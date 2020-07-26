@@ -1,23 +1,7 @@
-@import "style/variables";
-
 *, *:before, *:after {
   box-sizing: border-box;
 }
 
 body {
-  height: 100vh;
-  margin: 0;
-  font-family: $primary_font;
+  height: calc(100vh - 16px);
 }
-
-h1 {
-  margin: 0
-}
-
-button {
-  background: none;
-  border: 0;
-}
-
-@import "style/fonts";
-@import "style/utilities";

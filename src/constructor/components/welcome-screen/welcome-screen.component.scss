@@ -1,12 +1,6 @@
-@import "../../../resolution-mixins";
-
 .component {
   display: flex;
   flex-flow: column;
-
-  padding: 0 16px;
-
-  height: 100%;
 
   .header, .content {
     text-align: center;
@@ -22,33 +16,11 @@
 
   .footer {
     flex: 0 1 90px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
-}
 
-@include mobile {
-  .component {
-    .footer {
-      .button_container {
-        width: 100%;
-        height: auto;
-      }
-    }
-  }
-}
-
-@include desktop {
-  .component {
-    width: 592px;
-    height: 464px;
-
-    border-radius: 4px;
-
-    background-color: white;
-
-    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+  .social-share {
+    height: 30px;
+    margin-bottom: 20px;
+    color: red;
   }
 }
