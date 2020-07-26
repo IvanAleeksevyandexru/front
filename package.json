@@ -19,6 +19,11 @@
     "@angular/platform-browser": "~10.0.4",
     "@angular/platform-browser-dynamic": "~10.0.4",
     "@angular/router": "~10.0.4",
+    "ngx-perfect-scrollbar": "8.0.0",
+    "angular2-text-mask": "9.0.0",
+    "@ngx-translate/core": "11.0.1",
+    "@ngx-translate/http-loader": "4.0.0",
+    "moment": "2.24.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
@@ -41,6 +46,7 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
+    "epgu-lib": "^0.0.202",
     "typescript": "~3.9.5"
   }
 }

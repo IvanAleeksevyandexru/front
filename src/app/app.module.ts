@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {ConstructorModule} from '../constructor/constructor.module';
+import {EpguLibCommonModule} from 'epgu-lib';
 
 @NgModule({
   declarations: [
@@ -10,7 +12,9 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ConstructorModule,
+    EpguLibCommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
