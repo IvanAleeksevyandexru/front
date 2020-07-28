@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ConfirmPersonalUserEmailComponent } from './confirm-personal-user-email/confirm-personal-user-email.component';
+import { ConfirmPersonalUserEmailComponent } from './confirm-personal-user-email.component';
 import {SharedModule} from "../../../shared/shared.module";
 
 
