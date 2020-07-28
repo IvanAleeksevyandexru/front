@@ -10,6 +10,8 @@
     <div class="social-share">
       Social media
     </div>
-    <lib-button>Продолжить</lib-button>
+    <ng-container *ngFor="let action of data.actions">
+      <lib-button (click)="executeAction(action.method)">{{action.label}}</lib-button>
+    </ng-container>
   </div>
 </div>

@@ -1,4 +1,7 @@
+import {ComponentActionInterface} from './component-action.interface';
+
 export interface SimpleComponentInterface {
   header: string,
-  label?
+  label?: string,
+  actions?: ComponentActionInterface[]
 }
