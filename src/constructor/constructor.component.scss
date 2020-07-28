@@ -3,8 +3,6 @@
 #content-wrapper {
   height: 100%;
   width: 100%;
-
-  background-color: #F3F5FB;
 }
 
 main.app-content {
@@ -16,7 +14,21 @@ question-block {
   width: 100%;
 }
 
+@include mobile {
+  header.app-header {
+    height: 128px;
+  }
+
+  main.app-content {
+    height: calc(100% - 128px);
+  }
+}
+
 @include desktop {
+  #content-wrapper {
+    background-color: #F3F5FB;;
+  }
+
   header.app-header {
     height: 120px;
   }
