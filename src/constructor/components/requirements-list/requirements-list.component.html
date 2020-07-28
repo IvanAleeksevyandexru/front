@@ -1,7 +1,25 @@
-<div class="component">
-  <ul class="list">
-    <li>Паспортные данные всех взрослых членов семьи, включая детей старше 14 лет</li>
-    <li>Данные свидетельств о рождении для детей до 14 лет</li>
-    <li>Паспортные данные собственников жилья</li>
-  </ul>
-</div>
+<section class="section-content">
+  <div class="component">
+    <div class="header">
+      <h1>{{data.header}}</h1>
+    </div>
+  
+    <div class="content" [innerHTML]="data.label">
+    </div>
+  
+    <div class="footer">
+      <!-- Submit button -->
+      <ng-container>
+        <lib-button type="button" class="submit-button" size="lg" fontSize="13" (click)="nextStep()">
+          <label class="submit-label">
+            {{data.submitButtonLabel}}
+          </label>
+          <object class="button-icon" type="image/svg+xml" data="assets/icons/svg/arrow-forward.svg" width="20" height="20">
+            <img src="assets/icons/png/arrow-forward.png" width="20" height="20" alt="arrow-forward" />
+          </object>
+        </lib-button>
+      </ng-container>
+      <!-- Submit button end -->
+    </div>
+  </div>
+</section>

@@ -6,12 +6,13 @@ import {EpguLibModule} from 'epgu-lib';
 import {ConstructorComponent} from './constructor.component';
 import {QuestionBlockModule} from "./modules/questions-block/question-block.module";
 import {ConfirmPersonalUserEmailScreenModule} from "./modules/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module";
+import {QuestionBlockModule} from './modules/questions-block/question-block.module';
 
 const COMPONENTS = [
   WelcomeScreenComponent,
   RequirementsListComponent,
   ConstructorComponent
-]
+];
 
 @NgModule({
   declarations: [

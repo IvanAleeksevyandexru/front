@@ -1,8 +1,11 @@
-@import "variables";
+@import "style/variables";
+@import "style/fonts";
+@import "style/utilities";
+
 
 *, *:before, *:after {
   box-sizing: border-box;
-  font-family: 'Lato', sans-serif;
+  font-family: $primary_font, sans-serif;
 }
 
 body {
