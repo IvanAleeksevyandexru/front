@@ -9,7 +9,7 @@ import {QuestionAnswerInterface} from '../../../../interfaces/question-block.int
 export class AnswerChoiceComponent implements OnInit {
 
   @Input()
-  data: QuestionAnswerInterface
+  data: QuestionAnswerInterface;
   constructor() { }
 
   ngOnInit(): void {

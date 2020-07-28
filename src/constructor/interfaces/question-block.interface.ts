@@ -5,9 +5,9 @@
 export interface QuestionBlockInterface {
   // "id": string,
   // "type": "QuestionScr",
-  "header": string;
+  'header': string;
   // "label": string,
-  "supportedValues": Array<QuestionAnswerInterface>;
+  'supportedValues': Array<QuestionAnswerInterface>;
   // "attrs": Object,
   // "visited": boolean
 }
@@ -19,9 +19,9 @@ export interface QuestionBlockInterface {
  * @property {string}action - xxxxx - // TODO что это за значение
  */
 export interface QuestionAnswerInterface {
-  "label": string;
-  "value": string;
-  "action": string;
+  'label': string;
+  'value': string;
+  'action': string;
 }
 
 
