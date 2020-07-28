@@ -11,6 +11,11 @@ main.app-content {
   display: flex;
 }
 
+// TODO удалить после согласоваия по родительсокму компоненту (flex/block)
+question-block {
+  width: 100%;
+}
+
 @include desktop {
   header.app-header {
     height: 120px;
