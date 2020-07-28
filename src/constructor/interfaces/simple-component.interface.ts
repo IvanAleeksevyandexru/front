@@ -4,4 +4,5 @@ export interface SimpleComponentInterface {
   header: string,
   label?: string,
   actions?: ComponentActionInterface[]
+  submitButtonLabel?: string
 }

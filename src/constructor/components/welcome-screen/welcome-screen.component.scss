@@ -1,3 +1,5 @@
+@import "../../../resolution-mixins";
+
 .component {
   display: flex;
   flex-flow: column;
@@ -16,11 +18,22 @@
 
   .footer {
     flex: 0 1 90px;
-  }
 
-  .social-share {
-    height: 30px;
-    margin-bottom: 20px;
-    color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@include desktop {
+  .component {
+    width: 592px;
+    height: 464px;
+
+    border-radius: 4px;
+
+    background-color: white;
+
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
   }
 }

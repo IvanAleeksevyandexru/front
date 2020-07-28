@@ -7,11 +7,6 @@
   </div>
 
   <div class="footer">
-    <div class="social-share">
-      Social media
-    </div>
-    <ng-container *ngFor="let action of data.actions">
-      <lib-button (click)="executeAction(action.method)">{{action.label}}</lib-button>
-    </ng-container>
+    <lib-button (click)="nextStep()">{{data.submitButtonLabel}}</lib-button>
   </div>
 </div>

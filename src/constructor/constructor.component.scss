@@ -1,0 +1,31 @@
+@import "../resolution-mixins";
+
+#content-wrapper {
+  height: 100%;
+  width: 100%;
+
+  background-color: #F3F5FB;
+}
+
+main.app-content {
+  display: flex;
+}
+
+@include desktop {
+  header.app-header {
+    height: 120px;
+  }
+
+  main.app-content {
+    height: calc(100% - 321px);
+
+    align-items: center;
+    justify-content: center;
+  }
+
+  footer.app-footer {
+    height: 201px;
+
+    background: #E7ECF7;
+  }
+}
