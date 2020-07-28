@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SimpleComponentInterface} from '../../interfaces/simple-component.interface';
 
 @Component({
@@ -9,10 +9,14 @@ import {SimpleComponentInterface} from '../../interfaces/simple-component.interf
 export class WelcomeScreenComponent implements OnInit {
   @Input() data: SimpleComponentInterface;
 
+  @Output('nextStep') nextStepEvent: EventEmitter<any> = new EventEmitter<any>();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  nextStep() {}
+  nextStep() {
+    this.nextStepEvent.emit(true);
+  }
 }
