@@ -1,10 +1,14 @@
-<page-name>{{data?.header}}</page-name>
+<screen-container>
 
-<div class="answer-container">
-  <answer-choice
-    *ngFor="let answer of data?.supportedValues"
-    (click)="onAnswerChoose(answer)"
-    [data]="answer">
-    {{answer}}
-  </answer-choice>
-</div>
+  <page-name>{{data?.header}}</page-name>
+
+  <div class="answer-container">
+    <answer-choice
+      *ngFor="let answer of data?.supportedValues"
+      (click)="onAnswerChoose(answer)"
+      [data]="answer">
+      {{answer}}
+    </answer-choice>
+  </div>
+
+</screen-container>

@@ -1,10 +1,6 @@
-<div id="content-wrapper">
-  <header class="app-header"></header>
-  <main class="app-content">
-    <app-welcome-screen [data]="welcomeComponentData">
-    </app-welcome-screen>
-    <app-welcome-screen [data]="welcomeComponentData"></app-welcome-screen>
-<!--    <question-block [data]="questionComponentData" (onAnswerSelect)="onAnswerSelect($event)"></question-block>-->
-  </main>
-  <footer class="app-footer"></footer>
-</div>
+<header class="app-header"></header>
+<main class="app-content">
+  <app-welcome-screen [data]="welcomeComponentData"></app-welcome-screen>
+  <question-block [data]="questionComponentData" (onAnswerSelect)="onAnswerSelect($event)"></question-block>
+</main>
+<footer class="app-footer"></footer>
