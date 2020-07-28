@@ -13,4 +13,8 @@ export class WelcomeScreenComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  executeAction(method: string) {
+    console.log(method)
+  }
 }
