@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {WelcomeScreenComponent} from './components/welcome-screen/welcome-screen.component';
 import {EpguLibModule} from 'epgu-lib';
 import {ConstructorComponent} from './constructor.component';
+import {QuestionBlockModule} from "./modules/questions-block/question-block.module";
 
 const COMPONENTS = [
   WelcomeScreenComponent,
@@ -15,6 +16,7 @@ const COMPONENTS = [
   ],
   imports: [
     CommonModule,
+    QuestionBlockModule,
     EpguLibModule.forChild(),
   ],
   providers: [],

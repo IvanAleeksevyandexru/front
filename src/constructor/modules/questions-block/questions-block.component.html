@@ -1,0 +1,10 @@
+<page-name>{{data?.header}}</page-name>
+
+<div class="answer-container">
+  <answer-choice
+    *ngFor="let answer of data?.supportedValues"
+    (click)="onAnswerSelect(answer)"
+    [data]="answer">
+    {{answer}}
+  </answer-choice>
+</div>
