@@ -16,32 +16,32 @@ export class ConstructorComponent {
   }
   // WelcomeComponent <end>
 
-  // questionComponentData: QuestionISrcInterface = {
-  //   "header": "Кого необходимо зарегистрировать?",
-  //   "supportedValues": [{
-  //     "label": "Только меня",
-  //     "value": "Только меня",
-  //     "action": "getNextScreen"
-  //   },
-  //     {
-  //       "label": "Меня и детей до 14 лет",
-  //       "value": "Меня и детей до 14 лет",
-  //       "action": "asdasdafgsadScreen"
-  //     },
-  //     {
-  //       "label": "Только детей от 14 до 18",
-  //       "value": "Только детей от 14 до 18",
-  //       "action": "snahdgjadkafgas"
-  //     },
-  //     {
-  //       "label": "Всю семью",
-  //       "value": "Всю семью",
-  //       "action": "snahdgjadkafgas"
-  //     }
-  //   ],
-  // }
-  //
-  // onAnswerSelect(data: QuestionAnswerInterface) {
-  //   console.log(data)
-  // }
+  questionComponentData: QuestionISrcInterface = {
+    "header": "Кого необходимо зарегистрировать?",
+    "supportedValues": [{
+      "label": "Только меня",
+      "value": "Только меня",
+      "action": "getNextScreen"
+    },
+      {
+        "label": "Меня и детей до 14 лет",
+        "value": "Меня и детей до 14 лет",
+        "action": "asdasdafgsadScreen"
+      },
+      {
+        "label": "Только детей от 14 до 18",
+        "value": "Только детей от 14 до 18",
+        "action": "snahdgjadkafgas"
+      },
+      {
+        "label": "Всю семью",
+        "value": "Всю семью",
+        "action": "snahdgjadkafgas"
+      }
+    ],
+  }
+
+  onAnswerSelect(data: QuestionAnswerInterface) {
+    console.log(data)
+  }
 }

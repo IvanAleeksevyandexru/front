@@ -1,4 +1,5 @@
 :host {
+  display: block;
   width: 100%;
 }
 
@@ -9,4 +10,10 @@
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+}
+
+
+.container {
+  min-height: 100vh;
+  height: 100%;
 }
