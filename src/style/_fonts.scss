@@ -1,5 +1,6 @@
 @import "variables";
 
+// ALS-Ekibastuz fonts
 @font-face {
   font-family: $primary_font;
   font-weight: $fw-black;
@@ -22,3 +23,138 @@
   font-weight: $fw-regular;
   src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Regular.otf") format("opentype")
 }
+
+@font-face {
+  font-family: $primary_font;
+  font-weight: $fw-regular;
+  src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Regular.otf") format("opentype")
+}
+
+
+// Lato fonts
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-black;
+  font-style: normal;
+  src: url("/assets/fonts/Lato2OFL/Lato-Black.ttf") format("truetype")
+}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-black;
+  font-style: italic;
+  src: url("/assets/fonts/Lato2OFL/Lato-BlackItalic.ttf") format("truetype")
+}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-bold;
+  font-style: normal;
+  src: url("/assets/fonts/Lato2OFL/Lato-Bold.ttf") format("truetype")
+}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-bold;
+  font-style: italic;
+  src: url("/assets/fonts/Lato2OFL/Lato-BoldItalic.ttf") format("truetype")
+}
+
+//@font-face {
+//  font-family: $secondary_font;
+//  font-weight: $fw-;
+//  font-style: normal;
+//  src: url("/assets/fonts/Lato2OFL/Lato-Hairline.ttf") format("truetype")
+//}
+//@font-face {
+//  font-family: $secondary_font;
+//  font-weight: $fw-;
+//  font-style: normal;
+//  src: url("/assets/fonts/Lato2OFL/Lato-HairlineItalic.ttf") format("truetype")
+//}
+
+//@font-face {
+//  font-family: $secondary_font;
+//  font-weight: $fw-regular;
+//  font-style: normal;
+//  src: url("/assets/fonts/Lato2OFL/Lato-Heavy.ttf") format("truetype")
+//}
+//@font-face {
+//  font-family: $secondary_font;
+//  font-weight: $fw-regular;
+//  font-style: normal;
+//  src: url("/assets/fonts/Lato2OFL/Lato-HeavyItalic.ttf") format("truetype")
+//}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-light;
+  font-style: normal;
+  src: url("/assets/fonts/Lato2OFL/Lato-Light.ttf") format("truetype")
+}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-light;
+  font-style: italic;
+  src: url("/assets/fonts/Lato2OFL/Lato-LightItalic.ttf") format("truetype")
+}
+
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-medium;
+  font-style: normal;
+  src: url("/assets/fonts/Lato2OFL/Lato-Medium.ttf") format("truetype")
+}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-medium;
+  font-style: italic;
+  src: url("/assets/fonts/Lato2OFL/Lato-MediumItalic.ttf") format("truetype")
+}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-regular;
+  font-style: normal;
+  src: url("/assets/fonts/Lato2OFL/Lato-Regular.ttf") format("truetype")
+}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-regular;
+  font-style: italic;
+  src: url("/assets/fonts/Lato2OFL/Lato-Italic.ttf") format("truetype")
+}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-semi-bold;
+  font-style: normal;
+  src: url("/assets/fonts/Lato2OFL/Lato-Semibold.ttf") format("truetype")
+}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-semi-bold;
+  font-style: italic;
+  src: url("/assets/fonts/Lato2OFL/Lato-SemiboldItalic.ttf") format("truetype")
+}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-thin;
+  font-style: normal;
+  src: url("/assets/fonts/Lato2OFL/Lato-Thin.ttf") format("truetype")
+}
+
+@font-face {
+  font-family: $secondary_font;
+  font-weight: $fw-thin;
+  font-style: italic;
+  src: url("/assets/fonts/Lato2OFL/Lato-ThinItalic.ttf") format("truetype")
+}
+
