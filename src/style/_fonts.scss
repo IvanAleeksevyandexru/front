@@ -1,22 +1,24 @@
+@import "variables";
+
 @font-face {
-  font-family: "ALS Ekibastuz";
-  font-weight: 900;
-  src: url("/assets/fonts/ALS-Ekibastuz/ALS Ekibastuz Black.otf") format("otf")
+  font-family: $primary_font;
+  font-weight: $fw-black;
+  src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Black.otf") format("otf")
 }
 
 @font-face {
-  font-family: "ALS Ekibastuz";
-  font-weight: 700;
-  src: url("/assets/fonts/ALS-Ekibastuz/ALS Ekibastuz Bold.otf") format("otf")
+  font-family: $primary_font;
+  font-weight: $fw-bold;
+  src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Bold.otf") format("opentype")
 }
 
 @font-face {
   font-family: "ALS Ekibastuz Heavy";
-  src: url("/assets/fonts/ALS-Ekibastuz/ALS Ekibastuz Heavy.otf") format("otf")
+  src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Heavy.otf") format("opentype")
 }
 
 @font-face {
-  font-family: "ALS Ekibastuz";
-  font-weight: 400;
-  src: url("/assets/fonts/ALS-Ekibastuz/ALS Ekibastuz Regular.otf") format("otf")
+  font-family: $primary_font;
+  font-weight: $fw-regular;
+  src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Regular.otf") format("opentype")
 }

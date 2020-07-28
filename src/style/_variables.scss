@@ -5,6 +5,7 @@
 $white: #fff;
 $black: #000;
 $blue: #0B40B3;
+$nero: #292929;
 
 
 // primary font
@@ -12,15 +13,14 @@ $primary_font: 'ALS Ekibastuz';
 //$secondary_font: 'Helvetica Neue';
 
 // font-weight
-$thin: 100;
-$light: 300;
-$regular: 400;
-$bold: 700;
-$black: 900;
+$fw-thin: 100;
+$fw-light: 300;
+$fw-regular: 400;
+$fw-bold: 700;
+$fw-black: 900;
 
 // Font size
-$font-xs: 12px;
-$font-sm: 14px;
-$primary-fs: 16px;
-$font-md: 18px;
-$font-lg: 20px;
+//$font-xs: 12px;
+//$font-sm: 14px;
+//$font-md: 18px;
+//$font-lg: 20px;
