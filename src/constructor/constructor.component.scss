@@ -1,8 +1,12 @@
 @import "../resolution-mixins";
+@import "../style/variables";
+@import "../style/breakpoint";
 
 :host {
   display: block;
-  background-color: #F3F5FB;
+  @include tablets-up {
+    background-color: $quartz;
+  }
 }
 
 header {
