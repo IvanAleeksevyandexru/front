@@ -3,7 +3,7 @@
 <div class="answer-container">
   <answer-choice
     *ngFor="let answer of data?.supportedValues"
-    (click)="onAnswerSelect(answer)"
+    (click)="onAnswerChoose(answer)"
     [data]="answer">
     {{answer}}
   </answer-choice>

@@ -1,6 +1,17 @@
+@import "../../../style/variables";
+@import "../../../style/breakpoint";
 
 :host{
   display: block;
+}
+
+page-name {
+  width: 100%;
+  margin-bottom: 32px;
+  text-align: center;
+  @include tablets-up {
+    text-align: left;
+  }
 }
 
 answer-choice {
@@ -8,6 +19,3 @@ answer-choice {
   margin-bottom: 8px;
 }
 
-page-name {
-  margin-bottom: 32px;
-}

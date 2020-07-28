@@ -8,27 +8,9 @@ import {QuestionAnswerInterface, QuestionISrcInterface} from "../../interfaces/q
 })
 export class QuestionsBlockComponent implements OnInit {
 
-  @Input() data: QuestionISrcInterface = {
-    "header": "Ваша цель?",
-    "supportedValues": [{
-      "label": "Прекратить регистрацию",
-      "value": "Прекратить регистрацию",
-      "action": "getNextScreen"
-    },
-      {
-        "label": "Продолжить регистрацию",
-        "value": "Продолжить регистрацию",
-        "action": "asdasdafgsadScreen"
-      },
-      {
-        "label": "Отмена",
-        "value": "Отмена",
-        "action": "snahdgjadkafgas"
-      }
-    ],
-  }
+  @Input() data: QuestionISrcInterface;
 
-  @Output() onAnswerChoose = new EventEmitter<QuestionAnswerInterface>();
+  @Output() onAnswerSelect = new EventEmitter<QuestionAnswerInterface>();
 
   constructor() {
   }
@@ -36,8 +18,8 @@ export class QuestionsBlockComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onAnswerSelect(answer: QuestionAnswerInterface) {
-    this.onAnswerChoose.emit(answer)
+  onAnswerChoose(answer: QuestionAnswerInterface) {
+    this.onAnswerSelect.emit(answer)
   }
 }
 

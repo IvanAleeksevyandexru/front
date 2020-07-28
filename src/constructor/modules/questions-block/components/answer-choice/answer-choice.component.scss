@@ -1,7 +1,6 @@
 @import "../../../../../style/variables";
 @import "../../../../../style/breakpoint";
 
-
 :host {
   display: block;
 }
@@ -29,6 +28,7 @@ button {
 }
 
 .icon-arrow {
+  flex-shrink: 0;
   display: inline-block;
   width: 20px;
   height: 20px;
