@@ -10,7 +10,7 @@ export class QuestionsBlockComponent implements OnInit {
 
   @Input() data: QuestionBlockInterface;
 
-  @Output() onAnswerSelect = new EventEmitter<QuestionAnswerInterface>();
+  @Output() answerSelect = new EventEmitter<QuestionAnswerInterface>();
 
   constructor() {
   }
@@ -18,8 +18,8 @@ export class QuestionsBlockComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onAnswerChoose(answer: QuestionAnswerInterface) {
-    this.onAnswerSelect.emit(answer)
+  answerChoose(answer: QuestionAnswerInterface): void {
+    this.answerSelect.emit(answer)
   }
 }
 

@@ -7,7 +7,7 @@ import {AnswerChoiceComponent} from './components/answer-choice/answer-choice.co
 const COMPONENTS = [
   QuestionsBlockComponent,
   AnswerChoiceComponent
-]
+];
 
 @NgModule({
   declarations: [...COMPONENTS],
