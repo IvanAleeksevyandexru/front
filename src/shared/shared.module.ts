@@ -6,7 +6,7 @@ import { ScreenContainerComponent } from './components/screen-container/screen-c
 const COMPONENTS = [
   PageNameComponent,
   ScreenContainerComponent
-]
+];
 
 @NgModule({
   declarations: [...COMPONENTS],

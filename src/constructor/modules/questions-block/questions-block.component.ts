@@ -1,5 +1,5 @@
-import {asNativeElements, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {QuestionAnswerInterface, QuestionISrcInterface} from "../../interfaces/questionI-src.interface";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {QuestionAnswerInterface, QuestionBlockInterface} from '../../interfaces/question-block.interface';
 
 @Component({
   selector: 'question-block',
@@ -8,7 +8,7 @@ import {QuestionAnswerInterface, QuestionISrcInterface} from "../../interfaces/q
 })
 export class QuestionsBlockComponent implements OnInit {
 
-  @Input() data: QuestionISrcInterface;
+  @Input() data: QuestionBlockInterface;
 
   @Output() onAnswerSelect = new EventEmitter<QuestionAnswerInterface>();
 

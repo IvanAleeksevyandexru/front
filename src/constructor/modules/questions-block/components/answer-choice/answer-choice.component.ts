@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {QuestionAnswerInterface} from "../../../../interfaces/questionI-src.interface";
+import {QuestionAnswerInterface} from "../../../../interfaces/question-block.interface";
 
 @Component({
   selector: 'answer-choice',

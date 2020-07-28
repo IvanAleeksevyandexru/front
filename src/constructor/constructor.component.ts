@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {SimpleComponentInterface} from '../constructor/interfaces/simple-component.interface';
-import {QuestionAnswerInterface, QuestionISrcInterface} from "./interfaces/questionI-src.interface";
+import {QuestionAnswerInterface, QuestionBlockInterface} from "./interfaces/question-block.interface";
 
 @Component({
   selector: 'app-constructor',
@@ -16,7 +16,7 @@ export class ConstructorComponent {
   }
   // WelcomeComponent <end>
 
-  questionComponentData: QuestionISrcInterface = {
+  questionComponentData: QuestionBlockInterface = {
     "header": "Кого необходимо зарегистрировать?",
     "supportedValues": [{
       "label": "Только меня",
