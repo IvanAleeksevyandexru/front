@@ -1,0 +1,19 @@
+@import "../../../styles/variables";
+@import "../../../styles/breakpoint";
+
+:host{
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 32px;
+  text-align: center;
+  //@include tablets-up {
+  //  text-align: left;
+  //}
+}
+h1 {
+  font-size: 24px;
+  line-height: 36px;
+  @include tablets-up {
+    font-size: 32px;
+  }
+}

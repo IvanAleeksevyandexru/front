@@ -1,0 +1,21 @@
+@import "../../../styles/breakpoint";
+
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  max-width: 592px;
+  width: 100%;
+  padding: 32px 16px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+.container {
+  min-height: 100vh;
+  height: 100%;
+}

@@ -1,0 +1,21 @@
+@import "../../../styles/variables";
+@import "../../../styles/breakpoint";
+@import "../../../styles/functions";
+
+:host {
+  display: block;
+  background: $white;
+  @extend %shadow;
+  padding: 24px;
+  border-radius: 4px;
+  position: relative;
+  top: 0;
+  transition: top .3s ease, box-shadow .3s ease;
+  &:hover {
+    top: -5px;
+    box-shadow: 0 12px 36px rgba(0,0,0,.2)
+  }
+}
+
+
+

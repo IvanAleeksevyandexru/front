@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
-import {SimpleComponentInterface} from '../constructor/interfaces/simple-component.interface';
-import {QuestionAnswerInterface, QuestionBlockInterface} from './interfaces/question-block.interface';
-import {EpguService} from '../services/epgu.service';
-import {QuestionAnswerInterface, QuestionBlockInterface} from './interfaces/question-block.interface';
+import {SimpleComponentInterface} from '../app/interfaces/simple-component.interface';
+import {QuestionAnswerInterface, QuestionBlockInterface} from '../app/interfaces/question-block.interface';
 
 @Component({
   selector: 'app-constructor',
@@ -54,58 +52,8 @@ export class ConstructorComponent {
       }
     ],
   };
-  };
-
-  constructor(
-    public epguService: EpguService,
-  ) { }
 
   onAnswerSelect(data: QuestionAnswerInterface) {
     console.log(data);
   }
-
-
-  confirmUserEmail = {
-    "id": "pd3",
-    "type": "ConfirmUserEmail",
-    "header": "Подтвердите адрес электронной почты",
-    "label": "электронная почта",
-    "image": "",
-    "content": 'electropochta@electropochta.ru', // TODO отсебятина, удалить после определения структуры данных
-    "supportedValues": [],
-    "actions": [{"label": "Изменить", "method": "editPersonalEmail"}],
-    "fields": [],
-    "visited": false
-  }
-
-  confirmEmailActionSelect($event: any) {
-    console.log($event);
-  }
-
-
-  confirmPhoneEmail = {
-    "id": "pd2",
-    "type": "ConfirmUserPhone",
-    "header": "Подтвердите контактный телефон",
-    "label": "контактный телефон",
-    "content": '+7 (999) 999-99-99', // TODO отсебятина, удалить после определения структуры данных
-    "supportedValues": [],
-    "attrs": {"actions": [{"label": "Изменить", "method": "editPersonalPhone"}, {"label": "Верно", "method": "phoneCorrect"}]},
-    "visited": false
-    console.log(data);
-  }
-
-  ngOnInit(): void {
-    this.epguService.getData().subscribe((data) => {
-      console.log(data);
-    }, (error) => {
-      console.error(error);
-    });
-  }
-
-  confirmPhoneActionSelect($event: any) {
-    console.log($event);
-  }
-
-
 }

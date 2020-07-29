@@ -1,20 +1,16 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {WelcomeScreenComponent} from './components/welcome-screen/welcome-screen.component';
-import {RequirementsListComponent} from './components/requirements-list/requirements-list.component';
 import {EpguLibModule} from 'epgu-lib';
 import {ConstructorComponent} from './constructor.component';
-import {QuestionBlockModule} from "./modules/questions-block/question-block.module";
-import {ConfirmPersonalUserEmailScreenModule} from "./modules/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module";
-import {ConfirmPersonalUserPhoneScreenModule} from "./modules/confirm-personal-user/screens/confirm-personal-user-phone-screen/confirm-personal-user-phone-screen.module";
-import {QuestionBlockModule} from './modules/questions-block/question-block.module';
-import {SharedModule} from '../shared/shared.module';
-import {WelcomeBlockModule} from './modules/welcome-block/welcome-block.module';
+import {WelcomeBlockModule} from '../app/components/welcome-block/welcome-block.module';
+import {QuestionBlockModule} from '../app/components/questions-block/question-block.module';
+import {RequirementsListModule} from '../app/components/requirements-list/requirements-list.module';
+import {ConfirmPersonalUserEmailScreenModule} from '../app/components/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module';
+import {SharedComponentsModule} from '../app/components/shared-components/shared-components.module';
+import {ConstructorComponentRoutingModule} from './constructor-routing.module';
 
 const COMPONENTS = [
-  WelcomeScreenComponent,
-  RequirementsListComponent,
-  ConstructorComponent
+  ConstructorComponent,
 ];
 
 @NgModule({
@@ -23,11 +19,12 @@ const COMPONENTS = [
   ],
   imports: [
     CommonModule,
-    QuestionBlockModule,
     WelcomeBlockModule,
-    SharedModule,
+    QuestionBlockModule,
+    RequirementsListModule,
     ConfirmPersonalUserEmailScreenModule,
-    ConfirmPersonalUserPhoneScreenModule,
+    SharedComponentsModule,
+    ConstructorComponentRoutingModule,
     EpguLibModule.forChild(),
   ],
   providers: [],

@@ -8,8 +8,8 @@ const routes: Routes = [
   {
     path: 'showcase',
     loadChildren: () =>
-      import('../showcase/containers/showcase-index-page/showcase-index-page.module').then(
-        m => m.ShowcaseIndexPageModule
+      import('../constructor/constructor.module').then(
+        m => m.ConstructorModule
       ),
   },
 ];

@@ -1,0 +1,91 @@
+@import "../../styles/breakpoint";
+@import "../../styles/variables";
+
+:host {
+  @include tablets-down {
+    display: grid;
+  }
+}
+
+.component {
+  display: flex;
+  flex-flow: column;
+
+  height: 100%;
+
+  .header {
+    text-align: center;
+  }
+
+  .header {
+    flex: 0 1 auto;
+  }
+
+  .content {
+    flex: 1 1 auto;
+
+    font-family: $secondary_font;
+  }
+
+  .footer {
+    flex: 0 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .secondary-font {
+      font-family: $secondary_font;
+    }
+  }
+}
+
+@include desktop {
+@include tablets-down {
+  .component {
+    .header {
+      margin-bottom: 26px;
+    }
+
+    .content {
+      font-size: 14px;
+      line-height: 20px;
+
+      text-align: center;
+
+      margin-bottom: 32px;
+    }
+
+    .footer {
+      .button_container {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
+
+@include tablets-up {
+  .component {
+    min-height: 464px;
+
+    border-radius: 4px;
+
+    background-color: white;
+
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+
+    padding: 32px 24px;
+
+    .header {
+      margin-bottom: 32px;
+    }
+
+    .content {
+      font-size: 16px;
+      line-height: 24px;
+
+      margin-bottom: 32px;
+    }
+  }
+}

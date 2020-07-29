@@ -1,0 +1,149 @@
+@import "../../../styles";
+@import "../../styles/breakpoint";
+
+*, *:before, *:after {
+  font-family: $secondary_font, sans-serif;
+}
+
+.section-content {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.component {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  min-height: inherit;
+  h1 {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+  }
+  p {
+    font-size: .9rem;
+    line-height: 1.5;
+    margin: 1.5rem 1rem;
+  }
+  ul {
+    font-size: .9rem;
+    text-align: left;
+    line-height: 1.5;
+    list-style: none;
+    margin-left: 0;
+    background: $light-gray;
+    border-radius: 4px;
+    padding: 1.5rem 1rem;
+    & > li {
+      position: relative;
+      margin-left: 2rem;
+      &:not(:first-of-type) {
+        margin-top: .5rem;
+      }
+      &::before {
+        content: '';
+        position: absolute;
+        left: -2rem;
+        top: 3px;
+        display: inline-block;
+        width: 16px;
+        height: 12px;
+        background-image: url('^/assets/icons/png/check.png'); // Fallback PNG
+        background-image: url('^/assets/icons/svg/check.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        margin-right:0.5em;
+      }
+    }
+  }
+
+  .header, .content {
+    text-align: center;
+  }
+
+  .header {
+    flex: 0 1 auto;
+    margin-top: 1rem;
+  }
+
+  .content {
+    flex: 1 1 auto;
+  }
+
+  .footer {
+    flex: 0 1 auto;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+  }
+
+  .share-widget {
+    margin: 2rem 1rem;
+  }
+
+  .submit-button {
+    flex: 1 1 auto;
+    margin: 1rem;
+    & button {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .submit-label {
+    font-size: .9rem;
+    display: inline-block;
+    text-align: left;
+  }
+}
+
+@include tablets-up {
+  .component {
+    max-width: 592px;
+    height: auto;
+    border-radius: 4px;
+    background-color: white;
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+    .header {
+      margin: 0;
+    }
+    h1, p {
+      margin: 2rem 1.5rem;
+    }
+    .content {
+      text-align: left;
+    }
+    ul {
+      margin-top: 0;
+      font-size: 1rem;
+      padding: 1.5rem;
+    }
+
+    .submit-button {
+      margin-bottom: 2rem;
+      flex: 0 1 auto;
+      width: auto;
+    }
+
+    .submit-label {
+      font-size: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    .footer {
+      align-items: center;
+    }
+
+    .button-icon {
+      display: none;
+    }
+  }
+}
