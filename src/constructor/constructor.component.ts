@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {SimpleComponentInterface} from '../app/interfaces/simple-component.interface';
-import {QuestionAnswerInterface, QuestionBlockInterface} from '../app/interfaces/question-block.interface';
+import {SimpleComponentInterface} from '../constructor/interfaces/simple-component.interface';
+import {QuestionAnswerInterface, QuestionBlockInterface} from './interfaces/question-block.interface';
+import {EpguService} from '../services/epgu.service';
 
 @Component({
   selector: 'app-constructor',
@@ -53,7 +54,20 @@ export class ConstructorComponent {
     ],
   };
 
+  constructor(
+    public epguService: EpguService,
+  ) { }
+
   onAnswerSelect(data: QuestionAnswerInterface) {
     console.log(data);
+  }
+
+  ngOnInit(): void {
+    this.epguService.getData().subscribe((response) => {
+      const { display } = response;
+      console.log(display);
+    }, (error) => {
+      console.error(error);
+    });
   }
 }

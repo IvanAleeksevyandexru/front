@@ -12,8 +12,8 @@ export class EpguService {
   ) { }
 
   public getData(): Observable<any> {
-    return this.http.get('http://188.93.23.27:8080/getService', {
-      withCredentials: true
+    return this.http.get('http://188.93.23.27:18080/getService', {
+      withCredentials: false
     });
   }
 }
