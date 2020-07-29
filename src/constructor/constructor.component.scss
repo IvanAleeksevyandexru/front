@@ -1,4 +1,3 @@
-@import "../resolution-mixins";
 @import "../style/variables";
 @import "../style/breakpoint";
 
@@ -20,10 +19,21 @@ footer {
 main {
   display: flex;
   flex-direction: column;
+
+  min-height: calc(100% - 128px);
 }
 
+@include tablets-down {
+  header.app-header {
+    height: 128px;
+  }
+}
 
-@include desktop {
+@include tablets-up {
+  #content-wrapper {
+    background-color: #F3F5FB;;
+  }
+
   header.app-header {
     height: 120px;
   }

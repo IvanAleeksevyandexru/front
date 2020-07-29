@@ -2,11 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {SimpleComponentInterface} from '../../interfaces/simple-component.interface';
 
 @Component({
-  selector: 'app-welcome-screen',
-  templateUrl: './welcome-screen.component.html',
-  styleUrls: ['./welcome-screen.component.scss']
+  selector: 'welcome-block',
+  templateUrl: './welcome-block.component.html',
+  styleUrls: ['./welcome-block.component.scss']
 })
-export class WelcomeScreenComponent implements OnInit {
+export class WelcomeBlockComponent implements OnInit {
   @Input() data: SimpleComponentInterface;
 
   constructor() { }

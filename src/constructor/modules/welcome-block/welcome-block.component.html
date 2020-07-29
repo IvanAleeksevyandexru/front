@@ -1,0 +1,16 @@
+<screen-container>
+  <div class="component">
+    <div class="header">
+      <page-name>{{data?.header}}</page-name>
+    </div>
+
+    <div class="content" [innerHTML]="data?.label">
+    </div>
+
+    <div class="footer">
+      <div class="button_container">
+        <lib-button (click)="nextStep()"><div class="secondary-font">{{data.submitButtonLabel}}</div></lib-button>
+      </div>
+    </div>
+  </div>
+</screen-container>

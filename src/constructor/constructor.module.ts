@@ -7,6 +7,8 @@ import {ConstructorComponent} from './constructor.component';
 import {QuestionBlockModule} from "./modules/questions-block/question-block.module";
 import {ConfirmPersonalUserEmailScreenModule} from "./modules/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module";
 import {QuestionBlockModule} from './modules/questions-block/question-block.module';
+import {SharedModule} from '../shared/shared.module';
+import {WelcomeBlockModule} from './modules/welcome-block/welcome-block.module';
 
 const COMPONENTS = [
   WelcomeScreenComponent,
@@ -21,6 +23,8 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     QuestionBlockModule,
+    WelcomeBlockModule,
+    SharedModule
     ConfirmPersonalUserEmailScreenModule,
     EpguLibModule.forChild(),
   ],

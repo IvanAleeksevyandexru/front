@@ -1,0 +1,77 @@
+@import "../../../style/breakpoint";
+@import "../../../style/variables";
+
+:host {
+  @include tablets-down {
+    display: grid;
+  }
+}
+
+.component {
+  display: flex;
+  flex-flow: column;
+
+  height: 100%;
+
+  .header, .content {
+    text-align: center;
+  }
+
+  .header {
+    flex: 0 1 auto;
+  }
+
+  .content {
+    flex: 1 1 auto;
+
+    font-family: $secondary_font;
+  }
+
+  .footer {
+    flex: 0 1 90px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .secondary-font {
+      font-family: $secondary_font;
+    }
+  }
+}
+
+@include desktop {
+@include tablets-down {
+  .component {
+    .content {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .footer {
+      .button_container {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
+
+@include tablets-up {
+  .component {
+    min-height: 464px;
+
+    border-radius: 4px;
+
+    background-color: white;
+
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+
+    padding: 0 16px;
+
+    .content {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+}
