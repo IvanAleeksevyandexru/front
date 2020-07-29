@@ -8,4 +8,23 @@
 body {
   height: 100vh;
   margin: 0;
+  font-family: $primary_font;
 }
+
+h1 {
+  margin: 0
+}
+
+a {
+  text-decoration: none;
+  color: $egyptian-blue;
+}
+
+button {
+  background: none;
+  border: 0;
+}
+
+@import "style/fonts";
+@import "style/utilities";
+@import "style/icons";

@@ -1,6 +1,4 @@
-%shadow {
-  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
-}
+@import 'functions';
 
 .shadow {
   @extend %shadow
@@ -13,10 +11,4 @@
 }
 .shadow-lg {
 
-}
-
-
-
-.card-white {
-  @extend %shadow
 }

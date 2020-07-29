@@ -4,6 +4,8 @@ import {WelcomeScreenComponent} from './components/welcome-screen/welcome-screen
 import {RequirementsListComponent} from './components/requirements-list/requirements-list.component';
 import {EpguLibModule} from 'epgu-lib';
 import {ConstructorComponent} from './constructor.component';
+import {QuestionBlockModule} from "./modules/questions-block/question-block.module";
+import {ConfirmPersonalUserEmailScreenModule} from "./modules/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module";
 
 const COMPONENTS = [
   WelcomeScreenComponent,
@@ -17,6 +19,8 @@ const COMPONENTS = [
   ],
   imports: [
     CommonModule,
+    QuestionBlockModule,
+    ConfirmPersonalUserEmailScreenModule,
     EpguLibModule.forChild(),
   ],
   providers: [],

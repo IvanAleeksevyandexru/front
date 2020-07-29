@@ -2,5 +2,6 @@
 <main class="app-content">
   <app-welcome-screen [data]="welcomeComponentData"></app-welcome-screen>
   <question-block [data]="questionComponentData" (answerSelect)="onAnswerSelect($event)"></question-block>
+  <confirm-personal-user-email-screen></confirm-personal-user-email-screen>
 </main>
 <footer class="app-footer"></footer>
