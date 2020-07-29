@@ -14,7 +14,7 @@ $button-mt: 5px;
   }
 }
 
-:host::ng-deep .footer confirm-personal-user-button {
+:host::ng-deep .footer app-confirm-personal-user-button {
   @include tablets-up {
     margin: 5px 10px;
   }
