@@ -5,7 +5,7 @@
 
     <div class="answer-container">
       <app-answer-choice
-        *ngFor="let answer of data?.supportedValues"
+        *ngFor="let answer of data?.components[0].attrs.actions"
         (click)="answerChoose(answer)"
         [data]="answer">
         {{answer}}

@@ -4,6 +4,11 @@
   <app-question-block [data]="questionComponentData" (answerSelect)="onAnswerSelect($event)"></app-question-block>
   <app-requirements-list [data]="requirementsListComponentData"></app-requirements-list>
   <app-confirm-personal-user-email-screen></app-confirm-personal-user-email-screen>
+  {{componentId}}
+  <welcome-block [data]="welcomeComponentData" (nextStep)="welcomeNextStep($event)" *ngIf="componentType === 'WelcomeScr'"></welcome-block>
+  <question-block [data]="componentData" (answerSelect)="onAnswerSelect($event)" *ngIf="componentType === 'QuestionScr'"></question-block>
+  <app-requirements-list [data]="requirementsListComponentData" *ngIf="componentType === 'ServiceDscrScr'"></app-requirements-list>
+  <confirm-personal-user-email-screen *ngIf="false"></confirm-personal-user-email-screen>
 </main>
 <footer class="app-footer"></footer>
 

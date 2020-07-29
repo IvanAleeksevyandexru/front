@@ -54,18 +54,46 @@ export class ConstructorComponent {
     ],
   };
 
+  response: any;
+  componentId: string;
+  componentType: string;
+  componentData: any;
+
   constructor(
     public epguService: EpguService,
   ) { }
 
+  welcomeNextStep(value) {
+    this.response.currentValue[this.componentId] = {visited: true, value: ''};
+    this.sendData(this.response);
+  }
+
   onAnswerSelect(data: QuestionAnswerInterface) {
     console.log(data);
+    this.response.currentValue[this.componentId] = {visited: true, value: data.value};
+    this.sendData(this.response);
+  }
+
+  initResponse(response): void {
+    this.response = {};
+    this.response = response;
+    const { display } = response;
+    this.componentId = display.components[0].id;
+    this.componentType = display.components[0].type;
+    this.componentData = display;
+    console.log('initResponse', display);
   }
 
   ngOnInit(): void {
     this.epguService.getData().subscribe((response) => {
-      const { display } = response;
-      console.log(display);
+      this.initResponse(response);
+    }, (error) => {
+      console.error(error);
+    });
+  }
+  sendData(data) {
+    this.epguService.setData(this.response).subscribe((response) => {
+      this.initResponse(response);
     }, (error) => {
       console.error(error);
     });
