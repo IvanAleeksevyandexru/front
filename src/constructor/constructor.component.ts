@@ -29,31 +29,6 @@ export class ConstructorComponent {
   };
   // RequirementsListComponentData <end>
 
-  questionComponentData: QuestionBlockInterface = {
-    header: 'Кого необходимо зарегистрировать?',
-    supportedValues: [{
-      label: 'Только меня',
-      value: 'Только меня',
-      action: 'getNextScreen'
-    },
-      {
-        label: 'Меня и детей до 14 лет',
-        value: 'Меня и детей до 14 лет',
-        action: 'asdasdafgsadScreen'
-      },
-      {
-        label: 'Только детей от 14 до 18',
-        value: 'Только детей от 14 до 18',
-        action: 'snahdgjadkafgas'
-      },
-      {
-        label: 'Всю семью',
-        value: 'Всю семью',
-        action: 'snahdgjadkafgas'
-      }
-    ],
-  };
-
   response: any;
   componentId: string;
   componentType: string;
@@ -64,14 +39,11 @@ export class ConstructorComponent {
   ) { }
 
   welcomeNextStep(value) {
-    this.response.currentValue[this.componentId] = {visited: true, value: ''};
-    this.sendData(this.response);
+    this.sendData(true);
   }
 
   onAnswerSelect(data: QuestionAnswerInterface) {
-    console.log(data);
-    this.response.currentValue[this.componentId] = {visited: true, value: data.value};
-    this.sendData(this.response);
+    this.sendData(data.value);
   }
 
   initResponse(response): void {
@@ -81,7 +53,10 @@ export class ConstructorComponent {
     this.componentId = display.components[0].id;
     this.componentType = display.components[0].type;
     this.componentData = display;
-    console.log('initResponse', display);
+    console.log('--------------');
+    console.log('componentId:', this.componentId);
+    console.log('componentType:', this.componentType);
+    console.log('initResponse:', display);
   }
 
   ngOnInit(): void {
@@ -92,6 +67,7 @@ export class ConstructorComponent {
     });
   }
   sendData(data) {
+    this.response.currentValue[this.componentId] = {visited: true, value: data};
     this.epguService.setData(this.response).subscribe((response) => {
       this.initResponse(response);
     }, (error) => {

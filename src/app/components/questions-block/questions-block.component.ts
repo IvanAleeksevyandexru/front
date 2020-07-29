@@ -8,7 +8,7 @@ import {QuestionAnswerInterface, QuestionBlockInterface} from '../../interfaces/
 })
 export class QuestionsBlockComponent implements OnInit {
 
-  @Input() data: QuestionBlockInterface;
+  @Input() data: any;
 
   @Output() answerSelect = new EventEmitter<QuestionAnswerInterface>();
 

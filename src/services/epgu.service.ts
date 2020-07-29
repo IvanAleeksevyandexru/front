@@ -17,7 +17,6 @@ export class EpguService {
     });
   }
   public setData(data): any {
-    console.log(data);
     return this.http.post('http://188.93.23.27:18080/scenario/getNextStep', data, {
       withCredentials: false
     });
