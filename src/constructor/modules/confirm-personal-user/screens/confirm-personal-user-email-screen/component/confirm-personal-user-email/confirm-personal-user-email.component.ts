@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'confirm-personal-user-email',
@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfirmPersonalUserEmailComponent implements OnInit {
 
+  @Input() name: string
+  @Input() content: string
   constructor() { }
 
   ngOnInit(): void {

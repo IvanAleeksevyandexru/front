@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ConfirmEmailInterface} from "../../../../interfaces/confirm-email.interface";
 
 @Component({
   selector: 'confirm-personal-user-email-screen',
@@ -7,12 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
 
+  @Input() data: ConfirmEmailInterface;
+  @Output() actionSelect = new EventEmitter();
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  clickToAction() {
-
+  clickToAction(action) {
+    this.actionSelect.emit(action)
   }
 }

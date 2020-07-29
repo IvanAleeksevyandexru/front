@@ -56,4 +56,21 @@ export class ConstructorComponent {
   onAnswerSelect(data: QuestionAnswerInterface) {
     console.log(data);
   }
+
+
+  confirmUserEmail = {
+    "id": "pd3",
+    "type": "ConfirmUserEmail",
+    "header": "Подтвердите адрес электронной почты",
+    "label": "электронная почта",
+    "image": "",
+    "supportedValues": [],
+    "actions": [{"label": "Изменить", "method": "editPersonalEmail"}],
+    "fields": [],
+    "visited": false
+  }
+
+  confirmActionSelect($event: any) {
+
+  }
 }

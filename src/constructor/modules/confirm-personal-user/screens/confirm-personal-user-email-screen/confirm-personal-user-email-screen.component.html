@@ -1,16 +1,17 @@
 <confirm-personal-user-screen-layout>
 
   <div class="head">
-    <page-name>Подтвердите адрес электронной почты</page-name>
+    <page-name>{{data?.header}}</page-name>
   </div>
 
   <div class="body">
-    <confirm-personal-user-email></confirm-personal-user-email>
+    <confirm-personal-user-email [name]="data?.label" [content]=""></confirm-personal-user-email>
   </div>
 
 
   <div class="footer">
-    <confirm-personal-user-button (tap)="clickToAction()">Верно</confirm-personal-user-button>
+    <confirm-personal-user-button *ngFor="let action of data?.actions"
+      (tap)="clickToAction(action)">{{action.label}}</confirm-personal-user-button>
   </div>
 
 </confirm-personal-user-screen-layout>
