@@ -6,6 +6,7 @@
 }
 
 .section-content {
+  margin: 2rem 0;
   display: flex;
   justify-content: center;
 }
@@ -15,16 +16,14 @@
   flex-flow: column;
   height: 100%;
   min-height: inherit;
-  h1, p {
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
   h1 {
     font-size: 1.5rem;
+    margin-left: 1rem;
   }
   p {
     font-size: .9rem;
     line-height: 1.5;
+    margin: 1.5rem 1rem;
   }
   ul {
     font-size: .9rem;
@@ -34,7 +33,7 @@
     margin-left: 0;
     background: $bg-requirements-list;
     border-radius: 4px;
-    padding: 20px;
+    padding: 1.5rem 1rem;
     & > li {
       position: relative;
       margin-left: 2rem;
