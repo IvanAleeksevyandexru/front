@@ -3,31 +3,20 @@
 @import "../../../../../../../style/functions";
 
 
+$button-mt: 5px;
 :host::ng-deep .footer {
   display: flex;
   justify-content: center;
-  margin-top: 32px;
+  flex-wrap: wrap;
+  margin-top: 32px - $button-mt;
   @include tablets-down {
     flex-direction: column;
   }
 }
 
-:host::ng-deep .footer lib-button {
-  @include tablets-down {
-    width: 100%;
-    margin: 4px 0;
-  }
-}
-
-:host::ng-deep .footer lib-button button {
-  min-width: 176px;
-  @include tablets-down {
-    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
-    background: $white;
-    font-size: 14px;
-    line-height: 20px;
-    color: $egyptian-blue;
-    text-align: left;
+:host::ng-deep .footer confirm-personal-user-button {
+  @include tablets-up {
+    margin: 5px 10px;
   }
 }
 
