@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {QuestionAnswerInterface, QuestionBlockInterface} from '../../interfaces/question-block.interface';
 
 @Component({
-  selector: 'question-block',
+  selector: 'app-question-block',
   templateUrl: './questions-block.component.html',
   styleUrls: ['./questions-block.component.scss']
 })
@@ -19,7 +19,7 @@ export class QuestionsBlockComponent implements OnInit {
   }
 
   answerChoose(answer: QuestionAnswerInterface): void {
-    this.answerSelect.emit(answer)
+    this.answerSelect.emit(answer);
   }
 }
 

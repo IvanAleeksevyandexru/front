@@ -1,4 +1,4 @@
 export interface ComponentActionInterface {
-  label: string,
-  method: string
+  label: string;
+  method: string;
 }

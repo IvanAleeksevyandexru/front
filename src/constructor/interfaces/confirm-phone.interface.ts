@@ -6,7 +6,7 @@ export interface ConfirmPhoneInterface {
   'content': string;
   // "image": "",
   'supportedValues': [];
-  "attrs": {'actions': Array<ConfirmPhoneActionInterface>;},
+  'attrs': { 'actions': Array<ConfirmPhoneActionInterface> };
   'fields': [];
   // "visited": false
 }

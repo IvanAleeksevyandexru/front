@@ -1,17 +1,17 @@
-<confirm-personal-user-screen-layout>
+<app-confirm-personal-user-screen-layout>
 
   <div class="head">
     <page-name>{{data?.header}}</page-name>
   </div>
 
   <div class="body">
-    <confirm-personal-user-email [name]="data?.label" [content]="data?.content"></confirm-personal-user-email>
+    <app-confirm-personal-user-email [name]="data?.label" [content]="data?.content"></app-confirm-personal-user-email>
   </div>
 
 
   <div class="footer">
-    <confirm-personal-user-button *ngFor="let action of data?.actions"
-      (tap)="clickToAction(action)">{{action.label}}</confirm-personal-user-button>
+    <app-confirm-personal-user-button *ngFor="let action of data?.actions"
+      (tap)="clickToAction(action)">{{action.label}}</app-confirm-personal-user-button>
   </div>
 
-</confirm-personal-user-screen-layout>
+</app-confirm-personal-user-screen-layout>

@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ConfirmPhoneInterface} from "../../../../interfaces/confirm-phone.interface";
+import {ConfirmPhoneInterface} from '../../../../interfaces/confirm-phone.interface';
 
 @Component({
-  selector: 'confirm-personal-user-phone-screen',
+  selector: 'app-confirm-personal-user-phone-screen',
   templateUrl: './confirm-personal-user-phone-screen.component.html',
   styleUrls: ['./confirm-personal-user-phone-screen.component.scss']
 })
@@ -15,7 +15,7 @@ export class ConfirmPersonalUserPhoneScreenComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  clickToAction(action) {
-    this.actionSelect.emit(action)
+  clickToAction(action): void {
+    this.actionSelect.emit(action);
   }
 }

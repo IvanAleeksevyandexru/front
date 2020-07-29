@@ -4,12 +4,12 @@
     <page-name>{{data?.header}}</page-name>
 
     <div class="answer-container">
-      <answer-choice
+      <app-answer-choice
         *ngFor="let answer of data?.supportedValues"
         (click)="answerChoose(answer)"
         [data]="answer">
         {{answer}}
-      </answer-choice>
+      </app-answer-choice>
     </div>
   </div>
 
