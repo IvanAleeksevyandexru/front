@@ -3,6 +3,7 @@ export interface ConfirmEmailInterface {
   // "type": "ConfirmUserEmail",
   'header': string,
   'label': string,
+  'content': string,
   // "image": "",
   'supportedValues': [],
   'actions': Array<ConfirmEmailActionInterface>,

@@ -5,12 +5,12 @@
   </div>
 
   <div class="body">
-    <confirm-personal-user-email [name]="data?.label" [content]="data?.content"></confirm-personal-user-email>
+    <confirm-personal-user-phone [name]="data?.label" [content]="data?.content"></confirm-personal-user-phone>
   </div>
 
 
   <div class="footer">
-    <confirm-personal-user-button *ngFor="let action of data?.actions"
+    <confirm-personal-user-button *ngFor="let action of data?.attrs?.actions"
       (tap)="clickToAction(action)">{{action.label}}</confirm-personal-user-button>
   </div>
 

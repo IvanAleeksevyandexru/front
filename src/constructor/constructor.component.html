@@ -3,7 +3,8 @@
   <app-welcome-screen [data]="welcomeComponentData"></app-welcome-screen>
   <question-block [data]="questionComponentData" (answerSelect)="onAnswerSelect($event)"></question-block>
   <app-requirements-list [data]="requirementsListComponentData"></app-requirements-list>
-  <confirm-personal-user-email-screen [data]="confirmUserEmail" (actionSelect)="confirmActionSelect($event)"></confirm-personal-user-email-screen>
+  <confirm-personal-user-email-screen [data]="confirmUserEmail" (actionSelect)="confirmEmailActionSelect($event)"></confirm-personal-user-email-screen>
+  <confirm-personal-user-phone-screen [data]="confirmPhoneEmail" (actionSelect)="confirmPhoneActionSelect($event)"></confirm-personal-user-phone-screen>
 </main>
 <footer class="app-footer"></footer>
 

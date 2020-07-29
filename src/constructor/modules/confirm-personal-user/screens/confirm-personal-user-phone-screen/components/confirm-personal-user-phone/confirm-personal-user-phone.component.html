@@ -1,0 +1,24 @@
+<app-card class="desktop">
+  <div class="head">
+    <ng-content *ngTemplateOutlet="headTitle"></ng-content>
+    <a href="test.ru" class="head__actions">Изменить</a>
+  </div>
+  <ng-content *ngTemplateOutlet="headContent"></ng-content>
+</app-card>
+
+
+<div class="mobile">
+  <ng-content *ngTemplateOutlet="headContent"></ng-content>
+  <hr>
+  <ng-content *ngTemplateOutlet="headTitle"></ng-content>
+</div>
+
+
+<ng-template #headTitle>
+  <div class="head__title">{{name}}</div>
+</ng-template>
+
+<ng-template #headContent>
+  <div class="content">{{content}}</div>
+</ng-template>
+

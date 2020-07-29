@@ -64,13 +64,32 @@ export class ConstructorComponent {
     "header": "Подтвердите адрес электронной почты",
     "label": "электронная почта",
     "image": "",
+    "content": 'electropochta@electropochta.ru', // TODO отсебятина, удалить после определения структуры данных
     "supportedValues": [],
     "actions": [{"label": "Изменить", "method": "editPersonalEmail"}],
     "fields": [],
     "visited": false
   }
 
-  confirmActionSelect($event: any) {
-
+  confirmEmailActionSelect($event: any) {
+    console.log($event);
   }
+
+
+  confirmPhoneEmail = {
+    "id": "pd2",
+    "type": "ConfirmUserPhone",
+    "header": "Подтвердите контактный телефон",
+    "label": "контактный телефон",
+    "content": '+7 (999) 999-99-99', // TODO отсебятина, удалить после определения структуры данных
+    "supportedValues": [],
+    "attrs": {"actions": [{"label": "Изменить", "method": "editPersonalPhone"}, {"label": "Верно", "method": "phoneCorrect"}]},
+    "visited": false
+  }
+
+  confirmPhoneActionSelect($event: any) {
+    console.log($event);
+  }
+
+
 }
