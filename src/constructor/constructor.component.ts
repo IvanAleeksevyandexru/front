@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {SimpleComponentInterface} from '../constructor/interfaces/simple-component.interface';
 import {QuestionAnswerInterface, QuestionBlockInterface} from './interfaces/question-block.interface';
+import {EpguService} from '../services/epgu.service';
+import {QuestionAnswerInterface, QuestionBlockInterface} from './interfaces/question-block.interface';
 
 @Component({
   selector: 'app-constructor',
@@ -52,6 +54,11 @@ export class ConstructorComponent {
       }
     ],
   };
+  };
+
+  constructor(
+    public epguService: EpguService,
+  ) { }
 
   onAnswerSelect(data: QuestionAnswerInterface) {
     console.log(data);
@@ -85,6 +92,15 @@ export class ConstructorComponent {
     "supportedValues": [],
     "attrs": {"actions": [{"label": "Изменить", "method": "editPersonalPhone"}, {"label": "Верно", "method": "phoneCorrect"}]},
     "visited": false
+    console.log(data);
+  }
+
+  ngOnInit(): void {
+    this.epguService.getData().subscribe((data) => {
+      console.log(data);
+    }, (error) => {
+      console.error(error);
+    });
   }
 
   confirmPhoneActionSelect($event: any) {
