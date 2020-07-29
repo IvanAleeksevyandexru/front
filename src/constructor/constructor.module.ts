@@ -8,9 +8,15 @@ import {RequirementsListModule} from '../app/components/requirements-list/requir
 import {ConfirmPersonalUserEmailScreenModule} from '../app/components/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module';
 import {SharedComponentsModule} from '../app/components/shared-components/shared-components.module';
 import {ConstructorComponentRoutingModule} from './constructor-routing.module';
+import {QuestionBlockModule} from './modules/questions-block/question-block.module';
+import {RequirementsListModule} from './modules/requirements-list/requirements-list.module';
+import {SharedModule} from '../shared/shared.module';
+import {WelcomeBlockModule} from './modules/welcome-block/welcome-block.module';
+import {ConfirmPersonalUserEmailScreenModule} from "./modules/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module";
+import {ConfirmPersonalUserPhoneScreenModule} from "./modules/confirm-personal-user/screens/confirm-personal-user-phone-screen/confirm-personal-user-phone-screen.module";
 
 const COMPONENTS = [
-  ConstructorComponent,
+  ConstructorComponent
 ];
 
 @NgModule({
@@ -25,6 +31,7 @@ const COMPONENTS = [
     ConfirmPersonalUserEmailScreenModule,
     SharedComponentsModule,
     ConstructorComponentRoutingModule,
+    ConfirmPersonalUserPhoneScreenModule,
     EpguLibModule.forChild(),
   ],
   providers: [],
