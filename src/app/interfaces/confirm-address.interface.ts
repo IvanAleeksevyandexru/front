@@ -3,11 +3,11 @@ import {ConfirmAddress} from 'epgu-lib';
 export interface ConfirmAddressInterface {
   // "id": "pd4",
   // "type": "ConfirmUserRegistrationAddr",
-  "header": string;
+  'header': string;
   // "label": "",
-  "image": "";
-  "supportedValues": Array<ConfirmAddressSupportedValues>;
-  "actions": Array<ConfirmAddressActionInterface>;
+  'image': "";
+  'supportedValues': Array<ConfirmAddressSupportedValues>;
+  'actions': Array<ConfirmAddressActionInterface>;
   // "fields": [],
   // "visited": false
 }
@@ -18,8 +18,8 @@ interface ConfirmAddressActionInterface {
 }
 
 export interface ConfirmAddressSupportedValues {
-  title: string;
-  content: string;
+  'title': string;
+  'content': string;
 }
 
 
