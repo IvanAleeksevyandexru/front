@@ -1,4 +1,4 @@
-<button (click)="clickToButton()">
+<button class="button" [ngClass]="{'button--primary': action === 'getNextStep'}" (click)="clickToButton()">
   <ng-content></ng-content>
   <div class="icon-arrow"></div>
 </button>

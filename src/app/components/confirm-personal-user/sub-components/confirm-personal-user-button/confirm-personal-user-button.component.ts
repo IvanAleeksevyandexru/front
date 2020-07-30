@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, Input} from '@angular/core';
 
 @Component({
   selector: 'app-confirm-personal-user-button',
@@ -6,7 +6,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
   styleUrls: ['./confirm-personal-user-button.component.scss']
 })
 export class ConfirmPersonalUserButtonComponent implements OnInit {
-
+  @Input() action: string;
   @Output() tap = new EventEmitter();
   constructor() { }
 

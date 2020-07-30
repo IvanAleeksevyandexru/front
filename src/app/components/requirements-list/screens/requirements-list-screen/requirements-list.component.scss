@@ -5,7 +5,7 @@
   font-family: $secondary_font, sans-serif;
 }
 
-.component {
+.requirements-list {
   display: flex;
   flex-flow: column;
   height: 100%;
@@ -88,7 +88,7 @@
 }
 
 @include tablets-up {
-  .component {
+  .requirements-list {
     max-width: 592px;
     height: auto;
     border-radius: 4px;

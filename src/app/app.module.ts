@@ -6,12 +6,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {ConstructorModule} from '../constructor/constructor.module';
 import {EpguLibCommonModule} from 'epgu-lib';
-import { ConfirmPersonalUserDataScreenComponent } from './components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ConfirmPersonalUserDataScreenComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

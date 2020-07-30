@@ -1,13 +1,13 @@
 <screen-container>
-  <div class="component">
-    <div class="component__header">
+  <div class="requirements-list">
+    <div class="requirements-list__header">
       <page-name>{{data?.header}}</page-name>
     </div>
 
-    <div class="component__content" [innerHTML]="data.label">
+    <div class="requirements-list__content" [innerHTML]="data.label">
     </div>
 
-    <div class="component__footer">
+    <div class="requirements-list__footer">
       <!-- Submit button -->
       <lib-button type="button" class="lib-button" size="lg" fontSize="13" (click)="nextStep()">
         <label class="lib-button__label">

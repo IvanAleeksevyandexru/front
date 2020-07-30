@@ -15,7 +15,7 @@
   }
 }
 
-button {
+.button {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -35,6 +35,11 @@ button {
   }
   &:active {
     background: $egyptian-blue;
+    color: $white;
+  }
+  &--primary {
+    background-color: $egyptian-blue;
+    box-shadow: none;
     color: $white;
   }
   @include tablets-up {

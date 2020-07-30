@@ -1,1 +1,17 @@
-<p>confirm-personal-user-data-screen works!</p>
+<app-confirm-personal-user-screen-layout>
+
+  <div class="head">
+    <page-name>{{data?.header}}</page-name>
+  </div>
+
+  <div class="body">
+    <app-confirm-personal-user-data [data]="userData"></app-confirm-personal-user-data>
+  </div>
+
+
+  <div class="footer">
+    <app-confirm-personal-user-button *ngFor="let action of userData?.attrs?.actions"
+      (tap)="clickToAction(action)" [action]="action.method">{{action.label}}</app-confirm-personal-user-button>
+  </div>
+
+</app-confirm-personal-user-screen-layout>

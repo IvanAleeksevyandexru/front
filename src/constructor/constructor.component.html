@@ -1,5 +1,11 @@
 <header class="app-header"></header>
 <main class="app-content">
+  <app-welcome-block [data]="welcomeComponentData"></app-welcome-block>
+  <app-question-block [data]="questionComponentData" (answerSelect)="onAnswerSelect($event)"></app-question-block>
+  <app-requirements-list [data]="requirementsListComponentData"></app-requirements-list>
+  <app-confirm-personal-user-email-screen [data]="confirmUserEmail" (actionSelect)="confirmEmailActionSelect($event)"></app-confirm-personal-user-email-screen>
+  <app-confirm-personal-user-phone-screen [data]="confirmPhoneEmail" (actionSelect)="confirmPhoneActionSelect($event)"></app-confirm-personal-user-phone-screen>
+  <app-confirm-personal-user-data-screen [data]="confirmUserData" [userData]="userPersonalData" (actionSelect)="confirmUserDataActionSelect($event)"></app-confirm-personal-user-data-screen>
   <app-welcome-block [data]="welcomeComponentData" (nextStep)="welcomeNextStep($event)" *ngIf="componentType === 'WelcomeScr'"></app-welcome-block>
   <app-question-block [data]="componentData" (answerSelect)="onAnswerSelect($event)" *ngIf="componentType === 'QuestionScr'"></app-question-block>
   <app-requirements-list [data]="requirementsListComponentData" *ngIf="componentType === 'ServiceDscrScr'"></app-requirements-list>

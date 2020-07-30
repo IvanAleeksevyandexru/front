@@ -7,13 +7,13 @@
   }
 }
 
-.component {
+.welcome-block {
   display: flex;
   flex-flow: column;
 
   height: 100%;
 
-  .header {
+  &__header {
     text-align: center;
   }
 
@@ -21,13 +21,13 @@
     flex: 0 1 auto;
   }
 
-  .content {
+  &__content {
     flex: 1 1 auto;
 
     font-family: $secondary_font;
   }
 
-  .footer {
+  &__footer {
     flex: 0 1;
 
     display: flex;
@@ -40,13 +40,8 @@
   }
 }
 
-@include desktop {
 @include tablets-down {
   .component {
-    .header {
-      margin-bottom: 26px;
-    }
-
     .content {
       font-size: 14px;
       line-height: 20px;
@@ -76,10 +71,6 @@
     box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
 
     padding: 32px 24px;
-
-    .header {
-      margin-bottom: 32px;
-    }
 
     .content {
       font-size: 16px;

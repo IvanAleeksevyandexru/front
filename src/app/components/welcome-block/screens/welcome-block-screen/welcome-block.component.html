@@ -1,13 +1,13 @@
 <screen-container>
-  <div class="component">
-    <div class="header">
+  <div class="welcome-block">
+    <div class="welcome-block__header">
       <page-name>{{data?.header}}</page-name>
     </div>
 
-    <div class="content" [innerHTML]="data?.label">
+    <div class="welcome-block__content" [innerHTML]="data?.label">
     </div>
 
-    <div class="footer">
+    <div class="welcome-block__footer">
       <div class="button_container">
         <lib-button (click)="nextStep()"><div class="secondary-font">{{data.submitButtonLabel}}</div></lib-button>
       </div>

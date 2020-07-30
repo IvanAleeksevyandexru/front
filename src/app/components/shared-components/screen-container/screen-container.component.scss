@@ -22,5 +22,7 @@
 
 
 @include tablets-up {
-
+  .container {
+    min-height: auto;
+  }
 }
