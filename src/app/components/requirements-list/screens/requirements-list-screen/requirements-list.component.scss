@@ -7,23 +7,15 @@
 
 .requirements-list {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   height: 100%;
   min-height: inherit;
-  &__header {
-    padding-top: 2rem;
-    & > page-name {
-      margin-bottom: 0;
-      @include tablets-up {
-        margin-bottom: 2rem;
-      }
-    }
-  }
-  &__content {
+  &__body {
     text-align: center;
     flex: 1 1 auto;
   }
   &__footer {
+    margin-top: auto;
     flex: 0 1 auto;
     display: flex;
     flex-flow: column nowrap;
@@ -32,42 +24,35 @@
   & ::ng-deep p {
     font-size: .9rem;
     line-height: 1.5;
-    margin: 1.5rem 1rem;
+    margin: 1.5rem 0;
   }
   & ::ng-deep ul {
     font-size: .9rem;
     text-align: left;
     line-height: 1.5;
     list-style: none;
-    margin-left: 0;
     background: $light-gray;
     border-radius: 4px;
-    padding: 1.5rem 1rem;
-    width: calc(100% + 2rem);
-    transform: translateX(-1rem);
-    @include tablets-up {
-      width: 100%;
-      transform: translateX(0);
-    }
+    margin: 0 #{-$screen-pad-p};
+    padding: $screen-pad-p;
+
     & > li {
-      position: relative;
-      margin-left: 2rem;
+      display: flex;
       &:not(:first-of-type) {
         margin-top: .5rem;
       }
       &::before {
         content: '';
-        position: absolute;
-        left: -2rem;
-        top: 3px;
-        display: inline-block;
+        flex-shrink: 0;
+        margin-top: 5px;
+        margin-right: $screen-pad-p;
+        display: block;
         width: 16px;
         height: 12px;
         background-image: url('^/assets/icons/png/check.png'); // Fallback PNG
         background-image: url('^/assets/icons/svg/check.svg');
         background-size: contain;
         background-repeat: no-repeat;
-        margin-right:0.5em;
       }
     }
   }
@@ -89,22 +74,14 @@
 
 @include tablets-up {
   .requirements-list {
-    max-width: 592px;
-    height: auto;
-    border-radius: 4px;
-    background-color: white;
-    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
     &__header {
       margin: 0;
     }
-    &__content {
+    &__body {
       text-align: left;
     }
     &__footer {
       align-items: center;
-    }
-    & p {
-      margin: 2rem 1.5rem;
     }
     p {
       font-size: 1rem;
@@ -112,11 +89,11 @@
     ul {
       margin-top: 0;
       font-size: 1rem;
-      padding: 1.5rem;
+      padding: 1.5rem 0;
     }
   }
   .lib-button {
-    margin-bottom: 2rem;
+    margin-bottom: 16px;
     flex: 0 1 auto;
     width: auto;
     &__label {

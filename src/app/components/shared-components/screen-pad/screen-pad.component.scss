@@ -6,7 +6,7 @@
   display: block;
   background: $white;
   @include tablets-up {
-    padding: 24px;
+    padding: $screen-pad-p;
     box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
   }

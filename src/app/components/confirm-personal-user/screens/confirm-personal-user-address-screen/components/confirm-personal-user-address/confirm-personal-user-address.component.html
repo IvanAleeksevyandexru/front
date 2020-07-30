@@ -1,4 +1,4 @@
-<app-card class="desktop">
+<app-screen-pad class="desktop">
   <div class="item" *ngFor="let info of data">
     <div class="head">
       <ng-content *ngTemplateOutlet="headTitle; context: info"></ng-content>
@@ -6,7 +6,7 @@
     </div>
     <ng-content *ngTemplateOutlet="headContent; context: info"></ng-content>
   </div>
-</app-card>
+</app-screen-pad>
 
 
 <div class="mobile">

@@ -1,10 +1,10 @@
 <screen-container>
-  <div class="requirements-list">
+  <app-screen-pad class="requirements-list">
     <div class="requirements-list__header">
       <page-name>{{data?.header}}</page-name>
     </div>
 
-    <div class="requirements-list__content" [innerHTML]="data.label">
+    <div class="requirements-list__body" [innerHTML]="data.label">
     </div>
 
     <div class="requirements-list__footer">
@@ -19,5 +19,5 @@
       </lib-button>
       <!-- Submit button end -->
     </div>
-  </div>
+  </app-screen-pad>
 </screen-container>
