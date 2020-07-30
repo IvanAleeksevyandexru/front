@@ -195,4 +195,18 @@ export class ConstructorComponent {
   }
 
 
+  // ConfirmCreatedRequestComponent <start>
+  confirmCreatedRequestData: SimpleComponentInterface = {
+    header: 'Заявление создано!',
+    label: 'Процедура займет до 8 рабочих дней после получения согласия всех участников<br><br>' +
+      'Вам и членам вашей семьи в личный кабинет поступят электронные свидетельства о регистрации',
+    submitButtonLabel: 'Перейти к деталям заявления',
+    attrs: {
+      image: {
+        src: '/assets/icons/svg/check-confirm.svg',
+        alt: 'Для отправки заявления в ведомство дождитесь подтверждения данных членами вашей семьи и собственниками жилья'
+      }
+    }
+  };
+  // ConfirmCreatedRequestComponent <end>
 }

@@ -4,11 +4,22 @@
 :host{
   display: inline-block;
   width: 100%;
-  margin-bottom: 32px;
   text-align: center;
   //@include tablets-up {
   //  text-align: left;
   //}
+
+  @include tablets-down {
+    & {
+      margin-bottom: 24px;
+    }
+  }
+
+  @include tablets-up {
+    & {
+      margin-bottom: 32px;
+    }
+  }
 }
 h1 {
   font-size: 24px;

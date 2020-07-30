@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {SharedComponentsModule} from '../../../shared-components/shared-components.module';
-import {WelcomeBlockComponent} from './welcome-block.component';
+import {SharedComponentsModule} from '../shared-components/shared-components.module';
 import {EpguLibModule} from 'epgu-lib';
+import {ConfirmCreatedRequestScreenComponent} from './confirm-created-request-screen.component';
 
 const COMPONENTS = [
-  WelcomeBlockComponent
+  ConfirmCreatedRequestScreenComponent
 ];
 
 @NgModule({
@@ -17,4 +17,4 @@ const COMPONENTS = [
     EpguLibModule.forChild(),
   ]
 })
-export class WelcomeBlockModule { }
+export class ConfirmCreatedRequestScreenModule { }

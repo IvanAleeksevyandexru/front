@@ -1,26 +1,12 @@
 <header class="app-header"></header>
 <main class="app-content">
-  <div class="custom-wrapper">
-    <app-welcome-block [data]="welcomeComponentData"></app-welcome-block>
-  </div>
-  <div class="custom-wrapper">
-    <app-question-block [data]="questionComponentData" (answerSelect)="onAnswerSelect($event)"></app-question-block>
-  </div>
-  <div class="custom-wrapper">
-    <app-requirements-list [data]="requirementsListComponentData"></app-requirements-list>
-  </div>
-  <div class="custom-wrapper">
-    <app-confirm-personal-user-email-screen [data]="confirmUserEmail" (actionSelect)="confirmEmailActionSelect($event)"></app-confirm-personal-user-email-screen>
-  </div>
-  <div class="custom-wrapper">
-    <app-confirm-personal-user-phone-screen [data]="confirmPhoneEmail" (actionSelect)="confirmPhoneActionSelect($event)"></app-confirm-personal-user-phone-screen>
-  </div>
-  <div class="custom-wrapper">
-    <app-confirm-personal-user-address-screen [data]="confirmPhoneAddress" (actionSelect)="confirmAddressActionSelect($event)"></app-confirm-personal-user-address-screen>
-  </div>
-  <div class="custom-wrapper">
-    <app-confirm-personal-user-data-screen [data]="confirmUserData" [userData]="userPersonalData" (actionSelect)="confirmUserDataActionSelect($event)"></app-confirm-personal-user-data-screen>
-  </div>
+  <app-welcome-screen [data]="welcomeComponentData"></app-welcome-screen>
+  <app-question-block [data]="questionComponentData" (answerSelect)="onAnswerSelect($event)"></app-question-block>
+  <app-requirements-list [data]="requirementsListComponentData"></app-requirements-list>
+  <app-confirm-personal-user-email-screen [data]="confirmUserEmail" (actionSelect)="confirmEmailActionSelect($event)"></app-confirm-personal-user-email-screen>
+  <app-confirm-personal-user-phone-screen [data]="confirmPhoneEmail" (actionSelect)="confirmPhoneActionSelect($event)"></app-confirm-personal-user-phone-screen>
+  <app-confirm-personal-user-address-screen [data]="confirmPhoneAddress" (actionSelect)="confirmAddressActionSelect($event)"></app-confirm-personal-user-address-screen>
+  <app-confirm-created-request-screen [data]="confirmCreatedRequestData"></app-confirm-created-request-screen>
 </main>
 <footer class="app-footer"></footer>
 
