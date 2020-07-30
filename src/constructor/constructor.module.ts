@@ -14,6 +14,8 @@ import {SharedModule} from '../shared/shared.module';
 import {WelcomeBlockModule} from './modules/welcome-block/welcome-block.module';
 import {ConfirmPersonalUserEmailScreenModule} from "./modules/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module";
 import {ConfirmPersonalUserPhoneScreenModule} from "./modules/confirm-personal-user/screens/confirm-personal-user-phone-screen/confirm-personal-user-phone-screen.module";
+import {ConfirmPersonalUserPhoneScreenModule} from '../app/components/confirm-personal-user/screens/confirm-personal-user-phone-screen/confirm-personal-user-phone-screen.module';
+import {ConfirmPersonalUserAddressScreenModule} from '../app/components/confirm-personal-user/screens/confirm-personal-user-address-screen/confirm-personal-user-address-screen.module';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -32,6 +34,7 @@ const COMPONENTS = [
     SharedComponentsModule,
     ConstructorComponentRoutingModule,
     ConfirmPersonalUserPhoneScreenModule,
+    ConfirmPersonalUserAddressScreenModule,
     EpguLibModule.forChild(),
   ],
   providers: [],

@@ -6,12 +6,11 @@ import {SharedComponentsModule} from '../../../shared-components/shared-componen
 import {ConfirmPersonalUserPhoneComponent} from './components/confirm-personal-user-phone/confirm-personal-user-phone.component';
 
 const COMPONENTS = [
-  ConfirmPersonalUserPhoneScreenComponent,
-  ConfirmPersonalUserPhoneComponent
+  ConfirmPersonalUserPhoneScreenComponent
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [...COMPONENTS, ConfirmPersonalUserPhoneComponent],
   exports: [...COMPONENTS],
   imports: [
     CommonModule,

@@ -66,6 +66,22 @@ export class ConstructorComponent {
       console.error(error);
     });
   }
+
+
+  confirmPhoneEmail = {
+    "id": "pd2",
+    "type": "ConfirmUserPhone",
+    "header": "Подтвердите контактный телефон",
+    "label": "контактный телефон",
+    "content": '+7 (999) 999-99-99', // TODO отсебятина, удалить после определения структуры данных
+    "supportedValues": [],
+    "attrs": {
+      "actions": [{"label": "Изменить", "method": "editPersonalPhone"}, {
+        "label": "Верно",
+        "method": "phoneCorrect"
+      }]
+    },
+    "visited": false
   sendData(data) {
     this.response.currentValue[this.componentId] = {visited: true, value: data};
     this.epguService.setData(this.response).subscribe((response) => {
@@ -74,4 +90,32 @@ export class ConstructorComponent {
       console.error(error);
     });
   }
+
+  confirmPhoneActionSelect($event: any) {
+    console.log($event);
+  }
+
+  confirmPhoneAddress = {
+    "id": "pd4",
+    "type": "ConfirmUserRegistrationAddr",
+    "header": "Подтвердите адрес постоянной регистрации",
+    "label": "",
+    "image": "",
+    "supportedValues": [{
+      title: 'Адрес',
+      content: 'г. Москва, Варшавское ш., д. 141А, корп. 3, кв. 999'
+    }, {title: 'Дата регистрации', content: '01.01.2018'}],
+    "actions": [{
+      "label": "Изменить",
+      "method": "editPersonalRegistrationAddr"
+    }, {"label": "Нет адреса постоянной регистрации", "method": "skip"}],
+    "fields": [],
+    "visited": false
+  }
+
+  confirmAddressActionSelect($event: any) {
+    console.log($event);
+  }
+
+
 }
