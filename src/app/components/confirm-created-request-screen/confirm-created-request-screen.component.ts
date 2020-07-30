@@ -14,7 +14,6 @@ export class ConfirmCreatedRequestScreenComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.data)
   }
 
   nextStep() {
