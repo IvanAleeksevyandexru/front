@@ -27,16 +27,9 @@
     height: 48px;
     padding: 12px;
     text-align: center;
-    //@include btn--primary();
   }
-
   @include tablets-down {
     @include shadow();
-    //@include btn--light();
-  }
-
-  &:hover .icon-arrow {
-    background-image: url("/assets/icons/svg/arrow-forward.svg");
   }
 }
 
@@ -49,7 +42,10 @@
   }
 }
 
-.icon-arrow {
+.confirm-btn__icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   margin-left: 10px;
   @include tablets-up {
@@ -57,3 +53,6 @@
   }
 }
 
+.btn--light:hover .icon-arrow {
+  background-image: url("/assets/icons/svg/arrow-forward.svg");
+}

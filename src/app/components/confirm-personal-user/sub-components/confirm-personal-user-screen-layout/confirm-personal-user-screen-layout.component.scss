@@ -9,7 +9,6 @@ $button-mt: 5px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: auto;
   @include tablets-down {
     flex-direction: column;
   }
@@ -25,6 +24,7 @@ $button-mt: 5px;
   @include tablets-down {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
   }
 }
 

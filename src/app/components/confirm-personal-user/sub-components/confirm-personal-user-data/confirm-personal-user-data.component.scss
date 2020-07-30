@@ -2,7 +2,10 @@
 @import "../../../../styles/breakpoint";
 
 .user-data {
-  margin-bottom: 2rem;
+  @include tablets-down {
+    padding-bottom: 32px;
+  }
+
   &__name {
     margin-bottom: 1rem;
   }

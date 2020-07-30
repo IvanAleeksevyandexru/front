@@ -10,7 +10,9 @@
 
 
   <div class="footer">
-    <app-confirm-personal-user-button *ngFor="let action of data?.actions"
+    <app-confirm-personal-user-button
+      *ngFor="let action of data?.actions"
+      [action]="action.method"
       (tap)="clickToAction(action)">{{action.label}}</app-confirm-personal-user-button>
   </div>
 
