@@ -7,29 +7,31 @@
   }
 }
 
-.welcome-block {
-  display: flex;
-  flex-flow: column;
-
-  height: 100%;
+.welcome {
+  &__wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: inherit;
+  }
 
   &__header {
-    text-align: center;
+
   }
 
-  .header {
-    flex: 0 1 auto;
-  }
-
-  &__content {
-    flex: 1 1 auto;
-
-    font-family: $secondary_font;
+  &__body {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 32px;
+    @include tablets-down {
+      font-size: 14px;
+      line-height: 20px;
+      text-align: center;
+      margin-bottom: auto;
+    }
   }
 
   &__footer {
-    flex: 0 1;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,6 +42,13 @@
   }
 }
 
+.footer-btn {
+  min-width: 176px;
+  @include tablets-down {
+    width: 100%;
+  }
+  &::ng-deep button {
+    width: 100%;
 @include tablets-down {
   .component {
     .content {
@@ -60,6 +69,18 @@
   }
 }
 
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include tablets-up {
+      justify-content: center;
+    }
+  }
+
+  &__title {
+
+  }
 @include tablets-up {
   .component {
     min-height: 464px;
@@ -72,11 +93,10 @@
 
     padding: 32px 24px;
 
-    .content {
-      font-size: 16px;
-      line-height: 24px;
-
-      margin-bottom: 32px;
+  &__icon {
+    display: block;
+    @include tablets-up {
+      display: none;
     }
   }
 }

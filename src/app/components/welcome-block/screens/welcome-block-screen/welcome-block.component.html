@@ -1,16 +1,22 @@
 <screen-container>
-  <div class="welcome-block">
-    <div class="welcome-block__header">
-      <page-name>{{data?.header}}</page-name>
+  <app-screen-pad class="welcome__wrapper">
+
+    <page-name class="welcome__header">{{data?.header}}</page-name>
+
+    <div class="welcome__body" [innerHTML]="data?.label">
     </div>
 
-    <div class="welcome-block__content" [innerHTML]="data?.label">
+    <div class="welcome__footer footer">
+      <lib-button (click)="nextStep()" size="lg" class="footer__btn footer-btn">
+        <div class="footer-btn__inner">
+          <span class="footer-btn__title">{{data.submitButtonLabel}}</span>
+          <object class="footer-btn__icon" type="image/svg+xml" data="assets/icons/svg/arrow-forward.svg" width="20"
+                  height="20">
+            <img src="assets/icons/png/arrow-forward.png" width="20" height="20" alt="arrow-forward"/>
+          </object>
+        </div>
+      </lib-button>
     </div>
 
-    <div class="welcome-block__footer">
-      <div class="button_container">
-        <lib-button (click)="nextStep()"><div class="secondary-font">{{data.submitButtonLabel}}</div></lib-button>
-      </div>
-    </div>
-  </div>
+  </app-screen-pad>
 </screen-container>
