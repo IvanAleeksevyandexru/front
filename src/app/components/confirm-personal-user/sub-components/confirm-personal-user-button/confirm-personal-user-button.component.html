@@ -1,4 +1,4 @@
-<button class="btn btn--light" [ngClass]="{'btn--primary': action === 'getNextStep'}" (click)="clickToButton()">
-  <ng-content></ng-content>
-  <div class="icon-arrow"></div>
+<button class="confirm-btn btn" [ngClass]="action === 'getNextStep' ? 'btn--primary' : 'btn--light'" (click)="clickToButton()">
+  <span class="confirm-btn__content"><ng-content></ng-content></span>
+  <div class="confirm-btn__icon icon-arrow"></div>
 </button>

@@ -6,21 +6,9 @@
   cursor: pointer;
 }
 .btn--light {
-  @extend %shadow;
-  background: $white;
-  color: $egyptian-blue;
-  &:hover {
-    background: $royal-blue;
-    color: $white;
-  }
-  &:active {
-    background: $egyptian-blue;
-    color: $white;
-  }
+  @include btn--light();
 }
 
 .btn--primary {
-  background-color: $egyptian-blue;
-  box-shadow: none;
-  color: $white;
+  @include btn--primary();
 }

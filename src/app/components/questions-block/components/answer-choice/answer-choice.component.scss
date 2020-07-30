@@ -1,8 +1,10 @@
 @import "../../../../styles/variables";
+@import "../../../../styles/functions";
 @import "../../../../styles/breakpoint";
 
 :host {
   display: block;
+  cursor: pointer;
 }
 
 .answer__btn {
@@ -13,12 +15,11 @@
   padding: 20px;
   font-size: 14px;
   line-height: 20px;
+  background: $white;
+  color: $egyptian-blue;
+  @include shadow();
   @include tablets-up {
     padding: 24px;
-  }
-
-  &:hover .answer-btn__icon {
-    background-image: url("/assets/icons/svg/arrow-forward.svg");
   }
 }
 
