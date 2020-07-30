@@ -29,12 +29,12 @@
     flex-flow: column nowrap;
     justify-content: center;
   }
-  & p {
+  & ::ng-deep p {
     font-size: .9rem;
     line-height: 1.5;
     margin: 1.5rem 1rem;
   }
-  & ul {
+  & ::ng-deep ul {
     font-size: .9rem;
     text-align: left;
     line-height: 1.5;
@@ -75,7 +75,7 @@
 
 .lib-button {
   flex: 1 1 auto;
-  & .button {
+  & ::ng-deep .button {
     display: flex;
     justify-content: space-between;
     align-items: center;
