@@ -1,0 +1,23 @@
+<screen-container>
+  <div class="component">
+    <div class="component__header">
+      <page-name>{{data?.header}}</page-name>
+    </div>
+
+    <div class="component__content" [innerHTML]="data.label">
+    </div>
+
+    <div class="component__footer">
+      <!-- Submit button -->
+      <lib-button type="button" class="lib-button" size="lg" fontSize="13" (click)="nextStep()">
+        <label class="lib-button__label">
+          {{data.submitButtonLabel}}
+        </label>
+        <object class="lib-button__icon" type="image/svg+xml" data="assets/icons/svg/arrow-forward.svg" width="20" height="20">
+          <img src="assets/icons/png/arrow-forward.png" width="20" height="20" alt="arrow-forward" />
+        </object>
+      </lib-button>
+      <!-- Submit button end -->
+    </div>
+  </div>
+</screen-container>

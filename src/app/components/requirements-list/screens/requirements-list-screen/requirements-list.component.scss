@@ -1,14 +1,8 @@
-@import "../../../styles";
-@import "../../styles/breakpoint";
+@import "../../../../../styles";
+@import "../../../../styles/breakpoint";
 
 *, *:before, *:after {
   font-family: $secondary_font, sans-serif;
-}
-
-.section-content {
-  margin: 2rem 0;
-  display: flex;
-  justify-content: center;
 }
 
 .component {
@@ -16,16 +10,31 @@
   flex-flow: column;
   height: 100%;
   min-height: inherit;
-  h1 {
-    font-size: 1.5rem;
-    margin-left: 1rem;
+  &__header {
+    padding-top: 2rem;
+    & > page-name {
+      margin-bottom: 0;
+      @include tablets-up {
+        margin-bottom: 2rem;
+      }
+    }
   }
-  p {
+  &__content {
+    text-align: center;
+    flex: 1 1 auto;
+  }
+  &__footer {
+    flex: 0 1 auto;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+  }
+  & p {
     font-size: .9rem;
     line-height: 1.5;
     margin: 1.5rem 1rem;
   }
-  ul {
+  & ul {
     font-size: .9rem;
     text-align: left;
     line-height: 1.5;
@@ -34,6 +43,12 @@
     background: $light-gray;
     border-radius: 4px;
     padding: 1.5rem 1rem;
+    width: calc(100% + 2rem);
+    transform: translateX(-1rem);
+    @include tablets-up {
+      width: 100%;
+      transform: translateX(0);
+    }
     & > li {
       position: relative;
       margin-left: 2rem;
@@ -56,42 +71,16 @@
       }
     }
   }
+}
 
-  .header, .content {
-    text-align: center;
-  }
-
-  .header {
-    flex: 0 1 auto;
-    margin-top: 1rem;
-  }
-
-  .content {
-    flex: 1 1 auto;
-  }
-
-  .footer {
-    flex: 0 1 auto;
+.lib-button {
+  flex: 1 1 auto;
+  & .button {
     display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
   }
-
-  .share-widget {
-    margin: 2rem 1rem;
-  }
-
-  .submit-button {
-    flex: 1 1 auto;
-    margin: 1rem;
-    & button {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-
-  .submit-label {
+  &__label {
     font-size: .9rem;
     display: inline-block;
     text-align: left;
@@ -105,44 +94,35 @@
     border-radius: 4px;
     background-color: white;
     box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
-    .header {
+    &__header {
       margin: 0;
     }
-    h1, p {
+    &__content {
+      text-align: left;
+    }
+    &__footer {
+      align-items: center;
+    }
+    & p {
       margin: 2rem 1.5rem;
     }
-    .content {
-      text-align: left;
+    p {
+      font-size: 1rem;
     }
     ul {
       margin-top: 0;
       font-size: 1rem;
       padding: 1.5rem;
     }
-
-    .submit-button {
-      margin-bottom: 2rem;
-      flex: 0 1 auto;
-      width: auto;
-    }
-
-    .submit-label {
+  }
+  .lib-button {
+    margin-bottom: 2rem;
+    flex: 0 1 auto;
+    width: auto;
+    &__label {
       font-size: 1rem;
     }
-
-    h1 {
-      font-size: 2rem;
-    }
-
-    p {
-      font-size: 1rem;
-    }
-
-    .footer {
-      align-items: center;
-    }
-
-    .button-icon {
+    &__icon {
       display: none;
     }
   }

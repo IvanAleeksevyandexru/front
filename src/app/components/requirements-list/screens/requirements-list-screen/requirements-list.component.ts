@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { SimpleComponentInterface } from '../../interfaces/simple-component.interface';
+import { SimpleComponentInterface } from '../../../../interfaces/simple-component.interface';
 
 @Component({
   selector: 'app-requirements-list',
