@@ -1,7 +1,3 @@
-import {Component} from '@angular/core';
-import {SimpleComponentInterface} from '../constructor/interfaces/simple-component.interface';
-import {QuestionAnswerInterface, QuestionBlockInterface} from './interfaces/question-block.interface';
-import {EpguService} from '../services/epgu.service';
 import { Component } from '@angular/core';
 import { SimpleComponentInterface } from '../app/interfaces/simple-component.interface';
 import { ConfirmUserDataInterface } from '../app/interfaces/confirm-user-data.interface';
@@ -13,26 +9,28 @@ import {
 @Component({
   selector: 'app-constructor',
   templateUrl: './constructor.component.html',
-  styleUrls: ['./constructor.component.scss']
+  styleUrls: ['./constructor.component.scss'],
 })
 export class ConstructorComponent {
   // WelcomeComponent <start>
   welcomeComponentData: SimpleComponentInterface = {
     header: 'Регистрация и снятие с регистрации по месту пребывания',
-    label: 'Вы переехали на новое место, хотите зарегистрировать себя у родственников или прекратить регистрацию – воспользуйтесь данной услугой.<br><br>' +
+    label:
+      'Вы переехали на новое место, хотите зарегистрировать себя у родственников или прекратить регистрацию – воспользуйтесь данной услугой.<br><br>' +
       'По законодательству не требуется регистрироваться на срок пребывания \n' +
       'менее 90 дней. \n' +
       '<br><br>' +
       'Вам нужно ответить на несколько вопросов, чтобы мы показали необходимые действия.\n',
-    submitButtonLabel: 'Продолжить'
+    submitButtonLabel: 'Продолжить',
   };
   // WelcomeComponent <end>
 
   // RequirementsListComponentData <end>
   requirementsListComponentData: SimpleComponentInterface = {
     header: 'Для подачи заявления вам потребуется:',
-    label: '<ul><li>Паспортные данные всех взрослых членов семьи, включая детей старше 14 лет</li><li>Данные свидетельств о рождении для детей до 14 лет</li><li>Паспортные данные собственников жилья</li></ul><p>После подачи заявления все взрослые члены семьи и собственники жилого помещения должны подтвердить свое согласие на временную регистрацию через личный кабинет портала Госуслуг</p><p>Для получения бумажной копии свидетельства о регистрации сделайте соответствующую пометку в заявлении либо обратитесь в ближайший МФЦ</p>',
-    submitButtonLabel: 'Перейти к заявлению'
+    label:
+      '<ul><li>Паспортные данные всех взрослых членов семьи, включая детей старше 14 лет</li><li>Данные свидетельств о рождении для детей до 14 лет</li><li>Паспортные данные собственников жилья</li></ul><p>После подачи заявления все взрослые члены семьи и собственники жилого помещения должны подтвердить свое согласие на временную регистрацию через личный кабинет портала Госуслуг</p><p>Для получения бумажной копии свидетельства о регистрации сделайте соответствующую пометку в заявлении либо обратитесь в ближайший МФЦ</p>',
+    submitButtonLabel: 'Перейти к заявлению',
   };
   // RequirementsListComponentData <end>
 

@@ -4,8 +4,17 @@
 :host {
   display: block;
   @include tablets-up {
-    background-color: #f2f8fc;
+    background-color: $quartz;
   }
+}
+
+//FIXME: Временный костыль - убрать после демонстрации
+.custom-wrapper {
+  min-height: 100vh;
+}
+
+header {
+  background: red;
 }
 
 footer {
