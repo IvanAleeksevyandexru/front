@@ -1,9 +1,9 @@
 <screen-container>
 
-  <div class="inner">
-    <page-name>{{data?.header}}</page-name>
+  <div class="question__wrapper">
+    <page-name class="question__head">{{data?.header}}</page-name>
 
-    <div class="answer-container">
+    <div class="question__body question-body__item">
       <app-answer-choice
         *ngFor="let answer of data?.components[0].attrs.actions"
         (click)="answerChoose(answer)"
