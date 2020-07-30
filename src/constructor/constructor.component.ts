@@ -53,7 +53,7 @@ export class ConstructorComponent {
     this.componentId = display.components[0].id;
     this.componentType = display.components[0].type;
     this.componentData = display;
-    console.log('--------------');
+    console.log('----- GET DATA ---------');
     console.log('componentId:', this.componentId);
     console.log('componentType:', this.componentType);
     console.log('initResponse:', display);
@@ -85,6 +85,8 @@ export class ConstructorComponent {
   sendData(data) {
     this.response.currentValue[this.componentId] = {visited: true, value: data};
     this.epguService.setData(this.response).subscribe((response) => {
+      console.log('----- SET DATA ---------');
+      console.log('request', this.response)
       this.initResponse(response);
     }, (error) => {
       console.error(error);
