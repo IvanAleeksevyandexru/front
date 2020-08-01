@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ConfirmAddressSupportedValues} from '../../../../../../interfaces/confirm-address.interface';
+import {ConfirmAddressInterface} from '../../interface/confirm-address.interface';
 
 @Component({
   selector: 'app-confirm-personal-user-address',
@@ -8,7 +8,7 @@ import {ConfirmAddressSupportedValues} from '../../../../../../interfaces/confir
 })
 export class ConfirmPersonalUserAddressComponent implements OnInit {
 
-  @Input() data: Array<ConfirmAddressSupportedValues>;
+  @Input() data: ConfirmAddressInterface;
   constructor() { }
 
   ngOnInit(): void {
