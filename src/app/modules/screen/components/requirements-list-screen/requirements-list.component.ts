@@ -11,6 +11,4 @@ export class RequirementsListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void { }
-
-  nextStep(): void {}
 }

@@ -1,35 +1,25 @@
 @import "../../../../../styles";
 @import "../../../../styles/breakpoint";
 
-*, *:before, *:after {
+:hover {
+  display: block;
   font-family: $secondary_font, sans-serif;
 }
 
-.requirements-list {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: inherit;
-  &__body {
-    text-align: center;
-    flex: 1 1 auto;
+.requirements-list__body {
+  text-align: center;
+  font-size: .9rem;
+  line-height: 1.5;
+  @include tablets-up {
+    font-size: 1rem;
   }
-  &__footer {
-    margin-top: auto;
-    flex: 0 1 auto;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-  }
-  & ::ng-deep p {
-    font-size: .9rem;
-    line-height: 1.5;
+
+  &::ng-deep p {
     margin: 1.5rem 0;
   }
-  & ::ng-deep ul {
-    font-size: .9rem;
+
+  &::ng-deep ul {
     text-align: left;
-    line-height: 1.5;
     list-style: none;
     background: $light-gray;
     border-radius: 4px;
@@ -38,9 +28,11 @@
 
     & > li {
       display: flex;
+
       &:not(:first-of-type) {
         margin-top: .5rem;
       }
+
       &::before {
         content: '';
         flex-shrink: 0;
@@ -54,53 +46,6 @@
         background-size: contain;
         background-repeat: no-repeat;
       }
-    }
-  }
-}
-
-.lib-button {
-  flex: 1 1 auto;
-  & ::ng-deep .button {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  &__label {
-    font-size: .9rem;
-    display: inline-block;
-    text-align: left;
-  }
-}
-
-@include tablets-up {
-  .requirements-list {
-    &__header {
-      margin: 0;
-    }
-    &__body {
-      text-align: left;
-    }
-    &__footer {
-      align-items: center;
-    }
-    p {
-      font-size: 1rem;
-    }
-    ul {
-      margin-top: 0;
-      font-size: 1rem;
-      padding: 1.5rem 0;
-    }
-  }
-  .lib-button {
-    margin-bottom: 16px;
-    flex: 0 1 auto;
-    width: auto;
-    &__label {
-      font-size: 1rem;
-    }
-    &__icon {
-      display: none;
     }
   }
 }
