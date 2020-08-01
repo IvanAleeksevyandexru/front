@@ -17,7 +17,7 @@ import {ConfirmPersonalUserAddressScreenModule} from '../app/components/confirm-
 =======
 import {ConstructorComponentRoutingModule} from './constructor-routing.module';
 import {ScreenModule} from '../app/modules/screen/screen.module';
-import {QuestionBlockModule} from '../app/modules/questions/question-block.module';
+import {QuestionScreenModule} from '../app/modules/questions/question-screen.module';
 import {CustomScreeModule} from '../app/modules/custom/custom-scree.module';
 >>>>>>> ef358ca... [EPGU-267]
 
@@ -47,7 +47,7 @@ const COMPONENTS = [
 
     ScreenModule,
     CustomScreeModule,
-    QuestionBlockModule,
+    QuestionScreenModule,
 
 >>>>>>> ef358ca... [EPGU-267]
     EpguLibModule.forChild(),

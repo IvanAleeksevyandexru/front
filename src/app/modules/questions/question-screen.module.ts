@@ -16,5 +16,5 @@ const COMPONENTS = [
     SharedComponentsModule,
   ]
 })
-export class QuestionBlockModule { }
+export class QuestionScreenModule { }
 
