@@ -1,0 +1,38 @@
+@import "../../../../../../styles/variables";
+@import "../../../../../../styles/breakpoint";
+
+.user-data {
+  @include tablets-down {
+    padding-bottom: 32px;
+  }
+
+  &__name {
+    margin-bottom: 1rem;
+  }
+  &__section {
+    &:not(:first-of-type) {
+      margin-top: 1.5rem;
+    }
+  }
+
+  &__label {
+    font-size: .9rem;
+    line-height: 1.5;
+    color: $storm-gray
+  }
+
+  &__value {
+    font-size: .9rem;
+    line-height: 1.5;
+  }
+
+  &__field {
+    margin-top: 1rem;
+  }
+}
+
+@include tablets-up {
+  .user-data {
+    padding: 1.5rem;
+  }
+}

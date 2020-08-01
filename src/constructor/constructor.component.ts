@@ -1,10 +1,17 @@
 import { Component } from '@angular/core';
+<<<<<<< HEAD
 import { SimpleComponentInterface } from '../app/interfaces/simple-component.interface';
 import { ConfirmUserDataInterface } from '../app/interfaces/confirm-user-data.interface';
 import {
   QuestionAnswerInterface,
   QuestionBlockInterface,
 } from '../app/interfaces/question-block.interface';
+=======
+import {QuestionAnswerInterface} from '../app/interfaces/question-block.interface';
+import {EpguService} from '../services/epgu.service';
+import {COMPONENT_TYPE} from '../app/constant/global';
+import {EgpuResponseInterface} from '../app/interfaces/epgu.service.interface';
+>>>>>>> ef358ca... [EPGU-267]
 
 @Component({
   selector: 'app-constructor',
@@ -12,28 +19,11 @@ import {
   styleUrls: ['./constructor.component.scss'],
 })
 export class ConstructorComponent {
-  // WelcomeComponent <start>
-  welcomeComponentData: SimpleComponentInterface = {
-    header: 'Регистрация и снятие с регистрации по месту пребывания',
-    label:
-      'Вы переехали на новое место, хотите зарегистрировать себя у родственников или прекратить регистрацию – воспользуйтесь данной услугой.<br><br>' +
-      'По законодательству не требуется регистрироваться на срок пребывания \n' +
-      'менее 90 дней. \n' +
-      '<br><br>' +
-      'Вам нужно ответить на несколько вопросов, чтобы мы показали необходимые действия.\n',
-    submitButtonLabel: 'Продолжить',
-  };
-  // WelcomeComponent <end>
 
-  // RequirementsListComponentData <end>
-  requirementsListComponentData: SimpleComponentInterface = {
-    header: 'Для подачи заявления вам потребуется:',
-    label:
-      '<ul><li>Паспортные данные всех взрослых членов семьи, включая детей старше 14 лет</li><li>Данные свидетельств о рождении для детей до 14 лет</li><li>Паспортные данные собственников жилья</li></ul><p>После подачи заявления все взрослые члены семьи и собственники жилого помещения должны подтвердить свое согласие на временную регистрацию через личный кабинет портала Госуслуг</p><p>Для получения бумажной копии свидетельства о регистрации сделайте соответствующую пометку в заявлении либо обратитесь в ближайший МФЦ</p>',
-    submitButtonLabel: 'Перейти к заявлению',
-  };
-  // RequirementsListComponentData <end>
+  // <--constant
+  constructorComponentType = COMPONENT_TYPE;
 
+<<<<<<< HEAD
   // confirmPersonalUserData <end>
   confirmUserData: SimpleComponentInterface = {
     header: 'Подтвердите корректность ваших данных',
@@ -159,9 +149,55 @@ export class ConstructorComponent {
 
   confirmAddressActionSelect($event: any): void {
     console.log($event);
+=======
+  // <-- variable
+  response: EgpuResponseInterface;
+  componentId: string;
+  componentType: string;
+  componentData: any;
+
+  constructor(
+    public epguService: EpguService,
+  ) { }
+
+  ngOnInit(): void {
+    this.epguService.getData().subscribe((response) => {
+      this.initResponse(response);
+    }, (error) => {
+      console.error(error);
+    });
   }
 
-  confirmPhoneActionSelect($event: any): void {
-    console.log($event);
+  initResponse(response): void {
+    // this.response = {};
+    this.response = response;
+    const { display } = response;
+    this.componentId = display.components[0].id;
+    this.componentType = display.components[0].type;
+    this.componentData = display;
+    console.log('----- GET DATA ---------');
+    console.log('componentId:', this.componentId);
+    console.log('componentType:', this.componentType);
+    console.log('initResponse:', display);
+  }
+
+  sendData(data) {
+    this.response.currentValue[this.componentId] = {visited: true, value: data};
+    this.epguService.setData(this.response).subscribe((response) => {
+      console.log('----- SET DATA ---------');
+      console.log('request', this.response)
+      this.initResponse(response);
+    }, (error) => {
+      console.error(error);
+    });
+  }
+
+  nextStep() {
+    this.sendData(true);
+>>>>>>> ef358ca... [EPGU-267]
+  }
+
+  onAnswerSelect(data: QuestionAnswerInterface) {
+    this.sendData(data.value);
   }
 }

@@ -1,5 +1,6 @@
 <header class="app-header"></header>
 <main class="app-content">
+<<<<<<< HEAD
   <app-welcome-screen [data]="welcomeComponentData"></app-welcome-screen>
   <app-question-block [data]="questionComponentData" (answerSelect)="onAnswerSelect($event)"></app-question-block>
   <app-requirements-list [data]="requirementsListComponentData"></app-requirements-list>
@@ -7,6 +8,25 @@
   <app-confirm-personal-user-phone-screen [data]="confirmPhoneEmail" (actionSelect)="confirmPhoneActionSelect($event)"></app-confirm-personal-user-phone-screen>
   <app-confirm-personal-user-address-screen [data]="confirmPhoneAddress" (actionSelect)="confirmAddressActionSelect($event)"></app-confirm-personal-user-address-screen>
   <app-confirm-created-request-screen [data]="confirmCreatedRequestData"></app-confirm-created-request-screen>
+=======
+  <div class="custom-wrapper">
+
+    <ng-container [ngSwitch]="componentData?.type">
+      <app-screen
+        *ngSwitchCase="constructorComponentType.COMPONENT"
+        [data]="componentData"
+        (nextStep)="nextStep()"></app-screen>
+      <app-custom-screen
+        *ngSwitchCase="constructorComponentType.CUSTOM"
+        [data]="componentData"></app-custom-screen>
+      <app-question-screen
+        *ngSwitchCase="constructorComponentType.QUESTION"
+        [data]="componentData"
+        (answerSelect)="onAnswerSelect($event)"></app-question-screen>
+    </ng-container>
+
+  </div>
+>>>>>>> ef358ca... [EPGU-267]
 </main>
 <footer class="app-footer"></footer>
 

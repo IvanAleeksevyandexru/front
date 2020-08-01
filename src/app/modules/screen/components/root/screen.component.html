@@ -1,0 +1,29 @@
+
+
+<screen-container>
+  <div class="inner">
+    <div class="head">
+    <page-name>{{data?.header}}</page-name>
+    </div>
+
+    <app-card class="body">
+      <ng-container [ngSwitch]="data?.components[0].type">
+        <app-welcome-block
+          *ngSwitchCase="screenComponentName.welcome"
+          [data]="data?.components[0]"></app-welcome-block>
+
+        <app-confirm-personal-user-address-screen
+          *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
+          [data]="data?.components[0]"></app-confirm-personal-user-address-screen>
+
+      </ng-container>
+    </app-card>
+
+    <div class="footer">
+      <lib-button (click)="nextStep()" class="footer__btn-submit">
+        <div class="secondary-font">{{data?.submitLabel || 'Продолжить'}}</div>
+      </lib-button>
+    </div>
+  </div>
+</screen-container>
+
