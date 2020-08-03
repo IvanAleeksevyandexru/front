@@ -1,0 +1,12 @@
+<div class="container" [ngClass]="{active: innerValue === value}">
+  <label class="container__radio-label">
+    <span class="icon-{{type}}"></span>
+    <input class="gender-radio"
+           type="radio"
+           [value]="value"
+           [ngModel]="innerValue"
+           (ngModelChange)="change($event)"
+           [name]="name" />
+    <span>{{label}}</span>
+  </label>
+</div>

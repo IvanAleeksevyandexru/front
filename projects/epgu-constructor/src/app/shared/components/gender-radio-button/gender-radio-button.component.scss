@@ -1,0 +1,47 @@
+@import "src/styles/core";
+
+.container {
+  height: 47px;
+
+  padding: 0 12px 0 6px;
+  border-radius: 4px;
+
+  color: $color-black;
+
+  &.active {
+    background-color: $color-link-water;
+  }
+}
+
+.container__radio-label {
+  display: flex;
+  align-items: center;
+
+  height: 100%;
+
+  cursor: pointer;
+}
+
+.icon-male:before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 24px;
+  background-image: url("../../../../assets/icons/svg/male-icon.svg");
+  background-repeat: no-repeat;
+}
+
+.icon-female:before {
+  content: '';
+  display: inline-block;
+  margin-left: 5px;
+  padding-left: 1px;
+  width: 15px;
+  height: 24px;
+  background-image: url("../../../../assets/icons/svg/female-icon.svg");
+  background-repeat: no-repeat;
+}
+
+.gender-radio {
+  appearance: none;
+}

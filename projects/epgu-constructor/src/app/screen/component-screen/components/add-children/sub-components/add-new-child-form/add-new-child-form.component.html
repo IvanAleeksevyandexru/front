@@ -35,22 +35,20 @@
         <epgu-constructor-label> Пол </epgu-constructor-label>
         <div class="component__radio-group radio-group">
           <div class="radio-group__button">
-            <lib-radio
-              [(ngModel)]="item.gender"
-              name="gender"
-              value="муж"
-              [checked]="item.gender === 'муж'"
-            ></lib-radio>
-            <label>Мальчик</label>
+            <epgu-constructor-gender-radio-button [(ngModel)]="item.gender"
+                                      name="gender"
+                                      value="муж"
+                                      type="male"
+                                      label="Мальчик">
+            </epgu-constructor-gender-radio-button>
           </div>
           <div class="radio-group__button">
-            <lib-radio
-              [(ngModel)]="item.gender"
-              name="gender"
-              value="жен"
-              [checked]="item.gender === 'жен'"
-            ></lib-radio>
-            <label>Девочка</label>
+            <epgu-constructor-gender-radio-button [(ngModel)]="item.gender"
+                                      name="gender"
+                                      value="жен"
+                                      type="female"
+                                      label="Девочка">
+            </epgu-constructor-gender-radio-button>
           </div>
         </div>
       </div>
