@@ -5,10 +5,9 @@ import { SCREEN_COMPONENT_NAME } from '../../../../constant/global';
 @Component({
   selector: 'app-custom-screen',
   templateUrl: './custom-screen.component.html',
-  styleUrls: ['./custom-screen.component.scss']
+  styleUrls: ['./custom-screen.component.scss'],
 })
 export class CustomScreenComponent implements OnInit {
-
   screenComponentName = SCREEN_COMPONENT_NAME;
   @Input() data: EgpuResponseDisplayInterface;
   constructor() { }
