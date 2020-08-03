@@ -1,2 +1,14 @@
-<p>custom-screen works!</p>
-<!--<ng-container *ngFor="let component of componentns"></ng-container>-->
+<screen-container>
+  <div class="inner">
+    <div class="head">
+      <page-name>{{ data?.header }}</page-name>
+    </div>
+
+    <ng-container [ngSwitch]="(data?.components)[0].type">
+        <app-add-children-screen
+        *ngSwitchCase="screenComponentName.welcome"
+        [data]="(data?.components)[0]"
+      ></app-add-children-screen>
+    </ng-container>
+  </div>
+</screen-container>

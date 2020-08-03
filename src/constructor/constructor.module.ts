@@ -5,7 +5,7 @@ import {ConstructorComponent} from './constructor.component';
 import {ConstructorComponentRoutingModule} from './constructor-routing.module';
 import {ScreenModule} from '../app/modules/screen/screen.module';
 import {QuestionScreenModule} from '../app/modules/questions/question-screen.module';
-import {CustomScreeModule} from '../app/modules/custom/custom-scree.module';
+import {CustomScreenModule} from '../app/modules/custom/custom-screen.module';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -20,7 +20,7 @@ const COMPONENTS = [
     ConstructorComponentRoutingModule,
 
     ScreenModule,
-    CustomScreeModule,
+    CustomScreenModule,
     QuestionScreenModule,
 
     EpguLibModule.forChild(),

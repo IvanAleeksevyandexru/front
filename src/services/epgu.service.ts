@@ -14,13 +14,13 @@ export class EpguService {
   }
 
   public getData(): Observable<any> {
-    return this.http.get<EgpuResponseInterface>('http://188.93.23.27:18080/getService', {
+    return this.http.get<EgpuResponseInterface>('http://localhost:4200/api/getService/local', {
       withCredentials: false
     });
   }
 
   public setData(data): any {
-    return this.http.post<EgpuResponseInterface>('http://188.93.23.27:18080/scenario/getNextStep', {
+    return this.http.post<EgpuResponseInterface>('http://localhost:4200/api/service/local/scenario/getNextStep', {
       ...data,
       userId: '1000299353',
       token: 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTYyNzk0MTEsInNjb3BlIjoiaHR0c' +

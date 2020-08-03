@@ -21,7 +21,7 @@ import {ConfirmCreatedRequestScreenModule} from './components/confirm-created-re
 
 const COMPONENTS = [
   ScreenComponent
-]
+];
 
 @NgModule({
   declarations: [...COMPONENTS],

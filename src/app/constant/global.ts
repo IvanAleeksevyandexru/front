@@ -12,5 +12,8 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
+}
 
+export enum CUSTOM_COMPONENT_NAME {
+  'addChildren' = 'AddChildren,'
 }
