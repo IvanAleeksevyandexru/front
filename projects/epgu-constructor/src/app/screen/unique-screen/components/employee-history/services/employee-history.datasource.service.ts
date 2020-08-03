@@ -12,25 +12,25 @@ export class EmployeeHistoryDatasourceService {
   public getDataSourceByGender(gender: Gender): Array<EmployeeHistoryDataSource> {
     return [
       {
-        label: `Я учил${gender === 'male' ? 'ся' : 'ась'}`,
+        label: `Я учил${gender === 'M' ? 'ся' : 'ась'}`,
         type: 'student',
         position: 'Учащийся или студент',
         place: 'Место учебы без сокращений и аббревиатур',
       },
       {
-        label: `Я работал${gender === 'male' ? '' : 'а'}`,
+        label: `Я работал${gender === 'M' ? '' : 'а'}`,
         type: 'employed',
         position: 'Ваша должность',
         place: 'Место работы без сокращений и аббревиатур',
       },
       {
-        label: `Я служил${gender === 'male' ? '' : 'а'}`,
+        label: `Я служил${gender === 'M' ? '' : 'а'}`,
         type: 'military',
         position: 'Воинская должность и звание',
         place: 'Номер части и род (вид) войск',
       },
       {
-        label: `Я не работал${gender === 'male' ? '' : 'а'}`,
+        label: `Я не работал${gender === 'M' ? '' : 'а'}`,
         type: 'unemployed',
         position: '',
         place: '',

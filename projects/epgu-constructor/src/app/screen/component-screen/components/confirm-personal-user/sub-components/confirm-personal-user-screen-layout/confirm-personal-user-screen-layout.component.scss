@@ -22,6 +22,10 @@ $button-mt: 5px;
       margin-top: 16px;
     }
 
+    &:empty {
+      display: none;
+    }
+
     .confirm-personal-user-button {
       @include tablets-up {
         margin: 5px $actions-mx;

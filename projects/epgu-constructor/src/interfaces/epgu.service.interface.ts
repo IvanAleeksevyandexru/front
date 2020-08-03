@@ -1,5 +1,6 @@
 import { SCREEN_TYPE } from '../constant/global';
 
+export type Gender = 'M' | 'F';
 /**
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
  * @property {number}currentRule - id сценария для управление порядком компонентов (наверное не нужен для фронта)
@@ -24,8 +25,9 @@ export interface ScenarioDto {
   gender: Gender;
   orderId: string;
   sendNotification: Array<object>;
-  token: string
-  userId: string
+  token: string;
+  userId: string;
+  finishedAndCurrentScreens: [];
 }
 
 export interface ResponseInterface {
@@ -75,5 +77,3 @@ export interface CurrentValue {
   visited: boolean;
   value: any;
 }
-
-export type Gender = 'male' | 'female';
