@@ -4,15 +4,13 @@ import { ConfirmUserDataInterface } from '../../../../../../interfaces/confirm-u
 @Component({
   selector: 'app-confirm-personal-user-data-screen',
   templateUrl: './confirm-personal-user-data-screen.component.html',
-  styleUrls: ['./confirm-personal-user-data-screen.component.scss']
+  styleUrls: ['./confirm-personal-user-data-screen.component.scss'],
 })
 export class ConfirmPersonalUserDataScreenComponent implements OnInit {
   @Input() data;
   @Input() userData: ConfirmUserDataInterface;
   @Output() actionSelect = new EventEmitter();
-  @Output('nextStep') nextStepEvent: EventEmitter<any> = new EventEmitter<any>();
-
-  constructor() { }
+  @Output() nextStepEvent: EventEmitter<any> = new EventEmitter<any>();
 
   clickToAction(action): void {
     this.actionSelect.emit(action);
@@ -22,7 +20,5 @@ export class ConfirmPersonalUserDataScreenComponent implements OnInit {
     this.nextStepEvent.emit(true);
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

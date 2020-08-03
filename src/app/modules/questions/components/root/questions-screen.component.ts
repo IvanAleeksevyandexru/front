@@ -1,25 +1,23 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {QuestionAnswerInterface, QuestionBlockInterface} from '../../../../interfaces/question-block.interface';
-import {EgpuResponseDisplayInterface} from '../../../../interfaces/epgu.service.interface';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  EgpuResponseQuestionsDisplayComponentAttrsActionsInterface,
+  EgpuResponseQuestionsDisplayInterface,
+} from '../interface/question-block.interface';
 
 @Component({
   selector: 'app-question-screen',
   templateUrl: './questions-screen.component.html',
-  styleUrls: ['./questions-screen.component.scss']
+  styleUrls: ['./questions-screen.component.scss'],
 })
 export class QuestionsScreenComponent implements OnInit {
+  @Input() data: EgpuResponseQuestionsDisplayInterface;
+  @Output() answerSelect = new EventEmitter<
+    EgpuResponseQuestionsDisplayComponentAttrsActionsInterface
+  >();
 
-  @Input() data: EgpuResponseDisplayInterface;
-  @Output() answerSelect = new EventEmitter<QuestionAnswerInterface>();
+  ngOnInit(): void {}
 
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
-
-  answerChoose(answer: QuestionAnswerInterface): void {
+  answerChoose(answer: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface): void {
     this.answerSelect.emit(answer);
   }
 }
-

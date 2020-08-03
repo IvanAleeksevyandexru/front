@@ -1,19 +1,16 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ConfirmPhoneInterface} from '../../../../../../interfaces/confirm-phone.interface';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { EgpuResponseComponentInterface } from '../../../../../../interfaces/epgu.service.interface';
 
 @Component({
   selector: 'app-confirm-personal-user-phone-screen',
   templateUrl: './confirm-personal-user-phone-screen.component.html',
-  styleUrls: ['./confirm-personal-user-phone-screen.component.scss']
+  styleUrls: ['./confirm-personal-user-phone-screen.component.scss'],
 })
 export class ConfirmPersonalUserPhoneScreenComponent implements OnInit {
-
-  @Input() data: ConfirmPhoneInterface;
+  @Input() data: EgpuResponseComponentInterface;
   @Output() actionSelect = new EventEmitter();
-  constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   clickToAction(action): void {
     this.actionSelect.emit(action);

@@ -1,16 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-custom-screen',
   templateUrl: './custom-screen.component.html',
-  styleUrls: ['./custom-screen.component.scss']
+  styleUrls: ['./custom-screen.component.scss'],
 })
 export class CustomScreenComponent implements OnInit {
+  @Input() data;
 
-  @Input() data
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

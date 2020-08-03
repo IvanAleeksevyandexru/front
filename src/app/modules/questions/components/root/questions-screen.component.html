@@ -1,16 +1,16 @@
-<screen-container>
+<app-screen-container>
 
   <div class="question__wrapper">
-    <page-name class="question__head">{{data?.header}}</page-name>
+    <app-page-name>{{data?.header}}</app-page-name>
 
-    <div class="question__body question-body__item">
+    <div class="answer">
       <app-answer-choice
-        *ngFor="let answer of data?.components[0].attrs.actions"
+        class="answer__item"
+        *ngFor="let answer of data?.components[0]?.attrs.actions"
         (click)="answerChoose(answer)"
-        [data]="answer">
-        {{answer}}
+        [data]="answer.label">
       </app-answer-choice>
     </div>
   </div>
 
-</screen-container>
+</app-screen-container>

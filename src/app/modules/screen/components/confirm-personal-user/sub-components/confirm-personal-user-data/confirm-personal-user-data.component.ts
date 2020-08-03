@@ -8,15 +8,6 @@ import { ConfirmUserDataInterface } from '../../../../../../interfaces/confirm-u
 })
 export class ConfirmPersonalUserDataComponent implements OnInit {
   @Input() data: ConfirmUserDataInterface;
-  templateData: any = {};
-  constructor() {}
 
-  ngOnInit(): void {
-    try {
-      this.templateData.valueOrigin = this.data.value;
-      this.templateData.valueParsed = JSON.parse(this.data.value);
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  ngOnInit(): void {}
 }

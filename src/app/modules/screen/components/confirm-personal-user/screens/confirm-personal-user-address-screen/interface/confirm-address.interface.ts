@@ -36,6 +36,6 @@ interface ConfirmAddressActionsInterface {
  * @property {string}label - field name
  */
 interface ConfirmAddressFieldsInterface {
-  fieldName: "regAddr"
-  label: "адрес"
+  fieldName: 'regAddr'
+  label: 'адрес'
 }

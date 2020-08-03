@@ -7,7 +7,8 @@ import {COMPONENT_TYPE, SCREEN_COMPONENT_NAME} from '../constant/global';
  * @property {EgpuResponseDisplayInterface}display -
  * @property {string}gender
  * @property {string}orderId - идентификатор запорлнения черновика, (уже был черновик...)
- * @property {Array<object>>}sendNotification - собственники жилья (человек 1, человек 2) => эти людям прилетает уведомление о подтверждении ...
+ * @property {Array<object>>}sendNotification - собственники жилья
+ * (человек 1, человек 2) => эти людям прилетает уведомление о подтверждении ...
  * @property {string}token - в целях разработки, на продее через cookie;
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
  *
@@ -44,9 +45,11 @@ export interface EgpuResponseDisplayInterface {
 /**
  * @property {Array<object>>}attrs -
  * @property {string}id -
- * @property {string}label - может храниться разное строковое значение (например в некоторый случаях в строке будет сожержаться html разметка);
+ * @property {string}label - может храниться разное строковое значение
+ * (например в некоторый случаях в строке будет сожержаться html разметка);
  * @property {string}type - component name
- * @property {string}value - может храниться разное строковое значение (например проверка персональные данные будут содержать json с персональными данными)
+ * @property {string}value - может храниться разное строковое значение
+ * (например проверка персональные данные будут содержать json с персональными данными)
  */
 export interface EgpuResponseComponentInterface {
   attrs: Array<object>
