@@ -8,6 +8,8 @@ import {ConfirmPersonalUserAddressScreenModule} from './components/confirm-perso
 import {ConfirmPersonalUserDataScreenModule} from './components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.module';
 import {EpguLibModule} from 'epgu-lib';
 import {SharedComponentsModule} from '../../module-share/shared-components.module';
+import {ConfirmPersonalUserEmailScreenModule} from './components/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module';
+import {ConfirmCreatedRequestScreenModule} from './components/confirm-created-request-screen/confirm-created-request-screen.module';
 
 const COMPONENTS = [
   ScreenComponent
@@ -21,8 +23,10 @@ const COMPONENTS = [
     WelcomeBlockModule,
     RequirementsListModule,
     ConfirmPersonalUserPhoneScreenModule,
+    ConfirmPersonalUserEmailScreenModule,
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserDataScreenModule,
+    ConfirmCreatedRequestScreenModule,
 
     SharedComponentsModule,
     EpguLibModule.forChild(),

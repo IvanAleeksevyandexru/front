@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SimpleComponentInterface} from '../../interfaces/simple-component.interface';
 
 @Component({
   selector: 'app-confirm-created-request-screen',
@@ -7,8 +6,7 @@ import {SimpleComponentInterface} from '../../interfaces/simple-component.interf
   styleUrls: ['./confirm-created-request-screen.component.scss']
 })
 export class ConfirmCreatedRequestScreenComponent implements OnInit {
-  @Input() data: SimpleComponentInterface;
-
+  @Input() data;
   @Output('nextStep') nextStepEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }

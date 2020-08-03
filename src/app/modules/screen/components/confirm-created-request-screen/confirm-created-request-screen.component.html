@@ -1,0 +1,14 @@
+<div class="confirm-created-request__header">
+
+  <ng-template [ngIf]="data?.attrs?.image">
+    <div *ngIf="data.attrs.image.src" class="header__icon-block">
+      <div [ngStyle]="{backgroundImage: 'url('+ data.attrs.image.src +')'}" class="check-icon"></div>
+    </div>
+
+    <div *ngIf="data.attrs.image.alt" class="header__description">{{data.attrs.image.alt}}</div>
+  </ng-template>
+</div>
+
+<div class="confirm-created-request__content" [innerHTML]="data?.label">
+</div>
+

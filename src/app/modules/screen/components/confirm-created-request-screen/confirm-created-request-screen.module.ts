@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {SharedComponentsModule} from '../shared-components/shared-components.module';
 import {EpguLibModule} from 'epgu-lib';
 import {ConfirmCreatedRequestScreenComponent} from './confirm-created-request-screen.component';
+import {SharedComponentsModule} from '../../../../module-share/shared-components.module';
 
 const COMPONENTS = [
   ConfirmCreatedRequestScreenComponent

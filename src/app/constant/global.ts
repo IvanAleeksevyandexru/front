@@ -6,6 +6,11 @@ export enum COMPONENT_TYPE {
 
 export enum SCREEN_COMPONENT_NAME {
   'welcome' = 'WelcomeScr',
-  'confirmPersonalUserRegAddr' = 'ConfirmPersonalUserRegAddr'
+  'confirmPersonalUserRegAddr' = 'ConfirmPersonalUserRegAddr',
+  'serviceDscrScr' = 'ServiceDscrScr',
+  'confirmPersonalUserData' = 'ConfirmPersonalUserData',
+  'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
+  'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
+  'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
 
 }

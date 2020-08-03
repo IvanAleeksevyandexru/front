@@ -1,21 +1,7 @@
-@import "../../styles/breakpoint";
-@import "../../styles/variables";
+@import "../../../../styles/breakpoint";
+@import "../../../../styles/variables";
 
-:host {
-  @include tablets-down {
-    display: grid;
-  }
-
-  ::ng-deep screen-container {
-    @include tablets-down {
-      .container {
-        padding: 0 0 32px 0!important;
-      }
-    }
-  }
-}
-
-
+// TODO update style;
 .confirm-created-request {
   display: flex;
   flex-flow: column;
@@ -88,14 +74,6 @@
     font-family: $secondary_font;
 
     text-align: center;
-  }
-
-  .confirm-created-request__footer {
-    flex: 0 1;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }
 

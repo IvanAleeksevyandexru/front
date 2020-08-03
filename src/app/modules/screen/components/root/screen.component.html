@@ -1,23 +1,45 @@
-
-
 <screen-container>
   <div class="inner">
     <div class="head">
-    <page-name>{{data?.header}}</page-name>
+      <page-name>{{data?.header}}</page-name>
     </div>
 
-    <app-card class="body">
+    <app-screen-pad class="body">
       <ng-container [ngSwitch]="data?.components[0].type">
-        <app-welcome-block
+        <app-welcome-screen
           *ngSwitchCase="screenComponentName.welcome"
-          [data]="data?.components[0]"></app-welcome-block>
+          [data]="data?.components[0]"></app-welcome-screen>
 
         <app-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
           [data]="data?.components[0]"></app-confirm-personal-user-address-screen>
 
+        <app-requirements-list
+          *ngSwitchCase="screenComponentName.serviceDscrScr"
+          [data]="data?.components[0].label"></app-requirements-list>
+
+        <app-confirm-personal-user-data-screen
+          *ngSwitchCase="screenComponentName.confirmPersonalUserData"
+          [data]="data?.components[0]">
+        </app-confirm-personal-user-data-screen>
+
+        <app-confirm-personal-user-email-screen
+          *ngSwitchCase="screenComponentName.confirmPersonalUserEmail"
+          [data]="data?.components[0]">
+        </app-confirm-personal-user-email-screen>
+
+        <app-confirm-personal-user-phone-screen
+          *ngSwitchCase="screenComponentName.confirmPersonalUserPhone"
+          [data]="data?.components[0]">
+        </app-confirm-personal-user-phone-screen>
+
+        <app-confirm-created-request-screen
+          *ngSwitchCase="screenComponentName.confirmCreatedRequestScreen"
+          [data]="data?.components[0]">
+        </app-confirm-created-request-screen>
+
       </ng-container>
-    </app-card>
+    </app-screen-pad>
 
     <div class="footer">
       <lib-button (click)="nextStep()" class="footer__btn-submit">
