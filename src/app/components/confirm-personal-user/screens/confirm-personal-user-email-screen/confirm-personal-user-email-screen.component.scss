@@ -1,0 +1,11 @@
+@import "../../../../styles/variables";
+@import "../../../../styles/breakpoint";
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.body {
+  margin-bottom: 32px;
+}

@@ -1,0 +1,23 @@
+@import "../../../../../../styles/breakpoint";
+@import "../../../../../../styles/variables";
+
+:host {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.welcome__content {
+  flex: 1 1 auto;
+  font-family: $secondary_font;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  margin-bottom: 32px;
+
+  @include tablets-up {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 32px;
+  }
+}

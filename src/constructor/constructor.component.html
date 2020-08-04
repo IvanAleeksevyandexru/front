@@ -1,0 +1,22 @@
+<header class="app-header"></header>
+<main class="app-content">
+  <div class="custom-wrapper">
+
+    <ng-container [ngSwitch]="componentData?.type">
+      <app-screen
+        *ngSwitchCase="constructorComponentType.COMPONENT"
+        [data]="componentData"
+        (nextStepEvent)="nextStep()"></app-screen>
+      <app-custom-screen
+        *ngSwitchCase="constructorComponentType.CUSTOM"
+        [data]="componentData"></app-custom-screen>
+      <app-question-screen
+        *ngSwitchCase="constructorComponentType.QUESTION"
+        [data]="componentData"
+        (answerSelect)="onAnswerSelect($event)"></app-question-screen>
+    </ng-container>
+
+  </div>
+</main>
+<footer class="app-footer"></footer>
+

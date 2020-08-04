@@ -1,0 +1,14 @@
+@import "functions";
+@import "variables";
+
+.btn {
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn--light {
+  @include btn--light();
+}
+
+.btn--primary {
+  @include btn--primary();
+}

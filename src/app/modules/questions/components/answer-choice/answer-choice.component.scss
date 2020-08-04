@@ -1,0 +1,36 @@
+@import "../../../../styles/variables";
+@import "../../../../styles/functions";
+@import "../../../../styles/breakpoint";
+
+:host {
+  display: block;
+  cursor: pointer;
+}
+
+.answer__btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  font-size: 14px;
+  line-height: 20px;
+  background: $white;
+  color: $egyptian-blue;
+  @include shadow();
+  @include tablets-up {
+    padding: 24px;
+  }
+}
+
+.answer-btn__title {
+
+}
+
+.answer-btn__icon {
+  flex-shrink: 0;
+  margin-left: 10px;
+  @include tablets-up {
+    display: none;
+  }
+}

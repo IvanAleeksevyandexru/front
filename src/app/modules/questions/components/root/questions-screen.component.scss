@@ -1,0 +1,30 @@
+@import "../../../../styles/variables";
+@import "../../../../styles/breakpoint";
+
+:host {
+  display: block;
+}
+
+.question {
+  &__wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: inherit;
+    @include tablets-down {
+      justify-content: space-between;
+    }
+  }
+
+  &__body{
+    margin-top: auto;
+    @include tablets-up {
+      margin-top: 0;
+    }
+  }
+}
+
+.answer__item {
+  margin-bottom: 8px;
+}
+

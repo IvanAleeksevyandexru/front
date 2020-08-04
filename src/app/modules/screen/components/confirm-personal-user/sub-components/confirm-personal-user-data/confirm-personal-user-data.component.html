@@ -1,0 +1,14 @@
+
+<div class="user-data">
+<!--  <section class="user-data__section" *ngFor="let field of data?.attrs.fields">-->
+  <div *ngFor="let field of data?.attrs.fields">
+
+      <label class="user-data__label">
+        {{field.label}}
+      </label>
+      <div class="user-data__value">
+        {{(data.value | toJson)[field.fieldName]}}
+      </div>
+
+  </div>
+</div>

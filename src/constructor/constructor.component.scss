@@ -1,0 +1,54 @@
+@import "../app/styles/variables";
+@import "../app/styles/breakpoint";
+
+:host {
+  display: block;
+  @include tablets-up {
+    background-color: #f2f8fc;
+  }
+}
+
+//FIXME: Временный костыль - убрать после демонстрации
+.custom-wrapper {
+  min-height: 100vh;
+}
+
+header {
+  background: red;
+}
+
+footer {
+  background: green;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+
+  min-height: calc(100% - 128px);
+}
+
+@include tablets-down {
+  header.app-header {
+    height: 128px;
+  }
+}
+
+@include tablets-up {
+  #content-wrapper {
+    background-color: $quartz;
+  }
+
+  header.app-header {
+    height: 120px;
+    background: url(../assets/img/header.png) no-repeat 50% 50%;
+    background-size: cover;
+  }
+
+
+  footer.app-footer {
+    height: 200px;
+    background: url(../assets/img/footer.png) no-repeat 50% 100%;
+    background-size: contain;
+  }
+}

@@ -1,0 +1,29 @@
+@import "variables";
+
+@mixin shadow {
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+}
+
+@mixin btn--light {
+  background: $white;
+  color: $egyptian-blue;
+  &:hover {
+    background: $royal-blue;
+    color: $white;
+  }
+  &:active {
+    background: $egyptian-blue;
+    color: $white;
+  }
+}
+@mixin btn--primary {
+  background: $denim;
+  color: $white;
+  &:hover {
+    background: $royal-blue;
+  }
+  &:active {
+    background: $egyptian-blue;
+    color: $white;
+  }
+}

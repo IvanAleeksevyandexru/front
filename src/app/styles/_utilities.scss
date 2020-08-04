@@ -1,0 +1,14 @@
+@import 'functions';
+
+.shadow {
+  @include shadow();
+}
+.shadow-none {
+
+}
+.shadow-sm {
+
+}
+.shadow-lg {
+
+}
