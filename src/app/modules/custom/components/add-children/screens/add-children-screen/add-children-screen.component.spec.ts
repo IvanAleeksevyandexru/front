@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ScreenPadComponent } from './screen-pad.component';
+import { AddChildrenScreenComponent } from './add-children-screen.component';
 
-describe('AppCardComponent', () => {
-  let component: ScreenPadComponent;
-  let fixture: ComponentFixture<ScreenPadComponent>;
+describe('AddChildrenScreenComponent', () => {
+  let component: AddChildrenScreenComponent;
+  let fixture: ComponentFixture<AddChildrenScreenComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ScreenPadComponent ]
+      declarations: [ AddChildrenScreenComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ScreenPadComponent);
+    fixture = TestBed.createComponent(AddChildrenScreenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WelcomeScreenComponent } from './welcome-screen.component';
+import { AddNewChildFormComponent } from './add-new-child-form.component';
 
-describe('WelcomeScreenComponent', () => {
-  let component: WelcomeScreenComponent;
-  let fixture: ComponentFixture<WelcomeScreenComponent>;
+describe('AddNewChildFormComponent', () => {
+  let component: AddNewChildFormComponent;
+  let fixture: ComponentFixture<AddNewChildFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WelcomeScreenComponent ]
+      declarations: [ AddNewChildFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WelcomeScreenComponent);
+    fixture = TestBed.createComponent(AddNewChildFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
