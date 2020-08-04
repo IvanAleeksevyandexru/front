@@ -12,18 +12,15 @@
 
         <app-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
-          [data]="(data?.components)[0]"
-        ></app-confirm-personal-user-address-screen>
+          [data]="data?.components[0]"></app-confirm-personal-user-address-screen>
 
         <app-requirements-list
           *ngSwitchCase="screenComponentName.serviceDscrScr"
-          [data]="(data?.components)[0].label"
-        ></app-requirements-list>
+          [data]="data?.components[0].label"></app-requirements-list>
 
         <app-confirm-personal-user-data-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserData"
-          [data]="(data?.components)[0]"
-        >
+          [data]="data?.components[0]">
         </app-confirm-personal-user-data-screen>
 
         <app-confirm-personal-user-email-screen
@@ -46,9 +43,7 @@
 
     <div class="footer">
       <lib-button (click)="nextStep()" class="footer__btn-submit">
-        <div class="secondary-font">
-          {{ data?.submitLabel || "Продолжить" }}
-        </div>
+        <div class="secondary-font">{{data?.submitLabel || 'Продолжить'}}</div>
       </lib-button>
     </div>
   </div>

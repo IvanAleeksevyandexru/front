@@ -12,9 +12,9 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserData' = 'ConfirmPersonalUserData',
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
-  'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
+  'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen'
 }
 
-export enum CUSTOM_COMPONENT_NAME {
-  'addChildren' = 'AddChildren,'
+export enum UNIQUE_COMPONENT_NAME {
+  'childrenListUnder14' = 'ChildrenListUnder14'
 }
