@@ -16,8 +16,7 @@
               class="cs__select cs-select"
               (changed)="asdasdasd($event)"
               [list]="componentWithDictionary[componentData?.attrs?.dictionaryType]?.list"
-              [item]="componentWithDictionary[componentData?.attrs?.dictionaryType]?.list[0]"
-            ></lib-simple-select>
+              [item]="componentWithDictionary[componentData?.attrs?.dictionaryType]?.list[0]"></lib-simple-select>
           </div>
 
           <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
@@ -27,7 +26,7 @@
 
           <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
             <div class="form__title">{{componentData.label}}</div>
-            <lib-plain-input>sfdsdfs</lib-plain-input>
+            <lib-plain-input></lib-plain-input>
           </div>
 
         </ng-container>

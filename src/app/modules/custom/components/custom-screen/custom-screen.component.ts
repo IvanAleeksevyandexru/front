@@ -37,65 +37,7 @@ export class CustomScreenComponent implements OnInit {
   }
 
   @Input() set data(val: EgpuResponseDisplayInterface) {
-    this._data = val || {
-      "id": "s10",
-      "name": "Дополнительные сведения",
-      "type": "CUSTOM",
-      "header": "Дополнительные сведения",
-      "submitButtonLabel": "Далее",
-      "components": [
-        {
-          "id": "lg9",
-          "type": "LabelSection",
-          "label": "Сведения о гражданстве",
-          "attrs": {},
-          "value": "",
-          "visited": false
-        },
-        {
-          "id": "pd10",
-          "type": "Dictionary",
-          "label": "Гражданство",
-          "attrs": {
-            "dictionaryType": "DOC_TYPE_56555",
-            "requiredAttrs": ["regionId", "code", "fullName"],
-            "labelAttr": "fullName",
-            "ref": []
-          },
-          "value": "",
-          "visited": false
-        },
-        {
-          "id": "pd11",
-          "type": "ForeignCitizenship",
-          "label": "Есть ли у вас гражданство другого государства",
-          "attrs": {"displayFields": ["country"]},
-          "value": "",
-          "visited": false
-        },
-        {
-          "id": "pd12",
-          "type": "ForeignCitizenship",
-          "label": "Было ли у вас раньше гражданство другого государства",
-          "attrs": {"displayFields": ["country", "date"]},
-          "value": "",
-          "visited": false
-        },
-        {
-          "id": "pd24",
-          "type": "Dictionary",
-          "label": "Гражданство-связанное",
-          "attrs": {
-            "dictionaryType": "DOC_TYPE_56",
-            "requiredAttrs": ["regionId", "code", "fullName"],
-            "labelAttr": "fullName",
-            "ref": []
-          },
-          "value": "",
-          "visited": false
-        }
-      ]
-    }
+    this._data = val;
 
     this._data.components
       .filter(item => item.type === COMPONENT_TYPE.Dictionary)
