@@ -2,6 +2,7 @@ export enum COMPONENT_TYPE {
 'QUESTION' = 'QUESTION',
 'COMPONENT' = 'COMPONENT',
 'CUSTOM' = 'CUSTOM',
+'UNIQUE' = 'UNIQUE',
 }
 
 export enum SCREEN_COMPONENT_NAME {
@@ -12,4 +13,8 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
+}
+
+export enum CUSTOM_COMPONENT_NAME {
+  'addChildren' = 'AddChildren,'
 }
