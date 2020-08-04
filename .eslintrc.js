@@ -1,3 +1,5 @@
+const { off } = require("process");
+
 module.exports = {
   extends: ['plugin:@angular-eslint/recommended'],
   rules: {
@@ -31,9 +33,12 @@ module.exports = {
       // Custom rules
       rules: {
         'import/no-unresolved': 'off',
+        // 'import/no-extraneous-dependencies': 'off',
         'import/prefer-default-export': 'off',
         'class-methods-use-this': 'off',
         "lines-between-class-members": "off",
+        "@typescript-eslint/no-useless-constructor": ['off', 'always'],
+        "@typescript-eslint/no-empty-function": ['off', 'always'],
         "@typescript-eslint/lines-between-class-members": ["off", "always", { "exceptAfterOverload": false }],
         '@typescript-eslint/unbound-method': [
           'error',

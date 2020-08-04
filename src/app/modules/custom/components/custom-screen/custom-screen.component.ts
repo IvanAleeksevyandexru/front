@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { EgpuResponseDisplayInterface } from '../../../../interfaces/epgu.service.interface';
 import { SCREEN_COMPONENT_NAME } from '../../../../constant/global';
 
@@ -10,9 +10,7 @@ import { SCREEN_COMPONENT_NAME } from '../../../../constant/global';
 export class CustomScreenComponent implements OnInit {
   screenComponentName = SCREEN_COMPONENT_NAME;
   @Input() data: EgpuResponseDisplayInterface;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

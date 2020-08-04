@@ -10,6 +10,6 @@ export class ConfirmPersonalUserAddressComponent implements OnInit {
   @Input() data: ConfirmAddressInterface;
 
   ngOnInit(): void {
-    console.log(this.data);
+    // console.log(this.data);
   }
 }

@@ -3,10 +3,17 @@
 @import '../../../../../../styles/functions';
 
 .add-children-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   &__card {
     background-color: $white;
     box-shadow: 0px 24px 48px $box-shadow-color;
     border-radius: 12px;
+  }
+  &__form {
+    margin-top: 2rem;
   }
   &__action {
     margin-top: 24px;
@@ -23,7 +30,7 @@
     align-items: center;
   }
   &__title {
-    font-size: 1rem;
+    font-size: 18px;
     font-weight: $fw-bold;
   }
   &__close {
@@ -68,5 +75,23 @@
   }
   &__label {
     cursor: pointer;
+  }
+}
+
+.title {
+  text-align: center;
+  &::ng-deep span {
+    color: $gray;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $secondary_font;
+  margin-top: auto;
+  @include tablets-up {
+    margin-top: 32px;
   }
 }

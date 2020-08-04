@@ -32,7 +32,11 @@ export class ConstructorComponent implements OnInit {
   }
 
   initResponse(response): void {
-    // this.response = {};
+    if (!response) {
+      console.error('Invalid Reponse');
+      return;
+    }
+
     this.response = response;
     const { display } = response;
     this.componentId = display.components[0].id;

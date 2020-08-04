@@ -14,6 +14,10 @@
         *ngSwitchCase="constructorComponentType.QUESTION"
         [data]="componentData"
         (answerSelect)="onAnswerSelect($event)"></app-question-screen>
+      <app-unique-screen
+        *ngSwitchCase="constructorComponentType.UNIQUE"
+        [data]="componentData"
+        (answerSelect)="onAnswerSelect($event)"></app-unique-screen>
     </ng-container>
 
   </div>
