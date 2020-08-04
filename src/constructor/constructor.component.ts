@@ -32,12 +32,19 @@ export class ConstructorComponent implements OnInit {
   }
 
   initResponse(response): void {
-    // this.response = {};
+    if (!response) {
+      console.error('Invalid Reponse');
+      return;
+    }
+
     this.response = response;
     const { display } = response;
     this.componentId = display.components[0].id;
     this.componentType = display.components[0].type;
     this.componentData = display;
+    // this.componentData.header = 'Кому из детей требуется оформить загранпаспорт?';
+    // this.componentData.type = 'CUSTOM';
+    // this.componentData.components[0].type;
     console.log('----- GET DATA ---------');
     console.log('componentId:', this.componentId);
     console.log('componentType:', this.componentType);

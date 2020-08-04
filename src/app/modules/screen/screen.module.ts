@@ -18,10 +18,11 @@ import {
   ConfirmPersonalUserEmailScreenModule
 } from './components/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module';
 import {ConfirmCreatedRequestScreenModule} from './components/confirm-created-request-screen/confirm-created-request-screen.module';
+import { AddChildrenScreenModule } from '../unique/components/add-children/screens/add-children-screen/add-children-screen.module';
 
 const COMPONENTS = [
   ScreenComponent
-]
+];
 
 @NgModule({
   declarations: [...COMPONENTS],
@@ -35,6 +36,7 @@ const COMPONENTS = [
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserDataScreenModule,
     ConfirmCreatedRequestScreenModule,
+    AddChildrenScreenModule,
 
     SharedComponentsModule,
     EpguLibModule.forChild(),

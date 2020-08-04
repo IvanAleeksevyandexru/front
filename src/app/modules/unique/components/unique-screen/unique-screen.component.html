@@ -1,13 +1,10 @@
 <app-screen-container>
   <div class="inner">
-    <div class="head">
-      <app-page-name>{{ data?.header }}</app-page-name>
-    </div>
-
     <ng-container [ngSwitch]="(data?.components)[0].type">
         <app-add-children-screen
-        *ngSwitchCase="screenComponentName.welcome"
+        *ngSwitchCase="uniqueComponentName.childrenListUnder14"
         [data]="(data?.components)[0]"
+        [header]="data?.header"
       ></app-add-children-screen>
     </ng-container>
   </div>

@@ -6,6 +6,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+## Development backend server
+
+Dependency needed - JDK 12 or greater.
+Copy `fs-1.0-SNAPSHOT.jar` executable file to desired catalog, then run via command line `java -jar .\fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api`. It will launch API-server on `http://localhost:8080/api`.
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
