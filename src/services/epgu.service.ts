@@ -16,8 +16,7 @@ export class EpguService {
   }
 
   public getData(): Observable<any> {
-    // const path = `${environment.apiUrl}/getService`;
-    // const path = `${environment.apiUrl}/getService/a1`;
+    // const path = `${environment.apiUrl}/getService/local`;
     const path = `${environment.apiUrl}/api/getService/local`;
     return this.http.get<EgpuResponseInterface>(path, {
       withCredentials: false
@@ -25,8 +24,7 @@ export class EpguService {
   }
 
   public setData(data): any {
-    // const path = `${environment.apiUrl}/scenario/getNextStep`;
-    // const path = `${environment.apiUrl}/service/a1/scenario/getNextStep`;
+    // const path = `${environment.apiUrl}/service/local/scenario/getNextStep`;
     const path = `${environment.apiUrl}/api/service/local/scenario/getNextStep`;
     return this.http.post<EgpuResponseInterface>(path, {
       ...data,
@@ -45,7 +43,8 @@ export class EpguService {
       "pageSize": options.pageSize || '150',
       "parentRefItemValue": options.parentRefItemValue || "",
       "selectAttributes": options.selectAttributes || ["*"],
-      "tx": options.tx || "2e641f4f-bc6a-11ea-b438-001a4a1660a6",
+      "tx": options.tx || "",
+      // 2e641f4f-bc6a-11ea-b438-001a4a1660a6
       withCredentials: false
     })
   }

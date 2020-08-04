@@ -4,13 +4,14 @@ import { CustomScreenComponent } from './components/custom-screen/custom-screen.
 import { SharedComponentsModule } from '../../module-share/shared-components.module';
 import { EpguLibModule } from 'epgu-lib';
 import {LabelSectionComponent} from './components/lablel-section/label-section.component';
+import { ForeignCitizenshipComponent } from './components/foreign-citizenship/foreign-citizenship.component';
 
 const COMPONENTS = [
   CustomScreenComponent
 ]
 
 @NgModule({
-  declarations: [...COMPONENTS, LabelSectionComponent],
+  declarations: [...COMPONENTS, LabelSectionComponent, ForeignCitizenshipComponent],
   exports: [
     ...COMPONENTS
   ],

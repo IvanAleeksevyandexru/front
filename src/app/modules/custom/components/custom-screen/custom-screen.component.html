@@ -3,7 +3,7 @@
 
   <app-screen-pad>
     <form action="" class="form">
-      <ng-container *ngFor="let componentData of []">
+      <ng-container *ngFor="let componentData of data?.components">
         <ng-container [ngSwitch]="componentData.type">
 
           <div class="form__item" *ngSwitchCase="componentType.LabelSection">
@@ -11,10 +11,23 @@
           </div>
 
           <div class="form__item" *ngSwitchCase="componentType.Dictionary">
-            <div class="form__title">{{componentData.label}}</div>
+            <div class="form__title">{{componentData.label}}: Dictionary</div>
             <lib-simple-select
               class="cs__select cs-select"
-              [list]="sasdas" [item]="sasdas[0]"></lib-simple-select>
+              (changed)="asdasdasd($event)"
+              [list]="componentWithDictionary[componentData?.attrs?.dictionaryType]?.list"
+              [item]="componentWithDictionary[componentData?.attrs?.dictionaryType]?.list[0]"
+            ></lib-simple-select>
+          </div>
+
+          <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
+            <div class="form__title">{{componentData.label}}</div>
+            <app-foreign-citizenship></app-foreign-citizenship>
+          </div>
+
+          <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
+            <div class="form__title">{{componentData.label}}</div>
+            <lib-plain-input>sfdsdfs</lib-plain-input>
           </div>
 
         </ng-container>
