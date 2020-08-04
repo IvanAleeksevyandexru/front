@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddChildrenScreenComponent } from './add-children-screen.component';
+import { ForeignCitizenshipComponent } from './foreign-citizenship.component';
 
-describe('AddChildrenScreenComponent', () => {
-  let component: AddChildrenScreenComponent;
-  let fixture: ComponentFixture<AddChildrenScreenComponent>;
+describe('ForeignCitizenshipComponent', () => {
+  let component: ForeignCitizenshipComponent;
+  let fixture: ComponentFixture<ForeignCitizenshipComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddChildrenScreenComponent ]
+      declarations: [ ForeignCitizenshipComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddChildrenScreenComponent);
+    fixture = TestBed.createComponent(ForeignCitizenshipComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
