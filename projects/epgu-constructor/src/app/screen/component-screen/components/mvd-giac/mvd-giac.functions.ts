@@ -1,4 +1,4 @@
-import {DictionaryItem, DictionaryResponse} from '../../../../../interfaces/dictionary-options.interface';
+import { DictionaryItem, DictionaryResponse } from '../../../../../interfaces/dictionary-options.interface';
 import { ListItem } from 'epgu-lib';
 
 export function getTransformedDictionaryForMvgGiac(data: DictionaryResponse): Array<Partial<ListItem>> {

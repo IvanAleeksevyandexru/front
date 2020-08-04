@@ -1,13 +1,16 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import {filter, takeUntil} from 'rxjs/operators';
-import { DictionaryResponse} from '../../../../../interfaces/dictionary-options.interface';
+import { ListItem } from 'epgu-lib';
+import { filter, takeUntil } from 'rxjs/operators';
+import { DictionaryResponse } from '../../../../../interfaces/dictionary-options.interface';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
-import {getFilteredDictionaryForMvdGiac, getTransformedDictionaryForMvgGiac} from './mvd-giac.functions';
-import {UnsubscribeService} from '../../../../services/unsubscribe/unsubscribe.service';
-import { ListItem } from 'epgu-lib';
+import {
+  getFilteredDictionaryForMvdGiac,
+  getTransformedDictionaryForMvgGiac,
+} from './mvd-giac.functions';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-mvd-giac',
@@ -47,7 +50,7 @@ export class MvdGiacComponent implements OnInit {
     this.regionForm.valueChanges
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        filter(_ => this.regionForm.valid)
+        filter(() => this.regionForm.valid),
       )
       .subscribe((value) => this.formChangesHandler(value));
   }
@@ -77,8 +80,8 @@ export class MvdGiacComponent implements OnInit {
   }
 
   private filterRegion() {
-    const {applicantAnswers} = this.formPlayerService.responseStore.scenarioDto;
-    const {q1, q5, pd4, pd5} = applicantAnswers as any;
+    const { applicantAnswers } = this.formPlayerService.responseStore.scenarioDto;
+    const { q1, q5, pd4, pd5 } = applicantAnswers as any;
     // <--- значение предыдущих экранов
     const getCurrentRegion = () => JSON.parse(pd4.value).regAddr.region;
     const getRegistrationRegion = () => JSON.parse(pd5.value).regAddr.region;
@@ -88,13 +91,13 @@ export class MvdGiacComponent implements OnInit {
     const isSameRegion = () => getRegistrationRegion() !== getCurrentRegion();
     const isBaykanur = () => getCurrentRegion() === 'Байконур';
     const isRegionDifferent = () => !isSameAddress() && isSameRegion();
-    const isWebDoc = getDocumentType() === 'Электронная справка'
+    const isWebDoc = getDocumentType() === 'Электронная справка';
 
     if (!isWebDoc || isRegionDifferent() || isBaykanur()) {
       return;
     }
 
-    let filteredDictionary = getFilteredDictionaryForMvdGiac(this.dictionary, getCurrentRegion())
+    const filteredDictionary = getFilteredDictionaryForMvdGiac(this.dictionary, getCurrentRegion());
 
     if (filteredDictionary) {
       this.dictionary = filteredDictionary;

@@ -134,7 +134,7 @@ describe('MvdGiacComponent', () => {
       });
     });
 
-    xdescribe('initForm', () => {
+    describe('initForm', () => {
       beforeEach(() => {
         fixture.detectChanges();
       });
@@ -154,12 +154,6 @@ describe('MvdGiacComponent', () => {
         });
 
         expect(componentStateService.state).toBe(EXPECTED_VALUE);
-      });
-
-      it('should unsubscribe form formChanges after component destroyed', () => {
-        component.ngOnDestroy();
-
-        expect(component.regionForm.valueChanges['observers'].length).toBe(0);
       });
     });
 
