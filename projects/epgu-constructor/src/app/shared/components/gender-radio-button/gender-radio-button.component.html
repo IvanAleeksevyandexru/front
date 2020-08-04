@@ -1,12 +1,25 @@
-<div class="container" [ngClass]="{active: innerValue === value}">
+<div class="container" [ngClass]="{active: innerValue === 'male'}">
   <label class="container__radio-label">
-    <span class="icon-{{type}}"></span>
+    <span class="icon-male"></span>
     <input class="gender-radio"
            type="radio"
-           [value]="value"
+           value="male"
            [ngModel]="innerValue"
            (ngModelChange)="change($event)"
-           [name]="name" />
-    <span>{{label}}</span>
+           name="gender"/>
+    <span>Мальчик</span>
+  </label>
+</div>
+
+<div class="container margin-left" [ngClass]="{active: innerValue === 'female'}">
+  <label class="container__radio-label">
+    <span class="icon-female"></span>
+    <input class="gender-radio"
+           type="radio"
+           value="female"
+           [ngModel]="innerValue"
+           (ngModelChange)="change($event)"
+           name="gender"/>
+    <span>Девочка</span>
   </label>
 </div>

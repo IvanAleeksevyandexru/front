@@ -13,22 +13,8 @@
       <div class="component__field">
         <epgu-constructor-label> Пол </epgu-constructor-label>
         <div class="component__radio-group radio-group">
-          <div class="radio-group__button">
-            <epgu-constructor-gender-radio-button [(ngModel)]="item.gender"
-                                      name="gender"
-                                      value="муж"
-                                      type="male"
-                                      label="Мальчик">
-            </epgu-constructor-gender-radio-button>
-          </div>
-          <div class="radio-group__button">
-            <epgu-constructor-gender-radio-button [(ngModel)]="item.gender"
-                                      name="gender"
-                                      value="жен"
-                                      type="female"
-                                      label="Девочка">
-            </epgu-constructor-gender-radio-button>
-          </div>
+          <epgu-constructor-gender-radio-button [(ngModel)]="item.gender">
+          </epgu-constructor-gender-radio-button>
         </div>
       </div>
       <div class="component__field">

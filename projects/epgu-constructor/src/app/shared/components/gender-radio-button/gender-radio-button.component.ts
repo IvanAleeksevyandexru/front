@@ -15,10 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class GenderRadioButtonComponent implements ControlValueAccessor {
-  @Input() name: string;
   @Input() value: string | number | boolean;
-  @Input() label: string;
-  @Input() type: 'male' | 'female';
 
   onChange: Function;
   onTouched: Function;

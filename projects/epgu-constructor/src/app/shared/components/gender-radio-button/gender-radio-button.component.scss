@@ -1,6 +1,8 @@
 @import "src/styles/core";
 
 .container {
+  display: inline-block;
+
   height: 47px;
 
   padding: 0 12px 0 6px;
@@ -11,10 +13,14 @@
   &.active {
     background-color: $color-link-water;
   }
+
+  &.margin-left {
+    margin-left: 20px;
+  }
 }
 
 .container__radio-label {
-  display: flex;
+  display: inline-flex;
   align-items: center;
 
   height: 100%;
