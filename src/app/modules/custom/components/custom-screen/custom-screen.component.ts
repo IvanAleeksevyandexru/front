@@ -10,7 +10,7 @@ import { SCREEN_COMPONENT_NAME } from '../../../../constant/global';
 export class CustomScreenComponent implements OnInit {
   screenComponentName = SCREEN_COMPONENT_NAME;
   @Input() data: EgpuResponseDisplayInterface;
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // TODO
+  }
 }
