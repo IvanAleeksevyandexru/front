@@ -1,8 +1,9 @@
 <screen-container>
+  <page-name>{{ data?.header }}</page-name>
 
   <app-screen-pad>
     <form action="" class="form">
-      <ng-container *ngFor="let componentData of arrayComponent">
+      <ng-container *ngFor="let componentData of []">
         <ng-container [ngSwitch]="componentData.type">
 
           <div class="form__item" *ngSwitchCase="componentType.LabelSection">
