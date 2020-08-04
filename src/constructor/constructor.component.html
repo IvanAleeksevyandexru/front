@@ -2,6 +2,7 @@
 <main class="app-content">
   <div class="custom-wrapper">
 
+    <app-custom-screen></app-custom-screen>
     <ng-container [ngSwitch]="componentData?.type">
       <app-screen
         *ngSwitchCase="constructorComponentType.COMPONENT"

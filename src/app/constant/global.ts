@@ -2,7 +2,6 @@ export enum COMPONENT_TYPE {
 'QUESTION' = 'QUESTION',
 'COMPONENT' = 'COMPONENT',
 'CUSTOM' = 'CUSTOM',
-'UNIQUE' = 'UNIQUE',
 }
 
 export enum SCREEN_COMPONENT_NAME {
@@ -12,9 +11,5 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserData' = 'ConfirmPersonalUserData',
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
-  'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen'
-}
-
-export enum UNIQUE_COMPONENT_NAME {
-  'childrenListUnder14' = 'ChildrenListUnder14'
+  'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
 }

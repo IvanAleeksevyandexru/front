@@ -83,10 +83,30 @@ export class CustomScreenComponent implements OnInit {
 
 
   constructor(private epguService: EpguService) {
-    this.epguService.getDictionary('DOC_TYPE_56555').subscribe(data => console.log(data));
+    // this.epguService.getDictionary('regions_56555').subscribe(data => console.log(data));
+    this.epguService.getDictionary('OKATO', {parentRefItemValue: '00000000000'}).subscribe(data => console.log(data));
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.sasdas.push({
+        id: 5,
+        text: 'for',
+        hidden: false,
+        originalItem: '123',
+      },{
+        id: 5,
+        text: 'five',
+        hidden: false,
+        originalItem: '123',
+      },{
+        id: 6,
+        text: 'six',
+        hidden: false,
+        originalItem: '123',
+      })
+    }, 3000)
+
   }
 
 }

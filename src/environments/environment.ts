@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://188.93.23.27:18080',
+  // apiUrl: 'http://188.93.23.27:18080',
+  apiUrl: 'http://127.0.0.1:8080',
   dictionaryUrl: 'https://www.gosuslugi.ru/api/nsi/v1/dictionary',
 };
 
