@@ -5,6 +5,10 @@
 
 $button-mt: 5px;
 
+:host {
+  display: block;
+}
+
 :host::ng-deep {
   .footer {
     display: flex;

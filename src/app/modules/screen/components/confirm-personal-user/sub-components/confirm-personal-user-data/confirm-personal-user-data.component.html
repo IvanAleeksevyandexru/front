@@ -1,72 +1,14 @@
 
 <div class="user-data">
-  <section class="user-data__section">
-    <div class="user-data__name">
-      <strong>
-        {{ templateData?.valueParsed?.lastName + ' ' + templateData?.valueParsed?.firstName + ' ' + templateData?.valueParsed?.middleName }}
-      </strong>
-    </div>
+<!--  <section class="user-data__section" *ngFor="let field of data?.attrs.fields">-->
+  <div *ngFor="let field of data?.attrs.fields">
 
-    <div>
       <label class="user-data__label">
-        Дата рождения:
+        {{field.label}}
       </label>
       <div class="user-data__value">
-        {{ templateData?.valueParsed?.birthDate }}
+        {{(data.value | toJson)[field.fieldName]}}
       </div>
-    </div>
-  </section>
 
-  <section class="user-data__section">
-    <p>
-      <strong>
-        Паспорт гражданина РФ
-      </strong>
-    </p>
-
-    <div class="user-data__field">
-      <label class="user-data__label">
-        Серия и номер:
-      </label>
-      <div class="user-data__value">
-        {{ templateData?.valueParsed?.rfPasportSeries + ' ' + templateData?.valueParsed?.rfPasportNumber }}
-      </div>
-    </div>
-
-    <div class="user-data__field">
-      <label class="user-data__label">
-        Дата выдачи:
-      </label>
-      <div class="user-data__value">
-        {{ templateData?.valueParsed?.rfPasportIssueDate }}
-      </div>
-    </div>
-
-    <div class="user-data__field">
-      <label class="user-data__label">
-        Кем выдан:
-      </label>
-      <div class="user-data__value">
-        {{ templateData?.valueParsed?.rfPasportIssuedBy }}
-      </div>
-    </div>
-
-    <div class="user-data__field">
-      <label class="user-data__label">
-        Код подразделения:
-      </label>
-      <div class="user-data__value">
-        {{ templateData?.valueParsed?.rfPasportIssuedById }}
-      </div>
-    </div>
-
-    <div class="user-data__field">
-      <label class="user-data__label">
-        Место рождения:
-      </label>
-      <div class="user-data__value">
-        {{ templateData?.valueParsed?.birthPlace }}
-      </div>
-    </div>
-  </section>
+  </div>
 </div>

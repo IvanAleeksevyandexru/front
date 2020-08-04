@@ -7,8 +7,7 @@ import { ConfirmUserDataInterface } from '../../../../../../interfaces/confirm-u
   styleUrls: ['./confirm-personal-user-data-screen.component.scss'],
 })
 export class ConfirmPersonalUserDataScreenComponent implements OnInit {
-  @Input() data;
-  @Input() userData: ConfirmUserDataInterface;
+  @Input() data: ConfirmUserDataInterface;
   @Output() actionSelect = new EventEmitter();
   @Output() nextStepEvent: EventEmitter<any> = new EventEmitter<any>();
 

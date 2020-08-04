@@ -11,24 +11,6 @@
   }
 }
 
-.desktop {
-  @include tablets-down {
-    display: none;
-  }
-}
-
-.mobile {
-  @include tablets-up {
-    display: none;
-  }
-}
-
-
-.head {
-  display: flex;
-  justify-content: space-between;
-}
-
 .head__title {
   //text-align: inherit;
   font-family: $tertiary_font;

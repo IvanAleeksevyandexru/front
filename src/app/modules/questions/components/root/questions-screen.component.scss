@@ -11,6 +11,9 @@
     display: flex;
     flex-direction: column;
     min-height: inherit;
+    @include tablets-down {
+      justify-content: space-between;
+    }
   }
 
   &__body{
@@ -21,7 +24,7 @@
   }
 }
 
-.question-body__item {
+.answer__item {
   margin-bottom: 8px;
 }
 

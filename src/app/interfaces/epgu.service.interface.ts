@@ -52,7 +52,7 @@ export interface EgpuResponseDisplayInterface {
  * (например проверка персональные данные будут содержать json с персональными данными)
  */
 export interface EgpuResponseComponentInterface {
-  attrs: Array<object>
+  attrs: object
   id: string
   label: string
   type: SCREEN_COMPONENT_NAME

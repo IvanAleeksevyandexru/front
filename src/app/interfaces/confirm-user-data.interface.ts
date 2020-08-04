@@ -1,10 +1,10 @@
-export interface ConfirmUserDataInterface {
-  id: string;
-  type: string;
-  label: string;
-  attrs: { fields: Array<ConfirmUserDataFieldsInterface>, actions: Array<ConfirmUserDataActionsInterface> };
-  value: string;
-  visited: boolean;
+import {EgpuResponseComponentInterface} from './epgu.service.interface';
+
+export interface ConfirmUserDataInterface extends EgpuResponseComponentInterface{
+  attrs: {
+    fields: Array<ConfirmUserDataFieldsInterface>,
+    actions: Array<ConfirmUserDataActionsInterface>
+  };
 }
 
 export interface ConfirmUserDataActionsInterface {

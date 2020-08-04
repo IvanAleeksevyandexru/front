@@ -1,8 +1,8 @@
-<div class="item" *ngFor="let info of data?.attrs?.fields">
+<div class="item" *ngFor="let field of data?.attrs?.fields">
 
-  <div class="head__title">{{info.label}}</div>
+  <div class="head__title">{{field.label}}</div>
 
-  <div class="content">{{(data?.value | toJson)[info.fieldName]}}</div>
+  <div class="content">{{(data?.value | toJson)[field.fieldName]}}</div>
 
 </div>
 
