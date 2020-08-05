@@ -6,6 +6,12 @@
         [data]="(data?.components)[0]"
         [header]="data?.header"
       ></app-add-children-screen>
+        <app-add-passport-screen
+        *ngSwitchCase="uniqueComponentName.addPassport"
+        [data]="(data?.components)[0]"
+        [header]="data?.header"
+        [submitLabel]="data?.submitLabel"
+      ></app-add-passport-screen>
     </ng-container>
   </div>
 </app-screen-container>

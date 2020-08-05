@@ -17,5 +17,6 @@ export enum SCREEN_COMPONENT_NAME {
 }
 
 export enum UNIQUE_COMPONENT_NAME {
-  'childrenListUnder14' = 'ChildrenListUnder14'
+  'childrenListUnder14' = 'ChildrenListUnder14',
+  'addPassport' = 'AddPassport'
 }
