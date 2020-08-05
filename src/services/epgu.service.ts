@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {EgpuResponseInterface} from '../app/interfaces/epgu.service.interface';
 import {environment} from '../environments/environment';
-import {DictionaryOptionsInterface} from '../app/interfaces/dictionary-options.interface';
+import {DictionaryOptionsInterface, DictionaryResponse} from '../app/interfaces/dictionary-options.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -44,10 +44,10 @@ export class EpguService {
 
   getDictionary(dictionaryName: string, options: DictionaryOptionsInterface = {}) {
     const path = `${environment.dictionaryUrl}/${dictionaryName}`;
-    return this.http.post<EgpuResponseInterface>(path, {
+    return this.http.post<DictionaryResponse>(path, {
       treeFiltering: options.treeFiltering || 'ONELEVEL',
       pageNum: options.pageNum || 1,
-      pageSize: options.pageSize || '150',
+      pageSize: options.pageSize || '1000',
       parentRefItemValue: options.parentRefItemValue || '',
       selectAttributes: options.selectAttributes || ['*'],
       tx: options.tx || '',

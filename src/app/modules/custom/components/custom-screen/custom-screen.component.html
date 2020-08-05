@@ -11,12 +11,11 @@
           </div>
 
           <div class="form__item" *ngSwitchCase="componentType.Dictionary">
-            <div class="form__title">{{componentData.label}}: Dictionary</div>
+            <div class="form__title">{{componentData.label}}</div>
             <lib-simple-select
               class="cs__select cs-select"
-              (changed)="asdasdasd($event)"
-              [list]="componentWithDictionary[componentData?.attrs?.dictionaryType]?.list"
-              [item]="componentWithDictionary[componentData?.attrs?.dictionaryType]?.list[0]"></lib-simple-select>
+              (changed)="selectDictionary($event, componentData?.attrs?.dictionaryType)"
+              [list]="dictionary[componentData?.attrs?.dictionaryType]?.data?.items | dictionaryToSelect"></lib-simple-select>
           </div>
 
           <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
@@ -24,9 +23,15 @@
             <app-foreign-citizenship></app-foreign-citizenship>
           </div>
 
-          <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
+          <div class="form__item" *ngSwitchCase="componentType.StringInput">
             <div class="form__title">{{componentData.label}}</div>
-            <lib-plain-input></lib-plain-input>
+            <lib-plain-input
+              (change)="inputChange($event, componentData)"></lib-plain-input>
+          </div>
+
+          <div class="form__item" *ngSwitchCase="componentType.DateInput">
+            <div class="form__title">{{componentData.label}}</div>
+            <lib-date-picker></lib-date-picker>
           </div>
 
         </ng-container>
