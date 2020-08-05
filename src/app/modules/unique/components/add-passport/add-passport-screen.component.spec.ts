@@ -1,20 +1,20 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AddChildrenScreenComponent } from './add-children-screen.component';
+import {AddPassportScreenComponent} from './add-children-screen.component';
 
-describe('AddChildrenScreenComponent', () => {
-  let component: AddChildrenScreenComponent;
-  let fixture: ComponentFixture<AddChildrenScreenComponent>;
+describe('AddPassportScreenComponent', () => {
+  let component: AddPassportScreenComponent;
+  let fixture: ComponentFixture<AddPassportScreenComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddChildrenScreenComponent ]
+      declarations: [ AddPassportScreenComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddChildrenScreenComponent);
+    fixture = TestBed.createComponent(AddPassportScreenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
