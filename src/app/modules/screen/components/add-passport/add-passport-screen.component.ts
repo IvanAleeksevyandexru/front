@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 import { EgpuResponseDisplayInterface } from '../../../../interfaces/epgu.service.interface';
 
 @Component({
@@ -11,7 +12,7 @@ export class AddPassportScreenComponent implements OnInit {
   @Input() data: EgpuResponseDisplayInterface;
   @Input() header: string;
   @Input() submitLabel: string;
-  @Output() nextStepEvent = new EventEmitter();
+  @Output() valueChangedEvent = new EventEmitter();
 
   passportForm: FormGroup;
 
@@ -19,16 +20,16 @@ export class AddPassportScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.passportForm = this.fb.group({
-      series: this.fb.control({}),
-      number: this.fb.control({}),
+      series: this.fb.control(null, Validators.required),
+      number: this.fb.control(null, Validators.required),
     });
-  }
 
-  nextStep() {
-    if (!this.passportForm.valid) {
-      return;
-    }
+    this.passportForm.valueChanges.pipe(debounceTime(200)).subscribe((value) => {
+      if (!this.passportForm.valid) {
+        return;
+      }
 
-    this.nextStepEvent.emit(this.passportForm.value);
+      this.valueChangedEvent.emit(value);
+    });
   }
 }

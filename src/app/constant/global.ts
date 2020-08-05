@@ -15,10 +15,10 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
-  'notificationAboutAbsentAccountScreen' = 'NotificationAboutAbsentAccountScreen'
+  'notificationAboutAbsentAccountScreen' = 'NotificationAboutAbsentAccountScreen',
+  'addPassport' = 'AddPassport'
 }
 
 export enum UNIQUE_COMPONENT_NAME {
-  'childrenListUnder14' = 'ChildrenListUnder14',
-  'addPassport' = 'AddPassport'
+  'childrenListUnder14' = 'ChildrenListUnder14'
 }
