@@ -38,7 +38,7 @@
         <app-add-passport-screen
           *ngSwitchCase="screenComponentName.addPassport"
           [data]="(data?.components)[0]"
-          (nextStepEvent)="changedComponentData($event)"
+          (valueChangedEvent)="changedComponentData($event)"
         ></app-add-passport-screen>
 
         <app-change-list
