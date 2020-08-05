@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  // Разкомментируйте строчку 8 и закомментируйте
+  // apiUrl: 'http://188.93.23.27:18080',
+  apiUrl: 'http://127.0.0.1:4200',
+  dictionaryUrl: 'https://www.gosuslugi.ru/api/nsi/v1/dictionary',
+  serviceId: 'local'
 };
 
 /*

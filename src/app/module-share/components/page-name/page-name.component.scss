@@ -1,7 +1,7 @@
 @import "../../../styles/variables";
 @import "../../../styles/breakpoint";
 
-:host{
+:host {
   display: inline-block;
   width: 100%;
   text-align: center;
@@ -10,17 +10,14 @@
   //}
 
   @include tablets-down {
-    & {
-      margin-bottom: 24px;
-    }
+    margin-bottom: 24px;
   }
 
   @include tablets-up {
-    & {
-      margin-bottom: 32px;
-    }
+    margin-bottom: 32px;
   }
 }
+
 h1 {
   font-size: 24px;
   line-height: 34px;

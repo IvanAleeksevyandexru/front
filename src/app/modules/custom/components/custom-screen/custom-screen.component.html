@@ -1,14 +1,38 @@
 <app-screen-container>
-  <div class="inner">
-    <div class="head">
-      <app-page-name>{{ data?.header }}</app-page-name>
-    </div>
+  <app-page-name>{{ data?.header }}</app-page-name>
 
-    <ng-container [ngSwitch]="(data?.components)[0].type">
-        <app-add-children-screen
-        *ngSwitchCase="screenComponentName.welcome"
-        [data]="(data?.components)[0]"
-      ></app-add-children-screen>
-    </ng-container>
-  </div>
+  <app-screen-pad>
+    <form action="" class="form">
+      <ng-container *ngFor="let componentData of data?.components">
+        <ng-container [ngSwitch]="componentData.type">
+
+          <div class="form__item" *ngSwitchCase="componentType.LabelSection">
+            <app-label-section [name]="componentData.label"></app-label-section>
+          </div>
+
+          <div class="form__item" *ngSwitchCase="componentType.Dictionary">
+            <div class="form__title">{{componentData.label}}: Dictionary</div>
+            <lib-simple-select
+              class="cs__select cs-select"
+              (changed)="asdasdasd($event)"
+              [list]="componentWithDictionary[componentData?.attrs?.dictionaryType]?.list"
+              [item]="componentWithDictionary[componentData?.attrs?.dictionaryType]?.list[0]"></lib-simple-select>
+          </div>
+
+          <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
+            <div class="form__title">{{componentData.label}}</div>
+            <app-foreign-citizenship></app-foreign-citizenship>
+          </div>
+
+          <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
+            <div class="form__title">{{componentData.label}}</div>
+            <lib-plain-input></lib-plain-input>
+          </div>
+
+        </ng-container>
+      </ng-container>
+    </form>
+  </app-screen-pad>
+
+
 </app-screen-container>

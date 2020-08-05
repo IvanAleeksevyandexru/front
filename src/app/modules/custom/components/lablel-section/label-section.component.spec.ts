@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddNewChildFormComponent } from './add-new-child-form.component';
+import { LabelSectionComponent } from './label-section.component';
 
-describe('AddNewChildFormComponent', () => {
-  let component: AddNewChildFormComponent;
-  let fixture: ComponentFixture<AddNewChildFormComponent>;
+describe('LablelSectionComponent', () => {
+  let component: LabelSectionComponent;
+  let fixture: ComponentFixture<LabelSectionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddNewChildFormComponent ]
+      declarations: [ LabelSectionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddNewChildFormComponent);
+    fixture = TestBed.createComponent(LabelSectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
