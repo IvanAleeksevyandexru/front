@@ -1,4 +1,6 @@
-<div *ngIf="data?.attrs?.image?.src" [ngStyle]="{backgroundImage: 'url('+ data.attrs.image.src +')'}" class="notification_about_absent_account_screen__image">
+<div *ngIf="data?.attrs?.image?.src"
+     [ngStyle]="{backgroundImage: 'url('+ data.attrs.image.src +')'}"
+     class="notification_about_absent_account_screen__image">
 </div>
 
 <div class="notification_about_absent_account_screen__content" [innerHTML]="data?.label">
