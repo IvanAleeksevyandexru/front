@@ -34,6 +34,7 @@
 .form__inputs {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 
   .inputs__field {
     flex-basis: calc(50% - 10px);
