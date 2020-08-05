@@ -11,14 +11,15 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 @Component({
-  selector: 'app-add-passport-screen',
-  templateUrl: './add-passport-screen.component.html',
-  styleUrls: ['./add-passport-screen.component.scss'],
+  selector: 'app-add-passport',
+  templateUrl: './add-passport.component.html',
+  styleUrls: ['./add-passport.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddPassportScreenComponent implements OnInit, OnDestroy {
+export class AddPassportComponent implements OnInit, OnDestroy {
   private ngUnsubscribe$: Subject<any> = new Subject<any>();
 
   @Input() data: any;
@@ -28,7 +29,7 @@ export class AddPassportScreenComponent implements OnInit, OnDestroy {
 
   passportForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private screenComponentService: ScreenComponentService) {}
 
   ngOnInit(): void {
     const controls = {};

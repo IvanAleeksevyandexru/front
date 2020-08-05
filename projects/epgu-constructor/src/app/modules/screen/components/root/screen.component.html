@@ -35,11 +35,11 @@
         >
         </app-temporary-registration-addr-screen>
 
-        <app-add-passport-screen
-          *ngSwitchCase="screenComponentName.addPassport"
+        <app-add-passport
+          *ngSwitchCase="screenComponentName.personLookup"
           [data]="(data?.components)[0]"
           (valueChangedEvent)="changedComponentData($event)"
-        ></app-add-passport-screen>
+        ></app-add-passport>
 
         <app-change-list
           *ngSwitchCase="screenComponentName.changeList"
