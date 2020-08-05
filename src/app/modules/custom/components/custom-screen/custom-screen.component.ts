@@ -1,13 +1,17 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem } from 'epgu-lib';
-import { EgpuResponseDisplayInterface } from '../../../../interfaces/epgu.service.interface';
 import { EpguService } from '../../../../../services/epgu.service';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 import {
   CustomComponentDictionaryState,
-  EgpuResponseComponentAttrForCustomComponentInterface,
+  CustomComponentState,
+  EgpuResponseCustomComponentDisplayComponentInterface,
+  EgpuResponseCustomComponentDisplayInterface,
 } from '../../../../interfaces/custom-component.interface';
-import { DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../../../interfaces/dictionary-options.interface';
 
 @Component({
   selector: 'app-custom-screen',
@@ -17,51 +21,81 @@ import { DictionaryResponse } from '../../../../interfaces/dictionary-options.in
 export class CustomScreenComponent implements OnChanges {
   // <-- constant
   componentType = CUSTOM_COMPONENT_ITEM_TYPE;
-  // requestData = {};
 
   // <-- variables
+  state: { [key: string]: CustomComponentState } = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
 
-  @Input() data: EgpuResponseDisplayInterface;
+  @Input() data: EgpuResponseCustomComponentDisplayInterface;
+  @Output() nextStepEvent = new EventEmitter();
 
   constructor(private epguService: EpguService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
-      this.data.components
-        .filter(
-          (item) =>
-            (item.type as CUSTOM_COMPONENT_ITEM_TYPE) === CUSTOM_COMPONENT_ITEM_TYPE.Dictionary,
-        )
-        .forEach((item) => {
-          const dictionaryName = (item.attrs as EgpuResponseComponentAttrForCustomComponentInterface)
-            .dictionaryType;
+      this.data.components.forEach((component) => {
+        this.initState(component.id);
+        if (component.type === CUSTOM_COMPONENT_ITEM_TYPE.Dictionary) {
+          const dictionaryName = component.attrs.dictionaryType;
           this.initDictionary(dictionaryName);
-          this.loadDictionary(dictionaryName);
-        });
+          this.loadDictionary(dictionaryName, component);
+        }
+      });
     }
   }
 
-  selectDictionary(selectedItem: ListItem, dictionaryName: string) {
-    this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
-    // this.requestData;
+  nextScreen() {
+    // TODO добавить валидацию и проверку заполнения всех обязательных полей
+    const responseData = {};
+    const isValid = Object.keys(this.state).every((key) => this.state[key].valid);
+    if (isValid) {
+      Object.keys(this.state).forEach((key) => {
+        responseData[key] = { visited: true, value: this.state[key].value };
+      });
+      this.nextStepEvent.emit(responseData);
+    }
   }
 
-  inputChange($event: any, data) {
-    console.log($event, data);
+  selectDictionary(
+    selectedItem: { item: ListItem },
+    component: EgpuResponseCustomComponentDisplayComponentInterface,
+  ) {
+    const dictionaryName = component.attrs?.dictionaryType;
+    this.dictionary[dictionaryName].selectedItem = selectedItem.item.originalItem;
+    this.state[component.id].value = selectedItem.item.originalItem;
+    this.state[component.id].valid = true;
   }
 
-  loadDictionary(dictionaryName: string) {
+  inputChange($event: Event, component: EgpuResponseCustomComponentDisplayComponentInterface) {
+    this.state[component.id].value = ($event.target as HTMLInputElement).value;
+    this.state[component.id].valid = !$event;
+  }
+
+  // dateChange($event: any, componentData: EgpuResponseComponentInterface) {
+  //   console.log($event, componentData)
+  // }
+
+  loadDictionary(
+    dictionaryName: string,
+    component: EgpuResponseCustomComponentDisplayComponentInterface,
+  ) {
+    // TODO добавить обработку loader(-а) для словарей и ошибок;
     this.epguService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
-      (data) => this.loadDictionarySuccess(dictionaryName, data),
+      (data) => this.loadDictionarySuccess(dictionaryName, data, component),
       () => this.loadDictionaryError(dictionaryName),
     );
   }
 
-  loadDictionarySuccess(key: string, data: DictionaryResponse) {
+  loadDictionarySuccess(
+    key: string,
+    data: DictionaryResponse,
+    component: EgpuResponseCustomComponentDisplayComponentInterface,
+  ) {
     this.dictionary[key].loading = false;
     this.dictionary[key].paginationLoading = false;
     this.dictionary[key].data = data;
+    this.dictionary[key].origin = component;
+    this.dictionary[key].list = data.items.map((item) => this.adaptiveData(item));
   }
 
   loadDictionaryError(key: string) {
@@ -80,7 +114,24 @@ export class CustomScreenComponent implements OnChanges {
       paginationLoading: true,
       page: 0,
       data: {} as any,
+      list: [],
+      origin: {} as any,
       selectedItem: {} as any,
     };
+  }
+
+  adaptiveData(item: DictionaryItem): ListItem {
+    return {
+      id: item.value,
+      text: item.title,
+      formatted: '',
+      // 'hidden': false,
+      originalItem: item,
+      compare: () => false,
+    };
+  }
+
+  private initState(componentId: string) {
+    this.state[componentId] = { valid: false, errorMessage: '', value: {} };
   }
 }

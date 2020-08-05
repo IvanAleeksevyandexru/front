@@ -56,9 +56,15 @@ export interface EgpuResponseDisplayInterface {
  * (например проверка персональные данные будут содержать json с персональными данными)
  */
 export interface EgpuResponseComponentInterface {
-  attrs: object | ConfirmUserDataAttrsInterface | EgpuResponseComponentAttrForCustomComponentInterface;
+  attrs: object | ConfirmUserDataAttrsInterface;
   id: string;
   label: string;
-  type: SCREEN_COMPONENT_NAME | CUSTOM_COMPONENT_ITEM_TYPE;
+  type: string;
   value: string;
+}
+
+
+export interface EgpuResponseCurrentValue {
+  visited: boolean;
+  value: any;
 }

@@ -72,4 +72,9 @@ export class ConstructorComponent implements OnInit {
   onAnswerSelect(data: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface) {
     this.sendData(data.value);
   }
+
+  nextStepFromCustomScreen(data) {
+    console.log(data);
+    this.sendData(data);
+  }
 }

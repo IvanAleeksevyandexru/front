@@ -14,8 +14,8 @@
             <div class="form__title">{{componentData.label}}</div>
             <lib-simple-select
               class="cs__select cs-select"
-              (changed)="selectDictionary($event, componentData?.attrs?.dictionaryType)"
-              [list]="dictionary[componentData?.attrs?.dictionaryType]?.data?.items | dictionaryToSelect"></lib-simple-select>
+              (changed)="selectDictionary($event, componentData)"
+              [list]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-simple-select>
           </div>
 
           <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
@@ -25,13 +25,14 @@
 
           <div class="form__item" *ngSwitchCase="componentType.StringInput">
             <div class="form__title">{{componentData.label}}</div>
-            <lib-plain-input
-              (change)="inputChange($event, componentData)"></lib-plain-input>
+            <lib-plain-input (change)="inputChange($event, componentData)"></lib-plain-input>
           </div>
 
           <div class="form__item" *ngSwitchCase="componentType.DateInput">
             <div class="form__title">{{componentData.label}}</div>
-            <lib-date-picker></lib-date-picker>
+            <div>Компонент не настроен</div>
+<!--            Нужно настраивать почему-то вываливается ошибка-->
+<!--            <lib-date-picker (changed)="dateChage($event, componentData)"></lib-date-picker>-->
           </div>
 
         </ng-container>
@@ -39,5 +40,6 @@
     </form>
   </app-screen-pad>
 
+  <lib-button (click)="nextScreen()">{{data.submitLabel}}</lib-button>
 
 </app-screen-container>
