@@ -23,19 +23,7 @@ export class ConstructorComponent implements OnInit {
   ngOnInit(): void {
     this.epguService.getData().subscribe(
       (response) => {
-        // this.initResponse(response);
-        this.initResponse({
-          display: {
-            components: [{
-              type: 'NotificationAboutAbsentAccountScreen',
-              label: ' У вашей супруги нет подтвержденной учетной записи на портале Госуслуги. Для подачи заявления супруге необходимо иметь подтвержденную учетную запись. '
-            }],
-            type: 'COMPONENT',
-            header: null,
-            submitLabel: 'Далее'
-          },
-        });
-        console.log(response)
+        this.initResponse(response);
       },
       (error) => {
         console.error(error);
