@@ -3,6 +3,10 @@
   <div class="custom-wrapper">
 
     <ng-container [ngSwitch]="componentData?.type">
+      <app-invitation-screen
+        (resolve)="onEmailSelect($event)"
+        *ngSwitchCase="constructorComponentType.INVITATION_ERROR"
+        [data]="componentData"></app-invitation-screen>
       <app-screen
         *ngSwitchCase="constructorComponentType.COMPONENT"
         [data]="componentData"
