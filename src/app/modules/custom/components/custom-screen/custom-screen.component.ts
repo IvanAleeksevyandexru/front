@@ -1,90 +1,86 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {EgpuResponseDisplayInterface} from '../../../../interfaces/epgu.service.interface';
-import {EpguService} from '../../../../../services/epgu.service';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ListItem } from 'epgu-lib';
-
-enum COMPONENT_TYPE {
-  LabelSection = 'LabelSection',
-  Dictionary = 'Dictionary',
-  ForeignCitizenship = 'ForeignCitizenship',
-}
-
-interface CustomComponentDictionaryState {
-  loading: boolean,
-  loadError: boolean,
-  loadEnd: boolean,
-  paginationLoading: boolean;
-  page: number;
-  data: object;
-  list: Array<ListItem>;
-}
+import { EgpuResponseDisplayInterface } from '../../../../interfaces/epgu.service.interface';
+import { EpguService } from '../../../../../services/epgu.service';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
+import {
+  CustomComponentDictionaryState,
+  EgpuResponseComponentAttrForCustomComponentInterface,
+} from '../../../../interfaces/custom-component.interface';
+import { DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
 
 @Component({
   selector: 'app-custom-screen',
   templateUrl: './custom-screen.component.html',
-  styleUrls: ['./custom-screen.component.scss']
+  styleUrls: ['./custom-screen.component.scss'],
 })
-export class CustomScreenComponent implements OnInit {
+export class CustomScreenComponent implements OnChanges {
+  // <-- constant
+  componentType = CUSTOM_COMPONENT_ITEM_TYPE;
+  // requestData = {};
 
-  componentWithDictionary: { [key: string]: CustomComponentDictionaryState } = {};
-  initDictionary = (key) => this.componentWithDictionary[key] = {
-    loading: true, loadError: false, loadEnd: false, paginationLoading: true, page: 0, data: {}, list: []
-  }
-  componentType = COMPONENT_TYPE;
-  _data;
-  get data() {
-    return this._data;
-  }
+  // <-- variables
+  dictionary: { [key: string]: CustomComponentDictionaryState } = {};
 
-  @Input() set data(val: EgpuResponseDisplayInterface) {
-    this._data = val;
+  @Input() data: EgpuResponseDisplayInterface;
 
-    this._data.components
-      .filter(item => item.type === COMPONENT_TYPE.Dictionary)
-      .forEach(item => {
-        const loadDictionarySuccess = (key, data) => {
-          this.componentWithDictionary[key].loading = false;
-          this.componentWithDictionary[key].paginationLoading = false;
-          this.componentWithDictionary[key].data = data;
-          this.componentWithDictionary[key].list = this.adaptiveDictionaryToSelect(data);
-        }
+  constructor(private epguService: EpguService) {}
 
-        const loadDictionaryError = (key) => {
-          this.componentWithDictionary[key].loading = false;
-          this.componentWithDictionary[key].paginationLoading = false;
-          this.componentWithDictionary[key].loadError = true;
-          this.componentWithDictionary[key].loadEnd = false;
-        }
-
-        this.initDictionary(item.attrs.dictionaryType)
-        this.epguService
-          .getDictionary(item.attrs.dictionaryType, {pageNum: 0})
-          .subscribe(
-            data => loadDictionarySuccess(item.attrs.dictionaryType, data),
-            error => loadDictionaryError(item.attrs.dictionaryType)
-          )
-      })
-  };
-
-
-  constructor(private epguService: EpguService) {
-
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes?.data?.currentValue) {
+      this.data.components
+        .filter(
+          (item) =>
+            (item.type as CUSTOM_COMPONENT_ITEM_TYPE) === CUSTOM_COMPONENT_ITEM_TYPE.Dictionary,
+        )
+        .forEach((item) => {
+          const dictionaryName = (item.attrs as EgpuResponseComponentAttrForCustomComponentInterface)
+            .dictionaryType;
+          this.initDictionary(dictionaryName);
+          this.loadDictionary(dictionaryName);
+        });
+    }
   }
 
-  ngOnInit(): void {
+  selectDictionary(selectedItem: ListItem, dictionaryName: string) {
+    this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
+    // this.requestData;
   }
 
-
-  adaptiveDictionaryToSelect(data): Array<ListItem> {
-    return data.items.map((item, index) => ({
-      'id': index,
-      'text': item.title,
-      'hidden': false,
-    }))
+  inputChange($event: any, data) {
+    console.log($event, data);
   }
 
+  loadDictionary(dictionaryName: string) {
+    this.epguService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
+      (data) => this.loadDictionarySuccess(dictionaryName, data),
+      () => this.loadDictionaryError(dictionaryName),
+    );
+  }
 
-  asdasdasd(asd) {
-    console.log(asd)
+  loadDictionarySuccess(key: string, data: DictionaryResponse) {
+    this.dictionary[key].loading = false;
+    this.dictionary[key].paginationLoading = false;
+    this.dictionary[key].data = data;
+  }
+
+  loadDictionaryError(key: string) {
+    this.dictionary[key].loading = false;
+    this.dictionary[key].paginationLoading = false;
+    this.dictionary[key].loadError = true;
+    this.dictionary[key].loadEnd = false;
+  }
+
+  // <------------ tools
+  initDictionary(dictionaryName) {
+    this.dictionary[dictionaryName] = {
+      loading: true,
+      loadError: false,
+      loadEnd: false,
+      paginationLoading: true,
+      page: 0,
+      data: {} as any,
+      selectedItem: {} as any,
+    };
   }
 }
