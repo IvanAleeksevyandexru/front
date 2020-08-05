@@ -44,12 +44,12 @@ export class EpguService {
   getDictionary(dictionaryName: string, options: DictionaryOptionsInterface = {}) {
     const path = `${environment.dictionaryUrl}/${dictionaryName}`;
     return this.http.post<EgpuResponseInterface>(path, {
-      "treeFiltering": options.treeFiltering || "ONELEVEL",
-      "pageNum": options.pageNum || 1,
-      "pageSize": options.pageSize || '150',
-      "parentRefItemValue": options.parentRefItemValue || "",
-      "selectAttributes": options.selectAttributes || ["*"],
-      "tx": options.tx || "",
+      treeFiltering: options.treeFiltering || 'ONELEVEL',
+      pageNum: options.pageNum || 1,
+      pageSize: options.pageSize || '150',
+      parentRefItemValue: options.parentRefItemValue || '',
+      selectAttributes: options.selectAttributes || ['*'],
+      tx: options.tx || '',
       // 2e641f4f-bc6a-11ea-b438-001a4a1660a6
       withCredentials: false
     })

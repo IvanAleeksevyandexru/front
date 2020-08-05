@@ -4,41 +4,54 @@
 
 <section class="add-children-screen">
   <section *ngIf="sectionId === 1">
-    <div class="add-children-screen__card card">
-      <div class="card__wrapper">
-        <div class="card__header">
-          <div class="card__title">
-            Ребенок 1
+    <div
+      class="add-children-screen__card"
+      *ngFor="let child of childrenSelectList; let $index = index"
+    >
+      <div class="card">
+        <div class="card__wrapper">
+          <div class="card__header">
+            <div class="card__title">Ребенок {{ $index + 1 }}</div>
+            <div class="card__close">
+              <button (click)="removeChild($index)" class="button-close">
+                <div class="icon-close"></div>
+              </button>
+            </div>
           </div>
-          <div class="card__close">
-            <button
-              class="button-close"
-            >
-              <div class="icon-close"></div>
-            </button>
-          </div>
-        </div>
-        <div class="card__content">
-          <div>
-            <label class="card__label">
-              Выберите ребенка из вашего профиля
-            </label>
-          </div>
-          <div class="card__select">
-            <lib-simple-select
-              [list]="listItem"
-            ></lib-simple-select>
+          <div class="card__content">
+            <div>
+              <label class="card__label">
+                Выберите ребенка из вашего профиля
+              </label>
+            </div>
+            <div class="card__select">
+              <lib-simple-select
+                (changed)="handleSelect($event)"
+                [list]="childrenSelectList"
+              ></lib-simple-select>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="add-children-screen__form">
-      <app-add-new-child-form></app-add-new-child-form>
+    <div class="add-children-screen__form" *ngFor="let child of childrenList; let $index = index">
+      <app-add-new-child-form
+        *ngIf="child.id === 'new'"
+        (ngModel)="child"
+        [data]="{
+          childrenSelectList: childrenSelectList,
+          childrenList: childrenList,
+          child: child,
+          index: $index
+        }"
+        (removeChildEvent)="removeChild($event)"
+        (childUpdateEvent)="updateChild($event)"
+      ></app-add-new-child-form>
     </div>
 
     <div class="add-children-screen__action">
-      <button class="add-children-screen__button button">
+      <button class="add-children-screen__button button" (click)="addNewChild()">
         <label class="button__label">Добавить ребенка</label>
       </button>
     </div>
@@ -48,16 +61,26 @@
     <app-birth-certificate></app-birth-certificate>
   </section>
 
-  <section class="add-children-screen__birth-certificate" *ngIf="sectionId === 3">
-    <app-child-relationship></app-child-relationship>
+  <section *ngIf="sectionId === 3">
+    <app-child-relationship (answerSelect)="handleAnswerSelect($event)"></app-child-relationship>
+  </section>
+
+  <section *ngIf="sectionId === 4">
+    <app-confirm-child-address
+      [actions]="actionsList"
+      [data]="confirmAddressData"
+    ></app-confirm-child-address>
   </section>
 
   <section class="footer">
-    <lib-button (click)="nextStep()" class="footer__btn-submit">
+    <lib-button
+      (click)="nextStep()"
+      class="footer__btn-submit"
+      *ngIf="sectionId !== 3 && sectionId !== 4"
+    >
       <div class="secondary-font">
-        {{ data?.submitLabel || "Продолжить" }}
+        {{ data?.submitLabel || 'Продолжить' }}
       </div>
     </lib-button>
   </section>
 </section>
-

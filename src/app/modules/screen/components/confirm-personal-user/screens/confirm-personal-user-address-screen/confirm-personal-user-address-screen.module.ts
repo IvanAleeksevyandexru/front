@@ -7,12 +7,13 @@ import {ConfirmPersonalUserAddressComponent} from './components/confirm-personal
 
 
 const COMPONENTS = [
-  ConfirmPersonalUserAddressScreenComponent
+  ConfirmPersonalUserAddressScreenComponent,
+  ConfirmPersonalUserAddressComponent
 ];
 
 
 @NgModule({
-  declarations: [...COMPONENTS, ConfirmPersonalUserAddressComponent],
+  declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   imports: [
     CommonModule,

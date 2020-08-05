@@ -25,7 +25,7 @@ interface ConfirmAddressInterfaceAttr {
  * @property {string}label - action text
  * @property {string}value - action value
  */
-interface ConfirmAddressActionsInterface {
+export interface ConfirmAddressActionsInterface {
   action: string;
   label: string;
   value: string;
