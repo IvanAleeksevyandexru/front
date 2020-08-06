@@ -12,8 +12,8 @@ export class UniqueScreenComponent /* implements OnInit  */ {
   @Input() data: EgpuResponseDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
 
-  nextStep() {
-    this.nextStepEvent.emit();
+  nextStep(data?) {
+    this.nextStepEvent.emit(data);
   }
   // constructor() { }
 

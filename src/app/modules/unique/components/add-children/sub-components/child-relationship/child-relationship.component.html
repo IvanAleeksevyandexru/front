@@ -1,13 +1,13 @@
 <section class="footer">
   <app-answer-choice
     class="footer__button"
-    (click)="answerChoose({action: 'getNextAction', label: 'Мать', value: 'Мать'})"
-    [data]="'Мать'">
+    (click)="answerChoose(answerOption)"
+    [data]="answerOption">
   </app-answer-choice>
-  
+
   <app-answer-choice
     class="footer__button"
-    (click)="answerChoose({action: 'getNextAction', label: 'Опекун', value: 'Опекун'})"
+    (click)="answerChoose('Опекун')"
     [data]="'Опекун'">
   </app-answer-choice>
 </section>

@@ -27,6 +27,7 @@
   }
   &__field {
     margin-top: 1rem;
+    font-size: 14px;
   }
   &__radio-group {
     display: flex;
@@ -70,4 +71,11 @@
       }
     }
   }
+  &--small {
+    font-size: 14px;
+  }
+}
+
+.margin-top {
+  margin-top: 2rem;
 }

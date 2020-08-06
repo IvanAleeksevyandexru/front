@@ -46,5 +46,4 @@ const COMPONENTS = [
     EpguLibModule.forChild(),
   ]
 })
-export class ScreenModule {
-}
+export class ScreenModule { }

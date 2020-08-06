@@ -10,7 +10,7 @@ import { EgpuResponseComponentInterface } from '../../../../../../interfaces/epg
 export class AddChildrenScreenComponent implements OnInit {
   @Input() data: EgpuResponseComponentInterface;
   @Input() header: string;
-  @Output() nextStepEvent = new EventEmitter();
+  @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
   sectionId = 1; // variable for 'screen switching' according to sub-components order
   valueParsed: any;
@@ -26,65 +26,83 @@ export class AddChildrenScreenComponent implements OnInit {
     handleAnswerSelect: this.handleAnswerSelect.bind(this),
     getNextStep: this.nextStep.bind(this),
     getNextScreen: this.getNextScreen.bind(this),
+    handleUpdateChild: this.updateChild.bind(this),
   };
 
-  // constructor() {}
-
   ngOnInit(): void {
-    this.valueParsed = JSON.parse(this.data.value);
-    this.childrenList = this.valueParsed?.children;
-    this.childrenSelectList = this.childrenList.map((child) => {
-      return {
-        id: child.firstName,
-        text: child.firstName,
-      };
-    });
-
-    this.confirmAddressData = this.data;
-
     // temporary hardcoded headers for sub-components
     this.headerMapped = {
       1: this.header,
       2: 'Свидетельство о рождении',
-      3: `Кем вы приходитесь ребенку? (<span>${this.childrenSelectList[0].text}</span>)`,
-      4: `Адрес постоянной регистрации ребенка (<span>${this.childrenSelectList[0].text}</span>)`,
+      3: `Кем вы приходитесь ребенку? (<span>${this.selectedChildrenList[0]?.firstName}</span>)`,
+      4: `Адрес постоянной регистрации ребенка (<span>${this.selectedChildrenList[0]?.firstName}</span>)`,
     };
+
+    this.valueParsed = JSON.parse(this.data.value);
+    this.childrenList = this.valueParsed?.children;
+    this.childrenSelectList = this.childrenList.map((child) => {
+      return {
+        id: child.id,
+        text: child.firstName,
+      };
+    });
   }
 
   addNewChild() {
-    const newChild = { id: 'new', firstName: '' };
+    const newChild = { isNew: true, id: this.childrenList.length + 1, firstName: '' };
     this.childrenList.push(newChild);
     this.selectedChildrenList.push(newChild);
   }
 
-  removeChild(index) {
-    this.childrenSelectList.splice(index, 1);
-    this.childrenList.splice(index, 1);
+  removeChild(id) {
+    const childIdx1 = this.childrenSelectList.findIndex((child) => child.id === id);
+    const childIdx2 = this.childrenList.findIndex((child) => child.id === id);
+    if (childIdx1 > -1) {
+      this.childrenSelectList.splice(childIdx1, 1);
+    }
+    if (childIdx2 > -1) {
+      this.childrenList.splice(childIdx2, 1);
+    }
   }
 
-  updateChild(data) {
+  updateChild(childData) {
     // augment new child data with data passed from add-new-child-form component
-    const { childData, childIdx } = data;
-    this.childrenList[childIdx] = childData;
-    this.selectedChildrenList[childIdx] = childData;
+    const childIdx1 = this.childrenList.findIndex((child) => child.id === childData.id);
+    const childIdx2 = this.selectedChildrenList.findIndex((child) => child.id === childData.id);
+    this.childrenList[childIdx1] = childData;
+    this.selectedChildrenList[childIdx2] = childData;
   }
 
   handleSelect(event) {
     const { item } = event;
-    this.selectedChildrenList.push(this.childrenList.find((child) => child.firstName === item.id));
+    this.selectedChildrenList.push(this.childrenList.find((child) => child.id === item.id));
   }
 
-  handleAnswerSelect() {
+  handleAnswerSelect(event) {
+    const { value } = event;
+    this.selectedChildrenList[0].relationshipToChild = value;
     this.nextStep();
   }
 
+  // outter method to send final data to backend
   getNextScreen() {
-    this.nextStepEvent.emit();
+    this.valueParsed.children = this.childrenList;
+    const data = JSON.stringify(this.valueParsed);
+    this.nextStepEvent.emit(data);
   }
 
-  nextStep() {
-    if (this.selectedChildrenList.length) {
-      this.sectionId += 1;
+  // inner method to show next sub-component (screen-type)
+  nextStep(step?, srinkSelectedChildrenList?) {
+    if (srinkSelectedChildrenList) {
+      this.selectedChildrenList.shift();
+      if (!this.selectedChildrenList.length) {
+        this.getNextScreen();
+        return;
+      }
     }
+
+    this.headerMapped[3] = `Кем вы приходитесь ребенку? (<span>${this.selectedChildrenList[0]?.firstName}</span>)`;
+    this.headerMapped[4] = `Адрес постоянной регистрации ребенка (<span>${this.selectedChildrenList[0]?.firstName}</span>)`;
+    this.sectionId = step || this.sectionId + 1;
   }
 }

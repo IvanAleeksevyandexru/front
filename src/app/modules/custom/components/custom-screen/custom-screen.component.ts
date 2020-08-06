@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem } from 'epgu-lib';
-import { EpguService } from '../../../../../services/epgu.service';
+import { EpguService } from '../../../../services/epgu.service';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 import {
   CustomComponentDictionaryState,

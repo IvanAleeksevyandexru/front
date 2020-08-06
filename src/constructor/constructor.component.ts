@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { EpguService } from '../services/epgu.service';
+import { EpguService } from '../app/services/epgu.service';
 import { COMPONENT_TYPE } from '../app/constant/global';
 import { EgpuResponseInterface } from '../app/interfaces/epgu.service.interface';
+// eslint-disable-next-line max-len
 import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from '../app/modules/questions/components/interface/question-block.interface';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../app/modules/custom/tools/custom-screen-tools';
 
@@ -73,8 +74,8 @@ export class ConstructorComponent implements OnInit {
     );
   }
 
-  nextStep() {
-    this.sendData(true);
+  nextStep(data?: any) {
+    this.sendData(data || true);
   }
 
   onAnswerSelect(data: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface) {
