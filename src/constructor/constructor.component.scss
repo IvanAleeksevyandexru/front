@@ -15,7 +15,7 @@ main {
 
 header.app-header {
   height: 120px;
-  background: url(../assets/img/header.png) no-repeat 50% 50%;
+  background: url(/assets/img/header.png) no-repeat 50% 50%;
   background-size: cover;
 }
 
@@ -23,7 +23,7 @@ header.app-header {
 footer.app-footer {
   margin-top: auto;
   height: 200px;
-  background: url(../assets/img/footer.png) no-repeat 50% 100%;
+  background: url(/assets/img/footer.png) no-repeat 50% 100%;
   background-size: contain;
 }
 
