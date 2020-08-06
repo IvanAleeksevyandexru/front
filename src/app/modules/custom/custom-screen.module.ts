@@ -11,7 +11,9 @@ const COMPONENTS = [
 ]
 
 @NgModule({
-  declarations: [...COMPONENTS, LabelSectionComponent, ForeignCitizenshipComponent],
+  declarations: [...COMPONENTS,
+    LabelSectionComponent,
+    ForeignCitizenshipComponent],
   exports: [
     ...COMPONENTS
   ],

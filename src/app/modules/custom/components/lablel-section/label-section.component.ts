@@ -1,14 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-label-section',
   templateUrl: './label-section.component.html',
   styleUrls: ['./label-section.component.scss'],
 })
-export class LabelSectionComponent implements OnInit {
+export class LabelSectionComponent {
   @Input() name: string;
-
-  ngOnInit(): void {
-    // TODO
-  }
 }

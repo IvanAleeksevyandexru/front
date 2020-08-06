@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { COMPONENT_TYPE } from '../app/constant/global';
 import { EgpuResponseInterface } from '../app/interfaces/epgu.service.interface';
+// eslint-disable-next-line max-len
 import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from '../app/modules/questions/components/interface/question-block.interface';
 import { EpguService } from '../app/services/epgu.service';
 
@@ -71,5 +72,10 @@ export class ConstructorComponent implements OnInit {
 
   onAnswerSelect(data: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface) {
     this.sendData(data.value);
+  }
+
+  nextStepFromCustomScreen(data) {
+    console.log(data);
+    this.sendData(data);
   }
 }
