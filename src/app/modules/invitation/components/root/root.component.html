@@ -1,5 +1,3 @@
-<ng-container [ngSwitch]="data?.components[0].type">
-  <app-invitation-error
-    *ngSwitchCase="typeComponent.invitationError"
-    [attrs]="data?.components[0].attrs"></app-invitation-error>
-</ng-container>
+<app-invitation-error
+  *ngIf="data?.components[0].type === typeComponent.invitationError"
+  [attrs]="data?.components[0].attrs"></app-invitation-error>

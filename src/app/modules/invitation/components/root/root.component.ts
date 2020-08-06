@@ -9,6 +9,8 @@ import { SCREEN_COMPONENT_NAME } from '../../../../constant/global';
 })
 export class RootComponent implements OnInit {
   typeComponent = SCREEN_COMPONENT_NAME;
+
   @Input() data: EgpuResponseDisplayInterface;
+
   ngOnInit(): void {}
 }

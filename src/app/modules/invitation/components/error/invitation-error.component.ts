@@ -10,6 +10,8 @@ interface IAttrsError {
   styleUrls: ['./invitation-error.component.scss'],
 })
 export class InvitationErrorComponent implements OnInit {
+  readyToRegistration: boolean;
+
   @Input() attrs: IAttrsError;
 
   ngOnInit(): void {}
