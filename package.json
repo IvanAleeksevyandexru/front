@@ -9,6 +9,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
+    "lint: auto-fix": "ng lint --fix",
     "e2e": "ng e2e"
   },
   "husky": {

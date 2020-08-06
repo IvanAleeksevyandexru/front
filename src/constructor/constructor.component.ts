@@ -76,4 +76,9 @@ export class ConstructorComponent implements OnInit {
   onEmailSelect(email: string): void {
     this.sendData(email, 'errorScr');
   }
+
+  nextStepFromCustomScreen(data) {
+    console.log(data);
+    this.sendData(data);
+  }
 }
