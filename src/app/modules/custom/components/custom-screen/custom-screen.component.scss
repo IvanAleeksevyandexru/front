@@ -11,8 +11,10 @@ app-screen-pad {
 }
 lib-button {
   display: inline-block;
-  min-width: 176px;
   @extend %submit-button-margin;
+  &::ng-deep button{
+    min-width: 176px;
+  }
 }
 
 app-label-section {
@@ -27,4 +29,15 @@ app-label-section {
   line-height: 20px;
   color: $cyprus;
   margin-bottom: 4px;
+}
+
+
+lib-simple-select::ng-deep {
+  .simple-select {
+    border-radius: 4px;
+    padding: 14px 16px;
+  }
+  .simple-select-list {
+    width: 100% !important;
+  }
 }

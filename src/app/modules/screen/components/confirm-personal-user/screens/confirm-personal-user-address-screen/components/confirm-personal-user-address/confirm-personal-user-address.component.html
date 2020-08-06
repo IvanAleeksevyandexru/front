@@ -1,6 +1,6 @@
 <div class="item" *ngFor="let field of data?.attrs?.fields">
 
-  <div class="head__title">{{field.label}}</div>
+  <div class="title">{{field.label}}</div>
 
   <div class="content">{{(data?.value | toJson)[field.fieldName]}}</div>
 
