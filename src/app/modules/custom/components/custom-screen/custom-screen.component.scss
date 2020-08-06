@@ -3,6 +3,18 @@
 @import "../../../../styles/breakpoint";
 
 
+app-screen-container {
+  text-align: center;
+}
+app-screen-pad {
+  text-align: left;
+}
+lib-button {
+  display: inline-block;
+  min-width: 176px;
+  @extend %submit-button-margin;
+}
+
 app-label-section {
   margin-bottom: 20px;
 }

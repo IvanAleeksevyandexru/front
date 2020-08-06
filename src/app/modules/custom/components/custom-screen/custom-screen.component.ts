@@ -34,7 +34,9 @@ export class CustomScreenComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
       this.data.components.forEach((component) => {
-        this.initState(component.id);
+        if (component.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection) {
+          this.initState(component.id);
+        }
         if (component.type === CUSTOM_COMPONENT_ITEM_TYPE.Dictionary) {
           const dictionaryName = component.attrs.dictionaryType;
           this.initDictionary(dictionaryName);

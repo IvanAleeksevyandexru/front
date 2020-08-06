@@ -1,5 +1,6 @@
 @import "../../../../styles/breakpoint";
 @import "../../../../styles/variables";
+@import "../../../../styles/functions";
 
 .inner {
   display: flex;
@@ -29,10 +30,7 @@
   align-items: center;
   justify-content: center;
   font-family: $secondary_font;
-  margin-top: 8px;
-  @include tablets-up {
-    margin-top: 32px;
-  }
+  @extend %submit-button-margin;
 
   &__btn-submit {
     width: 100%;
