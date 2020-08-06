@@ -15,10 +15,15 @@
     }
   }
 
+  &__item {
+    margin-bottom: 16px;
+  }
+
   &__label {
     font-size: .9rem;
     line-height: 1.5;
-    color: $storm-gray
+    color: $storm-gray;
+    margin-bottom: 4px;
   }
 
   &__value {

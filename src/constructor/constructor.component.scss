@@ -6,7 +6,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  height: 100vh;
   @include tablets-up {
     background-color: #f2f8fc;
   }
