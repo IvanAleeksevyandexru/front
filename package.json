@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "start-proxy": "ng serve --proxy-config ./src/proxy.conf.json",
+    "start-backend": "java -jar fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
