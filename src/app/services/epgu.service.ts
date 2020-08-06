@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {EgpuResponseInterface} from '../app/interfaces/epgu.service.interface';
-import {environment} from '../environments/environment';
-import {DictionaryOptionsInterface, DictionaryResponse} from '../app/interfaces/dictionary-options.interface';
+import { DictionaryOptionsInterface } from '../interfaces/dictionary-options.interface';
+import { environment } from '../../environments/environment';
+import { EgpuResponseInterface } from '../interfaces/epgu.service.interface';
 
 @Injectable({
   providedIn: 'root'
