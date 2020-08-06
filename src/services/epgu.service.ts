@@ -15,14 +15,14 @@ export class EpguService {
   ) {
   }
 
-  public getData(): Observable<any> {
+  public getData() {
     const path = `${environment.apiUrl}/api/getService/${environment.serviceId}`;
     return this.http.get<EgpuResponseInterface>(path, {
       withCredentials: false
     });
   }
 
-  public setData(data): any {
+  public setData(data) {
     const path = `${environment.apiUrl}/api/service/${environment.serviceId}/scenario/getNextStep`;
     return this.http.post<EgpuResponseInterface>(path, {
       ...data,

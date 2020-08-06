@@ -3,6 +3,7 @@ import { EpguService } from '../services/epgu.service';
 import { COMPONENT_TYPE } from '../app/constant/global';
 import { EgpuResponseInterface } from '../app/interfaces/epgu.service.interface';
 import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from '../app/modules/questions/components/interface/question-block.interface';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../app/modules/custom/tools/custom-screen-tools';
 
 @Component({
   selector: 'app-constructor',
@@ -31,7 +32,7 @@ export class ConstructorComponent implements OnInit {
     );
   }
 
-  initResponse(response): void {
+  initResponse(response: EgpuResponseInterface): void {
     if (!response) {
       console.error('Invalid Reponse');
       return;
@@ -39,7 +40,14 @@ export class ConstructorComponent implements OnInit {
 
     this.response = response;
     const { display } = response;
-    this.componentId = display.components[0].id;
+
+    // TODO HARDCODE
+    // eslint-disable-next-line max-len
+    this.componentId =
+      response.display.type === COMPONENT_TYPE.CUSTOM
+        ? display.components.find((item) => item.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection)
+            .id
+        : display.components[0].id;
     this.componentType = display.components[0].type;
     this.componentData = display;
     // this.componentData.header = 'Кому из детей требуется оформить загранпаспорт?';
@@ -75,6 +83,6 @@ export class ConstructorComponent implements OnInit {
 
   nextStepFromCustomScreen(data) {
     console.log(data);
-    this.sendData(data);
+    this.sendData('asdasdas');
   }
 }
