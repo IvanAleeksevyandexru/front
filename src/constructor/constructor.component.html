@@ -3,9 +3,9 @@
   <div class="custom-wrapper">
 
 <!--    <app-custom-screen [data]="0"></app-custom-screen>-->
-    <!-- Если нет ошибки валидации -->
     <ng-container [ngSwitch]="componentData?.type">
       <app-invitation-screen
+        (resolve)="onEmailSelect($event)"
         *ngSwitchCase="constructorComponentType.INVITATION_ERROR"
         [data]="componentData"></app-invitation-screen>
       <app-screen

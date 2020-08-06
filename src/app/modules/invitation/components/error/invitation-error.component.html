@@ -18,13 +18,13 @@
       <img src="http://localhost:4200/assets/img/screens/s11_x2.png" />
       <div class="error__message">
         <label for="email">Введите адрес электронной почты</label>
-        <lib-standard-input id="email" type="email" placeholder="Email"></lib-standard-input>
+        <lib-standard-input id="email" type="email" [formControl]="email" placeholder="Email"></lib-standard-input>
         <div class="info">
           На указанный адрес электронной почты придет ссылка для регистрации на портале Госуслуг
         </div>
       </div>
       <div class="error__actions">
-        <button class="btn btn--light" (click)="readyToRegistration = false">
+        <button class="btn btn--light" (click)="sendEmail(); readyToRegistration = false">
           Отправить приглашение и вернуть к началу заполнения заявления
         </button>
       </div>
