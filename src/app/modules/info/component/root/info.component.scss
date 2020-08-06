@@ -1,0 +1,60 @@
+@import "../../../../styles/breakpoint";
+@import "../../../../styles/variables";
+
+
+
+:host {
+  display: block;
+  font-family: $secondary_font, sans-serif;
+}
+
+.info__body {
+  text-align: left;
+  font-size: .9rem;
+  line-height: 1.5;
+  @include tablets-up {
+    font-size: 1rem;
+  }
+
+  &::ng-deep p {
+    margin: 1.5rem 0;
+  }
+
+  &::ng-deep ul {
+    text-align: left;
+    list-style: none;
+    background: $light-gray;
+    border-radius: 4px;
+    margin: 0 #{-$screen-pad-p};
+    padding: $screen-pad-p;
+
+    & > li {
+      display: flex;
+
+      &:not(:first-of-type) {
+        margin-top: .5rem;
+      }
+
+      &::before {
+        content: '';
+        flex-shrink: 0;
+        margin-top: 5px;
+        margin-right: $screen-pad-p;
+        display: block;
+        width: 16px;
+        height: 12px;
+        background-image: url('^/assets/icons/png/check.png'); // Fallback PNG
+        background-image: url('^/assets/icons/svg/check.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+}
+
+.info__footer {
+  text-align: center;
+}
+.info-footer__submit {
+  display: inline-block;
+}

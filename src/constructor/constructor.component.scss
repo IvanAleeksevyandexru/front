@@ -6,17 +6,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  @include tablets-up {
-    background-color: #f2f8fc;
-  }
-}
-
-header {
-  background: red;
-}
-
-footer {
-  background: green;
 }
 
 main {
@@ -24,28 +13,22 @@ main {
   flex-direction: column;
 }
 
+header.app-header {
+  height: 120px;
+  background: url(../assets/img/header.png) no-repeat 50% 50%;
+  background-size: cover;
+}
+
+
+footer.app-footer {
+  margin-top: auto;
+  height: 200px;
+  background: url(../assets/img/footer.png) no-repeat 50% 100%;
+  background-size: contain;
+}
+
 @include tablets-down {
   header.app-header {
     height: 128px;
-  }
-}
-
-@include tablets-up {
-  #content-wrapper {
-    background-color: $quartz;
-  }
-
-  header.app-header {
-    height: 120px;
-    background: url(../assets/img/header.png) no-repeat 50% 50%;
-    background-size: cover;
-  }
-
-
-  footer.app-footer {
-    margin-top: auto;
-    height: 200px;
-    background: url(../assets/img/footer.png) no-repeat 50% 100%;
-    background-size: contain;
   }
 }
