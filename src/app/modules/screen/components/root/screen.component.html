@@ -1,6 +1,6 @@
 <app-screen-container>
   <div class="inner">
-    <div *ngIf="data.header" class="head">
+    <div *ngIf="data?.header" class="head">
       <app-page-name>{{data.header}}</app-page-name>
     </div>
 
@@ -42,6 +42,11 @@
           *ngSwitchCase="screenComponentName.notificationAboutAbsentAccountScreen"
           [data]="data?.components[0]">
         </app-notification-about-absent-account>
+
+        <app-temporary-registration-addr-screen
+          *ngSwitchCase="screenComponentName.registrationAddr"
+          [data]="data?.components[0]">
+        </app-temporary-registration-addr-screen>
 
       </ng-container>
     </app-screen-pad>

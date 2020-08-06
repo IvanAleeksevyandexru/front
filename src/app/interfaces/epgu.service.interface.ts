@@ -54,13 +54,15 @@ export interface EgpuResponseDisplayInterface {
  * @property {SCREEN_COMPONENT_NAME}type - component name
  * @property {string}value - может храниться разное строковое значение
  * (например проверка персональные данные будут содержать json с персональными данными)
+ * @property {boolean}visited?
  */
 export interface EgpuResponseComponentInterface {
   attrs: object | ConfirmUserDataAttrsInterface;
   id: string;
   label: string;
-  type: string;
+  type: SCREEN_COMPONENT_NAME;
   value: string;
+  visited?: boolean
 }
 
 

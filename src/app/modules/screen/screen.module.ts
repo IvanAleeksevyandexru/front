@@ -19,6 +19,8 @@ import {ConfirmCreatedRequestScreenModule} from './components/confirm-created-re
 import {AddChildrenScreenModule} from '../unique/components/add-children/screens/add-children-screen/add-children-screen.module';
 // eslint-disable-next-line max-len
 import {NotificationAboutAbsentAccountScreenModule} from './components/notification-about-absent-account/notification-about-absent-account-screen.module';
+// eslint-disable-next-line max-len
+import {TemporaryRegistrationAddrScreenModule} from './components/confirm-personal-user/screens/temporary-registration-addr/temporary-registration-addr-screen.module';
 
 const COMPONENTS = [
   ScreenComponent
@@ -38,6 +40,7 @@ const COMPONENTS = [
     ConfirmCreatedRequestScreenModule,
     AddChildrenScreenModule,
     NotificationAboutAbsentAccountScreenModule,
+    TemporaryRegistrationAddrScreenModule,
 
     SharedComponentsModule,
     EpguLibModule.forChild(),

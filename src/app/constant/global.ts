@@ -13,7 +13,8 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
-  'notificationAboutAbsentAccountScreen' = 'NotificationAboutAbsentAccountScreen'
+  'notificationAboutAbsentAccountScreen' = 'NotificationAboutAbsentAccountScreen',
+  'registrationAddr' = 'RegistrationAddr'
 }
 
 export enum UNIQUE_COMPONENT_NAME {
