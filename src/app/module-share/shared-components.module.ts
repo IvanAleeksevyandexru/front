@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PageNameComponent } from './components/page-name/page-name.component';
 import { ScreenContainerComponent } from './components/screen-container/screen-container.component';
 import {ScreenPadComponent} from './components/screen-pad/screen-pad.component';
-import { ToJsonPipe } from './pipe/to-json.pipe';
+import { ToJsonPipe } from './pipe/toJson/to-json.pipe';
 
 const COMPONENTS = [
   // component
@@ -12,7 +12,7 @@ const COMPONENTS = [
   ScreenPadComponent,
 
   // Pipe
-  ToJsonPipe
+  ToJsonPipe,
 ];
 
 @NgModule({

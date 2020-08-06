@@ -5,17 +5,15 @@
       <app-screen
         *ngSwitchCase="constructorComponentType.COMPONENT"
         [data]="componentData"
-        (nextStepEvent)="nextStep()"
-      ></app-screen>
+        (nextStepEvent)="nextStep()"></app-screen>
       <app-custom-screen
         *ngSwitchCase="constructorComponentType.CUSTOM"
         [data]="componentData"
-      ></app-custom-screen>
+        (nextStepEvent)="nextStepFromCustomScreen($event)"></app-custom-screen>
       <app-question-screen
         *ngSwitchCase="constructorComponentType.QUESTION"
         [data]="componentData"
-        (answerSelect)="onAnswerSelect($event)"
-      ></app-question-screen>
+        (answerSelect)="onAnswerSelect($event)"></app-question-screen>
       <app-unique-screen
         *ngSwitchCase="constructorComponentType.UNIQUE"
         [data]="componentData"
@@ -23,6 +21,8 @@
         (nextStepEvent)="nextStep()"
       ></app-unique-screen>
     </ng-container>
+
   </div>
 </main>
 <footer class="app-footer"></footer>
+

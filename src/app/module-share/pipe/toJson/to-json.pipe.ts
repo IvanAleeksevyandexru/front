@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ToJsonPipe implements PipeTransform {
 
-  public transform(value: string): unknown {
+  transform(value: string): unknown {
     return value ? JSON.parse(value) : {};
   }
 
