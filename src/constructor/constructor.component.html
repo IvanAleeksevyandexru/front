@@ -2,7 +2,6 @@
 <main class="app-content">
   <div class="custom-wrapper">
 
-<!--    <app-custom-screen [data]="0"></app-custom-screen>-->
     <ng-container [ngSwitch]="componentData?.type">
       <app-screen
         *ngSwitchCase="constructorComponentType.COMPONENT"
@@ -10,7 +9,8 @@
         (nextStepEvent)="nextStep()"></app-screen>
       <app-custom-screen
         *ngSwitchCase="constructorComponentType.CUSTOM"
-        [data]="componentData"></app-custom-screen>
+        [data]="componentData"
+        (nextStepEvent)="nextStepFromCustomScreen($event)"></app-custom-screen>
       <app-question-screen
         *ngSwitchCase="constructorComponentType.QUESTION"
         [data]="componentData"
