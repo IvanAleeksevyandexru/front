@@ -1,0 +1,45 @@
+@import "../../../../styles/breakpoint";
+@import "../../../../styles/variables";
+
+:host {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.error__content {
+  flex: 1 1 auto;
+  font-family: $secondary_font;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  margin-bottom: 32px;
+
+  img {
+    margin-top: 32px;
+  }
+
+  .error__message {
+    margin: 32px 0;
+
+    &::ng-deep span {
+      color: $gray;
+    }
+  }
+
+  .error__actions {
+    margin-bottom: 32px;
+
+    &::ng-deep button {
+      padding: 15px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+  }
+
+  @include tablets-up {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 32px;
+  }
+}
