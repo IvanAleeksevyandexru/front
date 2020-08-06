@@ -1,8 +1,65 @@
 <section class="birth-certificate component">
-  <div class="component__wrapper">
+  <div *ngIf="isCompleteData" class="component__wrapper">
     <div class="component__field">
       <span class="component__strong">
-        Константинопольский Сергей Константинович
+        {{child.lastName + ' ' + child.firstName + ' ' + child.middleName }}
+      </span>
+    </div>
+    <div class="component__field field field--small">
+      <div>
+        {{ child.gender === 'муж' ? 'мальчик' : 'девочка' }}
+      </div>
+    </div>
+    <div class="component__field">
+      <label class="component__label">
+        Дата рождения:
+      </label>
+      <div>
+        {{ child.birthDate }}
+      </div>
+    </div>
+    <div class="component__field margin-top">
+      <span class="component__strong">
+        Свидетельство о рождении
+      </span>
+    </div>
+    <div class="component__field">
+      <label class="component__label">
+        Серия и номер:
+      </label>
+      <div>
+        {{ child.rfBirthCertificateSeries + '-' + child.rfBirthCertificateNumber}}
+      </div>
+    </div>
+    <div class="component__field">
+      <label class="component__label">
+        Актовая запись:
+      </label>
+      <div>
+        {{ child.rfBirthCertificateActNumber }}
+      </div>
+    </div>
+    <div class="component__field">
+      <label class="component__label">
+        Дата выдачи
+      </label>
+      <div>
+        {{ child.rfBirthCertificateIssueDate }}
+      </div>
+    </div>
+    <div class="component__field">
+      <label class="component__label">
+        Кем выдано
+      </label>
+      <div>
+        {{ child.rfBirthCertificateIssuedBy }}
+      </div>
+    </div>
+  </div>
+  <form #birthCertificateForm="ngForm" *ngIf="!isCompleteData && child" class="component__wrapper">
+    <div class="component__field">
+      <span class="component__strong">
+        {{child.lastName + ' ' + child.firstName + ' ' + child.middleName }}
       </span>
     </div>
     <div class="component__field field field--row">
@@ -10,32 +67,32 @@
         <label class="component__label">
           Серия
         </label>
-        <lib-plain-input></lib-plain-input>
+        <lib-plain-input name="rfBirthCertificateSeries" [(ngModel)]="child.rfBirthCertificateSeries"></lib-plain-input>
       </div>
       <div>
         <label class="component__label">
           Номер
         </label>
-        <lib-plain-input></lib-plain-input>
+        <lib-plain-input name="rfBirthCertificateNumber" [(ngModel)]="child.rfBirthCertificateNumber"></lib-plain-input>
       </div>
     </div>
     <div class="component__field">
       <label class="component__label">
         Номер актовой записи
       </label>
-      <lib-plain-input></lib-plain-input>
+      <lib-plain-input name="rfBirthCertificateActNumber" [(ngModel)]="child.rfBirthCertificateActNumber"></lib-plain-input>
     </div>
     <div class="component__field">
       <label class="component__label">
         Дата выдачи
       </label>
-      <lib-date-picker></lib-date-picker>
+      <lib-date-picker name="rfBirthCertificateIssueDate" [(ngModel)]="child.rfBirthCertificateIssueDate"></lib-date-picker>
     </div>
     <div class="component__field">
       <label class="component__label">
         Кем выдано
       </label>
-      <lib-plain-input></lib-plain-input>
+      <lib-plain-input name="rfBirthCertificateIssuedBy" [(ngModel)]="child.rfBirthCertificateIssuedBy"></lib-plain-input>
     </div>
-  </div>
+  </form>
 </section>

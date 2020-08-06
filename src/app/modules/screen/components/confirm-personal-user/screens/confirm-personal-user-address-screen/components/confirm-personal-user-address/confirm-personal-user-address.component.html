@@ -1,9 +1,19 @@
-<div class="item" *ngFor="let field of data?.attrs?.fields">
+<section>
+  <form #dataForm="ngForm" *ngIf="isEditable">
+    <div class="item" *ngFor="let field of data?.attrs?.fields">
+      <div class="head__title">{{ field.label }}</div>
+      <lib-plain-input
+        [(ngModel)]="valueParsed[field.fieldName]"
+        [name]="field.fieldName"
+        class="content"
+      ></lib-plain-input>
+    </div>
+  </form>
 
-  <div class="head__title">{{field.label}}</div>
-
-  <div class="content">{{(data?.value | toJson)[field.fieldName]}}</div>
-
-</div>
-
-
+  <div *ngIf="!isEditable">
+    <div class="item" *ngFor="let field of data?.attrs?.fields">
+      <div class="head__title">{{ field.label }}</div>
+      <div class="content">{{ (data?.value | toJson)[field.fieldName] }}</div>
+    </div>
+  </div>
+</section>

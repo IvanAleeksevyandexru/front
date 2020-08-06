@@ -6,14 +6,14 @@
   <section *ngIf="sectionId === 1">
     <div
       class="add-children-screen__card"
-      *ngFor="let child of childrenSelectList; let $index = index"
+      *ngFor="let child of childrenSelectList"
     >
       <div class="card">
         <div class="card__wrapper">
           <div class="card__header">
-            <div class="card__title">Ребенок {{ $index + 1 }}</div>
+            <div class="card__title">Ребенок {{ child?.id }}</div>
             <div class="card__close">
-              <button (click)="removeChild($index)" class="button-close">
+              <button (click)="removeChild(child?.id)" class="button-close">
                 <div class="icon-close"></div>
               </button>
             </div>
@@ -35,15 +35,14 @@
       </div>
     </div>
 
-    <div class="add-children-screen__form" *ngFor="let child of childrenList; let $index = index">
+    <div class="add-children-screen__form" *ngFor="let child of childrenList">
       <app-add-new-child-form
-        *ngIf="child.id === 'new'"
+        *ngIf="child.isNew === true"
         (ngModel)="child"
         [data]="{
           childrenSelectList: childrenSelectList,
           childrenList: childrenList,
-          child: child,
-          index: $index
+          child: child
         }"
         (removeChildEvent)="removeChild($event)"
         (childUpdateEvent)="updateChild($event)"
@@ -58,17 +57,22 @@
   </section>
 
   <section class="add-children-screen__birth-certificate" *ngIf="sectionId === 2">
-    <app-birth-certificate></app-birth-certificate>
+    <app-birth-certificate [data]="selectedChildrenList"></app-birth-certificate>
   </section>
 
   <section *ngIf="sectionId === 3">
-    <app-child-relationship (answerSelect)="handleAnswerSelect($event)"></app-child-relationship>
+    <app-child-relationship [gender]="valueParsed?.gender" (answerSelect)="handleAnswerSelect($event)"></app-child-relationship>
   </section>
 
   <section *ngIf="sectionId === 4">
     <app-confirm-child-address
       [actions]="actionsList"
-      [data]="confirmAddressData"
+      [userAddress]="{
+        registrationAddress: valueParsed?.registrationAddress,
+        registrationAddressDate: valueParsed?.registrationAddressDate
+      }"
+      [data]="data"
+      [childrenData]="selectedChildrenList"
     ></app-confirm-child-address>
   </section>
 

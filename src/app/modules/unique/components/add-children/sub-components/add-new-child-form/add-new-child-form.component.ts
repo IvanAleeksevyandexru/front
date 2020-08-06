@@ -28,7 +28,6 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   childrenList: any;
   childrenSelectList: Array<ListItem>;
   list: Array<ListItem>;
-  index: number;
   ngUnsubscribe$: Subject<void>;
 
   constructor() {
@@ -39,12 +38,13 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
     const { item } = event;
     this.child = {
       ...this.child,
-      ...this.childrenList.find((child) => child.firstName === item.id),
+      ...this.childrenList.find((child) => child.id === item.id),
+      id: this.child.id,
     };
   }
 
-  removeChild(index) {
-    this.removeChildEvent.emit(index);
+  removeChild(id) {
+    this.removeChildEvent.emit(id);
   }
 
   ngOnInit(): void {
@@ -57,7 +57,6 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
     });
     this.childrenSelectList = this.data.childrenSelectList;
     this.child = this.data.child;
-    this.index = this.data.index;
   }
 
   ngAfterViewInit() {
@@ -68,7 +67,7 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
       this.child.lastName = lastName;
       this.child.middleName = middleName;
       this.child.gender = gender;
-      this.childUpdateEvent.emit({ childData: this.child, childIdx: this.index });
+      this.childUpdateEvent.emit(this.child);
     });
   }
 

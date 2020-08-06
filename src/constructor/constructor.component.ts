@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { EpguService } from '../services/epgu.service';
 import { COMPONENT_TYPE } from '../app/constant/global';
 import { EgpuResponseInterface } from '../app/interfaces/epgu.service.interface';
 import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from '../app/modules/questions/components/interface/question-block.interface';
+import { EpguService } from '../app/services/epgu.service';
 
 @Component({
   selector: 'app-constructor',
@@ -65,8 +65,8 @@ export class ConstructorComponent implements OnInit {
     );
   }
 
-  nextStep() {
-    this.sendData(true);
+  nextStep(data?: any) {
+    this.sendData(data || true);
   }
 
   onAnswerSelect(data: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface) {

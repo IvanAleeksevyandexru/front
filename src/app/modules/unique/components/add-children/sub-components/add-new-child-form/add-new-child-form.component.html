@@ -2,11 +2,11 @@
   <form #newChildForm="ngForm" class="component__form">
     <div class="component__header">
       <div class="component__title">
-        Ребенок {{ index + 1 }}
+        Ребенок {{ child.id }}
       </div>
       <div class="component__close">
         <button
-          (click)="removeChild(index)"
+          (click)="removeChild(child.id)"
           class="button-close"
         >
           <div class="icon-close"></div>

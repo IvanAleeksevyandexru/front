@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from '../../../../../questions/components/interface/question-block.interface';
 
 @Component({
@@ -7,15 +7,23 @@ import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from '../.
   styleUrls: ['./child-relationship.component.scss'],
 })
 export class ChildRelationshipComponent implements OnInit {
+  @Input() gender: string;
   @Output() answerSelect = new EventEmitter<
     EgpuResponseQuestionsDisplayComponentAttrsActionsInterface
   >();
 
-  answerChoose(answer: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface): void {
-    this.answerSelect.emit(answer);
+  answerOption: string;
+
+  answerChoose(answer: string): void {
+    const value: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface = {
+      action: 'getNextAction',
+      label: answer,
+      value: answer,
+    };
+    this.answerSelect.emit(value);
   }
 
   ngOnInit(): void {
-    // TODO
+    this.answerOption = this.gender === 'муж' ? 'Отец' : 'Мать';
   }
 }

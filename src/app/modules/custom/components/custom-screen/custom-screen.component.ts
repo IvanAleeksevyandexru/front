@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import { EgpuResponseDisplayInterface } from '../../../../interfaces/epgu.service.interface';
-import { EpguService } from '../../../../../services/epgu.service';
+import { EpguService } from '../../../../services/epgu.service';
 
 enum ComponentType {
   LabelSection = 'LabelSection',

@@ -19,8 +19,7 @@
       <app-unique-screen
         *ngSwitchCase="constructorComponentType.UNIQUE"
         [data]="componentData"
-        (answerSelect)="onAnswerSelect($event)"
-        (nextStepEvent)="nextStep()"
+        (nextStepEvent)="nextStep($event)"
       ></app-unique-screen>
     </ng-container>
   </div>
