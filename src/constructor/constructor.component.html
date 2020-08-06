@@ -3,7 +3,11 @@
   <div class="custom-wrapper">
 
 <!--    <app-custom-screen [data]="0"></app-custom-screen>-->
+    <!-- Если нет ошибки валидации -->
     <ng-container [ngSwitch]="componentData?.type">
+      <app-invitation-screen
+        *ngSwitchCase="constructorComponentType.INVITATION_ERROR"
+        [data]="componentData"></app-invitation-screen>
       <app-screen
         *ngSwitchCase="constructorComponentType.COMPONENT"
         [data]="componentData"
