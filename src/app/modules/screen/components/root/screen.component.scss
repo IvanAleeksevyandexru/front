@@ -30,7 +30,10 @@
   align-items: center;
   justify-content: center;
   font-family: $secondary_font;
-  @extend %submit-button-margin;
+  margin-top: 24px;
+  @include tablets-up {
+    margin-top: 32px;
+  }
 
   &__btn-submit {
     width: 100%;

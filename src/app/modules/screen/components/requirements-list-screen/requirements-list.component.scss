@@ -1,7 +1,7 @@
-@import "../../../../../styles";
 @import "../../../../styles/breakpoint";
+@import "../../../../styles/variables";
 
-:hover {
+:host {
   display: block;
   font-family: $secondary_font, sans-serif;
 }

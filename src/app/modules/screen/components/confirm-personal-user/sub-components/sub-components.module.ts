@@ -5,12 +5,10 @@ import { ConfirmPersonalUserButtonComponent } from './confirm-personal-user-butt
 import {
   ConfirmPersonalUserScreenLayoutComponent
 } from './confirm-personal-user-screen-layout/confirm-personal-user-screen-layout.component';
-import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data/confirm-personal-user-data.component';
 
 const COMPONENTS = [
   ConfirmPersonalUserButtonComponent,
   ConfirmPersonalUserScreenLayoutComponent,
-  ConfirmPersonalUserDataComponent
 ];
 
 @NgModule({
