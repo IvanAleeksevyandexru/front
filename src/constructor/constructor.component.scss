@@ -13,22 +13,3 @@ main {
   flex-direction: column;
 }
 
-header.app-header {
-  height: 120px;
-  background: url(/assets/img/header.png) no-repeat 50% 50%;
-  background-size: cover;
-}
-
-
-footer.app-footer {
-  margin-top: auto;
-  height: 200px;
-  background: url(/assets/img/footer.png) no-repeat 50% 100%;
-  background-size: contain;
-}
-
-@include tablets-down {
-  header.app-header {
-    height: 128px;
-  }
-}
