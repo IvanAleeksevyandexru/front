@@ -50,7 +50,9 @@ export class CustomScreenComponent implements OnChanges {
     // TODO добавить валидацию и проверку заполнения всех обязательных полей
     const responseData = {};
     const isValid = Object.keys(this.state).every((key) => this.state[key].valid);
-    if (isValid) {
+    console.log(isValid);
+    // TODO HARDCODE
+    if (true) {
       Object.keys(this.state).forEach((key) => {
         responseData[key] = { visited: true, value: this.state[key].value };
       });

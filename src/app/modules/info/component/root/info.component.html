@@ -3,7 +3,22 @@
 
     <app-page-name class="info__head">{{data?.header}}</app-page-name>
 
-    <div class="info__body" [innerHTML]="data?.components[0]?.label"></div>
+    <hr class="divider">
+
+    <div class="info__body">
+      <ng-container [ngSwitch]="data?.components[0].type">
+
+        <app-welcome-screen
+          *ngSwitchCase="infoScreenComponent.welcome"
+          [data]="data?.components[0]"></app-welcome-screen>
+
+        <app-requirements-list
+          *ngSwitchCase="infoScreenComponent.serviceDscrScr"
+          [data]="data?.components[0].label"></app-requirements-list>
+
+      </ng-container>
+
+    </div>
 
     <div class="info__footer info-footer">
       <lib-button (click)="nextStep()" class="info-footer__submit" size="lg">

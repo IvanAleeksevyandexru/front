@@ -7,15 +7,18 @@ export enum COMPONENT_TYPE {
 }
 
 export enum SCREEN_COMPONENT_NAME {
-  'welcome' = 'WelcomeScr',
   'confirmPersonalUserRegAddr' = 'ConfirmPersonalUserRegAddr',
-  'serviceDscrScr' = 'ServiceDscrScr',
   'confirmPersonalUserData' = 'ConfirmPersonalUserData',
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
   'notificationAboutAbsentAccountScreen' = 'NotificationAboutAbsentAccountScreen',
   'registrationAddr' = 'RegistrationAddr'
+}
+
+export enum INFO_SCREEN_COMPONENT {
+  'welcome' = 'WelcomeScr',
+  'serviceDscrScr' = 'ServiceDscrScr',
 }
 
 export enum UNIQUE_COMPONENT_NAME {

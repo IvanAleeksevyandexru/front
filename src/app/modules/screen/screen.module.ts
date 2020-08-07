@@ -1,8 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ScreenComponent} from './components/root/screen.component';
-import {WelcomeBlockModule} from './components/welcome-block/screens/welcome-block-screen/welcome-block.module';
-import {RequirementsListModule} from './components/requirements-list-screen/requirements-list.module';
 // eslint-disable-next-line max-len
 import {ConfirmPersonalUserPhoneScreenModule} from './components/confirm-personal-user/screens/confirm-personal-user-phone-screen/confirm-personal-user-phone-screen.module';
 // eslint-disable-next-line max-len
@@ -31,8 +29,6 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    WelcomeBlockModule,
-    RequirementsListModule,
     ConfirmPersonalUserPhoneScreenModule,
     ConfirmPersonalUserEmailScreenModule,
     ConfirmPersonalUserAddressScreenModule,

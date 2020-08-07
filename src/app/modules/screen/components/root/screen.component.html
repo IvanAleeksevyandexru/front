@@ -6,17 +6,9 @@
 
     <app-screen-pad class="body">
       <ng-container [ngSwitch]="data?.components[0].type">
-        <app-welcome-screen
-          *ngSwitchCase="screenComponentName.welcome"
-          [data]="data?.components[0]"></app-welcome-screen>
-
         <app-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
           [data]="data?.components[0]"></app-confirm-personal-user-address-screen>
-
-        <app-requirements-list
-          *ngSwitchCase="screenComponentName.serviceDscrScr"
-          [data]="data?.components[0].label"></app-requirements-list>
 
         <app-confirm-personal-user-data-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserData"
