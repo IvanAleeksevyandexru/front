@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import { EgpuResponseComponentInterface } from '../../../../../../interfaces/epgu.service.interface';
+import { ChildUnder14Interface } from '../../../../../../interfaces/children.interface';
 
 @Component({
   selector: 'app-add-children-screen',
@@ -31,11 +32,23 @@ export class AddChildrenScreenComponent implements OnInit {
   };
 
   addNewChild() {
-    const newChild = {
+    const newChild: ChildUnder14Interface = {
       isNew: true,
       id: this.childrenListInitial.length + 1,
-      firstName: '',
       isSelected: true,
+      birthDate: '',
+      gender: '',
+      firstName: '',
+      lastName: '',
+      middleName: '',
+      rfBirthCertificateSeries: '',
+      rfBirthCertificateNumber: '',
+      rfBirthCertificateActNumber: '',
+      rfBirthCertificateIssueDate: '',
+      rfBirthCertificateIssuedBy: '',
+      relationshipToChild: '',
+      registrationAddress: '',
+      registrationAddressDate: '',
     };
     this.childrenList.push(newChild);
     this.selectedChildrenList.push(newChild);
