@@ -7,11 +7,11 @@ import { EgpuResponseDisplayInterface } from '../../../../interfaces/epgu.servic
 import { INFO_SCREEN_COMPONENT } from '../../../../constant/global';
 
 @Component({
-  selector: 'app-info',
-  templateUrl: './info.component.html',
-  styleUrls: ['./info.component.scss'],
+  selector: 'app-info-screen',
+  templateUrl: './info-screen.component.html',
+  styleUrls: ['./info-screen.component.scss'],
 })
-export class InfoComponent {
+export class InfoScreenComponent {
   infoScreenComponent = INFO_SCREEN_COMPONENT;
 
   @Input() data: EgpuResponseDisplayInterface;

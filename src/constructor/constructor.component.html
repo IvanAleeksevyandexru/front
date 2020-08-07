@@ -1,10 +1,10 @@
 <main class="app-content">
   <div class="custom-wrapper">
     <ng-container [ngSwitch]="componentData?.type">
-      <app-info
+      <app-info-screen
         *ngSwitchCase="constructorComponentType.INFO"
         [data]="componentData"
-        (nextStepEvent)="nextStep()"></app-info>
+        (nextStepEvent)="nextStep()"></app-info-screen>
       <app-screen
         *ngSwitchCase="constructorComponentType.COMPONENT"
         [data]="componentData"

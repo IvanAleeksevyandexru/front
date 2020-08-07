@@ -8,7 +8,7 @@ import {QuestionScreenModule} from '../app/modules/questions/question-screen.mod
 import {CustomScreenModule} from '../app/modules/custom/custom-screen.module';
 import { SharedComponentsModule } from '../app/module-share/shared-components.module';
 import { UniqueScreenModule } from '../app/modules/unique/unique-screen.module';
-import {InfoModule} from '../app/modules/info/info.module';
+import {InfoScreenModule} from '../app/modules/info/info-screen.module';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -29,7 +29,7 @@ const COMPONENTS = [
 
         SharedComponentsModule,
         EpguLibModule.forChild(),
-        InfoModule,
+        InfoScreenModule,
     ],
   providers: [],
   exports: [
