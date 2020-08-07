@@ -14,11 +14,11 @@ export class BirthCertificateComponent implements OnInit {
 
   isDataComplete(child) {
     return (
-      child.rfBirthCertificateSeries.length &&
-      child.rfBirthCertificateNumber.length &&
-      child.rfBirthCertificateActNumber.length &&
-      child.rfBirthCertificateIssueDate.length &&
-      child.rfBirthCertificateIssuedBy.length &&
+      child?.rfBirthCertificateSeries?.length &&
+      child?.rfBirthCertificateNumber?.length &&
+      child?.rfBirthCertificateActNumber?.length &&
+      child?.rfBirthCertificateIssueDate?.length &&
+      child?.rfBirthCertificateIssuedBy?.length &&
       true
     );
   }

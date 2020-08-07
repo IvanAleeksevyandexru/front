@@ -15,6 +15,7 @@ export class AddChildrenScreenComponent implements OnInit {
   sectionId = 1; // variable for 'screen switching' according to sub-components order
   valueParsed: any;
   childrenList: any;
+  childrenListInitial: any;
   childrenSelectList: Array<ListItem>;
   selectedChildrenList: any = [];
 
@@ -29,27 +30,13 @@ export class AddChildrenScreenComponent implements OnInit {
     handleUpdateChild: this.updateChild.bind(this),
   };
 
-  ngOnInit(): void {
-    // temporary hardcoded headers for sub-components
-    this.headerMapped = {
-      1: this.header,
-      2: 'Свидетельство о рождении',
-      3: `Кем вы приходитесь ребенку? (<span>${this.selectedChildrenList[0]?.firstName}</span>)`,
-      4: `Адрес постоянной регистрации ребенка (<span>${this.selectedChildrenList[0]?.firstName}</span>)`,
-    };
-
-    this.valueParsed = JSON.parse(this.data.value);
-    this.childrenList = this.valueParsed?.children;
-    this.childrenSelectList = this.childrenList.map((child) => {
-      return {
-        id: child.id,
-        text: child.firstName,
-      };
-    });
-  }
-
   addNewChild() {
-    const newChild = { isNew: true, id: this.childrenList.length + 1, firstName: '' };
+    const newChild = {
+      isNew: true,
+      id: this.childrenListInitial.length + 1,
+      firstName: '',
+      isSelected: true,
+    };
     this.childrenList.push(newChild);
     this.selectedChildrenList.push(newChild);
   }
@@ -75,7 +62,9 @@ export class AddChildrenScreenComponent implements OnInit {
 
   handleSelect(event) {
     const { item } = event;
-    this.selectedChildrenList.push(this.childrenList.find((child) => child.id === item.id));
+    const selectedChild = this.childrenList.find((child) => child.id === item.id);
+    selectedChild.isSelected = true;
+    this.selectedChildrenList.push(selectedChild);
   }
 
   handleAnswerSelect(event) {
@@ -104,5 +93,25 @@ export class AddChildrenScreenComponent implements OnInit {
     this.headerMapped[3] = `Кем вы приходитесь ребенку? (<span>${this.selectedChildrenList[0]?.firstName}</span>)`;
     this.headerMapped[4] = `Адрес постоянной регистрации ребенка (<span>${this.selectedChildrenList[0]?.firstName}</span>)`;
     this.sectionId = step || this.sectionId + 1;
+  }
+
+  ngOnInit(): void {
+    // temporary hardcoded headers for sub-components
+    this.headerMapped = {
+      1: this.header,
+      2: 'Свидетельство о рождении',
+      3: `Кем вы приходитесь ребенку? (<span>${this.selectedChildrenList[0]?.firstName}</span>)`,
+      4: `Адрес постоянной регистрации ребенка (<span>${this.selectedChildrenList[0]?.firstName}</span>)`,
+    };
+
+    this.valueParsed = JSON.parse(this.data.value);
+    this.childrenListInitial = [...this.valueParsed?.children];
+    this.childrenList = this.valueParsed?.children;
+    this.childrenSelectList = this.childrenList.map((child) => {
+      return {
+        id: child.id,
+        text: child.firstName,
+      };
+    });
   }
 }
