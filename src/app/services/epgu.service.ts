@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import { DictionaryOptionsInterface } from '../interfaces/dictionary-options.interface';
-import { environment } from '../../environments/environment';
-import { EgpuResponseInterface } from '../interfaces/epgu.service.interface';
+import {EgpuResponseInterface} from '../interfaces/epgu.service.interface';
+import {environment} from '../../environments/environment';
+import {DictionaryOptionsInterface, DictionaryResponse} from '../interfaces/dictionary-options.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +14,14 @@ export class EpguService {
   ) {
   }
 
-  public getData(): Observable<any> {
+  public getData() {
     const path = `${environment.apiUrl}/api/getService/${environment.serviceId}`;
     return this.http.get<EgpuResponseInterface>(path, {
       withCredentials: false
     });
   }
 
-  public setData(data): any {
+  public setData(data) {
     const path = `${environment.apiUrl}/api/service/${environment.serviceId}/scenario/getNextStep`;
     return this.http.post<EgpuResponseInterface>(path, {
       ...data,
@@ -36,10 +35,10 @@ export class EpguService {
 
   getDictionary(dictionaryName: string, options: DictionaryOptionsInterface = {}) {
     const path = `${environment.dictionaryUrl}/${dictionaryName}`;
-    return this.http.post<EgpuResponseInterface>(path, {
+    return this.http.post<DictionaryResponse>(path, {
       treeFiltering: options.treeFiltering || 'ONELEVEL',
       pageNum: options.pageNum || 1,
-      pageSize: options.pageSize || '150',
+      pageSize: options.pageSize || '1000',
       parentRefItemValue: options.parentRefItemValue || '',
       selectAttributes: options.selectAttributes || ['*'],
       tx: options.tx || '',

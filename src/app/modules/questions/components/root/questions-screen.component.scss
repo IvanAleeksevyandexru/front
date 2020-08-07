@@ -7,7 +7,6 @@
 
 .question {
   &__wrapper {
-    height: 100%;
     display: flex;
     flex-direction: column;
     min-height: inherit;
@@ -16,7 +15,7 @@
     }
   }
 
-  &__body{
+  &__body {
     margin-top: auto;
     @include tablets-up {
       margin-top: 0;
@@ -25,6 +24,9 @@
 }
 
 .answer__item {
-  margin-bottom: 8px;
+  margin-bottom: 16px;
+  @include tablets-up {
+    margin-bottom: 24px;
+  }
 }
 

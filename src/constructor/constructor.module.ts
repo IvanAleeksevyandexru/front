@@ -8,6 +8,7 @@ import {QuestionScreenModule} from '../app/modules/questions/question-screen.mod
 import {CustomScreenModule} from '../app/modules/custom/custom-screen.module';
 import { SharedComponentsModule } from '../app/module-share/shared-components.module';
 import { UniqueScreenModule } from '../app/modules/unique/unique-screen.module';
+import {InfoModule} from '../app/modules/info/info.module';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -17,18 +18,19 @@ const COMPONENTS = [
   declarations: [
     ...COMPONENTS
   ],
-  imports: [
-    CommonModule,
-    ConstructorComponentRoutingModule,
+    imports: [
+        CommonModule,
+        ConstructorComponentRoutingModule,
 
-    ScreenModule,
-    CustomScreenModule,
-    QuestionScreenModule,
-    UniqueScreenModule,
+        ScreenModule,
+        CustomScreenModule,
+        QuestionScreenModule,
+        UniqueScreenModule,
 
-    SharedComponentsModule,
-    EpguLibModule.forChild(),
-  ],
+        SharedComponentsModule,
+        EpguLibModule.forChild(),
+        InfoModule,
+    ],
   providers: [],
   exports: [
     ...COMPONENTS

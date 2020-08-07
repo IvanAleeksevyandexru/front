@@ -1,22 +1,22 @@
-<header class="app-header"></header>
 <main class="app-content">
   <div class="custom-wrapper">
     <ng-container [ngSwitch]="componentData?.type">
+      <app-info
+        *ngSwitchCase="constructorComponentType.INFO"
+        [data]="componentData"
+        (nextStepEvent)="nextStep()"></app-info>
       <app-screen
         *ngSwitchCase="constructorComponentType.COMPONENT"
         [data]="componentData"
-        (nextStepEvent)="nextStep()"
-      ></app-screen>
+        (nextStepEvent)="nextStep()"></app-screen>
       <app-custom-screen
         *ngSwitchCase="constructorComponentType.CUSTOM"
         [data]="componentData"
-        (nextStepEvent)="nextStepFromCustomScreen($event)">
-      </app-custom-screen>
+        (nextStepEvent)="nextStepFromCustomScreen($event)"></app-custom-screen>
       <app-question-screen
         *ngSwitchCase="constructorComponentType.QUESTION"
         [data]="componentData"
-        (answerSelect)="onAnswerSelect($event)"
-      ></app-question-screen>
+        (answerSelect)="onAnswerSelect($event)"></app-question-screen>
       <app-unique-screen
         *ngSwitchCase="constructorComponentType.UNIQUE"
         [data]="componentData"
@@ -25,4 +25,3 @@
     </ng-container>
   </div>
 </main>
-<footer class="app-footer"></footer>

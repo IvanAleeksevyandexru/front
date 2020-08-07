@@ -1,0 +1,18 @@
+<div class="item" *ngFor="let field of data?.attrs?.fields">
+
+  <div class="title">{{field.label}}</div>
+
+  <ng-container [ngSwitch]="field.fieldName">
+
+<!--    <div class="content" *ngSwitchCase="'regDate'">{{date | date}}</div>-->
+    <lib-date-picker *ngSwitchCase="'regDate'"></lib-date-picker>
+    <lib-plain-input *ngSwitchDefault></lib-plain-input>
+
+  </ng-container>
+</div>
+
+<div class="item hint-wrapper">
+  <div class="item__hint" *ngFor="let hint of data?.attrs?.hints" (click)="hintClick(hint.timestamp)">{{hint.label}}</div>
+</div>
+
+

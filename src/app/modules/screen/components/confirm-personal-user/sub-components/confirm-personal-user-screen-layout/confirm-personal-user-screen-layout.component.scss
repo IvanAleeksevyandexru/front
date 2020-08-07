@@ -6,28 +6,27 @@
 $button-mt: 5px;
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 :host::ng-deep {
   .footer {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     flex-wrap: wrap;
     margin-top: auto;
-    @include tablets-down {
-      flex-direction: column;
-    }
-  }
-  .footer app-confirm-personal-user-button {
     @include tablets-up {
-      margin: 5px 10px;
+      flex-direction: row;
+      margin-top: 1rem;
     }
-  }
-  .container {
-    @include tablets-down {
-      display: flex;
-      flex-direction: column;
+
+    app-confirm-personal-user-button {
+      @include tablets-up {
+        margin: 5px 10px;
+      }
     }
   }
 }

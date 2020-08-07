@@ -1,13 +1,15 @@
 @import "../../../../styles/breakpoint";
 @import "../../../../styles/variables";
 
+
+
 :host {
   display: block;
   font-family: $secondary_font, sans-serif;
 }
 
-.requirements-list__body {
-  text-align: center;
+.info__body {
+  text-align: left;
   font-size: .9rem;
   line-height: 1.5;
   @include tablets-up {
@@ -48,4 +50,11 @@
       }
     }
   }
+}
+
+.info__footer {
+  text-align: center;
+}
+.info-footer__submit {
+  display: inline-block;
 }

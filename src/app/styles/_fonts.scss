@@ -1,7 +1,7 @@
 @import "variables";
 
 @font-face {
-  font-family: $secondary_font;
+  font-family: $primary_font;
   src: url('/assets/fonts/Lato/Lato-BlackItalic.woff') format('woff');
   font-weight: $fw-black;
   font-style: italic;
@@ -128,7 +128,10 @@
   font-display: optional;
 }
 
+
+// SECONDARY_FORT
 // ALS-Ekibastuz fonts
+
 @font-face {
   font-family: $secondary_font;
   src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Black.woff") format("woff");

@@ -2,9 +2,28 @@
 @import "../../../../../../../../styles/breakpoint";
 @import "../../../../../../../../styles/functions";
 
-
+$item-hint-mx: 13px;
 :host {
   display: block;
+}
+
+.item:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.item__hint {
+  background: $light-gray;
+  border-radius: 4px;
+  padding: 12px;
+  margin: $item-hint-mx $item-hint-mx 0;
+  cursor: pointer;
+}
+.hint-wrapper {
+  margin-left: -$item-hint-mx;
+  margin-right: -$item-hint-mx;
+  margin-top: -$item-hint-mx;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .title {

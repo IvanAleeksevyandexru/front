@@ -2,8 +2,5 @@
 @import "../../../../../../styles/breakpoint";
 
 :host {
-  display: block;
-  @include tablets-down {
-    flex-grow: 1;
-  }
+
 }

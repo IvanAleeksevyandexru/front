@@ -5,51 +5,26 @@
 
 :host {
   display: block;
-  text-align: center;
-  @include tablets-up {
-    text-align: left;
-  }
 }
 
-
-
-.item:not(:last-child) {
+.item {
   margin-bottom: 20px;
 }
 
-.head {
-  display: flex;
-  justify-content: space-between;
-}
-
-.head__title {
-  //text-align: inherit;
-  font-family: $tertiary_font;
-  font-size: 12px;
-  line-height: 24px;
-  color: $storm-gray;
-  margin-bottom: 8px;
-  @include tablets-up {
-    font-size: 16px;
+.title {
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 4px;
+  &:first-letter {
+    text-transform: uppercase;
   }
 }
 
 .content {
-  //text-align: inherit;
-  font-family: $quaternary_font;
+  font-size: 16px;
   line-height: 24px;
-  font-size: 20px;
   margin-bottom: 4px;
-  @include tablets-up {
-    font-size: 18px;
-    margin-bottom: 0;
-  }
-}
-
-hr {
-  background: $quartz;
-  margin-bottom: 4px;
-  @include tablets-up {
-    display: none;
-  }
+  border-radius: 4px;
+  padding: 14px 16px;
+  background: $solitude;
 }
