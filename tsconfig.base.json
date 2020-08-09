@@ -14,12 +14,6 @@
     "lib": [
       "es2018",
       "dom"
-    ],
-    "paths": {
-      "epgu-constructor": [
-        "dist/epgu-constructor/epgu-constructor",
-        "dist/epgu-constructor"
-      ]
-    }
+    ]
   }
 }

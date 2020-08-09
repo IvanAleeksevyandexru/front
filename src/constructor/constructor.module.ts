@@ -10,6 +10,7 @@ import {SharedComponentsModule} from '../app/module-share/shared-components.modu
 import {UniqueScreenModule} from '../app/modules/unique/unique-screen.module';
 import {InfoScreenModule} from '../app/modules/info/info-screen.module';
 import {InvitationModule} from '../app/modules/invitation/invitation.module';
+import {EpguConstructorModule} from '@epgu-constructor';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -28,6 +29,8 @@ const COMPONENTS = [
     QuestionScreenModule,
     UniqueScreenModule,
     InvitationModule,
+
+    EpguConstructorModule,
 
     SharedComponentsModule,
     EpguLibModule.forChild(),
