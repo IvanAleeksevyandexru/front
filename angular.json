@@ -129,6 +129,46 @@
           }
         }
       }
+    },
+    "epgu-constructor": {
+      "projectType": "library",
+      "root": "projects/epgu-constructor",
+      "sourceRoot": "projects/epgu-constructor/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/epgu-constructor/tsconfig.lib.json",
+            "project": "projects/epgu-constructor/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/epgu-constructor/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/epgu-constructor/src/test.ts",
+            "tsConfig": "projects/epgu-constructor/tsconfig.spec.json",
+            "karmaConfig": "projects/epgu-constructor/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/epgu-constructor/tsconfig.lib.json",
+              "projects/epgu-constructor/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "epgu-form-frontend",

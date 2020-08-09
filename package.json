@@ -12,16 +12,6 @@
     "lint: auto-fix": "ng lint --fix",
     "e2e": "ng e2e"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged --relative"
-    }
-  },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "eslint --fix"
-    ]
-  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~10.0.4",
@@ -51,6 +41,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.3",
+    "@angular-devkit/build-ng-packagr": "~0.1000.5",
     "@angular-eslint/builder": "0.0.1-alpha.32",
     "@angular-eslint/eslint-plugin": "0.0.1-alpha.32",
     "@angular-eslint/eslint-plugin-template": "0.0.1-alpha.32",
@@ -72,6 +63,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~3.3.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "ng-packagr": "^10.0.0",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "typescript": "~3.9.5"
