@@ -7,6 +7,15 @@ export enum COMPONENT_TYPE {
 }
 
 export enum SCREEN_COMPONENT_NAME {
+  'QUESTION' = 'QUESTION',
+  'COMPONENT' = 'COMPONENT',
+  'CUSTOM' = 'CUSTOM',
+  'UNIQUE' = 'UNIQUE',
+  'INVITATION_ERROR' = 'INVITATION_ERROR',
+}
+
+export enum SCREEN_COMPONENT_NAME {
+  'invitationError' = 'InvitationError',
   'confirmPersonalUserRegAddr' = 'ConfirmPersonalUserRegAddr',
   'confirmPersonalUserData' = 'ConfirmPersonalUserData',
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',

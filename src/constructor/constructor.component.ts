@@ -60,8 +60,8 @@ export class ConstructorComponent implements OnInit {
     console.log('initResponse:', display);
   }
 
-  sendData(data) {
-    this.response.currentValue[this.componentId] = { visited: true, value: data };
+  sendData(data, componentId?: string) {
+    this.response.currentValue[componentId || this.componentId] = { visited: true, value: data };
     this.epguService.setData(this.response).subscribe(
       (response) => {
         console.log('----- SET DATA ---------');
@@ -80,6 +80,10 @@ export class ConstructorComponent implements OnInit {
 
   onAnswerSelect(data: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface) {
     this.sendData(data.value);
+  }
+
+  onEmailSelect(email: string): void {
+    this.sendData(email, 'errorScr');
   }
 
   nextStepFromCustomScreen(data) {

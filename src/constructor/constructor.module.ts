@@ -6,9 +6,10 @@ import {ConstructorComponentRoutingModule} from './constructor-routing.module';
 import {ScreenModule} from '../app/modules/screen/screen.module';
 import {QuestionScreenModule} from '../app/modules/questions/question-screen.module';
 import {CustomScreenModule} from '../app/modules/custom/custom-screen.module';
-import { SharedComponentsModule } from '../app/module-share/shared-components.module';
-import { UniqueScreenModule } from '../app/modules/unique/unique-screen.module';
+import {SharedComponentsModule} from '../app/module-share/shared-components.module';
+import {UniqueScreenModule} from '../app/modules/unique/unique-screen.module';
 import {InfoScreenModule} from '../app/modules/info/info-screen.module';
+import {InvitationModule} from '../app/modules/invitation/invitation.module';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -18,23 +19,25 @@ const COMPONENTS = [
   declarations: [
     ...COMPONENTS
   ],
-    imports: [
-        CommonModule,
-        ConstructorComponentRoutingModule,
+  imports: [
+    CommonModule,
+    ConstructorComponentRoutingModule,
 
-        ScreenModule,
-        CustomScreenModule,
-        QuestionScreenModule,
-        UniqueScreenModule,
+    ScreenModule,
+    CustomScreenModule,
+    QuestionScreenModule,
+    UniqueScreenModule,
+    InvitationModule,
 
-        SharedComponentsModule,
-        EpguLibModule.forChild(),
-        InfoScreenModule,
-    ],
+    SharedComponentsModule,
+    EpguLibModule.forChild(),
+    InfoScreenModule,
+  ],
   providers: [],
   exports: [
     ...COMPONENTS
   ]
 })
 
-export class ConstructorModule { }
+export class ConstructorModule {
+}
