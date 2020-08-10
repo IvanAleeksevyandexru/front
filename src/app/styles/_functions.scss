@@ -1,7 +1,8 @@
 @import "variables";
+@import "breakpoint";
 
 @mixin shadow {
-  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
 }
 
 @mixin btn--light {
@@ -25,5 +26,12 @@
   &:active {
     background: $egyptian-blue;
     color: $white;
+  }
+}
+
+%submit-button-margin {
+  margin-top: 8px;
+  @include tablets-up {
+    margin-top: 32px;
   }
 }

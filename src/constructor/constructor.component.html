@@ -1,8 +1,10 @@
-<header class="app-header"></header>
 <main class="app-content">
   <div class="custom-wrapper">
-
     <ng-container [ngSwitch]="componentData?.type">
+      <app-info
+        *ngSwitchCase="constructorComponentType.INFO"
+        [data]="componentData"
+        (nextStepEvent)="nextStep()"></app-info>
       <app-invitation-screen
         (resolve)="onEmailSelect($event)"
         *ngSwitchCase="constructorComponentType.INVITATION_ERROR"
@@ -22,10 +24,8 @@
       <app-unique-screen
         *ngSwitchCase="constructorComponentType.UNIQUE"
         [data]="componentData"
-        (answerSelect)="onAnswerSelect($event)"></app-unique-screen>
+        (nextStepEvent)="nextStep($event)"
+      ></app-unique-screen>
     </ng-container>
-
   </div>
 </main>
-<footer class="app-footer"></footer>
-

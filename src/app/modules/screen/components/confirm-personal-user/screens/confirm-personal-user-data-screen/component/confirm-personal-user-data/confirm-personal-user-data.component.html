@@ -1,0 +1,24 @@
+
+<div class="data">
+
+  <div class="data__group data-group">
+    <div class="data-group__title">{{fullName}}</div>
+    <div class="data-group__items">
+      <div class="data__item data-item">
+        <div class="data-item__label">{{birthDay.label}}</div>
+        <div class="data-item__value">{{(data.value | toJson)[birthDay.fieldName]}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="data__group data-group">
+    <div class="data-group__title">Паспорт гражданина РФ</div>
+    <div class="data-group__items">
+      <div *ngFor="let field of passportFields" class="data__item data-item">
+        <div class="data-item__label">{{field.label}}</div>
+        <div class="data-item__value">{{(data.value | toJson)[field.fieldName]}}</div>
+      </div>
+    </div>
+  </div>
+
+</div>

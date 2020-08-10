@@ -5,6 +5,9 @@
 :host {
   display: block;
   background: $white;
+  padding: $screen-pad-p;
+  border-radius: $border-lg;
+  @include shadow();
 
   @include tablets-down {
     display: flex;

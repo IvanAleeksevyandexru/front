@@ -1,0 +1,16 @@
+<div class="body">
+  <app-confirm-personal-user-address
+    [isEditable]="isEditable"
+    [data]="data"
+    (dataEditedEvent)="handleDataChange($event)"
+  ></app-confirm-personal-user-address>
+</div>
+
+<div class="footer">
+  <app-confirm-personal-user-button
+    class="footer__button"
+    *ngFor="let action of data?.attrs?.actions"
+    (click)="handleAction(action)"
+    >{{ action.label }}</app-confirm-personal-user-button
+  >
+</div>

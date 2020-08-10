@@ -1,8 +1,2 @@
 @import "../../../../../../styles/variables";
 @import "../../../../../../styles/breakpoint";
-
-@include tablets-up {
-  .footer {
-    margin-top: 1rem !important;
-  }
-}

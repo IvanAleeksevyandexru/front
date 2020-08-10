@@ -1,1 +1,13 @@
-<p>child-relationship works!</p>
+<section class="footer">
+  <app-answer-choice
+    class="footer__button"
+    (click)="answerChoose(answerOption)"
+    [data]="answerOption">
+  </app-answer-choice>
+
+  <app-answer-choice
+    class="footer__button"
+    (click)="answerChoose('Опекун')"
+    [data]="'Опекун'">
+  </app-answer-choice>
+</section>

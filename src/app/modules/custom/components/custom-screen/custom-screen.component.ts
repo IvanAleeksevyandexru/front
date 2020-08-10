@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem } from 'epgu-lib';
-import { EpguService } from '../../../../../services/epgu.service';
+import { EpguService } from '../../../../services/epgu.service';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 import {
   CustomComponentDictionaryState,
@@ -34,7 +34,9 @@ export class CustomScreenComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
       this.data.components.forEach((component) => {
-        this.initState(component.id);
+        if (component.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection) {
+          this.initState(component.id);
+        }
         if (component.type === CUSTOM_COMPONENT_ITEM_TYPE.Dictionary) {
           const dictionaryName = component.attrs.dictionaryType;
           this.initDictionary(dictionaryName);

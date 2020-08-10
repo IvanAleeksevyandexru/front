@@ -1,6 +1,6 @@
 <app-screen-container>
   <div class="inner">
-    <div *ngIf="data.header" class="head">
+    <div *ngIf="data?.header" class="head">
       <app-page-name>{{data.header}}</app-page-name>
     </div>
 
@@ -52,7 +52,7 @@
     </app-screen-pad>
 
     <div class="footer">
-      <lib-button (click)="nextStep()" class="footer__btn-submit">
+      <lib-button (click)="nextStep()" class="footer__btn-submit" size="lg">
         <div class="secondary-font">{{data?.submitLabel || 'Продолжить'}}</div>
       </lib-button>
     </div>

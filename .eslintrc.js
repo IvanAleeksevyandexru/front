@@ -34,6 +34,7 @@ module.exports = {
         'import/prefer-default-export': 'off',
         'class-methods-use-this': 'off',
         "lines-between-class-members": "off",
+        "max-len": ["error", { "code": 180, "ignoreStrings": true }],
         "@typescript-eslint/lines-between-class-members": ["off", "always", { "exceptAfterOverload": false }],
         '@typescript-eslint/unbound-method': [
           'error',

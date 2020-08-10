@@ -5,11 +5,12 @@ import {QuestionsScreenComponent} from './components/root/questions-screen.compo
 import {AnswerChoiceComponent} from './components/answer-choice/answer-choice.component';
 
 const COMPONENTS = [
-  QuestionsScreenComponent
+  QuestionsScreenComponent,
+  AnswerChoiceComponent
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS, AnswerChoiceComponent],
+  declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   imports: [
     CommonModule,

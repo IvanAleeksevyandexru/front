@@ -1,5 +1,6 @@
 export enum COMPONENT_TYPE {
   'QUESTION' = 'QUESTION',
+  'INFO' = 'INFO',
   'COMPONENT' = 'COMPONENT',
   'CUSTOM' = 'CUSTOM',
   'UNIQUE' = 'UNIQUE',
@@ -16,6 +17,7 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
   'notificationAboutAbsentAccountScreen' = 'NotificationAboutAbsentAccountScreen',
+  'registrationAddr' = 'RegistrationAddr',
   'addPassport' = 'AddPassport'
 }
 

@@ -1,5 +1,6 @@
 @import "../../../../styles/breakpoint";
 @import "../../../../styles/variables";
+@import "../../../../styles/functions";
 
 .inner {
   display: flex;
@@ -12,12 +13,24 @@
   }
 }
 
+.body {
+  display: flex;
+  @include tablets-down {
+    flex-grow: 1;
+  }
+  &::ng-deep > * {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
 .footer {
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: $secondary_font;
-  margin-top: 8px;
+  margin-top: 24px;
   @include tablets-up {
     margin-top: 32px;
   }

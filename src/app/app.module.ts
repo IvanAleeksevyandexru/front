@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {ConstructorModule} from '../constructor/constructor.module';
 import {EpguLibCommonModule} from 'epgu-lib';
+import { DirectivesModule } from './directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import {EpguLibCommonModule} from 'epgu-lib';
     AppRoutingModule,
     ConstructorModule,
     EpguLibCommonModule,
+    DirectivesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
