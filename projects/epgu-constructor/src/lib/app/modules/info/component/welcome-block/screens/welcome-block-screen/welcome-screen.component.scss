@@ -1,0 +1,14 @@
+@import "../../../../../../../styles/breakpoint";
+@import "../../../../../../../styles/variables";
+
+:host {
+  &::ng-deep {
+    p {
+      margin: 0;
+    }
+  }
+}
+
+.welcome__content {
+
+}

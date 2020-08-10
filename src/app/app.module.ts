@@ -2,15 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import {ConstructorModule} from '../constructor/constructor.module';
-import {EpguLibCommonModule} from 'epgu-lib';
-import { DirectivesModule } from './directives/directives.module';
-import {RouterModule, Routes} from '@angular/router';
+import {ConstructorModule} from '@epgu-constructor';
+import {environment} from '../environments/environment';
 
-
-const routes: Routes = [
-  { path: '', component: ConstructorModule},
-];
 
 @NgModule({
   declarations: [
@@ -19,10 +13,11 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
-    ConstructorModule,
-    EpguLibCommonModule,
-    DirectivesModule,
-    RouterModule.forRoot(routes)
+    ConstructorModule.forRoot({
+      serviceId: environment.serviceId,
+      apiUrl: environment.apiUrl,
+      dictionaryUrl: environment.dictionaryUrl
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

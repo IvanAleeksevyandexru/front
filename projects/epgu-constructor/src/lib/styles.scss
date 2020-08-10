@@ -1,0 +1,32 @@
+@import "./styles/variables";
+@import "./styles/fonts";
+@import "./styles/icons";
+@import "./styles/buttons";
+@import "./styles/utilities";
+
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  font-family: $primary_font, sans-serif;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  color: $cyprus;
+  background-color: $pattens-blue;
+}
+
+h1 {
+  margin: 0
+}
+
+a {
+  text-decoration: none;
+  color: $egyptian-blue;
+}
+
+button {
+  background: none;
+  border: 0;
+}
