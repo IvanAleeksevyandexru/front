@@ -74,8 +74,8 @@ export class AddChildrenScreenComponent implements OnInit {
   }
 
   handleSelect(event) {
-    const { item } = event;
-    const selectedChild = this.childrenList.find((child) => child.id === item.id);
+    const { id } = event;
+    const selectedChild = this.childrenList.find((child) => child.id === id);
     selectedChild.isSelected = true;
     this.selectedChildrenList.push(selectedChild);
   }
