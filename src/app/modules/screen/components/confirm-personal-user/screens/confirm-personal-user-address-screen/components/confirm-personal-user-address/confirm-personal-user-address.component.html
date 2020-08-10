@@ -1,5 +1,5 @@
-<section>
-  <form #dataForm="ngForm" *ngIf="isEditable">
+<ng-template [ngIf]="isEditable" [ngIfElse]="nonEditable">
+  <form #dataForm="ngForm">
     <div class="item" *ngFor="let field of data?.attrs?.fields">
       <div class="head__title">{{ field.label }}</div>
       <lib-plain-input
@@ -9,11 +9,13 @@
       ></lib-plain-input>
     </div>
   </form>
+</ng-template>
 
-  <div *ngIf="!isEditable">
+<ng-template #nonEditable>
+  <div>
     <div class="item" *ngFor="let field of data?.attrs?.fields">
       <div class="head__title">{{ field.label }}</div>
       <div class="content">{{ (data?.value | toJson)[field.fieldName] }}</div>
     </div>
   </div>
-</section>
+</ng-template>
