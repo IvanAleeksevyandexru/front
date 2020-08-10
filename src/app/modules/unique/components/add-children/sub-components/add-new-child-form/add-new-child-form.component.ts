@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-new-child-form',
@@ -60,15 +60,17 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngAfterViewInit() {
-    this.newChildForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
-      const { birthDate, firstName, lastName, middleName, gender } = change;
-      this.child.birthDate = birthDate;
-      this.child.firstName = firstName;
-      this.child.lastName = lastName;
-      this.child.middleName = middleName;
-      this.child.gender = gender;
-      this.childUpdateEvent.emit(this.child);
-    });
+    this.newChildForm.form.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
+      .subscribe((change) => {
+        const { birthDate, firstName, lastName, middleName, gender } = change;
+        this.child.birthDate = birthDate;
+        this.child.firstName = firstName;
+        this.child.lastName = lastName;
+        this.child.middleName = middleName;
+        this.child.gender = gender;
+        this.childUpdateEvent.emit(this.child);
+      });
   }
 
   ngOnDestroy() {

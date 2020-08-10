@@ -29,6 +29,11 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/epgu-lib/assets/",
+                "output": "./lib-assets"
               }
             ],
             "styles": [
