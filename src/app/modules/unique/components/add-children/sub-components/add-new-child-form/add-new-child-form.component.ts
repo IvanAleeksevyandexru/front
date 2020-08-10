@@ -11,6 +11,7 @@ import {
 import { ListItem } from 'epgu-lib';
 import { Subject } from 'rxjs';
 import { takeUntil, delay } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-new-child-form',
@@ -51,7 +52,7 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
     this.childrenList = this.data.childrenList.map((child) => {
       const childFormatted = child;
       if (typeof child.birthDate === 'string') {
-        childFormatted.birthDate = new Date(child.birthDate.split('.').reverse().join('.'));
+        childFormatted.birthDate = moment(childFormatted.birthDate, 'DD.MM.YYYY').toDate();
       }
       return childFormatted;
     });
