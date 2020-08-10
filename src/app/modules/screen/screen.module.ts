@@ -19,7 +19,8 @@ import {
 } from './components/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module';
 import {ConfirmCreatedRequestScreenModule} from './components/confirm-created-request-screen/confirm-created-request-screen.module';
 import { AddChildrenScreenModule } from '../unique/components/add-children/screens/add-children-screen/add-children-screen.module';
-import {NotificationAboutAbsentAccountScreenModule} from './components/notification-about-absent-account/notification-about-absent-account-screen.module';
+import {NotificationAboutAbsentAccountScreenModule}
+  from './components/notification-about-absent-account/notification-about-absent-account-screen.module';
 
 const COMPONENTS = [
   ScreenComponent
