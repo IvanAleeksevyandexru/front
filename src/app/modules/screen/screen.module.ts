@@ -21,6 +21,7 @@ import {ConfirmCreatedRequestScreenModule} from './components/confirm-created-re
 import { AddChildrenScreenModule } from '../unique/components/add-children/screens/add-children-screen/add-children-screen.module';
 import {NotificationAboutAbsentAccountScreenModule}
   from './components/notification-about-absent-account/notification-about-absent-account-screen.module';
+import {AddPassportScreenModule} from './components/add-passport/add-passport-screen.module';
 
 const COMPONENTS = [
   ScreenComponent
@@ -40,6 +41,7 @@ const COMPONENTS = [
     ConfirmCreatedRequestScreenModule,
     AddChildrenScreenModule,
     NotificationAboutAbsentAccountScreenModule,
+    AddPassportScreenModule,
 
     SharedComponentsModule,
     EpguLibModule.forChild(),

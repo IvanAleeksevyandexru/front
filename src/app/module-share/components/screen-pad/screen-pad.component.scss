@@ -5,6 +5,15 @@
 :host {
   display: block;
   background: $white;
+
+  @include tablets-down {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+  }
+
   @include tablets-up {
     padding: $screen-pad-p;
     box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);

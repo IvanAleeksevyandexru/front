@@ -15,7 +15,8 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
-  'notificationAboutAbsentAccountScreen' = 'NotificationAboutAbsentAccountScreen'
+  'notificationAboutAbsentAccountScreen' = 'NotificationAboutAbsentAccountScreen',
+  'addPassport' = 'AddPassport'
 }
 
 export enum UNIQUE_COMPONENT_NAME {

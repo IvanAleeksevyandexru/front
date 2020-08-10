@@ -1,0 +1,22 @@
+<section class="add-passport-screen">
+  <div class="add-passport-screen__form">
+    <div class="form__name">
+      Паспорт РФ
+    </div>
+    <form [formGroup]="passportForm" class="form__inputs">
+      <div class="inputs__field">
+        <label class="field__label">
+          Серия
+        </label>
+        <lib-plain-input formControlName="series" type="number"></lib-plain-input>
+      </div>
+      <div class="inputs__field">
+        <label class="field__label">
+          Номер
+        </label>
+        <lib-plain-input formControlName="number" type="number"></lib-plain-input>
+      </div>
+    </form>
+  </div>
+</section>
+
