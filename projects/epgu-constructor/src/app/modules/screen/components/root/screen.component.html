@@ -25,16 +25,6 @@
           [data]="data?.components[0]">
         </app-confirm-personal-user-phone-screen>
 
-        <app-confirm-created-request-screen
-          *ngSwitchCase="screenComponentName.confirmCreatedRequestScreen"
-          [data]="data?.components[0]">
-        </app-confirm-created-request-screen>
-
-        <app-notification-about-absent-account
-          *ngSwitchCase="screenComponentName.notificationAboutAbsentAccountScreen"
-          [data]="data?.components[0]">
-        </app-notification-about-absent-account>
-
         <app-temporary-registration-addr-screen
           *ngSwitchCase="screenComponentName.registrationAddr"
           [data]="data?.components[0]">

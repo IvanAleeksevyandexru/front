@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RequirementsListComponent } from './requirements-list.component';
+import { InfoScreenBodyComponent } from './info-screen-body.component';
 
 describe('RequirementsListComponent', () => {
-  let component: RequirementsListComponent;
-  let fixture: ComponentFixture<RequirementsListComponent>;
+  let component: InfoScreenBodyComponent;
+  let fixture: ComponentFixture<InfoScreenBodyComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RequirementsListComponent ]
+      declarations: [ InfoScreenBodyComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RequirementsListComponent);
+    fixture = TestBed.createComponent(InfoScreenBodyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

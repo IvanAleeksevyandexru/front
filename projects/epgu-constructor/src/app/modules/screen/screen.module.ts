@@ -11,11 +11,7 @@ import {EpguLibModule} from 'epgu-lib';
 // eslint-disable-next-line max-len
 import {ConfirmPersonalUserEmailScreenModule} from './components/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module';
 // eslint-disable-next-line max-len
-import {ConfirmCreatedRequestScreenModule} from './components/confirm-created-request-screen/confirm-created-request-screen.module';
-// eslint-disable-next-line max-len
 import {AddChildrenScreenModule} from '../unique/components/add-children/screens/add-children-screen/add-children-screen.module';
-// eslint-disable-next-line max-len
-import {NotificationAboutAbsentAccountScreenModule} from './components/notification-about-absent-account/notification-about-absent-account-screen.module';
 // eslint-disable-next-line max-len
 import {TemporaryRegistrationAddrScreenModule} from './components/confirm-personal-user/screens/temporary-registration-addr/temporary-registration-addr-screen.module';
 import {EpgucSharedModule} from '../../shared-module/shared-components.module';
@@ -33,9 +29,7 @@ const COMPONENTS = [
     ConfirmPersonalUserEmailScreenModule,
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserDataScreenModule,
-    ConfirmCreatedRequestScreenModule,
     AddChildrenScreenModule,
-    NotificationAboutAbsentAccountScreenModule,
     TemporaryRegistrationAddrScreenModule,
 
     EpgucSharedModule,

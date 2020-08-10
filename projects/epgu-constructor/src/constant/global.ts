@@ -21,14 +21,11 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserData' = 'ConfirmPersonalUserData',
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
-  'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
-  'notificationAboutAbsentAccountScreen' = 'NotificationAboutAbsentAccountScreen',
   'registrationAddr' = 'RegistrationAddr'
 }
 
 export enum INFO_SCREEN_COMPONENT {
-  'welcome' = 'WelcomeScr',
-  'serviceDscrScr' = 'ServiceDscrScr',
+  'info' = 'InfoSrc',
 }
 
 export enum UNIQUE_COMPONENT_NAME {

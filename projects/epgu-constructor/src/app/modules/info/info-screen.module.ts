@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InfoScreenComponent } from './component/root/info-screen.component';
 import {EpguLibModule} from 'epgu-lib';
-import {WelcomeBlockModule} from './component/welcome-block/screens/welcome-block-screen/welcome-block.module';
-import {RequirementsListModule} from './component/requirements-list-screen/requirements-list.module';
+import {InfoScreenBodyModule} from './component/info-screen-body/info-screen-body.module';
 import {EpgucSharedModule} from '../../shared-module/shared-components.module';
 
 const COMPONENT = [
@@ -17,8 +16,7 @@ const COMPONENT = [
     CommonModule,
     EpgucSharedModule,
 
-    WelcomeBlockModule,
-    RequirementsListModule,
+    InfoScreenBodyModule,
 
     EpguLibModule.forChild(),
   ]

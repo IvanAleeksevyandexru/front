@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {RequirementsListComponent} from './requirements-list.component';
+import {InfoScreenBodyComponent} from './info-screen-body.component';
 import {EpguLibModule} from 'epgu-lib';
 import {EpgucSharedModule} from '../../../../shared-module/shared-components.module';
 
 const COMPONENTS = [
-  RequirementsListComponent
+  InfoScreenBodyComponent
 ];
 
 @NgModule({
@@ -17,5 +17,5 @@ const COMPONENTS = [
     EpguLibModule.forChild(),
   ]
 })
-export class RequirementsListModule { }
+export class InfoScreenBodyModule { }
 
