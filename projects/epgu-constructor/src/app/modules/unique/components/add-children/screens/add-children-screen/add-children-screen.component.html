@@ -6,10 +6,7 @@
 
 <section class="add-children-screen">
   <section *ngIf="sectionId === 1">
-    <div
-      class="add-children-screen__card"
-      *ngFor="let child of childrenSelectList"
-    >
+    <div class="add-children-screen__card" *ngFor="let child of childrenSelectList">
       <div class="card">
         <div class="card__wrapper">
           <div class="card__header">
@@ -41,7 +38,7 @@
     <div class="add-children-screen__form" *ngFor="let child of childrenList">
       <epgu-constructor-add-new-child-form
         *ngIf="child.isNew === true"
-        (ngModel)="child"
+        (ngModel)="(child)"
         [data]="{
           childrenSelectList: childrenSelectList,
           childrenList: childrenList,
@@ -60,14 +57,16 @@
   </section>
 
   <section class="add-children-screen__birth-certificate" *ngIf="sectionId === 2">
-    <epgu-constructor-birth-certificate [data]="selectedChildrenList"
-                                        (childUpdateEvent)="updateChild($event)"
+    <epgu-constructor-birth-certificate
+      [data]="selectedChildrenList"
+      (childUpdateEvent)="updateChild($event)"
     ></epgu-constructor-birth-certificate>
   </section>
 
   <section *ngIf="sectionId === 3">
-    <epgu-constructor-child-relationship [gender]="valueParsed?.gender"
-                                         (answerSelect)="handleAnswerSelect($event)"
+    <epgu-constructor-child-relationship
+      [gender]="valueParsed?.gender"
+      (answerSelect)="handleAnswerSelect($event)"
     ></epgu-constructor-child-relationship>
   </section>
 
