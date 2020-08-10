@@ -1,12 +1,14 @@
 export enum COMPONENT_TYPE {
-'QUESTION' = 'QUESTION',
-'INFO' = 'INFO',
-'COMPONENT' = 'COMPONENT',
-'CUSTOM' = 'CUSTOM',
-'UNIQUE' = 'UNIQUE',
+  'QUESTION' = 'QUESTION',
+  'INFO' = 'INFO',
+  'COMPONENT' = 'COMPONENT',
+  'CUSTOM' = 'CUSTOM',
+  'UNIQUE' = 'UNIQUE',
+  'INVITATION_ERROR' = 'INVITATION_ERROR',
 }
 
 export enum SCREEN_COMPONENT_NAME {
+  'invitationError' = 'InvitationError',
   'welcome' = 'WelcomeScr',
   'confirmPersonalUserRegAddr' = 'ConfirmPersonalUserRegAddr',
   'serviceDscrScr' = 'ServiceDscrScr',
@@ -15,7 +17,8 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
   'notificationAboutAbsentAccountScreen' = 'NotificationAboutAbsentAccountScreen',
-  'registrationAddr' = 'RegistrationAddr'
+  'registrationAddr' = 'RegistrationAddr',
+  'addPassport' = 'AddPassport'
 }
 
 export enum UNIQUE_COMPONENT_NAME {

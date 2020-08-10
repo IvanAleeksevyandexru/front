@@ -1,40 +1,35 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {EpguLibModule} from 'epgu-lib';
-import {ConstructorComponent} from './constructor.component';
-import {ConstructorComponentRoutingModule} from './constructor-routing.module';
-import {ScreenModule} from '../app/modules/screen/screen.module';
-import {QuestionScreenModule} from '../app/modules/questions/question-screen.module';
-import {CustomScreenModule} from '../app/modules/custom/custom-screen.module';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { EpguLibModule } from 'epgu-lib';
+import { ConstructorComponent } from './constructor.component';
+import { ConstructorComponentRoutingModule } from './constructor-routing.module';
+import { ScreenModule } from '../app/modules/screen/screen.module';
+import { QuestionScreenModule } from '../app/modules/questions/question-screen.module';
+import { CustomScreenModule } from '../app/modules/custom/custom-screen.module';
 import { SharedComponentsModule } from '../app/module-share/shared-components.module';
 import { UniqueScreenModule } from '../app/modules/unique/unique-screen.module';
-import {InfoModule} from '../app/modules/info/info.module';
+import { InfoModule } from '../app/modules/info/info.module';
+import { InvitationModule } from '../app/modules/invitation/invitation.module';
 
-const COMPONENTS = [
-  ConstructorComponent
-];
+const COMPONENTS = [ConstructorComponent];
 
 @NgModule({
-  declarations: [
-    ...COMPONENTS
+  declarations: [...COMPONENTS],
+  imports: [
+    CommonModule,
+    ConstructorComponentRoutingModule,
+
+    ScreenModule,
+    CustomScreenModule,
+    QuestionScreenModule,
+    UniqueScreenModule,
+    InvitationModule,
+
+    SharedComponentsModule,
+    EpguLibModule.forChild(),
+    InfoModule,
   ],
-    imports: [
-        CommonModule,
-        ConstructorComponentRoutingModule,
-
-        ScreenModule,
-        CustomScreenModule,
-        QuestionScreenModule,
-        UniqueScreenModule,
-
-        SharedComponentsModule,
-        EpguLibModule.forChild(),
-        InfoModule,
-    ],
   providers: [],
-  exports: [
-    ...COMPONENTS
-  ]
+  exports: [...COMPONENTS],
 })
-
-export class ConstructorModule { }
+export class ConstructorModule {}
