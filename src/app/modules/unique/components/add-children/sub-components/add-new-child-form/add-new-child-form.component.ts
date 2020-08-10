@@ -75,6 +75,8 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngOnDestroy() {
+    this.child.birthDate = moment(this.child.birthDate).format('DD.MM.YYYY');
+    this.childUpdateEvent.emit(this.child);
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }

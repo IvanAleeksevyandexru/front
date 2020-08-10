@@ -84,6 +84,7 @@ export class BirthCertificateComponent implements OnInit, OnDestroy, AfterViewIn
     this.child.rfBirthCertificateIssueDate = moment(this.child.rfBirthCertificateIssueDate).format(
       'DD.MM.YYYY',
     );
+    this.childUpdateEvent.emit(this.child);
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
