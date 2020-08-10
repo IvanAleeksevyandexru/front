@@ -8,7 +8,7 @@ import {ConfirmPersonalUserAddressScreenModule} from './components/confirm-perso
 // eslint-disable-next-line max-len
 import {ConfirmPersonalUserDataScreenModule} from './components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.module';
 import {EpguLibModule} from 'epgu-lib';
-import {SharedComponentsModule} from '../../module-share/shared-components.module';
+import {EpgucSharedModule} from '@epgu-constructor';
 // eslint-disable-next-line max-len
 import {ConfirmPersonalUserEmailScreenModule} from './components/confirm-personal-user/screens/confirm-personal-user-email-screen/confirm-personal-user-email-screen.module';
 // eslint-disable-next-line max-len
@@ -38,7 +38,7 @@ const COMPONENTS = [
     NotificationAboutAbsentAccountScreenModule,
     TemporaryRegistrationAddrScreenModule,
 
-    SharedComponentsModule,
+    EpgucSharedModule,
     EpguLibModule.forChild(),
   ]
 })

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedComponentsModule } from '../../../../../module-share/shared-components.module';
+import { EpgucSharedModule } from '@epgu-constructor';
 import { AddNewChildFormComponent } from './add-new-child-form/add-new-child-form.component';
 import { EpguLibModule } from 'epgu-lib';
 import { BirthCertificateComponent } from './birth-certificate/birth-certificate.component';
@@ -27,7 +27,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    SharedComponentsModule,
+    EpgucSharedModule,
     QuestionScreenModule,
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserSubComponentsModule,

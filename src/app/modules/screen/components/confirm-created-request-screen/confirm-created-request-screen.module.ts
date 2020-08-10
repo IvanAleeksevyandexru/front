@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {EpguLibModule} from 'epgu-lib';
 import {ConfirmCreatedRequestScreenComponent} from './confirm-created-request-screen.component';
-import {SharedComponentsModule} from '../../../../module-share/shared-components.module';
+import {EpgucSharedModule} from '@epgu-constructor';
 
 const COMPONENTS = [
   ConfirmCreatedRequestScreenComponent
@@ -13,7 +13,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    SharedComponentsModule,
+    EpgucSharedModule,
     EpguLibModule.forChild(),
   ]
 })

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomScreenComponent } from './components/custom-screen/custom-screen.component';
-import { SharedComponentsModule } from '../../module-share/shared-components.module';
+import { EpgucSharedModule } from '@epgu-constructor';
 import { EpguLibModule } from 'epgu-lib';
 import {LabelSectionComponent} from './components/lablel-section/label-section.component';
 import { ForeignCitizenshipComponent } from './components/foreign-citizenship/foreign-citizenship.component';
@@ -19,7 +19,7 @@ const COMPONENTS = [
   ],
   imports: [
     CommonModule,
-    SharedComponentsModule,
+    EpgucSharedModule,
     EpguLibModule.forChild(),
   ]
 })

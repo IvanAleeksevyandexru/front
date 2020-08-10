@@ -1,7 +1,7 @@
-<app-screen-container>
-  <app-page-name>{{ data?.header }}</app-page-name>
+<epguc-screen-container>
+  <epguc-page-name>{{ data?.header }}</epguc-page-name>
 
-  <app-screen-pad>
+  <epguc-screen-pad>
     <form action="" class="form">
       <ng-container *ngFor="let componentData of data?.components">
         <ng-container [ngSwitch]="componentData.type">
@@ -38,8 +38,8 @@
         </ng-container>
       </ng-container>
     </form>
-  </app-screen-pad>
+  </epguc-screen-pad>
 
   <lib-button (click)="nextScreen()" size="lg">{{data.submitLabel}}</lib-button>
 
-</app-screen-container>
+</epguc-screen-container>

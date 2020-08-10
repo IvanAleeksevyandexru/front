@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {EpguLibModule} from 'epgu-lib';
-import {SharedComponentsModule} from '../../../../module-share/shared-components.module';
+import {EpgucSharedModule} from '@epgu-constructor';
 import {NotificationAboutAbsentAccountScreenComponent} from './notification-about-absent-account-screen.component';
 
 const COMPONENTS = [
@@ -13,7 +13,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    SharedComponentsModule,
+    EpgucSharedModule,
     EpguLibModule.forChild(),
   ]
 })

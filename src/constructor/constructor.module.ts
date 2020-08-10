@@ -6,7 +6,7 @@ import {ConstructorComponentRoutingModule} from './constructor-routing.module';
 import {ScreenModule} from '../app/modules/screen/screen.module';
 import {QuestionScreenModule} from '../app/modules/questions/question-screen.module';
 import {CustomScreenModule} from '../app/modules/custom/custom-screen.module';
-import {SharedComponentsModule} from '../app/module-share/shared-components.module';
+import {EpgucSharedModule} from '@epgu-constructor';
 import {UniqueScreenModule} from '../app/modules/unique/unique-screen.module';
 import {InfoScreenModule} from '../app/modules/info/info-screen.module';
 import {InvitationModule} from '../app/modules/invitation/invitation.module';
@@ -32,7 +32,7 @@ const COMPONENTS = [
 
     EpguConstructorModule,
 
-    SharedComponentsModule,
+    EpgucSharedModule,
     EpguLibModule.forChild(),
     InfoScreenModule,
   ],

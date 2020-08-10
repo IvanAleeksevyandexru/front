@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedComponentsModule } from '../../../../../module-share/shared-components.module';
+import { EpgucSharedModule } from '@epgu-constructor';
 import { ConfirmPersonalUserButtonComponent } from './confirm-personal-user-button/confirm-personal-user-button.component';
 import {
   ConfirmPersonalUserScreenLayoutComponent
@@ -16,7 +16,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    SharedComponentsModule
+    EpgucSharedModule
   ]
 })
 export class SubComponentsModule { }

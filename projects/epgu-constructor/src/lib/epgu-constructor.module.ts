@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
-import { EpguConstructorComponent } from './epgu-constructor.component';
+import {EpguConstructorComponent} from './epgu-constructor.component';
 
+const COMPONENT = [
+  EpguConstructorComponent,
+]
 
 @NgModule({
-  declarations: [EpguConstructorComponent],
+  declarations: [...COMPONENT],
   imports: [
   ],
-  exports: [EpguConstructorComponent]
+  exports: [...COMPONENT]
 })
 export class EpguConstructorModule { }

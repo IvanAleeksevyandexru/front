@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {TemporaryRegistrationAddrScreenComponent} from './temporary-registration-addr-screen.component';
-import {SharedComponentsModule} from '../../../../../../module-share/shared-components.module';
+import {EpgucSharedModule} from '@epgu-constructor';
 import {SubComponentsModule} from '../../sub-components/sub-components.module';
 import { TemporaryRegistrationAddrComponent } from './components/temporary-registration-addr/temporary-registration-addr.component';
 import {EpguLibModule} from 'epgu-lib';
@@ -15,7 +15,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    SharedComponentsModule,
+    EpgucSharedModule,
     SubComponentsModule,
     EpguLibModule.forChild(),
   ]

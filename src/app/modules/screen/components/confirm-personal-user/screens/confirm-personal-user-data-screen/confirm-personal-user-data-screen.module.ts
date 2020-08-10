@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConfirmPersonalUserDataScreenComponent } from './confirm-personal-user-data-screen.component';
-import { SharedComponentsModule } from '../../../../../../module-share/shared-components.module';
+import { EpgucSharedModule } from '@epgu-constructor';
 import { SubComponentsModule } from '../../sub-components/sub-components.module';
 import { EpguLibModule } from 'epgu-lib';
 import {ConfirmPersonalUserDataComponent} from './component/confirm-personal-user-data/confirm-personal-user-data.component';
@@ -17,7 +17,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    SharedComponentsModule,
+    EpgucSharedModule,
     SubComponentsModule,
     EpguLibModule.forChild(),
   ]
