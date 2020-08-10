@@ -27,7 +27,7 @@
               "src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "src/assets",
+                "input": "dist/epgu-constructor/src/assets",
                 "output": "assets"
               }
             ],

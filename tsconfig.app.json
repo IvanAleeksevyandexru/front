@@ -7,7 +7,6 @@
     "paths": {
       "@ifc/plugin": ["node_modules/epgu-lib/assets/vendor/ifcplugin-lib.js"],
       "@ifc/common": ["node_modules/epgu-lib/assets/vendor/ifccommon-lib.js"],
-      "@epgu-constructor": ["dist/epgu-constructor/*", "dist/epgu-constructor"]
     }
   },
   "files": [

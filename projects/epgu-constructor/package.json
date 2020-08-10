@@ -3,7 +3,13 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^10.0.6",
-    "@angular/core": "^10.0.6"
+    "@angular/core": "^10.0.6",
+    "@ngx-translate/http-loader": "^6.0.0",
+    "angular2-text-mask": "^9.0.0",
+    "moment": "^2.27.0",
+    "ngx-perfect-scrollbar": "^10.0.1",
+    "text-mask-core": "^5.1.2",
+    "epgu-lib": "^0.0.202"
   },
   "dependencies": {
     "tslib": "^2.0.0"

@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import {ConstructorModule} from '@epgu-constructor';
+import {ConstructorModule} from 'dist/epgu-constructor';
 import {environment} from '../environments/environment';
 
 
@@ -12,7 +11,7 @@ import {environment} from '../environments/environment';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
+
     ConstructorModule.forRoot({
       serviceId: environment.serviceId,
       apiUrl: environment.apiUrl,
