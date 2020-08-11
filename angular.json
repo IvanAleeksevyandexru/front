@@ -162,8 +162,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
+            "eslintConfig": ".eslintrc.js",
             "tsConfig": [
               "projects/epgu-constructor/tsconfig.lib.json",
               "projects/epgu-constructor/tsconfig.spec.json"
