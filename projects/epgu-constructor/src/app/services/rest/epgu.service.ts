@@ -16,14 +16,14 @@ export class EpguService {
   }
 
   public getData() {
-    const path = `${this.constructorService.config.apiUrl}/api/getService/${this.constructorService.config.serviceId}`;
+    const path = `${this.constructorService.config.apiUrl}/getService/${this.constructorService.config.serviceId}`;
     return this.http.get<EgpuResponseInterface>(path, {
       withCredentials: false
     });
   }
 
   public setData(data) {
-    const path = `${this.constructorService.config.apiUrl}/api/service/${this.constructorService.config.serviceId}/scenario/getNextStep`;
+    const path = `${this.constructorService.config.apiUrl}/service/${this.constructorService.config.serviceId}/scenario/getNextStep`;
     return this.http.post<EgpuResponseInterface>(path, {
       ...data,
       userId: '1000299353',
