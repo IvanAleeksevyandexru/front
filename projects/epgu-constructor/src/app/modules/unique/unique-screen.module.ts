@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {EpguLibModule} from 'epgu-lib';
 import { UniqueScreenComponent } from './components/unique-screen/unique-screen.component';
 import { AddChildrenScreenModule } from './components/add-children/screens/add-children-screen/add-children-screen.module';
-import { SharedComponentsModule } from '../../module-share/shared-components.module';
+import {EpgucSharedModule} from '../../shared-module/shared-components.module';
 
 const COMPONENTS = [
   UniqueScreenComponent,
