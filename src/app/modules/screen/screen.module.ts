@@ -21,11 +21,12 @@ import { NotificationAboutAbsentAccountScreenModule } from './components/notific
 import { TemporaryRegistrationAddrScreenModule } from './components/confirm-personal-user/screens/temporary-registration-addr/temporary-registration-addr-screen.module';
 import { AddChildrenScreenModule } from '../unique/components/add-children/screens/add-children-screen/add-children-screen.module';
 import { AddPassportScreenModule } from './components/add-passport/add-passport-screen.module';
+import { ChangeListComponent } from './components/change-list/change-list.component';
 
 const COMPONENTS = [ScreenComponent];
 
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [...COMPONENTS, ChangeListComponent],
   exports: [...COMPONENTS],
   imports: [
     CommonModule,

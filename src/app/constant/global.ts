@@ -18,7 +18,8 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmCreatedRequestScreen' = 'ConfirmCreatedRequestScreen',
   'notificationAboutAbsentAccountScreen' = 'NotificationAboutAbsentAccountScreen',
   'registrationAddr' = 'RegistrationAddr',
-  'addPassport' = 'AddPassport'
+  'addPassport' = 'AddPassport',
+  'changeList' = 'ChangeList'
 }
 
 export enum UNIQUE_COMPONENT_NAME {

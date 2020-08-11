@@ -12,7 +12,7 @@
       <app-screen
         *ngSwitchCase="constructorComponentType.COMPONENT"
         [data]="componentData"
-        (nextStepEvent)="nextStep()"></app-screen>
+        (nextStepEvent)="nextStep($event)"></app-screen>
       <app-custom-screen
         *ngSwitchCase="constructorComponentType.CUSTOM"
         [data]="componentData"
