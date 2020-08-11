@@ -4,7 +4,7 @@
   "scripts": {
     "______develop": "echo list of command for developing",
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run start-proxy && npm run library-watch",
     "start-proxy": "ng serve --proxy-config ./src/proxy.conf.json",
     "start-backend": "java -jar fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api",
     "______build": "echo list of command for build",
@@ -19,7 +19,9 @@
     "lint: auto-fix": "ng lint --fix",
     "______test": "echo list of command for testing",
     "test": "ng test",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "______other": "echo list of command for testing",
+    "postinstall": "npm run library-build"
   },
   "private": true,
   "dependencies": {
