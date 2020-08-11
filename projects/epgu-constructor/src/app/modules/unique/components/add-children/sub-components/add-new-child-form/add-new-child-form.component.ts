@@ -9,7 +9,9 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { ListItem } from 'epgu-lib';
+/* eslint-disable import/no-extraneous-dependencies */
 import { Subject } from 'rxjs';
+/* eslint-disable import/no-extraneous-dependencies */
 import { takeUntil, delay } from 'rxjs/operators';
 import * as moment from 'moment';
 

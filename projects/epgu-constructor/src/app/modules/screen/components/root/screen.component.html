@@ -1,10 +1,10 @@
-<epguc-screen-container>
+<app-screen-container>
   <div class="inner">
     <div *ngIf="data?.header" class="head">
-      <epguc-page-name>{{data.header}}</epguc-page-name>
+      <app-page-name>{{data.header}}</app-page-name>
     </div>
 
-    <epguc-screen-pad class="body">
+    <app-screen-pad class="body">
       <ng-container [ngSwitch]="data?.components[0].type">
         <app-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
@@ -37,7 +37,7 @@
         ></app-add-passport-screen>
 
       </ng-container>
-    </epguc-screen-pad>
+    </app-screen-pad>
 
     <div class="footer">
       <lib-button (click)="nextStep()" class="footer__btn-submit" size="lg">
@@ -45,5 +45,5 @@
       </lib-button>
     </div>
   </div>
-</epguc-screen-container>
+</app-screen-container>
 

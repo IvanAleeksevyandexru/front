@@ -1,19 +1,16 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {EpguService} from './services/rest/epgu.service';
-import {COMPONENT_TYPE} from '../constant/global';
-import {EgpuResponseInterface} from '../interfaces/epgu.service.interface';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { EpguService } from './services/rest/epgu.service';
+import { COMPONENT_TYPE } from '../constant/global';
+import { EgpuResponseInterface } from '../interfaces/epgu.service.interface';
 // eslint-disable-next-line max-len
-import {EgpuResponseQuestionsDisplayComponentAttrsActionsInterface} from './modules/questions/components/interface/question-block.interface';
-import {CUSTOM_COMPONENT_ITEM_TYPE} from './modules/custom/tools/custom-screen-tools';
+import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from './modules/questions/components/interface/question-block.interface';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from './modules/custom/tools/custom-screen-tools';
 
 @Component({
   selector: 'app-constructor',
   templateUrl: './constructor.component.html',
-  styleUrls: [
-    './constructor.component.scss',
-    '../styles.scss'
-  ],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./constructor.component.scss', '../styles.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ConstructorComponent implements OnInit {
   // <--constant
