@@ -4,7 +4,7 @@
   "scripts": {
     "______develop": "echo list of command for developing",
     "ng": "ng",
-    "start": "npm run start-proxy && npm run library-watch",
+    "start": "npm run start-proxy",
     "start-proxy": "ng serve --proxy-config ./src/proxy.conf.json",
     "start-backend": "java -jar fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api",
     "______build": "echo list of command for build",
