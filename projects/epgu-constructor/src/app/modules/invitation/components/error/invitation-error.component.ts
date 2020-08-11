@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+/* eslint-disable import/no-extraneous-dependencies */
 import { FormControl } from '@angular/forms';
 
 interface IAttrsError {

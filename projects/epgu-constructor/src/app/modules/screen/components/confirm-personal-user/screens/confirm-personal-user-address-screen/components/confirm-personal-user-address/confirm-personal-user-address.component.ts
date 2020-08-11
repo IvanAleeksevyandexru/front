@@ -8,7 +8,9 @@ import {
   OnDestroy,
   AfterViewInit,
 } from '@angular/core';
+/* eslint-disable import/no-extraneous-dependencies */
 import { takeUntil } from 'rxjs/operators';
+/* eslint-disable import/no-extraneous-dependencies */
 import { Subject } from 'rxjs';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 

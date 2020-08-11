@@ -9,6 +9,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import * as moment from 'moment';
+/* eslint-disable import/no-extraneous-dependencies */
 import { Subject } from 'rxjs';
 import { takeUntil, delay } from 'rxjs/operators';
 
