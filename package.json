@@ -19,9 +19,7 @@
     "lint: auto-fix": "ng lint --fix",
     "______test": "echo list of command for testing",
     "test": "ng test",
-    "e2e": "ng e2e",
-    "______other": "echo list of command for testing",
-    "postinstall": "npm run library-build"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
