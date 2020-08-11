@@ -12,6 +12,7 @@ import {EpgucSharedModule} from './shared-module/shared-components.module';
 import {ConstructorConfigInterface} from '../interfaces/constructor-config.interface';
 import {CONSTRUCTOR_CONFIG_TOKEN} from './services/config/constructor.config';
 import {ConstructorService} from './services/config/constructor.service';
+import {LayoutModule} from './layout/layout.module';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -29,6 +30,7 @@ const COMPONENTS = [
     QuestionScreenModule,
     UniqueScreenModule,
     InvitationModule,
+    LayoutModule,
 
     EpgucSharedModule,
     EpguLibModule.forChild(),

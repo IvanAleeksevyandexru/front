@@ -8,6 +8,9 @@ import {ConstructorService} from '../config/constructor.service';
   providedIn: 'root'
 })
 export class EpguService {
+  userId = '1000299353';
+  // eslint-disable-next-line max-len
+  token = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTY3ODk1MDQsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl90cm0_b2lkPTEwMDAyOTkzNTMmbW9kZT13IGh0dHA6XC9cL2VzaWEuZ29zdXNsdWdpLnJ1XC91c3JfaW5mP29pZD0xMDAwMjk5MzUzJm1vZGU9dyBodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvdXNyX3NlYz9tb2RlPXcmb2lkPTEwMDAyOTkzNTMiLCJpc3MiOiJodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvIiwidXJuOmVzaWE6c2lkIjoiOWZiZTQ4MjU3MWE5N2NhNWI1ZDU2ZTFjYmExZjFlNDFlODgzZDg5NTIwYjg2Njk3OWE1NTE4NDNlMjI4NjY2NCIsInVybjplc2lhOnNial9pZCI6MTAwMDI5OTM1MywiZXhwIjoxNTk2ODc1OTA0LCJpYXQiOjE1OTY3ODk1MDQsImNsaWVudF9pZCI6IlBHVSJ9.mkaOXF-um7BXT3sRM1y--P6rWwwb_ktzgG4j7bQhWvfukfCyOf7CwvAJ0MwcWVWFTD88S3-ZcFLoj8r3tkSi6ioHgT1oBPqTNyLEe4_kuIuZweDzdBU0ReGzMQXqmy0j9r-AiKtw7xdw6FFWze7J1CoIlJrr3j74M6HiPTQQdxBq9lqu3rJJYzcBjurPa16UCy0541CBYsgzRFDXWBYikkJZZMV95Zn3yeAu17GQjjbVMxGXPIPRVVuSaR8OoIlbQIIIU0ZwTgBUsKHTGWVaZ_xQ--vLpmlL-w6OvCu8wWIxu7xgCbShSDrKGP8Syl91zuacI2usV8gLuPiMq9td_w';
 
   constructor(
     private http: HttpClient,
@@ -26,9 +29,19 @@ export class EpguService {
     const path = `${this.constructorService.config.apiUrl}/service/${this.constructorService.config.serviceId}/scenario/getNextStep`;
     return this.http.post<EgpuResponseInterface>(path, {
       ...data,
-      userId: '1000299353',
-      // eslint-disable-next-line max-len
-      token: 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTcxNDQ2NTAsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl90cm0_b2lkPTEwMDAyOTkzNTMmbW9kZT13IGh0dHA6XC9cL2VzaWEuZ29zdXNsdWdpLnJ1XC91c3JfaW5mP29pZD0xMDAwMjk5MzUzJm1vZGU9dyBodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvdXNyX3NlYz9tb2RlPXcmb2lkPTEwMDAyOTkzNTMiLCJpc3MiOiJodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvIiwidXJuOmVzaWE6c2lkIjoiNTRlYmFjOGJiOTk2YzE5ZmY1Y2UwY2M5MjA3NzA3OWNiYzRlNjVkN2M5NWIyNzc4Y2M5YjIwMGVmNzE3MWZhYiIsInVybjplc2lhOnNial9pZCI6MTAwMDI5OTM1MywiZXhwIjoxNTk3MjMxMDUwLCJpYXQiOjE1OTcxNDQ2NTAsImNsaWVudF9pZCI6IlBHVSJ9.frc71Bvzt3p0p267-stXo4t3g778DbTDYucOgTQUzWij4Vn2u2s27P5yXPx0EAhTKHQzKFTFrVmu8cpuOnuoRVrtn7BTolMchGaR-3vo-drqLERq33Bjez7SrzwDZM0HZKSzxTEsdPbxHKc2dk71m55YZBunaKok37y1lKk194fGNQWb0KiNMzc4N5kdw7H_J2V7V_WYQDwHm0AJP6Q5H_hA-NJkRHmTZVaXp7HgSLdGWyIkY1uyNLBdT8BIiIjvKNhk-WQCVCTEledOnlCYduyceFO12KkP2h1KxrVlQYh5ca__IrfA3cdCSqT4HiPCgyc-QmYXYdEav44ceBvV-w'
+      userId: this.userId,
+      token: this.token,
+    }, {
+      withCredentials: false
+    });
+  }
+
+  public getPrevStep(data) {
+    const path = `${this.constructorService.config.apiUrl}/api/service/${this.constructorService.config.serviceId}/scenario/getPrevStep`;
+    return this.http.post<EgpuResponseInterface>(path, {
+      ...data,
+      userId: this.userId,
+      token: this.token,
     }, {
       withCredentials: false
     });

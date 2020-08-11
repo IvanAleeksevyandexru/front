@@ -1,3 +1,7 @@
+<div class="head">
+  <app-navigation></app-navigation>
+</div>
+
 <ng-container [ngSwitch]="componentData?.type">
   <app-info-screen
     *ngSwitchCase="constructorComponentType.INFO"
@@ -18,7 +22,8 @@
   <app-question-screen
     *ngSwitchCase="constructorComponentType.QUESTION"
     [data]="componentData"
-    (answerSelect)="onAnswerSelect($event)"></app-question-screen>
+    (answerSelect)="onAnswerSelect($event)"
+    (goBack)="questionGoBack()"></app-question-screen>
   <app-unique-screen
     *ngSwitchCase="constructorComponentType.UNIQUE"
     [data]="componentData"

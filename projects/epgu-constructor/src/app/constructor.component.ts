@@ -75,6 +75,20 @@ export class ConstructorComponent implements OnInit {
     );
   }
 
+  getPrevStep(data?) {
+    console.log(data);
+    this.epguService.getPrevStep(this.response).subscribe(
+      (response) => {
+        console.log('----- SET DATA ---------');
+        console.log('request', this.response);
+        this.initResponse(response);
+      },
+      (error) => {
+        console.error(error);
+      },
+    );
+  }
+
   nextStep(data?: any) {
     this.sendData(data || true);
   }
@@ -90,5 +104,9 @@ export class ConstructorComponent implements OnInit {
   nextStepFromCustomScreen(data) {
     console.log(data);
     this.sendData('asdasdas');
+  }
+
+  questionGoBack() {
+    this.getPrevStep();
   }
 }
