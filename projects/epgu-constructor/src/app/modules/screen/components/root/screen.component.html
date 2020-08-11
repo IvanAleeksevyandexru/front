@@ -30,6 +30,12 @@
           [data]="data?.components[0]">
         </app-temporary-registration-addr-screen>
 
+        <app-add-passport-screen
+          *ngSwitchCase="screenComponentName.addPassport"
+          [data]="(data?.components)[0]"
+          (valueChangedEvent)="changedComponentData($event)"
+        ></app-add-passport-screen>
+
       </ng-container>
     </epguc-screen-pad>
 

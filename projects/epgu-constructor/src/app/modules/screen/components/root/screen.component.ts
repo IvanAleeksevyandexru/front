@@ -8,6 +8,7 @@ import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
   styleUrls: ['./screen.component.scss'],
 })
 export class ScreenComponent implements OnInit {
+  componentData = null;
   screenComponentName = SCREEN_COMPONENT_NAME;
   @Input() data: EgpuResponseDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
@@ -15,6 +16,10 @@ export class ScreenComponent implements OnInit {
   ngOnInit(): void {}
 
   nextStep() {
-    this.nextStepEvent.emit();
+    this.nextStepEvent.emit(this.componentData);
+  }
+
+  changedComponentData(value) {
+    this.componentData = value;
   }
 }

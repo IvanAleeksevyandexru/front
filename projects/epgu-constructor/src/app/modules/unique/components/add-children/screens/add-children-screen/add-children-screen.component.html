@@ -57,7 +57,7 @@
   </section>
 
   <section class="add-children-screen__birth-certificate" *ngIf="sectionId === 2">
-    <app-birth-certificate [data]="selectedChildrenList"></app-birth-certificate>
+    <app-birth-certificate [data]="selectedChildrenList" (childUpdateEvent)="updateChild($event)"></app-birth-certificate>
   </section>
 
   <section *ngIf="sectionId === 3">

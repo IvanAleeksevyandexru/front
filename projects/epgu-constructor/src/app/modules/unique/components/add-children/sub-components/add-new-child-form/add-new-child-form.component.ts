@@ -10,7 +10,8 @@ import {
 } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, delay } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-new-child-form',
@@ -51,7 +52,7 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
     this.childrenList = this.data.childrenList.map((child) => {
       const childFormatted = child;
       if (typeof child.birthDate === 'string') {
-        childFormatted.birthDate = new Date(child.birthDate.split('.').reverse().join('.'));
+        childFormatted.birthDate = moment(childFormatted.birthDate, 'DD.MM.YYYY').toDate();
       }
       return childFormatted;
     });
@@ -60,18 +61,22 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngAfterViewInit() {
-    this.newChildForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
-      const { birthDate, firstName, lastName, middleName, gender } = change;
-      this.child.birthDate = birthDate;
-      this.child.firstName = firstName;
-      this.child.lastName = lastName;
-      this.child.middleName = middleName;
-      this.child.gender = gender;
-      this.childUpdateEvent.emit(this.child);
-    });
+    this.newChildForm.form.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
+      .subscribe((change) => {
+        const { birthDate, firstName, lastName, middleName, gender } = change;
+        this.child.birthDate = birthDate;
+        this.child.firstName = firstName;
+        this.child.lastName = lastName;
+        this.child.middleName = middleName;
+        this.child.gender = gender;
+        this.childUpdateEvent.emit(this.child);
+      });
   }
 
   ngOnDestroy() {
+    this.child.birthDate = moment(this.child.birthDate).format('DD.MM.YYYY');
+    this.childUpdateEvent.emit(this.child);
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
