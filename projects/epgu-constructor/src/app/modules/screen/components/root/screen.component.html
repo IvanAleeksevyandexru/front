@@ -1,0 +1,49 @@
+<app-screen-container>
+  <div class="inner">
+    <div *ngIf="data?.header" class="head">
+      <app-page-name>{{data.header}}</app-page-name>
+    </div>
+
+    <app-screen-pad class="body">
+      <ng-container [ngSwitch]="data?.components[0].type">
+        <app-confirm-personal-user-address-screen
+          *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
+          [data]="data?.components[0]"></app-confirm-personal-user-address-screen>
+
+        <app-confirm-personal-user-data-screen
+          *ngSwitchCase="screenComponentName.confirmPersonalUserData"
+          [data]="data?.components[0]">
+        </app-confirm-personal-user-data-screen>
+
+        <app-confirm-personal-user-email-screen
+          *ngSwitchCase="screenComponentName.confirmPersonalUserEmail"
+          [data]="data?.components[0]">
+        </app-confirm-personal-user-email-screen>
+
+        <app-confirm-personal-user-phone-screen
+          *ngSwitchCase="screenComponentName.confirmPersonalUserPhone"
+          [data]="data?.components[0]">
+        </app-confirm-personal-user-phone-screen>
+
+        <app-temporary-registration-addr-screen
+          *ngSwitchCase="screenComponentName.registrationAddr"
+          [data]="data?.components[0]">
+        </app-temporary-registration-addr-screen>
+
+        <app-add-passport-screen
+          *ngSwitchCase="screenComponentName.addPassport"
+          [data]="(data?.components)[0]"
+          (nextStepEvent)="changedComponentData($event)"
+        ></app-add-passport-screen>
+
+      </ng-container>
+    </app-screen-pad>
+
+    <div class="footer">
+      <lib-button (click)="nextStep()" class="footer__btn-submit" size="lg">
+        <div class="secondary-font">{{data?.submitLabel || 'Продолжить'}}</div>
+      </lib-button>
+    </div>
+  </div>
+</app-screen-container>
+
