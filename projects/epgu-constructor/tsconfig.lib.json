@@ -13,7 +13,7 @@
     ],
     "paths": {
       "@ifc/plugin": ["node_modules/epgu-lib/assets/vendor/ifcplugin-lib.js"],
-      "@ifc/common": ["node_modules/epgu-lib/assets/vendor/ifccommon-lib.js"],
+      "@ifc/common": ["node_modules/epgu-lib/assets/vendor/ifccommon-lib.js"]
     }
   },
   "angularCompilerOptions": {
