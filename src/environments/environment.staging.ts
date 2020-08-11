@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:4200/api',
+  apiUrl: 'http://188.93.23.27:18080',
   dictionaryUrl: 'https://www.gosuslugi.ru/api/nsi/v1/dictionary',
   serviceId: 'local'
 };
