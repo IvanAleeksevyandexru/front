@@ -3,7 +3,11 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      "@ifc/plugin": ["node_modules/epgu-lib/assets/vendor/ifcplugin-lib.js"],
+      "@ifc/common": ["node_modules/epgu-lib/assets/vendor/ifccommon-lib.js"]
+    }
   },
   "files": [
     "src/main.ts",
