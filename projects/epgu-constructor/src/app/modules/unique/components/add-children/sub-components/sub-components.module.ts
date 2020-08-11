@@ -8,12 +8,13 @@ import { QuestionScreenModule } from '../../../../questions/question-screen.modu
 import { ConfirmChildAddressComponent } from './confirm-child-address/confirm-child-address.component';
 import {
   ConfirmPersonalUserAddressScreenModule
-// eslint-disable-next-line max-len
+  // eslint-disable-next-line max-len
 } from '../../../../screen/components/confirm-personal-user/screens/confirm-personal-user-address-screen/confirm-personal-user-address-screen.module';
 import {
   SubComponentsModule as ConfirmPersonalUserSubComponentsModule
 } from '../../../../screen/components/confirm-personal-user/sub-components/sub-components.module';
 import {EpgucSharedModule} from '../../../../../shared-module/shared-components.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const COMPONENTS = [
   AddNewChildFormComponent,
@@ -27,6 +28,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
+    BrowserAnimationsModule,
     EpgucSharedModule,
     QuestionScreenModule,
     ConfirmPersonalUserAddressScreenModule,

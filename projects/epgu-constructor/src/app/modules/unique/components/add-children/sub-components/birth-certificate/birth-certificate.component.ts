@@ -31,13 +31,12 @@ export class BirthCertificateComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   isDataComplete(child) {
-    return (
+    return !!(
       child?.rfBirthCertificateSeries?.length &&
       child?.rfBirthCertificateNumber?.length &&
       child?.rfBirthCertificateActNumber?.length &&
       child?.rfBirthCertificateIssueDate?.length &&
-      child?.rfBirthCertificateIssuedBy?.length &&
-      true
+      child?.rfBirthCertificateIssuedBy?.length
     );
   }
 
@@ -47,10 +46,10 @@ export class BirthCertificateComponent implements OnInit, OnDestroy, AfterViewIn
       this.isCompleteData = this.isDataComplete(this.child);
 
       if (!this.isCompleteData) {
-        this.child.rfBirthCertificateIssueDate = moment(
-          this.child.rfBirthCertificateIssueDate || new Date(),
-          'DD.MM.YYYY',
-        ).toDate();
+        const isValidDate = moment(this.child.rfBirthCertificateIssueDate, 'DD.MM.YYYY').isValid();
+        this.child.rfBirthCertificateIssueDate = isValidDate
+          ? moment(this.child.rfBirthCertificateIssueDate, 'DD.MM.YYYY').toDate()
+          : moment().toDate();
       }
     }
   }
@@ -60,21 +59,19 @@ export class BirthCertificateComponent implements OnInit, OnDestroy, AfterViewIn
       this.birthCertificateForm.form.valueChanges
         .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
         .subscribe((change) => {
-          const {
-            rfBirthCertificateSeries,
-            rfBirthCertificateNumber,
-            rfBirthCertificateActNumber,
-            rfBirthCertificateIssueDate,
-            rfBirthCertificateIssuedBy,
-          } = change;
-          this.child.rfBirthCertificateSeries = rfBirthCertificateSeries;
-          this.child.rfBirthCertificateNumber = rfBirthCertificateNumber;
-          this.child.rfBirthCertificateActNumber = rfBirthCertificateActNumber;
-          this.child.rfBirthCertificateIssueDate = moment(
-            rfBirthCertificateIssueDate,
-            'DD.MM.YYYY',
-          ).toDate();
-          this.child.rfBirthCertificateIssuedBy = rfBirthCertificateIssuedBy;
+          Object.keys(change).forEach((key) => {
+            if (change[key]) {
+              switch (key) {
+                case 'rfBirthCertificateIssueDate':
+                  this.child[key] = moment(change[key], 'DD.MM.YYYY').toDate();
+                  break;
+                default:
+                  this.child[key] = change[key];
+                  break;
+              }
+            }
+          });
+
           this.childUpdateEvent.emit(this.child);
         });
     }
