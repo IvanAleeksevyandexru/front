@@ -29,3 +29,11 @@
      }
     ]
     ```
+3. Сторонная библиотека epgu-lib требует дополнительных зависимостей которые хранятся в ней поэтому 
+добавим ссылоки на эти самые завивсомсти и для этого необходимо обновить файл приложение ```tsconfig.app.json```.
+ ```
+    "paths": {
+      "@ifc/plugin": ["node_modules/epgu-lib/assets/vendor/ifcplugin-lib.js"],
+      "@ifc/common": ["node_modules/epgu-lib/assets/vendor/ifccommon-lib.js"]
+    }
+```
