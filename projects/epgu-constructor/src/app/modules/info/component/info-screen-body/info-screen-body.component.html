@@ -1,7 +1,5 @@
-<div *ngIf="data.attrs.image.src" class="header__icon-block">
-  <div [ngStyle]="{backgroundImage: 'url('+ data.attrs.image.src +')'}" class="check-icon"></div>
-</div>
+<img *ngIf="data?.attrs?.image?.src" [src]="data.attrs.image.src" alt="" class="info__img">
 
-<div *ngIf="data.attrs.image.alt" class="header__description">{{data.attrs.image.alt}}</div>
+<div *ngIf="data?.attrs?.image?.alt" class="info__desc">{{data.attrs.image.alt}}</div>
 
-<div class="requirements-list__body" [innerHTML]="data"></div>
+<div class="info__text" [innerHTML]="data.label"></div>
