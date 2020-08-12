@@ -14,7 +14,8 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'registrationAddr' = 'RegistrationAddr',
-  'addPassport' = 'addPassport'
+  'addPassport' = 'addPassport',
+  'snils' = 'StringInput'
 }
 
 export enum INFO_SCREEN_COMPONENT {

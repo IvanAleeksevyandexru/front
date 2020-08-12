@@ -36,6 +36,9 @@
           (nextStepEvent)="changedComponentData($event)"
         ></app-add-passport-screen>
 
+
+        <app-snils  *ngSwitchCase="screenComponentName.snils"></app-snils>
+
       </ng-container>
     </app-screen-pad>
 
