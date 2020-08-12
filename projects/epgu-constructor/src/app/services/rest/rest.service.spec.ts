@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EpguService } from './epgu.service';
+import { RestService } from './epgu.service';
 
-describe('EpguService', () => {
-  let service: EpguService;
+describe('RestService', () => {
+  let service: RestService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(EpguService);
+    service = TestBed.inject(RestService);
   });
 
   it('should be created', () => {

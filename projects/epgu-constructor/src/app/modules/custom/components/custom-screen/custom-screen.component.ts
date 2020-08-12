@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem } from 'epgu-lib';
-import { EpguService } from '../../../../services/rest/epgu.service';
+import { RestService } from '../../../../services/rest/epgu.service';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 import {
   CustomComponentDictionaryState,
@@ -29,7 +29,7 @@ export class CustomScreenComponent implements OnChanges {
   @Input() data: EgpuResponseCustomComponentDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
 
-  constructor(private epguService: EpguService) {}
+  constructor(private restService: RestService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
@@ -84,7 +84,7 @@ export class CustomScreenComponent implements OnChanges {
     component: EgpuResponseCustomComponentDisplayComponentInterface,
   ) {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
-    this.epguService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
+    this.restService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryName, data, component),
       () => this.loadDictionaryError(dictionaryName),
     );

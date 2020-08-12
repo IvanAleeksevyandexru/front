@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { EpguService } from './services/rest/epgu.service';
+import { RestService } from './services/rest/epgu.service';
 import { COMPONENT_TYPE } from '../constant/global';
 import { EgpuResponseInterface } from '../interfaces/epgu.service.interface';
 // eslint-disable-next-line max-len
@@ -26,10 +26,10 @@ export class ConstructorComponent implements OnInit {
   componentType: string;
   componentData: any;
 
-  constructor(public epguService: EpguService) {}
+  constructor(public restService: RestService) {}
 
   ngOnInit(): void {
-    this.epguService.getData().subscribe(
+    this.restService.getData().subscribe(
       (response) => {
         this.initResponse(response);
       },
@@ -73,7 +73,7 @@ export class ConstructorComponent implements OnInit {
       value: data,
     };
     // eslint-disable-next-line
-    const request = options.goBack ? this.epguService.getPrevStep : this.epguService.getNextStep;
+    const request = options.goBack ? this.restService.getPrevStep : this.restService.getNextStep;
     request(this.response).subscribe(
       (response) => {
         console.log('----- SET DATA ---------');
