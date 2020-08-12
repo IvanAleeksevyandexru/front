@@ -1,6 +1,16 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { ListItem } from 'epgu-lib';
-import { RestService } from '../../../../services/rest/epgu.service';
+// eslint-disable-next-line
+import { Subscription } from 'rxjs';
+import { RestService } from '../../../../services/rest/rest.service';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 import {
   CustomComponentDictionaryState,
@@ -12,24 +22,37 @@ import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../../interfaces/dictionary-options.interface';
+import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 
 @Component({
   selector: 'app-custom-screen',
   templateUrl: './custom-screen.component.html',
   styleUrls: ['./custom-screen.component.scss'],
 })
-export class CustomScreenComponent implements OnChanges {
+export class CustomScreenComponent implements OnChanges, OnDestroy {
   // <-- constant
   componentType = CUSTOM_COMPONENT_ITEM_TYPE;
 
   // <-- variables
   state: { [key: string]: CustomComponentState } = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
+  subscriptions: Array<Subscription> = [];
 
   @Input() data: EgpuResponseCustomComponentDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
+  @Output() prevStepEvent = new EventEmitter();
 
-  constructor(private restService: RestService) {}
+  constructor(private restService: RestService, private navService: NavigationService) {
+    this.subscriptions.push(this.navService.clickToBack$.subscribe(() => this.prevStep()));
+  }
+
+  prevStep() {
+    this.prevStepEvent.emit();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((s) => s.unsubscribe());
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {

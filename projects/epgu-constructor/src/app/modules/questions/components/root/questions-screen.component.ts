@@ -19,16 +19,20 @@ export class QuestionsScreenComponent implements OnInit, OnDestroy {
   @Output() answerSelect = new EventEmitter<
     EgpuResponseQuestionsDisplayComponentAttrsActionsInterface
   >();
-  @Output() goBack = new EventEmitter();
+  @Output() prevStepEvent = new EventEmitter();
 
   constructor(private navService: NavigationService) {
-    this.subscriptions.push(this.navService.clickToBack$.subscribe(() => this.goBack.emit()));
+    this.subscriptions.push(this.navService.clickToBack$.subscribe(() => this.goPrevStepEvent()));
   }
 
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe());
+  }
+
+  goPrevStepEvent() {
+    this.prevStepEvent.emit();
   }
 
   answerChoose(answer: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface): void {
