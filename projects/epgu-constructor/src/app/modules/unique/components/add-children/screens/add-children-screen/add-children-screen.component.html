@@ -25,10 +25,10 @@
               </label>
             </div>
             <div class="card__select">
-              <lib-simple-select
+              <lib-dropdown
                 (changed)="handleSelect($event)"
-                [list]="childrenSelectList"
-              ></lib-simple-select>
+                [items]="childrenSelectList"
+              ></lib-dropdown>
             </div>
           </div>
         </div>

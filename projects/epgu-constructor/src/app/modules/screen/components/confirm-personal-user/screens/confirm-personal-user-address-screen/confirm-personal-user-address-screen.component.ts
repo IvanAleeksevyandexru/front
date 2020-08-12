@@ -9,10 +9,19 @@ import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   @Input() data: ConfirmAddressInterface;
   @Output() actionSelect = new EventEmitter();
+  isEditable: boolean;
+
+  clickToAction(event): void {
+    const { action } = event;
+    switch (action) {
+      case 'editUserRegAddr':
+        this.isEditable = true;
+        break;
+      default:
+        this.actionSelect.emit(action);
+        break;
+    }
+  }
 
   ngOnInit(): void {}
-
-  clickToAction(action): void {
-    this.actionSelect.emit(action);
-  }
 }

@@ -19,11 +19,11 @@
           Выберите ребенка из вашего профиля
         </label>
         <div class="component__select">
-          <lib-simple-select
+          <lib-dropdown
             name="childProfile"
-            [list]="childrenSelectList"
+            [items]="childrenSelectList"
             (changed)="handleSelect($event)"
-          ></lib-simple-select>
+          ></lib-dropdown>
         </div>
       </div>
       <div class="component__field">

@@ -20,7 +20,7 @@ $button-mt: 5px;
     margin-top: auto;
     @include tablets-up {
       flex-direction: row;
-      margin-top: 1rem;
+      margin-top: 16px;
     }
 
     app-confirm-personal-user-button {

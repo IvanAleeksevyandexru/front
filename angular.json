@@ -88,7 +88,7 @@
             "sourceMap": {
               "scripts": true,
               "styles": true,
-              "vendor": true
+              "vendor": false
             }
           },
           "configurations": {

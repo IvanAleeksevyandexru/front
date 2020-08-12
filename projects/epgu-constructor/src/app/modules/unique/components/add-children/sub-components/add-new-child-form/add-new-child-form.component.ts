@@ -38,10 +38,10 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   handleSelect(event) {
-    const { item } = event;
+    const { id } = event;
     this.child = {
       ...this.child,
-      ...this.childrenList.find((child) => child.id === item.id),
+      ...this.childrenList.find((child) => child.id === id),
       id: this.child.id,
     };
   }

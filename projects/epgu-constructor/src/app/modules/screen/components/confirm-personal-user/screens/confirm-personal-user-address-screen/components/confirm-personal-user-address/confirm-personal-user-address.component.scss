@@ -9,6 +9,11 @@
 
 .item {
   margin-bottom: 20px;
+  &__label {
+    font-size: 14px;
+    color: $black;
+    line-height: 20px;
+  }
 }
 
 .title {

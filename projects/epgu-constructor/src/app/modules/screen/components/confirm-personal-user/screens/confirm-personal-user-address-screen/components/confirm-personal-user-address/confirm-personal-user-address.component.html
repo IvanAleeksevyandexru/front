@@ -1,18 +1,38 @@
 <form #dataForm="ngForm" *ngIf="isEditable; else nonEditable">
-  <div class="item" *ngFor="let field of data?.attrs?.fields">
-    <div class="head__title">{{ field.label }}</div>
-    <lib-plain-input
-      [(ngModel)]="valueParsed[field.fieldName]"
-      [name]="field.fieldName"
-      class="content content__input"
-    ></lib-plain-input>
+  <div class="item" *ngFor="let field of data?.attrs?.fields" [ngSwitch]="field?.fieldName">
+    <div *ngSwitchDefault>
+      <label class="item__label">{{ field.label }}</label>
+      <lib-plain-input
+        [(ngModel)]="valueParsed[field.fieldName]"
+        [name]="field.fieldName"
+        class="content content__input"
+      ></lib-plain-input>
+    </div>
+    <div *ngSwitchCase="['addr', 'registrationAddress'].includes(field?.fieldName) ? field?.fieldName : ''">
+      <label class="item__label">{{ field.label }}</label>
+      <lib-dadata-widget
+        [simpleMode]="true"
+        [name]="field.fieldName"
+        [externalApiUrl]="externalApiUrl"
+        [initValue]="valueParsed[field.fieldName]"
+        [(ngModel)]="valueParsed[field.fieldName]"
+        (writeValue)="onChange($event)"
+      ></lib-dadata-widget>
+    </div>
+    <div *ngSwitchCase="['date', 'registrationAddressDate'].includes(field?.fieldName) ? field?.fieldName : ''">
+      <label class="item__label">{{ field.label }}</label>
+      <lib-date-picker
+        [name]="field.fieldName"
+        [(ngModel)]="valueParsed[field.fieldName]"
+      ></lib-date-picker>
+    </div>
   </div>
 </form>
 
 <ng-template #nonEditable>
   <div *ngIf="!isEditable">
     <div class="item" *ngFor="let field of data?.attrs?.fields">
-      <div class="head__title">{{ field.label }}</div>
+      <label class="item__label">{{ field.label }}</label>
       <div class="content">{{ (data?.value | toJson)[field.fieldName] }}</div>
     </div>
   </div>
