@@ -49,6 +49,7 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "ru-validation-codes": "^2.8.0",
     "epgu-lib": "^0.0.202",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",

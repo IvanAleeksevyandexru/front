@@ -15,6 +15,7 @@ import {TemporaryRegistrationAddrScreenModule} from './components/confirm-person
 import {EpgucSharedModule} from '../../shared-module/shared-components.module';
 import { AddChildrenScreenModule } from '../unique/components/add-children/screens/add-children-screen/add-children-screen.module';
 import { AddPassportScreenModule } from './components/add-passport/add-passport-screen.module';
+import {SnilsModule} from './components/snils/snils.module';
 
 
 const COMPONENTS = [
@@ -33,6 +34,7 @@ const COMPONENTS = [
     AddChildrenScreenModule,
     TemporaryRegistrationAddrScreenModule,
     AddPassportScreenModule,
+    SnilsModule,
 
     EpgucSharedModule,
     EpguLibModule.forChild(),
