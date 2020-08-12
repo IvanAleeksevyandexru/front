@@ -6,6 +6,11 @@ import { EgpuResponseInterface } from '../interfaces/epgu.service.interface';
 import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from './modules/questions/components/interface/question-block.interface';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from './modules/custom/tools/custom-screen-tools';
 
+interface SendDataOptionsInterface {
+  componentId?: string;
+  goBack?: boolean;
+}
+
 @Component({
   selector: 'app-constructor',
   templateUrl: './constructor.component.html',
@@ -43,13 +48,14 @@ export class ConstructorComponent implements OnInit {
     this.response = response;
     const { display } = response;
 
-    // TODO HARDCODE
+    // <-- start TODO HARDCODE
     // eslint-disable-next-line max-len
     this.componentId =
       response.display.type === COMPONENT_TYPE.CUSTOM
         ? display.components.find((item) => item.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection)
             .id
         : display.components[0].id;
+    // <-- end TODO HARDCODE
     this.componentType = display.components[0].type;
     this.componentData = display;
     // this.componentData.header = 'Кому из детей требуется оформить загранпаспорт?';
@@ -61,23 +67,14 @@ export class ConstructorComponent implements OnInit {
     console.log('initResponse:', display);
   }
 
-  sendData(data, componentId?: string) {
-    this.response.currentValue[componentId || this.componentId] = { visited: true, value: data };
-    this.epguService.setData(this.response).subscribe(
-      (response) => {
-        console.log('----- SET DATA ---------');
-        console.log('request', this.response);
-        this.initResponse(response);
-      },
-      (error) => {
-        console.error(error);
-      },
-    );
-  }
-
-  getPrevStep(data?) {
-    console.log(data);
-    this.epguService.getPrevStep(this.response).subscribe(
+  sendData(data, options: SendDataOptionsInterface = {}) {
+    this.response.currentValue[options.componentId || this.componentId] = {
+      visited: true,
+      value: data,
+    };
+    // eslint-disable-next-line
+    const request = options.goBack ? this.epguService.getPrevStep : this.epguService.getNextStep;
+    request(this.response).subscribe(
       (response) => {
         console.log('----- SET DATA ---------');
         console.log('request', this.response);
@@ -98,7 +95,7 @@ export class ConstructorComponent implements OnInit {
   }
 
   onEmailSelect(email: string): void {
-    this.sendData(email, 'errorScr');
+    this.sendData(email, { componentId: 'errorScr' });
   }
 
   nextStepFromCustomScreen(data) {
@@ -107,6 +104,6 @@ export class ConstructorComponent implements OnInit {
   }
 
   questionGoBack() {
-    this.getPrevStep();
+    this.sendData(null, { goBack: true });
   }
 }

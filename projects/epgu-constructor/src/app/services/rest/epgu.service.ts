@@ -25,7 +25,7 @@ export class EpguService {
     });
   }
 
-  public setData(data) {
+  public getNextStep(data) {
     const path = `${this.constructorService.config.apiUrl}/service/${this.constructorService.config.serviceId}/scenario/getNextStep`;
     return this.http.post<EgpuResponseInterface>(path, {
       ...data,
