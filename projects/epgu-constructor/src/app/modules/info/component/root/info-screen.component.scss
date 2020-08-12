@@ -1,0 +1,30 @@
+@import "../../../../../styles/breakpoint";
+@import "../../../../../styles/variables";
+
+
+
+:host {
+  display: block;
+}
+
+.info__head {
+  margin-bottom: 24px;
+}
+
+.info__body {
+  margin-bottom: 24px;
+}
+
+.divider {
+  border: 0;
+  background: $perano;
+  height: 1px;
+  margin: 0 0 24px;
+}
+
+.info__footer {
+  text-align: center;
+}
+.info-footer__submit {
+  display: inline-block;
+}

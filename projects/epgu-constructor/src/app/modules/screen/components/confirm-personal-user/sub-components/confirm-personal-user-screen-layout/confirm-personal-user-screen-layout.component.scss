@@ -1,0 +1,34 @@
+@import "../../../../../../../styles/variables";
+@import "../../../../../../../styles/breakpoint";
+@import "../../../../../../../styles/functions";
+
+
+$button-mt: 5px;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+:host::ng-deep {
+  .footer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-top: auto;
+    @include tablets-up {
+      flex-direction: row;
+      margin-top: 1rem;
+    }
+
+    app-confirm-personal-user-button {
+      @include tablets-up {
+        margin: 5px 10px;
+      }
+    }
+  }
+}
+
+

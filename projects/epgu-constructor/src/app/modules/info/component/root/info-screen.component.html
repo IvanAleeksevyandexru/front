@@ -1,0 +1,27 @@
+<app-screen-container>
+  <app-screen-pad>
+
+    <app-page-name class="info__head">{{data?.header}}</app-page-name>
+
+    <hr class="divider">
+
+    <div class="info__body">
+      <ng-container [ngSwitch]="data?.components[0].type">
+
+        <app-info-screen-body
+          *ngSwitchCase="infoScreenComponent.info"
+          [data]="data?.components[0]"></app-info-screen-body>
+
+      </ng-container>
+
+    </div>
+
+    <div class="info__footer info-footer">
+      <lib-button (click)="nextStep()" class="info-footer__submit" size="lg">
+        {{data?.submitLabel || 'Продолжить'}}
+      </lib-button>
+    </div>
+
+  </app-screen-pad>
+</app-screen-container>
+
