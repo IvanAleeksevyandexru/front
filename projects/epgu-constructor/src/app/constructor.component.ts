@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { COMPONENT_TYPE } from '../constant/global';
 // eslint-disable-next-line max-len
-import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from './modules/questions/components/interface/question-block.interface';
 import { ConstructorService } from './services/constructor/constructor.service';
 
 @Component({
@@ -18,10 +17,6 @@ export class ConstructorComponent implements OnInit {
 
   ngOnInit(): void {
     this.constructorService.getData();
-  }
-
-  onAnswerSelect(data: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface) {
-    this.constructorService.nextStep(data.value);
   }
 
   onEmailSelect(email: string): void {

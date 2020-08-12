@@ -44,7 +44,8 @@ export class ConstructorService {
   }
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}) {
-    this.response.currentValue[options.componentId || this.componentId] = {
+    const componentId = options.componentId || this.componentId;
+    this.response.currentValue[componentId] = {
       visited: true,
       value: data,
     };

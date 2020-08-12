@@ -16,9 +16,7 @@ export class QuestionsScreenComponent implements OnInit, OnDestroy {
   subscriptions: Array<Subscription> = [];
 
   @Input() data: EgpuResponseQuestionsDisplayInterface;
-  @Output() answerSelect = new EventEmitter<
-    EgpuResponseQuestionsDisplayComponentAttrsActionsInterface
-  >();
+  @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
   constructor(private navService: NavigationService) {
@@ -36,6 +34,6 @@ export class QuestionsScreenComponent implements OnInit, OnDestroy {
   }
 
   answerChoose(answer: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface): void {
-    this.answerSelect.emit(answer);
+    this.nextStepEvent.emit(answer.value);
   }
 }
