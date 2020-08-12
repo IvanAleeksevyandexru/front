@@ -6,8 +6,9 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { EgpuResponseComponentInterface } from '../../../../interfaces/epgu.service.interface';
+import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 
 interface EgpuResponseComponentInterfaceForChangeList extends EgpuResponseComponentInterface {
   attrs: {
