@@ -37,7 +37,7 @@ export class EpguService {
   }
 
   public getPrevStep(data) {
-    const path = `${this.constructorService.config.apiUrl}/api/service/${this.constructorService.config.serviceId}/scenario/getPrevStep`;
+    const path = `${this.constructorService.config.apiUrl}/service/${this.constructorService.config.serviceId}/scenario/getPrevStep`;
     return this.http.post<EgpuResponseInterface>(path, {
       ...data,
       userId: this.userId,
