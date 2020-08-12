@@ -2,25 +2,25 @@
   <app-navigation></app-navigation>
 </div>
 
-<ng-container [ngSwitch]="componentData?.type">
+<ng-container [ngSwitch]="constructorService?.componentData?.type">
   <app-info-screen
     *ngSwitchCase="constructorComponentType.INFO"
-    [data]="componentData"
+    [data]="constructorService?.componentData"
     (nextStepEvent)="nextStep()"
     (prevStepEvent)="prevStep()"></app-info-screen>
   <app-invitation-screen
     *ngSwitchCase="constructorComponentType.INVITATION_ERROR"
-    [data]="componentData"
+    [data]="constructorService?.componentData"
     (resolve)="onEmailSelect($event)"
     (prevStepEvent)="prevStep()"></app-invitation-screen>
   <app-screen
     *ngSwitchCase="constructorComponentType.COMPONENT"
-    [data]="componentData"
+    [data]="constructorService?.componentData"
     (nextStepEvent)="nextStep()"
     (prevStepEvent)="prevStep()"></app-screen>
   <app-custom-screen
     *ngSwitchCase="constructorComponentType.CUSTOM"
-    [data]="componentData"
+    [data]="constructorService?.componentData"
     (nextStepEvent)="nextStepFromCustomScreen($event)"
     (prevStepEvent)="prevStep()"></app-custom-screen>
   <app-question-screen
@@ -30,7 +30,7 @@
     (prevStepEvent)="prevStep($event)"></app-question-screen>
   <app-unique-screen
     *ngSwitchCase="constructorComponentType.UNIQUE"
-    [data]="componentData"
+    [data]="constructorService?.componentData"
     (nextStepEvent)="nextStep($event)"
     (prevStepEvent)="prevStep()">
 
