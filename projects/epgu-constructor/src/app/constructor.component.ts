@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { RestService } from './services/rest/epgu.service';
+import { RestService } from './services/rest/rest.service';
 import { COMPONENT_TYPE } from '../constant/global';
 import { EgpuResponseInterface } from '../interfaces/epgu.service.interface';
 // eslint-disable-next-line max-len
@@ -20,6 +20,7 @@ interface SendDataOptionsInterface {
 export class ConstructorComponent implements OnInit {
   // <--constant
   constructorComponentType = COMPONENT_TYPE;
+
   // <-- variable
   response: EgpuResponseInterface;
   componentId: string;
@@ -67,43 +68,49 @@ export class ConstructorComponent implements OnInit {
     console.log('initResponse:', display);
   }
 
-  sendData(data, options: SendDataOptionsInterface = {}) {
+  nextStep(data?: any, options?: SendDataOptionsInterface) {
+    this.updateRequest(data, options);
+    this.restService.getNextStep(this.response).subscribe(
+      (response) => this.sendDataSuccess(response),
+      (error) => this.sendDataError(error),
+    );
+  }
+
+  prevStep(data?: any) {
+    this.updateRequest(data);
+    this.restService.getPrevStep(this.response).subscribe(
+      (response) => this.sendDataSuccess(response),
+      (error) => this.sendDataError(error),
+    );
+  }
+
+  updateRequest(data: any, options: SendDataOptionsInterface = {}) {
     this.response.currentValue[options.componentId || this.componentId] = {
       visited: true,
       value: data,
     };
-    // eslint-disable-next-line
-    const request = options.goBack ? this.restService.getPrevStep : this.restService.getNextStep;
-    request(this.response).subscribe(
-      (response) => {
-        console.log('----- SET DATA ---------');
-        console.log('request', this.response);
-        this.initResponse(response);
-      },
-      (error) => {
-        console.error(error);
-      },
-    );
   }
 
-  nextStep(data?: any) {
-    this.sendData(data || true);
+  sendDataSuccess(response) {
+    console.log('----- SET DATA ---------');
+    console.log('request', this.response);
+    this.initResponse(response);
+  }
+
+  sendDataError(error) {
+    console.error(error);
   }
 
   onAnswerSelect(data: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface) {
-    this.sendData(data.value);
+    this.nextStep(data.value);
   }
 
   onEmailSelect(email: string): void {
-    this.sendData(email, { componentId: 'errorScr' });
+    this.nextStep(email, { componentId: 'errorScr' });
   }
 
   nextStepFromCustomScreen(data) {
     console.log(data);
-    this.sendData('asdasdas');
-  }
-
-  questionGoBack() {
-    this.sendData(null, { goBack: true });
+    this.nextStep('asdasdas');
   }
 }
