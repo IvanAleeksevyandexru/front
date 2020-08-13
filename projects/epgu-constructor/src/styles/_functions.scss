@@ -29,6 +29,12 @@
   }
 }
 
+@mixin first-letter-uppercase {
+  &:first-letter {
+    text-transform: uppercase;
+  }
+}
+
 %submit-button-margin {
   margin-top: 8px;
   @include tablets-up {

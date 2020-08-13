@@ -26,3 +26,7 @@ export enum UNIQUE_COMPONENT_NAME {
   'childrenListUnder14' = 'ChildrenListUnder14',
   'addPassport' = 'AddPassport'
 }
+
+export enum CONSTANTS {
+  'dateFormat' = 'DD.MM.YYYY'
+}

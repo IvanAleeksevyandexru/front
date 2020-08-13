@@ -15,7 +15,8 @@ import {environment} from '../environments/environment';
     ConstructorModule.forRoot({
       serviceId: environment.serviceId,
       apiUrl: environment.apiUrl,
-      dictionaryUrl: environment.dictionaryUrl
+      dictionaryUrl: environment.dictionaryUrl,
+      externalApiUrl: environment.externalApiUrl
     }),
   ],
   providers: [],

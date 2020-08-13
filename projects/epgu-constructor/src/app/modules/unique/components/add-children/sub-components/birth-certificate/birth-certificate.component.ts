@@ -12,6 +12,7 @@ import * as moment from 'moment';
 /* eslint-disable import/no-extraneous-dependencies */
 import { Subject } from 'rxjs';
 import { takeUntil, delay } from 'rxjs/operators';
+import { CONSTANTS } from '../../../../../../../constant/global';
 
 @Component({
   selector: 'app-birth-certificate',
@@ -47,9 +48,12 @@ export class BirthCertificateComponent implements OnInit, OnDestroy, AfterViewIn
       this.isCompleteData = this.isDataComplete(this.child);
 
       if (!this.isCompleteData) {
-        const isValidDate = moment(this.child.rfBirthCertificateIssueDate, 'DD.MM.YYYY').isValid();
+        const isValidDate = moment(
+          this.child.rfBirthCertificateIssueDate,
+          CONSTANTS.dateFormat,
+        ).isValid();
         this.child.rfBirthCertificateIssueDate = isValidDate
-          ? moment(this.child.rfBirthCertificateIssueDate, 'DD.MM.YYYY').toDate()
+          ? moment(this.child.rfBirthCertificateIssueDate, CONSTANTS.dateFormat).toDate()
           : moment().toDate();
       }
     }
@@ -64,7 +68,7 @@ export class BirthCertificateComponent implements OnInit, OnDestroy, AfterViewIn
             if (change[key]) {
               switch (key) {
                 case 'rfBirthCertificateIssueDate':
-                  this.child[key] = moment(change[key], 'DD.MM.YYYY').toDate();
+                  this.child[key] = moment(change[key], CONSTANTS.dateFormat).toDate();
                   break;
                 default:
                   this.child[key] = change[key];
@@ -80,7 +84,7 @@ export class BirthCertificateComponent implements OnInit, OnDestroy, AfterViewIn
 
   ngOnDestroy(): void {
     this.child.rfBirthCertificateIssueDate = moment(this.child.rfBirthCertificateIssueDate).format(
-      'DD.MM.YYYY',
+      CONSTANTS.dateFormat,
     );
     this.childUpdateEvent.emit(this.child);
     this.ngUnsubscribe$.next();
