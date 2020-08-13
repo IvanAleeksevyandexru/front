@@ -6,12 +6,16 @@
 
 <!--    <div class="content" *ngSwitchCase="'regDate'">{{date | date}}</div>-->
     <lib-date-picker *ngSwitchCase="'regDate'"></lib-date-picker>
+<!--    <lib-plain-input *ngSwitchCase="'regFrom'"></lib-plain-input>-->
+<!--    <lib-plain-input *ngSwitchCase="'regTo'"></lib-plain-input>-->
+<!--    <lib-plain-input *ngSwitchCase="'regAddr'"></lib-plain-input>-->
     <lib-plain-input *ngSwitchDefault></lib-plain-input>
 
   </ng-container>
 </div>
 
 <div class="item hint-wrapper">
+  <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
   <div class="item__hint" *ngFor="let hint of data?.attrs?.hints" (click)="hintClick(hint.timestamp)">{{hint.label}}</div>
 </div>
 
