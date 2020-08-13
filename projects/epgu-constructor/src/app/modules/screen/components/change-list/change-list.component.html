@@ -1,0 +1,20 @@
+<ng-container *ngFor="let field of data.attrs.fields">
+  <ng-container *ngIf="field.type === 'input'">
+    <label class="change-list__label" [for]="field.fieldName">{{ field.label }}</label>
+    <lib-standard-input
+      class="change-list__input"
+      [formControl]="fields.get(field.fieldName)"
+      [name]="field.fieldName"
+      [id]="field.fieldName">
+
+    </lib-standard-input>
+  </ng-container>
+</ng-container>
+
+<button class="btn btn--light change-list__button" (click)="pushFormGroupToResponse()">Добавить данные</button>
+
+<div *ngFor="let item of response; let i = index" class="change-list__item">
+  {{ i + 1 }}. <ng-container *ngFor="let field of data.attrs.fields">
+    {{ item[field.fieldName] }}
+  </ng-container>
+</div>

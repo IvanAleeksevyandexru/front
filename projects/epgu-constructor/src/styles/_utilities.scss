@@ -12,3 +12,6 @@
 .shadow-lg {
 
 }
+.first-letter-uppercase {
+  @include first-letter-uppercase();
+}

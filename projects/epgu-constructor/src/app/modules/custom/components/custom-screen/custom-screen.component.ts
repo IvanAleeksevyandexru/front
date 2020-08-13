@@ -147,7 +147,7 @@ export class CustomScreenComponent implements OnChanges, OnDestroy {
     };
   }
 
-  adaptiveData(item: DictionaryItem): ListItem {
+  adaptiveData(item: DictionaryItem): any {
     return {
       id: item.value,
       text: item.title,

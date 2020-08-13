@@ -12,10 +12,10 @@
 
           <div class="form__item" *ngSwitchCase="componentType.Dictionary">
             <div class="form__title">{{componentData.label}}</div>
-            <lib-simple-select
+            <lib-dropdown
               class="cs__select cs-select"
               (changed)="selectDictionary($event, componentData)"
-              [list]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-simple-select>
+              [items]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-dropdown>
           </div>
 
           <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
