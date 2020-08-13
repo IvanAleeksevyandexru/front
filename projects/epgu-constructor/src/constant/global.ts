@@ -4,7 +4,7 @@ export enum COMPONENT_TYPE {
   'COMPONENT' = 'COMPONENT', // внутри этого компонента внутри ровна один компонент
   'CUSTOM' = 'CUSTOM',
   'UNIQUE' = 'UNIQUE',
-  'INVITATION_ERROR'= 'INVITATION_ERROR'
+  'INVITATION_ERROR' = 'INVITATION_ERROR',
 }
 
 export enum SCREEN_COMPONENT_NAME {
@@ -15,6 +15,7 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'registrationAddr' = 'RegistrationAddr',
   'addPassport' = 'addPassport',
+  'changeList' = 'ChangeList',
   'snils' = 'StringInput'
 }
 
