@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 // eslint-disable-next-line
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 @Component({
   selector: 'app-screen',
@@ -22,7 +23,10 @@ export class ScreenComponent implements OnInit, OnDestroy {
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
-  constructor(private navService: NavigationService) {
+  constructor(
+    private navService: NavigationService,
+    private screenComponentService: ScreenComponentService,
+  ) {
     this.subscriptions.push(this.navService.clickToBack$.subscribe(() => this.prevStep()));
   }
 
@@ -37,7 +41,7 @@ export class ScreenComponent implements OnInit, OnDestroy {
   }
 
   nextStep() {
-    this.nextStepEvent.emit(this.componentData);
+    this.nextStepEvent.emit(this.screenComponentService.dataToSend);
   }
 
   changedComponentData(value) {

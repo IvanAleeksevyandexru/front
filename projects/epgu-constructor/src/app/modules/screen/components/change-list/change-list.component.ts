@@ -9,6 +9,7 @@ import {
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 interface EgpuResponseComponentInterfaceForChangeList extends EgpuResponseComponentInterface {
   attrs: {
@@ -31,6 +32,8 @@ export class ChangeListComponent implements OnChanges {
   @Output() valueChangedEvent = new EventEmitter<Array<any>>();
   response: Array<any>;
   fields: FormGroup;
+
+  constructor(private screenComponentService: ScreenComponentService) {}
 
   ngOnChanges(): void {
     this.fields = this.generateFormControls();
