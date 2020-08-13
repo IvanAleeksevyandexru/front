@@ -14,6 +14,7 @@ import { Subject } from 'rxjs';
 /* eslint-disable import/no-extraneous-dependencies */
 import { takeUntil, delay } from 'rxjs/operators';
 import * as moment from 'moment';
+import { CONSTANTS } from '../../../../../../../constant/global';
 
 @Component({
   selector: 'app-add-new-child-form',
@@ -54,7 +55,7 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
     this.childrenList = this.data.childrenList.map((child) => {
       const childFormatted = child;
       if (typeof child.birthDate === 'string') {
-        childFormatted.birthDate = moment(childFormatted.birthDate, 'DD.MM.YYYY').toDate();
+        childFormatted.birthDate = moment(childFormatted.birthDate, CONSTANTS.dateFormat).toDate();
       }
       return childFormatted;
     });
@@ -77,7 +78,7 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngOnDestroy() {
-    this.child.birthDate = moment(this.child.birthDate).format('DD.MM.YYYY');
+    this.child.birthDate = moment(this.child.birthDate).format(CONSTANTS.dateFormat);
     this.childUpdateEvent.emit(this.child);
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();

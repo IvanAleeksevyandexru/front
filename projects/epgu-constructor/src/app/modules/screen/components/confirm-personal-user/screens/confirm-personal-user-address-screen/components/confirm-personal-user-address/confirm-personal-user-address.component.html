@@ -1,13 +1,76 @@
 <form #dataForm="ngForm" *ngIf="isEditable; else nonEditable">
-  <div class="item" *ngFor="let field of data?.attrs?.fields" [ngSwitch]="field?.fieldName">
-    <div *ngSwitchDefault>
-      <label class="item__label">{{ field.label }}</label>
-      <lib-plain-input
-        [(ngModel)]="valueParsed[field.fieldName]"
-        [name]="field.fieldName"
-        class="content content__input"
-      ></lib-plain-input>
+  <ng-container *ngFor="let field of data?.attrs?.fields" [ngSwitch]="field?.fieldName">
+    <ng-container *ngSwitchCase="'addr'">
+      <ng-container *ngTemplateOutlet="form1; context: {field: field}">
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'registrationAddress'">
+      <ng-container *ngTemplateOutlet="form1; context: {field: field}">
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'date'">
+      <ng-container *ngTemplateOutlet="form2; context: {field: field}">
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'registrationAddressDate'">
+      <ng-container *ngTemplateOutlet="form2; context: {field: field}">
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngSwitchDefault>
+      <ng-container *ngTemplateOutlet="form3; context: {field: field}">
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</form>
+
+<ng-template #nonEditable>
+  <address-item class="item" name="field.label" *ngFor="let field of data?.attrs?.fields">
+    <div class="content">
+      {{ (data?.value | toJson)[field.fieldName] }}
     </div>
+  </address-item>
+</ng-template>
+
+<ng-template #form1 let-field="field">
+  <address-item class="item" name="field.label">
+    <lib-dadata-widget
+      [simpleMode]="true"
+      [name]="field.fieldName"
+      [externalApiUrl]="externalApiUrl"
+      [initValue]="valueParsed[field.fieldName]"
+      [(ngModel)]="valueParsed[field.fieldName]"
+    >
+    </lib-dadata-widget>
+  </address-item>
+</ng-template>
+
+<ng-template #form2 let-field="field">
+  <address-item class="item" name="field.label">
+    <lib-date-picker
+      [name]="field.fieldName"
+      [(ngModel)]="valueParsed[field.fieldName]"
+    >
+    </lib-date-picker>
+  </address-item>
+</ng-template>
+
+<ng-template #form3 let-field="field">
+  <address-item class="item" name="field.label">
+    <lib-plain-input
+      [(ngModel)]="valueParsed[field.fieldName]"
+      [name]="field.fieldName"
+      class="content content__input"
+    >
+    </lib-plain-input>
+  </address-item>
+</ng-template>
+
+<!-- <form #dataForm="ngForm" *ngIf="isEditable; else nonEditable">
+  <div class="item" *ngFor="let field of data?.attrs?.fields" [ngSwitch]="field?.fieldName">
     <div *ngSwitchCase="['addr', 'registrationAddress'].includes(field?.fieldName) ? field?.fieldName : ''">
       <label class="item__label">{{ field.label }}</label>
       <lib-dadata-widget
@@ -26,14 +89,22 @@
         [(ngModel)]="valueParsed[field.fieldName]"
       ></lib-date-picker>
     </div>
+    <div *ngSwitchDefault>
+      <label class="item__label">{{ field.label }}</label>
+      <lib-plain-input
+        [(ngModel)]="valueParsed[field.fieldName]"
+        [name]="field.fieldName"
+        class="content content__input"
+      ></lib-plain-input>
+    </div>
   </div>
 </form>
 
 <ng-template #nonEditable>
-  <div *ngIf="!isEditable">
+  <div>
     <div class="item" *ngFor="let field of data?.attrs?.fields">
       <label class="item__label">{{ field.label }}</label>
       <div class="content">{{ (data?.value | toJson)[field.fieldName] }}</div>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
