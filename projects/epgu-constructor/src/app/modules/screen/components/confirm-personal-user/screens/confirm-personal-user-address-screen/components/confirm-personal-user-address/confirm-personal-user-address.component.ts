@@ -14,8 +14,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
-import { ConstructorService } from '../../../../../../../../services/config/constructor.service';
 import { CONSTANTS } from '../../../../../../../../../constant/global';
+import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 
 @Component({
   selector: 'app-confirm-personal-user-address',
@@ -32,9 +32,9 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnDestroy, O
   ngUnsubscribe$: Subject<void>;
   externalApiUrl: string;
 
-  constructor(private constructorService: ConstructorService) {
+  constructor(private constructorConfigService: ConstructorConfigService) {
     this.ngUnsubscribe$ = new Subject();
-    this.externalApiUrl = this.constructorService.config.externalApiUrl;
+    this.externalApiUrl = this.constructorConfigService.config.externalApiUrl;
   }
 
   handleDataChange(change) {
