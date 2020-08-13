@@ -124,7 +124,7 @@ export class CustomScreenComponent implements OnChanges {
     };
   }
 
-  adaptiveData(item: DictionaryItem): ListItem {
+  adaptiveData(item: DictionaryItem): any {
     return {
       id: item.value,
       text: item.title,

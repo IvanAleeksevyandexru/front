@@ -43,6 +43,9 @@
           (valueChangedEvent)="changedComponentData($event)">
 
         </app-change-list>
+
+        <app-snils  *ngSwitchCase="screenComponentName.snils"></app-snils>
+
       </ng-container>
     </app-screen-pad>
 

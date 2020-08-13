@@ -1,0 +1,29 @@
+import { Component, OnInit } from '@angular/core';
+/* eslint-disable import/no-extraneous-dependencies */
+import { FormControl, Validators } from '@angular/forms';
+import { ValidationService } from 'epgu-lib';
+import { checkSnils } from 'ru-validation-codes';
+
+@Component({
+  selector: 'app-snils',
+  templateUrl: './snils.component.html',
+  styleUrls: ['./snils.component.scss'],
+})
+export class SnilsComponent implements OnInit {
+  public mask = this.validationService.masks.snils;
+  public snils = new FormControl('', [
+    Validators.required,
+    Validators.minLength(14),
+    // eslint-disable-next-line
+    this.checkSnilsSum,
+  ]);
+  constructor(private validationService: ValidationService) {}
+
+  ngOnInit(): void {}
+  checkSnilsSum(control: FormControl): { [s: string]: boolean } {
+    if (!checkSnils(control.value)) {
+      return { notValid: true };
+    }
+    return null;
+  }
+}

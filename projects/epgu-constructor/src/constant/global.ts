@@ -15,15 +15,19 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'registrationAddr' = 'RegistrationAddr',
   'addPassport' = 'addPassport',
-  'changeList' = 'ChangeList'
+  'changeList' = 'ChangeList',
+  'snils' = 'StringInput'
 }
 
 export enum INFO_SCREEN_COMPONENT {
   'info' = 'InfoSrc',
-  'addPassport' = 'AddPassport',
 }
 
 export enum UNIQUE_COMPONENT_NAME {
   'childrenListUnder14' = 'ChildrenListUnder14',
   'addPassport' = 'AddPassport'
+}
+
+export enum CONSTANTS {
+  'dateFormat' = 'DD.MM.YYYY'
 }

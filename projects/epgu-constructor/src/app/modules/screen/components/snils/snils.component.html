@@ -1,0 +1,10 @@
+<label>Снилс</label>
+<lib-standard-masked-input
+  [clearable]='true'
+  [mask]="mask"
+  [showMaskAsPlaceholder]="true"
+  [showConstantMaskSymbols]="true"
+  [validation]="snils.valid"
+  [validationMessages]="'Снилс указан не верно'"
+  [formControl]="snils"
+></lib-standard-masked-input>
