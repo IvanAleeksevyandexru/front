@@ -20,7 +20,7 @@ export enum SCREEN_COMPONENT_NAME {
 }
 
 export enum INFO_SCREEN_COMPONENT {
-  'info' = 'InfoSrc',
+  'info' = 'InfoScr',
 }
 
 export enum UNIQUE_COMPONENT_NAME {

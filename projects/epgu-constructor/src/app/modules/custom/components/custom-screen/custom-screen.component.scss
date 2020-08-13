@@ -2,19 +2,46 @@
 @import "../../../../../styles/functions";
 @import "../../../../../styles/breakpoint";
 
+.inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: inherit;
+  min-height: inherit;
+  @include tablets-up {
+    min-height: auto;
+  }
+}
+
+.body {
+  display: flex;
+  @include tablets-down {
+    flex-grow: 1;
+  }
+  &::ng-deep > * {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $secondary_font;
+  margin-top: 24px;
+  @include tablets-up {
+    margin-top: 32px;
+  }
+}
 
 epguc-screen-container {
   text-align: center;
 }
+
 app-screen-pad {
   text-align: left;
-}
-lib-button {
-  display: inline-block;
-  @extend %submit-button-margin;
-  &::ng-deep button{
-    min-width: 176px;
-  }
 }
 
 app-label-section {

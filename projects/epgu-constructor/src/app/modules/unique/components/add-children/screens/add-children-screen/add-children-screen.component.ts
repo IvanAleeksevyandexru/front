@@ -118,8 +118,8 @@ export class AddChildrenScreenComponent implements OnInit {
     };
 
     this.valueParsed = JSON.parse(this.data.value);
-    this.childrenListInitial = [...this.valueParsed?.children];
-    this.childrenList = this.valueParsed?.children;
+    this.childrenListInitial = [...this.valueParsed?.items];
+    this.childrenList = this.valueParsed?.items;
     this.childrenSelectList = this.childrenList.map((child) => {
       return {
         id: child.id,

@@ -36,11 +36,7 @@
   }
 
   &__btn-submit {
-    width: 100%;
-    @include tablets-up {
-      width: auto;
-      min-width: 176px;
-    }
+    width: auto;
     &::ng-deep button {
       width: inherit;
       min-width: inherit;

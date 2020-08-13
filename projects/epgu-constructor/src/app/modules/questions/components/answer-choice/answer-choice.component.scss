@@ -19,7 +19,7 @@
   color: $egyptian-blue;
   border-radius: $border-xl;
   cursor: pointer;
-  @include shadow();
+  @include shadow-main();
   @include tablets-up {
     padding: 24px 32px;
   }
