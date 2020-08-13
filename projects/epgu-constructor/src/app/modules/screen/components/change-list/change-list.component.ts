@@ -28,7 +28,7 @@ interface IField {
 })
 export class ChangeListComponent implements OnChanges {
   @Input() data: EgpuResponseComponentInterfaceForChangeList;
-  @Output() valueChangedEvent: EventEmitter<Array<any>> = new EventEmitter<Array<any>>();
+  @Output() valueChangedEvent = new EventEmitter<Array<any>>();
   response: Array<any>;
   fields: FormGroup;
 
