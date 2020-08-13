@@ -38,17 +38,14 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnDestroy, O
   }
 
   handleDataChange(change) {
-    const { addr, date, registrationAddress, registrationAddressDate, ...restFields } = change;
-    const { fullAddress } = addr || registrationAddress || {};
-    this.valueParsed = change;
-    this.data.value = JSON.stringify({
-      addr: fullAddress || '',
-      date:
-        moment(date || registrationAddressDate).format(CONSTANTS.dateFormat) ||
-        moment().format(CONSTANTS.dateFormat),
+    const { regAddr, regDate, ...restFields } = change;
+    const { fullAddress } = regAddr || {};
+    return JSON.stringify({
+      regAddr: fullAddress || '',
+      regDate:
+        moment(regDate).format(CONSTANTS.dateFormat) || moment().format(CONSTANTS.dateFormat),
       ...restFields,
     });
-    this.dataEditedEvent.emit({ valueParsed: this.valueParsed, data: this.data });
   }
 
   ngOnInit(): void {
@@ -67,7 +64,9 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnDestroy, O
       // give time to init view dataForm and make form changes subscription possible
       setTimeout(() => {
         this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
-          this.handleDataChange(change);
+          this.valueParsed = change;
+          this.data.value = this.handleDataChange(change);
+          this.dataEditedEvent.emit({ valueParsed: this.valueParsed, data: this.data });
         });
       }, 0);
     }
