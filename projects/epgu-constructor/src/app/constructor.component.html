@@ -2,25 +2,35 @@
   <app-info-screen
     *ngSwitchCase="constructorComponentType.INFO"
     [data]="componentData"
-    (nextStepEvent)="nextStep()"></app-info-screen>
+    [isLoading]="isLoading"
+    (nextStepEvent)="nextStep()"
+  ></app-info-screen>
   <app-invitation-screen
-    (resolve)="onEmailSelect($event)"
     *ngSwitchCase="constructorComponentType.INVITATION_ERROR"
-    [data]="componentData"></app-invitation-screen>
+    [data]="componentData"
+    [isLoading]="isLoading"
+    (resolve)="onEmailSelect($event)"
+  ></app-invitation-screen>
   <app-screen
     *ngSwitchCase="constructorComponentType.COMPONENT"
     [data]="componentData"
-    (nextStepEvent)="nextStep($event)"></app-screen>
+    [isLoading]="isLoading"
+    (nextStepEvent)="nextStep($event)"
+  ></app-screen>
   <app-custom-screen
     *ngSwitchCase="constructorComponentType.CUSTOM"
     [data]="componentData"
-    (nextStepEvent)="nextStepFromCustomScreen($event)"></app-custom-screen>
+    [isLoading]="isLoading"
+    (nextStepEvent)="nextStepFromCustomScreen($event)"
+  ></app-custom-screen>
   <app-question-screen
     *ngSwitchCase="constructorComponentType.QUESTION"
     [data]="componentData"
-    (answerSelect)="onAnswerSelect($event)"></app-question-screen>
+    (answerSelect)="onAnswerSelect($event)"
+  ></app-question-screen>
   <app-unique-screen
     *ngSwitchCase="constructorComponentType.UNIQUE"
     [data]="componentData"
-    (nextStepEvent)="nextStep($event)"></app-unique-screen>
+    (nextStepEvent)="nextStep($event)"
+  ></app-unique-screen>
 </ng-container>

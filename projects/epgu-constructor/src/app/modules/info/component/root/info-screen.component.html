@@ -17,7 +17,7 @@
     </div>
 
     <div class="info__footer info-footer">
-      <lib-button (click)="nextStep()" class="info-footer__submit">
+      <lib-button [showLoader]="isLoading" (click)="nextStep()" class="info-footer__submit">
         {{data?.submitLabel || 'Продолжить'}}
       </lib-button>
     </div>

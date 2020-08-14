@@ -17,7 +17,7 @@
 
 .divider {
   border: 0;
-  background: $perano;
+  background: $devider;
   height: 1px;
   margin: 0 0 24px;
 }
@@ -27,4 +27,7 @@
 }
 .info-footer__submit {
   display: inline-block;
+  &::ng-deep button {
+    min-width: 100px;
+  }
 }

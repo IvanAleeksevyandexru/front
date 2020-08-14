@@ -20,6 +20,7 @@ export class ConstructorComponent implements OnInit {
   componentId: string;
   componentType: string;
   componentData: any;
+  isLoading: boolean;
 
   constructor(public epguService: EpguService) {}
 
@@ -62,6 +63,7 @@ export class ConstructorComponent implements OnInit {
   }
 
   sendData(data, componentId?: string) {
+    this.isLoading = true;
     this.response.currentValue[componentId || this.componentId] = { visited: true, value: data };
     this.epguService.setData(this.response).subscribe(
       (response) => {
@@ -71,6 +73,9 @@ export class ConstructorComponent implements OnInit {
       },
       (error) => {
         console.error(error);
+      },
+      () => {
+        this.isLoading = false;
       },
     );
   }
