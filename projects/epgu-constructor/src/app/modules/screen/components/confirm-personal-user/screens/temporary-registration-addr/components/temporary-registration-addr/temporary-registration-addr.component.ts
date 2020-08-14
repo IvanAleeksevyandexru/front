@@ -9,7 +9,7 @@ import { ConstructorConfigService } from '../../../../../../../../services/confi
 })
 export class TemporaryRegistrationAddrComponent {
   date = new Date();
-  forms = {};
+  forms: any = {};
   @Input() data: EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface;
 
   constructor(public constructorConfigService: ConstructorConfigService) {}
