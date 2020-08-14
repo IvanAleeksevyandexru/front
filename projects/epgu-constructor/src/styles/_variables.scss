@@ -1,9 +1,29 @@
 // Variables
 
 // Color system
+// New brand colors
+$white: #FFFFFF;
+$black: #000000;
+$summer-night: #0B1F33; // brand black
+$text-helper: #66727F;
+$gosblue: #0D4CD3;
+$gosred: #EE3F58;
+$giallo-brillante: #FED13E;
+$green-sea: #16A086;
+$input: #F5F7FA;
+$devider: #99B1E6;
+$error-highlight: #EE3F58;
+$shadow: #E6EBF5;
+$background: #FAFCFF;
+$bg-disabled: #D1D5DF;
+$active-item: #1D5DEB;
+$tag-line: #1D5DEB;
+$button-disabled: #E5EAF5;
+$tagline-hit: #1D5DEB;
+$nephritis: #2DC36A;
+$button-hit: #0B40B3;
 
-$white: #fff;
-$black: #0B1F33;
+// Depricated brand colors
 $egyptian-blue: #0B40B3;
 $royal-blue: #1D5DEB;
 $denim: #0D4CD3;
@@ -17,26 +37,16 @@ $cyprus: #0B1F33;
 $pattens-blue: #F9FBFD;
 $perano: #99B1E6;
 $hawkes-blue: #E5EAF5;
-
-
-
 $solitude: #F5F7FA;
-
-
 $box-shadow-color: #E6EBF5;
 
-// fonts
+// Fonts
 $primary_font: Lato;
 $secondary_font: ALS Ekibastuz;
 $tertiary_font: Helvetica Neue;
 $quaternary_font: Helvetica;
-//$quinary_font:
-//$senary_font:
-//$septenary_font:
-//$octonary_font:
-//$nonary_font:
 
-// font-weight
+// Font-weight
 $fw-thin: 100;
 $fw-light: 300;
 $fw-regular: 400;
@@ -47,18 +57,21 @@ $fw-bold: 700;
 $fw-black: 900;
 
 // Font size
-//$font-xs: 12px;
-//$font-sm: 14px;
-//$font-md: 18px;
-//$font-lg: 20px;
+$font-xs: 12px;
+$font-sm: 14px;
+$font-dflt: 16px;
+$font-md: 18px;
+$font-lg: 20px;
+$font-xl: 24px;
+$font-xxl: 32px;
+$font-extra: 36px;
 
 // Border
 $border-xl: 12px;
 $border-lg: 8px;
 $border-md: 4px;
 $border-sm: 2px;
+$border-round: 12px;
 
-
-
-// other
+// Other
 $screen-pad-p: 24px;

@@ -9,6 +9,7 @@
   text-align: left;
   font-weight: $fw-bold;
   margin-bottom: 24px;
+  color: $black;
   @include tablets-up {
     margin-bottom: 32px;
   }

@@ -5,10 +5,12 @@ import {
   ConfirmPersonalUserScreenLayoutComponent
 } from './confirm-personal-user-screen-layout/confirm-personal-user-screen-layout.component';
 import {EpgucSharedModule} from '../../../../../shared-module/shared-components.module';
+import { AddressItemComponent } from './address-item/address-item.component';
 
 const COMPONENTS = [
   ConfirmPersonalUserButtonComponent,
   ConfirmPersonalUserScreenLayoutComponent,
+  AddressItemComponent,
 ];
 
 @NgModule({
