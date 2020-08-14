@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 
 @Component({
   selector: 'app-upload-file',
@@ -6,5 +7,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./upload-file.component.scss'],
 })
 export class UploadFileComponent {
-  @Input() name: string;
+  @Input() attributes: EgpuResponseComponentInterface;
+  @Input() objectId: number; // Идентификато объекта
+  @Input() prefixForMnemonic: string; // Префикс для создания мнемоники
 }

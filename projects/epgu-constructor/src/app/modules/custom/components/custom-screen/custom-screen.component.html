@@ -40,7 +40,7 @@
 
             <div class="form__item" *ngSwitchCase="componentType.FileUploadComponent">
               <div class="form__title">{{componentData.label}}</div>
-              <app-upload-file (change)="inputChange($event, componentData)"></app-upload-file>
+              <app-upload-file [attributes]="componentData.attrs" (change)="inputChange($event, componentData)"></app-upload-file>
             </div>
 
           </ng-container>
