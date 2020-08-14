@@ -50,7 +50,7 @@
     </app-screen-pad>
 
     <div class="footer">
-      <lib-button (click)="nextStep()" class="footer__btn-submit">
+      <lib-button [showLoader]="isLoading" (click)="nextStep()" class="footer__btn-submit">
         <div class="secondary-font">{{data?.submitLabel || 'Продолжить'}}</div>
       </lib-button>
     </div>

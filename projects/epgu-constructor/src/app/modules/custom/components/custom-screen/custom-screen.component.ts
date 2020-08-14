@@ -28,6 +28,7 @@ export class CustomScreenComponent implements OnChanges {
 
   @Input() data: EgpuResponseCustomComponentDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
+  @Input() isLoading: boolean;
 
   constructor(private epguService: EpguService) {}
 

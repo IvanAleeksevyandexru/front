@@ -11,6 +11,7 @@ export class ScreenComponent implements OnInit {
   componentData = null;
   screenComponentName = SCREEN_COMPONENT_NAME;
   @Input() data: EgpuResponseDisplayInterface;
+  @Input() isLoading: boolean;
   @Output() nextStepEvent = new EventEmitter();
 
   ngOnInit(): void {}
