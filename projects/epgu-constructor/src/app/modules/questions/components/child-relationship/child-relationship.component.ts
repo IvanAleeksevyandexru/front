@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { QuestionsComponentActionsInterface } from '../../../../../questions/components/interface/question-block.interface';
+import { QuestionsComponentActionsInterface } from '../../../../../interfaces/question-block.interface';
 
 @Component({
   selector: 'epgu-constructor-child-relationship',

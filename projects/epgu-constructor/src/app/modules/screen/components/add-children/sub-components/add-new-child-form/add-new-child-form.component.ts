@@ -28,19 +28,19 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   @Output() removeChildEvent = new EventEmitter();
   @Output() childUpdateEvent = new EventEmitter();
 
-  child: any;
-  childrenList: any;
-  childrenSelectList: Array<ListItem>;
+  item: any;
+  items: any;
+  itemsToSelect: Array<ListItem>;
   list: Array<ListItem>;
 
   constructor(private ngUnsubscribe$: UnsubscribeService) {}
 
   handleSelect(event) {
     const { id } = event;
-    this.child = {
-      ...this.child,
-      ...this.childrenList.find((child) => child.id === id),
-      id: this.child.id,
+    this.item = {
+      ...this.item,
+      ...this.items.find((child) => child.id === id),
+      id: this.item.id,
     };
   }
 
@@ -49,18 +49,15 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngOnInit(): void {
-    this.childrenList = this.data.childrenList.map((child) => {
-      const childFormatted = child;
-      if (typeof child.birthDate === 'string') {
-        childFormatted.birthDate = moment(
-          childFormatted.birthDate,
-          DATE_STRING_DOT_FORMAT,
-        ).toDate();
+    this.items = this.data.items.map((item) => {
+      const itemFormatted = item;
+      if (typeof item.birthDate === 'string') {
+        itemFormatted.birthDate = moment(itemFormatted.birthDate, DATE_STRING_DOT_FORMAT).toDate();
       }
-      return childFormatted;
+      return itemFormatted;
     });
-    this.childrenSelectList = this.data.childrenSelectList;
-    this.child = this.data.child;
+    this.itemsToSelect = this.data.itemsToSelect;
+    this.item = this.data.item;
   }
 
   ngAfterViewInit() {
@@ -68,17 +65,17 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
       .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
       .subscribe((change) => {
         const { birthDate, firstName, lastName, middleName, gender } = change;
-        this.child.birthDate = birthDate;
-        this.child.firstName = firstName;
-        this.child.lastName = lastName;
-        this.child.middleName = middleName;
-        this.child.gender = gender;
-        this.childUpdateEvent.emit(this.child);
+        this.item.birthDate = birthDate;
+        this.item.firstName = firstName;
+        this.item.lastName = lastName;
+        this.item.middleName = middleName;
+        this.item.gender = gender;
+        this.childUpdateEvent.emit(this.item);
       });
   }
 
   ngOnDestroy() {
-    this.child.birthDate = moment(this.child.birthDate).format(DATE_STRING_DOT_FORMAT);
-    this.childUpdateEvent.emit(this.child);
+    this.item.birthDate = moment(this.item.birthDate).format(DATE_STRING_DOT_FORMAT);
+    this.childUpdateEvent.emit(this.item);
   }
 }

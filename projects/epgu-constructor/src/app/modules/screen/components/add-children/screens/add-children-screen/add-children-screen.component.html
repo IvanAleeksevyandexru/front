@@ -1,15 +1,6 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
-
-<div class="head">
-  <h3 class="title" [innerHTML]="headerMapped[sectionId]"></h3>
-</div>
-
 <section class="add-children-screen">
-  <section *ngIf="sectionId === 1">
-    <div
-      class="add-children-screen__card"
-      *ngFor="let child of childrenSelectList"
-    >
+  <section>
+    <div class="add-children-screen__card" *ngFor="let child of childrenListInitial">
       <div class="card">
         <div class="card__wrapper">
           <div class="card__header">
@@ -41,11 +32,11 @@
     <div class="add-children-screen__form" *ngFor="let child of childrenList">
       <epgu-constructor-add-new-child-form
         *ngIf="child.isNew === true"
-        (ngModel)="child"
+        (ngModel)="(child)"
         [data]="{
-          childrenSelectList: childrenSelectList,
-          childrenList: childrenList,
-          child: child
+          itemsToSelect: childrenListInitial,
+          items: childrenList,
+          item: child
         }"
         (removeChildEvent)="removeChild($event)"
         (childUpdateEvent)="updateChild($event)"
@@ -59,15 +50,17 @@
     </div>
   </section>
 
-  <section class="add-children-screen__birth-certificate" *ngIf="sectionId === 2">
-    <epgu-constructor-birth-certificate [data]="selectedChildrenList"
-                                        (childUpdateEvent)="updateChild($event)"
+  <!-- <section class="add-children-screen__birth-certificate" *ngIf="sectionId === 2">
+    <epgu-constructor-birth-certificate
+      [data]="selectedChildrenList"
+      (childUpdateEvent)="updateChild($event)"
     ></epgu-constructor-birth-certificate>
   </section>
 
   <section *ngIf="sectionId === 3">
-    <epgu-constructor-child-relationship [gender]="valueParsed?.gender"
-                                         (answerSelect)="handleAnswerSelect($event)"
+    <epgu-constructor-child-relationship
+      [gender]="valueParsed?.gender"
+      (answerSelect)="handleAnswerSelect($event)"
     ></epgu-constructor-child-relationship>
   </section>
 
@@ -81,17 +74,5 @@
       [data]="data"
       [childrenData]="selectedChildrenList"
     ></epgu-constructor-confirm-child-address>
-  </section>
-
-  <section class="footer">
-    <lib-button
-      (click)="nextStep()"
-      class="footer__btn-submit"
-      *ngIf="sectionId !== 3 && sectionId !== 4"
-    >
-      <div class="secondary-font">
-        {{ data?.submitLabel || 'Продолжить' }}
-      </div>
-    </lib-button>
-  </section>
+  </section> -->
 </section>

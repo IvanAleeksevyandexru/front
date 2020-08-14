@@ -15,10 +15,14 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'registrationAddr' = 'RegistrationAddr',
   'personLookup' = 'PersonLookup',
+  'docInput' = 'DocInput',
+  'addPassport' = 'AddPassport',
   'changeList' = 'ChangeList',
   'snils' = 'StringInput',
-  'docInput' = 'DocInput',
-  'countryApostil' = 'CountryApostil'
+  'countryApostil' = 'CountryApostil',
+  'childrenListUnder14' = 'ChildrenListUnder14',
+  'childrenListAbove14' = 'ChildrenListAbove14',
+  'birthCertificate' = 'BirthCertificate',
 }
 
 export enum INFO_SCREEN_COMPONENT {

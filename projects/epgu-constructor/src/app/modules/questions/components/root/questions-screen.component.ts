@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import {
   QuestionsComponentActionsInterface,
   QuestionsDisplayInterface,
-} from '../interface/question-block.interface';
+} from '../../../../../interfaces/question-block.interface';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 
 @Component({
   selector: 'epgu-constructor-question-screen',

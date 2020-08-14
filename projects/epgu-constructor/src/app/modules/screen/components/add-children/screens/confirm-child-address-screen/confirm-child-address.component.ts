@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ConfirmAddressActionsInterface } from '../../../../../screen/components/confirm-personal-user/screens/confirm-personal-user-address-screen/interface/confirm-address.interface';
+import { ConfirmAddressActionsInterface } from '../../../confirm-personal-user/screens/confirm-personal-user-address-screen/interface/confirm-address.interface';
 
 @Component({
   selector: 'epgu-constructor-confirm-child-address',
