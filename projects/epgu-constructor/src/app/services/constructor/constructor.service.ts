@@ -34,7 +34,7 @@ export class ConstructorService {
     );
   }
 
-  prevStep(data?: any) {
+  prevStep(data: any = '') {
     this.updateRequest(data);
     this.restService.getPrevStep(this.response).subscribe(
       (response) => this.sendDataSuccess(response),
