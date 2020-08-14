@@ -18,6 +18,7 @@ export class RootComponent implements OnInit, OnDestroy {
   subscriptions: Array<Subscription> = [];
 
   @Input() data: EgpuResponseDisplayInterface;
+  @Input() isLoading: boolean;
   @Output() resolve: EventEmitter<string> = new EventEmitter<string>();
   @Output() prevStepEvent = new EventEmitter();
 

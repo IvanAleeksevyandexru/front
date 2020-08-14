@@ -4,21 +4,25 @@
   <app-info-screen
     *ngSwitchCase="constructorComponentType.INFO"
     [data]="constructorService?.componentData"
+    [isLoading]="isLoading"
     (nextStepEvent)="nextStep()"
     (prevStepEvent)="prevStep()"></app-info-screen>
   <app-invitation-screen
     *ngSwitchCase="constructorComponentType.INVITATION_ERROR"
     [data]="constructorService?.componentData"
+    [isLoading]="isLoading"
     (resolve)="onEmailSelect($event)"
     (prevStepEvent)="prevStep()"></app-invitation-screen>
   <app-screen
     *ngSwitchCase="constructorComponentType.COMPONENT"
     [data]="constructorService?.componentData"
+    [isLoading]="isLoading"
     (nextStepEvent)="nextStep($event)"
     (prevStepEvent)="prevStep($event)"></app-screen>
   <app-custom-screen
     *ngSwitchCase="constructorComponentType.CUSTOM"
     [data]="constructorService?.componentData"
+    [isLoading]="isLoading"
     (nextStepEvent)="nextStep($event)"
     (prevStepEvent)="prevStep()"></app-custom-screen>
   <app-question-screen
@@ -31,6 +35,5 @@
     [data]="constructorService?.componentData"
     (nextStepEvent)="nextStep($event)"
     (prevStepEvent)="prevStep()">
-
   </app-unique-screen>
 </ng-container>

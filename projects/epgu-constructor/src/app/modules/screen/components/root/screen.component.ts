@@ -20,6 +20,7 @@ export class ScreenComponent implements OnInit, OnDestroy {
   subscriptions: Array<Subscription> = [];
 
   @Input() data: EgpuResponseDisplayInterface;
+  @Input() isLoading: boolean;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
