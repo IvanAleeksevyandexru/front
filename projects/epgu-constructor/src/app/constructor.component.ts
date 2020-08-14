@@ -65,19 +65,22 @@ export class ConstructorComponent implements OnInit {
   sendData(data, componentId?: string) {
     this.isLoading = true;
     this.response.currentValue[componentId || this.componentId] = { visited: true, value: data };
-    this.epguService.setData(this.response).subscribe(
-      (response) => {
-        console.log('----- SET DATA ---------');
-        console.log('request', this.response);
-        this.initResponse(response);
-      },
-      (error) => {
-        console.error(error);
-      },
-      () => {
+    this.epguService
+      .setData(this.response)
+      .subscribe(
+        (response) => {
+          console.log('----- SET DATA ---------');
+          console.log('request', this.response);
+          this.initResponse(response);
+        },
+        (error) => {
+          console.error(error);
+        },
+      )
+      // Called when operation is complete (both success and error)
+      .add(() => {
         this.isLoading = false;
-      },
-    );
+      });
   }
 
   nextStep(data?: any) {
