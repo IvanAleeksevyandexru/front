@@ -15,30 +15,37 @@ export class ConstructorService {
   componentId: string;
   componentType: string;
   componentData: EgpuResponseDisplayInterface;
+  isLoading = false;
 
   constructor(public restService: RestService) {
   }
 
   getData() {
+    this.isLoading = true;
     this.restService.getData().subscribe(
       (response) => this.initResponse(response),
-      (error) => console.error(error)
+      (error) => console.error(error),
+      () => this.isLoading = false
     );
   }
 
   nextStep(data?: any, options?: SendDataOptionsInterface) {
+    this.isLoading = true;
     this.updateRequest(data, options);
     this.restService.getNextStep(this.response).subscribe(
       (response) => this.sendDataSuccess(response),
       (error) => this.sendDataError(error),
+      () => this.isLoading = false
     );
   }
 
   prevStep(data?: any) {
+    this.isLoading = true;
     this.updateRequest(data);
     this.restService.getPrevStep(this.response).subscribe(
       (response) => this.sendDataSuccess(response),
       (error) => this.sendDataError(error),
+      () => this.isLoading = false
     );
   }
 

@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { INFO_SCREEN_COMPONENT } from '../../../../../constant/global';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { ConstructorService } from '../../../../services/constructor/constructor.service';
 
 @Component({
   selector: 'app-info-screen',
@@ -22,11 +23,13 @@ export class InfoScreenComponent implements OnDestroy {
   subscriptions: Array<Subscription> = [];
 
   @Input() data: EgpuResponseDisplayInterface;
-  @Input() isLoading: boolean;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
-  constructor(private navService: NavigationService) {
+  constructor(
+    private navService: NavigationService,
+    public constructorService: ConstructorService,
+  ) {
     this.subscriptions.push(this.navService.clickToBack$.subscribe(() => this.prevStep()));
   }
 

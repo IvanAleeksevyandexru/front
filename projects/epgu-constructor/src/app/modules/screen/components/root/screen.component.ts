@@ -5,6 +5,7 @@ import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.ser
 import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
+import { ConstructorService } from '../../../../services/constructor/constructor.service';
 
 @Component({
   selector: 'app-screen',
@@ -20,11 +21,11 @@ export class ScreenComponent implements OnInit, OnDestroy {
   subscriptions: Array<Subscription> = [];
 
   @Input() data: EgpuResponseDisplayInterface;
-  @Input() isLoading: boolean;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
   constructor(
+    public constructorService: ConstructorService,
     private navService: NavigationService,
     private screenComponentService: ScreenComponentService,
   ) {

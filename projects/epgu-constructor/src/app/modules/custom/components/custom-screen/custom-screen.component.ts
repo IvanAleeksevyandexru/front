@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 // eslint-disable-next-line
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 import { RestService } from '../../../../services/rest/rest.service';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 import {
@@ -23,6 +23,7 @@ import {
   DictionaryResponse,
 } from '../../../../../interfaces/dictionary-options.interface';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { ConstructorService } from '../../../../services/constructor/constructor.service';
 
 @Component({
   selector: 'app-custom-screen',
@@ -42,7 +43,11 @@ export class CustomScreenComponent implements OnChanges, OnDestroy {
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
-  constructor(private restService: RestService, private navService: NavigationService) {
+  constructor(
+    private restService: RestService,
+    private navService: NavigationService,
+    public constructorService: ConstructorService,
+  ) {
     this.subscriptions.push(this.navService.clickToBack$.subscribe(() => this.prevStep()));
   }
 
