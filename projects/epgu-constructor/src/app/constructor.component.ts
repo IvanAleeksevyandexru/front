@@ -23,11 +23,6 @@ export class ConstructorComponent implements OnInit {
     this.constructorService.nextStep(email, { componentId: 'errorScr' });
   }
 
-  nextStepFromCustomScreen(data) {
-    console.log(data);
-    this.constructorService.nextStep('asdasdas');
-  }
-
   nextStep(data?: any) {
     this.constructorService.nextStep(data);
   }

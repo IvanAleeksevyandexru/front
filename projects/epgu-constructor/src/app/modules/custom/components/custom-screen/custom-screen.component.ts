@@ -77,19 +77,19 @@ export class CustomScreenComponent implements OnChanges, OnDestroy {
     // TODO HARDCODE
     if (true) {
       Object.keys(this.state).forEach((key) => {
-        responseData[key] = { visited: true, value: this.state[key].value };
+        responseData[key] = { visited: true, value: JSON.stringify(this.state[key].value || {}) };
       });
       this.nextStepEvent.emit(responseData);
     }
   }
 
   selectDictionary(
-    selectedItem: { item: ListItem },
+    selectedItem: ListItem,
     component: EgpuResponseCustomComponentDisplayComponentInterface,
   ) {
     const dictionaryName = component.attrs?.dictionaryType;
-    this.dictionary[dictionaryName].selectedItem = selectedItem.item.originalItem;
-    this.state[component.id].value = selectedItem.item.originalItem;
+    this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
+    this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
   }
 

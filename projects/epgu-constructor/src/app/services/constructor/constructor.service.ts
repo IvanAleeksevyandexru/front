@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {EgpuResponseInterface} from '../../../interfaces/epgu.service.interface';
+import {EgpuResponseDisplayInterface, EgpuResponseInterface} from '../../../interfaces/epgu.service.interface';
 import {RestService} from '../rest/rest.service';
 import {COMPONENT_TYPE} from '../../../constant/global';
-import {CUSTOM_COMPONENT_ITEM_TYPE} from '../../modules/custom/tools/custom-screen-tools';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -15,7 +14,7 @@ export class ConstructorService {
   response: EgpuResponseInterface;
   componentId: string;
   componentType: string;
-  componentData: any;
+  componentData: EgpuResponseDisplayInterface;
 
   constructor(public restService: RestService) {
   }
@@ -45,10 +44,16 @@ export class ConstructorService {
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}) {
     const componentId = options.componentId || this.componentId;
-    this.response.currentValue[componentId] = {
-      visited: true,
-      value: data,
-    };
+
+    // TODO HARDCODE наверное компоненты должны поднимать готовый state,
+    if (this.componentData.type === COMPONENT_TYPE.CUSTOM) {
+      this.response.currentValue = data;
+    } else {
+      this.response.currentValue[componentId] = {
+        visited: true,
+        value: data,
+      };
+    }
   }
 
   sendDataSuccess(response) {
@@ -70,14 +75,7 @@ export class ConstructorService {
     this.response = response;
     const { display } = response;
 
-    // <-- start TODO HARDCODE
-    // eslint-disable-next-line max-len
-    this.componentId =
-      response.display.type === COMPONENT_TYPE.CUSTOM
-        ? display.components.find((item) => item.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection)
-          .id
-        : display.components[0].id;
-    // <-- end TODO HARDCODE
+    this.componentId = display.components[0].id;
     this.componentType = display.components[0].type;
     this.componentData = display;
     // this.componentData.header = 'Кому из детей требуется оформить загранпаспорт?';
