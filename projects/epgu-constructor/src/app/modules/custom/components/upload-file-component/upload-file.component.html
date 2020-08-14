@@ -1,0 +1,13 @@
+<ng-template ngFor let-upload [ngForOf]="attributes.uploads">
+  <app-file-upload-item
+    [data]="upload"
+    [objectId]="objectId"
+    [prefixForMnemonic]="prefixForMnemonic"
+  ></app-file-upload-item>
+  <app-file-upload
+    *ngIf="upload?.relatedUploads"
+    [attributes]="upload.relatedUploads"
+    [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(upload.relatedUploads?.ref)"
+    [objectId]="objectId"
+  ></app-file-upload>
+</ng-template>
