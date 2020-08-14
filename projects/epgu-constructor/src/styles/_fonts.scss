@@ -127,34 +127,3 @@
   font-style: $fw-regular;
   font-display: optional;
 }
-
-
-// SECONDARY_FORT
-// ALS-Ekibastuz fonts
-
-@font-face {
-  font-family: $secondary_font;
-  src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Black.woff") format("woff");
-  font-weight: $fw-black;
-  font-display: optional;
-}
-
-@font-face {
-  font-family: $secondary_font;
-  src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Bold.woff") format("woff");
-  font-weight: $fw-bold;
-  font-display: optional;
-}
-
-@font-face {
-  font-family: "ALS Ekibastuz Heavy";
-  src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Heavy.woff") format("woff");
-  font-display: optional;
-}
-
-@font-face {
-  font-family: $secondary_font;
-  src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Regular.woff") format("woff");
-  font-weight: $fw-regular;
-  font-display: optional;
-}
