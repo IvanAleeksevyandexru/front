@@ -16,7 +16,8 @@ export enum SCREEN_COMPONENT_NAME {
   'registrationAddr' = 'RegistrationAddr',
   'addPassport' = 'addPassport',
   'changeList' = 'ChangeList',
-  'snils' = 'StringInput'
+  'snils' = 'StringInput',
+  'docInput' = 'DocInput'
 }
 
 export enum INFO_SCREEN_COMPONENT {
