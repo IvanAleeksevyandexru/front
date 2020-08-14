@@ -8,6 +8,7 @@ import { EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface } from '
 })
 export class TemporaryRegistrationAddrComponent {
   date = new Date();
+  forms = {};
   @Input() data: EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface;
 
   hintClick(timestamp: number) {
