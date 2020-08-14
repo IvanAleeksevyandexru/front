@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
 } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -27,13 +28,18 @@ interface IField {
   styleUrls: ['./change-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChangeListComponent implements OnChanges {
+export class ChangeListComponent implements OnInit, OnChanges {
   @Input() data: EgpuResponseComponentInterfaceForChangeList;
   @Output() valueChangedEvent = new EventEmitter<Array<any>>();
   response: Array<any>;
   fields: FormGroup;
 
   constructor(private screenComponentService: ScreenComponentService) {}
+
+  ngOnInit(): void {
+    // TODO eliskachev это для тебя нужно заполнить данные;
+    this.screenComponentService.dataToSend = '';
+  }
 
   ngOnChanges(): void {
     this.fields = this.generateFormControls();

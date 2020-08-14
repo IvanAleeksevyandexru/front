@@ -26,7 +26,7 @@ export class ConstructorService {
     );
   }
 
-  nextStep(data?: any, options?: SendDataOptionsInterface) {
+  nextStep(data: any = '', options?: SendDataOptionsInterface) {
     this.updateRequest(data, options);
     this.restService.getNextStep(this.response).subscribe(
       (response) => this.sendDataSuccess(response),
@@ -34,7 +34,7 @@ export class ConstructorService {
     );
   }
 
-  prevStep(data?: any) {
+  prevStep(data: any = '') {
     this.updateRequest(data);
     this.restService.getPrevStep(this.response).subscribe(
       (response) => this.sendDataSuccess(response),
