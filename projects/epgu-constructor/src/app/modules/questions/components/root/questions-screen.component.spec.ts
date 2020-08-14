@@ -1,12 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 import { SCREEN_TYPE } from '../../../../../constant/global'
+import { QuestionsDisplayInterface } from '../../../../../interfaces/question-block.interface'
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service'
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service'
-import { QuestionsDisplayInterface } from '../interface/question-block.interface'
 import { QuestionsScreenComponent } from './questions-screen.component'
-
-
 
 describe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;

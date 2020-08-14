@@ -10,31 +10,21 @@ import { ComponentInterface } from '../../../../../../../interfaces/epgu.service
 })
 export class AddChildrenScreenComponent implements OnInit {
   @Input() data: ComponentInterface;
-  @Input() header: string;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
-  sectionId = 1; // variable for 'screen switching' according to sub-components order
   valueParsed: any;
   childrenList: any;
-  childrenListInitial: any;
+  itemsInitial: any;
   childrenSelectList: Array<ListItem>;
   selectedChildrenList: any = [];
 
   headerMapped: any;
   confirmAddressData: any;
 
-  // list of root actions to pass to sub-components providing 'navigation' logic
-  actionsList = {
-    handleAnswerSelect: this.handleAnswerSelect.bind(this),
-    getNextStep: this.nextStep.bind(this),
-    getNextScreen: this.getNextScreen.bind(this),
-    handleUpdateChild: this.updateChild.bind(this),
-  };
-
   addNewChild() {
     const newChild: ChildUnder14Interface = {
       isNew: true,
-      id: this.childrenListInitial.length + 1,
+      id: this.itemsInitial.length + 1,
       isSelected: true,
       birthDate: '',
       gender: '',
@@ -80,12 +70,6 @@ export class AddChildrenScreenComponent implements OnInit {
     this.selectedChildrenList.push(selectedChild);
   }
 
-  handleAnswerSelect(event) {
-    const { value } = event;
-    this.selectedChildrenList[0].relationshipToChild = value;
-    this.nextStep();
-  }
-
   // outter method to send final data to backend
   getNextScreen() {
     this.valueParsed.items = this.childrenList;
@@ -93,32 +77,9 @@ export class AddChildrenScreenComponent implements OnInit {
     this.nextStepEvent.emit(data);
   }
 
-  // inner method to show next sub-component (screen-type)
-  nextStep(step?, srinkSelectedChildrenList?) {
-    if (srinkSelectedChildrenList) {
-      this.selectedChildrenList.shift();
-      if (!this.selectedChildrenList.length) {
-        this.getNextScreen();
-        return;
-      }
-    }
-
-    this.headerMapped[3] = `Кем вы приходитесь ребенку? (<span>${this.selectedChildrenList[0]?.firstName}</span>)`;
-    this.headerMapped[4] = `Адрес постоянной регистрации ребенка (<span>${this.selectedChildrenList[0]?.firstName}</span>)`;
-    this.sectionId = step || this.sectionId + 1;
-  }
-
   ngOnInit(): void {
-    // temporary hardcoded headers for sub-components
-    this.headerMapped = {
-      1: this.header,
-      2: 'Свидетельство о рождении',
-      3: `Кем вы приходитесь ребенку? (<span>${this.selectedChildrenList[0]?.firstName}</span>)`,
-      4: `Адрес постоянной регистрации ребенка (<span>${this.selectedChildrenList[0]?.firstName}</span>)`,
-    };
-
     this.valueParsed = JSON.parse(this.data.value);
-    this.childrenListInitial = [...this.valueParsed?.items];
+    this.itemsInitial = [...this.valueParsed?.items];
     this.childrenList = this.valueParsed?.items;
     this.childrenSelectList = this.childrenList.map((child) => {
       return {
