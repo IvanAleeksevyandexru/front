@@ -15,6 +15,6 @@ export class TemporaryRegistrationAddrComponent {
   constructor(public constructorConfigService: ConstructorConfigService) {}
 
   hintClick(timestamp: number) {
-    this.date = new Date(new Date().getTime() + timestamp);
+    this.forms.regDate = new Date(new Date().getTime() + timestamp);
   }
 }
