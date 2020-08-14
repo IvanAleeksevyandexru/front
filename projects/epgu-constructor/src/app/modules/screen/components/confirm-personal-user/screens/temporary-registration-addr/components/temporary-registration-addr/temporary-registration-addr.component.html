@@ -14,6 +14,15 @@
 <!--    <lib-plain-input *ngSwitchCase="'regAddr'"></lib-plain-input>-->
     <lib-plain-input *ngSwitchDefault></lib-plain-input>
 
+    <lib-dadata-widget
+      *ngSwitchCase="'regAddr'"
+      [simpleMode]="true"
+      [name]="field.fieldName"
+      [externalApiUrl]="constructorConfigService.config.externalApiUrl"
+      [initValue]="forms[field.fieldName]"
+      [(ngModel)]="forms[field.fieldName]">
+    </lib-dadata-widget>
+
   </ng-container>
 </div>
 
