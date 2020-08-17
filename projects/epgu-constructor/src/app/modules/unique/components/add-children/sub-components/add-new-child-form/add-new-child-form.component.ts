@@ -1,20 +1,22 @@
 import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  OnDestroy,
-  ViewChild,
   AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
 } from '@angular/core';
 import { ListItem } from 'epgu-lib';
+import * as moment_ from 'moment';
 /* eslint-disable import/no-extraneous-dependencies */
 import { Subject } from 'rxjs';
 /* eslint-disable import/no-extraneous-dependencies */
-import { takeUntil, delay } from 'rxjs/operators';
-import * as moment from 'moment';
+import { delay, takeUntil } from 'rxjs/operators';
 import { CONSTANTS } from '../../../../../../../constant/global';
+
+const moment = moment_;
 
 @Component({
   selector: 'app-add-new-child-form',

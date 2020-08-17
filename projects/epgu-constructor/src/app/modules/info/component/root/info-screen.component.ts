@@ -15,6 +15,7 @@ export class InfoScreenComponent {
   infoScreenComponent = INFO_SCREEN_COMPONENT;
 
   @Input() data: EgpuResponseDisplayInterface;
+  @Input() isLoading: boolean;
   @Output() nextStepEvent = new EventEmitter();
 
   nextStep() {

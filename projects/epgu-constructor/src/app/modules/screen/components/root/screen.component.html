@@ -40,17 +40,20 @@
         <app-change-list
           *ngSwitchCase="screenComponentName.changeList"
           [data]="data?.components[0]"
-          (valueChangedEvent)="changedComponentData($event)">
-
-        </app-change-list>
+          (valueChangedEvent)="changedComponentData($event)"></app-change-list>
 
         <app-snils  *ngSwitchCase="screenComponentName.snils"></app-snils>
+
+        <app-doc-input
+          *ngSwitchCase="screenComponentName.docInput"
+          [data]="data?.components[0]"
+          (nextStepEvent)="changedComponentData($event)"></app-doc-input>
 
       </ng-container>
     </app-screen-pad>
 
     <div class="footer">
-      <lib-button (click)="nextStep()" class="footer__btn-submit">
+      <lib-button [showLoader]="isLoading" (click)="nextStep()" class="footer__btn-submit">
         <div class="secondary-font">{{data?.submitLabel || 'Продолжить'}}</div>
       </lib-button>
     </div>

@@ -5,7 +5,7 @@
   src: url('/assets/fonts/Lato/Lato-BlackItalic.woff') format('woff');
   font-weight: $fw-black;
   font-style: italic;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -13,7 +13,7 @@
   src: url('/assets/fonts/Lato/Lato-Light.woff') format('woff');
   font-weight: $fw-light;
   font-style: $fw-regular;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -21,7 +21,7 @@
   src: url('/assets/fonts/Lato/Lato-Medium.woff') format('woff');
   font-weight: 500;
   font-style: $fw-regular;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -29,7 +29,7 @@
   src: url('/assets/fonts/Lato/Lato-HeavyItalic.woff') format('woff');
   font-weight: $fw-black;
   font-style: italic;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -37,7 +37,7 @@
   src: url('/assets/fonts/Lato/Lato-ThinItalic.woff') format('woff');
   font-weight: $fw-thin;
   font-style: italic;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -45,7 +45,7 @@
   src: url('/assets/fonts/Lato/Lato-Black.woff') format('woff');
   font-weight: $fw-black;
   font-style: $fw-regular;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -53,7 +53,7 @@
   src: url('/assets/fonts/Lato/Lato-Heavy.woff') format('woff');
   font-weight: $fw-black;
   font-style: $fw-regular;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -61,7 +61,7 @@
   src: url('/assets/fonts/Lato/Lato-Regular.woff') format('woff');
   font-weight: $fw-regular;
   font-style: $fw-regular;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -69,7 +69,7 @@
   src: url('/assets/fonts/Lato/Lato-BoldItalic.woff') format('woff');
   font-weight: bold;
   font-style: italic;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -77,7 +77,7 @@
   src: url('/assets/fonts/Lato/Lato-SemiboldItalic.woff') format('woff');
   font-weight: 600;
   font-style: italic;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -85,7 +85,7 @@
   src: url('/assets/fonts/Lato/Lato-Semibold.woff') format('woff');
   font-weight: 600;
   font-style: $fw-regular;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -93,7 +93,7 @@
   src: url('/assets/fonts/Lato/Lato-LightItalic.woff') format('woff');
   font-weight: $fw-light;
   font-style: italic;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -101,7 +101,7 @@
   src: url('/assets/fonts/Lato/Lato-Thin.woff') format('woff');
   font-weight: $fw-thin;
   font-style: $fw-regular;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -109,7 +109,7 @@
   src: url('/assets/fonts/Lato/Lato-MediumItalic.woff') format('woff');
   font-weight: 500;
   font-style: italic;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -117,7 +117,7 @@
   src: url('/assets/fonts/Lato/Lato-Italic.woff') format('woff');
   font-weight: $fw-regular;
   font-style: italic;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
@@ -125,7 +125,7 @@
   src: url('/assets/fonts/Lato/Lato-Bold.woff') format('woff');
   font-weight: bold;
   font-style: $fw-regular;
-  font-display: optional;
+  font-display: auto;
 }
 
 
@@ -136,25 +136,25 @@
   font-family: $secondary_font;
   src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Black.woff") format("woff");
   font-weight: $fw-black;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
   font-family: $secondary_font;
   src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Bold.woff") format("woff");
   font-weight: $fw-bold;
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
   font-family: "ALS Ekibastuz Heavy";
   src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Heavy.woff") format("woff");
-  font-display: optional;
+  font-display: auto;
 }
 
 @font-face {
   font-family: $secondary_font;
   src: url("/assets/fonts/ALS-Ekibastuz/ALS-Ekibastuz-Regular.woff") format("woff");
   font-weight: $fw-regular;
-  font-display: optional;
+  font-display: auto;
 }
