@@ -40,11 +40,14 @@
         <app-change-list
           *ngSwitchCase="screenComponentName.changeList"
           [data]="data?.components[0]"
-          (valueChangedEvent)="changedComponentData($event)">
-
-        </app-change-list>
+          (valueChangedEvent)="changedComponentData($event)"></app-change-list>
 
         <app-snils  *ngSwitchCase="screenComponentName.snils"></app-snils>
+
+        <app-doc-input
+          *ngSwitchCase="screenComponentName.docInput"
+          [data]="data?.components[0]"
+          (nextStepEvent)="changedComponentData($event)"></app-doc-input>
 
       </ng-container>
     </app-screen-pad>

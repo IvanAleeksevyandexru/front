@@ -1,0 +1,21 @@
+@import "../../../../../styles/variables";
+
+.doc-input-screen {
+
+  &__inputs-row {
+    display: flex;
+    margin: 0 -10px;
+  }
+
+  &__input {
+    flex: 1 1 auto;
+    margin: 10px;
+  }
+
+  &__label {
+    display: block;
+    margin: 7px 0;
+    text-align: left;
+    color: $gray;
+  }
+}
