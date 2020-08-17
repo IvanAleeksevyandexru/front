@@ -8,14 +8,16 @@ import {
   OnDestroy,
   OnChanges,
 } from '@angular/core';
+import * as moment_ from 'moment';
 /* eslint-disable import/no-extraneous-dependencies */
 import { takeUntil } from 'rxjs/operators';
 /* eslint-disable import/no-extraneous-dependencies */
 import { Subject } from 'rxjs';
-import * as moment from 'moment';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { CONSTANTS } from '../../../../../../../../../constant/global';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
+
+const moment = moment_;
 
 @Component({
   selector: 'app-confirm-personal-user-address',
