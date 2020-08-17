@@ -3,9 +3,12 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^10.0.6",
+    "@angular/cdk": "~10.0.0",
     "@angular/core": "^10.0.6",
     "@ngx-translate/http-loader": "^6.0.0",
     "angular2-text-mask": "^9.0.0",
+    "ngx-webcam": "^0.3.0",
+    "rxjs": "~6.5.5",
     "moment": "^2.27.0",
     "ngx-perfect-scrollbar": "^10.0.1",
     "text-mask-core": "^5.1.2",

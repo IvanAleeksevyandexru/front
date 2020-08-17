@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ITerraFileOptions, ITerraUploadFileOptions, TerabyteConfig} from '../config/terabyte.config';
 import { Observable } from 'rxjs';
+
+
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
@@ -62,8 +64,18 @@ export class TerabyteService {
     Object.keys(options).forEach(k => {
       formData.append(k, options[k]);
     });
+    // eslint-disable-next-line max-len
+    //formData.append('token', TERABYTE_TEST_TOKEN);
+    //formData.append('userId', '1000299353');
+
+    // const headers = new HttpHeaders({
+    //   Authorization: 'Bearer ' + TERABYTE_TEST_TOKEN
+    // });
+    //headers.append('Authorization', `bearer ${TERABYTE_TEST_TOKEN}`);
     console.log('formData', formData.get('file'));
-    return this.http.post(this.getTerabyteApiUrl('/upload'), formData);
+    return this.http.post(this.getTerabyteApiUrl('/upload'), formData, {
+      withCredentials: true
+    });
   }
 
   /**

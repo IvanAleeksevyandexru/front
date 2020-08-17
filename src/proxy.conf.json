@@ -4,7 +4,7 @@
     "secure": false
   },
   "/terrabyte": {
-    "target": "http://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files",
+    "target": "https://svcdev-beta.test.gosuslugi.ru/api/storage/v1/files",
     "secure": false
   }
 }

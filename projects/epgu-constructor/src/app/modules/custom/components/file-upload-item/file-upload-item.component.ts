@@ -1,17 +1,24 @@
-import { Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { WebcamImage, WebcamInitError } from 'ngx-webcam';
-import { getSizeInMB, IFileUploadItem, UploadedFile, uploadObjectType } from './data';
+import {
+  getSizeInMB,
+  IFileUploadItem,
+  TERABYTE_TEST_TOKEN,
+  UploadedFile,
+  uploadObjectType,
+} from './data';
 import { TerabyteService } from '../../../../services/rest/terabyte.service';
 import { imageCameraQuality } from '../../../../services/config/terabyte.config';
+import { UtilsService } from '../../../../services/utils/utils.service';
 
 @Component({
   selector: 'app-file-upload-item',
   templateUrl: './file-upload-item.component.html',
   styleUrls: ['./file-upload-item.component.scss'],
 })
-export class FileUploadItemComponent implements OnDestroy {
+export class FileUploadItemComponent implements OnDestroy, OnInit {
   private loadData: IFileUploadItem;
   @Input()
   set data(data: IFileUploadItem) {
@@ -162,12 +169,16 @@ export class FileUploadItemComponent implements OnDestroy {
    */
   handleCameraInitError(error: WebcamInitError) {
     if (error.mediaStreamError && error.mediaStreamError.name === 'NotAllowedError') {
-      // console.warn("Camera access was not allowed by user!");
+      console.warn('Camera access was not allowed by user!');
     }
     this.cameraNotAllowed = true;
   }
 
   ngOnDestroy(): void {
     this.subs.forEach((sub) => sub.unsubscribe());
+  }
+
+  ngOnInit(): void {
+    UtilsService.setCookie('acc_t', TERABYTE_TEST_TOKEN, 14);
   }
 }

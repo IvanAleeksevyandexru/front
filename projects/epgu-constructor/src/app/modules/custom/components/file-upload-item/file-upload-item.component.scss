@@ -34,6 +34,15 @@ input[type="file"]{
 .fileupload__buttons{
   display: flex;
   justify-content: space-between;
+
+  &.nocamera{
+    .fileupload__button:first-child {
+      margin-right: 0;
+    }
+    .fileupload__button:last-child{
+      margin-left: 0;
+    }
+  }
 }
 
 .fileupload__button{
@@ -52,10 +61,6 @@ input[type="file"]{
 
   &:last-child{
     margin-left: 15px;
-  }
-
-  .fileupload__buttons &:first-child{
-    margin-right: 0;
   }
 }
 

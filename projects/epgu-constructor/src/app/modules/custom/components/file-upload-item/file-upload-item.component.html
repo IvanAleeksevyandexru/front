@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="fileupload__buttons" [class.nocamera]="cameraNotAllowed" >
-    <button *ngIf="cameraNotAllowed" class="fileupload__button"
+    <button *ngIf="!cameraNotAllowed" class="fileupload__button"
       [disabled]="listIsUploadingNow || filesInUploading > 0">
       <img src="/assets/icons/svg/camera.svg" class="fileupload__button-icon"/>
       Фото
