@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-// eslint-disable-next-line
-import {Subscription} from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
@@ -18,7 +18,7 @@ export class ScreenComponent implements OnInit, OnDestroy {
 
   // <-- variables
   componentData = null;
-  subscriptions: Array<Subscription> = [];
+  ngUnsubscribe$ = new Subject();
 
   @Input() data: EgpuResponseDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
@@ -29,13 +29,16 @@ export class ScreenComponent implements OnInit, OnDestroy {
     private navService: NavigationService,
     private screenComponentService: ScreenComponentService,
   ) {
-    this.subscriptions.push(this.navService.clickToBack$.subscribe(() => this.prevStep()));
+    this.navService.clickToBack$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.prevStep());
   }
 
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s.unsubscribe());
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   prevStep() {

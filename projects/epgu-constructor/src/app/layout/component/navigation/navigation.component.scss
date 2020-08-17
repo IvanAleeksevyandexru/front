@@ -14,7 +14,7 @@
   $height: 4px;
   height: $height;
   background: $hawkes-blue;
-  border-radius: 0 0 4px 4px;
+  border-radius: 0 0 $border-round $border-round;
   &__thumb {
     width: 70%;
     height: $height;

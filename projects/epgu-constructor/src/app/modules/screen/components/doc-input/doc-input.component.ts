@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup } from '@angular/forms';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Subject } from 'rxjs';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { map, takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';

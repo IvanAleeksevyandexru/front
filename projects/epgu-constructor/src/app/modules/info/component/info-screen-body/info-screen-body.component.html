@@ -1,4 +1,4 @@
-<img *ngIf="data?.attrs?.image?.src" [src]="data.attrs.image.src" alt="" class="info__img">
+<img *ngIf="data?.attrs?.image?.src" [src]="data.attrs.image.src" [alt]="data.attrs.image.alt" class="info__img">
 
 <div *ngIf="data?.attrs?.image?.alt" class="info__desc">{{data.attrs.image.alt}}</div>
 

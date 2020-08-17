@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-/* eslint-disable import/no-extraneous-dependencies */
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import {
   EgpuResponseQuestionsDisplayComponentAttrsActionsInterface,
   EgpuResponseQuestionsDisplayInterface,
@@ -13,20 +13,23 @@ import { NavigationService } from '../../../../layout/service/navigation/navigat
   styleUrls: ['./questions-screen.component.scss'],
 })
 export class QuestionsScreenComponent implements OnInit, OnDestroy {
-  subscriptions: Array<Subscription> = [];
+  ngUnsubscribe$ = new Subject();
 
   @Input() data: EgpuResponseQuestionsDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
   constructor(private navService: NavigationService) {
-    this.subscriptions.push(this.navService.clickToBack$.subscribe(() => this.goPrevStepEvent()));
+    this.navService.clickToBack$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.goPrevStepEvent());
   }
 
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s.unsubscribe());
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   goPrevStepEvent() {

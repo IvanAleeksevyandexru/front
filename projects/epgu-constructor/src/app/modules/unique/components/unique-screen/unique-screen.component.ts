@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-// eslint-disable-next-line
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
 import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
@@ -15,18 +15,21 @@ export class UniqueScreenComponent implements OnDestroy {
   uniqueComponentName = UNIQUE_COMPONENT_NAME;
 
   // <-- variables
-  subscriptions: Array<Subscription> = [];
+  ngUnsubscribe$ = new Subject();
 
   @Input() data: EgpuResponseDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
   constructor(private navService: NavigationService) {
-    this.subscriptions.push(this.navService.clickToBack$.subscribe(() => this.prevStep()));
+    this.navService.clickToBack$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.prevStep());
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s.unsubscribe());
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   prevStep() {

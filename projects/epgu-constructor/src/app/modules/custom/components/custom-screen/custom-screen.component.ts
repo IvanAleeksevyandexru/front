@@ -8,8 +8,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ListItem } from 'epgu-lib';
-// eslint-disable-next-line
-import {Subscription} from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { RestService } from '../../../../services/rest/rest.service';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 import {
@@ -37,7 +37,7 @@ export class CustomScreenComponent implements OnChanges, OnDestroy {
   // <-- variables
   state: { [key: string]: CustomComponentState } = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
-  subscriptions: Array<Subscription> = [];
+  ngUnsubscribe$ = new Subject();
 
   @Input() data: EgpuResponseCustomComponentDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
@@ -48,7 +48,9 @@ export class CustomScreenComponent implements OnChanges, OnDestroy {
     private navService: NavigationService,
     public constructorService: ConstructorService,
   ) {
-    this.subscriptions.push(this.navService.clickToBack$.subscribe(() => this.prevStep()));
+    this.navService.clickToBack$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.prevStep());
   }
 
   prevStep() {
@@ -56,7 +58,8 @@ export class CustomScreenComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s.unsubscribe());
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

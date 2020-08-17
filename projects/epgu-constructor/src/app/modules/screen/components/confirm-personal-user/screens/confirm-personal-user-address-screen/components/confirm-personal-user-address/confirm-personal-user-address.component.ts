@@ -9,9 +9,7 @@ import {
   OnChanges,
 } from '@angular/core';
 import * as moment_ from 'moment';
-/* eslint-disable import/no-extraneous-dependencies */
 import { takeUntil } from 'rxjs/operators';
-/* eslint-disable import/no-extraneous-dependencies */
 import { Subject } from 'rxjs';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { CONSTANTS } from '../../../../../../../../../constant/global';
