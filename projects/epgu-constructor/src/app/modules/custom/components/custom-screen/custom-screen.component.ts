@@ -50,7 +50,8 @@ export class CustomScreenComponent implements OnChanges {
     // TODO добавить валидацию и проверку заполнения всех обязательных полей
     const responseData = {};
     const isValid = Object.keys(this.state).every((key) => this.state[key].valid);
-    console.log(isValid);
+
+    console.log('isValid', isValid);
     // TODO HARDCODE
     if (true) {
       Object.keys(this.state).forEach((key) => {
@@ -133,6 +134,16 @@ export class CustomScreenComponent implements OnChanges {
       originalItem: item,
       compare: () => false,
     };
+  }
+
+  /**
+   * Возвращает префикс для формирования мнемоники
+   * @param componentData - данные компонента
+   */
+  getUploadComponentPrefixForMnemonic(
+    componentData: EgpuResponseCustomComponentDisplayComponentInterface,
+  ): string {
+    return [componentData.id, this.componentType.FileUploadComponent].join('.');
   }
 
   private initState(componentId: string) {

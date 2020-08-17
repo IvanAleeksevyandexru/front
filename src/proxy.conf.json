@@ -2,5 +2,9 @@
   "/api": {
     "target": "http://localhost:8080",
     "secure": false
+  },
+  "/terrabyte": {
+    "target": "http://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files",
+    "secure": false
   }
 }

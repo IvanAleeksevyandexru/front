@@ -1,0 +1,65 @@
+@import "../../../../../styles/variables";
+@import "../../../../../styles/functions";
+
+.fileupload__wrapper{
+  padding: 22px;
+  margin-bottom: 24px;
+  border: 2px dashed $perano2;
+  box-sizing: border-box;
+}
+
+.fileupload__label{
+  font-size: 16px;
+  margin-bottom: 12px;
+
+  &::ng-deep ul{
+    padding: 0;
+    padding-left: 15px;
+    margin: 0;
+    margin-bottom: 10px;
+
+    li{
+      padding: 0;
+      margin: 0;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+input[type="file"]{
+  //display: none;
+}
+
+
+.fileupload__buttons{
+  display: flex;
+  justify-content: space-between;
+}
+
+.fileupload__button{
+  width: 100%;
+  font-size: 14px;
+  color: $egyptian-blue;
+  line-height: 60px;
+  text-align: left;
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+  padding-left: 12px;
+  cursor: pointer;
+
+  &:first-child{
+    margin-right: 15px;
+  }
+
+  &:last-child{
+    margin-left: 15px;
+  }
+
+  .fileupload__buttons &:first-child{
+    margin-right: 0;
+  }
+}
+
+.fileupload__button-icon{
+  vertical-align: middle;
+  margin-right: 12px;
+}

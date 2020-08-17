@@ -39,8 +39,6 @@ export interface CustomComponentState {
   value: any;
 }
 
-
-
 export interface EgpuResponseCustomComponentDisplayInterface extends EgpuResponseDisplayInterface {
   components: Array<EgpuResponseCustomComponentDisplayComponentInterface>;
 }
