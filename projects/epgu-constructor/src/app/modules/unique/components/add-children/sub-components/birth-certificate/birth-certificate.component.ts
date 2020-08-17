@@ -1,18 +1,20 @@
 import {
-  Component,
-  OnInit,
-  Input,
-  ViewChild,
-  OnDestroy,
   AfterViewInit,
-  Output,
+  Component,
   EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
 } from '@angular/core';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
 /* eslint-disable import/no-extraneous-dependencies */
 import { Subject } from 'rxjs';
-import { takeUntil, delay } from 'rxjs/operators';
+import { delay, takeUntil } from 'rxjs/operators';
 import { CONSTANTS } from '../../../../../../../constant/global';
+
+const moment = moment_;
 
 @Component({
   selector: 'app-birth-certificate',

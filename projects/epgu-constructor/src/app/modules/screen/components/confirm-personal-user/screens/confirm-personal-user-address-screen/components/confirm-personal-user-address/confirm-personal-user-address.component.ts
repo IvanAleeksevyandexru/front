@@ -1,21 +1,23 @@
 import {
   Component,
+  EventEmitter,
   Input,
+  OnChanges,
+  OnDestroy,
   OnInit,
   Output,
-  EventEmitter,
   ViewChild,
-  OnDestroy,
-  OnChanges,
 } from '@angular/core';
-/* eslint-disable import/no-extraneous-dependencies */
-import { takeUntil } from 'rxjs/operators';
+import * as moment_ from 'moment';
 /* eslint-disable import/no-extraneous-dependencies */
 import { Subject } from 'rxjs';
-import * as moment from 'moment';
-import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
-import { ConstructorService } from '../../../../../../../../services/config/constructor.service';
+/* eslint-disable import/no-extraneous-dependencies */
+import { takeUntil } from 'rxjs/operators';
 import { CONSTANTS } from '../../../../../../../../../constant/global';
+import { ConstructorService } from '../../../../../../../../services/config/constructor.service';
+import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
+
+const moment = moment_;
 
 @Component({
   selector: 'app-confirm-personal-user-address',
