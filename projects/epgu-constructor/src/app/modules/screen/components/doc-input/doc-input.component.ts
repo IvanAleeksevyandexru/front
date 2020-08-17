@@ -3,9 +3,11 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
 import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { CONSTANTS } from '../../../../../constant/global';
+
+const moment = moment_;
 
 interface EgpuResponseComponentInterfaceForDocInput extends EgpuResponseComponentInterface {
   attrs: {
