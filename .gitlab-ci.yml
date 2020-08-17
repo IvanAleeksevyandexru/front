@@ -1,32 +1,49 @@
 image: node:latest
 
-# This folder is cached between builds
-# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
-  paths:
-    - node_modules/
+  paths: 
+    - node_modules
+    - dist
     - .yarn
-
+      
 stages:
+  - install
   - lint
-#  - test
-#  - staging
-#  - openMr
-#  - production
+  - library-build
+  - build
+
+Install:
+  stage: install
+  before_script:
+    - yarn config set cache-folder .yarn
+    - npm set registry http://npm.gosuslugi.local
+  script: 
+    - yarn install
 
 Lint:
   stage: lint
-  before_script: 
-    - yarn config set cache-folder .yarn
-    - npm set registry http://npm.gosuslugi.local
-    - yarn install 
-  script:
+  before_script:
+    - yarn config set cache-folder .yarn  
+  script: 
     - yarn lint
-    
+
 #Test:
 #  stage: test
-#  before_script: 
+#  before_script:
 #    - yarn config set cache-folder .yarn
-#    - yarn install --frozen-lockfile
-#  script:
-#    - yarn test
+#  script: 
+#    - yarn test --coverage
+    
+Library-build:
+  stage: library-build
+  before_script:
+    - yarn config set cache-folder .yarn 
+  script: 
+    - yarn library-build
+
+Build:
+  stage: build
+  before_script:
+    - yarn config set cache-folder .yarn 
+  script: 
+    - yarn build
