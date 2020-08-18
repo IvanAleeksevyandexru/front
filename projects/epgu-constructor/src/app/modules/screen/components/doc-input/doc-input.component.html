@@ -1,24 +1,24 @@
 <section class="doc-input-screen">
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input">
-      <label class="doc-input-screen__label">Серия</label>
-      <lib-plain-input [formControl]="form.get('series')" type="number"></lib-plain-input>
+      <app-label for="serial">Серия</app-label>
+      <lib-plain-input id="serial" [formControl]="form.get('series')" type="number"></lib-plain-input>
     </div>
     <div class="doc-input-screen__input">
-      <label class="doc-input-screen__label">Номер</label>
-      <lib-plain-input [formControl]="form.get('number')" type="number"></lib-plain-input>
-    </div>
-  </div>
-  <div class="doc-input-screen__inputs-row">
-    <div class="doc-input-screen__input">
-      <label class="doc-input-screen__label">Дата выдачи</label>
-      <lib-date-picker name="date" [formControl]="form.get('date')" [maxDate]="maxDate"></lib-date-picker>
+      <app-label for="number">Номер</app-label>
+      <lib-plain-input id="number" [formControl]="form.get('number')" type="number"></lib-plain-input>
     </div>
   </div>
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input">
-      <label class="doc-input-screen__label">Кем выдано</label>
-      <lib-plain-input [formControl]="form.get('emiter')" type="text"></lib-plain-input>
+      <app-label for="date">Дата выдачи</app-label>
+      <lib-date-picker id="date" name="date" [formControl]="form.get('date')" [maxDate]="maxDate"></lib-date-picker>
+    </div>
+  </div>
+  <div class="doc-input-screen__inputs-row">
+    <div class="doc-input-screen__input">
+      <app-label for="emitter">Кем выдано</app-label>
+      <lib-plain-input id="emitter" [formControl]="form.get('emiter')" type="text"></lib-plain-input>
     </div>
   </div>
 </section>
