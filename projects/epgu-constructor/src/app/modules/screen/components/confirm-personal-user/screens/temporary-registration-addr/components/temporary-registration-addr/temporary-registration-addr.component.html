@@ -5,13 +5,29 @@
   <ng-container [ngSwitch]="field.fieldName">
 
 <!--    <div class="content" *ngSwitchCase="'regDate'">{{date | date}}</div>-->
-    <lib-date-picker *ngSwitchCase="'regDate'"></lib-date-picker>
+    <lib-date-picker
+      *ngSwitchCase="'regDate'"
+      [name]="field.fieldName"
+      [(ngModel)]="forms[field.fieldName]"></lib-date-picker>
+<!--    <lib-plain-input *ngSwitchCase="'regFrom'"></lib-plain-input>-->
+<!--    <lib-plain-input *ngSwitchCase="'regTo'"></lib-plain-input>-->
+<!--    <lib-plain-input *ngSwitchCase="'regAddr'"></lib-plain-input>-->
     <lib-plain-input *ngSwitchDefault></lib-plain-input>
+
+    <lib-dadata-widget
+      *ngSwitchCase="'regAddr'"
+      [simpleMode]="true"
+      [name]="field.fieldName"
+      [externalApiUrl]="constructorConfigService.config.externalApiUrl"
+      [initValue]="forms[field.fieldName]"
+      [(ngModel)]="forms[field.fieldName]">
+    </lib-dadata-widget>
 
   </ng-container>
 </div>
 
 <div class="item hint-wrapper">
+  <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
   <div class="item__hint" *ngFor="let hint of data?.attrs?.hints" (click)="hintClick(hint.timestamp)">{{hint.label}}</div>
 </div>
 

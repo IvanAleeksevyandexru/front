@@ -10,8 +10,11 @@ import {InfoScreenModule} from './modules/info/info-screen.module';
 import {InvitationModule} from './modules/invitation/invitation.module';
 import {EpgucSharedModule} from './shared-module/shared-components.module';
 import {ConstructorConfigInterface} from '../interfaces/constructor-config.interface';
-import {CONSTRUCTOR_CONFIG_TOKEN} from './services/config/constructor.config';
-import {ConstructorService} from './services/config/constructor.service';
+import {CONSTRUCTOR_CONFIG_TOKEN} from './services/config/constructor.config.token';
+import {ConstructorService} from './services/constructor/constructor.service';
+import {LayoutModule} from './layout/layout.module';
+import {ConstructorConfigService} from './services/config/constructor-config.service';
+import {RestService} from './services/rest/rest.service';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -29,13 +32,16 @@ const COMPONENTS = [
     QuestionScreenModule,
     UniqueScreenModule,
     InvitationModule,
+    LayoutModule,
 
     EpgucSharedModule,
     EpguLibModule.forChild(),
     InfoScreenModule,
   ],
   providers: [
-    ConstructorService
+    RestService,
+    ConstructorService,
+    ConstructorConfigService
   ],
   exports: [
     ...COMPONENTS

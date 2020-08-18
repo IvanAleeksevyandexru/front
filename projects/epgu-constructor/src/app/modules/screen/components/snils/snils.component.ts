@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationService } from 'epgu-lib';
 import { checkSnils } from 'ru-validation-codes';
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 @Component({
   selector: 'app-snils',
@@ -17,7 +18,10 @@ export class SnilsComponent implements OnInit {
     // eslint-disable-next-line
     this.checkSnilsSum,
   ]);
-  constructor(private validationService: ValidationService) {}
+  constructor(
+    private validationService: ValidationService,
+    private screenComponentService: ScreenComponentService,
+  ) {}
 
   ngOnInit(): void {}
   checkSnilsSum(control: FormControl): { [s: string]: boolean } {

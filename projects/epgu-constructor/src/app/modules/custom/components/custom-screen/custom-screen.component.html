@@ -44,7 +44,10 @@
     </app-screen-pad>
 
     <div class="footer">
-      <lib-button [showLoader]="isLoading" (click)="nextScreen()" class="footer__btn-submit">{{data.submitLabel}}</lib-button>
+      <lib-button
+        [showLoader]="constructorService.isLoading"
+        (click)="nextScreen()"
+        class="footer__btn-submit">{{data.submitLabel}}</lib-button>
     </div>
   </div>
 </app-screen-container>

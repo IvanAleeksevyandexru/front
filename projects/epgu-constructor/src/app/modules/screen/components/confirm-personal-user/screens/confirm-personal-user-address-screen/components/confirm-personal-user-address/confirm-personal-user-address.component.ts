@@ -1,21 +1,19 @@
 import {
   Component,
-  EventEmitter,
   Input,
-  OnChanges,
-  OnDestroy,
   OnInit,
   Output,
+  EventEmitter,
   ViewChild,
+  OnDestroy,
+  OnChanges,
 } from '@angular/core';
 import * as moment_ from 'moment';
-/* eslint-disable import/no-extraneous-dependencies */
-import { Subject } from 'rxjs';
-/* eslint-disable import/no-extraneous-dependencies */
 import { takeUntil } from 'rxjs/operators';
-import { CONSTANTS } from '../../../../../../../../../constant/global';
-import { ConstructorService } from '../../../../../../../../services/config/constructor.service';
+import { Subject } from 'rxjs';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
+import { CONSTANTS } from '../../../../../../../../../constant/global';
+import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 
 const moment = moment_;
 
@@ -34,9 +32,9 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnDestroy, O
   ngUnsubscribe$: Subject<void>;
   externalApiUrl: string;
 
-  constructor(private constructorService: ConstructorService) {
+  constructor(private constructorConfigService: ConstructorConfigService) {
     this.ngUnsubscribe$ = new Subject();
-    this.externalApiUrl = this.constructorService.config.externalApiUrl;
+    this.externalApiUrl = this.constructorConfigService.config.externalApiUrl;
   }
 
   handleDataChange(change) {

@@ -4,11 +4,13 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
 } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 interface EgpuResponseComponentInterfaceForChangeList extends EgpuResponseComponentInterface {
   attrs: {
@@ -26,11 +28,18 @@ interface IField {
   styleUrls: ['./change-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChangeListComponent implements OnChanges {
+export class ChangeListComponent implements OnInit, OnChanges {
   @Input() data: EgpuResponseComponentInterfaceForChangeList;
   @Output() valueChangedEvent = new EventEmitter<Array<any>>();
   response: Array<any>;
   fields: FormGroup;
+
+  constructor(private screenComponentService: ScreenComponentService) {}
+
+  ngOnInit(): void {
+    // TODO eliskachev это для тебя нужно заполнить данные;
+    this.screenComponentService.dataToSend = '';
+  }
 
   ngOnChanges(): void {
     this.fields = this.generateFormControls();

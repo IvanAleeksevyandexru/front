@@ -9,7 +9,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import * as moment_ from 'moment';
-/* eslint-disable import/no-extraneous-dependencies */
 import { Subject } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
 import { CONSTANTS } from '../../../../../../../constant/global';

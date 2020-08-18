@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
+import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
 
 @Component({
   selector: 'app-confirm-personal-user-address-screen',
@@ -10,6 +11,8 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   @Input() data: ConfirmAddressInterface;
   @Output() actionSelect = new EventEmitter();
   isEditable: boolean;
+
+  constructor(private screenComponentService: ScreenComponentService) {}
 
   clickToAction(event): void {
     const { action } = event;

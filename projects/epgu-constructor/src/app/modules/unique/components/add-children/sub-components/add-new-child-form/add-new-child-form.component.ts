@@ -10,9 +10,7 @@ import {
 } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-/* eslint-disable import/no-extraneous-dependencies */
 import { Subject } from 'rxjs';
-/* eslint-disable import/no-extraneous-dependencies */
 import { delay, takeUntil } from 'rxjs/operators';
 import { CONSTANTS } from '../../../../../../../constant/global';
 
