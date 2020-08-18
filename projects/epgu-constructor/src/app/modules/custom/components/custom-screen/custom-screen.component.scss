@@ -1,6 +1,6 @@
-@import "../../../../../styles/variables";
-@import "../../../../../styles/functions";
-@import "../../../../../styles/breakpoint";
+@import '../../../../../styles/variables';
+@import '../../../../../styles/functions';
+@import '../../../../../styles/breakpoint';
 
 .inner {
   display: flex;
@@ -47,16 +47,21 @@ app-label-section {
   margin-bottom: 20px;
 }
 
-.form__item {
-  margin-bottom: 24px;
+.form {
+  &__item {
+    margin-bottom: 24px;
+  }
+  &__title {
+    font-size: 14px;
+    line-height: 20px;
+    color: $cyprus;
+    margin-bottom: 4px;
+  }
+  &__error {
+    margin-top: 4px;
+    color: $gosred;
+  }
 }
-.form__title {
-  font-size: 14px;
-  line-height: 20px;
-  color: $cyprus;
-  margin-bottom: 4px;
-}
-
 
 lib-dropdown::ng-deep {
   .simple-select {
