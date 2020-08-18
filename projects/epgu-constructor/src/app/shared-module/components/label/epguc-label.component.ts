@@ -6,10 +6,9 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./epguc-label.component.scss'],
 })
 export class EpgucLabelComponent implements OnInit {
-  @Input() label: string;
   @Input() for: string;
   @Input() required: boolean;
-  @Input() tips: boolean;
+  @Input() tips: string;
 
   ngOnInit(): void {}
 }

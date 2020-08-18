@@ -5,4 +5,8 @@ label {
   margin: 7px 0;
   text-align: left;
   color: $summer-night;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
 }
