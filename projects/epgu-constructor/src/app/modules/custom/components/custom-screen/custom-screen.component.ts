@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { ListItem } from 'epgu-lib';
-import { EpguService } from '../../../../services/rest/epgu.service';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
+import { ListItem, ValidationShowOn } from 'epgu-lib';
 import {
   CustomComponentDictionaryState,
   CustomComponentState,
@@ -12,6 +10,8 @@ import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../../interfaces/dictionary-options.interface';
+import { EpguService } from '../../../../services/rest/epgu.service';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 
 @Component({
   selector: 'app-custom-screen',
@@ -23,6 +23,7 @@ export class CustomScreenComponent implements OnChanges {
   componentType = CUSTOM_COMPONENT_ITEM_TYPE;
 
   // <-- variables
+  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   state: { [key: string]: CustomComponentState } = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
 
@@ -36,7 +37,7 @@ export class CustomScreenComponent implements OnChanges {
     if (changes?.data?.currentValue) {
       this.data.components.forEach((component) => {
         if (component.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection) {
-          this.initState(component.id);
+          this.initState(component);
         }
         if (component.type === CUSTOM_COMPONENT_ITEM_TYPE.Dictionary) {
           const dictionaryName = component.attrs.dictionaryType;
@@ -48,12 +49,31 @@ export class CustomScreenComponent implements OnChanges {
   }
 
   nextScreen() {
-    // TODO добавить валидацию и проверку заполнения всех обязательных полей
+    // TODO добавить валидацию и проверку заполнения всех полей помимо StringInput
     const responseData = {};
-    const isValid = Object.keys(this.state).every((key) => this.state[key].valid);
-    console.log(isValid);
-    // TODO HARDCODE
-    if (true) {
+    let isValid = true;
+    Object.keys(this.state).forEach((key) => {
+      if (this.state[key].component.type === CUSTOM_COMPONENT_ITEM_TYPE.StringInput) {
+        const inputValidationResult = this.checkInputValidation(
+          this.state[key].value,
+          this.state[key].component,
+        );
+
+        this.setValidationState(
+          inputValidationResult,
+          this.state[key]?.component?.id,
+          this.state[key]?.value,
+        );
+
+        if (inputValidationResult > -1) {
+          isValid = false;
+        }
+      }
+    });
+
+    this.validationShowOn = ValidationShowOn.IMMEDIATE;
+
+    if (isValid) {
       Object.keys(this.state).forEach((key) => {
         responseData[key] = { visited: true, value: this.state[key].value };
       });
@@ -62,18 +82,65 @@ export class CustomScreenComponent implements OnChanges {
   }
 
   selectDictionary(
-    selectedItem: { item: ListItem },
+    selectedItem: ListItem,
     component: EgpuResponseCustomComponentDisplayComponentInterface,
   ) {
     const dictionaryName = component.attrs?.dictionaryType;
-    this.dictionary[dictionaryName].selectedItem = selectedItem.item.originalItem;
-    this.state[component.id].value = selectedItem.item.originalItem;
+    this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
+    this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
   }
 
+  setValidationState(inputValidationResult, componentId, componentValue) {
+    const handleSetState = (isValid, errMsg?) => {
+      this.state[componentId].value = componentValue;
+      this.state[componentId].valid = isValid;
+      this.state[componentId].errorMessage = errMsg;
+    };
+
+    if (inputValidationResult === -1) {
+      handleSetState(true);
+    } else {
+      handleSetState(
+        false,
+        this.state[componentId]?.component.attrs.validation[inputValidationResult].errorMsg,
+      );
+    }
+  }
+
   inputChange($event: Event, component: EgpuResponseCustomComponentDisplayComponentInterface) {
-    this.state[component.id].value = ($event.target as HTMLInputElement).value;
-    this.state[component.id].valid = !$event;
+    const { value } = $event.target as HTMLInputElement;
+    const inputValidationResult = this.checkInputValidation(value, component);
+
+    this.setValidationState(inputValidationResult, component.id, value);
+  }
+
+  checkInputValidation(
+    value: string,
+    component: EgpuResponseCustomComponentDisplayComponentInterface,
+  ): number {
+    const regExpArr = component?.attrs?.validation?.map((item) => {
+      try {
+        return new RegExp(item.value);
+      } catch {
+        console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
+        return new RegExp(/.*/);
+      }
+    });
+
+    let result = -1; // if result === -1 input value is considered valid
+
+    if (regExpArr) {
+      regExpArr.every((regExp, index) => {
+        if (!regExp.test(value)) {
+          result = index;
+          return false;
+        }
+        return true;
+      });
+    }
+
+    return result;
   }
 
   // dateChange($event: any, componentData: EgpuResponseComponentInterface) {
@@ -136,7 +203,8 @@ export class CustomScreenComponent implements OnChanges {
     };
   }
 
-  private initState(componentId: string) {
-    this.state[componentId] = { valid: false, errorMessage: '', value: {} };
+  private initState(component: EgpuResponseCustomComponentDisplayComponentInterface) {
+    const { id, value } = component;
+    this.state[id] = { valid: false, errorMessage: '', value, component };
   }
 }
