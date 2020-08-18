@@ -7,6 +7,6 @@ label {
   color: $summer-night;
 
   &::first-letter {
-    text-transform: capitalize;
+    text-transform: uppercase;
   }
 }
