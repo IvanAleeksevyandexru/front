@@ -23,7 +23,7 @@ Install:
 Lint:
   stage: lint
   before_script:
-    - yarn config set cache-folder .yarn  
+    - yarn config set cache-folder .yarn
   script: 
     - yarn lint
 
@@ -47,3 +47,4 @@ Build:
     - yarn config set cache-folder .yarn 
   script: 
     - yarn build
+    - /devops/notify/notify.sh fronted_new_master_available
