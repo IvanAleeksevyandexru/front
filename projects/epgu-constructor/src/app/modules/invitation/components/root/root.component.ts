@@ -1,22 +1,20 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
+import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'app-invitation-screen',
   templateUrl: './root.component.html',
   styleUrls: ['./root.component.scss'],
+  providers: [UnsubscribeService],
 })
-export class RootComponent implements OnInit, OnDestroy {
+export class RootComponent implements OnInit {
   // <-- constant
   typeComponent = SCREEN_COMPONENT_NAME;
-
-  // <-- variables
-  ngUnsubscribe$ = new Subject();
 
   @Input() data: EgpuResponseDisplayInterface;
   @Output() resolve: EventEmitter<string> = new EventEmitter<string>();
@@ -25,6 +23,7 @@ export class RootComponent implements OnInit, OnDestroy {
   constructor(
     private navService: NavigationService,
     public constructorService: ConstructorService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.navService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -32,11 +31,6 @@ export class RootComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
-  }
 
   prevStep() {
     this.prevStepEvent.emit();

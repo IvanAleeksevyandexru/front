@@ -1,7 +1,7 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
-import { EgpuResponseComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
 import { ChildUnder14Interface } from '../../../../../../../interfaces/children.interface';
+import { EgpuResponseComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
 
 @Component({
   selector: 'app-add-children-screen',
@@ -88,7 +88,7 @@ export class AddChildrenScreenComponent implements OnInit {
 
   // outter method to send final data to backend
   getNextScreen() {
-    this.valueParsed.children = this.childrenList;
+    this.valueParsed.items = this.childrenList;
     const data = JSON.stringify(this.valueParsed);
     this.nextStepEvent.emit(data);
   }

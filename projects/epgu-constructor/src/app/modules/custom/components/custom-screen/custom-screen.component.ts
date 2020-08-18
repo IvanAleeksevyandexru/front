@@ -1,17 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem } from 'epgu-lib';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { RestService } from '../../../../services/rest/rest.service';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 import {
   CustomComponentDictionaryState,
   CustomComponentState,
@@ -24,20 +13,23 @@ import {
 } from '../../../../../interfaces/dictionary-options.interface';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
+import { RestService } from '../../../../services/rest/rest.service';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 
 @Component({
   selector: 'app-custom-screen',
   templateUrl: './custom-screen.component.html',
   styleUrls: ['./custom-screen.component.scss'],
+  providers: [UnsubscribeService],
 })
-export class CustomScreenComponent implements OnChanges, OnDestroy {
+export class CustomScreenComponent implements OnChanges {
   // <-- constant
   componentType = CUSTOM_COMPONENT_ITEM_TYPE;
 
   // <-- variables
   state: { [key: string]: CustomComponentState } = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
-  ngUnsubscribe$ = new Subject();
 
   @Input() data: EgpuResponseCustomComponentDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
@@ -47,6 +39,7 @@ export class CustomScreenComponent implements OnChanges, OnDestroy {
     private restService: RestService,
     private navService: NavigationService,
     public constructorService: ConstructorService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.navService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -55,11 +48,6 @@ export class CustomScreenComponent implements OnChanges, OnDestroy {
 
   prevStep() {
     this.prevStepEvent.emit();
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
