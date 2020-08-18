@@ -2,25 +2,23 @@
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { INFO_SCREEN_COMPONENT } from '../../../../../constant/global';
+import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'app-info-screen',
   templateUrl: './info-screen.component.html',
   styleUrls: ['./info-screen.component.scss'],
+  providers: [UnsubscribeService],
 })
-export class InfoScreenComponent implements OnDestroy {
+export class InfoScreenComponent {
   // <-- constant
   infoScreenComponent = INFO_SCREEN_COMPONENT;
-
-  // <-- variable
-  ngUnsubscribe$ = new Subject();
 
   @Input() data: EgpuResponseDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
@@ -29,15 +27,11 @@ export class InfoScreenComponent implements OnDestroy {
   constructor(
     private navService: NavigationService,
     public constructorService: ConstructorService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.navService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   nextStep() {
