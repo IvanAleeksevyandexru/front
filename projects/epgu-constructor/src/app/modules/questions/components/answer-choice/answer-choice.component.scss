@@ -25,6 +25,13 @@
   }
 }
 
+.answer-btn__hint {
+  lib-question-help-tip {
+    display: flex;
+  }
+  margin-left: auto;
+}
+
 .answer-btn__title {
 
 }
