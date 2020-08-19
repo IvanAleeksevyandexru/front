@@ -21,6 +21,7 @@ Install:
     - yarn install
   only:
     - merge_requests
+
 Lint:
   stage: lint
   before_script:
@@ -37,7 +38,8 @@ Lint:
 #  script: 
 #    - yarn test --coverage
 #  only:
-    - merge_requests
+#   - merge_requests
+
 Library-build:
   stage: library-build
   before_script:
