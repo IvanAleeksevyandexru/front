@@ -9,5 +9,4 @@ export class ConstructorConfigServiceStub {
     serviceId: '',
     externalApiUrl: ''
   };
-  constructor() {}
 }
