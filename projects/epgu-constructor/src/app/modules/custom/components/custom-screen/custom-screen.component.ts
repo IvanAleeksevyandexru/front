@@ -165,6 +165,16 @@ export class CustomScreenComponent implements OnChanges {
     return [componentData.id, this.componentType.FileUploadComponent].join('.');
   }
 
+  /**
+   * Возвращает идентификатор заявлявления
+   */
+  get getOrderId(): number {
+    // TODO: Пока заглушка с заведённым заявлением
+    return 763418900;
+
+    // return Number(this.constructorService.response.orderId);
+  }
+
   private initState(componentId: string) {
     this.state[componentId] = { valid: false, errorMessage: '', value: {} };
   }
