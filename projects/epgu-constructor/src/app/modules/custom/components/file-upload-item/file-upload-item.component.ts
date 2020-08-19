@@ -57,6 +57,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   }
   @Input() prefixForMnemonic: string;
   @Input() objectId: number;
+  @Input() refData: any = null;
 
   @ViewChild('fileUploadInput', {
     static: true,
@@ -138,8 +139,6 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
         f.hasError = !uploaded;
         // eslint-disable-next-line no-param-reassign
         f.fileSize = fileSize;
-
-        console.log('f', f);
       }
     });
     this.files$.next(files);
@@ -153,8 +152,6 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * @private
    */
   private updateFileInfoFromServer(uploadedFile: UploadedFile, uploaded: boolean = true) {
-    console.log('uploaded', uploaded);
-
     if (uploaded) {
       this.terabyteService
         .getFileInfo(uploadedFile.getParamsForFileOptions())
@@ -193,8 +190,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
             return throwError(e);
           }),
         )
-        .subscribe((result) => {
-          console.log('result', result);
+        .subscribe(() => {
           this.filesInUploading -= 1;
           this.updateFileInfoFromServer(fileToUpload);
         }),
@@ -268,8 +264,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
             return throwError(e);
           }),
         )
-        .subscribe((result) => {
-          console.log('result', result);
+        .subscribe(() => {
           this.filesInUploading -= 1;
           let files = this.files$.value;
           files = files.filter((f) => f.mnemonic !== file.mnemonic);
@@ -331,14 +326,21 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   }
 
   /**
-   * Скачивание файла
+   * Запрос на скачивание файла и отдачу пользователю
    * @param file - объект файла
    */
   downloadFile(file: UploadedFile) {
+    this.errors = [];
     const subs: Subscription = this.terabyteService
       .downloadFile(file.getParamsForFileOptions())
+      .pipe(
+        catchError((e: any) => {
+          this.errors.push(`Не удалось скачать файл ${file.fileName}`);
+          return throwError(e);
+        }),
+      )
       .subscribe((result) => {
-        console.log('result5', result);
+        this.terabyteService.pushFileToBrowserForDownload(result, file);
         subs.unsubscribe();
       });
   }

@@ -5,7 +5,10 @@ import {ITerraFileOptions, ITerraUploadFileOptions} from '../../../../services/c
  */
 export interface IFileUploadAttributes{
   uploads: IFileUploadItem[],
+  idAttrs?: string[];
+  ref?: string;
   maxSize?: number;
+  maxFileCount?: number;
 }
 
 

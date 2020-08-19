@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ITerraFileOptions, ITerraUploadFileOptions, TerabyteConfig} from '../config/terabyte.config';
 import { Observable } from 'rxjs';
-import {TERABYTE_TEST_TOKEN} from '../../modules/custom/components/file-upload-item/data';
+import {TERABYTE_TEST_TOKEN, UploadedFile} from '../../modules/custom/components/file-upload-item/data';
 
 
 
@@ -13,9 +13,13 @@ import {TERABYTE_TEST_TOKEN} from '../../modules/custom/components/file-upload-i
   providedIn: 'root'
 })
 export class TerabyteService {
+  isLocalHost = false;
+
   constructor(
     private http: HttpClient
-  ) {}
+  ) {
+    this.isLocalHost = location.hostname === 'localhost';
+  }
 
   /**
    * Переводит base64 картинку в Blob
@@ -23,27 +27,24 @@ export class TerabyteService {
    * @param contentType - тип контента
    */
   static base64toBlob(base64Data: string, contentType: string): Blob {
-    const type = contentType || '';
-    const sliceSize = 1024;
-    const byteCharacters = atob(base64Data);
-    const bytesLength = byteCharacters.length;
-    const slicesCount = Math.ceil(bytesLength / sliceSize);
+    const parts = base64Data.split(';base64,');
+    const imageType = parts[0].split(':')[1];
+    const decodedData = window.atob(parts[1]);
+    const uInt8Array = new Uint8Array(decodedData.length);
 
-    let byteArrays = new Array(slicesCount);
-
-    for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
-      const begin = sliceIndex * sliceSize;
-      const end = Math.min(begin + sliceSize, bytesLength);
-
-      let bytes = new Array(end - begin);
-
-      for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
-        bytes[i] = byteCharacters[offset].charCodeAt(0);
-      }
-
-      byteArrays[sliceIndex] = new Uint8Array(bytes);
+    for (let i = 0; i < decodedData.length; ++i) {
+      uInt8Array[i] = decodedData.charCodeAt(i);
     }
-    return new Blob(byteArrays, { type });
+    return new Blob([uInt8Array], { type: imageType });
+  }
+
+  /**
+   * Возвращает объект заголовков, которые нужны для запуска на тестовом домене
+   */
+  private getTestHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Cookie: 'acc_t=' + TERABYTE_TEST_TOKEN + '; Path=/; Domain=.pgu-dev-fed.test.gosuslugi.ru; Expires=Mon, 30 Aug 2021 09:32:01 GMT;',
+    });
   }
 
   /**
@@ -51,18 +52,30 @@ export class TerabyteService {
    *
    * @param relativePath - относительный путь от API для запросов
    */
-  getTerabyteApiUrl = (relativePath) =>
-      (location.hostname === 'localhost' ? TerabyteConfig.LOCALHOST_API_URL : TerabyteConfig.API_URL) + relativePath;
+  private getTerabyteApiUrl = (relativePath): string =>
+      (this.isLocalHost ? TerabyteConfig.LOCALHOST_API_URL : TerabyteConfig.API_URL) + relativePath;
+
+  /**
+   * Возращает опции запроса
+   * @private
+   */
+  private getServerRequestOptions(additionalOptions: object = {}): object {
+    let options = {
+      withCredentials: true
+    }
+    if (this.isLocalHost){
+      options['headers'] = this.getTestHeaders();
+    }
+    options = {...additionalOptions, ...options}
+    return options;
+  }
 
   /**
    * Возвращает список файлов, для определённого объекта
    * @param objectId - идентификатор объекта
    */
   getListByObjectId(objectId: number): Observable<any>  {
-    //return this.http.get(this.getTerabyteApiUrl(`/${objectId}`));
-    return this.http.get(`https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files/${objectId}`, {
-      withCredentials: true
-    });
+    return this.http.get(this.getTerabyteApiUrl(`/${objectId}`), this.getServerRequestOptions());
   }
 
   /**
@@ -71,8 +84,7 @@ export class TerabyteService {
    */
   getFileInfo(options: ITerraFileOptions): Observable<any>  {
     // eslint-disable-next-line max-len
-    return this.http.get(`https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`);
-    //return this.http.get(this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`));
+    return this.http.get(this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`), this.getServerRequestOptions());
   }
 
   /**
@@ -87,27 +99,11 @@ export class TerabyteService {
     }else{
       formData.append('file', file);
     }
-
     Object.keys(options).forEach(k => {
       formData.append(k, options[k]);
     });
-    // formData.append('token', TERABYTE_TEST_TOKEN);
-    // formData.append('userId', '1000299353');
 
-    const headers = new HttpHeaders({
-      Cookie: 'acc_t=' + TERABYTE_TEST_TOKEN + '; Path=/; Domain=.pgu-dev-fed.test.gosuslugi.ru; Expires=Mon, 30 Aug 2021 09:32:01 GMT;',
-      Authorization:`bearer ${TERABYTE_TEST_TOKEN}`
-    });
-    //headers.append('Authorization', `bearer ${TERABYTE_TEST_TOKEN}`);
-    console.log('formData', formData.get('file'));
-    // return this.http.post(this.getTerabyteApiUrl(''), formData, {
-    //   withCredentials: true
-    // });
-    return this.http
-      .post('https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files/upload', formData, {
-      headers,
-      withCredentials: true,
-    });
+    return this.http.post(this.getTerabyteApiUrl('/upload'), formData, this.getServerRequestOptions());
   }
 
   /**
@@ -115,9 +111,8 @@ export class TerabyteService {
    * @param options - данные о файле
    */
   deleteFile(options: ITerraFileOptions): Observable<any> {
-    //return this.http.delete(this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`));
     // eslint-disable-next-line max-len
-    return this.http.delete(`https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`);
+    return this.http.delete(this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`), this.getServerRequestOptions());
   }
 
 
@@ -126,10 +121,25 @@ export class TerabyteService {
    * @param options - данные о файле
    */
   downloadFile(options: ITerraFileOptions): Observable<any> {
-    //return this.http.delete(this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`));
     // eslint-disable-next-line max-len
-    return this.http.get(`https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`);
+    return this.http.get(this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`), this.getServerRequestOptions({
+      responseType: 'blob'
+    }));
   }
 
-
+  /**
+   * Отдача пользователю файла прямо в браузер
+   * @private
+   */
+  pushFileToBrowserForDownload(data: Blob, file: UploadedFile) {
+    const url = window.URL.createObjectURL(data);
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    a.setAttribute('style', 'display: none');
+    a.href = url;
+    a.download = file.fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+  }
 }

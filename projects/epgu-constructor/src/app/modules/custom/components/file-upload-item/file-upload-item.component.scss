@@ -15,6 +15,7 @@
   border-bottom: 1px solid $devider;
 
   &::ng-deep ul{
+    list-style: none;
     padding: 0;
     padding-left: 15px;
     margin: 0;
@@ -35,47 +36,6 @@ input[type="file"]{
 .error{
   color: $gosred;
   margin-bottom: 10px;
-}
-
-
-.fileupload__buttons{
-  display: flex;
-  justify-content: flex-start;
-
-  &.nocamera{
-    .fileupload__button:first-child {
-      margin-right: 0;
-    }
-  }
-}
-
-.fileupload__button{
-  font-size: 16px;
-  color: $gosblue;
-  line-height: 50px;
-  text-align: left;
-  padding: 0 40px;
-  cursor: pointer;
-  border: 2px solid $gosblue;
-  border-radius: 8px;
-  box-sizing: border-box;
-
-  &:first-child{
-    margin-right: 24px;
-  }
-
-  &:focus{
-    outline: 0;
-  }
-}
-
-.fileupload__button-icon{
-  vertical-align: middle;
-  margin-right: 8.6px;
-}
-
-.files{
-
 }
 
 .file{
@@ -110,6 +70,7 @@ input[type="file"]{
   font-size: 16px;
   line-height: 24px;
   color: $text-helper;
+  word-break: break-all;
 
   &.uploaded{
     color: $summer-night;
@@ -148,4 +109,48 @@ input[type="file"]{
 
 .webcam__video{
   display: none;
+}
+
+.fileupload__button-icon{
+  vertical-align: middle;
+  margin-right: 8.6px;
+}
+
+.fileupload__buttons{
+  display: flex;
+  justify-content: flex-start;
+
+  &.nocamera{
+    .fileupload__button:first-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.fileupload__button{
+  font-size: 16px;
+  color: $gosblue;
+  line-height: 50px;
+  text-align: left;
+  padding: 0 40px;
+  cursor: pointer;
+  border: 2px solid $gosblue;
+  border-radius: 8px;
+  box-sizing: border-box;
+
+  @include phones-down{
+    padding: 0 18px;
+  }
+
+  &:first-child{
+    margin-right: 24px;
+
+    @include phones-down{
+      margin-right: 15px;
+    }
+  }
+
+  &:focus{
+    outline: 0;
+  }
 }

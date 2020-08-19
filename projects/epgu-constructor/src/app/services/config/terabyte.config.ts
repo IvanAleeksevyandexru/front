@@ -3,8 +3,7 @@
  */
 export const TerabyteConfig = {
   API_URL: 'https://gosuslugi.ru/api/storage/v1/files',
-  LOCALHOST_API_URL: '/terrabyte',
-  //LOCALHOST_API_URL: 'https://svcdev-beta.test.gosuslugi.ru/api/storage/v1/files',
+  LOCALHOST_API_URL: 'https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files',
 }
 
 /**
