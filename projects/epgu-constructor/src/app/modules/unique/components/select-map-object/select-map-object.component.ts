@@ -34,7 +34,6 @@ export class SelectMapObjectComponent implements OnInit, OnDestroy {
   private isMapsScriptLoaded = false;
   private fiasCode;
 
-  // eslint-disable-next-line prettier/prettier
   constructor(
     public selectMapObjectService: SelectMapObjectService,
     private yaMapService: YaMapService,

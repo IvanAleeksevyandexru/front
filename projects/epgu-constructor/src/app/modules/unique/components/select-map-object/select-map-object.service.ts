@@ -137,16 +137,20 @@ export class SelectMapObjectService {
       '<div class=\'PGU-FieldMapWithList-buttonwrap PGU-BtnContainer-column\'>' +
       '<div class=\'PGU-Btn-margin\'>' +
       '{% if !properties.res.btnFromCluster %}' +
-      '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.id}}\' class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
+      '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.id}}\' ' +
+      'class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
       '{% endif %}' +
       '{% if properties.res.btnFromCluster &&  properties.res.itemData && properties.res.itemData.code %}' +
-      '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.itemData.code}}\' class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
+      '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.itemData.code}}\' ' +
+      'class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
       '{% endif %}' +
       '{% if properties.res.btnFromCluster &&  properties.res.itemData && properties.res.itemData.numIk %}' +
-      '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.itemData.id}}\' class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
+      '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.itemData.id}}\' ' +
+      'class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
       '{% endif %}' +
       '{%  if properties.res.btnFromCluster && !properties.res.itemData && properties.res.id >= 0 %}' +
-      '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.id}}\' class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
+      '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.id}}\' ' +
+      'class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
       '{% endif %}' +
       '</div>' +
       '</div>' +
@@ -168,7 +172,8 @@ export class SelectMapObjectService {
       '{% endif %}' +
       '{% endfor  %}' +
       '{% endif %}' +
-      '<div class="PGU-FieldMapWithList-Baloon-content-Bottom">На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы <a href="#!">ознакомиться</a></div>' +
+      '<div class="PGU-FieldMapWithList-Baloon-content-Bottom">' +
+      'На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы <a href="#!">ознакомиться</a></div>' +
       '</div>' +
       btnTemplateDesk +
       '</div>',
@@ -176,13 +181,6 @@ export class SelectMapObjectService {
         // Переопределяем функцию build, чтобы при создании макета начинать
         // слушать событие click на кнопке
         build: function () {
-          // Используются служебные поля, проверка на случай изменнения yandex api
-          if (this._data && this._data.geoObject && this._data.geoObject.id >= 0 && this._data.geoObject.properties && this._data.geoObject.properties.res) {
-            this.activePlacemark = {
-              coords: this._data.geoObject.properties.res.center,
-              id: this._data.geoObject.id
-            };
-          }
           // Сначала вызываем метод build родительского класса.
           customBalloonContentLayout.superclass.build.call(this);
           // Биндим к кнопке клик
