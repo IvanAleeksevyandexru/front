@@ -13,7 +13,9 @@
     "library:lint": "ng lint epgu-constructor",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
-    "test": "ng test",
+    "test:dev": "jest --watch -o",
+    "test:ci": "jest --ci -w=50%",
+    "test:coverage": "jest --ci -w=50% --coverage --no-cache --reporters=default --reporters=jest-junit --coverageDirectory=coverage/jest",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -26,6 +28,16 @@
     "*.{js,ts}": [
       "eslint --fix"
     ]
+  },
+  "jest-junit": {
+    "suiteName": "epgu-form-frontend",
+    "outputDirectory": "./coverage/junit",
+    "outputName": "test-results.xml",
+    "uniqueOutputName": "false",
+    "classNameTemplate": "{classname}-{title}",
+    "titleTemplate": "{classname}-{title}",
+    "ancestorSeparator": " › ",
+    "usePathForSuiteName": "true"
   },
   "dependencies": {
     "@angular/animations": "~10.0.4",
@@ -40,9 +52,9 @@
     "@ngx-translate/http-loader": "4.0.0",
     "angular2-text-mask": "9.0.0",
     "epgu-lib": "^0.0.384",
-    "ru-validation-codes": "^2.8.0",
     "moment": "2.24.0",
     "ngx-perfect-scrollbar": "8.0.0",
+    "ru-validation-codes": "^2.8.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
@@ -59,6 +71,7 @@
     "@angular/compiler-cli": "~10.0.4",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
+    "@types/jest": "^26.0.10",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "2.31.0",
     "@typescript-eslint/parser": "2.31.0",
@@ -68,18 +81,24 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.2.5",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",
-    "husky": "^4.2.5",
+    "jest": "^26.4.0",
+    "jest-junit": "^11.1.0",
+    "jest-preset-angular": "^8.2.1",
     "karma": "~5.0.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~3.3.0",
     "karma-jasmine-html-reporter": "^1.5.0",
     "lint-staged": "^10.2.11",
+    "ng-bullet": "^1.0.3",
+    "ng-mocks": "^10.1.2",
     "ng-packagr": "^10.0.0",
     "prettier": "^2.0.5",
     "protractor": "~7.0.0",
+    "ts-jest": "^26.2.0",
     "ts-node": "~8.3.0",
     "typescript": "~3.9.5"
   }
