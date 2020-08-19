@@ -1,17 +1,23 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subscription, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { WebcamImage, WebcamInitError } from 'ngx-webcam';
+import { BehaviorSubject, Subscription, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { WebcamInitError } from 'ngx-webcam';
 import {
   getSizeInMB,
   IFileUploadItem,
   TERABYTE_TEST_TOKEN,
+  TerrabyteListItem,
   UploadedFile,
   uploadObjectType,
 } from './data';
 import { TerabyteService } from '../../../../services/rest/terabyte.service';
-import { imageCameraQuality } from '../../../../services/config/terabyte.config';
 import { UtilsService } from '../../../../services/utils/utils.service';
+import { WebcamService } from '../../../../services/utils/webcam.service';
+import {
+  isCloseAndSaveWebcamEvent,
+  isCloseWebcamEvent,
+  WebcamEvent,
+} from '../../../../services/utils/webcamevents';
 
 @Component({
   selector: 'app-file-upload-item',
@@ -23,6 +29,28 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   @Input()
   set data(data: IFileUploadItem) {
     this.loadData = data;
+    this.listIsUploadingNow = true;
+    this.files$.next([]);
+    this.terabyteService
+      .getListByObjectId(this.objectId)
+      .pipe(
+        catchError((e: any) => {
+          this.listIsUploadingNow = false;
+          return throwError(e);
+        }),
+      )
+      .pipe(
+        map((result) => this.filterServerListItemsForCurrentForm(result)),
+        map((list: TerrabyteListItem[]) => this.transformTerrabyteItemsToUploadedFiles(list)),
+      )
+      .subscribe((list) => {
+        this.listIsUploadingNow = false;
+        if (list.length) {
+          console.log('list', list);
+          this.files$.next([...list]);
+          this.maxFileNumber = this.getMaxFileNumberFromList(list);
+        }
+      });
   }
   get data() {
     return this.loadData;
@@ -30,30 +58,147 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   @Input() prefixForMnemonic: string;
   @Input() objectId: number;
 
-  @ViewChild('fileUploadInput') uploadInput: ElementRef;
+  @ViewChild('fileUploadInput', {
+    static: true,
+  })
+  uploadInput: ElementRef;
 
   private subs: Subscription[] = [];
   private maxFileNumber = -1;
-  imageCameraQuality = imageCameraQuality;
+
   cameraNotAllowed = false; // Флаг, что камеры нет или она запрещена
   listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
-  files: UploadedFile[] = []; // Список уже загруженных файлов
+  files$: BehaviorSubject<UploadedFile[]> = new BehaviorSubject<UploadedFile[]>([]); // Список уже загруженных файлов
   errors: string[] = [];
 
-  constructor(private terabyteService: TerabyteService) {}
+  constructor(private terabyteService: TerabyteService, private webcamService: WebcamService) {}
 
   /**
-   * Возращает типы файлов, которые должны принимать
+   * Переводит список файлов с сервера в файлы для отображения
+   * @param list - массив информациио файлах на сервере
+   * @private
    */
-  getAcceptTypes(): string {
-    if (!this.data.fileType.length) {
-      return null;
+  private transformTerrabyteItemsToUploadedFiles(list: TerrabyteListItem[]): UploadedFile[] {
+    const filesList: UploadedFile[] = [];
+    if (list.length) {
+      list.forEach((terraFile: TerrabyteListItem) => {
+        const file = new UploadedFile(terraFile);
+        file.uploaded = true;
+        filesList.push(file);
+      });
     }
-    return this.data.fileType
-      .map((fileType) => `.${fileType}`)
-      .join(',')
-      .toLowerCase();
+    return filesList;
+  }
+
+  /**
+   * Фильтрует список файлов полученных с сервера, чтобы были только для этой формы
+   * @param result - список файлов, хранящихся на сервере
+   * @private
+   */
+  private filterServerListItemsForCurrentForm(result: TerrabyteListItem[]): TerrabyteListItem[] {
+    return result.filter(
+      (fileInfo) =>
+        fileInfo?.mnemonic?.includes(this.getSubMnemonicPath()) &&
+        fileInfo?.objectId === this.objectId,
+    );
+  }
+
+  /**
+   * Возращает промежуточный путь для формирования мнемомники, конретно для этой формы
+   * @private
+   */
+  private getSubMnemonicPath(): string {
+    return [this.prefixForMnemonic, this.data.uploadId].join('.');
+  }
+
+  /**
+   * Возвращает мнемонику для файла, формируя уникальный префикс
+   * @private
+   */
+  private getMnemonic(): string {
+    this.maxFileNumber += 1;
+    return [this.getSubMnemonicPath(), this.maxFileNumber].join('.');
+  }
+
+  /**
+   * Устанавливает сведения Фаой
+   * @param uploadedFile - файл загружаемый на сервер
+   * @param fileSize - размер фай
+   * @param uploaded - файл загружен?
+   * @private
+   */
+  private setFileInfoUploaded(uploadedFile: UploadedFile, fileSize: number, uploaded: boolean) {
+    const files = this.files$.value;
+    files.forEach((f: UploadedFile) => {
+      if (f.mnemonic === uploadedFile.mnemonic) {
+        // eslint-disable-next-line no-param-reassign
+        f.uploaded = uploaded;
+        // eslint-disable-next-line no-param-reassign
+        f.hasError = !uploaded;
+        // eslint-disable-next-line no-param-reassign
+        f.fileSize = fileSize;
+
+        console.log('f', f);
+      }
+    });
+    this.files$.next(files);
+  }
+
+  /**
+   * Подгружает информацию с сервера
+   *
+   * @param uploadedFile - файл предварительно загруженный на сервер
+   * @param uploaded - признак что файл загружен
+   * @private
+   */
+  private updateFileInfoFromServer(uploadedFile: UploadedFile, uploaded: boolean = true) {
+    console.log('uploaded', uploaded);
+
+    if (uploaded) {
+      this.terabyteService
+        .getFileInfo(uploadedFile.getParamsForFileOptions())
+        .subscribe((result: TerrabyteListItem) => {
+          this.setFileInfoUploaded(uploadedFile, result.fileSize, uploaded);
+        });
+    } else {
+      this.setFileInfoUploaded(uploadedFile, 0, uploaded);
+    }
+  }
+
+  /**
+   * Отправляет файл на сервер
+   * @param file - file object to upload
+   * @private
+   */
+  private sendFile(file: File | Blob) {
+    this.filesInUploading += 1;
+
+    const fileToUpload = new UploadedFile({
+      fileName: file instanceof File ? file.name : `camera_${this.filesInUploading}.jpg`,
+      objectId: this.objectId,
+      objectTypeId: uploadObjectType,
+      mnemonic: this.getMnemonic(),
+    });
+    const files = this.files$.value;
+    files.push(fileToUpload);
+    this.files$.next(files);
+    this.subs.push(
+      this.terabyteService
+        .uploadFile(fileToUpload.getParamsForUploadFileOptions(), file)
+        .pipe(
+          catchError((e: any) => {
+            this.filesInUploading -= 1;
+            this.updateFileInfoFromServer(fileToUpload, false);
+            return throwError(e);
+          }),
+        )
+        .subscribe((result) => {
+          console.log('result', result);
+          this.filesInUploading -= 1;
+          this.updateFileInfoFromServer(fileToUpload);
+        }),
+    );
   }
 
   /**
@@ -78,32 +223,45 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   }
 
   /**
-   * Возвращает мнемонику для файла, формируя уникальный префикс
+   * Возвращает максимальный индекс файла загрузки из списка уже загруженных
+   * @param list - список файлов загруженных с сервера
    * @private
    */
-  private getMnemonic(): string {
-    this.maxFileNumber += 1;
-    return [this.prefixForMnemonic, this.data.uploadId, this.maxFileNumber].join('.');
+  private getMaxFileNumberFromList(list: UploadedFile[]): number {
+    let maxIndex = -1;
+    list.forEach((f) => {
+      const index = Number(f.mnemonic.split('.').pop());
+      if (index > maxIndex) {
+        maxIndex = index;
+      }
+    });
+    return maxIndex;
   }
 
   /**
-   * Send one file to server
-   * @param file - file object to upload
-   * @private
+   * Возращает типы файлов, которые должны принимать
    */
-  private sendFile(file: File | Blob) {
-    this.filesInUploading += 1;
-    this.subs.push(
+  getAcceptTypes(): string {
+    if (!this.data.fileType.length) {
+      return null;
+    }
+    return this.data.fileType
+      .map((fileType) => `.${fileType}`)
+      .join(',')
+      .toLowerCase();
+  }
+
+  /**
+   * Удаление файла из стека
+   * @param file - объект файла на удаление
+   */
+  deleteFile(file: UploadedFile) {
+    this.errors = [];
+
+    if (file.uploaded) {
+      this.filesInUploading += 1;
       this.terabyteService
-        .uploadFile(
-          {
-            name: file instanceof File ? file.name : `camera_${this.filesInUploading}.jpg`,
-            objectId: this.objectId,
-            objectType: uploadObjectType,
-            mnemonic: this.getMnemonic(),
-          },
-          file,
-        )
+        .deleteFile(file.getParamsForFileOptions())
         .pipe(
           catchError((e: any) => {
             this.filesInUploading -= 1;
@@ -113,14 +271,21 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
         .subscribe((result) => {
           console.log('result', result);
           this.filesInUploading -= 1;
-        }),
-    );
+          let files = this.files$.value;
+          files = files.filter((f) => f.mnemonic !== file.mnemonic);
+          this.files$.next(files);
+        });
+    } else {
+      let files = this.files$.value;
+      files = files.filter((f) => f.mnemonic !== file.mnemonic);
+      this.files$.next(files);
+    }
   }
 
   /**
    * Обновляет данные о файлах, которые были загружены
    */
-  updateFilesInfo() {
+  updateSelectedFilesInfoAndSend() {
     this.errors = [];
     const inputFiles: File[] = this.prepareFilesToUpload(this.uploadInput.nativeElement.files);
 
@@ -129,7 +294,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
       if (
         !maxFileCountError &&
         this.data.maxFileCount &&
-        this.files.length === this.data.maxFileCount
+        this.files$.value.length === this.data.maxFileCount
       ) {
         maxFileCountError = true;
         this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
@@ -144,24 +309,38 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   /**
    * Загрузка файлов на сервер террабайта через стандартный выбор
    */
-  uploadFilesEvent() {
+  selectFilesEvent() {
     this.uploadInput.nativeElement.click();
   }
 
-  // /**
-  //  * Открытие камеры для получения изображения
-  //  */
-  // openCamera() {
-  //
-  // }
+  /**
+   * Открытие камеры для получения изображения и последующей загрузки
+   */
+  openCamera() {
+    const webcamEvents = this.webcamService.open();
+    webcamEvents.events.subscribe((event: WebcamEvent) => {
+      if (isCloseWebcamEvent(event) || isCloseAndSaveWebcamEvent(event)) {
+        if (isCloseAndSaveWebcamEvent(event)) {
+          // Если данные нужно сохранить и отправить
+          const { data } = event;
+          this.sendFile(TerabyteService.base64toBlob(data, ''));
+        }
+        this.webcamService.close();
+      }
+    });
+  }
 
   /**
-   * Обработка сфотографированной картинки
-   *
-   * @param $event - событие сфотографированной картинки
+   * Скачивание файла
+   * @param file - объект файла
    */
-  handleWebcamCapture($event: WebcamImage) {
-    console.log('$event', $event);
+  downloadFile(file: UploadedFile) {
+    const subs: Subscription = this.terabyteService
+      .downloadFile(file.getParamsForFileOptions())
+      .subscribe((result) => {
+        console.log('result5', result);
+        subs.unsubscribe();
+      });
   }
 
   /**

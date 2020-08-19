@@ -13,15 +13,20 @@ export class UtilsService {
    * @param name - имя куки
    * @param value - значение куки
    * @param days - количество дней на установку
+   * @param domain - домен, к которому записывается кука
    */
-  static setCookie(name: string, value: string | number, days: number) {
+  static setCookie(name: string, value: string | number, days: number, domain: string = '') {
     let expires = '';
     if (days) {
       const date = new Date();
       date.setTime(date.getTime() + (days*24*60*60*1000));
       expires = '; expires=' + date.toUTCString();
     }
-    document.cookie = name + '=' + (value || '')  + expires + '; path=/';
+    let cookie = name + '=' + (value || '')  + expires + '; path=/';
+    if (domain.length){
+      cookie += '; domain=' + domain + ';';
+    }
+    document.cookie = cookie;
   }
 
   /**

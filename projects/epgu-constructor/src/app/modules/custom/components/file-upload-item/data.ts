@@ -1,3 +1,5 @@
+import {ITerraFileOptions, ITerraUploadFileOptions} from '../../../../services/config/terabyte.config';
+
 /**
  * Интерфейс для аттрибутов файла на загрузку из JSON
  */
@@ -31,21 +33,98 @@ export interface IFileUploadItem{
  * Интерфейс для класса подгруженного файла
  */
 export interface IUploadedFile{
-  name: string;
-  objectId: string;
-  objectType: string;
+  fileName: string;
+  objectId: number;
+  objectTypeId: number;
   mnemonic: string;
+  uploaded: boolean;
+  fileSize: number;
+  hasError: boolean;
+
+  alternativeMimeTypes?: string[]
+  created?: string;
+  deleted?: boolean;
+  fileExt?: string;
+  fileUid?: number;
+  hasSign?: boolean;
+  metaId?: number;
+  nodeId?: string;
+  realPath?: string;
+  relativePath?: string;
+  updated?: string;
+  userId?: number;
+}
+
+/***
+ * Интерфейс для файла из списка файлов в хранилище террабайт
+ */
+export interface TerrabyteListItem{
+  alternativeMimeTypes: string[];
+  created: string;
+  deleted: boolean;
+  fileExt: string;
+  fileName: string;
+  fileSize: number;
+  fileUid: number;
+  hasSign: boolean;
+  metaId: number;
+  mnemonic: string;
+  nodeId: string;
+  objectId: number;
+  objectTypeId: number;
+  realPath: string;
+  relativePath: string;
+  updated: string;
+  userId: number;
 }
 
 /**
  * Класс подгруженного файла
  */
 export class UploadedFile implements IUploadedFile{
-  name = '';
-  objectId = '';
-  objectType = '';
+  fileName = '';
+  objectId = 0;
+  objectTypeId = 0;
   mnemonic = '';
+  fileSize = 0;
   uploaded = false;
+  hasError = false;
+
+  constructor(props: object = {}) {
+    Object.keys(props).forEach((key) => {
+      this[key] = props[key];
+    });
+  }
+
+  /**
+   * Возвращает объект с данными и параметрами для загрузки на сервер файла
+   */
+  getParamsForUploadFileOptions(): ITerraUploadFileOptions {
+    return {
+      name: this.fileName,
+      objectId: this.objectId,
+      objectType: this.objectTypeId,
+      mnemonic: this.mnemonic,
+    } as ITerraUploadFileOptions
+  }
+
+  /**
+   * Возвращает объект с данными с параметрами получения сведений о файле
+   */
+  getParamsForFileOptions(): ITerraFileOptions {
+    return {
+      objectId: this.objectId,
+      objectType: this.objectTypeId,
+      mnemonic: this.mnemonic,
+    } as ITerraFileOptions
+  }
+
+  /**
+   * Возвращает размер в мегабайтах
+   */
+  getFileSizeInMB() {
+    return getSizeInMB(this.fileSize);
+  }
 }
 
 /**
@@ -59,16 +138,16 @@ export const uploadObjectType = 2;
 export const BYTES_IN_KB = 1024;
 
 // eslint-disable-next-line max-len
-export const TERABYTE_TEST_TOKEN = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTc2NzM4OTQsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl9pbmY_b2lkPTEwMDAyOTkzNTMmbW9kZT13IiwiaXNzIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcLyIsInVybjplc2lhOnNpZCI6IjNlODAwMmI0NzYwY2QwNGRlN2NjYmIzYzM4M2ZjNTIwNTlmYTgyYmJkNmY0ZDM5MmUyYmZlMjNkODY1YmM5ODIiLCJ1cm46ZXNpYTpzYmpfaWQiOjEwMDAyOTkzNTMsImV4cCI6MTU5Nzc2MDI5NCwiaWF0IjoxNTk3NjczODk0LCJjbGllbnRfaWQiOiJQR1UifQ.GhwBnGje2wCAWrlWcEA7y8KJd9FQcwyP9KOj4Ge2-1YWeQqnIcHm2oD_5Z_d0ymi9AZvyPBikHsD9F9XNGFpA7wvcLjwnqb5p8cb5uGc4taaX2hsnBGpgZdmeVB6sY-SNH68Cyy7f8acaNeRdC4sW0S14hELdUZ5F_5xmC8Lp3Pa4TMnEuYcSNUZgD_mQ4nUizgS7LRF0G9NLx4JGTPwyY4mIv8GAO_-leaYQFyf13lRQ5G18S5G7bdMu-m-9Vdzpm0PVLjz9D6zwN0z9I_vx1L7nFuvpBDf1UzjYA7XJIlnTzTbYPaZu4_icd2L8V34sgt_xRK5Sx3fUAjuw-gOpA';
+export const TERABYTE_TEST_TOKEN = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTc4MzE4ODksInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl90cm0_b2lkPTEwMDAyOTkzNTMmbW9kZT13IGh0dHA6XC9cL2VzaWEuZ29zdXNsdWdpLnJ1XC91c3JfaW5mP29pZD0xMDAwMjk5MzUzJm1vZGU9dyBodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvdXNyX3NlYz9tb2RlPXcmb2lkPTEwMDAyOTkzNTMiLCJpc3MiOiJodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvIiwidXJuOmVzaWE6c2lkIjoiNDM0YjQxMjRlNGIxNjg2M2ZjODVkYTI3NzhmY2ZjZmY2NmM1YzRmZTlmYTg0MDEzMjZlNWViMWNmNmYwOTUyOSIsInVybjplc2lhOnNial9pZCI6MTAwMDI5OTM1MywiZXhwIjoxNTk3OTE4Mjg5LCJpYXQiOjE1OTc4MzE4ODksImNsaWVudF9pZCI6IlBHVSJ9.HBSIKOVZmABnhUDz3UPQaI441PGjWc-RTabYgksej43sne3LRH0KEQ3e0STPFTh2lZQSmYhSZK1pl3jL10c9htdMVxtd6eZMEfkC06_I_sJk-t9QWiCI5D6D7NQy4TE2rOskM1s6sHR1bSQcSiBoOmMN-VLECn9ax_jHzAFn-ysjt4at2zVapK0FwC9ZcypPYQXZSmrEdoiF6M74obKes8M7ZGbLrt8NwKRKhGUTrEhu4Hz3wxVTAqaPWT8YIfPBIw4IaQEGFTZ9YbcgEzcUXiuFDKMJhhr1x3I7m_pxCjiRFkIfTQ9CvZLi-Iim1kfyVnBhxfbIP7Eya-lttlQKLQ';
 
 /**
  * Возвращает размер в килобайтах из байт
  * @param bytes - байты для перевода
  */
-export const getSizeInKB = (bytes) => bytes / BYTES_IN_KB;
+export const getSizeInKB = (bytes) => Math.round(((bytes / BYTES_IN_KB) + Number.EPSILON) * 100) / 100;
 
 /**
  * Возвращает размер в мегабайтах из байт
  * @param bytes - байты для перевода
  */
-export const getSizeInMB = (bytes) => bytes / BYTES_IN_KB / BYTES_IN_KB;
+export const getSizeInMB = (bytes) => Math.round(((bytes / BYTES_IN_KB / BYTES_IN_KB) + Number.EPSILON) * 100) / 100;

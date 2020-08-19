@@ -7,7 +7,8 @@ import { ForeignCitizenshipComponent } from './components/foreign-citizenship/fo
 import {EpgucSharedModule} from '../../shared-module/shared-components.module';
 import {FileUploadComponent} from './components/file-upload/file-upload.component';
 import {FileUploadItemComponent} from './components/file-upload-item/file-upload-item.component';
-import {WebcamModule} from 'ngx-webcam';
+import { WebcamModule } from 'ngx-webcam';
+import { WebcamShotComponent } from './components/webcam-shot/webcam-shot.component';
 
 const COMPONENTS = [
   CustomScreenComponent
@@ -16,7 +17,11 @@ const COMPONENTS = [
 @NgModule({
   declarations: [...COMPONENTS,
     LabelSectionComponent,
-    ForeignCitizenshipComponent, FileUploadComponent, FileUploadItemComponent],
+    ForeignCitizenshipComponent,
+    FileUploadComponent,
+    FileUploadItemComponent,
+    WebcamShotComponent
+  ],
   exports: [
     ...COMPONENTS
   ],
