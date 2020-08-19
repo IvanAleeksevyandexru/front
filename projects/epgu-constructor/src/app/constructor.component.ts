@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { COMPONENT_TYPE } from '../constant/global';
+import { SCREEN_TYPE } from '../constant/global';
 // eslint-disable-next-line max-len
 import { ConstructorService } from './services/constructor/constructor.service';
 
@@ -11,7 +11,7 @@ import { ConstructorService } from './services/constructor/constructor.service';
 })
 export class ConstructorComponent implements OnInit {
   // <--constant
-  constructorComponentType = COMPONENT_TYPE;
+  constructorComponentType = SCREEN_TYPE;
 
   constructor(public constructorService: ConstructorService) {}
 

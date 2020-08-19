@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {EgpuResponseDisplayInterface, EgpuResponseInterface} from '../../../interfaces/epgu.service.interface';
 import {RestService} from '../rest/rest.service';
-import {COMPONENT_TYPE} from '../../../constant/global';
+import {SCREEN_TYPE} from '../../../constant/global';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -53,7 +53,7 @@ export class ConstructorService {
     const componentId = options.componentId || this.componentId;
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
-    if (this.componentData.type === COMPONENT_TYPE.CUSTOM) {
+    if (this.componentData.type === SCREEN_TYPE.CUSTOM) {
       this.response.currentValue = data;
     } else {
       this.response.currentValue[componentId] = {

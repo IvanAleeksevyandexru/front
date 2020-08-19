@@ -1,7 +1,4 @@
-import {COMPONENT_TYPE, SCREEN_COMPONENT_NAME} from '../constant/global';
-import {CUSTOM_COMPONENT_ITEM_TYPE} from '../app/modules/custom/tools/custom-screen-tools';
-import {EgpuResponseComponentAttrForCustomComponentInterface} from './custom-component.interface';
-import {ConfirmUserDataAttrsInterface} from './confirm-user-data.interface';
+import {SCREEN_TYPE} from '../constant/global';
 
 /**
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
@@ -34,7 +31,7 @@ export interface EgpuResponseInterface {
  * @property {string}id -
  * @property {string}name - краткая информация о том что за компонент (на фронде не используется)
  * @property {string}submitLabel - text for submit button
- * @property {COMPONENT_TYPE}type - тип компонента
+ * @property {SCREEN_TYPE}type - тип компонента
  */
 export interface EgpuResponseDisplayInterface {
   components: Array<EgpuResponseComponentInterface>;
@@ -42,7 +39,7 @@ export interface EgpuResponseDisplayInterface {
   id: string;
   name: string;
   submitLabel: string;
-  type: COMPONENT_TYPE;
+  type: SCREEN_TYPE;
 }
 
 /**
