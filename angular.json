@@ -106,23 +106,6 @@
             "browserTarget": "epgu-form-frontend:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": []
-          }
-        },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
@@ -167,14 +150,6 @@
             "production": {
               "tsConfig": "projects/epgu-constructor/tsconfig.lib.prod.json"
             }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/epgu-constructor/src/test.ts",
-            "tsConfig": "projects/epgu-constructor/tsconfig.spec.json",
-            "karmaConfig": "projects/epgu-constructor/karma.conf.js"
           }
         },
         "lint": {

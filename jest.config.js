@@ -6,14 +6,11 @@ module.exports = {
     '<rootDir>/node_modules/',
     '<rootDir>/dist/',
     '<rootDir>/src/',
-    '<rootDir>/projects/epgu-constructor/src/test.ts'
   ],
   coverageReporters: ['text', 'cobertura', 'html'],
   collectCoverageFrom: [
     'projects/epgu-constructor/src/app/**/*.service.ts',
     'projects/epgu-constructor/src/app/**/*.component.ts',
-    'projects/epgu-constructor/src/app/**/*.query.ts',
-    'projects/epgu-constructor/src/app/**/*.store.ts',
     'projects/epgu-constructor/src/app/**/*.directive.ts',
     'projects/epgu-constructor/src/app/**/*.interceptor.ts',
     'projects/epgu-constructor/src/app/**/*.pipe.ts',
@@ -21,4 +18,10 @@ module.exports = {
     'projects/epgu-constructor/src/app/**/*.validators.ts',
     'projects/epgu-constructor/src/app/**/*.guard.ts'
   ],
+  globals: {
+    'ts-jest': {
+      tsConfig: '<rootDir>/tsconfig.spec.json',
+      stringifyContentPathRegex: '\\.html$'
+    }
+  }
 };
