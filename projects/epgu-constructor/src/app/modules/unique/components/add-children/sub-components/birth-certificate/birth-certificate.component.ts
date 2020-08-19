@@ -9,9 +9,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import * as moment_ from 'moment';
-import { Subject } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
 import { CONSTANTS } from '../../../../../../../constant/global';
+import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
 const moment = moment_;
 
@@ -27,11 +27,8 @@ export class BirthCertificateComponent implements OnInit, OnDestroy, AfterViewIn
   @Output() childUpdateEvent = new EventEmitter();
   child: any;
   isCompleteData: boolean;
-  ngUnsubscribe$: Subject<void>;
 
-  constructor() {
-    this.ngUnsubscribe$ = new Subject();
-  }
+  constructor(private ngUnsubscribe$: UnsubscribeService) {}
 
   isDataComplete(child) {
     return !!(
@@ -88,7 +85,5 @@ export class BirthCertificateComponent implements OnInit, OnDestroy, AfterViewIn
       CONSTANTS.dateFormat,
     );
     this.childUpdateEvent.emit(this.child);
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 }
