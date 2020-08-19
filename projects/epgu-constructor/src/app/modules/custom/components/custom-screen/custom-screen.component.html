@@ -15,10 +15,11 @@
 
             <div class="form__item" *ngSwitchCase="componentType.Dictionary">
               <div class="form__title">{{componentData.label}}</div>
-              <lib-dropdown
-                class="cs__select cs-select"
+              <lib-lookup
+                [queryMinSymbolsCount]="0"
+                [searchCaseSensitive]="false"
                 (changed)="selectDictionary($event, componentData)"
-                [items]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-dropdown>
+                [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-lookup>
             </div>
 
             <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
