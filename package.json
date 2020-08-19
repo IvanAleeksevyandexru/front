@@ -2,6 +2,7 @@
   "name": "epgu-form-frontend",
   "version": "0.0.0",
   "scripts": {
+    "postinstall": "ngcc --properties es2015 browser module main",
     "ng": "ng",
     "start": "ng serve --proxy-config ./src/proxy.conf.json",
     "start:stage": "ng serve --configuration staging",

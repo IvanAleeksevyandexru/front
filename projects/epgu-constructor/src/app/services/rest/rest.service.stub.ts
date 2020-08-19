@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 
 @Injectable()
-export class RestService {
+export class RestServiceStub {
 
   public getData(): Observable<any> {
     return of({});
