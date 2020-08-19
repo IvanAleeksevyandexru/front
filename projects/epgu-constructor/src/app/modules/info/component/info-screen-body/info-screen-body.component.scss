@@ -3,10 +3,9 @@
 
 :host {
   display: block;
-  font-family: $secondary_font, sans-serif;
 }
 
-.requirements-list__body::ng-deep {
+.info__text::ng-deep {
   & > * {
     margin: 0;
     &:not(:first-child) {

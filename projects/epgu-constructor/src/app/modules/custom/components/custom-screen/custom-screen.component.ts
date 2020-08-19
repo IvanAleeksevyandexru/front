@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem } from 'epgu-lib';
-import { EpguService } from '../../../../services/rest/epgu.service';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
+import { takeUntil } from 'rxjs/operators';
 import {
   CustomComponentDictionaryState,
   CustomComponentState,
@@ -12,11 +11,17 @@ import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../../interfaces/dictionary-options.interface';
+import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { ConstructorService } from '../../../../services/constructor/constructor.service';
+import { RestService } from '../../../../services/rest/rest.service';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 
 @Component({
   selector: 'app-custom-screen',
   templateUrl: './custom-screen.component.html',
   styleUrls: ['./custom-screen.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class CustomScreenComponent implements OnChanges {
   // <-- constant
@@ -28,9 +33,22 @@ export class CustomScreenComponent implements OnChanges {
 
   @Input() data: EgpuResponseCustomComponentDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
-  @Input() isLoading: boolean;
+  @Output() prevStepEvent = new EventEmitter();
 
-  constructor(private epguService: EpguService) {}
+  constructor(
+    private restService: RestService,
+    private navService: NavigationService,
+    public constructorService: ConstructorService,
+    private ngUnsubscribe$: UnsubscribeService,
+  ) {
+    this.navService.clickToBack$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.prevStep());
+  }
+
+  prevStep() {
+    this.prevStepEvent.emit();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
@@ -56,19 +74,19 @@ export class CustomScreenComponent implements OnChanges {
     // TODO HARDCODE
     if (true) {
       Object.keys(this.state).forEach((key) => {
-        responseData[key] = { visited: true, value: this.state[key].value };
+        responseData[key] = { visited: true, value: JSON.stringify(this.state[key].value || {}) };
       });
       this.nextStepEvent.emit(responseData);
     }
   }
 
   selectDictionary(
-    selectedItem: { item: ListItem },
+    selectedItem: ListItem,
     component: EgpuResponseCustomComponentDisplayComponentInterface,
   ) {
     const dictionaryName = component.attrs?.dictionaryType;
-    this.dictionary[dictionaryName].selectedItem = selectedItem.item.originalItem;
-    this.state[component.id].value = selectedItem.item.originalItem;
+    this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
+    this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
   }
 
@@ -86,7 +104,7 @@ export class CustomScreenComponent implements OnChanges {
     component: EgpuResponseCustomComponentDisplayComponentInterface,
   ) {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
-    this.epguService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
+    this.restService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryName, data, component),
       () => this.loadDictionaryError(dictionaryName),
     );

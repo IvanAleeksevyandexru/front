@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup } from '@angular/forms';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Subject } from 'rxjs';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
-import * as moment from 'moment';
-import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { CONSTANTS } from '../../../../../constant/global';
+import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+
+const moment = moment_;
 
 interface EgpuResponseComponentInterfaceForDocInput extends EgpuResponseComponentInterface {
   attrs: {
@@ -31,23 +31,19 @@ interface IForm {
   selector: 'app-doc-input',
   templateUrl: './doc-input.component.html',
   styleUrls: ['./doc-input.component.scss'],
+  providers: [UnsubscribeService],
 })
-export class DocInputComponent implements OnInit, OnDestroy {
+export class DocInputComponent implements OnInit {
   @Input() data: EgpuResponseComponentInterfaceForDocInput;
   @Output() nextStepEvent = new EventEmitter<any>();
-
-  private ngUnsubscribe$ = new Subject<void>();
 
   form = new FormGroup({});
   readonly maxDate = new Date();
 
+  constructor(private ngUnsubscribe$: UnsubscribeService) {}
+
   ngOnInit(): void {
     this.generateFormGroup();
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   private generateFormGroup(): void {

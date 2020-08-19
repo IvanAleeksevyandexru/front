@@ -1,4 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import {
   EgpuResponseQuestionsDisplayComponentAttrsActionsInterface,
   EgpuResponseQuestionsDisplayInterface,
@@ -8,16 +11,26 @@ import {
   selector: 'app-question-screen',
   templateUrl: './questions-screen.component.html',
   styleUrls: ['./questions-screen.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class QuestionsScreenComponent implements OnInit {
   @Input() data: EgpuResponseQuestionsDisplayInterface;
-  @Output() answerSelect = new EventEmitter<
-    EgpuResponseQuestionsDisplayComponentAttrsActionsInterface
-  >();
+  @Output() nextStepEvent = new EventEmitter();
+  @Output() prevStepEvent = new EventEmitter();
+
+  constructor(private navService: NavigationService, private ngUnsubscribe$: UnsubscribeService) {
+    this.navService.clickToBack$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.goPrevStepEvent());
+  }
 
   ngOnInit(): void {}
 
+  goPrevStepEvent() {
+    this.prevStepEvent.emit();
+  }
+
   answerChoose(answer: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface): void {
-    this.answerSelect.emit(answer);
+    this.nextStepEvent.emit(answer.value);
   }
 }
