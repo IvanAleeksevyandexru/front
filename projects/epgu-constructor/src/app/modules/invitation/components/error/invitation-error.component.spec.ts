@@ -1,20 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorsBlockScreenComponent } from './invitation-error.component';
+
+import {InvitationErrorComponent} from './invitation-error.component';
 
 describe('ErrorsBlockScreenComponent', () => {
-  let component: ErrorsBlockScreenComponent;
-  let fixture: ComponentFixture<ErrorsBlockScreenComponent>;
+  let component: InvitationErrorComponent;
+  let fixture: ComponentFixture<InvitationErrorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ErrorsBlockScreenComponent ]
+      declarations: [ InvitationErrorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ErrorsBlockScreenComponent);
+    fixture = TestBed.createComponent(InvitationErrorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

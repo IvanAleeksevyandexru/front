@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {AddPassportScreenComponent} from './add-children-screen.component';
+import {AddPassportScreenComponent} from './add-passport-screen.component';
 
 describe('AddPassportScreenComponent', () => {
   let component: AddPassportScreenComponent;

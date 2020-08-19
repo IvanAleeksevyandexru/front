@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { COMPONENT_TYPE } from '../constant/global';
-// eslint-disable-next-line max-len
 import { ConstructorService } from './services/constructor/constructor.service';
 
 @Component({
