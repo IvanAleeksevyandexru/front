@@ -16,7 +16,8 @@ import {environment} from '../environments/environment';
       serviceId: environment.serviceId,
       apiUrl: environment.apiUrl,
       dictionaryUrl: environment.dictionaryUrl,
-      externalApiUrl: environment.externalApiUrl
+      externalApiUrl: environment.externalApiUrl,
+      externalUrl: environment.externalUrl,
     }),
   ],
   providers: [],

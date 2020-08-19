@@ -9,10 +9,11 @@ export class RestService {
   apiUrl: string;
   serviceId: string;
   dictionaryUrl: string;
+  externalApiUrl: string;
 
-  userId = '1000299353';
+  userId = '1000298933';
   // eslint-disable-next-line max-len
-  token = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTczODcwMjAsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl90cm0_b2lkPTEwMDAyOTkzNTMmbW9kZT13IGh0dHA6XC9cL2VzaWEuZ29zdXNsdWdpLnJ1XC91c3JfaW5mP29pZD0xMDAwMjk5MzUzJm1vZGU9dyBodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvdXNyX3NlYz9tb2RlPXcmb2lkPTEwMDAyOTkzNTMiLCJpc3MiOiJodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvIiwidXJuOmVzaWE6c2lkIjoiZGM0ZGI4MThlMDQ0YmMxMzQyZWZiMDdhZGY0MjUyYzU3OGEyMGMyM2Y2M2JmYmY0MzQxYjEyNjExZDA5N2ZlNCIsInVybjplc2lhOnNial9pZCI6MTAwMDI5OTM1MywiZXhwIjoxNTk3NDczNDIwLCJpYXQiOjE1OTczODcwMjAsImNsaWVudF9pZCI6IlBHVSJ9.vYddkubecOgr2THTyknANMT_HbvIHz-hQw8bxtfzSgZNjHSUatf58JCK3qY5ZeGzj6-4jlxHvh181cy_v-7rmZccXKowEvTqkZ-LTOmneXlMUF39QWb9cv04h9d4SdC1SFRp-Dq6WcRcRf39JgZuXCldfFyqr9NFRqTQcIaPG9KG8qt7t9zZW6miw1rkbCzZpDabnT-z4Hz9laRdLqFZCiA8MRnYJf-sdhYOBqGVA6D7su8dB4YYTdQtV9u3ECBDyTMXjtsrPGM9rtV1OvsUO49JVOFmB2y8BFFFAWM6UC1RgUlhms4XGW9PEhMXCSwrMMqsJz_fREdU6x2N1a_nSA';
+  token = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTc4MDA3NTEsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl9pbmY_b2lkPTEwMDAyOTg5MzMmbW9kZT13IiwiaXNzIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcLyIsInVybjplc2lhOnNpZCI6ImMwZTYxYmIxYWRjYzQ1NmU2ZWY4Y2RkNjkxZDA5ZGIxNzlhNzI5YjU1NTIyZWU1MTc2MjJkZTdmNjc3Yjg5NDIiLCJ1cm46ZXNpYTpzYmpfaWQiOjEwMDAyOTg5MzMsImV4cCI6MTU5Nzg4NzE1MSwiaWF0IjoxNTk3ODAwNzUxLCJjbGllbnRfaWQiOiJQR1UifQ.H884KLu5xExHnSJR12WvDybONsd7s0dfpgTqcpNHk-DWK6gRpfp4bxsllv9oqdUDoANGI1JYOlK3Y6h6mu8jItg3iU-uiz-0SYZTu51x2HbzOwH7ZBs_cvrsGvQ1ffNHVeXvbfUzrZaOn3xCOSgq8fza0mnQrkcKt1eRE-wEXTB1dPFPmXOxiTFEnQKoA3whF_9B5f7jXqdTPOcJjCLPF8zJAMxJYDHwXNGkQmbl-YNGBR_XBxPEIrcaGPdHmnikCCYLHMc3Y8mszVoa7UGGoJv8LtaMd33pSRtIge_g_BMXOip0iEmTFqoaUi7YX4zkxhYfdrtt9TWSh8f7UGwewA';
 
   constructor(
     private http: HttpClient,
@@ -21,6 +22,7 @@ export class RestService {
     this.apiUrl = cnstrctrConfigSrv.config.apiUrl;
     this.serviceId = cnstrctrConfigSrv.config.serviceId;
     this.dictionaryUrl = cnstrctrConfigSrv.config.dictionaryUrl;
+    this.externalApiUrl = cnstrctrConfigSrv.config.externalApiUrl;
   }
 
   public getData() {
@@ -55,6 +57,7 @@ export class RestService {
   getDictionary(dictionaryName: string, options: DictionaryOptionsInterface = {}) {
     const path = `${this.dictionaryUrl}/${dictionaryName}`;
     return this.http.post<DictionaryResponse>(path, {
+      filter: options.filter,
       treeFiltering: options.treeFiltering || 'ONELEVEL',
       pageNum: options.pageNum || 1,
       pageSize: options.pageSize || '1000',
@@ -65,4 +68,10 @@ export class RestService {
       withCredentials: false
     })
   }
+
+  getDadataByFias(fiasCode: string) {
+    const path = `${this.externalApiUrl}dadata/${fiasCode}`;
+    return this.http.get(path)
+  }
+
 }

@@ -26,7 +26,8 @@ export enum INFO_SCREEN_COMPONENT {
 
 export enum UNIQUE_COMPONENT_NAME {
   'childrenListUnder14' = 'ChildrenListUnder14',
-  'addPassport' = 'AddPassport'
+  'addPassport' = 'AddPassport',
+  'mapService' = 'MapService',
 }
 
 export enum CONSTANTS {
