@@ -14,7 +14,6 @@ import {ConfirmPersonalUserEmailScreenModule} from './components/confirm-persona
 import {TemporaryRegistrationAddrScreenModule} from './components/confirm-personal-user/screens/temporary-registration-addr/temporary-registration-addr-screen.module';
 import {EpgucSharedModule} from '../../shared-module/shared-components.module';
 import { AddChildrenScreenModule } from '../unique/components/add-children/screens/add-children-screen/add-children-screen.module';
-import { AddPassportScreenModule } from './components/add-passport/add-passport-screen.module';
 import { ChangeListComponent } from './components/change-list/change-list.component';
 import {SnilsModule} from './components/snils/snils.module';
 import {ScreenComponentService} from './service/screen-component/screen-component.service';
@@ -37,7 +36,6 @@ const COMPONENTS = [
     ConfirmPersonalUserDataScreenModule,
     AddChildrenScreenModule,
     TemporaryRegistrationAddrScreenModule,
-    AddPassportScreenModule,
     SnilsModule,
     DocInputModule,
     EpgucSharedModule,

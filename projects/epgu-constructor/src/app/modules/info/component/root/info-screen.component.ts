@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { INFO_SCREEN_COMPONENT } from '../../../../../constant/global';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 
 @Component({

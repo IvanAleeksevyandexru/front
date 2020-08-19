@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 

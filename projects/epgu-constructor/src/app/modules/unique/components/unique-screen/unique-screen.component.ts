@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
 import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 
 @Component({
   selector: 'app-unique-screen',

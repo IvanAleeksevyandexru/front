@@ -1,3 +1,4 @@
+<app-navigation></app-navigation>
 <app-screen-container>
   <div class="inner">
     <div *ngIf="data?.header" class="head">
@@ -33,8 +34,7 @@
         <app-add-passport-screen
           *ngSwitchCase="screenComponentName.addPassport"
           [data]="(data?.components)[0]"
-          (nextStepEvent)="changedComponentData($event)"
-        ></app-add-passport-screen>
+          (nextStepEvent)="changedComponentData($event)"></app-add-passport-screen>
 
 
         <app-change-list

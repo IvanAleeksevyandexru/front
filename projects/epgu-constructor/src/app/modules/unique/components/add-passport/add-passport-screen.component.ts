@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
+import { ScreenComponentService } from '../../../screen/service/screen-component/screen-component.service';
 
 @Component({
   selector: 'app-add-passport-screen',

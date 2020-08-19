@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AddChildrenScreenComponent } from './add-children-screen.component';
 import { EpguLibModule } from 'epgu-lib';
 import { SubComponentsModule } from '../../sub-components/sub-components.module';
+import {EpgucSharedModule} from '../../../../../../shared-module/shared-components.module';
 
 const COMPONENTS = [ AddChildrenScreenComponent ];
 
@@ -11,6 +12,7 @@ const COMPONENTS = [ AddChildrenScreenComponent ];
   imports: [
     CommonModule,
     SubComponentsModule,
+    EpgucSharedModule,
     EpguLibModule.forChild(),
   ],
   exports: [ ...COMPONENTS ]

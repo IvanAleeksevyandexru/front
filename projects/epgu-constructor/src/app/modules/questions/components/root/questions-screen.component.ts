@@ -5,7 +5,7 @@ import {
   EgpuResponseQuestionsDisplayComponentAttrsActionsInterface,
   EgpuResponseQuestionsDisplayInterface,
 } from '../interface/question-block.interface';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 
 @Component({
   selector: 'app-question-screen',

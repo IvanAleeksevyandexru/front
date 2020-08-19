@@ -1,10 +1,15 @@
 @import "../../../../../styles/breakpoint";
 @import "../../../../../styles/variables";
+@import "../../../../../styles/functions";
 
 
 
 :host {
   display: block;
+}
+
+app-navigation {
+  @include navigation-mt();
 }
 
 .info__head {

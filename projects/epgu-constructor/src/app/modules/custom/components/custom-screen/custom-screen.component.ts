@@ -22,7 +22,7 @@ import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../../interfaces/dictionary-options.interface';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 
 @Component({

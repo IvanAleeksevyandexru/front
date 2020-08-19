@@ -2,6 +2,10 @@
 @import '../../../../../../../styles/breakpoint';
 @import '../../../../../../../styles/functions';
 
+app-navigation {
+  @include navigation-mt();
+}
+
 .add-children-screen {
   display: flex;
   flex-direction: column;

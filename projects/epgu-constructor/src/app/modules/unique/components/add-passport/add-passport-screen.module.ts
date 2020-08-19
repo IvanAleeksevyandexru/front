@@ -10,6 +10,7 @@ const COMPONENTS = [ AddPassportScreenComponent ];
   declarations: [ ...COMPONENTS ],
   imports: [
     CommonModule,
+    EpgucSharedModule,
     EpguLibModule.forChild(),
     EpgucSharedModule,
   ],
