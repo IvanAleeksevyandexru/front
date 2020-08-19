@@ -15,11 +15,12 @@
     </div>
     <div class="component__content">
       <div class="component__field">
-        <label class="component__label">
+        <app-label for="childProfile">
           Выберите ребенка из вашего профиля
-        </label>
+        </app-label>
         <div class="component__select">
           <lib-dropdown
+            id="childProfile"
             name="childProfile"
             [items]="childrenSelectList"
             (changed)="handleSelect($event)"
@@ -27,18 +28,19 @@
         </div>
       </div>
       <div class="component__field">
-        <label class="component__label">
+        <app-label for="birthDate">
           Дата рождения
-        </label>
+        </app-label>
         <lib-date-picker
+          id="birthDate"
           name="birthDate"
           [(ngModel)]="child.birthDate"
         ></lib-date-picker>
       </div>
       <div class="component__field">
-        <label class="component__label">
+        <app-label>
           Пол
-        </label>
+        </app-label>
         <div class="component__radio-group radio-group">
           <div class="radio-group__button">
             <lib-radio [(ngModel)]="child.gender" name="gender" value="муж" [checked]="child.gender === 'муж'"></lib-radio>
@@ -51,22 +53,22 @@
         </div>
       </div>
       <div class="component__field">
-        <label class="component__label">
+        <app-label for="lastName">
           Фамилия
-        </label>
-        <lib-plain-input name="lastName" [(ngModel)]="child.lastName"></lib-plain-input>
+        </app-label>
+        <lib-plain-input id="lastName" name="lastName" [(ngModel)]="child.lastName"></lib-plain-input>
       </div>
       <div class="component__field">
-        <label class="component__label">
+        <app-label for="firstName">
           Имя
-        </label>
-        <lib-plain-input name="firstName" [(ngModel)]="child.firstName"></lib-plain-input>
+        </app-label>
+        <lib-plain-input id="firstName" name="firstName" [(ngModel)]="child.firstName"></lib-plain-input>
       </div>
       <div class="component__field">
-        <label class="component__label">
+        <app-label for="middleName">
           Отчество
-        </label>
-        <lib-plain-input name="middleName" [(ngModel)]="child.middleName"></lib-plain-input>
+        </app-label>
+        <lib-plain-input id="middleName" name="middleName" [(ngModel)]="child.middleName"></lib-plain-input>
       </div>
     </div>
   </form>
