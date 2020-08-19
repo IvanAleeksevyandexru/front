@@ -14,8 +14,8 @@
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "test:dev": "jest --watch -o",
-    "test:ci": "jest --ci -w=50%",
-    "test:coverage": "jest --ci -w=50% --coverage --no-cache --reporters=default --reporters=jest-junit --coverageDirectory=coverage/jest",
+    "test:ci": "jest --ci",
+    "test:coverage": "jest --ci --coverage --no-cache --reporters=default --reporters=jest-junit --coverageDirectory=coverage/jest",
     "e2e": "ng e2e"
   },
   "private": true,
