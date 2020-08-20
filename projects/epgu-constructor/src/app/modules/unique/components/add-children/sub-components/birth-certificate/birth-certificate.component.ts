@@ -23,22 +23,12 @@ const moment = moment_;
 export class BirthCertificateComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('birthCertificateForm') birthCertificateForm;
 
-  @Input() data: any;
+  @Input() data: any[];
   @Output() childUpdateEvent = new EventEmitter();
   child: any;
   isCompleteData: boolean;
 
   constructor(private ngUnsubscribe$: UnsubscribeService) {}
-
-  isDataComplete(child) {
-    return !!(
-      child?.rfBirthCertificateSeries?.length &&
-      child?.rfBirthCertificateNumber?.length &&
-      child?.rfBirthCertificateActNumber?.length &&
-      child?.rfBirthCertificateIssueDate?.length &&
-      child?.rfBirthCertificateIssuedBy?.length
-    );
-  }
 
   ngOnInit(): void {
     if (this.data.length) {
@@ -85,5 +75,15 @@ export class BirthCertificateComponent implements OnInit, OnDestroy, AfterViewIn
       CONSTANTS.dateFormat,
     );
     this.childUpdateEvent.emit(this.child);
+  }
+
+  isDataComplete(child) {
+    return !!(
+      child?.rfBirthCertificateSeries?.length &&
+      child?.rfBirthCertificateNumber?.length &&
+      child?.rfBirthCertificateActNumber?.length &&
+      child?.rfBirthCertificateIssueDate?.length &&
+      child?.rfBirthCertificateIssuedBy?.length
+    );
   }
 }
