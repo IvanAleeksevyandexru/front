@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {QuestionsScreenComponent} from './components/root/questions-screen.component';
 import {AnswerChoiceComponent} from './components/answer-choice/answer-choice.component';
 import {EpgucSharedModule} from '../../shared-module/shared-components.module';
+import { EpguLibModule } from 'epgu-lib';
 
 const COMPONENTS = [
   QuestionsScreenComponent,
@@ -12,10 +13,11 @@ const COMPONENTS = [
 @NgModule({
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
-  imports: [
-    CommonModule,
-    EpgucSharedModule,
-  ]
+    imports: [
+        CommonModule,
+        EpgucSharedModule,
+        EpguLibModule,
+    ]
 })
 export class QuestionScreenModule { }
 

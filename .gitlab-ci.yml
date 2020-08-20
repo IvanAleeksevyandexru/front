@@ -20,6 +20,8 @@ Install:
     - npm set registry http://npm.gosuslugi.local
   script:
     - yarn install
+  only:
+    - merge_requests
 
 Lint:
   stage: lint
@@ -27,6 +29,8 @@ Lint:
     - yarn config set cache-folder .yarn
   script:
     - yarn lint
+  only:
+    - merge_requests
 
 Test:
   stage: test
@@ -34,6 +38,8 @@ Test:
     - yarn config set cache-folder .yarn
   script:
     - yarn test:coverage
+  only:
+    - merge_requests
 
 Library-build:
   stage: library-build
@@ -41,6 +47,8 @@ Library-build:
     - yarn config set cache-folder .yarn
   script:
     - yarn library:build
+  only:
+    - merge_requests
 
 Build:
   stage: build
@@ -49,3 +57,5 @@ Build:
   script:
     - yarn build
     - /devops/notify/notify.sh fronted_new_master_available
+  only:
+    - merge_requests
