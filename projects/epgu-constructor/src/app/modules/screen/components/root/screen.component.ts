@@ -42,7 +42,7 @@ export class ScreenComponent implements OnInit {
   }
 
   nextStep() {
-    this.nextStepEvent.emit(this.screenComponentService.dataToSend);
+    this.nextStepEvent.emit(JSON.stringify(this.screenComponentService.dataToSend));
   }
 
   changedComponentData(value) {
