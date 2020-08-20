@@ -1,7 +1,9 @@
 // import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+// import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+//
 // import { SnilsComponent } from './snils.component';
-// import {EpguLibModule} from 'epgu-lib';
+// import { ValidationService } from 'epgu-lib'
+// import { ScreenComponentService } from '../../service/screen-component/screen-component.service'
 
 describe('SnilsComponent', () => {
   it('TODO: remove it when resolve issue with @ifc/plugin and @ifc/common dependencies', () => {
@@ -15,8 +17,9 @@ describe('SnilsComponent', () => {
 //
 //   beforeEach(async(() => {
 //     TestBed.configureTestingModule({
-//       // imports: [EpguLibModule.forChild()],
-//       declarations: [ SnilsComponent ]
+//       imports: [],
+//       declarations: [ SnilsComponent ],
+//       providers: [ScreenComponentService, {provide: ValidationService, useValue: {masks: {snils: ''}}}]
 //     })
 //     .compileComponents();
 //   }));

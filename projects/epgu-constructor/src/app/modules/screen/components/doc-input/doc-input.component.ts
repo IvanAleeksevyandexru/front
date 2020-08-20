@@ -9,7 +9,7 @@ import { CONSTANTS } from '../../../../../constant/global';
 
 const moment = moment_;
 
-interface EgpuResponseComponentInterfaceForDocInput extends EgpuResponseComponentInterface {
+export interface EgpuResponseComponentInterfaceForDocInput extends EgpuResponseComponentInterface {
   attrs: {
     fields: Array<IField>;
   };
