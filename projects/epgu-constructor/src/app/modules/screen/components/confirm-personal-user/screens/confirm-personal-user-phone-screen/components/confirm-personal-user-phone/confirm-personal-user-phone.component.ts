@@ -20,26 +20,7 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
 
   phoneForm: FormGroup;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  phoneMask = [
-    '+',
-    /[7]/,
-    ' ',
-    '(',
-    /[1-9]/,
-    /\d/,
-    /\d/,
-    ')',
-    ' ',
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-  ];
+  phoneMask = ['+', /[7]/, '(', /[1-9]/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,7 +36,7 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
           disabled: !this.isEditable,
         },
         {
-          validators: Validators.compose([Validators.required, Validators.minLength(18)]),
+          validators: Validators.compose([Validators.required, Validators.minLength(14)]),
         },
       ),
     });
