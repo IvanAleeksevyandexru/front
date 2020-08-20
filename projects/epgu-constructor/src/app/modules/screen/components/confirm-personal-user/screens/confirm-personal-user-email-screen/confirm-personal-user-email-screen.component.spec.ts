@@ -1,8 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { ConfirmPersonalUserEmailScreenComponent } from './confirm-personal-user-email-screen.component';
 import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service'
 import { EgpuResponseComponentInterface } from '../../../../../../../interfaces/epgu.service.interface'
+
 
 describe('ConfirmPersonalUserEmailComponent', () => {
   let component: ConfirmPersonalUserEmailScreenComponent;
@@ -17,6 +19,7 @@ describe('ConfirmPersonalUserEmailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ ConfirmPersonalUserEmailScreenComponent ],
       providers: [ScreenComponentService]
     })
