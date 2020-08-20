@@ -93,8 +93,6 @@ export class FileUploadComponent {
    * @param $eventData - новые значения от формы
    */
   handleNewValueForItem($eventData: IFileResponseToBackendUploadsItem) {
-    console.log('usual$eventData', $eventData);
-
     this.value.map((valueItem: IFileResponseToBackendUploadsItem) => {
       if (valueItem.uploadId === $eventData.uploadId) {
         // eslint-disable-next-line no-param-reassign
@@ -106,7 +104,6 @@ export class FileUploadComponent {
     if (!this.isRelatedUploads) {
       this.newValueSet.emit(this.value);
     } else {
-      console.log('beforeSendValue', this.value);
       this.newRelatedValueSet.emit({
         uploadId: this.uploadId,
         uploads: this.value,
@@ -119,9 +116,6 @@ export class FileUploadComponent {
    * @param $eventData - новые значения от формы
    */
   handleNewRelatedValueForItem($eventData: IFileResponseToBackendWithRelatedUploads) {
-    console.log('$eventDataRelated', $eventData);
-
-    console.log('this.uploadId', $eventData.uploadId);
     this.newValueSet.emit({
       uploadId: $eventData.uploadId,
       relatedUploads: {

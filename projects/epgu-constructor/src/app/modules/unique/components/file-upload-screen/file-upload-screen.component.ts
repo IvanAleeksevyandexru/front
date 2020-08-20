@@ -79,7 +79,6 @@ export class FileUploadScreenComponent {
    * @param $eventData - данные из компонента
    */
   handleNewValueSet($eventData: any) {
-    console.log('$eventImportant', $eventData);
     if ($eventData.relatedUploads && this.value?.uploads) {
       this.value.uploads = this.value.uploads.map((value: any) => {
         if ($eventData.uploadId === value.uploadId) {
@@ -88,12 +87,9 @@ export class FileUploadScreenComponent {
         }
         return value;
       });
-      console.log('value', this.value.uploads);
     } else {
       this.value.uploads = $eventData;
     }
-
-    console.log('mainValue', this.value);
   }
 
   /**
