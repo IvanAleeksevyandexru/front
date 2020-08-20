@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { EpguLibModule } from 'epgu-lib';
-import { EpgucSharedModule } from '../../shared-module/shared-components.module';
+import { SharedModule } from '../../shared-module/shared-components.module';
 import { AddChildrenScreenModule } from '../unique/components/add-children/screens/add-children-screen/add-children-screen.module';
 import { AddPassportScreenModule } from './components/add-passport/add-passport-screen.module';
 import { ChangeListComponent } from './components/change-list/change-list.component';
@@ -40,7 +40,7 @@ const COMPONENTS = [
     AddPassportScreenModule,
     SnilsModule,
     DocInputModule,
-    EpgucSharedModule,
+    SharedModule,
     EpguLibModule.forChild(),
   ],
   providers: [

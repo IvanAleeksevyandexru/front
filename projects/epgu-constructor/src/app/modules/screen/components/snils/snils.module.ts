@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EpguLibModule } from 'epgu-lib';
 import { SnilsComponent } from './snils.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import {EpgucSharedModule} from '../../../../shared-module/shared-components.module';
+import { SharedModule } from '../../../../shared-module/shared-components.module';
 
 const COMPONENTS = [
   SnilsComponent
@@ -14,7 +14,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    EpgucSharedModule,
+    SharedModule,
     ReactiveFormsModule,
     EpguLibModule.forChild(),
   ]

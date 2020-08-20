@@ -11,7 +11,7 @@ import {
 import {
   SubComponentsModule as ConfirmPersonalUserSubComponentsModule
 } from '../../confirm-personal-user/sub-components/sub-components.module';
-import {EpgucSharedModule} from '../../../../../shared-module/shared-components.module';
+import {SharedModule} from '../../../../../shared-module/shared-components.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChildRelationshipComponent } from '../../../../questions/components/child-relationship/child-relationship.component';
 import { ConfirmChildAddressComponent } from '../screens/confirm-child-address-screen/confirm-child-address.component';
@@ -29,7 +29,7 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     BrowserAnimationsModule,
-    EpgucSharedModule,
+    SharedModule,
     QuestionScreenModule,
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserSubComponentsModule,

@@ -15,7 +15,7 @@ import { CONSTRUCTOR_CONFIG_TOKEN } from './services/config/constructor.config.t
 import { ConstructorService } from './services/constructor/constructor.service';
 import { RestService } from './services/rest/rest.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
-import { EpgucSharedModule } from './shared-module/shared-components.module';
+import { SharedModule } from './shared-module/shared-components.module';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -35,7 +35,7 @@ const COMPONENTS = [
     InvitationModule,
     LayoutModule,
 
-    EpgucSharedModule,
+    SharedModule,
     EpguLibModule.forChild(),
     InfoScreenModule,
   ],

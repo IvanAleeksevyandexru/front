@@ -4,7 +4,7 @@ import { ConfirmPersonalUserButtonComponent } from './confirm-personal-user-butt
 import {
   ConfirmPersonalUserScreenLayoutComponent
 } from './confirm-personal-user-screen-layout/confirm-personal-user-screen-layout.component';
-import {EpgucSharedModule} from '../../../../../shared-module/shared-components.module';
+import { SharedModule } from '../../../../../shared-module/shared-components.module';
 import { AddressItemComponent } from './address-item/address-item.component';
 
 const COMPONENTS = [
@@ -18,7 +18,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    EpgucSharedModule
+    SharedModule
   ]
 })
 export class SubComponentsModule { }
