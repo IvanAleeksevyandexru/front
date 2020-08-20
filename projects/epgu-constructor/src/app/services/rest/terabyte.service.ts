@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ITerraFileOptions, ITerraUploadFileOptions, TerabyteConfig} from '../config/terabyte.config';
 import { Observable } from 'rxjs';
-import {TERABYTE_TEST_TOKEN, UploadedFile} from '../../modules/custom/components/file-upload-item/data';
+import {TERABYTE_TEST_TOKEN, UploadedFile} from '../../modules/unique/components/file-upload-screen/sub-components/file-upload-item/data';
 
 
 

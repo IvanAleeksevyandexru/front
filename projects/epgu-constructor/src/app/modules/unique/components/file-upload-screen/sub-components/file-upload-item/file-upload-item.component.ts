@@ -1,9 +1,19 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { WebcamInitError } from 'ngx-webcam';
 import {
   getSizeInMB,
+  IFileResponseToBackendUploadsItem,
   IFileUploadItem,
   TERABYTE_TEST_TOKEN,
   TerrabyteListItem,
@@ -30,7 +40,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   set data(data: IFileUploadItem) {
     this.loadData = data;
     this.listIsUploadingNow = true;
-    this.files$.next([]);
+    this.files$$.next([]);
     this.terabyteService
       .getListByObjectId(this.objectId)
       .pipe(
@@ -48,7 +58,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
         if (list.length) {
           // eslint-disable-next-line no-console
           console.log('list', list);
-          this.files$.next([...list]);
+          this.files$$.next([...list]);
           this.maxFileNumber = this.getMaxFileNumberFromList(list);
         }
       });
@@ -59,6 +69,10 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   @Input() prefixForMnemonic: string;
   @Input() objectId: number;
   @Input() refData: any = null;
+
+  @Output() newValueSet: EventEmitter<IFileResponseToBackendUploadsItem> = new EventEmitter<
+    IFileResponseToBackendUploadsItem
+  >();
 
   @ViewChild('fileUploadInput', {
     static: true,
@@ -71,7 +85,20 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   cameraNotAllowed = false; // Флаг, что камеры нет или она запрещена
   listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
-  files$: BehaviorSubject<UploadedFile[]> = new BehaviorSubject<UploadedFile[]>([]); // Список уже загруженных файлов
+  files$$: BehaviorSubject<UploadedFile[]> = new BehaviorSubject<UploadedFile[]>([]); // Список уже загруженных файлов
+  files$ = this.files$$
+    .asObservable()
+    .pipe(
+      tap((files) => {
+        if (this.loadData) {
+          this.newValueSet.emit({
+            uploadId: this.loadData.uploadId,
+            value: files,
+          } as IFileResponseToBackendUploadsItem);
+        }
+      }),
+    )
+    .subscribe();
   errors: string[] = [];
 
   constructor(private terabyteService: TerabyteService, private webcamService: WebcamService) {}
@@ -131,7 +158,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * @private
    */
   private setFileInfoUploaded(uploadedFile: UploadedFile, fileSize: number, uploaded: boolean) {
-    const files = this.files$.value;
+    const files = this.files$$.value;
     files.forEach((f: UploadedFile) => {
       if (f.mnemonic === uploadedFile.mnemonic) {
         // eslint-disable-next-line no-param-reassign
@@ -142,7 +169,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
         f.fileSize = fileSize;
       }
     });
-    this.files$.next(files);
+    this.files$$.next(files);
   }
 
   /**
@@ -178,9 +205,9 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
       objectTypeId: uploadObjectType,
       mnemonic: this.getMnemonic(),
     });
-    const files = this.files$.value;
+    const files = this.files$$.value;
     files.push(fileToUpload);
-    this.files$.next(files);
+    this.files$$.next(files);
     this.subs.push(
       this.terabyteService
         .uploadFile(fileToUpload.getParamsForUploadFileOptions(), file)
@@ -267,14 +294,14 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
         )
         .subscribe(() => {
           this.filesInUploading -= 1;
-          let files = this.files$.value;
+          let files = this.files$$.value;
           files = files.filter((f) => f.mnemonic !== file.mnemonic);
-          this.files$.next(files);
+          this.files$$.next(files);
         });
     } else {
-      let files = this.files$.value;
+      let files = this.files$$.value;
       files = files.filter((f) => f.mnemonic !== file.mnemonic);
-      this.files$.next(files);
+      this.files$$.next(files);
     }
   }
 
@@ -290,7 +317,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
       if (
         !maxFileCountError &&
         this.data.maxFileCount &&
-        this.files$.value.length === this.data.maxFileCount
+        this.files$$.value.length === this.data.maxFileCount
       ) {
         maxFileCountError = true;
         this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
@@ -314,7 +341,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    */
   openCamera() {
     this.errors = [];
-    if (this.data.maxFileCount && this.files$.value.length === this.data.maxFileCount) {
+    if (this.data.maxFileCount && this.files$$.value.length === this.data.maxFileCount) {
       this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
     } else {
       const webcamEvents = this.webcamService.open();

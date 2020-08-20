@@ -7,7 +7,7 @@
   <div class="errors" *ngIf="errors.length">
     <div class="error" *ngFor="let error of errors" [innerText]="error"></div>
   </div>
-  <div class="files" *ngIf="(files$ | async) as files">
+  <div class="files" *ngIf="(files$$ | async) as files">
     <div class="file" *ngFor="let file of files">
       <div class="file__icon"
            [class.uploaded]="file.uploaded"

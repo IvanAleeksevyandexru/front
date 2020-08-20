@@ -4,11 +4,15 @@
     [objectId]="objectId"
     [data]="upload"
     [prefixForMnemonic]="prefixForMnemonic"
+    (newValueSet)="handleNewValueForItem($event)"
   ></app-file-upload-item>
   <app-file-upload
     *ngIf="upload?.relatedUploads"
+    [isRelatedUploads]="true"
+    [uploadId]="upload.uploadId"
     [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(upload.relatedUploads?.ref)"
     [objectId]="objectId"
     [attributes]="upload.relatedUploads"
+    (newRelatedValueSet)="handleNewRelatedValueForItem($event)"
   ></app-file-upload>
 </ng-template>

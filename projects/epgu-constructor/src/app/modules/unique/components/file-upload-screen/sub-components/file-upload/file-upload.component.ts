@@ -1,5 +1,10 @@
-import { Component, Input } from '@angular/core';
-import { IFileUploadAttributes } from '../file-upload-item/data';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  IFileResponseToBackendUploadsItem,
+  IFileResponseToBackendWithRelatedUploads,
+  IFileUploadAttributes,
+  IFileUploadItem,
+} from '../file-upload-item/data';
 import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 
 @Component({
@@ -14,15 +19,38 @@ export class FileUploadComponent {
     if (attrs?.ref) {
       this.refData = this.getRefValuesForApplicantAnswers(attrs);
     }
+    this.value = this.fillUploadsDefaultValue();
+    this.newValueSet.emit(this.value);
   }
   get attributes(): IFileUploadAttributes {
     return this.attrs;
   }
   @Input() prefixForMnemonic: string;
   @Input() objectId: number;
+  @Input() isRelatedUploads = false;
+  @Input() uploadId: string = null;
   refData: string = null;
+  private value: IFileResponseToBackendUploadsItem[] = []; // Здесь будет храниться значение на передачу
+  @Output() newValueSet: EventEmitter<object> = new EventEmitter<object>();
+  @Output() newRelatedValueSet: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private constructorService: ConstructorService) {}
+
+  /**
+   * Заполняем значения по умолчанию для возврата на сервер
+   * @private
+   */
+  private fillUploadsDefaultValue(): IFileResponseToBackendUploadsItem[] {
+    const value: IFileResponseToBackendUploadsItem[] = [];
+    this.attrs?.uploads.forEach((upload: IFileUploadItem) => {
+      const newValue: IFileResponseToBackendUploadsItem = {
+        uploadId: upload.uploadId,
+        value: [],
+      };
+      value.push(newValue);
+    });
+    return value;
+  }
 
   /**
    * Возвращает префикс для формирования мнемоники
@@ -58,5 +86,47 @@ export class FileUploadComponent {
       }
     }
     return null;
+  }
+
+  /**
+   * Обрабатывает новое значение от формы загрузки
+   * @param $eventData - новые значения от формы
+   */
+  handleNewValueForItem($eventData: IFileResponseToBackendUploadsItem) {
+    console.log('usual$eventData', $eventData);
+
+    this.value.map((valueItem: IFileResponseToBackendUploadsItem) => {
+      if (valueItem.uploadId === $eventData.uploadId) {
+        // eslint-disable-next-line no-param-reassign
+        valueItem.value = $eventData.value;
+      }
+      return valueItem;
+    });
+
+    if (!this.isRelatedUploads) {
+      this.newValueSet.emit(this.value);
+    } else {
+      console.log('beforeSendValue', this.value);
+      this.newRelatedValueSet.emit({
+        uploadId: this.uploadId,
+        uploads: this.value,
+      } as IFileResponseToBackendWithRelatedUploads);
+    }
+  }
+
+  /**
+   * Обрабатывает новое значение от формы загрузки по связанным документам
+   * @param $eventData - новые значения от формы
+   */
+  handleNewRelatedValueForItem($eventData: IFileResponseToBackendWithRelatedUploads) {
+    console.log('$eventDataRelated', $eventData);
+
+    console.log('this.uploadId', $eventData.uploadId);
+    this.newValueSet.emit({
+      uploadId: $eventData.uploadId,
+      relatedUploads: {
+        uploads: $eventData.uploads,
+      },
+    } as IFileResponseToBackendUploadsItem);
   }
 }

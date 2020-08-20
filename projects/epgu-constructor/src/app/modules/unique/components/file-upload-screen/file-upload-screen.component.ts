@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { IFileUploadItem } from './sub-components/file-upload-item/data';
+import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
 
 @Component({
   selector: 'app-file-upload-screen',
@@ -24,6 +25,10 @@ export class FileUploadScreenComponent {
     // @ts-ignore
     const { uploads } = attrs;
     this.collectMaxFilesNumber(uploads);
+    this.value = {
+      id: data.id,
+      type: UNIQUE_COMPONENT_NAME.fileUploadComponent,
+    };
   }
   get data(): EgpuResponseComponentInterface {
     return this.info;
@@ -32,6 +37,7 @@ export class FileUploadScreenComponent {
   @Output() nextStepEvent = new EventEmitter();
 
   allMaxFiles = 0;
+  private value: any = {}; // Здесь будет храниться значение на передачу
 
   constructor(public constructorService: ConstructorService) {}
 
@@ -68,7 +74,32 @@ export class FileUploadScreenComponent {
     });
   }
 
+  /**
+   * Принимает новое значение от компонентов
+   * @param $eventData - данные из компонента
+   */
+  handleNewValueSet($eventData: any) {
+    console.log('$eventImportant', $eventData);
+    if ($eventData.relatedUploads && this.value?.uploads) {
+      this.value.uploads = this.value.uploads.map((value: any) => {
+        if ($eventData.uploadId === value.uploadId) {
+          // eslint-disable-next-line no-param-reassign
+          value = { ...value, ...$eventData };
+        }
+        return value;
+      });
+      console.log('value', this.value.uploads);
+    } else {
+      this.value.uploads = $eventData;
+    }
+
+    console.log('mainValue', this.value);
+  }
+
+  /**
+   * Переход на следующий экран с отправкой данных
+   */
   nextScreen() {
-    this.nextStepEvent.emit(JSON.stringify({}));
+    this.nextStepEvent.emit(JSON.stringify(this.value));
   }
 }

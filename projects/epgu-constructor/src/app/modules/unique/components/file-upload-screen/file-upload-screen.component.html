@@ -6,7 +6,9 @@
   <app-file-upload
     [objectId]="getOrderId"
     [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
-    [attributes]="data.attrs">
+    [attributes]="data.attrs"
+    (newValueSet)="handleNewValueSet($event)"
+  >
   </app-file-upload>
 
   <div class="screen__info">

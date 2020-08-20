@@ -8,7 +8,7 @@ export interface CustomComponentDictionaryState {
   loadError: boolean,
   loadEnd: boolean,
   paginationLoading: boolean;
-  origin: EgpuResponseCustomComponentDisplayComponentInterface;
+  origin: EpguResponseCustomComponentDisplayComponentInterface;
   data: DictionaryResponse;
   list: Array<ListItem>;
   page: number;
@@ -40,10 +40,10 @@ export interface CustomComponentState {
 }
 
 export interface EgpuResponseCustomComponentDisplayInterface extends EgpuResponseDisplayInterface {
-  components: Array<EgpuResponseCustomComponentDisplayComponentInterface>;
+  components: Array<EpguResponseCustomComponentDisplayComponentInterface>;
 }
 
-export interface EgpuResponseCustomComponentDisplayComponentInterface extends EgpuResponseComponentInterface{
+export interface EpguResponseCustomComponentDisplayComponentInterface extends EgpuResponseComponentInterface{
   attrs: EgpuResponseComponentAttrForCustomComponentInterface;
   type: CUSTOM_COMPONENT_ITEM_TYPE;
 }

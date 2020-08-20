@@ -1,15 +1,15 @@
 import {ComponentRef, ApplicationRef, ComponentFactoryResolver, Inject, Injectable, Injector} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {ComponentPortal, DomPortalOutlet} from '@angular/cdk/portal';
-import {WebcamShotComponent} from '../../modules/custom/components/webcam-shot/webcam-shot.component';
 import {WebcamEvents} from './webcamevents';
+import {WebcamShootComponent} from '../../modules/unique/components/file-upload-screen/sub-components/webcam-shoot/webcam-shoot.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebcamService {
-  private loadComponent: ComponentPortal<WebcamShotComponent>;
-  private containerRef: ComponentRef<WebcamShotComponent>;
+  private loadComponent: ComponentPortal<WebcamShootComponent>;
+  private containerRef: ComponentRef<WebcamShootComponent>;
 
   constructor(
     private appRef: ApplicationRef,
@@ -17,7 +17,7 @@ export class WebcamService {
     private _injector: Injector,
     @Inject(DOCUMENT) private document: Document
   ) {
-    this.loadComponent = new ComponentPortal(WebcamShotComponent);
+    this.loadComponent = new ComponentPortal(WebcamShootComponent);
   }
 
   /**

@@ -1,18 +1,28 @@
 <app-screen-container>
   <div class="inner">
-    <ng-container [ngSwitch]="(data?.components)[0].type">
-      <app-add-children-screen
-        *ngSwitchCase="uniqueComponentName.childrenListUnder14"
-        (nextStepEvent)="nextStep($event)"
-        [data]="(data?.components)[0]"
-        [header]="data?.header"
-      ></app-add-children-screen>
-      <app-add-passport-screen
-        *ngSwitchCase="uniqueComponentName.addPassport"
-        [data]="(data?.components)[0]"
-        [header]="data?.header"
-        [submitLabel]="data?.submitLabel"
-      ></app-add-passport-screen>
-    </ng-container>
+    <ng-template ngFor let-componentData [ngForOf]="data?.components">
+      <ng-container [ngSwitch]="(data?.components)[0].type">
+        <app-add-children-screen
+          *ngSwitchCase="uniqueComponentName.childrenListUnder14"
+          [data]="(data?.components)[0]"
+          [header]="data?.header"
+          (nextStepEvent)="nextStep($event)"
+        ></app-add-children-screen>
+        <app-add-passport-screen
+          *ngSwitchCase="uniqueComponentName.addPassport"
+          [data]="(data?.components)[0]"
+          [header]="data?.header"
+          [submitLabel]="data?.submitLabel"
+        ></app-add-passport-screen>
+        <app-file-upload-screen
+          *ngSwitchCase="uniqueComponentName.fileUploadComponent"
+          [data]="(data?.components)[0]"
+          [header]="data?.label"
+          [submitLabel]="data?.submitLabel"
+          (nextStepEvent)="nextStep($event)"
+        ></app-file-upload-screen>
+
+      </ng-container>
+    </ng-template>
   </div>
 </app-screen-container>

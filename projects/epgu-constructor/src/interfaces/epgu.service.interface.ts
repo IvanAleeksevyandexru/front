@@ -1,7 +1,8 @@
 import {COMPONENT_TYPE, SCREEN_COMPONENT_NAME} from '../constant/global';
-import {CUSTOM_COMPONENT_ITEM_TYPE} from '../app/modules/custom/tools/custom-screen-tools';
-import {EgpuResponseComponentAttrForCustomComponentInterface} from './custom-component.interface';
-import {ConfirmUserDataAttrsInterface} from './confirm-user-data.interface';
+import {
+  EpguResponseCustomComponentDisplayComponentInterface
+} from './custom-component.interface';
+import {IFileUploadAttributes} from '../app/modules/unique/components/file-upload-screen/sub-components/file-upload-item/data';
 
 /**
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
@@ -39,6 +40,7 @@ export interface EgpuResponseInterface {
 export interface EgpuResponseDisplayInterface {
   components: Array<EgpuResponseComponentInterface>;
   header: string;
+  label?: string;
   id: string;
   name: string;
   submitLabel: string;

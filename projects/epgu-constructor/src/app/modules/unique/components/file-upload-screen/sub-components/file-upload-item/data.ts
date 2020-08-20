@@ -1,10 +1,29 @@
 import {ITerraFileOptions, ITerraUploadFileOptions} from '../../../../../../services/config/terabyte.config';
 
 /**
+ * Интерфейс для экспорта одного значения для компонента загрузки
+ */
+export interface IFileResponseToBackendUploadsItem{
+  uploadId: string;
+  value?: IUploadedFile[]
+  relatedUploads?: {
+    uploads: IFileResponseToBackendUploadsItem[]
+  }
+}
+/**
+ * Интерфейс для экспорта одного значения для компонента загрузки для связанных компонентов
+ */
+export interface IFileResponseToBackendWithRelatedUploads{
+  uploadId: string;
+  uploads?: IFileResponseToBackendUploadsItem[]
+}
+
+/**
  * Интерфейс для аттрибутов файла на загрузку из JSON
  */
 export interface IFileUploadAttributes{
   uploads: IFileUploadItem[],
+  uploadId?: string;
   idAttrs?: string[];
   ref?: string;
   maxSize?: number;
