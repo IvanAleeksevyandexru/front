@@ -32,3 +32,6 @@ export enum UNIQUE_COMPONENT_NAME {
 export enum CONSTANTS {
   'dateFormat' = 'DD.MM.YYYY'
 }
+
+export const FMS_COUNTRIES_DICTIONARY = 'FMS_COUNTRIES';
+export const RUSSIA_DICTIONARY_NAME = 'РОССИЯ'
