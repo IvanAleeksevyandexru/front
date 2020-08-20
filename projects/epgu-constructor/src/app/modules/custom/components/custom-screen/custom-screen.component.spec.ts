@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 
 import { CustomScreenComponent } from './custom-screen.component';
 import { RestService } from '../../../../services/rest/rest.service'
@@ -8,7 +9,7 @@ import { ConstructorService } from '../../../../services/constructor/constructor
 import { ConstructorServiceStub } from '../../../../services/constructor/constructor.service.stub'
 import { EgpuResponseCustomComponentDisplayInterface } from '../../../../../interfaces/custom-component.interface'
 import { COMPONENT_TYPE } from '../../../../../constant/global'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
