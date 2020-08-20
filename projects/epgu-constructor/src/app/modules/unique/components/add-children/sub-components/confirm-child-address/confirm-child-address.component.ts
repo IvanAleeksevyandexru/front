@@ -8,12 +8,11 @@ import { ConfirmAddressActionsInterface } from '../../../../../screen/components
 })
 export class ConfirmChildAddressComponent implements OnInit {
   @Input() data: any;
-  @Input() childrenData: any;
+  @Input() childrenData: any[];
   @Input() userAddress: any;
   @Input() actions: any;
   isEditable: boolean;
   child: any;
-  // constructor() { }
 
   sameAddressAction() {
     this.child.registrationAddress = this.userAddress.registrationAddress;

@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from '../interface/question-block.interface';
 
-interface IData extends EgpuResponseQuestionsDisplayComponentAttrsActionsInterface {
+export interface IData extends EgpuResponseQuestionsDisplayComponentAttrsActionsInterface {
   hint: string;
 }
 @Component({
@@ -9,9 +9,6 @@ interface IData extends EgpuResponseQuestionsDisplayComponentAttrsActionsInterfa
   templateUrl: './answer-choice.component.html',
   styleUrls: ['./answer-choice.component.scss'],
 })
-export class AnswerChoiceComponent implements OnInit {
-  @Input()
-  data: Partial<IData>;
-
-  ngOnInit(): void {}
+export class AnswerChoiceComponent {
+  @Input() data: Partial<IData>;
 }

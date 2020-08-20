@@ -3,6 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import { AddNewChildFormComponent } from './add-new-child-form.component';
+import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service'
 
 
 describe('AddNewChildFormComponent', () => {
@@ -17,7 +18,8 @@ describe('AddNewChildFormComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       imports: [ FormsModule ],
-      declarations: [ AddNewChildFormComponent ]
+      declarations: [ AddNewChildFormComponent ],
+      providers: [ UnsubscribeService ]
     })
     .compileComponents();
   }));
