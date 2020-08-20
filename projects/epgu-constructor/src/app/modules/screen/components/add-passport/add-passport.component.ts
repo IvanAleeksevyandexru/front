@@ -2,14 +2,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { ScreenComponentService } from '../../../screen/service/screen-component/screen-component.service';
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 @Component({
   selector: 'app-add-passport-screen',
-  templateUrl: './add-passport-screen.component.html',
-  styleUrls: ['./add-passport-screen.component.scss'],
+  templateUrl: './add-passport.component.html',
+  styleUrls: ['./add-passport.component.scss'],
 })
-export class AddPassportScreenComponent implements OnInit {
+export class AddPassportComponent implements OnInit {
   @Input() data: EgpuResponseDisplayInterface;
   @Input() header: string;
   @Input() submitLabel: string;

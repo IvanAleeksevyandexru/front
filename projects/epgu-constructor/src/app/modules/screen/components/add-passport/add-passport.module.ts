@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {EpguLibModule} from 'epgu-lib';
-import {AddPassportScreenComponent} from './add-passport-screen.component';
+import {AddPassportComponent} from './add-passport.component';
 import {EpgucSharedModule} from '../../../../shared-module/shared-components.module';
 
-const COMPONENTS = [ AddPassportScreenComponent ];
+const COMPONENTS = [ AddPassportComponent ];
 
 @NgModule({
   declarations: [ ...COMPONENTS ],
@@ -16,4 +16,4 @@ const COMPONENTS = [ AddPassportScreenComponent ];
   ],
   exports: [ ...COMPONENTS ]
 })
-export class AddPassportScreenModule { }
+export class AddPassportModule { }

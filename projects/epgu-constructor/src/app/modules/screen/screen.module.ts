@@ -18,6 +18,7 @@ import { ChangeListComponent } from './components/change-list/change-list.compon
 import {SnilsModule} from './components/snils/snils.module';
 import {ScreenComponentService} from './service/screen-component/screen-component.service';
 import { DocInputModule } from './components/doc-input/doc-input.module';
+import {AddPassportModule} from './components/add-passport/add-passport.module';
 
 
 const COMPONENTS = [
@@ -36,6 +37,7 @@ const COMPONENTS = [
     ConfirmPersonalUserDataScreenModule,
     AddChildrenScreenModule,
     TemporaryRegistrationAddrScreenModule,
+    AddPassportModule,
     SnilsModule,
     DocInputModule,
     EpgucSharedModule,

@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AddPassportScreenComponent} from './add-children-screen.component';
 
-describe('AddPassportScreenComponent', () => {
+describe('AddPassportComponent', () => {
   let component: AddPassportScreenComponent;
   let fixture: ComponentFixture<AddPassportScreenComponent>;
 
