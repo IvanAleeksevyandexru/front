@@ -5,6 +5,14 @@ import { InfoScreenBodyComponent } from './info-screen-body.component';
 describe('RequirementsListComponent', () => {
   let component: InfoScreenBodyComponent;
   let fixture: ComponentFixture<InfoScreenBodyComponent>;
+  let mockData = {
+    attrs: {
+      image: {
+        src: 'some src',
+        alt: 'some alt'
+      }
+    }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -16,6 +24,7 @@ describe('RequirementsListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoScreenBodyComponent);
     component = fixture.componentInstance;
+    component.data = mockData;
     fixture.detectChanges();
   });
 
