@@ -1,34 +1,25 @@
-<div class="PGU-widgets-container desktop-default">
-  <div class="map-container">
-    <div class="PGU-List-sidebar isFull">
-      <div class="PGU-List-sidebar-search">
-          <div class="PGU-FieldTextInput PGU-FieldBody">
-            Выберите ЗАГСы
-            <div class="PGU-Input-Wrap">
-              <input
-                #searchInput
-                type="text" tabindex="1"
-                class="PGU-FieldTextInputBasic"
-                (keyup)="search(searchInput.value)"
-                (focus)="isSearchInputFocused = true"
-                (blur)="isSearchInputFocused = false"
-              >
-              <div class="PGU-FieldTextAreaWrap PGU-FieldBody disabledInDiv ng-hide"></div>
-            </div>
-            <div class="x-clear"></div>
-          </div>
-      </div>
-      <div class="PGU-List-sidebar-body" *ngIf="isSearchInputFocused">
-        <ul class="PGU-List-sidebar-items">
-          <li (mousedown)="selectMapObject(item)" *ngFor="let item of selectMapObjectService.filteredDictionaryItems">
-            <span class="item-title">{{item.title}}</span>
-          </li>
-        </ul>
+<div class="widgets-container desktop-default">
+  <div class="widgets-container__map-container">
+    <div class="widgets-container__map-container__List-sidebar">
+      Выберите ЗАГСы
+      <div class="PGU-Input-Wrap">
+        <lib-lookup
+          [searchCaseSensitive]="false"
+          [fixedItems]="mappedDictionaryForLookup"
+          [showSuggestion]="true"
+          (changed)="selectMapObject($event.originalItem)"
+          [showExpandCollapse]="false"
+          [queryMinSymbolsCount]="0"
+        >
+        </lib-lookup>
       </div>
     </div>
-    <lib-ya-map [externalMode]="true" [enterpriseYandexMapsEnabled]="true"
-      [yandexMapsApiKey]="'9e8e2fc4-5970-4ca6-95c5-3e620095e8e3'" [center]="[37.651475, 55.70882]"
-      [controls]="['zoomControl']" #yaMap>
-    </lib-ya-map>
+    <lib-map
+      [externalMode]="true"
+      [enterpriseYandexMapsEnabled]="true"
+      [yandexMapsApiKey]="yandexMapsApiKey"
+      [center]="mapCenter"
+      [controls]="mapControls">
+    </lib-map>
   </div>
 </div>

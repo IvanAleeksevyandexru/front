@@ -18,6 +18,7 @@ import {environment} from '../environments/environment';
       dictionaryUrl: environment.dictionaryUrl,
       externalApiUrl: environment.externalApiUrl,
       externalUrl: environment.externalUrl,
+      yandexMapsApiKey: environment.yandexMapsApiKey,
     }),
   ],
   providers: [],

@@ -7,8 +7,9 @@ export const environment = {
   apiUrl: 'http://188.93.23.27:18080',
   dictionaryUrl: 'https://www.gosuslugi.ru/api/nsi/v1/dictionary',
   externalApiUrl: '//www.gosuslugi.ru/api/nsi/v1/',
-  externalUrl: '//www.gosuslugi.ru/',
-  serviceId: 'local'
+  externalUrl: 'https://www.gosuslugi.ru/',
+  serviceId: 'local',
+  yandexMapsApiKey: '9e8e2fc4-5970-4ca6-95c5-3e620095e8e3',
 };
 
 /*

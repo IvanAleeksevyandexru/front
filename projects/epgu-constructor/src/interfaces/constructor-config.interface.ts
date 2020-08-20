@@ -7,4 +7,5 @@ export interface ConstructorConfigInterface {
   serviceId: string;
   externalApiUrl: string;
   externalUrl: string;
+  yandexMapsApiKey: string;
 }

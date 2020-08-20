@@ -1,36 +1,30 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core';
-import { tap, switchMap, filter, takeWhile } from 'rxjs/operators';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { switchMap, filter, takeWhile, takeUntil } from 'rxjs/operators';
 
-// import { YaMapService } from 'epgu-lib/lib/services/ya-map/ya-map.service';
 import { YaMapService } from 'epgu-lib';
-import { Subject, interval } from 'rxjs';
+import { interval, Observable } from 'rxjs';
 import { SelectMapObjectService } from './select-map-object.service';
 import { EgpuResponseInterface } from '../../../../../interfaces/epgu.service.interface';
 import { RestService } from '../../../../services/rest/rest.service';
+import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { IGeoCoordsResponse } from './select-map-object.interface';
 
 @Component({
   selector: 'app-select-map-object',
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
+  providers: [UnsubscribeService],
 })
-export class SelectMapObjectComponent implements OnInit, OnDestroy {
-  @Input() response: EgpuResponseInterface;
-  @Output() nextStepEvent: EventEmitter<any> = new EventEmitter();
+export class SelectMapObjectComponent implements OnInit {
+  @Input() data: EgpuResponseInterface;
+  @Output() nextStepEvent = new EventEmitter<any>();
 
-  public isSearchInputFocused;
+  public mappedDictionaryForLookup;
+  public mapCenter: Array<number>;
+  public mapControls = ['zoomControl'];
+  public yandexMapsApiKey: string;
 
-  @ViewChild('yaMap', { static: false })
-  yaMap: any;
-
-  private ngUnsubscribe$ = new Subject();
   private isMapsScriptLoaded = false;
   private fiasCode;
 
@@ -38,7 +32,10 @@ export class SelectMapObjectComponent implements OnInit, OnDestroy {
     public selectMapObjectService: SelectMapObjectService,
     private yaMapService: YaMapService,
     private restService: RestService,
+    private constructorConfigService: ConstructorConfigService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {
+    this.yandexMapsApiKey = constructorConfigService.config.yandexMapsApiKey;
     // TODO HARDCODE
     this.fiasCode =
       // constructorService.response.applicantAnswers?.pd1?.value
@@ -47,52 +44,69 @@ export class SelectMapObjectComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.controlsLogicInit();
-    this.selectMapObjectService.controlValue.subscribe((value) => {
-      this.nextStepEvent.emit(value);
-    });
-  }
-
-  public ngOnDestroy(): void {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
+    this.selectMapObjectService.controlValue
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((value: any) => this.nextStepEvent.emit(value));
   }
 
   private controlsLogicInit() {
     interval(1000)
       .pipe(
-        filter(() => {
-          return this.yaMapService.map;
-        }),
-        takeWhile(() => {
-          return !this.isMapsScriptLoaded;
-        }),
+        filter(() => this.yaMapService.map),
+        takeWhile(() => !this.isMapsScriptLoaded),
       )
       .subscribe(() => {
         this.selectMapObjectService.ymaps = (window as any).ymaps;
-        this.isMapsScriptLoaded = true;
-        this.restService
-          .getDadataByFias(this.fiasCode)
-          .pipe(
-            switchMap((geoObject: any) => {
-              return this.restService.getDictionary(
-                'FNS_ZAGS_ORGANIZATION_AREA',
-                this.getFilterOptions(geoObject.address.elements[0].kladrCode.substr(0, 2)),
-              );
-            }),
-            switchMap((dictionary) => {
-              this.selectMapObjectService.dictionary = dictionary;
-              return this.selectMapObjectService.getCoordsByAddress((dictionary as any).items);
-            }),
-            tap((coords) => {
-              this.selectMapObjectService.filteredDictionaryItems =
-                this.selectMapObjectService.dictionary.items || [];
-              this.selectMapObjectService.fillDictionaryItemsWithCoords(coords);
-            }),
-          )
-          .subscribe(() => {
-            this.selectMapObjectService.placeOjectsOnMap(this.yaMapService.map);
-          });
+        this.isMapsScriptLoaded = true; // флаг чтобы отписаться
+        this.fillCoords(this.fiasCode).subscribe((coords: IGeoCoordsResponse) => {
+          this.saveCoords(coords);
+          this.selectMapObjectService.placeOjectsOnMap(this.yaMapService.map);
+        });
       });
+  }
+
+  /**
+   * По фиас получаем кладр, по кладру справочник с объектами на карте, по адресам объектов список координат
+   * затем заполняем полученный справочник этими координтами и кладем в сервис
+   * @param fiasCode код фиас
+   */
+  private fillCoords(fiasCode): Observable<IGeoCoordsResponse> {
+    return this.restService.getDadataByFias(fiasCode).pipe(
+      switchMap((geoObject: any) => {
+        const kladrCodeFirst2Letters = geoObject.address.elements[0].kladrCode.substr(0, 2);
+        this.mapCenter = [geoObject.geo_lon, geoObject.geo_lat];
+        return this.restService.getDictionary(
+          // TODO получить имя из response
+          'FNS_ZAGS_ORGANIZATION_AREA',
+          this.getFilterOptions(kladrCodeFirst2Letters),
+        );
+      }),
+      switchMap((dictionary: any) => {
+        this.selectMapObjectService.dictionary = dictionary;
+        this.mappedDictionaryForLookup = this.mapDictionaryForLookup(dictionary);
+        return this.selectMapObjectService.getCoordsByAddress(dictionary.items);
+      }),
+    );
+  }
+
+  /**
+   * Заполняет словарь в сервисе полученными координатами
+   * @param coords массив гео координат для объектов
+   */
+  private saveCoords(coords: IGeoCoordsResponse) {
+    this.selectMapObjectService.filteredDictionaryItems =
+      this.selectMapObjectService.dictionary.items || [];
+    this.selectMapObjectService.fillDictionaryItemsWithCoords(coords);
+  }
+
+  private mapDictionaryForLookup(dictionary) {
+    return dictionary.items.map((item) => {
+      return {
+        originalItem: item,
+        id: item.value,
+        text: item.title,
+      };
+    });
   }
 
   public search(searchString) {

@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
 import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { IGeoCoordsResponse } from './select-map-object.interface';
 
 @Injectable()
 export class SelectMapObjectService {
@@ -20,16 +21,17 @@ export class SelectMapObjectService {
 
   constructor(
     private http: HttpClient,
-    private constructorService: ConstructorConfigService,
+    private constructorConfigService: ConstructorConfigService,
     private yaMapService: YaMapService,
+    private ngZone: NgZone,
   ) { }
 
   /**
    * Returns geo coords of physical addresses array
    * @param items
    */
-  public getCoordsByAddress(items) {
-    const path = `${this.constructorService.config.externalApiUrl}/address/resolve`;
+  public getCoordsByAddress(items): Observable<any> {
+    const path = `${this.constructorConfigService.config.externalApiUrl}/address/resolve`;
     return this.http.post(path, {
       address: items.map(item => item.attributeValues.ADDRESS),
     });
@@ -40,7 +42,7 @@ export class SelectMapObjectService {
    * @param dictionary 
    * @param coords 
    */
-  public fillDictionaryItemsWithCoords(coords) {
+  public fillDictionaryItemsWithCoords(coords: IGeoCoordsResponse) {
     const hashMap = {};
     coords.coords.forEach(coord => {
       hashMap[coord.address] = { latitude: coord.latitude, longitude: coord.longitude };
@@ -87,6 +89,7 @@ export class SelectMapObjectService {
     this.objectManager = this.createMapsObjectManager();
     this.objectManager.objects.options.set(Icons.blue);
     this.objectManager.objects.options.set('balloonContentLayout', this.getCustomBalloonContentLayout());
+    this.objectManager.objects.options.set('balloonLayout', this.getCustomBalloonContentLayout());
     this.objectManager.add(objects);
     map.geoObjects.removeAll();
     map.geoObjects.add(this.objectManager);
@@ -101,7 +104,7 @@ export class SelectMapObjectService {
       minClusterSize: 2,
       gridSize: 128,
       geoObjectBalloonMaxWidth: 265,
-      geoObjectBalloonOffset: [0, -12],
+      geoObjectBalloonOffset: [-160, -350],
       geoObjectHideIconOnBalloonOpen: !1,
       geoObjectIconColor: '#0D69AF',
       viewportMargin: 300,
@@ -131,35 +134,34 @@ export class SelectMapObjectService {
     if (typeof this.ymaps.templateLayoutFactory == 'undefined') {
       return;
     }
-    let componentContext = this;
-    let btnTemplateDesk =
+    const componentContext = this;
+    const btnTemplateDesk =
       '{% if properties.res.btnName %}' +
-      '<div class=\'PGU-FieldMapWithList-buttonwrap PGU-BtnContainer-column\'>' +
-      '<div class=\'PGU-Btn-margin\'>' +
+      '<div class=\'FieldMapWithList-buttonwrap\'>' +
       '{% if !properties.res.btnFromCluster %}' +
+      // TODO: replace with <lib-button>
       '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.id}}\' ' +
-      'class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
+      'class=\'btn-balloon btn_base btn_small btn_blue\'>{{properties.res.btnName}}</a>' +
       '{% endif %}' +
-      '{% if properties.res.btnFromCluster &&  properties.res.itemData && properties.res.itemData.code %}' +
+      '{% if properties.res.btnFromCluster && properties.res.itemData && properties.res.itemData.code %}' +
       '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.itemData.code}}\' ' +
-      'class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
+      'class=\'btn-balloon btn_base btn_small btn_blue\'>{{properties.res.btnName}}</a>' +
       '{% endif %}' +
-      '{% if properties.res.btnFromCluster &&  properties.res.itemData && properties.res.itemData.numIk %}' +
+      '{% if properties.res.btnFromCluster && properties.res.itemData && properties.res.itemData.numIk %}' +
       '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.itemData.id}}\' ' +
-      'class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
+      'class=\'btn-balloon btn_base btn_small btn_blue\'>{{properties.res.btnName}}</a>' +
       '{% endif %}' +
       '{%  if properties.res.btnFromCluster && !properties.res.itemData && properties.res.id >= 0 %}' +
       '<a tabindex=\'1\' href=\'#\' data-objectid=\'{{properties.res.id}}\' ' +
-      'class=\'PGU-Button PGU-Button-Choose PGU-Btn-Base PGU-Btn-Small PGU-Btn-Blue\'>{{properties.res.btnName}}</a>' +
+      'class=\'btn-balloon btn_base btn_small btn_blue\'>{{properties.res.btnName}}</a>' +
       '{% endif %}' +
-      '</div>' +
       '</div>' +
       '{% endif %}';
 
-    let customBalloonContentLayout = this.ymaps.templateLayoutFactory.createClass(
-      '<div class=\'PGU-FieldMapWithList-Baloon\'>' +
-      '<div class=\'PGU-FieldMapWithList-Baloon-content\'>' +
-      '<h6 class=\'PGU-FieldMapWithList-Baloon-content-Header\'>{{properties.res.title}}</h6>' +
+    const customBalloonContentLayout = this.ymaps.templateLayoutFactory.createClass(
+      '<div class=\'map-baloon\'>' +
+      '<div class=\'map-baloon-content\'>' +
+      '<h6 class=\'map-baloon-content-Header\'>{{properties.res.title}}</h6>' +
       '{% if properties.res.baloonContent && properties.res.baloonContent.length %}' +
       '{% for cont in properties.res.baloonContent %}' +
       '{% if cont.value %}' +
@@ -172,7 +174,7 @@ export class SelectMapObjectService {
       '{% endif %}' +
       '{% endfor  %}' +
       '{% endif %}' +
-      '<div class="PGU-FieldMapWithList-Baloon-content-Bottom">' +
+      '<div class="map-baloon-content-Bottom">' +
       'На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы <a href="#!">ознакомиться</a></div>' +
       '</div>' +
       btnTemplateDesk +
@@ -186,7 +188,7 @@ export class SelectMapObjectService {
           // Биндим к кнопке клик
           // let parentElement = angular.element(this.getParentElement());
           let parentElement = this.getParentElement();
-          parentElement.querySelector('.PGU-Button').addEventListener('click', this.onClick);
+          parentElement.querySelector('.btn-balloon').addEventListener('click', this.onClick);
         },
 
         // Аналогично переопределяем функцию clear, чтобы снять
@@ -194,14 +196,14 @@ export class SelectMapObjectService {
         clear: function () {
           // Выполняем действия в обратном порядке - сначала снимаем слушателя,
           // а потом вызываем метод clear родительского класса.
-          this.getParentElement().querySelector('.PGU-Button').removeEventListener('click', this.onClick);
+          this.getParentElement().querySelector('.btn-balloon').removeEventListener('click', this.onClick);
           customBalloonContentLayout.superclass.clear.call(this);
         },
 
         onClick: function (e) {
           e.preventDefault();
-          let $objectId = e.target.getAttribute('data-objectid');
-          let checkedId = $objectId || this.activePlacemark.id.toString();
+          const objectId = e.target.getAttribute('data-objectid');
+          let checkedId = objectId || this.activePlacemark.id.toString();
           let item;
           if (checkedId) {
             item = componentContext.objectManager.objects.getById(checkedId).properties.res;
