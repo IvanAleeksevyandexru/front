@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ConfirmPersonalUserPhoneScreenComponent} from './confirm-personal-user-phone-screen.component';
-import {SubComponentsModule} from '../../sub-components/sub-components.module';
-import {ConfirmPersonalUserPhoneComponent} from './components/confirm-personal-user-phone/confirm-personal-user-phone.component';
-import {EpgucSharedModule} from '../../../../../../shared-module/shared-components.module';
+import { NgModule } from '@angular/core';
+import { EpguLibModule } from 'epgu-lib';
+import { EpgucSharedModule } from '../../../../../../shared-module/shared-components.module';
+import { SubComponentsModule } from '../../sub-components/sub-components.module';
+import { ConfirmPersonalUserPhoneComponent } from './components/confirm-personal-user-phone/confirm-personal-user-phone.component';
+import { ConfirmPersonalUserPhoneScreenComponent } from './confirm-personal-user-phone-screen.component';
 
 const COMPONENTS = [
   ConfirmPersonalUserPhoneScreenComponent
@@ -16,6 +17,7 @@ const COMPONENTS = [
     CommonModule,
     EpgucSharedModule,
     SubComponentsModule,
+    EpguLibModule.forChild(),
   ]
 })
 export class ConfirmPersonalUserPhoneScreenModule { }
