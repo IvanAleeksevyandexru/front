@@ -8,7 +8,7 @@ import { EgpuResponseComponentInterface } from '../../../../../../../interfaces/
 describe('AddChildrenScreenComponent', () => {
   let component: AddChildrenScreenComponent;
   let fixture: ComponentFixture<AddChildrenScreenComponent>;
-  let mockData: EgpuResponseComponentInterface = {
+  const mockData: EgpuResponseComponentInterface = {
     attrs: {},
     id: '',
     label: '',

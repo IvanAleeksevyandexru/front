@@ -14,7 +14,7 @@ describe('AddPassportScreenComponent', () => {
 // describe('AddPassportScreenComponent', () => {
 //   let component: AddPassportScreenComponent;
 //   let fixture: ComponentFixture<AddPassportScreenComponent>;
-//   let mockData: EgpuResponseDisplayInterface = {
+//   const mockData: EgpuResponseDisplayInterface = {
 //     components: [{
 //       attrs: {},
 //       id: '',

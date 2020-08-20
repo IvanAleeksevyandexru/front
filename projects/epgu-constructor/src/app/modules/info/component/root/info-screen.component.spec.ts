@@ -12,7 +12,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 describe('InfoScreenComponent', () => {
   let component: InfoScreenComponent;
   let fixture: ComponentFixture<InfoScreenComponent>;
-  let mockData: EgpuResponseDisplayInterface = {
+  const mockData: EgpuResponseDisplayInterface = {
     components: [
       {
         attrs: {},

@@ -5,7 +5,7 @@ import { AnswerChoiceComponent, IData } from './answer-choice.component'
 describe('AnswerChoiceComponent', () => {
   let component: AnswerChoiceComponent;
   let fixture: ComponentFixture<AnswerChoiceComponent>;
-  let mockData: Partial<IData> = {
+  const mockData: Partial<IData> = {
     hint: '',
     action: '',
     label: '',

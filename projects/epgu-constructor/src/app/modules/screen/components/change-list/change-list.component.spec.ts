@@ -8,7 +8,7 @@ describe('ChangeListComponent', () => {
   let component: ChangeListComponent;
   let fixture: ComponentFixture<ChangeListComponent>;
   let screenComponentService: ScreenComponentService;
-  let mockData: EgpuResponseComponentInterfaceForChangeList = {
+  const mockData: EgpuResponseComponentInterfaceForChangeList = {
     attrs: {
       fields: [{
         fieldName: 'name',

@@ -6,7 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 describe('DocInputComponent', () => {
   let component: DocInputComponent;
   let fixture: ComponentFixture<DocInputComponent>;
-  let mockData: EgpuResponseComponentInterfaceForDocInput = {
+  const mockData: EgpuResponseComponentInterfaceForDocInput = {
     attrs: { fields: [{
       fieldName: 'some',
       label: 'some label',

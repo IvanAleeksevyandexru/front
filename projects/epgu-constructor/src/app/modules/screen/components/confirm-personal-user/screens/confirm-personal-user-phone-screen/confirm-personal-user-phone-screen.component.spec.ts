@@ -9,7 +9,7 @@ import { EgpuResponseComponentInterface } from '../../../../../../../interfaces/
 describe('ConfirmPersonalUserPhoneScreenComponent', () => {
   let component: ConfirmPersonalUserPhoneScreenComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserPhoneScreenComponent>;
-  let mockData: EgpuResponseComponentInterface = {
+  const mockData: EgpuResponseComponentInterface = {
     attrs: {},
     id: '',
     label: '',

@@ -5,7 +5,7 @@ import { InfoScreenBodyComponent } from './info-screen-body.component';
 describe('RequirementsListComponent', () => {
   let component: InfoScreenBodyComponent;
   let fixture: ComponentFixture<InfoScreenBodyComponent>;
-  let mockData = {
+  const mockData = {
     attrs: {
       image: {
         src: 'some src',

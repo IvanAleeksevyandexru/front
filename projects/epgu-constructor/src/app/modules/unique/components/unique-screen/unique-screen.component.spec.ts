@@ -13,7 +13,7 @@ describe('UniqueScreenComponent', () => {
   let component: UniqueScreenComponent;
   let fixture: ComponentFixture<UniqueScreenComponent>;
   let navService: NavigationService;
-  let mockData: EgpuResponseDisplayInterface = {
+  const mockData: EgpuResponseDisplayInterface = {
     components: [{
       attrs: {},
       id: '',

@@ -22,7 +22,7 @@ describe('CustomScreenComponent', () => {
 //   let restService: RestService;
 //   let navService: NavigationService;
 //   let constructorService: ConstructorService;
-//   let mockData: EgpuResponseCustomComponentDisplayInterface = {
+//   const mockData: EgpuResponseCustomComponentDisplayInterface = {
 //     components: [],
 //     header: '',
 //     id: '',

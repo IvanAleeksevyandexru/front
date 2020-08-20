@@ -8,7 +8,7 @@ import { SCREEN_COMPONENT_NAME } from '../../../../../../../constant/global'
 describe('ConfirmPersonalUserAddressScreenComponent', () => {
   let component: ConfirmPersonalUserAddressScreenComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserAddressScreenComponent>;
-  let mockData: ConfirmAddressInterface = {
+  const mockData: ConfirmAddressInterface = {
     attrs: {
       fields: [],
       actions: []

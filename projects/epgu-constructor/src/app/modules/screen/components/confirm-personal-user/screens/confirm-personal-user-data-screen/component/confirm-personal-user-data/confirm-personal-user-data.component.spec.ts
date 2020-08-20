@@ -7,7 +7,7 @@ import { ToJsonPipe } from '../../../../../../../../shared-module/pipe/toJson/to
 describe('ConfirmPersonalUserDataComponent', () => {
   let component: ConfirmPersonalUserDataComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserDataComponent>;
-  let mockData: ConfirmUserDataInterface = {
+  const mockData: ConfirmUserDataInterface = {
     attrs: {
       actions: [
         {

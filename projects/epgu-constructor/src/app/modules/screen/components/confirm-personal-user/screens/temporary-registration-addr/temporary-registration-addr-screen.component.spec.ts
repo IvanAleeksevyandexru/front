@@ -8,7 +8,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 describe('TemporaryRegistrationAddrScreenComponent', () => {
   let component: TemporaryRegistrationAddrScreenComponent;
   let fixture: ComponentFixture<TemporaryRegistrationAddrScreenComponent>;
-  let mockData: EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface = {
+  const mockData: EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface = {
     attrs: {
       actions: [],
       fields: [],

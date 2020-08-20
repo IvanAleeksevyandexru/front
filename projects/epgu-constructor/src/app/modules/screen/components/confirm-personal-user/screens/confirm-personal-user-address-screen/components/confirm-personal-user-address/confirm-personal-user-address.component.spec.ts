@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms'
 describe('ConfirmPersonalUserAddressComponent', () => {
   let component: ConfirmPersonalUserAddressComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserAddressComponent>;
-  let mockData: ConfirmAddressInterface = {
+  const mockData: ConfirmAddressInterface = {
     attrs: {
       actions: [],
       fields: []

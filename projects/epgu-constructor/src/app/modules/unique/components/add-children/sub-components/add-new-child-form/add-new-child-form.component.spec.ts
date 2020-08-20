@@ -9,7 +9,7 @@ import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsub
 describe('AddNewChildFormComponent', () => {
   let component: AddNewChildFormComponent;
   let fixture: ComponentFixture<AddNewChildFormComponent>;
-  let mockData = {
+  const mockData = {
     childrenList: [ { birthDate: '', id: '' } ],
     child: [ { birthDate: '', id: '' } ]
   };

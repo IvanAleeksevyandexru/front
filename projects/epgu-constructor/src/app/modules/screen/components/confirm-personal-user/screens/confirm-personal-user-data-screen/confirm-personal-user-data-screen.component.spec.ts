@@ -8,7 +8,7 @@ import { ConfirmUserDataInterface } from '../../../../../../../interfaces/confir
 describe('ConfirmPersonalUserDataScreenComponent', () => {
   let component: ConfirmPersonalUserDataScreenComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserDataScreenComponent>;
-  let mockData: ConfirmUserDataInterface = {
+  const mockData: ConfirmUserDataInterface = {
     attrs: {
       fields: [],
       actions: []

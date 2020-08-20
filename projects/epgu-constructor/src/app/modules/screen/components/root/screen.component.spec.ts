@@ -15,7 +15,7 @@ describe('ScreenComponent', () => {
   let navService: NavigationService;
   let constructorService: ConstructorService;
   let screenComponentService: ScreenComponentService;
-  let mockData: EgpuResponseDisplayInterface = {
+  const mockData: EgpuResponseDisplayInterface = {
     components: [{
       attrs: {},
       id: '',

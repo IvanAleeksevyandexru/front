@@ -6,7 +6,7 @@ import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsub
 describe('BirthCertificateComponent', () => {
   let component: BirthCertificateComponent;
   let fixture: ComponentFixture<BirthCertificateComponent>;
-  let mockData = [];
+  const mockData = [];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

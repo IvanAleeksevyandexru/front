@@ -12,7 +12,7 @@ describe('TemporaryRegistrationAddrComponent', () => {
   let component: TemporaryRegistrationAddrComponent;
   let fixture: ComponentFixture<TemporaryRegistrationAddrComponent>;
   let constructorConfigService: ConstructorConfigService;
-  let mockData: EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface = {
+  const mockData: EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface = {
     attrs: {
       actions: [],
       fields: [],

@@ -7,7 +7,7 @@ import { IAttrsError, InvitationErrorComponent } from './invitation-error.compon
 describe('InvitationErrorComponent', () => {
   let component: InvitationErrorComponent;
   let fixture: ComponentFixture<InvitationErrorComponent>;
-  let mockData: IAttrsError = {msg: '', url: ''};
+  const mockData: IAttrsError = {msg: '', url: ''};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
