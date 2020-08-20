@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { switchMap, filter, takeWhile, takeUntil } from 'rxjs/operators';
 
 import { YaMapService } from 'epgu-lib';
-import { interval, Observable } from 'rxjs';
+import { interval } from 'rxjs';
 import { SelectMapObjectService } from './select-map-object.service';
 import { EgpuResponseInterface } from '../../../../../interfaces/epgu.service.interface';
 import { RestService } from '../../../../services/rest/rest.service';
@@ -35,7 +35,7 @@ export class SelectMapObjectComponent implements OnInit {
     private constructorConfigService: ConstructorConfigService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {
-    this.yandexMapsApiKey = constructorConfigService.config.yandexMapsApiKey;
+    this.yandexMapsApiKey = this.constructorConfigService.config.yandexMapsApiKey;
     // TODO HARDCODE
     this.fiasCode =
       // constructorService.response.applicantAnswers?.pd1?.value
@@ -70,7 +70,7 @@ export class SelectMapObjectComponent implements OnInit {
    * затем заполняем полученный справочник этими координтами и кладем в сервис
    * @param fiasCode код фиас
    */
-  private fillCoords(fiasCode): Observable<IGeoCoordsResponse> {
+  private fillCoords(fiasCode) {
     return this.restService.getDadataByFias(fiasCode).pipe(
       switchMap((geoObject: any) => {
         const kladrCodeFirst2Letters = geoObject.address.elements[0].kladrCode.substr(0, 2);
@@ -113,6 +113,7 @@ export class SelectMapObjectComponent implements OnInit {
     this.selectMapObjectService.searchMapObject(searchString);
   }
 
+  // TODO Сделать интерфейс для mapObject
   public selectMapObject(mapObject) {
     this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.id);
   }

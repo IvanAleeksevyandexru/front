@@ -30,9 +30,9 @@ export class SelectMapObjectService {
    * Returns geo coords of physical addresses array
    * @param items
    */
-  public getCoordsByAddress(items): Observable<any> {
+  public getCoordsByAddress(items) {
     const path = `${this.constructorConfigService.config.externalApiUrl}/address/resolve`;
-    return this.http.post(path, {
+    return this.http.post<IGeoCoordsResponse>(path, {
       address: items.map(item => item.attributeValues.ADDRESS),
     });
   }

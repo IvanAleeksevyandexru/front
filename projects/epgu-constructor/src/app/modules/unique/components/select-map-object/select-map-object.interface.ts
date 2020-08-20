@@ -1,7 +1,7 @@
 export interface IGeoCoords {
   address: string;
-  latitude: 55.70882;
-  longitude: 37.651475;
+  latitude: number;
+  longitude: number;
 }
 
 export interface IGeoCoordsResponse {
