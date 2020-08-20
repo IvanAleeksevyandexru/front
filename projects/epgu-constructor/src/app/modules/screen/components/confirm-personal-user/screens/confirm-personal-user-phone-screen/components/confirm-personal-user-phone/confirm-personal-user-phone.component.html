@@ -1,5 +1,15 @@
 <form [formGroup]="phoneForm">
-  <label class="label">{{ label }}</label>
+  <div class="flex-row">
+    <label class="label">{{ label }}</label>
+    <a
+      href="javascript:void(0);"
+      (click)="handleClick()"
+      class="button-change"
+      *ngIf="isEditButtonShown"
+    >
+      Изменить
+    </a>
+  </div>
   <lib-base-masked-input
     [formControlName]="'phone'"
     name="phone"

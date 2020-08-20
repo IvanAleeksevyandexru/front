@@ -1,7 +1,8 @@
-@import "../../../../../../../styles/variables";
-@import "../../../../../../../styles/breakpoint";
+@import '../../../../../../../styles/variables';
+@import '../../../../../../../styles/breakpoint';
 
-:host {
-
+.footer {
+  @include tablets-up {
+    display: none;
+  }
 }
-

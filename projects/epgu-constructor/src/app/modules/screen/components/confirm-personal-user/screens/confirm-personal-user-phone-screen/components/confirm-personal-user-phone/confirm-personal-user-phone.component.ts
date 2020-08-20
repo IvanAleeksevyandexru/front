@@ -15,6 +15,7 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
   @Input() label: string;
   @Input() data: string;
   @Input() isEditable: boolean;
+  @Input() isEditButtonShown: boolean;
   @Output() dataChanged = new EventEmitter();
 
   phoneForm: FormGroup;
@@ -77,5 +78,9 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
         this.phoneForm.controls.phone.disable();
       }
     }
+  }
+
+  handleClick() {
+    this.phoneForm.controls.phone.enable();
   }
 }
