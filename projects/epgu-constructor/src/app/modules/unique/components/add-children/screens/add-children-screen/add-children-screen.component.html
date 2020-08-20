@@ -22,12 +22,13 @@
           </div>
           <div class="card__content">
             <div>
-              <label class="card__label">
+              <app-label for="childrenList">
                 Выберите ребенка из вашего профиля
-              </label>
+              </app-label>
             </div>
             <div class="card__select">
               <lib-dropdown
+                id="childrenList"
                 (changed)="handleSelect($event)"
                 [items]="childrenSelectList"
               ></lib-dropdown>

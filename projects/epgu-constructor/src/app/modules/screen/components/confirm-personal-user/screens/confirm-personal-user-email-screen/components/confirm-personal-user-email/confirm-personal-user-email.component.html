@@ -1,3 +1,10 @@
-<div class="title">{{name}}</div>
-<div class="content">{{content}}</div>
-
+<form [formGroup]="emailForm">
+  <label class="label">{{ label }}</label>
+  <lib-plain-input
+    [formControlName]="'email'"
+    name="email"
+    [invalid]="!emailForm.controls.email.valid"
+    [validationShowOn]="validationShowOn"
+    class="content content__input"
+  ></lib-plain-input>
+</form>

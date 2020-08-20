@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {EgpuResponseInterface} from '../../../interfaces/epgu.service.interface';
-import {DictionaryOptionsInterface, DictionaryResponse} from '../../../interfaces/dictionary-options.interface';
-import {ConstructorConfigService} from '../config/constructor-config.service';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { DictionaryOptionsInterface, DictionaryResponse } from '../../../interfaces/dictionary-options.interface';
+import { EgpuResponseInterface } from '../../../interfaces/epgu.service.interface';
+import { ConstructorConfigService } from '../config/constructor-config.service';
 
 @Injectable()
 export class RestService {

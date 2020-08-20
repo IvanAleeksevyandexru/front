@@ -1,13 +1,12 @@
-@import "../../../../styles/breakpoint";
-@import "../../../../styles/variables";
-
+@import '../../../../styles/breakpoint';
+@import '../../../../styles/variables';
 
 :host {
   display: block;
   margin-bottom: 32px;
   font-size: 16px;
   line-height: 24px;
-  color: $denim;
+  color: $gosblue;
 }
 
 .head {

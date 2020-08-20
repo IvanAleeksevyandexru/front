@@ -11,9 +11,9 @@
       </div>
     </div>
     <div class="component__field">
-      <label class="component__label">
+      <app-label>
         Дата рождения:
-      </label>
+      </app-label>
       <div>
         {{ child.birthDate }}
       </div>
@@ -24,33 +24,33 @@
       </span>
     </div>
     <div class="component__field">
-      <label class="component__label">
+      <app-label>
         Серия и номер:
-      </label>
+      </app-label>
       <div>
         {{ child.rfBirthCertificateSeries + '-' + child.rfBirthCertificateNumber}}
       </div>
     </div>
     <div class="component__field">
-      <label class="component__label">
+      <app-label>
         Актовая запись:
-      </label>
+      </app-label>
       <div>
         {{ child.rfBirthCertificateActNumber }}
       </div>
     </div>
     <div class="component__field">
-      <label class="component__label">
+      <app-label>
         Дата выдачи
-      </label>
+      </app-label>
       <div>
         {{ child.rfBirthCertificateIssueDate }}
       </div>
     </div>
     <div class="component__field">
-      <label class="component__label">
+      <app-label>
         Кем выдано
-      </label>
+      </app-label>
       <div>
         {{ child.rfBirthCertificateIssuedBy }}
       </div>
@@ -64,35 +64,60 @@
     </div>
     <div class="component__field field field--row">
       <div>
-        <label class="component__label">
+        <app-label for="series">
           Серия
-        </label>
-        <lib-plain-input name="rfBirthCertificateSeries" [(ngModel)]="child.rfBirthCertificateSeries"></lib-plain-input>
+        </app-label>
+        <lib-plain-input
+          id="series"
+          name="rfBirthCertificateSeries"
+          [(ngModel)]="child.rfBirthCertificateSeries">
+
+        </lib-plain-input>
       </div>
       <div>
-        <label class="component__label">
+        <app-label for="number">
           Номер
-        </label>
-        <lib-plain-input name="rfBirthCertificateNumber" [(ngModel)]="child.rfBirthCertificateNumber"></lib-plain-input>
+        </app-label>
+        <lib-plain-input
+          id="number"
+          name="rfBirthCertificateNumber"
+          [(ngModel)]="child.rfBirthCertificateNumber">
+
+        </lib-plain-input>
       </div>
     </div>
     <div class="component__field">
-      <label class="component__label">
+      <app-label for="actNumber">
         Номер актовой записи
-      </label>
-      <lib-plain-input name="rfBirthCertificateActNumber" [(ngModel)]="child.rfBirthCertificateActNumber"></lib-plain-input>
+      </app-label>
+      <lib-plain-input
+        id="actNumber"
+        name="rfBirthCertificateActNumber"
+        [(ngModel)]="child.rfBirthCertificateActNumber">
+
+      </lib-plain-input>
     </div>
     <div class="component__field">
-      <label class="component__label">
+      <app-label for="date">
         Дата выдачи
-      </label>
-      <lib-date-picker name="rfBirthCertificateIssueDate" [(ngModel)]="child.rfBirthCertificateIssueDate"></lib-date-picker>
+      </app-label>
+      <lib-date-picker
+        id="date"
+        name="rfBirthCertificateIssueDate"
+        [(ngModel)]="child.rfBirthCertificateIssueDate">
+
+      </lib-date-picker>
     </div>
     <div class="component__field">
-      <label class="component__label">
+      <app-label for="emitter">
         Кем выдано
-      </label>
-      <lib-plain-input name="rfBirthCertificateIssuedBy" [(ngModel)]="child.rfBirthCertificateIssuedBy"></lib-plain-input>
+      </app-label>
+      <lib-plain-input
+        id="emitter"
+        name="rfBirthCertificateIssuedBy"
+        [(ngModel)]="child.rfBirthCertificateIssuedBy">
+
+      </lib-plain-input>
     </div>
   </form>
 </section>

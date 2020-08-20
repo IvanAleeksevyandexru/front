@@ -40,15 +40,6 @@ app-navigation {
 
       .inputs__field {
         flex-basis: calc(50% - 10px);
-
-        .field__label {
-          display: inline-block;
-          margin-bottom: 8px;
-
-          color: $dark-gray;
-          font-size: 14px;
-          line-height: 20px;
-        }
       }
     }
   }

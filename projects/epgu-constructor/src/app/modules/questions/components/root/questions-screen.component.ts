@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import {
   EgpuResponseQuestionsDisplayComponentAttrsActionsInterface,
   EgpuResponseQuestionsDisplayInterface,
@@ -11,26 +11,20 @@ import { NavigationService } from '../../../../shared-module/service/navigation/
   selector: 'app-question-screen',
   templateUrl: './questions-screen.component.html',
   styleUrls: ['./questions-screen.component.scss'],
+  providers: [UnsubscribeService],
 })
-export class QuestionsScreenComponent implements OnInit, OnDestroy {
-  ngUnsubscribe$ = new Subject();
-
+export class QuestionsScreenComponent implements OnInit {
   @Input() data: EgpuResponseQuestionsDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
-  constructor(private navService: NavigationService) {
+  constructor(private navService: NavigationService, private ngUnsubscribe$: UnsubscribeService) {
     this.navService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.goPrevStepEvent());
   }
 
   ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
-  }
 
   goPrevStepEvent() {
     this.prevStepEvent.emit();

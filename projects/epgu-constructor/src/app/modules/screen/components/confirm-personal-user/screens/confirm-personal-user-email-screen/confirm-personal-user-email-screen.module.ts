@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { EpguLibModule } from 'epgu-lib';
+import { EpgucSharedModule } from '../../../../../../shared-module/shared-components.module';
 import { SubComponentsModule } from '../../sub-components/sub-components.module';
+import { ConfirmPersonalUserEmailComponent } from './components/confirm-personal-user-email/confirm-personal-user-email.component';
 import { ConfirmPersonalUserEmailScreenComponent } from './confirm-personal-user-email-screen.component';
-import {ConfirmPersonalUserEmailComponent} from './components/confirm-personal-user-email/confirm-personal-user-email.component';
-import {EpgucSharedModule} from '../../../../../../shared-module/shared-components.module';
 
 const COMPONENTS = [ConfirmPersonalUserEmailScreenComponent];
 
@@ -14,6 +15,7 @@ const COMPONENTS = [ConfirmPersonalUserEmailScreenComponent];
     CommonModule,
     EpgucSharedModule,
     SubComponentsModule,
+    EpguLibModule.forChild(),
   ]
 })
 export class ConfirmPersonalUserEmailScreenModule { }
