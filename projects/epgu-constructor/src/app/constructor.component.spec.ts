@@ -1,9 +1,11 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+
 import { ConstructorComponent } from './constructor.component';
 import { ConstructorService } from './services/constructor/constructor.service'
 import { ConstructorServiceStub } from './services/constructor/constructor.service.stub'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+
 
 describe('ConstructorComponent', () => {
   let constructorService: ConstructorService;
