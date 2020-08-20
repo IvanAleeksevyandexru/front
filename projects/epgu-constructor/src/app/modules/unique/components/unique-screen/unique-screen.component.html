@@ -13,6 +13,7 @@
   ></app-add-passport-screen>
   <app-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
+    [data]="data"
     (nextStepEvent)="nextStep($event)">
   </app-select-map-object>
 </ng-container>

@@ -4,7 +4,7 @@ import { switchMap, filter, takeWhile, takeUntil } from 'rxjs/operators';
 import { YaMapService } from 'epgu-lib';
 import { interval } from 'rxjs';
 import { SelectMapObjectService } from './select-map-object.service';
-import { EgpuResponseInterface } from '../../../../../interfaces/epgu.service.interface';
+import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { RestService } from '../../../../services/rest/rest.service';
 import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
@@ -17,7 +17,7 @@ import { IGeoCoordsResponse } from './select-map-object.interface';
   providers: [UnsubscribeService],
 })
 export class SelectMapObjectComponent implements OnInit {
-  @Input() data: EgpuResponseInterface;
+  @Input() data: EgpuResponseDisplayInterface;
   @Output() nextStepEvent = new EventEmitter<any>();
 
   public mappedDictionaryForLookup;
@@ -26,7 +26,8 @@ export class SelectMapObjectComponent implements OnInit {
   public yandexMapsApiKey: string;
 
   private isMapsScriptLoaded = false;
-  private fiasCode;
+  private regCode: string;
+  private componentValue;
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
@@ -36,17 +37,17 @@ export class SelectMapObjectComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.yandexMapsApiKey = this.constructorConfigService.config.yandexMapsApiKey;
-    // TODO HARDCODE
-    this.fiasCode =
-      // constructorService.response.applicantAnswers?.pd1?.value
-      '0c5b2444-70a0-4932-980c-b4dc0d3f02b5';
   }
 
   ngOnInit(): void {
+    if (this.data.components[0].value) {
+      this.componentValue = JSON.parse(this.data.components[0].value);
+      this.regCode = this.componentValue.regCode;
+    }
     this.controlsLogicInit();
     this.selectMapObjectService.controlValue
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((value: any) => this.nextStepEvent.emit(value));
+      .subscribe((value: any) => this.nextStepEvent.emit(JSON.stringify(value)));
   }
 
   private controlsLogicInit() {
@@ -58,7 +59,8 @@ export class SelectMapObjectComponent implements OnInit {
       .subscribe(() => {
         this.selectMapObjectService.ymaps = (window as any).ymaps;
         this.isMapsScriptLoaded = true; // флаг чтобы отписаться
-        this.fillCoords(this.fiasCode).subscribe((coords: IGeoCoordsResponse) => {
+        this.mapCenter = [this.componentValue.geo_lon, this.componentValue.geo_lat];
+        this.fillCoords(this.regCode).subscribe((coords: IGeoCoordsResponse) => {
           this.saveCoords(coords);
           this.selectMapObjectService.placeOjectsOnMap(this.yaMapService.map);
         });
@@ -68,25 +70,22 @@ export class SelectMapObjectComponent implements OnInit {
   /**
    * По фиас получаем кладр, по кладру справочник с объектами на карте, по адресам объектов список координат
    * затем заполняем полученный справочник этими координтами и кладем в сервис
-   * @param fiasCode код фиас
+   * @param regCode код региона
    */
-  private fillCoords(fiasCode) {
-    return this.restService.getDadataByFias(fiasCode).pipe(
-      switchMap((geoObject: any) => {
-        const kladrCodeFirst2Letters = geoObject.address.elements[0].kladrCode.substr(0, 2);
-        this.mapCenter = [geoObject.geo_lon, geoObject.geo_lat];
-        return this.restService.getDictionary(
-          // TODO получить имя из response
-          'FNS_ZAGS_ORGANIZATION_AREA',
-          this.getFilterOptions(kladrCodeFirst2Letters),
-        );
-      }),
-      switchMap((dictionary: any) => {
-        this.selectMapObjectService.dictionary = dictionary;
-        this.mappedDictionaryForLookup = this.mapDictionaryForLookup(dictionary);
-        return this.selectMapObjectService.getCoordsByAddress(dictionary.items);
-      }),
-    );
+  private fillCoords(regCode) {
+    return this.restService
+      .getDictionary(
+        // TODO получить имя из response
+        'FNS_ZAGS_ORGANIZATION_AREA',
+        this.getFilterOptions(regCode),
+      )
+      .pipe(
+        switchMap((dictionary: any) => {
+          this.selectMapObjectService.dictionary = dictionary;
+          this.mappedDictionaryForLookup = this.mapDictionaryForLookup(dictionary);
+          return this.selectMapObjectService.getCoordsByAddress(dictionary.items);
+        }),
+      );
   }
 
   /**
@@ -139,7 +138,7 @@ export class SelectMapObjectComponent implements OnInit {
               simple: {
                 attributeName: 'CODE',
                 condition: 'CONTAINS',
-                value: { asString: `R${kladr || '77'}` },
+                value: { asString: `${kladr || 'R77'}` },
               },
             },
             {
