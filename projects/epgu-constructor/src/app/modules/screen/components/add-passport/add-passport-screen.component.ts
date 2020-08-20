@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 @Component({
   selector: 'app-add-passport-screen',
@@ -17,7 +16,7 @@ export class AddPassportScreenComponent implements OnInit {
 
   passportForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private screenComponentService: ScreenComponentService) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.passportForm = this.fb.group({
