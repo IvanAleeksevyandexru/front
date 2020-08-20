@@ -1,6 +1,6 @@
 <form [formGroup]="emailForm">
   <div class="flex-row">
-    <label class="label">{{ label }}</label>
+    <app-label for="email">{{ label }}</app-label>
     <a
       href="javascript:void(0);"
       (click)="handleClick()"
@@ -11,8 +11,9 @@
     </a>
   </div>
   <lib-plain-input
-    [formControlName]="'email'"
+    formControlName="email"
     name="email"
+    id="email"
     [invalid]="!emailForm.controls.email.valid"
     [validationShowOn]="validationShowOn"
     class="content content__input"

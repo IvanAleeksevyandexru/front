@@ -1,6 +1,6 @@
 <form [formGroup]="phoneForm">
   <div class="flex-row">
-    <label class="label">{{ label }}</label>
+    <app-label for="phone">{{ label }}</app-label>
     <a
       href="javascript:void(0);"
       (click)="handleClick()"
@@ -11,8 +11,9 @@
     </a>
   </div>
   <lib-base-masked-input
-    [formControlName]="'phone'"
+    formControlName="phone"
     name="phone"
+    id="phone"
     [invalid]="!phoneForm.controls.phone.valid"
     [validationShowOn]="validationShowOn"
     class="content content__input"
