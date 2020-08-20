@@ -6,12 +6,19 @@
   display: block;
 }
 
-.label {
-  font-size: 14px;
-  line-height: 20px;
-  margin-bottom: 4px;
-  &::first-letter {
-    text-transform: uppercase;
+.flex-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.button-change {
+  font-size: $font-sm;
+  flex: 0 0 auto;
+  margin-left: auto;
+  @include tablets-down {
+    display: none;
   }
 }
 
