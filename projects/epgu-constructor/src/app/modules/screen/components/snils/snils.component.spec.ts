@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SnilsComponent } from './snils.component';
+import {EpguLibModule} from 'epgu-lib';
 
 describe('SnilsComponent', () => {
   let component: SnilsComponent;
@@ -8,6 +9,7 @@ describe('SnilsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [EpguLibModule.forChild()],
       declarations: [ SnilsComponent ]
     })
     .compileComponents();
