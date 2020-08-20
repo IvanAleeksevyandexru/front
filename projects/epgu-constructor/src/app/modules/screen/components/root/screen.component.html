@@ -62,6 +62,7 @@
         [showLoader]="constructorService.isLoading"
         (click)="nextStep()"
         class="footer__btn-submit"
+        [disabled]="!screenComponentService.isValid"
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
       </lib-button>

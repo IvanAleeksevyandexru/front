@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-import { takeUntil } from 'rxjs/operators';
+import { delay, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
 
 @Component({
   selector: 'app-confirm-personal-user-phone',
@@ -39,7 +40,11 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
     /\d/,
   ];
 
-  constructor(private formBuilder: FormBuilder, private ngUnsubscribe$: UnsubscribeService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private ngUnsubscribe$: UnsubscribeService,
+    private screenComponentService: ScreenComponentService,
+  ) {}
 
   ngOnInit(): void {
     this.phoneForm = this.formBuilder.group({
@@ -54,9 +59,14 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
       ),
     });
 
-    this.phoneForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
-      this.dataChanged.emit(change);
-    });
+    this.phoneForm.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
+      .subscribe((change) => {
+        const { phone } = change;
+        this.screenComponentService.dataToSend = phone;
+        this.screenComponentService.isValid = this.phoneForm.valid;
+        this.dataChanged.emit(change);
+      });
   }
 
   ngOnChanges(): void {
