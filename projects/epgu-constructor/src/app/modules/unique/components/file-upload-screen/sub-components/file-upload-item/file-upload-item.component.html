@@ -22,7 +22,7 @@
              [innerText]="!file.hasError ? 'Файл загружается' : 'Ошибка загрузки'">
         </div>
         <div class="file__title-info" *ngIf="file.uploaded">
-          Файл загружен ({{file.getFileSizeInMB()}} МБ)
+          Файл загружен ({{file.getFileSize()}})
         </div>
       </div>
       <button class="file__action" (click)="deleteFile(file)">

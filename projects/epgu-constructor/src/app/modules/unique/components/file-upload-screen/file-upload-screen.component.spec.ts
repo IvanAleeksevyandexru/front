@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WebcamShotComponent } from './webcam-shot.component';
+import { FileUploadScreenComponent } from './file-upload-screen.component';
 
 describe('FileUploadComponent', () => {
-  let component: WebcamShotComponent;
-  let fixture: ComponentFixture<WebcamShotComponent>;
+  let component: FileUploadScreenComponent;
+  let fixture: ComponentFixture<FileUploadScreenComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WebcamShotComponent ]
+      declarations: [ FileUploadScreenComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WebcamShotComponent);
+    fixture = TestBed.createComponent(FileUploadScreenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

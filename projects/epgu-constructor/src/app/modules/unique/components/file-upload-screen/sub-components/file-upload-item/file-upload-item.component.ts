@@ -10,14 +10,14 @@ import {
   UploadedFile,
   uploadObjectType,
 } from './data';
-import { TerabyteService } from '../../../../services/rest/terabyte.service';
-import { UtilsService } from '../../../../services/utils/utils.service';
-import { WebcamService } from '../../../../services/utils/webcam.service';
+import { TerabyteService } from '../../../../../../services/rest/terabyte.service';
+import { UtilsService } from '../../../../../../services/utils/utils.service';
+import { WebcamService } from '../../../../../../services/utils/webcam.service';
 import {
   isCloseAndSaveWebcamEvent,
   isCloseWebcamEvent,
   WebcamEvent,
-} from '../../../../services/utils/webcamevents';
+} from '../../../../../../services/utils/webcamevents';
 
 @Component({
   selector: 'app-file-upload-item',
@@ -46,6 +46,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
       .subscribe((list) => {
         this.listIsUploadingNow = false;
         if (list.length) {
+          // eslint-disable-next-line no-console
           console.log('list', list);
           this.files$.next([...list]);
           this.maxFileNumber = this.getMaxFileNumberFromList(list);
@@ -312,17 +313,22 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * Открытие камеры для получения изображения и последующей загрузки
    */
   openCamera() {
-    const webcamEvents = this.webcamService.open();
-    webcamEvents.events.subscribe((event: WebcamEvent) => {
-      if (isCloseWebcamEvent(event) || isCloseAndSaveWebcamEvent(event)) {
-        if (isCloseAndSaveWebcamEvent(event)) {
-          // Если данные нужно сохранить и отправить
-          const { data } = event;
-          this.sendFile(TerabyteService.base64toBlob(data, ''));
+    this.errors = [];
+    if (this.data.maxFileCount && this.files$.value.length === this.data.maxFileCount) {
+      this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
+    } else {
+      const webcamEvents = this.webcamService.open();
+      webcamEvents.events.subscribe((event: WebcamEvent) => {
+        if (isCloseWebcamEvent(event) || isCloseAndSaveWebcamEvent(event)) {
+          if (isCloseAndSaveWebcamEvent(event)) {
+            // Если данные нужно сохранить и отправить
+            const { data } = event;
+            this.sendFile(TerabyteService.base64toBlob(data, ''));
+          }
+          this.webcamService.close();
         }
-        this.webcamService.close();
-      }
-    });
+      });
+    }
   }
 
   /**
@@ -350,7 +356,8 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    */
   handleCameraInitError(error: WebcamInitError) {
     if (error.mediaStreamError && error.mediaStreamError.name === 'NotAllowedError') {
-      console.warn('Camera access was not allowed by user!');
+      // eslint-disable-next-line no-console
+      console.info('Camera access was not allowed by user!');
     }
     this.cameraNotAllowed = true;
   }

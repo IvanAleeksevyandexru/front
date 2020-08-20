@@ -1,4 +1,4 @@
-import {ITerraFileOptions, ITerraUploadFileOptions} from '../../../../services/config/terabyte.config';
+import {ITerraFileOptions, ITerraUploadFileOptions} from '../../../../../../services/config/terabyte.config';
 
 /**
  * Интерфейс для аттрибутов файла на загрузку из JSON
@@ -123,10 +123,11 @@ export class UploadedFile implements IUploadedFile{
   }
 
   /**
-   * Возвращает размер в мегабайтах
+   * Возвращает размер в килобайтах или мегабайтах
    */
-  getFileSizeInMB() {
-    return getSizeInMB(this.fileSize);
+  getFileSize(): string {
+    const sizeInMB = getSizeInMB(this.fileSize);
+    return sizeInMB > 0 ? `${sizeInMB} МБ` : `${getSizeInKB(this.fileSize)} КБ`;
   }
 }
 

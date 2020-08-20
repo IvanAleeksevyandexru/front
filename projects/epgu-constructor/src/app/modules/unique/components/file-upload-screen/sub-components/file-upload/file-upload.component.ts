@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IFileUploadAttributes } from '../file-upload-item/data';
-import { ConstructorService } from '../../../../services/constructor/constructor.service';
+import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 
 @Component({
   selector: 'app-file-upload',

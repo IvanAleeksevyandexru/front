@@ -1,0 +1,45 @@
+@import "../../../../../styles/variables";
+@import "../../../../../styles/functions";
+@import "../../../../../styles/breakpoint";
+
+
+.body {
+  display: flex;
+  @include tablets-down {
+    flex-grow: 1;
+  }
+  &::ng-deep > * {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: inherit;
+  min-height: inherit;
+  @include tablets-up {
+    min-height: auto;
+  }
+}
+
+.screen__info-info{
+  font-size: 16px;
+  line-height: 24px;
+  color: $text-helper;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 32px;
+  margin-bottom: 40px;
+
+  @include tablets-up {
+    margin-top: 40px;
+  }
+}

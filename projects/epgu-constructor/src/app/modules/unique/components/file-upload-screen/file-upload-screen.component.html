@@ -1,0 +1,29 @@
+<app-screen-container>
+  <div *ngIf="header" class="head">
+    <app-page-name>{{ header }}</app-page-name>
+  </div>
+
+  <app-file-upload
+    [objectId]="getOrderId"
+    [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
+    [attributes]="data.attrs">
+  </app-file-upload>
+
+  <div class="screen__info">
+    <div class="screen__info-info">
+      Объем загружаемых данных не должен превышать 5 МБ
+    </div>
+    <div class="screen__info-info" *ngIf="allMaxFiles">
+      Количество загружаемых файлов не более {{ allMaxFiles }}
+    </div>
+  </div>
+
+  <div class="footer">
+    <lib-button
+      [showLoader]="constructorService.isLoading"
+      (click)="nextScreen()"
+      class="footer__btn-submit">
+      {{ submitLabel || "Продолжить" }}
+    </lib-button>
+  </div>
+</app-screen-container>

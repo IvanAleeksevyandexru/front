@@ -38,15 +38,6 @@
   <!--            <lib-date-picker (changed)="dateChage($event, componentData)"></lib-date-picker>-->
             </div>
 
-          <div class="form__item" *ngSwitchCase="componentType.FileUploadComponent">
-            <div class="form__title" *ngIf="componentData.label && componentData.label.length">{{componentData.label}}</div>
-            <app-file-upload
-              [objectId]="getOrderId"
-              [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(componentData)"
-              [attributes]="componentData.attrs"
-              (change)="inputChange($event, componentData)"></app-file-upload>
-          </div>
-
         </ng-container>
       </ng-container>
     </form>

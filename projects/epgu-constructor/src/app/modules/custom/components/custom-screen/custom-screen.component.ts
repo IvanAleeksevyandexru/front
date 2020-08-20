@@ -4,8 +4,8 @@ import { takeUntil } from 'rxjs/operators';
 import {
   CustomComponentDictionaryState,
   CustomComponentState,
-  EgpuResponseCustomComponentDisplayComponentInterface,
   EgpuResponseCustomComponentDisplayInterface,
+  EpguResponseCustomComponentDisplayComponentInterface,
 } from '../../../../../interfaces/custom-component.interface';
 import {
   DictionaryItem,
@@ -70,8 +70,10 @@ export class CustomScreenComponent implements OnChanges {
     const responseData = {};
     const isValid = Object.keys(this.state).every((key) => this.state[key].valid);
 
+    // eslint-disable-next-line no-console
     console.log('isValid', isValid);
     // TODO HARDCODE
+    // eslint-disable-next-line no-constant-condition
     if (true) {
       Object.keys(this.state).forEach((key) => {
         responseData[key] = { visited: true, value: JSON.stringify(this.state[key].value || {}) };
@@ -82,7 +84,7 @@ export class CustomScreenComponent implements OnChanges {
 
   selectDictionary(
     selectedItem: ListItem,
-    component: EgpuResponseCustomComponentDisplayComponentInterface,
+    component: EpguResponseCustomComponentDisplayComponentInterface,
   ) {
     const dictionaryName = component.attrs?.dictionaryType;
     this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
@@ -90,7 +92,7 @@ export class CustomScreenComponent implements OnChanges {
     this.state[component.id].valid = true;
   }
 
-  inputChange($event: Event, component: EgpuResponseCustomComponentDisplayComponentInterface) {
+  inputChange($event: Event, component: EpguResponseCustomComponentDisplayComponentInterface) {
     this.state[component.id].value = ($event.target as HTMLInputElement).value;
     this.state[component.id].valid = !$event;
   }
@@ -101,7 +103,7 @@ export class CustomScreenComponent implements OnChanges {
 
   loadDictionary(
     dictionaryName: string,
-    component: EgpuResponseCustomComponentDisplayComponentInterface,
+    component: EpguResponseCustomComponentDisplayComponentInterface,
   ) {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
     this.restService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
@@ -113,7 +115,7 @@ export class CustomScreenComponent implements OnChanges {
   loadDictionarySuccess(
     key: string,
     data: DictionaryResponse,
-    component: EgpuResponseCustomComponentDisplayComponentInterface,
+    component: EpguResponseCustomComponentDisplayComponentInterface,
   ) {
     this.dictionary[key].loading = false;
     this.dictionary[key].paginationLoading = false;
@@ -153,26 +155,6 @@ export class CustomScreenComponent implements OnChanges {
       originalItem: item,
       compare: () => false,
     };
-  }
-
-  /**
-   * Возвращает префикс для формирования мнемоники
-   * @param componentData - данные компонента
-   */
-  getUploadComponentPrefixForMnemonic(
-    componentData: EgpuResponseCustomComponentDisplayComponentInterface,
-  ): string {
-    return [componentData.id, this.componentType.FileUploadComponent].join('.');
-  }
-
-  /**
-   * Возвращает идентификатор заявлявления
-   */
-  get getOrderId(): number {
-    // TODO: Пока заглушка с заведённым заявлением
-    return 763418900;
-
-    // return Number(this.constructorService.response.orderId);
   }
 
   private initState(componentId: string) {

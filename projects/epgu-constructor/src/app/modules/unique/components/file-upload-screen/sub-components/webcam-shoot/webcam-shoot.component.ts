@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { WebcamImage } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
-import { imageCameraQuality } from '../../../../services/config/terabyte.config';
-import { WebcamEvents } from '../../../../services/utils/webcamevents';
+import { imageCameraQuality } from '../../../../../../services/config/terabyte.config';
+import { WebcamEvents } from '../../../../../../services/utils/webcamevents';
 
 @Component({
-  selector: 'app-webcam',
-  templateUrl: './webcam-shot.component.html',
-  styleUrls: ['./webcam-shot.component.scss'],
+  selector: 'app-webcam-shoot',
+  templateUrl: './webcam-shoot.component.html',
+  styleUrls: ['./webcam-shoot.component.scss'],
 })
-export class WebcamShotComponent {
+export class WebcamShootComponent {
   imageCameraQuality = imageCameraQuality;
   imageType = 'image/jpeg';
   width = 0;
