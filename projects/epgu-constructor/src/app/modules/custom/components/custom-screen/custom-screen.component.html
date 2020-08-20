@@ -23,11 +23,6 @@
                 [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-lookup>
             </div>
 
-            <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
-              <div class="form__title">{{componentData.label}}</div>
-              <app-foreign-citizenship></app-foreign-citizenship>
-            </div>
-
             <div class="form__item" *ngSwitchCase="componentType.StringInput">
               <div class="form__title">{{componentData.label}}</div>
               <lib-plain-input (change)="inputChange($event, componentData)"></lib-plain-input>
