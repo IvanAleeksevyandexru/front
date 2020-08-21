@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 @Component({
@@ -15,7 +14,7 @@ import { ScreenComponentService } from '../../service/screen-component/screen-co
 export class AddPassportComponent implements OnInit {
   private ngUnsubscribe$: Subject<any> = new Subject<any>();
 
-  @Input() data: EgpuResponseDisplayInterface;
+  @Input() data: any;
   @Input() header: string;
   @Input() submitLabel: string;
 
