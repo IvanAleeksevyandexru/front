@@ -65,13 +65,12 @@
         border-radius: 12px;
       }
       &.locked {
-        background-color: #EEEFEF;
         cursor: default;
         &:hover {
           border: none;
         }
         .calendar-day-text {
-          color: #A8ACB1;
+          color: #99B1E6;
         }
       }
       &.outer {
@@ -148,6 +147,10 @@
 
     ::ng-deep.dropdown-field {
       border: none;
+
+      &.disabled {
+        background-color: #ffffff;
+      }
 
       .dropdown-value>.selected-value-text {
         color: #0D4CD3!important;

@@ -24,6 +24,7 @@
                     'today': isToday(day.date),
                     'holiday': isHoliday(day.date),
                     'selected': isSelected(day.date),
+                    'locked': isDateLocked(day.date),
                     'outer': isDateOutOfMonth(day.date)
                   }">
                 <span class="calendar-day-text">{{day ? day.number : ''}}</span>

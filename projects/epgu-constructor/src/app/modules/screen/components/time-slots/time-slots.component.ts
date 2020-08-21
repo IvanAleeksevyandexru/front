@@ -11,10 +11,14 @@ const moment = moment_;
   styleUrls: ['./time-slots.component.scss'],
 })
 export class TimeSlotsComponent implements OnInit {
+  private componentValue;
+
   public date: Date = null;
+  public label: string;
   public activeMonthNumber: number;
   public activeYearNumber: number;
 
+  public daySlots = [];
   public daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
   public months = [
     'Январь',
@@ -96,7 +100,7 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   public isDateLocked(date: Date) {
-    return this.isDateOutOfMonth(date);
+    return !this.isDateOutOfMonth(date) && !this.daySlots[date.getDate()];
   }
 
   public suppressMobileKeyboard() {
@@ -113,7 +117,7 @@ export class TimeSlotsComponent implements OnInit {
 
   public selectDate(date: Date) {
     this.suppressMobileKeyboard();
-    if (this.isDateLocked(date)) {
+    if (this.isDateLocked(date) || this.isDateOutOfMonth(date)) {
       return;
     }
     this.date = date;
@@ -131,11 +135,10 @@ export class TimeSlotsComponent implements OnInit {
   public showTimeSlots(date: Date) {
     this.currentSlot = null;
     this.timeSlots = [];
-    date.setHours(14, 0);
-    for (let i = 0; i < 16; i += 1) {
-      if (Math.round(Math.random())) {
-        this.timeSlots.push(new Date(date.getTime() + i * 15 * 60000));
-      }
+    if (this.daySlots[date.getDate()]) {
+      this.daySlots[date.getDate()].forEach((slot) => {
+        this.timeSlots.push(slot.slotTime);
+      });
     }
   }
 
@@ -146,19 +149,37 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const date = new Date();
-    this.activeMonthNumber = date.getMonth();
-    this.activeYearNumber = date.getFullYear();
-    for (let i = 0; i < 5; i += 1) {
-      this.monthsYears.push(
-        new ListItem({
-          id: `${this.activeMonthNumber + i}`,
-          text: `${this.months[this.activeMonthNumber + i]} ${this.activeYearNumber}`,
-        }),
-      );
+    if (this.data.components[0].value) {
+      this.label = this.data.components[0].label;
+      this.componentValue = JSON.parse(this.data.components[0].value);
+      const { slots } = this.componentValue.slotsResponse;
+      slots.forEach((slot) => {
+        const slotDate = new Date(slot.visitTime);
+        if (!this.daySlots[slotDate.getDate()]) {
+          this.daySlots[slotDate.getDate()] = [];
+        }
+        this.daySlots[slotDate.getDate()].push({
+          slotId: slot.slotId,
+          slotTime: slotDate,
+        });
+      });
+
+      this.fixedMonth = true;
+      const [activeYearNumber, activeMonthNumber] = this.componentValue.period.period.split('-');
+      this.activeMonthNumber = parseInt(activeMonthNumber, 10);
+      this.activeYearNumber = parseInt(activeYearNumber, 10);
+
+      for (let i = 0; i < 2; i += 1) {
+        this.monthsYears.push(
+          new ListItem({
+            id: `${this.activeMonthNumber + i}`,
+            text: `${this.months[this.activeMonthNumber - 1 + i]} ${this.activeYearNumber}`,
+          }),
+        );
+      }
     }
 
-    this.showTimeSlots(date);
+    // this.showTimeSlots(date);
     [this.currentMonth] = this.monthsYears;
 
     this.renderSingleMonthGrid(this.weeks, 0);
