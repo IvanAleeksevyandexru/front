@@ -104,7 +104,7 @@ export class SelectMapObjectService {
       minClusterSize: 2,
       gridSize: 128,
       geoObjectBalloonMaxWidth: 265,
-      geoObjectBalloonOffset: [-160, -350],
+      geoObjectBalloonOffset: [0, 0],
       geoObjectHideIconOnBalloonOpen: !1,
       geoObjectIconColor: '#0D69AF',
       viewportMargin: 300,
@@ -160,6 +160,7 @@ export class SelectMapObjectService {
 
     const customBalloonContentLayout = this.ymaps.templateLayoutFactory.createClass(
       '<div class=\'map-baloon\'>' +
+      '<div class=\'cross-btn\'></div>' +
       '<div class=\'map-baloon-content\'>' +
       '<h6 class=\'map-baloon-content-Header\'>{{properties.res.title}}</h6>' +
       '{% if properties.res.baloonContent && properties.res.baloonContent.length %}' +
@@ -187,8 +188,10 @@ export class SelectMapObjectService {
           customBalloonContentLayout.superclass.build.call(this);
           // Биндим к кнопке клик
           // let parentElement = angular.element(this.getParentElement());
+          this.applyElementOffset();
           let parentElement = this.getParentElement();
           parentElement.querySelector('.btn-balloon').addEventListener('click', this.onClick);
+          parentElement.querySelector('.cross-btn').addEventListener('click', this.onCloseClick.bind(this));
         },
 
         // Аналогично переопределяем функцию clear, чтобы снять
@@ -197,7 +200,14 @@ export class SelectMapObjectService {
           // Выполняем действия в обратном порядке - сначала снимаем слушателя,
           // а потом вызываем метод clear родительского класса.
           this.getParentElement().querySelector('.btn-balloon').removeEventListener('click', this.onClick);
+          this.getParentElement().querySelector('.cross-btn').removeEventListener('click', this.onCloseClick.bind(this));
           customBalloonContentLayout.superclass.clear.call(this);
+        },
+
+        applyElementOffset: function () {
+          const balloon = this.getParentElement().querySelector('.map-baloon');
+          balloon.style.left = -(balloon.offsetWidth / 2) + 'px';
+          balloon.style.top = -(balloon.offsetHeight + 15) + 'px';
         },
 
         onClick: function (e) {
@@ -209,6 +219,11 @@ export class SelectMapObjectService {
             item = componentContext.objectManager.objects.getById(checkedId).properties.res;
             componentContext.controlValue.next(item);
           }
+        },
+
+        onCloseClick: function (e) {
+          e.preventDefault();
+          this.that.events.fire('userclose');
         },
       }
     );
