@@ -47,6 +47,12 @@
           (valueChangedEvent)="changedComponentData($event)"
         ></app-change-list>
 
+        <app-time-slots
+          *ngSwitchCase="screenComponentName.timeSlot"
+          [data]="data"
+          (nextStepEvent)="changedComponentData($event)">
+        </app-time-slots>
+
         <app-snils *ngSwitchCase="screenComponentName.snils"></app-snils>
 
         <app-doc-input

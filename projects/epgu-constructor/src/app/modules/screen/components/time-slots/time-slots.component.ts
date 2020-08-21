@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HelperService, ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
+import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 
 const moment = moment_;
 
@@ -36,10 +37,12 @@ export class TimeSlotsComponent implements OnInit {
   public currentSlot: Date;
   public currentMonth: ListItem;
   public blockMobileKeyboard = false;
+  public fixedMonth = false;
 
   constructor(private changeDetection: ChangeDetectorRef) {}
 
-  @Input() public fixedMonth = false;
+  @Input() data: EgpuResponseDisplayInterface;
+  @Output() nextStepEvent = new EventEmitter<any>();
 
   private renderSingleMonthGrid(output, monthShift) {
     output.splice(0, output.length); // in-place clear

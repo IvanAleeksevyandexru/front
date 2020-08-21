@@ -17,7 +17,6 @@ import { MockService } from './services/mock/mock.service';
 import { RestService } from './services/rest/rest.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { EpgucSharedModule } from './shared-module/shared-components.module';
-import {BookingScreenModule} from './modules/booking/booking-screen.module';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -29,7 +28,6 @@ const COMPONENTS = [
   ],
   imports: [
     CommonModule,
-    BookingScreenModule,
     ScreenModule,
     CustomScreenModule,
     QuestionScreenModule,
