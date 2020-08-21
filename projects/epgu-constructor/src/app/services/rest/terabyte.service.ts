@@ -70,9 +70,6 @@ export class TerabyteService {
     let options = {
       withCredentials: true
     }
-    if (this.isLocalHost){
-      //options['headers'] = this.getTestHeaders();
-    }
     options = {...additionalOptions, ...options}
     return options;
   }
