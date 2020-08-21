@@ -1,21 +1,21 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-class AddPassportScreenComponent {
+class AddPassportComponent {
 }
 
-describe('AddPassportComponent', () => {
-  let component: AddPassportScreenComponent;
-  let fixture: ComponentFixture<AddPassportScreenComponent>;
+describe('', () => {
+  let component: AddPassportComponent;
+  let fixture: ComponentFixture<AddPassportComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddPassportScreenComponent ]
+      declarations: [ AddPassportComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddPassportScreenComponent);
+    fixture = TestBed.createComponent(AddPassportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
