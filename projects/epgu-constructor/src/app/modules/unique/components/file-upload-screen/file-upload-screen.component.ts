@@ -21,9 +21,8 @@ export class FileUploadScreenComponent {
   @Input() set data(data: EgpuResponseComponentInterface) {
     this.info = data;
     this.allMaxFiles = 0;
-    const { attrs } = data;
     // @ts-ignore
-    const { uploads } = attrs;
+    const { attrs: { uploads } = {} } = data;
     this.collectMaxFilesNumber(uploads);
     this.value = {
       id: data.id,
@@ -36,7 +35,7 @@ export class FileUploadScreenComponent {
   @Input() submitLabel: string;
   @Output() nextStepEvent = new EventEmitter();
 
-  allMaxFiles = 0;
+  allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
   private value: any = {}; // Здесь будет храниться значение на передачу
 
   constructor(public constructorService: ConstructorService) {}

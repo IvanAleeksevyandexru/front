@@ -1,3 +1,23 @@
-<div class="title">{{name}}</div>
-
-<div class="content">{{content}}</div>
+<form [formGroup]="phoneForm">
+  <div class="flex-row">
+    <app-label for="phone">{{ label }}</app-label>
+    <a
+      href="javascript:void(0);"
+      (click)="handleClick()"
+      class="button-change"
+      *ngIf="isEditButtonShown"
+    >
+      Изменить
+    </a>
+  </div>
+  <lib-base-masked-input
+    formControlName="phone"
+    name="phone"
+    id="phone"
+    [invalid]="!phoneForm.controls.phone.valid"
+    [validationShowOn]="validationShowOn"
+    class="content content__input"
+    [mask]="phoneMask"
+    showMaskAsPlaceholder="true"
+  ></lib-base-masked-input>
+</form>

@@ -27,7 +27,7 @@ export class ScreenComponent implements OnInit {
   constructor(
     public constructorService: ConstructorService,
     private navService: NavigationService,
-    private screenComponentService: ScreenComponentService,
+    public screenComponentService: ScreenComponentService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.navService.clickToBack$

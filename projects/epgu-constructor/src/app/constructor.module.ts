@@ -13,6 +13,7 @@ import { UniqueScreenModule } from './modules/unique/unique-screen.module';
 import { ConstructorConfigService } from './services/config/constructor-config.service';
 import { CONSTRUCTOR_CONFIG_TOKEN } from './services/config/constructor.config.token';
 import { ConstructorService } from './services/constructor/constructor.service';
+import { MockService } from './services/mock/mock.service';
 import { RestService } from './services/rest/rest.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { EpgucSharedModule } from './shared-module/shared-components.module';
@@ -43,7 +44,8 @@ const COMPONENTS = [
     RestService,
     ConstructorService,
     ConstructorConfigService,
-    UnsubscribeService
+    UnsubscribeService,
+    MockService,
   ],
   exports: [
     ...COMPONENTS

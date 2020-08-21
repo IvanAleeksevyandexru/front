@@ -14,7 +14,7 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'registrationAddr' = 'RegistrationAddr',
-  'addPassport' = 'addPassport',
+  'personLookup' = 'PersonLookup',
   'changeList' = 'ChangeList',
   'snils' = 'StringInput',
   'docInput' = 'DocInput'
