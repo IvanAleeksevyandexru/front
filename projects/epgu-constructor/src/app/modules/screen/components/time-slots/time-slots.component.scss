@@ -55,11 +55,6 @@
 
         }
       }
-      &.holiday {
-        .calendar-day-text {
-          color: #EE3F58;
-        }
-      }
       &:hover {
         background: rgba(13, 76, 211, 0.18);
         border-radius: 12px;
@@ -71,6 +66,11 @@
         }
         .calendar-day-text {
           color: #99B1E6;
+        }
+      }
+      &.holiday {
+        .calendar-day-text {
+          color: #EE3F58;
         }
       }
       &.outer {

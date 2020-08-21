@@ -22,9 +22,9 @@
             <div class="calendar-week" *ngFor="let week of weeks">
               <div *ngFor="let day of week" class="calendar-day" (click)="selectDate(day.date)" [ngClass]="{
                     'today': isToday(day.date),
+                    'locked': isDateLocked(day.date),
                     'holiday': isHoliday(day.date),
                     'selected': isSelected(day.date),
-                    'locked': isDateLocked(day.date),
                     'outer': isDateOutOfMonth(day.date)
                   }">
                 <span class="calendar-day-text">{{day ? day.number : ''}}</span>

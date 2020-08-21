@@ -48,12 +48,11 @@ export class TimeSlotsComponent implements OnInit {
   @Input() data: EgpuResponseDisplayInterface;
   @Output() nextStepEvent = new EventEmitter<any>();
 
-  private renderSingleMonthGrid(output, monthShift) {
+  private renderSingleMonthGrid(output) {
     output.splice(0, output.length); // in-place clear
     const firstDayOfMonth = moment()
       .year(this.activeYearNumber)
       .month(this.activeMonthNumber)
-      .add(monthShift, 'month')
       .startOf('month')
       .startOf('day');
     const firstDayOfWeekInMonth = firstDayOfMonth.isoWeekday();
@@ -76,9 +75,8 @@ export class TimeSlotsComponent implements OnInit {
     }
     let days = 0;
     while (output[week].length < 7) {
-      const date = moment(firstDayOfMonth)
-        .add(1, 'month')
-        .add((days += 1), 'day');
+      const date = moment(firstDayOfMonth).add(1, 'month').add(days, 'day');
+      days += 1;
       output[week].push({ number: date.date(), date: date.toDate() });
     }
   }
@@ -145,7 +143,7 @@ export class TimeSlotsComponent implements OnInit {
   public monthChanged(ev) {
     const { id } = ev;
     this.activeMonthNumber = +id;
-    this.renderSingleMonthGrid(this.weeks, 0);
+    this.renderSingleMonthGrid(this.weeks);
   }
 
   ngOnInit(): void {
@@ -166,14 +164,14 @@ export class TimeSlotsComponent implements OnInit {
 
       this.fixedMonth = true;
       const [activeYearNumber, activeMonthNumber] = this.componentValue.period.period.split('-');
-      this.activeMonthNumber = parseInt(activeMonthNumber, 10);
+      this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
       this.activeYearNumber = parseInt(activeYearNumber, 10);
 
       for (let i = 0; i < 2; i += 1) {
         this.monthsYears.push(
           new ListItem({
             id: `${this.activeMonthNumber + i}`,
-            text: `${this.months[this.activeMonthNumber - 1 + i]} ${this.activeYearNumber}`,
+            text: `${this.months[this.activeMonthNumber + i]} ${this.activeYearNumber}`,
           }),
         );
       }
@@ -182,6 +180,6 @@ export class TimeSlotsComponent implements OnInit {
     // this.showTimeSlots(date);
     [this.currentMonth] = this.monthsYears;
 
-    this.renderSingleMonthGrid(this.weeks, 0);
+    this.renderSingleMonthGrid(this.weeks);
   }
 }
