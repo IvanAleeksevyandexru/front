@@ -1,7 +1,7 @@
-import {DictionaryItem} from '../../../../interfaces/dictionary-options.interface';
-import {FMS_COUNTRIES_DICTIONARY, RUSSIA_DICTIONARY_NAME} from '../../../../constant/global';
-import {ListItem} from 'epgu-lib';
-import {CustomComponentDictionaryState} from '../../../../interfaces/custom-component.interface';
+import { ListItem } from 'epgu-lib';
+import { FMS_COUNTRIES_DICTIONARY, RUSSIA_DICTIONARY_NAME } from '../../../../constant/global';
+import { CustomComponentDictionaryState } from '../../../../interfaces/custom-component.interface';
+import { DictionaryItem } from '../../../../interfaces/dictionary-options.interface';
 
 export enum CUSTOM_COMPONENT_ITEM_TYPE {
   LabelSection = 'LabelSection',
@@ -10,6 +10,7 @@ export enum CUSTOM_COMPONENT_ITEM_TYPE {
   StringInput = 'StringInput',
   DateInput = 'DateInput',
   Lookup = 'Lookup',
+  RadioInput = 'RadioInput'
 }
 
 export function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
