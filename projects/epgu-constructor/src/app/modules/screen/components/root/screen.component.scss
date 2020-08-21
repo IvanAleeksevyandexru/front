@@ -2,6 +2,10 @@
 @import "../../../../../styles/variables";
 @import "../../../../../styles/functions";
 
+app-navigation {
+  @include navigation-mt();
+}
+
 .inner {
   display: flex;
   flex-direction: column;

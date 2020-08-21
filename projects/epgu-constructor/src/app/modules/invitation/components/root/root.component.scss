@@ -1,0 +1,5 @@
+@import "../../../../../styles/functions";
+
+app-navigation {
+  @include navigation-mt();
+}

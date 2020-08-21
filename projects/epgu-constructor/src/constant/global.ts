@@ -1,4 +1,4 @@
-export enum COMPONENT_TYPE {
+export enum SCREEN_TYPE {
   'QUESTION' = 'QUESTION',
   'INFO' = 'INFO',
   'COMPONENT' = 'COMPONENT', // внутри этого компонента внутри ровна один компонент
@@ -30,3 +30,6 @@ export enum UNIQUE_COMPONENT_NAME {
 
 export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';
 export const DATE_STRING_DASH_FORMAT = 'DD-MM-YYYY';
+
+export const FMS_COUNTRIES_DICTIONARY = 'FMS_COUNTRIES';
+export const RUSSIA_DICTIONARY_NAME = 'РОССИЯ'

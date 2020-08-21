@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ForeignCitizenshipComponent } from './foreign-citizenship.component';
+import { NavigationProgressComponent } from './navigation-progress.component';
 
-describe('ForeignCitizenshipComponent', () => {
-  let component: ForeignCitizenshipComponent;
-  let fixture: ComponentFixture<ForeignCitizenshipComponent>;
+describe('NavigationProgressComponent', () => {
+  let component: NavigationProgressComponent;
+  let fixture: ComponentFixture<NavigationProgressComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ForeignCitizenshipComponent ]
+      declarations: [ NavigationProgressComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ForeignCitizenshipComponent);
+    fixture = TestBed.createComponent(NavigationProgressComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

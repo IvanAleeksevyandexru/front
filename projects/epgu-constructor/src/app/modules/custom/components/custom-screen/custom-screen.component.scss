@@ -2,6 +2,11 @@
 @import '../../../../../styles/functions';
 @import '../../../../../styles/breakpoint';
 
+
+app-navigation {
+  @include navigation-mt();
+}
+
 .inner {
   display: flex;
   flex-direction: column;

@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import {
   EgpuResponseQuestionsDisplayComponentAttrsActionsInterface,
   EgpuResponseQuestionsDisplayInterface,
 } from '../interface/question-block.interface';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 
 @Component({
   selector: 'app-question-screen',
