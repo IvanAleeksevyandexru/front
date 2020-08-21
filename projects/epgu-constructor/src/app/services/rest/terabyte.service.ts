@@ -22,7 +22,7 @@ export class TerabyteService {
     private constructorConfigService: ConstructorConfigService,
   ) {
     this.isLocalHost = location.hostname === 'localhost';
-    this.testToken = constructorConfigService.config.apiUrl;
+    this.testToken = constructorConfigService.config.fileUploadTokenForTest;
     this.apiUrl = constructorConfigService.config.fileUploadApiUrl;
     this.apiLocalhostUrl = constructorConfigService.config.fileUploadLocalhostApiUrl;
   }
