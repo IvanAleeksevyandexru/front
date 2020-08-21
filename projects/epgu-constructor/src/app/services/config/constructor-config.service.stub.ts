@@ -7,6 +7,7 @@ export class ConstructorConfigServiceStub {
     apiUrl: '',
     dictionaryUrl: '',
     serviceId: '',
-    externalApiUrl: ''
+    externalApiUrl: '',
+    isProd: false
   };
 }
