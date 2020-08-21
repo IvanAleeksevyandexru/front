@@ -26,11 +26,6 @@
       "pre-push": "yarn test && yarn build && yarn library:build"
     }
   },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "eslint --fix"
-    ]
-  },
   "jest-junit": {
     "suiteName": "epgu-form-frontend",
     "outputDirectory": "./coverage/junit",
