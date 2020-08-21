@@ -22,7 +22,6 @@ export class TerabyteService {
     private constructorConfigService: ConstructorConfigService,
   ) {
     this.isLocalHost = location.hostname === 'localhost';
-    this.testToken = constructorConfigService.config.fileUploadTokenForTest;
     this.apiUrl = constructorConfigService.config.fileUploadApiUrl;
     this.apiLocalhostUrl = constructorConfigService.config.fileUploadLocalhostApiUrl;
   }
@@ -48,9 +47,11 @@ export class TerabyteService {
    * Возвращает объект заголовков, которые нужны для запуска на тестовом домене
    */
   private getTestHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      Cookie: 'acc_t=' + this.testToken + '; Path=/; Domain=.pgu-dev-fed.test.gosuslugi.ru; Expires=Mon, 30 Aug 2021 09:32:01 GMT;',
-    });
+    // return new HttpHeaders({
+    //   Cookie: 'acc_t=' + this.testToken + '; Path=/; Domain=.pgu-dev-fed.test.gosuslugi.ru; Expires=Mon, 30 Aug 2021 09:32:01 GMT;',
+    // });
+
+    return new HttpHeaders();
   }
 
   /**
@@ -70,7 +71,7 @@ export class TerabyteService {
       withCredentials: true
     }
     if (this.isLocalHost){
-      options['headers'] = this.getTestHeaders();
+      //options['headers'] = this.getTestHeaders();
     }
     options = {...additionalOptions, ...options}
     return options;
@@ -81,7 +82,7 @@ export class TerabyteService {
    * @param objectId - идентификатор объекта
    */
   getListByObjectId(objectId: number): Observable<any>  {
-    return this.http.get(this.getTerabyteApiUrl(`/${objectId}`), this.getServerRequestOptions());
+    return this.http.get(this.getTerabyteApiUrl(`/${objectId}`));
   }
 
   /**

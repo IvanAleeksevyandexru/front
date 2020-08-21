@@ -18,7 +18,6 @@ import { AppComponent } from './app.component';
       dictionaryUrl: environment.dictionaryUrl,
       externalApiUrl: environment.externalApiUrl,
       isProd: environment.production,
-      fileUploadTokenForTest: environment.fileUploadTokenForTest,
       fileUploadApiUrl: environment.fileUploadApiUrl,
       fileUploadLocalhostApiUrl: environment.fileUploadLocalhostApiUrl,
     }),

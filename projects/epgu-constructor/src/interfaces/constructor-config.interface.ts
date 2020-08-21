@@ -7,7 +7,6 @@ export interface ConstructorConfigInterface {
   serviceId: string;
   externalApiUrl: string;
   isProd: boolean;
-  fileUploadTokenForTest: string;
   fileUploadApiUrl: string;
   fileUploadLocalhostApiUrl: string;
 }

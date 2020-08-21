@@ -13,7 +13,6 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { WebcamInitError } from 'ngx-webcam';
 import { getSizeInMB, UploadedFile, uploadObjectType } from './data';
 import { TerabyteService } from '../../../../../../services/rest/terabyte.service';
-import { UtilsService } from '../../../../../../services/utils/utils.service';
 import { WebcamService } from '../../../../../../services/utils/webcam.service';
 import {
   isCloseAndSaveWebcamEvent,
@@ -383,7 +382,5 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     this.subs.forEach((sub) => sub.unsubscribe());
   }
 
-  ngOnInit(): void {
-    UtilsService.setCookie('acc_t', this.terabyteService.testToken, 14);
-  }
+  ngOnInit(): void {}
 }
