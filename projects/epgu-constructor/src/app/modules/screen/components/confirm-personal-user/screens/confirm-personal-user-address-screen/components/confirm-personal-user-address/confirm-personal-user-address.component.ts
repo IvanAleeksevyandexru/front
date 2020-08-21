@@ -8,11 +8,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import * as moment_ from 'moment';
-import { delay, takeUntil } from 'rxjs/operators';
-import {
-  DATE_STRING_DASH_FORMAT,
-  DATE_STRING_DOT_FORMAT,
-} from '../../../../../../../../../constant/global';
+import { takeUntil } from 'rxjs/operators';
+import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../../constant/global';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
@@ -55,10 +52,7 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.valueParsed = JSON.parse(this.data.value);
     if (this.valueParsed.regDate) {
-      const date = moment(
-        this.valueParsed.regDate,
-        DATE_STRING_DOT_FORMAT || DATE_STRING_DASH_FORMAT,
-      );
+      const date = moment(this.valueParsed.regDate, DATE_STRING_DOT_FORMAT);
       const isValidDate = date.isValid();
       if (isValidDate) {
         this.valueParsed.regDate = date.toDate();
@@ -68,13 +62,12 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.isEditable) {
-      this.dataForm.form.valueChanges
-        .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
-        .subscribe((change) => {
-          this.valueParsed = change;
-          this.data.value = this.handleDataChange(change);
-          this.dataEditedEvent.emit({ valueParsed: this.valueParsed, data: this.data });
-        });
+      this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
+        this.valueParsed = change;
+        this.data.value = this.handleDataChange(change);
+        this.data.value = this.handleDataChange(change);
+        this.dataEditedEvent.emit({ valueParsed: this.valueParsed, data: this.data });
+      });
     }
   }
 }

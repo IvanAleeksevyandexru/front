@@ -43,16 +43,10 @@ export class ScreenComponent implements OnInit {
   }
 
   nextStep() {
-    if (typeof this.screenComponentService.dataToSend === 'object') {
-      this.nextStepEvent.emit(JSON.stringify(this.screenComponentService.dataToSend));
-    } else {
-      this.nextStepEvent.emit(this.screenComponentService.dataToSend);
-    }
-
-    this.screenComponentService.dataToSend = null;
-  }
-
-  changedComponentData(value) {
-    this.componentData = value;
+    const data =
+      typeof this.screenComponentService.dataToSend === 'object'
+        ? JSON.stringify(this.screenComponentService.dataToSend)
+        : this.screenComponentService.dataToSend;
+    this.nextStepEvent.emit(data);
   }
 }

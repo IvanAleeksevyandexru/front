@@ -54,6 +54,7 @@ export class CustomScreenComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
+      this.state = {};
       this.data.components.forEach((component) => {
         if (component.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection) {
           this.initState(component);
@@ -95,11 +96,10 @@ export class CustomScreenComponent implements OnChanges {
     if (isValid) {
       Object.keys(this.state).forEach((key) => {
         const responseValue = this.state[key].value;
-        if (typeof responseValue === 'object') {
-          responseData[key] = { visited: true, value: JSON.stringify(responseValue || {}) };
-        } else {
-          responseData[key] = { visited: true, value: responseValue };
-        }
+        responseData[key] =
+          typeof responseValue === 'object'
+            ? { visited: true, value: JSON.stringify(responseValue || {}) }
+            : { visited: true, value: responseValue };
       });
       this.nextStepEvent.emit(responseData);
       this.validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
