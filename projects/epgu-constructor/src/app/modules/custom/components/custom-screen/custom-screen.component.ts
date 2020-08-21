@@ -94,9 +94,15 @@ export class CustomScreenComponent implements OnChanges {
 
     if (isValid) {
       Object.keys(this.state).forEach((key) => {
-        responseData[key] = { visited: true, value: JSON.stringify(this.state[key].value || {}) };
+        const responseValue = this.state[key].value;
+        if (typeof responseValue === 'object') {
+          responseData[key] = { visited: true, value: JSON.stringify(responseValue || {}) };
+        } else {
+          responseData[key] = { visited: true, value: responseValue };
+        }
       });
       this.nextStepEvent.emit(responseData);
+      this.validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
     }
   }
 
