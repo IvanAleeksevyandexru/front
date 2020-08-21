@@ -7,6 +7,7 @@ export const environment = {
   apiUrl: 'http://localhost:4200/api',
   dictionaryUrl: 'https://www.gosuslugi.ru/api/nsi/v1/dictionary',
   externalApiUrl: '//pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/',
+  externalLkUrl: 'https://pgu-dev-lk.test.gosuslugi.ru/info',
   serviceId: 'local'
 };
 
