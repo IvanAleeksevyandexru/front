@@ -9,7 +9,7 @@
         class="answer__item"
         *ngFor="let answer of data?.components[0]?.attrs.actions"
         (click)="answerChoose(answer)"
-        [data]="answer.label">
+        [data]="answer">
       </app-answer-choice>
     </div>
   </div>

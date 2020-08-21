@@ -15,6 +15,7 @@ export class ConfirmPersonalUserEmailComponent implements OnInit {
   @Input() label: string;
   @Input() data: string;
   @Input() isEditable: boolean;
+  @Input() isEditButtonShown: boolean;
   @Output() dataChanged = new EventEmitter();
 
   emailForm: FormGroup;
@@ -57,5 +58,9 @@ export class ConfirmPersonalUserEmailComponent implements OnInit {
         this.emailForm.controls.email.disable();
       }
     }
+  }
+
+  handleClick() {
+    this.emailForm.controls.email.enable();
   }
 }
