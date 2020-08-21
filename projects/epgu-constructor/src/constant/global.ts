@@ -28,6 +28,5 @@ export enum UNIQUE_COMPONENT_NAME {
   'childrenListUnder14' = 'ChildrenListUnder14',
 }
 
-export enum CONSTANTS {
-  'dateFormat' = 'DD.MM.YYYY'
-}
+export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';
+export const DATE_STRING_DASH_FORMAT = 'DD-MM-YYYY';

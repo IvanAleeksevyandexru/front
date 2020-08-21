@@ -8,8 +8,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import * as moment_ from 'moment';
-import { takeUntil } from 'rxjs/operators';
-import { CONSTANTS } from '../../../../../../../../../constant/global';
+import { delay, takeUntil } from 'rxjs/operators';
+import {
+  DATE_STRING_DASH_FORMAT,
+  DATE_STRING_DOT_FORMAT,
+} from '../../../../../../../../../constant/global';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
@@ -44,32 +47,34 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
     return JSON.stringify({
       regAddr: fullAddress || '',
       regDate:
-        moment(regDate).format(CONSTANTS.dateFormat) || moment().format(CONSTANTS.dateFormat),
+        moment(regDate).format(DATE_STRING_DOT_FORMAT) || moment().format(DATE_STRING_DOT_FORMAT),
       ...restFields,
     });
   }
 
   ngOnInit(): void {
     this.valueParsed = JSON.parse(this.data.value);
-    if (this.valueParsed.date) {
-      const date = moment(this.valueParsed.date, CONSTANTS.dateFormat);
+    if (this.valueParsed.regDate) {
+      const date = moment(
+        this.valueParsed.regDate,
+        DATE_STRING_DOT_FORMAT || DATE_STRING_DASH_FORMAT,
+      );
       const isValidDate = date.isValid();
       if (isValidDate) {
-        this.valueParsed.date = date.toDate();
+        this.valueParsed.regDate = date.toDate();
       }
     }
   }
 
   ngOnChanges() {
     if (this.isEditable) {
-      // give time to init view dataForm and make form changes subscription possible
-      setTimeout(() => {
-        this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
+      this.dataForm.form.valueChanges
+        .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
+        .subscribe((change) => {
           this.valueParsed = change;
           this.data.value = this.handleDataChange(change);
           this.dataEditedEvent.emit({ valueParsed: this.valueParsed, data: this.data });
         });
-      }, 0);
     }
   }
 }
