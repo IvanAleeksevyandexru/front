@@ -17,6 +17,7 @@ import { AppComponent } from './app.component';
       apiUrl: environment.apiUrl,
       dictionaryUrl: environment.dictionaryUrl,
       externalApiUrl: environment.externalApiUrl,
+      externalLkUrl: environment.externalLkUrl,
       isProd: environment.production,
     }),
   ],

@@ -6,5 +6,6 @@ export interface ConstructorConfigInterface {
   dictionaryUrl: string;
   serviceId: string;
   externalApiUrl: string;
+  externalLkUrl: string;
   isProd: boolean;
 }

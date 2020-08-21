@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {
   ConfirmUserDataFieldsInterface,
   ConfirmUserDataInterface,
 } from '../../../../../../../../../interfaces/confirm-user-data.interface';
+import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 
 @Component({
   selector: 'app-confirm-personal-user-data',
@@ -14,6 +15,8 @@ export class ConfirmPersonalUserDataComponent implements OnInit, OnChanges {
   birthDay: ConfirmUserDataFieldsInterface;
   passportFields: Array<ConfirmUserDataFieldsInterface>;
   @Input() data: ConfirmUserDataInterface;
+
+  constructor(public constructorConfigService: ConstructorConfigService) {}
 
   ngOnInit(): void {}
 

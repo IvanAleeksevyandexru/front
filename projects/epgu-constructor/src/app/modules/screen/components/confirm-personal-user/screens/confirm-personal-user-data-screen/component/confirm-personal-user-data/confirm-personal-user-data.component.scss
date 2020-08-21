@@ -1,6 +1,5 @@
-@import "../../../../../../../../../styles/variables";
-@import "../../../../../../../../../styles/breakpoint";
-
+@import '../../../../../../../../../styles/variables';
+@import '../../../../../../../../../styles/breakpoint';
 
 .data__group:not(:last-child) {
   margin-bottom: 16px;
@@ -20,10 +19,26 @@
   margin-bottom: 16px;
 
   &__label {
-    color: rgba($storm-gray, .5);
+    color: rgba($storm-gray, 0.5);
     margin-bottom: 4px;
   }
 
   &__value {
+  }
+}
+
+.flex-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.button-change {
+  margin-left: auto;
+  margin-bottom: 16px;
+  font-size: $font-sm;
+  @include tablets-down {
+    display: none;
   }
 }
