@@ -13,6 +13,7 @@ import { CONSTANTS } from '../../../../../../../../../constant/global';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
+import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
 
 const moment = moment_;
 
@@ -28,14 +29,25 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
   @Input() data: ConfirmAddressInterface;
   @Input() isEditable: boolean;
   @Output() dataEditedEvent = new EventEmitter();
-  valueParsed: any;
   externalApiUrl: string;
 
   constructor(
+    private screenComponentService: ScreenComponentService,
     private constructorConfigService: ConstructorConfigService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.externalApiUrl = this.constructorConfigService.config.externalApiUrl;
+  }
+
+  ngOnInit(): void {
+    this.screenComponentService.dataToSend = JSON.parse(this.data.value);
+    if (this.screenComponentService.dataToSend.date) {
+      const date = moment(this.screenComponentService.dataToSend.date, CONSTANTS.dateFormat);
+      const isValidDate = date.isValid();
+      if (isValidDate) {
+        this.screenComponentService.dataToSend.date = date.toDate();
+      }
+    }
   }
 
   handleDataChange(change) {
@@ -49,25 +61,17 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnInit(): void {
-    this.valueParsed = JSON.parse(this.data.value);
-    if (this.valueParsed.date) {
-      const date = moment(this.valueParsed.date, CONSTANTS.dateFormat);
-      const isValidDate = date.isValid();
-      if (isValidDate) {
-        this.valueParsed.date = date.toDate();
-      }
-    }
-  }
-
   ngOnChanges() {
     if (this.isEditable) {
       // give time to init view dataForm and make form changes subscription possible
       setTimeout(() => {
         this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
-          this.valueParsed = change;
+          this.screenComponentService.dataToSend = change;
           this.data.value = this.handleDataChange(change);
-          this.dataEditedEvent.emit({ valueParsed: this.valueParsed, data: this.data });
+          this.dataEditedEvent.emit({
+            valueParsed: this.screenComponentService.dataToSend,
+            data: this.data,
+          });
         });
       }, 0);
     }

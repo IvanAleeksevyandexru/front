@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
@@ -30,7 +22,6 @@ interface IField {
 })
 export class ChangeListComponent implements OnInit, OnChanges {
   @Input() data: EgpuResponseComponentInterfaceForChangeList;
-  @Output() valueChangedEvent = new EventEmitter<Array<any>>();
   response: Array<any>;
   fields: FormGroup;
 
@@ -50,7 +41,7 @@ export class ChangeListComponent implements OnInit, OnChanges {
     if (this.fields.valid) {
       this.response.unshift(this.fields.getRawValue());
       this.fields.reset();
-      this.valueChangedEvent.emit(this.response);
+      this.screenComponentService.dataToSend = this.response;
     }
   }
 

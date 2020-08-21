@@ -15,6 +15,7 @@ export class ConfirmPersonalUserPhoneScreenComponent implements OnInit {
   constructor(private screenComponentService: ScreenComponentService) {}
 
   ngOnInit(): void {
+    // TODO возможно стоит переместить во внутриь компонента
     this.screenComponentService.dataToSend = this.data.value;
   }
 

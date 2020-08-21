@@ -14,6 +14,10 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
 
   constructor(private screenComponentService: ScreenComponentService) {}
 
+  ngOnInit(): void {
+    this.screenComponentService.dataToSend = this.data.value;
+  }
+
   clickToAction(event): void {
     const { action } = event;
     switch (action) {
@@ -26,5 +30,8 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  dataChange($event: any) {
+    console.log($event, 123);
+    this.screenComponentService.dataToSend = JSON.stringify($event);
+  }
 }
