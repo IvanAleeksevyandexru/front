@@ -1,7 +1,7 @@
-import { ListItem } from 'epgu-lib';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../app/modules/custom/tools/custom-screen-tools';
-import { DictionaryItem, DictionaryResponse } from './dictionary-options.interface';
-import { EgpuResponseComponentInterface, EgpuResponseDisplayInterface } from './epgu.service.interface';
+import {ListItem} from 'epgu-lib';
+import {CUSTOM_COMPONENT_ITEM_TYPE} from '../app/modules/custom/tools/custom-screen-tools';
+import {DictionaryItem, DictionaryResponse} from './dictionary-options.interface';
+import {EgpuResponseComponentInterface, EgpuResponseDisplayInterface} from './epgu.service.interface';
 
 export interface CustomComponentDictionaryState {
   loading: boolean,
@@ -51,12 +51,11 @@ export interface CustomComponentState {
 }
 
 
-
 export interface EgpuResponseCustomComponentDisplayInterface extends EgpuResponseDisplayInterface {
   components: Array<EgpuResponseCustomComponentDisplayComponentInterface>;
 }
 
-export interface EgpuResponseCustomComponentDisplayComponentInterface extends EgpuResponseComponentInterface{
+export interface EgpuResponseCustomComponentDisplayComponentInterface extends EgpuResponseComponentInterface {
   attrs: EgpuResponseComponentAttrForCustomComponentInterface;
   type: CUSTOM_COMPONENT_ITEM_TYPE;
 }

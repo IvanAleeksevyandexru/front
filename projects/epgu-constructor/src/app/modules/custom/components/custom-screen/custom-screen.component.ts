@@ -9,15 +9,16 @@ import {
   EgpuResponseCustomComponentDisplayComponentInterface,
   EgpuResponseCustomComponentDisplayInterface,
 } from '../../../../../interfaces/custom-component.interface';
-import {
-  DictionaryItem,
-  DictionaryResponse,
-} from '../../../../../interfaces/dictionary-options.interface';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { DictionaryResponse } from '../../../../../interfaces/dictionary-options.interface';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { RestService } from '../../../../services/rest/rest.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
+import {
+  CUSTOM_COMPONENT_ITEM_TYPE,
+  getCustomScreenDictionaryFirstState,
+  getNormalizeDataCustomScreenDictionary,
+} from '../../tools/custom-screen-tools';
 
 const moment = moment_;
 
@@ -192,7 +193,7 @@ export class CustomScreenComponent implements OnChanges {
     this.dictionary[key].paginationLoading = false;
     this.dictionary[key].data = data;
     this.dictionary[key].origin = component;
-    this.dictionary[key].list = data.items.map((item) => this.adaptiveData(item));
+    this.dictionary[key].list = getNormalizeDataCustomScreenDictionary(data.items, key);
   }
 
   loadDictionaryError(key: string) {
@@ -204,28 +205,7 @@ export class CustomScreenComponent implements OnChanges {
 
   // <------------ tools
   initDictionary(dictionaryName) {
-    this.dictionary[dictionaryName] = {
-      loading: true,
-      loadError: false,
-      loadEnd: false,
-      paginationLoading: true,
-      page: 0,
-      data: {} as any,
-      list: [],
-      origin: {} as any,
-      selectedItem: {} as any,
-    };
-  }
-
-  adaptiveData(item: DictionaryItem): any {
-    return {
-      id: item.value,
-      text: item.title,
-      formatted: '',
-      // 'hidden': false,
-      originalItem: item,
-      compare: () => false,
-    };
+    this.dictionary[dictionaryName] = getCustomScreenDictionaryFirstState();
   }
 
   private initState(component: EgpuResponseCustomComponentDisplayComponentInterface) {

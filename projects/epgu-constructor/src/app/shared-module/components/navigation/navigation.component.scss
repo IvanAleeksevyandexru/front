@@ -9,23 +9,8 @@
   color: $gosblue;
 }
 
-.progress {
-  $height: 4px;
-  height: $height;
-  background: $button-disabled;
-  border-radius: 0 0 $border-round $border-round;
-  &__thumb {
-    width: 70%;
-    height: $height;
-    background: $royal-blue;
-    border-radius: 0 4px 4px 4px;
-  }
-}
-
 .head {
-  margin-top: 32px;
   @include tablets-down {
-    margin-top: 0;
     padding: 10px 0;
     border: 1px solid $perano;
     border-left: none;
