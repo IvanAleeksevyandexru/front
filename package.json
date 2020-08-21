@@ -14,8 +14,8 @@
     "library:lint": "ng lint epgu-constructor",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
+    "test": "jest --ci",
     "test:dev": "jest --watch -o",
-    "test:ci": "jest --ci",
     "test:coverage": "jest --ci --coverage --no-cache --reporters=default --reporters=jest-junit --coverageDirectory=coverage/jest",
     "e2e": "ng e2e"
   },
@@ -23,7 +23,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged --relative",
-      "pre-push": "yarn test:ci && yarn build && yarn library:build"
+      "pre-push": "yarn test && yarn build && yarn library:build"
     }
   },
   "lint-staged": {
