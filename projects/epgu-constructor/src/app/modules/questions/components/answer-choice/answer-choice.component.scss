@@ -27,9 +27,19 @@
   &:focus,
   &:active {
     outline: none;
+  }
+  &:focus {
     border: 1px dashed $color-cornflower;
     @include tablets-up {
       padding: 23px 31px;
+    }
+    transition-delay: .1s;
+  }
+  &:active {
+    background: $color-zircon;
+    border: none;
+    @include tablets-up {
+      padding: 24px 32px;
     }
   }
 
