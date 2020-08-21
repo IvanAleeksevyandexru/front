@@ -33,6 +33,7 @@ export class CustomScreenComponent implements OnChanges {
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
 
   @Input() data: EgpuResponseCustomComponentDisplayInterface;
+  @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 

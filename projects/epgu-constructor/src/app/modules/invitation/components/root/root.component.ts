@@ -17,6 +17,7 @@ export class RootComponent implements OnInit {
   typeComponent = SCREEN_COMPONENT_NAME;
 
   @Input() data: EgpuResponseDisplayInterface;
+  @Input() errors: object;
   @Output() resolve: EventEmitter<string> = new EventEmitter<string>();
   @Output() prevStepEvent = new EventEmitter();
 

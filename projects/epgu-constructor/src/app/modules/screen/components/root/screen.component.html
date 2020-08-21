@@ -20,12 +20,14 @@
         <app-confirm-personal-user-email-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserEmail"
           [data]="(data?.components)[0]"
+          [errors]="errors"
         >
         </app-confirm-personal-user-email-screen>
 
         <app-confirm-personal-user-phone-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserPhone"
           [data]="(data?.components)[0]"
+          [errors]="errors"
         >
         </app-confirm-personal-user-phone-screen>
 

@@ -14,6 +14,7 @@ import { ScreenComponentService } from '../../../../../../service/screen-compone
 export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
   @Input() label: string;
   @Input() data: string;
+  @Input() error: string;
   @Input() isEditable: boolean;
   @Input() isEditButtonShown: boolean;
   @Output() dataChanged = new EventEmitter();
@@ -57,6 +58,13 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
         this.phoneForm.controls.phone.enable();
       } else {
         this.phoneForm.controls.phone.disable();
+      }
+
+      if (this.error) {
+        this.phoneForm.controls.phone.setErrors({ incorrect: true });
+        this.phoneForm.controls.phone.enable();
+      } else {
+        this.phoneForm.controls.phone.setErrors(null);
       }
     }
   }
