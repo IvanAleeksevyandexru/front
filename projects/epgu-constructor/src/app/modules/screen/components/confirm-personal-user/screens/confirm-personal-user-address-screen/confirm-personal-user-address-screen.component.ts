@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
 
@@ -26,5 +26,9 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.screenComponentService.dataToSend = this.data.value;
+  }
+
+
 }

@@ -5,6 +5,7 @@ import { EpguLibModule } from 'epgu-lib';
 import {LabelSectionComponent} from './components/lablel-section/label-section.component';
 import { ForeignCitizenshipComponent } from './components/foreign-citizenship/foreign-citizenship.component';
 import {EpgucSharedModule} from '../../shared-module/shared-components.module';
+import { RadioInputComponent } from './components/radio-input/radio-input.component';
 
 const COMPONENTS = [
   CustomScreenComponent
@@ -13,7 +14,8 @@ const COMPONENTS = [
 @NgModule({
   declarations: [...COMPONENTS,
     LabelSectionComponent,
-    ForeignCitizenshipComponent],
+    ForeignCitizenshipComponent,
+    RadioInputComponent],
   exports: [
     ...COMPONENTS
   ],

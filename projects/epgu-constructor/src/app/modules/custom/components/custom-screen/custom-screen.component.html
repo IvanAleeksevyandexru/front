@@ -47,6 +47,13 @@
               <!--            Нужно настраивать почему-то вываливается ошибка-->
               <!--            <lib-date-picker (changed)="dateChage($event, componentData)"></lib-date-picker>-->
             </div>
+
+            <div class="form__item" *ngSwitchCase="componentType.RadioInput">
+              <div class="form__title">{{ componentData.label }}</div>
+              <app-radio-input *ngFor="let radio in componentData.attrs.supportedValues">
+                <lib-radio [value]="radio.value" [labelText]="radio.label"></lib-radio>
+              </app-radio-input>
+            </div>
           </ng-container>
         </ng-container>
       </form>

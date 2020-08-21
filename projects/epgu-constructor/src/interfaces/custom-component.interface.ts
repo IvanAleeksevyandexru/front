@@ -27,6 +27,7 @@ export interface EgpuResponseComponentAttrForCustomComponentInterface {
   ref: Array<any>;
   requiredAttrs?: Array<string>;
   validation: Array<EpguResponseComponentAttrValidationInterface>;
+  supportedValues?: Array<ISupportedValue>;
 }
 
 export interface EpguResponseComponentAttrValidationInterface {
@@ -59,4 +60,9 @@ export interface EgpuResponseCustomComponentDisplayInterface extends EgpuRespons
 export interface EgpuResponseCustomComponentDisplayComponentInterface extends EgpuResponseComponentInterface{
   attrs: EgpuResponseComponentAttrForCustomComponentInterface;
   type: CUSTOM_COMPONENT_ITEM_TYPE;
+}
+
+interface ISupportedValue {
+  label: string;
+  value: string;
 }
