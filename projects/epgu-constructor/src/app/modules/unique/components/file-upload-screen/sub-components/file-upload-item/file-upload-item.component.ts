@@ -15,7 +15,6 @@ import {
   getSizeInMB,
   IFileResponseToBackendUploadsItem,
   IFileUploadItem,
-  TERABYTE_TEST_TOKEN,
   TerrabyteListItem,
   UploadedFile,
   uploadObjectType,
@@ -85,7 +84,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   cameraNotAllowed = false; // Флаг, что камеры нет или она запрещена
   listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
-  files$$: BehaviorSubject<UploadedFile[]> = new BehaviorSubject<UploadedFile[]>([]); // Список уже загруженных файлов
+  files$$ = new BehaviorSubject<UploadedFile[]>([]); // Список уже загруженных файлов
   files$ = this.files$$
     .asObservable()
     .pipe(
@@ -108,13 +107,13 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * @param list - массив информациио файлах на сервере
    * @private
    */
-  private transformTerrabyteItemsToUploadedFiles(list: TerrabyteListItem[]): UploadedFile[] {
-    const filesList: UploadedFile[] = [];
+  private transformTerrabyteItemsToUploadedFiles(list: TerrabyteListItem[] = []): UploadedFile[] {
+    let filesList: UploadedFile[] = [];
     if (list.length) {
-      list.forEach((terraFile: TerrabyteListItem) => {
+      filesList = list.map((terraFile: TerrabyteListItem) => {
         const file = new UploadedFile(terraFile);
         file.uploaded = true;
-        filesList.push(file);
+        return file;
       });
     }
     return filesList;
@@ -233,7 +232,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    */
   private prepareFilesToUpload(newFilesToUpload: File[]): File[] {
     const files: File[] = [];
-    Array.from(newFilesToUpload).forEach((fileToAdd: File) => {
+    newFilesToUpload.forEach((fileToAdd: File) => {
       if (fileToAdd.size > this.data.maxSize) {
         this.errors.push(
           `Размер файла "${fileToAdd.name}" превышает ${getSizeInMB(this.data.maxSize)} МБ`,
@@ -394,6 +393,6 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    UtilsService.setCookie('acc_t', TERABYTE_TEST_TOKEN, 14);
+    UtilsService.setCookie('acc_t', this.terabyteService.testToken, 14);
   }
 }

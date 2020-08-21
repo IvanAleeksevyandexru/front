@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ITerraFileOptions, ITerraUploadFileOptions, TerabyteConfig} from '../config/terabyte.config';
 import { Observable } from 'rxjs';
-import {TERABYTE_TEST_TOKEN, UploadedFile} from '../../modules/unique/components/file-upload-screen/sub-components/file-upload-item/data';
+import {UploadedFile} from '../../modules/unique/components/file-upload-screen/sub-components/file-upload-item/data';
+import {ConstructorConfigService} from '../config/constructor-config.service';
 
 
 
@@ -14,11 +15,14 @@ import {TERABYTE_TEST_TOKEN, UploadedFile} from '../../modules/unique/components
 })
 export class TerabyteService {
   isLocalHost = false;
+  testToken: string;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private constructorConfigService: ConstructorConfigService,
   ) {
     this.isLocalHost = location.hostname === 'localhost';
+    this.testToken = constructorConfigService.config.apiUrl;
   }
 
   /**
@@ -43,7 +47,7 @@ export class TerabyteService {
    */
   private getTestHeaders(): HttpHeaders {
     return new HttpHeaders({
-      Cookie: 'acc_t=' + TERABYTE_TEST_TOKEN + '; Path=/; Domain=.pgu-dev-fed.test.gosuslugi.ru; Expires=Mon, 30 Aug 2021 09:32:01 GMT;',
+      Cookie: 'acc_t=' + this.testToken + '; Path=/; Domain=.pgu-dev-fed.test.gosuslugi.ru; Expires=Mon, 30 Aug 2021 09:32:01 GMT;',
     });
   }
 

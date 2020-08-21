@@ -19,7 +19,7 @@
         </div>
         <div class="file__title" *ngIf="!file.uploaded"
              [class.has-error]="file.hasError"
-             [innerText]="!file.hasError ? 'Файл загружается' : 'Ошибка загрузки'">
+             [innerText]="file.hasError ? 'Ошибка загрузки' : 'Файл загружается'">
         </div>
         <div class="file__title-info" *ngIf="file.uploaded">
           Файл загружен ({{file.getFileSize()}})
