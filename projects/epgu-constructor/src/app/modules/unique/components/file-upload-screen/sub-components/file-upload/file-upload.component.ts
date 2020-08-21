@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 import {
   IFileResponseToBackendUploadsItem,
   IFileResponseToBackendWithRelatedUploads,
   IFileUploadAttributes,
   IFileUploadItem,
-} from '../file-upload-item/data';
-import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
+} from '../../../../../../../interfaces/terabyte.interface';
 
 @Component({
   selector: 'app-file-upload',

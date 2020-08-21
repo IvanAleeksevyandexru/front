@@ -32,3 +32,8 @@ export enum UNIQUE_COMPONENT_NAME {
 export enum CONSTANTS {
   'dateFormat' = 'DD.MM.YYYY'
 }
+
+/**
+ * Качество фото с камеры в котором будет сохраняться для компонента загрузки файлов
+ */
+export const imageCameraQuality = 0.9;

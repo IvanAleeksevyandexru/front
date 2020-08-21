@@ -33,13 +33,13 @@
   <div class="fileupload__buttons" [class.nocamera]="cameraNotAllowed" >
     <button *ngIf="!cameraNotAllowed" class="fileupload__button"
       (click)="openCamera()"
-      [disabled]="listIsUploadingNow || filesInUploading > 0">
+      [disabled]="(listIsUploadingNow || filesInUploading > 0)">
       <img src="/assets/icons/svg/camera.svg" class="fileupload__button-icon"/>
       Фото
     </button>
     <button class="fileupload__button"
       (click)="selectFilesEvent()"
-      [disabled]="listIsUploadingNow || filesInUploading > 0">
+      [disabled]="(listIsUploadingNow || filesInUploading > 0)">
       <img src="/assets/icons/svg/clip.svg" class="fileupload__button-icon"/>
       Файл
     </button>

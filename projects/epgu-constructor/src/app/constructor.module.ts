@@ -61,6 +61,8 @@ export class ConstructorModule {
     externalApiUrl: string;
     serviceId: string;
     fileUploadTokenForTest: string;
+    fileUploadApiUrl: string;
+    fileUploadLocalhostApiUrl: string;
   }) {
     return {
       ngModule: ConstructorModule,

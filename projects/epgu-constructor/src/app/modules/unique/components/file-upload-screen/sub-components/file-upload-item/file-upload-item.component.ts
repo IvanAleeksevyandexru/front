@@ -11,14 +11,7 @@ import {
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { WebcamInitError } from 'ngx-webcam';
-import {
-  getSizeInMB,
-  IFileResponseToBackendUploadsItem,
-  IFileUploadItem,
-  TerrabyteListItem,
-  UploadedFile,
-  uploadObjectType,
-} from './data';
+import { getSizeInMB, UploadedFile, uploadObjectType } from './data';
 import { TerabyteService } from '../../../../../../services/rest/terabyte.service';
 import { UtilsService } from '../../../../../../services/utils/utils.service';
 import { WebcamService } from '../../../../../../services/utils/webcam.service';
@@ -27,6 +20,11 @@ import {
   isCloseWebcamEvent,
   WebcamEvent,
 } from '../../../../../../services/utils/webcamevents';
+import {
+  IFileResponseToBackendUploadsItem,
+  IFileUploadItem,
+  TerabyteListItem,
+} from '../../../../../../../interfaces/terabyte.interface';
 
 @Component({
   selector: 'app-file-upload-item',
@@ -50,7 +48,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
       )
       .pipe(
         map((result) => this.filterServerListItemsForCurrentForm(result)),
-        map((list: TerrabyteListItem[]) => this.transformTerrabyteItemsToUploadedFiles(list)),
+        map((list: TerabyteListItem[]) => this.transformTerabyteItemsToUploadedFiles(list)),
       )
       .subscribe((list) => {
         this.listIsUploadingNow = false;
@@ -107,10 +105,10 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * @param list - массив информациио файлах на сервере
    * @private
    */
-  private transformTerrabyteItemsToUploadedFiles(list: TerrabyteListItem[] = []): UploadedFile[] {
+  private transformTerabyteItemsToUploadedFiles(list: TerabyteListItem[] = []): UploadedFile[] {
     let filesList: UploadedFile[] = [];
     if (list.length) {
-      filesList = list.map((terraFile: TerrabyteListItem) => {
+      filesList = list.map((terraFile: TerabyteListItem) => {
         const file = new UploadedFile(terraFile);
         file.uploaded = true;
         return file;
@@ -124,7 +122,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * @param result - список файлов, хранящихся на сервере
    * @private
    */
-  private filterServerListItemsForCurrentForm(result: TerrabyteListItem[]): TerrabyteListItem[] {
+  private filterServerListItemsForCurrentForm(result: TerabyteListItem[]): TerabyteListItem[] {
     return result.filter(
       (fileInfo) =>
         fileInfo?.mnemonic?.includes(this.getSubMnemonicPath()) &&
@@ -182,7 +180,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     if (uploaded) {
       this.terabyteService
         .getFileInfo(uploadedFile.getParamsForFileOptions())
-        .subscribe((result: TerrabyteListItem) => {
+        .subscribe((result: TerabyteListItem) => {
           this.setFileInfoUploaded(uploadedFile, result.fileSize, uploaded);
         });
     } else {
@@ -230,9 +228,9 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * @param newFilesToUpload
    * @private
    */
-  private prepareFilesToUpload(newFilesToUpload: File[]): File[] {
+  private prepareFilesToUpload(newFilesToUpload: FileList): File[] {
     const files: File[] = [];
-    newFilesToUpload.forEach((fileToAdd: File) => {
+    Array.from(newFilesToUpload).forEach((fileToAdd: File) => {
       if (fileToAdd.size > this.data.maxSize) {
         this.errors.push(
           `Размер файла "${fileToAdd.name}" превышает ${getSizeInMB(this.data.maxSize)} МБ`,
@@ -251,14 +249,11 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * @private
    */
   private getMaxFileNumberFromList(list: UploadedFile[]): number {
-    let maxIndex = -1;
-    list.forEach((f) => {
-      const index = Number(f.mnemonic.split('.').pop());
-      if (index > maxIndex) {
-        maxIndex = index;
-      }
-    });
-    return maxIndex;
+    const maxIndex = -1;
+    return list.reduce((item, file) => {
+      const index = Number(file.mnemonic.split('.').pop());
+      return index > maxIndex ? index : item;
+    }, -1);
   }
 
   /**
@@ -313,17 +308,13 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
 
     let maxFileCountError = false;
     inputFiles.forEach((file: File) => {
-      if (
-        !maxFileCountError &&
-        this.data.maxFileCount &&
-        this.files$$.value.length === this.data.maxFileCount
-      ) {
-        maxFileCountError = true;
-        this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
-      }
-      // console.log(maxFileCountError);
       if (!maxFileCountError) {
-        this.sendFile(file);
+        if (this.data.maxFileCount && this.files$$.value.length === this.data.maxFileCount) {
+          maxFileCountError = true;
+          this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
+        } else {
+          this.sendFile(file);
+        }
       }
     });
   }

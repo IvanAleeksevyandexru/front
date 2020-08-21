@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
-import { IFileUploadItem } from './sub-components/file-upload-item/data';
 import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
+import { IFileUploadItem } from '../../../../../interfaces/terabyte.interface';
 
 @Component({
   selector: 'app-file-upload-screen',

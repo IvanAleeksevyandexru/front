@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {ITerraFileOptions, ITerraUploadFileOptions, TerabyteConfig} from '../config/terabyte.config';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ITerraFileOptions, ITerraUploadFileOptions } from '../../../interfaces/terabyte.interface';
 import { Observable } from 'rxjs';
-import {UploadedFile} from '../../modules/unique/components/file-upload-screen/sub-components/file-upload-item/data';
-import {ConstructorConfigService} from '../config/constructor-config.service';
-
-
+import { UploadedFile } from '../../modules/unique/components/file-upload-screen/sub-components/file-upload-item/data';
+import { ConstructorConfigService } from '../config/constructor-config.service';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
@@ -16,6 +14,8 @@ import {ConstructorConfigService} from '../config/constructor-config.service';
 export class TerabyteService {
   isLocalHost = false;
   testToken: string;
+  apiUrl: string;
+  apiLocalhostUrl: string;
 
   constructor(
     private http: HttpClient,
@@ -23,6 +23,8 @@ export class TerabyteService {
   ) {
     this.isLocalHost = location.hostname === 'localhost';
     this.testToken = constructorConfigService.config.apiUrl;
+    this.apiUrl = constructorConfigService.config.fileUploadApiUrl;
+    this.apiLocalhostUrl = constructorConfigService.config.fileUploadLocalhostApiUrl;
   }
 
   /**
@@ -52,12 +54,12 @@ export class TerabyteService {
   }
 
   /**
-   * Возвращает путь API адреса для обращений к сервису TERRABYTE
+   * Возвращает путь API адреса для обращений к сервису TERABYTE
    *
    * @param relativePath - относительный путь от API для запросов
    */
   private getTerabyteApiUrl = (relativePath): string =>
-      (this.isLocalHost ? TerabyteConfig.LOCALHOST_API_URL : TerabyteConfig.API_URL) + relativePath;
+      (this.isLocalHost ? this.apiLocalhostUrl : this.apiUrl) + relativePath;
 
   /**
    * Возращает опции запроса

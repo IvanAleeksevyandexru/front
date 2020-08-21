@@ -1,8 +1,4 @@
-import {COMPONENT_TYPE, SCREEN_COMPONENT_NAME} from '../constant/global';
-import {
-  EpguResponseCustomComponentDisplayComponentInterface
-} from './custom-component.interface';
-import {IFileUploadAttributes} from '../app/modules/unique/components/file-upload-screen/sub-components/file-upload-item/data';
+import {COMPONENT_TYPE} from '../constant/global';
 
 /**
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
@@ -65,10 +61,4 @@ export interface EgpuResponseComponentInterface {
   type: string;
   value: string;
   visited?: boolean
-}
-
-
-export interface EgpuResponseCurrentValue {
-  visited: boolean;
-  value: any;
 }
