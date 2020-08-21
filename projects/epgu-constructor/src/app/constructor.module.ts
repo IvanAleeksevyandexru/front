@@ -54,16 +54,7 @@ const COMPONENTS = [
 
 export class ConstructorModule {
 
-  static forRoot(constructorConfig: {
-    dictionaryUrl: string;
-    apiUrl: string;
-    isProd: boolean;
-    externalApiUrl: string;
-    serviceId: string;
-    fileUploadTokenForTest: string;
-    fileUploadApiUrl: string;
-    fileUploadLocalhostApiUrl: string;
-  }) {
+  static forRoot(constructorConfig: ConstructorConfigInterface) {
     return {
       ngModule: ConstructorModule,
       providers: [
