@@ -56,6 +56,8 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
       const isValidDate = date.isValid();
       if (isValidDate) {
         this.valueParsed.regDate = date.toDate();
+      } else {
+        this.valueParsed.regDate = moment().toDate();
       }
     }
   }

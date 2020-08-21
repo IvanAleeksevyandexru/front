@@ -43,9 +43,10 @@
 
             <div class="form__item" *ngSwitchCase="componentType.DateInput">
               <div class="form__title">{{ componentData.label }}</div>
-              <div>Компонент не настроен</div>
-              <!--            Нужно настраивать почему-то вываливается ошибка-->
-              <!--            <lib-date-picker (changed)="dateChage($event, componentData)"></lib-date-picker>-->
+              <lib-date-picker
+                [name]="componentData.id"
+                [(ngModel)]="state[componentData.id].value"
+              ></lib-date-picker>
             </div>
           </ng-container>
         </ng-container>

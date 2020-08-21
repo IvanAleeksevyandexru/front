@@ -4,7 +4,7 @@
     [ngSwitch]="field?.fieldName"
   >
     <lib-dadata-widget
-      *ngSwitchCase="'addr'"
+      *ngSwitchCase="'regAddr'"
       [simpleMode]="true"
       [disabled]="!isEditable"
       [name]="field.fieldName"
@@ -15,7 +15,7 @@
     </lib-dadata-widget>
 
     <app-address-item
-      *ngSwitchCase="'date'"
+      *ngSwitchCase="'regDate'"
       class="item"
       [label]="field.label"
       [name]="field.label"

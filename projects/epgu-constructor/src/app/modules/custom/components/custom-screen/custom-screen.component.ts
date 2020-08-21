@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
+import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
+import { DATE_STRING_DOT_FORMAT } from '../../../../../constant/global';
 import {
   CustomComponentDictionaryState,
   CustomComponentState,
@@ -16,6 +18,8 @@ import { ConstructorService } from '../../../../services/constructor/constructor
 import { RestService } from '../../../../services/rest/rest.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
+
+const moment = moment_;
 
 @Component({
   selector: 'app-custom-screen',
@@ -78,16 +82,16 @@ export class CustomScreenComponent implements OnChanges {
           this.state[key].value,
           this.state[key].component,
         );
-
         this.setValidationState(
           inputValidationResult,
           this.state[key]?.component?.id,
           this.state[key]?.value,
         );
-
         if (inputValidationResult > -1) {
           isValid = false;
         }
+      } else if (this.state[key].component.type === CUSTOM_COMPONENT_ITEM_TYPE.DateInput) {
+        this.state[key].value = moment(this.state[key].value).format(DATE_STRING_DOT_FORMAT);
       }
     });
 
@@ -167,10 +171,6 @@ export class CustomScreenComponent implements OnChanges {
 
     return result;
   }
-
-  // dateChange($event: any, componentData: EgpuResponseComponentInterface) {
-  //   console.log($event, componentData)
-  // }
 
   loadDictionary(
     dictionaryName: string,
