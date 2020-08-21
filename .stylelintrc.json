@@ -23,7 +23,24 @@
     "no-empty-source": null,
     "color-no-hex": true,
     "color-named": "never",
-    "color-hex-case": "lower"
+    "color-hex-case": "lower",
+    "selector-type-no-unknown": [
+      true,
+      {
+        "ignoreTypes": [
+          "app-confirm-personal-user-button",
+          "lib-question-help-tip",
+          "lib-dropdown",
+          "app-label-section",
+          "app-screen-pad",
+          "epguc-screen-container",
+          "app-constructor"
+        ]
+      }
+    ]
   },
-  "ignoreFiles": []
+  "ignoreFiles": [
+    "./dist/**",
+    "./projects/epgu-constructor/src/styles/_variables.scss"
+  ]
 }

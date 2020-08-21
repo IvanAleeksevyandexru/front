@@ -3,15 +3,6 @@
 .shadow {
   @include shadow-main();
 }
-.shadow-none {
-
-}
-.shadow-sm {
-
-}
-.shadow-lg {
-
-}
 .first-letter-uppercase {
   @include first-letter-uppercase();
 }

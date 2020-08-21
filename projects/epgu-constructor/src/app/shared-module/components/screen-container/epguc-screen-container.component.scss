@@ -13,12 +13,6 @@
   margin-left: auto;
 }
 
-
-.container {
-
-}
-
-
 @include tablets-up {
   .container {
     min-height: auto;
