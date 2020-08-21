@@ -15,6 +15,7 @@ import {ConstructorService} from './services/constructor/constructor.service';
 import {LayoutModule} from './layout/layout.module';
 import {ConstructorConfigService} from './services/config/constructor-config.service';
 import {RestService} from './services/rest/rest.service';
+import {BookingScreenModule} from './modules/booking/booking-screen.module';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -26,14 +27,13 @@ const COMPONENTS = [
   ],
   imports: [
     CommonModule,
-
+    BookingScreenModule,
     ScreenModule,
     CustomScreenModule,
     QuestionScreenModule,
     UniqueScreenModule,
     InvitationModule,
     LayoutModule,
-
     EpgucSharedModule,
     EpguLibModule.forChild(),
     InfoScreenModule,
