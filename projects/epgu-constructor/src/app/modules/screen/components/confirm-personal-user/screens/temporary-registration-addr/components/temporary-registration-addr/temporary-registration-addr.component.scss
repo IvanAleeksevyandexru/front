@@ -17,6 +17,10 @@ $item-hint-mx: 13px;
   padding: 12px;
   margin: $item-hint-mx $item-hint-mx 0;
   cursor: pointer;
+
+  &:hover {
+    background: $color-hawkes-blue;
+  };
 }
 .hint-wrapper {
   margin-left: -$item-hint-mx;

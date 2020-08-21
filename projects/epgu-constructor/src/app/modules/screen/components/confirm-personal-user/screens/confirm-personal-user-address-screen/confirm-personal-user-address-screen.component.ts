@@ -31,7 +31,6 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   }
 
   dataChange($event: any) {
-    console.log($event, 123);
     this.screenComponentService.dataToSend = JSON.stringify($event);
   }
 }

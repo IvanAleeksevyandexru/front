@@ -15,6 +15,7 @@ import {
 })
 export class QuestionsScreenComponent implements OnInit {
   @Input() data: EgpuResponseQuestionsDisplayInterface;
+  @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 

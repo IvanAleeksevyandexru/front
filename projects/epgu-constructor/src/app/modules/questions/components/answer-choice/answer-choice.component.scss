@@ -7,10 +7,10 @@
   cursor: pointer;
 }
 
-.answer__btn {
+.answer-btn {
   display: flex;
   width: 100%;
-  padding: 16px;
+  padding: 24px 32px;
   background: $white;
   justify-content: space-between;
   align-items: center;
@@ -23,21 +23,36 @@
   @include tablets-up {
     padding: 24px 32px;
   }
-}
 
-.answer-btn__hint {
-  // ToDo убрать, как доработают компонент epgu-lib
-  lib-question-help-tip {
-    display: flex;
+  &:focus,
+  &:active {
+    outline: none;
   }
-  margin-left: auto;
-}
+  &:focus {
+    border: 1px dashed $color-cornflower;
+    @include tablets-up {
+      padding: 23px 31px;
+    }
+    transition-delay: .1s;
+  }
+  &:active {
+    background: $color-zircon;
+    border: none;
+    @include tablets-up {
+      padding: 24px 32px;
+    }
+  }
 
-.answer-btn__title {
+  &__hint {
+    // ToDo убрать, как доработают компонент epgu-lib
+    lib-question-help-tip {
+      display: flex;
+    }
+    margin-left: auto;
+  }
 
-}
-
-.answer-btn__icon {
-  flex-shrink: 0;
-  margin-left: 10px;
+  &__icon {
+    flex-shrink: 0;
+    margin-left: 10px;
+  }
 }

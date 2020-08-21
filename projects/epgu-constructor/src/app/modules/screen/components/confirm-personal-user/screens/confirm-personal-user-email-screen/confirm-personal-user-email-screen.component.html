@@ -3,6 +3,7 @@
     <app-confirm-personal-user-email
       [label]="data?.label"
       [data]="data?.value"
+      [error]="errors && errors[data?.id]"
       [isEditable]="isEditable"
       [isEditButtonShown]="true"
     ></app-confirm-personal-user-email>

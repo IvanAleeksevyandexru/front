@@ -1,68 +1,39 @@
 
 <form #dataForm="ngForm">
   <ng-container *ngFor="let field of data?.attrs?.fields; let i = index" [ngSwitch]="field?.fieldName">
-    <ng-container *ngSwitchCase="'regAddr'">
-      <ng-container *ngTemplateOutlet="form1; context: {field: field, index: i}">
-      </ng-container>
-    </ng-container>
 
-    <!-- DEPRICATED: will be removed -->
-    <ng-container *ngSwitchCase="'addr'">
-      <ng-container *ngTemplateOutlet="form1; context: {field: field, index: i}">
-      </ng-container>
-    </ng-container>
+      <lib-dadata-widget
+        *ngSwitchCase="'addr'"
+        [simpleMode]="true"
+        [disabled]="!isEditable"
+        [name]="field.fieldName"
+        [externalApiUrl]="externalApiUrl"
+        [initValue]="valueParsed[field.fieldName]"
+        [(ngModel)]="valueParsed[field.fieldName]">
+      </lib-dadata-widget>
 
-    <ng-container *ngSwitchCase="'regDate'">
-      <ng-container *ngTemplateOutlet="form2; context: {field: field, index: i}">
-      </ng-container>
-    </ng-container>
+      <app-address-item
+        *ngSwitchCase="'date'"
+        class="item" [label]="field.label" [name]="field.label">
+        <lib-date-picker
+          [disabled]="!isEditable"
+          [name]="field.fieldName"
+          [(ngModel)]="valueParsed[field.fieldName]"
+        >
+        </lib-date-picker>
+      </app-address-item>
 
-    <!-- DEPRICATED: will be removed -->
-    <ng-container *ngSwitchCase="'date'">
-      <ng-container *ngTemplateOutlet="form2; context: {field: field, index: i}">
-      </ng-container>
-    </ng-container>
-
-    <ng-container *ngSwitchDefault>
-      <ng-container *ngTemplateOutlet="form3; context: {field: field, index: i}">
-      </ng-container>
-    </ng-container>
+      <app-address-item
+        *ngSwitchDefault
+        class="item" [label]="field.label"
+        [name]="field.label">
+        <lib-plain-input
+          [disabled]="!isEditable"
+          [(ngModel)]="valueParsed[field.fieldName]"
+          [name]="field.fieldName"
+          class="content content__input"
+        >
+        </lib-plain-input>
+      </app-address-item>
   </ng-container>
 </form>
-
-
-<ng-template #form1 let-field="field" let-index="index">
-  <app-address-item class="item" [label]="field.label" [name]="field.label">
-    <lib-dadata-widget
-      [simpleMode]="true"
-      [disabled]="!isEditable"
-      [name]="field.fieldName"
-      [externalApiUrl]="externalApiUrl"
-      [initValue]="screenComponentService.dataToSend[field.fieldName]"
-      [(ngModel)]="screenComponentService.dataToSend[field.fieldName]">
-    </lib-dadata-widget>
-  </app-address-item>
-</ng-template>
-
-<ng-template #form2 let-field="field" let-index="index">
-  <app-address-item class="item" [label]="field.label" [name]="field.label">
-    <lib-date-picker
-      [disabled]="!isEditable"
-      [name]="field.fieldName"
-      [(ngModel)]="screenComponentService.dataToSend[field.fieldName]"
-    >
-    </lib-date-picker>
-  </app-address-item>
-</ng-template>
-
-<ng-template #form3 let-field="field" let-index="index">
-  <app-address-item class="item" [label]="field.label" [name]="field.label">
-    <lib-plain-input
-      [disabled]="!isEditable"
-      [(ngModel)]="screenComponentService.dataToSend[field.fieldName]"
-      [name]="field.fieldName"
-      class="content content__input"
-    >
-    </lib-plain-input>
-  </app-address-item>
-</ng-template>

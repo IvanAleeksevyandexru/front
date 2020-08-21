@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { delay, takeUntil } from 'rxjs/operators';
@@ -11,9 +11,10 @@ import { ScreenComponentService } from '../../../../../../service/screen-compone
   styleUrls: ['./confirm-personal-user-email.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ConfirmPersonalUserEmailComponent implements OnInit {
+export class ConfirmPersonalUserEmailComponent implements OnInit, OnChanges {
   @Input() label: string;
   @Input() data: string;
+  @Input() error: string;
   @Input() isEditable: boolean;
   @Input() isEditButtonShown: boolean;
   @Output() dataChanged = new EventEmitter();
@@ -56,6 +57,13 @@ export class ConfirmPersonalUserEmailComponent implements OnInit {
         this.emailForm.controls.email.enable();
       } else {
         this.emailForm.controls.email.disable();
+      }
+
+      if (this.error) {
+        this.emailForm.controls.email.setErrors({ incorrect: true });
+        this.emailForm.controls.email.enable();
+      } else {
+        this.emailForm.controls.email.setErrors(null);
       }
     }
   }

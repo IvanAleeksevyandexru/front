@@ -9,6 +9,7 @@ import { ScreenComponentService } from '../../../../service/screen-component/scr
 })
 export class ConfirmPersonalUserPhoneScreenComponent implements OnInit {
   @Input() data: EgpuResponseComponentInterface;
+  @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
   isEditable: boolean;
 

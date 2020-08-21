@@ -1,7 +1,4 @@
-import {COMPONENT_TYPE, SCREEN_COMPONENT_NAME} from '../constant/global';
-import {CUSTOM_COMPONENT_ITEM_TYPE} from '../app/modules/custom/tools/custom-screen-tools';
-import {EgpuResponseComponentAttrForCustomComponentInterface} from './custom-component.interface';
-import {ConfirmUserDataAttrsInterface} from './confirm-user-data.interface';
+import { COMPONENT_TYPE } from '../constant/global';
 
 /**
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
@@ -21,6 +18,7 @@ export interface EgpuResponseInterface {
   currentRule: number;
   currentValue: object;
   display: EgpuResponseDisplayInterface;
+  errors: object;
   gender: number;
   orderId: string;
   sendNotification: Array<object>;

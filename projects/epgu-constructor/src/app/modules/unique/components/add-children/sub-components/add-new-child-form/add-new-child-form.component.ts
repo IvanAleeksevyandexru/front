@@ -11,7 +11,7 @@ import {
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { delay, takeUntil } from 'rxjs/operators';
-import { CONSTANTS } from '../../../../../../../constant/global';
+import { DATE_STRING_DOT_FORMAT } from '../../../../../../../constant/global';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
 const moment = moment_;
@@ -52,7 +52,10 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
     this.childrenList = this.data.childrenList.map((child) => {
       const childFormatted = child;
       if (typeof child.birthDate === 'string') {
-        childFormatted.birthDate = moment(childFormatted.birthDate, CONSTANTS.dateFormat).toDate();
+        childFormatted.birthDate = moment(
+          childFormatted.birthDate,
+          DATE_STRING_DOT_FORMAT,
+        ).toDate();
       }
       return childFormatted;
     });
@@ -75,7 +78,7 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngOnDestroy() {
-    this.child.birthDate = moment(this.child.birthDate).format(CONSTANTS.dateFormat);
+    this.child.birthDate = moment(this.child.birthDate).format(DATE_STRING_DOT_FORMAT);
     this.childUpdateEvent.emit(this.child);
   }
 }

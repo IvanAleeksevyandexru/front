@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import * as moment_ from 'moment';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { map, takeUntil } from 'rxjs/operators';
-import { CONSTANTS } from '../../../../../constant/global';
+import { DATE_STRING_DOT_FORMAT } from '../../../../../constant/global';
 import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
@@ -59,7 +59,7 @@ export class DocInputComponent implements OnInit {
       .pipe(
         map((form: IForm) => ({
           ...form,
-          date: moment(form.date).format(CONSTANTS.dateFormat),
+          date: moment(form.date).format(DATE_STRING_DOT_FORMAT),
         })),
         takeUntil(this.ngUnsubscribe$),
       )
