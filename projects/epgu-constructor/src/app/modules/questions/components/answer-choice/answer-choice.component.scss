@@ -27,8 +27,10 @@
   &:focus,
   &:active {
     outline: none;
-    padding: 23px 31px;
     border: 1px dashed $color-cornflower;
+    @include tablets-up {
+      padding: 23px 31px;
+    }
   }
 
   &__hint {
