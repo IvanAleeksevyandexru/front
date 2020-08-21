@@ -18,10 +18,6 @@ export class ConfirmPersonalUserPhoneScreenComponent implements OnInit {
     this.screenComponentService.dataToSend = this.data.value;
   }
 
-  handleDataChanged() {
-    // TODO
-  }
-
   clickToAction(event): void {
     const { action } = event;
     switch (action) {

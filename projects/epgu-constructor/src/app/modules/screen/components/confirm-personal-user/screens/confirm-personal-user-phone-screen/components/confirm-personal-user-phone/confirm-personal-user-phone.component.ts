@@ -15,30 +15,12 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
   @Input() label: string;
   @Input() data: string;
   @Input() isEditable: boolean;
+  @Input() isEditButtonShown: boolean;
   @Output() dataChanged = new EventEmitter();
 
   phoneForm: FormGroup;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  phoneMask = [
-    '+',
-    /[7]/,
-    ' ',
-    '(',
-    /[1-9]/,
-    /\d/,
-    /\d/,
-    ')',
-    ' ',
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-  ];
+  phoneMask = ['+', /[7]/, '(', /[1-9]/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,7 +36,7 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
           disabled: !this.isEditable,
         },
         {
-          validators: Validators.compose([Validators.required, Validators.minLength(18)]),
+          validators: Validators.compose([Validators.required, Validators.minLength(14)]),
         },
       ),
     });
@@ -77,5 +59,9 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
         this.phoneForm.controls.phone.disable();
       }
     }
+  }
+
+  handleClick() {
+    this.phoneForm.controls.phone.enable();
   }
 }

@@ -8,4 +8,5 @@ export interface ConstructorConfigInterface {
   externalApiUrl: string;
   externalUrl: string;
   yandexMapsApiKey: string;
+  isProd: boolean;
 }
