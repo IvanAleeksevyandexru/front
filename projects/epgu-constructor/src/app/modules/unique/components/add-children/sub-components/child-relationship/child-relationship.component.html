@@ -2,12 +2,12 @@
   <app-answer-choice
     class="footer__button"
     (click)="answerChoose(answerOption)"
-    [data]="answerOption">
+    [data]="{ label: answerOption }">
   </app-answer-choice>
 
   <app-answer-choice
     class="footer__button"
     (click)="answerChoose('Опекун')"
-    [data]="'Опекун'">
+    [data]="{ label: 'Опекун' }">
   </app-answer-choice>
 </section>

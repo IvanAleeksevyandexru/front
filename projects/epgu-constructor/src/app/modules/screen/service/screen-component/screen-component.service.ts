@@ -10,6 +10,7 @@ export class ScreenComponentService {
   // отправляемые данные, при рендеринге компонента
   // инициализируем данные, при редактировании обновляем;
   dataToSend: any;
+  isValid = true;
 
   constructor() { }
 }

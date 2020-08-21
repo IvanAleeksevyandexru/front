@@ -9,7 +9,8 @@ import { ScreenComponentService } from '../../../../service/screen-component/scr
 })
 export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
   @Input() data: EgpuResponseComponentInterface;
-  @Output() actionSelect = new EventEmitter();
+  @Output() nextStepEvent = new EventEmitter();
+  isEditable: boolean;
 
   constructor(private screenComponentService: ScreenComponentService) {}
 
@@ -17,7 +18,15 @@ export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
     this.screenComponentService.dataToSend = this.data.value;
   }
 
-  clickToAction(action): void {
-    this.actionSelect.emit(action);
+  clickToAction(event): void {
+    const { action } = event;
+    switch (action) {
+      case 'editUserEmail':
+        this.isEditable = true;
+        break;
+      default:
+        this.nextStepEvent.emit(this.data.value);
+        break;
+    }
   }
 }
