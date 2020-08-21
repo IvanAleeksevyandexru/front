@@ -44,16 +44,13 @@ export function getCustomScreenDictionaryFirstState(): CustomComponentDictionary
  * @param dictionaryName
  */
 export function getNormalizeDataCustomScreenDictionary(items: Array<DictionaryItem>, dictionaryName: string): Array<ListItem> {
-  const arr = dictionaryName === FMS_COUNTRIES_DICTIONARY ? putRussiaToFirstInArr(items) : items;
+  const arr = dictionaryName === FMS_COUNTRIES_DICTIONARY ? putRussiaToFirstInArrForFmsCountriesDictionary(items) : items;
   return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem)
 }
 
-function putRussiaToFirstInArr(items: Array<DictionaryItem>): Array<DictionaryItem> {
-  for(let i = 0; i < items.length; i++) {
-    if(items[i].title.toLowerCase() === RUSSIA_DICTIONARY_NAME.toLowerCase()) {
-      return [ items[i] ]
-        .concat(items.slice(0, i))
-        .concat(items.slice(i + 1))
-    }
-  }
+function putRussiaToFirstInArrForFmsCountriesDictionary(items: Array<DictionaryItem>): Array<DictionaryItem> {
+  const rusItemIndex = items.findIndex(item => item.title.toLowerCase() === RUSSIA_DICTIONARY_NAME.toLowerCase());
+  return [ items[rusItemIndex] ]
+    .concat(items.slice(0, rusItemIndex))
+    .concat(items.slice(rusItemIndex + 1))
 }

@@ -28,9 +28,7 @@ export enum UNIQUE_COMPONENT_NAME {
   'childrenListUnder14' = 'ChildrenListUnder14',
 }
 
-export enum CONSTANTS {
-  'dateFormat' = 'DD.MM.YYYY'
-}
+export const DATE_FORMAT = 'DD.MM.YYYY'
 
 export const FMS_COUNTRIES_DICTIONARY = 'FMS_COUNTRIES';
 export const RUSSIA_DICTIONARY_NAME = 'РОССИЯ'

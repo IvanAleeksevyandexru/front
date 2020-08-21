@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { CONSTANTS } from '../../../../../../../../../constant/global';
+import { DATE_FORMAT } from '../../../../../../../../../constant/global';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
@@ -43,8 +43,7 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
     const { fullAddress } = regAddr || {};
     return JSON.stringify({
       regAddr: fullAddress || '',
-      regDate:
-        moment(regDate).format(CONSTANTS.dateFormat) || moment().format(CONSTANTS.dateFormat),
+      regDate: moment(regDate).format(DATE_FORMAT) || moment().format(DATE_FORMAT),
       ...restFields,
     });
   }
@@ -52,7 +51,7 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.valueParsed = JSON.parse(this.data.value);
     if (this.valueParsed.date) {
-      const date = moment(this.valueParsed.date, CONSTANTS.dateFormat);
+      const date = moment(this.valueParsed.date, DATE_FORMAT);
       const isValidDate = date.isValid();
       if (isValidDate) {
         this.valueParsed.date = date.toDate();
