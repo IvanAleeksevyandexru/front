@@ -1,8 +1,8 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { ConstructorModule } from 'dist/epgu-constructor';
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import {ConstructorModule} from 'dist/epgu-constructor';
-import {environment} from '../environments/environment';
 
 
 @NgModule({
@@ -16,7 +16,10 @@ import {environment} from '../environments/environment';
       serviceId: environment.serviceId,
       apiUrl: environment.apiUrl,
       dictionaryUrl: environment.dictionaryUrl,
-      externalApiUrl: environment.externalApiUrl
+      externalApiUrl: environment.externalApiUrl,
+      externalUrl: environment.externalUrl,
+      yandexMapsApiKey: environment.yandexMapsApiKey,
+      isProd: environment.production,
     }),
   ],
   providers: [],

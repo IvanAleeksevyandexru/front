@@ -14,7 +14,7 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserEmail' = 'ConfirmPersonalUserEmail',
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'registrationAddr' = 'RegistrationAddr',
-  'addPassport' = 'addPassport',
+  'personLookup' = 'PersonLookup',
   'changeList' = 'ChangeList',
   'snils' = 'StringInput',
   'docInput' = 'DocInput'
@@ -26,7 +26,8 @@ export enum INFO_SCREEN_COMPONENT {
 
 export enum UNIQUE_COMPONENT_NAME {
   'childrenListUnder14' = 'ChildrenListUnder14',
-  'addPassport' = 'AddPassport'
+  'addPassport' = 'AddPassport',
+  'mapService' = 'MapService',
 }
 
 export enum CONSTANTS {

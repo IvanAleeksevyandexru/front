@@ -10,9 +10,9 @@ import {
 } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { Subject } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
 import { CONSTANTS } from '../../../../../../../constant/global';
+import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
 const moment = moment_;
 
@@ -32,11 +32,8 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   childrenList: any;
   childrenSelectList: Array<ListItem>;
   list: Array<ListItem>;
-  ngUnsubscribe$: Subject<void>;
 
-  constructor() {
-    this.ngUnsubscribe$ = new Subject();
-  }
+  constructor(private ngUnsubscribe$: UnsubscribeService) {}
 
   handleSelect(event) {
     const { id } = event;
@@ -80,7 +77,5 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   ngOnDestroy() {
     this.child.birthDate = moment(this.child.birthDate).format(CONSTANTS.dateFormat);
     this.childUpdateEvent.emit(this.child);
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 }

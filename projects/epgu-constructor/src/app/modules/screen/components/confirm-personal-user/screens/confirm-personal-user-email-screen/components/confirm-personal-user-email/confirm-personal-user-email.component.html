@@ -1,3 +1,21 @@
-<div class="title">{{name}}</div>
-<div class="content">{{content}}</div>
-
+<form [formGroup]="emailForm">
+  <div class="flex-row">
+    <app-label for="email">{{ label }}</app-label>
+    <a
+      href="javascript:void(0);"
+      (click)="handleClick()"
+      class="button-change"
+      *ngIf="isEditButtonShown"
+    >
+      Изменить
+    </a>
+  </div>
+  <lib-plain-input
+    formControlName="email"
+    name="email"
+    id="email"
+    [invalid]="!emailForm.controls.email.valid"
+    [validationShowOn]="validationShowOn"
+    class="content content__input"
+  ></lib-plain-input>
+</form>

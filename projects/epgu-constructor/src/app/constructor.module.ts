@@ -1,20 +1,22 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {EpguLibModule} from 'epgu-lib';
-import {ConstructorComponent} from './constructor.component';
-import {ScreenModule} from './modules/screen/screen.module';
-import {QuestionScreenModule} from './modules/questions/question-screen.module';
-import {CustomScreenModule} from './modules/custom/custom-screen.module';
-import {UniqueScreenModule} from './modules/unique/unique-screen.module';
-import {InfoScreenModule} from './modules/info/info-screen.module';
-import {InvitationModule} from './modules/invitation/invitation.module';
-import {EpgucSharedModule} from './shared-module/shared-components.module';
-import {ConstructorConfigInterface} from '../interfaces/constructor-config.interface';
-import {CONSTRUCTOR_CONFIG_TOKEN} from './services/config/constructor.config.token';
-import {ConstructorService} from './services/constructor/constructor.service';
-import {LayoutModule} from './layout/layout.module';
-import {ConstructorConfigService} from './services/config/constructor-config.service';
-import {RestService} from './services/rest/rest.service';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { EpguLibModule } from 'epgu-lib';
+import { ConstructorConfigInterface } from '../interfaces/constructor-config.interface';
+import { ConstructorComponent } from './constructor.component';
+import { LayoutModule } from './layout/layout.module';
+import { CustomScreenModule } from './modules/custom/custom-screen.module';
+import { InfoScreenModule } from './modules/info/info-screen.module';
+import { InvitationModule } from './modules/invitation/invitation.module';
+import { QuestionScreenModule } from './modules/questions/question-screen.module';
+import { ScreenModule } from './modules/screen/screen.module';
+import { UniqueScreenModule } from './modules/unique/unique-screen.module';
+import { ConstructorConfigService } from './services/config/constructor-config.service';
+import { CONSTRUCTOR_CONFIG_TOKEN } from './services/config/constructor.config.token';
+import { ConstructorService } from './services/constructor/constructor.service';
+import { MockService } from './services/mock/mock.service';
+import { RestService } from './services/rest/rest.service';
+import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
+import { EpgucSharedModule } from './shared-module/shared-components.module';
 import {BookingScreenModule} from './modules/booking/booking-screen.module';
 
 const COMPONENTS = [
@@ -34,6 +36,7 @@ const COMPONENTS = [
     UniqueScreenModule,
     InvitationModule,
     LayoutModule,
+
     EpgucSharedModule,
     EpguLibModule.forChild(),
     InfoScreenModule,
@@ -41,7 +44,9 @@ const COMPONENTS = [
   providers: [
     RestService,
     ConstructorService,
-    ConstructorConfigService
+    ConstructorConfigService,
+    UnsubscribeService,
+    MockService,
   ],
   exports: [
     ...COMPONENTS

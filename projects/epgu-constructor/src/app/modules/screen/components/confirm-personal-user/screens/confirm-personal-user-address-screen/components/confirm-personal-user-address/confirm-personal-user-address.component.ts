@@ -1,19 +1,19 @@
 import {
   Component,
+  EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
-  EventEmitter,
   ViewChild,
-  OnDestroy,
-  OnChanges,
 } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { CONSTANTS } from '../../../../../../../../../constant/global';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
+import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
+import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
 
 const moment = moment_;
 
@@ -21,19 +21,22 @@ const moment = moment_;
   selector: 'app-confirm-personal-user-address',
   templateUrl: './confirm-personal-user-address.component.html',
   styleUrls: ['./confirm-personal-user-address.component.scss'],
+  providers: [UnsubscribeService],
 })
-export class ConfirmPersonalUserAddressComponent implements OnInit, OnDestroy, OnChanges {
+export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
   @ViewChild('dataForm', { static: false }) dataForm;
 
   @Input() data: ConfirmAddressInterface;
   @Input() isEditable: boolean;
   @Output() dataEditedEvent = new EventEmitter();
   valueParsed: any;
-  ngUnsubscribe$: Subject<void>;
   externalApiUrl: string;
 
-  constructor(private constructorConfigService: ConstructorConfigService) {
-    this.ngUnsubscribe$ = new Subject();
+  constructor(
+    public screenComponentService: ScreenComponentService,
+    private constructorConfigService: ConstructorConfigService,
+    private ngUnsubscribe$: UnsubscribeService,
+  ) {
     this.externalApiUrl = this.constructorConfigService.config.externalApiUrl;
   }
 
@@ -49,7 +52,8 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnDestroy, O
   }
 
   ngOnInit(): void {
-    this.valueParsed = JSON.parse(this.data.value);
+    this.screenComponentService.dataToSend = JSON.parse(this.data.value);
+    this.valueParsed = this.screenComponentService.dataToSend;
     if (this.valueParsed.date) {
       const date = moment(this.valueParsed.date, CONSTANTS.dateFormat);
       const isValidDate = date.isValid();
@@ -64,16 +68,12 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnDestroy, O
       // give time to init view dataForm and make form changes subscription possible
       setTimeout(() => {
         this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
-          this.valueParsed = change;
+          this.screenComponentService.dataToSend = change;
+          this.valueParsed = this.screenComponentService.dataToSend;
           this.data.value = this.handleDataChange(change);
           this.dataEditedEvent.emit({ valueParsed: this.valueParsed, data: this.data });
         });
       }, 0);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 }
