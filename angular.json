@@ -158,7 +158,7 @@
             "eslintConfig": ".eslintrc.js",
             "tsConfig": [
               "projects/epgu-constructor/tsconfig.lib.json",
-              "projects/epgu-constructor/tsconfig.spec.json"
+              "tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

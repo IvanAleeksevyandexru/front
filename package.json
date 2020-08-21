@@ -22,7 +22,8 @@
   "private": true,
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged --relative"
+      "pre-commit": "lint-staged --relative",
+      "pre-push": "yarn test:ci && yarn build && yarn library:build"
     }
   },
   "lint-staged": {
