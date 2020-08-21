@@ -4,5 +4,7 @@ export const environment = {
   dictionaryUrl: 'https://www.gosuslugi.ru/api/nsi/v1/dictionary',
   externalApiUrl: '//www.gosuslugi.ru/api/nsi/v1/',
   externalLkUrl: 'https://www.gosuslugi.ru/info',
-  serviceId: 'local'
+  serviceId: 'local',
+  fileUploadApiUrl: 'https://gosuslugi.ru/api/storage/v1/files',
+  fileUploadLocalhostApiUrl: 'https://localhost/api/storage/v1/files'
 };

@@ -9,6 +9,7 @@ export enum CUSTOM_COMPONENT_ITEM_TYPE {
   ForeignCitizenship = 'ForeignCitizenship',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
+  FileUploadComponent = 'FileUploadComponent',
   Lookup = 'Lookup',
 }
 

@@ -19,6 +19,8 @@ import { AppComponent } from './app.component';
       externalApiUrl: environment.externalApiUrl,
       externalLkUrl: environment.externalLkUrl,
       isProd: environment.production,
+      fileUploadApiUrl: environment.fileUploadApiUrl,
+      fileUploadLocalhostApiUrl: environment.fileUploadLocalhostApiUrl,
     }),
   ],
   providers: [],
