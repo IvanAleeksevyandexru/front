@@ -7,6 +7,7 @@ import { UnsubscribeService } from '../../../../../../../../services/unsubscribe
 import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub'
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service'
 import { FormsModule } from '@angular/forms'
+import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service'
 
 describe('ConfirmPersonalUserAddressComponent', () => {
   let component: ConfirmPersonalUserAddressComponent;
@@ -28,6 +29,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
       declarations: [ ConfirmPersonalUserAddressComponent ],
       providers: [
         UnsubscribeService,
+        ScreenComponentService,
         {provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub}
       ]
     })
