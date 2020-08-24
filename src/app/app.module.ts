@@ -17,6 +17,8 @@ import { AppComponent } from './app.component';
       apiUrl: environment.apiUrl,
       dictionaryUrl: environment.dictionaryUrl,
       externalApiUrl: environment.externalApiUrl,
+      externalUrl: environment.externalUrl,
+      yandexMapsApiKey: environment.yandexMapsApiKey,
       isProd: environment.production,
     }),
   ],

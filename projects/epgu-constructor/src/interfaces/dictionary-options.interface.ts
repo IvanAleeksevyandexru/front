@@ -7,6 +7,7 @@
  * @property {string}tx -
  */
 export interface DictionaryOptionsInterface {
+  filter?: any;
   treeFiltering?: string;
   pageNum?: number;
   pageSize?: string;
