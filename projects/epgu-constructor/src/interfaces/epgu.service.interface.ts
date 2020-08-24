@@ -37,6 +37,7 @@ export interface EgpuResponseInterface {
 export interface EgpuResponseDisplayInterface {
   components: Array<EgpuResponseComponentInterface>;
   header: string;
+  label?: string;
   id: string;
   name: string;
   submitLabel: string;
@@ -61,10 +62,4 @@ export interface EgpuResponseComponentInterface {
   type: string;
   value: string;
   visited?: boolean
-}
-
-
-export interface EgpuResponseCurrentValue {
-  visited: boolean;
-  value: any;
 }

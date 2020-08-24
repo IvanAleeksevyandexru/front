@@ -8,4 +8,6 @@ export interface ConstructorConfigInterface {
   externalApiUrl: string;
   externalLkUrl: string;
   isProd: boolean;
+  fileUploadApiUrl: string;
+  fileUploadLocalhostApiUrl: string;
 }

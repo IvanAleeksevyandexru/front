@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EpgucLabelComponent } from './epguc-label.component';
+import { FileUploadItemComponent } from './file-upload-item.component';
 
-describe('LabelComponent', () => {
-  let component: EpgucLabelComponent;
-  let fixture: ComponentFixture<EpgucLabelComponent>;
+describe('FileUploadComponent', () => {
+  let component: FileUploadItemComponent;
+  let fixture: ComponentFixture<FileUploadItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EpgucLabelComponent ]
+      declarations: [ FileUploadItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EpgucLabelComponent);
+    fixture = TestBed.createComponent(FileUploadItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

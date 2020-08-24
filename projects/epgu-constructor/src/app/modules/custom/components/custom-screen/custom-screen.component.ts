@@ -6,7 +6,7 @@ import { DATE_STRING_DOT_FORMAT } from '../../../../../constant/global';
 import {
   CustomComponentDictionaryState,
   CustomComponentState,
-  EgpuResponseCustomComponentDisplayComponentInterface,
+  EpguResponseCustomComponentDisplayComponentInterface,
   EgpuResponseCustomComponentDisplayInterface,
 } from '../../../../../interfaces/custom-component.interface';
 import { DictionaryResponse } from '../../../../../interfaces/dictionary-options.interface';
@@ -113,7 +113,7 @@ export class CustomScreenComponent implements OnChanges {
 
   selectDictionary(
     selectedItem: ListItem,
-    component: EgpuResponseCustomComponentDisplayComponentInterface,
+    component: EpguResponseCustomComponentDisplayComponentInterface,
   ) {
     const dictionaryName = component.attrs?.dictionaryType;
     this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
@@ -138,7 +138,7 @@ export class CustomScreenComponent implements OnChanges {
     }
   }
 
-  inputChange($event: Event, component: EgpuResponseCustomComponentDisplayComponentInterface) {
+  inputChange($event: Event, component: EpguResponseCustomComponentDisplayComponentInterface) {
     const { value } = $event.target as HTMLInputElement;
     const inputValidationResult = this.checkInputValidation(value, component);
 
@@ -147,7 +147,7 @@ export class CustomScreenComponent implements OnChanges {
 
   checkInputValidation(
     value: string,
-    component: EgpuResponseCustomComponentDisplayComponentInterface,
+    component: EpguResponseCustomComponentDisplayComponentInterface,
   ): number {
     const regExpArr = component?.attrs?.validation?.map((item) => {
       try {
@@ -175,7 +175,7 @@ export class CustomScreenComponent implements OnChanges {
 
   loadDictionary(
     dictionaryName: string,
-    component: EgpuResponseCustomComponentDisplayComponentInterface,
+    component: EpguResponseCustomComponentDisplayComponentInterface,
   ) {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
     this.restService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
@@ -187,7 +187,7 @@ export class CustomScreenComponent implements OnChanges {
   loadDictionarySuccess(
     key: string,
     data: DictionaryResponse,
-    component: EgpuResponseCustomComponentDisplayComponentInterface,
+    component: EpguResponseCustomComponentDisplayComponentInterface,
   ) {
     this.dictionary[key].loading = false;
     this.dictionary[key].paginationLoading = false;
@@ -208,7 +208,7 @@ export class CustomScreenComponent implements OnChanges {
     this.dictionary[dictionaryName] = getCustomScreenDictionaryFirstState();
   }
 
-  private initState(component: EgpuResponseCustomComponentDisplayComponentInterface) {
+  private initState(component: EpguResponseCustomComponentDisplayComponentInterface) {
     const { id, value } = component;
     this.state[id] = { valid: false, errorMessage: '', value, component };
   }

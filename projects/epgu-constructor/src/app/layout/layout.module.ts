@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {EpgucSharedModule} from '../shared-module/shared-components.module';
+import { SharedModule } from '../shared-module/shared-components.module';
 import { NavigationProgressComponent } from './component/navigation-progress/navigation-progress.component';
 
 
@@ -13,7 +13,7 @@ const COMPONENT = [
   exports: [...COMPONENT],
   imports: [
     CommonModule,
-    EpgucSharedModule
+    SharedModule
   ]
 })
 export class LayoutModule { }

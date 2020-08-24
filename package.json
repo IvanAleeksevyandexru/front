@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@angular/animations": "~10.0.4",
+    "@angular/cdk": "~10.0.0",
     "@angular/common": "~10.0.4",
     "@angular/compiler": "~10.0.4",
     "@angular/core": "~10.0.4",
@@ -45,7 +46,6 @@
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
     "angular2-text-mask": "9.0.0",
-    "epgu-lib": "^0.0.384",
     "eslint-config-airbnb-typescript": "^9.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
@@ -54,6 +54,7 @@
     "lint-staged": "^10.2.11",
     "moment": "2.24.0",
     "ngx-perfect-scrollbar": "8.0.0",
+    "ngx-webcam": "^0.3.0",
     "prettier": "^2.0.5",
     "ru-validation-codes": "^2.8.0",
     "rxjs": "~6.5.5",

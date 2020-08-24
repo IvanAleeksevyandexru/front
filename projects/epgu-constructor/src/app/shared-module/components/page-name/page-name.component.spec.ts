@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EpgucPageNameComponent } from './epguc-page-name.component';
+import { PageNameComponent } from './page-name.component';
 
 describe('PageNameComponent', () => {
-  let component: EpgucPageNameComponent;
-  let fixture: ComponentFixture<EpgucPageNameComponent>;
+  let component: PageNameComponent;
+  let fixture: ComponentFixture<PageNameComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EpgucPageNameComponent ]
+      declarations: [ PageNameComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EpgucPageNameComponent);
+    fixture = TestBed.createComponent(PageNameComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

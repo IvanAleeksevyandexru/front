@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {EpguLibModule} from 'epgu-lib';
 import {AddPassportComponent} from './add-passport.component';
-import {EpgucSharedModule} from '../../../../shared-module/shared-components.module';
+import {SharedModule} from '../../../../shared-module/shared-components.module';
 
 const COMPONENTS = [ AddPassportComponent ];
 
@@ -12,7 +12,7 @@ const COMPONENTS = [ AddPassportComponent ];
     CommonModule,
     EpgucSharedModule,
     EpguLibModule.forChild(),
-    EpgucSharedModule,
+    SharedModule,
   ],
   exports: [ ...COMPONENTS ]
 })
