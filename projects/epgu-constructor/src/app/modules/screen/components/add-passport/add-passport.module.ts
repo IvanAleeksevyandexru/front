@@ -10,7 +10,6 @@ const COMPONENTS = [ AddPassportComponent ];
   declarations: [ ...COMPONENTS ],
   imports: [
     CommonModule,
-    EpgucSharedModule,
     EpguLibModule.forChild(),
     SharedModule,
   ],

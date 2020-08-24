@@ -11,7 +11,7 @@ import { ScreenComponentService } from '../../service/screen-component/screen-co
 
 const moment = moment_;
 
-interface EgpuResponseComponentInterfaceForDocInput extends EgpuResponseComponentInterface {
+export interface EgpuResponseComponentInterfaceForDocInput extends EgpuResponseComponentInterface {
   attrs: {
     fields: Array<IField>;
   };

@@ -3,7 +3,8 @@
        [innerHTML]="data.label"></div>
   <div class="fileupload__label" *ngIf="refData?.length"
        [innerHTML]="refData"></div>
-  <input #fileUploadInput type="file" [attr.accept]="getAcceptTypes()" (change)="updateSelectedFilesInfoAndSend()" multiple/>
+  <input #fileUploadInput type="file" [attr.accept]="getAcceptTypes()" (change)="updateSelectedFilesInfoAndSend()"
+         multiple/>
   <div class="errors" *ngIf="errors.length">
     <div class="error" *ngFor="let error of errors" [innerText]="error"></div>
   </div>
@@ -30,16 +31,17 @@
       </button>
     </div>
   </div>
-  <div class="fileupload__buttons" [class.nocamera]="cameraNotAllowed" >
-    <button *ngIf="!cameraNotAllowed" class="fileupload__button"
-      (click)="openCamera()"
-      [disabled]="(listIsUploadingNow || filesInUploading > 0)">
+  <div class="fileupload__buttons" [class.nocamera]="cameraNotAllowed">
+    <button class="fileupload__button"
+            *ngIf="!cameraNotAllowed"
+            (click)="openCamera()"
+            [disabled]="(listIsUploadingNow || filesInUploading > 0)">
       <img src="/assets/icons/svg/camera.svg" class="fileupload__button-icon"/>
       Фото
     </button>
     <button class="fileupload__button"
-      (click)="selectFilesEvent()"
-      [disabled]="(listIsUploadingNow || filesInUploading > 0)">
+            (click)="selectFilesEvent()"
+            [disabled]="(listIsUploadingNow || filesInUploading > 0)">
       <img src="/assets/icons/svg/clip.svg" class="fileupload__button-icon"/>
       Файл
     </button>

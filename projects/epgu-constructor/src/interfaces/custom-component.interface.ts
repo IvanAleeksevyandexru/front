@@ -17,7 +17,7 @@ export interface CustomComponentDictionaryState {
 
 
 /**
- * @property {Array<string>>}ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
+ * @property {Array<string>}ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
  * (например Регион связан со траной что и чтоб не выкачивать все регионы мира, в ссылке будет указана страна)
  * @property {string}dictionaryType - dictionary name for request {@see getDictionary}
  */

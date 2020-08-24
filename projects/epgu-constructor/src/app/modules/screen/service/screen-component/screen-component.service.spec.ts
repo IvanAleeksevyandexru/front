@@ -6,7 +6,9 @@ describe('ScreenComponentService', () => {
   let service: ScreenComponentService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [ScreenComponentService]
+    });
     service = TestBed.inject(ScreenComponentService);
   });
 

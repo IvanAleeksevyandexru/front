@@ -7,14 +7,14 @@ import {SCREEN_TYPE} from '../constant/global';
  * @property {EgpuResponseDisplayInterface}display -
  * @property {string}gender
  * @property {string}orderId - идентификатор запорлнения черновика, (уже был черновик...)
- * @property {Array<object>>}sendNotification - собственники жилья
+ * @property {Array<object>}sendNotification - собственники жилья
  * (человек 1, человек 2) => эти людям прилетает уведомление о подтверждении ...
  * @property {string}token - в целях разработки, на продее через cookie;
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
  *
  */
 export interface EgpuResponseInterface {
-  applicantAnswers: object;
+  applicantAnswers: {[key: string]: any};
   currentRule: number;
   currentValue: object;
   display: EgpuResponseDisplayInterface;

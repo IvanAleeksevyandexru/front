@@ -4,7 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
-interface EgpuResponseComponentInterfaceForChangeList extends EgpuResponseComponentInterface {
+export interface EgpuResponseComponentInterfaceForChangeList
+  extends EgpuResponseComponentInterface {
   attrs: {
     fields: Array<IField>;
   };
@@ -30,6 +31,7 @@ export class ChangeListComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     // TODO eliskachev это для тебя нужно заполнить данные;
     this.screenComponentService.dataToSend = '';
+    this.fields = this.generateFormControls();
   }
 
   ngOnChanges(): void {

@@ -5,7 +5,6 @@ import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 @Component({
   selector: 'app-confirm-personal-user-address-screen',
   templateUrl: './confirm-personal-user-address-screen.component.html',
-  styleUrls: ['./confirm-personal-user-address-screen.component.scss'],
 })
 export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   @Input() data: ConfirmAddressInterface;

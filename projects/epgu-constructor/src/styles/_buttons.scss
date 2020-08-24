@@ -12,3 +12,33 @@
 .btn--primary {
   @include btn--primary();
 }
+
+.cross-btn {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 20px;
+  height: 20px;
+  opacity: 0.3;
+
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  &:before,
+  &:after {
+    position: absolute;
+    left: 10px;
+    content: " ";
+    height: 20px;
+    width: 2px;
+    background-color: $black;
+  }
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
+}

@@ -18,14 +18,20 @@ export class ConfirmPersonalUserDataComponent implements OnInit, OnChanges {
 
   constructor(public constructorConfigService: ConstructorConfigService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.parseData();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
-      this.fullName = this.getFullName(this.data);
-      this.birthDay = this.getBirthDay(this.data);
-      this.passportFields = this.getPassportFields(this.data);
+      this.parseData();
     }
+  }
+
+  private parseData() {
+    this.fullName = this.getFullName(this.data);
+    this.birthDay = this.getBirthDay(this.data);
+    this.passportFields = this.getPassportFields(this.data);
   }
 
   private getFullName(data: ConfirmUserDataInterface) {

@@ -2,7 +2,7 @@
 @import '../../../../../../../styles/breakpoint';
 @import '../../../../../../../styles/functions';
 
-app-navigation {
+.nav {
   @include navigation-mt();
 }
 

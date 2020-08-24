@@ -26,7 +26,9 @@ export enum INFO_SCREEN_COMPONENT {
 
 export enum UNIQUE_COMPONENT_NAME {
   childrenListUnder14 = 'ChildrenListUnder14',
-  fileUploadComponent = 'FileUploadComponent'
+  fileUploadComponent = 'FileUploadComponent',
+  'addPassport' = 'AddPassport',
+  'mapService' = 'MapService',
 }
 
 export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';
