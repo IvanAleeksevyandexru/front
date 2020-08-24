@@ -6,7 +6,7 @@ import {
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 
 @Component({
-  selector: 'app-confirm-personal-user-data',
+  selector: 'epgu-constructor-confirm-personal-user-data',
   templateUrl: './confirm-personal-user-data.component.html',
   styleUrls: ['./confirm-personal-user-data.component.scss'],
 })

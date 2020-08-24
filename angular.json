@@ -12,7 +12,6 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -106,20 +105,6 @@
             "browserTarget": "epgu-form-frontend:build"
           }
         },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "eslintConfig": ".eslintrc.js",
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
@@ -138,7 +123,12 @@
       "projectType": "library",
       "root": "projects/epgu-constructor",
       "sourceRoot": "projects/epgu-constructor/src",
-      "prefix": "lib",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "prefix": "epgu-constructor",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
@@ -155,7 +145,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": ".eslintrc.js",
+            "eslintConfig": "projects/epgu-constructor/.eslintrc.js",
             "tsConfig": [
               "projects/epgu-constructor/tsconfig.lib.json",
               "tsconfig.spec.json"

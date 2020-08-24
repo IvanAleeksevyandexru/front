@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
-import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
 import { IFileUploadItem } from '../../../../../interfaces/terabyte.interface';
 
 @Component({
-  selector: 'app-file-upload-screen',
+  selector: 'epgu-constructor-file-upload-screen',
   templateUrl: './file-upload-screen.component.html',
   styleUrls: ['./file-upload-screen.component.scss'],
 })
@@ -17,8 +17,8 @@ export class FileUploadScreenComponent {
   get header() {
     return this.head ? this.head : this.data.label;
   }
-  private info: EgpuResponseComponentInterface;
-  @Input() set data(data: EgpuResponseComponentInterface) {
+  private info: ComponentInterface;
+  @Input() set data(data: ComponentInterface) {
     this.info = data;
     this.allMaxFiles = 0;
     // @ts-ignore
@@ -29,7 +29,7 @@ export class FileUploadScreenComponent {
       type: UNIQUE_COMPONENT_NAME.fileUploadComponent,
     };
   }
-  get data(): EgpuResponseComponentInterface {
+  get data(): ComponentInterface {
     return this.info;
   }
   @Input() submitLabel: string;
@@ -44,7 +44,7 @@ export class FileUploadScreenComponent {
    * Возвращает префикс для формирования мнемоники
    * @param componentData - данные компонента
    */
-  getUploadComponentPrefixForMnemonic(componentData: EgpuResponseComponentInterface): string {
+  getUploadComponentPrefixForMnemonic(componentData: ComponentInterface): string {
     return [componentData.id, 'FileUploadComponent'].join('.');
   }
 

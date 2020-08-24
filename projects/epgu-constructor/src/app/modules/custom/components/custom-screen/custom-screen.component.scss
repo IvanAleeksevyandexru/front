@@ -20,6 +20,7 @@
 
 .body {
   display: flex;
+  text-align: left;
   @include tablets-down {
     flex-grow: 1;
   }
@@ -32,14 +33,6 @@
 
 .screen-container {
   text-align: center;
-}
-
-app-screen-pad {
-  text-align: left;
-}
-
-app-label-section {
-  margin-bottom: 20px;
 }
 
 .form {
@@ -55,6 +48,12 @@ app-label-section {
   &__error {
     margin-top: 4px;
     color: $gosred;
+  }
+}
+
+.form-item {
+  &__label {
+    margin-bottom: 20px;
   }
 }
 

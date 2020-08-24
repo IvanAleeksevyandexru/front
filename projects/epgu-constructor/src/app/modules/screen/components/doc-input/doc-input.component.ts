@@ -5,13 +5,13 @@ import * as moment_ from 'moment';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { map, takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../constant/global';
-import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 const moment = moment_;
 
-export interface EgpuResponseComponentInterfaceForDocInput extends EgpuResponseComponentInterface {
+interface EgpuResponseComponentInterfaceForDocInput extends ComponentInterface {
   attrs: {
     fields: Array<IField>;
   };
@@ -30,7 +30,7 @@ interface IForm {
 }
 
 @Component({
-  selector: 'app-doc-input',
+  selector: 'epgu-constructor-doc-input',
   templateUrl: './doc-input.component.html',
   styleUrls: ['./doc-input.component.scss'],
   providers: [UnsubscribeService],

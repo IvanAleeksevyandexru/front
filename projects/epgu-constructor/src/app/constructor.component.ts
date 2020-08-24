@@ -4,9 +4,9 @@ import { SCREEN_TYPE } from '../constant/global';
 import { ConstructorService } from './services/constructor/constructor.service';
 
 @Component({
-  selector: 'app-constructor',
+  selector: 'epgu-constructor-constructor',
   templateUrl: './constructor.component.html',
-  styleUrls: ['./constructor.component.scss', '../styles.scss'],
+  styleUrls: ['../styles.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class ConstructorComponent implements OnInit {

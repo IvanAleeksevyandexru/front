@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
-export interface EgpuResponseComponentInterfaceForChangeList
-  extends EgpuResponseComponentInterface {
+export interface EgpuResponseComponentInterfaceForChangeList extends ComponentInterface {
   attrs: {
     fields: Array<IField>;
   };
@@ -16,7 +15,7 @@ interface IField {
   type: 'input';
 }
 @Component({
-  selector: 'app-change-list',
+  selector: 'epgu-constructor-change-list',
   templateUrl: './change-list.component.html',
   styleUrls: ['./change-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

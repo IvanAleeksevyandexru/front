@@ -26,7 +26,7 @@ import {
 } from '../../../../../../../interfaces/terabyte.interface';
 
 @Component({
-  selector: 'app-file-upload-item',
+  selector: 'epgu-constructor-file-upload-item',
   templateUrl: './file-upload-item.component.html',
   styleUrls: ['./file-upload-item.component.scss'],
 })

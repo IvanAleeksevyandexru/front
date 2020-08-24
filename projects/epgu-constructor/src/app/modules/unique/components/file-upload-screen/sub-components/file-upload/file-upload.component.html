@@ -1,12 +1,12 @@
 <ng-template ngFor let-upload [ngForOf]="attributes.uploads">
-  <app-file-upload-item
+  <epgu-constructor-file-upload-item
     [refData]="refData"
     [objectId]="objectId"
     [data]="upload"
     [prefixForMnemonic]="prefixForMnemonic"
     (newValueSet)="handleNewValueForItem($event)"
-  ></app-file-upload-item>
-  <app-file-upload
+  ></epgu-constructor-file-upload-item>
+  <epgu-constructor-file-upload
     *ngIf="upload?.relatedUploads"
     [isRelatedUploads]="true"
     [uploadId]="upload.uploadId"
@@ -14,5 +14,5 @@
     [objectId]="objectId"
     [attributes]="upload.relatedUploads"
     (newRelatedValueSet)="handleNewRelatedValueForItem($event)"
-  ></app-file-upload>
+  ></epgu-constructor-file-upload>
 </ng-template>

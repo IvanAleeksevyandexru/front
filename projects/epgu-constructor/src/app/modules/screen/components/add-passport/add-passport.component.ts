@@ -6,7 +6,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 @Component({
-  selector: 'app-add-passport-screen',
+  selector: 'epgu-constructor-add-passport',
   templateUrl: './add-passport.component.html',
   styleUrls: ['./add-passport.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-navigation-progress',
+  selector: 'epgu-constructor-navigation-progress',
   templateUrl: './navigation-progress.component.html',
   styleUrls: ['./navigation-progress.component.scss'],
 })

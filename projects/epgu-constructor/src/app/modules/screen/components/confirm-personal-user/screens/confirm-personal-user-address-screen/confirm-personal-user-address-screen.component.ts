@@ -3,7 +3,7 @@ import { ScreenComponentService } from '../../../../service/screen-component/scr
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
 @Component({
-  selector: 'app-confirm-personal-user-address-screen',
+  selector: 'epgu-constructor-confirm-personal-user-address-screen',
   templateUrl: './confirm-personal-user-address-screen.component.html',
 })
 export class ConfirmPersonalUserAddressScreenComponent implements OnInit {

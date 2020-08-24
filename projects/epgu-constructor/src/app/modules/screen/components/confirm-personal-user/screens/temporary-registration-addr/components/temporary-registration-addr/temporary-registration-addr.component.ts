@@ -1,16 +1,16 @@
 import { Component, Input } from '@angular/core';
-import { EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface } from '../../../../../../../../../interfaces/temporary-registration-addr.interface';
+import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../../../interfaces/temporary-registration-addr.interface';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 
 @Component({
-  selector: 'app-temporary-registration-addr',
+  selector: 'epgu-constructor-temporary-registration-addr',
   templateUrl: './temporary-registration-addr.component.html',
   styleUrls: ['./temporary-registration-addr.component.scss'],
 })
 export class TemporaryRegistrationAddrComponent {
   date = new Date();
   forms: any = {};
-  @Input() data: EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface;
+  @Input() data: TemporaryRegistrationAddrComponentInterface;
 
   constructor(public constructorConfigService: ConstructorConfigService) {}
 

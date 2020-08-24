@@ -5,7 +5,7 @@ import { WebcamEvents } from '../../../../../../services/utils/webcamevents';
 import { imageCameraQuality } from '../../../../../../../constant/global';
 
 @Component({
-  selector: 'app-webcam-shoot',
+  selector: 'epgu-constructor-webcam-shoot',
   templateUrl: './webcam-shoot.component.html',
   styleUrls: ['./webcam-shoot.component.scss'],
 })

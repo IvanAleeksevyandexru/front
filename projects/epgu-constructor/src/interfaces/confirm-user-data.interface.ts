@@ -1,6 +1,6 @@
-import {EgpuResponseComponentInterface} from './epgu.service.interface';
+import { ComponentInterface } from './epgu.service.interface';
 
-export interface ConfirmUserDataInterface extends EgpuResponseComponentInterface{
+export interface ConfirmUserDataInterface extends ComponentInterface{
   attrs: ConfirmUserDataAttrsInterface;
 }
 export interface ConfirmUserDataAttrsInterface {

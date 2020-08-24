@@ -17,7 +17,7 @@ import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsub
 const moment = moment_;
 
 @Component({
-  selector: 'app-add-new-child-form',
+  selector: 'epgu-constructor-add-new-child-form',
   templateUrl: './add-new-child-form.component.html',
   styleUrls: ['./add-new-child-form.component.scss'],
 })

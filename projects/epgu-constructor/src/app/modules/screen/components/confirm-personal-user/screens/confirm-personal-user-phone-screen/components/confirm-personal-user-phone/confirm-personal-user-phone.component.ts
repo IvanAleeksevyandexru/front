@@ -6,7 +6,7 @@ import { UnsubscribeService } from '../../../../../../../../services/unsubscribe
 import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
 
 @Component({
-  selector: 'app-confirm-personal-user-phone',
+  selector: 'epgu-constructor-confirm-personal-user-phone',
   templateUrl: './confirm-personal-user-phone.component.html',
   styleUrls: ['./confirm-personal-user-phone.component.scss'],
   providers: [UnsubscribeService],

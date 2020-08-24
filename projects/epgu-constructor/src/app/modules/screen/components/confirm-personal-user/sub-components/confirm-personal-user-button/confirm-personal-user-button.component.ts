@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-confirm-personal-user-button',
+  selector: 'epgu-constructor-confirm-personal-user-button',
   templateUrl: './confirm-personal-user-button.component.html',
   styleUrls: ['./confirm-personal-user-button.component.scss'],
 })

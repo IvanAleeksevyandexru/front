@@ -23,7 +23,8 @@ $button-mt: 5px;
       margin-top: 16px;
     }
 
-    app-confirm-personal-user-button {
+     // stylelint-disable-next-line
+    epgu-constructor-confirm-personal-user-button {
       @include tablets-up {
         margin: 5px 10px;
       }

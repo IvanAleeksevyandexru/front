@@ -1,15 +1,15 @@
-<app-screen-container>
+<epgu-constructor-screen-container>
   <div *ngIf="header" class="head">
-    <app-page-name>{{ header }}</app-page-name>
+    <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
   </div>
 
-  <app-file-upload
+  <epgu-constructor-file-upload
     [objectId]="getOrderId"
     [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
     [attributes]="data.attrs"
     (newValueSet)="handleNewValueSet($event)"
   >
-  </app-file-upload>
+  </epgu-constructor-file-upload>
 
   <div class="info">
     <div class="info__item">
@@ -28,4 +28,4 @@
       {{ submitLabel || "Продолжить" }}
     </lib-button>
   </div>
-</app-screen-container>
+</epgu-constructor-screen-container>
