@@ -1,0 +1,23 @@
+<div class="widget">
+  <div class="widget__form widget-form">
+    <span class="widget-form__title">Выберите ЗАГСы</span>
+    <div class="widget-form__input">
+      <lib-lookup
+        [searchCaseSensitive]="false"
+        [fixedItems]="mappedDictionaryForLookup"
+        [showSuggestion]="true"
+        (changed)="selectMapObject($event.originalItem)"
+        [showExpandCollapse]="false"
+        [queryMinSymbolsCount]="0"
+      >
+      </lib-lookup>
+    </div>
+  </div>
+  <lib-map
+    [externalMode]="true"
+    [enterpriseYandexMapsEnabled]="true"
+    [yandexMapsApiKey]="yandexMapsApiKey"
+    [center]="mapCenter"
+    [controls]="mapControls">
+  </lib-map>
+</div>

@@ -17,7 +17,7 @@ import {ConfirmUserDataAttrsInterface} from './confirm-user-data.interface';
  *
  */
 export interface EgpuResponseInterface {
-  applicantAnswers: object;
+  applicantAnswers: {[key: string]: any};
   currentRule: number;
   currentValue: object;
   display: EgpuResponseDisplayInterface;
