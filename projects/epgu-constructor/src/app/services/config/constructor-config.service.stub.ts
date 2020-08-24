@@ -8,6 +8,8 @@ export class ConstructorConfigServiceStub {
     dictionaryUrl: '',
     serviceId: '',
     externalApiUrl: '',
+    externalUrl: '',
+    yandexMapsApiKey: '',
     isProd: false
   };
 }
