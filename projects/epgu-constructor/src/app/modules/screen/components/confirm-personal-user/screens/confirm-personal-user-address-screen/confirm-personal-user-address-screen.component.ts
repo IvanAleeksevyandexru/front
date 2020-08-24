@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
+import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
 @Component({
   selector: 'app-confirm-personal-user-address-screen',

@@ -18,6 +18,10 @@ app-navigation {
     @include tablets-down {
       justify-content: space-between;
     }
+
+    &__label {
+      margin-bottom: 30px;
+    }
   }
 
   &__body {
