@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
@@ -13,7 +13,7 @@ import {
   styleUrls: ['./questions-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class QuestionsScreenComponent implements OnInit {
+export class QuestionsScreenComponent {
   @Input() data: EgpuResponseQuestionsDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
@@ -23,8 +23,6 @@ export class QuestionsScreenComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.goPrevStepEvent());
   }
-
-  ngOnInit(): void {}
 
   goPrevStepEvent() {
     this.prevStepEvent.emit();

@@ -10,7 +10,7 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
 
 const moment = moment_;
 
-interface EgpuResponseComponentInterfaceForDocInput extends EgpuResponseComponentInterface {
+export interface EgpuResponseComponentInterfaceForDocInput extends EgpuResponseComponentInterface {
   attrs: {
     fields: Array<IField>;
   };

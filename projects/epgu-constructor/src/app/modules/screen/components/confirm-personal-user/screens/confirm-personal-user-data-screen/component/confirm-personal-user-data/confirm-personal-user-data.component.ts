@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {
   ConfirmUserDataFieldsInterface,
   ConfirmUserDataInterface,
@@ -15,14 +15,20 @@ export class ConfirmPersonalUserDataComponent implements OnInit, OnChanges {
   passportFields: Array<ConfirmUserDataFieldsInterface>;
   @Input() data: ConfirmUserDataInterface;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.parseData();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
-      this.fullName = this.getFullName(this.data);
-      this.birthDay = this.getBirthDay(this.data);
-      this.passportFields = this.getPassportFields(this.data);
+      this.parseData();
     }
+  }
+
+  private parseData() {
+    this.fullName = this.getFullName(this.data);
+    this.birthDay = this.getBirthDay(this.data);
+    this.passportFields = this.getPassportFields(this.data);
   }
 
   private getFullName(data: ConfirmUserDataInterface) {
