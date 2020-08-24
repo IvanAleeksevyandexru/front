@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EpgucScreenContainerComponent } from './epguc-screen-container.component';
+import { ScreenContainerComponent } from './screen-container.component';
 
 describe('ScreenContainerComponent', () => {
-  let component: EpgucScreenContainerComponent;
-  let fixture: ComponentFixture<EpgucScreenContainerComponent>;
+  let component: ScreenContainerComponent;
+  let fixture: ComponentFixture<ScreenContainerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EpgucScreenContainerComponent ]
+      declarations: [ ScreenContainerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EpgucScreenContainerComponent);
+    fixture = TestBed.createComponent(ScreenContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

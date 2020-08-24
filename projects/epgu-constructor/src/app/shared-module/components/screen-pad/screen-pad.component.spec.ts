@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EpgucLabelComponent } from './epguc-label.component';
+import { ScreenPadComponent } from './screen-pad.component';
 
-describe('LabelComponent', () => {
-  let component: EpgucLabelComponent;
-  let fixture: ComponentFixture<EpgucLabelComponent>;
+describe('AppCardComponent', () => {
+  let component: ScreenPadComponent;
+  let fixture: ComponentFixture<ScreenPadComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EpgucLabelComponent ]
+      declarations: [ ScreenPadComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EpgucLabelComponent);
+    fixture = TestBed.createComponent(ScreenPadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

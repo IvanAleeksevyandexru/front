@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {InfoScreenBodyComponent} from './info-screen-body.component';
-import {EpguLibModule} from 'epgu-lib';
-import {EpgucSharedModule} from '../../../../shared-module/shared-components.module';
+import { InfoScreenBodyComponent } from './info-screen-body.component';
+import { EpguLibModule } from 'epgu-lib';
+import { SharedModule } from '../../../../shared-module/shared-components.module';
 
 const COMPONENTS = [
   InfoScreenBodyComponent
@@ -13,7 +13,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    EpgucSharedModule,
+    SharedModule,
     EpguLibModule.forChild(),
   ]
 })

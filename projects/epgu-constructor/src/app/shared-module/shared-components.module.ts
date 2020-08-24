@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EpgucPageNameComponent } from './components/page-name/epguc-page-name.component';
-import { EpgucScreenContainerComponent } from './components/screen-container/epguc-screen-container.component';
-import {EpgucScreenPadComponent} from './components/screen-pad/epguc-screen-pad.component';
+import { PageNameComponent } from './components/page-name/page-name.component';
+import { ScreenContainerComponent } from './components/screen-container/screen-container.component';
+import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { ToJsonPipe } from './pipe/toJson/to-json.pipe';
+import { LabelComponent } from './components/label/label.component';
 import { EpguLibModule } from 'epgu-lib';
 import {NavigationService} from './service/navigation/navigation.service';
 import {NavigationComponent} from './components/navigation/navigation.component';
-import {EpgucLabelComponent} from './components/label/epguc-label.component';
 
 const COMPONENTS = [
   // component
-  EpgucPageNameComponent,
-  EpgucScreenContainerComponent,
-  EpgucScreenPadComponent,
+  PageNameComponent,
+  ScreenContainerComponent,
+  ScreenPadComponent,
+  LabelComponent,
   NavigationComponent,
-  EpgucLabelComponent,
 
   // Pipe
   ToJsonPipe,
@@ -30,5 +30,5 @@ const COMPONENTS = [
         EpguLibModule,
     ]
 })
-export class EpgucSharedModule { }
+export class SharedModule { }
 

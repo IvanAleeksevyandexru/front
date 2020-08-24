@@ -4,7 +4,7 @@ import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-us
 import {SubComponentsModule} from '../../sub-components/sub-components.module';
 import {ConfirmPersonalUserAddressComponent} from './components/confirm-personal-user-address/confirm-personal-user-address.component';
 import {EpguLibModule} from 'epgu-lib';
-import {EpgucSharedModule} from '../../../../../../shared-module/shared-components.module';
+import {SharedModule} from '../../../../../../shared-module/shared-components.module';
 
 const COMPONENTS = [
   ConfirmPersonalUserAddressScreenComponent,
@@ -17,7 +17,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    EpgucSharedModule,
+    SharedModule,
     SubComponentsModule,
     EpguLibModule.forChild(),
   ]
