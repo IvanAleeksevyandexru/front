@@ -4,6 +4,10 @@
   display: block;
 }
 
+.nav {
+  @include navigation-mt();
+}
+
 .question {
   &__wrapper {
     display: flex;
@@ -11,6 +15,10 @@
     min-height: inherit;
     @include tablets-down {
       justify-content: space-between;
+    }
+
+    &__label {
+      margin-bottom: 30px;
     }
   }
 

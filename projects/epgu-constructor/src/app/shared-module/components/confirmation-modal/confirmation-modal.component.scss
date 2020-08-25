@@ -1,0 +1,88 @@
+@import "src/styles/core";
+
+:host::ng-deep {
+  .conf-modal {
+    display: flex;
+    flex-direction: column;
+    @include modal-body();
+    top: 18%;
+    width: 634px;
+    height: 485px;
+    padding: 32px;
+    border-radius: 12px;
+
+    &__close {
+      float: right;
+      width: 16px;
+      height: 16px;
+
+      &:before,
+      &:after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 20px;
+        background: $button-hit;
+        transform: rotate(45deg);
+      }
+
+      &:before {
+        transform: rotate(45deg);
+      }
+
+      &:after {
+        transform: rotate(-45deg);
+      }
+    }
+
+    &__title {
+      padding-right: 50px;
+      font-size: 24px;
+      line-height: 32px;
+      color: $summer-night;
+    }
+
+    &__header {
+      border-bottom: 1px solid $divider;
+      padding-bottom: 24px;
+    }
+
+    &__body {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__text {
+      white-space: pre-line;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    &__text-wrapper {
+      overflow-y: auto;
+      padding: 24px 20px 0 0;
+      margin-right: 6px;
+    }
+
+    &__controls {
+      display: flex;
+      margin-top: 26px;
+      justify-content: center;
+      flex: 1;
+    }
+
+    @include tablets-down {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      border-radius: 0;
+
+      &__button {
+        width: 100%
+      }
+    }
+  }
+}
+
+

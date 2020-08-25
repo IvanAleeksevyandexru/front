@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import {
   QuestionsComponentActionsInterface,
   QuestionsDisplayInterface,
@@ -15,6 +15,7 @@ import {
 })
 export class QuestionsScreenComponent {
   @Input() data: QuestionsDisplayInterface;
+  @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 

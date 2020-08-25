@@ -1,21 +1,26 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
+import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
+import { DATE_STRING_DOT_FORMAT } from '../../../../../constant/global';
 import {
   CustomComponentDictionaryState,
   CustomComponentInterface,
   CustomComponentState,
   CustomDisplayInterface,
 } from '../../../../../interfaces/custom-component.interface';
-import {
-  DictionaryItem,
-  DictionaryResponse,
-} from '../../../../../interfaces/dictionary-options.interface';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { DictionaryResponse } from '../../../../../interfaces/dictionary-options.interface';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { RestService } from '../../../../services/rest/rest.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
+import {
+  CUSTOM_COMPONENT_ITEM_TYPE,
+  getCustomScreenDictionaryFirstState,
+  getNormalizeDataCustomScreenDictionary,
+} from '../../tools/custom-screen-tools';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-custom-screen',
@@ -33,6 +38,7 @@ export class CustomScreenComponent implements OnChanges {
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
 
   @Input() data: CustomDisplayInterface;
+  @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
@@ -77,16 +83,16 @@ export class CustomScreenComponent implements OnChanges {
           this.state[key].value,
           this.state[key].component,
         );
-
         this.setValidationState(
           inputValidationResult,
           this.state[key]?.component?.id,
           this.state[key]?.value,
         );
-
         if (inputValidationResult > -1) {
           isValid = false;
         }
+      } else if (this.state[key].component.type === CUSTOM_COMPONENT_ITEM_TYPE.DateInput) {
+        this.state[key].value = moment(this.state[key].value).format(DATE_STRING_DOT_FORMAT);
       }
     });
 
@@ -95,13 +101,13 @@ export class CustomScreenComponent implements OnChanges {
     if (isValid) {
       Object.keys(this.state).forEach((key) => {
         const responseValue = this.state[key].value;
-        if (typeof responseValue === 'object') {
-          responseData[key] = { visited: true, value: JSON.stringify(responseValue || {}) };
-        } else {
-          responseData[key] = { visited: true, value: responseValue };
-        }
+        responseData[key] =
+          typeof responseValue === 'object'
+            ? { visited: true, value: JSON.stringify(responseValue || {}) }
+            : { visited: true, value: responseValue };
       });
       this.nextStepEvent.emit(responseData);
+      this.validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
     }
   }
 
@@ -141,8 +147,8 @@ export class CustomScreenComponent implements OnChanges {
       try {
         return new RegExp(item.value);
       } catch {
-        console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
-        return new RegExp(/.*/);
+        console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.+/`);
+        return new RegExp(/.+/);
       }
     });
 
@@ -182,7 +188,7 @@ export class CustomScreenComponent implements OnChanges {
     this.dictionary[key].paginationLoading = false;
     this.dictionary[key].data = data;
     this.dictionary[key].origin = component;
-    this.dictionary[key].list = data.items.map((item) => this.adaptiveData(item));
+    this.dictionary[key].list = getNormalizeDataCustomScreenDictionary(data.items, key);
   }
 
   loadDictionaryError(key: string) {
@@ -194,28 +200,7 @@ export class CustomScreenComponent implements OnChanges {
 
   // <------------ tools
   initDictionary(dictionaryName) {
-    this.dictionary[dictionaryName] = {
-      loading: true,
-      loadError: false,
-      loadEnd: false,
-      paginationLoading: true,
-      page: 0,
-      data: {} as any,
-      list: [],
-      origin: {} as any,
-      selectedItem: {} as any,
-    };
-  }
-
-  adaptiveData(item: DictionaryItem): any {
-    return {
-      id: item.value,
-      text: item.title,
-      formatted: '',
-      // 'hidden': false,
-      originalItem: item,
-      compare: () => false,
-    };
+    this.dictionary[dictionaryName] = getCustomScreenDictionaryFirstState();
   }
 
   private initState(component: CustomComponentInterface) {

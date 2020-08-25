@@ -1,69 +1,41 @@
-
 <form #dataForm="ngForm">
-  <ng-container *ngFor="let field of data?.attrs?.fields" [ngSwitch]="field?.fieldName">
-    <ng-container *ngSwitchCase="'regAddr'">
-      <ng-container *ngTemplateOutlet="form1; context: {field: field}">
-      </ng-container>
-    </ng-container>
+  <ng-container *ngFor="let field of data?.attrs?.fields; let i = index" [ngSwitch]="field?.fieldName">
+    <epgu-constructor-address-item class="item" [label]="field.label" [name]="field.label" *ngSwitchCase="'regAddr'">
+      <lib-dadata-widget
+        [simpleMode]="true"
+        [disabled]="!isEditable"
+        [name]="field.fieldName"
+        [externalApiUrl]="externalApiUrl"
+        [initValue]="valueParsed[field.fieldName]"
+        [(ngModel)]="valueParsed[field.fieldName]"
+        [textModelValue]="true"
+      >
+      </lib-dadata-widget>
+    </epgu-constructor-address-item>
 
-    <!-- DEPRICATED: will be removed -->
-    <ng-container *ngSwitchCase="'addr'">
-      <ng-container *ngTemplateOutlet="form1; context: {field: field}">
-      </ng-container>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'regDate'">
-      <ng-container *ngTemplateOutlet="form2; context: {field: field}">
-      </ng-container>
-    </ng-container>
-
-    <!-- DEPRICATED: will be removed -->
-    <ng-container *ngSwitchCase="'date'">
-      <ng-container *ngTemplateOutlet="form2; context: {field: field}">
-      </ng-container>
-    </ng-container>
-
-    <ng-container *ngSwitchDefault>
-      <ng-container *ngTemplateOutlet="form3; context: {field: field}">
-      </ng-container>
-    </ng-container>
-  </ng-container>
-</form>
-
-
-<ng-template #form1 let-field="field">
-  <epgu-constructor-address-item class="item" [label]="field.label" [name]="field.label">
-    <lib-dadata-widget
-      [simpleMode]="true"
-      [disabled]="!isEditable"
-      [name]="field.fieldName"
-      [externalApiUrl]="externalApiUrl"
-      [initValue]="valueParsed[field.fieldName]"
-      [(ngModel)]="valueParsed[field.fieldName]">
-    </lib-dadata-widget>
-  </epgu-constructor-address-item>
-</ng-template>
-
-<ng-template #form2 let-field="field">
-  <epgu-constructor-address-item class="item" [label]="field.label" [name]="field.label">
-    <lib-date-picker
-      [disabled]="!isEditable"
-      [name]="field.fieldName"
-      [(ngModel)]="valueParsed[field.fieldName]"
+    <epgu-constructor-address-item
+      *ngSwitchCase="'regDate'"
+      class="item"
+      [label]="field.label"
+      [name]="field.label"
       [textModelValue]="true"
     >
-    </lib-date-picker>
-  </epgu-constructor-address-item>
-</ng-template>
+      <lib-date-picker
+        [disabled]="!isEditable"
+        [name]="field.fieldName"
+        [(ngModel)]="valueParsed[field.fieldName]"
+      >
+      </lib-date-picker>
+    </epgu-constructor-address-item>
 
-<ng-template #form3 let-field="field">
-  <epgu-constructor-address-item class="item" [label]="field.label" [name]="field.label">
-    <lib-plain-input
-      [disabled]="!isEditable"
-      [(ngModel)]="valueParsed[field.fieldName]"
-      [name]="field.fieldName"
-      class="content content__input"
-    >
-    </lib-plain-input>
-  </epgu-constructor-address-item>
-</ng-template>
+    <epgu-constructor-address-item *ngSwitchDefault class="item" [label]="field.label" [name]="field.label">
+      <lib-plain-input
+        [disabled]="!isEditable"
+        [(ngModel)]="valueParsed[field.fieldName]"
+        [name]="field.fieldName"
+        class="content content__input"
+      >
+      </lib-plain-input>
+    </epgu-constructor-address-item>
+  </ng-container>
+</form>

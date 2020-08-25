@@ -1,18 +1,20 @@
-<epgu-constructor-screen-container>
-  <div class="inner">
-    <ng-container [ngSwitch]="(data?.components)[0].type">
-      <epgu-constructor-add-children-screen
-        *ngSwitchCase="uniqueComponentName.childrenListUnder14"
-        (nextStepEvent)="nextStep($event)"
-        [data]="(data?.components)[0]"
-        [header]="data?.header"
-      ></epgu-constructor-add-children-screen>
-      <epgu-constructor-select-map-object
-        *ngSwitchCase="uniqueComponentName.mapService"
-        [data]="data"
-        (nextStepEvent)="nextStep($event)"
-      >
-      </epgu-constructor-select-map-object>
-    </ng-container>
-  </div>
-</epgu-constructor-screen-container>
+<ng-container [ngSwitch]="data?.components[0].type">
+  <epgu-constructor-add-children-screen
+    *ngSwitchCase="uniqueComponentName.childrenListUnder14"
+    (nextStepEvent)="nextStep($event)"
+    [data]="data?.components[0]"
+    [header]="data?.header"
+  ></epgu-constructor-add-children-screen>
+  <epgu-constructor-select-map-object
+    *ngSwitchCase="uniqueComponentName.mapService"
+    [data]="data"
+    (nextStepEvent)="nextStep($event)">
+  </epgu-constructor-select-map-object>
+  <epgu-constructor-file-upload-screen
+    *ngSwitchCase="uniqueComponentName.fileUploadComponent"
+    [data]="data?.components[0]"
+    [header]="data?.label"
+    [submitLabel]="data?.submitLabel"
+    (nextStepEvent)="nextStep($event)"
+  ></epgu-constructor-file-upload-screen>
+</ng-container>

@@ -1,16 +1,16 @@
 import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
-import { COMPONENT_TYPE } from '../constant/global';
+import { SCREEN_TYPE } from '../constant/global';
 import { ConstructorService } from './services/constructor/constructor.service';
 
 @Component({
   selector: 'epgu-constructor-constructor',
   templateUrl: './constructor.component.html',
-  styleUrls: ['./constructor.component.scss', '../styles/index.scss'],
+  styleUrls: ['../styles/index.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class ConstructorComponent implements OnInit {
   @HostBinding('class.epgu-form') class = true;
-  public readonly constructorComponentType = COMPONENT_TYPE;
+  public readonly constructorComponentType = SCREEN_TYPE;
 
   constructor(public constructorService: ConstructorService) {}
 

@@ -28,6 +28,7 @@ export interface CustomComponentAttrInterface {
   requiredAttrs?: Array<string>;
   supportedValues?: Array<ISupportedValue>;
   validation: Array<CustomComponentAttrValidationInterface>;
+  supportedValues?: Array<ISupportedValue>;
 }
 
 export interface CustomComponentAttrValidationInterface {
@@ -50,8 +51,6 @@ export interface CustomComponentState {
   value: any;
   component: CustomComponentInterface
 }
-
-
 
 export interface CustomDisplayInterface extends DisplayInterface {
   components: Array<CustomComponentInterface>;

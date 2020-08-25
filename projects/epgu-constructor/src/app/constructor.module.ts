@@ -16,7 +16,7 @@ import { ConstructorService } from './services/constructor/constructor.service';
 import { MockService } from './services/mock/mock.service';
 import { RestService } from './services/rest/rest.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
-import { EpgucSharedModule } from './shared-module/shared-components.module';
+import { SharedModule } from './shared-module/shared-components.module';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -24,7 +24,7 @@ const COMPONENTS = [
 
 @NgModule({
   declarations: [
-    ...COMPONENTS
+    ...COMPONENTS,
   ],
   imports: [
     CommonModule,
@@ -36,7 +36,7 @@ const COMPONENTS = [
     InvitationModule,
     LayoutModule,
 
-    EpgucSharedModule,
+    SharedModule,
     EpguLibModule.forChild(),
     InfoScreenModule,
   ],
@@ -62,7 +62,7 @@ export class ConstructorModule {
           provide: CONSTRUCTOR_CONFIG_TOKEN,
           useValue: constructorConfig
         },
-        ConstructorService
+        ConstructorService,
       ]
     };
   }
