@@ -1,14 +1,14 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-
+import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
 import { AddChildrenScreenComponent } from './add-children-screen.component';
-import { EgpuResponseComponentInterface } from '../../../../../../../interfaces/epgu.service.interface'
+
 
 
 describe('AddChildrenScreenComponent', () => {
   let component: AddChildrenScreenComponent;
   let fixture: ComponentFixture<AddChildrenScreenComponent>;
-  const mockData: EgpuResponseComponentInterface = {
+  const mockData: ComponentInterface = {
     attrs: {},
     id: '',
     label: '',

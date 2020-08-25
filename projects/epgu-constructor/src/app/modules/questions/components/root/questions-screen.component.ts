@@ -3,18 +3,18 @@ import { takeUntil } from 'rxjs/operators';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import {
-  EgpuResponseQuestionsDisplayComponentAttrsActionsInterface,
-  EgpuResponseQuestionsDisplayInterface,
+  QuestionsComponentActionsInterface,
+  QuestionsDisplayInterface,
 } from '../interface/question-block.interface';
 
 @Component({
-  selector: 'app-question-screen',
+  selector: 'epgu-constructor-question-screen',
   templateUrl: './questions-screen.component.html',
   styleUrls: ['./questions-screen.component.scss'],
   providers: [UnsubscribeService],
 })
 export class QuestionsScreenComponent {
-  @Input() data: EgpuResponseQuestionsDisplayInterface;
+  @Input() data: QuestionsDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
@@ -28,7 +28,7 @@ export class QuestionsScreenComponent {
     this.prevStepEvent.emit();
   }
 
-  answerChoose(answer: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface): void {
+  answerChoose(answer: QuestionsComponentActionsInterface): void {
     this.nextStepEvent.emit(answer.value);
   }
 }

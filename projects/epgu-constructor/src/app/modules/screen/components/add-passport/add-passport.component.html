@@ -5,9 +5,9 @@
     </div>
     <form [formGroup]="passportForm" class="form__inputs">
       <div *ngFor="let field of data.attrs.fields" class="inputs__field">
-        <app-label [for]="field.fieldName" class="field__label">
+        <epgu-constructor-label [for]="field.fieldName" class="field__label">
           {{ field.label }}
-        </app-label>
+        </epgu-constructor-label>
         <lib-plain-input [id]="field.fieldName" [formControlName]="field.fieldName" [type]="field.type"></lib-plain-input>
       </div>
     </form>

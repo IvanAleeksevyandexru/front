@@ -21,12 +21,10 @@ $button-mt: 5px;
       margin-top: 16px;
     }
 
-    app-confirm-personal-user-button {
+    .confirm-personal-user-button {
       @include tablets-up {
         margin: 5px 10px;
       }
     }
   }
 }
-
-

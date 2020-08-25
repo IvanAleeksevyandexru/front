@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
-import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
+import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
-  selector: 'app-unique-screen',
+  selector: 'epgu-constructor-unique-screen',
   templateUrl: './unique-screen.component.html',
   styleUrls: ['./unique-screen.component.scss'],
   providers: [UnsubscribeService],
@@ -15,7 +15,7 @@ export class UniqueScreenComponent {
   // <-- constant
   uniqueComponentName = UNIQUE_COMPONENT_NAME;
 
-  @Input() data: EgpuResponseDisplayInterface;
+  @Input() data: DisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 

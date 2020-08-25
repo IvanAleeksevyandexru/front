@@ -1,4 +1,4 @@
-<app-screen-container>
+<epgu-constructor-screen-container>
   <ng-container *ngIf="!readyToRegistration">
     <div class="invitation-error__content">
       <img class="invitation-error__image" [src]="attrs.url" />
@@ -17,7 +17,7 @@
     <div class="invitation-error__content">
       <img src="http://localhost:4200/assets/img/screens/s11_x2.png" />
       <div class="invitation-error__message">
-        <app-label for="email">Введите адрес электронной почты</app-label>
+        <epgu-constructor-label for="email">Введите адрес электронной почты</epgu-constructor-label>
         <lib-standard-input id="email" type="email" [formControl]="email" placeholder="Email"></lib-standard-input>
         <div class="invitation-error__info">
           На указанный адрес электронной почты придет ссылка для регистрации на портале Госуслуг
@@ -30,5 +30,5 @@
       </div>
     </div>
   </ng-container>
-</app-screen-container>
+</epgu-constructor-screen-container>
 

@@ -1,12 +1,17 @@
-<app-confirm-personal-user-screen-layout>
-
+<epgu-constructor-confirm-personal-user-screen-layout>
   <div class="body">
-    <app-confirm-personal-user-data [data]="data"></app-confirm-personal-user-data>
+    <epgu-constructor-confirm-personal-user-data
+      [data]="data"
+    ></epgu-constructor-confirm-personal-user-data>
   </div>
 
   <div class="footer">
-    <app-confirm-personal-user-button *ngFor="let action of data?.attrs?.actions"
-      (tap)="clickToAction(action)" [action]="action.action">{{action.label}}</app-confirm-personal-user-button>
+    <epgu-constructor-confirm-personal-user-button
+      class="confirm-personal-user-button"
+      *ngFor="let action of data?.attrs?.actions"
+      (tap)="clickToAction(action)"
+      [action]="action.action"
+      >{{ action.label }}</epgu-constructor-confirm-personal-user-button
+    >
   </div>
-
-</app-confirm-personal-user-screen-layout>
+</epgu-constructor-confirm-personal-user-screen-layout>

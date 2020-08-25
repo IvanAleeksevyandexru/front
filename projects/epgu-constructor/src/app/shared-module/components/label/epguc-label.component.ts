@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-label',
+  selector: 'epgu-constructor-label',
   templateUrl: './epguc-label.component.html',
   styleUrls: ['./epguc-label.component.scss'],
 })

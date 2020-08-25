@@ -13,6 +13,7 @@
 
 .body {
   display: flex;
+  text-align: left;
   @include tablets-down {
     flex-grow: 1;
   }
@@ -33,15 +34,7 @@
   }
 }
 
-epguc-screen-container {
-  text-align: center;
-}
-
-app-screen-pad {
-  text-align: left;
-}
-
-app-label-section {
+.label {
   margin-bottom: 20px;
 }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-confirm-personal-user-screen-layout',
+  selector: 'epgu-constructor-confirm-personal-user-screen-layout',
   templateUrl: './confirm-personal-user-screen-layout.component.html',
   styleUrls: ['./confirm-personal-user-screen-layout.component.scss'],
 })
