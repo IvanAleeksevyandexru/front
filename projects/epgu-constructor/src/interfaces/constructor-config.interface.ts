@@ -6,6 +6,7 @@ export interface ConstructorConfigInterface {
   dictionaryUrl: string;
   serviceId: string;
   externalApiUrl: string;
+  externalLkApiUrl: string;
   externalUrl: string;
   yandexMapsApiKey: string;
   isProd: boolean;

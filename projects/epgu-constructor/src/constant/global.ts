@@ -16,7 +16,6 @@ export enum SCREEN_COMPONENT_NAME {
   'registrationAddr' = 'RegistrationAddr',
   'personLookup' = 'PersonLookup',
   'changeList' = 'ChangeList',
-  'timeSlot' = 'TimeSlot',
   'snils' = 'StringInput',
   'docInput' = 'DocInput'
 }
@@ -28,6 +27,7 @@ export enum INFO_SCREEN_COMPONENT {
 export enum UNIQUE_COMPONENT_NAME {
   'childrenListUnder14' = 'ChildrenListUnder14',
   'addPassport' = 'AddPassport',
+  'timeSlot' = 'TimeSlot',
   'mapService' = 'MapService',
 }
 

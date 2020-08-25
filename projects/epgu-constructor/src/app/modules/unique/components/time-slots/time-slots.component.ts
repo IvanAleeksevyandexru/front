@@ -1,7 +1,10 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HelperService, ListItem } from 'epgu-lib';
+import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ScreenComponentService } from '../../../screen/service/screen-component/screen-component.service';
+import { TimeSlotsService } from './time-slots.service';
+import { ConstructorService } from '../../../../services/constructor/constructor.service';
 
 const moment = moment_;
 
@@ -37,13 +40,18 @@ export class TimeSlotsComponent implements OnInit {
 
   public weeks = [];
   public monthsYears: ListItem[] = [];
-  public timeSlots: Date[] = [];
-  public currentSlot: Date;
+  public timeSlots = [];
+  public currentSlot: any;
   public currentMonth: ListItem;
   public blockMobileKeyboard = false;
   public fixedMonth = false;
 
-  constructor(private changeDetection: ChangeDetectorRef) {}
+  constructor(
+    private changeDetection: ChangeDetectorRef,
+    private timeSlotsService: TimeSlotsService,
+    public screenComponentService: ScreenComponentService,
+    public constructorService: ConstructorService,
+  ) {}
 
   @Input() data: EgpuResponseDisplayInterface;
   @Output() nextStepEvent = new EventEmitter<any>();
@@ -101,20 +109,7 @@ export class TimeSlotsComponent implements OnInit {
     return !this.isDateOutOfMonth(date) && !this.daySlots[date.getDate()];
   }
 
-  public suppressMobileKeyboard() {
-    if (HelperService.isTouchDevice()) {
-      this.blockMobileKeyboard = true;
-      this.changeDetection.detectChanges();
-    }
-  }
-
-  public cancelSupressingMobileKeyboard() {
-    this.blockMobileKeyboard = false;
-    this.changeDetection.detectChanges();
-  }
-
   public selectDate(date: Date) {
-    this.suppressMobileKeyboard();
     if (this.isDateLocked(date) || this.isDateOutOfMonth(date)) {
       return;
     }
@@ -122,21 +117,20 @@ export class TimeSlotsComponent implements OnInit {
     this.showTimeSlots(date);
   }
 
-  public chooseTimeSlot(slot: Date) {
+  public chooseTimeSlot(slot) {
     this.currentSlot = slot;
+    this.screenComponentService.dataToSend = slot;
   }
 
-  public isSlotSelected(slot: Date) {
-    return this.currentSlot === slot;
+  public isSlotSelected(slot) {
+    return this.currentSlot && this.currentSlot.slotId === slot.slotId;
   }
 
   public showTimeSlots(date: Date) {
     this.currentSlot = null;
     this.timeSlots = [];
     if (this.daySlots[date.getDate()]) {
-      this.daySlots[date.getDate()].forEach((slot) => {
-        this.timeSlots.push(slot.slotTime);
-      });
+      this.timeSlots = this.daySlots[date.getDate()];
     }
   }
 
@@ -144,6 +138,16 @@ export class TimeSlotsComponent implements OnInit {
     const { id } = ev;
     this.activeMonthNumber = +id;
     this.renderSingleMonthGrid(this.weeks);
+  }
+
+  public bookTimeSlot() {
+    const { bookRequest } = this.componentValue;
+    bookRequest.areaId = [this.currentSlot.areaId];
+    bookRequest.selectedHallTitle = this.currentSlot.areaId;
+    bookRequest.slotId = [this.currentSlot.slotId];
+    this.timeSlotsService.bookTimeSlot(bookRequest).subscribe((response) => {
+      this.nextStepEvent.emit(response);
+    });
   }
 
   ngOnInit(): void {
@@ -158,6 +162,7 @@ export class TimeSlotsComponent implements OnInit {
         }
         this.daySlots[slotDate.getDate()].push({
           slotId: slot.slotId,
+          areaId: slot.areaId,
           slotTime: slotDate,
         });
       });

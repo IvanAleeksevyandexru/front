@@ -5,6 +5,7 @@ import { UniqueScreenComponent } from './components/unique-screen/unique-screen.
 import { AddChildrenScreenModule } from './components/add-children/screens/add-children-screen/add-children-screen.module';
 import { EpgucSharedModule } from '../../shared-module/shared-components.module';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
+import {TimeSlotsModule} from './components/time-slots/time-slots.module';
 
 const COMPONENTS = [
   UniqueScreenComponent,
@@ -16,6 +17,7 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     AddChildrenScreenModule,
+    TimeSlotsModule,
     EpgucSharedModule,
     EpguLibModule.forChild(),
     SelectMapObjectModule,
