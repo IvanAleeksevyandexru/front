@@ -18,7 +18,7 @@ export interface ResponseInterface {
     applicantAnswers: object;
     currentScenarioId: number;
     currentValue: object;
-    display: EgpuResponseDisplayInterface;
+    display: DisplayInterface;
     gender: number;
     orderId: string;
     sendNotification: Array<object>;
