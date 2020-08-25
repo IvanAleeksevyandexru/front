@@ -25,7 +25,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged --relative",
-      "pre-push": "yarn lint && yarn stylelint && yarn test && yarn build && yarn library:build"
+      "pre-push": "yarn lint && yarn stylelint && yarn test && yarn library:build && yarn build"
     }
   },
   "jest-junit": {
