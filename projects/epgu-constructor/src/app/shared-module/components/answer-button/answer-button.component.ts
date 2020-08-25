@@ -10,6 +10,5 @@ interface IData extends QuestionsComponentActionsInterface {
   styleUrls: ['./answer-button.component.scss'],
 })
 export class AnswerButtonComponent {
-  @Input()
-  data: Partial<IData>;
+  @Input() data: Partial<IData>;
 }
