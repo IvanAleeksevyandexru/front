@@ -1,9 +1,9 @@
 import {async, TestBed} from '@angular/core/testing';
 
 import { RestService } from './rest.service';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {ConstructorConfigService} from '../config/constructor-config.service';
-import {ConstructorConfigServiceStub} from '../config/constructor-config.service.stub';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { ConstructorConfigService } from '../config/constructor-config.service';
+import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
 
 describe('RestService', () => {
   let service: RestService;
