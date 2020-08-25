@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-screen-pad',
+  selector: 'epgu-constructor-screen-pad',
   templateUrl: './epguc-screen-pad.component.html',
   styleUrls: ['./epguc-screen-pad.component.scss'],
 })

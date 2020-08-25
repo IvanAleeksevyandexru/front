@@ -7,7 +7,7 @@ export interface IAttrsError {
   url: string;
 }
 @Component({
-  selector: 'app-invitation-error',
+  selector: 'epgu-constructor-invitation-error',
   templateUrl: './invitation-error.component.html',
   styleUrls: ['./invitation-error.component.scss'],
 })

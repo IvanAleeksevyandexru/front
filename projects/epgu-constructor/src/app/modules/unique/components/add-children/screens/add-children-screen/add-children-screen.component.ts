@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import { ChildUnder14Interface } from '../../../../../../../interfaces/children.interface';
-import { EgpuResponseComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
 
 @Component({
-  selector: 'app-add-children-screen',
+  selector: 'epgu-constructor-add-children-screen',
   templateUrl: './add-children-screen.component.html',
   styleUrls: ['./add-children-screen.component.scss'],
 })
 export class AddChildrenScreenComponent implements OnInit {
-  @Input() data: EgpuResponseComponentInterface;
+  @Input() data: ComponentInterface;
   @Input() header: string;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 

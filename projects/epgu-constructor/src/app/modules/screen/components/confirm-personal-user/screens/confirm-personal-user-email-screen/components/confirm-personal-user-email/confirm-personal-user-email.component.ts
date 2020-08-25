@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { delay, takeUntil } from 'rxjs/operators';
@@ -6,12 +6,12 @@ import { UnsubscribeService } from '../../../../../../../../services/unsubscribe
 import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
 
 @Component({
-  selector: 'app-confirm-personal-user-email',
+  selector: 'epgu-constructor-confirm-personal-user-email',
   templateUrl: './confirm-personal-user-email.component.html',
   styleUrls: ['./confirm-personal-user-email.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ConfirmPersonalUserEmailComponent implements OnInit {
+export class ConfirmPersonalUserEmailComponent implements OnInit, OnChanges {
   @Input() label: string;
   @Input() data: string;
   @Input() isEditable: boolean;

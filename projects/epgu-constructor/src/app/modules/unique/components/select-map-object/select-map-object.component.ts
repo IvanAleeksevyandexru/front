@@ -1,23 +1,22 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { switchMap, filter, takeWhile, takeUntil } from 'rxjs/operators';
-
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { YaMapService } from 'epgu-lib';
 import { interval } from 'rxjs';
-import { SelectMapObjectService } from './select-map-object.service';
-import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { RestService } from '../../../../services/rest/rest.service';
+import { filter, switchMap, takeUntil, takeWhile } from 'rxjs/operators';
+import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { RestService } from '../../../../services/rest/rest.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
+import { SelectMapObjectService } from './select-map-object.service';
 
 @Component({
-  selector: 'app-select-map-object',
+  selector: 'epgu-constructor-select-map-object',
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
   providers: [UnsubscribeService],
 })
 export class SelectMapObjectComponent implements OnInit {
-  @Input() data: EgpuResponseDisplayInterface;
+  @Input() data: DisplayInterface;
   @Output() nextStepEvent = new EventEmitter<any>();
 
   public mappedDictionaryForLookup;

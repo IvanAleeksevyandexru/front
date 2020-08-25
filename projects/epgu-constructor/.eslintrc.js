@@ -1,16 +1,16 @@
 module.exports = {
   extends: ['plugin:@angular-eslint/recommended'],
   rules: {
-    // ORIGINAL tslint.json -> "directive-selector": [true, "attribute", "app", "camelCase"],
-    // '@angular-eslint/directive-selector': [
-    //   'error',
-    //   { type: 'attribute', prefix: 'app', style: 'camelCase' },
-    // ],
-    // ORIGINAL tslint.json -> "component-selector": [true, "element", "app", "kebab-case"],
-    // '@angular-eslint/component-selector': [
-    //   'error',
-    //   { type: 'element', prefix: 'app', style: 'kebab-case' },
-    // ],
+    // ORIGINAL tslint.json -> "directive-selector": [true, "attribute", "epgu-constructor", "camelCase"],
+    '@angular-eslint/directive-selector': [
+      'error',
+      { type: 'attribute', prefix: 'epgu-constructor', style: 'camelCase' },
+    ],
+    // ORIGINAL tslint.json -> "component-selector": [true, "element", "epgu-constructor", "kebab-case"],
+    '@angular-eslint/component-selector': [
+      'error',
+      { type: 'element', prefix: 'epgu-constructor', style: 'kebab-case' },
+    ],
   },
   overrides: [
     // Add this rules, if you use inline templates inside *.component.ts files

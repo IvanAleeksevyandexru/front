@@ -15,9 +15,9 @@
     </div>
     <div class="component__content">
       <div class="component__field">
-        <app-label for="childProfile">
+        <epgu-constructor-label for="childProfile">
           Выберите ребенка из вашего профиля
-        </app-label>
+        </epgu-constructor-label>
         <div class="component__select">
           <lib-dropdown
             id="childProfile"
@@ -28,9 +28,9 @@
         </div>
       </div>
       <div class="component__field">
-        <app-label for="birthDate">
+        <epgu-constructor-label for="birthDate">
           Дата рождения
-        </app-label>
+        </epgu-constructor-label>
         <lib-date-picker
           id="birthDate"
           name="birthDate"
@@ -38,9 +38,9 @@
         ></lib-date-picker>
       </div>
       <div class="component__field">
-        <app-label>
+        <epgu-constructor-label>
           Пол
-        </app-label>
+        </epgu-constructor-label>
         <div class="component__radio-group radio-group">
           <div class="radio-group__button">
             <lib-radio [(ngModel)]="child.gender" name="gender" value="муж" [checked]="child.gender === 'муж'"></lib-radio>
@@ -53,21 +53,21 @@
         </div>
       </div>
       <div class="component__field">
-        <app-label for="lastName">
+        <epgu-constructor-label for="lastName">
           Фамилия
-        </app-label>
+        </epgu-constructor-label>
         <lib-plain-input id="lastName" name="lastName" [(ngModel)]="child.lastName"></lib-plain-input>
       </div>
       <div class="component__field">
-        <app-label for="firstName">
+        <epgu-constructor-label for="firstName">
           Имя
-        </app-label>
+        </epgu-constructor-label>
         <lib-plain-input id="firstName" name="firstName" [(ngModel)]="child.firstName"></lib-plain-input>
       </div>
       <div class="component__field">
-        <app-label for="middleName">
+        <epgu-constructor-label for="middleName">
           Отчество
-        </app-label>
+        </epgu-constructor-label>
         <lib-plain-input id="middleName" name="middleName" [(ngModel)]="child.middleName"></lib-plain-input>
       </div>
     </div>
