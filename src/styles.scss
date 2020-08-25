@@ -1,0 +1,13 @@
+@import "projects/epgu-constructor/src/styles/core";
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  color: $summer-night;
+  background-color: $pattens-blue;
+  font-family: $primary_font, sans-serif;
+}
