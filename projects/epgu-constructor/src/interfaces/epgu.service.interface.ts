@@ -17,15 +17,17 @@ import {ConfirmUserDataAttrsInterface} from './confirm-user-data.interface';
  *
  */
 export interface EgpuResponseInterface {
-  applicantAnswers: {[key: string]: any};
-  currentRule: number;
-  currentValue: object;
-  display: EgpuResponseDisplayInterface;
-  gender: number;
-  orderId: string;
-  sendNotification: Array<object>;
-  token: string
-  userId: string
+  scenarioDto: {
+    applicantAnswers: {[key: string]: any};
+    currentRule: number;
+    currentValue: object;
+    display: EgpuResponseDisplayInterface;
+    gender: number;
+    orderId: string;
+    sendNotification: Array<object>;
+    token: string
+    userId: string
+  }
 }
 
 /**

@@ -54,9 +54,9 @@ export class ConstructorService {
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
     if (this.componentData.type === COMPONENT_TYPE.CUSTOM) {
-      this.response.currentValue = data;
+      this.response.scenarioDto.currentValue = data;
     } else {
-      this.response.currentValue[componentId] = {
+      this.response.scenarioDto.currentValue[componentId] = {
         visited: true,
         value: data || '',
       };
@@ -80,7 +80,7 @@ export class ConstructorService {
     }
 
     this.response = response;
-    const { display } = response;
+    const { display } = response.scenarioDto;
 
     this.componentId = display.components[0].id;
     this.componentType = display.components[0].type;
