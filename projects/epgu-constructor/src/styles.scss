@@ -1,8 +1,6 @@
-@import "./styles/variables";
-@import "./styles/fonts";
-@import "./styles/icons";
-@import "./styles/buttons";
+@import "./styles/core";
 
+// TODO: remove all normalize css styles, it may affect app's style
 
 *, *:before, *:after {
   box-sizing: border-box;
@@ -77,3 +75,6 @@ button {
   background: none;
   border: 0;
 }
+
+// TODO: remove global components, use encapsulated components
+@import "./styles/components";
