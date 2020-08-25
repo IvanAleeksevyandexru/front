@@ -5,12 +5,12 @@ import * as moment_ from 'moment';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { map, takeUntil } from 'rxjs/operators';
 import { CONSTANTS } from '../../../../../constant/global';
-import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 const moment = moment_;
 
-export interface EgpuResponseComponentInterfaceForDocInput extends EgpuResponseComponentInterface {
+export interface DocInputComponentInterface extends ComponentInterface {
   attrs: {
     fields: Array<IField>;
   };
@@ -29,13 +29,13 @@ interface IForm {
 }
 
 @Component({
-  selector: 'app-doc-input',
+  selector: 'epgu-constructor-doc-input',
   templateUrl: './doc-input.component.html',
   styleUrls: ['./doc-input.component.scss'],
   providers: [UnsubscribeService],
 })
 export class DocInputComponent implements OnInit {
-  @Input() data: EgpuResponseComponentInterfaceForDocInput;
+  @Input() data: DocInputComponentInterface;
   @Output() nextStepEvent = new EventEmitter<any>();
 
   form = new FormGroup({});

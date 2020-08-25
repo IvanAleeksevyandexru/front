@@ -3,9 +3,9 @@ import { ListItem, ValidationShowOn } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 import {
   CustomComponentDictionaryState,
+  CustomComponentInterface,
   CustomComponentState,
-  EgpuResponseCustomComponentDisplayComponentInterface,
-  EgpuResponseCustomComponentDisplayInterface,
+  CustomDisplayInterface,
 } from '../../../../../interfaces/custom-component.interface';
 import {
   DictionaryItem,
@@ -18,7 +18,7 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../tools/custom-screen-tools';
 
 @Component({
-  selector: 'app-custom-screen',
+  selector: 'epgu-constructor-custom-screen',
   templateUrl: './custom-screen.component.html',
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
@@ -32,7 +32,7 @@ export class CustomScreenComponent implements OnChanges {
   state: { [key: string]: CustomComponentState } = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
 
-  @Input() data: EgpuResponseCustomComponentDisplayInterface;
+  @Input() data: CustomDisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
@@ -105,10 +105,7 @@ export class CustomScreenComponent implements OnChanges {
     }
   }
 
-  selectDictionary(
-    selectedItem: ListItem,
-    component: EgpuResponseCustomComponentDisplayComponentInterface,
-  ) {
+  selectDictionary(selectedItem: ListItem, component: CustomComponentInterface) {
     const dictionaryName = component.attrs?.dictionaryType;
     this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
     this.state[component.id].value = selectedItem.originalItem;
@@ -132,17 +129,14 @@ export class CustomScreenComponent implements OnChanges {
     }
   }
 
-  inputChange($event: Event, component: EgpuResponseCustomComponentDisplayComponentInterface) {
+  inputChange($event: Event, component: CustomComponentInterface) {
     const { value } = $event.target as HTMLInputElement;
     const inputValidationResult = this.checkInputValidation(value, component);
 
     this.setValidationState(inputValidationResult, component.id, value);
   }
 
-  checkInputValidation(
-    value: string,
-    component: EgpuResponseCustomComponentDisplayComponentInterface,
-  ): number {
+  checkInputValidation(value: string, component: CustomComponentInterface): number {
     const regExpArr = component?.attrs?.validation?.map((item) => {
       try {
         return new RegExp(item.value);
@@ -167,14 +161,11 @@ export class CustomScreenComponent implements OnChanges {
     return result;
   }
 
-  // dateChange($event: any, componentData: EgpuResponseComponentInterface) {
+  // dateChange($event: any, componentData: ComponentInterface) {
   //   console.log($event, componentData)
   // }
 
-  loadDictionary(
-    dictionaryName: string,
-    component: EgpuResponseCustomComponentDisplayComponentInterface,
-  ) {
+  loadDictionary(dictionaryName: string, component: CustomComponentInterface) {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
     this.restService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryName, data, component),
@@ -185,7 +176,7 @@ export class CustomScreenComponent implements OnChanges {
   loadDictionarySuccess(
     key: string,
     data: DictionaryResponse,
-    component: EgpuResponseCustomComponentDisplayComponentInterface,
+    component: CustomComponentInterface,
   ) {
     this.dictionary[key].loading = false;
     this.dictionary[key].paginationLoading = false;
@@ -227,7 +218,7 @@ export class CustomScreenComponent implements OnChanges {
     };
   }
 
-  private initState(component: EgpuResponseCustomComponentDisplayComponentInterface) {
+  private initState(component: CustomComponentInterface) {
     const { id, value } = component;
     this.state[id] = { valid: false, errorMessage: '', value, component };
   }

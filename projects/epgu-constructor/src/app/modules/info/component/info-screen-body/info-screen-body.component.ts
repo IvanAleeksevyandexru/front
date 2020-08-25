@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-info-screen-body',
+  selector: 'epgu-constructor-info-screen-body',
   templateUrl: './info-screen-body.component.html',
   styleUrls: ['./info-screen-body.component.scss'],
 })

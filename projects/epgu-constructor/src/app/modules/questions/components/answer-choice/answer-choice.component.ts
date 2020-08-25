@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from '../interface/question-block.interface';
+import { QuestionsComponentActionsInterface } from '../interface/question-block.interface';
 
-export interface IData extends EgpuResponseQuestionsDisplayComponentAttrsActionsInterface {
+export interface IData extends QuestionsComponentActionsInterface {
   hint: string;
 }
 @Component({
-  selector: 'app-answer-choice',
+  selector: 'epgu-constructor-answer-choice',
   templateUrl: './answer-choice.component.html',
   styleUrls: ['./answer-choice.component.scss'],
 })

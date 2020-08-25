@@ -1,8 +1,7 @@
-@import "../styles/variables";
-@import "../styles/breakpoint";
+@import '../styles/variables';
+@import '../styles/breakpoint';
 
-app-constructor {
+:host {
   display: flex;
   flex-direction: column;
 }
-

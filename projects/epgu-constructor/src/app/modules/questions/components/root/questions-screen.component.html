@@ -1,16 +1,16 @@
-<app-screen-container>
+<epgu-constructor-screen-container>
 
   <div class="question__wrapper">
-    <app-page-name>{{data?.header}}</app-page-name>
+    <epgu-constructor-page-name>{{data?.header}}</epgu-constructor-page-name>
 
     <div class="answer">
-      <app-answer-choice
+      <epgu-constructor-answer-choice
         class="answer__item"
         *ngFor="let answer of data?.components[0]?.attrs.actions"
         (click)="answerChoose(answer)"
         [data]="answer">
-      </app-answer-choice>
+      </epgu-constructor-answer-choice>
     </div>
   </div>
 
-</app-screen-container>
+</epgu-constructor-screen-container>

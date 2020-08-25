@@ -1,14 +1,14 @@
-import {EgpuResponseComponentInterface, EgpuResponseDisplayInterface} from './epgu.service.interface';
+import { ComponentInterface, DisplayInterface } from './epgu.service.interface';
 
-export interface EgpuResponseTemporaryRegistrationAddrDisplayInterface extends EgpuResponseDisplayInterface {
-  components: Array<EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface>;
+export interface TemporaryRegistrationAddrDisplayInterface extends DisplayInterface {
+  components: Array<TemporaryRegistrationAddrComponentInterface>;
 }
 
-export interface EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface extends EgpuResponseComponentInterface {
-  attrs: EgpuResponseTemporaryRegistrationAddrDisplayComponentAttrsInterface;
+export interface TemporaryRegistrationAddrComponentInterface extends ComponentInterface {
+  attrs: TemporaryRegistrationAddrComponentAttrsInterface;
 }
 
-export interface EgpuResponseTemporaryRegistrationAddrDisplayComponentAttrsInterface {
+export interface TemporaryRegistrationAddrComponentAttrsInterface {
   hints: Array<TemporaryRegistrationAddrHints>,
   fields: Array<TemporaryRegistrationAddrFields>,
   actions: Array<any>

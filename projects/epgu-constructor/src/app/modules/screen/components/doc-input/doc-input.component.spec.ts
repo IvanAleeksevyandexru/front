@@ -1,12 +1,12 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { DocInputComponent, DocInputComponentInterface } from './doc-input.component';
 
-import { DocInputComponent, EgpuResponseComponentInterfaceForDocInput } from './doc-input.component'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 
 describe('DocInputComponent', () => {
   let component: DocInputComponent;
   let fixture: ComponentFixture<DocInputComponent>;
-  const mockData: EgpuResponseComponentInterfaceForDocInput = {
+  const mockData: DocInputComponentInterface = {
     attrs: { fields: [{
       fieldName: 'some',
       label: 'some label',

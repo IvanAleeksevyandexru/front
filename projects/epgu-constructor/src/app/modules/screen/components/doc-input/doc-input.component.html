@@ -1,23 +1,23 @@
 <section class="doc-input-screen">
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input">
-      <app-label for="series">Серия</app-label>
+      <epgu-constructor-label for="series">Серия</epgu-constructor-label>
       <lib-plain-input id="series" [formControl]="form.get('series')" type="number"></lib-plain-input>
     </div>
     <div class="doc-input-screen__input">
-      <app-label for="number">Номер</app-label>
+      <epgu-constructor-label for="number">Номер</epgu-constructor-label>
       <lib-plain-input id="number" [formControl]="form.get('number')" type="number"></lib-plain-input>
     </div>
   </div>
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input">
-      <app-label for="date">Дата выдачи</app-label>
+      <epgu-constructor-label for="date">Дата выдачи</epgu-constructor-label>
       <lib-date-picker id="date" name="date" [formControl]="form.get('date')" [maxDate]="maxDate"></lib-date-picker>
     </div>
   </div>
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input">
-      <app-label for="emitter">Кем выдано</app-label>
+      <epgu-constructor-label for="emitter">Кем выдано</epgu-constructor-label>
       <lib-plain-input id="emitter" [formControl]="form.get('emiter')" type="text"></lib-plain-input>
     </div>
   </div>

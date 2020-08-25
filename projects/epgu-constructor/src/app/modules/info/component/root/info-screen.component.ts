@@ -5,13 +5,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { INFO_SCREEN_COMPONENT } from '../../../../../constant/global';
-import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
+import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
-  selector: 'app-info-screen',
+  selector: 'epgu-constructor-info-screen',
   templateUrl: './info-screen.component.html',
   styleUrls: ['./info-screen.component.scss'],
   providers: [UnsubscribeService],
@@ -20,7 +20,7 @@ export class InfoScreenComponent {
   // <-- constant
   infoScreenComponent = INFO_SCREEN_COMPONENT;
 
-  @Input() data: EgpuResponseDisplayInterface;
+  @Input() data: DisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
