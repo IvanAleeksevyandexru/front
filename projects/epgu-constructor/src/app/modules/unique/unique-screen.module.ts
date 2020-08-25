@@ -35,6 +35,6 @@ const COMPONENTS = [
     WebcamModule,
     EpguLibModule.forChild(),
     SelectMapObjectModule,
-  ]
+  ],
 })
 export class UniqueScreenModule { }

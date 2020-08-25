@@ -5,6 +5,7 @@ import { ConstructorService } from '../../../../services/constructor/constructor
   selector: 'epgu-constructor-repeatable-fields',
   templateUrl: './repeatable-fields.component.html',
   styleUrls: ['./repeatable-fields.component.scss'],
+  providers: [ConstructorService],
 })
 export class RepeatableFieldsComponent implements OnInit {
   components = []; // TODO указать тип
