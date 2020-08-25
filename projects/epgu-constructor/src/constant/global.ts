@@ -30,6 +30,7 @@ export enum UNIQUE_COMPONENT_NAME {
   fileUploadComponent = 'FileUploadComponent',
   'addPassport' = 'AddPassport',
   'mapService' = 'MapService',
+  'repeatableFields' = 'RepeatableFields',
 }
 
 export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';
