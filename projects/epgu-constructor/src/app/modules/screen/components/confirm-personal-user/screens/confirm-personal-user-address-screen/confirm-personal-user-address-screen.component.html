@@ -10,8 +10,7 @@
     <epgu-constructor-confirm-personal-user-button
       class="confirm-personal-user-button"
       *ngFor="let action of data?.attrs?.actions"
-      (tap)="clickToAction(action)"
-    >
+      (tap)="clickToAction(action)">
       {{ action.label }}
     </epgu-constructor-confirm-personal-user-button>
   </div>

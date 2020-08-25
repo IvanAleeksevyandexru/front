@@ -1,6 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DocInputComponent, DocInputComponentInterface } from './doc-input.component';
 
 
 describe('DocInputComponent', () => {

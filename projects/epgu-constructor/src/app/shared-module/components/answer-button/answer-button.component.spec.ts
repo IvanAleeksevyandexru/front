@@ -16,6 +16,7 @@ describe('AnswerButtonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AnswerButtonComponent);
     component = fixture.componentInstance;
+    component.data;
     fixture.detectChanges();
   });
 

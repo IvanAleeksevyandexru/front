@@ -8,6 +8,7 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { InfoScreenComponent } from './info-screen.component';
 
+
 describe('InfoScreenComponent', () => {
   let component: InfoScreenComponent;
   let fixture: ComponentFixture<InfoScreenComponent>;
