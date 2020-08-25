@@ -1,5 +1,5 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { EpguLibModule } from 'epgu-lib'
 // eslint-disable-next-line max-len
 import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../interfaces/temporary-registration-addr.interface';
 import { TemporaryRegistrationAddrScreenComponent } from './temporary-registration-addr-screen.component';
@@ -22,7 +22,7 @@ describe('TemporaryRegistrationAddrScreenComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      imports: [ EpguLibModule.forChild() ],
       declarations: [ TemporaryRegistrationAddrScreenComponent ]
     })
     .compileComponents();

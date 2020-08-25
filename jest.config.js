@@ -5,7 +5,8 @@ module.exports = {
   ],
   moduleDirectories: [
     'node_modules',
-    'stub_modules'
+    'stub_modules',
+    'node_modules/epgu-lib/lib/services/list-item'
   ],
   setupFiles: ['<rootDir>/setup-jest.ts'],
   setupFilesAfterEnv: ['<rootDir>/setup-jest-env.ts'],

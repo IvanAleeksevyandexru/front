@@ -1,9 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-user-address-screen.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { EpguLibModule } from 'epgu-lib'
 import { ConfirmAddressInterface } from './interface/confirm-address.interface'
 import { SCREEN_COMPONENT_NAME } from '../../../../../../../constant/global'
+
 
 describe('ConfirmPersonalUserAddressScreenComponent', () => {
   let component: ConfirmPersonalUserAddressScreenComponent;
@@ -21,7 +22,7 @@ describe('ConfirmPersonalUserAddressScreenComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      imports: [ EpguLibModule.forChild() ],
       declarations: [ ConfirmPersonalUserAddressScreenComponent ]
     })
     .compileComponents();

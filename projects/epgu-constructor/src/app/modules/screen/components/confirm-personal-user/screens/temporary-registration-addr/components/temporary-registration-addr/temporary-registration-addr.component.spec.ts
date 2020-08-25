@@ -1,10 +1,11 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { EpguLibModule } from 'epgu-lib'
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 // eslint-disable-next-line max-len
 import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../../../interfaces/temporary-registration-addr.interface';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
+
 
 
 
@@ -26,7 +27,7 @@ describe('TemporaryRegistrationAddrComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      imports: [ EpguLibModule.forChild() ],
       declarations: [ TemporaryRegistrationAddrComponent ],
       providers: [
         {provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub}

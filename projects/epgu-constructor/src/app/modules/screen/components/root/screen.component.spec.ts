@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { EpguLibModule } from 'epgu-lib'
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { COMPONENT_TYPE } from '../../../../../constant/global';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
@@ -7,6 +7,7 @@ import { ConstructorService } from '../../../../services/constructor/constructor
 import { ConstructorServiceStub } from '../../../../services/constructor/constructor.service.stub';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 import { ScreenComponent } from './screen.component';
+
 
 
 describe('ScreenComponent', () => {
@@ -32,7 +33,7 @@ describe('ScreenComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      imports: [ EpguLibModule.forChild() ],
       declarations: [ ScreenComponent ],
       providers: [
         NavigationService,

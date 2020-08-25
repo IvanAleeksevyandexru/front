@@ -1,9 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import { AddNewChildFormComponent } from './add-new-child-form.component';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service'
+import { EpguLibModule, ɵj as ListItemsService } from 'epgu-lib'
+import { TranslateService } from '@ngx-translate/core'
 
 
 describe('AddNewChildFormComponent', () => {
@@ -16,10 +17,9 @@ describe('AddNewChildFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      imports: [ FormsModule ],
+      imports: [ EpguLibModule.forChild(), FormsModule ],
       declarations: [ AddNewChildFormComponent ],
-      providers: [ UnsubscribeService ]
+      providers: [ UnsubscribeService, ListItemsService, TranslateService ]
     })
     .compileComponents();
   }));

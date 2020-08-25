@@ -1,6 +1,7 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { EpguLibModule } from 'epgu-lib'
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DocInputComponent, DocInputComponentInterface } from './doc-input.component';
+
 
 
 describe('DocInputComponent', () => {
@@ -20,7 +21,7 @@ describe('DocInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      imports: [ EpguLibModule.forChild() ],
       declarations: [ DocInputComponent ]
     })
     .compileComponents();
