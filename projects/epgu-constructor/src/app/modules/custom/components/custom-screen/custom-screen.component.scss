@@ -61,6 +61,22 @@ app-label-section {
     margin-top: 4px;
     color: $gosred;
   }
+  &__radio {
+    &__inline {
+      margin-top: 24px;
+      display: inline-flex;
+      lib-radio:not(:first-child) {
+        margin-left: 24px;
+      }
+    }
+    &__block {
+      display: inline-block;
+      lib-radio {
+        display: block;
+        margin-bottom: 16px;
+      }
+    }
+  }
 }
 
 lib-dropdown::ng-deep {

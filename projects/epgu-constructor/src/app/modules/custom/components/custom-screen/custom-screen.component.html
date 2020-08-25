@@ -41,12 +41,46 @@
               </div>
             </div>
 
+            <div class="form__item" *ngSwitchCase="componentType.RadioInput">
+              <div class="form__title">{{ componentData.label }}</div>
+              <div class="form__radio__block">
+                <lib-radio *ngFor="let item of componentData?.attrs?.supportedValues"
+                  [name]="componentData.id"
+                  [labelText]="item.label"
+                  (change)="inputChange($event, componentData)"
+                  [value]="item.value">
+
+                </lib-radio>
+              </div>
+            </div>
+
+            <div class="form__item" *ngSwitchCase="componentType.RadioButton">
+              <div class="form__title">{{ componentData.label }}</div>
+              <div class="form__radio__inline">
+                <lib-radio
+                  [name]="componentData.id"
+                  (change)="inputChange($event, componentData)"
+                  [value]="true"
+                  labelText="Да">
+
+                </lib-radio>
+                <lib-radio
+                  [name]="componentData.id"
+                  (change)="inputChange($event, componentData)"
+                  [value]="false"
+                  labelText="Нет">
+
+                </lib-radio>
+              </div>
+            </div>
+
             <div class="form__item" *ngSwitchCase="componentType.DateInput">
               <div class="form__title">{{ componentData.label }}</div>
               <div>Компонент не настроен</div>
               <!--            Нужно настраивать почему-то вываливается ошибка-->
               <!--            <lib-date-picker (changed)="dateChage($event, componentData)"></lib-date-picker>-->
             </div>
+
           </ng-container>
         </ng-container>
       </form>
