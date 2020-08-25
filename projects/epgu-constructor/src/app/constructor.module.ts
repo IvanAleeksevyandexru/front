@@ -24,7 +24,7 @@ const COMPONENTS = [
 
 @NgModule({
   declarations: [
-    ...COMPONENTS
+    ...COMPONENTS,
   ],
   imports: [
     CommonModule,
@@ -62,7 +62,7 @@ export class ConstructorModule {
           provide: CONSTRUCTOR_CONFIG_TOKEN,
           useValue: constructorConfig
         },
-        ConstructorService
+        ConstructorService,
       ]
     };
   }

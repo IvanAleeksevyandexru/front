@@ -2,8 +2,8 @@
 // import { ReactiveFormsModule } from '@angular/forms'
 //
 // import {AddPassportScreenComponent} from './add-passport-screen.component';
-// import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface'
-// import { COMPONENT_TYPE } from '../../../../../constant/global'
+// import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface'
+// import { SCREEN_TYPE } from '../../../../../constant/global'
 
 describe('AddPassportScreenComponent', () => {
   it('TODO: remove it when resolve issue with @ifc/plugin and @ifc/common dependencies', () => {
@@ -14,7 +14,7 @@ describe('AddPassportScreenComponent', () => {
 // describe('AddPassportScreenComponent', () => {
 //   let component: AddPassportScreenComponent;
 //   let fixture: ComponentFixture<AddPassportScreenComponent>;
-//   const mockData: EgpuResponseDisplayInterface = {
+//   const mockData: DisplayInterface = {
 //     components: [{
 //       attrs: {},
 //       id: '',
@@ -26,7 +26,7 @@ describe('AddPassportScreenComponent', () => {
 //     id: '',
 //     name: '',
 //     submitLabel: '',
-//     type: COMPONENT_TYPE.COMPONENT
+//     type: SCREEN_TYPE.COMPONENT
 //   };
 //
 //   beforeEach(async(() => {

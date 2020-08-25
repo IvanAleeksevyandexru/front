@@ -2,22 +2,22 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 
 import { QuestionsScreenComponent } from './questions-screen.component'
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service'
+import {NavigationService} from '../../../../shared-module/service/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service'
-import { EgpuResponseQuestionsDisplayInterface } from '../interface/question-block.interface'
-import { COMPONENT_TYPE } from '../../../../../constant/global'
+import { QuestionsDisplayInterface } from '../interface/question-block.interface'
+import { SCREEN_TYPE } from '../../../../../constant/global'
 
 
 describe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
   let fixture: ComponentFixture<QuestionsScreenComponent>;
-  const mockData: EgpuResponseQuestionsDisplayInterface = {
+  const mockData: QuestionsDisplayInterface = {
     components: [],
     header: '',
     id: '',
     name: '',
     submitLabel: '',
-    type: COMPONENT_TYPE.COMPONENT
+    type: SCREEN_TYPE.COMPONENT
   }
 
   beforeEach(async(() => {

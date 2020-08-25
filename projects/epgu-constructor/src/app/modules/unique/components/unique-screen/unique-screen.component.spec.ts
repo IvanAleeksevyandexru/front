@@ -1,19 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UniqueScreenComponent } from './unique-screen.component';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service'
+import {NavigationService} from '../../../../shared-module/service/navigation/navigation.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import {
-  EgpuResponseComponentInterface,
-  EgpuResponseDisplayInterface
-} from '../../../../../interfaces/epgu.service.interface'
-import { COMPONENT_TYPE } from '../../../../../constant/global'
+import {DisplayInterface} from '../../../../../interfaces/epgu.service.interface'
+import { SCREEN_TYPE } from '../../../../../constant/global'
 
 describe('UniqueScreenComponent', () => {
   let component: UniqueScreenComponent;
   let fixture: ComponentFixture<UniqueScreenComponent>;
   let navService: NavigationService;
-  const mockData: EgpuResponseDisplayInterface = {
+  const mockData: DisplayInterface = {
     components: [{
       attrs: {},
       id: '',
@@ -25,7 +22,7 @@ describe('UniqueScreenComponent', () => {
     id: '',
     name: '',
     submitLabel: '',
-    type: COMPONENT_TYPE.COMPONENT
+    type: SCREEN_TYPE.COMPONENT
   };
 
   beforeEach(async(() => {

@@ -3,13 +3,13 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { ConfirmPersonalUserEmailScreenComponent } from './confirm-personal-user-email-screen.component';
 import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service'
-import { EgpuResponseComponentInterface } from '../../../../../../../interfaces/epgu.service.interface'
+import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface'
 
 
 describe('ConfirmPersonalUserEmailComponent', () => {
   let component: ConfirmPersonalUserEmailScreenComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserEmailScreenComponent>;
-  const mockData: EgpuResponseComponentInterface = {
+  const mockData: ComponentInterface = {
     attrs: {},
     id: '',
     label: '',

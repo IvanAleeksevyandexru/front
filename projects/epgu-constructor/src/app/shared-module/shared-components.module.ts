@@ -8,6 +8,10 @@ import { LabelComponent } from './components/label/label.component';
 import { EpguLibModule } from 'epgu-lib';
 import {NavigationService} from './service/navigation/navigation.service';
 import {NavigationComponent} from './components/navigation/navigation.component';
+import {AnswerButtonComponent} from './components/answer-button/answer-button.component';
+import {ConfirmationModalComponent} from './components/confirmation-modal/confirmation-modal.component';
+import {ModalBaseComponent} from './components/modal-base/modal-base.component';
+import {ModalContainerComponent} from './components/modal-container/modal-container.component';
 
 const COMPONENTS = [
   // component
@@ -16,6 +20,10 @@ const COMPONENTS = [
   ScreenPadComponent,
   LabelComponent,
   NavigationComponent,
+  AnswerButtonComponent,
+  ConfirmationModalComponent,
+  ModalContainerComponent,
+  ModalBaseComponent,
 
   // Pipe
   ToJsonPipe,

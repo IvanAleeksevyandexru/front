@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ScreenComponent } from './screen.component';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service'
-import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface'
-import { COMPONENT_TYPE } from '../../../../../constant/global'
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
+import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface'
+import { SCREEN_TYPE } from '../../../../../constant/global'
 import { ConstructorService } from '../../../../services/constructor/constructor.service'
 import { ConstructorServiceStub } from '../../../../services/constructor/constructor.service.stub'
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service'
@@ -15,7 +15,7 @@ describe('ScreenComponent', () => {
   let navService: NavigationService;
   let constructorService: ConstructorService;
   let screenComponentService: ScreenComponentService;
-  const mockData: EgpuResponseDisplayInterface = {
+  const mockData: DisplayInterface = {
     components: [{
       attrs: {},
       id: '',
@@ -27,7 +27,7 @@ describe('ScreenComponent', () => {
     id: '',
     name: '',
     submitLabel: '',
-    type: COMPONENT_TYPE.COMPONENT
+    type: SCREEN_TYPE.COMPONENT
   };
 
   beforeEach(async(() => {

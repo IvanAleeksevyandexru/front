@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { DictionaryOptionsInterface, DictionaryResponse } from '../../../interfaces/dictionary-options.interface';
 import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { ConstructorConfigService } from '../config/constructor-config.service';
@@ -61,7 +62,7 @@ export class RestService {
     });
   }
 
-  getDictionary(dictionaryName: string, options: DictionaryOptionsInterface = {}) {
+   getDictionary(dictionaryName: string, options: DictionaryOptionsInterface = {}) {
     const path = `${this.dictionaryUrl}/${dictionaryName}`;
     return this.http.post<DictionaryResponse>(path, {
       filter: options.filter,

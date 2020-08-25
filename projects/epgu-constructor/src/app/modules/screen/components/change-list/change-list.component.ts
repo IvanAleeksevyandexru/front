@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
-export interface EgpuResponseComponentInterfaceForChangeList extends ComponentInterface {
+export interface ComponentInterfaceForChangeList extends ComponentInterface {
   attrs: {
     fields: Array<IField>;
   };
@@ -21,7 +21,7 @@ interface IField {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangeListComponent implements OnInit, OnChanges {
-  @Input() data: EgpuResponseComponentInterfaceForChangeList;
+  @Input() data: ComponentInterfaceForChangeList;
   response: Array<any>;
   fields: FormGroup;
 

@@ -4,11 +4,10 @@
 // import { CustomScreenComponent } from './custom-screen.component';
 // import { RestService } from '../../../../services/rest/rest.service'
 // import { RestServiceStub } from '../../../../services/rest/rest.service.stub'
-// import { NavigationService } from '../../../../layout/service/navigation/navigation.service'
 // import { ConstructorService } from '../../../../services/constructor/constructor.service'
 // import { ConstructorServiceStub } from '../../../../services/constructor/constructor.service.stub'
 // import { EgpuResponseCustomComponentDisplayInterface } from '../../../../../interfaces/custom-component.interface'
-// import { COMPONENT_TYPE } from '../../../../../constant/global'
+// import { SCREEN_TYPE } from '../../../../../constant/global'
 
 describe('CustomScreenComponent', () => {
   it('TODO: remove it when resolve issue with @ifc/plugin and @ifc/common dependencies', () => {
@@ -28,7 +27,7 @@ describe('CustomScreenComponent', () => {
 //     id: '',
 //     name: '',
 //     submitLabel: '',
-//     type: COMPONENT_TYPE.COMPONENT
+//     type: SCREEN_TYPE.COMPONENT
 //   };
 //
 //   beforeEach(async(() => {

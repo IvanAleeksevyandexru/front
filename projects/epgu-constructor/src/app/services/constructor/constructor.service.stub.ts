@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
-import {EgpuResponseDisplayInterface, EgpuResponseInterface} from '../../../interfaces/epgu.service.interface';
+import {DisplayInterface, ResponseInterface} from '../../../interfaces/epgu.service.interface';
 
 
 @Injectable()
 export class ConstructorServiceStub {
-  response: EgpuResponseInterface;
+  response: ResponseInterface;
   componentId: string;
   componentType: string;
-  componentData: EgpuResponseDisplayInterface;
+  componentData: DisplayInterface;
   isLoading = false;
 
   getData(): void {}

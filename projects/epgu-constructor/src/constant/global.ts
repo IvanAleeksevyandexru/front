@@ -17,7 +17,8 @@ export enum SCREEN_COMPONENT_NAME {
   'personLookup' = 'PersonLookup',
   'changeList' = 'ChangeList',
   'snils' = 'StringInput',
-  'docInput' = 'DocInput'
+  'docInput' = 'DocInput',
+  'countryApostil' = 'CountryApostil'
 }
 
 export enum INFO_SCREEN_COMPONENT {

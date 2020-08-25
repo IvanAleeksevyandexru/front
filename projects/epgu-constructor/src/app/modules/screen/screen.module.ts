@@ -19,11 +19,13 @@ import {ScreenComponent} from './components/root/screen.component';
 import {SnilsModule} from './components/snils/snils.module';
 import {ScreenComponentService} from './service/screen-component/screen-component.service';
 import {AddPassportModule} from './components/add-passport/add-passport.module';
+import {CountrySelectionComponent} from './components/country-selection/country-selection.component';
 
 
 const COMPONENTS = [
   ScreenComponent,
-  ChangeListComponent
+  ChangeListComponent,
+  CountrySelectionComponent,
 ];
 
 @NgModule({

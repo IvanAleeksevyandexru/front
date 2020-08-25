@@ -115,8 +115,9 @@ export class TerabyteService {
    * @param options - данные о файле
    */
   deleteFile(options: ITerraFileOptions): Observable<any> {
+    const url = `/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`;
     // eslint-disable-next-line max-len
-    return this.http.delete(this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`), this.getServerRequestOptions());
+    return this.http.delete(this.getTerabyteApiUrl(url), this.getServerRequestOptions());
   }
 
 

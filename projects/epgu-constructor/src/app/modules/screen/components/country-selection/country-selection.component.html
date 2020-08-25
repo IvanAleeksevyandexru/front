@@ -1,0 +1,17 @@
+<form [formGroup]="form">
+  <epgu-constructor-label>{{ data.label }}</epgu-constructor-label>
+  <lib-dropdown
+    formControlName="countryDropdown"
+    [placeholder]="placeholder"
+    [items]="listItemDictionary"
+    (changed)="selectCountry($event)"
+    [localSearch]="true">
+  </lib-dropdown>
+  <div *ngIf="selectedCountry && selectedCountry.countryType !== '1'"
+       class="country-apostil__warning">
+    <lib-disclaimer-elk
+      color="#FFD54C"
+      title="Предупреждение"
+      [text]="warningMessages[selectedCountry.countryType]"></lib-disclaimer-elk>
+  </div>
+</form>
