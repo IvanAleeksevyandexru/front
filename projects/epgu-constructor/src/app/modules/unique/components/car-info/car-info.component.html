@@ -19,7 +19,7 @@
   <epgu-constructor-screen-pad *ngIf="carInfo.legal" class="car__info--block">
     <h5 class="car__info--title">Юридическая чистота</h5>
     <div class="car__info--item" *ngFor="let legalItem of carInfo.legal">
-      {{legalItem.name}}: <span class="bold">{{ legalItem ? 'Да' : 'Нет' }}</span>
+      {{legalItem.name | carInfoLegal}}: <span class="bold">{{ legalItem ? 'Да' : 'Нет' }}</span>
     </div>
     <div class="car__info--item" *ngIf="carInfo.legal?.length === 0">Нет данных</div>
   </epgu-constructor-screen-pad>

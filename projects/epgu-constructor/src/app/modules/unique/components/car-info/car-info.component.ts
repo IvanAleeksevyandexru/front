@@ -19,14 +19,6 @@ export class CarInfoComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.components[0].value) {
-      // const data = JSON.parse(this.data.components[0].value);
-      // const dataKeys = Object.keys(data);
-      // const dataValues = Object.values(data);
-      //
-      // dataKeys.forEach((key, index) => {
-      //
-      // });
-
       this.carInfo = JSON.parse(this.data.components[0].value);
     }
   }

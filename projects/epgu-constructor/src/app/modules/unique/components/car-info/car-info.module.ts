@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { EpguLibModule } from 'epgu-lib';
 import { EpgucSharedModule } from '../../../../shared-module/shared-components.module';
 import { CarInfoComponent } from './car-info.component';
+import { CarInfoLegalPipe } from './car-info.pipe';
 
 const COMPONENTS = [
-  CarInfoComponent
+  CarInfoComponent,
+  CarInfoLegalPipe,
 ];
 
 @NgModule({
