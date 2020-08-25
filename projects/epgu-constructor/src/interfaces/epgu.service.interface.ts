@@ -16,7 +16,7 @@ import { COMPONENT_TYPE } from '../constant/global';
 export interface EgpuResponseInterface {
   scenarioDto: {
     applicantAnswers: object;
-    currentRule: number;
+    currentScenarioId: number;
     currentValue: object;
     display: EgpuResponseDisplayInterface;
     gender: number;
