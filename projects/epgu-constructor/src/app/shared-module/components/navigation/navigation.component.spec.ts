@@ -2,14 +2,17 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NavigationComponent } from './navigation.component';
 import { NavigationService } from '../../service/navigation/navigation.service'
+import { MockComponent } from 'ng-mocks'
+import { ScreenContainerComponent } from '../screen-container/screen-container.component'
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
   let fixture: ComponentFixture<NavigationComponent>;
+  let ScreenContainerComponentMock = MockComponent(ScreenContainerComponent);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavigationComponent ],
+      declarations: [ NavigationComponent, ScreenContainerComponentMock ],
       providers: [ NavigationService ]
     })
     .compileComponents();
