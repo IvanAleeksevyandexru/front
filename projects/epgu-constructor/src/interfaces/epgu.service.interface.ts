@@ -14,15 +14,17 @@ import { COMPONENT_TYPE } from '../constant/global';
  *
  */
 export interface ResponseInterface {
-  applicantAnswers: object;
-  currentRule: number;
-  currentValue: object;
-  display: DisplayInterface;
-  gender: number;
-  orderId: string;
-  sendNotification: Array<object>;
-  token: string
-  userId: string
+  scenarioDto: {
+    applicantAnswers: object;
+    currentScenarioId: number;
+    currentValue: object;
+    display: EgpuResponseDisplayInterface;
+    gender: number;
+    orderId: string;
+    sendNotification: Array<object>;
+    token: string
+    userId: string
+  }
 }
 
 /**
