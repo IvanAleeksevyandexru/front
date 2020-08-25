@@ -3,6 +3,7 @@ import { SCREEN_TYPE } from '../../../../../constant/global';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { UniqueScreenComponent } from './unique-screen.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 
 describe('UniqueScreenComponent', () => {
   let component: UniqueScreenComponent;

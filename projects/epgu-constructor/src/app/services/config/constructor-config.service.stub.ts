@@ -13,6 +13,6 @@ export class ConstructorConfigServiceStub {
     fileUploadLocalhostApiUrl: '',
     externalUrl: '',
     yandexMapsApiKey: '',
-    isProd: false
+    isProd: false,
   };
 }

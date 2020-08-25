@@ -74,9 +74,9 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    document
-      .getElementsByClassName('country-apostil__minsk-convention-link')[0]
-      .addEventListener('click', this.showModal);
+    // document
+    //   .getElementsByClassName('country-apostil__minsk-convention-link')[0]
+    //   .addEventListener('click', this.showModal);
   }
 
   mapToListItemModel(dictionary): void {

@@ -4,18 +4,7 @@
       [label]="data?.label"
       [data]="data?.value"
       [error]="errors && errors[data?.id]"
-      [isEditable]="isEditable"
       [isEditButtonShown]="true"
     ></epgu-constructor-confirm-personal-user-phone>
-  </div>
-
-  <div class="footer">
-    <epgu-constructor-confirm-personal-user-button
-      class="confirm-personal-user-button"
-      *ngFor="let action of data?.attrs?.actions"
-      [action]="action.method"
-      (click)="clickToAction(action)"
-      >{{ action.label }}</epgu-constructor-confirm-personal-user-button
-    >
   </div>
 </epgu-constructor-confirm-personal-user-screen-layout>

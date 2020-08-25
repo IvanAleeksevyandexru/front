@@ -4,6 +4,7 @@ import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-us
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { ConfirmAddressInterface } from './interface/confirm-address.interface'
 import { SCREEN_COMPONENT_NAME } from '../../../../../../../constant/global'
+import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service'
 
 describe('ConfirmPersonalUserAddressScreenComponent', () => {
   let component: ConfirmPersonalUserAddressScreenComponent;
@@ -22,7 +23,8 @@ describe('ConfirmPersonalUserAddressScreenComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [ ConfirmPersonalUserAddressScreenComponent ]
+      declarations: [ ConfirmPersonalUserAddressScreenComponent ],
+      providers: [ScreenComponentService]
     })
     .compileComponents();
   }));

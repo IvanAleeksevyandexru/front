@@ -1,6 +1,6 @@
 <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <epgu-constructor-screen-container>
-  <div class="inner" [formGroup]="form">
+  <form class="inner" [formGroup]="form">
     <div *ngIf="data?.header" class="head">
       <epgu-constructor-page-name>{{ data.header }}</epgu-constructor-page-name>
     </div>
@@ -77,10 +77,8 @@
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
       </lib-button>
-      <div
-        *ngIf="componentSetting.displayWarningAnswers"
-        class="footer__warning-answers"
-      >
+      <div *ngIf="componentSetting.displayWarningAnswers"
+           class="footer__warning-answers">
         <epgu-constructor-answer-button
           (click)="nextStep()"
           [data]="{ label: 'Всё равно продолжить'}">
@@ -92,5 +90,5 @@
         </epgu-constructor-answer-button>
       </div>
     </div>
-  </div>
+  </form>
 </epgu-constructor-screen-container>

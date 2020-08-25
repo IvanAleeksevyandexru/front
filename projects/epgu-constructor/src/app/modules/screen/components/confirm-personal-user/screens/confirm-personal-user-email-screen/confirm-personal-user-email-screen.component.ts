@@ -18,16 +18,4 @@ export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
   ngOnInit(): void {
     this.screenComponentService.dataToSend = this.data.value;
   }
-
-  clickToAction(event): void {
-    const { action } = event;
-    switch (action) {
-      case 'editUserEmail':
-        this.isEditable = true;
-        break;
-      default:
-        this.nextStepEvent.emit(this.data.value);
-        break;
-    }
-  }
 }

@@ -66,4 +66,8 @@ export class ChangeListComponent implements OnInit, OnChanges {
 
     return new FormGroup(fields);
   }
+
+  removeItem(item) {
+    this.response = this.response.filter((el) => el !== item);
+  }
 }

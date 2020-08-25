@@ -68,7 +68,7 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
         this.valueParsed = change;
         this.data.value = this.handleDataChange(change);
         this.data.value = this.handleDataChange(change);
-        this.dataEditedEvent.emit({ valueParsed: this.valueParsed, data: this.data });
+        this.dataEditedEvent.emit(this.valueParsed);
       });
     }
   }
