@@ -15,7 +15,7 @@ export class RestService {
 
   userId = '1000299353';
   // eslint-disable-next-line max-len
-  token = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTc5MDUzMjgsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl90cm0_b2lkPTEwMDAyOTkzNTMmbW9kZT13IGh0dHA6XC9cL2VzaWEuZ29zdXNsdWdpLnJ1XC91c3JfaW5mP29pZD0xMDAwMjk5MzUzJm1vZGU9dyBodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvdXNyX3NlYz9tb2RlPXcmb2lkPTEwMDAyOTkzNTMiLCJpc3MiOiJodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvIiwidXJuOmVzaWE6c2lkIjoiZTUwZDlmZmJlODA0YTRkZjY4NzI5Mzc1MTljMzRmNDExYzM2MzQxMzk1NGI3ZWE4MDE5ZjNjZTI3NDVhZGFiMyIsInVybjplc2lhOnNial9pZCI6MTAwMDI5OTM1MywiZXhwIjoxNTk3OTkxNzI4LCJpYXQiOjE1OTc5MDUzMjgsImNsaWVudF9pZCI6IlBHVSJ9.gPSeau7tk1hcXFg72IsIeSXSZ7NeCpB1tfW2zRACGC2ZvLUyqGoYlw72xOBStc6mbEQsrItB1GS6jrbtGYag0d9wHCtdcDMiXN0CugVzChuQthETHp2pzYFupTOKuCzgyxD0YjMCp0WlOkMgL_vgjM0vycrBSxJUBbgeiI2THSLaX0JWZouqgKuMymZdLBeI2vmeqoV-YxTlEy7FMjug02ebRmss-dWV481iIzwoBPPQkcrwkgT8TemWH8thgP9_zjAuQax92Tx6BQXzHx9fagHoilWwZh8X9Ib9qdK5Wf5_pefhIW8VjXOAcFxUvo3mYB3wjcJwo5hW8F8J9UhKZA';
+  token = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTgzNDQ3NzQsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl90cm0_b2lkPTEwMDAyOTkzNTMmbW9kZT13IGh0dHA6XC9cL2VzaWEuZ29zdXNsdWdpLnJ1XC91c3JfaW5mP29pZD0xMDAwMjk5MzUzJm1vZGU9dyBodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvdXNyX3NlYz9tb2RlPXcmb2lkPTEwMDAyOTkzNTMiLCJpc3MiOiJodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvIiwidXJuOmVzaWE6c2lkIjoiYTNjN2IzYTFmMTkzZmFkYWM0OWQ4NjZkMThhNDU0ZDkzMTQxMGYyODJlMjA5MjY1N2NkYThhNjc5NDk2Zjk1NiIsInVybjplc2lhOnNial9pZCI6MTAwMDI5OTM1MywiZXhwIjoxNTk4NDMxMTc0LCJpYXQiOjE1OTgzNDQ3NzQsImNsaWVudF9pZCI6IlBHVSJ9.mCq_M7g1T6Yx4D9INuKVwjYRZVX8A6wTUz5VjdUiwoQ1W_fPEYv24G3UJLbDOX4iOEd4URasdPq6DTroPTc4Ebp47u89r9fcgJ3JwqZZCIqt5pmZEk_vhmHZaKu9ywUJCqjgzo8e8aBJJy7qkKcmPbWEBTeiaijvyyNHkTwqunclWPyuGZjfCH2LFkd5mB7EA5dK10oEszxyMVt1lO5-xQ2CfXazaeBo_jJN1wstLRkN009V_lXHCK2zrH0dDWW_kTbDGVkWu0SodvAAVG81pA5Ly3AkDedau9cZ-8vkXv0kvjD1v_RrQrDGj_VcOukmbHTiG9DS5M_Xfc_05gWrfA';
   currentUserId: string;
   currentUserToken: string;
 
@@ -42,10 +42,11 @@ export class RestService {
 
   public getNextStep(data) {
     const path = `${this.apiUrl}/service/${this.serviceId}/scenario/getNextStep`;
+    data.scenarioDto.userId = this.currentUserId;
+    data.scenarioDto.token = this.currentUserToken;
     return this.http.post<ResponseInterface>(path, {
       ...data,
-      userId: this.currentUserId,
-      token: this.currentUserToken,
+
     }, {
       withCredentials: false
     });
@@ -53,10 +54,10 @@ export class RestService {
 
   public getPrevStep(data) {
     const path = `${this.apiUrl}/service/${this.serviceId}/scenario/getPrevStep`;
+    data.scenarioDto.userId = this.currentUserId;
+    data.scenarioDto.token = this.currentUserToken;
     return this.http.post<ResponseInterface>(path, {
-      ...data,
-      userId: this.currentUserId,
-      token: this.currentUserToken,
+      ...data
     }, {
       withCredentials: false
     });

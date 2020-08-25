@@ -1,4 +1,5 @@
-@import "../../../../../styles/functions";
+@import "src/styles/core";
+
 
 .nav {
   @include navigation-mt();
