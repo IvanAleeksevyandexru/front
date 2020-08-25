@@ -13,7 +13,7 @@ import { COMPONENT_TYPE } from '../constant/global';
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
  *
  */
-export interface EgpuResponseInterface {
+export interface ResponseInterface {
   scenarioDto: {
     applicantAnswers: object;
     currentScenarioId: number;
