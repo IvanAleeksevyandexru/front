@@ -6,6 +6,7 @@
 
   <div class="footer">
     <epgu-constructor-confirm-personal-user-button
+      class="confirm-personal-user-button"
       *ngFor="let action of data?.attrs?.actions"
       [action]="action.method"
       (tap)="clickToAction(action)">{{action.label}}</epgu-constructor-confirm-personal-user-button>
