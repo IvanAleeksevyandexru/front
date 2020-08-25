@@ -41,10 +41,11 @@ export class RestService {
 
   public getNextStep(data) {
     const path = `${this.apiUrl}/service/${this.serviceId}/scenario/getNextStep`;
+    data.scenarioDto.userId = this.currentUserId;
+    data.scenarioDto.token = this.currentUserToken;
     return this.http.post<ResponseInterface>(path, {
       ...data,
-      userId: this.currentUserId,
-      token: this.currentUserToken,
+
     }, {
       withCredentials: false
     });
@@ -52,10 +53,10 @@ export class RestService {
 
   public getPrevStep(data) {
     const path = `${this.apiUrl}/service/${this.serviceId}/scenario/getPrevStep`;
+    data.scenarioDto.userId = this.currentUserId;
+    data.scenarioDto.token = this.currentUserToken;
     return this.http.post<ResponseInterface>(path, {
-      ...data,
-      userId: this.currentUserId,
-      token: this.currentUserToken,
+      ...data
     }, {
       withCredentials: false
     });
