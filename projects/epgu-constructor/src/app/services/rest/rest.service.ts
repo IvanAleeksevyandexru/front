@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DictionaryOptionsInterface, DictionaryResponse } from '../../../interfaces/dictionary-options.interface';
-import { EgpuResponseInterface } from '../../../interfaces/epgu.service.interface';
+import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { MockService } from '../mock/mock.service';
 
@@ -34,14 +34,14 @@ export class RestService {
 
   public getData() {
     const path = `${this.apiUrl}/getService/${this.serviceId}`;
-    return this.http.get<EgpuResponseInterface>(path, {
+    return this.http.get<ResponseInterface>(path, {
       withCredentials: false
     });
   }
 
   public getNextStep(data) {
     const path = `${this.apiUrl}/service/${this.serviceId}/scenario/getNextStep`;
-    return this.http.post<EgpuResponseInterface>(path, {
+    return this.http.post<ResponseInterface>(path, {
       ...data,
       userId: this.currentUserId,
       token: this.currentUserToken,
@@ -52,7 +52,7 @@ export class RestService {
 
   public getPrevStep(data) {
     const path = `${this.apiUrl}/service/${this.serviceId}/scenario/getPrevStep`;
-    return this.http.post<EgpuResponseInterface>(path, {
+    return this.http.post<ResponseInterface>(path, {
       ...data,
       userId: this.currentUserId,
       token: this.currentUserToken,

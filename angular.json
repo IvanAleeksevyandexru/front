@@ -138,7 +138,12 @@
       "projectType": "library",
       "root": "projects/epgu-constructor",
       "sourceRoot": "projects/epgu-constructor/src",
-      "prefix": "lib",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "prefix": "epgu-constructor",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
@@ -155,7 +160,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": ".eslintrc.js",
+            "eslintConfig": "projects/epgu-constructor/.eslintrc.js",
             "tsConfig": [
               "projects/epgu-constructor/tsconfig.lib.json",
               "tsconfig.spec.json"

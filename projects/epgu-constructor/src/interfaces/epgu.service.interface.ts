@@ -1,26 +1,23 @@
-import {COMPONENT_TYPE, SCREEN_COMPONENT_NAME} from '../constant/global';
-import {CUSTOM_COMPONENT_ITEM_TYPE} from '../app/modules/custom/tools/custom-screen-tools';
-import {EgpuResponseComponentAttrForCustomComponentInterface} from './custom-component.interface';
-import {ConfirmUserDataAttrsInterface} from './confirm-user-data.interface';
+import { COMPONENT_TYPE } from '../constant/global';
 
 /**
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
  * @property {number}currentRule - id сценария для управление порядком компонентов (наверное не нужен для фронта)
  * @property {object}currentValue - для отправляемых данных
- * @property {EgpuResponseDisplayInterface}display -
- * @property {string}gender
+ * @property {DisplayInterface}display - текущий экран с компонентами и данными для отрисовки
+ * @property {string}gender- пол пользователя
  * @property {string}orderId - идентификатор запорлнения черновика, (уже был черновик...)
  * @property {Array<object>>}sendNotification - собственники жилья
  * (человек 1, человек 2) => эти людям прилетает уведомление о подтверждении ...
- * @property {string}token - в целях разработки, на продее через cookie;
+ * @property {string}token - в целях разработки, на проде через cookie;
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
  *
  */
-export interface EgpuResponseInterface {
-  applicantAnswers: {[key: string]: any};
+export interface ResponseInterface {
+  applicantAnswers: object;
   currentRule: number;
   currentValue: object;
-  display: EgpuResponseDisplayInterface;
+  display: DisplayInterface;
   gender: number;
   orderId: string;
   sendNotification: Array<object>;
@@ -30,14 +27,14 @@ export interface EgpuResponseInterface {
 
 /**
  * @property {}components
- * @property {string}header - text in component header
- * @property {string}id -
- * @property {string}name - краткая информация о том что за компонент (на фронде не используется)
- * @property {string}submitLabel - text for submit button
+ * @property {string}header - текстовый заголовок компонента
+ * @property {string}id - идентификатор экрана
+ * @property {string}name - краткая информация о том что за компонент (на фронте не используется)
+ * @property {string}submitLabel - текст для submit-button'a
  * @property {COMPONENT_TYPE}type - тип компонента
  */
-export interface EgpuResponseDisplayInterface {
-  components: Array<EgpuResponseComponentInterface>;
+export interface DisplayInterface {
+  components: Array<ComponentInterface>;
   header: string;
   id: string;
   name: string;
@@ -46,17 +43,17 @@ export interface EgpuResponseDisplayInterface {
 }
 
 /**
- * @property {Array<object>}attrs - обеъект с дополнительной информацией
+ * @property {Array<object>}attrs - объект с дополнительной информацией
  * (например для select элементов могут приходить словари)
- * @property {string}id -
+ * @property {string}id - идентификатор компонента
  * @property {string}label - может храниться разное строковое значение
  * (например в некоторый случаях в строке будет сожержаться html разметка);
  * @property {string}type - component name
  * @property {string}value - может храниться разное строковое значение
  * (например проверка персональные данные будут содержать json с персональными данными)
- * @property {boolean}visited?
+ * @property {boolean}visited? - булевый флаг пройдена ли пользователем бизнес-логика данного компонента
  */
-export interface EgpuResponseComponentInterface {
+export interface ComponentInterface {
   attrs: object;
   id: string;
   label: string;
@@ -65,8 +62,7 @@ export interface EgpuResponseComponentInterface {
   visited?: boolean
 }
 
-
-export interface EgpuResponseCurrentValue {
+export interface CurrentValue {
   visited: boolean;
   value: any;
 }

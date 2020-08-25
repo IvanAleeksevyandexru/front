@@ -1,21 +1,19 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from '../../../../../questions/components/interface/question-block.interface';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { QuestionsComponentActionsInterface } from '../../../../../questions/components/interface/question-block.interface';
 
 @Component({
-  selector: 'app-child-relationship',
+  selector: 'epgu-constructor-child-relationship',
   templateUrl: './child-relationship.component.html',
   styleUrls: ['./child-relationship.component.scss'],
 })
 export class ChildRelationshipComponent implements OnInit {
   @Input() gender: string;
-  @Output() answerSelect = new EventEmitter<
-    EgpuResponseQuestionsDisplayComponentAttrsActionsInterface
-  >();
+  @Output() answerSelect = new EventEmitter<QuestionsComponentActionsInterface>();
 
   answerOption: string;
 
   answerChoose(answer: string): void {
-    const value: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface = {
+    const value: QuestionsComponentActionsInterface = {
       action: 'getNextAction',
       label: answer,
       value: answer,

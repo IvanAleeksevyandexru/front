@@ -1,18 +1,18 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
 // eslint-disable-next-line max-len
-import { EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface } from '../../../../../../../../../interfaces/temporary-registration-addr.interface'
-import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service'
-import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../../../interfaces/temporary-registration-addr.interface';
+import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
+import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
+import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
+
 
 
 describe('TemporaryRegistrationAddrComponent', () => {
   let component: TemporaryRegistrationAddrComponent;
   let fixture: ComponentFixture<TemporaryRegistrationAddrComponent>;
   let constructorConfigService: ConstructorConfigService;
-  const mockData: EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface = {
+  const mockData: TemporaryRegistrationAddrComponentInterface = {
     attrs: {
       actions: [],
       fields: [],

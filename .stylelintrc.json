@@ -42,6 +42,6 @@
   },
   "ignoreFiles": [
     "./dist/**",
-    "./projects/epgu-constructor/src/styles/_variables.scss"
+    "./projects/epgu-constructor/src/styles/core/_variables.scss"
   ]
 }

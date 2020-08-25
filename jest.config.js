@@ -3,6 +3,10 @@ module.exports = {
   modulePaths: [
     '<rootDir>'
   ],
+  moduleDirectories: [
+    'node_modules',
+    'stub_modules'
+  ],
   setupFiles: ['<rootDir>/setup-jest.ts'],
   setupFilesAfterEnv: ['<rootDir>/setup-jest-env.ts'],
   testPathIgnorePatterns: [

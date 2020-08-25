@@ -1,14 +1,14 @@
 import { ListItem } from 'epgu-lib';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../app/modules/custom/tools/custom-screen-tools';
 import { DictionaryItem, DictionaryResponse } from './dictionary-options.interface';
-import { EgpuResponseComponentInterface, EgpuResponseDisplayInterface } from './epgu.service.interface';
+import { ComponentInterface, DisplayInterface } from './epgu.service.interface';
 
 export interface CustomComponentDictionaryState {
   loading: boolean,
   loadError: boolean,
   loadEnd: boolean,
   paginationLoading: boolean;
-  origin: EgpuResponseCustomComponentDisplayComponentInterface;
+  origin: CustomComponentInterface;
   data: DictionaryResponse;
   list: Array<ListItem>;
   page: number;
@@ -17,20 +17,20 @@ export interface CustomComponentDictionaryState {
 
 
 /**
- * @property {Array<string>>}ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
+ * @property {Array<string>}ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
  * (например Регион связан со траной что и чтоб не выкачивать все регионы мира, в ссылке будет указана страна)
  * @property {string}dictionaryType - dictionary name for request {@see getDictionary}
  */
-export interface EgpuResponseComponentAttrForCustomComponentInterface {
+export interface CustomComponentAttrInterface {
   dictionaryType: string;
   labelAttr: string;
   ref: Array<any>;
   requiredAttrs?: Array<string>;
   supportedValues?: Array<ISupportedValue>;
-  validation: Array<EpguResponseComponentAttrValidationInterface>;
+  validation: Array<CustomComponentAttrValidationInterface>;
 }
 
-export interface EpguResponseComponentAttrValidationInterface {
+export interface CustomComponentAttrValidationInterface {
   type: string;
   value: string;
   ref: string;
@@ -48,17 +48,17 @@ export interface CustomComponentState {
   valid: boolean;
   errorMessage: string;
   value: any;
-  component: EgpuResponseCustomComponentDisplayComponentInterface
+  component: CustomComponentInterface
 }
 
 
 
-export interface EgpuResponseCustomComponentDisplayInterface extends EgpuResponseDisplayInterface {
-  components: Array<EgpuResponseCustomComponentDisplayComponentInterface>;
+export interface CustomDisplayInterface extends DisplayInterface {
+  components: Array<CustomComponentInterface>;
 }
 
-export interface EgpuResponseCustomComponentDisplayComponentInterface extends EgpuResponseComponentInterface{
-  attrs: EgpuResponseComponentAttrForCustomComponentInterface;
+export interface CustomComponentInterface extends ComponentInterface{
+  attrs: CustomComponentAttrInterface;
   type: CUSTOM_COMPONENT_ITEM_TYPE;
 }
 

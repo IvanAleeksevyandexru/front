@@ -1,13 +1,18 @@
-<ng-container [ngSwitch]="(data?.components)[0].type">
-  <app-add-children-screen
-    *ngSwitchCase="uniqueComponentName.childrenListUnder14"
-    (nextStepEvent)="nextStep($event)"
-    [data]="(data?.components)[0]"
-    [header]="data?.header"
-  ></app-add-children-screen>
-  <app-select-map-object
-    *ngSwitchCase="uniqueComponentName.mapService"
-    [data]="data"
-    (nextStepEvent)="nextStep($event)">
-  </app-select-map-object>
-</ng-container>
+<epgu-constructor-screen-container>
+  <div class="inner">
+    <ng-container [ngSwitch]="(data?.components)[0].type">
+      <epgu-constructor-add-children-screen
+        *ngSwitchCase="uniqueComponentName.childrenListUnder14"
+        (nextStepEvent)="nextStep($event)"
+        [data]="(data?.components)[0]"
+        [header]="data?.header"
+      ></epgu-constructor-add-children-screen>
+      <epgu-constructor-select-map-object
+        *ngSwitchCase="uniqueComponentName.mapService"
+        [data]="data"
+        (nextStepEvent)="nextStep($event)"
+      >
+      </epgu-constructor-select-map-object>
+    </ng-container>
+  </div>
+</epgu-constructor-screen-container>
