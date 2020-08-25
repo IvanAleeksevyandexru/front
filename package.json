@@ -11,7 +11,7 @@
     "library:build": "ng build epgu-constructor",
     "library:watch": "ng build epgu-constructor --watch",
     "library:test": "ng test epgu-constructor",
-    "library:lint": "ng lint epgu-constructor --fix",
+    "lint": "ng lint epgu-constructor --fix",
     "stylelint": "stylelint '**/*.scss' --config .stylelintrc.json",
     "stylelint:fix": "stylelint '**/*.scss' --config .stylelintrc.json --fix",
     "test": "jest --ci",
