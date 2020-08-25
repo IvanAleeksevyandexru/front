@@ -1,15 +1,18 @@
-<app-screen-container>
+<epgu-constructor-screen-container>
   <div class="inner">
     <div *ngIf="data?.header" class="head">
-      <app-page-name>{{ data?.header }}</app-page-name>
+      <epgu-constructor-page-name>{{ data?.header }}</epgu-constructor-page-name>
     </div>
 
-    <app-screen-pad class="body">
+    <epgu-constructor-screen-pad class="body">
       <form #customForm="ngForm" action="" class="form">
         <ng-container *ngFor="let componentData of data?.components">
           <ng-container [ngSwitch]="componentData.type">
             <div class="form__item" *ngSwitchCase="componentType.LabelSection">
-              <app-label-section [name]="componentData.label"></app-label-section>
+              <epgu-constructor-label-section
+                class="label"
+                [name]="componentData.label"
+              ></epgu-constructor-label-section>
             </div>
 
             <div class="form__item" *ngSwitchCase="componentType.Dictionary">
@@ -23,7 +26,7 @@
 
             <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
               <div class="form__title">{{ componentData.label }}</div>
-              <app-foreign-citizenship></app-foreign-citizenship>
+              <epgu-constructor-foreign-citizenship></epgu-constructor-foreign-citizenship>
             </div>
 
             <div class="form__item" *ngSwitchCase="componentType.StringInput">
@@ -50,7 +53,7 @@
           </ng-container>
         </ng-container>
       </form>
-    </app-screen-pad>
+    </epgu-constructor-screen-pad>
 
     <div class="footer">
       <lib-button
@@ -61,4 +64,4 @@
       >
     </div>
   </div>
-</app-screen-container>
+</epgu-constructor-screen-container>

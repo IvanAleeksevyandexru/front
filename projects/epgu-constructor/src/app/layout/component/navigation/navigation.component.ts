@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationService } from '../../service/navigation/navigation.service';
 
 @Component({
-  selector: 'app-navigation',
+  selector: 'epgu-constructor-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })

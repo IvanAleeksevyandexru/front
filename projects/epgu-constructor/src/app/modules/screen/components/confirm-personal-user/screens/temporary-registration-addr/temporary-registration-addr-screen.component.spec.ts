@@ -1,14 +1,14 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { TemporaryRegistrationAddrScreenComponent } from './temporary-registration-addr-screen.component';
 // eslint-disable-next-line max-len
-import { EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface } from '../../../../../../../interfaces/temporary-registration-addr.interface'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../interfaces/temporary-registration-addr.interface';
+import { TemporaryRegistrationAddrScreenComponent } from './temporary-registration-addr-screen.component';
+
 
 describe('TemporaryRegistrationAddrScreenComponent', () => {
   let component: TemporaryRegistrationAddrScreenComponent;
   let fixture: ComponentFixture<TemporaryRegistrationAddrScreenComponent>;
-  const mockData: EgpuResponseTemporaryRegistrationAddrDisplayComponentInterface = {
+  const mockData: TemporaryRegistrationAddrComponentInterface = {
     attrs: {
       actions: [],
       fields: [],

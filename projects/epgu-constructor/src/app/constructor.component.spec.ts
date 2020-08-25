@@ -1,10 +1,13 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 
 import { ConstructorComponent } from './constructor.component';
 import { ConstructorService } from './services/constructor/constructor.service'
 import { ConstructorServiceStub } from './services/constructor/constructor.service.stub'
+import { EpguLibModule } from 'epgu-lib'
+import { NavigationComponent } from './layout/component/navigation/navigation.component'
+import { NavigationService } from './layout/service/navigation/navigation.service'
+import { EpgucScreenContainerComponent } from './shared-module/components/screen-container/epguc-screen-container.component'
 
 
 describe('ConstructorComponent', () => {
@@ -12,14 +15,19 @@ describe('ConstructorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        EpguLibModule.forChild()
       ],
       declarations: [
-        ConstructorComponent
+        ConstructorComponent,
+        NavigationComponent,
+        EpgucScreenContainerComponent
       ],
-      providers: [{provide: ConstructorService, useClass: ConstructorServiceStub}]
+      providers: [
+        NavigationService,
+        {provide: ConstructorService, useClass: ConstructorServiceStub}
+      ]
     }).compileComponents();
     constructorService = TestBed.inject(ConstructorService);
   }));

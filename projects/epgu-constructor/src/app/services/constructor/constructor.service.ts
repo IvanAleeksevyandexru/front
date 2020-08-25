@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {EgpuResponseDisplayInterface, EgpuResponseInterface} from '../../../interfaces/epgu.service.interface';
-import {RestService} from '../rest/rest.service';
-import {COMPONENT_TYPE} from '../../../constant/global';
+import { Injectable } from '@angular/core';
+import { COMPONENT_TYPE } from '../../../constant/global';
+import { DisplayInterface, ResponseInterface } from '../../../interfaces/epgu.service.interface';
+import { RestService } from '../rest/rest.service';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -11,10 +11,10 @@ interface SendDataOptionsInterface {
 @Injectable()
 export class ConstructorService {
   // <-- variable
-  response: EgpuResponseInterface;
+  response: ResponseInterface;
   componentId: string;
   componentType: string;
-  componentData: EgpuResponseDisplayInterface;
+  componentData: DisplayInterface;
   isLoading = false;
 
   constructor(public restService: RestService) {
@@ -73,7 +73,7 @@ export class ConstructorService {
     console.error(error);
   }
 
-  initResponse(response: EgpuResponseInterface): void {
+  initResponse(response: ResponseInterface): void {
     if (!response) {
       console.error('Invalid Reponse');
       return;

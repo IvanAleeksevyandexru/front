@@ -14,8 +14,8 @@
     "library:lint": "ng lint epgu-constructor",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
-    "stylelint": "stylelint '**/*.scss' --config .stylelintrc.json",
-    "stylelint:fix": "stylelint '**/*.scss' --config .stylelintrc.json --fix",
+    "stylelint": "stylelint \"**/*.scss\" --config .stylelintrc.json",
+    "stylelint:fix": "stylelint \"**/*.scss\" --config .stylelintrc.json --fix",
     "test": "jest --ci",
     "test:dev": "jest --watch -o",
     "test:coverage": "jest --ci --coverage --no-cache --reporters=default --reporters=jest-junit --coverageDirectory=coverage/jest",
@@ -25,7 +25,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged --relative",
-      "pre-push": "yarn lint && yarn stylelint && yarn test && yarn build && yarn library:build"
+      "pre-push": "yarn lint && yarn stylelint && yarn test && yarn library:build && yarn build"
     }
   },
   "jest-junit": {

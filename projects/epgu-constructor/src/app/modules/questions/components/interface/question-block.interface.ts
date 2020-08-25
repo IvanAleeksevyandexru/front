@@ -1,21 +1,17 @@
-import {
-  EgpuResponseComponentInterface,
-  EgpuResponseDisplayInterface,
-  EgpuResponseInterface
-} from '../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface, DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 
 
-export interface EgpuResponseQuestionsDisplayInterface extends EgpuResponseDisplayInterface {
-  components: Array<EgpuResponseQuestionsDisplayComponentInterface>;
+export interface QuestionsDisplayInterface extends DisplayInterface {
+  components: Array<QuestionsComponentInterface>;
 }
 
-interface EgpuResponseQuestionsDisplayComponentInterface extends EgpuResponseComponentInterface {
+interface QuestionsComponentInterface extends ComponentInterface {
   attrs: {
-    actions: Array<EgpuResponseQuestionsDisplayComponentAttrsActionsInterface>
+    actions: Array<QuestionsComponentActionsInterface>
   }
 }
 
-export interface EgpuResponseQuestionsDisplayComponentAttrsActionsInterface {
+export interface QuestionsComponentActionsInterface {
   action: string;
   label: string;
   value: string;

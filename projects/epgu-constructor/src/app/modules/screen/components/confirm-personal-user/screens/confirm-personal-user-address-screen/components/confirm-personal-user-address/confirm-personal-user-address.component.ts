@@ -18,7 +18,7 @@ import { ScreenComponentService } from '../../../../../../service/screen-compone
 const moment = moment_;
 
 @Component({
-  selector: 'app-confirm-personal-user-address',
+  selector: 'epgu-constructor-confirm-personal-user-address',
   templateUrl: './confirm-personal-user-address.component.html',
   styleUrls: ['./confirm-personal-user-address.component.scss'],
   providers: [UnsubscribeService],

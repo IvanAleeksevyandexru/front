@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
-import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
+import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 @Component({
-  selector: 'app-screen',
+  selector: 'epgu-constructor-screen',
   templateUrl: './screen.component.html',
   styleUrls: ['./screen.component.scss'],
   providers: [UnsubscribeService],
@@ -20,7 +20,7 @@ export class ScreenComponent implements OnInit {
   // <-- variables
   componentData = null;
 
-  @Input() data: EgpuResponseDisplayInterface;
+  @Input() data: DisplayInterface;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 

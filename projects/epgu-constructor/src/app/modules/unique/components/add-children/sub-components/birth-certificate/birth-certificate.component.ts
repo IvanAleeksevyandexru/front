@@ -16,7 +16,7 @@ import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsub
 const moment = moment_;
 
 @Component({
-  selector: 'app-birth-certificate',
+  selector: 'epgu-constructor-birth-certificate',
   templateUrl: './birth-certificate.component.html',
   styleUrls: ['./birth-certificate.component.scss'],
 })

@@ -1,35 +1,36 @@
-<app-navigation></app-navigation>
+<epgu-constructor-navigation></epgu-constructor-navigation>
+
 
 <ng-container [ngSwitch]="constructorService?.componentData?.type">
-  <app-info-screen
+  <epgu-constructor-info-screen
     *ngSwitchCase="constructorComponentType.INFO"
     [data]="constructorService?.componentData"
     (nextStepEvent)="nextStep()"
-    (prevStepEvent)="prevStep()"></app-info-screen>
-  <app-invitation-screen
+    (prevStepEvent)="prevStep()"></epgu-constructor-info-screen>
+  <epgu-constructor-invitation-screen
     *ngSwitchCase="constructorComponentType.INVITATION_ERROR"
     [data]="constructorService?.componentData"
     (resolve)="onEmailSelect($event)"
-    (prevStepEvent)="prevStep()"></app-invitation-screen>
-  <app-screen
+    (prevStepEvent)="prevStep()"></epgu-constructor-invitation-screen>
+  <epgu-constructor-screen
     *ngSwitchCase="constructorComponentType.COMPONENT"
     [data]="constructorService?.componentData"
     (nextStepEvent)="nextStep($event)"
-    (prevStepEvent)="prevStep($event)"></app-screen>
-  <app-custom-screen
+    (prevStepEvent)="prevStep($event)"></epgu-constructor-screen>
+  <epgu-constructor-custom-screen
     *ngSwitchCase="constructorComponentType.CUSTOM"
     [data]="constructorService?.componentData"
     (nextStepEvent)="nextStep($event)"
-    (prevStepEvent)="prevStep()"></app-custom-screen>
-  <app-question-screen
+    (prevStepEvent)="prevStep()"></epgu-constructor-custom-screen>
+  <epgu-constructor-question-screen
     *ngSwitchCase="constructorComponentType.QUESTION"
     [data]="constructorService?.componentData"
     (nextStepEvent)="nextStep($event)"
-    (prevStepEvent)="prevStep($event)"></app-question-screen>
-  <app-unique-screen
+    (prevStepEvent)="prevStep($event)"></epgu-constructor-question-screen>
+  <epgu-constructor-unique-screen
     *ngSwitchCase="constructorComponentType.UNIQUE"
     [data]="constructorService?.componentData"
     (nextStepEvent)="nextStep($event)"
     (prevStepEvent)="prevStep()">
-  </app-unique-screen>
+  </epgu-constructor-unique-screen>
 </ng-container>

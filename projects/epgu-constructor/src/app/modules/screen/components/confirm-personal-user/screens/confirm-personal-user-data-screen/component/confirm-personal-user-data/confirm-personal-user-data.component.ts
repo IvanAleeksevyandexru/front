@@ -5,7 +5,7 @@ import {
 } from '../../../../../../../../../interfaces/confirm-user-data.interface';
 
 @Component({
-  selector: 'app-confirm-personal-user-data',
+  selector: 'epgu-constructor-confirm-personal-user-data',
   templateUrl: './confirm-personal-user-data.component.html',
   styleUrls: ['./confirm-personal-user-data.component.scss'],
 })

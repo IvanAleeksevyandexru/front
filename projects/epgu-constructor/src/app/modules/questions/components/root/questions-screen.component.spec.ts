@@ -1,17 +1,17 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-
-import { QuestionsScreenComponent } from './questions-screen.component'
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
+import { COMPONENT_TYPE } from '../../../../../constant/global'
 import { NavigationService } from '../../../../layout/service/navigation/navigation.service'
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service'
-import { EgpuResponseQuestionsDisplayInterface } from '../interface/question-block.interface'
-import { COMPONENT_TYPE } from '../../../../../constant/global'
+import { QuestionsDisplayInterface } from '../interface/question-block.interface'
+import { QuestionsScreenComponent } from './questions-screen.component'
+
 
 
 describe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
   let fixture: ComponentFixture<QuestionsScreenComponent>;
-  const mockData: EgpuResponseQuestionsDisplayInterface = {
+  const mockData: QuestionsDisplayInterface = {
     components: [],
     header: '',
     id: '',
