@@ -26,7 +26,6 @@ export interface CustomComponentAttrInterface {
   labelAttr: string;
   ref: Array<any>;
   requiredAttrs?: Array<string>;
-  supportedValues?: Array<ISupportedValue>;
   validation: Array<CustomComponentAttrValidationInterface>;
   supportedValues?: Array<ISupportedValue>;
 }
