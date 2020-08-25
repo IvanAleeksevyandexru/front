@@ -1,14 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../../../interfaces/temporary-registration-addr.interface';
+import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
+import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
-// eslint-disable-next-line max-len
-import {
-  TemporaryRegistrationAddrComponentInterface,
-  TemporaryRegistrationAddrDisplayInterface
-} from '../../../../../../../../../interfaces/temporary-registration-addr.interface'
-import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service'
-import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 
 
 describe('TemporaryRegistrationAddrComponent', () => {

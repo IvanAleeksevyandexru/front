@@ -1,13 +1,13 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SCREEN_TYPE } from '../../../../../constant/global';
+import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ConstructorService } from '../../../../services/constructor/constructor.service';
+import { ConstructorServiceStub } from '../../../../services/constructor/constructor.service.stub';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { InfoScreenComponent } from './info-screen.component';
-import {NavigationService} from '../../../../shared-module/service/navigation/navigation.service';
-import { ConstructorService } from '../../../../services/constructor/constructor.service'
-import { ConstructorServiceStub } from '../../../../services/constructor/constructor.service.stub'
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service'
-import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface'
-import { SCREEN_TYPE } from '../../../../../constant/global'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+
 
 describe('InfoScreenComponent', () => {
   let component: InfoScreenComponent;

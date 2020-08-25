@@ -9,8 +9,11 @@
       <form #customForm="ngForm" action="" class="form">
         <ng-container *ngFor="let componentData of data?.components">
           <ng-container [ngSwitch]="componentData.type">
-            <div class="form__item form-item" *ngSwitchCase="componentType.LabelSection">
-              <epgu-constructor-label-section class="form-item__label" [name]="componentData.label"></epgu-constructor-label-section>
+            <div class="form__item" *ngSwitchCase="componentType.LabelSection">
+              <epgu-constructor-label-section
+                class="label"
+                [name]="componentData.label"
+              ></epgu-constructor-label-section>
             </div>
 
             <div class="form__item" *ngSwitchCase="componentType.Dictionary">

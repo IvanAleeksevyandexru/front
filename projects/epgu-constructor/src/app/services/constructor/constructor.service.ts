@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {SCREEN_TYPE} from '../../../constant/global';
+import { SCREEN_TYPE } from '../../../constant/global';
 import { DisplayInterface, ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { RestService } from '../rest/rest.service';
 
@@ -52,7 +52,7 @@ export class ConstructorService {
     this.updateRequest(data);
     this.restService.getPrevStep(this.response).subscribe(
       (response) => {
-        if (response.errors) {
+        if (response?.errors) {
           this.sendDataError(response);
         } else {
           this.sendDataSuccess(response);
@@ -65,6 +65,7 @@ export class ConstructorService {
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}) {
     const componentId = options.componentId || this.componentId;
+    this.response.currentValue = {};
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
     if (this.componentData.type === SCREEN_TYPE.CUSTOM) {

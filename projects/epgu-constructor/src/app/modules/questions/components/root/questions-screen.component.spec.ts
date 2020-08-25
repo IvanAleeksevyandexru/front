@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-
-import { QuestionsScreenComponent } from './questions-screen.component'
-import {NavigationService} from '../../../../shared-module/service/navigation/navigation.service';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service'
-import { QuestionsDisplayInterface } from '../interface/question-block.interface'
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 import { SCREEN_TYPE } from '../../../../../constant/global'
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service'
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service'
+import { QuestionsDisplayInterface } from '../interface/question-block.interface'
+import { QuestionsScreenComponent } from './questions-screen.component'
+
 
 
 describe('QuestionsScreenComponent', () => {

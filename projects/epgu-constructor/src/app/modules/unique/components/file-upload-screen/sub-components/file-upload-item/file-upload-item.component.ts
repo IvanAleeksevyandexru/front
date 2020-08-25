@@ -8,10 +8,14 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { WebcamInitError } from 'ngx-webcam';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { WebcamInitError } from 'ngx-webcam';
-import { getSizeInMB, UploadedFile, uploadObjectType } from './data';
+import {
+  IFileResponseToBackendUploadsItem,
+  IFileUploadItem,
+  TerabyteListItem,
+} from '../../../../../../../interfaces/terabyte.interface';
 import { TerabyteService } from '../../../../../../services/rest/terabyte.service';
 import { WebcamService } from '../../../../../../services/utils/webcam.service';
 import {
@@ -19,11 +23,7 @@ import {
   isCloseWebcamEvent,
   WebcamEvent,
 } from '../../../../../../services/utils/webcamevents';
-import {
-  IFileResponseToBackendUploadsItem,
-  IFileUploadItem,
-  TerabyteListItem,
-} from '../../../../../../../interfaces/terabyte.interface';
+import { getSizeInMB, UploadedFile, uploadObjectType } from './data';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',

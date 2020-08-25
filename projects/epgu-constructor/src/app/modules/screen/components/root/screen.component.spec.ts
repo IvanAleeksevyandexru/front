@@ -1,13 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ScreenComponent } from './screen.component';
+import { SCREEN_TYPE } from '../../../../../constant/global';
+import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ConstructorService } from '../../../../services/constructor/constructor.service';
+import { ConstructorServiceStub } from '../../../../services/constructor/constructor.service.stub';
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
-import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface'
-import { SCREEN_TYPE } from '../../../../../constant/global'
-import { ConstructorService } from '../../../../services/constructor/constructor.service'
-import { ConstructorServiceStub } from '../../../../services/constructor/constructor.service.stub'
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
+import { ScreenComponent } from './screen.component';
 
 describe('ScreenComponent', () => {
   let component: ScreenComponent;

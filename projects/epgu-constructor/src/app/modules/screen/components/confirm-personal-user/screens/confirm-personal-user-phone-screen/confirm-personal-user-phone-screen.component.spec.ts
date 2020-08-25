@@ -1,9 +1,7 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-
 import { ConfirmPersonalUserPhoneScreenComponent } from './confirm-personal-user-phone-screen.component';
-import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service'
-import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface'
+
 
 
 describe('ConfirmPersonalUserPhoneScreenComponent', () => {
