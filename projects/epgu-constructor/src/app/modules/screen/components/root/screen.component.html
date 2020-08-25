@@ -40,12 +40,14 @@
 
         <epgu-constructor-add-passport
           *ngSwitchCase="screenComponentName.personLookup"
-          [data]="data?.components[0]"
+          [data]="(data?.components)[0]"
+          (valueChangedEvent)="changedComponentData($event)"
         ></epgu-constructor-add-passport>
 
         <epgu-constructor-change-list
           *ngSwitchCase="screenComponentName.changeList"
-          [data]="data?.components[0]"
+          [data]="(data?.components)[0]"
+          (valueChangedEvent)="changedComponentData($event)"
         ></epgu-constructor-change-list>
 
         <epgu-constructor-snils *ngSwitchCase="screenComponentName.snils"></epgu-constructor-snils>
@@ -54,11 +56,13 @@
           *ngSwitchCase="screenComponentName.docInput"
           [data]="data?.components[0]"></epgu-constructor-doc-input>
 
-        <epgu-constructor-country-selection *ngSwitchCase="screenComponentName.countryApostil"
-                               [form]="form"
-                               [data]="data?.components[0]"
-                               (changeComponentSettings)="changeComponentSettings($event)"
-                               (changeComponentData)="changeComponentData($event)">
+        <epgu-constructor-country-selection
+          *ngSwitchCase="screenComponentName.countryApostil"
+          [form]="form"
+          [data]="data?.components[0]"
+          (changeComponentSettings)="changeComponentSettings($event)"
+          (changeComponentData)="changeComponentData($event)"
+        >
         </epgu-constructor-country-selection>
       </ng-container>
     </epgu-constructor-screen-pad>
@@ -73,8 +77,10 @@
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
       </lib-button>
-      <div *ngIf="componentSetting.displayWarningAnswers"
-           class="footer__warning-answers">
+      <div
+        *ngIf="componentSetting.displayWarningAnswers"
+        class="footer__warning-answers"
+      >
         <epgu-constructor-answer-button
           (click)="nextStep()"
           [data]="{ label: 'Всё равно продолжить'}">

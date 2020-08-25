@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 interface ComponentSetting {

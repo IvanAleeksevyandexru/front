@@ -11,7 +11,7 @@ import { ScreenComponentService } from '../../service/screen-component/screen-co
 
 const moment = moment_;
 
-export interface ComponentInterfaceForDocInput extends ComponentInterface {
+export interface DocInputComponentInterface extends ComponentInterface {
   attrs: {
     fields: Array<IField>;
   };
@@ -36,7 +36,7 @@ interface IForm {
   providers: [UnsubscribeService],
 })
 export class DocInputComponent implements OnInit {
-  @Input() data: ComponentInterfaceForDocInput;
+  @Input() data: DocInputComponentInterface;
 
   form = new FormGroup({});
   readonly maxDate = new Date();

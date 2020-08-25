@@ -1,10 +1,18 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
-export interface ComponentInterfaceForChangeList extends ComponentInterface {
+export interface ChangeListComponentInterface extends ComponentInterface {
   attrs: {
     fields: Array<IField>;
   };
@@ -21,7 +29,8 @@ interface IField {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangeListComponent implements OnInit, OnChanges {
-  @Input() data: ComponentInterfaceForChangeList;
+  @Input() data: ChangeListComponentInterface;
+  @Output() valueChangedEvent = new EventEmitter<Array<any>>();
   response: Array<any>;
   fields: FormGroup;
 

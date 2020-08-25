@@ -1,14 +1,14 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
+import { ChangeListComponent, ChangeListComponentInterface } from './change-list.component';
 
-import { ChangeListComponent, ComponentInterfaceForChangeList } from './change-list.component'
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 
 describe('ChangeListComponent', () => {
   let component: ChangeListComponent;
   let fixture: ComponentFixture<ChangeListComponent>;
   let screenComponentService: ScreenComponentService;
-  const mockData: ComponentInterfaceForChangeList = {
+  const mockData: ChangeListComponentInterface = {
     attrs: {
       fields: [{
         fieldName: 'name',

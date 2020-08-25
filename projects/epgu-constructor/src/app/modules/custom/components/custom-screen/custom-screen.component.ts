@@ -10,10 +10,10 @@ import {
   CustomDisplayInterface,
 } from '../../../../../interfaces/custom-component.interface';
 import { DictionaryResponse } from '../../../../../interfaces/dictionary-options.interface';
-import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { RestService } from '../../../../services/rest/rest.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import {
   CUSTOM_COMPONENT_ITEM_TYPE,
   getCustomScreenDictionaryFirstState,
@@ -147,8 +147,8 @@ export class CustomScreenComponent implements OnChanges {
       try {
         return new RegExp(item.value);
       } catch {
-        console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
-        return new RegExp(/.*/);
+        console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.+/`);
+        return new RegExp(/.+/);
       }
     });
 

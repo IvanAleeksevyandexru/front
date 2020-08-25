@@ -1,4 +1,4 @@
-import {SCREEN_TYPE} from '../constant/global';
+import { SCREEN_TYPE } from '../constant/global';
 
 /**
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
@@ -14,7 +14,7 @@ import {SCREEN_TYPE} from '../constant/global';
  *
  */
 export interface ResponseInterface {
-  applicantAnswers: {[key: string]: any};
+  applicantAnswers: object;
   currentRule: number;
   currentValue: object;
   display: DisplayInterface;

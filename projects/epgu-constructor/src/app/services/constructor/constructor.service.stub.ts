@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {DisplayInterface, ResponseInterface} from '../../../interfaces/epgu.service.interface';
+import { Injectable } from '@angular/core';
+import { DisplayInterface, ResponseInterface } from '../../../interfaces/epgu.service.interface';
 
 
 @Injectable()

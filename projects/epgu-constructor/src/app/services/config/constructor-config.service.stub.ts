@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {ConstructorConfigInterface} from '../../../interfaces/constructor-config.interface';
+import { Injectable } from '@angular/core';
+import { ConstructorConfigInterface } from '../../../interfaces/constructor-config.interface';
 
 @Injectable()
 export class ConstructorConfigServiceStub {
@@ -8,6 +8,9 @@ export class ConstructorConfigServiceStub {
     dictionaryUrl: '',
     serviceId: '',
     externalApiUrl: '',
+    externalLkUrl: '',
+    fileUploadApiUrl: '',
+    fileUploadLocalhostApiUrl: '',
     externalUrl: '',
     yandexMapsApiKey: '',
     isProd: false

@@ -1,7 +1,6 @@
-@import "../../../../../../../styles/variables";
-@import "../../../../../../../styles/breakpoint";
-@import "../../../../../../../styles/functions";
-
+@import '../../../../../../../styles/variables';
+@import '../../../../../../../styles/breakpoint';
+@import '../../../../../../../styles/functions';
 
 $button-mt: 5px;
 
@@ -23,13 +22,10 @@ $button-mt: 5px;
       margin-top: 16px;
     }
 
-     // stylelint-disable-next-line
-    epgu-constructor-confirm-personal-user-button {
+    .confirm-personal-user-button {
       @include tablets-up {
         margin: 5px 10px;
       }
     }
   }
 }
-
-

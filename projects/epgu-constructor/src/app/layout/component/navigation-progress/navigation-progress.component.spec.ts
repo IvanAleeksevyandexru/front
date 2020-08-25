@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NavigationProgressComponent } from './navigation-progress.component';
+
 
 describe('NavigationProgressComponent', () => {
   let component: NavigationProgressComponent;
