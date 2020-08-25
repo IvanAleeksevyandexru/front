@@ -55,10 +55,10 @@
 
     <div class="footer">
       <lib-button
-        [showLoader]="constructorService.isLoading"
+        [showLoader]="constructorService.isLoading || bookingProgress"
         (click)="bookTimeSlot()"
         class="footer__btn-submit"
-        [disabled]="!screenComponentService.isValid"
+        [disabled]="!screenComponentService.isValid || bookingProgress"
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
       </lib-button>

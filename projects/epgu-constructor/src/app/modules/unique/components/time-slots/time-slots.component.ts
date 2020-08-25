@@ -45,6 +45,7 @@ export class TimeSlotsComponent implements OnInit {
   public currentMonth: ListItem;
   public blockMobileKeyboard = false;
   public fixedMonth = false;
+  public bookingProgress = false;
 
   constructor(
     private changeDetection: ChangeDetectorRef,
@@ -141,12 +142,14 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   public bookTimeSlot() {
+    this.bookingProgress = true;
     const { bookRequest } = this.componentValue;
     bookRequest.areaId = [this.currentSlot.areaId];
     bookRequest.selectedHallTitle = this.currentSlot.areaId;
     bookRequest.slotId = [this.currentSlot.slotId];
     this.timeSlotsService.bookTimeSlot(bookRequest).subscribe((response) => {
-      this.nextStepEvent.emit(response);
+      this.nextStepEvent.emit(JSON.stringify(response));
+      this.bookingProgress = false;
     });
   }
 
