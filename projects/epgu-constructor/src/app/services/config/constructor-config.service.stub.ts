@@ -10,6 +10,9 @@ export class ConstructorConfigServiceStub {
     externalApiUrl: '',
     externalUrl: '',
     yandexMapsApiKey: '',
-    isProd: false
+    isProd: false,
+    fileUploadApiUrl: '',
+    fileUploadLocalhostApiUrl: '',
+    externalLkUrl: '',
   };
 }
