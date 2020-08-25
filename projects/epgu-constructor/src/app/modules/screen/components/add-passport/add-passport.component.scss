@@ -9,7 +9,7 @@
   height: 100%;
 
   @include tablets-up {
-    background-color: $white;
+    background-color: $color-white;
 
     padding: 24px;
   }
@@ -41,7 +41,7 @@
       display: inline-block;
       margin-bottom: 8px;
 
-      color: $dark-gray;
+      color: $color-dark-gray;
       font-size: 14px;
       line-height: 20px;
     }

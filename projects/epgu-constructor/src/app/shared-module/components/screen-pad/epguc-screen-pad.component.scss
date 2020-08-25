@@ -2,7 +2,7 @@
 
 :host {
   display: block;
-  background: $white;
+  background: $color-white;
   padding: $screen-pad-p;
   border-radius: $border-lg;
   @include shadow-second();

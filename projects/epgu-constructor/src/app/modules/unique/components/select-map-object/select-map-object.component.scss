@@ -9,12 +9,12 @@
     position: absolute;
     top: 20px;
     left: calc(50% - 296px);
-    background: $white;
+    background: $color-white;
     width: 592px;
     z-index: 100;
     padding: 32px;
     border-radius: $border-round;
-    box-shadow: 0px 24px 48px rgba($shadow, 0.4);
+    box-shadow: 0px 24px 48px rgba($color-shadow, 0.4);
   }
 }
 
@@ -24,7 +24,7 @@
     padding: 24px;
     width: 288px;
     position: relative;
-    background-color: $white;
+    background-color: $color-white;
     border-radius: $border-round;
     font-family: 'Lato', sans-serif;
     font-style: normal;
@@ -75,10 +75,10 @@
     justify-content: center;
 
     .btn_base {
-      background: $white;
+      background: $color-white;
       cursor: pointer;
       border-radius: 4px;
-      border: 1px solid $gray;
+      border: 1px solid $color-gray;
       height: 54px;
       display: inline-block;
       vertical-align: top;
@@ -99,9 +99,9 @@
       }
 
       &.btn_blue {
-        background: $gosblue;
-        border: 1px solid $gosblue;
-        color: $white;
+        background: $color-gosblue;
+        border: 1px solid $color-gosblue;
+        color: $color-white;
       }
     }
   }

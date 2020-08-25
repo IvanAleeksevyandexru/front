@@ -5,18 +5,18 @@
   margin-bottom: 32px;
   font-size: 16px;
   line-height: 24px;
-  color: $gosblue;
+  color: $color-gosblue;
 }
 
 .progress {
   $height: 4px;
   height: $height;
-  background: $button-disabled;
+  background: $color-button-disabled;
   border-radius: 0 0 $border-round $border-round;
   &__thumb {
     width: 70%;
     height: $height;
-    background: $royal-blue;
+    background: $color-active-item;
     border-radius: 0 4px 4px 4px;
   }
 }
@@ -26,7 +26,7 @@
   @include tablets-down {
     margin-top: 0;
     padding: 10px 0;
-    border: 1px solid $perano;
+    border: 1px solid $color-devider;
     border-left: none;
     border-right: none;
   }
