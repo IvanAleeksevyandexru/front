@@ -23,3 +23,19 @@
     margin-bottom: 4px;
   }
 }
+
+.flex-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.button-change {
+  margin-left: auto;
+  margin-bottom: 16px;
+  font-size: $font-sm;
+  @include tablets-down {
+    display: none;
+  }
+}

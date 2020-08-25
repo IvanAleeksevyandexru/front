@@ -9,6 +9,7 @@ import { ScreenComponentService } from '../../../../service/screen-component/scr
 })
 export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
   @Input() data: ComponentInterface;
+  @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
   isEditable: boolean;
 
@@ -16,17 +17,5 @@ export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenComponentService.dataToSend = this.data.value;
-  }
-
-  clickToAction(event): void {
-    const { action } = event;
-    switch (action) {
-      case 'editUserEmail':
-        this.isEditable = true;
-        break;
-      default:
-        this.nextStepEvent.emit(this.data.value);
-        break;
-    }
   }
 }

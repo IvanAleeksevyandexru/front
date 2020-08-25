@@ -1,4 +1,5 @@
-<epgu-constructor-screen-container>
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container class="screen-container">
   <div class="inner">
     <div *ngIf="data?.header" class="head">
       <epgu-constructor-page-name>{{ data?.header }}</epgu-constructor-page-name>
@@ -24,9 +25,13 @@
               ></lib-dropdown>
             </div>
 
-            <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
-              <div class="form__title">{{ componentData.label }}</div>
-              <epgu-constructor-foreign-citizenship></epgu-constructor-foreign-citizenship>
+            <div class="form__item" *ngSwitchCase="componentType.Lookup">
+              <div class="form__title">{{componentData.label}}</div>
+              <lib-lookup
+                [queryMinSymbolsCount]="0"
+                [searchCaseSensitive]="false"
+                (changed)="selectDictionary($event, componentData)"
+                [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-lookup>
             </div>
 
             <div class="form__item" *ngSwitchCase="componentType.StringInput">
@@ -46,9 +51,17 @@
 
             <div class="form__item" *ngSwitchCase="componentType.DateInput">
               <div class="form__title">{{ componentData.label }}</div>
-              <div>Компонент не настроен</div>
-              <!--            Нужно настраивать почему-то вываливается ошибка-->
-              <!--            <lib-date-picker (changed)="dateChage($event, componentData)"></lib-date-picker>-->
+              <lib-date-picker
+                [name]="componentData.id"
+                [(ngModel)]="state[componentData.id].value"
+              ></lib-date-picker>
+            </div>
+
+            <div class="form__item" *ngSwitchCase="componentType.RadioInput">
+              <div class="form__title">{{ componentData.label }}</div>
+              <epgu-constructor-radio-input *ngFor="let radio in componentData.attrs.supportedValues">
+                <lib-radio [value]="radio.value" [labelText]="radio.label"></lib-radio>
+              </epgu-constructor-radio-input>
             </div>
           </ng-container>
         </ng-container>

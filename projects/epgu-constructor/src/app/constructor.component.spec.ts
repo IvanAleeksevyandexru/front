@@ -1,28 +1,29 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { ConstructorComponent } from './constructor.component';
 import { ConstructorService } from './services/constructor/constructor.service'
 import { ConstructorServiceStub } from './services/constructor/constructor.service.stub'
 import { EpguLibModule } from 'epgu-lib'
-import { NavigationComponent } from './layout/component/navigation/navigation.component'
-import { NavigationService } from './layout/service/navigation/navigation.service'
-import { EpgucScreenContainerComponent } from './shared-module/components/screen-container/epguc-screen-container.component'
-
+import { NavigationComponent } from './shared-module/components/navigation/navigation.component';
+import { NavigationService } from './shared-module/service/navigation/navigation.service';
+import { ScreenContainerComponent } from './shared-module/components/screen-container/screen-container.component';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 describe('ConstructorComponent', () => {
   let constructorService: ConstructorService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
       imports: [
         RouterTestingModule,
-        EpguLibModule.forChild()
+        EpguLibModule.forChild(),
       ],
       declarations: [
         ConstructorComponent,
         NavigationComponent,
-        EpgucScreenContainerComponent
+        ScreenContainerComponent
       ],
       providers: [
         NavigationService,

@@ -1,10 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { COMPONENT_TYPE } from '../../../../../constant/global';
+import { SCREEN_TYPE } from '../../../../../constant/global';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { UniqueScreenComponent } from './unique-screen.component';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 
 describe('UniqueScreenComponent', () => {
   let component: UniqueScreenComponent;
@@ -22,7 +21,7 @@ describe('UniqueScreenComponent', () => {
     id: '',
     name: '',
     submitLabel: '',
-    type: COMPONENT_TYPE.COMPONENT
+    type: SCREEN_TYPE.COMPONENT
   };
 
   beforeEach(async(() => {
