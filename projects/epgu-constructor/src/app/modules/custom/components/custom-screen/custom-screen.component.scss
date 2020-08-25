@@ -41,16 +41,6 @@
 .form {
   &__item {
     margin-bottom: 24px;
-
-    lib-dropdown {
-      .simple-select {
-        border-radius: 4px;
-        padding: 14px 16px;
-      }
-      .simple-select-list {
-        width: 100% !important;
-      }
-    }
   }
   &__title {
     font-size: 14px;
