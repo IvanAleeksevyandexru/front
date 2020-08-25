@@ -69,7 +69,7 @@ export class FileUploadComponent {
     const sections = attrs.ref.split('.');
     const key = sections[0];
     const blockKey = sections[1];
-    const value = response?.applicantAnswers[key]?.value;
+    const value = response?.scenarioDto?.applicantAnswers[key]?.value;
     if (value) {
       const refBlock = value[blockKey];
 
