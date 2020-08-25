@@ -1,8 +1,7 @@
-import { EpguLibModule } from 'epgu-lib'
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
 import { AddChildrenScreenComponent } from './add-children-screen.component';
-
 
 
 
@@ -19,7 +18,7 @@ describe('AddChildrenScreenComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ EpguLibModule.forChild() ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ AddChildrenScreenComponent ]
     })
     .compileComponents();

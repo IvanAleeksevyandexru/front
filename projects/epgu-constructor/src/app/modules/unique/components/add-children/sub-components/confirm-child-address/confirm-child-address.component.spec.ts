@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { EpguLibModule } from 'epgu-lib'
 
 import { ConfirmChildAddressComponent } from './confirm-child-address.component';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 
 describe('ConfirmChildAddressComponent', () => {
   let component: ConfirmChildAddressComponent;
@@ -10,7 +9,7 @@ describe('ConfirmChildAddressComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ EpguLibModule.forChild() ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ ConfirmChildAddressComponent ]
     })
     .compileComponents();

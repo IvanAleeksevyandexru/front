@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { EpguLibModule } from 'epgu-lib'
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AddressItemComponent } from './address-item.component';
-
 
 
 describe('AddressItemComponent', () => {
@@ -11,7 +10,7 @@ describe('AddressItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ EpguLibModule.forChild() ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ AddressItemComponent ]
     })
     .compileComponents();

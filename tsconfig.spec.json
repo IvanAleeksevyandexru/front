@@ -15,7 +15,6 @@
   ],
   "include": [
     "projects/epgu-constructor/src/**/*.spec.ts",
-    "projects/epgu-constructor/src/**/*.d.ts",
-    "node_modules/epgu-lib/lib/services/list-item"
+    "projects/epgu-constructor/src/**/*.d.ts"
   ]
 }
