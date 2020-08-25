@@ -27,12 +27,6 @@ export class ConfirmationModalComponent extends ModalBaseComponent implements Af
       elem.addEventListener(event, handler);
     });
 
-    document.querySelectorAll('a').forEach((tag) => {
-      if (tag.getAttribute('href')) {
-        tag.setAttribute('target', '_blank');
-      }
-    });
-
     this.buttons.forEach(({ handler, closeModal }, index) => {
       this.buttons[index].handler = () => {
         if (handler) {
