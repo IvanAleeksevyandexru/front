@@ -1,4 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { DocInputComponent, DocInputComponentInterface } from './doc-input.component'
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service'
 
 
 describe('DocInputComponent', () => {
@@ -19,7 +22,8 @@ describe('DocInputComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [ DocInputComponent ]
+      declarations: [ DocInputComponent ],
+      providers: [ScreenComponentService]
     })
     .compileComponents();
   }));

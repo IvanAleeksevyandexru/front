@@ -1,6 +1,6 @@
 <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <epgu-constructor-screen-container>
-  <div class="inner" [formGroup]="form">
+  <form class="inner" [formGroup]="form">
     <div *ngIf="data?.header" class="head">
       <epgu-constructor-page-name>{{ data.header }}</epgu-constructor-page-name>
     </div>
@@ -92,5 +92,5 @@
         </epgu-constructor-answer-button>
       </div>
     </div>
-  </div>
+  </form>
 </epgu-constructor-screen-container>
