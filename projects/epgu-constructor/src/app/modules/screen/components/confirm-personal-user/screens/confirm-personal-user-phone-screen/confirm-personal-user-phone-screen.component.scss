@@ -1,7 +1,2 @@
 @import '../../../../../../../styles/breakpoint';
 
-.footer {
-  @include tablets-up {
-    display: none;
-  }
-}

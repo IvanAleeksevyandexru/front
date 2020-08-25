@@ -77,10 +77,8 @@
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
       </lib-button>
-      <div
-        *ngIf="componentSetting.displayWarningAnswers"
-        class="footer__warning-answers"
-      >
+      <div *ngIf="componentSetting.displayWarningAnswers"
+           class="footer__warning-answers">
         <epgu-constructor-answer-button
           (click)="nextStep()"
           [data]="{ label: 'Всё равно продолжить'}">

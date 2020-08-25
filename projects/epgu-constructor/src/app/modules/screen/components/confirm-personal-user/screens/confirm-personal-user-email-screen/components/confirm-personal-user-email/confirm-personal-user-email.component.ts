@@ -15,10 +15,10 @@ export class ConfirmPersonalUserEmailComponent implements OnInit, OnChanges {
   @Input() label: string;
   @Input() data: string;
   @Input() error: string;
-  @Input() isEditable: boolean;
   @Input() isEditButtonShown: boolean;
   @Output() dataChanged = new EventEmitter();
 
+  isEditable: boolean;
   emailForm: FormGroup;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 

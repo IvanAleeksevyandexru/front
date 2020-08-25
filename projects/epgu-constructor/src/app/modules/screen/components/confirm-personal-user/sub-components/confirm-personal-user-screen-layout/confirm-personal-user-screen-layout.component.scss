@@ -11,12 +11,13 @@ $button-mt: 5px;
 }
 
 :host::ng-deep {
+  $actions-mx: 10px;
   .footer {
     display: flex;
     justify-content: center;
     flex-direction: column;
     flex-wrap: wrap;
-    margin-top: auto;
+    margin: auto $actions-mx 0;
     @include tablets-up {
       flex-direction: row;
       margin-top: 16px;
@@ -24,7 +25,7 @@ $button-mt: 5px;
 
     .confirm-personal-user-button {
       @include tablets-up {
-        margin: 5px 10px;
+        margin: 5px $actions-mx;
       }
     }
   }

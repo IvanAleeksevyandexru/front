@@ -1,20 +1,16 @@
 <form #dataForm="ngForm">
-  <ng-container
-    *ngFor="let field of data?.attrs?.fields; let i = index"
-    [ngSwitch]="field?.fieldName"
-  >
-    <epgu-constructor-address-item class="item" [label]="field.label" [name]="field.label">
-    <lib-dadata-widget
-      *ngSwitchCase="'regAddr'"
-      [simpleMode]="true"
-      [disabled]="!isEditable"
-      [name]="field.fieldName"
-      [externalApiUrl]="externalApiUrl"
-      [initValue]="valueParsed[field.fieldName]"
-      [(ngModel)]="valueParsed[field.fieldName]"
-      [textModelValue]="true"
-    >
-    </lib-dadata-widget>
+  <ng-container *ngFor="let field of data?.attrs?.fields; let i = index" [ngSwitch]="field?.fieldName">
+    <epgu-constructor-address-item class="item" [label]="field.label" [name]="field.label" *ngSwitchCase="'regAddr'">
+      <lib-dadata-widget
+        [simpleMode]="true"
+        [disabled]="!isEditable"
+        [name]="field.fieldName"
+        [externalApiUrl]="externalApiUrl"
+        [initValue]="valueParsed[field.fieldName]"
+        [(ngModel)]="valueParsed[field.fieldName]"
+        [textModelValue]="true"
+      >
+      </lib-dadata-widget>
     </epgu-constructor-address-item>
 
     <epgu-constructor-address-item

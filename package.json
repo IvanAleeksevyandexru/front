@@ -52,7 +52,6 @@
     "@ngx-translate/http-loader": "4.0.0",
     "angular2-text-mask": "9.0.0",
     "moment": "2.24.0",
-    "epgu-lib": "^0.0.384",
     "ngx-webcam": "^0.3.0",
     "ngx-perfect-scrollbar": "8.0.0",
     "ru-validation-codes": "^2.8.0",
