@@ -1,16 +1,17 @@
-<app-screen-container>
-  <app-screen-pad>
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container>
+  <epgu-constructor-screen-pad>
 
-    <app-page-name class="info__head">{{data?.header}}</app-page-name>
+    <epgu-constructor-page-name class="info__head">{{data?.header}}</epgu-constructor-page-name>
 
     <hr class="divider">
 
     <div class="info__body">
       <ng-container [ngSwitch]="data?.components[0].type">
 
-        <app-info-screen-body
+        <epgu-constructor-info-screen-body
           *ngSwitchCase="infoScreenComponent.info"
-          [data]="data?.components[0]"></app-info-screen-body>
+          [data]="data?.components[0]"></epgu-constructor-info-screen-body>
 
       </ng-container>
 
@@ -22,6 +23,6 @@
       </lib-button>
     </div>
 
-  </app-screen-pad>
-</app-screen-container>
+  </epgu-constructor-screen-pad>
+</epgu-constructor-screen-container>
 

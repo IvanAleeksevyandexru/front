@@ -1,8 +1,11 @@
-@import "../../../../../styles/variables";
-@import "../../../../../styles/breakpoint";
+@import "src/styles/core";
 
 :host {
   display: block;
+}
+
+.nav {
+  @include navigation-mt();
 }
 
 .question {
@@ -12,6 +15,10 @@
     min-height: inherit;
     @include tablets-down {
       justify-content: space-between;
+    }
+
+    &__label {
+      margin-bottom: 30px;
     }
   }
 

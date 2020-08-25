@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-page-name',
+  selector: 'epgu-constructor-page-name',
   templateUrl: './page-name.component.html',
   styleUrls: ['./page-name.component.scss'],
 })

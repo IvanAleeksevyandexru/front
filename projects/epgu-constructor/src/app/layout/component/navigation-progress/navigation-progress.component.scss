@@ -1,0 +1,14 @@
+@import "src/styles/core";
+
+.progress {
+  $height: 4px;
+  height: $height;
+  background: $hawkes-blue;
+  border-radius: 0 0 $border-round $border-round;
+  &__thumb {
+    width: 70%;
+    height: $height;
+    background: $royal-blue;
+    border-radius: 0 4px 4px 4px;
+  }
+}

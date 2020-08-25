@@ -1,6 +1,6 @@
 <form [formGroup]="phoneForm">
   <div class="flex-row">
-    <app-label for="phone">{{ label }}</app-label>
+    <epgu-constructor-label for="phone">{{ label }}</epgu-constructor-label>
     <a
       href="javascript:void(0);"
       (click)="handleClick()"
@@ -20,4 +20,7 @@
     [mask]="phoneMask"
     showMaskAsPlaceholder="true"
   ></lib-base-masked-input>
+  <div class="error">
+    <small>{{ error }}</small>
+  </div>
 </form>

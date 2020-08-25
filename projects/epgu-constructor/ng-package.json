@@ -8,6 +8,9 @@
       "epgu-lib": "epgu-lib",
       "moment": "moment",
       "ru-validation-codes": "ru-validation-codes"
-    }
+    },
+    "styleIncludePaths": [
+      "."
+    ]
   }
 }

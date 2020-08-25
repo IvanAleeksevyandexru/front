@@ -1,0 +1,31 @@
+<epgu-constructor-screen-container>
+  <div *ngIf="header" class="head">
+    <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
+  </div>
+
+  <epgu-constructor-file-upload
+    [objectId]="getOrderId"
+    [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
+    [attributes]="data.attrs"
+    (newValueSet)="handleNewValueSet($event)"
+  >
+  </epgu-constructor-file-upload>
+
+  <div class="info">
+    <div class="info__item">
+      Объем загружаемых данных не должен превышать 5 МБ
+    </div>
+    <div class="info__item" *ngIf="allMaxFiles">
+      Количество загружаемых файлов не более {{ allMaxFiles }}
+    </div>
+  </div>
+
+  <div class="footer">
+    <lib-button
+      [showLoader]="constructorService.isLoading"
+      (click)="nextScreen()"
+      class="footer__btn-submit">
+      {{ submitLabel || "Продолжить" }}
+    </lib-button>
+  </div>
+</epgu-constructor-screen-container>

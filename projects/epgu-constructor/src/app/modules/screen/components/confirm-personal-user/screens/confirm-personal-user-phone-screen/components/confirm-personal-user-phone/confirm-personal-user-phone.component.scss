@@ -1,6 +1,4 @@
-@import '../../../../../../../../../styles/variables';
-@import '../../../../../../../../../styles/breakpoint';
-@import '../../../../../../../../../styles/functions';
+@import "src/styles/core";
 
 :host {
   display: block;
@@ -17,9 +15,6 @@
   font-size: $font-sm;
   flex: 0 0 auto;
   margin-left: auto;
-  @include tablets-down {
-    display: none;
-  }
 }
 
 .content {
@@ -32,4 +27,10 @@
   &__input {
     padding: 0;
   }
+}
+
+.error {
+  font-size: $font-sm;
+  color: $gosred;
+  margin-top: 7px;
 }

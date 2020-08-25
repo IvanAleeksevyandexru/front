@@ -1,15 +1,19 @@
-<app-screen-container>
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container class="screen-container">
   <div class="inner">
     <div *ngIf="data?.header" class="head">
-      <app-page-name>{{ data?.header }}</app-page-name>
+      <epgu-constructor-page-name>{{ data?.header }}</epgu-constructor-page-name>
     </div>
 
-    <app-screen-pad class="body">
+    <epgu-constructor-screen-pad class="body">
       <form #customForm="ngForm" action="" class="form">
         <ng-container *ngFor="let componentData of data?.components">
           <ng-container [ngSwitch]="componentData.type">
             <div class="form__item" *ngSwitchCase="componentType.LabelSection">
-              <app-label-section [name]="componentData.label"></app-label-section>
+              <epgu-constructor-label-section
+                class="label"
+                [name]="componentData.label"
+              ></epgu-constructor-label-section>
             </div>
 
             <div class="form__item" *ngSwitchCase="componentType.Dictionary">
@@ -21,9 +25,13 @@
               ></lib-dropdown>
             </div>
 
-            <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
-              <div class="form__title">{{ componentData.label }}</div>
-              <app-foreign-citizenship></app-foreign-citizenship>
+            <div class="form__item" *ngSwitchCase="componentType.Lookup">
+              <div class="form__title">{{componentData.label}}</div>
+              <lib-lookup
+                [queryMinSymbolsCount]="0"
+                [searchCaseSensitive]="false"
+                (changed)="selectDictionary($event, componentData)"
+                [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-lookup>
             </div>
 
             <div class="form__item" *ngSwitchCase="componentType.StringInput">
@@ -43,14 +51,22 @@
 
             <div class="form__item" *ngSwitchCase="componentType.DateInput">
               <div class="form__title">{{ componentData.label }}</div>
-              <div>Компонент не настроен</div>
-              <!--            Нужно настраивать почему-то вываливается ошибка-->
-              <!--            <lib-date-picker (changed)="dateChage($event, componentData)"></lib-date-picker>-->
+              <lib-date-picker
+                [name]="componentData.id"
+                [(ngModel)]="state[componentData.id].value"
+              ></lib-date-picker>
+            </div>
+
+            <div class="form__item" *ngSwitchCase="componentType.RadioInput">
+              <div class="form__title">{{ componentData.label }}</div>
+              <epgu-constructor-radio-input *ngFor="let radio in componentData.attrs.supportedValues">
+                <lib-radio [value]="radio.value" [labelText]="radio.label"></lib-radio>
+              </epgu-constructor-radio-input>
             </div>
           </ng-container>
         </ng-container>
       </form>
-    </app-screen-pad>
+    </epgu-constructor-screen-pad>
 
     <div class="footer">
       <lib-button
@@ -61,4 +77,4 @@
       >
     </div>
   </div>
-</app-screen-container>
+</epgu-constructor-screen-container>

@@ -1,8 +1,2 @@
-@import '../../../../../../../styles/variables';
-@import '../../../../../../../styles/breakpoint';
+@import "src/styles/core";
 
-.footer {
-  @include tablets-up {
-    display: none;
-  }
-}

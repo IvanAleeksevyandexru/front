@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-foreign-citizenship',
+  selector: 'epgu-constructor-foreign-citizenship',
   templateUrl: './foreign-citizenship.component.html',
   styleUrls: ['./foreign-citizenship.component.scss'],
 })

@@ -1,6 +1,8 @@
-@import '../../../../../styles/variables';
-@import '../../../../../styles/breakpoint';
-@import '../../../../../styles/functions';
+@import "src/styles/core";
+
+.nav {
+  @include navigation-mt();
+}
 
 .add-passport-screen {
   display: flex;
@@ -10,42 +12,59 @@
 
   height: 100%;
 
+  .add-passport-screen__header {
+    flex: 0 1 auto;
+
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .add-passport-screen__form {
+    flex: 1 1 auto;
+
+    width: 100%;
+
+    .form__name {
+      margin-bottom: 20px;
+
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: bold;
+    }
+
+    .form__inputs {
+      display: flex;
+      justify-content: space-between;
+
+      .inputs__field {
+        flex-basis: calc(50% - 10px);
+      }
+    }
+  }
+
+  .add-passport-screen__footer {
+    flex: 0 1 auto;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include tablets-down {
+      .add-passport-screen-footer__btn-submit {
+        width: 100%;
+      }
+    }
+
+    @include tablets-up {
+      margin-top: 32px;
+    }
+  }
+
   @include tablets-up {
     background-color: $white;
 
     padding: 24px;
-  }
-}
-
-.add-passport-screen__form {
-  flex: 1 1 auto;
-
-  width: 100%;
-}
-
-.form__name {
-  margin-bottom: 20px;
-
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: bold;
-}
-
-.form__inputs {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-
-  .inputs__field {
-    flex-basis: calc(50% - 10px);
-
-    .field__label {
-      display: inline-block;
-      margin-bottom: 8px;
-
-      color: $dark-gray;
-      font-size: 14px;
-      line-height: 20px;
-    }
   }
 }

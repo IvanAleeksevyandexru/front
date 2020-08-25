@@ -2,18 +2,17 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ConfirmAddressActionsInterface } from '../../../../../screen/components/confirm-personal-user/screens/confirm-personal-user-address-screen/interface/confirm-address.interface';
 
 @Component({
-  selector: 'app-confirm-child-address',
+  selector: 'epgu-constructor-confirm-child-address',
   templateUrl: './confirm-child-address.component.html',
   styleUrls: ['./confirm-child-address.component.scss'],
 })
 export class ConfirmChildAddressComponent implements OnInit {
   @Input() data: any;
-  @Input() childrenData: any;
+  @Input() childrenData: any[];
   @Input() userAddress: any;
   @Input() actions: any;
   isEditable: boolean;
   child: any;
-  // constructor() { }
 
   sameAddressAction() {
     this.child.registrationAddress = this.userAddress.registrationAddress;

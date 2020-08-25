@@ -6,7 +6,7 @@ import { UnsubscribeService } from '../../../../../../../../services/unsubscribe
 import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
 
 @Component({
-  selector: 'app-confirm-personal-user-phone',
+  selector: 'epgu-constructor-confirm-personal-user-phone',
   templateUrl: './confirm-personal-user-phone.component.html',
   styleUrls: ['./confirm-personal-user-phone.component.scss'],
   providers: [UnsubscribeService],
@@ -14,10 +14,11 @@ import { ScreenComponentService } from '../../../../../../service/screen-compone
 export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
   @Input() label: string;
   @Input() data: string;
-  @Input() isEditable: boolean;
+  @Input() error: string;
   @Input() isEditButtonShown: boolean;
   @Output() dataChanged = new EventEmitter();
 
+  isEditable: boolean;
   phoneForm: FormGroup;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   phoneMask = ['+', /[7]/, '(', /[1-9]/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
@@ -57,6 +58,13 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
         this.phoneForm.controls.phone.enable();
       } else {
         this.phoneForm.controls.phone.disable();
+      }
+
+      if (this.error) {
+        this.phoneForm.controls.phone.setErrors({ incorrect: true });
+        this.phoneForm.controls.phone.enable();
+      } else {
+        this.phoneForm.controls.phone.setErrors(null);
       }
     }
   }

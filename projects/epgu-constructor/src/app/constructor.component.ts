@@ -1,17 +1,16 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { COMPONENT_TYPE } from '../constant/global';
-// eslint-disable-next-line max-len
+import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
+import { SCREEN_TYPE } from '../constant/global';
 import { ConstructorService } from './services/constructor/constructor.service';
 
 @Component({
-  selector: 'app-constructor',
+  selector: 'epgu-constructor-constructor',
   templateUrl: './constructor.component.html',
-  styleUrls: ['./constructor.component.scss', '../styles.scss'],
+  styleUrls: ['../styles/index.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class ConstructorComponent implements OnInit {
-  // <--constant
-  constructorComponentType = COMPONENT_TYPE;
+  @HostBinding('class.epgu-form') class = true;
+  public readonly constructorComponentType = SCREEN_TYPE;
 
   constructor(public constructorService: ConstructorService) {}
 

@@ -1,6 +1,4 @@
-@import "../../../../../../../../../styles/variables";
-@import "../../../../../../../../../styles/breakpoint";
-@import "../../../../../../../../../styles/functions";
+@import "src/styles/core";
 
 $item-hint-mx: 13px;
 :host {
@@ -17,6 +15,10 @@ $item-hint-mx: 13px;
   padding: 12px;
   margin: $item-hint-mx $item-hint-mx 0;
   cursor: pointer;
+
+  &:hover {
+    background: $color-hawkes-blue;
+  }
 }
 .hint-wrapper {
   margin-left: -$item-hint-mx;

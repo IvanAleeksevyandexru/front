@@ -3,7 +3,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ConstructorModule } from 'dist/epgu-constructor';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
+import { ConstructorConfigInterface } from '../../projects/epgu-constructor/src/interfaces/constructor-config.interface'
 
+const constructorConfig: ConstructorConfigInterface = {
+  serviceId: environment.serviceId,
+  apiUrl: environment.apiUrl,
+  dictionaryUrl: environment.dictionaryUrl,
+  externalApiUrl: environment.externalApiUrl,
+  externalUrl: environment.externalUrl,
+  yandexMapsApiKey: environment.yandexMapsApiKey,
+  isProd: environment.production,
+  fileUploadApiUrl: environment.fileUploadApiUrl,
+  externalLkUrl: environment.externalLkUrl,
+  fileUploadLocalhostApiUrl: environment.fileUploadLocalhostApiUrl,
+};
 
 @NgModule({
   declarations: [
@@ -12,15 +25,7 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
 
-    ConstructorModule.forRoot({
-      serviceId: environment.serviceId,
-      apiUrl: environment.apiUrl,
-      dictionaryUrl: environment.dictionaryUrl,
-      externalApiUrl: environment.externalApiUrl,
-      externalUrl: environment.externalUrl,
-      yandexMapsApiKey: environment.yandexMapsApiKey,
-      isProd: environment.production,
-    }),
+    ConstructorModule.forRoot(constructorConfig),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -5,11 +5,14 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:4200/api',
-  dictionaryUrl: 'https://www.gosuslugi.ru/api/nsi/v1/dictionary',
+  dictionaryUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
   externalApiUrl: '//pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/',
   externalUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/',
   serviceId: 'local',
   yandexMapsApiKey: '9e8e2fc4-5970-4ca6-95c5-3e620095e8e3',
+  externalLkUrl: 'https://pgu-dev-lk.test.gosuslugi.ru/info',
+  fileUploadApiUrl: 'https://gosuslugi.ru/api/storage/v1/files',
+  fileUploadLocalhostApiUrl: 'http://localhost/api/storage/v1/files'
 };
 
 /*

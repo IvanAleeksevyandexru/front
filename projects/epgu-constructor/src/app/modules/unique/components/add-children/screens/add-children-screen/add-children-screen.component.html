@@ -1,3 +1,5 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+
 <div class="head">
   <h3 class="title" [innerHTML]="headerMapped[sectionId]"></h3>
 </div>
@@ -20,9 +22,9 @@
           </div>
           <div class="card__content">
             <div>
-              <app-label for="childrenList">
+              <epgu-constructor-label for="childrenList">
                 Выберите ребенка из вашего профиля
-              </app-label>
+              </epgu-constructor-label>
             </div>
             <div class="card__select">
               <lib-dropdown
@@ -37,7 +39,7 @@
     </div>
 
     <div class="add-children-screen__form" *ngFor="let child of childrenList">
-      <app-add-new-child-form
+      <epgu-constructor-add-new-child-form
         *ngIf="child.isNew === true"
         (ngModel)="child"
         [data]="{
@@ -47,7 +49,7 @@
         }"
         (removeChildEvent)="removeChild($event)"
         (childUpdateEvent)="updateChild($event)"
-      ></app-add-new-child-form>
+      ></epgu-constructor-add-new-child-form>
     </div>
 
     <div class="add-children-screen__action">
@@ -58,15 +60,19 @@
   </section>
 
   <section class="add-children-screen__birth-certificate" *ngIf="sectionId === 2">
-    <app-birth-certificate [data]="selectedChildrenList" (childUpdateEvent)="updateChild($event)"></app-birth-certificate>
+    <epgu-constructor-birth-certificate [data]="selectedChildrenList"
+                                        (childUpdateEvent)="updateChild($event)"
+    ></epgu-constructor-birth-certificate>
   </section>
 
   <section *ngIf="sectionId === 3">
-    <app-child-relationship [gender]="valueParsed?.gender" (answerSelect)="handleAnswerSelect($event)"></app-child-relationship>
+    <epgu-constructor-child-relationship [gender]="valueParsed?.gender"
+                                         (answerSelect)="handleAnswerSelect($event)"
+    ></epgu-constructor-child-relationship>
   </section>
 
   <section *ngIf="sectionId === 4">
-    <app-confirm-child-address
+    <epgu-constructor-confirm-child-address
       [actions]="actionsList"
       [userAddress]="{
         registrationAddress: valueParsed?.registrationAddress,
@@ -74,7 +80,7 @@
       }"
       [data]="data"
       [childrenData]="selectedChildrenList"
-    ></app-confirm-child-address>
+    ></epgu-constructor-confirm-child-address>
   </section>
 
   <section class="footer">

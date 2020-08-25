@@ -1,10 +1,13 @@
-@import "../../../../../styles/breakpoint";
-@import "../../../../../styles/variables";
+@import "src/styles/core";
 
 
 
 :host {
   display: block;
+}
+
+.nav {
+  @include navigation-mt();
 }
 
 .info__head {
@@ -17,7 +20,7 @@
 
 .divider {
   border: 0;
-  background: $devider;
+  background: $divider;
   height: 1px;
   margin: 0 0 24px;
 }

@@ -1,4 +1,4 @@
-@import "../../../../styles/breakpoint";
+@import "src/styles/core";
 
 :host {
   display: block;
@@ -12,12 +12,6 @@
   margin-right: auto;
   margin-left: auto;
 }
-
-
-.container {
-
-}
-
 
 @include tablets-up {
   .container {

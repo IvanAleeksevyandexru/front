@@ -1,17 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { EgpuResponseQuestionsDisplayComponentAttrsActionsInterface } from '../interface/question-block.interface';
+import { Component, Input } from '@angular/core';
+import { QuestionsComponentActionsInterface } from '../interface/question-block.interface';
 
-interface IData extends EgpuResponseQuestionsDisplayComponentAttrsActionsInterface {
+export interface IData extends QuestionsComponentActionsInterface {
   hint: string;
 }
 @Component({
-  selector: 'app-answer-choice',
+  selector: 'epgu-constructor-answer-choice',
   templateUrl: './answer-choice.component.html',
   styleUrls: ['./answer-choice.component.scss'],
 })
-export class AnswerChoiceComponent implements OnInit {
-  @Input()
-  data: Partial<IData>;
-
-  ngOnInit(): void {}
+export class AnswerChoiceComponent {
+  @Input() data: Partial<IData>;
 }
