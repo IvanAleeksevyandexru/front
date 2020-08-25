@@ -8,6 +8,7 @@ import { ConstructorConfigServiceStub } from '../../../../../../../../services/c
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service'
 import { FormsModule } from '@angular/forms'
 import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service'
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 
 describe('ConfirmPersonalUserAddressComponent', () => {
   let component: ConfirmPersonalUserAddressComponent;
@@ -25,6 +26,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       imports: [FormsModule],
       declarations: [ ConfirmPersonalUserAddressComponent ],
       providers: [

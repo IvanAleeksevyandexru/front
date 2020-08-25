@@ -6,7 +6,7 @@
   <epgu-constructor-file-upload
     [objectId]="getOrderId"
     [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
-    [attributes]="data.attrs"
+    [attributes]="getAttrs()"
     (newValueSet)="handleNewValueSet($event)"
   >
   </epgu-constructor-file-upload>

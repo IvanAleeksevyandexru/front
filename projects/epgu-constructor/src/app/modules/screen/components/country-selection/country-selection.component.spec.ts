@@ -8,7 +8,7 @@ import { RestService } from '../../../../services/rest/rest.service'
 import { ModalService } from '../../../../services/modal/modal.service'
 import { ModalServiceStub } from '../../../../services/modal/modal.service.stub'
 
-// TODO: remove skip when resolve Converting circular structure to JSON
+// TODO: Need to refactoring component
 describe.skip('CountrySelectionComponent', () => {
   let component: CountrySelectionComponent;
   let fixture: ComponentFixture<CountrySelectionComponent>;
