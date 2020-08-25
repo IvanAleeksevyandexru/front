@@ -6,6 +6,7 @@ import { ConstructorServiceStub } from '../../../../services/constructor/constru
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 import { ScreenComponent } from './screen.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 
 describe('ScreenComponent', () => {
   let component: ScreenComponent;

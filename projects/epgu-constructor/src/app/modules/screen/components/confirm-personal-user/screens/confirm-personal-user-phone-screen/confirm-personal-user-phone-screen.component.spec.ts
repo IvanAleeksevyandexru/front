@@ -1,6 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmPersonalUserPhoneScreenComponent } from './confirm-personal-user-phone-screen.component';
+import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface'
+import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service'
 
 
 
