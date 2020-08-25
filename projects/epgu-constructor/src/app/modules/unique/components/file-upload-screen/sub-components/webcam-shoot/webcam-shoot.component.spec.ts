@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WebcamShootComponent } from './webcam-shoot.component';
 
-describe('FileUploadComponent', () => {
+describe('WebcamShootComponent', () => {
   let component: WebcamShootComponent;
   let fixture: ComponentFixture<WebcamShootComponent>;
 
