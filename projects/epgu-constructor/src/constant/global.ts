@@ -28,6 +28,7 @@ export enum UNIQUE_COMPONENT_NAME {
   'childrenListUnder14' = 'ChildrenListUnder14',
   'addPassport' = 'AddPassport',
   'mapService' = 'MapService',
+  'carInfo' = 'CarInfo',
 }
 
 export enum CONSTANTS {

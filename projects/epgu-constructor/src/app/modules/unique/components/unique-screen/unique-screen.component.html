@@ -13,6 +13,12 @@
         (nextStepEvent)="nextStep($event)"
       >
       </epgu-constructor-select-map-object>
+      <epgu-constructor-car-info
+        *ngSwitchCase="uniqueComponentName.carInfo"
+        [data]="data"
+        (nextStepEvent)="nextStep()"
+      >
+      </epgu-constructor-car-info>
     </ng-container>
   </div>
 </epgu-constructor-screen-container>

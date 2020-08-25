@@ -1,0 +1,41 @@
+<div class="inner">
+  <div *ngIf="data?.header" class="head">
+    <epgu-constructor-page-name>{{ data?.header }}</epgu-constructor-page-name>
+  </div>
+
+  <epgu-constructor-screen-pad *ngIf="carInfo.brandModel" class="car__info--block">
+      <h5 class="car__info--title">Марка и модель</h5>
+      <div class="car__info--item">{{ carInfo.brandModel }}</div>
+  </epgu-constructor-screen-pad>
+
+  <epgu-constructor-screen-pad *ngIf="carInfo.owners" class="car__info--block">
+    <h5 class="car__info--title">Владельцы по ПТС</h5>
+    <div class="car__info--item" *ngFor="let owner of carInfo.owners">
+      {{ owner }}
+    </div>
+    <div class="car__info--item" *ngIf="carInfo.owners?.length === 0">Нет данных</div>
+  </epgu-constructor-screen-pad>
+
+  <epgu-constructor-screen-pad *ngIf="carInfo.legal" class="car__info--block">
+    <h5 class="car__info--title">Юридическая чистота</h5>
+    <div class="car__info--item" *ngFor="let legalItem of carInfo.legal">
+      {{legalItem.name}}: <span class="bold">{{ legalItem ? 'Да' : 'Нет' }}</span>
+    </div>
+    <div class="car__info--item" *ngIf="carInfo.legal?.length === 0">Нет данных</div>
+  </epgu-constructor-screen-pad>
+
+  <epgu-constructor-screen-pad *ngIf="carInfo.accidents" class="car__info--block">
+    <h5 class="car__info--title">Участие в ДТП</h5>
+    <div class="car__info--item">{{ carInfo.accidents || '-' }}</div>
+  </epgu-constructor-screen-pad>
+
+  <div class="footer">
+    <lib-button
+      [showLoader]="constructorService.isLoading"
+      class="footer__btn-submit"
+      >
+        {{ data?.submitLabel || 'Продолжить' }}
+      </lib-button
+    >
+  </div>
+</div>

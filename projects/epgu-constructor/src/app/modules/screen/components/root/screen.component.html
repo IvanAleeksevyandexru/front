@@ -47,7 +47,10 @@
           (valueChangedEvent)="changedComponentData($event)"
         ></epgu-constructor-change-list>
 
-        <epgu-constructor-snils *ngSwitchCase="screenComponentName.snils"></epgu-constructor-snils>
+        <epgu-constructor-snils
+          *ngSwitchCase="screenComponentName.snils"
+          (valueChangedEvent)="changedComponentData($event)"
+        ></epgu-constructor-snils>
 
         <epgu-constructor-doc-input
           *ngSwitchCase="screenComponentName.docInput"

@@ -1,22 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EpguLibModule } from 'epgu-lib';
-import { SnilsComponent } from './snils.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { EpgucSharedModule } from '../../../../shared-module/shared-components.module';
+import { CarInfoComponent } from './car-info.component';
 
 const COMPONENTS = [
-  SnilsComponent
+  CarInfoComponent
 ];
 
 @NgModule({
   declarations: [...COMPONENTS],
+  providers: [],
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
     EpgucSharedModule,
-    ReactiveFormsModule,
     EpguLibModule.forChild(),
   ]
 })
-export class SnilsModule { }
+export class CarInfoModule { }
