@@ -5,7 +5,7 @@ $item-hint-mx: 13px;
   display: block;
 }
 
-.item:not(:last-child) {
+.item:not(:last-child), .form {
   margin-bottom: 20px;
 }
 

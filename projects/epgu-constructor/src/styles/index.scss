@@ -1,8 +1,9 @@
 @import "core";
+@import "components";
 
 // TODO: remove all normalize css styles, it may affect app's style
-
-.epgu-form {
+// stylelint-disable
+epgu-constructor-constructor {
 
   *, *:before, *:after {
     box-sizing: border-box;

@@ -16,7 +16,7 @@ export class InfoScreenBodyComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.data?.attrs?.clarifications?.forEach((modal) => {
       const [id, params] = Object.entries(modal)[0];
-      const link = document.getElementById(id);
+      const link = document.querySelector(`[href="#${id}"]`);
 
       link.addEventListener('click', () => this.showModal(params));
     });
