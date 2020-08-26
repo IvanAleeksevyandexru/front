@@ -1,5 +1,28 @@
 @import "variables";
 
+// Fonts
+$primary_font: Lato;
+
+// Font-weight
+$fw-thin: 100;
+$fw-light: 300;
+$fw-regular: 400;
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-semi-bold: 600;
+$fw-bold: 700;
+$fw-black: 900;
+
+// Font size
+$font-xs: 12px;
+$font-sm: 14px;
+$font-dflt: 16px;
+$font-md: 18px;
+$font-lg: 20px;
+$font-xl: 24px;
+$font-xxl: 32px;
+$font-extra: 36px;
+
 @font-face {
   font-family: $primary_font;
   src: url('/assets/fonts/Lato/Lato-BlackItalic.woff') format('woff');
