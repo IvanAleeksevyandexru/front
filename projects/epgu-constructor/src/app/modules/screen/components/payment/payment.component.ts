@@ -33,7 +33,8 @@ export class PaymentComponent implements OnInit {
   public uin: string;
   public sum: string;
   public document: string;
-  @Input() componentData: PaymentInterface;
+  // @Input() componentData: PaymentInterface;
+  @Input() componentData: any;
   private apiUrl;
   private mockUinCode = '18810177200104519116';
   private mockOrderId = '763411359';
