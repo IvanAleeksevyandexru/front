@@ -5,17 +5,17 @@ $color-gosred: #ee3f58;
 $color-summer-night: #0b1f33;
 $color-input: #f5f7fa;
 $color-devider: #99b1e6;
-$color-error-highlight: #f8dee4;
-$color-shadow: #a5bae9;
+$color-error-highlight: rgba(238, 63, 88, 0.16); // -> #f8dee4
+$color-shadow: rgba(230, 235, 245, 0.4); // -> #a5bae9
 $color-background: #fafcff;
 $color-bg-disabled: #d1d5df;
 $color-text-helper: #828c9a;
 $color-active-item: #1d5deb;
 $color-giallo-brillante: #fed13e;
 $color-giallo-selezionato: #f8b200;
-$color-tag-line: #edf2fe;
+$color-tag-line: rgba(29, 93, 235, 0.06); // -> #edf2fe
 $color-button-disabled: #e5eaf5;
-$color-tagline-hit: #d2dffb;
+$color-tagline-hit: rgba(29, 93, 235, 0.18); // -> #d2dffb
 $color-nephritis: #2dc36a;
 $color-green-sea: #16a086;
 $color-button-hit: #0b40b3;
