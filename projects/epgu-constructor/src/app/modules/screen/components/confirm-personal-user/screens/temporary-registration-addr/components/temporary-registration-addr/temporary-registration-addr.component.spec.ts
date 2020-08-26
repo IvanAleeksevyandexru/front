@@ -41,6 +41,8 @@ describe('TemporaryRegistrationAddrComponent', () => {
   //   fixture.detectChanges();
   // });
 
+  // TODO TEST исправить тест
+
   it('should create', () => {
     expect(true).toBeTruthy();
   });
