@@ -1,5 +1,20 @@
 @import "src/styles/core";
 
+.nav {
+  @include navigation-mt();
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: inherit;
+  min-height: inherit;
+  @include tablets-up {
+    min-height: auto;
+  }
+}
+
 .car__info--title {
   font-family: 'Lato', sans-serif;
   font-style: normal;
