@@ -10,7 +10,7 @@
   justify-content: flex-start;
   &__card {
     background-color: $color-white;
-    box-shadow: 0px 24px 48px $box-shadow-color;
+    box-shadow: 0px 24px 48px $color-box-shadow;
     border-radius: 12px;
     &:not(:first-of-type) {
       margin-top: 16px;
