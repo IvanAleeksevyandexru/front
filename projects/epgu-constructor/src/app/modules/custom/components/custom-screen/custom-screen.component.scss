@@ -22,7 +22,7 @@
   @include tablets-down {
     flex-grow: 1;
   }
-  &::ng-deep > * {
+  > * {
     display: flex;
     width: 100%;
     flex-direction: column;
