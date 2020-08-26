@@ -47,7 +47,8 @@ export class CustomScreenComponent {
       // if (!this.dataToSend[key].valid) return; // TODO: add user-friendly validation logic
       acc[key] = {
         visited: true,
-        value: JSON.stringify(data[key].value || {}),
+        value:
+          data[key].value !== 'object' ? data[key].value : JSON.stringify(data[key].value || {}),
       };
       return acc;
     }, {});
