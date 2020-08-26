@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ComponentInterface, TGender } from '../../../../../interfaces/epgu.service.interface';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
@@ -16,8 +16,6 @@ export class EmployeeHistoryComponent implements OnInit {
   @Input() data: ComponentInterface;
   @Input() header: string;
   @Input() gender: TGender;
-
-  @ViewChild('startDate') startDate: ElementRef;
 
   ds: Array<IEmployeeHistoryDataSource>;
   generateForm: FormGroup;
@@ -41,16 +39,9 @@ export class EmployeeHistoryComponent implements OnInit {
   pushFormGroup(): void {
     this.employeeFormService.employeeHistory.push(this.generateForm.getRawValue());
     this.resetForm(0);
-    this.redirectToFromDate();
   }
 
   removeFormGroup(index: number): void {
     this.employeeFormService.employeeHistory.splice(index, 1);
-  }
-
-  private redirectToFromDate(): void {
-    setTimeout(() => {
-      this.startDate['inputElement']['inputElement'].nativeElement.focus();
-    }, 0);
   }
 }
