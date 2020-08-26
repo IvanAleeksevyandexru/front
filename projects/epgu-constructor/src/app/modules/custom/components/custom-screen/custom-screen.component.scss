@@ -22,7 +22,7 @@
   @include tablets-down {
     flex-grow: 1;
   }
-  &::ng-deep > * {
+  > * {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -47,21 +47,21 @@
     margin-top: 4px;
     color: $color-gosred;
   }
-}
-
-.form-item {
-  &__label {
-    margin-bottom: 20px;
-  }
-}
-
-lib-dropdown::ng-deep {
-  .simple-select {
-    border-radius: 4px;
-    padding: 14px 16px;
-  }
-  .simple-select-list {
-    width: 100% !important;
+  &__radio {
+    &__block {
+      display: inline-block;
+      lib-radio {
+        display: block;
+        margin-bottom: 16px;
+      }
+    }
+    &__inline {
+      margin-top: 24px;
+      display: inline-flex;
+      lib-radio:not(:first-child) {
+        margin-left: 24px;
+      }
+    }
   }
 }
 
