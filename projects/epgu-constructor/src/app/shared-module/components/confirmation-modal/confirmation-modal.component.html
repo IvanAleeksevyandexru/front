@@ -8,11 +8,12 @@
       <span class="conf-modal__text" [innerHTML]="text | safeHtml"></span>
     </div>
     <div class="conf-modal__controls">
-      <lib-button *ngFor="let button of buttons"
-                  [showLoader]="button.loader"
-                  class="conf-modal__button"
-                  [color]="button.color || ''"
-                  (click)="button.handler()">{{ button.label }}</lib-button>
+      <lib-button
+        *ngFor="let button of buttons"
+        [showLoader]="button.loader"
+        class="conf-modal__button"
+        [color]="button.color || ''"
+        (click)="button.handler()">{{ button.label }}</lib-button>
     </div>
   </div>
 </div>
