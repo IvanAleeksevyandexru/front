@@ -1,8 +1,11 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { ConstructorService } from '../../../../services/constructor/constructor.service';
 
-import { CarInfoValues } from './car-info.interface';
+import * as moment from 'moment';
+
+import { DisplayInterface } from '../../../../../../../interfaces/epgu.service.interface';
+import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
+
+import { CarInfoValues } from '../../models/car-info.interface';
 
 @Component({
   selector: 'epgu-constructor-car-info',
@@ -21,5 +24,9 @@ export class CarInfoComponent implements OnInit {
     if (this.data.components[0].value) {
       this.carInfo = JSON.parse(this.data.components[0].value);
     }
+  }
+
+  nextStep(): void {
+    this.nextStepEvent.emit();
   }
 }
