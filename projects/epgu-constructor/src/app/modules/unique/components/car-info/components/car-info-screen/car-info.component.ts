@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import * as moment from 'moment';
-
 import { DisplayInterface } from '../../../../../../../interfaces/epgu.service.interface';
 import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 
