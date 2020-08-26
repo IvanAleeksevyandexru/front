@@ -45,8 +45,9 @@ export function getCustomScreenDictionaryFirstState(): CustomComponentDictionary
 
 /**
  * Адаптирует массив в вид необходимый для компонентов из библлиотеки и если нужно то удаляет РОССИЮ из списка
- * @param items
- * @param dictionaryName
+ * @param {Array<DictionaryItem>}items
+ * @param {string}dictionaryName
+ * @param {CustomComponentInterface}component - тут хранится флаг, для удаление россии из словаря.
  */
 export function getNormalizeDataCustomScreenDictionary(
   items: Array<DictionaryItem>,
