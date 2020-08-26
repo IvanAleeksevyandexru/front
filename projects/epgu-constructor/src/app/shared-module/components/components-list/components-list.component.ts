@@ -165,7 +165,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.dictionary[key].paginationLoading = false;
     this.dictionary[key].data = data;
     this.dictionary[key].origin = component;
-    this.dictionary[key].list = getNormalizeDataCustomScreenDictionary(data.items, key);
+    this.dictionary[key].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
   }
 
   loadDictionaryError(key: string) {

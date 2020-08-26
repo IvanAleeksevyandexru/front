@@ -22,6 +22,7 @@ export interface CustomComponentDictionaryState {
  * @property {string}dictionaryType - dictionary name for request {@see getDictionary}
  */
 export interface CustomComponentAttrInterface {
+  [key:string]:any;
   dictionaryType: string;
   labelAttr: string;
   ref: Array<any>;
