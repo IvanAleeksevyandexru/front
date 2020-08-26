@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { COMPONENT_TYPE } from '../../../constant/global';
+import { SCREEN_TYPE } from '../../../constant/global';
 import { DisplayInterface, ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { RestService } from '../rest/rest.service';
 
@@ -15,6 +15,7 @@ export class ConstructorService {
   componentId: string;
   componentType: string;
   componentData: DisplayInterface;
+  componentErrors: object;
   isLoading = false;
 
   constructor(public restService: RestService) {
@@ -33,7 +34,14 @@ export class ConstructorService {
     this.isLoading = true;
     this.updateRequest(data, options);
     this.restService.getNextStep(this.response).subscribe(
-      (response) => this.sendDataSuccess(response),
+      (response) => {
+        // TODO возможно стоит обернуть в pipe и делоть throwError
+        if (response?.scenarioDto?.errors) {
+          this.sendDataError(response);
+        } else {
+          this.sendDataSuccess(response);
+        }
+      },
       (error) => this.sendDataError(error),
       () => this.isLoading = false
     );
@@ -43,7 +51,13 @@ export class ConstructorService {
     this.isLoading = true;
     this.updateRequest(data);
     this.restService.getPrevStep(this.response).subscribe(
-      (response) => this.sendDataSuccess(response),
+      (response) => {
+        if (response?.scenarioDto?.errors) {
+          this.sendDataError(response);
+        } else {
+          this.sendDataSuccess(response);
+        }
+      },
       (error) => this.sendDataError(error),
       () => this.isLoading = false
     );
@@ -51,9 +65,10 @@ export class ConstructorService {
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}) {
     const componentId = options.componentId || this.componentId;
+    this.response.scenarioDto.currentValue = {};
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
-    if (this.componentData.type === COMPONENT_TYPE.CUSTOM) {
+    if (this.componentData.type === SCREEN_TYPE.CUSTOM) {
       this.response.scenarioDto.currentValue = data;
     } else {
       this.response.scenarioDto.currentValue[componentId] = {
@@ -69,8 +84,11 @@ export class ConstructorService {
     this.initResponse(response);
   }
 
-  sendDataError(error) {
-    console.error(error);
+  sendDataError(response) {
+    console.error('----- ERROR DATA ---------');
+    console.error(JSON.stringify(response.errors));
+    this.initResponse(response);
+
   }
 
   initResponse(response: ResponseInterface): void {
@@ -80,11 +98,12 @@ export class ConstructorService {
     }
 
     this.response = response;
-    const { display } = response.scenarioDto;
+    const { display, errors } = response?.scenarioDto;
 
     this.componentId = display.components[0].id;
     this.componentType = display.components[0].type;
     this.componentData = display;
+    this.componentErrors = errors;
     // this.componentData.header = 'Кому из детей требуется оформить загранпаспорт?';
     // this.componentData.type = 'CUSTOM';
     // this.componentData.components[0].type;

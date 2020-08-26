@@ -1,15 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
@@ -19,13 +11,12 @@ import { ScreenComponentService } from '../../service/screen-component/screen-co
   styleUrls: ['./add-passport.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddPassportComponent implements OnInit, OnDestroy {
+export class AddPassportComponent implements OnInit {
   private ngUnsubscribe$: Subject<any> = new Subject<any>();
 
   @Input() data: any;
   @Input() header: string;
   @Input() submitLabel: string;
-  @Output() valueChangedEvent = new EventEmitter();
 
   passportForm: FormGroup;
 
@@ -46,12 +37,7 @@ export class AddPassportComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.valueChangedEvent.emit(value);
+        this.screenComponentService.dataToSend = value;
       });
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 }

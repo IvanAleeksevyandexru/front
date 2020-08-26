@@ -4,7 +4,6 @@ import { ComponentInterface } from '../../../../../../../interfaces/epgu.service
 import { AddChildrenScreenComponent } from './add-children-screen.component';
 
 
-
 describe('AddChildrenScreenComponent', () => {
   let component: AddChildrenScreenComponent;
   let fixture: ComponentFixture<AddChildrenScreenComponent>;

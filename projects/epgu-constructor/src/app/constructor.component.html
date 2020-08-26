@@ -1,36 +1,46 @@
-<epgu-constructor-navigation></epgu-constructor-navigation>
-
-
 <ng-container [ngSwitch]="constructorService?.componentData?.type">
   <epgu-constructor-info-screen
     *ngSwitchCase="constructorComponentType.INFO"
     [data]="constructorService?.componentData"
+    [errors]="constructorService?.componentErrors"
     (nextStepEvent)="nextStep()"
-    (prevStepEvent)="prevStep()"></epgu-constructor-info-screen>
+    (prevStepEvent)="prevStep()"
+  ></epgu-constructor-info-screen>
   <epgu-constructor-invitation-screen
     *ngSwitchCase="constructorComponentType.INVITATION_ERROR"
     [data]="constructorService?.componentData"
+    [errors]="constructorService?.componentErrors"
     (resolve)="onEmailSelect($event)"
-    (prevStepEvent)="prevStep()"></epgu-constructor-invitation-screen>
+    (prevStepEvent)="prevStep()"
+  ></epgu-constructor-invitation-screen>
   <epgu-constructor-screen
     *ngSwitchCase="constructorComponentType.COMPONENT"
     [data]="constructorService?.componentData"
+    [errors]="constructorService?.componentErrors"
     (nextStepEvent)="nextStep($event)"
-    (prevStepEvent)="prevStep($event)"></epgu-constructor-screen>
+    (prevStepEvent)="prevStep($event)"
+  ></epgu-constructor-screen>
   <epgu-constructor-custom-screen
     *ngSwitchCase="constructorComponentType.CUSTOM"
     [data]="constructorService?.componentData"
+    [errors]="constructorService?.componentErrors"
     (nextStepEvent)="nextStep($event)"
-    (prevStepEvent)="prevStep()"></epgu-constructor-custom-screen>
+    (prevStepEvent)="prevStep()"
+  ></epgu-constructor-custom-screen>
   <epgu-constructor-question-screen
     *ngSwitchCase="constructorComponentType.QUESTION"
     [data]="constructorService?.componentData"
+    [errors]="constructorService?.componentErrors"
     (nextStepEvent)="nextStep($event)"
-    (prevStepEvent)="prevStep($event)"></epgu-constructor-question-screen>
+    (prevStepEvent)="prevStep($event)"
+  ></epgu-constructor-question-screen>
   <epgu-constructor-unique-screen
     *ngSwitchCase="constructorComponentType.UNIQUE"
     [data]="constructorService?.componentData"
+    [errors]="constructorService?.componentErrors"
     (nextStepEvent)="nextStep($event)"
-    (prevStepEvent)="prevStep()">
+    (prevStepEvent)="prevStep()"
+  >
   </epgu-constructor-unique-screen>
 </ng-container>
+<epgu-constructor-modal-container></epgu-constructor-modal-container>

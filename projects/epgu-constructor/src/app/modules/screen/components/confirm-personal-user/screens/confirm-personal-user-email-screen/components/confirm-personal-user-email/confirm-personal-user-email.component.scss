@@ -15,9 +15,6 @@
   font-size: $font-sm;
   flex: 0 0 auto;
   margin-left: auto;
-  @include tablets-down {
-    display: none;
-  }
 }
 
 .content {
@@ -30,4 +27,10 @@
   &__input {
     padding: 0;
   }
+}
+
+.error {
+  font-size: $font-sm;
+  color: $gosred;
+  margin-top: 7px;
 }

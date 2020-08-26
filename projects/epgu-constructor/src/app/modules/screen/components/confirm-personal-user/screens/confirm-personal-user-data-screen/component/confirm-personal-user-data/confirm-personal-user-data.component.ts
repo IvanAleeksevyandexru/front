@@ -3,6 +3,7 @@ import {
   ConfirmUserDataFieldsInterface,
   ConfirmUserDataInterface,
 } from '../../../../../../../../../interfaces/confirm-user-data.interface';
+import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-data',
@@ -14,6 +15,8 @@ export class ConfirmPersonalUserDataComponent implements OnInit, OnChanges {
   birthDay: ConfirmUserDataFieldsInterface;
   passportFields: Array<ConfirmUserDataFieldsInterface>;
   @Input() data: ConfirmUserDataInterface;
+
+  constructor(public constructorConfigService: ConstructorConfigService) {}
 
   ngOnInit(): void {
     this.parseData();

@@ -12,7 +12,6 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -35,9 +34,6 @@
                 "input": "./node_modules/epgu-lib/assets/",
                 "output": "./lib-assets"
               }
-            ],
-            "styles": [
-              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -104,20 +100,6 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "epgu-form-frontend:build"
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "eslintConfig": ".eslintrc.js",
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         },
         "e2e": {

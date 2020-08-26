@@ -17,6 +17,8 @@ export class RestServiceStub {
   }
 
   getDictionary(): Observable<any> {
-    return of({});
+    return of({
+      items: []
+    });
   }
 }

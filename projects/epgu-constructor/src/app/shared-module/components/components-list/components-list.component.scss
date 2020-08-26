@@ -1,0 +1,38 @@
+@import "src/styles/core";
+
+
+.form {
+  &__item {
+    margin-bottom: 24px;
+  }
+  &__title {
+    font-size: 14px;
+    line-height: 20px;
+    color: $cyprus;
+    margin-bottom: 4px;
+  }
+  &__error {
+    margin-top: 4px;
+    color: $gosred;
+  }
+  &__radio {
+    &__block {
+      display: inline-block;
+      lib-radio {
+        display: block;
+        margin-bottom: 16px;
+      }
+    }
+    &__inline {
+      margin-top: 24px;
+      display: inline-flex;
+      lib-radio:not(:first-child) {
+        margin-left: 24px;
+      }
+    }
+  }
+}
+
+.label {
+  margin-bottom: 20px;
+}

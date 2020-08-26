@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 
 @Component({
   selector: 'epgu-constructor-invitation-screen',
@@ -17,6 +17,7 @@ export class RootComponent implements OnInit {
   typeComponent = SCREEN_COMPONENT_NAME;
 
   @Input() data: DisplayInterface;
+  @Input() errors: object;
   @Output() resolve: EventEmitter<string> = new EventEmitter<string>();
   @Output() prevStepEvent = new EventEmitter();
 

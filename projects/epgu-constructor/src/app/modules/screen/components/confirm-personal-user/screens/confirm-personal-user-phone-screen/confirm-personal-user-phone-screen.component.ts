@@ -9,24 +9,13 @@ import { ScreenComponentService } from '../../../../service/screen-component/scr
 })
 export class ConfirmPersonalUserPhoneScreenComponent implements OnInit {
   @Input() data: ComponentInterface;
+  @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
-  isEditable: boolean;
 
   constructor(private screenComponentService: ScreenComponentService) {}
 
   ngOnInit(): void {
+    // TODO возможно стоит переместить во внутриь компонента
     this.screenComponentService.dataToSend = this.data.value;
-  }
-
-  clickToAction(event): void {
-    const { action } = event;
-    switch (action) {
-      case 'editUserPhone':
-        this.isEditable = true;
-        break;
-      default:
-        this.nextStepEvent.emit(this.data.value);
-        break;
-    }
   }
 }

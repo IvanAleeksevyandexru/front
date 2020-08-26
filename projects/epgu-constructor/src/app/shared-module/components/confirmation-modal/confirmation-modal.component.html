@@ -1,0 +1,19 @@
+<div class="conf-modal">
+  <div class="conf-modal__header" *ngIf="title">
+    <a class="conf-modal__close cursor-pointer" (click)="closeModal()"></a>
+    <h4 class="conf-modal__title" [innerHTML]="title | safeHtml"></h4>
+  </div>
+  <div class="conf-modal__body">
+    <div class="conf-modal__text-wrapper">
+      <span class="conf-modal__text" [innerHTML]="text | safeHtml"></span>
+    </div>
+    <div class="conf-modal__controls">
+      <lib-button
+        *ngFor="let button of buttons"
+        [showLoader]="button.loader"
+        class="conf-modal__button"
+        [color]="button.color || ''"
+        (click)="button.handler()">{{ button.label }}</lib-button>
+    </div>
+  </div>
+</div>

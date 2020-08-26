@@ -1,12 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup } from '@angular/forms';
 import * as moment_ from 'moment';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { map, takeUntil } from 'rxjs/operators';
-import { CONSTANTS } from '../../../../../constant/global';
+import { DATE_STRING_DOT_FORMAT } from '../../../../../constant/global';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 const moment = moment_;
 
@@ -36,12 +37,14 @@ interface IForm {
 })
 export class DocInputComponent implements OnInit {
   @Input() data: DocInputComponentInterface;
-  @Output() nextStepEvent = new EventEmitter<any>();
 
   form = new FormGroup({});
   readonly maxDate = new Date();
 
-  constructor(private ngUnsubscribe$: UnsubscribeService) {}
+  constructor(
+    private ngUnsubscribe$: UnsubscribeService,
+    private screenComponentService: ScreenComponentService,
+  ) {}
 
   ngOnInit(): void {
     this.generateFormGroup();
@@ -56,10 +59,12 @@ export class DocInputComponent implements OnInit {
       .pipe(
         map((form: IForm) => ({
           ...form,
-          date: moment(form.date).format(CONSTANTS.dateFormat),
+          date: moment(form.date).format(DATE_STRING_DOT_FORMAT),
         })),
         takeUntil(this.ngUnsubscribe$),
       )
-      .subscribe((next: IForm) => this.nextStepEvent.emit(next));
+      .subscribe((next: IForm) => {
+        this.screenComponentService.dataToSend = next;
+      });
   }
 }
