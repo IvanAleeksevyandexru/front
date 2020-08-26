@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { EpguLibModule } from 'epgu-lib';
 
-import { EpgucSharedModule } from '../../../../shared-module/shared-components.module';
+import { SharedModule } from '../../../../shared-module/shared-components.module';
 
 import { CarInfoComponent } from './components/car-info-screen/car-info.component';
 
@@ -29,7 +29,7 @@ const COMPONENTS = [
   exports: [...COMPONENTS],
   imports: [
     CommonModule,
-    EpgucSharedModule,
+    SharedModule,
     EpguLibModule.forChild(),
   ]
 })
