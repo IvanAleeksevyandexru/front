@@ -13,6 +13,9 @@ const constructorConfig: ConstructorConfigInterface = {
   externalUrl: environment.externalUrl,
   yandexMapsApiKey: environment.yandexMapsApiKey,
   isProd: environment.production,
+  fileUploadApiUrl: environment.fileUploadApiUrl,
+  externalLkUrl: environment.externalLkUrl,
+  fileUploadLocalhostApiUrl: environment.fileUploadLocalhostApiUrl,
 };
 
 @NgModule({
@@ -21,6 +24,7 @@ const constructorConfig: ConstructorConfigInterface = {
   ],
   imports: [
     BrowserModule,
+
     ConstructorModule.forRoot(constructorConfig),
   ],
   providers: [],

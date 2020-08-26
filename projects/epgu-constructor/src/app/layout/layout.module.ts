@@ -1,21 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {NavigationComponent} from './component/navigation/navigation.component';
-import {NavigationService} from './service/navigation/navigation.service';
-import {EpgucSharedModule} from '../shared-module/shared-components.module';
+import { SharedModule } from '../shared-module/shared-components.module';
+import { NavigationProgressComponent } from './component/navigation-progress/navigation-progress.component';
 
 
 const COMPONENT = [
-  NavigationComponent
+  NavigationProgressComponent
 ]
 
 @NgModule({
   declarations: [...COMPONENT],
   exports: [...COMPONENT],
-  providers: [NavigationService],
   imports: [
     CommonModule,
-    EpgucSharedModule
+    SharedModule
   ]
 })
 export class LayoutModule { }

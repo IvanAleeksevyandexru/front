@@ -14,10 +14,11 @@ import { ScreenComponentService } from '../../../../../../service/screen-compone
 export class ConfirmPersonalUserEmailComponent implements OnInit, OnChanges {
   @Input() label: string;
   @Input() data: string;
-  @Input() isEditable: boolean;
+  @Input() error: string;
   @Input() isEditButtonShown: boolean;
   @Output() dataChanged = new EventEmitter();
 
+  isEditable: boolean;
   emailForm: FormGroup;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
@@ -56,6 +57,13 @@ export class ConfirmPersonalUserEmailComponent implements OnInit, OnChanges {
         this.emailForm.controls.email.enable();
       } else {
         this.emailForm.controls.email.disable();
+      }
+
+      if (this.error) {
+        this.emailForm.controls.email.setErrors({ incorrect: true });
+        this.emailForm.controls.email.enable();
+      } else {
+        this.emailForm.controls.email.setErrors(null);
       }
     }
   }

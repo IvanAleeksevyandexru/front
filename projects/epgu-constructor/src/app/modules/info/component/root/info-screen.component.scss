@@ -6,6 +6,10 @@
   display: block;
 }
 
+.nav {
+  @include navigation-mt();
+}
+
 .info__head {
   margin-bottom: 24px;
 }

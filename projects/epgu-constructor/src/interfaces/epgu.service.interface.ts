@@ -1,4 +1,4 @@
-import { COMPONENT_TYPE } from '../constant/global';
+import { SCREEN_TYPE } from '../constant/global';
 
 /**
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
@@ -7,7 +7,7 @@ import { COMPONENT_TYPE } from '../constant/global';
  * @property {DisplayInterface}display - текущий экран с компонентами и данными для отрисовки
  * @property {string}gender- пол пользователя
  * @property {string}orderId - идентификатор запорлнения черновика, (уже был черновик...)
- * @property {Array<object>>}sendNotification - собственники жилья
+ * @property {Array<object>}sendNotification - собственники жилья
  * (человек 1, человек 2) => эти людям прилетает уведомление о подтверждении ...
  * @property {string}token - в целях разработки, на проде через cookie;
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
@@ -16,9 +16,10 @@ import { COMPONENT_TYPE } from '../constant/global';
 export interface ResponseInterface {
   scenarioDto: {
     applicantAnswers: object;
-    currentScenarioId: number;
+    currentRule: number;
     currentValue: object;
-    display: EgpuResponseDisplayInterface;
+    display: DisplayInterface;
+    errors: object;
     gender: number;
     orderId: string;
     sendNotification: Array<object>;
@@ -33,15 +34,16 @@ export interface ResponseInterface {
  * @property {string}id - идентификатор экрана
  * @property {string}name - краткая информация о том что за компонент (на фронте не используется)
  * @property {string}submitLabel - текст для submit-button'a
- * @property {COMPONENT_TYPE}type - тип компонента
+ * @property {SCREEN_TYPE}type - тип компонента
  */
 export interface DisplayInterface {
   components: Array<ComponentInterface>;
   header: string;
+  label?: string;
   id: string;
   name: string;
   submitLabel: string;
-  type: COMPONENT_TYPE;
+  type: SCREEN_TYPE;
 }
 
 /**

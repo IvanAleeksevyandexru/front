@@ -21,6 +21,7 @@
     color: $color-white;
   }
 }
+
 @mixin btn--primary {
   background: $color-gosblue;
   color: $color-white;
@@ -36,6 +37,25 @@
 @mixin first-letter-uppercase {
   &:first-letter {
     text-transform: uppercase;
+  }
+}
+
+@mixin centred-axis-x {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@mixin modal-body {
+  @include centred-axis-x();
+  z-index: $modal-z-index;
+  background: $white;
+}
+
+@mixin navigation-mt {
+  margin-top: 32px;
+  @include tablets-down {
+    margin-top: 0;
   }
 }
 

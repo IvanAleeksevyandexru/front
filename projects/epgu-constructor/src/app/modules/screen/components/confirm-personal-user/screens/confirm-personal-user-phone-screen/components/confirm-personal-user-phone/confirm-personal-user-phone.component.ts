@@ -14,10 +14,11 @@ import { ScreenComponentService } from '../../../../../../service/screen-compone
 export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
   @Input() label: string;
   @Input() data: string;
-  @Input() isEditable: boolean;
+  @Input() error: string;
   @Input() isEditButtonShown: boolean;
   @Output() dataChanged = new EventEmitter();
 
+  isEditable: boolean;
   phoneForm: FormGroup;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   phoneMask = ['+', /[7]/, '(', /[1-9]/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
@@ -57,6 +58,13 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
         this.phoneForm.controls.phone.enable();
       } else {
         this.phoneForm.controls.phone.disable();
+      }
+
+      if (this.error) {
+        this.phoneForm.controls.phone.setErrors({ incorrect: true });
+        this.phoneForm.controls.phone.enable();
+      } else {
+        this.phoneForm.controls.phone.setErrors(null);
       }
     }
   }

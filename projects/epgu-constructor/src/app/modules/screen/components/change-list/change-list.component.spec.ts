@@ -1,7 +1,7 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
-import { ChangeListComponent, ChangeListComponentInterface } from './change-list.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { ChangeListComponent, ChangeListComponentInterface } from './change-list.component'
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service'
 
 
 describe('ChangeListComponent', () => {

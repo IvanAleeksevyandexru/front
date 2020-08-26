@@ -1,8 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { async, ComponentFixture, TestBed } from '@angular/core/testing'
-import { COMPONENT_TYPE } from '../../../../../constant/global'
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service'
+import { SCREEN_TYPE } from '../../../../../constant/global'
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service'
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service'
 import { QuestionsDisplayInterface } from '../interface/question-block.interface'
 import { QuestionsScreenComponent } from './questions-screen.component'
 
@@ -17,7 +17,7 @@ describe('QuestionsScreenComponent', () => {
     id: '',
     name: '',
     submitLabel: '',
-    type: COMPONENT_TYPE.COMPONENT
+    type: SCREEN_TYPE.COMPONENT
   }
 
   beforeEach(async(() => {
