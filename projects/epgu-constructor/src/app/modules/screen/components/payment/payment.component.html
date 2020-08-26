@@ -1,0 +1,28 @@
+<div class="payment">
+	<div *ngIf="status === paymentStatus.SUCCESS">
+		<p><strong>{{ componentData.label }}</strong><br>
+			УИН {{ uin }}<br>
+			Начисление на паспорт РФ 1234 123456 от ЗАГС г. Москвы
+		</p>
+		<h4 class="payment__sum">{{ sum }} Р
+			<!-- <span class="secondary">4 000,00 Р</span> -->
+		</h4>
+		<!-- <small class="secondary">Скидка действует при оплате 11 января 2020</small> -->
+	</div>
+
+	<ng-container *ngIf="status === paymentStatus.ERROR">
+		<div>
+			<img class="info__img" src="assets/icons/svg/error-icon.svg">
+		</div>
+		<p>При получении реквизитов оплаты пошлины произошла ошибка.</p>
+		<p>Попробуйте обновить страницу или <a href="#">обратитесь в службу поддержки</a>. Ваш черновик автоматически
+			сохранен.</p>
+	</ng-container>
+
+	<ng-container *ngIf="status === paymentStatus.SERVER_ERROR">
+		<div>
+			<img class="info__img" src="assets/img/server-error.svg">
+		</div>
+		<p>Попробуйте зайти на страницу позже. Если ошибка не исчезнет, <a href="#">сообщите нам о ней</a></p>
+	</ng-container>
+</div>

@@ -1,0 +1,5 @@
+<ng-container [ngSwitch]="(data?.components)[0].type">
+
+	<epgu-constructor-redirect *ngSwitchCase="screenComponentName.Redirect" [componentData]="data?.components[0]">
+	</epgu-constructor-redirect>
+</ng-container>
