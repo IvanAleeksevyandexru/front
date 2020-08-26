@@ -1,0 +1,32 @@
+@import "src/styles/core";
+
+
+.form {
+  &__item {
+    margin-bottom: 24px;
+  }
+  &__title {
+    font-size: 14px;
+    line-height: 20px;
+    color: $cyprus;
+    margin-bottom: 4px;
+  }
+  &__error {
+    margin-top: 4px;
+    color: $gosred;
+  }
+}
+
+.label {
+  margin-bottom: 20px;
+}
+
+.cs-select::ng-deep {
+  .simple-select {
+    border-radius: 4px;
+    padding: 14px 16px;
+  }
+  .simple-select-list {
+    width: 100% !important;
+  }
+}

@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 import {
   IFileResponseToBackendUploadsItem,
   IFileResponseToBackendWithRelatedUploads,
   IFileUploadAttributes,
   IFileUploadItem,
 } from '../../../../../../../interfaces/terabyte.interface';
+import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload',
@@ -69,7 +69,7 @@ export class FileUploadComponent {
     const sections = attrs.ref.split('.');
     const key = sections[0];
     const blockKey = sections[1];
-    const value = response?.scenarioDto?.applicantAnswers[key]?.value;
+    const value = response?.applicantAnswers[key]?.value;
     if (value) {
       const refBlock = value[blockKey];
 

@@ -17,4 +17,10 @@
     [submitLabel]="data?.submitLabel"
     (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-file-upload-screen>
+  <epgu-constructor-repeatable-fields
+    *ngSwitchCase="uniqueComponentName.repeatableFields"
+    (nextStepEvent)="nextStep($event)"
+    [data]="data"
+  ></epgu-constructor-repeatable-fields>
+
 </ng-container>

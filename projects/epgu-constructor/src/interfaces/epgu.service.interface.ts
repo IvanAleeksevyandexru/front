@@ -14,7 +14,7 @@ import { SCREEN_TYPE } from '../constant/global';
  *
  */
 export interface ResponseInterface {
-  scenarioDto: {
+  // scenarioDto: {
     applicantAnswers: object;
     currentRule: number;
     currentValue: object;
@@ -25,7 +25,7 @@ export interface ResponseInterface {
     sendNotification: Array<object>;
     token: string
     userId: string
-  }
+  // }
 }
 
 /**

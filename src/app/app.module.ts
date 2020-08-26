@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ConstructorModule } from 'dist/epgu-constructor';
+import { ConstructorConfigInterface } from '../../projects/epgu-constructor/src/interfaces/constructor-config.interface';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { ConstructorConfigInterface } from '../../projects/epgu-constructor/src/interfaces/constructor-config.interface'
 
 const constructorConfig: ConstructorConfigInterface = {
   serviceId: environment.serviceId,
@@ -20,7 +20,7 @@ const constructorConfig: ConstructorConfigInterface = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

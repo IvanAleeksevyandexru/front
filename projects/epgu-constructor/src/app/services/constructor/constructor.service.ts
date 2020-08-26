@@ -36,7 +36,7 @@ export class ConstructorService {
     this.restService.getNextStep(this.response).subscribe(
       (response) => {
         // TODO возможно стоит обернуть в pipe и делоть throwError
-        if (response?.scenarioDto?.errors) {
+        if (response?.errors) {
           this.sendDataError(response);
         } else {
           this.sendDataSuccess(response);
@@ -52,7 +52,7 @@ export class ConstructorService {
     this.updateRequest(data);
     this.restService.getPrevStep(this.response).subscribe(
       (response) => {
-        if (response?.scenarioDto?.errors) {
+        if (response?.errors) {
           this.sendDataError(response);
         } else {
           this.sendDataSuccess(response);
@@ -65,13 +65,13 @@ export class ConstructorService {
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}) {
     const componentId = options.componentId || this.componentId;
-    this.response.scenarioDto.currentValue = {};
+    this.response.currentValue = {};
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
     if (this.componentData.type === SCREEN_TYPE.CUSTOM) {
-      this.response.scenarioDto.currentValue = data;
+      this.response.currentValue = data;
     } else {
-      this.response.scenarioDto.currentValue[componentId] = {
+      this.response.currentValue[componentId] = {
         visited: true,
         value: data || '',
       };
@@ -98,7 +98,7 @@ export class ConstructorService {
     }
 
     this.response = response;
-    const { display, errors } = response.scenarioDto;
+    const { display, errors } = response;
 
     this.componentId = display.components[0].id;
     this.componentType = display.components[0].type;
