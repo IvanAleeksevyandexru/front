@@ -10,18 +10,20 @@ import { FileUploadItemComponent } from './components/file-upload-screen/sub-com
 import { FileUploadComponent } from './components/file-upload-screen/sub-components/file-upload/file-upload.component';
 import { WebcamShootComponent } from './components/file-upload-screen/sub-components/webcam-shoot/webcam-shoot.component';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
+import { EmployeeHistoryComponent } from './components/employee-history/employee-history.component';
 
 const COMPONENTS = [
   UniqueScreenComponent,
+  FileUploadScreenComponent,
+  FileUploadComponent,
+  FileUploadItemComponent,
+  WebcamShootComponent,
+  EmployeeHistoryComponent
 ];
 
 @NgModule({
   declarations: [
     ...COMPONENTS,
-    FileUploadScreenComponent,
-    FileUploadComponent,
-    FileUploadItemComponent,
-    WebcamShootComponent
   ],
   exports: [
     ...COMPONENTS
