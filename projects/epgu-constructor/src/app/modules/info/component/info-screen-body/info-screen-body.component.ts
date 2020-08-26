@@ -14,11 +14,10 @@ export class InfoScreenBodyComponent implements AfterViewInit {
   constructor(private modalService: ModalService) {}
 
   ngAfterViewInit(): void {
-    this.data?.attrs?.clarifications?.forEach((modal) => {
-      const [id, params] = Object.entries(modal)[0];
-      const link = document.querySelector(`[href="#${id}"]`);
-
-      link.addEventListener('click', () => this.showModal(params));
+    const arr = this.data?.attrs?.clarifications || [];
+    Object.entries(arr)?.forEach(([id, modalData]) => {
+      const link = document.getElementById(id);
+      link.addEventListener('click', () => this.showModal(modalData));
     });
   }
 
