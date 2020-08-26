@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 import {
   IFileResponseToBackendUploadsItem,
   IFileResponseToBackendWithRelatedUploads,
   IFileUploadAttributes,
   IFileUploadItem,
 } from '../../../../../../../interfaces/terabyte.interface';
+import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload',
