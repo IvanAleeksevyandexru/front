@@ -22,6 +22,7 @@ Install:
     - yarn install
   only:
     - merge_requests
+    - master
 
 Lint:
   stage: lint
@@ -31,6 +32,7 @@ Lint:
     - yarn lint
   only:
     - merge_requests
+    - master
 
 Test:
   stage: test
@@ -40,6 +42,7 @@ Test:
     - yarn test:coverage
   only:
     - merge_requests
+    - master
 
 Library-build:
   stage: library-build
@@ -49,6 +52,7 @@ Library-build:
     - yarn library:build
   only:
     - merge_requests
+    - master
 
 Build:
   stage: build
@@ -59,3 +63,4 @@ Build:
     - /devops/notify/notify.sh fronted_new_master_available
   only:
     - merge_requests
+    - master
