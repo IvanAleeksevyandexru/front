@@ -13,7 +13,6 @@ export enum CUSTOM_COMPONENT_ITEM_TYPE {
   DateInput = 'DateInput',
   RadioInput = 'RadioInput',
   CompositeRadioButton = 'CompositeRadioButton',
-  FileUploadComponent = 'FileUploadComponent',
   Lookup = 'Lookup',
 }
 
