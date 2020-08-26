@@ -8,7 +8,7 @@
   right: 0;
   bottom: 0;
   z-index: 5;
-  background-color: $black;
+  background-color: $color-black;
 }
 
 .webcam__video{
@@ -36,9 +36,9 @@
   font-size: 16px;
   line-height: 40px;
   width: 130px;
-  color: $gosblue;
-  background-color: $white;
+  color: $color-gosblue;
+  background-color: $color-white;
   cursor: pointer;
-  border: 2px solid $gosblue;
+  border: 2px solid $color-gosblue;
   border-radius: 8px;
 }

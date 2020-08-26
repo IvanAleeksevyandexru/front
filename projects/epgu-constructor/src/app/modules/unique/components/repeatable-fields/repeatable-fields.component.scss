@@ -54,7 +54,7 @@
 
 .btn__add {
   padding: 15px;
-  border: 1px dashed $active-item;
+  border: 1px dashed $color-active-item;
   box-sizing: border-box;
   border-radius: 4px;
   @include tablets-down {

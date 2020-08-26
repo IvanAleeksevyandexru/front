@@ -33,7 +33,7 @@
 
 .btn--light {
   @include tablets-up {
-    border: 1px solid $egyptian-blue;
+    border: 1px solid $color-button-hit;
   }
   @include tablets-down {
     @include shadow-main();

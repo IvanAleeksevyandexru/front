@@ -1,0 +1,65 @@
+$font-main: $font-lato, 'Arial', sans-serif;
+
+@mixin typ-h1 {
+  font-family: $font-main;
+  font-style: normal;
+  font-weight: $fw-semi-bold;
+  font-size: $font-extra;
+  line-height: 48px;
+}
+
+@mixin typ-h2 {
+  font-family: $font-main;
+  font-style: normal;
+  font-weight: $fw-semi-bold;
+  font-size: $font-xxl;
+  line-height: 40px;
+}
+
+@mixin typ-h3 {
+  font-family: $font-main;
+  font-style: normal;
+  font-weight: $fw-semi-bold;
+  font-size: $font-xl;
+  line-height: 32px;
+}
+
+@mixin typ-h4 {
+  font-family: $font-main;
+  font-style: normal;
+  font-weight: $fw-semi-bold;
+  font-size: $font-lg;
+  line-height: 24px;
+}
+
+@mixin typ-h5 {
+  font-family: $font-main;
+  font-style: normal;
+  font-weight: $fw-semi-bold;
+  font-size: $font-md;
+  line-height: 24px;
+}
+
+@mixin typ-h6 {
+  font-family: $font-main;
+  font-style: normal;
+  font-weight: $fw-semi-bold;
+  font-size: $font-dflt;
+  line-height: 24px;
+}
+
+@mixin typ-plain-text {
+  font-family: $font-main;
+  font-style: normal;
+  font-weight: $fw-regular;
+  font-size: $font-dflt;
+  line-height: 24px;
+}
+
+@mixin typ-plain-small {
+  font-family: $font-main;
+  font-style: normal;
+  font-weight: $fw-regular;
+  font-size: $font-sm;
+  line-height: 20px;
+}
