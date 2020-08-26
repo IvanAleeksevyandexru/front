@@ -26,12 +26,13 @@
             </div>
 
             <div class="form__item" *ngSwitchCase="componentType.Lookup">
-              <div class="form__title">{{componentData.label}}</div>
+              <div class="form__title">{{ componentData.label }}</div>
               <lib-lookup
                 [queryMinSymbolsCount]="0"
                 [searchCaseSensitive]="false"
                 (changed)="selectDictionary($event, componentData)"
-                [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-lookup>
+                [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"
+              ></lib-lookup>
             </div>
 
             <div class="form__item" *ngSwitchCase="componentType.StringInput">
@@ -39,6 +40,7 @@
               <lib-plain-input
                 [invalid]="!state[componentData.id].valid"
                 [name]="componentData.id"
+                [(ngModel)]="state[componentData.id].value"
                 (change)="inputChange($event, componentData)"
                 [validationShowOn]="validationShowOn"
               ></lib-plain-input>
@@ -59,7 +61,9 @@
 
             <div class="form__item" *ngSwitchCase="componentType.RadioInput">
               <div class="form__title">{{ componentData.label }}</div>
-              <epgu-constructor-radio-input *ngFor="let radio in componentData.attrs.supportedValues">
+              <epgu-constructor-radio-input
+                *ngFor="let radio; in: componentData.attrs.supportedValues"
+              >
                 <lib-radio [value]="radio.value" [labelText]="radio.label"></lib-radio>
               </epgu-constructor-radio-input>
             </div>

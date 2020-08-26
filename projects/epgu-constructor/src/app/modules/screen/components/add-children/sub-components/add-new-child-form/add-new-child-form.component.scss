@@ -1,4 +1,4 @@
-@import "src/styles/core";
+@import 'src/styles/core';
 
 .add-new-child-form {
   background-color: $light-gray;
@@ -43,6 +43,14 @@
     padding: 0;
     transform: translateX(2px);
   }
+}
+
+.icon-close {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-image: url('/assets/icons/png/close.png');
+  background-image: url('/assets/icons/svg/close.svg');
 }
 
 .radio-group {
