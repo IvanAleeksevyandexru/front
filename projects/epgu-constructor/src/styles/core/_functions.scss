@@ -10,27 +10,27 @@
 }
 
 @mixin btn--light {
-  background: $white;
-  color: $egyptian-blue;
+  background: $color-white;
+  color: $color-button-hit;
   &:hover {
-    background: $royal-blue;
-    color: $white;
+    background: $color-active-item;
+    color: $color-white;
   }
   &:active {
-    background: $egyptian-blue;
-    color: $white;
+    background: $color-button-hit;
+    color: $color-white;
   }
 }
 
 @mixin btn--primary {
-  background: $gosblue;
-  color: $white;
+  background: $color-gosblue;
+  color: $color-white;
   &:hover {
-    background: $royal-blue;
+    background: $color-active-item;
   }
   &:active {
-    background: $egyptian-blue;
-    color: $white;
+    background: $color-button-hit;
+    color: $color-white;
   }
 }
 
@@ -42,14 +42,15 @@
 
 @mixin centred-axis-x {
   position: absolute;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
 }
 
 @mixin modal-body {
   @include centred-axis-x();
   z-index: $modal-z-index;
-  background: $white;
+  background: $color-white;
 }
 
 @mixin navigation-mt {

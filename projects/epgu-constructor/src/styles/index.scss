@@ -1,8 +1,7 @@
 @import "core";
 
-// TODO: remove all normalize css styles, it may affect app's style
-
 .epgu-form {
+  color: $color-summer-night;
 
   *, *:before, *:after {
     box-sizing: border-box;
@@ -13,46 +12,38 @@
   }
 
   h1 {
-    font-size: $font-extra;
-    font-weight: $fw-semi-bold;
+    @include typ-h1;
   }
 
   h2 {
-    font-size: $font-xxl;
-    font-weight: $fw-semi-bold;
+    @include typ-h2;
   }
 
   h3 {
-    font-size: $font-xl;
-    font-weight: $fw-bold;
+    @include typ-h3;
   }
 
   h4 {
-    font-size: $font-lg;
-    font-weight: $fw-bold;
+    @include typ-h4;
   }
 
   h5 {
-    font-size: $font-md;
-    font-weight: $fw-bold;
+    @include typ-h5;
   }
 
   h6 {
-    font-size: $font-dflt;
-    font-weight: $fw-bold;
+    @include typ-h6;
   }
 
   p {
-    font-size: $font-dflt;
-    line-height: 24px;
+    @include typ-plain-text;
     &:not(:first-child) {
       margin-top: 24px;
     }
   }
 
   small, label {
-    font-size: $font-sm;
-    line-height: 20px;
+    @include typ-plain-small;
   }
 
   sub {
@@ -62,7 +53,7 @@
 
   a {
     text-decoration: none;
-    color: $egyptian-blue;
+    color: $color-button-hit;
   }
 
   button {

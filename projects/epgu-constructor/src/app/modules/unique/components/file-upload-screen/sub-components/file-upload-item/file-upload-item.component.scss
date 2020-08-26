@@ -4,7 +4,7 @@
 .fileupload__wrapper {
   margin-bottom: 24px;
   box-sizing: border-box;
-  background-color: $white;
+  background-color: $color-white;
   padding: 24px;
   border-radius: 12px;
 }
@@ -12,10 +12,10 @@
 .fileupload__label {
   font-size: 16px;
   line-height: 24px;
-  color: $summer-night;
+  color: $color-summer-night;
   padding-bottom: 24px;
   margin-bottom: 24px;
-  border-bottom: 1px solid $divider;
+  border-bottom: 1px solid $color-devider;
 
   &::ng-deep ul {
     list-style: none;
@@ -37,7 +37,7 @@ input[type="file"] {
 }
 
 .error {
-  color: $gosred;
+  color: $color-gosred;
   margin-bottom: 10px;
 }
 
@@ -72,11 +72,11 @@ input[type="file"] {
 .file__title {
   font-size: 16px;
   line-height: 24px;
-  color: $text-helper;
+  color: $color-text-helper;
   word-break: break-all;
 
   &.uploaded {
-    color: $summer-night;
+    color: $color-summer-night;
 
     &:not(.has-error) {
       cursor: pointer;
@@ -88,20 +88,20 @@ input[type="file"] {
   }
 
   &.has-error {
-    color: $gosred;
+    color: $color-gosred;
   }
 }
 
 .file__title-info {
   font-size: 14px;
-  color: $green-sea;
+  color: $color-green-sea;
 }
 
 .file__action {
   font-size: 14px;
   line-height: 20px;
   flex-shrink: 0;
-  color: $gosred;
+  color: $color-gosred;
   cursor: pointer;
   margin-left: 12px;
 
@@ -126,12 +126,12 @@ input[type="file"] {
 
 .fileupload__button {
   font-size: 16px;
-  color: $gosblue;
+  color: $color-gosblue;
   line-height: 50px;
   text-align: left;
   padding: 0 40px;
   cursor: pointer;
-  border: 2px solid $gosblue;
+  border: 2px solid $color-gosblue;
   border-radius: 8px;
   box-sizing: border-box;
 

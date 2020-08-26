@@ -3,15 +3,17 @@ import { FMS_COUNTRIES_DICTIONARY, RUSSIA_DICTIONARY_NAME } from '../../../../co
 import { CustomComponentDictionaryState } from '../../../../interfaces/custom-component.interface';
 import { DictionaryItem } from '../../../../interfaces/dictionary-options.interface';
 
+
 export enum CUSTOM_COMPONENT_ITEM_TYPE {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
   ForeignCitizenship = 'ForeignCitizenship',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
+  RadioInput = 'RadioInput',
   FileUploadComponent = 'FileUploadComponent',
   Lookup = 'Lookup',
-  RadioInput = 'RadioInput'
+  RadioButton = 'RadioButton',
 }
 
 export function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {

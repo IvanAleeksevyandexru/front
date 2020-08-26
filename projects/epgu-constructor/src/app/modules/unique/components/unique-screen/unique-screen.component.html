@@ -22,4 +22,10 @@
     [gender]="gender"
     [data]="data?.components[0]"
   ></epgu-constructor-employee-history>
+  <epgu-constructor-repeatable-fields
+    *ngSwitchCase="uniqueComponentName.repeatableFields"
+    (nextStepEvent)="nextStep($event)"
+    [data]="data"
+  ></epgu-constructor-repeatable-fields>
+
 </ng-container>
