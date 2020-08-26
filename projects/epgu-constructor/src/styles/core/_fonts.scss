@@ -1,7 +1,29 @@
 @import "variables";
 
+// Font families
+$font-lato: 'Lato';
+
+// Font weights
+$fw-thin: 100;
+$fw-light: 300;
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-semi-bold: 600;
+$fw-bold: 700;
+$fw-black: 900;
+
+// Font sizes
+$font-xs: 12px;
+$font-sm: 14px;
+$font-dflt: 16px;
+$font-md: 18px;
+$font-lg: 20px;
+$font-xl: 24px;
+$font-xxl: 32px;
+$font-extra: 36px;
+
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-BlackItalic.woff') format('woff');
   font-weight: $fw-black;
   font-style: italic;
@@ -9,7 +31,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-Light.woff') format('woff');
   font-weight: $fw-light;
   font-style: $fw-regular;
@@ -17,7 +39,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-Medium.woff') format('woff');
   font-weight: 500;
   font-style: $fw-regular;
@@ -25,7 +47,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-HeavyItalic.woff') format('woff');
   font-weight: $fw-black;
   font-style: italic;
@@ -33,7 +55,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-ThinItalic.woff') format('woff');
   font-weight: $fw-thin;
   font-style: italic;
@@ -41,7 +63,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-Black.woff') format('woff');
   font-weight: $fw-black;
   font-style: $fw-regular;
@@ -49,7 +71,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-Heavy.woff') format('woff');
   font-weight: $fw-black;
   font-style: $fw-regular;
@@ -57,7 +79,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-Regular.woff') format('woff');
   font-weight: $fw-regular;
   font-style: $fw-regular;
@@ -65,7 +87,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-BoldItalic.woff') format('woff');
   font-weight: bold;
   font-style: italic;
@@ -73,7 +95,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-SemiboldItalic.woff') format('woff');
   font-weight: 600;
   font-style: italic;
@@ -81,7 +103,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-Semibold.woff') format('woff');
   font-weight: 600;
   font-style: $fw-regular;
@@ -89,7 +111,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-LightItalic.woff') format('woff');
   font-weight: $fw-light;
   font-style: italic;
@@ -97,7 +119,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-Thin.woff') format('woff');
   font-weight: $fw-thin;
   font-style: $fw-regular;
@@ -105,7 +127,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-MediumItalic.woff') format('woff');
   font-weight: 500;
   font-style: italic;
@@ -113,7 +135,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-Italic.woff') format('woff');
   font-weight: $fw-regular;
   font-style: italic;
@@ -121,7 +143,7 @@
 }
 
 @font-face {
-  font-family: $primary_font;
+  font-family: $font-lato;
   src: url('/assets/fonts/Lato/Lato-Bold.woff') format('woff');
   font-weight: bold;
   font-style: $fw-regular;
