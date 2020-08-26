@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CustomDisplayInterface } from '../../../../../interfaces/custom-component.interface';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
@@ -11,13 +11,15 @@ import { NavigationService } from '../../../../shared-module/service/navigation/
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class CustomScreenComponent {
+export class CustomScreenComponent implements OnInit {
   @Input() data: CustomDisplayInterface;
   @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
   dataToSend: any;
+  isCycledFields: boolean;
+  cycledValues: any;
 
   constructor(
     private navService: NavigationService,
@@ -27,6 +29,15 @@ export class CustomScreenComponent {
     this.navService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
+  }
+
+  ngOnInit() {
+    const cycledFields = this.constructorService.response?.scenarioDto?.cycledFields;
+    this.isCycledFields = !!Object.keys(cycledFields).length;
+    if (this.isCycledFields && typeof cycledFields === 'object') {
+      this.cycledValues = [...Object.values(cycledFields).map((value) => JSON.parse(value))];
+    }
+    // this.setState();
   }
 
   prevStep() {

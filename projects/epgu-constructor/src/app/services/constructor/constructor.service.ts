@@ -119,6 +119,6 @@ export class ConstructorService {
     console.log('----- GET DATA ---------');
     console.log('componentId:', this.componentId);
     console.log('componentType:', this.componentType);
-    console.log('initResponse:', display);
+    console.log('initResponse:', response);
   }
 }

@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { delay, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../constant/global';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
@@ -61,17 +61,15 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngAfterViewInit() {
-    this.newChildForm.form.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
-      .subscribe((change) => {
-        const { birthDate, firstName, lastName, middleName, gender } = change;
-        this.item.birthDate = birthDate;
-        this.item.firstName = firstName;
-        this.item.lastName = lastName;
-        this.item.middleName = middleName;
-        this.item.gender = gender;
-        this.childUpdateEvent.emit(this.item);
-      });
+    this.newChildForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
+      const { birthDate, firstName, lastName, middleName, gender } = change;
+      this.item.birthDate = birthDate;
+      this.item.firstName = firstName;
+      this.item.lastName = lastName;
+      this.item.middleName = middleName;
+      this.item.gender = gender;
+      this.childUpdateEvent.emit(this.item);
+    });
   }
 
   ngOnDestroy() {

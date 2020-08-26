@@ -1,27 +1,27 @@
 <section class="add-children-screen">
   <section>
-    <div class="add-children-screen__card" *ngFor="let child of itemsInitial">
-      <div class="card">
+    <div class="add-children-screen__card" *ngFor="let item of itemsList">
+      <div *ngIf="item.isNew !== true" class="card">
         <div class="card__wrapper">
           <div class="card__header">
-            <div class="card__title">Ребенок {{ child?.id }}</div>
+            <div class="card__title">Ребенок {{ item?.id }}</div>
             <div class="card__close">
-              <button (click)="removeChild(child?.id)" class="button-close">
+              <button (click)="removeChild(item?.id)" class="button-close">
                 <div class="icon-close"></div>
               </button>
             </div>
           </div>
           <div class="card__content">
             <div>
-              <epgu-constructor-label for="childrenList">
+              <epgu-constructor-label for="itemsList">
                 Выберите ребенка из вашего профиля
               </epgu-constructor-label>
             </div>
             <div class="card__select">
               <lib-dropdown
-                id="childrenList"
+                id="itemsList"
                 (changed)="handleSelect($event)"
-                [items]="childrenSelectList"
+                [items]="itemsToSelect"
               ></lib-dropdown>
             </div>
           </div>
@@ -29,14 +29,14 @@
       </div>
     </div>
 
-    <div class="add-children-screen__form" *ngFor="let child of childrenList">
+    <div class="add-children-screen__form" *ngFor="let item of itemsList">
       <epgu-constructor-add-new-child-form
-        *ngIf="child.isNew === true"
-        (ngModel)="(child)"
+        *ngIf="item.isNew === true"
+        (ngModel)="(item)"
         [data]="{
-          itemsToSelect: childrenListInitial,
-          items: childrenList,
-          item: child
+          itemsToSelect: itemsToSelect,
+          items: itemsList,
+          item: item
         }"
         (removeChildEvent)="removeChild($event)"
         (childUpdateEvent)="updateChild($event)"
@@ -52,7 +52,7 @@
 
   <!-- <section class="add-children-screen__birth-certificate" *ngIf="sectionId === 2">
     <epgu-constructor-birth-certificate
-      [data]="selectedChildrenList"
+      [data]="selectedItems"
       (childUpdateEvent)="updateChild($event)"
     ></epgu-constructor-birth-certificate>
   </section>
@@ -72,7 +72,7 @@
         registrationAddressDate: valueParsed?.registrationAddressDate
       }"
       [data]="data"
-      [childrenData]="selectedChildrenList"
+      [childrenData]="selectedItems"
     ></epgu-constructor-confirm-child-address>
   </section> -->
 </section>
