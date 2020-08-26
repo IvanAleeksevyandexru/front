@@ -20,7 +20,7 @@ export interface ResponseInterface {
     currentValue: object;
     display: DisplayInterface;
     errors: object;
-    gender: number;
+    gender: TGender;
     orderId: string;
     sendNotification: Array<object>;
     token: string
@@ -70,3 +70,5 @@ export interface CurrentValue {
   visited: boolean;
   value: any;
 }
+
+export type TGender = 'male' | 'female';

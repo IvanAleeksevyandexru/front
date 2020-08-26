@@ -10,7 +10,7 @@ import { FileUploadItemComponent } from './components/file-upload-screen/sub-com
 import { FileUploadComponent } from './components/file-upload-screen/sub-components/file-upload/file-upload.component';
 import { WebcamShootComponent } from './components/file-upload-screen/sub-components/webcam-shoot/webcam-shoot.component';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
-import { EmployeeHistoryComponent } from './components/employee-history/employee-history.component';
+import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
 
 const COMPONENTS = [
   UniqueScreenComponent,
@@ -18,7 +18,6 @@ const COMPONENTS = [
   FileUploadComponent,
   FileUploadItemComponent,
   WebcamShootComponent,
-  EmployeeHistoryComponent
 ];
 
 @NgModule({
@@ -35,6 +34,7 @@ const COMPONENTS = [
     WebcamModule,
     EpguLibModule.forChild(),
     SelectMapObjectModule,
+    EmployeeHistoryModule,
   ]
 })
 export class UniqueScreenModule { }

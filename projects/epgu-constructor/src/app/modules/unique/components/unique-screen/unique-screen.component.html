@@ -17,7 +17,9 @@
     [submitLabel]="data?.submitLabel"
     (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-file-upload-screen>
-  <epgu-constructor-employee-history>
-
-  </epgu-constructor-employee-history>
+  <epgu-constructor-employee-history
+    [header]="data?.header"
+    [gender]="gender"
+    [data]="data?.components[0]"
+  ></epgu-constructor-employee-history>
 </ng-container>
