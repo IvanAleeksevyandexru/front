@@ -98,7 +98,7 @@ export class ConstructorService {
     }
 
     this.response = response;
-    const { display, errors } = response.scenarioDto;
+    const { display, errors } = response?.scenarioDto;
 
     this.componentId = display.components[0].id;
     this.componentType = display.components[0].type;
