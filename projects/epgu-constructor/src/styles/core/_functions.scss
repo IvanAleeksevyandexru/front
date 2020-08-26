@@ -49,7 +49,7 @@
 @mixin modal-body {
   @include centred-axis-x();
   z-index: $modal-z-index;
-  background: $white;
+  background: $color-white;
 }
 
 @mixin navigation-mt {
