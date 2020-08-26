@@ -43,4 +43,8 @@ describe('ConfirmPersonalUserPhoneScreenComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('check snapshot', () => {
+    expect(fixture).toMatchSnapshot();
+  });
 });

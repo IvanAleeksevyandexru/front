@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfirmPersonalUserPhoneScreenComponent check snapshot 1`] = `
+<epgu-constructor-confirm-personal-user-phone-screen
+  __ngContext__={[Function LRootView]}
+  data={[Function Object]}
+  nextStepEvent={[Function EventEmitter_]}
+  screenComponentService={[Function ScreenComponentService]}
+>
+  <epgu-constructor-confirm-personal-user-screen-layout>
+    <div
+      class="body"
+    >
+      <epgu-constructor-confirm-personal-user-phone />
+    </div>
+  </epgu-constructor-confirm-personal-user-screen-layout>
+</epgu-constructor-confirm-personal-user-phone-screen>
+`;
