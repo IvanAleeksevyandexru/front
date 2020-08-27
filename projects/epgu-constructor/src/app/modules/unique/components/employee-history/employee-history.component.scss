@@ -30,15 +30,34 @@
   }
 
   &__date {
+    &__hint {
+      display: none;
+    }
+
+    & > div:first-child {
+      margin-bottom: 24px;
+    }
+
     @include phones-up() {
       display: flex;
 
       & > div {
         flex: 1;
 
+        &:first-child {
+          margin-bottom: 0;
+        }
+
         &:not(:first-child) {
           margin-left: 24px;
         }
+      }
+
+      &__hint {
+        color: $color-text-helper;
+        font-size: 14px;
+        margin-top: 8px;
+        display: block;
       }
     }
   }

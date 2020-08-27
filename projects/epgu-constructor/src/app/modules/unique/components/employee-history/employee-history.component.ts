@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { filter, takeUntil } from 'rxjs/operators';
 import { ComponentInterface, TGender } from '../../../../../interfaces/epgu.service.interface';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { IEmployeeHistoryDataSource } from '../../../../../interfaces/employee-history.interface';
-// eslint-disable-next-line import/named
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
+import { IEmployeeHistoryDataSource } from '../../../../../interfaces/employee-history.interface';
 
 @Component({
   selector: 'epgu-constructor-employee-history',
@@ -29,6 +29,7 @@ export class EmployeeHistoryComponent implements OnInit {
   ngOnInit(): void {
     this.ds = this.datasourceService.getDataSourceByGender(this.gender);
     this.generateForm = this.employeeFormService.createEmployeeForm();
+    this.generateFormWatcher();
   }
 
   resetForm(currentType: number): void {
@@ -43,5 +44,15 @@ export class EmployeeHistoryComponent implements OnInit {
 
   removeFormGroup(index: number): void {
     this.employeeFormService.employeeHistory.splice(index, 1);
+  }
+
+  private generateFormWatcher(): void {
+    this.generateForm
+      .get('checkboxToDate')
+      .valueChanges.pipe(
+        filter((checked: boolean) => checked),
+        takeUntil(this.unsubscribeService),
+      )
+      .subscribe(() => this.generateForm.get('to').patchValue(new Date()));
   }
 }

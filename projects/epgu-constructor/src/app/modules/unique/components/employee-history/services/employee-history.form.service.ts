@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { IEmployeeHistoryModel } from '../../../../../../interfaces/employee-history.interface';
 
 @Injectable({
@@ -18,6 +18,7 @@ export class EmployeeHistoryFormService {
       position: [null],
       place: [null],
       address: [null],
+      checkboxToDate: [false]
     });
   }
 }

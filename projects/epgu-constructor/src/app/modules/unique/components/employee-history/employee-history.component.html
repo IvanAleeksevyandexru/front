@@ -79,20 +79,30 @@
     </div>
     <div class="employee-history__date">
       <div>
-        <epgu-constructor-label for="from">Укажите дату (месяц, год)</epgu-constructor-label>
+        <epgu-constructor-label for="from">Укажите дату с (месяц, год)</epgu-constructor-label>
         <lib-date-picker
           id="from"
           [formControl]="generateForm.get('from')"
         ></lib-date-picker>
+        <div class="employee-history__date__hint">Заполняется при наличии</div>
       </div>
 
       <div>
-        <epgu-constructor-label for="to">Укажите дату (месяц, год)</epgu-constructor-label>
-        <lib-date-picker
-          id="to"
-          [formControl]="generateForm.get('to')"
-        ></lib-date-picker>
+        <ng-container *ngIf="!generateForm.get('checkboxToDate').value">
+          <epgu-constructor-label for="to">Укажите дату по (месяц, год)</epgu-constructor-label>
+          <lib-date-picker
+            id="to"
+            [formControl]="generateForm.get('to')"
+          ></lib-date-picker>
+          <div class="employee-history__date__hint">Заполняется при наличии</div>
+        </ng-container>
       </div>
+    </div>
+    <div class="employee-history__input">
+      <lib-checkbox
+        [formControl]="generateForm.get('checkboxToDate')"
+        labelText="По настоящее время"
+      ></lib-checkbox>
     </div>
     <div class="employee-history__input" *ngIf="ds[generateForm.get('type').value]?.position as position">
       <epgu-constructor-label for="position">{{ position }}</epgu-constructor-label>
