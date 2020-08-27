@@ -4,6 +4,7 @@ import { DictionaryOptionsInterface, DictionaryResponse } from '../../../interfa
 import { EgpuResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { MockService } from '../mock/mock.service';
+import {CookieService} from 'ngx-cookie-service';
 
 @Injectable()
 export class RestService {
@@ -12,9 +13,9 @@ export class RestService {
   dictionaryUrl: string;
   externalApiUrl: string;
 
-  userId = '1000299353';
+  userId = '1000298933';
   // eslint-disable-next-line max-len
-  token = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTc5MDUzMjgsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl90cm0_b2lkPTEwMDAyOTkzNTMmbW9kZT13IGh0dHA6XC9cL2VzaWEuZ29zdXNsdWdpLnJ1XC91c3JfaW5mP29pZD0xMDAwMjk5MzUzJm1vZGU9dyBodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvdXNyX3NlYz9tb2RlPXcmb2lkPTEwMDAyOTkzNTMiLCJpc3MiOiJodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvIiwidXJuOmVzaWE6c2lkIjoiZTUwZDlmZmJlODA0YTRkZjY4NzI5Mzc1MTljMzRmNDExYzM2MzQxMzk1NGI3ZWE4MDE5ZjNjZTI3NDVhZGFiMyIsInVybjplc2lhOnNial9pZCI6MTAwMDI5OTM1MywiZXhwIjoxNTk3OTkxNzI4LCJpYXQiOjE1OTc5MDUzMjgsImNsaWVudF9pZCI6IlBHVSJ9.gPSeau7tk1hcXFg72IsIeSXSZ7NeCpB1tfW2zRACGC2ZvLUyqGoYlw72xOBStc6mbEQsrItB1GS6jrbtGYag0d9wHCtdcDMiXN0CugVzChuQthETHp2pzYFupTOKuCzgyxD0YjMCp0WlOkMgL_vgjM0vycrBSxJUBbgeiI2THSLaX0JWZouqgKuMymZdLBeI2vmeqoV-YxTlEy7FMjug02ebRmss-dWV481iIzwoBPPQkcrwkgT8TemWH8thgP9_zjAuQax92Tx6BQXzHx9fagHoilWwZh8X9Ib9qdK5Wf5_pefhIW8VjXOAcFxUvo3mYB3wjcJwo5hW8F8J9UhKZA';
+  token = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTg0NDUzNDEsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl9pbmY_b2lkPTEwMDAyOTg5MzMmbW9kZT13IiwiaXNzIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcLyIsInVybjplc2lhOnNpZCI6IjBkODBjZDI1M2UzZGY5NzEzODQ5NmY2MWMxZmU1MDc1ZDhlYjliYmY2ZTEwYmRjOWY0ZWJhNjM2Mzk1ZTM5ODAiLCJ1cm46ZXNpYTpzYmpfaWQiOjEwMDAyOTg5MzMsImV4cCI6MTU5ODUzMTc0MSwiaWF0IjoxNTk4NDQ1MzQxLCJjbGllbnRfaWQiOiJQR1UifQ.bAVH8qDiVrYyjUDBgmnXWbOB2iTc4nMDspx5aU6MoTGWX561DZn7Ip-HAyMso1_XZM42V3DEuMVYrZVaItD20nVHXR_XLavdmPey_fnWKC8v7TgtY7tTQ97_Z4Ue-G3EwQkeR_gBnXNOhNfkf2rnXri6Fnn0eIXvU4V8efpvYtIezbXU6DsEJaD_avffdiumj2xMe7woEI1QdHLWO3ml5FJaBnoMdJXQhC5Iz1bHeeUJDpIAFTRDJV6VZ5swPFSAxx1Mu8zdU-j44aSVQysBEMTiCYenuFd_-gnbEn55QWVkTBszWuYWMk_Us0o_Xi32Exd3BrTmc33jKimRkieatw';
   currentUserId: string;
   currentUserToken: string;
 
@@ -22,6 +23,7 @@ export class RestService {
     private http: HttpClient,
     private constructorConfigService: ConstructorConfigService,
     private mockService: MockService,
+    private cookieService: CookieService
   ) {
     this.apiUrl = constructorConfigService.config.apiUrl;
     this.serviceId = constructorConfigService.config.serviceId;
@@ -30,6 +32,8 @@ export class RestService {
     // TODO: add fetch current user data for prod env
     this.currentUserId = constructorConfigService.config.isProd ? this.currentUserId : this.mockService.currentUserId;
     this.currentUserToken = constructorConfigService.config.isProd ? this.currentUserToken : this.mockService.currentUserToken;
+    this.cookieService.set('u', this.currentUserId);
+    this.cookieService.set('acc_t', this.currentUserToken);
   }
 
   public getData() {

@@ -5,7 +5,7 @@
     </div>
 
     <app-screen-pad class="body">
-      <div class="card">
+      <div *ngIf="initialized" class="card">
         <label>Выберите дату и время</label>
         <div class="months-list">
           <lib-dropdown
@@ -55,10 +55,10 @@
 
     <div class="footer">
       <lib-button
-        [showLoader]="constructorService.isLoading || bookingProgress"
+        [showLoader]="constructorService.isLoading || inProgress"
         (click)="bookTimeSlot()"
         class="footer__btn-submit"
-        [disabled]="!screenComponentService.isValid || bookingProgress"
+        [disabled]="buttonDisabled()"
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
       </lib-button>

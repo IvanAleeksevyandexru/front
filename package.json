@@ -54,11 +54,13 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "moment": "2.24.0",
+    "ngx-cookie-service": "^10.0.1",
     "ngx-perfect-scrollbar": "8.0.0",
     "prettier": "^2.0.5",
     "ru-validation-codes": "^2.8.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
+    "uuid": "^8.3.0",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {

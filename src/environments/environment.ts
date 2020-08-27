@@ -7,7 +7,7 @@ export const environment = {
   apiUrl: 'http://localhost:4200/api',
   dictionaryUrl: 'https://www.gosuslugi.ru/api/nsi/v1/dictionary',
   externalApiUrl: 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1/',
-  externalLkApiUrl: 'https://svcdev-beta.test.gosuslugi.ru/api/lk/v1/',
+  externalLkApiUrl: 'http://localhost:4200/api/lk/v1/',
   externalUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/',
   serviceId: 'local',
   yandexMapsApiKey: '9e8e2fc4-5970-4ca6-95c5-3e620095e8e3',
