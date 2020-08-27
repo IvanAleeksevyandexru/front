@@ -1,8 +1,8 @@
 <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
-<epgu-constructor-screen-container>
-  <div *ngIf="header" class="head">
+<epgu-constructor-screen-container class="employee-history">
+  <section class="employee-history__header" *ngIf="header">
     <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
-  </div>
+  </section>
   <section class="employee-history__addedGenerations"
     *ngFor="let generation of employeeFormService.employeeHistory; let i = index">
     <div class="employee-history__type">
