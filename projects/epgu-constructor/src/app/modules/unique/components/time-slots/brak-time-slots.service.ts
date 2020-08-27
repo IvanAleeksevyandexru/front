@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ConstructorConfigService} from '../../../../services/config/constructor-config.service';
 import {TimeSlotsService} from './time-slots.service';
-import {ConstructorService} from '../../../../services/constructor/constructor.service';
-import {ResponseInterface} from '../../../../../interfaces/epgu.service.interface';
 import * as uuid from 'uuid';
 import {Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
@@ -11,10 +9,10 @@ import {map, tap} from 'rxjs/operators';
 @Injectable()
 export class BrakTimeSlotsService implements TimeSlotsService {
 
-  private response: ResponseInterface;
   private department;
   private solemn: boolean;
   private slotsPeriod;
+  private orderId;
 
   public activeMonthNumber: number;
   public activeYearNumber: number;
@@ -28,8 +26,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
 
   constructor(
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
-    private constructorService: ConstructorService
+    private constructorConfigService: ConstructorConfigService
   ) {
 
   }
@@ -81,10 +78,9 @@ export class BrakTimeSlotsService implements TimeSlotsService {
     return this.activeYearNumber
   }
 
-  init(ref: any): Observable<any> {
-    this.response = this.constructorService.response;
+  init(data: any): Observable<any> {
 
-    if (this.changed(ref) || this.errorMessage) {
+    if (this.changed(data) || this.errorMessage) {
       this.slotsMap = {};
       this.errorMessage = undefined;
       return this.getTimeSlots(this.getSlotsRequest()).pipe(
@@ -110,22 +106,22 @@ export class BrakTimeSlotsService implements TimeSlotsService {
     return this.errorMessage;
   }
 
-  changed(ref: any): boolean {
+  changed(data: any): boolean {
     let changed = false;
 
-    let department = JSON.parse(this.response.scenarioDto.applicantAnswers[ref.department].value);
+    let department = JSON.parse(data.department);
     if (!this.department || this.department.value !== department.value) {
       changed = true;
       this.department = department;
     }
 
-    let solemn = this.response.scenarioDto.applicantAnswers[ref.solemn].value == 'Да';
+    let solemn = data.solemn == 'Да';
     if (this.solemn !== solemn) {
       changed = true;
       this.solemn = solemn;
     }
 
-    let slotsPeriod = JSON.parse(this.response.scenarioDto.applicantAnswers[ref.slotsPeriod].value).value.substring(0, 7);
+    let slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
     if (this.slotsPeriod !== slotsPeriod) {
       changed = true;
       this.slotsPeriod = slotsPeriod;
@@ -134,13 +130,19 @@ export class BrakTimeSlotsService implements TimeSlotsService {
       this.activeYearNumber = parseInt(activeYearNumber, 10);
     }
 
+    let orderId = data.orderId;
+    if (!this.orderId || this.orderId !== orderId) {
+      changed = true;
+      this.orderId = orderId;
+    }
+
     return changed;
   }
 
   private getSlotsRequest() {
     return {
       organizationId: [this.department.attributeValues.CODE],
-      caseNumber: this.response.scenarioDto.orderId,
+      caseNumber: this.orderId,
       serviceId: ['ЗагсБрак'],
       eserviceId: '10000057526',
       routeNumber: '45382000',
@@ -182,7 +184,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
         selectedSlot.slotId
       ],
       selectedHallTitle: selectedSlot.slotId,
-      parentOrderId: this.response.scenarioDto.orderId,
+      parentOrderId: this.orderId,
       preliminaryReservationPeriod: '1440',
       attributes: [],
       slotId: [

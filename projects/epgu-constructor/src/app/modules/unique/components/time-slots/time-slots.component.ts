@@ -37,9 +37,6 @@ export class TimeSlotsComponent implements OnInit {
     'Декабрь',
   ];
 
-  private timeSlotType = 'timeSlotType';
-  private ref = 'ref';
-
   public weeks = [];
   public monthsYears: ListItem[] = [];
   public timeSlots = [];
@@ -206,8 +203,9 @@ export class TimeSlotsComponent implements OnInit {
     if (this.data.components[0]) {
       this.inProgress = true;
       this.label = this.data.components[0].label;
-      this.currentService = this.timeSlotServices[this.data.components[0].attrs[this.timeSlotType]];
-      this.currentService.init(this.data.components[0].attrs[this.ref]).subscribe(() => {
+      const value = JSON.parse(this.data.components[0].value);
+      this.currentService = this.timeSlotServices[value.timeSlotType];
+      this.currentService.init(value).subscribe(() => {
         if (this.currentService.hasError()) {
           this.errorMessage = this.currentService.getErrorMessage();
         } else {
