@@ -1,4 +1,4 @@
-@import "../../../../../styles/core/variables";
+@import "src/styles/core";
 
 .payment {
  &__sum {
@@ -12,7 +12,7 @@
     }
   }
   .secondary {
-    color: $text-helper;
+    color: $color-gray;
   }
   p {
     margin-bottom: 0;

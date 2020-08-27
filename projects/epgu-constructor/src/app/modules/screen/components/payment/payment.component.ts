@@ -18,7 +18,7 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
 import { PaymentStatus } from './enums/payment-status.enum';
 
 export interface PaymentInterface extends ComponentInterface {
-  ttrs: PaymentAttrsInterface;
+  attrs: PaymentAttrsInterface;
 }
 @Component({
   selector: 'epgu-constructor-payment',
@@ -33,11 +33,12 @@ export class PaymentComponent implements OnInit {
   public uin: string;
   public sum: string;
   public document: string;
-  // @Input() componentData: PaymentInterface;
-  @Input() componentData: any;
+  // @Input() data: PaymentInterface;
+  @Input() data: any;
   private apiUrl;
   private mockUinCode = '18810177200104519116';
-  private mockOrderId = '763411359';
+  // private mockOrderId = '763411359';
+  private mockOrderId = '763419899';
 
   constructor(
     private restService: RestService,
@@ -55,8 +56,7 @@ export class PaymentComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.status = PaymentStatus.SUCCESS;
-          this.uin = res.value;
-          // eslint-disable-next-line prettier/prettier
+          this.uin = res.value.replace('PRIOR', '');
           this.screenComponentService.dataToSend = this.getPaymentLink();
         },
         (error: HttpErrorResponse) => {
@@ -72,7 +72,7 @@ export class PaymentComponent implements OnInit {
 
   loadPaymentInfo() {
     const dictionaryOptions = this.createPaymentRequestOptions();
-    const { nsi } = this.componentData.attrs;
+    const { nsi } = this.data.attrs;
     return this.restService.getDictionary(nsi, dictionaryOptions).pipe(
       map((res: any) => {
         if (res.error.code === 0) {
@@ -89,11 +89,13 @@ export class PaymentComponent implements OnInit {
       }),
     );
   }
+
   getPaymentLink() {
     // TODO хардкод. доделать.
     // eslint-disable-next-line prettier/prettier
     return `https://payment-dev-l14.test.gosuslugi.ru/?billNumber=${this.uin}&returnUrl=${encodeURIComponent(this.apiUrl,)}&subscribe=true`;
   }
+
   getUin(attributeValues: PaymentInfoInterface): Observable<any> {
     const options = { withCredentials: true };
     return this.http.post(
@@ -116,7 +118,7 @@ export class PaymentComponent implements OnInit {
       tx: '41588125-d55f-11ea-8b86-fa163ee4b849',
     };
     const uinRequestData = dictionaryOptions.filter;
-    const simple = Object.entries(JSON.parse(this.componentData.value));
+    const simple = Object.entries(JSON.parse(this.data.value));
     simple.forEach(([key, value]) => {
       uinRequestData.union.subs.push({
         simple: {
@@ -131,11 +133,12 @@ export class PaymentComponent implements OnInit {
       simple: {
         attributeName: 'dictem_code',
         condition: 'EQUALS',
-        value: { asString: this.componentData.attrs.dictItemCode },
+        value: { asString: this.data.attrs.dictItemCode },
       },
     });
     return dictionaryOptions;
   }
+
   transformSum(attributeValues): string {
     return attributeValues.sum.padStart(3, '0').replace(/\d{2}$/, ',$&');
   }
