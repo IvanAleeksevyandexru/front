@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 import { filter, takeUntil } from 'rxjs/operators';
-import { DisplayInterface, TGender } from '../../../../../interfaces/epgu.service.interface';
+import { DisplayInterface, Gender } from '../../../../../interfaces/epgu.service.interface';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
@@ -20,7 +20,7 @@ import {
 export class EmployeeHistoryComponent implements OnInit {
   @Input() data: DisplayInterface;
   @Input() header: string;
-  @Input() gender: TGender;
+  @Input() gender: Gender;
 
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EmployeeHistoryDataSource } from '../../../../../../interfaces/employee-history.interface';
-import { TGender } from '../../../../../../interfaces/epgu.service.interface';
+import { Gender } from '../../../../../../interfaces/epgu.service.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ export class EmployeeHistoryDatasourceService {
 
   constructor() { }
 
-  public getDataSourceByGender(gender: TGender): Array<EmployeeHistoryDataSource> {
+  public getDataSourceByGender(gender: Gender): Array<EmployeeHistoryDataSource> {
     return [
       {
         label: `Я учил${gender === 'male' ? 'ся' : 'ась'}`,

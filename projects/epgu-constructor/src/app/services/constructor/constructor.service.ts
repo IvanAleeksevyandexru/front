@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface, ResponseInterface, TGender } from '../../../interfaces/epgu.service.interface';
+import { DisplayInterface, ResponseInterface, Gender } from '../../../interfaces/epgu.service.interface';
 import { RestService } from '../rest/rest.service';
 
 interface SendDataOptionsInterface {
@@ -16,7 +16,7 @@ export class ConstructorService {
   componentType: string;
   componentData: DisplayInterface;
   componentErrors: object;
-  gender: TGender;
+  gender: Gender;
   isLoading = false;
 
   constructor(public restService: RestService) {

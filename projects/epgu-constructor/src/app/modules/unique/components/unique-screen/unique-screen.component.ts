@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
 // eslint-disable-next-line import/named
-import { DisplayInterface, TGender } from '../../../../../interfaces/epgu.service.interface';
+import { DisplayInterface, Gender } from '../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 
@@ -18,7 +18,7 @@ export class UniqueScreenComponent {
 
   @Input() data: DisplayInterface;
   @Input() errors: object;
-  @Input() gender: TGender;
+  @Input() gender: Gender;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
