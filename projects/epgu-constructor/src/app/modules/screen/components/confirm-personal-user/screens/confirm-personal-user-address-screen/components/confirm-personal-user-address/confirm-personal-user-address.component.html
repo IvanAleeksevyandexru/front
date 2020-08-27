@@ -1,6 +1,17 @@
 <form #dataForm="ngForm">
-  <ng-container *ngFor="let field of data?.attrs?.fields; let i = index" [ngSwitch]="field?.fieldName">
-    <epgu-constructor-address-item class="item" [label]="field.label" [name]="field.label" *ngSwitchCase="'regAddr'">
+  <div class="flex-row" *ngIf="data?.attrs?.actions?.length === 1">
+    <a href="javascript:void(0);" (click)="handleClick()" class="button-change"> Изменить </a>
+  </div>
+  <ng-container
+    *ngFor="let field of data?.attrs?.fields; let i = index"
+    [ngSwitch]="field?.fieldName"
+  >
+    <epgu-constructor-address-item
+      class="item"
+      [label]="field.label"
+      [name]="field.label"
+      *ngSwitchCase="'regAddr'"
+    >
       <lib-dadata-widget
         [simpleMode]="true"
         [disabled]="!isEditable"
@@ -28,7 +39,12 @@
       </lib-date-picker>
     </epgu-constructor-address-item>
 
-    <epgu-constructor-address-item *ngSwitchDefault class="item" [label]="field.label" [name]="field.label">
+    <epgu-constructor-address-item
+      *ngSwitchDefault
+      class="item"
+      [label]="field.label"
+      [name]="field.label"
+    >
       <lib-plain-input
         [disabled]="!isEditable"
         [(ngModel)]="valueParsed[field.fieldName]"

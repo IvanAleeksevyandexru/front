@@ -18,4 +18,8 @@ export class ConfirmPersonalUserPhoneScreenComponent implements OnInit {
     // TODO возможно стоит переместить во внутриь компонента
     this.screenComponentService.dataToSend = this.data.value;
   }
+
+  clickToAction(action: NotificationAction) {
+    console.log(action);
+  }
 }

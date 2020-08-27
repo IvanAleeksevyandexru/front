@@ -1,8 +1,11 @@
 @import "src/styles/core";
 
-label {
+:host {
   display: block;
-  margin: 7px 0;
+  margin: 0 0 4px;
+}
+.label {
+  display: block;
   text-align: left;
   color: $color-summer-night;
 

@@ -26,7 +26,10 @@ export class ConstructorService {
     this.isLoading = true;
     this.restService.getData().subscribe(
       (response) => this.initResponse(response),
-      (error) => console.error(error),
+      (error) => {
+        this.isLoading = false;
+        console.error(error)
+      },
       () => this.isLoading = false
     );
   }
@@ -43,7 +46,10 @@ export class ConstructorService {
           this.sendDataSuccess(response);
         }
       },
-      (error) => this.sendDataError(error),
+      (error) => {
+        this.sendDataError(error);
+        this.isLoading = false;
+      },
       () => this.isLoading = false
     );
   }
@@ -59,7 +65,10 @@ export class ConstructorService {
           this.sendDataSuccess(response);
         }
       },
-      (error) => this.sendDataError(error),
+      (error) => {
+        this.sendDataError(error);
+        this.isLoading = false;
+      },
       () => this.isLoading = false
     );
   }

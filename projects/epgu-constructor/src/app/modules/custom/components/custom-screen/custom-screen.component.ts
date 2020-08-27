@@ -34,20 +34,23 @@ export class CustomScreenComponent {
   }
 
   nextScreen() {
-    const responseData = {};
-
-    Object.keys(this.dataToSend).forEach((key) => {
-      // if (!this.dataToSend[key].valid) return; // TODO: add user-friendly validation logic
-
-      responseData[key] = {
-        visited: true,
-        value: JSON.stringify(this.dataToSend[key].value || {}),
-      };
-    });
+    const responseData = this.getPrepareResponseData(this.dataToSend);
     this.nextStepEvent.emit(responseData);
   }
 
   changeComponentsList(event) {
     this.dataToSend = event;
+  }
+
+  private getPrepareResponseData(data = {}) {
+    return Object.keys(data).reduce((acc, key) => {
+      // if (!this.dataToSend[key].valid) return; // TODO: add user-friendly validation logic
+      acc[key] = {
+        visited: true,
+        value:
+          data[key].value !== 'object' ? data[key].value : JSON.stringify(data[key].value || {}),
+      };
+      return acc;
+    }, {});
   }
 }

@@ -1,6 +1,7 @@
 <div class="data">
   <div class="data__group data-group">
-    <div class="flex-row">
+    <!-- Бизнеслогика-->
+    <div class="flex-row" *ngIf="data?.attrs?.actions?.length === 1">
       <div class="data-group__title">{{ fullName }}</div>
       <a [href]="constructorConfigService.config.externalLkUrl" class="button-change">Изменить</a>
     </div>
