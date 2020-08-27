@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { EmployeeHistoryDatasourceService } from './employee-history.datasource.service';
 
-describe('EmployeeHistory.DatasourceService', () => {
+describe('EmployeeHistoryDatasourceService', () => {
   let service: EmployeeHistoryDatasourceService;
 
   beforeEach(() => {
