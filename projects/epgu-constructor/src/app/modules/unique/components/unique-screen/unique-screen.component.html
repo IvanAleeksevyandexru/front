@@ -28,5 +28,9 @@
     (nextStepEvent)="nextStep($event)"
     [data]="data"
   ></epgu-constructor-repeatable-fields>
-
+  <epgu-constructor-car-info
+    *ngSwitchCase="uniqueComponentName.carInfo"
+    [data]="data"
+    (nextStepEvent)="nextStep()"
+  ></epgu-constructor-car-info>
 </ng-container>

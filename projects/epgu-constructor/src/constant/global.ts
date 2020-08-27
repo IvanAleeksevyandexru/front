@@ -16,7 +16,7 @@ export enum SCREEN_COMPONENT_NAME {
   'registrationAddr' = 'RegistrationAddr',
   'personLookup' = 'PersonLookup',
   'changeList' = 'ChangeList',
-  'snils' = 'StringInput',
+  'snilsInput' = 'SnilsInput',
   'docInput' = 'DocInput',
   'countryApostil' = 'CountryApostil'
 }
@@ -30,6 +30,7 @@ export enum UNIQUE_COMPONENT_NAME {
   fileUploadComponent = 'FileUploadComponent',
   'addPassport' = 'AddPassport',
   'mapService' = 'MapService',
+  'carInfo' = 'CarInfo',
   'repeatableFields' = 'RepeatableFields',
 }
 
