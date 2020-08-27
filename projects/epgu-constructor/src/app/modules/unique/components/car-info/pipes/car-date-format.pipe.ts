@@ -1,4 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import * as moment from 'moment';
+
 import { TenureDates } from '../models/car-info.interface';
 
 import { UtilsService } from '../../../../../services/utils/utils.service';
