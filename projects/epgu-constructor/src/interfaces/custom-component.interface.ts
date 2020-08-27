@@ -47,9 +47,20 @@ export interface CustomComponentAttrValidationInterface {
  */
 export interface CustomComponentState {
   valid: boolean;
+  isShow: boolean;
   errorMessage: string;
   value: any;
   component: CustomComponentInterface
+}
+
+/**
+ * @property {string}relatedRel - id компонента от которого зависим
+ * @property {string}val - ключевое значение которое должен принимать компонент от которого заивисм
+ */
+export interface CustomComponentRefInterface {
+  'relatedRel': string,
+  'val': string,
+  'relation': string
 }
 
 export interface CustomDisplayInterface extends DisplayInterface {

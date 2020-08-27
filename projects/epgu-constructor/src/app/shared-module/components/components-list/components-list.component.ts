@@ -13,7 +13,10 @@ import {
   CustomComponentInterface,
   CustomComponentState,
 } from '../../../../interfaces/custom-component.interface';
-import { DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../../../interfaces/dictionary-options.interface';
 import {
   CUSTOM_COMPONENT_ITEM_TYPE,
   getCustomScreenDictionaryFirstState,
@@ -35,7 +38,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   state: { [key: string]: CustomComponentState } = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
 
-  @Input() components;
+  @Input() components: Array<CustomComponentInterface>;
   @Output() changes = new EventEmitter();
 
   constructor(private restService: RestService) {}
@@ -81,7 +84,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
         if (component.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection) {
           this.initState(component);
         }
-        if (this.hasDictionary(component.type)) {
+        if (this.likeDictionary(component.type)) {
           const dictionaryName = component.attrs.dictionaryType;
           this.initDictionary(dictionaryName);
           this.loadDictionary(dictionaryName, component);
@@ -95,6 +98,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
     this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
+    this.calcDependedComponent(component);
     this.changes.emit(this.state);
   }
 
@@ -181,12 +185,34 @@ export class ComponentsListComponent implements OnInit, OnChanges {
 
   private initState(component: CustomComponentInterface) {
     const { id, value } = component;
-    this.state[id] = { valid: false, errorMessage: '', value, component };
+    const hasRelatedRef = component.attrs.ref?.length;
+    this.state[id] = { valid: false, errorMessage: '', value, component, isShow: !hasRelatedRef };
   }
 
-  private hasDictionary(type: CUSTOM_COMPONENT_ITEM_TYPE) {
+  private likeDictionary(type: CUSTOM_COMPONENT_ITEM_TYPE) {
     return (
       CUSTOM_COMPONENT_ITEM_TYPE.Dictionary === type || CUSTOM_COMPONENT_ITEM_TYPE.Lookup === type
     );
+  }
+
+  private calcDependedComponent(component: CustomComponentInterface) {
+    const dependentComponents = this.components.filter((item) =>
+      // TODO возможно стоить удалить это правило для линтинга;
+      // eslint-disable-next-line
+      item.attrs?.ref?.some((el) => (el.relatedRel = component.id)),
+    ); // TODO добавить возможность зависить от нескольких полей
+
+    dependentComponents.forEach((dependentComponent) => {
+      const isLikeDictionary =
+        component.type === CUSTOM_COMPONENT_ITEM_TYPE.Dictionary ||
+        component.type === CUSTOM_COMPONENT_ITEM_TYPE.Lookup;
+      if (isLikeDictionary) {
+        const dictionaryOfTheDependentComponent: DictionaryItem = this.state[component.id]?.value;
+
+        // TODO Временный hardcode;
+        this.state[dependentComponent.id].isShow =
+          dependentComponent.attrs.ref[0].val === dictionaryOfTheDependentComponent.value; // TODO добавить возможность зависить от нескольких полей
+      }
+    });
   }
 }

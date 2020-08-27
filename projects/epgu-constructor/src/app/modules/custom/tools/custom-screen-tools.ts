@@ -9,6 +9,9 @@ import { DictionaryItem } from '../../../../interfaces/dictionary-options.interf
 export enum CUSTOM_COMPONENT_ITEM_TYPE {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
+  HiddenDictionary = 'HiddenDictionary',
+  HiddenLookup = 'HiddenLookup',
+  HiddenInput = 'HiddenInput',
   DropDown = 'DropDown',
   ForeignCitizenship = 'ForeignCitizenship',
   StringInput = 'StringInput',
