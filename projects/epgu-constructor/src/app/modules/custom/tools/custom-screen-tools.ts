@@ -7,13 +7,13 @@ import { DictionaryItem } from '../../../../interfaces/dictionary-options.interf
 export enum CUSTOM_COMPONENT_ITEM_TYPE {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
+  DropDown = 'DropDown',
   ForeignCitizenship = 'ForeignCitizenship',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
   RadioInput = 'RadioInput',
-  FileUploadComponent = 'FileUploadComponent',
+  CompositeRadioButton = 'CompositeRadioButton',
   Lookup = 'Lookup',
-  RadioButton = 'RadioButton',
 }
 
 export function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
