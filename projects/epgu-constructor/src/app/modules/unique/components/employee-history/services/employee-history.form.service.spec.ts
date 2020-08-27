@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { EmployeeHistoryFormService } from './employee-history.form.service';
 
-describe('EmployeeHistory.FormService', () => {
+describe('EmployeeHistoryFormService', () => {
   let service: EmployeeHistoryFormService;
 
   beforeEach(() => {
