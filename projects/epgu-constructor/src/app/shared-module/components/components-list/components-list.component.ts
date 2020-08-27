@@ -79,6 +79,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   // }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.state = {};
     if (changes?.components?.currentValue) {
       this.components.forEach((component) => {
         if (component.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection) {
@@ -90,6 +91,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
           this.loadDictionary(dictionaryName, component);
         }
       });
+      this.changes.emit(this.state);
     }
   }
 
@@ -157,6 +159,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.restService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryName, data, component),
       () => this.loadDictionaryError(dictionaryName),
+      () => this.changes.emit(this.state),
     );
   }
 
