@@ -1,5 +1,6 @@
 @import "src/styles/core/palettes";
 @import "src/styles/core/functions";
+@import "src/styles/core/typography";
 
 .employee-history {
   &__generation,
@@ -20,11 +21,9 @@
     }
 
     &__msg {
+      @include typ-h5();
       padding-top: 5px;
       margin-right: auto;
-      font-size: 18px;
-      line-height: 24px;
-      font-weight: bold;
       margin-left: 16px;
     }
   }
@@ -64,7 +63,7 @@
     }
 
     & > div:first-child {
-      margin-bottom: 24px;
+      margin-bottom: $screen-pad-p;
     }
 
     @include phones-up() {
@@ -78,13 +77,13 @@
         }
 
         &:not(:first-child) {
-          margin-left: 24px;
+          margin-left: $screen-pad-p;
         }
       }
 
       &__hint {
         color: $color-text-helper;
-        font-size: 14px;
+        @include typ-plain-small();
         margin-top: 8px;
         display: block;
       }
@@ -93,14 +92,14 @@
 
   &__date,
   &__input {
-    margin-bottom: 24px;
+    margin-bottom: $screen-pad-p;
   }
 
   &__pushGeneration {
     text-align: center;
 
     &__button {
-      font-size: 16px;
+      @include typ-plain-text();
       padding: 15px;
       display: inline-block;
       margin: 10px auto;
