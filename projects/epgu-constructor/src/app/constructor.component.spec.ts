@@ -25,7 +25,7 @@ describe('ConstructorComponent', () => {
       ],
       providers: [
         NavigationService,
-        {provide: ConstructorService, useClass: ConstructorServiceStub}
+        { provide: ConstructorService, useClass: ConstructorServiceStub }
       ]
     }).compileComponents();
     constructorService = TestBed.inject(ConstructorService);

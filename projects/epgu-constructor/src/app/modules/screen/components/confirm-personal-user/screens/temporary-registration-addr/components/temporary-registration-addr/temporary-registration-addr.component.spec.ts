@@ -27,7 +27,7 @@ describe('TemporaryRegistrationAddrComponent', () => {
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ TemporaryRegistrationAddrComponent ],
       providers: [
-        {provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub}
+        { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     })
     .compileComponents();

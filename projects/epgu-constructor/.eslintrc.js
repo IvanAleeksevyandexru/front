@@ -11,7 +11,8 @@ module.exports = {
     ],
     semi: 'off',
     '@typescript-eslint/semi': ['error'],
-    'no-empty-function': ['error', { "allow": ["constructors"] }]
+    'no-empty-function': ['error', { "allow": ["constructors"] }],
+    'object-curly-spacing': ["error", "always", {"objectsInObjects": false}],
   },
   overrides: [
     // Add this rules, if you use inline templates inside *.component.ts files

@@ -10,7 +10,7 @@ describe('ConstructorConfigService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: CONSTRUCTOR_CONFIG_TOKEN, useValue: {} },
+        { provide: CONSTRUCTOR_CONFIG_TOKEN, useValue: {}},
         ConstructorConfigService
       ]
     });

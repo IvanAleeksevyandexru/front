@@ -13,7 +13,7 @@ describe('TerabyteService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         TerabyteService,
-        {provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub}
+        { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });
     service = TestBed.inject(TerabyteService);

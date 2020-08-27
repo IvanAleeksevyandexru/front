@@ -34,7 +34,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ConfirmPersonalUserDataComponent, ToJsonPipe ],
-      providers: [ ScreenComponentService, {provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub} ]
+      providers: [ ScreenComponentService, { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub } ]
     })
     .compileComponents();
   }));

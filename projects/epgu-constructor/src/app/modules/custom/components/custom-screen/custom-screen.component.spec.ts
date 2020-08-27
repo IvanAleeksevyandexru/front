@@ -47,8 +47,8 @@ describe('CustomScreenComponent', () => {
       ],
       providers: [
         NavigationService,
-        {provide: RestService, useClass: RestServiceStub},
-        {provide: ConstructorService, useClass: ConstructorServiceStub},
+        { provide: RestService, useClass: RestServiceStub },
+        { provide: ConstructorService, useClass: ConstructorServiceStub },
       ]
     })
     .compileComponents();

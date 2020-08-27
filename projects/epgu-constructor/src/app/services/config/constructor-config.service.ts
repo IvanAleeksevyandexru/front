@@ -1,6 +1,6 @@
-import {Inject, Injectable} from '@angular/core';
-import {ConstructorConfigInterface} from '../../../interfaces/constructor-config.interface';
-import {CONSTRUCTOR_CONFIG_TOKEN} from './constructor.config.token';
+import { Inject, Injectable } from '@angular/core';
+import { ConstructorConfigInterface } from '../../../interfaces/constructor-config.interface';
+import { CONSTRUCTOR_CONFIG_TOKEN } from './constructor.config.token';
 
 @Injectable()
 export class ConstructorConfigService {

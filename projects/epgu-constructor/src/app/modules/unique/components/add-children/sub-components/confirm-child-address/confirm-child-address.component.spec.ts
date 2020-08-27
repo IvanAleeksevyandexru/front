@@ -20,7 +20,7 @@ describe('ConfirmChildAddressComponent', () => {
     component = fixture.componentInstance;
     component.userAddress = '';
     component.actions = '';
-    component.childrenData = [{registrationAddress: 'sd', registrationAddressDate: 'fs'}];
+    component.childrenData = [{ registrationAddress: 'sd', registrationAddressDate: 'fs' }];
     component.data = {};
     fixture.detectChanges();
   });

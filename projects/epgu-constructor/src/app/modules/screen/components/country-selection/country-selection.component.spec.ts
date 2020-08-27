@@ -25,8 +25,8 @@ describe.skip('CountrySelectionComponent', () => {
       imports: [ReactiveFormsModule],
       declarations: [ CountrySelectionComponent ],
       providers: [
-        {provide: RestService, useClass: RestServiceStub},
-        {provide: ModalService, useClass: ModalServiceStub},
+        { provide: RestService, useClass: RestServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
       ]
     })
     .compileComponents();

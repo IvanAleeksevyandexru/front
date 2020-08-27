@@ -32,7 +32,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
       providers: [
         UnsubscribeService,
         ScreenComponentService,
-        {provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub}
+        { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     })
     .compileComponents();
