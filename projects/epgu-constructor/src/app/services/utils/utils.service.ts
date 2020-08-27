@@ -53,11 +53,11 @@ export class UtilsService {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
 
-  static formatDate(date: moment.Moment, format: string): string {
+  public formatDate(date: moment.Moment, format: string): string {
     return date.format(format);
   }
 
-  static getDeclension(num: number, forms: string[]): string {
+  public getDeclension(num: number, forms: string[]): string {
     const num0 = Math.abs(num) % 100;
     const n1 = num0 % 10;
 
