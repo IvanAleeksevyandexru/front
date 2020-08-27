@@ -48,7 +48,10 @@
           [data]="(data?.components)[0]"
         ></epgu-constructor-change-list>
 
-        <epgu-constructor-snils *ngSwitchCase="screenComponentName.snils"></epgu-constructor-snils>
+        <epgu-constructor-snils
+          *ngSwitchCase="screenComponentName.SnilsInput"
+          [data]="(data?.components)[0]"
+        ></epgu-constructor-snils>
 
         <epgu-constructor-doc-input
           *ngSwitchCase="screenComponentName.docInput"
