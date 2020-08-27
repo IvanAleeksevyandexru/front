@@ -1,13 +1,13 @@
-@import "src/styles/core/breakpoint";
 @import "src/styles/core/palettes";
+@import "src/styles/core/functions";
 
 .employee-history {
   &__generation,
   &__addedGenerations {
-    box-shadow: 0px 6px 16px $color-box-shadow;
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 24px;
+    @include shadow-second();
+    border-radius: $border-xl;
+    padding: $screen-pad-p;
+    margin-bottom: $screen-pad-p;
   }
 
   &__completed {
