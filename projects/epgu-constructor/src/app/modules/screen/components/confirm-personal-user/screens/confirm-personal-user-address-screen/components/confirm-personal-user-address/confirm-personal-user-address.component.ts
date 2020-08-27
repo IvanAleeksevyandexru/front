@@ -56,6 +56,7 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
 
   setState() {
     this.valueParsed = JSON.parse(this.value);
+    this.value = this.handleDataChange(this.valueParsed);
     if (this.valueParsed.regDate) {
       const date = moment(this.valueParsed.regDate, DATE_STRING_DOT_FORMAT);
       const isValidDate = date.isValid();
@@ -65,7 +66,6 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
         this.valueParsed.regDate = moment().toDate();
       }
     }
-    this.dataEditedEvent.emit(this.valueParsed);
   }
 
   ngOnChanges() {
@@ -73,11 +73,10 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
       this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
         this.valueParsed = change;
         this.value = this.handleDataChange(change);
-        this.value = this.handleDataChange(change);
-        this.dataEditedEvent.emit(this.valueParsed);
+        this.dataEditedEvent.emit(this.value);
       });
     } else {
-      this.setState();
+      this.dataEditedEvent.emit(this.value);
     }
   }
 }
