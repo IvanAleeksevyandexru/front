@@ -1,10 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
+import { DATE_STRING_DOT_FORMAT } from '../../../../../constant/global';
 import { CustomDisplayInterface } from '../../../../../interfaces/custom-component.interface';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 
+const moment = moment_;
 @Component({
   selector: 'epgu-constructor-custom-screen',
   templateUrl: './custom-screen.component.html',
@@ -34,10 +37,15 @@ export class CustomScreenComponent implements OnInit {
   ngOnInit() {
     const cycledFields = this.constructorService.response?.scenarioDto?.cycledFields;
     this.isCycledFields = !!Object.keys(cycledFields).length;
-    if (this.isCycledFields && typeof cycledFields === 'object') {
+    if (this.isCycledFields) {
       this.cycledValues = [...Object.values(cycledFields).map((value) => JSON.parse(value))];
+      this.data.components.forEach((item) => {
+        const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
+        const cycledFieldKey = Object.keys(this.cycledValues[0]).find((key) => key === fieldName);
+        // eslint-disable-next-line no-param-reassign
+        item.value = this.cycledValues[0][cycledFieldKey];
+      });
     }
-    // this.setState();
   }
 
   prevStep() {
@@ -49,8 +57,46 @@ export class CustomScreenComponent implements OnInit {
     this.nextStepEvent.emit(responseData);
   }
 
-  changeComponentsList(event) {
-    this.dataToSend = event;
+  setState(changes) {
+    let stateData = {};
+    if (this.isCycledFields) {
+      // take cycledFields object first key
+      const [cycledFieldsKey] = Object.keys(
+        this.constructorService.response?.scenarioDto?.cycledFields,
+      );
+      // format state data to {fieldName: value} format
+      const stateDataPrepared = Object.keys(changes).reduce((result, key) => {
+        const fieldName =
+          changes[key].component.attrs.fields && changes[key].component.attrs.fields[0].fieldName;
+        if (!fieldName) return result;
+
+        if (typeof changes[key].value === 'object' && moment(changes[key].value).isValid()) {
+          // eslint-disable-next-line no-param-reassign
+          result[fieldName] = moment(changes[key].value).format(DATE_STRING_DOT_FORMAT);
+        } else {
+          // eslint-disable-next-line no-param-reassign
+          result[fieldName] = changes[key].value;
+        }
+        return result;
+      }, {});
+      // flat cycledValues
+      const cycledValuesPrepared = { ...this.cycledValues[0] };
+      // merge cycledValue data and state data, which could be updated
+      const data = { ...cycledValuesPrepared, ...stateDataPrepared };
+      stateData[cycledFieldsKey] = {
+        visited: true,
+        value: JSON.stringify(data),
+      };
+    } else {
+      stateData = this.getPrepareResponseData(changes);
+    }
+
+    return stateData;
+  }
+
+  changeComponentsList(changes) {
+    const responseData = this.setState(changes);
+    this.dataToSend = responseData;
   }
 
   private getPrepareResponseData(data = {}) {

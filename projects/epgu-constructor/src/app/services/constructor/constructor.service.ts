@@ -74,10 +74,11 @@ export class ConstructorService {
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}) {
     const componentId = options.componentId || this.componentId;
+    const isCycledFields = !!Object.keys(this.response?.scenarioDto?.cycledFields).length;
     this.response.scenarioDto.currentValue = {};
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
-    if (this.componentData.type === SCREEN_TYPE.CUSTOM) {
+    if (this.componentData.type === SCREEN_TYPE.CUSTOM || isCycledFields) {
       this.response.scenarioDto.currentValue = data;
     } else {
       this.response.scenarioDto.currentValue[componentId] = {
