@@ -29,7 +29,7 @@
         position: absolute;
         width: 2px;
         height: 20px;
-        background: $button-hit;
+        background: $color-button-hit;
         transform: rotate(45deg);
       }
 
@@ -46,11 +46,11 @@
       padding-right: 50px;
       font-size: 24px;
       line-height: 32px;
-      color: $summer-night;
+      color: $color-summer-night;
     }
 
     &__header {
-      border-bottom: 1px solid $divider;
+      border-bottom: 1px solid $color-devider;
       padding-bottom: 24px;
     }
 
@@ -68,8 +68,6 @@
 
     &__text-wrapper {
       overflow-y: auto;
-      padding: 24px 20px 0 0;
-      margin-right: 6px;
     }
 
     &__controls {

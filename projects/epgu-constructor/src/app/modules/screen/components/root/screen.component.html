@@ -41,13 +41,11 @@
         <epgu-constructor-add-passport
           *ngSwitchCase="screenComponentName.personLookup"
           [data]="(data?.components)[0]"
-          (valueChangedEvent)="changedComponentData($event)"
         ></epgu-constructor-add-passport>
 
         <epgu-constructor-change-list
           *ngSwitchCase="screenComponentName.changeList"
           [data]="(data?.components)[0]"
-          (valueChangedEvent)="changedComponentData($event)"
         ></epgu-constructor-change-list>
 
         <!-- <epgu-constructor-snils

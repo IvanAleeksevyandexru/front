@@ -81,7 +81,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
         if (component.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection) {
           this.initState(component);
         }
-        if (component.type === CUSTOM_COMPONENT_ITEM_TYPE.Dictionary) {
+        if (this.hasDictionary(component.type)) {
           const dictionaryName = component.attrs.dictionaryType;
           this.initDictionary(dictionaryName);
           this.loadDictionary(dictionaryName, component);
@@ -182,5 +182,11 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   private initState(component: CustomComponentInterface) {
     const { id, value } = component;
     this.state[id] = { valid: false, errorMessage: '', value, component };
+  }
+
+  private hasDictionary(type: CUSTOM_COMPONENT_ITEM_TYPE) {
+    return (
+      CUSTOM_COMPONENT_ITEM_TYPE.Dictionary === type || CUSTOM_COMPONENT_ITEM_TYPE.Lookup === type
+    );
   }
 }

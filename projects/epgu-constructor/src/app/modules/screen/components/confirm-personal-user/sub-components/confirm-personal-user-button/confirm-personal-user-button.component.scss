@@ -18,11 +18,9 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 60px;
   padding: 20px;
   @include tablets-up {
     display: inline-block;
-    height: 48px;
     padding: 12px;
     text-align: center;
   }
@@ -33,7 +31,7 @@
 
 .btn--light {
   @include tablets-up {
-    border: 1px solid $egyptian-blue;
+    border: 1px solid $color-button-hit;
   }
   @include tablets-down {
     @include shadow-main();

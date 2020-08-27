@@ -5,33 +5,53 @@
   cursor: pointer;
 }
 
-.answer__btn {
+.answer-btn {
   display: flex;
   width: 100%;
   padding: 16px;
-  background: $white;
+  background: $color-white;
   justify-content: space-between;
   align-items: center;
   font-size: 16px;
   line-height: 24px;
-  color: $egyptian-blue;
+  color: $color-button-hit;
   border-radius: $border-xl;
   cursor: pointer;
   @include shadow-main();
   @include tablets-up {
     padding: 24px 32px;
   }
-}
 
-.answer-btn__hint {
-  // ToDo убрать, как доработают компонент epgu-lib
-  lib-question-help-tip {
-    display: flex;
+  &:focus,
+  &:active {
+    outline: none;
   }
-  margin-left: auto;
+  &:focus {
+    border: 1px dashed $color-devider;
+    @include tablets-up {
+      padding: 23px 31px;
+    }
+    transition-delay: .1s;
+  }
+  &:active {
+    background: $color-background;
+    border: none;
+    @include tablets-up {
+      padding: 24px 32px;
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    margin-left: 10px;
+  }
+
+  &__hint {
+    // ToDo убрать, как доработают компонент epgu-lib
+    lib-question-help-tip {
+      display: flex;
+    }
+    margin-left: auto;
+  }
 }
 
-.answer-btn__icon {
-  flex-shrink: 0;
-  margin-left: 10px;
-}

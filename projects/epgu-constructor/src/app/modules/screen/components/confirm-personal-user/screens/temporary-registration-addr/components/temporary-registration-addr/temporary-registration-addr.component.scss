@@ -5,12 +5,12 @@ $item-hint-mx: 13px;
   display: block;
 }
 
-.item:not(:last-child) {
+.item:not(:last-child), .form {
   margin-bottom: 20px;
 }
 
 .item__hint {
-  background: $light-gray;
+  background: $color-light-gray;
   border-radius: 4px;
   padding: 12px;
   margin: $item-hint-mx $item-hint-mx 0;
@@ -43,5 +43,5 @@ $item-hint-mx: 13px;
   margin-bottom: 4px;
   border-radius: 4px;
   padding: 14px 16px;
-  background: $solitude;
+  background: $color-input;
 }
