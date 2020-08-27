@@ -1,5 +1,4 @@
-@import "../../../../../styles/breakpoint";
-@import "../../../../../styles/variables";
+@import "src/styles/core";
 
 :host {
   display: block;
@@ -33,7 +32,7 @@
         height: 8px;
         margin-top: 5px;
         margin-right: 12px;
-        background: $gosblue;
+        background: $color-gosblue;
         flex-shrink: 0;
         border-radius: 50%;
       }

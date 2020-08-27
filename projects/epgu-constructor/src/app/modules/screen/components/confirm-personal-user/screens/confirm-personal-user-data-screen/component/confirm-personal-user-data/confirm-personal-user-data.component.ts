@@ -1,11 +1,12 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {
   ConfirmUserDataFieldsInterface,
   ConfirmUserDataInterface,
 } from '../../../../../../../../../interfaces/confirm-user-data.interface';
+import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 
 @Component({
-  selector: 'app-confirm-personal-user-data',
+  selector: 'epgu-constructor-confirm-personal-user-data',
   templateUrl: './confirm-personal-user-data.component.html',
   styleUrls: ['./confirm-personal-user-data.component.scss'],
 })
@@ -15,14 +16,22 @@ export class ConfirmPersonalUserDataComponent implements OnInit, OnChanges {
   passportFields: Array<ConfirmUserDataFieldsInterface>;
   @Input() data: ConfirmUserDataInterface;
 
-  ngOnInit(): void {}
+  constructor(public constructorConfigService: ConstructorConfigService) {}
+
+  ngOnInit(): void {
+    this.parseData();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
-      this.fullName = this.getFullName(this.data);
-      this.birthDay = this.getBirthDay(this.data);
-      this.passportFields = this.getPassportFields(this.data);
+      this.parseData();
     }
+  }
+
+  private parseData() {
+    this.fullName = this.getFullName(this.data);
+    this.birthDay = this.getBirthDay(this.data);
+    this.passportFields = this.getPassportFields(this.data);
   }
 
   private getFullName(data: ConfirmUserDataInterface) {

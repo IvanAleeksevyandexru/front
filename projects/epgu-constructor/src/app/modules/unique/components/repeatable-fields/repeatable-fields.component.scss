@@ -1,0 +1,63 @@
+@import "src/styles/core";
+
+.nav {
+  @include navigation-mt();
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: inherit;
+  min-height: inherit;
+  @include tablets-up {
+    min-height: auto;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+  @include tablets-up {
+    margin-top: 32px;
+  }
+  &__btns-group {
+    display: flex;
+    flex-flow: column;
+    & > * {
+      margin: 4px;
+    }
+  }
+  &__btn-submit {
+    width: auto;
+    &::ng-deep button {
+      width: inherit;
+      min-width: 100px;
+    }
+  }
+}
+
+.body {
+  display: flex;
+  text-align: left;
+  @include tablets-down {
+    flex-grow: 1;
+  }
+  &::ng-deep > * {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.btn__add {
+  padding: 15px;
+  border: 1px dashed $color-active-item;
+  box-sizing: border-box;
+  border-radius: 4px;
+  @include tablets-down {
+    width: 100%;
+  }
+}

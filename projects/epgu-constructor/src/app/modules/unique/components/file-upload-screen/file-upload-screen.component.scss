@@ -1,0 +1,31 @@
+@import "src/styles/core";
+
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: inherit;
+  min-height: inherit;
+  @include tablets-up {
+    min-height: auto;
+  }
+}
+
+.info__item{
+  font-size: 16px;
+  line-height: 24px;
+  color: $color-text-helper;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 32px;
+  margin-bottom: 40px;
+
+  @include tablets-up {
+    margin-top: 40px;
+  }
+}

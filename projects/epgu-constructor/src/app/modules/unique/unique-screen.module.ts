@@ -1,10 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { EpguLibModule } from 'epgu-lib';
-import { UniqueScreenComponent } from './components/unique-screen/unique-screen.component';
+import { WebcamModule } from 'ngx-webcam';
+import { SharedModule } from '../../shared-module/shared-components.module';
 import { AddChildrenScreenModule } from './components/add-children/screens/add-children-screen/add-children-screen.module';
-import { EpgucSharedModule } from '../../shared-module/shared-components.module';
+import { FileUploadScreenComponent } from './components/file-upload-screen/file-upload-screen.component';
+import { FileUploadItemComponent } from './components/file-upload-screen/sub-components/file-upload-item/file-upload-item.component';
+import { FileUploadComponent } from './components/file-upload-screen/sub-components/file-upload/file-upload.component';
+import { WebcamShootComponent } from './components/file-upload-screen/sub-components/webcam-shoot/webcam-shoot.component';
+import { RepeatableFieldsComponent } from './components/repeatable-fields/repeatable-fields.component';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
+import { UniqueScreenComponent } from './components/unique-screen/unique-screen.component';
 import {TimeSlotsModule} from './components/time-slots/time-slots.module';
 
 const COMPONENTS = [
@@ -12,15 +18,25 @@ const COMPONENTS = [
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
+  declarations: [
+    ...COMPONENTS,
+    FileUploadScreenComponent,
+    FileUploadComponent,
+    FileUploadItemComponent,
+    WebcamShootComponent,
+    RepeatableFieldsComponent,
+  ],
+  exports: [
+    ...COMPONENTS
+  ],
   imports: [
     CommonModule,
     AddChildrenScreenModule,
+    SharedModule,
+    WebcamModule,
     TimeSlotsModule,
-    EpgucSharedModule,
     EpguLibModule.forChild(),
     SelectMapObjectModule,
-  ]
+  ],
 })
 export class UniqueScreenModule { }

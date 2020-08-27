@@ -7,7 +7,10 @@ export interface ConstructorConfigInterface {
   serviceId: string;
   externalApiUrl: string;
   externalLkApiUrl: string;
+  externalLkUrl: string;
   externalUrl: string;
   yandexMapsApiKey: string;
   isProd: boolean;
+  fileUploadApiUrl: string;
+  fileUploadLocalhostApiUrl: string;
 }

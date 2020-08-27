@@ -1,6 +1,4 @@
-@import "../../../../../../../../../styles/variables";
-@import "../../../../../../../../../styles/breakpoint";
-@import "../../../../../../../../../styles/functions";
+@import "src/styles/core";
 
 
 :host {
@@ -12,7 +10,7 @@
   margin-bottom: 20px;
   &__label {
     font-size: 14px;
-    color: $black;
+    color: $color-black;
     line-height: 20px;
   }
 }
@@ -32,7 +30,7 @@
   margin-bottom: 4px;
   border-radius: 4px;
   padding: 14px 16px;
-  background: $solitude;
+  background: $color-input;
   &__input {
     padding: 0;
   }

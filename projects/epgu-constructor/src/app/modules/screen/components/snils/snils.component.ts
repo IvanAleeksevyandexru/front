@@ -6,7 +6,7 @@ import { checkSnils } from 'ru-validation-codes';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 @Component({
-  selector: 'app-snils',
+  selector: 'epgu-constructor-snils',
   templateUrl: './snils.component.html',
   styleUrls: ['./snils.component.scss'],
 })

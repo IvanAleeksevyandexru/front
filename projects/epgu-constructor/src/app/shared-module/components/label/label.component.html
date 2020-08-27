@@ -1,0 +1,5 @@
+<label class="label" [for]="for">
+  <ng-content></ng-content>
+  <span *ngIf="required"> * </span>
+  <lib-question-help-tip *ngIf="tips">{{ tips | titlecase }}</lib-question-help-tip>
+</label>

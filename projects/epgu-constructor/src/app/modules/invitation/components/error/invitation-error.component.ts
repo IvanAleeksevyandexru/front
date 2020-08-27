@@ -2,12 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormControl } from '@angular/forms';
 
-interface IAttrsError {
+export interface IAttrsError {
   msg: string;
   url: string;
 }
 @Component({
-  selector: 'app-invitation-error',
+  selector: 'epgu-constructor-invitation-error',
   templateUrl: './invitation-error.component.html',
   styleUrls: ['./invitation-error.component.scss'],
 })

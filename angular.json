@@ -12,7 +12,6 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -84,6 +83,8 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "epgu-form-frontend:build",
+            "host": "x.pgu-dev-fed.test.gosuslugi.ru",
+            "port": 4200,
             "proxyConfig": "src/proxy.conf.json",
             "sourceMap": {
               "scripts": true,
@@ -106,37 +107,6 @@
             "browserTarget": "epgu-form-frontend:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "eslintConfig": ".eslintrc.js",
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
@@ -155,7 +125,12 @@
       "projectType": "library",
       "root": "projects/epgu-constructor",
       "sourceRoot": "projects/epgu-constructor/src",
-      "prefix": "lib",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "prefix": "epgu-constructor",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
@@ -169,21 +144,13 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/epgu-constructor/src/test.ts",
-            "tsConfig": "projects/epgu-constructor/tsconfig.spec.json",
-            "karmaConfig": "projects/epgu-constructor/karma.conf.js"
-          }
-        },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": ".eslintrc.js",
+            "eslintConfig": "projects/epgu-constructor/.eslintrc.js",
             "tsConfig": [
               "projects/epgu-constructor/tsconfig.lib.json",
-              "projects/epgu-constructor/tsconfig.spec.json"
+              "tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

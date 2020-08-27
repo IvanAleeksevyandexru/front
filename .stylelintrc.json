@@ -1,0 +1,47 @@
+{
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "extends": "stylelint-config-recommended-scss",
+  "rules": {
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "host"
+        ]
+      }
+    ],
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": [
+          "ng-deep"
+        ]
+      }
+    ],
+    "no-empty-source": null,
+    "color-no-hex": true,
+    "color-named": "never",
+    "color-hex-case": "lower",
+    "selector-type-no-unknown": [
+      true,
+      {
+        "ignoreTypes": [
+          "app-confirm-personal-user-button",
+          "lib-question-help-tip",
+          "lib-dropdown",
+          "lib-radio",
+          "app-label-section",
+          "app-screen-pad",
+          "epguc-screen-container",
+          "app-constructor"
+        ]
+      }
+    ]
+  },
+  "ignoreFiles": [
+    "./dist/**",
+    "./projects/epgu-constructor/src/styles/core/_palettes.scss"
+  ]
+}

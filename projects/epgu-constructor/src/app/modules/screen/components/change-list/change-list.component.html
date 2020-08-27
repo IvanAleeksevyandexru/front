@@ -1,6 +1,6 @@
 <ng-container *ngFor="let field of data.attrs.fields">
   <ng-container *ngIf="field.type === 'input'">
-    <app-label [for]="field.fieldName">{{ field.label }}</app-label>
+    <epgu-constructor-label [for]="field.fieldName">{{ field.label }}</epgu-constructor-label>
     <lib-standard-input
       class="change-list__input"
       [formControl]="fields.get(field.fieldName)"
@@ -8,12 +8,23 @@
       [id]="field.fieldName">
     </lib-standard-input>
   </ng-container>
+  <ng-container *ngIf="field.type === 'checkbox'">
+    <lib-checkbox
+      class="change-list__input"
+      [formControl]="fields.get(field.fieldName)"
+      [labelText]="field.label"
+      [checkboxId]="field.fieldName">
+    </lib-checkbox>
+  </ng-container>
+
 </ng-container>
 
 <button class="btn btn--light change-list__button" (click)="pushFormGroupToResponse()">Добавить данные</button>
 
-<div *ngFor="let item of response; let i = index" class="change-list__item">
-  {{ i + 1 }}. <ng-container *ngFor="let field of data.attrs.fields">
-    {{ item[field.fieldName] }}
-  </ng-container>
+<div *ngFor="let item of response; let i = index" class="chg-l-item">
+  <div class="chg-l-item__order">{{ i + 1 }}. </div>
+  <div class="chg-l-item__title">
+    <ng-container *ngFor="let field of data.attrs.fields">{{ item[field.fieldName] }}</ng-container>
+  </div>
+  <div class="chg-l-item__del icon-close" (click)="removeItem(item)"></div>
 </div>

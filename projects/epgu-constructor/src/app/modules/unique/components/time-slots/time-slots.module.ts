@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EpguLibModule } from 'epgu-lib';
 import { TimeSlotsComponent } from './time-slots.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import {EpgucSharedModule} from '../../../../shared-module/shared-components.module';
+import { SharedModule } from '../../../../shared-module/shared-components.module';
 import {TimeSlotsService} from './time-slots.service';
 
 const COMPONENTS = [
@@ -16,7 +16,7 @@ const COMPONENTS = [
   providers: [TimeSlotsService],
   imports: [
     CommonModule,
-    EpgucSharedModule,
+    SharedModule,
     ReactiveFormsModule,
     EpguLibModule.forChild(),
   ]

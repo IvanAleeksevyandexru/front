@@ -9,10 +9,10 @@ import {
 } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
-interface EgpuResponseComponentInterfaceForChangeList extends EgpuResponseComponentInterface {
+export interface ChangeListComponentInterface extends ComponentInterface {
   attrs: {
     fields: Array<IField>;
   };
@@ -23,13 +23,13 @@ interface IField {
   type: 'input';
 }
 @Component({
-  selector: 'app-change-list',
+  selector: 'epgu-constructor-change-list',
   templateUrl: './change-list.component.html',
   styleUrls: ['./change-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangeListComponent implements OnInit, OnChanges {
-  @Input() data: EgpuResponseComponentInterfaceForChangeList;
+  @Input() data: ChangeListComponentInterface;
   @Output() valueChangedEvent = new EventEmitter<Array<any>>();
   response: Array<any>;
   fields: FormGroup;
@@ -39,6 +39,7 @@ export class ChangeListComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     // TODO eliskachev это для тебя нужно заполнить данные;
     this.screenComponentService.dataToSend = '';
+    this.fields = this.generateFormControls();
   }
 
   ngOnChanges(): void {
@@ -50,7 +51,7 @@ export class ChangeListComponent implements OnInit, OnChanges {
     if (this.fields.valid) {
       this.response.unshift(this.fields.getRawValue());
       this.fields.reset();
-      this.valueChangedEvent.emit(this.response);
+      this.screenComponentService.dataToSend = this.response;
     }
   }
 
@@ -64,5 +65,9 @@ export class ChangeListComponent implements OnInit, OnChanges {
     }
 
     return new FormGroup(fields);
+  }
+
+  removeItem(item) {
+    this.response = this.response.filter((el) => el !== item);
   }
 }

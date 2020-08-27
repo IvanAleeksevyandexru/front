@@ -1,16 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup } from '@angular/forms';
 import * as moment_ from 'moment';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { map, takeUntil } from 'rxjs/operators';
-import { CONSTANTS } from '../../../../../constant/global';
-import { EgpuResponseComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { DATE_STRING_DOT_FORMAT } from '../../../../../constant/global';
+import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 
 const moment = moment_;
 
-interface EgpuResponseComponentInterfaceForDocInput extends EgpuResponseComponentInterface {
+export interface DocInputComponentInterface extends ComponentInterface {
   attrs: {
     fields: Array<IField>;
   };
@@ -29,19 +30,21 @@ interface IForm {
 }
 
 @Component({
-  selector: 'app-doc-input',
+  selector: 'epgu-constructor-doc-input',
   templateUrl: './doc-input.component.html',
   styleUrls: ['./doc-input.component.scss'],
   providers: [UnsubscribeService],
 })
 export class DocInputComponent implements OnInit {
-  @Input() data: EgpuResponseComponentInterfaceForDocInput;
-  @Output() nextStepEvent = new EventEmitter<any>();
+  @Input() data: DocInputComponentInterface;
 
   form = new FormGroup({});
   readonly maxDate = new Date();
 
-  constructor(private ngUnsubscribe$: UnsubscribeService) {}
+  constructor(
+    private ngUnsubscribe$: UnsubscribeService,
+    private screenComponentService: ScreenComponentService,
+  ) {}
 
   ngOnInit(): void {
     this.generateFormGroup();
@@ -56,10 +59,12 @@ export class DocInputComponent implements OnInit {
       .pipe(
         map((form: IForm) => ({
           ...form,
-          date: moment(form.date).format(CONSTANTS.dateFormat),
+          date: moment(form.date).format(DATE_STRING_DOT_FORMAT),
         })),
         takeUntil(this.ngUnsubscribe$),
       )
-      .subscribe((next: IForm) => this.nextStepEvent.emit(next));
+      .subscribe((next: IForm) => {
+        this.screenComponentService.dataToSend = next;
+      });
   }
 }

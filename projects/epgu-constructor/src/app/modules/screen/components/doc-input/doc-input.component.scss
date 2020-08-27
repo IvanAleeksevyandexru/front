@@ -1,4 +1,4 @@
-@import "../../../../../styles/variables";
+@import "src/styles/core";
 
 .doc-input-screen {
 
@@ -16,6 +16,6 @@
     display: block;
     margin: 7px 0;
     text-align: left;
-    color: $gray;
+    color: $color-gray;
   }
 }

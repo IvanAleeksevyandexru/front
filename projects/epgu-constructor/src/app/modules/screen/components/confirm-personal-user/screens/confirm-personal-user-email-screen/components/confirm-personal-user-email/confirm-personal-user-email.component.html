@@ -1,6 +1,6 @@
 <form [formGroup]="emailForm">
   <div class="flex-row">
-    <app-label for="email">{{ label }}</app-label>
+    <epgu-constructor-label for="email">{{ label }}</epgu-constructor-label>
     <a
       href="javascript:void(0);"
       (click)="handleClick()"
@@ -18,4 +18,7 @@
     [validationShowOn]="validationShowOn"
     class="content content__input"
   ></lib-plain-input>
+  <div class="error">
+    <small>{{ error }}</small>
+  </div>
 </form>

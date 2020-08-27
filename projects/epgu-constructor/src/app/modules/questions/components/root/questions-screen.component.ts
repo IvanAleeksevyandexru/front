@@ -1,20 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { NavigationService } from '../../../../layout/service/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import {
-  EgpuResponseQuestionsDisplayComponentAttrsActionsInterface,
-  EgpuResponseQuestionsDisplayInterface,
+  QuestionsComponentActionsInterface,
+  QuestionsDisplayInterface,
 } from '../interface/question-block.interface';
 
 @Component({
-  selector: 'app-question-screen',
+  selector: 'epgu-constructor-question-screen',
   templateUrl: './questions-screen.component.html',
   styleUrls: ['./questions-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class QuestionsScreenComponent implements OnInit {
-  @Input() data: EgpuResponseQuestionsDisplayInterface;
+export class QuestionsScreenComponent {
+  @Input() data: QuestionsDisplayInterface;
+  @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
   @Output() prevStepEvent = new EventEmitter();
 
@@ -24,13 +25,11 @@ export class QuestionsScreenComponent implements OnInit {
       .subscribe(() => this.goPrevStepEvent());
   }
 
-  ngOnInit(): void {}
-
   goPrevStepEvent() {
     this.prevStepEvent.emit();
   }
 
-  answerChoose(answer: EgpuResponseQuestionsDisplayComponentAttrsActionsInterface): void {
+  answerChoose(answer: QuestionsComponentActionsInterface): void {
     this.nextStepEvent.emit(answer.value);
   }
 }

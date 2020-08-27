@@ -1,0 +1,15 @@
+@import "src/styles/core";
+
+:host {
+  display: block;
+  margin: 0 0 4px;
+}
+.label {
+  display: block;
+  text-align: left;
+  color: $color-summer-night;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}

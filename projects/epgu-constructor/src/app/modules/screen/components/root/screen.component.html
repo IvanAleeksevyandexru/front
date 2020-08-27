@@ -1,64 +1,73 @@
-<app-screen-container>
-  <div class="inner">
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container>
+  <form class="inner" [formGroup]="form">
     <div *ngIf="data?.header" class="head">
-      <app-page-name>{{ data.header }}</app-page-name>
+      <epgu-constructor-page-name>{{ data.header }}</epgu-constructor-page-name>
     </div>
 
-    <app-screen-pad class="body">
-      <ng-container [ngSwitch]="(data?.components)[0].type">
-        <app-confirm-personal-user-address-screen
+    <epgu-constructor-screen-pad class="body">
+      <ng-container [ngSwitch]="data?.components[0].type">
+        <epgu-constructor-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
-          [data]="(data?.components)[0]"
-        ></app-confirm-personal-user-address-screen>
+          [data]="data?.components[0]"
+        ></epgu-constructor-confirm-personal-user-address-screen>
 
-        <app-confirm-personal-user-data-screen
+        <epgu-constructor-confirm-personal-user-data-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserData"
-          [data]="(data?.components)[0]"
+          [data]="data?.components[0]"
         >
-        </app-confirm-personal-user-data-screen>
+        </epgu-constructor-confirm-personal-user-data-screen>
 
-        <app-confirm-personal-user-email-screen
+        <epgu-constructor-confirm-personal-user-email-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserEmail"
-          [data]="(data?.components)[0]"
+          [data]="data?.components[0]"
+          [errors]="errors"
         >
-        </app-confirm-personal-user-email-screen>
+        </epgu-constructor-confirm-personal-user-email-screen>
 
-        <app-confirm-personal-user-phone-screen
+        <epgu-constructor-confirm-personal-user-phone-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserPhone"
-          [data]="(data?.components)[0]"
+          [data]="data?.components[0]"
+          [errors]="errors"
         >
-        </app-confirm-personal-user-phone-screen>
+        </epgu-constructor-confirm-personal-user-phone-screen>
 
-        <app-temporary-registration-addr-screen
+        <epgu-constructor-temporary-registration-addr-screen
           *ngSwitchCase="screenComponentName.registrationAddr"
-          [data]="(data?.components)[0]"
+          [data]="data?.components[0]"
         >
-        </app-temporary-registration-addr-screen>
+        </epgu-constructor-temporary-registration-addr-screen>
 
-        <app-add-passport
+        <epgu-constructor-add-passport
           *ngSwitchCase="screenComponentName.personLookup"
           [data]="(data?.components)[0]"
-          (valueChangedEvent)="changedComponentData($event)"
-        ></app-add-passport>
+        ></epgu-constructor-add-passport>
 
-        <app-change-list
+        <epgu-constructor-change-list
           *ngSwitchCase="screenComponentName.changeList"
           [data]="(data?.components)[0]"
-          (valueChangedEvent)="changedComponentData($event)"
-        ></app-change-list>
+        ></epgu-constructor-change-list>
 
-        <app-snils *ngSwitchCase="screenComponentName.snils"></app-snils>
+        <epgu-constructor-snils *ngSwitchCase="screenComponentName.snils"></epgu-constructor-snils>
 
-        <app-doc-input
+        <epgu-constructor-doc-input
           *ngSwitchCase="screenComponentName.docInput"
-          [data]="(data?.components)[0]"
-          (nextStepEvent)="changedComponentData($event)"
-        ></app-doc-input>
+          [data]="data?.components[0]"></epgu-constructor-doc-input>
+
+        <epgu-constructor-country-selection
+          *ngSwitchCase="screenComponentName.countryApostil"
+          [form]="form"
+          [data]="data?.components[0]"
+          (changeComponentSettings)="changeComponentSettings($event)"
+          (changeComponentData)="changeComponentData($event)"
+        >
+        </epgu-constructor-country-selection>
       </ng-container>
-    </app-screen-pad>
+    </epgu-constructor-screen-pad>
 
     <div class="footer">
       <lib-button
+        *ngIf="componentSetting.displayContinueBtn"
         [showLoader]="constructorService.isLoading"
         (click)="nextStep()"
         class="footer__btn-submit"
@@ -66,6 +75,18 @@
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
       </lib-button>
+      <div *ngIf="componentSetting.displayWarningAnswers"
+           class="footer__warning-answers">
+        <epgu-constructor-answer-button
+          (click)="nextStep()"
+          [data]="{ label: 'Всё равно продолжить'}">
+        </epgu-constructor-answer-button>
+        <epgu-constructor-answer-button
+          class="footer__answer-btn"
+          (click)="goToHomePage()"
+          [data]="{ label: 'Вернуться в личный кабинет'}">
+        </epgu-constructor-answer-button>
+      </div>
     </div>
-  </div>
-</app-screen-container>
+  </form>
+</epgu-constructor-screen-container>

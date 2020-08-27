@@ -1,4 +1,5 @@
-<app-invitation-error
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+<epgu-constructor-invitation-error
   *ngIf="data?.components[0].type === typeComponent.invitationError"
   (getEmail)="sendEmail($event)"
-  [attrs]="data?.components[0].attrs"></app-invitation-error>
+  [attrs]="data?.components[0].attrs"></epgu-constructor-invitation-error>

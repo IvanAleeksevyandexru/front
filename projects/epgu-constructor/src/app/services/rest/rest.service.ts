@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { DictionaryOptionsInterface, DictionaryResponse } from '../../../interfaces/dictionary-options.interface';
-import { EgpuResponseInterface } from '../../../interfaces/epgu.service.interface';
+import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { MockService } from '../mock/mock.service';
 
@@ -14,7 +15,7 @@ export class RestService {
 
   userId = '1000299353';
   // eslint-disable-next-line max-len
-  token = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTc5MDUzMjgsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl90cm0_b2lkPTEwMDAyOTkzNTMmbW9kZT13IGh0dHA6XC9cL2VzaWEuZ29zdXNsdWdpLnJ1XC91c3JfaW5mP29pZD0xMDAwMjk5MzUzJm1vZGU9dyBodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvdXNyX3NlYz9tb2RlPXcmb2lkPTEwMDAyOTkzNTMiLCJpc3MiOiJodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvIiwidXJuOmVzaWE6c2lkIjoiZTUwZDlmZmJlODA0YTRkZjY4NzI5Mzc1MTljMzRmNDExYzM2MzQxMzk1NGI3ZWE4MDE5ZjNjZTI3NDVhZGFiMyIsInVybjplc2lhOnNial9pZCI6MTAwMDI5OTM1MywiZXhwIjoxNTk3OTkxNzI4LCJpYXQiOjE1OTc5MDUzMjgsImNsaWVudF9pZCI6IlBHVSJ9.gPSeau7tk1hcXFg72IsIeSXSZ7NeCpB1tfW2zRACGC2ZvLUyqGoYlw72xOBStc6mbEQsrItB1GS6jrbtGYag0d9wHCtdcDMiXN0CugVzChuQthETHp2pzYFupTOKuCzgyxD0YjMCp0WlOkMgL_vgjM0vycrBSxJUBbgeiI2THSLaX0JWZouqgKuMymZdLBeI2vmeqoV-YxTlEy7FMjug02ebRmss-dWV481iIzwoBPPQkcrwkgT8TemWH8thgP9_zjAuQax92Tx6BQXzHx9fagHoilWwZh8X9Ib9qdK5Wf5_pefhIW8VjXOAcFxUvo3mYB3wjcJwo5hW8F8J9UhKZA';
+  token = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTg0MzI2MTYsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl90cm0_b2lkPTEwMDAyOTkzNTMmbW9kZT13IGh0dHA6XC9cL2VzaWEuZ29zdXNsdWdpLnJ1XC91c3JfaW5mP29pZD0xMDAwMjk5MzUzJm1vZGU9dyBodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvdXNyX3NlYz9tb2RlPXcmb2lkPTEwMDAyOTkzNTMiLCJpc3MiOiJodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvIiwidXJuOmVzaWE6c2lkIjoiZGQxOTdmNmYxYjhkMjkxODBmZWU5ZTBmOWZjY2U2ZDg4ZDlhZTI0Mjg2ZDI0NDA4NTBmMTlmZGUwMDJjMGNhNiIsInVybjplc2lhOnNial9pZCI6MTAwMDI5OTM1MywiZXhwIjoxNTk4NTE5MDE2LCJpYXQiOjE1OTg0MzI2MTYsImNsaWVudF9pZCI6IlBHVSJ9.YtpKb0qWova8wL6J-36-f_JWNQHV52KgdzpGWsVg-bS7H3m3qwC_qHDUnhOzyu0R0BHnYJEpmGDAvrk7X3o6BbGWDSFM7LtVkG7yUmpFbTtxkt1LBtOrtgqFKFSaTPQtSScARWd6wKUmKYRU5Kl_u__v09l9NEfWHjJOK5yncxt4A9Dsyfc0XzwpBjFNoofEGW9PIBlB9OmBjp2rfshNuNHiNW3ikgbr8Bi_N-sECy7GFsm-JaPPx3B4cdBzXPj3klWp4XQLH74Ftf9eU8sGbqNySJaK_gNO_z11PBVDTNm0p3aBjlzwamPToRrPR0hjiS8xFbLndPX8jorL4gyarw';
   currentUserId: string;
   currentUserToken: string;
 
@@ -34,17 +35,18 @@ export class RestService {
 
   public getData() {
     const path = `${this.apiUrl}/getService/${this.serviceId}`;
-    return this.http.get<EgpuResponseInterface>(path, {
+    return this.http.get<ResponseInterface>(path, {
       withCredentials: false
     });
   }
 
   public getNextStep(data) {
     const path = `${this.apiUrl}/service/${this.serviceId}/scenario/getNextStep`;
-    return this.http.post<EgpuResponseInterface>(path, {
+    data.scenarioDto.userId = this.currentUserId;
+    data.scenarioDto.token = this.currentUserToken;
+    return this.http.post<ResponseInterface>(path, {
       ...data,
-      userId: this.currentUserId,
-      token: this.currentUserToken,
+
     }, {
       withCredentials: false
     });
@@ -52,16 +54,16 @@ export class RestService {
 
   public getPrevStep(data) {
     const path = `${this.apiUrl}/service/${this.serviceId}/scenario/getPrevStep`;
-    return this.http.post<EgpuResponseInterface>(path, {
-      ...data,
-      userId: this.currentUserId,
-      token: this.currentUserToken,
+    data.scenarioDto.userId = this.currentUserId;
+    data.scenarioDto.token = this.currentUserToken;
+    return this.http.post<ResponseInterface>(path, {
+      ...data
     }, {
       withCredentials: false
     });
   }
 
-  getDictionary(dictionaryName: string, options: DictionaryOptionsInterface = {}) {
+   getDictionary(dictionaryName: string, options: DictionaryOptionsInterface = {}) {
     const path = `${this.dictionaryUrl}/${dictionaryName}`;
     return this.http.post<DictionaryResponse>(path, {
       filter: options.filter,

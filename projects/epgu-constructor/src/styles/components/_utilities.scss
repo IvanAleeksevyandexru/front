@@ -1,0 +1,8 @@
+@import '../core/functions';
+
+.shadow {
+  @include shadow-main();
+}
+.first-letter-uppercase {
+  @include first-letter-uppercase();
+}

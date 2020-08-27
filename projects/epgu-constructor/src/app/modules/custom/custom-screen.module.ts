@@ -1,25 +1,22 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CustomScreenComponent } from './components/custom-screen/custom-screen.component';
+import { NgModule } from '@angular/core';
 import { EpguLibModule } from 'epgu-lib';
-import {LabelSectionComponent} from './components/lablel-section/label-section.component';
-import { ForeignCitizenshipComponent } from './components/foreign-citizenship/foreign-citizenship.component';
-import {EpgucSharedModule} from '../../shared-module/shared-components.module';
+import { SharedModule } from '../../shared-module/shared-components.module';
+import { CustomScreenComponent } from './components/custom-screen/custom-screen.component';
+import { RadioInputComponent } from './components/radio-input/radio-input.component';
 
-const COMPONENTS = [
-  CustomScreenComponent
-]
+const COMPONENTS = [CustomScreenComponent, RadioInputComponent];
 
 @NgModule({
-  declarations: [...COMPONENTS,
-    LabelSectionComponent,
-    ForeignCitizenshipComponent],
+  declarations: [
+    ...COMPONENTS,
+  ],
   exports: [
     ...COMPONENTS
   ],
   imports: [
     CommonModule,
-    EpgucSharedModule,
+    SharedModule,
     EpguLibModule.forChild(),
   ]
 })

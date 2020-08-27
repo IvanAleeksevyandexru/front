@@ -1,56 +1,16 @@
-<app-screen-container>
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container class="screen-container">
   <div class="inner">
     <div *ngIf="data?.header" class="head">
-      <app-page-name>{{ data?.header }}</app-page-name>
+      <epgu-constructor-page-name>{{ data?.header }}</epgu-constructor-page-name>
     </div>
 
-    <app-screen-pad class="body">
-      <form #customForm="ngForm" action="" class="form">
-        <ng-container *ngFor="let componentData of data?.components">
-          <ng-container [ngSwitch]="componentData.type">
-            <div class="form__item" *ngSwitchCase="componentType.LabelSection">
-              <app-label-section [name]="componentData.label"></app-label-section>
-            </div>
-
-            <div class="form__item" *ngSwitchCase="componentType.Dictionary">
-              <div class="form__title">{{ componentData.label }}</div>
-              <lib-dropdown
-                class="cs__select cs-select"
-                (changed)="selectDictionary($event, componentData)"
-                [items]="dictionary[componentData?.attrs?.dictionaryType]?.list"
-              ></lib-dropdown>
-            </div>
-
-            <div class="form__item" *ngSwitchCase="componentType.ForeignCitizenship">
-              <div class="form__title">{{ componentData.label }}</div>
-              <app-foreign-citizenship></app-foreign-citizenship>
-            </div>
-
-            <div class="form__item" *ngSwitchCase="componentType.StringInput">
-              <div class="form__title">{{ componentData.label }}</div>
-              <lib-plain-input
-                [invalid]="!state[componentData.id].valid"
-                [name]="componentData.id"
-                (change)="inputChange($event, componentData)"
-                [validationShowOn]="validationShowOn"
-              ></lib-plain-input>
-              <div class="form__error">
-                <small *ngIf="!state[componentData.id].valid"
-                  >{{ state[componentData.id]?.errorMessage }}
-                </small>
-              </div>
-            </div>
-
-            <div class="form__item" *ngSwitchCase="componentType.DateInput">
-              <div class="form__title">{{ componentData.label }}</div>
-              <div>Компонент не настроен</div>
-              <!--            Нужно настраивать почему-то вываливается ошибка-->
-              <!--            <lib-date-picker (changed)="dateChage($event, componentData)"></lib-date-picker>-->
-            </div>
-          </ng-container>
-        </ng-container>
-      </form>
-    </app-screen-pad>
+    <epgu-constructor-screen-pad class="body">
+      <epgu-constructor-components-list
+        (changes)="changeComponentsList($event)"
+        [components]="data?.components"
+      ></epgu-constructor-components-list>
+    </epgu-constructor-screen-pad>
 
     <div class="footer">
       <lib-button
@@ -61,4 +21,4 @@
       >
     </div>
   </div>
-</app-screen-container>
+</epgu-constructor-screen-container>

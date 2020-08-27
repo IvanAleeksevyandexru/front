@@ -1,18 +1,30 @@
-<ng-container [ngSwitch]="(data?.components)[0].type">
-  <app-add-children-screen
+<ng-container [ngSwitch]="data?.components[0].type">
+  <epgu-constructor-add-children-screen
     *ngSwitchCase="uniqueComponentName.childrenListUnder14"
     (nextStepEvent)="nextStep($event)"
-    [data]="(data?.components)[0]"
+    [data]="data?.components[0]"
     [header]="data?.header"
-  ></app-add-children-screen>
-  <app-select-map-object
+  ></epgu-constructor-add-children-screen>
+  <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
     [data]="data"
     (nextStepEvent)="nextStep($event)">
-  </app-select-map-object>
-  <app-time-slots
+  </epgu-constructor-select-map-object>
+  <epgu-constructor-file-upload-screen
+    *ngSwitchCase="uniqueComponentName.fileUploadComponent"
+    [data]="data?.components[0]"
+    [header]="data?.label"
+    [submitLabel]="data?.submitLabel"
+    (nextStepEvent)="nextStep($event)"
+  ></epgu-constructor-file-upload-screen>
+  <epgu-constructor-repeatable-fields
+    *ngSwitchCase="uniqueComponentName.repeatableFields"
+    (nextStepEvent)="nextStep($event)"
+    [data]="data"
+  ></epgu-constructor-repeatable-fields>
+  <epgu-constructor-time-slots
     *ngSwitchCase="uniqueComponentName.timeSlot"
     [data]="data"
     (nextStepEvent)="nextStep($event)">
-  </app-time-slots>
+  </epgu-constructor-time-slots>
 </ng-container>

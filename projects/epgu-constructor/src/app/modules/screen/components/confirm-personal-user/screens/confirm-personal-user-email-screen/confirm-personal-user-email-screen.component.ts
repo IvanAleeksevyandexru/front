@@ -1,14 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { EgpuResponseComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
 import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
 
 @Component({
-  selector: 'app-confirm-personal-user-email-screen',
+  selector: 'epgu-constructor-confirm-personal-user-email-screen',
   templateUrl: './confirm-personal-user-email-screen.component.html',
   styleUrls: ['./confirm-personal-user-email-screen.component.scss'],
 })
 export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
-  @Input() data: EgpuResponseComponentInterface;
+  @Input() data: ComponentInterface;
+  @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
   isEditable: boolean;
 
@@ -18,15 +19,7 @@ export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
     this.screenComponentService.dataToSend = this.data.value;
   }
 
-  clickToAction(event): void {
-    const { action } = event;
-    switch (action) {
-      case 'editUserEmail':
-        this.isEditable = true;
-        break;
-      default:
-        this.nextStepEvent.emit(this.data.value);
-        break;
-    }
+  clickToAction(action: NotificationAction) {
+    console.log(action);
   }
 }

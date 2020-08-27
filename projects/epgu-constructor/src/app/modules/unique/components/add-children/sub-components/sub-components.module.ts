@@ -13,7 +13,7 @@ import {
 import {
   SubComponentsModule as ConfirmPersonalUserSubComponentsModule
 } from '../../../../screen/components/confirm-personal-user/sub-components/sub-components.module';
-import {EpgucSharedModule} from '../../../../../shared-module/shared-components.module';
+import { SharedModule } from '../../../../../shared-module/shared-components.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const COMPONENTS = [
@@ -29,7 +29,7 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     BrowserAnimationsModule,
-    EpgucSharedModule,
+    SharedModule,
     QuestionScreenModule,
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserSubComponentsModule,

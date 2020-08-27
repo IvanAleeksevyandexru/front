@@ -1,4 +1,4 @@
-export enum COMPONENT_TYPE {
+export enum SCREEN_TYPE {
   'QUESTION' = 'QUESTION',
   'INFO' = 'INFO',
   'COMPONENT' = 'COMPONENT', // внутри этого компонента внутри ровна один компонент
@@ -17,7 +17,8 @@ export enum SCREEN_COMPONENT_NAME {
   'personLookup' = 'PersonLookup',
   'changeList' = 'ChangeList',
   'snils' = 'StringInput',
-  'docInput' = 'DocInput'
+  'docInput' = 'DocInput',
+  'countryApostil' = 'CountryApostil'
 }
 
 export enum INFO_SCREEN_COMPONENT {
@@ -25,12 +26,21 @@ export enum INFO_SCREEN_COMPONENT {
 }
 
 export enum UNIQUE_COMPONENT_NAME {
-  'childrenListUnder14' = 'ChildrenListUnder14',
+  childrenListUnder14 = 'ChildrenListUnder14',
+  fileUploadComponent = 'FileUploadComponent',
   'addPassport' = 'AddPassport',
   'timeSlot' = 'TimeSlot',
   'mapService' = 'MapService',
+  'repeatableFields' = 'RepeatableFields',
 }
 
-export enum CONSTANTS {
-  'dateFormat' = 'DD.MM.YYYY'
-}
+export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';
+export const DATE_STRING_DASH_FORMAT = 'DD-MM-YYYY';
+
+export const FMS_COUNTRIES_DICTIONARY = 'FMS_COUNTRIES';
+export const RUSSIA_DICTIONARY_NAME = 'РОССИЯ'
+
+/**
+ * Качество фото с камеры в котором будет сохраняться для компонента загрузки файлов
+ */
+export const imageCameraQuality = 0.9;

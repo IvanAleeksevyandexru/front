@@ -1,10 +1,10 @@
-<app-screen-container>
+<epgu-constructor-screen-container>
   <div class="inner">
     <div *ngIf="data?.header" class="head">
-      <app-page-name>{{ data.header }}</app-page-name>
+      <epgu-constructor-page-name>{{ data.header }}</epgu-constructor-page-name>
     </div>
 
-    <app-screen-pad class="body">
+    <epgu-constructor-screen-pad class="body">
       <div class="card">
         <label>Выберите дату и время</label>
         <div class="months-list">
@@ -51,8 +51,7 @@
           </div>
         </div>
       </div>
-    </app-screen-pad>
-
+    </epgu-constructor-screen-pad>
     <div class="footer">
       <lib-button
         [showLoader]="constructorService.isLoading || bookingProgress"
@@ -64,4 +63,19 @@
       </lib-button>
     </div>
   </div>
-</app-screen-container>
+  <div class="verify-modal-wrap" *ngIf="changeTSConfirm">
+    <div class="verify-modal">
+      <div class="verify-modal-header">
+        <a class="close-button" (click)="closeModal()"></a>
+      </div>
+      <div class="verify-modal-body">
+        Вы уверены, что хотите поменять забронированное время?
+      </div>
+      <div class="buttons-row">
+        <lib-button *ngFor="let button of dialogButtons"
+                    (click)="button.action ? button.action($event) : null"
+                    [classList]="button.classes">{{button.text}}</lib-button>
+      </div>
+    </div>
+  </div>
+</epgu-constructor-screen-container>

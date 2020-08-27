@@ -1,0 +1,93 @@
+<form #customForm="ngForm" action="" class="form">
+  <ng-container *ngFor="let componentData of components">
+    <ng-container [ngSwitch]="componentData.type">
+      <div class="form__item" *ngSwitchCase="componentType.LabelSection">
+        <epgu-constructor-label-section
+          class="label"
+          [name]="componentData.label"
+        ></epgu-constructor-label-section>
+      </div>
+
+      <div class="form__item" *ngSwitchCase="componentType.Dictionary">
+        <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+        <lib-dropdown
+          class="cs__select cs-select"
+          (changed)="selectDictionary($event, componentData)"
+          [items]="dictionary[componentData?.attrs?.dictionaryType]?.list"
+        ></lib-dropdown>
+      </div>
+
+      <div class="form__item" *ngSwitchCase="componentType.Lookup">
+        <epgu-constructor-label>{{componentData.label}}</epgu-constructor-label>
+        <lib-lookup
+          [queryMinSymbolsCount]="0"
+          [searchCaseSensitive]="false"
+          (changed)="selectDictionary($event, componentData)"
+          [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-lookup>
+      </div>
+
+      <div class="form__item" *ngSwitchCase="componentType.StringInput">
+        <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+        <lib-plain-input
+          [invalid]="!state[componentData.id].valid"
+          [name]="componentData.id"
+          (change)="inputChange($event, componentData)"
+          [validationShowOn]="validationShowOn"
+        ></lib-plain-input>
+        <div class="form__error">
+          <small *ngIf="!state[componentData.id].valid"
+            >{{ state[componentData.id]?.errorMessage }}
+          </small>
+        </div>
+      </div>
+
+      <div class="form__item" *ngSwitchCase="componentType.RadioInput">
+        <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+        <div class="form__radio__block">
+          <lib-radio *ngFor="let item of componentData?.attrs?.supportedValues"
+                     [name]="componentData.id"
+                     [labelText]="item.label"
+                     (change)="inputChange($event, componentData)"
+                     [value]="item.value">
+
+          </lib-radio>
+        </div>
+      </div>
+
+      <div class="form__item" *ngSwitchCase="componentType.CompositeRadioButton">
+        <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+        <div class="form__radio__inline">
+          <lib-radio
+            [name]="componentData.id"
+            (change)="inputChange($event, componentData)"
+            [value]="true"
+            labelText="Да">
+
+          </lib-radio>
+          <lib-radio
+            [name]="componentData.id"
+            (change)="inputChange($event, componentData)"
+            [value]="false"
+            labelText="Нет">
+
+          </lib-radio>
+        </div>
+      </div>
+
+      <div class="form__item" *ngSwitchCase="componentType.DateInput">
+        <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+        <lib-date-picker
+          [name]="componentData.id"
+          [(ngModel)]="state[componentData.id].value"
+        ></lib-date-picker>
+      </div>
+
+      <div class="form__item" *ngSwitchCase="componentType.RadioInput">
+        <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+        <epgu-constructor-radio-input *ngFor="let radio in componentData.attrs.supportedValues">
+          <lib-radio [value]="radio.value" [labelText]="radio.label"></lib-radio>
+        </epgu-constructor-radio-input>
+      </div>
+    </ng-container>
+  </ng-container>
+</form>

@@ -1,19 +1,22 @@
-<app-confirm-personal-user-screen-layout>
+<epgu-constructor-confirm-personal-user-screen-layout>
   <div class="body">
-    <app-confirm-personal-user-email
+    <epgu-constructor-confirm-personal-user-email
       [label]="data?.label"
       [data]="data?.value"
-      [isEditable]="isEditable"
-      [isEditButtonShown]="true"
-    ></app-confirm-personal-user-email>
+      [error]="errors && errors[data?.id]"
+      [isEditButtonShown]="data?.attrs?.actions?.length === 1"
+    ></epgu-constructor-confirm-personal-user-email>
   </div>
 
   <div class="footer">
-    <app-confirm-personal-user-button
-      *ngFor="let action of data?.attrs.actions"
-      [action]="action.method"
-      (click)="clickToAction(action)"
-      >{{ action.label }}</app-confirm-personal-user-button
-    >
+    <ng-container #actions *ngIf="data?.attrs?.actions?.length > 1">
+      <epgu-constructor-confirm-personal-user-button
+        class="confirm-personal-user-button"
+        *ngFor="let action of data?.attrs.actions"
+        [action]="action.method"
+        (tap)="clickToAction(action)">
+        {{ action.label }}
+      </epgu-constructor-confirm-personal-user-button>
+    </ng-container>
   </div>
-</app-confirm-personal-user-screen-layout>
+</epgu-constructor-confirm-personal-user-screen-layout>

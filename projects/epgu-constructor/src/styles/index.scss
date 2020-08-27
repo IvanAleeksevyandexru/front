@@ -1,0 +1,71 @@
+@import "core";
+@import "components";
+
+// TODO: remove all normalize css styles, it may affect app's style
+// stylelint-disable
+
+.epgu-form {
+  color: $color-summer-night;
+
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+  }
+
+  h1 {
+    @include typ-h1;
+  }
+
+  h2 {
+    @include typ-h2;
+  }
+
+  h3 {
+    @include typ-h3;
+  }
+
+  h4 {
+    @include typ-h4;
+  }
+
+  h5 {
+    @include typ-h5;
+  }
+
+  h6 {
+    @include typ-h6;
+  }
+
+  p {
+    @include typ-plain-text;
+    &:not(:first-child) {
+      margin-top: 24px;
+    }
+  }
+
+  small, label {
+    @include typ-plain-small;
+  }
+
+  sub {
+    font-size: $font-xs;
+    line-height: 16px;
+  }
+
+  a {
+    text-decoration: none;
+    color: $color-button-hit;
+    cursor: pointer;
+  }
+
+  button {
+    background: none;
+    border: 0;
+  }
+
+  // Implement styleguide for all library's components
+  @import "components";
+}

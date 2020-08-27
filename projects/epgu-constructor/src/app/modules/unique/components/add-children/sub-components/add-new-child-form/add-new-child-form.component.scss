@@ -1,7 +1,7 @@
-@import '../../../../../../../styles/variables';
+@import "src/styles/core";
 
 .add-new-child-form {
-  background-color: $light-gray;
+  background-color: $color-light-gray;
 }
 
 .component {
@@ -14,7 +14,7 @@
   &__title {
     font-size: 18px;
     line-height: 24px;
-    color: $gray;
+    color: $color-gray;
   }
   &__close {
     margin-left: auto;

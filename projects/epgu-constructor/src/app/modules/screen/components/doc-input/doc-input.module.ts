@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EpguLibModule } from 'epgu-lib';
-import { EpgucSharedModule } from '../../../../shared-module/shared-components.module';
+import { SharedModule } from '../../../../shared-module/shared-components.module';
 import { DocInputComponent } from './doc-input.component';
 
 const COMPONENTS = [ DocInputComponent ];
@@ -11,7 +11,7 @@ const COMPONENTS = [ DocInputComponent ];
   imports: [
     CommonModule,
     EpguLibModule.forChild(),
-    EpgucSharedModule,
+    SharedModule,
   ],
   exports: [ ...COMPONENTS ]
 })

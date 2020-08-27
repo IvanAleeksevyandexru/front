@@ -1,14 +1,15 @@
 image: node:latest
 
 cache:
-  paths: 
+  paths:
     - node_modules
     - dist
     - .yarn
-      
+
 stages:
   - install
   - lint
+  - test
   - library-build
   - build
 
@@ -17,44 +18,49 @@ Install:
   before_script:
     - yarn config set cache-folder .yarn
     - npm set registry http://npm.gosuslugi.local
-  script: 
+  script:
     - yarn install
   only:
     - merge_requests
+    - master
 
 Lint:
   stage: lint
   before_script:
     - yarn config set cache-folder .yarn
-  script: 
+  script:
     - yarn lint
   only:
     - merge_requests
+    - master
 
-#Test:
-#  stage: test
-#  before_script:
-#    - yarn config set cache-folder .yarn
-#  script: 
-#    - yarn test --coverage
-#  only:
-#   - merge_requests
+Test:
+  stage: test
+  before_script:
+    - yarn config set cache-folder .yarn
+  script:
+    - yarn test:coverage
+  only:
+    - merge_requests
+    - master
 
 Library-build:
   stage: library-build
   before_script:
-    - yarn config set cache-folder .yarn 
-  script: 
-    - yarn library-build
+    - yarn config set cache-folder .yarn
+  script:
+    - yarn library:build
   only:
     - merge_requests
+    - master
 
 Build:
   stage: build
   before_script:
-    - yarn config set cache-folder .yarn 
-  script: 
+    - yarn config set cache-folder .yarn
+  script:
     - yarn build
     - /devops/notify/notify.sh fronted_new_master_available
   only:
     - merge_requests
+    - master

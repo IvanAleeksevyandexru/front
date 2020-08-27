@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { EgpuResponseDisplayInterface } from '../../../../../interfaces/epgu.service.interface';
+import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ScreenComponentService } from '../../../screen/service/screen-component/screen-component.service';
 import { TimeSlotsService } from './time-slots.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
@@ -9,7 +9,7 @@ import { ConstructorService } from '../../../../services/constructor/constructor
 const moment = moment_;
 
 @Component({
-  selector: 'app-time-slots',
+  selector: 'epgu-constructor-time-slots',
   templateUrl: './time-slots.component.html',
   styleUrls: ['./time-slots.component.scss'],
 })
@@ -41,11 +41,13 @@ export class TimeSlotsComponent implements OnInit {
   public weeks = [];
   public monthsYears: ListItem[] = [];
   public timeSlots = [];
+  public dialogButtons = [];
   public currentSlot: any;
   public currentMonth: ListItem;
   public blockMobileKeyboard = false;
   public fixedMonth = false;
   public bookingProgress = false;
+  public changeTSConfirm = false;
 
   constructor(
     private changeDetection: ChangeDetectorRef,
@@ -54,7 +56,7 @@ export class TimeSlotsComponent implements OnInit {
     public constructorService: ConstructorService,
   ) {}
 
-  @Input() data: EgpuResponseDisplayInterface;
+  @Input() data: DisplayInterface;
   @Output() nextStepEvent = new EventEmitter<any>();
 
   private renderSingleMonthGrid(output) {
@@ -141,6 +143,14 @@ export class TimeSlotsComponent implements OnInit {
     this.renderSingleMonthGrid(this.weeks);
   }
 
+  public clickSubmit() {
+    if (this.componentValue.bookResponse) {
+      this.openModal();
+    } else {
+      this.bookTimeSlot();
+    }
+  }
+
   public bookTimeSlot() {
     this.bookingProgress = true;
     const { bookRequest } = this.componentValue;
@@ -153,41 +163,75 @@ export class TimeSlotsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (this.data.components[0].value) {
-      this.label = this.data.components[0].label;
-      this.componentValue = JSON.parse(this.data.components[0].value);
-      const { slots } = this.componentValue.slotsResponse;
-      slots.forEach((slot) => {
-        const slotDate = new Date(slot.visitTime);
-        if (!this.daySlots[slotDate.getDate()]) {
-          this.daySlots[slotDate.getDate()] = [];
-        }
-        this.daySlots[slotDate.getDate()].push({
-          slotId: slot.slotId,
-          areaId: slot.areaId,
-          slotTime: slotDate,
-        });
-      });
+  setDialogButtons() {
+    this.dialogButtons = [];
+    this.dialogButtons.push(
+      {
+        text: 'Да',
+        action: () => {
+          this.bookTimeSlot();
+        },
+      },
+      {
+        text: 'Нет',
+        action: 'cancel',
+        classes: 'cancel-button',
+      },
+    );
+  }
 
-      this.fixedMonth = true;
-      const [activeYearNumber, activeMonthNumber] = this.componentValue.period.period.split('-');
-      this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
-      this.activeYearNumber = parseInt(activeYearNumber, 10);
+  public openModal() {
+    document.body.classList.add('modal-open');
+    this.changeTSConfirm = true;
+  }
 
-      for (let i = 0; i < 2; i += 1) {
-        this.monthsYears.push(
-          new ListItem({
-            id: `${this.activeMonthNumber + i}`,
-            text: `${this.months[this.activeMonthNumber + i]} ${this.activeYearNumber}`,
-          }),
-        );
+  /**
+   * закрыть диалог
+   */
+  public closeModal() {
+    document.body.classList.remove('modal-open');
+    this.changeTSConfirm = false;
+  }
+
+  loadData() {
+    this.label = this.data.components[0].label;
+    this.componentValue = JSON.parse(this.data.components[0].value);
+    const { slots } = this.componentValue.slotsResponse;
+    slots.forEach((slot) => {
+      const slotDate = new Date(slot.visitTime);
+      if (!this.daySlots[slotDate.getDate()]) {
+        this.daySlots[slotDate.getDate()] = [];
       }
+      this.daySlots[slotDate.getDate()].push({
+        slotId: slot.slotId,
+        areaId: slot.areaId,
+        slotTime: slotDate,
+      });
+    });
+
+    this.fixedMonth = true;
+    const [activeYearNumber, activeMonthNumber] = this.componentValue.period.period.split('-');
+    this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
+    this.activeYearNumber = parseInt(activeYearNumber, 10);
+
+    for (let i = 0; i < 2; i += 1) {
+      this.monthsYears.push(
+        new ListItem({
+          id: `${this.activeMonthNumber + i}`,
+          text: `${this.months[this.activeMonthNumber + i]} ${this.activeYearNumber}`,
+        }),
+      );
     }
-
-    // this.showTimeSlots(date);
     [this.currentMonth] = this.monthsYears;
+  }
 
+  ngOnInit(): void {
+    this.setDialogButtons();
+    if (this.data.components[0].value) {
+      this.loadData();
+    } else {
+      //
+    }
     this.renderSingleMonthGrid(this.weeks);
   }
 }
