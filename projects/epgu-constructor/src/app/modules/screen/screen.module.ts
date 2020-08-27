@@ -20,6 +20,7 @@ import {SnilsModule} from './components/snils/snils.module';
 import {ScreenComponentService} from './service/screen-component/screen-component.service';
 import {AddPassportModule} from './components/add-passport/add-passport.module';
 import {CountrySelectionComponent} from './components/country-selection/country-selection.component';
+import { PaymentModule } from './components/payment/payment.module';
 
 
 const COMPONENTS = [
@@ -41,6 +42,7 @@ const COMPONENTS = [
     TemporaryRegistrationAddrScreenModule,
     AddPassportModule,
     SnilsModule,
+    PaymentModule,
     DocInputModule,
     SharedModule,
     EpguLibModule.forChild(),
