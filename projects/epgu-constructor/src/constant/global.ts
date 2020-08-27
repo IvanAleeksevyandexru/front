@@ -16,7 +16,7 @@ export enum SCREEN_COMPONENT_NAME {
   'registrationAddr' = 'RegistrationAddr',
   'personLookup' = 'PersonLookup',
   'changeList' = 'ChangeList',
-  // 'snils' = 'StringInput',
+  'snilsInput' = 'SnilsInput',
   'docInput' = 'DocInput',
   'countryApostil' = 'CountryApostil'
 }

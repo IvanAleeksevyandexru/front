@@ -13,7 +13,7 @@
   <epgu-constructor-file-upload-screen
     *ngSwitchCase="uniqueComponentName.fileUploadComponent"
     [data]="data?.components[0]"
-    [header]="data?.label"
+    [header]="data?.header"
     [submitLabel]="data?.submitLabel"
     (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-file-upload-screen>

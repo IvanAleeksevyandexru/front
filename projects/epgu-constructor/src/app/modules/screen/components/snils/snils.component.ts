@@ -1,10 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationService } from 'epgu-lib';
 import { checkSnils } from 'ru-validation-codes';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
+import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
@@ -13,8 +14,7 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
   styleUrls: ['./snils.component.scss'],
 })
 export class SnilsComponent implements OnInit {
-  @Output() valueChangedEvent = new EventEmitter<any>();
-
+  @Input() data: ComponentInterface;
   public mask = this.validationService.masks.snils;
   public snils = new FormControl('', [
     Validators.required,
@@ -29,19 +29,19 @@ export class SnilsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.subscribeToSnilsValue();
+    this.saveSnils();
   }
-
   checkSnilsSum(control: FormControl): { [s: string]: boolean } {
     if (!checkSnils(control.value)) {
       return { notValid: true };
     }
     return null;
   }
-
-  private subscribeToSnilsValue(): void {
-    this.snils.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((value) => this.valueChangedEvent.emit(value));
+  saveSnils() {
+    this.snils.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((value) => {
+      if (this.snils.valid) {
+        this.screenComponentService.dataToSend = value.replace(/\D/g, '');
+      }
+    });
   }
 }
