@@ -30,6 +30,7 @@ export enum UNIQUE_COMPONENT_NAME {
   fileUploadComponent = 'FileUploadComponent',
   'addPassport' = 'AddPassport',
   'mapService' = 'MapService',
+  'carInfo' = 'CarInfo',
   'repeatableFields' = 'RepeatableFields',
 }
 

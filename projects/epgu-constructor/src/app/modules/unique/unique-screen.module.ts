@@ -6,6 +6,8 @@ import { AddChildrenScreenModule } from './components/add-children/screens/add-c
 import { FileUploadModule } from './components/file-upload-screen/file-upload.module';
 import { RepeatableFieldsComponent } from './components/repeatable-fields/repeatable-fields.component';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
+
+import { CarInfoModule } from './components/car-info/car-info.module';
 import { UniqueScreenComponent } from './components/unique-screen/unique-screen.component';
 
 const COMPONENTS = [
@@ -27,6 +29,7 @@ const COMPONENTS = [
     FileUploadModule,
     EpguLibModule.forChild(),
     SelectMapObjectModule,
+    CarInfoModule,
   ],
 })
 export class UniqueScreenModule { }

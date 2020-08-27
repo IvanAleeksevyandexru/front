@@ -20,4 +20,3 @@ const COMPONENTS = [
   ]
 })
 export class SnilsModule { }
-
