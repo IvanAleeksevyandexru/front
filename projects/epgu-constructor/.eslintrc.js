@@ -1,16 +1,17 @@
 module.exports = {
   extends: ['plugin:@angular-eslint/recommended'],
   rules: {
-    // ORIGINAL tslint.json -> "directive-selector": [true, "attribute", "epgu-constructor", "camelCase"],
     '@angular-eslint/directive-selector': [
       'error',
       { type: 'attribute', prefix: 'epgu-constructor', style: 'camelCase' },
     ],
-    // ORIGINAL tslint.json -> "component-selector": [true, "element", "epgu-constructor", "kebab-case"],
     '@angular-eslint/component-selector': [
       'error',
       { type: 'element', prefix: 'epgu-constructor', style: 'kebab-case' },
     ],
+    semi: 'off',
+    '@typescript-eslint/semi': ['error'],
+    'no-empty-function': ['error', { "allow": ["constructors"] }]
   },
   overrides: [
     // Add this rules, if you use inline templates inside *.component.ts files
@@ -44,5 +45,11 @@ module.exports = {
         ],
       },
     },
+    {
+      files: ['*.stub.ts'],
+      rules: {
+        'no-empty-function': "off"
+      }
+    }
   ],
 };

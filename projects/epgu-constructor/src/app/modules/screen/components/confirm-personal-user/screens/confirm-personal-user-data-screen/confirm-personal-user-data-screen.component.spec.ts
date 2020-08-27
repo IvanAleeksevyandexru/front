@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { ConfirmPersonalUserDataScreenComponent } from './confirm-personal-user-data-screen.component';
-import { ConfirmUserDataInterface } from '../../../../../../../interfaces/confirm-user-data.interface'
+import { ConfirmUserDataInterface } from '../../../../../../../interfaces/confirm-user-data.interface';
 
 
 describe('ConfirmPersonalUserDataScreenComponent', () => {
@@ -17,7 +17,7 @@ describe('ConfirmPersonalUserDataScreenComponent', () => {
     label: '',
     type: '',
     value: '',
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

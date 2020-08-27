@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BirthCertificateComponent } from './birth-certificate.component';
-import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 // Need to refactoring component
 describe.skip('BirthCertificateComponent', () => {

@@ -37,7 +37,7 @@ export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';
 export const DATE_STRING_DASH_FORMAT = 'DD-MM-YYYY';
 
 export const FMS_COUNTRIES_DICTIONARY = 'FMS_COUNTRIES';
-export const RUSSIA_DICTIONARY_NAME = 'РОССИЯ'
+export const RUSSIA_DICTIONARY_NAME = 'РОССИЯ';
 
 /**
  * Качество фото с камеры в котором будет сохраняться для компонента загрузки файлов

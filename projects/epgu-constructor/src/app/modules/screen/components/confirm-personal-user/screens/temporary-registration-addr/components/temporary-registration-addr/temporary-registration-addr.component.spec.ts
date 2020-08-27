@@ -3,7 +3,7 @@ import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../.
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
 describe('TemporaryRegistrationAddrComponent', () => {
@@ -20,7 +20,7 @@ describe('TemporaryRegistrationAddrComponent', () => {
     label: '',
     type: '',
     value: ''
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -49,12 +49,12 @@ export function getCustomScreenDictionaryFirstState(): CustomComponentDictionary
  */
 export function getNormalizeDataCustomScreenDictionary(items: Array<DictionaryItem>, dictionaryName: string): Array<ListItem> {
   const arr = dictionaryName === FMS_COUNTRIES_DICTIONARY ? putRussiaToFirstInArrForFmsCountriesDictionary(items) : items;
-  return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem)
+  return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
 }
 
 function putRussiaToFirstInArrForFmsCountriesDictionary(items: Array<DictionaryItem>): Array<DictionaryItem> {
   const rusItemIndex = items.findIndex(item => item.title.toLowerCase() === RUSSIA_DICTIONARY_NAME.toLowerCase());
   return [ items[rusItemIndex] ]
     .concat(items.slice(0, rusItemIndex))
-    .concat(items.slice(rusItemIndex + 1))
+    .concat(items.slice(rusItemIndex + 1));
 }

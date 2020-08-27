@@ -3,7 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import { AddNewChildFormComponent } from './add-new-child-form.component';
-import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service'
+import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
 
 describe('AddNewChildFormComponent', () => {

@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing'
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component'
-import { ConfirmAddressInterface } from '../../interface/confirm-address.interface'
-import { SCREEN_COMPONENT_NAME } from '../../../../../../../../../constant/global'
-import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service'
-import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub'
-import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service'
-import { FormsModule } from '@angular/forms'
-import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
+import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
+import { SCREEN_COMPONENT_NAME } from '../../../../../../../../../constant/global';
+import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
+import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
+import { FormsModule } from '@angular/forms';
+import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ConfirmPersonalUserAddressComponent', () => {
   let component: ConfirmPersonalUserAddressComponent;

@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 
 @Injectable()
 export class NavigationService {
-  clickToBack = new Subject()
+  clickToBack = new Subject();
   clickToBack$ = this.clickToBack.asObservable();
 
   constructor() { }

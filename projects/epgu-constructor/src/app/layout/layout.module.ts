@@ -6,7 +6,7 @@ import { NavigationProgressComponent } from './component/navigation-progress/nav
 
 const COMPONENT = [
   NavigationProgressComponent
-]
+];
 
 @NgModule({
   declarations: [...COMPONENT],

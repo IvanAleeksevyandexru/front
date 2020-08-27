@@ -75,12 +75,12 @@ export class RestService {
       tx: options.tx || '',
       // 2e641f4f-bc6a-11ea-b438-001a4a1660a6
       withCredentials: false
-    })
+    });
   }
 
   getDadataByFias(fiasCode: string) {
     const path = `${this.externalApiUrl}dadata/${fiasCode}`;
-    return this.http.get(path)
+    return this.http.get(path);
   }
 
 }

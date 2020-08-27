@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-user-address-screen.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import { ConfirmAddressInterface } from './interface/confirm-address.interface'
-import { SCREEN_COMPONENT_NAME } from '../../../../../../../constant/global'
-import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service'
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ConfirmAddressInterface } from './interface/confirm-address.interface';
+import { SCREEN_COMPONENT_NAME } from '../../../../../../../constant/global';
+import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
 
 describe('ConfirmPersonalUserAddressScreenComponent', () => {
   let component: ConfirmPersonalUserAddressScreenComponent;

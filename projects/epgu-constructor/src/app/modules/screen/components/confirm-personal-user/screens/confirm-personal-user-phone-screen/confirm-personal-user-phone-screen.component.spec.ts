@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks'
+import { MockComponent } from 'ng-mocks';
 
 import { ConfirmPersonalUserPhoneScreenComponent } from './confirm-personal-user-phone-screen.component';
-import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface'
-import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service'
+import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
+import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
 // eslint-disable-next-line max-len
-import { ConfirmPersonalUserScreenLayoutComponent } from '../../sub-components/confirm-personal-user-screen-layout/confirm-personal-user-screen-layout.component'
-import { ConfirmPersonalUserPhoneComponent } from './components/confirm-personal-user-phone/confirm-personal-user-phone.component'
+import { ConfirmPersonalUserScreenLayoutComponent } from '../../sub-components/confirm-personal-user-screen-layout/confirm-personal-user-screen-layout.component';
+import { ConfirmPersonalUserPhoneComponent } from './components/confirm-personal-user-phone/confirm-personal-user-phone.component';
 
 
 describe('ConfirmPersonalUserPhoneScreenComponent', () => {

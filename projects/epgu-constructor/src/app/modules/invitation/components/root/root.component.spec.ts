@@ -4,9 +4,9 @@ import { RootComponent } from './root.component';
 import {ConstructorService} from '../../../../services/constructor/constructor.service';
 import {ConstructorServiceStub} from '../../../../services/constructor/constructor.service.stub';
 import {NavigationService} from '../../../../shared-module/service/navigation/navigation.service';
-import { MockComponent } from 'ng-mocks'
-import { InvitationErrorComponent } from '../error/invitation-error.component'
-import { NavigationComponent } from '../../../../shared-module/components/navigation/navigation.component'
+import { MockComponent } from 'ng-mocks';
+import { InvitationErrorComponent } from '../error/invitation-error.component';
+import { NavigationComponent } from '../../../../shared-module/components/navigation/navigation.component';
 
 describe('RootComponent', () => {
   let component: RootComponent;
