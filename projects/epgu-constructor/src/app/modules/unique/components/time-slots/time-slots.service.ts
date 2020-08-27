@@ -1,19 +1,14 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {ConstructorConfigService} from '../../../../services/config/constructor-config.service';
+import {Observable} from 'rxjs';
 
-@Injectable()
-export class TimeSlotsService {
-
-  constructor(
-    private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
-  ) {
-
-  }
-
-  public bookTimeSlot(requestBody) {
-    const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/book?srcSystem=BETA`;
-    return this.http.post(path, requestBody);
-  }
+export interface TimeSlotsService {
+  init(data: any): Observable<any>;
+  getCurrentYear(): number;
+  getCurrentMonth(): number;
+  getAvailableMonths(): string[];
+  isDateLocked(date: Date): boolean;
+  getAvailableSlots(selectedDay: Date): any[];
+  getBookedSlot(): any;
+  book(selectedSlot: any): Observable<any>;
+  hasError(): boolean;
+  getErrorMessage(): string;
 }

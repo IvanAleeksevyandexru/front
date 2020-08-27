@@ -4,7 +4,8 @@ import { EpguLibModule } from 'epgu-lib';
 import { TimeSlotsComponent } from './time-slots.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared-module/shared-components.module';
-import {TimeSlotsService} from './time-slots.service';
+import {BrakTimeSlotsService} from './brak-time-slots.service';
+import {DivorceTimeSlotsService} from './divorce-time-slots.service';
 
 const COMPONENTS = [
   TimeSlotsComponent
@@ -13,7 +14,9 @@ const COMPONENTS = [
 @NgModule({
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
-  providers: [TimeSlotsService],
+  providers: [
+    BrakTimeSlotsService,
+    DivorceTimeSlotsService],
   imports: [
     CommonModule,
     SharedModule,

@@ -3,8 +3,10 @@ import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ScreenComponentService } from '../../../screen/service/screen-component/screen-component.service';
-import { TimeSlotsService } from './time-slots.service';
+import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
+import { TimeSlotsService } from './time-slots.service';
+import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 
 const moment = moment_;
 
@@ -14,14 +16,11 @@ const moment = moment_;
   styleUrls: ['./time-slots.component.scss'],
 })
 export class TimeSlotsComponent implements OnInit {
-  private componentValue;
-
   public date: Date = null;
   public label: string;
   public activeMonthNumber: number;
   public activeYearNumber: number;
 
-  public daySlots = [];
   public daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
   public months = [
     'Январь',
@@ -38,6 +37,9 @@ export class TimeSlotsComponent implements OnInit {
     'Декабрь',
   ];
 
+  private timeSlotType = 'timeSlotType';
+  private ref = 'ref';
+
   public weeks = [];
   public monthsYears: ListItem[] = [];
   public timeSlots = [];
@@ -46,15 +48,25 @@ export class TimeSlotsComponent implements OnInit {
   public currentMonth: ListItem;
   public blockMobileKeyboard = false;
   public fixedMonth = false;
-  public bookingProgress = false;
+  public inProgress = false;
   public changeTSConfirm = false;
+  initialized = false;
+  bookedSlot;
+  errorMessage;
+
+  private timeSlotServices: { [key: string]: TimeSlotsService } = {};
+  private currentService: TimeSlotsService;
 
   constructor(
     private changeDetection: ChangeDetectorRef,
-    private timeSlotsService: TimeSlotsService,
+    private brakTimeSlotsService: BrakTimeSlotsService,
+    private divorceTimeSlotsService: DivorceTimeSlotsService,
     public screenComponentService: ScreenComponentService,
     public constructorService: ConstructorService,
-  ) {}
+  ) {
+    this.timeSlotServices.BRAK = brakTimeSlotsService;
+    this.timeSlotServices.RAZBRAK = divorceTimeSlotsService;
+  }
 
   @Input() data: DisplayInterface;
   @Output() nextStepEvent = new EventEmitter<any>();
@@ -109,7 +121,7 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   public isDateLocked(date: Date) {
-    return !this.isDateOutOfMonth(date) && !this.daySlots[date.getDate()];
+    return this.isDateOutOfMonth(date) || this.currentService.isDateLocked(date);
   }
 
   public selectDate(date: Date) {
@@ -126,25 +138,24 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   public isSlotSelected(slot) {
-    return this.currentSlot && this.currentSlot.slotId === slot.slotId;
+    return this.currentSlot && this.currentSlot.slotTime === slot.slotTime;
   }
 
   public showTimeSlots(date: Date) {
     this.currentSlot = null;
-    this.timeSlots = [];
-    if (this.daySlots[date.getDate()]) {
-      this.timeSlots = this.daySlots[date.getDate()];
-    }
+    this.timeSlots = this.currentService.getAvailableSlots(date);
   }
 
   public monthChanged(ev) {
     const { id } = ev;
-    this.activeMonthNumber = +id;
+    const [activeYear, activeMonth] = id.split('-');
+    this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
+    this.activeYearNumber = parseInt(activeYear, 10);
     this.renderSingleMonthGrid(this.weeks);
   }
 
   public clickSubmit() {
-    if (this.componentValue.bookResponse) {
+    if (this.bookedSlot) {
       this.openModal();
     } else {
       this.bookTimeSlot();
@@ -152,14 +163,10 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   public bookTimeSlot() {
-    this.bookingProgress = true;
-    const { bookRequest } = this.componentValue;
-    bookRequest.areaId = [this.currentSlot.areaId];
-    bookRequest.selectedHallTitle = this.currentSlot.areaId;
-    bookRequest.slotId = [this.currentSlot.slotId];
-    this.timeSlotsService.bookTimeSlot(bookRequest).subscribe((response) => {
+    this.inProgress = true;
+    this.currentService.book(this.currentSlot).subscribe((response) => {
+      this.inProgress = false;
       this.nextStepEvent.emit(JSON.stringify(response));
-      this.bookingProgress = false;
     });
   }
 
@@ -193,45 +200,62 @@ export class TimeSlotsComponent implements OnInit {
     this.changeTSConfirm = false;
   }
 
-  loadData() {
-    this.label = this.data.components[0].label;
-    this.componentValue = JSON.parse(this.data.components[0].value);
-    const { slots } = this.componentValue.slotsResponse;
-    slots.forEach((slot) => {
-      const slotDate = new Date(slot.visitTime);
-      if (!this.daySlots[slotDate.getDate()]) {
-        this.daySlots[slotDate.getDate()] = [];
-      }
-      this.daySlots[slotDate.getDate()].push({
-        slotId: slot.slotId,
-        areaId: slot.areaId,
-        slotTime: slotDate,
-      });
-    });
-
-    this.fixedMonth = true;
-    const [activeYearNumber, activeMonthNumber] = this.componentValue.period.period.split('-');
-    this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
-    this.activeYearNumber = parseInt(activeYearNumber, 10);
-
-    for (let i = 0; i < 2; i += 1) {
-      this.monthsYears.push(
-        new ListItem({
-          id: `${this.activeMonthNumber + i}`,
-          text: `${this.months[this.activeMonthNumber + i]} ${this.activeYearNumber}`,
-        }),
-      );
-    }
-    [this.currentMonth] = this.monthsYears;
-  }
+  loadData() {}
 
   ngOnInit(): void {
-    this.setDialogButtons();
-    if (this.data.components[0].value) {
-      this.loadData();
-    } else {
-      //
+    if (this.data.components[0]) {
+      this.inProgress = true;
+      this.label = this.data.components[0].label;
+      this.currentService = this.timeSlotServices[this.data.components[0].attrs[this.timeSlotType]];
+      this.currentService.init(this.data.components[0].attrs[this.ref]).subscribe(() => {
+        if (this.currentService.hasError()) {
+          this.errorMessage = this.currentService.getErrorMessage();
+        } else {
+          this.errorMessage = undefined;
+          this.activeMonthNumber = this.currentService.getCurrentMonth();
+          this.activeYearNumber = this.currentService.getCurrentYear();
+
+          const availableMonths = this.currentService.getAvailableMonths();
+          for (let i = 0; i < availableMonths.length; i += 1) {
+            const [activeYear, activeMonth] = availableMonths[i].split('-');
+            const monthNumber = parseInt(activeMonth, 10) - 1;
+            const yearNumber = parseInt(activeYear, 10);
+            this.monthsYears.push(
+              new ListItem({
+                id: `${availableMonths[i]}`,
+                text: `${this.months[monthNumber]} ${yearNumber}`,
+              }),
+            );
+          }
+          this.currentMonth = this.monthsYears.find(
+            (item) => item.id === `${this.activeYearNumber}-${this.activeMonthNumber + 1}`,
+          );
+          this.fixedMonth = this.monthsYears.length < 2;
+
+          this.renderSingleMonthGrid(this.weeks);
+
+          this.bookedSlot = this.currentService.getBookedSlot();
+          if (this.bookedSlot) {
+            this.selectDate(this.bookedSlot.slotTime);
+            this.chooseTimeSlot(this.bookedSlot);
+          }
+        }
+
+        this.inProgress = false;
+        this.initialized = true;
+      });
     }
-    this.renderSingleMonthGrid(this.weeks);
+  }
+
+  buttonDisabled(): boolean {
+    return (
+      !this.screenComponentService.isValid ||
+      this.inProgress ||
+      (this.bookedSlot && this.currentSlot && this.bookedSlot.slotId === this.currentSlot.slotId)
+    );
+  }
+
+  calendarAvailable(): boolean {
+    return this.initialized && !this.errorMessage;
   }
 }
