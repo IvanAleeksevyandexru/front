@@ -1,6 +1,14 @@
 <form #dataForm="ngForm">
-  <ng-container *ngFor="let field of data?.attrs?.fields; let i = index" [ngSwitch]="field?.fieldName">
-    <epgu-constructor-address-item class="item" [label]="field.label" [name]="field.label" *ngSwitchCase="'regAddr'">
+  <ng-container
+    *ngFor="let field of data?.attrs?.fields; let i = index"
+    [ngSwitch]="field?.fieldName"
+  >
+    <epgu-constructor-address-item
+      class="item"
+      [label]="field.label"
+      [name]="field.label"
+      *ngSwitchCase="'regAddr' || 'registrationAddress'"
+    >
       <lib-dadata-widget
         [simpleMode]="true"
         [disabled]="!isEditable"
@@ -14,7 +22,7 @@
     </epgu-constructor-address-item>
 
     <epgu-constructor-address-item
-      *ngSwitchCase="'regDate'"
+      *ngSwitchCase="'regDate' || 'registrationAddressDate'"
       class="item"
       [label]="field.label"
       [name]="field.label"
@@ -28,7 +36,12 @@
       </lib-date-picker>
     </epgu-constructor-address-item>
 
-    <epgu-constructor-address-item *ngSwitchDefault class="item" [label]="field.label" [name]="field.label">
+    <epgu-constructor-address-item
+      *ngSwitchDefault
+      class="item"
+      [label]="field.label"
+      [name]="field.label"
+    >
       <lib-plain-input
         [disabled]="!isEditable"
         [(ngModel)]="valueParsed[field.fieldName]"

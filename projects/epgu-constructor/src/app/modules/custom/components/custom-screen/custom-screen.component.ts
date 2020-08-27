@@ -38,12 +38,12 @@ export class CustomScreenComponent implements OnInit {
     const cycledFields = this.constructorService.response?.scenarioDto?.cycledFields;
     this.isCycledFields = !!Object.keys(cycledFields).length;
     if (this.isCycledFields) {
-      this.cycledValues = [...Object.values(cycledFields).map((value) => JSON.parse(value))];
+      [this.cycledValues] = [...Object.values(cycledFields).map((value) => JSON.parse(value))];
       this.data.components.forEach((item) => {
         const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
-        const cycledFieldKey = Object.keys(this.cycledValues[0]).find((key) => key === fieldName);
+        const cycledFieldKey = Object.keys(this.cycledValues).find((key) => key === fieldName);
         // eslint-disable-next-line no-param-reassign
-        item.value = this.cycledValues[0][cycledFieldKey];
+        item.value = this.cycledValues[cycledFieldKey];
       });
     }
   }
@@ -80,7 +80,7 @@ export class CustomScreenComponent implements OnInit {
         return result;
       }, {});
       // flat cycledValues
-      const cycledValuesPrepared = { ...this.cycledValues[0] };
+      const cycledValuesPrepared = { ...this.cycledValues };
       // merge cycledValue data and state data, which could be updated
       const data = { ...cycledValuesPrepared, ...stateDataPrepared };
       stateData[cycledFieldsKey] = {

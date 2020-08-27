@@ -2,15 +2,18 @@
   <div class="body">
     <epgu-constructor-confirm-personal-user-address
       [data]="data"
+      [value]="data.value"
       (dataEditedEvent)="dataChange($event)"
-      [isEditable]="isEditable"></epgu-constructor-confirm-personal-user-address>
+      [isEditable]="isEditable"
+    ></epgu-constructor-confirm-personal-user-address>
   </div>
 
   <div class="footer">
     <epgu-constructor-confirm-personal-user-button
       class="confirm-personal-user-button"
       *ngFor="let action of data?.attrs?.actions"
-      (tap)="clickToAction(action)">
+      (tap)="clickToAction(action)"
+    >
       {{ action.label }}
     </epgu-constructor-confirm-personal-user-button>
   </div>

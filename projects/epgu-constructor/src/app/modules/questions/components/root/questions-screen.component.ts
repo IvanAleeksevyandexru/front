@@ -37,7 +37,7 @@ export class QuestionsScreenComponent implements OnInit {
     const cycledFields = this.constructorService.response?.scenarioDto?.cycledFields;
     this.isCycledFields = !!Object.keys(cycledFields).length;
     if (this.isCycledFields && typeof cycledFields === 'object') {
-      this.cycledValues = [...Object.values(cycledFields).map((value) => JSON.parse(value))];
+      [this.cycledValues] = [...Object.values(cycledFields).map((value) => JSON.parse(value))];
     }
   }
 
@@ -56,7 +56,7 @@ export class QuestionsScreenComponent implements OnInit {
       const fieldNameRef = this.constructorService.response.scenarioDto.display.components[0].attrs
         .fields[0].fieldName;
       // flat cycledValues
-      const cycledValuesPrepared = { ...this.cycledValues[0] };
+      const cycledValuesPrepared = { ...this.cycledValues };
       // merge cycledValue data and state data, which could be updated
       const data = { ...cycledValuesPrepared, [fieldNameRef]: answer.value };
       responseData[cycledFieldsKey] = {

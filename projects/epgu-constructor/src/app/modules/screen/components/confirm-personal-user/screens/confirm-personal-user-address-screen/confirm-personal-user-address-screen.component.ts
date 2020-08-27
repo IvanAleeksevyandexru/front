@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
@@ -10,11 +11,51 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   @Input() data: ConfirmAddressInterface;
   @Output() actionSelect = new EventEmitter();
   isEditable: boolean;
+  dataToSend: any;
+  isCycledFields: boolean;
+  cycledValues: any;
+  cycledFields: object;
 
-  constructor(private screenComponentService: ScreenComponentService) {}
+  constructor(
+    private screenComponentService: ScreenComponentService,
+    public constructorService: ConstructorService,
+    private changeDetection: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
-    this.screenComponentService.dataToSend = this.data.value;
+    this.cycledFields = this.constructorService.response?.scenarioDto?.cycledFields;
+    this.isCycledFields = !!Object.keys(this.cycledFields).length;
+    if (this.isCycledFields) {
+      [this.cycledValues] = [...Object.values(this.cycledFields).map((value) => JSON.parse(value))];
+      // format state data to {fieldName: value} format
+      const data = this.data.attrs.fields.reduce((result, item) => {
+        const { fieldName } = item;
+        if (!fieldName) return result;
+
+        // eslint-disable-next-line no-param-reassign
+        result[fieldName] = this.cycledValues[fieldName];
+        return result;
+      }, {});
+      this.data.value = JSON.stringify(data);
+    }
+    this.dataToSend = this.data.value;
+    this.screenComponentService.dataToSend = this.dataToSend;
+  }
+
+  sameAddressAction() {
+    const [cycledFieldsKey] = Object.keys(this.cycledFields);
+    const rawValueRef = this.constructorService.response.scenarioDto.applicantAnswers[
+      cycledFieldsKey
+    ].value;
+    const valueRef = typeof rawValueRef === 'string' ? JSON.parse(rawValueRef) : rawValueRef;
+    const { regAddr, regDate, registrationAddress } = valueRef;
+    this.data.value = JSON.stringify({ regDate, regAddr: regAddr || registrationAddress });
+    this.changeDetection.detectChanges();
+  }
+
+  noAddressAction() {
+    this.data.value = JSON.stringify({ regDate: '', regAddr: '' });
+    this.changeDetection.detectChanges();
   }
 
   clickToAction(event): void {
@@ -23,13 +64,43 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
       case 'editUserRegAddr':
         this.isEditable = true;
         break;
+      case 'sameAddress':
+        this.sameAddressAction();
+        break;
+      case 'noAddress':
+        this.noAddressAction();
+        break;
       default:
         this.actionSelect.emit(action);
         break;
     }
   }
 
-  dataChange($event: any) {
-    this.screenComponentService.dataToSend = JSON.stringify($event);
+  setState(changes) {
+    let stateData: any;
+    if (this.isCycledFields) {
+      stateData = {};
+      // take cycledFields object first key
+      const [cycledFieldsKey] = Object.keys(
+        this.constructorService.response?.scenarioDto?.cycledFields,
+      );
+      // flat cycledValues
+      const cycledValuesPrepared = { ...this.cycledValues };
+      // merge cycledValue data and state data, which could be updated
+      const data = { ...cycledValuesPrepared, ...changes };
+      stateData[cycledFieldsKey] = {
+        visited: true,
+        value: JSON.stringify(data),
+      };
+    } else {
+      stateData = changes;
+    }
+
+    return stateData;
+  }
+
+  dataChange(changes: any) {
+    const responseData = this.setState(changes);
+    this.screenComponentService.dataToSend = responseData;
   }
 }

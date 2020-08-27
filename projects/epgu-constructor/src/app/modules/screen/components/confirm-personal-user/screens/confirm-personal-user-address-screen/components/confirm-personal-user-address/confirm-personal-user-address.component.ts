@@ -25,6 +25,7 @@ const moment = moment_;
 export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
   @ViewChild('dataForm', { static: false }) dataForm;
 
+  @Input() value: string;
   @Input() data: ConfirmAddressInterface;
   @Input() isEditable: boolean;
   @Output() dataEditedEvent = new EventEmitter();
@@ -50,7 +51,11 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.valueParsed = JSON.parse(this.data.value);
+    this.setState();
+  }
+
+  setState() {
+    this.valueParsed = JSON.parse(this.value);
     if (this.valueParsed.regDate) {
       const date = moment(this.valueParsed.regDate, DATE_STRING_DOT_FORMAT);
       const isValidDate = date.isValid();
@@ -60,16 +65,19 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
         this.valueParsed.regDate = moment().toDate();
       }
     }
+    this.dataEditedEvent.emit(this.valueParsed);
   }
 
   ngOnChanges() {
     if (this.isEditable) {
       this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
         this.valueParsed = change;
-        this.data.value = this.handleDataChange(change);
-        this.data.value = this.handleDataChange(change);
+        this.value = this.handleDataChange(change);
+        this.value = this.handleDataChange(change);
         this.dataEditedEvent.emit(this.valueParsed);
       });
+    } else {
+      this.setState();
     }
   }
 }

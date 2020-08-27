@@ -30,6 +30,7 @@ export class ScreenComponent implements OnInit {
   // <-- variables
   componentData = null;
   form: FormGroup;
+  isCycledFields: boolean;
 
   @Input() data: DisplayInterface;
   @Input() errors: object;
@@ -50,6 +51,8 @@ export class ScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({});
+    this.isCycledFields = !!Object.keys(this.constructorService.response?.scenarioDto?.cycledFields)
+      .length;
   }
 
   prevStep(): void {
@@ -57,10 +60,17 @@ export class ScreenComponent implements OnInit {
   }
 
   nextStep() {
-    const data =
-      typeof this.screenComponentService.dataToSend === 'object'
-        ? JSON.stringify(this.screenComponentService.dataToSend)
-        : this.screenComponentService.dataToSend;
+    let data: string | object;
+    if (typeof this.screenComponentService.dataToSend === 'object') {
+      data = JSON.stringify(this.screenComponentService.dataToSend);
+    } else {
+      data = this.screenComponentService.dataToSend;
+    }
+
+    if (this.isCycledFields) {
+      data = this.screenComponentService.dataToSend;
+    }
+
     this.nextStepEvent.emit(data);
   }
 
