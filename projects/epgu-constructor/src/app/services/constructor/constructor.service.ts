@@ -115,9 +115,6 @@ export class ConstructorService {
     this.componentData = display;
     this.componentErrors = errors;
     this.gender = gender;
-    // this.componentData.header = 'Кому из детей требуется оформить загранпаспорт?';
-    // this.componentData.type = 'CUSTOM';
-    // this.componentData.components[0].type;
     console.log('----- GET DATA ---------');
     console.log('componentId:', this.componentId);
     console.log('componentType:', this.componentType);
