@@ -1,10 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { OwnerType } from  '../models/car-info.interface';
-
-const OWNER_MAP = {
-  INDIVIDUAL: 'Физическое лицо',
-  LEGAL_ENTITY: 'Юридическое лицо',
-};
+import { OWNER_MAP } from './mapping/car-info.mapping';
 
 @Pipe({ name: 'carInfoOwner' })
 export class CarInfoOwnerPipe implements PipeTransform {

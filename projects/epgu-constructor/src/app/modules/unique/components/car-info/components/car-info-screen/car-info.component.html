@@ -6,6 +6,14 @@
     <epgu-constructor-page-name>{{ data?.header }}</epgu-constructor-page-name>
   </div>
 
+  <epgu-constructor-screen-pad
+    *ngIf="!carInfo.brandModel && !carInfo.status && !carInfo.owners && !carInfo.legals && !carInfo.accidenceCount"
+    class="car__info--block"
+  >
+      <h5 class="car__info--title">Данные не получены</h5>
+      <div class="car__info--item">Не удалось получить данные о состоянии ТС</div>
+  </epgu-constructor-screen-pad>
+
   <epgu-constructor-screen-pad *ngIf="carInfo.brandModel" class="car__info--block">
       <h5 class="car__info--title">Марка и модель</h5>
       <div class="car__info--item">{{ carInfo.brandModel }}</div>

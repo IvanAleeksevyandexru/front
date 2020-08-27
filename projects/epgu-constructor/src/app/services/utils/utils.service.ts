@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -50,5 +51,28 @@ export class UtilsService {
    */
   static removeCookie(name) {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  }
+
+  static formatDate(date: moment.Moment, format: string): string {
+    return date.format(format);
+  }
+
+  static getDeclension(num: number, forms: string[]): string {
+    const num0 = Math.abs(num) % 100;
+    const n1 = num0 % 10;
+
+    if (num0 > 10 && num0 < 20) {
+      return forms[2];
+    }
+
+    if (n1 > 1 && n1 < 5) {
+      return forms[1];
+    }
+
+    if (n1 === 1) {
+       return forms[0];
+    }
+
+    return forms[2];
   }
 }

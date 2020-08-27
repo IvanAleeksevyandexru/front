@@ -1,28 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TenureDates } from '../models/car-info.interface';
 
-import * as moment from 'moment';
+import { UtilsService } from '../../../../../services/utils/utils.service';
 
 type Type = 'DIFF' | 'FORMAT';
 
-const format = (value: moment.Moment) => value.format('DD.MM.YYYY');
-const numToDec = (n, forms) => {
-    n = Math.abs(n) % 100;
-    const n1 = n % 10;
-    if (n > 10 && n < 20) {
-      return forms[2];
-    }
-    if (n1 > 1 && n1 < 5) {
-      return forms[1];
-    }
-    if (n1 === 1) {
-       return forms[0];
-    }
-    return forms[2];
-}
-
 @Pipe({ name: 'carInfoDate' })
 export class CarInfoDatePipe implements PipeTransform {
+  constructor (private utils: UtilsService) {}
+
   transform(value: TenureDates, type: Type = 'FORMAT'): string {
     const { from, to } = value;
     const fromDate =  moment(new Date(from));
@@ -35,10 +21,10 @@ export class CarInfoDatePipe implements PipeTransform {
       } else if (diff > 5) {
         return 'более 5 лет';
       } else {
-        return `${diff} ${numToDec(diff, ['год', 'года', 'лет'])}`;
+        return `${diff} ${this.utils.getDeclension(diff, ['год', 'года', 'лет'])}`;
       }
     }
 
-    return `(${format(fromDate)} -  ${format(toDate)})`;
+    return `(${this.utils.formatDate(fromDate, 'DD.MM.YYYY')} -  ${this.utils.formatDate(toDate, 'DD.MM.YYYY')})`;
   }
 }
