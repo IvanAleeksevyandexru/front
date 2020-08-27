@@ -74,7 +74,7 @@ export class ConstructorService {
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}) {
     const componentId = options.componentId || this.componentId;
-    const isCycledFields = !!Object.keys(this.response?.scenarioDto?.cycledFields).length;
+    const isCycledFields = !!Object.keys(this.response?.scenarioDto?.currentCycledFields).length;
     this.response.scenarioDto.currentValue = {};
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,

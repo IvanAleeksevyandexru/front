@@ -35,10 +35,12 @@ export class CustomScreenComponent implements OnInit {
   }
 
   ngOnInit() {
-    const cycledFields = this.constructorService.response?.scenarioDto?.cycledFields;
-    this.isCycledFields = !!Object.keys(cycledFields).length;
+    const currentCycledFields = this.constructorService.response?.scenarioDto?.currentCycledFields;
+    this.isCycledFields = !!Object.keys(currentCycledFields).length;
     if (this.isCycledFields) {
-      [this.cycledValues] = [...Object.values(cycledFields).map((value) => JSON.parse(value))];
+      [this.cycledValues] = [
+        ...Object.values(currentCycledFields).map((value) => JSON.parse(value)),
+      ];
       this.data.components.forEach((item) => {
         const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
         const cycledFieldKey = Object.keys(this.cycledValues).find((key) => key === fieldName);
@@ -60,9 +62,9 @@ export class CustomScreenComponent implements OnInit {
   setState(changes) {
     let stateData = {};
     if (this.isCycledFields) {
-      // take cycledFields object first key
-      const [cycledFieldsKey] = Object.keys(
-        this.constructorService.response?.scenarioDto?.cycledFields,
+      // take currentCycledFields object first key
+      const [currentCycledFieldsKey] = Object.keys(
+        this.constructorService.response?.scenarioDto?.currentCycledFields,
       );
       // format state data to {fieldName: value} format
       const stateDataPrepared = Object.keys(changes).reduce((result, key) => {
@@ -83,7 +85,7 @@ export class CustomScreenComponent implements OnInit {
       const cycledValuesPrepared = { ...this.cycledValues };
       // merge cycledValue data and state data, which could be updated
       const data = { ...cycledValuesPrepared, ...stateDataPrepared };
-      stateData[cycledFieldsKey] = {
+      stateData[currentCycledFieldsKey] = {
         visited: true,
         value: JSON.stringify(data),
       };

@@ -51,8 +51,9 @@ export class ScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({});
-    this.isCycledFields = !!Object.keys(this.constructorService.response?.scenarioDto?.cycledFields)
-      .length;
+    this.isCycledFields = !!Object.keys(
+      this.constructorService.response?.scenarioDto?.currentCycledFields,
+    ).length;
   }
 
   prevStep(): void {

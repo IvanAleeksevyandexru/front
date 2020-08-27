@@ -34,10 +34,12 @@ export class QuestionsScreenComponent implements OnInit {
   }
 
   ngOnInit() {
-    const cycledFields = this.constructorService.response?.scenarioDto?.cycledFields;
-    this.isCycledFields = !!Object.keys(cycledFields).length;
-    if (this.isCycledFields && typeof cycledFields === 'object') {
-      [this.cycledValues] = [...Object.values(cycledFields).map((value) => JSON.parse(value))];
+    const currentCycledFields = this.constructorService.response?.scenarioDto?.currentCycledFields;
+    this.isCycledFields = !!Object.keys(currentCycledFields).length;
+    if (this.isCycledFields && typeof currentCycledFields === 'object') {
+      [this.cycledValues] = [
+        ...Object.values(currentCycledFields).map((value) => JSON.parse(value)),
+      ];
     }
   }
 
@@ -48,18 +50,18 @@ export class QuestionsScreenComponent implements OnInit {
   answerChoose(answer: QuestionsComponentActionsInterface): void {
     const responseData = {};
     if (this.isCycledFields) {
-      // take cycledFields object first key
-      const [cycledFieldsKey] = Object.keys(
-        this.constructorService.response?.scenarioDto?.cycledFields,
+      // take currentCycledFields object first key
+      const [currentCycledFieldsKey] = Object.keys(
+        this.constructorService.response?.scenarioDto?.currentCycledFields,
       );
-      // take reference to fieldName in cycledFields
+      // take reference to fieldName in currentCycledFields
       const fieldNameRef = this.constructorService.response.scenarioDto.display.components[0].attrs
         .fields[0].fieldName;
       // flat cycledValues
       const cycledValuesPrepared = { ...this.cycledValues };
       // merge cycledValue data and state data, which could be updated
       const data = { ...cycledValuesPrepared, [fieldNameRef]: answer.value };
-      responseData[cycledFieldsKey] = {
+      responseData[currentCycledFieldsKey] = {
         visited: true,
         value: JSON.stringify(data),
       };

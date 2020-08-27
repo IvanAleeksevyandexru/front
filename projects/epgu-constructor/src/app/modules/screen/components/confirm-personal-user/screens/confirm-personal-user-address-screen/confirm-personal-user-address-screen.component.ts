@@ -14,7 +14,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   dataToSend: any;
   isCycledFields: boolean;
   cycledValues: any;
-  cycledFields: object;
+  currentCycledFields: object;
 
   constructor(
     private screenComponentService: ScreenComponentService,
@@ -23,10 +23,12 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cycledFields = this.constructorService.response?.scenarioDto?.cycledFields;
-    this.isCycledFields = !!Object.keys(this.cycledFields).length;
+    this.currentCycledFields = this.constructorService.response?.scenarioDto?.currentCycledFields;
+    this.isCycledFields = !!Object.keys(this.currentCycledFields).length;
     if (this.isCycledFields) {
-      [this.cycledValues] = [...Object.values(this.cycledFields).map((value) => JSON.parse(value))];
+      [this.cycledValues] = [
+        ...Object.values(this.currentCycledFields).map((value) => JSON.parse(value)),
+      ];
       // format state data to {fieldName: value} format
       const data = this.data.attrs.fields.reduce((result, item) => {
         const { fieldName } = item;
@@ -43,9 +45,9 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   }
 
   sameAddressAction() {
-    const [cycledFieldsKey] = Object.keys(this.cycledFields);
+    const [currentCycledFieldsKey] = Object.keys(this.currentCycledFields);
     const rawValueRef = this.constructorService.response.scenarioDto.applicantAnswers[
-      cycledFieldsKey
+      currentCycledFieldsKey
     ].value;
     const valueRef = typeof rawValueRef === 'string' ? JSON.parse(rawValueRef) : rawValueRef;
     const { regAddr, regDate, registrationAddress } = valueRef;
@@ -80,15 +82,15 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     let stateData: any;
     if (this.isCycledFields) {
       stateData = {};
-      // take cycledFields object first key
-      const [cycledFieldsKey] = Object.keys(
-        this.constructorService.response?.scenarioDto?.cycledFields,
+      // take currentCycledFields object first key
+      const [currentCycledFieldsKey] = Object.keys(
+        this.constructorService.response?.scenarioDto?.currentCycledFields,
       );
       // flat cycledValues
       const cycledValuesPrepared = { ...this.cycledValues };
       // merge cycledValue data and state data, which could be updated
       const data = { ...cycledValuesPrepared, ...changes };
-      stateData[cycledFieldsKey] = {
+      stateData[currentCycledFieldsKey] = {
         visited: true,
         value: JSON.stringify(data),
       };

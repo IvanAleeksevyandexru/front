@@ -18,7 +18,8 @@ export interface ResponseInterface {
     applicantAnswers: object;
     currentRule: number;
     currentValue: object;
-    cycledFields: object;
+    currentCycledFields: object;
+    cycledFields: Array<object>;
     display: DisplayInterface;
     errors: object;
     gender: number;
