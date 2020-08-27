@@ -63,19 +63,4 @@
       </lib-button>
     </div>
   </div>
-  <div class="verify-modal-wrap" *ngIf="changeTSConfirm">
-    <div class="verify-modal">
-      <div class="verify-modal-header">
-        <a class="close-button" (click)="closeModal()"></a>
-      </div>
-      <div class="verify-modal-body">
-        Вы уверены, что хотите поменять забронированное время?
-      </div>
-      <div class="buttons-row">
-        <lib-button *ngFor="let button of dialogButtons"
-                    (click)="button.action ? button.action($event) : null"
-                    [classList]="button.classes">{{button.text}}</lib-button>
-      </div>
-    </div>
-  </div>
 </epgu-constructor-screen-container>

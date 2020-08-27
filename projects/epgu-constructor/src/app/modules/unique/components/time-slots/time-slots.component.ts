@@ -7,6 +7,9 @@ import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { TimeSlotsService } from './time-slots.service';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
+import { ConfirmationModalComponent } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.component';
+import { ModalService } from '../../../../services/modal/modal.service';
+import { ConfirmationModal } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.interface';
 
 const moment = moment_;
 
@@ -58,6 +61,7 @@ export class TimeSlotsComponent implements OnInit {
     private changeDetection: ChangeDetectorRef,
     private brakTimeSlotsService: BrakTimeSlotsService,
     private divorceTimeSlotsService: DivorceTimeSlotsService,
+    private modalService: ModalService,
     public screenComponentService: ScreenComponentService,
     public constructorService: ConstructorService,
   ) {
@@ -153,51 +157,41 @@ export class TimeSlotsComponent implements OnInit {
 
   public clickSubmit() {
     if (this.bookedSlot) {
-      this.openModal();
+      this.showModal(this.setConfirmationParams());
     } else {
       this.bookTimeSlot();
     }
   }
 
-  public bookTimeSlot() {
+  public bookTimeSlot = () => {
     this.inProgress = true;
     this.currentService.book(this.currentSlot).subscribe((response) => {
       this.inProgress = false;
       this.nextStepEvent.emit(JSON.stringify(response));
     });
-  }
+  };
 
-  setDialogButtons() {
-    this.dialogButtons = [];
-    this.dialogButtons.push(
-      {
-        text: 'Да',
-        action: () => {
-          this.bookTimeSlot();
+  setConfirmationParams() {
+    const modalParameters: ConfirmationModal = {
+      text: 'Вы уверены, что хотите поменять забронированное время?',
+      buttons: [
+        {
+          label: 'Да',
+          closeModal: true,
+          handler: this.bookTimeSlot,
         },
-      },
-      {
-        text: 'Нет',
-        action: 'cancel',
-        classes: 'cancel-button',
-      },
-    );
+        {
+          label: 'Нет',
+          closeModal: true,
+        },
+      ],
+    };
+    return modalParameters;
   }
 
-  public openModal() {
-    document.body.classList.add('modal-open');
-    this.changeTSConfirm = true;
+  showModal(params) {
+    this.modalService.openModal(ConfirmationModalComponent, params);
   }
-
-  /**
-   * закрыть диалог
-   */
-  public closeModal() {
-    document.body.classList.remove('modal-open');
-    this.changeTSConfirm = false;
-  }
-
-  loadData() {}
 
   ngOnInit(): void {
     if (this.data.components[0]) {
