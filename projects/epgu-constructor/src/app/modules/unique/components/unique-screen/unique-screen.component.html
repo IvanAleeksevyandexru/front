@@ -20,7 +20,8 @@
   <epgu-constructor-employee-history
     [header]="data?.header"
     [gender]="gender"
-    [data]="data?.components[0]"
+    [data]="data"
+    (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-employee-history>
   <epgu-constructor-repeatable-fields
     *ngSwitchCase="uniqueComponentName.repeatableFields"

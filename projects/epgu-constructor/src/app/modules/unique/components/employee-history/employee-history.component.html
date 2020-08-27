@@ -65,7 +65,7 @@
       ></lib-plain-input>
     </div>
   </section>
-  <section class="employee-history__generation">
+  <section class="employee-history__generation" *ngIf="!isCompleteForm()">
     <div class="employee-history__type">
       <div>
         <lib-radio *ngFor="let role of ds"
@@ -131,5 +131,17 @@
               (click)="pushFormGroup()"
       >Добавить данные</button>
     </div>
+  </section>
+  <section class="employee-history__completed" *ngIf="isCompleteForm()">
+    <div class="employee-history__completed__icon"></div>
+    <div class="employee-history__completed__msg">Вы заполнили 10 лет</div>
+  </section>
+  <section class="employee-history__footer">
+    <lib-button
+      (click)="getNextScreen()"
+      class="employee-history__footer__btn-submit"
+    >
+        {{ data?.submitLabel || 'Продолжить' }}
+    </lib-button>
   </section>
 </epgu-constructor-screen-container>
