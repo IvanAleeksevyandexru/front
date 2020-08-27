@@ -17,6 +17,7 @@ import { MockService } from './services/mock/mock.service';
 import { RestService } from './services/rest/rest.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { SharedModule } from './shared-module/shared-components.module';
+import { EmptyModule } from './modules/empty/empty.module';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -35,6 +36,7 @@ const COMPONENTS = [
     UniqueScreenModule,
     InvitationModule,
     LayoutModule,
+    EmptyModule,
 
     SharedModule,
     EpguLibModule.forChild(),

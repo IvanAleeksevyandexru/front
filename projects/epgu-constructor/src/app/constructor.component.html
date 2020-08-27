@@ -42,5 +42,11 @@
     (prevStepEvent)="prevStep()"
   >
   </epgu-constructor-unique-screen>
+  <epgu-constructor-empty
+    *ngSwitchCase="constructorComponentType.EMPTY"
+    [data]="constructorService?.componentData"
+    (nextStepEvent)="nextStep($event)"
+    (prevStepEvent)="prevStep()"
+  ></epgu-constructor-empty>
 </ng-container>
 <epgu-constructor-modal-container></epgu-constructor-modal-container>

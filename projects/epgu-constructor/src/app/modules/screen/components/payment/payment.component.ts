@@ -34,10 +34,10 @@ export class PaymentComponent implements OnInit {
   public sum: string;
   public document: string;
   // @Input() data: PaymentInterface;
-  @Input() data: any;
-  private apiUrl;
+  @Input() data: PaymentInterface;
+  private apiUrl: string;
+  private externalUrl: string;
   private mockUinCode = '18810177200104519116';
-  // private mockOrderId = '763411359';
   private mockOrderId = '763419899';
 
   constructor(
@@ -48,6 +48,7 @@ export class PaymentComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.apiUrl = this.constructorConfigService.config.apiUrl;
+    this.externalUrl = this.constructorConfigService.config.externalUrl;
   }
 
   ngOnInit(): void {
@@ -99,7 +100,7 @@ export class PaymentComponent implements OnInit {
   getUin(attributeValues: PaymentInfoInterface): Observable<any> {
     const options = { withCredentials: true };
     return this.http.post(
-      `https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/paygate/uin/1?orderId=${this.mockOrderId}`,
+      `${this.externalUrl}api/lk/v1/paygate/uin/1?orderId=${this.mockOrderId}`,
       attributeValues,
       options,
     );
@@ -107,6 +108,7 @@ export class PaymentComponent implements OnInit {
   }
 
   createPaymentRequestOptions(): PaymentDictionaryOptionsInterface {
+    // TODO хардкод. доделать.
     const dictionaryOptions: PaymentDictionaryOptionsInterface = {
       pageSize: '258',
       filter: {
@@ -117,29 +119,24 @@ export class PaymentComponent implements OnInit {
       },
       tx: '41588125-d55f-11ea-8b86-fa163ee4b849',
     };
-    const uinRequestData = dictionaryOptions.filter;
-    const simple = Object.entries(JSON.parse(this.data.value));
-    simple.forEach(([key, value]) => {
-      uinRequestData.union.subs.push({
-        simple: {
-          attributeName: key,
-          condition: 'EQUALS',
-          value: { asString: value },
-        },
-      } as SubInterface);
+    const { subs } = dictionaryOptions.filter.union;
+    Object.entries(JSON.parse(this.data.value)).forEach(([key, value]) => {
+      this.addSubsParamsToFilter(subs, key, value);
     });
-
-    uinRequestData.union.subs.push({
-      simple: {
-        attributeName: 'dictem_code',
-        condition: 'EQUALS',
-        value: { asString: this.data.attrs.dictItemCode },
-      },
-    });
+    this.addSubsParamsToFilter(subs, 'dictem_code', this.data.attrs.dictItemCode);
     return dictionaryOptions;
   }
 
   transformSum(attributeValues): string {
     return attributeValues.sum.padStart(3, '0').replace(/\d{2}$/, ',$&');
+  }
+  addSubsParamsToFilter(arr: SubInterface[], key: string, value: any): void {
+    arr.push({
+      simple: {
+        attributeName: key,
+        condition: 'EQUALS',
+        value: { asString: value },
+      },
+    } as SubInterface);
   }
 }

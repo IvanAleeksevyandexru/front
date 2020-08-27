@@ -51,8 +51,7 @@
         ></epgu-constructor-change-list>
 
         <epgu-constructor-snils
-        *ngSwitchCase="screenComponentName.SnilsInput"
-        [data]="data?.components[0]"
+          *ngSwitchCase="screenComponentName.SnilsInput"
         ></epgu-constructor-snils>
 
         <epgu-constructor-doc-input
@@ -67,7 +66,7 @@
           (changeComponentData)="changeComponentData($event)"
         >
         <epgu-constructor-payment
-        *ngSwitchCase="screenComponentName.personLookup"
+          *ngSwitchCase="screenComponentName.paymentScr"
           [data]="data?.components[0]"
         ></epgu-constructor-payment>
         </epgu-constructor-country-selection>

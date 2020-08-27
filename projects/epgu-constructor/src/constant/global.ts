@@ -5,6 +5,7 @@ export enum SCREEN_TYPE {
   'CUSTOM' = 'CUSTOM',
   'UNIQUE' = 'UNIQUE',
   'INVITATION_ERROR' = 'INVITATION_ERROR',
+  'EMPTY' = 'EMPTY'
 }
 
 export enum SCREEN_COMPONENT_NAME {
@@ -19,7 +20,8 @@ export enum SCREEN_COMPONENT_NAME {
   'SnilsInput' = 'SnilsInput',
   'docInput' = 'DocInput',
   'countryApostil' = 'CountryApostil',
-  'Redirect' = 'Redirect'
+  'redirect' = 'Redirect',
+  'paymentScr' = 'PaymentScr'
 }
 
 export enum INFO_SCREEN_COMPONENT {
