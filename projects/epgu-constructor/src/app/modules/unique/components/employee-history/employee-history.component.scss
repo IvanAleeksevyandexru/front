@@ -1,10 +1,10 @@
-@import "src/styles/core";
-@import "src/styles/components";
+@import "src/styles/core/breakpoint";
+@import "src/styles/core/palettes";
 
 .employee-history {
   &__generation,
   &__addedGenerations {
-    box-shadow: 0px 6px 16px rgba(230, 235, 245, 0.8);
+    box-shadow: 0px 6px 16px $color-box-shadow;
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 24px;

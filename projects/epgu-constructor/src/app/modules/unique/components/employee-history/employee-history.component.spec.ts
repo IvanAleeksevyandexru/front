@@ -4,13 +4,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
-import { CheckboxComponent, DatePickerComponent, PlainInputComponent, RadioComponent } from 'epgu-lib';
+import { ButtonComponent, CheckboxComponent, DatePickerComponent, PlainInputComponent, RadioComponent } from 'epgu-lib';
 import { PageNameComponent } from '../../../../shared-module/components/page-name/page-name.component';
 import { LabelComponent } from '../../../../shared-module/components/label/label.component';
 import { NavigationComponent } from '../../../../shared-module/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../../../shared-module/components/screen-container/screen-container.component';
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { MockComponent } from 'ng-mocks';
+import { SCREEN_TYPE } from '../../../../../constant/global';
 
 describe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;
@@ -27,6 +28,7 @@ describe('EmployeeHistoryComponent', () => {
         PageNameComponent,
         LabelComponent,
         RadioComponentMock,
+        ButtonComponent,
         NavigationComponent,
         ScreenContainerComponent,
       ],
@@ -41,11 +43,12 @@ describe('EmployeeHistoryComponent', () => {
     fixture = TestBed.createComponent(EmployeeHistoryComponent);
     component = fixture.componentInstance;
     component.data = {
-      attrs: {},
+      components: [],
+      header: '',
       id: '',
-      label: '',
-      type: '',
-      value: ''
+      name: '',
+      submitLabel: '',
+      type: SCREEN_TYPE.UNIQUE,
     };
     component.header = '';
     component.gender = 'male';
