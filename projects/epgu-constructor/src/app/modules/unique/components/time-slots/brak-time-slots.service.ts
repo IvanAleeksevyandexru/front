@@ -102,6 +102,14 @@ export class BrakTimeSlotsService implements TimeSlotsService {
     return of(undefined);
   }
 
+  hasError(): boolean {
+    return !!this.getErrorMessage();
+  }
+
+  getErrorMessage(): string {
+    return this.errorMessage;
+  }
+
   changed(ref: any): boolean {
     let changed = false;
 

@@ -9,4 +9,6 @@ export interface TimeSlotsService {
   getAvailableSlots(selectedDay: Date): any[];
   getBookedSlot(): any;
   book(selectedSlot: any): Observable<any>;
+  hasError(): boolean;
+  getErrorMessage(): string;
 }

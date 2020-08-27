@@ -13,10 +13,10 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
 
   private response: EgpuResponseInterface;
   private department;
-  private solemn: boolean;
 
   public activeMonthNumber: number;
   public activeYearNumber: number;
+  availableMonths: string[];
 
   private slotsMap: { [key: number]: { [key: number]: { [key: number]: { slotId, areaId, slotTime }[] } } };
 
@@ -49,6 +49,8 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
         if (!response.error) {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;
+          this.activeMonthNumber = selectedSlot.slotTime.getMonth();
+          this.activeYearNumber = selectedSlot.slotTime.getFullYear();
         }
       })
     );
@@ -61,7 +63,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
   }
 
   getAvailableMonths(): string[] {
-    return [];
+    return this.availableMonths;
   }
 
   getAvailableSlots(selectedDay: Date): any[] {
@@ -85,6 +87,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
 
     if (this.changed(ref) || this.errorMessage) {
       this.slotsMap = {};
+      this.availableMonths = [];
       this.errorMessage = undefined;
       return this.getTimeSlots(this.getSlotsRequest()).pipe(
         map(response => {
@@ -101,6 +104,14 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
     return of(undefined);
   }
 
+  hasError(): boolean {
+    return !!this.getErrorMessage();
+  }
+
+  getErrorMessage(): string {
+    return this.errorMessage;
+  }
+
   changed(ref: any): boolean {
     let changed = false;
 
@@ -108,12 +119,6 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
     if (!this.department || this.department.value !== department.value) {
       changed = true;
       this.department = department;
-    }
-
-    let solemn = this.response.applicantAnswers[ref.solemn].value == 'Да';
-    if (this.solemn !== solemn) {
-      changed = true;
-      this.solemn = solemn;
     }
 
     // let slotsPeriod = JSON.parse(this.response.applicantAnswers[ref.slotsPeriod].value).value.substring(0, 7);
@@ -199,6 +204,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
       let monthSlots = this.slotsMap[slotDate.getFullYear()];
       if (!monthSlots[slotDate.getMonth()]) {
         monthSlots[slotDate.getMonth()] = {};
+        this.availableMonths.push(`${slotDate.getFullYear()}-${slotDate.getMonth()+1}`);
       }
 
       let daySlots = monthSlots[slotDate.getMonth()];
@@ -212,5 +218,15 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
         slotTime: slotDate,
       });
     });
+
+    if (this.availableMonths.length == 0) {
+      const today = new Date();
+      this.activeMonthNumber = today.getMonth();
+      this.activeYearNumber = today.getFullYear();
+    } else {
+      const [activeYearNumber, activeMonthNumber] = this.availableMonths[0].split('-');
+      this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
+      this.activeYearNumber = parseInt(activeYearNumber, 10);
+    }
   }
 }

@@ -5,7 +5,7 @@
     </div>
 
     <app-screen-pad class="body">
-      <div *ngIf="initialized" class="card">
+      <div *ngIf="calendarAvailable()" class="card">
         <label>Выберите дату и время</label>
         <div class="months-list">
           <lib-dropdown
