@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelperTextComponent should match snapshot 1`] = `
+<epgu-constructor-helper-text
+  __ngContext__={[Function LRootView]}
+  text={[Function String]}
+>
+  <span
+    class="helper-text"
+  >
+    Awesome useful helper text.
+  </span>
+</epgu-constructor-helper-text>
+`;
