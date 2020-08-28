@@ -21,7 +21,26 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
   isEditable: boolean;
   phoneForm: FormGroup;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  phoneMask = ['+', /[7]/, '(', /[1-9]/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
+  phoneMask = [
+    '+',
+    '7',
+    ' ',
+    '(',
+    /[1-9]/,
+    /\d/,
+    /\d/,
+    ')',
+    ' ',
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,7 +56,7 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
           disabled: !this.isEditable,
         },
         {
-          validators: Validators.compose([Validators.required, Validators.minLength(14)]),
+          validators: Validators.compose([Validators.required, Validators.minLength(18)]),
         },
       ),
     });
@@ -45,7 +64,8 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
     this.phoneForm.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
       .subscribe((change) => {
-        const { phone } = change;
+        let { phone } = change;
+        phone = phone.replace(/[\s|-]+/g, ''); // backend-friendly format +7(999)1234567
         this.screenComponentService.dataToSend = phone;
         this.screenComponentService.isValid = this.phoneForm.valid;
         this.dataChanged.emit(change);
