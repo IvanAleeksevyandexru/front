@@ -27,7 +27,8 @@
             [queryMinSymbolsCount]="0"
             [searchCaseSensitive]="false"
             (changed)="selectDictionary($event, componentData)"
-            [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-lookup>
+            [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"
+          ></lib-lookup>
         </ng-container>
       </div>
 
@@ -67,7 +68,7 @@
         </epgu-constructor-helper-text>
         <div class="form__error">
           <small *ngIf="!state[componentData.id].valid"
-          >{{ state[componentData.id]?.errorMessage }}
+            >{{ state[componentData.id]?.errorMessage }}
           </small>
         </div>
       </div>
@@ -111,6 +112,7 @@
         <lib-date-picker
           [name]="componentData.id"
           [(ngModel)]="state[componentData.id].value"
+          minDate="-18y"
         ></lib-date-picker>
       </div>
 

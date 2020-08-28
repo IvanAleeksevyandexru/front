@@ -89,7 +89,8 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
       // flat cycledValues
       const cycledValuesPrepared = { ...this.cycledValues };
       // merge cycledValue data and state data, which could be updated
-      const data = { ...cycledValuesPrepared, ...changes };
+      const changesPrepared = JSON.parse(changes);
+      const data = { ...cycledValuesPrepared, ...changesPrepared };
       stateData[currentCycledFieldsKey] = {
         visited: true,
         value: JSON.stringify(data),

@@ -69,7 +69,7 @@ export class CustomScreenComponent implements OnInit {
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
       const stateDataPrepared = this.formatCycledFieldsValues(changes);
-      const cycledValuesPrepared = this.flattenCycledFieldsValues;
+      const cycledValuesPrepared = { ...this.cycledValues };
       const mergedCycledAndStateData = { ...cycledValuesPrepared, ...stateDataPrepared };
       stateData[currentCycledFieldsKey] = {
         visited: true,
