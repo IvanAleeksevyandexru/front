@@ -31,7 +31,7 @@ export class EmployeeHistoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.monthsService.years = this.data.components[0].attrs.years;
+    this.monthsService.years = this.data?.components[0]?.attrs?.years;
     this.ds = this.datasourceService.getDataSourceByGender(this.gender);
     this.employeeFormService.generateFormWatcher();
   }
