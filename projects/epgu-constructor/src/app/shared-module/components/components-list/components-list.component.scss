@@ -1,5 +1,4 @@
-@import "src/styles/core";
-
+@import 'src/styles/core';
 
 .form {
   &__item {
@@ -7,6 +6,7 @@
   }
   &__title {
     font-size: 14px;
+    font-family: $font-main;
     line-height: 20px;
     color: $color-summer-night;
     margin-bottom: 4px;

@@ -15,8 +15,12 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'registrationAddr' = 'RegistrationAddr',
   'personLookup' = 'PersonLookup',
+  'addPassport' = 'AddPassport',
   'changeList' = 'ChangeList',
-  'snils' = 'StringInput',
+  'childrenListUnder14' = 'ChildrenListUnder14',
+  'childrenListAbove14' = 'ChildrenListAbove14',
+  'birthCertificate' = 'BirthCertificate',
+  'snilsInput' = 'SnilsInput',
   'docInput' = 'DocInput',
   'countryApostil' = 'CountryApostil'
 }
@@ -31,6 +35,7 @@ export enum UNIQUE_COMPONENT_NAME {
   'addPassport' = 'AddPassport',
   'timeSlot' = 'TimeSlot',
   'mapService' = 'MapService',
+  'carInfo' = 'CarInfo',
   'repeatableFields' = 'RepeatableFields',
 }
 

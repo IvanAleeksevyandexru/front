@@ -1,42 +1,37 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { EpguLibModule } from 'epgu-lib';
-import { WebcamModule } from 'ngx-webcam';
 import { SharedModule } from '../../shared-module/shared-components.module';
-import { AddChildrenScreenModule } from './components/add-children/screens/add-children-screen/add-children-screen.module';
-import { FileUploadScreenComponent } from './components/file-upload-screen/file-upload-screen.component';
-import { FileUploadItemComponent } from './components/file-upload-screen/sub-components/file-upload-item/file-upload-item.component';
-import { FileUploadComponent } from './components/file-upload-screen/sub-components/file-upload/file-upload.component';
-import { WebcamShootComponent } from './components/file-upload-screen/sub-components/webcam-shoot/webcam-shoot.component';
+import { CarInfoModule } from './components/car-info/car-info.module';
+import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
+import { FileUploadModule } from './components/file-upload-screen/file-upload.module';
 import { RepeatableFieldsComponent } from './components/repeatable-fields/repeatable-fields.component';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
 import { UniqueScreenComponent } from './components/unique-screen/unique-screen.component';
 import {TimeSlotsModule} from './components/time-slots/time-slots.module';
 
-const COMPONENTS = [
-  UniqueScreenComponent,
-];
+
+// NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
+const COMPONENTS = [UniqueScreenComponent];
 
 @NgModule({
   declarations: [
     ...COMPONENTS,
-    FileUploadScreenComponent,
-    FileUploadComponent,
-    FileUploadItemComponent,
-    WebcamShootComponent,
     RepeatableFieldsComponent,
   ],
   exports: [
-    ...COMPONENTS
+    ...COMPONENTS,
   ],
   imports: [
     CommonModule,
-    AddChildrenScreenModule,
     SharedModule,
     WebcamModule,
     TimeSlotsModule,
+    FileUploadModule,
     EpguLibModule.forChild(),
     SelectMapObjectModule,
+    CarInfoModule,
+    EmployeeHistoryModule,
   ],
 })
-export class UniqueScreenModule { }
+export class UniqueScreenModule {}
