@@ -55,7 +55,7 @@
     <div class="footer">
       <lib-button
         [showLoader]="constructorService.isLoading || inProgress"
-        (click)="bookTimeSlot()"
+        (click)="clickSubmit()"
         class="footer__btn-submit"
         [disabled]="buttonDisabled()"
       >

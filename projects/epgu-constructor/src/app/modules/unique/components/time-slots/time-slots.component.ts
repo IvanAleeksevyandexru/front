@@ -183,6 +183,7 @@ export class TimeSlotsComponent implements OnInit {
         {
           label: 'Нет',
           closeModal: true,
+          color: 'white',
         },
       ],
     };
