@@ -2,4 +2,4 @@
 
 <div *ngIf="data?.attrs?.image?.alt" class="info__desc">{{data.attrs.image.alt}}</div>
 
-<div class="info__text" [innerHTML]="data.label | safeHtml"></div>
+<div class="info__text" (click)="clickToInnerHTML($event)" [innerHTML]="data.label | safeHtml"></div>
