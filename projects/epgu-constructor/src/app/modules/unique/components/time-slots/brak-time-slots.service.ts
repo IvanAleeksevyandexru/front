@@ -5,24 +5,25 @@ import {TimeSlotsService} from './time-slots.service';
 import * as uuid from 'uuid';
 import {Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
+import {SlotsMapInterface} from './slots-map.interface';
 
 @Injectable()
 export class BrakTimeSlotsService implements TimeSlotsService {
 
-  private department;
+  private department: any;
   private solemn: boolean;
-  private slotsPeriod;
-  private orderId;
+  private slotsPeriod: any;
+  private orderId: string;
 
   public activeMonthNumber: number;
   public activeYearNumber: number;
 
-  private slotsMap: { [key: number]: { [key: number]: { [key: number]: { slotId, areaId, slotTime }[] } } };
+  private slotsMap: SlotsMapInterface;
 
   private bookedSlot: { slotId, areaId, slotTime };
-  private bookId;
+  private bookId: string;
 
-  private errorMessage;
+  private errorMessage: string;
 
   constructor(
     private http: HttpClient,
@@ -31,7 +32,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
 
   }
 
-  private getTimeSlots(requestBody): Observable<any> {
+  private getTimeSlots(requestBody) {
     const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/slots`;
     return this.http.post(path, requestBody);
   }
@@ -53,9 +54,11 @@ export class BrakTimeSlotsService implements TimeSlotsService {
   }
 
   isDateLocked(date: Date): boolean {
-    return !this.slotsMap[date.getFullYear()]
-      || !this.slotsMap[date.getFullYear()][date.getMonth()]
-      || !this.slotsMap[date.getFullYear()][date.getMonth()][date.getDate()];
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    return !this.slotsMap[year]
+      || !this.slotsMap[year][month]
+      || !this.slotsMap[year][month][date.getDate()];
   }
 
   getAvailableMonths(): string[] {
@@ -84,7 +87,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
       this.slotsMap = {};
       this.errorMessage = undefined;
       return this.getTimeSlots(this.getSlotsRequest()).pipe(
-        map(response => {
+        map((response:any) => {
             if (response.error.errorDetail.errorCode === 0) {
               this.initSlotsMap(response.slots);
             } else {
@@ -115,7 +118,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
       this.department = department;
     }
 
-    let solemn = data.solemn == 'Да';
+    let solemn = data.solemn === 'Да';
     if (this.solemn !== solemn) {
       changed = true;
       this.solemn = solemn;
