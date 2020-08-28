@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
@@ -16,7 +16,7 @@ import { QuestionScreenModalParams } from './questions-screen.constant';
   styleUrls: ['./questions-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class QuestionsScreenComponent implements AfterViewInit {
+export class QuestionsScreenComponent {
   @Input() data: QuestionsDisplayInterface;
   @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
@@ -32,11 +32,6 @@ export class QuestionsScreenComponent implements AfterViewInit {
       .subscribe(() => this.goPrevStepEvent());
   }
 
-  ngAfterViewInit(): void {
-    const arr = (this.data.components[0]?.attrs as any)?.clarifications || [];
-    this.addListenerForAllItemInHtmlFromServer(arr);
-  }
-
   goPrevStepEvent() {
     this.prevStepEvent.emit();
   }
@@ -45,11 +40,13 @@ export class QuestionsScreenComponent implements AfterViewInit {
     this.nextStepEvent.emit(answer.value);
   }
 
-  private addListenerForAllItemInHtmlFromServer(arr: any) {
-    Object.entries(arr)?.forEach(([id, modalData]) => {
-      const link = document.getElementById(id);
-      link.addEventListener('click', () => this.showModal(modalData));
-    });
+  clickToInnerHTML($event: MouseEvent) {
+    const targetElementId = ($event.target as HTMLElement).id;
+    const { clarifications = {} } = this.data.components[0]?.attrs as any;
+    const targetElementModalData = clarifications[targetElementId];
+    if (targetElementModalData) {
+      this.showModal(targetElementModalData);
+    }
   }
 
   showModal(params) {
