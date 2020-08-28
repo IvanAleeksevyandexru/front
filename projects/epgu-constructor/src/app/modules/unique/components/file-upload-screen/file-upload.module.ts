@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EpguLibModule } from 'epgu-lib';
-import { SnilsComponent } from './snils.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared-module/shared-components.module';
 
+import { SubComponentsModule } from './sub-components/sub-components.module';
+
+import { FileUploadScreenComponent } from './file-upload-screen.component';
+
 const COMPONENTS = [
-  SnilsComponent
+  FileUploadScreenComponent,
 ];
 
 @NgModule({
@@ -15,8 +17,8 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     SharedModule,
-    ReactiveFormsModule,
+    SubComponentsModule,
     EpguLibModule.forChild(),
-  ]
+  ],
 })
-export class SnilsModule { }
+export class FileUploadModule {}

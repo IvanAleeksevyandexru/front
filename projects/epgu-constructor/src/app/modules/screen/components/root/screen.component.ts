@@ -75,7 +75,7 @@ export class ScreenComponent implements OnInit {
     this.nextStepEvent.emit(data);
   }
 
-  changeComponentData(value: any): void {
+  changedComponentData(value: any): void {
     this.componentData = value;
   }
 

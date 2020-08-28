@@ -68,6 +68,10 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
     }
   }
 
+  handleClick() {
+    this.isEditable = true;
+  }
+
   ngOnChanges() {
     if (this.isEditable) {
       this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {

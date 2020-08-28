@@ -8,7 +8,7 @@
   <epgu-constructor-file-upload-screen
     *ngSwitchCase="uniqueComponentName.fileUploadComponent"
     [data]="data?.components[0]"
-    [header]="data?.label"
+    [header]="data?.header"
     [submitLabel]="data?.submitLabel"
     (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-file-upload-screen>
@@ -17,5 +17,9 @@
     (nextStepEvent)="nextStep($event)"
     [data]="data"
   ></epgu-constructor-repeatable-fields>
-
+  <epgu-constructor-car-info
+    *ngSwitchCase="uniqueComponentName.carInfo"
+    [data]="data"
+    (nextStepEvent)="nextStep()"
+  ></epgu-constructor-car-info>
 </ng-container>

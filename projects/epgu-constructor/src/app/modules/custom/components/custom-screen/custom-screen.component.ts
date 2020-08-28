@@ -107,7 +107,9 @@ export class CustomScreenComponent implements OnInit {
       acc[key] = {
         visited: true,
         value:
-          data[key].value !== 'object' ? data[key].value : JSON.stringify(data[key].value || {}),
+          typeof data[key].value !== 'object'
+            ? data[key].value
+            : JSON.stringify(data[key].value || {}),
       };
       return acc;
     }, {});

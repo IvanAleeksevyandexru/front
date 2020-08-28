@@ -15,22 +15,35 @@
   }
 }
 
-.info__item{
+.car__info--title {
+  font-family: 'Lato', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.car__info--block {
+  margin-bottom: 24px;
+}
+
+.car__info--item {
+  margin-top: 24px;
+  font-family: 'Lato', sans-serif;
+  font-style: normal;
+  font-weight: normal;
   font-size: 16px;
   line-height: 24px;
-  color: $color-text-helper;
+
+  .bold {
+    font-weight: bold;
+  }
 }
 
 .footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 32px;
-  margin-bottom: 40px;
-
-  @include tablets-up {
-    margin-top: 40px;
-  }
 
   &__btn-submit {
     width: auto;
