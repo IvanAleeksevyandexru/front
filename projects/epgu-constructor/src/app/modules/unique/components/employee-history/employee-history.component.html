@@ -65,12 +65,12 @@
       ></lib-plain-input>
     </div>
   </section>
-  <section class="employee-history__generation" *ngIf="!isCompleteForm()">
+  <section class="employee-history__generation">
     <div class="employee-history__type">
       <div>
         <lib-radio *ngFor="let role of ds"
           name="generationType"
-          [formControl]="generateForm.get('type')"
+          [formControl]="employeeFormService.generateForm.get('type')"
           [labelText]="role.label"
           [value]="role.value"
           (change)="resetForm(role.value)"
@@ -82,17 +82,23 @@
         <epgu-constructor-label for="from">Укажите дату с (месяц, год)</epgu-constructor-label>
         <lib-date-picker
           id="from"
-          [formControl]="generateForm.get('from')"
+          name="minDate"
+          [formControl]="employeeFormService.generateForm.get('from')"
+          [minDate]="monthsService.minDateFrom"
+          [maxDate]="monthsService.maxDate"
         ></lib-date-picker>
         <div class="employee-history__date__hint">Заполняется при наличии</div>
       </div>
 
       <div>
-        <ng-container *ngIf="!generateForm.get('checkboxToDate').value">
+        <ng-container *ngIf="!employeeFormService.generateForm.get('checkboxToDate').value">
           <epgu-constructor-label for="to">Укажите дату по (месяц, год)</epgu-constructor-label>
           <lib-date-picker
             id="to"
-            [formControl]="generateForm.get('to')"
+            name="maxDate"
+            [formControl]="employeeFormService.generateForm.get('to')"
+            [minDate]="monthsService.minDateTo"
+            [maxDate]="monthsService.maxDate"
           ></lib-date-picker>
           <div class="employee-history__date__hint">Заполняется при наличии</div>
         </ng-container>
@@ -100,29 +106,31 @@
     </div>
     <div class="employee-history__input">
       <lib-checkbox
-        [formControl]="generateForm.get('checkboxToDate')"
+        [formControl]="employeeFormService.generateForm.get('checkboxToDate')"
         labelText="По настоящее время"
       ></lib-checkbox>
     </div>
-    <div class="employee-history__input" *ngIf="ds[generateForm.get('type').value]?.position as position">
+    <div class="employee-history__input"
+         *ngIf="ds[employeeFormService.generateForm.get('type').value]?.position as position">
       <epgu-constructor-label for="position">{{ position }}</epgu-constructor-label>
       <lib-plain-input
         id="position"
-        [formControl]="generateForm.get('position')"
+        [formControl]="employeeFormService.generateForm.get('position')"
       ></lib-plain-input>
     </div>
-    <div class="employee-history__input" *ngIf="ds[generateForm.get('type').value]?.place as place">
+    <div class="employee-history__input"
+         *ngIf="ds[employeeFormService.generateForm.get('type').value]?.place as place">
       <epgu-constructor-label for="place">{{ place }}</epgu-constructor-label>
       <lib-plain-input
         id="place"
-        [formControl]="generateForm.get('place')"
+        [formControl]="employeeFormService.generateForm.get('place')"
       ></lib-plain-input>
     </div>
     <div class="employee-history__input">
       <epgu-constructor-label for="address">Адрес полностью, включая регион и город</epgu-constructor-label>
       <lib-plain-input
         id="address"
-        [formControl]="generateForm.get('address')"
+        [formControl]="employeeFormService.generateForm.get('address')"
       ></lib-plain-input>
     </div>
 
@@ -134,7 +142,7 @@
   </section>
   <section class="employee-history__completed" *ngIf="isCompleteForm()">
     <div class="employee-history__completed__icon"></div>
-    <div class="employee-history__completed__msg">Вы заполнили 10 лет</div>
+    <div class="employee-history__completed__msg">Вы заполнили {{ monthsService.years }} лет</div>
   </section>
   <section class="employee-history__footer">
     <lib-button
