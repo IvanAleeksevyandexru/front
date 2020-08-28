@@ -55,7 +55,7 @@ export class QuestionsScreenComponent implements OnInit {
   }
 
   answerChoose(answer: QuestionsComponentActionsInterface): void {
-    const responseData = answer.value;
+    let responseData = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
       const fieldNameRef = this.data.components[0]?.attrs?.fields[0]?.fieldName;
@@ -65,7 +65,10 @@ export class QuestionsScreenComponent implements OnInit {
         visited: true,
         value: JSON.stringify(mergedCycledAndAnswerValues),
       };
+    } else {
+      responseData = answer.value;
     }
+
     this.nextStepEvent.emit(responseData);
   }
 
