@@ -1,4 +1,4 @@
-@import "src/styles/core";
+@import 'src/styles/core';
 
 .nav {
   @include navigation-mt();
@@ -24,6 +24,14 @@
   }
 }
 
+.icon-close {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-image: url('/assets/icons/png/close.png');
+  background-image: url('/assets/icons/svg/close.svg');
+}
+
 .card {
   &__wrapper {
     padding: 24px;
@@ -36,6 +44,7 @@
   &__title {
     font-size: 18px;
     font-weight: $fw-bold;
+    font-family: $font-main;
   }
   &__close {
     margin-left: auto;

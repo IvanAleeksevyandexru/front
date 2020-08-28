@@ -8,18 +8,25 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
+import * as moment_ from 'moment';
+import { DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
 import {
   CustomComponentDictionaryState,
   CustomComponentInterface,
   CustomComponentState,
 } from '../../../../interfaces/custom-component.interface';
-import { DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../../../interfaces/dictionary-options.interface';
 import {
   CUSTOM_COMPONENT_ITEM_TYPE,
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
 } from '../../../modules/custom/tools/custom-screen-tools';
 import { RestService } from '../../../services/rest/rest.service';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -35,7 +42,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   state: { [key: string]: CustomComponentState } = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
 
-  @Input() components;
+  @Input() components: Array<CustomComponentInterface>;
   @Output() changes = new EventEmitter();
 
   constructor(private restService: RestService) {}
@@ -76,17 +83,18 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   // }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.state = {};
     if (changes?.components?.currentValue) {
       this.components.forEach((component) => {
-        if (component.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection) {
-          this.initState(component);
-        }
-        if (this.hasDictionary(component.type)) {
+        if (this.likeDictionary(component.type)) {
           const dictionaryName = component.attrs.dictionaryType;
           this.initDictionary(dictionaryName);
           this.loadDictionary(dictionaryName, component);
+        } else {
+          this.initState(component);
         }
       });
+      this.changes.emit(this.state);
     }
   }
 
@@ -95,6 +103,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
     this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
+    this.calcDependedComponent(component);
     this.changes.emit(this.state);
   }
 
@@ -153,6 +162,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.restService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryName, data, component),
       () => this.loadDictionaryError(dictionaryName),
+      () => this.changes.emit(this.state),
     );
   }
 
@@ -165,7 +175,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.dictionary[key].paginationLoading = false;
     this.dictionary[key].data = data;
     this.dictionary[key].origin = component;
-    this.dictionary[key].list = getNormalizeDataCustomScreenDictionary(data.items, key);
+    this.dictionary[key].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
   }
 
   loadDictionaryError(key: string) {
@@ -181,12 +191,52 @@ export class ComponentsListComponent implements OnInit, OnChanges {
 
   private initState(component: CustomComponentInterface) {
     const { id, value } = component;
-    this.state[id] = { valid: false, errorMessage: '', value, component };
+    const hasRelatedRef = component.attrs.ref?.length;
+
+    let valueFormatted: string | Date;
+    switch (component.type) {
+      case CUSTOM_COMPONENT_ITEM_TYPE.DateInput:
+        valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate() || moment().toDate();
+        break;
+      default:
+        valueFormatted = value;
+        break;
+    }
+
+    this.state[id] = {
+      valid: false,
+      errorMessage: '',
+      value: valueFormatted,
+      component,
+      isShow: !hasRelatedRef,
+    };
+    this.changes.emit(this.state);
   }
 
-  private hasDictionary(type: CUSTOM_COMPONENT_ITEM_TYPE) {
+  private likeDictionary(type: CUSTOM_COMPONENT_ITEM_TYPE) {
     return (
       CUSTOM_COMPONENT_ITEM_TYPE.Dictionary === type || CUSTOM_COMPONENT_ITEM_TYPE.Lookup === type
     );
+  }
+
+  private calcDependedComponent(component: CustomComponentInterface) {
+    const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
+    // TODO добавить возможность зависить от нескольких полей
+    const dependentComponents = this.components.filter((item) =>
+      isComponentDependOn(item.attrs?.ref),
+    );
+
+    dependentComponents.forEach((dependentComponent) => {
+      const isLikeDictionary =
+        component.type === CUSTOM_COMPONENT_ITEM_TYPE.Dictionary ||
+        component.type === CUSTOM_COMPONENT_ITEM_TYPE.Lookup;
+      if (isLikeDictionary) {
+        const dictionaryOfTheDependentComponent: DictionaryItem = this.state[component.id]?.value;
+
+        // TODO Временный hardcode;
+        this.state[dependentComponent.id].isShow =
+          dependentComponent.attrs.ref[0].val === dictionaryOfTheDependentComponent.value; // TODO добавить возможность зависить от нескольких полей
+      }
+    });
   }
 }
