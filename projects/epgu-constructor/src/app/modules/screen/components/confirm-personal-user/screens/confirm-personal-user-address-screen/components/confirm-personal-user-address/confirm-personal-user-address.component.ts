@@ -80,6 +80,10 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
         this.dataEditedEvent.emit(this.value);
       });
     } else {
+      // TODO remove this hack
+      setTimeout(() => {
+        this.setState();
+      });
       this.dataEditedEvent.emit(this.value);
     }
   }

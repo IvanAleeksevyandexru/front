@@ -98,7 +98,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     } else {
       stateData = changes;
     }
-
+    this.data.value = changes;
     return stateData;
   }
 
