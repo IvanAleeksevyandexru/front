@@ -1,0 +1,82 @@
+<section class="add-new-child-form component">
+  <form #newChildForm="ngForm" class="component__form">
+    <div class="component__header">
+      <div class="component__title">Ребенок {{ item.id }}</div>
+      <div class="component__close">
+        <button (click)="removeChild(item.id)" class="button-close">
+          <div class="icon-close"></div>
+        </button>
+      </div>
+    </div>
+    <div class="component__content">
+      <div class="component__field">
+        <epgu-constructor-label for="childProfile">
+          Выберите ребенка из вашего профиля
+        </epgu-constructor-label>
+        <div class="component__select">
+          <lib-dropdown
+            id="childProfile"
+            name="childProfile"
+            [items]="itemsToSelect"
+            (changed)="handleSelect($event)"
+          ></lib-dropdown>
+        </div>
+      </div>
+      <div class="component__field">
+        <epgu-constructor-label for="birthDate"> Дата рождения </epgu-constructor-label>
+        <lib-date-picker
+          id="birthDate"
+          name="birthDate"
+          [(ngModel)]="item.birthDate"
+        ></lib-date-picker>
+      </div>
+      <div class="component__field">
+        <epgu-constructor-label> Пол </epgu-constructor-label>
+        <div class="component__radio-group radio-group">
+          <div class="radio-group__button">
+            <lib-radio
+              [(ngModel)]="item.gender"
+              name="gender"
+              value="муж"
+              [checked]="item.gender === 'муж'"
+            ></lib-radio>
+            <label>Мальчик</label>
+          </div>
+          <div class="radio-group__button">
+            <lib-radio
+              [(ngModel)]="item.gender"
+              name="gender"
+              value="жен"
+              [checked]="item.gender === 'жен'"
+            ></lib-radio>
+            <label>Девочка</label>
+          </div>
+        </div>
+      </div>
+      <div class="component__field">
+        <epgu-constructor-label for="lastName"> Фамилия </epgu-constructor-label>
+        <lib-plain-input
+          id="lastName"
+          name="lastName"
+          [(ngModel)]="item.lastName"
+        ></lib-plain-input>
+      </div>
+      <div class="component__field">
+        <epgu-constructor-label for="firstName"> Имя </epgu-constructor-label>
+        <lib-plain-input
+          id="firstName"
+          name="firstName"
+          [(ngModel)]="item.firstName"
+        ></lib-plain-input>
+      </div>
+      <div class="component__field">
+        <epgu-constructor-label for="middleName"> Отчество </epgu-constructor-label>
+        <lib-plain-input
+          id="middleName"
+          name="middleName"
+          [(ngModel)]="item.middleName"
+        ></lib-plain-input>
+      </div>
+    </div>
+  </form>
+</section>

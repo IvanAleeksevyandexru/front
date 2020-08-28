@@ -1,0 +1,52 @@
+<section class="add-children-screen">
+  <section>
+    <div class="add-children-screen__card" *ngFor="let item of itemsList">
+      <div *ngIf="item.isNew !== true" class="card">
+        <div class="card__wrapper">
+          <div class="card__header">
+            <div class="card__title">Ребенок {{ item?.id }}</div>
+            <div class="card__close">
+              <button (click)="removeChild(item?.id)" class="button-close">
+                <div class="icon-close"></div>
+              </button>
+            </div>
+          </div>
+          <div class="card__content">
+            <div>
+              <epgu-constructor-label for="itemsList">
+                Выберите ребенка из вашего профиля
+              </epgu-constructor-label>
+            </div>
+            <div class="card__select">
+              <lib-dropdown
+                id="itemsList"
+                (changed)="handleSelect($event)"
+                [items]="itemsToSelect"
+              ></lib-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="add-children-screen__form" *ngFor="let item of itemsList">
+      <epgu-constructor-add-new-child-form
+        *ngIf="item.isNew === true"
+        (ngModel)="(item)"
+        [data]="{
+          itemsToSelect: itemsToSelect,
+          items: itemsList,
+          item: item
+        }"
+        (removeChildEvent)="removeChild($event)"
+        (childUpdateEvent)="updateChild($event)"
+      ></epgu-constructor-add-new-child-form>
+    </div>
+
+    <div class="add-children-screen__action">
+      <button class="add-children-screen__button button" (click)="addNewChild()">
+        <label class="button__label">Добавить ребенка</label>
+      </button>
+    </div>
+  </section>
+</section>

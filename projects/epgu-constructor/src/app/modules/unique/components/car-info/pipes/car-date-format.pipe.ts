@@ -1,10 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment from 'moment';
-
+import * as moment_ from 'moment';
+import { UtilsService } from '../../../../../services/utils/utils.service';
 import { TenureDates } from '../models/car-info.interface';
 
-import { UtilsService } from '../../../../../services/utils/utils.service';
-
+const moment = moment_;
 type Type = 'DIFF' | 'FORMAT';
 
 @Pipe({ name: 'carInfoDate' })

@@ -1,13 +1,11 @@
-@import "src/styles/core";
+@import 'src/styles/core';
 
-.birth-certificate {
-  background-color: $color-white;
+.add-new-child-form {
+  background-color: $color-light-gray;
 }
 
 .component {
-  &__wrapper {
-    padding: 24px 16px;
-  }
+  padding: 24px 16px;
   &__header {
     display: flex;
     justify-content: flex-start;
@@ -17,17 +15,13 @@
     font-size: 18px;
     line-height: 24px;
     color: $color-gray;
-  }
-  &__strong {
-    font-weight: $fw-bold;
-    font-size: 14px;
+    font-family: $font-main;
   }
   &__close {
     margin-left: auto;
   }
   &__field {
     margin-top: 16px;
-    font-size: 14px;
   }
   &__radio-group {
     display: flex;
@@ -52,25 +46,22 @@
   }
 }
 
-.field {
-  &--row {
-    display: flex;
-    flex-flow: row nowrap;
-    & > * {
-      flex: 1 1 auto;
-      &:not(:first-of-type) {
-        margin-left: 10px;
-      }
-      &:not(:last-of-type) {
-        margin-right: 10px;
-      }
-    }
-  }
-  &--small {
-    font-size: 14px;
-  }
+.icon-close {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-image: url('/assets/icons/png/close.png');
+  background-image: url('/assets/icons/svg/close.svg');
 }
 
-.margin-top {
-  margin-top: 32px;
+.radio-group {
+  &__button {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    &:not(:first-of-type) {
+      margin-left: 16px;
+    }
+  }
 }

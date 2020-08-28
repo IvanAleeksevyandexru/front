@@ -24,6 +24,7 @@ export interface CustomComponentDictionaryState {
 export interface CustomComponentAttrInterface {
   dictionaryType: string;
   labelAttr: string;
+  fields: Array<any>;
   ref: Array<any>;
   requiredAttrs?: Array<string>;
   validation: Array<CustomComponentAttrValidationInterface>;

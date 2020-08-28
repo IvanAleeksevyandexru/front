@@ -75,10 +75,11 @@ export class ConstructorService {
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}) {
     const componentId = options.componentId || this.componentId;
+    const isCycledFields = !!Object.keys(this.response?.scenarioDto?.currentCycledFields).length;
     this.response.scenarioDto.currentValue = {};
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
-    if (this.componentData.type === SCREEN_TYPE.CUSTOM) {
+    if (this.componentData.type === SCREEN_TYPE.CUSTOM || isCycledFields) {
       this.response.scenarioDto.currentValue = data;
     } else {
       this.response.scenarioDto.currentValue[componentId] = {
@@ -118,6 +119,6 @@ export class ConstructorService {
     console.log('----- GET DATA ---------');
     console.log('componentId:', this.componentId);
     console.log('componentType:', this.componentType);
-    console.log('initResponse:', display);
+    console.log('initResponse:', response);
   }
 }

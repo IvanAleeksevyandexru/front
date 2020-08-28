@@ -4,7 +4,7 @@
       <div class="form__item" *ngSwitchCase="componentType.LabelSection">
         <epgu-constructor-label-section
           class="label"
-          [name]="componentData.label"
+          [name]="componentData.label || state[componentData.id].value"
         ></epgu-constructor-label-section>
       </div>
 
@@ -18,12 +18,13 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.Lookup">
-        <epgu-constructor-label>{{componentData.label}}</epgu-constructor-label>
+        <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
         <lib-lookup
           [queryMinSymbolsCount]="0"
           [searchCaseSensitive]="false"
           (changed)="selectDictionary($event, componentData)"
-          [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-lookup>
+          [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"
+        ></lib-lookup>
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.StringInput">
@@ -31,6 +32,7 @@
         <lib-plain-input
           [invalid]="!state[componentData.id].valid"
           [name]="componentData.id"
+          [(ngModel)]="state[componentData.id].value"
           (change)="inputChange($event, componentData)"
           [validationShowOn]="validationShowOn"
         ></lib-plain-input>
@@ -44,12 +46,13 @@
       <div class="form__item" *ngSwitchCase="componentType.RadioInput">
         <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
         <div class="form__radio__block">
-          <lib-radio *ngFor="let item of componentData?.attrs?.supportedValues"
-                     [name]="componentData.id"
-                     [labelText]="item.label"
-                     (change)="inputChange($event, componentData)"
-                     [value]="item.value">
-
+          <lib-radio
+            *ngFor="let item of componentData?.attrs?.supportedValues"
+            [name]="componentData.id"
+            [labelText]="item.label"
+            (change)="inputChange($event, componentData)"
+            [value]="item.value"
+          >
           </lib-radio>
         </div>
       </div>
@@ -61,15 +64,15 @@
             [name]="componentData.id"
             (change)="inputChange($event, componentData)"
             [value]="true"
-            labelText="Да">
-
+            labelText="Да"
+          >
           </lib-radio>
           <lib-radio
             [name]="componentData.id"
             (change)="inputChange($event, componentData)"
             [value]="false"
-            labelText="Нет">
-
+            labelText="Нет"
+          >
           </lib-radio>
         </div>
       </div>
@@ -84,7 +87,7 @@
 
       <div class="form__item" *ngSwitchCase="componentType.RadioInput">
         <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
-        <epgu-constructor-radio-input *ngFor="let radio in componentData.attrs.supportedValues">
+        <epgu-constructor-radio-input *ngFor="let radio; in: componentData.attrs.supportedValues">
           <lib-radio [value]="radio.value" [labelText]="radio.label"></lib-radio>
         </epgu-constructor-radio-input>
       </div>
