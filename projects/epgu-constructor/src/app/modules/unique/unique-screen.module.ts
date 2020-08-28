@@ -25,13 +25,12 @@ const COMPONENTS = [UniqueScreenComponent];
   imports: [
     CommonModule,
     SharedModule,
-    WebcamModule,
-    TimeSlotsModule,
     FileUploadModule,
     EpguLibModule.forChild(),
     SelectMapObjectModule,
     CarInfoModule,
     EmployeeHistoryModule,
+    TimeSlotsModule,
   ],
 })
 export class UniqueScreenModule {}
