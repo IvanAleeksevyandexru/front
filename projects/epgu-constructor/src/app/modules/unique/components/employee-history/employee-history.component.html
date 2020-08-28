@@ -145,8 +145,12 @@
     <div class="employee-history__completed__msg">Вы заполнили {{ monthsService.years }} лет</div>
   </section>
   <section class="employee-history__footer">
+    <div class="employee-history__footer__msg" *ngIf="!isCompleteForm()">
+      Не заполнен весь период деятельности за {{ monthsService.years }} лет
+    </div>
     <lib-button
       (click)="getNextScreen()"
+      [disabled]="!isCompleteForm()"
       class="employee-history__footer__btn-submit"
     >
         {{ data?.submitLabel || 'Продолжить' }}
