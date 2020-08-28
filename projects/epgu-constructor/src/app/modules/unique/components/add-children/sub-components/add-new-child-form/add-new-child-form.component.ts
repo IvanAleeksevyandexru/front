@@ -13,6 +13,7 @@ import * as moment_ from 'moment';
 import { delay, takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../constant/global';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { OPTIONAL_FIELD } from '../../../../../../../constant/helperTexts';
 
 const moment = moment_;
 
@@ -32,6 +33,7 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   childrenList: any;
   childrenSelectList: Array<ListItem>;
   list: Array<ListItem>;
+  helperText: string;
 
   constructor(private ngUnsubscribe$: UnsubscribeService) {}
 
@@ -61,6 +63,7 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
     });
     this.childrenSelectList = this.data.childrenSelectList;
     this.child = this.data.child;
+    this.updateHelperText();
   }
 
   ngAfterViewInit() {
@@ -80,5 +83,10 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   ngOnDestroy() {
     this.child.birthDate = moment(this.child.birthDate).format(DATE_STRING_DOT_FORMAT);
     this.childUpdateEvent.emit(this.child);
+  }
+
+  // TODO: find better way to resolve helper logic, for example encapsulated at field component
+  updateHelperText() {
+    this.helperText = this.data.required ? '' : OPTIONAL_FIELD;
   }
 }

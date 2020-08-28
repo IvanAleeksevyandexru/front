@@ -63,6 +63,7 @@ export interface ComponentInterface {
   label: string;
   type: string;
   value: string;
+  required?: boolean
   visited?: boolean
 }
 

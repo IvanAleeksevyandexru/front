@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import { ChildUnder14Interface } from '../../../../../../../interfaces/children.interface';
 import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
+import { OPTIONAL_FIELD } from '../../../../../../../constant/helperTexts';
 
 @Component({
   selector: 'epgu-constructor-add-children-screen',
@@ -19,6 +20,7 @@ export class AddChildrenScreenComponent implements OnInit {
   childrenListInitial: any;
   childrenSelectList: Array<ListItem>;
   selectedChildrenList: any = [];
+  helperText: string;
 
   headerMapped: any;
   confirmAddressData: any;
@@ -126,5 +128,11 @@ export class AddChildrenScreenComponent implements OnInit {
         text: child.firstName,
       };
     });
+    this.updateHelperText();
+  }
+
+  // TODO: find better way to resolve helper logic, for example encapsulated at field component
+  updateHelperText() {
+    this.helperText = this.data.required ? '' : OPTIONAL_FIELD;
   }
 }

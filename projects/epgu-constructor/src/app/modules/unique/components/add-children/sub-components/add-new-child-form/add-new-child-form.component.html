@@ -25,6 +25,7 @@
             [items]="childrenSelectList"
             (changed)="handleSelect($event)"
           ></lib-dropdown>
+          <epgu-constructor-helper-text *ngIf="helperText" [text]="helperText"></epgu-constructor-helper-text>
         </div>
       </div>
       <div class="component__field">
