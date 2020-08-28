@@ -91,9 +91,8 @@ export class ComponentsListComponent implements OnInit, OnChanges {
           const dictionaryName = component.attrs.dictionaryType;
           this.initDictionary(dictionaryName);
           this.loadDictionary(dictionaryName, component);
-        } else {
-          this.initState(component);
         }
+        this.initState(component);
       });
       this.changes.emit(this.state);
     }
@@ -102,7 +101,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   selectDictionary(selectedItem: ListItem, component: CustomComponentInterface) {
     const dictionaryName = component.attrs?.dictionaryType;
     this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
-    this.state[component.id].value = JSON.stringify(selectedItem.originalItem);
+    this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
     this.calcDependedComponent(component);
     this.changes.emit(this.state);
