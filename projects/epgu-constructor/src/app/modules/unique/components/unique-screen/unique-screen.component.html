@@ -14,6 +14,7 @@
     (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-file-upload-screen>
   <epgu-constructor-employee-history
+    *ngSwitchCase="uniqueComponentName.employeeHistory"
     [header]="data?.header"
     [gender]="gender"
     [data]="data"
