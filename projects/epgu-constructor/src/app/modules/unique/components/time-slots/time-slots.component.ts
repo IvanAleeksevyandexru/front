@@ -7,6 +7,7 @@ import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { TimeSlotsService } from './time-slots.service';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
+import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { ConfirmationModalComponent } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { ConfirmationModal } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.interface';
@@ -61,12 +62,14 @@ export class TimeSlotsComponent implements OnInit {
     private changeDetection: ChangeDetectorRef,
     private brakTimeSlotsService: BrakTimeSlotsService,
     private divorceTimeSlotsService: DivorceTimeSlotsService,
+    private mvdTimeSlotsService: MvdTimeSlotsService,
     private modalService: ModalService,
     public screenComponentService: ScreenComponentService,
     public constructorService: ConstructorService,
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = divorceTimeSlotsService;
+    this.timeSlotServices.MVD = mvdTimeSlotsService;
   }
 
   @Input() data: DisplayInterface;
@@ -144,7 +147,9 @@ export class TimeSlotsComponent implements OnInit {
 
   public showTimeSlots(date: Date) {
     this.currentSlot = null;
-    this.timeSlots = this.currentService.getAvailableSlots(date);
+    this.currentService.getAvailableSlots(date).subscribe((timeSlots) => {
+      this.timeSlots = timeSlots;
+    });
   }
 
   public monthChanged(ev) {

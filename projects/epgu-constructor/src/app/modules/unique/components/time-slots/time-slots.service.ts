@@ -6,7 +6,7 @@ export interface TimeSlotsService {
   getCurrentMonth(): number;
   getAvailableMonths(): string[];
   isDateLocked(date: Date): boolean;
-  getAvailableSlots(selectedDay: Date): any[];
+  getAvailableSlots(selectedDay: Date): Observable<any[]>;
   getBookedSlot(): any;
   book(selectedSlot: any): Observable<any>;
   hasError(): boolean;

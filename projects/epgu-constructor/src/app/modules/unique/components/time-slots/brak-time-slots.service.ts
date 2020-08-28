@@ -62,8 +62,8 @@ export class BrakTimeSlotsService implements TimeSlotsService {
     return [this.slotsPeriod];
   }
 
-  getAvailableSlots(selectedDay: Date): any[] {
-    return this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()];
+  getAvailableSlots(selectedDay: Date): Observable<any[]> {
+    return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
   }
 
   getBookedSlot(): any {
