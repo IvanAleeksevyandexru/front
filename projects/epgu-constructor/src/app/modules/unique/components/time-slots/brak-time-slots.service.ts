@@ -6,13 +6,17 @@ import * as uuid from 'uuid';
 import {Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {SlotsMapInterface} from './slots-map.interface';
+import {ZagsDepartmentInterface} from './zags-department.interface';
+import {ZagsBookResponseInterface} from './zags-book-response.interface';
+import {ZagsSlotInterface} from './zags-slot.interface';
+import {ZagsSlotsResponseInterface} from './zags-slots-response.interface';
 
 @Injectable()
-export class BrakTimeSlotsService implements TimeSlotsService {
+export class BrakTimeSlotsService implements TimeSlotsService<ZagsSlotInterface> {
 
-  private department: any;
+  private department: ZagsDepartmentInterface;
   private solemn: boolean;
-  private slotsPeriod: any;
+  private slotsPeriod: string;
   private orderId: string;
 
   public activeMonthNumber: number;
@@ -20,7 +24,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
 
   private slotsMap: SlotsMapInterface;
 
-  private bookedSlot: { slotId, areaId, slotTime };
+  private bookedSlot: ZagsSlotInterface;
   private bookId: string;
 
   private errorMessage: string;
@@ -32,22 +36,25 @@ export class BrakTimeSlotsService implements TimeSlotsService {
 
   }
 
-  private getTimeSlots(requestBody) {
+  private getTimeSlots(requestBody): Observable<ZagsSlotsResponseInterface> {
     const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/slots`;
-    return this.http.post(path, requestBody);
+    return this.http.post<ZagsSlotsResponseInterface>(path, requestBody);
   }
 
-  private bookTimeSlot(requestBody): Observable<any> {
+  private bookTimeSlot(requestBody): Observable<ZagsBookResponseInterface> {
     const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/book?srcSystem=BETA`;
-    return this.http.post(path, requestBody);
+    return this.http.post<ZagsBookResponseInterface>(path, requestBody);
   }
 
-  book(selectedSlot: any): Observable<any> {
+  book(selectedSlot: ZagsSlotInterface) {
+    this.errorMessage = undefined;
     return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
-      tap(response => {
+      tap((response) => {
         if (!response.error) {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;
+        } else {
+          this.errorMessage = response.error.errorDetail.errorMessage;
         }
       })
     );
@@ -81,8 +88,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
     return this.activeYearNumber
   }
 
-  init(data: any): Observable<any> {
-
+  init(data: any) {
     if (this.changed(data) || this.errorMessage) {
       this.slotsMap = {};
       this.errorMessage = undefined;
@@ -143,6 +149,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
   }
 
   private getSlotsRequest() {
+    // TODO HARDCODE, возможно, стоит перенести в json
     return {
       organizationId: [this.department.attributeValues.CODE],
       caseNumber: this.orderId,
@@ -162,10 +169,11 @@ export class BrakTimeSlotsService implements TimeSlotsService {
     };
   }
 
-  private getBookRequest(selectedSlot: { slotId, areaId, slotTime }) {
+  private getBookRequest(selectedSlot: ZagsSlotInterface) {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
+    // TODO HARDCODE, возможно, стоит перенести в json
     return {
       preliminaryReservation: 'true',
       address: this.department.attributeValues.ADDRESS,
@@ -224,3 +232,4 @@ export class BrakTimeSlotsService implements TimeSlotsService {
     });
   }
 }
+

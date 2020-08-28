@@ -10,6 +10,7 @@ import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 import { ConfirmationModalComponent } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { ConfirmationModal } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.interface';
+import { SlotInterface } from './slot.interface';
 
 const moment = moment_;
 
@@ -51,11 +52,11 @@ export class TimeSlotsComponent implements OnInit {
   public inProgress = false;
   public changeTSConfirm = false;
   initialized = false;
-  bookedSlot;
+  bookedSlot: SlotInterface;
   errorMessage;
 
-  private timeSlotServices: { [key: string]: TimeSlotsService } = {};
-  private currentService: TimeSlotsService;
+  private timeSlotServices: { [key: string]: TimeSlotsService<SlotInterface> } = {};
+  private currentService: TimeSlotsService<SlotInterface>;
 
   constructor(
     private changeDetection: ChangeDetectorRef,

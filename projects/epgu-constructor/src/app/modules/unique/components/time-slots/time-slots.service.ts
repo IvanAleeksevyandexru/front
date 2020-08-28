@@ -1,14 +1,14 @@
-import {Observable} from 'rxjs';
+import {SlotInterface} from './slot.interface';
 
-export interface TimeSlotsService {
-  init(data: any): Observable<any>;
+export interface TimeSlotsService<T extends SlotInterface> {
+  init(data: any);
   getCurrentYear(): number;
   getCurrentMonth(): number;
   getAvailableMonths(): string[];
   isDateLocked(date: Date): boolean;
-  getAvailableSlots(selectedDay: Date): any[];
+  getAvailableSlots(selectedDay: Date): T[];
   getBookedSlot(): any;
-  book(selectedSlot: any): Observable<any>;
+  book(selectedSlot: T);
   hasError(): boolean;
   getErrorMessage(): string;
 }
