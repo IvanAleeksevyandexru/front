@@ -86,7 +86,7 @@ export class AddNewChildFormComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   // TODO: find better way to resolve helper logic, for example encapsulated at field component
-  updateHelperText() {
+  updateHelperText(): void {
     this.helperText = this.data.required ? '' : OPTIONAL_FIELD;
   }
 }

@@ -7,7 +7,7 @@
     (changed)="selectCountry($event)"
     [localSearch]="true">
   </lib-dropdown>
-  <epgu-constructor-helper-text *ngIf="helperText" [text]="helperText"></epgu-constructor-helper-text>
+  <epgu-constructor-helper-text *ngIf="helperText">{{ helperText }}</epgu-constructor-helper-text>
   <div *ngIf="selectedCountry && selectedCountry.countryType !== '1'"
        class="country-apostil__warning">
     <lib-disclaimer-elk

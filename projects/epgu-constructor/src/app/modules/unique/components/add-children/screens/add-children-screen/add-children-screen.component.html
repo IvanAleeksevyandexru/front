@@ -32,7 +32,7 @@
                 (changed)="handleSelect($event)"
                 [items]="childrenSelectList"
               ></lib-dropdown>
-              <epgu-constructor-helper-text *ngIf="helperText" [text]="helperText"></epgu-constructor-helper-text>
+              <epgu-constructor-helper-text *ngIf="helperText">{{ helperText }}</epgu-constructor-helper-text>
             </div>
           </div>
         </div>

@@ -103,7 +103,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
   showModal = () =>
     this.modalService.openModal<null>(ConfirmationModalComponent, this.modalParameters);
 
-  updateHelperText() {
+  updateHelperText(): void {
     this.helperText = this.data.required ? '' : OPTIONAL_FIELD;
   }
 }

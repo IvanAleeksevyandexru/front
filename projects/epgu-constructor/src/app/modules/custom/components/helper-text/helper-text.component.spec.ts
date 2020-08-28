@@ -1,24 +1,30 @@
+import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { HelperTextComponent } from './helper-text.component';
-import { By } from '@angular/platform-browser'
+
+const helperTextMock = 'Awesome useful helper text.';
+
+@Component({
+  template: `<epgu-constructor-helper-text>${helperTextMock}</epgu-constructor-helper-text>`
+})
+class WrapperTestComponent {}
 
 describe('HelperTextComponent', () => {
-  let component: HelperTextComponent;
-  let fixture: ComponentFixture<HelperTextComponent>;
-  let helperTextMock = 'Awesome useful helper text.';
+  let component: WrapperTestComponent;
+  let fixture: ComponentFixture<WrapperTestComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HelperTextComponent ]
+      declarations: [ WrapperTestComponent, HelperTextComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HelperTextComponent);
+    fixture = TestBed.createComponent(WrapperTestComponent);
     component = fixture.componentInstance;
-    component.text = helperTextMock;
     fixture.detectChanges();
   });
 
