@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface, ResponseInterface } from '../../../interfaces/epgu.service.interface';
+import { DisplayInterface, ResponseInterface, Gender } from '../../../interfaces/epgu.service.interface';
 import { RestService } from '../rest/rest.service';
 
 interface SendDataOptionsInterface {
@@ -16,6 +16,7 @@ export class ConstructorService {
   componentType: string;
   componentData: DisplayInterface;
   componentErrors: object;
+  gender: Gender;
   isLoading = false;
 
   constructor(public restService: RestService) {
@@ -107,15 +108,13 @@ export class ConstructorService {
     }
 
     this.response = response;
-    const { display, errors } = response?.scenarioDto;
+    const { display, errors, gender } = response.scenarioDto;
 
     this.componentId = display.components[0].id;
     this.componentType = display.components[0].type;
     this.componentData = display;
     this.componentErrors = errors;
-    // this.componentData.header = 'Кому из детей требуется оформить загранпаспорт?';
-    // this.componentData.type = 'CUSTOM';
-    // this.componentData.components[0].type;
+    this.gender = gender;
     console.log('----- GET DATA ---------');
     console.log('componentId:', this.componentId);
     console.log('componentType:', this.componentType);
