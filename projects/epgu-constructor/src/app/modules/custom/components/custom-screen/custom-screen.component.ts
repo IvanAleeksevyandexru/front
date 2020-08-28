@@ -104,16 +104,18 @@ export class CustomScreenComponent implements OnInit {
 
   private formatCycledFieldsValues(changes: any) {
     return Object.keys(changes).reduce((result, key) => {
+      const targetItem = changes[key];
+      const targetItemValue = targetItem.value;
       const fieldName =
-        changes[key].component.attrs.fields && changes[key].component.attrs.fields[0].fieldName;
+        targetItem.component.attrs.fields && targetItem.component.attrs.fields[0].fieldName;
       if (!fieldName) return result;
 
-      if (typeof changes[key].value === 'object' && moment(changes[key].value).isValid()) {
+      if (typeof targetItemValue === 'object' && moment(targetItemValue).isValid()) {
         // eslint-disable-next-line no-param-reassign
-        result[fieldName] = moment(changes[key].value).format(DATE_STRING_DOT_FORMAT);
+        result[fieldName] = moment(targetItemValue).format(DATE_STRING_DOT_FORMAT);
       } else {
         // eslint-disable-next-line no-param-reassign
-        result[fieldName] = changes[key].value;
+        result[fieldName] = targetItemValue;
       }
       return result;
     }, {});

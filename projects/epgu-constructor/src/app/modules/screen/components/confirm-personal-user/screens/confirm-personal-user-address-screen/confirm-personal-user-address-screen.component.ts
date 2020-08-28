@@ -50,8 +50,8 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
       currentCycledFieldsKey
     ].value;
     const valueRef = typeof rawValueRef === 'string' ? JSON.parse(rawValueRef) : rawValueRef;
-    const { regAddr, regDate, registrationAddress } = valueRef;
-    this.data.value = JSON.stringify({ regDate, regAddr: regAddr || registrationAddress });
+    const { regAddr, regDate } = valueRef;
+    this.data.value = JSON.stringify({ regDate, regAddr });
     this.changeDetection.detectChanges();
   }
 

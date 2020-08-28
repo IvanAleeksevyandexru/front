@@ -10,7 +10,7 @@
       class="item"
       [label]="field.label"
       [name]="field.label"
-      *ngSwitchCase="'regAddr' || 'registrationAddress'"
+      *ngSwitchCase="'regAddr'"
     >
       <lib-dadata-widget
         [simpleMode]="true"
@@ -25,7 +25,7 @@
     </epgu-constructor-address-item>
 
     <epgu-constructor-address-item
-      *ngSwitchCase="'regDate' || 'registrationAddressDate'"
+      *ngSwitchCase="'regDate'"
       class="item"
       [label]="field.label"
       [name]="field.label"

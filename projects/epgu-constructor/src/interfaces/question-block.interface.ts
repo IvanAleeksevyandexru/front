@@ -7,7 +7,8 @@ export interface QuestionsDisplayInterface extends DisplayInterface {
 
 interface QuestionsComponentInterface extends ComponentInterface {
   attrs: {
-    actions: Array<QuestionsComponentActionsInterface>
+    actions: Array<QuestionsComponentActionsInterface>;
+    fields: object;
   }
 }
 

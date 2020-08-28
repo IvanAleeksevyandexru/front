@@ -58,8 +58,7 @@ export class QuestionsScreenComponent implements OnInit {
     const responseData = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
-      const fieldNameRef = this.constructorService.response.scenarioDto.display.components[0].attrs
-        .fields[0].fieldName;
+      const fieldNameRef = this.data.components[0].attrs.fields[0].fieldName;
       const cycledValuesPrepared = this.flattenCycledFieldsValues;
       const mergedCycledAndAnswerValues = { ...cycledValuesPrepared, [fieldNameRef]: answer.value };
       responseData[currentCycledFieldsKey] = {
