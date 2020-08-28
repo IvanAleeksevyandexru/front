@@ -23,6 +23,12 @@ export class QuestionsScreenComponent implements OnInit {
   isCycledFields = false;
   cycledValues: Array<any>;
 
+  private readonly cycledFieldsKeys = Object.keys(
+    this.constructorService.response?.scenarioDto?.currentCycledFields || {},
+  );
+
+  private readonly flattenCycledFieldsValues = { ...this.cycledValues };
+
   constructor(
     private navService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
@@ -34,7 +40,8 @@ export class QuestionsScreenComponent implements OnInit {
   }
 
   ngOnInit() {
-    const currentCycledFields = this.constructorService.response?.scenarioDto?.currentCycledFields;
+    const currentCycledFields =
+      this.constructorService.response?.scenarioDto?.currentCycledFields || {};
     this.isCycledFields = !!Object.keys(currentCycledFields).length;
     if (this.isCycledFields && typeof currentCycledFields === 'object') {
       [this.cycledValues] = [
@@ -50,20 +57,14 @@ export class QuestionsScreenComponent implements OnInit {
   answerChoose(answer: QuestionsComponentActionsInterface): void {
     const responseData = {};
     if (this.isCycledFields) {
-      // take currentCycledFields object first key
-      const [currentCycledFieldsKey] = Object.keys(
-        this.constructorService.response?.scenarioDto?.currentCycledFields,
-      );
-      // take reference to fieldName in currentCycledFields
+      const [currentCycledFieldsKey] = this.cycledFieldsKeys;
       const fieldNameRef = this.constructorService.response.scenarioDto.display.components[0].attrs
         .fields[0].fieldName;
-      // flat cycledValues
-      const cycledValuesPrepared = { ...this.cycledValues };
-      // merge cycledValue data and state data, which could be updated
-      const data = { ...cycledValuesPrepared, [fieldNameRef]: answer.value };
+      const cycledValuesPrepared = this.flattenCycledFieldsValues;
+      const mergedCycledAndAnswerValues = { ...cycledValuesPrepared, [fieldNameRef]: answer.value };
       responseData[currentCycledFieldsKey] = {
         visited: true,
-        value: JSON.stringify(data),
+        value: JSON.stringify(mergedCycledAndAnswerValues),
       };
       this.nextStepEvent.emit(responseData);
     } else {

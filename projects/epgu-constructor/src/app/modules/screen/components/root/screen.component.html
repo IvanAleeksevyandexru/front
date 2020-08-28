@@ -53,11 +53,6 @@
           [data]="(data?.components)[0]"
         ></epgu-constructor-snils>
 
-        <epgu-constructor-doc-input
-          *ngSwitchCase="screenComponentName.docInput"
-          [data]="data?.components[0]"
-        ></epgu-constructor-doc-input>
-
         <epgu-constructor-country-selection
           *ngSwitchCase="screenComponentName.countryApostil"
           [form]="form"
@@ -67,15 +62,11 @@
         >
         </epgu-constructor-country-selection>
 
-        <epgu-constructor-snils *ngSwitchCase="screenComponentName.snils"></epgu-constructor-snils>
-
         <epgu-constructor-doc-input
           *ngSwitchCase="screenComponentName.docInput"
           [data]="(data?.components)[0]"
           (nextStepEvent)="changedComponentData($event)"
         ></epgu-constructor-doc-input>
-
-        <epgu-constructor-snils *ngSwitchCase="screenComponentName.snils"></epgu-constructor-snils>
 
         <epgu-constructor-add-children-screen
           *ngSwitchCase="screenComponentName.childrenListUnder14"

@@ -24,6 +24,12 @@ export class CustomScreenComponent implements OnInit {
   isCycledFields: boolean;
   cycledValues: any;
 
+  private readonly cycledFieldsKeys = Object.keys(
+    this.constructorService.response?.scenarioDto?.currentCycledFields,
+  );
+
+  private readonly flattenCycledFieldsValues = { ...this.cycledValues };
+
   constructor(
     private navService: NavigationService,
     public constructorService: ConstructorService,
@@ -62,32 +68,13 @@ export class CustomScreenComponent implements OnInit {
   setState(changes) {
     let stateData = {};
     if (this.isCycledFields) {
-      // take currentCycledFields object first key
-      const [currentCycledFieldsKey] = Object.keys(
-        this.constructorService.response?.scenarioDto?.currentCycledFields,
-      );
-      // format state data to {fieldName: value} format
-      const stateDataPrepared = Object.keys(changes).reduce((result, key) => {
-        const fieldName =
-          changes[key].component.attrs.fields && changes[key].component.attrs.fields[0].fieldName;
-        if (!fieldName) return result;
-
-        if (typeof changes[key].value === 'object' && moment(changes[key].value).isValid()) {
-          // eslint-disable-next-line no-param-reassign
-          result[fieldName] = moment(changes[key].value).format(DATE_STRING_DOT_FORMAT);
-        } else {
-          // eslint-disable-next-line no-param-reassign
-          result[fieldName] = changes[key].value;
-        }
-        return result;
-      }, {});
-      // flat cycledValues
-      const cycledValuesPrepared = { ...this.cycledValues };
-      // merge cycledValue data and state data, which could be updated
-      const data = { ...cycledValuesPrepared, ...stateDataPrepared };
+      const [currentCycledFieldsKey] = this.cycledFieldsKeys;
+      const stateDataPrepared = this.formatCycledFieldsValues(changes);
+      const cycledValuesPrepared = this.flattenCycledFieldsValues;
+      const mergedCycledAndStateData = { ...cycledValuesPrepared, ...stateDataPrepared };
       stateData[currentCycledFieldsKey] = {
         visited: true,
-        value: JSON.stringify(data),
+        value: JSON.stringify(mergedCycledAndStateData),
       };
     } else {
       stateData = this.getPrepareResponseData(changes);
@@ -112,6 +99,23 @@ export class CustomScreenComponent implements OnInit {
             : JSON.stringify(data[key].value || {}),
       };
       return acc;
+    }, {});
+  }
+
+  private formatCycledFieldsValues(changes: any) {
+    return Object.keys(changes).reduce((result, key) => {
+      const fieldName =
+        changes[key].component.attrs.fields && changes[key].component.attrs.fields[0].fieldName;
+      if (!fieldName) return result;
+
+      if (typeof changes[key].value === 'object' && moment(changes[key].value).isValid()) {
+        // eslint-disable-next-line no-param-reassign
+        result[fieldName] = moment(changes[key].value).format(DATE_STRING_DOT_FORMAT);
+      } else {
+        // eslint-disable-next-line no-param-reassign
+        result[fieldName] = changes[key].value;
+      }
+      return result;
     }, {});
   }
 }

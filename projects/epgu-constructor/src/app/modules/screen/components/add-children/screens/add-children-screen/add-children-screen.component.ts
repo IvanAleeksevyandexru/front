@@ -14,7 +14,7 @@ export class AddChildrenScreenComponent implements OnInit {
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
   valueParsed: any;
-  itemsList: any;
+  itemsList: any = [];
   itemsInitialLength: number;
   itemsToSelect: Array<ListItem>;
   selectedItems: any = [];
@@ -80,8 +80,8 @@ export class AddChildrenScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.valueParsed = JSON.parse(this.data.value);
-    this.itemsInitialLength = this.valueParsed?.items.length;
-    this.itemsList = this.valueParsed?.items;
+    this.itemsInitialLength = this.valueParsed?.items?.length || 0;
+    this.itemsList = this.valueParsed?.items || [];
     this.itemsToSelect = this.itemsList.map((child) => {
       return {
         id: child.id,
