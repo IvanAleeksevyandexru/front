@@ -23,10 +23,9 @@ export class QuestionsScreenComponent implements OnInit {
   isCycledFields = false;
   cycledValues: Array<any>;
 
-  private readonly cycledFieldsKeys = Object.keys(
-    this.constructorService.response?.scenarioDto?.currentCycledFields || {},
-  );
-
+  private readonly currentCycledFields = this.constructorService.response?.scenarioDto
+    ?.currentCycledFields;
+  private readonly cycledFieldsKeys = Object.keys(this.currentCycledFields || {});
   private readonly flattenCycledFieldsValues = { ...this.cycledValues };
 
   constructor(
@@ -40,8 +39,7 @@ export class QuestionsScreenComponent implements OnInit {
   }
 
   ngOnInit() {
-    const currentCycledFields =
-      this.constructorService.response?.scenarioDto?.currentCycledFields || {};
+    const currentCycledFields = this.currentCycledFields || {};
     this.isCycledFields = !!Object.keys(currentCycledFields).length;
     if (this.isCycledFields && typeof currentCycledFields === 'object') {
       [this.cycledValues] = [
@@ -55,7 +53,7 @@ export class QuestionsScreenComponent implements OnInit {
   }
 
   answerChoose(answer: QuestionsComponentActionsInterface): void {
-    const responseData = {};
+    const responseData = answer.value;
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
       const fieldNameRef = this.data.components[0].attrs.fields[0].fieldName;
@@ -65,9 +63,7 @@ export class QuestionsScreenComponent implements OnInit {
         visited: true,
         value: JSON.stringify(mergedCycledAndAnswerValues),
       };
-      this.nextStepEvent.emit(responseData);
-    } else {
-      this.nextStepEvent.emit(answer.value);
     }
+    this.nextStepEvent.emit(responseData);
   }
 }

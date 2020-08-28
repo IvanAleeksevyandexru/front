@@ -44,9 +44,8 @@ export class CustomScreenComponent implements OnInit {
     const currentCycledFields = this.constructorService.response?.scenarioDto?.currentCycledFields;
     this.isCycledFields = !!Object.keys(currentCycledFields).length;
     if (this.isCycledFields) {
-      [this.cycledValues] = [
-        ...Object.values(currentCycledFields).map((value) => JSON.parse(value)),
-      ];
+      const [firstCurrentCycledValues] = Object.values(currentCycledFields);
+      this.cycledValues = JSON.parse(firstCurrentCycledValues);
       this.data.components.forEach((item) => {
         const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
         const cycledFieldKey = Object.keys(this.cycledValues).find((key) => key === fieldName);

@@ -1,16 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
+import { Moment } from 'moment';
 import { filter, takeUntil } from 'rxjs/operators';
-import { DisplayInterface, Gender } from '../../../../../interfaces/epgu.service.interface';
-import { EmployeeHistoryFormService } from './services/employee-history.form.service';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel,
 } from '../../../../../interfaces/employee-history.interface';
+import { DisplayInterface, Gender } from '../../../../../interfaces/epgu.service.interface';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
+import { EmployeeHistoryFormService } from './services/employee-history.form.service';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-employee-history',
@@ -54,8 +57,8 @@ export class EmployeeHistoryComponent implements OnInit {
 
   pushFormGroup(): void {
     const formValues: EmployeeHistoryModel = this.generateForm.getRawValue();
-    const fromDate: moment.Moment = moment(formValues.from);
-    const toDate: moment.Moment = moment(formValues.to);
+    const fromDate: Moment = moment(formValues.from);
+    const toDate: Moment = moment(formValues.to);
 
     if (toDate.diff(fromDate) < 0) {
       console.error('Дата начала больше даты окончания');
@@ -96,8 +99,8 @@ export class EmployeeHistoryComponent implements OnInit {
   }
 
   private getAvailableMonths(
-    fromDate: moment.Moment = moment().subtract(this.years, 'years'),
-    toDate: moment.Moment = moment(),
+    fromDate: Moment = moment().subtract(this.years, 'years'),
+    toDate: Moment = moment(),
   ): EmployeeHistoryAvailableDates[] {
     const availableDates = [];
 
