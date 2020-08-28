@@ -35,6 +35,7 @@ export enum UNIQUE_COMPONENT_NAME {
   'mapService' = 'MapService',
   'carInfo' = 'CarInfo',
   'repeatableFields' = 'RepeatableFields',
+  'employeeHistory' = 'EmployeeHistory',
 }
 
 export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';
