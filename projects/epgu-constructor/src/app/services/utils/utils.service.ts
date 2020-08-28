@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
+import { Moment } from 'moment';
+
+const moment = moment_;
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +56,7 @@ export class UtilsService {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
 
-  public formatDate(date: moment.Moment, format: string): string {
+  public formatDate(date: Moment, format: string): string {
     return date.format(format);
   }
 

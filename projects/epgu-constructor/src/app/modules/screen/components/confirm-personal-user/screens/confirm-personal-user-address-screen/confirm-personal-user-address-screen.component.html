@@ -2,6 +2,7 @@
   <div class="body">
     <epgu-constructor-confirm-personal-user-address
       [data]="data"
+      [value]="data.value"
       (dataEditedEvent)="dataChange($event)"
       [isEditable]="isEditable"
     ></epgu-constructor-confirm-personal-user-address>

@@ -28,7 +28,6 @@ const COMPONENTS = [
   ],
   imports: [
     CommonModule,
-
     ScreenModule,
     CustomScreenModule,
     QuestionScreenModule,
