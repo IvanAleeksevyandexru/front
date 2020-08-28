@@ -1,4 +1,3 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <ng-container [ngSwitch]="data?.components[0].type">
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
@@ -14,6 +13,7 @@
     (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-file-upload-screen>
   <epgu-constructor-employee-history
+    *ngSwitchCase="uniqueComponentName.employeeHistory"
     [header]="data?.header"
     [gender]="gender"
     [data]="data"
