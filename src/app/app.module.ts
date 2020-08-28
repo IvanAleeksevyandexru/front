@@ -10,6 +10,7 @@ const constructorConfig: ConstructorConfigInterface = {
   apiUrl: environment.apiUrl,
   dictionaryUrl: environment.dictionaryUrl,
   externalApiUrl: environment.externalApiUrl,
+  externalLkApiUrl: environment.externalLkApiUrl,
   externalUrl: environment.externalUrl,
   yandexMapsApiKey: environment.yandexMapsApiKey,
   isProd: environment.production,
@@ -31,3 +32,4 @@ const constructorConfig: ConstructorConfigInterface = {
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

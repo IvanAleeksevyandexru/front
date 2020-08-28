@@ -1,3 +1,4 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <ng-container [ngSwitch]="data?.components[0].type">
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
@@ -23,9 +24,14 @@
     (nextStepEvent)="nextStep($event)"
     [data]="data"
   ></epgu-constructor-repeatable-fields>
+  <epgu-constructor-time-slots
+    *ngSwitchCase="uniqueComponentName.timeSlot"
+    [data]="data"
+    (nextStepEvent)="nextStep($event)">
+  </epgu-constructor-time-slots>
   <epgu-constructor-car-info
     *ngSwitchCase="uniqueComponentName.carInfo"
     [data]="data"
     (nextStepEvent)="nextStep()"
   ></epgu-constructor-car-info>
-</ng-container>
+  </ng-container>

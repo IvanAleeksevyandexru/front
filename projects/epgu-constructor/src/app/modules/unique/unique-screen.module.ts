@@ -8,6 +8,7 @@ import { FileUploadModule } from './components/file-upload-screen/file-upload.mo
 import { RepeatableFieldsComponent } from './components/repeatable-fields/repeatable-fields.component';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
 import { UniqueScreenComponent } from './components/unique-screen/unique-screen.component';
+import {TimeSlotsModule} from './components/time-slots/time-slots.module';
 
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
@@ -29,6 +30,7 @@ const COMPONENTS = [UniqueScreenComponent];
     SelectMapObjectModule,
     CarInfoModule,
     EmployeeHistoryModule,
+    TimeSlotsModule,
   ],
 })
 export class UniqueScreenModule {}
