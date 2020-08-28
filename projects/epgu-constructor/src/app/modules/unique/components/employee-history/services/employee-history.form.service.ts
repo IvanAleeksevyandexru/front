@@ -4,7 +4,10 @@ import { EmployeeHistoryModel } from '../../../../../../interfaces/employee-hist
 import { filter, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
+import { Moment } from 'moment';
+
+const moment = moment_;
 
 @Injectable({
   providedIn: 'root'
@@ -40,8 +43,8 @@ export class EmployeeHistoryFormService {
 
   pushFormGroup(): void {
     const formValues: EmployeeHistoryModel = this.generateForm.getRawValue();
-    const fromDate: moment.Moment = moment(formValues.from);
-    const toDate: moment.Moment = moment(formValues.to);
+    const fromDate: Moment = moment(formValues.from);
+    const toDate: Moment = moment(formValues.to);
 
     this.monthsService.updateAvailableMonths(fromDate, toDate, true);
     this.employeeHistory.push(formValues);

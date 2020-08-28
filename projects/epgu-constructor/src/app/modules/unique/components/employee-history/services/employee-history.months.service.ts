@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
+import { Moment } from 'moment'
 import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryModel
 } from '../../../../../../interfaces/employee-history.interface';
+
+const moment = moment_;
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +27,8 @@ export class EmployeeHistoryMonthsService {
   }
 
   getAvailableMonths(
-    fromDate: moment.Moment = moment().subtract(this.years, 'years'),
-    toDate: moment.Moment = moment(),
+    fromDate: Moment = moment().subtract(this.years, 'years'),
+    toDate: Moment = moment(),
   ): EmployeeHistoryAvailableDates[] {
     const availableDates = [];
 
@@ -41,8 +44,8 @@ export class EmployeeHistoryMonthsService {
   }
 
   updateAvailableMonths(
-    fromDate: moment.Moment,
-    toDate: moment.Moment,
+    fromDate: Moment,
+    toDate: Moment,
     checked: boolean,
     employeeHistory: EmployeeHistoryModel[] = [],
   ): void {

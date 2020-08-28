@@ -1,4 +1,4 @@
-import { ComponentInterface, DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface, DisplayInterface } from './epgu.service.interface';
 
 
 export interface QuestionsDisplayInterface extends DisplayInterface {
@@ -7,7 +7,8 @@ export interface QuestionsDisplayInterface extends DisplayInterface {
 
 interface QuestionsComponentInterface extends ComponentInterface {
   attrs: {
-    actions: Array<QuestionsComponentActionsInterface>
+    actions: Array<QuestionsComponentActionsInterface>;
+    fields: object;
   }
 }
 

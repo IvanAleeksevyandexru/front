@@ -1,14 +1,9 @@
 <ng-container [ngSwitch]="data?.components[0].type">
-  <epgu-constructor-add-children-screen
-    *ngSwitchCase="uniqueComponentName.childrenListUnder14"
-    (nextStepEvent)="nextStep($event)"
-    [data]="data?.components[0]"
-    [header]="data?.header"
-  ></epgu-constructor-add-children-screen>
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
     [data]="data"
-    (nextStepEvent)="nextStep($event)">
+    (nextStepEvent)="nextStep($event)"
+  >
   </epgu-constructor-select-map-object>
   <epgu-constructor-file-upload-screen
     *ngSwitchCase="uniqueComponentName.fileUploadComponent"

@@ -1,7 +1,6 @@
 export interface ChildUnder14Interface {
   isNew?: boolean,
   id: number,
-  isSelected?: boolean,
   birthDate: string,
   gender: string,
   firstName: string,

@@ -13,15 +13,6 @@
   >
   </epgu-constructor-file-upload>
 
-  <div class="info">
-    <div class="info__item">
-      Объем загружаемых данных не должен превышать 5 МБ
-    </div>
-    <div class="info__item" *ngIf="allMaxFiles">
-      Количество загружаемых файлов не более {{ allMaxFiles }}
-    </div>
-  </div>
-
   <div class="footer">
     <lib-button
       [showLoader]="constructorService.isLoading"
