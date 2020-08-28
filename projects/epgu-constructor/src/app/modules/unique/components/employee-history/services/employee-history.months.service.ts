@@ -12,14 +12,13 @@ const moment = moment_;
   providedIn: 'root'
 })
 export class EmployeeHistoryMonthsService {
-  years: number;
+  years = 10;
   maxDate: Date;
   minDateFrom: Date;
   minDateTo: Date;
   availableMonths: EmployeeHistoryAvailableDates[];
 
-  constructor() {
-    this.years = 10;
+  initSettings(): void {
     this.maxDate = new Date();
     this.minDateFrom = new Date(moment().subtract(this.years, 'years').format());
     this.minDateTo = this.minDateFrom;

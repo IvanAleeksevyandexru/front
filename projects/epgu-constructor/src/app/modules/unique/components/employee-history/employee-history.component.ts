@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import * as moment_ from 'moment';
 import { DisplayInterface, Gender } from '../../../../../interfaces/epgu.service.interface';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
@@ -8,6 +9,8 @@ import {
   EmployeeHistoryDataSource,
 } from '../../../../../interfaces/employee-history.interface';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-employee-history',
@@ -32,6 +35,7 @@ export class EmployeeHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.monthsService.years = this.data?.components[0]?.attrs?.years;
+    this.monthsService.initSettings();
     this.ds = this.datasourceService.getDataSourceByGender(this.gender);
     this.employeeFormService.generateFormWatcher();
   }
@@ -49,9 +53,25 @@ export class EmployeeHistoryComponent implements OnInit {
   }
 
   isCompleteForm(): boolean {
-    return this.monthsService.availableMonths.every(
-      (e: EmployeeHistoryAvailableDates) => e.checked,
-    );
+    if (this.data?.components[0]?.attrs?.nonStop) {
+      return this.monthsService.availableMonths.every(
+        (e: EmployeeHistoryAvailableDates) => e.checked,
+      );
+    }
+    const convertedDate = this.monthsService.availableMonths
+      .filter((stringDate: EmployeeHistoryAvailableDates) => stringDate.checked)
+      .map((stringDate: EmployeeHistoryAvailableDates) => {
+        const c = stringDate.date.split('/');
+        return moment(`${c[0]}/01/${c[1]}`);
+      });
+
+    const diff = moment.max(convertedDate).diff(moment.min(convertedDate), 'years');
+
+    if (diff === this.monthsService.years) {
+      return true;
+    }
+
+    return false;
   }
 
   getNextScreen() {
