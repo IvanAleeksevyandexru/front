@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../shared-module/shared-components.module';
 import { CarInfoModule } from './components/car-info/car-info.module';
+import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
 import { FileUploadModule } from './components/file-upload-screen/file-upload.module';
 import { RepeatableFieldsComponent } from './components/repeatable-fields/repeatable-fields.component';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
@@ -18,7 +19,7 @@ const COMPONENTS = [UniqueScreenComponent];
     RepeatableFieldsComponent,
   ],
   exports: [
-    ...COMPONENTS
+    ...COMPONENTS,
   ],
   imports: [
     CommonModule,
@@ -27,6 +28,7 @@ const COMPONENTS = [UniqueScreenComponent];
     EpguLibModule.forChild(),
     SelectMapObjectModule,
     CarInfoModule,
+    EmployeeHistoryModule,
   ],
 })
 export class UniqueScreenModule {}
