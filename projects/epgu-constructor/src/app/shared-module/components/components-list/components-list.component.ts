@@ -25,6 +25,7 @@ import {
   getNormalizeDataCustomScreenDictionary,
 } from '../../../modules/custom/tools/custom-screen-tools';
 import { RestService } from '../../../services/rest/rest.service';
+import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
 
 const moment = moment_;
 
@@ -187,6 +188,10 @@ export class ComponentsListComponent implements OnInit, OnChanges {
 
   initDictionary(dictionaryName) {
     this.dictionary[dictionaryName] = getCustomScreenDictionaryFirstState();
+  }
+
+  getHelperText(required: boolean): string {
+    return required ? '' : OPTIONAL_FIELD;
   }
 
   private initState(component: CustomComponentInterface) {

@@ -15,6 +15,9 @@
           (changed)="selectDictionary($event, componentData)"
           [items]="dictionary[componentData?.attrs?.dictionaryType]?.list"
         ></lib-dropdown>
+        <epgu-constructor-helper-text *ngIf="!componentData.required">
+          {{ getHelperText(componentData.required) }}
+        </epgu-constructor-helper-text>
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.HiddenLookup">
@@ -59,6 +62,9 @@
           (change)="inputChange($event, componentData)"
           [validationShowOn]="validationShowOn"
         ></lib-plain-input>
+        <epgu-constructor-helper-text *ngIf="!componentData.required">
+        {{ getHelperText(componentData.required) }}
+        </epgu-constructor-helper-text>
         <div class="form__error">
           <small *ngIf="!state[componentData.id].valid"
           >{{ state[componentData.id]?.errorMessage }}
