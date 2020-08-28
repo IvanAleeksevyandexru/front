@@ -35,6 +35,9 @@
                 "output": "./lib-assets"
               }
             ],
+            "styles": [
+              "src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
