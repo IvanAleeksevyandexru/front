@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.component';
 import { InfoScreenBodyComponentModalParams } from './info-screen-body.constant';
@@ -8,17 +8,18 @@ import { InfoScreenBodyComponentModalParams } from './info-screen-body.constant'
   templateUrl: './info-screen-body.component.html',
   styleUrls: ['./info-screen-body.component.scss'],
 })
-export class InfoScreenBodyComponent implements AfterViewInit {
+export class InfoScreenBodyComponent {
   @Input() data: any;
 
   constructor(private modalService: ModalService) {}
 
-  ngAfterViewInit(): void {
-    const arr = this.data?.attrs?.clarifications || [];
-    Object.entries(arr)?.forEach(([id, modalData]) => {
-      const link = document.getElementById(id);
-      link.addEventListener('click', () => this.showModal(modalData));
-    });
+  clickToInnerHTML($event: MouseEvent) {
+    const targetElementId = ($event.target as HTMLElement).id;
+    const { clarifications = {} } = this.data?.attrs as any;
+    const targetElementModalData = clarifications[targetElementId];
+    if (targetElementModalData) {
+      this.showModal(targetElementModalData);
+    }
   }
 
   showModal(params) {

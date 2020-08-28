@@ -27,7 +27,6 @@ export class ConstructorService {
     this.restService.getData().subscribe(
       (response) => this.initResponse(response),
       (error) => {
-        this.isLoading = false;
         console.error(error)
       },
       () => this.isLoading = false
@@ -48,7 +47,6 @@ export class ConstructorService {
       },
       (error) => {
         this.sendDataError(error);
-        this.isLoading = false;
       },
       () => this.isLoading = false
     );
@@ -67,7 +65,6 @@ export class ConstructorService {
       },
       (error) => {
         this.sendDataError(error);
-        this.isLoading = false;
       },
       () => this.isLoading = false
     );
@@ -98,8 +95,7 @@ export class ConstructorService {
   sendDataError(response) {
     console.error('----- ERROR DATA ---------');
     console.error(JSON.stringify(response.errors));
-    this.initResponse(response);
-
+    // this.initResponse(response);
   }
 
   initResponse(response: ResponseInterface): void {

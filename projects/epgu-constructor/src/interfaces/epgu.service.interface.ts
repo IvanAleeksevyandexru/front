@@ -60,7 +60,7 @@ export interface DisplayInterface {
  * @property {boolean}visited? - булевый флаг пройдена ли пользователем бизнес-логика данного компонента
  */
 export interface ComponentInterface {
-  attrs: any; // TODO: replace with actual Interface
+  attrs: {[key: string]: any};
   id: string;
   label: string;
   type: string;

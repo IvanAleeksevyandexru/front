@@ -77,10 +77,6 @@
           [data]="(data?.components)[0]"
           (nextStepEvent)="nextStep($event)"
         ></epgu-constructor-add-children-screen>
-
-        <app-birth-certificate
-          *ngSwitchCase="screenComponentName.birthCertificate"
-        ></app-birth-certificate>
       </ng-container>
     </epgu-constructor-screen-pad>
 
