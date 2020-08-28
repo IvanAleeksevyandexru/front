@@ -199,11 +199,11 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   private calcDependedComponent(component: CustomComponentInterface) {
+    const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
+    // TODO добавить возможность зависить от нескольких полей
     const dependentComponents = this.components.filter((item) =>
-      // TODO возможно стоить удалить это правило для линтинга;
-      // eslint-disable-next-line
-      item.attrs?.ref?.some((el) => (el.relatedRel = component.id)),
-    ); // TODO добавить возможность зависить от нескольких полей
+      isComponentDependOn(item.attrs?.ref),
+    );
 
     dependentComponents.forEach((dependentComponent) => {
       const isLikeDictionary =

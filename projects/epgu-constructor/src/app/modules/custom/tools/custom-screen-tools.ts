@@ -57,18 +57,10 @@ export function getNormalizeDataCustomScreenDictionary(
   dictionaryName: string,
   component: CustomComponentInterface): Array<ListItem> {
   const isRemoveRussiaFromList = component?.attrs.russia === false;
-  // let arr = dictionaryName === FMS_COUNTRIES_DICTIONARY ? putRussiaToFirstInArrForFmsCountriesDictionary(items) : items;
   let arr = items;
   if (isRemoveRussiaFromList) {
-    const russiaCode = 'RUS';
-    arr = arr.filter(item => item.value === russiaCode)
+    const russiaCode = 'RUS'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
+    arr = arr.filter(item => item.value !== russiaCode)
   }
   return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem)
 }
-
-// function putRussiaToFirstInArrForFmsCountriesDictionary(items: Array<DictionaryItem>): Array<DictionaryItem> {
-//   const rusItemIndex = items.findIndex(item => item.title.toLowerCase() === RUSSIA_DICTIONARY_NAME.toLowerCase());
-//   return [ items[rusItemIndex] ]
-//     .concat(items.slice(0, rusItemIndex))
-//     .concat(items.slice(rusItemIndex + 1))
-// }
