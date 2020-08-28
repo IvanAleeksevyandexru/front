@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
+import { EMPTY_SCREEN_COMPONENT } from '../../../../../constant/global';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
@@ -14,7 +14,7 @@ import { NavigationService } from '../../../../shared-module/service/navigation/
 })
 export class EmptyComponent implements OnInit {
   // <-- constant
-  screenComponentName = SCREEN_COMPONENT_NAME;
+  emptyComponentName = EMPTY_SCREEN_COMPONENT;
 
   // <-- variables
   componentData = null;

@@ -17,10 +17,8 @@ export enum SCREEN_COMPONENT_NAME {
   'registrationAddr' = 'RegistrationAddr',
   'personLookup' = 'PersonLookup',
   'changeList' = 'ChangeList',
-  'SnilsInput' = 'SnilsInput',
   'docInput' = 'DocInput',
   'countryApostil' = 'CountryApostil',
-  'redirect' = 'Redirect',
   'paymentScr' = 'PaymentScr'
 }
 
@@ -34,6 +32,10 @@ export enum UNIQUE_COMPONENT_NAME {
   'addPassport' = 'AddPassport',
   'mapService' = 'MapService',
   'repeatableFields' = 'RepeatableFields',
+}
+
+export enum EMPTY_SCREEN_COMPONENT {
+  'redirect' = 'Redirect',
 }
 
 export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';
