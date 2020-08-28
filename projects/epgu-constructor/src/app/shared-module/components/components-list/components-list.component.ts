@@ -8,6 +8,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
+import * as moment_ from 'moment';
+import { DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
 import {
   CustomComponentDictionaryState,
   CustomComponentInterface,
@@ -23,6 +25,8 @@ import {
   getNormalizeDataCustomScreenDictionary,
 } from '../../../modules/custom/tools/custom-screen-tools';
 import { RestService } from '../../../services/rest/rest.service';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -82,13 +86,12 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.state = {};
     if (changes?.components?.currentValue) {
       this.components.forEach((component) => {
-        if (component.type !== CUSTOM_COMPONENT_ITEM_TYPE.LabelSection) {
-          this.initState(component);
-        }
         if (this.likeDictionary(component.type)) {
           const dictionaryName = component.attrs.dictionaryType;
           this.initDictionary(dictionaryName);
           this.loadDictionary(dictionaryName, component);
+        } else {
+          this.initState(component);
         }
       });
       this.changes.emit(this.state);
@@ -189,7 +192,25 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   private initState(component: CustomComponentInterface) {
     const { id, value } = component;
     const hasRelatedRef = component.attrs.ref?.length;
-    this.state[id] = { valid: false, errorMessage: '', value, component, isShow: !hasRelatedRef };
+
+    let valueFormatted: string | Date;
+    switch (component.type) {
+      case CUSTOM_COMPONENT_ITEM_TYPE.DateInput:
+        valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate() || moment().toDate();
+        break;
+      default:
+        valueFormatted = value;
+        break;
+    }
+
+    this.state[id] = {
+      valid: false,
+      errorMessage: '',
+      value: valueFormatted,
+      component,
+      isShow: !hasRelatedRef,
+    };
+    this.changes.emit(this.state);
   }
 
   private likeDictionary(type: CUSTOM_COMPONENT_ITEM_TYPE) {

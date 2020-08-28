@@ -25,6 +25,7 @@ export interface CustomComponentAttrInterface {
   [key:string]:any;
   dictionaryType: string;
   labelAttr: string;
+  fields: Array<any>;
   ref: Array<any>;
   requiredAttrs?: Array<string>;
   validation: Array<CustomComponentAttrValidationInterface>;

@@ -18,9 +18,11 @@ export interface ResponseInterface {
     applicantAnswers: object;
     currentRule: number;
     currentValue: object;
+    currentCycledFields: object;
+    cycledFields: Array<object>;
     display: DisplayInterface;
     errors: object;
-    gender: number;
+    gender: Gender;
     orderId: string;
     sendNotification: Array<object>;
     token: string
@@ -70,3 +72,5 @@ export interface CurrentValue {
   visited: boolean;
   value: any;
 }
+
+export type Gender = 'male' | 'female';

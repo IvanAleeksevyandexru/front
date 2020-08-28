@@ -1,5 +1,4 @@
-@import "src/styles/core";
-
+@import 'src/styles/core';
 
 :host {
   display: block;
@@ -22,6 +21,19 @@
   &:first-letter {
     text-transform: uppercase;
   }
+}
+
+.flex-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.button-change {
+  font-size: $font-sm;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .content {

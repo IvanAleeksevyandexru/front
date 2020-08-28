@@ -48,20 +48,35 @@
           [data]="(data?.components)[0]"
         ></epgu-constructor-change-list>
 
-        <epgu-constructor-snils *ngSwitchCase="screenComponentName.snils"></epgu-constructor-snils>
-
-        <epgu-constructor-doc-input
-          *ngSwitchCase="screenComponentName.docInput"
-          [data]="data?.components[0]"></epgu-constructor-doc-input>
+        <epgu-constructor-snils
+          *ngSwitchCase="screenComponentName.snilsInput"
+          [data]="(data?.components)[0]"
+        ></epgu-constructor-snils>
 
         <epgu-constructor-country-selection
           *ngSwitchCase="screenComponentName.countryApostil"
           [form]="form"
-          [data]="data?.components[0]"
+          [data]="(data?.components)[0]"
           (changeComponentSettings)="changeComponentSettings($event)"
           (changeComponentData)="changeComponentData($event)"
         >
         </epgu-constructor-country-selection>
+
+        <epgu-constructor-doc-input
+          *ngSwitchCase="screenComponentName.docInput"
+          [data]="(data?.components)[0]"
+          (nextStepEvent)="changedComponentData($event)"
+        ></epgu-constructor-doc-input>
+
+        <epgu-constructor-add-children-screen
+          *ngSwitchCase="screenComponentName.childrenListUnder14"
+          [data]="(data?.components)[0]"
+          (nextStepEvent)="nextStep($event)"
+        ></epgu-constructor-add-children-screen>
+
+        <app-birth-certificate
+          *ngSwitchCase="screenComponentName.birthCertificate"
+        ></app-birth-certificate>
       </ng-container>
     </epgu-constructor-screen-pad>
 
@@ -75,16 +90,17 @@
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
       </lib-button>
-      <div *ngIf="componentSetting.displayWarningAnswers"
-           class="footer__warning-answers">
+      <div *ngIf="componentSetting.displayWarningAnswers" class="footer__warning-answers">
         <epgu-constructor-answer-button
           (click)="nextStep()"
-          [data]="{ label: 'Всё равно продолжить'}">
+          [data]="{ label: 'Всё равно продолжить' }"
+        >
         </epgu-constructor-answer-button>
         <epgu-constructor-answer-button
           class="footer__answer-btn"
           (click)="goToHomePage()"
-          [data]="{ label: 'Вернуться в личный кабинет'}">
+          [data]="{ label: 'Вернуться в личный кабинет' }"
+        >
         </epgu-constructor-answer-button>
       </div>
     </div>

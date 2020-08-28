@@ -37,6 +37,7 @@
   <epgu-constructor-unique-screen
     *ngSwitchCase="constructorComponentType.UNIQUE"
     [data]="constructorService?.componentData"
+    [gender]="constructorService?.gender"
     [errors]="constructorService?.componentErrors"
     (nextStepEvent)="nextStep($event)"
     (prevStepEvent)="prevStep()"
