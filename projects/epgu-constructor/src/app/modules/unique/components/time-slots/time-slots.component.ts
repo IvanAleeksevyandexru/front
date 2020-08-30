@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } fro
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { ScreenComponentService } from '../../../screen/service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { TimeSlotsService } from './time-slots.service';
@@ -64,7 +64,7 @@ export class TimeSlotsComponent implements OnInit {
     private divorceTimeSlotsService: DivorceTimeSlotsService,
     private mvdTimeSlotsService: MvdTimeSlotsService,
     private modalService: ModalService,
-    public screenComponentService: ScreenComponentService,
+    private componentStateService: ComponentStateService,
     public constructorService: ConstructorService,
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;
@@ -138,7 +138,7 @@ export class TimeSlotsComponent implements OnInit {
 
   public chooseTimeSlot(slot) {
     this.currentSlot = slot;
-    this.screenComponentService.dataToSend = slot;
+    this.componentStateService.state = slot;
   }
 
   public isSlotSelected(slot) {
@@ -247,7 +247,7 @@ export class TimeSlotsComponent implements OnInit {
 
   buttonDisabled(): boolean {
     return (
-      !this.screenComponentService.isValid ||
+      !this.componentStateService.isValid ||
       this.inProgress ||
       (this.bookedSlot && this.currentSlot && this.bookedSlot.slotId === this.currentSlot.slotId)
     );

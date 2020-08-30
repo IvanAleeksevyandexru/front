@@ -16,7 +16,7 @@ import {
   IFileUploadItem,
   TerabyteListItem,
 } from '../../../../../../../interfaces/terabyte.interface';
-import { TerabyteService } from '../../../../../../services/rest/terabyte.service';
+import { TerabyteService } from '../../../../../../services/terabyte/terabyte.service';
 import { WebcamService } from '../../../../../../services/utils/webcam.service';
 import {
   isCloseAndSaveWebcamEvent,

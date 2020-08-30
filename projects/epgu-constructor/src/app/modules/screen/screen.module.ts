@@ -19,7 +19,6 @@ import { CountrySelectionComponent } from './components/country-selection/countr
 import { DocInputModule } from './components/doc-input/doc-input.module';
 import { ScreenComponent } from './components/root/screen.component';
 import { SnilsModule } from './components/snils/snils.module';
-import { ScreenComponentService } from './service/screen-component/screen-component.service';
 
 
 const COMPONENTS = [
@@ -45,8 +44,5 @@ const COMPONENTS = [
     SharedModule,
     EpguLibModule.forChild(),
   ],
-  providers: [
-    ScreenComponentService,
-  ]
 })
 export class ScreenModule {}

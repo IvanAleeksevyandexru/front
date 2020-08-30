@@ -8,9 +8,7 @@ import { ConstructorConfigService } from '../config/constructor-config.service';
 /**
  * Сервис для обмена файлами с сервисом терабайт
  */
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TerabyteService {
   isLocalHost = false;
   testToken: string;

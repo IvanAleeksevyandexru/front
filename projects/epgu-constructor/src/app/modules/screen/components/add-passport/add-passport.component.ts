@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 
 @Component({
   selector: 'epgu-constructor-add-passport',
@@ -20,7 +20,7 @@ export class AddPassportComponent implements OnInit {
 
   passportForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private screenComponentService: ScreenComponentService) {}
+  constructor(private fb: FormBuilder, private componentStateService: ComponentStateService) {}
 
   ngOnInit(): void {
     const controls = {};
@@ -37,7 +37,7 @@ export class AddPassportComponent implements OnInit {
           return;
         }
 
-        this.screenComponentService.dataToSend = value;
+        this.componentStateService.state = value;
       });
   }
 }
