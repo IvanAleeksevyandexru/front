@@ -42,6 +42,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
     fixture = TestBed.createComponent(ConfirmPersonalUserAddressComponent);
     component = fixture.componentInstance;
     component.data = mockData;
+    component.value = '{}';
     component.isEditable = false;
     fixture.detectChanges();
   });
