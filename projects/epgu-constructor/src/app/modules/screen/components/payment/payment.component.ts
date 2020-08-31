@@ -83,19 +83,13 @@ export class PaymentComponent implements OnInit {
         throw Error();
       }),
       switchMap((attributeValues: PaymentInfoInterface) => {
-        this.sum = this.transformSum(attributeValues);
+        this.sum = this.transformSum(attributeValues.sum);
         return this.getUin(attributeValues);
       }),
       catchError((err: any) => {
         return throwError(err);
       }),
     );
-  }
-
-  getPaymentLink() {
-    // TODO хардкод. доделать.
-    // eslint-disable-next-line prettier/prettier
-    return `https://payment-dev-l14.test.gosuslugi.ru/?billNumber=${this.uin}&returnUrl=${encodeURIComponent(this.apiUrl,)}&subscribe=true`;
   }
 
   getUin(attributeValues: PaymentInfoInterface): Observable<any> {
@@ -106,6 +100,12 @@ export class PaymentComponent implements OnInit {
       options,
     );
     // return of({ value: this.mockUinCode });
+  }
+
+  getPaymentLink() {
+    // TODO хардкод. доделать.
+    // eslint-disable-next-line prettier/prettier
+    return `https://payment-dev-l14.test.gosuslugi.ru/?billNumber=${this.uin}&returnUrl=${encodeURIComponent(this.apiUrl,)}&subscribe=true`;
   }
 
   createPaymentRequestOptions(): PaymentDictionaryOptionsInterface {
@@ -147,7 +147,7 @@ export class PaymentComponent implements OnInit {
     };
   }
 
-  transformSum(attributeValues): string {
-    return attributeValues.sum.padStart(3, '0').replace(/\d{2}$/, ',$&');
+  transformSum(sum): string {
+    return sum.padEnd(3, '0').replace(/\d{2}$/, ',$&');
   }
 }

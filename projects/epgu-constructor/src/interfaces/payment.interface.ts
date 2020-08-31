@@ -1,8 +1,28 @@
 import { DictionaryOptionsInterface } from './dictionary-options.interface';
+import { DisplayInterface, Gender } from './epgu.service.interface';
 
 export interface PaymentAttrsInterface {
 	nsi: string;
 	dictItemCode: string;
+}
+
+export interface PaymentScenarioInterface {
+	applicantAnswers: {
+		pay1?: {
+			value: string;
+		}
+	};
+	currentRule: number;
+	currentValue: object;
+	currentCycledFields: object;
+	cycledFields: Array<object>;
+	display: DisplayInterface;
+	errors: object;
+	gender: Gender;
+	orderId: string;
+	sendNotification: Array<object>;
+	token: string
+	userId: string
 }
 
 export interface PaymentInfoInterface {
