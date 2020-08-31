@@ -7,6 +7,7 @@ import { EmployeeHistoryDatasourceService } from './services/employee-history.da
 import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryDataSource,
+  EmployeeHistoryModel,
 } from '../../../../../interfaces/employee-history.interface';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 
@@ -64,17 +65,25 @@ export class EmployeeHistoryComponent implements OnInit {
         const c = stringDate.date.split('/');
         return moment(`${c[0]}/01/${c[1]}`);
       });
-
     const diff = moment.max(convertedDate).diff(moment.min(convertedDate), 'years');
-
     if (diff === this.monthsService.years) {
       return true;
     }
-
     return false;
   }
 
   getNextScreen() {
-    this.nextStepEvent.emit(JSON.stringify(this.employeeFormService.employeeHistory));
+    this.nextStepEvent.emit(JSON.stringify(this.convertEmployeeHistory()));
+  }
+
+  private convertEmployeeHistory(): EmployeeHistoryModel[] {
+    return this.employeeFormService.employeeHistory.map((e: EmployeeHistoryModel) => {
+      delete e.checkboxToDate;
+      return {
+        ...e,
+        from: moment(e.from).format('MM/YYYY'),
+        to: moment(e.to).format('MM/YYYY'),
+      };
+    });
   }
 }

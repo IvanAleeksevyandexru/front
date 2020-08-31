@@ -12,6 +12,7 @@ export interface EmployeeHistoryModel {
   position: string,
   place: string,
   address: string,
+  checkboxToDate?: boolean;
 }
 
 export interface EmployeeHistoryAvailableDates {
