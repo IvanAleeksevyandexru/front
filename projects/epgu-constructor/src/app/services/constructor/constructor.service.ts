@@ -27,7 +27,7 @@ export class ConstructorService {
     this.restService.getData().subscribe(
       (response) => this.initResponse(response),
       (error) => {
-        console.error(error)
+        console.error(error);
       },
       () => this.isLoading = false
     );

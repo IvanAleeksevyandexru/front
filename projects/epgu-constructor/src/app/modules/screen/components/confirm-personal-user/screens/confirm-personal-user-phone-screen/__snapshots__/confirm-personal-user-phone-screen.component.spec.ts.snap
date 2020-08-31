@@ -13,6 +13,11 @@ exports[`ConfirmPersonalUserPhoneScreenComponent check snapshot 1`] = `
     >
       <epgu-constructor-confirm-personal-user-phone />
     </div>
+    <div
+      class="footer"
+    >
+      
+    </div>
   </epgu-constructor-confirm-personal-user-screen-layout>
 </epgu-constructor-confirm-personal-user-phone-screen>
 `;
