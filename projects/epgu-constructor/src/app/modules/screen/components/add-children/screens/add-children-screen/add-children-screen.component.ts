@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import { ChildUnder14Interface } from '../../../../../../../interfaces/children.interface';
 import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
-import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 @Component({
   selector: 'epgu-constructor-add-children-screen',
@@ -22,7 +22,7 @@ export class AddChildrenScreenComponent implements OnInit {
   headerMapped: any;
   confirmAddressData: any;
 
-  constructor(private screenComponentService: ScreenComponentService) {}
+  constructor(private componentStateService: ComponentStateService) {}
 
   addNewChild() {
     const newChild: ChildUnder14Interface = {
@@ -59,7 +59,7 @@ export class AddChildrenScreenComponent implements OnInit {
 
   passDataToSend(selectedItems) {
     this.valueParsed.items = selectedItems;
-    this.screenComponentService.dataToSend = this.valueParsed;
+    this.componentStateService.state = this.valueParsed;
   }
 
   updateChild(childData) {

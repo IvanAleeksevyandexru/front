@@ -34,6 +34,7 @@
       <lib-date-picker
         [disabled]="!isEditable"
         [name]="field.fieldName"
+        minDate="-50y"
         [(ngModel)]="valueParsed[field.fieldName]"
       >
       </lib-date-picker>

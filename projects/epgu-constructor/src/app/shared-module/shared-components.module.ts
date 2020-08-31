@@ -15,9 +15,9 @@ import { ScreenContainerComponent } from './components/screen-container/screen-c
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { ToJsonPipe } from './pipe/toJson/to-json.pipe';
 import { NavigationService } from './service/navigation/navigation.service';
+import { HelperTextComponent } from '../modules/custom/components/helper-text/helper-text.component';
 
 const COMPONENTS = [
-  // component
   PageNameComponent,
   ScreenContainerComponent,
   ScreenPadComponent,
@@ -29,15 +29,17 @@ const COMPONENTS = [
   ModalBaseComponent,
   ComponentsListComponent,
   LabelSectionComponent,
+  HelperTextComponent,
+];
 
-  // Pipe
+const PIPES = [
   ToJsonPipe,
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [...COMPONENTS, ...PIPES],
   providers: [NavigationService],
-  exports: [...COMPONENTS],
+  exports: [...COMPONENTS, ...PIPES],
     imports: [
         CommonModule,
         EpguLibModule,

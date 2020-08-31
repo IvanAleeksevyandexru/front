@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { delay, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
-import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-email',
@@ -25,7 +25,7 @@ export class ConfirmPersonalUserEmailComponent implements OnInit, OnChanges {
   constructor(
     private formBuilder: FormBuilder,
     private ngUnsubscribe$: UnsubscribeService,
-    private screenComponentService: ScreenComponentService,
+    private componentStateService: ComponentStateService,
   ) {}
 
   ngOnInit(): void {
@@ -45,8 +45,8 @@ export class ConfirmPersonalUserEmailComponent implements OnInit, OnChanges {
       .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
       .subscribe((change) => {
         const { email } = change;
-        this.screenComponentService.dataToSend = email;
-        this.screenComponentService.isValid = this.emailForm.valid;
+        this.componentStateService.state = email;
+        this.componentStateService.isValid = this.emailForm.valid;
         this.dataChanged.emit(change);
       });
   }

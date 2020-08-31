@@ -10,7 +10,7 @@ import {
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 
 export interface ChangeListComponentInterface extends ComponentInterface {
   attrs: {
@@ -34,11 +34,11 @@ export class ChangeListComponent implements OnInit, OnChanges {
   response: Array<any>;
   fields: FormGroup;
 
-  constructor(private screenComponentService: ScreenComponentService) {}
+  constructor(private componentStateService: ComponentStateService) {}
 
   ngOnInit(): void {
     // TODO eliskachev это для тебя нужно заполнить данные;
-    this.screenComponentService.dataToSend = '';
+    this.componentStateService.state = '';
     this.fields = this.generateFormControls();
   }
 
@@ -48,10 +48,11 @@ export class ChangeListComponent implements OnInit, OnChanges {
   }
 
   pushFormGroupToResponse(): void {
+    console.log(this.fields);
     if (this.fields.valid) {
       this.response.unshift(this.fields.getRawValue());
       this.fields.reset();
-      this.screenComponentService.dataToSend = this.response;
+      this.componentStateService.state = this.response;
     }
   }
 

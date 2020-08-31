@@ -7,7 +7,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../constant/global';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 
 const moment = moment_;
 
@@ -43,7 +43,7 @@ export class DocInputComponent implements OnInit {
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
-    private screenComponentService: ScreenComponentService,
+    private componentStateService: ComponentStateService,
   ) {}
 
   ngOnInit(): void {
@@ -64,7 +64,7 @@ export class DocInputComponent implements OnInit {
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe((next: IForm) => {
-        this.screenComponentService.dataToSend = next;
+        this.componentStateService.state = next;
       });
   }
 }

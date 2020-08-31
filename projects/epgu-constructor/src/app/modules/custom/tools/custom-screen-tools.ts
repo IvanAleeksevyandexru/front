@@ -60,7 +60,8 @@ export function getNormalizeDataCustomScreenDictionary(
   let arr = items;
   if (isRemoveRussiaFromList) {
     const russiaCode = 'RUS'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
-    arr = arr.filter(item => item.value !== russiaCode);
+    const sssrCode = 'SUN'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
+    arr = arr.filter(item => ![sssrCode, russiaCode].includes(item.value));
   }
   return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
 }
