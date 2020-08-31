@@ -4,7 +4,7 @@ import { ConstructorConfigService } from '../../../../../../../../services/confi
 import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { FormsModule } from '@angular/forms';
 
@@ -32,7 +32,7 @@ describe('TemporaryRegistrationAddrComponent', () => {
       declarations: [ TemporaryRegistrationAddrComponent ],
       providers: [
         UnsubscribeService,
-        ScreenComponentService,
+        ComponentStateService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     })

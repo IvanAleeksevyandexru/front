@@ -4,7 +4,7 @@ import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-us
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 import { SCREEN_COMPONENT_NAME } from '../../../../../../../constant/global';
-import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 import { ConstructorServiceStub } from '../../../../../../services/constructor/constructor.service.stub';
 
@@ -27,7 +27,7 @@ describe('ConfirmPersonalUserAddressScreenComponent', () => {
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ ConfirmPersonalUserAddressScreenComponent ],
       providers: [
-        ScreenComponentService,
+        ComponentStateService,
         { provide: ConstructorService, useClass: ConstructorServiceStub },
       ]
     })

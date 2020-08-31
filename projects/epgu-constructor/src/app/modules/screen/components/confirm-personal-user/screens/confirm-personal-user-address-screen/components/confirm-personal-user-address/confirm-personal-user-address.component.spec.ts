@@ -7,7 +7,7 @@ import { UnsubscribeService } from '../../../../../../../../services/unsubscribe
 import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 import { FormsModule } from '@angular/forms';
-import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ConfirmPersonalUserAddressComponent', () => {
@@ -31,7 +31,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
       declarations: [ ConfirmPersonalUserAddressComponent ],
       providers: [
         UnsubscribeService,
-        ScreenComponentService,
+        ComponentStateService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     })
