@@ -101,12 +101,12 @@ export class ConstructorService {
     this.initResponse(response);
   }
 
-  sendDataError(response = {}) {
+  sendDataError(response) {
     this.isError = true;
     this.isLoading = false;
     console.error('----- ERROR DATA ---------');
-    console.error(JSON.stringify((response as any).errors));
-    // this.initResponse(response);
+    console.error(JSON.stringify(response.scenarioDto?.errors));
+    this.initResponse(response);
   }
 
   initResponse(response: ResponseInterface): void {
