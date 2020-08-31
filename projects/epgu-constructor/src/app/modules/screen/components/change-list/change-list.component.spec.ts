@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { ChangeListComponent, ChangeListComponentInterface } from './change-list.component'
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service'
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 
 
 describe('ChangeListComponent', () => {
   let component: ChangeListComponent;
   let fixture: ComponentFixture<ChangeListComponent>;
-  let screenComponentService: ScreenComponentService;
+  let componentStateService: ComponentStateService;
   const mockData: ChangeListComponentInterface = {
     attrs: {
       fields: [{
@@ -26,10 +26,10 @@ describe('ChangeListComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ ChangeListComponent ],
-      providers: [ScreenComponentService]
+      providers: [ComponentStateService]
     })
     .compileComponents();
-    screenComponentService = TestBed.inject(ScreenComponentService);
+    componentStateService = TestBed.inject(ComponentStateService);
   }));
 
   beforeEach(() => {

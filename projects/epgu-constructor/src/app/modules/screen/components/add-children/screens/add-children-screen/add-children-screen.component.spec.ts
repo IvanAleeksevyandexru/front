@@ -9,7 +9,7 @@ import { PageNameComponent } from '../../../../../../shared-module/components/pa
 import { ScreenContainerComponent } from '../../../../../../shared-module/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../../../../../shared-module/components/screen-pad/screen-pad.component';
 import { NavigationService } from '../../../../../../shared-module/service/navigation/navigation.service';
-import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { AddChildrenScreenComponent } from './add-children-screen.component';
 
 describe('AddChildrenScreenComponent', () => {
@@ -17,7 +17,7 @@ describe('AddChildrenScreenComponent', () => {
   let fixture: ComponentFixture<AddChildrenScreenComponent>;
   let navService: NavigationService;
   let constructorService: ConstructorService;
-  let screenComponentService: ScreenComponentService;
+  let componentStateService: ComponentStateService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
   const mockData: ComponentInterface = {
     attrs: [],
@@ -40,7 +40,7 @@ describe('AddChildrenScreenComponent', () => {
       ],
       providers: [
         NavigationService,
-        ScreenComponentService,
+        ComponentStateService,
         // { provide: ScreenComponentService, useClass: ScreenComponentServiceStub },
         { provide: ConstructorService, useClass: ConstructorServiceStub },
       ]
@@ -48,7 +48,7 @@ describe('AddChildrenScreenComponent', () => {
     .compileComponents();
     navService = TestBed.inject(NavigationService);
     constructorService = TestBed.inject(ConstructorService);
-    screenComponentService = TestBed.inject(ScreenComponentService);
+    componentStateService = TestBed.inject(ComponentStateService);
   }));
 
   beforeEach(() => {

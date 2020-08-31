@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { delay, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
-import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-phone',
@@ -45,7 +45,7 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
   constructor(
     private formBuilder: FormBuilder,
     private ngUnsubscribe$: UnsubscribeService,
-    private screenComponentService: ScreenComponentService,
+    private componentStateService: ComponentStateService,
   ) {}
 
   ngOnInit(): void {
@@ -66,8 +66,8 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
       .subscribe((change) => {
         let { phone } = change;
         phone = phone.replace(/[\s|-]+/g, ''); // backend-friendly format +7(999)1234567
-        this.screenComponentService.dataToSend = phone;
-        this.screenComponentService.isValid = this.phoneForm.valid;
+        this.componentStateService.state = phone;
+        this.componentStateService.isValid = this.phoneForm.valid;
         this.dataChanged.emit(change);
       });
   }

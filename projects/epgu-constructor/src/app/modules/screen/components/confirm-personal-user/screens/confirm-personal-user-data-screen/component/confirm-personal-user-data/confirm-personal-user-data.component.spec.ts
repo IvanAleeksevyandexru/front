@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ConfirmUserDataInterface } from '../../../../../../../../../interfaces/confirm-user-data.interface'
 import { ToJsonPipe } from '../../../../../../../../shared-module/pipe/toJson/to-json.pipe'
-import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service'
+import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service'
 import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub'
 
@@ -34,7 +34,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ConfirmPersonalUserDataComponent, ToJsonPipe ],
-      providers: [ ScreenComponentService, {provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub} ]
+      providers: [ ComponentStateService, {provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub} ]
     })
     .compileComponents();
   }));
