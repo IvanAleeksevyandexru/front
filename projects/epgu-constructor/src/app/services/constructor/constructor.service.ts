@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface, Gender, ResponseInterface, ScenarioDto } from '../../../interfaces/epgu.service.interface';
-import { ComponentStateService } from '../component-state/component-state.service';
+import { DisplayInterface, ResponseInterface, Gender, ScenarioDto } from '../../../interfaces/epgu.service.interface';
 import { RestService } from '../rest/rest.service';
+import { ComponentStateService } from '../component-state/component-state.service';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -56,7 +56,7 @@ export class ConstructorService {
       },
       () => {
         // TODO почему не отрабатывает если пришла ошибка 500;
-        this.isLoading = false
+        this.isLoading = false;
       }
     );
   }

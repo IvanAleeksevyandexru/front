@@ -36,7 +36,7 @@ describe('InfoScreenComponent', () => {
       providers: [
         NavigationService,
         UnsubscribeService,
-        {provide: ConstructorService, useClass: ConstructorServiceStub}
+        { provide: ConstructorService, useClass: ConstructorServiceStub }
       ]
     })
     .compileComponents();

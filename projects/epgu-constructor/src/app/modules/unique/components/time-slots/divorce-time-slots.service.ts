@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {ConstructorConfigService} from '../../../../services/config/constructor-config.service';
-import {TimeSlotsService} from './time-slots.service';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
-import {Observable, of} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class DivorceTimeSlotsService implements TimeSlotsService {
@@ -76,7 +76,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
   }
 
   getCurrentYear(): number {
-    return this.activeYearNumber
+    return this.activeYearNumber;
   }
 
   init(data: any): Observable<any> {
@@ -94,7 +94,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
             }
           }
         )
-      )
+      );
     }
 
     return of(undefined);
@@ -184,7 +184,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
       serviceId: [
         'ЗагсРазводФорма12-1'
       ]
-    }
+    };
   }
 
   private initSlotsMap(slots: any[]): void {

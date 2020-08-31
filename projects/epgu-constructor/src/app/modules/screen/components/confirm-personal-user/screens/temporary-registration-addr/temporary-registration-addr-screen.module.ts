@@ -9,7 +9,7 @@ import { SharedModule } from '../../../../../../shared-module/shared-components.
 const COMPONENTS = [
   TemporaryRegistrationAddrScreenComponent,
   TemporaryRegistrationAddrComponent,
-]
+];
 
 @NgModule({
   declarations: [...COMPONENTS],

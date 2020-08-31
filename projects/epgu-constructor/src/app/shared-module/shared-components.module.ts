@@ -15,7 +15,7 @@ import { ScreenContainerComponent } from './components/screen-container/screen-c
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { ToJsonPipe } from './pipe/toJson/to-json.pipe';
 import { NavigationService } from './service/navigation/navigation.service';
-import { HelperTextComponent } from '../modules/custom/components/helper-text/helper-text.component'
+import { HelperTextComponent } from '../modules/custom/components/helper-text/helper-text.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -34,7 +34,7 @@ const COMPONENTS = [
 
 const PIPES = [
   ToJsonPipe,
-]
+];
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES],

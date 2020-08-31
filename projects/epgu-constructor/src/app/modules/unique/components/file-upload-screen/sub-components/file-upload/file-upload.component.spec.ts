@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileUploadComponent } from './file-upload.component';
-import { ConstructorService } from '../../../../../../services/constructor/constructor.service'
-import { ConstructorServiceStub } from '../../../../../../services/constructor/constructor.service.stub'
-import { IFileUploadAttributes } from '../../../../../../../interfaces/terabyte.interface'
-import { MockComponent } from 'ng-mocks'
-import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component'
+import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
+import { ConstructorServiceStub } from '../../../../../../services/constructor/constructor.service.stub';
+import { IFileUploadAttributes } from '../../../../../../../interfaces/terabyte.interface';
+import { MockComponent } from 'ng-mocks';
+import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -21,7 +21,7 @@ describe('FileUploadComponent', () => {
         maxSize: 42
       }
     ]
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

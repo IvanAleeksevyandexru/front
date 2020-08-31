@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ConstructorConfigService } from './constructor-config.service';
-import { CONSTRUCTOR_CONFIG_TOKEN } from './constructor.config.token'
+import { CONSTRUCTOR_CONFIG_TOKEN } from './constructor.config.token';
 
 
 describe('ConstructorConfigService', () => {
@@ -10,7 +10,7 @@ describe('ConstructorConfigService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: CONSTRUCTOR_CONFIG_TOKEN, useValue: {} },
+        { provide: CONSTRUCTOR_CONFIG_TOKEN, useValue: {}},
         ConstructorConfigService
       ]
     });

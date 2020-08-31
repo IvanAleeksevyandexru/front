@@ -63,5 +63,5 @@ export function getNormalizeDataCustomScreenDictionary(
     const sssrCode = 'SUN'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
     arr = arr.filter(item => ![sssrCode, russiaCode].includes(item.value));
   }
-  return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem)
+  return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
 }

@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {ConstructorConfigService} from '../../../../services/config/constructor-config.service';
-import {TimeSlotsService} from './time-slots.service';
-import {Observable, of} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
-import {RestService} from '../../../../services/rest/rest.service';
-import {formatDate} from '@angular/common';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { TimeSlotsService } from './time-slots.service';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { RestService } from '../../../../services/rest/rest.service';
+import { formatDate } from '@angular/common';
 
 @Injectable()
 export class MvdTimeSlotsService implements TimeSlotsService {
@@ -58,8 +58,8 @@ export class MvdTimeSlotsService implements TimeSlotsService {
       map(response => {
         if (response.error.code === 0) {
           return response.items.map(
-            slot => { slot.value; new Date(slot.value) }
-          )
+            slot => { slot.value; new Date(slot.value); }
+          );
         } else {
           this.errorMessage = response.error.message;
           return [];
@@ -77,7 +77,7 @@ export class MvdTimeSlotsService implements TimeSlotsService {
   }
 
   getCurrentYear(): number {
-    return this.activeYearNumber
+    return this.activeYearNumber;
   }
 
   init(data: any): Observable<any> {
