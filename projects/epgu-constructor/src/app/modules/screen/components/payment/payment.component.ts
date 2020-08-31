@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Subscription, throwError, Observable } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { catchError, switchMap, map, takeUntil } from 'rxjs/operators';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { RestService } from '../../../../services/rest/rest.service';
@@ -28,7 +28,6 @@ export class PaymentComponent implements OnInit {
   @Input() data: PaymentInterface;
   public paymentStatus = PaymentStatus;
   public status: PaymentStatus;
-  public loadPaymentInfoSub: Subscription;
   public uin: string;
   public sum: string;
   private apiUrl: string;
