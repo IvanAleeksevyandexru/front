@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ValidationService } from 'epgu-lib';
 import { checkSnils } from 'ru-validation-codes';
 import { takeUntil } from 'rxjs/operators';
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
@@ -24,7 +24,7 @@ export class SnilsComponent implements OnInit {
   ]);
   constructor(
     private validationService: ValidationService,
-    private screenComponentService: ScreenComponentService,
+    private componentStateService: ComponentStateService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
@@ -40,7 +40,7 @@ export class SnilsComponent implements OnInit {
   saveSnils() {
     this.snils.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((value) => {
       if (this.snils.valid) {
-        this.screenComponentService.dataToSend = value.replace(/\D/g, '');
+        this.componentStateService.state = value.replace(/\D/g, '');
       }
     });
   }

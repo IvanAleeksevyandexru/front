@@ -15,6 +15,9 @@
           (changed)="selectDictionary($event, componentData)"
           [items]="dictionary[componentData?.attrs?.dictionaryType]?.list"
         ></lib-dropdown>
+        <epgu-constructor-helper-text *ngIf="!componentData.required">
+          {{ getHelperText(componentData.required) }}
+        </epgu-constructor-helper-text>
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.HiddenLookup">
@@ -24,7 +27,8 @@
             [queryMinSymbolsCount]="0"
             [searchCaseSensitive]="false"
             (changed)="selectDictionary($event, componentData)"
-            [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"></lib-lookup>
+            [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"
+          ></lib-lookup>
         </ng-container>
       </div>
 
@@ -59,9 +63,12 @@
           (change)="inputChange($event, componentData)"
           [validationShowOn]="validationShowOn"
         ></lib-plain-input>
+        <epgu-constructor-helper-text *ngIf="!componentData.required">
+        {{ getHelperText(componentData.required) }}
+        </epgu-constructor-helper-text>
         <div class="form__error">
           <small *ngIf="!state[componentData.id].valid"
-          >{{ state[componentData.id]?.errorMessage }}
+            >{{ state[componentData.id]?.errorMessage }}
           </small>
         </div>
       </div>
@@ -94,6 +101,7 @@
             [name]="componentData.id"
             (change)="inputChange($event, componentData)"
             [value]="false"
+            checked="checked"
             labelText="Нет"
           >
           </lib-radio>
@@ -105,6 +113,7 @@
         <lib-date-picker
           [name]="componentData.id"
           [(ngModel)]="state[componentData.id].value"
+          minDate="-18y"
         ></lib-date-picker>
       </div>
 

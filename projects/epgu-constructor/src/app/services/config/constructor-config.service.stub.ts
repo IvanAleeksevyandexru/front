@@ -8,6 +8,7 @@ export class ConstructorConfigServiceStub {
     dictionaryUrl: '',
     serviceId: '',
     externalApiUrl: '',
+    externalLkApiUrl: '',
     externalLkUrl: '',
     fileUploadApiUrl: '',
     fileUploadLocalhostApiUrl: '',
