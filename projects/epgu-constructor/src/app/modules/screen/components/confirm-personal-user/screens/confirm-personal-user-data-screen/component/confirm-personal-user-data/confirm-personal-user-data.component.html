@@ -1,25 +1,21 @@
 <div class="data">
-  <div class="data__group data-group">
+  <div class="data__group data-group" *ngFor="let groupItem of preparedData">
     <!-- Бизнеслогика-->
-    <div class="flex-row" *ngIf="data?.attrs?.actions?.length === 1">
-      <div class="data-group__title">{{ fullName }}</div>
-      <a [href]="constructorConfigService.config.externalLkUrl" class="button-change">Изменить</a>
+    <div class="flex-row">
+      <div class="data-group__title">{{ groupItem?.groupName }}</div>
     </div>
     <div class="data-group__items">
-      <div class="data__item data-item">
-        <div class="data-item__label">{{ birthDay.label }}</div>
-        <div class="data-item__value">{{ (data.value | toJson)[birthDay.fieldName] }}</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="data__group data-group">
-    <div class="data-group__title">Паспорт гражданина РФ</div>
-    <div class="data-group__items">
-      <div *ngFor="let field of passportFields" class="data__item data-item">
+      <div class="data__item data-item" *ngFor="let field of groupItem.list">
         <div class="data-item__label">{{ field.label }}</div>
-        <div class="data-item__value">{{ (data.value | toJson)[field.fieldName] }}</div>
+        <div class="data-item__value">{{ field.value }}</div>
       </div>
     </div>
   </div>
+</div>
+<div class="divider"></div>
+<div class="footer" >
+  <a class="btn-edit" [href]="constructorConfigService.config.externalLkUrl">
+    <span class="btn-edit__icon"></span>
+    <span class="btn-edit__text">Редактировать</span>
+  </a>
 </div>

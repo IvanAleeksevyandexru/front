@@ -1,5 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ConfirmUserDataInterface } from '../../../../../../../interfaces/confirm-user-data.interface';
+import { Component, OnInit, Input } from '@angular/core';
+import {
+  ConfirmUserDataFieldsStateInterface,
+  ConfirmUserDataInterface,
+} from '../../../../../../../interfaces/confirm-user-data.interface';
+import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-data-screen',
@@ -7,17 +11,17 @@ import { ConfirmUserDataInterface } from '../../../../../../../interfaces/confir
   styleUrls: ['./confirm-personal-user-data-screen.component.scss'],
 })
 export class ConfirmPersonalUserDataScreenComponent implements OnInit {
+  constructor(private componentStateService: ComponentStateService) {}
+
   @Input() data: ConfirmUserDataInterface;
-  @Output() actionSelect = new EventEmitter();
-  @Output() nextStepEvent: EventEmitter<any> = new EventEmitter<any>();
 
   clickToAction(action): void {
-    this.actionSelect.emit(action);
-  }
-
-  nextStep(): void {
-    this.nextStepEvent.emit(true);
+    console.log('click to action: ', action);
   }
 
   ngOnInit(): void {}
+
+  dataChange($event: Array<ConfirmUserDataFieldsStateInterface>) {
+    this.componentStateService.state = JSON.stringify($event);
+  }
 }

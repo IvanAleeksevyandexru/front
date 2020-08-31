@@ -68,6 +68,12 @@
     color: $color-text-helper;
   }
 
+  .divider {
+    border: 0;
+    background: $color-devider;
+    height: 1px;
+  }
+
   // Implement styleguide for all library's components
   @import "components";
 }

@@ -31,11 +31,20 @@
   align-items: center;
 }
 
-.button-change {
-  margin-left: auto;
+.divider {
+  margin-bottom: 24px;
+}
+
+.btn-edit {
+  display: flex;
+  align-items: center;
   margin-bottom: 16px;
   font-size: $font-sm;
-  @include tablets-down {
-    display: none;
+  &__icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    background-image: url('/assets/icons/svg/ion_pencil-outline.svg');
+    background-repeat: no-repeat;
   }
 }
