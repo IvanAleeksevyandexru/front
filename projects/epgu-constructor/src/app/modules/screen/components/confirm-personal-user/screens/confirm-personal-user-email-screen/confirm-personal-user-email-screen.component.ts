@@ -18,4 +18,8 @@ export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
   ngOnInit(): void {
     this.screenComponentService.dataToSend = this.data.value;
   }
+
+  clickToAction(action: NotificationAction) {
+    console.log(action);
+  }
 }

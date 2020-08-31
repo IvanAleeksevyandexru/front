@@ -1,19 +1,24 @@
 import { ListItem } from 'epgu-lib';
-import { FMS_COUNTRIES_DICTIONARY, RUSSIA_DICTIONARY_NAME } from '../../../../constant/global';
-import { CustomComponentDictionaryState } from '../../../../interfaces/custom-component.interface';
+import {
+  CustomComponentDictionaryState,
+  CustomComponentInterface
+} from '../../../../interfaces/custom-component.interface';
 import { DictionaryItem } from '../../../../interfaces/dictionary-options.interface';
 
 
 export enum CUSTOM_COMPONENT_ITEM_TYPE {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
+  HiddenDictionary = 'HiddenDictionary',
+  HiddenLookup = 'HiddenLookup',
+  HiddenInput = 'HiddenInput',
+  DropDown = 'DropDown',
   ForeignCitizenship = 'ForeignCitizenship',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
   RadioInput = 'RadioInput',
-  FileUploadComponent = 'FileUploadComponent',
+  CompositeRadioButton = 'CompositeRadioButton',
   Lookup = 'Lookup',
-  RadioButton = 'RadioButton',
 }
 
 export function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
@@ -42,19 +47,20 @@ export function getCustomScreenDictionaryFirstState(): CustomComponentDictionary
 }
 
 /**
- * Адаптирует массив в вид необходимый для компонентов из библлиотеки, а если словарь
- * словарь является {@link FMS_COUNTRIES_DICTIONARY} то страну РОССИЯ располагаю первым
- * @param items
- * @param dictionaryName
+ * Адаптирует массив в вид необходимый для компонентов из библлиотеки и если нужно то удаляет РОССИЮ из списка
+ * @param {Array<DictionaryItem>}items
+ * @param {string}dictionaryName
+ * @param {CustomComponentInterface}component - тут хранится флаг, для удаление россии из словаря.
  */
-export function getNormalizeDataCustomScreenDictionary(items: Array<DictionaryItem>, dictionaryName: string): Array<ListItem> {
-  const arr = dictionaryName === FMS_COUNTRIES_DICTIONARY ? putRussiaToFirstInArrForFmsCountriesDictionary(items) : items;
-  return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
-}
-
-function putRussiaToFirstInArrForFmsCountriesDictionary(items: Array<DictionaryItem>): Array<DictionaryItem> {
-  const rusItemIndex = items.findIndex(item => item.title.toLowerCase() === RUSSIA_DICTIONARY_NAME.toLowerCase());
-  return [ items[rusItemIndex] ]
-    .concat(items.slice(0, rusItemIndex))
-    .concat(items.slice(rusItemIndex + 1));
+export function getNormalizeDataCustomScreenDictionary(
+  items: Array<DictionaryItem>,
+  dictionaryName: string,
+  component: CustomComponentInterface): Array<ListItem> {
+  const isRemoveRussiaFromList = component?.attrs.russia === false;
+  let arr = items;
+  if (isRemoveRussiaFromList) {
+    const russiaCode = 'RUS'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
+    arr = arr.filter(item => item.value !== russiaCode)
+  }
+  return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem)
 }

@@ -1,5 +1,8 @@
 @import "core";
 
+// TODO: remove all normalize css styles, it may affect app's style
+// stylelint-disable
+
 .epgu-form {
   color: $color-summer-night;
 
@@ -53,11 +56,16 @@
   a {
     text-decoration: none;
     color: $color-button-hit;
+    cursor: pointer;
   }
 
   button {
     background: none;
     border: 0;
+  }
+
+  strike {
+    color: $color-text-helper;
   }
 
   // Implement styleguide for all library's components

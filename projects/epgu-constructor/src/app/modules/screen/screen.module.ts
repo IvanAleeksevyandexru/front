@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../shared-module/shared-components.module';
-import { AddChildrenScreenModule } from '../unique/components/add-children/screens/add-children-screen/add-children-screen.module';
+import { AddChildrenScreenModule } from './components/add-children/screens/add-children-screen/add-children-screen.module';
+import { AddPassportModule } from './components/add-passport/add-passport.module';
 import { ChangeListComponent } from './components/change-list/change-list.component';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressScreenModule } from './components/confirm-personal-user/screens/confirm-personal-user-address-screen/confirm-personal-user-address-screen.module';
@@ -14,12 +15,11 @@ import { ConfirmPersonalUserEmailScreenModule } from './components/confirm-perso
 import { ConfirmPersonalUserPhoneScreenModule } from './components/confirm-personal-user/screens/confirm-personal-user-phone-screen/confirm-personal-user-phone-screen.module';
 // eslint-disable-next-line max-len
 import { TemporaryRegistrationAddrScreenModule } from './components/confirm-personal-user/screens/temporary-registration-addr/temporary-registration-addr-screen.module';
+import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
 import { DocInputModule } from './components/doc-input/doc-input.module';
 import { ScreenComponent } from './components/root/screen.component';
 import { SnilsModule } from './components/snils/snils.module';
 import { ScreenComponentService } from './service/screen-component/screen-component.service';
-import { AddPassportModule } from './components/add-passport/add-passport.module';
-import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
 
 
 const COMPONENTS = [
@@ -49,4 +49,4 @@ const COMPONENTS = [
     ScreenComponentService,
   ]
 })
-export class ScreenModule { }
+export class ScreenModule {}

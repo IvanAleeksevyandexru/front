@@ -1,4 +1,6 @@
-<epgu-constructor-screen-container>
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+
+<epgu-constructor-screen-container class="screen-container">
   <div *ngIf="header" class="head">
     <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
   </div>
@@ -10,15 +12,6 @@
     (newValueSet)="handleNewValueSet($event)"
   >
   </epgu-constructor-file-upload>
-
-  <div class="info">
-    <div class="info__item">
-      Объем загружаемых данных не должен превышать 5 МБ
-    </div>
-    <div class="info__item" *ngIf="allMaxFiles">
-      Количество загружаемых файлов не более {{ allMaxFiles }}
-    </div>
-  </div>
 
   <div class="footer">
     <lib-button

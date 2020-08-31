@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface, ResponseInterface } from '../../../interfaces/epgu.service.interface';
+import { DisplayInterface, ResponseInterface, Gender } from '../../../interfaces/epgu.service.interface';
 import { RestService } from '../rest/rest.service';
 
 interface SendDataOptionsInterface {
@@ -16,6 +16,7 @@ export class ConstructorService {
   componentType: string;
   componentData: DisplayInterface;
   componentErrors: object;
+  gender: Gender;
   isLoading = false;
 
   constructor(public restService: RestService) {
@@ -25,7 +26,9 @@ export class ConstructorService {
     this.isLoading = true;
     this.restService.getData().subscribe(
       (response) => this.initResponse(response),
-      (error) => console.error(error),
+      (error) => {
+        console.error(error)
+      },
       () => this.isLoading = false
     );
   }
@@ -42,7 +45,9 @@ export class ConstructorService {
           this.sendDataSuccess(response);
         }
       },
-      (error) => this.sendDataError(error),
+      (error) => {
+        this.sendDataError(error);
+      },
       () => this.isLoading = false
     );
   }
@@ -58,17 +63,20 @@ export class ConstructorService {
           this.sendDataSuccess(response);
         }
       },
-      (error) => this.sendDataError(error),
+      (error) => {
+        this.sendDataError(error);
+      },
       () => this.isLoading = false
     );
   }
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}) {
     const componentId = options.componentId || this.componentId;
+    const isCycledFields = !!Object.keys(this.response?.scenarioDto?.currentCycledFields).length;
     this.response.scenarioDto.currentValue = {};
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
-    if (this.componentData.type === SCREEN_TYPE.CUSTOM) {
+    if (this.componentData.type === SCREEN_TYPE.CUSTOM || isCycledFields) {
       this.response.scenarioDto.currentValue = data;
     } else {
       this.response.scenarioDto.currentValue[componentId] = {
@@ -87,8 +95,7 @@ export class ConstructorService {
   sendDataError(response) {
     console.error('----- ERROR DATA ---------');
     console.error(JSON.stringify(response.errors));
-    this.initResponse(response);
-
+    // this.initResponse(response);
   }
 
   initResponse(response: ResponseInterface): void {
@@ -98,18 +105,16 @@ export class ConstructorService {
     }
 
     this.response = response;
-    const { display, errors } = response?.scenarioDto;
+    const { display, errors, gender } = response.scenarioDto;
 
     this.componentId = display.components[0].id;
     this.componentType = display.components[0].type;
     this.componentData = display;
     this.componentErrors = errors;
-    // this.componentData.header = 'Кому из детей требуется оформить загранпаспорт?';
-    // this.componentData.type = 'CUSTOM';
-    // this.componentData.components[0].type;
+    this.gender = gender;
     console.log('----- GET DATA ---------');
     console.log('componentId:', this.componentId);
     console.log('componentType:', this.componentType);
-    console.log('initResponse:', display);
+    console.log('initResponse:', response);
   }
 }
