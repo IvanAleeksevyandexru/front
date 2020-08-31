@@ -13,7 +13,7 @@ export function getFullNameConfirmPersonalUserData(data: ConfirmUserDataInterfac
     data.attrs.fields
       .filter((item) => includeItem(FULL_NAME_FIELD_ITEMS, item.fieldName))
       // eslint-disable-next-line no-return-assign, no-param-reassign
-      .reduce((acc, item) => (acc += ` ${JSONParse(data, item.fieldName)}`), '')
+      .reduce((acc, item) => (acc += ` ${getPropFromStringJson(data, item.fieldName)}`), '')
       .trim()
   );
 }
@@ -22,7 +22,7 @@ export function getBirthDayConfirmPersonalUserData(data: ConfirmUserDataInterfac
   const birthDate = data.attrs.fields.find((item) => item.fieldName === CONFIRM_USER_DATA_BIRTHDAY_FIELD_NAME);
   return {
     label: birthDate.label,
-    value: JSONParse(data, birthDate.fieldName),
+    value: getPropFromStringJson(data, birthDate.fieldName),
   };
 }
 
@@ -34,9 +34,9 @@ export function getOtherFieldsConfirmPersonalUserData(data: ConfirmUserDataInter
   const excludeFieldList = FULL_NAME_FIELD_ITEMS.concat([CONFIRM_USER_DATA_BIRTHDAY_FIELD_NAME]);
   return data.attrs.fields
     .filter((item) => !includeItem(excludeFieldList, item.fieldName))
-    .map((item) => ({ label: item.label, value: JSONParse(data, item.fieldName) }));
+    .map((item) => ({ label: item.label, value: getPropFromStringJson(data, item.fieldName) }));
 }
 
-function JSONParse(data: ConfirmUserDataInterface, fieldName) {
+function getPropFromStringJson(data: ConfirmUserDataInterface, fieldName) {
   return JSON.parse(data.value)[fieldName];
 }
