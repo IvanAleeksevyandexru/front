@@ -5,6 +5,7 @@ import { DictionaryOptionsInterface, DictionaryResponse } from '../../../interfa
 import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { MockService } from '../mock/mock.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class RestService {
@@ -13,9 +14,9 @@ export class RestService {
   dictionaryUrl: string;
   externalApiUrl: string;
 
-  userId = '1000299353';
+  userId = '1000298933';
   // eslint-disable-next-line max-len
-  token = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTg0MzI2MTYsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl90cm0_b2lkPTEwMDAyOTkzNTMmbW9kZT13IGh0dHA6XC9cL2VzaWEuZ29zdXNsdWdpLnJ1XC91c3JfaW5mP29pZD0xMDAwMjk5MzUzJm1vZGU9dyBodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvdXNyX3NlYz9tb2RlPXcmb2lkPTEwMDAyOTkzNTMiLCJpc3MiOiJodHRwOlwvXC9lc2lhLmdvc3VzbHVnaS5ydVwvIiwidXJuOmVzaWE6c2lkIjoiZGQxOTdmNmYxYjhkMjkxODBmZWU5ZTBmOWZjY2U2ZDg4ZDlhZTI0Mjg2ZDI0NDA4NTBmMTlmZGUwMDJjMGNhNiIsInVybjplc2lhOnNial9pZCI6MTAwMDI5OTM1MywiZXhwIjoxNTk4NTE5MDE2LCJpYXQiOjE1OTg0MzI2MTYsImNsaWVudF9pZCI6IlBHVSJ9.YtpKb0qWova8wL6J-36-f_JWNQHV52KgdzpGWsVg-bS7H3m3qwC_qHDUnhOzyu0R0BHnYJEpmGDAvrk7X3o6BbGWDSFM7LtVkG7yUmpFbTtxkt1LBtOrtgqFKFSaTPQtSScARWd6wKUmKYRU5Kl_u__v09l9NEfWHjJOK5yncxt4A9Dsyfc0XzwpBjFNoofEGW9PIBlB9OmBjp2rfshNuNHiNW3ikgbr8Bi_N-sECy7GFsm-JaPPx3B4cdBzXPj3klWp4XQLH74Ftf9eU8sGbqNySJaK_gNO_z11PBVDTNm0p3aBjlzwamPToRrPR0hjiS8xFbLndPX8jorL4gyarw';
+  token = 'eyJ2ZXIiOjEsInR5cCI6IkpXVCIsInNidCI6ImFjY2VzcyIsImFsZyI6IlJTMjU2In0.eyJuYmYiOjE1OTg1MTQ1ODksInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl9pbmY_b2lkPTEwMDAyOTg5MzMmbW9kZT13IiwiaXNzIjoiaHR0cDpcL1wvZXNpYS1wb3J0YWwxLnRlc3QuZ29zdXNsdWdpLnJ1XC8iLCJ1cm46ZXNpYTpzaWQiOiJhNWI0NGUwZjcyMDY3ZWM3MmZkZWJhM2Q4ZmMxMzU0NzgzZGZlZWU4MTUzM2RhNGJjY2Y1ZTEzZmRiNDkwMjExIiwidXJuOmVzaWE6c2JqX2lkIjoxMDAwMjk4OTMzLCJleHAiOjE1OTg2MDA5ODksImlhdCI6MTU5ODUxNDU4OSwiY2xpZW50X2lkIjoiUEdVIn0.qFa0xAt6GJ6VmVuYO7BQ9g6DDGlg1UdwBK3owdVhjghl8wjw4BRHd96eaMbOy53jWpFyFLZRspey1qyheA91sqFvkgpL2VEelAqYfSmL2Zb3oBxSPlkTtwt4mZsoBj6FLKgf387XBu8t0XtoryDWr7AA7_nR7qJ5uxtm8BrmdjI9tjojQz01FMCE71VV9iwoZgFrf98rOm6W440sGbAlR-VbATCB8yhezyjNfmG_RAXA36_CQjSyCmyMhd_FwXMR6lxeWIqH4LGgRd9s-eaGy-BLzjvWGB-zfRE-Ut6Rc_iQX_pj09rr-5mKxiYjsI-jieVuY_afraygJI_sE0mOHQ';
   currentUserId: string;
   currentUserToken: string;
 
@@ -23,6 +24,7 @@ export class RestService {
     private http: HttpClient,
     private constructorConfigService: ConstructorConfigService,
     private mockService: MockService,
+    private cookieService: CookieService
   ) {
     this.apiUrl = constructorConfigService.config.apiUrl;
     this.serviceId = constructorConfigService.config.serviceId;
@@ -31,6 +33,8 @@ export class RestService {
     // TODO: add fetch current user data for prod env
     this.currentUserId = constructorConfigService.config.isProd ? this.currentUserId : this.mockService.currentUserId;
     this.currentUserToken = constructorConfigService.config.isProd ? this.currentUserToken : this.mockService.currentUserToken;
+    this.cookieService.set('u', this.currentUserId);
+    this.cookieService.set('acc_t', this.currentUserToken);
   }
 
   public getData() {
@@ -75,12 +79,12 @@ export class RestService {
       tx: options.tx || '',
       // 2e641f4f-bc6a-11ea-b438-001a4a1660a6
       withCredentials: false
-    })
+    });
   }
 
   getDadataByFias(fiasCode: string) {
     const path = `${this.externalApiUrl}dadata/${fiasCode}`;
-    return this.http.get(path)
+    return this.http.get(path);
   }
 
 }

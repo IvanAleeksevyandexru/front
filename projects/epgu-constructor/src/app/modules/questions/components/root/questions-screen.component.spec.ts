@@ -51,7 +51,7 @@ describe('QuestionsScreenComponent', () => {
     fixture = TestBed.createComponent(QuestionsScreenComponent);
     component = fixture.componentInstance;
     component.data = mockData;
-    component.answerChoose({ action: '', label: '', value: ''});
+    component.answerChoose({ action: '', label: '', value: '' });
     fixture.detectChanges();
   });
 

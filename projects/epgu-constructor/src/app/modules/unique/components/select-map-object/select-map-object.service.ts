@@ -72,7 +72,7 @@ export class SelectMapObjectService {
           properties: {
             res: { ...item, btnName: 'Выбрать' },
           },
-        }
+        };
         res.features.push(obj);
       }
     });
@@ -285,7 +285,7 @@ export class SelectMapObjectService {
         label: attr.label,
       });
     });
-    return res
+    return res;
   }
 
   /**

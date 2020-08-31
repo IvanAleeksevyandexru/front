@@ -4,8 +4,7 @@ module.exports = {
     '<rootDir>'
   ],
   moduleDirectories: [
-    'node_modules',
-    'stub_modules'
+    'node_modules'
   ],
   setupFiles: ['<rootDir>/setup-jest.ts'],
   setupFilesAfterEnv: ['<rootDir>/setup-jest-env.ts'],
@@ -14,6 +13,10 @@ module.exports = {
     '<rootDir>/dist/',
     '<rootDir>/src/',
   ],
+  moduleNameMapper: {
+    '@ifc/plugin': '<rootDir>/node_modules/epgu-lib/assets/vendor/ifcplugin-lib.js',
+    '@ifc/common': '<rootDir>/node_modules/epgu-lib/assets/vendor/ifccommon-lib.js'
+  },
   coverageReporters: ['text', 'cobertura', 'html'],
   collectCoverageFrom: [
     'projects/epgu-constructor/src/app/**/*.service.ts',

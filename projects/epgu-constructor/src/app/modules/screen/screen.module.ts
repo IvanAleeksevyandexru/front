@@ -20,8 +20,6 @@ import { DocInputModule } from './components/doc-input/doc-input.module';
 import { ScreenComponent } from './components/root/screen.component';
 import { SnilsModule } from './components/snils/snils.module';
 import { PaymentModule } from './components/payment/payment.module';
-import { ScreenComponentService } from './service/screen-component/screen-component.service';
-
 
 const COMPONENTS = [
   ScreenComponent,
@@ -47,8 +45,5 @@ const COMPONENTS = [
     SharedModule,
     EpguLibModule.forChild(),
   ],
-  providers: [
-    ScreenComponentService,
-  ]
 })
 export class ScreenModule {}

@@ -31,7 +31,7 @@ export class UploadedFile implements IUploadedFile{
       objectId: this.objectId,
       objectType: this.objectTypeId,
       mnemonic: this.mnemonic,
-    } as ITerraUploadFileOptions
+    } as ITerraUploadFileOptions;
   }
 
   /**
@@ -42,7 +42,7 @@ export class UploadedFile implements IUploadedFile{
       objectId: this.objectId,
       objectType: this.objectTypeId,
       mnemonic: this.mnemonic,
-    } as ITerraFileOptions
+    } as ITerraFileOptions;
   }
 
   /**

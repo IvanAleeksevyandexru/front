@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CommonModule } from '@angular/common'
+import { CommonModule } from '@angular/common';
 
 import { ConfirmationModalComponent } from './confirmation-modal.component';
 

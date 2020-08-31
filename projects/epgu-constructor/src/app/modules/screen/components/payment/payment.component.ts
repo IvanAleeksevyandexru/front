@@ -5,7 +5,6 @@ import { catchError, switchMap, map, takeUntil } from 'rxjs/operators';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { RestService } from '../../../../services/rest/rest.service';
 import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import {
   PaymentAttrsInterface,
@@ -14,6 +13,7 @@ import {
 } from '../../../../../interfaces/payment.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { PaymentStatus } from './enums/payment-status.enum';
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 
 export interface PaymentInterface extends ComponentInterface {
   attrs: PaymentAttrsInterface;
@@ -38,7 +38,7 @@ export class PaymentComponent implements OnInit {
     private restService: RestService,
     private http: HttpClient,
     private constructorConfigService: ConstructorConfigService,
-    private screenComponentService: ScreenComponentService,
+    private componentStateService: ComponentStateService,
     private ngUnsubscribe$: UnsubscribeService,
     public constructorService: ConstructorService,
   ) {
@@ -53,7 +53,7 @@ export class PaymentComponent implements OnInit {
         (res: any) => {
           this.status = PaymentStatus.SUCCESS;
           this.uin = res.value.replace('PRIOR', '');
-          this.screenComponentService.dataToSend = this.getPaymentLink();
+          this.componentStateService.state = this.getPaymentLink();
         },
         (error: HttpErrorResponse) => {
           if (error.status === 500) {

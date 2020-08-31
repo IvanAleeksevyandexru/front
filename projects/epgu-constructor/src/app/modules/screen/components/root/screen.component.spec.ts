@@ -4,10 +4,10 @@ import { DisplayInterface } from '../../../../../interfaces/epgu.service.interfa
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { ConstructorServiceStub } from '../../../../services/constructor/constructor.service.stub';
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { ScreenComponent } from './screen.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import { ScreenContainerComponent } from '../../../../shared-module/components/screen-container/screen-container.component'
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ScreenContainerComponent } from '../../../../shared-module/components/screen-container/screen-container.component';
 
 
 // TODO: Need to refactoring component
@@ -16,7 +16,7 @@ describe.skip('ScreenComponent', () => {
   let fixture: ComponentFixture<ScreenComponent>;
   let navService: NavigationService;
   let constructorService: ConstructorService;
-  let screenComponentService: ScreenComponentService;
+  let componentStateService: ComponentStateService;
   const mockData: DisplayInterface = {
     components: [{
       attrs: {},
@@ -39,13 +39,13 @@ describe.skip('ScreenComponent', () => {
       providers: [
         NavigationService,
         { provide: ConstructorService, useClass: ConstructorServiceStub },
-        ScreenComponentService
+        ComponentStateService
       ]
     })
     .compileComponents();
     navService = TestBed.inject(NavigationService);
     constructorService = TestBed.inject(ConstructorService);
-    screenComponentService = TestBed.inject(ScreenComponentService);
+    componentStateService = TestBed.inject(ComponentStateService);
   }));
 
   beforeEach(() => {

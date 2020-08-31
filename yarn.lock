@@ -4309,6 +4309,11 @@ entities@^2.0.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-2.0.3.tgz#5c487e5742ab93c15abb5da22759b8590ec03b7f"
   integrity sha512-MyoZ0jgnLvB2X3Lg5HqpFmn1kybDiIfEQmKzTb5apr51Rb+T3KdmMiqa70T+bhGnyv7bQ6WMj2QMHpGMmlrUYQ==
 
+epgu-lib@^0.0.384:
+  version "0.0.384"
+  resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.384.tgz#ece5846f76614d224ef033a18608b6c60fd85450"
+  integrity sha512-8qZPT4XjeFVt+2/3RxVJRYTD6MwP7fds1I6Wg/W2a7g/flpf09Sbi/jplA5ygPle8twoAN4lIE/yiSg+mwNCsA==
+
 err-code@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/err-code/-/err-code-1.1.2.tgz#06e0116d3028f6aef4806849eb0ea6a748ae6960"
@@ -7829,6 +7834,13 @@ ng-packagr@^10.0.0:
     stylus "^0.54.7"
     terser "^5.0.0"
     update-notifier "^4.0.0"
+
+ngx-cookie-service@^10.0.1:
+  version "10.0.1"
+  resolved "http://npm.gosuslugi.local/ngx-cookie-service/-/ngx-cookie-service-10.0.1.tgz#b05556636a66874b43953b6ee3eea44652c134a3"
+  integrity sha512-QRafo2KuAQxdIZhiu2S0DhpwrkPxVDP34NlfluS4NnAU+8TeOPiKwrqZo/y1FYgxKtQgL1gjjs8KQHDYeR/7gQ==
+  dependencies:
+    tslib "^2.0.0"
 
 ngx-perfect-scrollbar@8.0.0:
   version "8.0.0"

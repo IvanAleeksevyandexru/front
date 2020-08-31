@@ -6,6 +6,7 @@ import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
 import { ConfirmationModalComponent } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.interface';
 import { RestService } from '../../../../services/rest/rest.service';
+import { OPTIONAL_FIELD } from '../../../../../constant/helperTexts';
 
 interface WarningMessages {
   [countryType: number]: string;
@@ -27,6 +28,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
   placeholder = 'Выберите страну';
   screenComponentName = SCREEN_COMPONENT_NAME;
   selectedCountry: Country;
+  helperText: string;
 
   @Input() data: any;
   @Input() form: FormGroup;
@@ -71,6 +73,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
       this.mapToListItemModel(dictionary.items);
     });
     this.form.addControl('countryDropdown', new FormControl('', [Validators.required]));
+    this.updateHelperText();
   }
 
   ngAfterViewInit() {
@@ -99,4 +102,8 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
 
   showModal = () =>
     this.modalService.openModal<null>(ConfirmationModalComponent, this.modalParameters);
+
+  updateHelperText(): void {
+    this.helperText = this.data.required ? '' : OPTIONAL_FIELD;
+  }
 }

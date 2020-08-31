@@ -1,9 +1,17 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ValidationShowOn } from 'epgu-lib';
+import { BaseMaskedInputComponent, ValidationShowOn } from 'epgu-lib';
 import { delay, takeUntil } from 'rxjs/operators';
+import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
-import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-phone',
@@ -12,21 +20,40 @@ import { ScreenComponentService } from '../../../../../../service/screen-compone
   providers: [UnsubscribeService],
 })
 export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
+  @ViewChild('mask', { static: true }) mask: BaseMaskedInputComponent;
   @Input() label: string;
   @Input() data: string;
   @Input() error: string;
   @Input() isEditButtonShown: boolean;
   @Output() dataChanged = new EventEmitter();
 
-  isEditable: boolean;
   phoneForm: FormGroup;
-  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  phoneMask = ['+', /[7]/, '(', /[1-9]/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
+  validationShowOn = ValidationShowOn.TOUCHED;
+  phoneMask = [
+    '+',
+    '7',
+    ' ',
+    '(',
+    /[1-9]/,
+    /\d/,
+    /\d/,
+    ')',
+    ' ',
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
     private ngUnsubscribe$: UnsubscribeService,
-    private screenComponentService: ScreenComponentService,
+    private componentStateService: ComponentStateService,
   ) {}
 
   ngOnInit(): void {
@@ -34,10 +61,10 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
       phone: this.formBuilder.control(
         {
           value: this.data || '',
-          disabled: !this.isEditable,
+          disabled: true,
         },
         {
-          validators: Validators.compose([Validators.required, Validators.minLength(14)]),
+          validators: Validators.compose([Validators.required, Validators.minLength(18)]),
         },
       ),
     });
@@ -46,20 +73,18 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
       .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
       .subscribe((change) => {
         const { phone } = change;
-        this.screenComponentService.dataToSend = phone;
-        this.screenComponentService.isValid = this.phoneForm.valid;
-        this.dataChanged.emit(change);
+        const phoneUnmasked = phone.replace(/[\s|-]+/g, ''); // backend-friendly format +7(999)1234567
+        this.componentStateService.isValid = this.phoneForm.controls.phone.valid;
+        this.componentStateService.state = phoneUnmasked;
+        this.dataChanged.emit(phoneUnmasked);
       });
+
+    this.componentStateService.state = this.data;
+    this.componentStateService.isValid = true;
   }
 
   ngOnChanges(): void {
     if (this.phoneForm) {
-      if (this.isEditable) {
-        this.phoneForm.controls.phone.enable();
-      } else {
-        this.phoneForm.controls.phone.disable();
-      }
-
       if (this.error) {
         this.phoneForm.controls.phone.setErrors({ incorrect: true });
         this.phoneForm.controls.phone.enable();
@@ -71,5 +96,10 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
 
   handleClick() {
     this.phoneForm.controls.phone.enable();
+    // @ts-ignore
+    const data = this.mask.textMaskInputElement.state.previousConformedValue || this.data;
+    this.mask.writeValue(data);
+    // @ts-ignore
+    this.phoneForm.patchValue({ phone: this.mask.lastModelValue });
   }
 }
