@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Subscription, throwError, Observable } from 'rxjs';
-/* eslint-disable import/no-extraneous-dependencies */
 import { catchError, switchMap, map, takeUntil } from 'rxjs/operators';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { RestService } from '../../../../services/rest/rest.service';
@@ -27,17 +25,14 @@ export interface PaymentInterface extends ComponentInterface {
   providers: [UnsubscribeService],
 })
 export class PaymentComponent implements OnInit {
+  @Input() data: PaymentInterface;
   public paymentStatus = PaymentStatus;
   public status: PaymentStatus;
   public loadPaymentInfoSub: Subscription;
   public uin: string;
   public sum: string;
-  public document: string;
-  // @Input() data: PaymentInterface;
-  @Input() data: PaymentInterface;
   private apiUrl: string;
   private externalUrl: string;
-  private mockUinCode = '18810177200104519116';
   private mockOrderId = '763419899';
 
   constructor(
@@ -99,7 +94,6 @@ export class PaymentComponent implements OnInit {
       attributeValues,
       options,
     );
-    // return of({ value: this.mockUinCode });
   }
 
   getPaymentLink() {
