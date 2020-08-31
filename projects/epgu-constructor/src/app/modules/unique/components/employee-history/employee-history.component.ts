@@ -5,6 +5,7 @@ import { EmployeeHistoryFormService } from './services/employee-history.form.ser
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import {
+  Employee,
   EmployeeHistoryAvailableDates,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel,
@@ -39,9 +40,11 @@ export class EmployeeHistoryComponent implements OnInit {
     this.monthsService.initSettings();
     this.ds = this.datasourceService.getDataSourceByGender(this.gender);
     this.employeeFormService.generateFormWatcher();
+
+    this.employeeFormService.generateForm.valueChanges.subscribe((a) => console.log(a));
   }
 
-  resetForm(currentType: number): void {
+  resetForm(currentType: Employee): void {
     this.employeeFormService.resetForm(currentType);
   }
 
@@ -74,6 +77,13 @@ export class EmployeeHistoryComponent implements OnInit {
 
   getNextScreen() {
     this.nextStepEvent.emit(JSON.stringify(this.convertEmployeeHistory()));
+  }
+
+  findData(type?: Employee): EmployeeHistoryDataSource {
+    return this.ds.find(
+      (e) =>
+        String(e.value) === String(type || this.employeeFormService.generateForm.get('type').value),
+    );
   }
 
   private convertEmployeeHistory(): EmployeeHistoryModel[] {

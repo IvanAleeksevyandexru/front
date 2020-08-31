@@ -39,7 +39,7 @@
         ></lib-date-picker>
       </div>
     </div>
-    <div class="employee-history__input" *ngIf="ds[generation.type]?.position as position">
+    <div class="employee-history__input" *ngIf="findData(generation.type)?.position as position">
       <epgu-constructor-label [for]="i + '_position'">{{ position }}</epgu-constructor-label>
       <lib-plain-input
         [id]="i + '_position'"
@@ -47,7 +47,7 @@
         [(ngModel)]="generation.position"
       ></lib-plain-input>
     </div>
-    <div class="employee-history__input" *ngIf="ds[generation.type]?.place as place">
+    <div class="employee-history__input" *ngIf="findData(generation.type)?.place as place">
       <epgu-constructor-label [for]="i + '_place'">{{ place }}</epgu-constructor-label>
       <lib-plain-input
         [id]="i + '_place'"
@@ -110,7 +110,7 @@
       ></lib-checkbox>
     </div>
     <div class="employee-history__input"
-         *ngIf="ds[employeeFormService.generateForm.get('type').value]?.position as position">
+         *ngIf="findData()?.position as position">
       <epgu-constructor-label for="position">{{ position }}</epgu-constructor-label>
       <lib-plain-input
         id="position"
@@ -118,7 +118,7 @@
       ></lib-plain-input>
     </div>
     <div class="employee-history__input"
-         *ngIf="ds[employeeFormService.generateForm.get('type').value]?.place as place">
+         *ngIf="findData()?.place as place">
       <epgu-constructor-label for="place">{{ place }}</epgu-constructor-label>
       <lib-plain-input
         id="place"

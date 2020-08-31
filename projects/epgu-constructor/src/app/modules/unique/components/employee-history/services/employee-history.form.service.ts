@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { EmployeeHistoryModel } from '../../../../../../interfaces/employee-history.interface';
+import { Employee, EmployeeHistoryModel } from '../../../../../../interfaces/employee-history.interface';
 import { filter, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
@@ -26,7 +26,7 @@ export class EmployeeHistoryFormService {
 
   createEmployeeForm(): FormGroup {
     return this.fb.group({
-      type: [0],
+      type: ['student'],
       from: [null],
       to: [null],
       position: [null],
@@ -36,7 +36,7 @@ export class EmployeeHistoryFormService {
     });
   }
 
-  resetForm(currentType: number): void {
+  resetForm(currentType: Employee): void {
     this.generateForm.reset();
     this.generateForm.get('type').patchValue(currentType);
   }
@@ -48,7 +48,7 @@ export class EmployeeHistoryFormService {
 
     this.monthsService.updateAvailableMonths(fromDate, toDate, true);
     this.employeeHistory.push(formValues);
-    this.resetForm(0);
+    this.resetForm('student');
 
     console.log(
       'pushFormGroup()::',
