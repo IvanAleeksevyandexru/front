@@ -12,8 +12,8 @@
     </div>
   </div>
 </div>
-<div class="divider"></div>
-<div class="footer" >
+<div class="data-footer" *ngIf="data?.attrs?.actions?.length === 1">
+  <div class="divider"></div>
   <a class="btn-edit" [href]="constructorConfigService.config.externalLkUrl">
     <span class="btn-edit__icon"></span>
     <span class="btn-edit__text">Редактировать</span>
