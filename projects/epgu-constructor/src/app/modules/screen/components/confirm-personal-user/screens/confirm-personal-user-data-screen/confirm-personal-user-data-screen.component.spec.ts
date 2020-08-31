@@ -3,6 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { ConfirmPersonalUserDataScreenComponent } from './confirm-personal-user-data-screen.component';
 import { ConfirmUserDataInterface } from '../../../../../../../interfaces/confirm-user-data.interface';
+import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 
 describe('ConfirmPersonalUserDataScreenComponent', () => {
@@ -22,7 +23,8 @@ describe('ConfirmPersonalUserDataScreenComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [ ConfirmPersonalUserDataScreenComponent ]
+      declarations: [ ConfirmPersonalUserDataScreenComponent ],
+      providers: [ComponentStateService]
     })
     .compileComponents();
   }));
