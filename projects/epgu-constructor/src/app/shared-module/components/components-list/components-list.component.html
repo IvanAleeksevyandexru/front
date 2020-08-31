@@ -20,6 +20,15 @@
         </epgu-constructor-helper-text>
       </div>
 
+      <div class="form__item" *ngSwitchCase="componentType.DropDown">
+        <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+        <lib-dropdown
+          class="cs__select cs-select"
+          (changed)="selectDropDown($event, componentData)"
+          [items]="dropDown[componentData?.id]?.list"
+        ></lib-dropdown>
+      </div>
+
       <div class="form__item" *ngSwitchCase="componentType.HiddenLookup">
         <ng-container *ngIf="state[componentData.id].isShow">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>

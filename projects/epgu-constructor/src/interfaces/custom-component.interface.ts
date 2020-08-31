@@ -15,6 +15,18 @@ export interface CustomComponentDictionaryState {
   selectedItem: DictionaryItem;
 }
 
+export interface CustomComponentDropDownStateInterface {
+  origin: CustomComponentDropDownItemList;
+  list: Array<Partial<ListItem>>;
+  selectedItem?: DictionaryItem;
+}
+
+export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
+export type CustomComponentDropDownItem = {
+  name: string;
+};
+
+
 
 /**
  * @property {Array<string>}ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
@@ -23,6 +35,7 @@ export interface CustomComponentDictionaryState {
  */
 export interface CustomComponentAttrInterface {
   [key:string]:any;
+  dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType: string;
   labelAttr: string;
   fields: Array<any>;
