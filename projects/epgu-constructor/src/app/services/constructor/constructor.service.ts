@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface, ResponseInterface, Gender, ScenarioDto } from '../../../interfaces/epgu.service.interface';
+import { DisplayInterface, Gender, ResponseInterface, ScenarioDto } from '../../../interfaces/epgu.service.interface';
+import { ComponentStateService } from '../component-state/component-state.service';
 import { RestService } from '../rest/rest.service';
-import {ComponentStateService} from '../component-state/component-state.service';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -101,12 +101,12 @@ export class ConstructorService {
     this.initResponse(response);
   }
 
-  sendDataError(response = {}) {
+  sendDataError(response) {
     this.isError = true;
     this.isLoading = false;
     console.error('----- ERROR DATA ---------');
-    console.error(JSON.stringify((response as any).errors));
-    // this.initResponse(response);
+    console.error(JSON.stringify(response.scenarioDto?.errors));
+    this.initResponse(response);
   }
 
   initResponse(response: ResponseInterface): void {
