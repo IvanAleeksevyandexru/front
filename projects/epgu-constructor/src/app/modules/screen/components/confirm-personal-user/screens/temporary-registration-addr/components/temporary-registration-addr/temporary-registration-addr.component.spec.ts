@@ -4,6 +4,9 @@ import { ConstructorConfigService } from '../../../../../../../../services/confi
 import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
+import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { FormsModule } from '@angular/forms';
 
 
 describe('TemporaryRegistrationAddrComponent', () => {
@@ -25,8 +28,11 @@ describe('TemporaryRegistrationAddrComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      imports: [FormsModule],
       declarations: [ TemporaryRegistrationAddrComponent ],
       providers: [
+        UnsubscribeService,
+        ScreenComponentService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     })
