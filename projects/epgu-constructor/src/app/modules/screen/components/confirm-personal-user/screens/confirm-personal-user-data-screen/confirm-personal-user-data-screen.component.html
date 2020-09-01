@@ -1,8 +1,8 @@
 <epgu-constructor-confirm-personal-user-screen-layout>
   <div class="body">
     <epgu-constructor-confirm-personal-user-data
-      [data]="data"
-    ></epgu-constructor-confirm-personal-user-data>
+      (dataChange)="dataChange($event)"
+      [data]="data"></epgu-constructor-confirm-personal-user-data>
   </div>
 
   <div class="footer">
