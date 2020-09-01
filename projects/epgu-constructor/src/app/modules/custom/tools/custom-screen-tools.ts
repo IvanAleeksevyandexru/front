@@ -1,6 +1,6 @@
 import { ListItem } from 'epgu-lib';
 import {
-  CustomComponentDictionaryState,
+  CustomComponentDictionaryState, CustomComponentDropDownItemList,
   CustomComponentInterface
 } from '../../../../interfaces/custom-component.interface';
 import { DictionaryItem } from '../../../../interfaces/dictionary-options.interface';
@@ -46,6 +46,16 @@ export function getCustomScreenDictionaryFirstState(): CustomComponentDictionary
   };
 }
 
+export function likeDictionary(type: CUSTOM_COMPONENT_ITEM_TYPE) {
+  return (
+    CUSTOM_COMPONENT_ITEM_TYPE.Dictionary === type || CUSTOM_COMPONENT_ITEM_TYPE.Lookup === type
+  );
+}
+
+export function isDropDown(type: CUSTOM_COMPONENT_ITEM_TYPE) {
+  return CUSTOM_COMPONENT_ITEM_TYPE.DropDown === type;
+}
+
 /**
  * Адаптирует массив в вид необходимый для компонентов из библлиотеки и если нужно то удаляет РОССИЮ из списка
  * @param {Array<DictionaryItem>}items
@@ -64,4 +74,23 @@ export function getNormalizeDataCustomScreenDictionary(
     arr = arr.filter(item => ![sssrCode, russiaCode].includes(item.value));
   }
   return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
+}
+
+/**
+ * Адаптирует массив в вид необходимый для компонентов из библлиотеки
+ * @param {CustomComponentDropDownItemList}items
+ * @param {string}dictionaryName
+ * @param {CustomComponentInterface}component - тут хранится флаг, для удаление россии из словаря.
+ */
+export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
+  return items.map((item, index) => {
+    return  {
+      id: `${item.name}-${index}`,
+      text: item.name,
+      formatted: '',
+      // 'hidden': false,
+      originalItem: item,
+      compare: () => false,
+    };
+  });
 }
