@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import * as moment_ from 'moment';
+import { ValidationShowOn } from 'epgu-lib';
 import { DisplayInterface, Gender } from '../../../../../interfaces/epgu.service.interface';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
@@ -19,7 +20,7 @@ const moment = moment_;
   templateUrl: './employee-history.component.html',
   styleUrls: ['./employee-history.component.scss'],
 })
-export class EmployeeHistoryComponent implements OnInit {
+export class EmployeeHistoryComponent implements OnInit, OnChanges {
   @Input() data: DisplayInterface;
   @Input() header: string;
   @Input() gender: Gender;
@@ -27,6 +28,7 @@ export class EmployeeHistoryComponent implements OnInit {
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
   ds: Array<EmployeeHistoryDataSource>;
+  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
   constructor(
     public employeeFormService: EmployeeHistoryFormService,
@@ -40,8 +42,10 @@ export class EmployeeHistoryComponent implements OnInit {
     this.monthsService.initSettings();
     this.ds = this.datasourceService.getDataSourceByGender(this.gender);
     this.employeeFormService.generateFormWatcher();
+  }
 
-    this.employeeFormService.generateForm.valueChanges.subscribe((a) => console.log(a));
+  ngOnChanges() {
+    this.employeeFormService.employeeHistory = [];
   }
 
   resetForm(currentType: Employee): void {
@@ -49,7 +53,11 @@ export class EmployeeHistoryComponent implements OnInit {
   }
 
   pushFormGroup(): void {
-    this.employeeFormService.pushFormGroup();
+    this.updateValidators();
+    this.validationShowOn = ValidationShowOn.IMMEDIATE;
+    if (this.employeeFormService.generateForm.valid) {
+      this.employeeFormService.pushFormGroup();
+    }
   }
 
   removeFormGroup(index: number): void {
@@ -82,7 +90,7 @@ export class EmployeeHistoryComponent implements OnInit {
   findData(type?: Employee): EmployeeHistoryDataSource {
     return this.ds.find(
       (e) =>
-        String(e.value) === String(type || this.employeeFormService.generateForm.get('type').value),
+        String(e.type) === String(type || this.employeeFormService.generateForm.get('type').value),
     );
   }
 
@@ -95,5 +103,15 @@ export class EmployeeHistoryComponent implements OnInit {
         to: moment(e.to).format('MM/YYYY'),
       };
     });
+  }
+
+  private updateValidators(): void {
+    const selectedEmployee = this.datasourceService
+      .getDataSourceByGender(this.gender)
+      .find(
+        (v: EmployeeHistoryDataSource) =>
+          v.type === this.employeeFormService.generateForm.getRawValue().type,
+      );
+    this.employeeFormService.updateValidators(selectedEmployee);
   }
 }

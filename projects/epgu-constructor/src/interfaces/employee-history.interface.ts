@@ -1,6 +1,6 @@
 export interface EmployeeHistoryDataSource {
   label: string;
-  value: Employee;
+  type: Employee;
   position: string;
   place: string;
 }
