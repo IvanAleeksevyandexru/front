@@ -5,10 +5,13 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
 import { RestService } from '../rest/rest.service';
+import { ConstructorService } from '../constructor/constructor.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
   let restService: RestService;
+  let constructorConfigService: ConstructorConfigService;
+  let constructorService: ConstructorService;
   let http: HttpTestingController;
 
   beforeEach(() => {
@@ -17,6 +20,8 @@ describe('PaymentService', () => {
       providers: [
         RestService,
         PaymentService,
+        constructorService,
+        constructorConfigService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });
