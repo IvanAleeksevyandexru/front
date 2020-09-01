@@ -1,6 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import {
+  prepareDataToSendForRepeatableFieldsComponent,
+  removeItemFromArrByIndex,
+} from './repeatable-fields.constant';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
@@ -19,8 +23,8 @@ export class RepeatableFieldsComponent implements OnInit {
   propData; // TODO указать тип
 
   @Input() set data(data) {
-    this.propData = data;
     this.initVariable();
+    this.propData = data;
     this.screens[this.getId()] = data.components[0].attrs.components;
   }
   @Output() nextStepEvent = new EventEmitter();
@@ -30,6 +34,7 @@ export class RepeatableFieldsComponent implements OnInit {
    */
   // eslint-disable-next-line
   getId = () => (this.componentId += 1);
+  trackByFunction = (index, item) => item;
 
   constructor(
     private componentStateService: ComponentStateService,
@@ -41,23 +46,28 @@ export class RepeatableFieldsComponent implements OnInit {
   private initVariable() {
     this.screens = {};
     this.componentId = 0;
-    this.componentStateService.state = {};
+    this.componentStateService.state = [];
   }
 
   duplicateScreen() {
     this.screens[this.getId()] = this.propData.components[0].attrs.components;
   }
 
-  changeComponentList({ value }, screenKey) {
-    this.componentStateService.state[screenKey] = value;
+  changeComponentList(changes, index: number) {
+    this.componentStateService.state[index] = prepareDataToSendForRepeatableFieldsComponent(
+      changes,
+    );
   }
 
   nextScreen() {
-    this.nextStepEvent.emit();
+    this.nextStepEvent.emit(this.componentStateService.state);
   }
 
-  removeItem(key: string) {
+  removeItem(key: string, index: number) {
     delete this.screens[key];
-    delete this.componentStateService.state[key];
+    this.componentStateService.state = removeItemFromArrByIndex(
+      this.componentStateService.state,
+      index,
+    );
   }
 }

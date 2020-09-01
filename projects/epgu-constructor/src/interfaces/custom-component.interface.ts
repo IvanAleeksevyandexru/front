@@ -69,6 +69,13 @@ export interface CustomComponentStateItem {
   component: CustomComponentInterface
 }
 
+export interface CustomComponentOutputDataInterface {
+  [key: string]: {
+    value: string;
+    valid: boolean
+  }
+}
+
 /**
  * @property {string}relatedRel - id компонента от которого зависим
  * @property {string}val - ключевое значение которое должен принимать компонент от которого заивисм

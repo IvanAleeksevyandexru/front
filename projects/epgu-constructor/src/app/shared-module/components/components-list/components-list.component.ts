@@ -13,6 +13,7 @@ import {
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
   CustomComponentInterface,
+  CustomComponentOutputDataInterface,
   CustomComponentState,
 } from '../../../../interfaces/custom-component.interface';
 import { DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
@@ -46,7 +47,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   dropDown: { [key: string]: CustomComponentDropDownStateInterface } = {};
 
   @Input() components: Array<CustomComponentInterface>;
-  @Output() changes = new EventEmitter();
+  @Output() changes = new EventEmitter<CustomComponentOutputDataInterface>();
 
   constructor(private restService: RestService) {}
 
