@@ -1,13 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
 import { PaymentService } from './payment.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
 import { RestService } from '../rest/rest.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
+  let restService: RestService;
+  let http: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,6 +21,8 @@ describe('PaymentService', () => {
       ]
     });
     service = TestBed.inject(PaymentService);
+    restService = TestBed.inject(RestService);
+    http = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
