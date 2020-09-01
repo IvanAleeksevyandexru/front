@@ -10,8 +10,6 @@ import { ConstructorService } from '../constructor/constructor.service';
 describe('PaymentService', () => {
   let service: PaymentService;
   let restService: RestService;
-  let constructorConfigService: ConstructorConfigService;
-  let constructorService: ConstructorService;
   let http: HttpTestingController;
 
   beforeEach(() => {
@@ -20,8 +18,8 @@ describe('PaymentService', () => {
       providers: [
         RestService,
         PaymentService,
-        constructorService,
-        constructorConfigService,
+        ConstructorConfigService,
+        ConstructorService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });
