@@ -4,6 +4,7 @@ import { PaymentService } from './payment.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
+import { RestService } from '../rest/rest.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -12,6 +13,7 @@ describe('PaymentService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
+        RestService,
         PaymentService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
