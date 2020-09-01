@@ -1,16 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import {
-  QuestionsComponentActionsInterface,
-  QuestionsDisplayInterface,
-} from '../../../interfaces/question-block.interface';
+import { QuestionsComponentActionsInterface } from '../../../interfaces/question-block.interface';
 import { ConstructorService } from '../../services/constructor/constructor.service';
 import { ModalService } from '../../services/modal/modal.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { QuestionScreenModalParams } from './questions-screen.constant';
-import { Screen } from '../../../interfaces/screen.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import {
   NextStepEventData,
   PrevStepEventData,
@@ -29,8 +26,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     ?.currentCycledFields;
   private readonly cycledFieldsKeys = Object.keys(this.currentCycledFields || {});
 
-  @Input() data: QuestionsDisplayInterface;
-  @Input() errors: object;
+  @Input() screenData: ScreenData;
   @Output() nextStepEvent = new EventEmitter<NextStepEventData>();
   @Output() prevStepEvent = new EventEmitter<PrevStepEventData>();
 
@@ -63,7 +59,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     let data = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
-      const fieldNameRef = this.data.components[0]?.attrs?.fields[0]?.fieldName;
+      const fieldNameRef = this.screenData.componentData.components[0]?.attrs?.fields[0]?.fieldName;
       const cycledValuesPrepared = { ...this.cycledValues };
       const mergedCycledAndAnswerValues = { ...cycledValuesPrepared, [fieldNameRef]: answer.value };
       data[currentCycledFieldsKey] = {
@@ -79,7 +75,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
 
   clickToInnerHTML($event: MouseEvent) {
     const targetElementId = ($event.target as HTMLElement).id;
-    const { clarifications = {} } = this.data.components[0]?.attrs as any;
+    const { clarifications = {} } = this.screenData.componentData.components[0]?.attrs as any;
     const targetElementModalData = clarifications[targetElementId];
     if (targetElementModalData) {
       this.showModal(targetElementModalData);

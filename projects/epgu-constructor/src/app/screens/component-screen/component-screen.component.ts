@@ -2,12 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENT_NAME } from '../../../constant/global';
-import { DisplayInterface } from '../../../interfaces/epgu.service.interface';
 import { ConstructorService } from '../../services/constructor/constructor.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
-import { Screen } from '../../../interfaces/screen.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import {
   NextStepEventData,
   PrevStepEventData,
@@ -37,8 +36,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
   form: FormGroup;
   isCycledFields: boolean;
 
-  @Input() data: DisplayInterface;
-  @Input() errors: object;
+  @Input() screenData: ScreenData;
   @Output() nextStepEvent = new EventEmitter<NextStepEventData>();
   @Output() prevStepEvent = new EventEmitter<PrevStepEventData>();
 

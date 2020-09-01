@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { DynamicModule } from 'ng-dynamic-component';
 import { EpguLibModule } from 'epgu-lib';
+
 import { ConstructorConfigInterface } from '../interfaces/constructor-config.interface';
 import { ConstructorComponent } from './constructor.component';
 import { LayoutModule } from './layout/layout.module';
@@ -21,6 +23,7 @@ import { TerabyteService } from './services/terabyte/terabyte.service';
 import { ComponentStateService } from './services/component-state/component-state.service';
 import { ScreenService } from './services/screen/screen.service';
 
+
 const COMPONENTS = [
   ConstructorComponent
 ];
@@ -37,7 +40,7 @@ const COMPONENTS = [
     UniqueScreenModule,
     InvitationErrorScreenModule,
     LayoutModule,
-
+    DynamicModule,
     SharedModule,
     EpguLibModule.forChild(),
     InfoScreenModule,

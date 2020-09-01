@@ -5,8 +5,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { INFO_SCREEN_COMPONENT } from '../../../constant/global';
-import { Screen } from '../../../interfaces/screen.interface';
-import { DisplayInterface } from '../../../interfaces/epgu.service.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ConstructorService } from '../../services/constructor/constructor.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
@@ -25,8 +24,7 @@ export class InfoScreenComponent implements Screen {
   // <-- constant
   infoScreenComponent = INFO_SCREEN_COMPONENT;
 
-  @Input() data: DisplayInterface;
-  @Input() errors: object;
+  @Input() screenData: ScreenData;
   @Output() nextStepEvent = new EventEmitter<NextStepEventData>();
   @Output() prevStepEvent = new EventEmitter<PrevStepEventData>();
 

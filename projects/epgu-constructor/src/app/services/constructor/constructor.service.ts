@@ -3,6 +3,7 @@ import { SCREEN_TYPE } from '../../../constant/global';
 import { DisplayInterface, ResponseInterface, Gender, ScenarioDto } from '../../../interfaces/epgu.service.interface';
 import { RestService } from '../rest/rest.service';
 import { ComponentStateService } from '../component-state/component-state.service';
+import { ScreenData } from '../../../interfaces/screen.interface';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -16,11 +17,19 @@ export class ConstructorService {
   scenarioDto: ScenarioDto;
   componentId: string;
   componentType: string;
+  isLoading = false;
+  isError = false;
+
+  // TODO: remove when complete refactoring of screens
   componentData: DisplayInterface;
   componentErrors: object;
   gender: Gender;
-  isLoading = false;
-  isError = false;
+
+  screenData: ScreenData = {
+    componentData: this.componentData,
+    gender: this.gender,
+    errors: this.componentErrors,
+  };
 
   constructor(
     public restService: RestService,

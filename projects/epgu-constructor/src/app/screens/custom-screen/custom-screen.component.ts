@@ -2,11 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../constant/global';
-import { CustomDisplayInterface } from '../../../interfaces/custom-component.interface';
 import { ConstructorService } from '../../services/constructor/constructor.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
-import { Screen } from '../../../interfaces/screen.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import {
   NextStepEventData,
   PrevStepEventData,
@@ -20,8 +19,7 @@ const moment = moment_;
   providers: [UnsubscribeService],
 })
 export class CustomScreenComponent implements OnInit, Screen {
-  @Input() data: CustomDisplayInterface;
-  @Input() errors: object;
+  @Input() screenData: ScreenData;
   @Output() nextStepEvent = new EventEmitter<NextStepEventData>();
   @Output() prevStepEvent = new EventEmitter<PrevStepEventData>();
 
@@ -51,7 +49,7 @@ export class CustomScreenComponent implements OnInit, Screen {
     if (this.isCycledFields) {
       const [firstCurrentCycledValues] = Object.values(currentCycledFields);
       this.cycledValues = JSON.parse(firstCurrentCycledValues);
-      this.data.components.forEach((item) => {
+      this.screenData.componentData.components.forEach((item) => {
         const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
         const cycledFieldKey = Object.keys(this.cycledValues).find((key) => key === fieldName);
         // eslint-disable-next-line no-param-reassign

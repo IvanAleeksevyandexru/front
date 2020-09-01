@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENT_NAME } from '../../../constant/global';
-import { DisplayInterface } from '../../../interfaces/epgu.service.interface';
 import { ConstructorService } from '../../services/constructor/constructor.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
-import { Screen } from '../../../interfaces/screen.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import {
   NextStepEventData,
   PrevStepEventData,
@@ -18,8 +17,7 @@ import {
   providers: [UnsubscribeService],
 })
 export class InvitationErrorScreenComponent implements OnInit, Screen {
-  @Input() data: DisplayInterface;
-  @Input() errors: object;
+  @Input() screenData: ScreenData;
   @Output() nextStepEvent = new EventEmitter<NextStepEventData>();
   @Output() prevStepEvent = new EventEmitter<PrevStepEventData>();
   typeComponent = SCREEN_COMPONENT_NAME;

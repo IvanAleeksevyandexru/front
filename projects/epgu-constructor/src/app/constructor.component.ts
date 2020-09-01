@@ -1,16 +1,7 @@
-import {
-  Component,
-  ComponentFactory,
-  ComponentFactoryResolver,
-  ComponentRef,
-  HostBinding,
-  OnInit,
-  ViewContainerRef,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, ComponentRef, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
 import { SCREEN_TYPE } from '../constant/global';
 import { ConstructorService } from './services/constructor/constructor.service';
-import { NextStepEventData } from '../interfaces/step-event-data.interface';
+import { NextStepEventData, PrevStepEventData } from '../interfaces/step-event-data.interface';
 import { ScreenService } from './services/screen/screen.service';
 
 @Component({
@@ -24,18 +15,22 @@ export class ConstructorComponent implements OnInit {
   componentRef: ComponentRef<Screen>;
   public readonly constructorComponentType = SCREEN_TYPE;
 
+  screenInputs = { screenData: this.constructorService.screenData };
+  screenOutputs = {
+    nextStepEvent: (nextStepEventData: NextStepEventData) => this.nextStep(nextStepEventData),
+    prevStepEvent: (prevStepEventData: PrevStepEventData) => this.prevStep(prevStepEventData),
+  };
+
   constructor(
     readonly constructorService: ConstructorService,
     readonly screenService: ScreenService,
-    private readonly componentFactoryResolver: ComponentFactoryResolver,
-    private readonly viewContainerRef: ViewContainerRef,
   ) {}
 
   ngOnInit(): void {
     this.constructorService.getData();
   }
 
-  createComponent() {
+  get screenComponent() {
     const screenType = this.constructorService.getScreenType();
     const screenComponent = this.screenService.getScreenComponentByType(screenType);
 
@@ -43,10 +38,7 @@ export class ConstructorComponent implements OnInit {
       this.handleScreenComponentError(screenType);
     }
 
-    const componentFactory: ComponentFactory<Screen> = this.componentFactoryResolver.resolveComponentFactory(
-      screenComponent,
-    );
-    this.componentRef = this.viewContainerRef.createComponent(componentFactory);
+    return screenComponent;
   }
 
   handleScreenComponentError(screenType: string) {
