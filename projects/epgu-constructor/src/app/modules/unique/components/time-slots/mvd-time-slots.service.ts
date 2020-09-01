@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { RestService } from '../../../../services/rest/rest.service';
 import { formatDate } from '@angular/common';
+import { SlotsMapInterface } from './slots-map.interface';
 
 @Injectable()
 export class MvdTimeSlotsService implements TimeSlotsService {
@@ -18,7 +19,7 @@ export class MvdTimeSlotsService implements TimeSlotsService {
   public activeYearNumber: number;
   availableMonths: string[];
 
-  private slotsMap: { [key: number]: { [key: number]: { [key: number]: { slotId, slotTime }[] } } };
+  private slotsMap: SlotsMapInterface;
 
   private bookedSlot: { slotId, areaId, slotTime };
 

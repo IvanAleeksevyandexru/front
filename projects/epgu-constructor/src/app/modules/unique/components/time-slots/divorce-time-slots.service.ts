@@ -5,6 +5,10 @@ import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { SlotsMapInterface } from './slots-map.interface';
+import { ZagsSlotInterface } from './zags-slot.interface';
+import { ZagsSlotsResponseInterface } from './zags-slots-response.interface';
+import { ZagsBookResponseInterface } from './zags-book-response.interface';
 
 @Injectable()
 export class DivorceTimeSlotsService implements TimeSlotsService {
@@ -16,9 +20,9 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
   public activeYearNumber: number;
   availableMonths: string[];
 
-  private slotsMap: { [key: number]: { [key: number]: { [key: number]: { slotId, areaId, slotTime }[] } } };
+  private slotsMap: SlotsMapInterface;
 
-  private bookedSlot: { slotId, areaId, slotTime };
+  private bookedSlot: ZagsSlotInterface;
   private bookId;
 
   private errorMessage;
@@ -30,17 +34,17 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
 
   }
 
-  private getTimeSlots(requestBody): Observable<any> {
+  private getTimeSlots(requestBody): Observable<ZagsSlotsResponseInterface> {
     const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/slots`;
-    return this.http.post(path, requestBody);
+    return this.http.post<ZagsSlotsResponseInterface>(path, requestBody);
   }
 
-  private bookTimeSlot(requestBody): Observable<any> {
+  private bookTimeSlot(requestBody): Observable<ZagsBookResponseInterface> {
     const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/book?srcSystem=BETA`;
-    return this.http.post(path, requestBody);
+    return this.http.post<ZagsBookResponseInterface>(path, requestBody);
   }
 
-  book(selectedSlot: any): Observable<any> {
+  book(selectedSlot: ZagsSlotInterface) {
     return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
         if (!response.error) {
@@ -127,6 +131,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
   }
 
   private getSlotsRequest() {
+    // TODO HARDCODE, возможно, стоит перенести в json
     return {
       organizationId: [this.department.attributeValues.CODE],
       caseNumber: this.orderId,
@@ -142,7 +147,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
     };
   }
 
-  private getBookRequest(selectedSlot: { slotId, areaId, slotTime }) {
+  private getBookRequest(selectedSlot: ZagsSlotInterface) {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
