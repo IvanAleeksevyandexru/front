@@ -3,6 +3,8 @@ import { CUSTOM_COMPONENT_ITEM_TYPE } from '../app/modules/custom/tools/custom-s
 import { DictionaryItem, DictionaryResponse } from './dictionary-options.interface';
 import { ComponentInterface, DisplayInterface } from './epgu.service.interface';
 
+export type CustomComponentState = { [key: string]: CustomComponentStateItem };
+
 export interface CustomComponentDictionaryState {
   loading: boolean,
   loadError: boolean,
@@ -59,7 +61,7 @@ export interface CustomComponentAttrValidationInterface {
  * @property {string}errorMessage - сообщение для ощибки
  * @property {any}value - текущее значение
  */
-export interface CustomComponentState {
+export interface CustomComponentStateItem {
   valid: boolean;
   isShow: boolean;
   errorMessage: string;
