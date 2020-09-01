@@ -24,7 +24,7 @@ export enum CUSTOM_COMPONENT_ITEM_TYPE {
   Lookup = 'Lookup',
 }
 
-export function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
+function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
   return {
     id: item.value,
     text: item.title,
