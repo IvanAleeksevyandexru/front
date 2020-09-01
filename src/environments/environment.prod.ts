@@ -7,6 +7,7 @@ export const environment = {
   serviceId: 'local',
   yandexMapsApiKey: '',
   externalLkUrl: 'https://www.gosuslugi.ru/info',
+  paymentUrl: 'https://gosuslugi.ru',
   fileUploadApiUrl: 'https://gosuslugi.ru/api/storage/v1/files',
   fileUploadLocalhostApiUrl: 'https://localhost/api/storage/v1/files'
 };

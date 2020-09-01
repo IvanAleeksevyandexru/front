@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EMPTY_SCREEN_COMPONENT } from '../../../../../constant/global';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
@@ -13,6 +13,4 @@ export class EmptyComponent {
   emptyComponentName = EMPTY_SCREEN_COMPONENT;
 
   @Input() data: DisplayInterface;
-  @Output() nextStepEvent = new EventEmitter();
-  @Output() prevStepEvent = new EventEmitter();
 }

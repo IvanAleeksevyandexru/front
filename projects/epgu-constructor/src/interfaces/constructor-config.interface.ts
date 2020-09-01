@@ -9,6 +9,7 @@ export interface ConstructorConfigInterface {
   externalLkApiUrl: string;
   externalLkUrl: string;
   externalUrl: string;
+  paymentUrl: string;
   yandexMapsApiKey: string;
   isProd: boolean;
   fileUploadApiUrl: string;

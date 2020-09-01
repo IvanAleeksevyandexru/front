@@ -11,7 +11,6 @@ import { ConstructorConfigService } from '../config/constructor-config.service';
 @Injectable()
 export class TerabyteService {
   isLocalHost = false;
-  testToken: string;
   apiUrl: string;
   apiLocalhostUrl: string;
 

@@ -58,14 +58,13 @@
           [form]="form"
           [data]="(data?.components)[0]"
           (changeComponentSettings)="changeComponentSettings($event)"
-          (changeComponentData)="changeComponentData($event)"
+          (changeComponentData)="changedComponentData($event)"
         >
         </epgu-constructor-country-selection>
 
         <epgu-constructor-doc-input
           *ngSwitchCase="screenComponentName.docInput"
           [data]="(data?.components)[0]"
-          (nextStepEvent)="changedComponentData($event)"
         ></epgu-constructor-doc-input>
 
         <epgu-constructor-add-children-screen
@@ -76,6 +75,7 @@
 
         <epgu-constructor-payment
           *ngSwitchCase="screenComponentName.paymentScr"
+          [orderId]="getOrderId"
           [data]="data?.components[0]"
         ></epgu-constructor-payment>
       </ng-container>
@@ -85,7 +85,7 @@
       <lib-button
         *ngIf="componentSetting.displayContinueBtn"
         [showLoader]="constructorService.isLoading"
-        (click)="nextStep()"
+        (click)="nextStep($event)"
         class="footer__btn-submit"
         [disabled]="!componentStateService.isValid"
       >
@@ -93,7 +93,7 @@
       </lib-button>
       <div *ngIf="componentSetting.displayWarningAnswers" class="footer__warning-answers">
         <epgu-constructor-answer-button
-          (click)="nextStep()"
+          (click)="nextStep($event)"
           [data]="{ label: 'Всё равно продолжить' }"
         >
         </epgu-constructor-answer-button>
