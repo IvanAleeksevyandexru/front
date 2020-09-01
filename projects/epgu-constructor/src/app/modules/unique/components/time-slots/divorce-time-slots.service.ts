@@ -1,29 +1,24 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {ConstructorConfigService} from '../../../../services/config/constructor-config.service';
-import {TimeSlotsService} from './time-slots.service';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
-import {Observable, of} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
-import {ZagsDepartmentInterface} from './zags-department.interface';
-import {SlotsMapInterface} from './slots-map.interface';
-import {ZagsBookResponseInterface} from './zags-book-response.interface';
-import {ZagsSlotInterface} from './zags-slot.interface';
-import {ZagsSlotsResponseInterface} from './zags-slots-response.interface';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable()
-export class DivorceTimeSlotsService implements TimeSlotsService<ZagsSlotInterface> {
+export class DivorceTimeSlotsService implements TimeSlotsService {
 
-  private department: ZagsDepartmentInterface;
-  private orderId: string;
+  private department;
+  private orderId;
 
   public activeMonthNumber: number;
   public activeYearNumber: number;
   availableMonths: string[];
 
-  private slotsMap: SlotsMapInterface;
+  private slotsMap: { [key: number]: { [key: number]: { [key: number]: { slotId, areaId, slotTime }[] } } };
 
-  private bookedSlot: ZagsSlotInterface;
+  private bookedSlot: { slotId, areaId, slotTime };
   private bookId;
 
   private errorMessage;
@@ -35,18 +30,17 @@ export class DivorceTimeSlotsService implements TimeSlotsService<ZagsSlotInterfa
 
   }
 
-  private getTimeSlots(requestBody): Observable<ZagsSlotsResponseInterface> {
+  private getTimeSlots(requestBody): Observable<any> {
     const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/slots`;
-    return this.http.post<ZagsSlotsResponseInterface>(path, requestBody);
+    return this.http.post(path, requestBody);
   }
 
-  private bookTimeSlot(requestBody): Observable<ZagsBookResponseInterface> {
+  private bookTimeSlot(requestBody): Observable<any> {
     const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/book?srcSystem=BETA`;
-    return this.http.post<ZagsBookResponseInterface>(path, requestBody);
+    return this.http.post(path, requestBody);
   }
 
-  book(selectedSlot: ZagsSlotInterface) {
-    this.errorMessage = undefined;
+  book(selectedSlot: any): Observable<any> {
     return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
         if (!response.error) {
@@ -54,8 +48,6 @@ export class DivorceTimeSlotsService implements TimeSlotsService<ZagsSlotInterfa
           this.bookId = response.bookId;
           this.activeMonthNumber = selectedSlot.slotTime.getMonth();
           this.activeYearNumber = selectedSlot.slotTime.getFullYear();
-        } else {
-          this.errorMessage = response.error.errorDetail.errorMessage;
         }
       })
     );
@@ -71,8 +63,8 @@ export class DivorceTimeSlotsService implements TimeSlotsService<ZagsSlotInterfa
     return this.availableMonths;
   }
 
-  getAvailableSlots(selectedDay: Date): any[] {
-    return this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()];
+  getAvailableSlots(selectedDay: Date): Observable<any[]> {
+    return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
   }
 
   getBookedSlot(): any {
@@ -84,10 +76,10 @@ export class DivorceTimeSlotsService implements TimeSlotsService<ZagsSlotInterfa
   }
 
   getCurrentYear(): number {
-    return this.activeYearNumber
+    return this.activeYearNumber;
   }
 
-  init(data: any) {
+  init(data: any): Observable<any> {
 
     if (this.changed(data) || this.errorMessage) {
       this.slotsMap = {};
@@ -102,7 +94,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService<ZagsSlotInterfa
             }
           }
         )
-      )
+      );
     }
 
     return of(undefined);
@@ -135,7 +127,6 @@ export class DivorceTimeSlotsService implements TimeSlotsService<ZagsSlotInterfa
   }
 
   private getSlotsRequest() {
-    // TODO HARDCODE, возможно, стоит перенести в json
     return {
       organizationId: [this.department.attributeValues.CODE],
       caseNumber: this.orderId,
@@ -151,11 +142,10 @@ export class DivorceTimeSlotsService implements TimeSlotsService<ZagsSlotInterfa
     };
   }
 
-  private getBookRequest(selectedSlot: ZagsSlotInterface) {
+  private getBookRequest(selectedSlot: { slotId, areaId, slotTime }) {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
-    // TODO HARDCODE, возможно, стоит перенести в json
     return {
       preliminaryReservation: 'true',
       address: this.department.attributeValues.ADDRESS,
@@ -194,7 +184,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService<ZagsSlotInterfa
       serviceId: [
         'ЗагсРазводФорма12-1'
       ]
-    }
+    };
   }
 
   private initSlotsMap(slots: any[]): void {

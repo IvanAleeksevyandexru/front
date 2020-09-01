@@ -35,6 +35,7 @@
         <epgu-constructor-temporary-registration-addr-screen
           *ngSwitchCase="screenComponentName.registrationAddr"
           [data]="data?.components[0]"
+          [errors]="errors"
         >
         </epgu-constructor-temporary-registration-addr-screen>
 
@@ -73,10 +74,6 @@
           [data]="(data?.components)[0]"
           (nextStepEvent)="nextStep($event)"
         ></epgu-constructor-add-children-screen>
-
-        <app-birth-certificate
-          *ngSwitchCase="screenComponentName.birthCertificate"
-        ></app-birth-certificate>
       </ng-container>
     </epgu-constructor-screen-pad>
 
@@ -86,7 +83,7 @@
         [showLoader]="constructorService.isLoading"
         (click)="nextStep()"
         class="footer__btn-submit"
-        [disabled]="!screenComponentService.isValid"
+        [disabled]="!componentStateService.isValid"
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
       </lib-button>

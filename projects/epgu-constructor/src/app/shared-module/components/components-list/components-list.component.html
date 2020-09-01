@@ -15,6 +15,42 @@
           (changed)="selectDictionary($event, componentData)"
           [items]="dictionary[componentData?.attrs?.dictionaryType]?.list"
         ></lib-dropdown>
+        <epgu-constructor-helper-text *ngIf="!componentData.required">
+          {{ getHelperText(componentData.required) }}
+        </epgu-constructor-helper-text>
+      </div>
+
+      <div class="form__item" *ngSwitchCase="componentType.DropDown">
+        <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+        <lib-dropdown
+          class="cs__select cs-select"
+          (changed)="selectDropDown($event, componentData)"
+          [items]="dropDown[componentData?.id]?.list"
+        ></lib-dropdown>
+      </div>
+
+      <div class="form__item" *ngSwitchCase="componentType.HiddenLookup">
+        <ng-container *ngIf="state[componentData.id].isShow">
+          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+          <lib-lookup
+            [queryMinSymbolsCount]="0"
+            [searchCaseSensitive]="false"
+            (changed)="selectDictionary($event, componentData)"
+            [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"
+          ></lib-lookup>
+        </ng-container>
+      </div>
+
+      <div class="form__item" *ngSwitchCase="componentType.HiddenInput">
+        <ng-container *ngIf="state[componentData.id].isShow">
+          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+          <lib-plain-input
+            [invalid]="!state[componentData.id].valid"
+            [name]="componentData.id"
+            (change)="inputChange($event, componentData)"
+            [validationShowOn]="validationShowOn"
+          ></lib-plain-input>
+        </ng-container>
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.Lookup">
@@ -36,6 +72,9 @@
           (change)="inputChange($event, componentData)"
           [validationShowOn]="validationShowOn"
         ></lib-plain-input>
+        <epgu-constructor-helper-text *ngIf="!componentData.required">
+        {{ getHelperText(componentData.required) }}
+        </epgu-constructor-helper-text>
         <div class="form__error">
           <small *ngIf="!state[componentData.id].valid"
             >{{ state[componentData.id]?.errorMessage }}
@@ -71,6 +110,7 @@
             [name]="componentData.id"
             (change)="inputChange($event, componentData)"
             [value]="false"
+            checked="checked"
             labelText="Нет"
           >
           </lib-radio>
@@ -82,6 +122,7 @@
         <lib-date-picker
           [name]="componentData.id"
           [(ngModel)]="state[componentData.id].value"
+          minDate="-18y"
         ></lib-date-picker>
       </div>
 

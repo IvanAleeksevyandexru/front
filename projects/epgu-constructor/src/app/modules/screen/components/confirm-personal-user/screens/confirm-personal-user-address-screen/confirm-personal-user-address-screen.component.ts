@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
-import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
 @Component({
@@ -17,7 +17,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   currentCycledFields: object;
 
   constructor(
-    private screenComponentService: ScreenComponentService,
+    private componentStateService: ComponentStateService,
     public constructorService: ConstructorService,
     private changeDetection: ChangeDetectorRef,
   ) {}
@@ -41,7 +41,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
       this.data.value = JSON.stringify(data);
     }
     this.dataToSend = this.data.value;
-    this.screenComponentService.dataToSend = this.dataToSend;
+    this.componentStateService.state = this.dataToSend;
   }
 
   sameAddressAction() {
@@ -89,7 +89,8 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
       // flat cycledValues
       const cycledValuesPrepared = { ...this.cycledValues };
       // merge cycledValue data and state data, which could be updated
-      const data = { ...cycledValuesPrepared, ...changes };
+      const changesPrepared = JSON.parse(changes);
+      const data = { ...cycledValuesPrepared, ...changesPrepared };
       stateData[currentCycledFieldsKey] = {
         visited: true,
         value: JSON.stringify(data),
@@ -97,12 +98,12 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     } else {
       stateData = changes;
     }
-
+    this.data.value = changes;
     return stateData;
   }
 
   dataChange(changes: any) {
     const responseData = this.setState(changes);
-    this.screenComponentService.dataToSend = responseData;
+    this.componentStateService.state = responseData;
   }
 }

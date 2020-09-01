@@ -2,8 +2,8 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/
 import { NgForm } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../../../interfaces/temporary-registration-addr.interface';
+import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
-import { ScreenComponentService } from '../../../../../../service/screen-component/screen-component.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
@@ -16,16 +16,16 @@ export class TemporaryRegistrationAddrComponent implements OnChanges {
   forms: any = {};
   @ViewChild('dataForm', { static: false }) dataForm: NgForm;
   @Input() data: TemporaryRegistrationAddrComponentInterface;
+  @Input() error: string;
 
   constructor(
     public constructorConfigService: ConstructorConfigService,
-    private screenComponentService: ScreenComponentService,
+    private componentStateService: ComponentStateService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
-      this.screenComponentService.dataToSend = '';
       setTimeout(() => {
         this.subscribeToFormChanges();
       });
@@ -38,7 +38,7 @@ export class TemporaryRegistrationAddrComponent implements OnChanges {
   }
 
   private formChanges(changesData) {
-    this.screenComponentService.dataToSend = changesData;
+    this.componentStateService.state = changesData;
   }
 
   private subscribeToFormChanges() {

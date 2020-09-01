@@ -6,7 +6,7 @@ import { DisplayInterface } from '../../../../../interfaces/epgu.service.interfa
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
-import { ScreenComponentService } from '../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -40,7 +40,7 @@ export class ScreenComponent implements OnInit {
   constructor(
     public constructorService: ConstructorService,
     private navService: NavigationService,
-    public screenComponentService: ScreenComponentService,
+    public componentStateService: ComponentStateService,
     private ngUnsubscribe$: UnsubscribeService,
     private fb: FormBuilder,
   ) {
@@ -62,14 +62,14 @@ export class ScreenComponent implements OnInit {
 
   nextStep() {
     let data: string | object;
-    if (typeof this.screenComponentService.dataToSend === 'object') {
-      data = JSON.stringify(this.screenComponentService.dataToSend);
+    if (typeof this.componentStateService.state === 'object') {
+      data = JSON.stringify(this.componentStateService.state);
     } else {
-      data = this.screenComponentService.dataToSend;
+      data = this.componentStateService.state;
     }
 
     if (this.isCycledFields) {
-      data = this.screenComponentService.dataToSend;
+      data = this.componentStateService.state;
     }
 
     this.nextStepEvent.emit(data);

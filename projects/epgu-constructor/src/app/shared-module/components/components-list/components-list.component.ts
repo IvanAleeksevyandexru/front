@@ -12,16 +12,24 @@ import * as moment_ from 'moment';
 import { DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
 import {
   CustomComponentDictionaryState,
+  CustomComponentDropDownStateInterface,
   CustomComponentInterface,
   CustomComponentState,
 } from '../../../../interfaces/custom-component.interface';
-import { DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../../../interfaces/dictionary-options.interface';
 import {
   CUSTOM_COMPONENT_ITEM_TYPE,
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
+  adaptiveDropDown,
+  likeDictionary,
+  isDropDown,
 } from '../../../modules/custom/tools/custom-screen-tools';
 import { RestService } from '../../../services/rest/rest.service';
+import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
 
 const moment = moment_;
 
@@ -38,8 +46,9 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   state: { [key: string]: CustomComponentState } = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
+  dropDown: { [key: string]: CustomComponentDropDownStateInterface } = {};
 
-  @Input() components;
+  @Input() components: Array<CustomComponentInterface>;
   @Output() changes = new EventEmitter();
 
   constructor(private restService: RestService) {}
@@ -80,27 +89,29 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   // }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.state = {};
     if (changes?.components?.currentValue) {
       this.components.forEach((component) => {
-        switch (component.type) {
-          case CUSTOM_COMPONENT_ITEM_TYPE.Dictionary:
-            this.initDictionary(component.attrs.dictionaryType);
-            this.loadDictionary(component.attrs.dictionaryType, component);
-            break;
-          default:
-            this.initState(component);
-            break;
+        this.initState(component);
+        if (likeDictionary(component.type)) {
+          const dictionaryName = component.attrs.dictionaryType;
+          this.initDictionary(dictionaryName);
+          this.loadDictionary(dictionaryName, component);
+        } else if (isDropDown(component.type)) {
+          this.initDropDown(component);
         }
       });
+      this.emmitChanges();
     }
   }
 
   selectDictionary(selectedItem: ListItem, component: CustomComponentInterface) {
     const dictionaryName = component.attrs?.dictionaryType;
     this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
-    this.state[component.id].value = JSON.stringify(selectedItem.originalItem);
+    this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
-    this.changes.emit(this.state);
+    this.calcDependedComponent(component);
+    this.emmitChanges();
   }
 
   setValidationState(inputValidationResult, componentId, componentValue) {
@@ -108,7 +119,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
       this.state[componentId].value = componentValue;
       this.state[componentId].valid = isValid;
       this.state[componentId].errorMessage = errMsg;
-      this.changes.emit(this.state);
+      this.emmitChanges();
     };
 
     if (inputValidationResult === -1) {
@@ -158,7 +169,17 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.restService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryName, data, component),
       () => this.loadDictionaryError(dictionaryName),
+      () => this.changes.emit(this.state),
     );
+  }
+
+  private initDropDown(component: CustomComponentInterface) {
+    const key = component.id;
+    const data = component.attrs.dictionaryList;
+    this.dropDown[key] = {
+      origin: data,
+      list: adaptiveDropDown(data),
+    };
   }
 
   loadDictionarySuccess(
@@ -170,7 +191,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.dictionary[key].paginationLoading = false;
     this.dictionary[key].data = data;
     this.dictionary[key].origin = component;
-    this.dictionary[key].list = getNormalizeDataCustomScreenDictionary(data.items, key);
+    this.dictionary[key].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
   }
 
   loadDictionaryError(key: string) {
@@ -184,9 +205,13 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.dictionary[dictionaryName] = getCustomScreenDictionaryFirstState();
   }
 
+  getHelperText(required: boolean): string {
+    return required ? '' : OPTIONAL_FIELD;
+  }
+
   private initState(component: CustomComponentInterface) {
-    const { id } = component;
-    const { value } = component;
+    const { id, value } = component;
+    const hasRelatedRef = component.attrs.ref?.length;
 
     let valueFormatted: string | Date;
     switch (component.type) {
@@ -198,13 +223,40 @@ export class ComponentsListComponent implements OnInit, OnChanges {
         break;
     }
 
-    this.state[id] = { valid: false, errorMessage: '', value: valueFormatted, component };
-    this.changes.emit(this.state);
+    this.state[id] = {
+      valid: false,
+      errorMessage: '',
+      value: valueFormatted,
+      component,
+      isShow: !hasRelatedRef,
+    };
+    this.emmitChanges();
   }
 
-  private hasDictionary(type: CUSTOM_COMPONENT_ITEM_TYPE) {
-    return (
-      CUSTOM_COMPONENT_ITEM_TYPE.Dictionary === type || CUSTOM_COMPONENT_ITEM_TYPE.Lookup === type
+  private calcDependedComponent(component: CustomComponentInterface) {
+    const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
+    // TODO добавить возможность зависить от нескольких полей
+    const dependentComponents = this.components.filter((item) =>
+      isComponentDependOn(item.attrs?.ref),
     );
+
+    dependentComponents.forEach((dependentComponent) => {
+      if (likeDictionary(component.type)) {
+        const dictionaryOfTheDependentComponent: DictionaryItem = this.state[component.id]?.value;
+
+        // TODO Временный hardcode;
+        this.state[dependentComponent.id].isShow =
+          dependentComponent.attrs.ref[0].val === dictionaryOfTheDependentComponent.value; // TODO добавить возможность зависить от нескольких полей
+      }
+    });
+  }
+
+  selectDropDown($event: any, componentData: CustomComponentInterface) {
+    this.state[componentData.id].value = $event.origin;
+    this.emmitChanges();
+  }
+
+  emmitChanges() {
+    this.changes.emit(this.state);
   }
 }

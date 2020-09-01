@@ -13,25 +13,25 @@ export class EmployeeHistoryDatasourceService {
     return [
       {
         label: `Я учил${gender === 'male' ? 'ся' : 'ась'}`,
-        value: 0,
+        type: 'student',
         position: 'Учащийся или студент',
         place: 'Место учебы без сокращений и аббревиатур',
       },
       {
         label: `Я работал${gender === 'male' ? '' : 'а'}`,
-        value: 1,
+        type: 'employed',
         position: 'Ваша должность',
         place: 'Место работы без сокращений и аббревиатур',
       },
       {
         label: `Я служил${gender === 'male' ? '' : 'а'}`,
-        value: 2,
+        type: 'military',
         position: 'Воинская должность и звание',
         place: 'Номер части и род (вид) войск',
       },
       {
         label: `Я не работал${gender === 'male' ? '' : 'а'}`,
-        value: 3,
+        type: 'unemployed',
         position: '',
         place: '',
       },

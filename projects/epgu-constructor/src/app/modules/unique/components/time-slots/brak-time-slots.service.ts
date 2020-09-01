@@ -1,33 +1,28 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {ConstructorConfigService} from '../../../../services/config/constructor-config.service';
-import {TimeSlotsService} from './time-slots.service';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
-import {Observable, of} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
-import {SlotsMapInterface} from './slots-map.interface';
-import {ZagsDepartmentInterface} from './zags-department.interface';
-import {ZagsBookResponseInterface} from './zags-book-response.interface';
-import {ZagsSlotInterface} from './zags-slot.interface';
-import {ZagsSlotsResponseInterface} from './zags-slots-response.interface';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable()
-export class BrakTimeSlotsService implements TimeSlotsService<ZagsSlotInterface> {
+export class BrakTimeSlotsService implements TimeSlotsService {
 
-  private department: ZagsDepartmentInterface;
+  private department;
   private solemn: boolean;
-  private slotsPeriod: string;
-  private orderId: string;
+  private slotsPeriod;
+  private orderId;
 
   public activeMonthNumber: number;
   public activeYearNumber: number;
 
-  private slotsMap: SlotsMapInterface;
+  private slotsMap: { [key: number]: { [key: number]: { [key: number]: { slotId, areaId, slotTime }[] } } };
 
-  private bookedSlot: ZagsSlotInterface;
-  private bookId: string;
+  private bookedSlot: { slotId, areaId, slotTime };
+  private bookId;
 
-  private errorMessage: string;
+  private errorMessage;
 
   constructor(
     private http: HttpClient,
@@ -36,44 +31,39 @@ export class BrakTimeSlotsService implements TimeSlotsService<ZagsSlotInterface>
 
   }
 
-  private getTimeSlots(requestBody): Observable<ZagsSlotsResponseInterface> {
+  private getTimeSlots(requestBody): Observable<any> {
     const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/slots`;
-    return this.http.post<ZagsSlotsResponseInterface>(path, requestBody);
+    return this.http.post(path, requestBody);
   }
 
-  private bookTimeSlot(requestBody): Observable<ZagsBookResponseInterface> {
+  private bookTimeSlot(requestBody): Observable<any> {
     const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/book?srcSystem=BETA`;
-    return this.http.post<ZagsBookResponseInterface>(path, requestBody);
+    return this.http.post(path, requestBody);
   }
 
-  book(selectedSlot: ZagsSlotInterface) {
-    this.errorMessage = undefined;
+  book(selectedSlot: any): Observable<any> {
     return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
-      tap((response) => {
+      tap(response => {
         if (!response.error) {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;
-        } else {
-          this.errorMessage = response.error.errorDetail.errorMessage;
         }
       })
     );
   }
 
   isDateLocked(date: Date): boolean {
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    return !this.slotsMap[year]
-      || !this.slotsMap[year][month]
-      || !this.slotsMap[year][month][date.getDate()];
+    return !this.slotsMap[date.getFullYear()]
+      || !this.slotsMap[date.getFullYear()][date.getMonth()]
+      || !this.slotsMap[date.getFullYear()][date.getMonth()][date.getDate()];
   }
 
   getAvailableMonths(): string[] {
     return [this.slotsPeriod];
   }
 
-  getAvailableSlots(selectedDay: Date): any[] {
-    return this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()];
+  getAvailableSlots(selectedDay: Date): Observable<any[]> {
+    return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
   }
 
   getBookedSlot(): any {
@@ -85,15 +75,16 @@ export class BrakTimeSlotsService implements TimeSlotsService<ZagsSlotInterface>
   }
 
   getCurrentYear(): number {
-    return this.activeYearNumber
+    return this.activeYearNumber;
   }
 
-  init(data: any) {
+  init(data: any): Observable<any> {
+
     if (this.changed(data) || this.errorMessage) {
       this.slotsMap = {};
       this.errorMessage = undefined;
       return this.getTimeSlots(this.getSlotsRequest()).pipe(
-        map((response:any) => {
+        map(response => {
             if (response.error.errorDetail.errorCode === 0) {
               this.initSlotsMap(response.slots);
             } else {
@@ -101,7 +92,7 @@ export class BrakTimeSlotsService implements TimeSlotsService<ZagsSlotInterface>
             }
           }
         )
-      )
+      );
     }
 
     return of(undefined);
@@ -124,7 +115,7 @@ export class BrakTimeSlotsService implements TimeSlotsService<ZagsSlotInterface>
       this.department = department;
     }
 
-    let solemn = data.solemn === 'Да';
+    let solemn = data.solemn == 'Да';
     if (this.solemn !== solemn) {
       changed = true;
       this.solemn = solemn;
@@ -149,7 +140,6 @@ export class BrakTimeSlotsService implements TimeSlotsService<ZagsSlotInterface>
   }
 
   private getSlotsRequest() {
-    // TODO HARDCODE, возможно, стоит перенести в json
     return {
       organizationId: [this.department.attributeValues.CODE],
       caseNumber: this.orderId,
@@ -169,11 +159,10 @@ export class BrakTimeSlotsService implements TimeSlotsService<ZagsSlotInterface>
     };
   }
 
-  private getBookRequest(selectedSlot: ZagsSlotInterface) {
+  private getBookRequest(selectedSlot: { slotId, areaId, slotTime }) {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
-    // TODO HARDCODE, возможно, стоит перенести в json
     return {
       preliminaryReservation: 'true',
       address: this.department.attributeValues.ADDRESS,
@@ -204,7 +193,7 @@ export class BrakTimeSlotsService implements TimeSlotsService<ZagsSlotInterface>
       serviceId: [
         'ЗагсБрак'
       ]
-    }
+    };
   }
 
   private initSlotsMap(slots: any[]): void {
@@ -232,4 +221,3 @@ export class BrakTimeSlotsService implements TimeSlotsService<ZagsSlotInterface>
     });
   }
 }
-

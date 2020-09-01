@@ -1,5 +1,4 @@
 @import "core";
-@import "components";
 
 // TODO: remove all normalize css styles, it may affect app's style
 // stylelint-disable
@@ -54,7 +53,6 @@
     font-size: $font-xs;
     line-height: 16px;
   }
-
   a {
     text-decoration: none;
     color: $color-button-hit;
@@ -66,6 +64,22 @@
     border: 0;
   }
 
+  strike {
+    color: $color-text-helper;
+  }
+  
+  blockquote {
+    background: rgba(11, 64, 179, 0.1);
+    border: 1px solid $color-button-hit;
+    box-sizing: border-box;
+    border-radius: $border-md;
+  }
+
+  .divider {
+    border: 0;
+    background: $color-devider;
+    height: 1px;
+  }
   // Implement styleguide for all library's components
   @import "components";
 }

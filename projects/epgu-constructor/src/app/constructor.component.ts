@@ -25,6 +25,7 @@ export class ConstructorComponent implements OnInit {
   nextStep(data?: any) {
     this.constructorService.nextStep(data);
   }
+
   prevStep(data?: any) {
     this.constructorService.prevStep(data);
   }

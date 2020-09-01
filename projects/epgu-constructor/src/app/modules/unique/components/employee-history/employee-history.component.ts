@@ -1,17 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import * as moment_ from 'moment';
-import { Moment } from 'moment';
-import { filter, takeUntil } from 'rxjs/operators';
+import { ValidationShowOn } from 'epgu-lib';
+import { DisplayInterface, Gender } from '../../../../../interfaces/epgu.service.interface';
+import { EmployeeHistoryFormService } from './services/employee-history.form.service';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import {
+  Employee,
   EmployeeHistoryAvailableDates,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel,
 } from '../../../../../interfaces/employee-history.interface';
-import { DisplayInterface, Gender } from '../../../../../interfaces/epgu.service.interface';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
-import { EmployeeHistoryFormService } from './services/employee-history.form.service';
+import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 
 const moment = moment_;
 
@@ -20,108 +20,98 @@ const moment = moment_;
   templateUrl: './employee-history.component.html',
   styleUrls: ['./employee-history.component.scss'],
 })
-export class EmployeeHistoryComponent implements OnInit {
+export class EmployeeHistoryComponent implements OnInit, OnChanges {
   @Input() data: DisplayInterface;
   @Input() header: string;
   @Input() gender: Gender;
 
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
-  readonly years = 1;
-
   ds: Array<EmployeeHistoryDataSource>;
-  generateForm: FormGroup;
-  availableMonths: EmployeeHistoryAvailableDates[];
-
-  minDate = new Date(moment().subtract(this.years, 'years').format('YYYY-MM-DD'));
-  maxDate = new Date(moment().add(10, 'years').format());
+  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
   constructor(
     public employeeFormService: EmployeeHistoryFormService,
     private unsubscribeService: UnsubscribeService,
     private datasourceService: EmployeeHistoryDatasourceService,
-  ) {
-    this.availableMonths = this.getAvailableMonths();
-  }
+    public monthsService: EmployeeHistoryMonthsService,
+  ) {}
 
   ngOnInit(): void {
+    this.monthsService.years = this.data?.components[0]?.attrs?.years;
+    this.monthsService.initSettings();
     this.ds = this.datasourceService.getDataSourceByGender(this.gender);
-    this.generateForm = this.employeeFormService.createEmployeeForm();
-    this.generateFormWatcher();
+    this.employeeFormService.generateFormWatcher();
   }
 
-  resetForm(currentType: number): void {
-    this.generateForm.reset();
-    this.generateForm.get('type').patchValue(currentType);
+  ngOnChanges() {
+    this.employeeFormService.employeeHistory = [];
+  }
+
+  resetForm(currentType: Employee): void {
+    this.employeeFormService.resetForm(currentType);
   }
 
   pushFormGroup(): void {
-    const formValues: EmployeeHistoryModel = this.generateForm.getRawValue();
-    const fromDate: Moment = moment(formValues.from);
-    const toDate: Moment = moment(formValues.to);
-
-    if (toDate.diff(fromDate) < 0) {
-      console.error('Дата начала больше даты окончания');
+    this.updateValidators();
+    this.validationShowOn = ValidationShowOn.IMMEDIATE;
+    if (this.employeeFormService.generateForm.valid) {
+      this.employeeFormService.pushFormGroup();
     }
-
-    const selectedMonths: EmployeeHistoryAvailableDates[] = this.getAvailableMonths(
-      fromDate,
-      toDate,
-    ).map((item) => ({
-      ...item,
-      checked: true,
-    }));
-
-    this.availableMonths = this.availableMonths.map(
-      (availableMonth: EmployeeHistoryAvailableDates) =>
-        selectedMonths.find(
-          (selectedMonth: EmployeeHistoryAvailableDates) =>
-            selectedMonth.date === availableMonth.date,
-        ) || availableMonth,
-    );
-
-    this.employeeFormService.employeeHistory.push(formValues);
-    this.resetForm(0);
-
-    console.log(this.availableMonths, this.employeeFormService.employeeHistory);
   }
 
   removeFormGroup(index: number): void {
-    this.employeeFormService.employeeHistory.splice(index, 1);
+    this.employeeFormService.removeFormGroup(index);
   }
 
   isCompleteForm(): boolean {
-    return this.availableMonths.every((e: EmployeeHistoryAvailableDates) => e.checked);
+    if (this.data?.components[0]?.attrs?.nonStop) {
+      return this.monthsService.availableMonths.every(
+        (e: EmployeeHistoryAvailableDates) => e.checked,
+      );
+    }
+    const convertedDate = this.monthsService.availableMonths
+      .filter((stringDate: EmployeeHistoryAvailableDates) => stringDate.checked)
+      .map((stringDate: EmployeeHistoryAvailableDates) => {
+        const c = stringDate.date.split('/');
+        return moment(`${c[0]}/01/${c[1]}`);
+      });
+    const diff = moment.max(convertedDate).diff(moment.min(convertedDate), 'years');
+    if (diff === this.monthsService.years) {
+      return true;
+    }
+    return false;
   }
 
   getNextScreen() {
-    this.nextStepEvent.emit(JSON.stringify(this.employeeFormService.employeeHistory));
+    this.nextStepEvent.emit(JSON.stringify(this.convertEmployeeHistory()));
   }
 
-  private getAvailableMonths(
-    fromDate: Moment = moment().subtract(this.years, 'years'),
-    toDate: Moment = moment(),
-  ): EmployeeHistoryAvailableDates[] {
-    const availableDates = [];
-
-    while (toDate.diff(fromDate) >= 0) {
-      availableDates.push({
-        date: fromDate.format('MM/YYYY'),
-        checked: false,
-      });
-      fromDate.add(1, 'month');
-    }
-
-    return availableDates;
+  findData(type?: Employee): EmployeeHistoryDataSource {
+    return this.ds.find(
+      (e) =>
+        String(e.type) === String(type || this.employeeFormService.generateForm.get('type').value),
+    );
   }
 
-  private generateFormWatcher(): void {
-    this.generateForm
-      .get('checkboxToDate')
-      .valueChanges.pipe(
-        filter((checked: boolean) => checked),
-        takeUntil(this.unsubscribeService),
-      )
-      .subscribe(() => this.generateForm.get('to').patchValue(new Date()));
+  private convertEmployeeHistory(): EmployeeHistoryModel[] {
+    return this.employeeFormService.employeeHistory.map((e: EmployeeHistoryModel) => {
+      delete e.checkboxToDate;
+      return {
+        ...e,
+        from: moment(e.from).format('MM/YYYY'),
+        to: moment(e.to).format('MM/YYYY'),
+      };
+    });
+  }
+
+  private updateValidators(): void {
+    const selectedEmployee = this.datasourceService
+      .getDataSourceByGender(this.gender)
+      .find(
+        (v: EmployeeHistoryDataSource) =>
+          v.type === this.employeeFormService.generateForm.getRawValue().type,
+      );
+    this.employeeFormService.updateValidators(selectedEmployee);
   }
 }

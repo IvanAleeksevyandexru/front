@@ -8,9 +8,7 @@ import { ConstructorConfigService } from '../config/constructor-config.service';
 /**
  * Сервис для обмена файлами с сервисом терабайт
  */
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TerabyteService {
   isLocalHost = false;
   testToken: string;
@@ -69,8 +67,8 @@ export class TerabyteService {
   private getServerRequestOptions(additionalOptions: object = {}): object {
     let options = {
       withCredentials: true
-    }
-    options = {...additionalOptions, ...options}
+    };
+    options = { ...additionalOptions, ...options };
     return options;
   }
 

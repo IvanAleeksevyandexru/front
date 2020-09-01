@@ -13,6 +13,6 @@ import { EmployeeHistoryComponent } from './employee-history.component';
   ],
   exports: [
     EmployeeHistoryComponent
-  ]
+  ],
 })
 export class EmployeeHistoryModule { }

@@ -1,14 +1,14 @@
 <form #dataForm="ngForm" class="form">
   <div class="item" *ngFor="let field of data?.attrs?.fields">
-
-    <div class="title">{{field.label}}</div>
+    <div class="title">{{ field.label }}</div>
 
     <ng-container [ngSwitch]="field.fieldName">
-
       <lib-date-picker
         *ngSwitchCase="'regDate'"
         [name]="field.fieldName"
-        [(ngModel)]="forms[field.fieldName]">
+        minDate="-50y"
+        [(ngModel)]="forms[field.fieldName]"
+      >
       </lib-date-picker>
 
       <lib-dadata-widget
@@ -17,20 +17,25 @@
         [name]="field.fieldName"
         [externalApiUrl]="constructorConfigService.config.externalApiUrl"
         [initValue]="forms[field.fieldName]"
-        [(ngModel)]="forms[field.fieldName]">
+        [(ngModel)]="forms[field.fieldName]"
+      >
       </lib-dadata-widget>
 
       <lib-plain-input *ngSwitchDefault></lib-plain-input>
-
     </ng-container>
+  </div>
+  <div class="error">
+    <small>{{ error }}</small>
   </div>
 </form>
 
 <div class="item hint-wrapper">
   <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
-  <div class="item__hint" *ngFor="let hint of data?.attrs?.hints" (click)="hintClick(hint.timestamp)">
-    {{hint.label}}
+  <div
+    class="item__hint"
+    *ngFor="let hint of data?.attrs?.hints"
+    (click)="hintClick(hint.timestamp)"
+  >
+    {{ hint.label }}
   </div>
 </div>
-
-

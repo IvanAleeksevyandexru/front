@@ -5,9 +5,11 @@ import {
   QuestionsDisplayInterface,
 } from '../../../../../interfaces/question-block.interface';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
+import { ModalService } from '../../../../services/modal/modal.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { ConfirmationModalComponent } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
-
+import { QuestionScreenModalParams } from './questions-screen.constant';
 @Component({
   selector: 'epgu-constructor-question-screen',
   templateUrl: './questions-screen.component.html',
@@ -15,20 +17,20 @@ import { NavigationService } from '../../../../shared-module/service/navigation/
   providers: [UnsubscribeService],
 })
 export class QuestionsScreenComponent implements OnInit {
-  @Input() data: QuestionsDisplayInterface;
-  @Input() errors: object;
-  @Output() nextStepEvent = new EventEmitter();
-  @Output() prevStepEvent = new EventEmitter();
-
   isCycledFields = false;
   cycledValues: Array<any>;
 
   private readonly currentCycledFields = this.constructorService.response?.scenarioDto
     ?.currentCycledFields;
   private readonly cycledFieldsKeys = Object.keys(this.currentCycledFields || {});
-  private readonly flattenCycledFieldsValues = { ...this.cycledValues };
+
+  @Input() data: QuestionsDisplayInterface;
+  @Input() errors: object;
+  @Output() nextStepEvent = new EventEmitter();
+  @Output() prevStepEvent = new EventEmitter();
 
   constructor(
+    private modalService: ModalService,
     private navService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     public constructorService: ConstructorService,
@@ -53,17 +55,36 @@ export class QuestionsScreenComponent implements OnInit {
   }
 
   answerChoose(answer: QuestionsComponentActionsInterface): void {
-    const responseData = answer.value;
+    let responseData = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
-      const fieldNameRef = this.data.components[0].attrs.fields[0].fieldName;
-      const cycledValuesPrepared = this.flattenCycledFieldsValues;
+      const fieldNameRef = this.data.components[0]?.attrs?.fields[0]?.fieldName;
+      const cycledValuesPrepared = { ...this.cycledValues };
       const mergedCycledAndAnswerValues = { ...cycledValuesPrepared, [fieldNameRef]: answer.value };
       responseData[currentCycledFieldsKey] = {
         visited: true,
         value: JSON.stringify(mergedCycledAndAnswerValues),
       };
+    } else {
+      responseData = answer.value;
     }
+
     this.nextStepEvent.emit(responseData);
+  }
+
+  clickToInnerHTML($event: MouseEvent) {
+    const targetElementId = ($event.target as HTMLElement).id;
+    const { clarifications = {} } = this.data.components[0]?.attrs as any;
+    const targetElementModalData = clarifications[targetElementId];
+    if (targetElementModalData) {
+      this.showModal(targetElementModalData);
+    }
+  }
+
+  showModal(params) {
+    this.modalService.openModal(ConfirmationModalComponent, {
+      ...QuestionScreenModalParams,
+      ...params,
+    });
   }
 }

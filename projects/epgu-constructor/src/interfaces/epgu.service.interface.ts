@@ -13,21 +13,23 @@ import { SCREEN_TYPE } from '../constant/global';
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
  *
  */
+export interface ScenarioDto {
+  applicantAnswers: object;
+  currentRule: number;
+  currentValue: object;
+  currentCycledFields: object;
+  cycledFields: Array<object>;
+  display: DisplayInterface;
+  errors: object;
+  gender: Gender;
+  orderId: string;
+  sendNotification: Array<object>;
+  token: string
+  userId: string
+}
+
 export interface ResponseInterface {
-  scenarioDto: {
-    applicantAnswers: object;
-    currentRule: number;
-    currentValue: object;
-    currentCycledFields: object;
-    cycledFields: Array<object>;
-    display: DisplayInterface;
-    errors: object;
-    gender: Gender;
-    orderId: string;
-    sendNotification: Array<object>;
-    token: string
-    userId: string
-  }
+  scenarioDto: ScenarioDto;
 }
 
 /**
@@ -60,11 +62,12 @@ export interface DisplayInterface {
  * @property {boolean}visited? - булевый флаг пройдена ли пользователем бизнес-логика данного компонента
  */
 export interface ComponentInterface {
-  attrs: any; // TODO: replace with actual Interface
+  attrs: {[key: string]: any};
   id: string;
   label: string;
   type: string;
   value: string;
+  required?: boolean
   visited?: boolean
 }
 

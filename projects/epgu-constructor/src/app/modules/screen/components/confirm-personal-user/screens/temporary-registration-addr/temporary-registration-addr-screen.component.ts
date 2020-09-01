@@ -8,6 +8,7 @@ import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../.
 })
 export class TemporaryRegistrationAddrScreenComponent {
   @Input() data: TemporaryRegistrationAddrComponentInterface;
+  @Input() errors: object;
   @Output() actionSelect = new EventEmitter();
 
   clickToAction(action): void {

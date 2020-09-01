@@ -1,5 +1,11 @@
 @import "src/styles/core";
 
+.info {
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 24px;
+  color: $color-text-helper;
+}
 
 .fileupload__wrapper {
   margin-bottom: 24px;
@@ -9,13 +15,16 @@
   border-radius: 12px;
 }
 
+.file__bottom {
+  border-bottom: 1px solid $color-devider;
+  margin-bottom: 24px;
+}
+
 .fileupload__label {
   font-size: 16px;
   line-height: 24px;
   color: $color-summer-night;
-  padding-bottom: 24px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid $color-devider;
+  margin-bottom: 8px;
 
   &::ng-deep ul {
     list-style: none;

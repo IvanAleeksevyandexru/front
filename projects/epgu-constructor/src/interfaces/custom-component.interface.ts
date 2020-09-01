@@ -15,6 +15,18 @@ export interface CustomComponentDictionaryState {
   selectedItem: DictionaryItem;
 }
 
+export interface CustomComponentDropDownStateInterface {
+  origin: CustomComponentDropDownItemList;
+  list: Array<Partial<ListItem>>;
+  selectedItem?: DictionaryItem;
+}
+
+export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
+export type CustomComponentDropDownItem = {
+  name: string;
+};
+
+
 
 /**
  * @property {Array<string>}ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
@@ -22,6 +34,8 @@ export interface CustomComponentDictionaryState {
  * @property {string}dictionaryType - dictionary name for request {@see getDictionary}
  */
 export interface CustomComponentAttrInterface {
+  [key:string]:any;
+  dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType: string;
   labelAttr: string;
   fields: Array<any>;
@@ -47,9 +61,20 @@ export interface CustomComponentAttrValidationInterface {
  */
 export interface CustomComponentState {
   valid: boolean;
+  isShow: boolean;
   errorMessage: string;
   value: any;
   component: CustomComponentInterface
+}
+
+/**
+ * @property {string}relatedRel - id компонента от которого зависим
+ * @property {string}val - ключевое значение которое должен принимать компонент от которого заивисм
+ */
+export interface CustomComponentRefInterface {
+  'relatedRel': string,
+  'val': string,
+  'relation': string
 }
 
 export interface CustomDisplayInterface extends DisplayInterface {

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
-import { ScreenComponentService } from '../../../../service/screen-component/screen-component.service';
+import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-phone-screen',
@@ -12,11 +12,11 @@ export class ConfirmPersonalUserPhoneScreenComponent implements OnInit {
   @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
 
-  constructor(private screenComponentService: ScreenComponentService) {}
+  constructor(private componentStateService: ComponentStateService) {}
 
   ngOnInit(): void {
     // TODO возможно стоит переместить во внутриь компонента
-    this.screenComponentService.dataToSend = this.data.value;
+    this.componentStateService.state = this.data.value;
   }
 
   clickToAction(action: NotificationAction) {
