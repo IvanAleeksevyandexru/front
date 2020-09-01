@@ -18,9 +18,6 @@ export class RepeatableFieldsComponent implements OnInit {
   screens: { [key: string]: any };
   propData; // TODO указать тип
 
-  get data() {
-    return this.propData;
-  }
   @Input() set data(data) {
     this.propData = data;
     this.initVariable();
@@ -48,7 +45,7 @@ export class RepeatableFieldsComponent implements OnInit {
   }
 
   duplicateScreen() {
-    this.screens[this.getId()] = this.data.components[0].attrs.components;
+    this.screens[this.getId()] = this.propData.components[0].attrs.components;
   }
 
   changeComponentList({ value }, screenKey) {
