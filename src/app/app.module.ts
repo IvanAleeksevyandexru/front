@@ -12,6 +12,7 @@ const constructorConfig: ConstructorConfigInterface = {
   externalApiUrl: environment.externalApiUrl,
   externalLkApiUrl: environment.externalLkApiUrl,
   externalUrl: environment.externalUrl,
+  paymentUrl: environment.paymentUrl,
   yandexMapsApiKey: environment.yandexMapsApiKey,
   isProd: environment.production,
   fileUploadApiUrl: environment.fileUploadApiUrl,
