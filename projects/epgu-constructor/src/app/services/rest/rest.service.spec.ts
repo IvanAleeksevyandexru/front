@@ -1,4 +1,4 @@
-import {async, TestBed} from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 
 import { RestService } from './rest.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';

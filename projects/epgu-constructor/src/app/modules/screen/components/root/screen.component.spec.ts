@@ -6,8 +6,8 @@ import { ConstructorServiceStub } from '../../../../services/constructor/constru
 import { NavigationService } from '../../../../shared-module/service/navigation/navigation.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { ScreenComponent } from './screen.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import { ScreenContainerComponent } from '../../../../shared-module/components/screen-container/screen-container.component'
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ScreenContainerComponent } from '../../../../shared-module/components/screen-container/screen-container.component';
 
 
 // TODO: Need to refactoring component

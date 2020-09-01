@@ -16,7 +16,7 @@ describe('TemporaryRegistrationAddrScreenComponent', () => {
     label: '',
     type: '',
     value: ''
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

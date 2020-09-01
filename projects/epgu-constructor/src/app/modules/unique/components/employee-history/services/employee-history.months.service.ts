@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
-import { Moment } from 'moment'
+import { Moment } from 'moment';
 import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryModel

@@ -1,11 +1,12 @@
-@import "src/styles/core";
+@import 'src/styles/core';
 
 $item-hint-mx: 13px;
 :host {
   display: block;
 }
 
-.item:not(:last-child), .form {
+.item:not(:last-child),
+.form {
   margin-bottom: 20px;
 }
 
@@ -44,4 +45,10 @@ $item-hint-mx: 13px;
   border-radius: 4px;
   padding: 14px 16px;
   background: $color-input;
+}
+
+.error {
+  font-size: $font-sm;
+  color: $color-gosred;
+  margin-top: 7px;
 }

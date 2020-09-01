@@ -1,34 +1,31 @@
-/*
 import { TestBed, async } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EpguLibModule } from 'epgu-lib';
+
 import { ConstructorComponent } from './constructor.component';
-import { ConstructorService } from './services/constructor/constructor.service'
-import { ConstructorServiceStub } from './services/constructor/constructor.service.stub'
-import { EpguLibModule } from 'epgu-lib'
-import { NavigationComponent } from './shared-module/components/navigation/navigation.component';
+import { ConstructorService } from './services/constructor/constructor.service';
+import { ConstructorServiceStub } from './services/constructor/constructor.service.stub';
 import { NavigationService } from './shared-module/service/navigation/navigation.service';
-import { ScreenContainerComponent } from './shared-module/components/screen-container/screen-container.component';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { ModalContainerComponent } from './shared-module/components/modal-container/modal-container.component';
 
 describe('ConstructorComponent', () => {
   let constructorService: ConstructorService;
+  let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
       imports: [
         RouterTestingModule,
         EpguLibModule.forChild(),
       ],
       declarations: [
         ConstructorComponent,
-        NavigationComponent,
-        ScreenContainerComponent
+        ModalContainerComponentMock
       ],
       providers: [
         NavigationService,
-        {provide: ConstructorService, useClass: ConstructorServiceStub}
+        { provide: ConstructorService, useClass: ConstructorServiceStub }
       ]
     }).compileComponents();
     constructorService = TestBed.inject(ConstructorService);
@@ -38,11 +35,5 @@ describe('ConstructorComponent', () => {
     const fixture = TestBed.createComponent(ConstructorComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-});
-*/
-describe('ConstructorComponent', () => {
-  it('TODO: write the test', () => {
-    expect(true).toBeTruthy();
   });
 });

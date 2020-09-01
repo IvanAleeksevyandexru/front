@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
-import { ConstructorService } from '../../../../services/constructor/constructor.service'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import { ConstructorServiceStub } from '../../../../services/constructor/constructor.service.stub'
-import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface'
+import { ConstructorService } from '../../../../services/constructor/constructor.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ConstructorServiceStub } from '../../../../services/constructor/constructor.service.stub';
+import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 
 // TODO: Need to refactoring component
 describe.skip('FileUploadScreenComponent', () => {
@@ -25,7 +25,7 @@ describe.skip('FileUploadScreenComponent', () => {
     label: '',
     type: '',
     value: '',
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

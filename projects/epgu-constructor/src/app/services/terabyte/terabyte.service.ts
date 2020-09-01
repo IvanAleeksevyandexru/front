@@ -67,8 +67,8 @@ export class TerabyteService {
   private getServerRequestOptions(additionalOptions: object = {}): object {
     let options = {
       withCredentials: true
-    }
-    options = {...additionalOptions, ...options}
+    };
+    options = { ...additionalOptions, ...options };
     return options;
   }
 

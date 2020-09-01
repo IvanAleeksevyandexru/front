@@ -19,13 +19,13 @@ export class ModalService {
   constructor(private cfr: ComponentFactoryResolver,
               private rendererFactory: RendererFactory2,
               private appRef: ApplicationRef) {
-    this.renderer = rendererFactory.createRenderer(null, null)
+    this.renderer = rendererFactory.createRenderer(null, null);
   }
 
   public openModal<T>(modalComponent: Type<any>, modalParameters?: any): Observable<T> {
     const modalResult = new Subject<T>();
 
-    const componentFactory = this.cfr.resolveComponentFactory(modalComponent)
+    const componentFactory = this.cfr.resolveComponentFactory(modalComponent);
     const modalContainer = document.getElementById('modal-container');
     const modalRootNode = this.renderer.createElement('div');
     this.renderer.addClass(modalRootNode, 'modal-overlay');

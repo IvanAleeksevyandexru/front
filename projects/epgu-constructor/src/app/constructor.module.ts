@@ -18,7 +18,7 @@ import { RestService } from './services/rest/rest.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { SharedModule } from './shared-module/shared-components.module';
 import { TerabyteService } from './services/terabyte/terabyte.service';
-import {ComponentStateService} from './services/component-state/component-state.service';
+import { ComponentStateService } from './services/component-state/component-state.service';
 
 const COMPONENTS = [
   ConstructorComponent
