@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
 @Component({
@@ -9,6 +9,7 @@ import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 })
 export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   @Input() data: ConfirmAddressInterface;
+  @Input() errors: object;
   @Output() actionSelect = new EventEmitter();
   isEditable: boolean;
   dataToSend: any;
