@@ -18,7 +18,6 @@ import {
 } from '../../../../interfaces/custom-component.interface';
 import { DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
 import {
-  CUSTOM_COMPONENT_ITEM_TYPE,
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
   adaptiveDropDown,
@@ -30,6 +29,7 @@ import {
 } from '../../../modules/custom/tools/custom-screen-tools';
 import { RestService } from '../../../services/rest/rest.service';
 import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
 
 @Component({
   selector: 'epgu-constructor-components-list',

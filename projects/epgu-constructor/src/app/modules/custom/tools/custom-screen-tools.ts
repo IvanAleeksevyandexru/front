@@ -4,25 +4,10 @@ import {
   CustomComponentInterface, CustomComponentState
 } from '../../../../interfaces/custom-component.interface';
 import { DictionaryItem } from '../../../../interfaces/dictionary-options.interface';
-import { DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
+import { CUSTOM_COMPONENT_ITEM_TYPE, DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
 import * as moment_ from 'moment';
 const moment = moment_;
 
-
-
-export enum CUSTOM_COMPONENT_ITEM_TYPE {
-  LabelSection = 'LabelSection',
-  Dictionary = 'Dictionary',
-  HiddenDictionary = 'HiddenDictionary',
-  HiddenLookup = 'HiddenLookup',
-  HiddenInput = 'HiddenInput',
-  DropDown = 'DropDown',
-  StringInput = 'StringInput',
-  DateInput = 'DateInput',
-  RadioInput = 'RadioInput',
-  CompositeRadioButton = 'CompositeRadioButton',
-  Lookup = 'Lookup',
-}
 
 function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
   return {

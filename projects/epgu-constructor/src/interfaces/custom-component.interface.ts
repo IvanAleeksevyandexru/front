@@ -1,5 +1,5 @@
 import { ListItem } from 'epgu-lib';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../app/modules/custom/tools/custom-screen-tools';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../constant/global';
 import { DictionaryItem, DictionaryResponse } from './dictionary-options.interface';
 import { ComponentInterface, DisplayInterface } from './epgu.service.interface';
 
