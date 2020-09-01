@@ -2,8 +2,8 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/
 import { NgForm } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../../../interfaces/temporary-registration-addr.interface';
-import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
+import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
@@ -16,6 +16,7 @@ export class TemporaryRegistrationAddrComponent implements OnChanges {
   forms: any = {};
   @ViewChild('dataForm', { static: false }) dataForm: NgForm;
   @Input() data: TemporaryRegistrationAddrComponentInterface;
+  @Input() error: string;
 
   constructor(
     public constructorConfigService: ConstructorConfigService,
