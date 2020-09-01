@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -10,9 +11,9 @@ import {
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../../constant/global';
+import { ConfirmAddressInterface } from '../../../../../../../../../interfaces/confirm-address.interface';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
-import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 
 const moment = moment_;
 
@@ -25,7 +26,6 @@ const moment = moment_;
 export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
   @ViewChild('dataForm', { static: false }) dataForm;
 
-  @Input() value: string;
   @Input() data: ConfirmAddressInterface;
   @Input() error: string;
   @Input() isEditable: boolean;
@@ -36,6 +36,7 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
   constructor(
     private constructorConfigService: ConstructorConfigService,
     private ngUnsubscribe$: UnsubscribeService,
+    private changeDetection: ChangeDetectorRef,
   ) {
     this.externalApiUrl = this.constructorConfigService.config.externalApiUrl;
   }
@@ -56,10 +57,9 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
   }
 
   setState() {
-    this.valueParsed = JSON.parse(this.value);
-    this.value = this.handleDataChange(this.valueParsed);
+    this.valueParsed = JSON.parse(this.data.value);
     if (this.valueParsed.regDate) {
-      const date = moment(this.valueParsed.regDate, DATE_STRING_DOT_FORMAT);
+      const date = moment(this.valueParsed.regDate);
       const isValidDate = date.isValid();
       if (isValidDate) {
         this.valueParsed.regDate = date.toDate();
@@ -67,6 +67,7 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
         this.valueParsed.regDate = moment().toDate();
       }
     }
+    this.changeDetection.detectChanges();
   }
 
   handleClick() {
@@ -77,15 +78,14 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
     if (this.isEditable) {
       this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
         this.valueParsed = change;
-        this.value = this.handleDataChange(change);
-        this.dataEditedEvent.emit(this.value);
+        this.data.value = this.handleDataChange(change);
+        this.dataEditedEvent.emit(this.data.value);
       });
     } else {
-      // TODO remove this hack
       setTimeout(() => {
         this.setState();
       });
-      this.dataEditedEvent.emit(this.value);
+      this.dataEditedEvent.emit(this.data.value);
     }
   }
 }

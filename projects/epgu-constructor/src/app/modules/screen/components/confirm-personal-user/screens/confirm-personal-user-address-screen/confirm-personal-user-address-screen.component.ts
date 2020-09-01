@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ConfirmAddressInterface } from '../../../../../../../interfaces/confirm-address.interface';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { ConstructorService } from '../../../../../../services/constructor/constructor.service';
-import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-address-screen',
@@ -20,7 +20,6 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   constructor(
     private componentStateService: ComponentStateService,
     public constructorService: ConstructorService,
-    private changeDetection: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -53,12 +52,12 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     const valueRef = typeof rawValueRef === 'string' ? JSON.parse(rawValueRef) : rawValueRef;
     const { regAddr, regDate } = valueRef;
     this.data.value = JSON.stringify({ regDate, regAddr });
-    this.changeDetection.detectChanges();
+    this.data = { ...this.data };
   }
 
   noAddressAction() {
     this.data.value = JSON.stringify({ regDate: '', regAddr: '' });
-    this.changeDetection.detectChanges();
+    this.data = { ...this.data };
   }
 
   clickToAction(event): void {
