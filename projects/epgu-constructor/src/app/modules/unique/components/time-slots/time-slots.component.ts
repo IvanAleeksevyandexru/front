@@ -11,6 +11,7 @@ import { ConfirmationModalComponent } from '../../../../shared-module/components
 import { ModalService } from '../../../../services/modal/modal.service';
 import { ConfirmationModal } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.interface';
 import { SlotInterface } from './slot.interface';
+import { MvdTimeSlotsService } from './mvd-time-slots.service';
 
 const moment = moment_;
 
@@ -62,12 +63,14 @@ export class TimeSlotsComponent implements OnInit {
     private changeDetection: ChangeDetectorRef,
     private brakTimeSlotsService: BrakTimeSlotsService,
     private divorceTimeSlotsService: DivorceTimeSlotsService,
+    private mvdTimeSlotsService: MvdTimeSlotsService,
     private modalService: ModalService,
     public screenComponentService: ScreenComponentService,
     public constructorService: ConstructorService,
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = divorceTimeSlotsService;
+    this.timeSlotServices.MVD = mvdTimeSlotsService;
   }
 
   @Input() data: DisplayInterface;
