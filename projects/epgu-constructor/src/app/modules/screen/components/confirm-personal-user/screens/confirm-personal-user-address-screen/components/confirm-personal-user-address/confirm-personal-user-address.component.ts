@@ -27,6 +27,7 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
 
   @Input() value: string;
   @Input() data: ConfirmAddressInterface;
+  @Input() error: string;
   @Input() isEditable: boolean;
   @Output() dataEditedEvent = new EventEmitter();
   valueParsed: any;
