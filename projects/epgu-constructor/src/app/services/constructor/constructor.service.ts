@@ -39,6 +39,10 @@ export class ConstructorService {
     );
   }
 
+  getScreenType() {
+    return this.componentData?.type;
+  }
+
   nextStep(data?: any, options?: SendDataOptionsInterface) {
     this.isLoading = true;
     this.updateRequest(data, options);

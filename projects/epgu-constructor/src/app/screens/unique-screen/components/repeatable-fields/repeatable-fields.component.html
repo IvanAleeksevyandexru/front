@@ -1,0 +1,25 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+
+<epgu-constructor-screen-container class="screen-container">
+  <div class="inner">
+    <epgu-constructor-page-name>{{ data.header }}</epgu-constructor-page-name>
+  </div>
+    <div *ngFor="let components of screens; index as $index">
+      <epgu-constructor-components-list
+        (changes)="changeComponentsList($event, $index)"
+        [components]="components"
+      ></epgu-constructor-components-list>
+    </div>
+
+  <div class="footer">
+    <div class="footer__btns-group">
+      <button class="btn btn__add" (click)="duplicateScreen()">Добавить</button>
+      <lib-button
+          [showLoader]="constructorService.isLoading"
+          (click)="nextScreen()"
+          class="footer__btn-submit"
+          >{{ data.submitLabel }}</lib-button
+        >
+    </div>
+  </div>
+</epgu-constructor-screen-container>

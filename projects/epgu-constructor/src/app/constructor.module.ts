@@ -4,21 +4,22 @@ import { EpguLibModule } from 'epgu-lib';
 import { ConstructorConfigInterface } from '../interfaces/constructor-config.interface';
 import { ConstructorComponent } from './constructor.component';
 import { LayoutModule } from './layout/layout.module';
-import { CustomScreenModule } from './modules/custom/custom-screen.module';
-import { InfoScreenModule } from './modules/info/info-screen.module';
-import { InvitationModule } from './modules/invitation/invitation.module';
-import { QuestionScreenModule } from './modules/questions/question-screen.module';
-import { ScreenModule } from './modules/screen/screen.module';
-import { UniqueScreenModule } from './modules/unique/unique-screen.module';
+import { CustomScreenModule } from './screens/custom-screen/custom-screen.module';
+import { InfoScreenModule } from './screens/info-screen/info-screen.module';
+import { InvitationErrorScreenModule } from './screens/invitation-error-screen/invitation-error-screen.module';
+import { QuestionsScreenModule } from './screens/questions-screen/questions-screen.module';
+import { ComponentScreenModule } from './screens/component-screen/component-screen.module';
+import { UniqueScreenModule } from './screens/unique-screen/unique-screen.module';
 import { ConstructorConfigService } from './services/config/constructor-config.service';
 import { CONSTRUCTOR_CONFIG_TOKEN } from './services/config/constructor.config.token';
 import { ConstructorService } from './services/constructor/constructor.service';
 import { MockService } from './services/mock/mock.service';
 import { RestService } from './services/rest/rest.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
-import { SharedModule } from './shared-module/shared-components.module';
+import { SharedModule } from './shared/shared.module';
 import { TerabyteService } from './services/terabyte/terabyte.service';
 import { ComponentStateService } from './services/component-state/component-state.service';
+import { ScreenService } from './services/screen/screen.service';
 
 const COMPONENTS = [
   ConstructorComponent
@@ -30,11 +31,11 @@ const COMPONENTS = [
   ],
   imports: [
     CommonModule,
-    ScreenModule,
+    ComponentScreenModule,
     CustomScreenModule,
-    QuestionScreenModule,
+    QuestionsScreenModule,
     UniqueScreenModule,
-    InvitationModule,
+    InvitationErrorScreenModule,
     LayoutModule,
 
     SharedModule,
@@ -45,6 +46,7 @@ const COMPONENTS = [
     RestService,
     TerabyteService,
     ConstructorService,
+    ScreenService,
     ComponentStateService,
     ConstructorConfigService,
     UnsubscribeService,

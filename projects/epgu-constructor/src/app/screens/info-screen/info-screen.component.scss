@@ -1,0 +1,36 @@
+@import "../../../styles/core";
+
+
+
+:host {
+  display: block;
+}
+
+.nav {
+  @include navigation-mt();
+}
+
+.info__head {
+  margin-bottom: 24px;
+}
+
+.info__body {
+  margin-bottom: 24px;
+}
+
+.divider {
+  border: 0;
+  background: $color-devider;
+  height: 1px;
+  margin: 0 0 24px;
+}
+
+.info__footer {
+  text-align: center;
+}
+.info-footer__submit {
+  display: inline-block;
+  &::ng-deep button {
+    min-width: 100px;
+  }
+}
