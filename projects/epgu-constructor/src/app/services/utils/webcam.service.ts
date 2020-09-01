@@ -4,7 +4,7 @@ import { ComponentPortal, DomPortalOutlet } from '@angular/cdk/portal';
 import { WebcamEvents } from './webcamevents';
 import {
   WebcamShootComponent
-} from '../../screens/unique-screen/components/file-upload-screen/sub-components/webcam-shoot/webcam-shoot.component';
+} from '../../screen/unique-screen/components/file-upload-screen/sub-components/webcam-shoot/webcam-shoot.component';
 
 @Injectable({
   providedIn: 'root'

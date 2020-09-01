@@ -8,8 +8,7 @@ export interface ScreenData {
   gender?: Gender,
 }
 
-export interface Screen {
-  screenData: ScreenData,
+export interface ScreenOutputs {
   nextStepEvent: EventEmitter<NextStepEventData>,
   prevStepEvent: EventEmitter<PrevStepEventData>,
 }

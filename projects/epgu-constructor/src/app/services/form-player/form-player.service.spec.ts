@@ -1,0 +1,25 @@
+import { TestBed } from '@angular/core/testing';
+
+import { FormPlayerService } from './form-player.service';
+import { RestService } from '../rest/rest.service';
+import { RestServiceStub } from '../rest/rest.service.stub';
+import { ComponentStateService } from '../component-state/component-state.service';
+
+describe('FormPlayerService', () => {
+  let service: FormPlayerService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        FormPlayerService,
+        ComponentStateService,
+        { provide: RestService, useClass: RestServiceStub },
+      ]
+    });
+    service = TestBed.inject(FormPlayerService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

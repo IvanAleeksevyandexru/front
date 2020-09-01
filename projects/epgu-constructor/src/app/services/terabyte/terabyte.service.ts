@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ITerraFileOptions, ITerraUploadFileOptions } from '../../../interfaces/terabyte.interface';
 import { Observable } from 'rxjs';
-import { UploadedFile } from '../../screens/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { UploadedFile } from '../../screen/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 
 /**

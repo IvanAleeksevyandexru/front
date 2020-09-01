@@ -1,0 +1,6 @@
+<ndc-dynamic
+  *ngIf="!constructorService.isLoading"
+  [ndcDynamicComponent]="screenComponent"
+  [ndcDynamicOutputs]="screenOutputs"
+></ndc-dynamic>
+<epgu-constructor-modal-container></epgu-constructor-modal-container>
