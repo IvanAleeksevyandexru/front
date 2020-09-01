@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConstructorService } from '../../../../services/constructor/constructor.service';
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
@@ -8,46 +9,58 @@ import { ConstructorService } from '../../../../services/constructor/constructor
   providers: [ConstructorService],
 })
 export class RepeatableFieldsComponent implements OnInit {
-  components = []; // TODO указать тип
+  objectKeys = Object.keys;
+  componentId;
 
+  /**
+   * Словарь для хранения массива компонентов
+   */
+  screens: { [key: string]: any };
   propData; // TODO указать тип
-  screens = []; // TODO указать тип
-  screenData = []; // TODO указать тип
+
   get data() {
     return this.propData;
   }
   @Input() set data(data) {
     this.propData = data;
-    this.screens.push(data.components[0].attrs.components);
+    this.initVariable();
+    this.screens[this.getId()] = data.components[0].attrs.components;
   }
   @Output() nextStepEvent = new EventEmitter();
-  @Output() prevStepEvent = new EventEmitter();
 
-  constructor(public constructorService: ConstructorService) {}
+  /**
+   * Генерирует уникальный идентификатор массива компонентов для {@link screens}
+   */
+  // eslint-disable-next-line
+  getId = () => (this.componentId += 1);
+
+  constructor(
+    private componentStateService: ComponentStateService,
+    public constructorService: ConstructorService,
+  ) {}
 
   ngOnInit(): void {}
 
-  duplicateScreen() {
-    this.screens.push(this.data.components[0].attrs.components);
+  private initVariable() {
+    this.screens = {};
+    this.componentId = 0;
+    this.componentStateService.state = {};
   }
 
-  changeComponentsList(state, index) {
-    this.screenData[index] = state;
-    console.log(state, index, this.screenData);
+  duplicateScreen() {
+    this.screens[this.getId()] = this.data.components[0].attrs.components;
+  }
+
+  changeComponentList({ value }, screenKey) {
+    this.componentStateService.state[screenKey] = value;
   }
 
   nextScreen() {
-    const responseData = {};
-    const dataToSend = [...this.screenData];
+    this.nextStepEvent.emit();
+  }
 
-    Object.keys(dataToSend).forEach((key) => {
-      // if (!dataToSend[key].valid) return; // TODO: add user-friendly validation logic
-
-      responseData[key] = {
-        visited: true,
-        value: JSON.stringify(dataToSend[key] || {}),
-      };
-    });
-    this.nextStepEvent.emit(responseData);
+  removeItem(key: string) {
+    delete this.screens[key];
+    delete this.componentStateService.state[key];
   }
 }

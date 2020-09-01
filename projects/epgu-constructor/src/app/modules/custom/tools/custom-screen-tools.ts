@@ -1,9 +1,13 @@
 import { ListItem } from 'epgu-lib';
 import {
   CustomComponentDictionaryState, CustomComponentDropDownItemList,
-  CustomComponentInterface
+  CustomComponentInterface, CustomComponentState
 } from '../../../../interfaces/custom-component.interface';
 import { DictionaryItem } from '../../../../interfaces/dictionary-options.interface';
+import { DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
+import * as moment_ from 'moment';
+const moment = moment_;
+
 
 
 export enum CUSTOM_COMPONENT_ITEM_TYPE {
@@ -13,7 +17,6 @@ export enum CUSTOM_COMPONENT_ITEM_TYPE {
   HiddenLookup = 'HiddenLookup',
   HiddenInput = 'HiddenInput',
   DropDown = 'DropDown',
-  ForeignCitizenship = 'ForeignCitizenship',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
   RadioInput = 'RadioInput',
@@ -93,4 +96,74 @@ export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<
       compare: () => false,
     };
   });
+}
+
+export function calcDependedComponent(
+  component: CustomComponentInterface,
+  state: CustomComponentState,
+  components: Array<CustomComponentInterface>) {
+  const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
+  // TODO добавить возможность зависить от нескольких полей
+  const dependentComponents = components.filter((item) =>
+    isComponentDependOn(item.attrs?.ref),
+  );
+
+  dependentComponents.forEach((dependentComponent) => {
+    if (likeDictionary(component.type)) {
+      const dictionaryOfTheDependentComponent: DictionaryItem = state[component.id]?.value;
+
+      // TODO Временный hardcode;
+      state[dependentComponent.id].isShow =
+        // TODO добавить возможность зависить от нескольких полей
+        dependentComponent.attrs.ref[0].val === dictionaryOfTheDependentComponent.value;
+    }
+  });
+}
+
+export function CheckInputValidationComponentList(value: string, component: CustomComponentInterface): number {
+  const regExpArr = component?.attrs?.validation?.map((item) => {
+    try {
+      return new RegExp(item.value);
+    } catch {
+      console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
+      return new RegExp(/.*/);
+    }
+  });
+
+  let result = -1; // if result === -1 input value is considered valid
+
+  if (regExpArr) {
+    regExpArr.every((regExp, index) => {
+      if (!regExp.test(value)) {
+        result = index;
+        return false;
+      }
+      return true;
+    });
+  }
+
+  return result;
+}
+
+export function getInitStateItemComponentList(component: CustomComponentInterface) {
+  const { value } = component;
+  const hasRelatedRef = component.attrs.ref?.length;
+
+  let valueFormatted: string | Date;
+  switch (component.type) {
+    case CUSTOM_COMPONENT_ITEM_TYPE.DateInput:
+      valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate() || moment().toDate();
+      break;
+    default:
+      valueFormatted = value;
+      break;
+  }
+
+  return {
+    valid: false,
+    errorMessage: '',
+    value: valueFormatted,
+    component,
+    isShow: !hasRelatedRef,
+  };
 }

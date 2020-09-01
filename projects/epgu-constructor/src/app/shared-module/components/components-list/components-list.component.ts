@@ -8,18 +8,14 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-import * as moment_ from 'moment';
-import { DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
+
 import {
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
   CustomComponentInterface,
   CustomComponentState,
 } from '../../../../interfaces/custom-component.interface';
-import {
-  DictionaryItem,
-  DictionaryResponse,
-} from '../../../../interfaces/dictionary-options.interface';
+import { DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
 import {
   CUSTOM_COMPONENT_ITEM_TYPE,
   getCustomScreenDictionaryFirstState,
@@ -27,11 +23,12 @@ import {
   adaptiveDropDown,
   likeDictionary,
   isDropDown,
+  calcDependedComponent,
+  CheckInputValidationComponentList,
+  getInitStateItemComponentList,
 } from '../../../modules/custom/tools/custom-screen-tools';
 import { RestService } from '../../../services/rest/rest.service';
 import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
-
-const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -44,7 +41,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
 
   // <-- variables
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  state: { [key: string]: CustomComponentState } = {};
+  state: CustomComponentState = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
   dropDown: { [key: string]: CustomComponentDropDownStateInterface } = {};
 
@@ -110,7 +107,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
     this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
-    this.calcDependedComponent(component);
+    calcDependedComponent(component, this.state, this.components);
     this.emmitChanges();
   }
 
@@ -134,34 +131,9 @@ export class ComponentsListComponent implements OnInit, OnChanges {
 
   inputChange($event: Event, component: CustomComponentInterface) {
     const { value } = $event.target as HTMLInputElement;
-    const inputValidationResult = this.checkInputValidation(value, component);
+    const inputValidationResult = CheckInputValidationComponentList(value, component);
 
     this.setValidationState(inputValidationResult, component.id, value);
-  }
-
-  checkInputValidation(value: string, component: CustomComponentInterface): number {
-    const regExpArr = component?.attrs?.validation?.map((item) => {
-      try {
-        return new RegExp(item.value);
-      } catch {
-        console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
-        return new RegExp(/.*/);
-      }
-    });
-
-    let result = -1; // if result === -1 input value is considered valid
-
-    if (regExpArr) {
-      regExpArr.every((regExp, index) => {
-        if (!regExp.test(value)) {
-          result = index;
-          return false;
-        }
-        return true;
-      });
-    }
-
-    return result;
   }
 
   loadDictionary(dictionaryName: string, component: CustomComponentInterface) {
@@ -210,45 +182,8 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   private initState(component: CustomComponentInterface) {
-    const { id, value } = component;
-    const hasRelatedRef = component.attrs.ref?.length;
-
-    let valueFormatted: string | Date;
-    switch (component.type) {
-      case CUSTOM_COMPONENT_ITEM_TYPE.DateInput:
-        valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate() || moment().toDate();
-        break;
-      default:
-        valueFormatted = value;
-        break;
-    }
-
-    this.state[id] = {
-      valid: false,
-      errorMessage: '',
-      value: valueFormatted,
-      component,
-      isShow: !hasRelatedRef,
-    };
+    this.state[component.id] = getInitStateItemComponentList(component);
     this.emmitChanges();
-  }
-
-  private calcDependedComponent(component: CustomComponentInterface) {
-    const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
-    // TODO добавить возможность зависить от нескольких полей
-    const dependentComponents = this.components.filter((item) =>
-      isComponentDependOn(item.attrs?.ref),
-    );
-
-    dependentComponents.forEach((dependentComponent) => {
-      if (likeDictionary(component.type)) {
-        const dictionaryOfTheDependentComponent: DictionaryItem = this.state[component.id]?.value;
-
-        // TODO Временный hardcode;
-        this.state[dependentComponent.id].isShow =
-          dependentComponent.attrs.ref[0].val === dictionaryOfTheDependentComponent.value; // TODO добавить возможность зависить от нескольких полей
-      }
-    });
   }
 
   selectDropDown($event: any, componentData: CustomComponentInterface) {
@@ -257,6 +192,19 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   emmitChanges() {
-    this.changes.emit(this.state);
+    const prepareStateForSending = this.getPreparedStateForSending();
+    this.changes.emit(prepareStateForSending);
+  }
+
+  /**
+   * Подгатавливаются данные для пробраса на верх.
+   * Родительскому компоненту нужны данные компонента и состояние валидности.
+   */
+  private getPreparedStateForSending() {
+    return Object.entries(this.state).reduce((acc, [key, val]) => {
+      const { value, valid } = val;
+      acc[key] = { value, valid };
+      return acc;
+    }, {});
   }
 }
