@@ -6,6 +6,7 @@ import { ComponentStateService } from '../component-state/component-state.servic
 import { ScreenData } from '../../../interfaces/screen.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';
+import { NavigationService } from '../../shared/service/navigation/navigation.service';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -36,8 +37,7 @@ export class FormPlayerService {
     public restService: RestService,
     private screenService: ScreenService,
     private componentStateService: ComponentStateService,
-    ) {
-  }
+  ) {}
 
   initData(): void {
     this.updateLoading(true);

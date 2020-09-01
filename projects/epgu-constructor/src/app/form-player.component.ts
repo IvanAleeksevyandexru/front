@@ -1,8 +1,12 @@
 import { Component, ComponentRef, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
 import { SCREEN_TYPE } from '../constant/global';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { NextStepEventData, PrevStepEventData } from '../interfaces/step-event-data.interface';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
+import { NavigationService } from './shared/service/navigation/navigation.service';
+import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -15,18 +19,22 @@ export class FormPlayerComponent implements OnInit {
   componentRef: ComponentRef<Screen>;
   public readonly constructorComponentType = SCREEN_TYPE;
 
-  screenOutputs = {
-    nextStepEvent: (nextStepEventData: NextStepEventData) => this.nextStep(nextStepEventData),
-    prevStepEvent: (prevStepEventData: PrevStepEventData) => this.prevStep(prevStepEventData),
-  };
-
   constructor(
-    readonly constructorService: FormPlayerService,
-    readonly screenResolverService: ScreenResolverService,
+    public constructorService: FormPlayerService,
+    private screenResolverService: ScreenResolverService,
+    private navigationService: NavigationService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
   ngOnInit(): void {
     this.constructorService.initData();
+    this.navigationService.nextStep$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((data: NextStepEventData) => this.nextStep(data));
+
+    this.navigationService.prevStep$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((data: PrevStepEventData) => this.prevStep(data));
   }
 
   // TODO: remove this to FormPlayerService when finish of splitting app's layers refactor
@@ -47,10 +55,11 @@ export class FormPlayerComponent implements OnInit {
   }
 
   nextStep(nextStepEventData?: NextStepEventData) {
+    console.log('nextStepEventData', nextStepEventData);
     this.constructorService.nextStep(nextStepEventData?.data, nextStepEventData?.options);
   }
 
-  prevStep(data?: any) {
-    this.constructorService.prevStep(data);
+  prevStep(prevStepEventData?: PrevStepEventData) {
+    this.constructorService.prevStep(prevStepEventData?.data);
   }
 }

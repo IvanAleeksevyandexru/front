@@ -1,13 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UNIQUE_COMPONENT_NAME } from '../../../constant/global';
-import { ScreenOutputs, ScreenData } from '../../../interfaces/screen.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
-import {
-  NextStepEventData,
-  PrevStepEventData,
-} from '../../../interfaces/step-event-data.interface';
 import { ScreenService } from '../screen.service';
 
 @Component({
@@ -16,22 +12,19 @@ import { ScreenService } from '../screen.service';
   styleUrls: ['./unique-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class UniqueScreenComponent implements ScreenOutputs, OnInit {
+export class UniqueScreenComponent implements OnInit, Screen {
   // <-- constant
   uniqueComponentName = UNIQUE_COMPONENT_NAME;
   screenData: ScreenData;
 
-  @Output() nextStepEvent = new EventEmitter<NextStepEventData>();
-  @Output() prevStepEvent = new EventEmitter<PrevStepEventData>();
-
   constructor(
-    private navService: NavigationService,
+    private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {
-    this.navService.clickToBack$
+    this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
 
@@ -42,11 +35,12 @@ export class UniqueScreenComponent implements ScreenOutputs, OnInit {
       });
   }
 
-  prevStep() {
-    this.prevStepEvent.emit();
+  prevStep(): void {
+    this.navigationService.prevStep.next();
   }
 
-  nextStep(data?) {
-    this.nextStepEvent.emit({ data });
+  // TODO: add NextStepData typing support
+  nextStep(data?): void {
+    this.navigationService.nextStep.next({ data });
   }
 }

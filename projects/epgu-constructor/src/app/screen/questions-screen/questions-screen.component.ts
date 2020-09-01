@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { QuestionsComponentActionsInterface } from '../../../interfaces/question-block.interface';
 import { FormPlayerService } from '../../services/form-player/form-player.service';
@@ -7,12 +7,9 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { QuestionScreenModalParams } from './questions-screen.constant';
-import { ScreenOutputs, ScreenData } from '../../../interfaces/screen.interface';
-import {
-  NextStepEventData,
-  PrevStepEventData,
-} from '../../../interfaces/step-event-data.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
+import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -20,7 +17,7 @@ import { ScreenService } from '../screen.service';
   styleUrls: ['./questions-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class QuestionsScreenComponent implements OnInit, ScreenOutputs {
+export class QuestionsScreenComponent implements OnInit, Screen {
   isCycledFields = false;
   cycledValues: Array<any>;
   screenData: ScreenData;
@@ -29,18 +26,15 @@ export class QuestionsScreenComponent implements OnInit, ScreenOutputs {
     ?.currentCycledFields;
   private readonly cycledFieldsKeys = Object.keys(this.currentCycledFields || {});
 
-  @Output() nextStepEvent = new EventEmitter<NextStepEventData>();
-  @Output() prevStepEvent = new EventEmitter<PrevStepEventData>();
-
   constructor(
     private modalService: ModalService,
-    private navService: NavigationService,
+    private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
     public constructorService: FormPlayerService, // TODO: remove this from this layer
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     const currentCycledFields = this.currentCycledFields || {};
     this.isCycledFields = !!Object.keys(currentCycledFields).length;
     if (this.isCycledFields && typeof currentCycledFields === 'object') {
@@ -49,9 +43,9 @@ export class QuestionsScreenComponent implements OnInit, ScreenOutputs {
       ];
     }
 
-    this.navService.clickToBack$
+    this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.goPrevStepEvent());
+      .subscribe(() => this.prevStep());
 
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -60,8 +54,12 @@ export class QuestionsScreenComponent implements OnInit, ScreenOutputs {
       });
   }
 
-  goPrevStepEvent() {
-    this.prevStepEvent.emit();
+  prevStep(): void {
+    this.navigationService.prevStep.next();
+  }
+
+  nextStep(data?: NextStepEventData): void {
+    this.navigationService.nextStep.next(data);
   }
 
   answerChoose(answer: QuestionsComponentActionsInterface): void {
@@ -79,10 +77,10 @@ export class QuestionsScreenComponent implements OnInit, ScreenOutputs {
       data = answer.value;
     }
 
-    this.nextStepEvent.emit({ data });
+    this.nextStep({ data });
   }
 
-  clickToInnerHTML($event: MouseEvent) {
+  clickToInnerHTML($event: MouseEvent): void {
     const targetElementId = ($event.target as HTMLElement).id;
     const { clarifications = {} } = this.screenData.componentData.components[0]?.attrs as any;
     const targetElementModalData = clarifications[targetElementId];
@@ -91,7 +89,7 @@ export class QuestionsScreenComponent implements OnInit, ScreenOutputs {
     }
   }
 
-  showModal(params) {
+  showModal(params): void {
     this.modalService.openModal(ConfirmationModalComponent, {
       ...QuestionScreenModalParams,
       ...params,

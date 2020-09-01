@@ -1,16 +1,13 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../constant/global';
 import { FormPlayerService } from '../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
-import { ScreenOutputs, ScreenData } from '../../../interfaces/screen.interface';
-import {
-  NextStepEventData,
-  PrevStepEventData,
-} from '../../../interfaces/step-event-data.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
+import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
 
 const moment = moment_;
 @Component({
@@ -19,14 +16,11 @@ const moment = moment_;
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class CustomScreenComponent implements OnInit, ScreenOutputs {
+export class CustomScreenComponent implements OnInit, Screen {
   dataToSend: any;
   isCycledFields: boolean;
   cycledValues: any;
   screenData: ScreenData;
-
-  @Output() nextStepEvent = new EventEmitter<NextStepEventData>();
-  @Output() prevStepEvent = new EventEmitter<PrevStepEventData>();
 
   private readonly cycledFieldsKeys = Object.keys(
     this.constructorService.response?.scenarioDto?.currentCycledFields,
@@ -34,13 +28,14 @@ export class CustomScreenComponent implements OnInit, ScreenOutputs {
   private readonly flattenCycledFieldsValues = { ...this.cycledValues };
 
   constructor(
-    private navService: NavigationService,
+    private navigationService: NavigationService,
     public constructorService: FormPlayerService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    // TODO: move this logic to method
     const currentCycledFields = this.constructorService.response?.scenarioDto?.currentCycledFields;
     this.isCycledFields = !!Object.keys(currentCycledFields).length;
     if (this.isCycledFields) {
@@ -54,7 +49,7 @@ export class CustomScreenComponent implements OnInit, ScreenOutputs {
       });
     }
 
-    this.navService.clickToBack$
+    this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
 
@@ -65,15 +60,20 @@ export class CustomScreenComponent implements OnInit, ScreenOutputs {
       });
   }
 
-  prevStep() {
-    this.prevStepEvent.emit();
+  prevStep(): void {
+    this.navigationService.prevStep.next();
   }
 
-  nextScreen() {
+  nextStep(data?: NextStepEventData): void {
+    this.navigationService.nextStep.next(data);
+  }
+
+  nextScreen(): void {
     const data = this.getPrepareResponseData(this.dataToSend);
-    this.nextStepEvent.emit({ data });
+    this.nextStep({ data });
   }
 
+  // TODO: not clear what to do this logic, named set, but return value.
   setState(changes) {
     let stateData = {};
     if (this.isCycledFields) {
@@ -92,7 +92,7 @@ export class CustomScreenComponent implements OnInit, ScreenOutputs {
     return stateData;
   }
 
-  changeComponentsList(changes) {
+  changeComponentsList(changes): void {
     const responseData = this.setState(changes);
     this.dataToSend = responseData;
   }

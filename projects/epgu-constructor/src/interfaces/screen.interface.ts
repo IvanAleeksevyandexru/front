@@ -1,6 +1,6 @@
 import { DisplayInterface, Gender } from './epgu.service.interface';
-import { EventEmitter } from '@angular/core';
 import { NextStepEventData, PrevStepEventData } from './step-event-data.interface';
+
 
 export interface ScreenData {
   componentData: DisplayInterface,
@@ -8,7 +8,8 @@ export interface ScreenData {
   gender?: Gender,
 }
 
-export interface ScreenOutputs {
-  nextStepEvent: EventEmitter<NextStepEventData>,
-  prevStepEvent: EventEmitter<PrevStepEventData>,
+export interface Screen {
+  screenData: ScreenData,
+  prevStep: (data?: PrevStepEventData) => void,
+  nextStep: (data?: NextStepEventData) => void,
 }

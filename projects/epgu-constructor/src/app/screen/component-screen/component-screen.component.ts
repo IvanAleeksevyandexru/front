@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENT_NAME } from '../../../constant/global';
@@ -6,11 +6,7 @@ import { FormPlayerService } from '../../services/form-player/form-player.servic
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
-import { ScreenOutputs, ScreenData } from '../../../interfaces/screen.interface';
-import {
-  NextStepEventData,
-  PrevStepEventData,
-} from '../../../interfaces/step-event-data.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
 
 interface ComponentSetting {
@@ -24,7 +20,7 @@ interface ComponentSetting {
   styleUrls: ['./component-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ComponentScreenComponent implements OnInit, ScreenOutputs {
+export class ComponentScreenComponent implements OnInit, Screen {
   // <-- constant
   screenComponentName = SCREEN_COMPONENT_NAME;
 
@@ -38,12 +34,9 @@ export class ComponentScreenComponent implements OnInit, ScreenOutputs {
   isCycledFields: boolean;
   screenData: ScreenData;
 
-  @Output() nextStepEvent = new EventEmitter<NextStepEventData>();
-  @Output() prevStepEvent = new EventEmitter<PrevStepEventData>();
-
   constructor(
     public constructorService: FormPlayerService,
-    private navService: NavigationService,
+    private navigationService: NavigationService,
     public componentStateService: ComponentStateService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
@@ -56,7 +49,7 @@ export class ComponentScreenComponent implements OnInit, ScreenOutputs {
       this.constructorService.response?.scenarioDto?.currentCycledFields,
     ).length;
 
-    this.navService.clickToBack$
+    this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
 
@@ -68,7 +61,7 @@ export class ComponentScreenComponent implements OnInit, ScreenOutputs {
   }
 
   prevStep(): void {
-    this.prevStepEvent.emit();
+    this.navigationService.prevStep.next();
   }
 
   nextStep() {
@@ -83,7 +76,7 @@ export class ComponentScreenComponent implements OnInit, ScreenOutputs {
       data = this.componentStateService.state;
     }
 
-    this.nextStepEvent.emit({ data });
+    this.navigationService.nextStep.next({ data });
   }
 
   changedComponentData(value: any): void {

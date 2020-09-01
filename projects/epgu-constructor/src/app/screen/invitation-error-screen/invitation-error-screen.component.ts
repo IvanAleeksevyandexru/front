@@ -1,15 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENT_NAME } from '../../../constant/global';
 import { FormPlayerService } from '../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
-import { ScreenOutputs, ScreenData } from '../../../interfaces/screen.interface';
-import {
-  NextStepEventData,
-  PrevStepEventData,
-} from '../../../interfaces/step-event-data.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
+import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
 
 @Component({
   selector: 'epgu-constructor-invitation-screen',
@@ -17,22 +14,19 @@ import { ScreenService } from '../screen.service';
   styleUrls: ['./invitation-error-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class InvitationErrorScreenComponent implements OnInit, ScreenOutputs {
+export class InvitationErrorScreenComponent implements OnInit, Screen {
   typeComponent = SCREEN_COMPONENT_NAME;
   screenData: ScreenData;
 
-  @Output() nextStepEvent = new EventEmitter<NextStepEventData>();
-  @Output() prevStepEvent = new EventEmitter<PrevStepEventData>();
-
   constructor(
-    private navService: NavigationService,
+    private navigationService: NavigationService,
     public constructorService: FormPlayerService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {
-    this.navService.clickToBack$
+    this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
 
@@ -43,12 +37,16 @@ export class InvitationErrorScreenComponent implements OnInit, ScreenOutputs {
       });
   }
 
-  prevStep() {
-    this.prevStepEvent.emit();
+  prevStep(): void {
+    this.navigationService.prevStep.next();
   }
 
-  sendEmail(email: string) {
+  nextStep(data?: NextStepEventData): void {
+    this.navigationService.nextStep.next(data);
+  }
+
+  sendEmail(email: string): void {
     const nextStepData = { data: email, options: { componentId: 'errorScr' } };
-    this.nextStepEvent.emit(nextStepData);
+    this.nextStep(nextStepData);
   }
 }
