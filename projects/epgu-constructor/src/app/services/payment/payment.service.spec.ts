@@ -6,6 +6,7 @@ import { ConstructorConfigService } from '../config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
 import { RestService } from '../rest/rest.service';
 import { ConstructorService } from '../constructor/constructor.service';
+import { ComponentStateService } from '../component-state/component-state.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -20,6 +21,7 @@ describe('PaymentService', () => {
         PaymentService,
         ConstructorConfigService,
         ConstructorService,
+        ComponentStateService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });
