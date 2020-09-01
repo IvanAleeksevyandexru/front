@@ -1,4 +1,4 @@
-@import "src/styles/core";
+@import 'src/styles/core';
 
 :host {
   display: block;
@@ -19,22 +19,25 @@
   }
 
   li {
-       display: flex;
+    position: relative;
+    padding-left: 16px;
 
-      &:not(:first-child) {
-        margin-top: 16px;
-      }
-
-      &::before {
-        content: '';
-        display: block;
-        width: 8px;
-        height: 8px;
-        margin-top: 5px;
-        margin-right: 12px;
-        background: $color-gosblue;
-        flex-shrink: 0;
-        border-radius: 50%;
-      }
+    &:not(:first-child) {
+      margin-top: 16px;
     }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      display: block;
+      width: 8px;
+      height: 8px;
+      margin-top: 5px;
+      margin-right: 12px;
+      background: $color-gosblue;
+      flex-shrink: 0;
+      border-radius: 50%;
+    }
+  }
 }

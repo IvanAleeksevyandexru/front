@@ -67,13 +67,19 @@
   strike {
     color: $color-text-helper;
   }
+  
+  blockquote {
+    background: rgba(11, 64, 179, 0.1);
+    border: 1px solid $color-button-hit;
+    box-sizing: border-box;
+    border-radius: $border-md;
+  }
 
   .divider {
     border: 0;
     background: $color-devider;
     height: 1px;
   }
-
   // Implement styleguide for all library's components
   @import "components";
 }
