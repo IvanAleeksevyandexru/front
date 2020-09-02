@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface, Gender, ResponseInterface, ScenarioDto } from '../../../interfaces/epgu.service.interface';
-import { ComponentStateService } from '../component-state/component-state.service';
+import { SCREEN_TYPE } from '../constant/global';
+import { DisplayInterface, Gender, ResponseInterface, ScenarioDto } from '../interfaces/epgu.service.interface';
+import { ComponentStateService } from './services/component-state/component-state.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ScreenService } from '../../screen/screen.service';
-import { RestService } from '../rest/rest.service';
+import { ScreenService } from './screen/screen.service';
+import { RestService } from './services/rest/rest.service';
 
 interface SendDataOptionsInterface {
   componentId?: string;

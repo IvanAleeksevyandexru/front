@@ -1,7 +1,7 @@
 import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { FormPlayerService } from './services/form-player/form-player.service';
+import { FormPlayerService } from './form-player.service';
 import { NextStepEventData, PrevStepEventData } from '../interfaces/step-event-data.interface';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { NavigationService } from './shared/service/navigation/navigation.service';

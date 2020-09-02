@@ -4,8 +4,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EpguLibModule } from 'epgu-lib';
 
 import { FormPlayerComponent } from './form-player.component';
-import { FormPlayerService } from './services/form-player/form-player.service';
-import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
+import { FormPlayerService } from './form-player.service';
+import { FormPlayerServiceStub } from './form-player.service.stub';
 import { NavigationService } from './shared/service/navigation/navigation.service';
 import { ModalContainerComponent } from './shared/components/modal-container/modal-container.component';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
