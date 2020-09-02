@@ -4,8 +4,9 @@ import { NextStepEventData, PrevStepEventData } from './step-event-data.interfac
 
 export interface ScreenData {
   componentData: DisplayInterface,
-  errors: object,
+  errors?: object,
   gender?: Gender,
+  currentCycledFields?: object
 }
 
 export interface Screen {

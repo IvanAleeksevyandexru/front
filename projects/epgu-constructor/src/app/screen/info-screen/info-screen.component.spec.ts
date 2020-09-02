@@ -1,32 +1,34 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface } from '../../../interfaces/epgu.service.interface';
-import { FormPlayerService } from '../../services/form-player/form-player.service';
-import { FormPlayerServiceStub } from '../../services/form-player/form-player.service.stub';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { InfoScreenComponent } from './info-screen.component';
+import { ScreenService } from '../screen.service';
+import { ScreenData } from '../../../interfaces/screen.interface';
 
 
 describe('InfoScreenComponent', () => {
   let component: InfoScreenComponent;
   let fixture: ComponentFixture<InfoScreenComponent>;
-  const mockData: DisplayInterface = {
-    components: [
-      {
-        attrs: {},
-        type: '',
-        id: '',
-        label: '',
-        value: ''
-      }
-    ],
-    header: '',
-    id: '',
-    name: '',
-    submitLabel: '',
-    type: SCREEN_TYPE.COMPONENT
+  let screenService: ScreenService;
+  const screenDataMock: ScreenData = {
+    componentData: {
+      components: [
+        {
+          attrs: {},
+          type: '',
+          id: '',
+          label: '',
+          value: ''
+        }
+      ],
+      header: '',
+      id: '',
+      name: '',
+      submitLabel: '',
+      type: SCREEN_TYPE.COMPONENT
+    }
   };
 
   beforeEach(async(() => {
@@ -36,16 +38,17 @@ describe('InfoScreenComponent', () => {
       providers: [
         NavigationService,
         UnsubscribeService,
-        { provide: FormPlayerService, useClass: FormPlayerServiceStub }
+        ScreenService
       ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
     fixture = TestBed.createComponent(InfoScreenComponent);
     component = fixture.componentInstance;
-    component.data = mockData;
+    screenService.updateScreenData(screenDataMock);
     fixture.detectChanges();
   });
 

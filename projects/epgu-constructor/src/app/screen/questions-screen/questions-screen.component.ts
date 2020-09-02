@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { QuestionsComponentActionsInterface } from '../../../interfaces/question-block.interface';
-import { FormPlayerService } from '../../services/form-player/form-player.service';
 import { ModalService } from '../../services/modal/modal.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
@@ -22,8 +21,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   cycledValues: Array<any>;
   screenData: ScreenData;
 
-  private readonly currentCycledFields = this.constructorService.response?.scenarioDto
-    ?.currentCycledFields;
+  private readonly currentCycledFields = this.screenData?.currentCycledFields;
   private readonly cycledFieldsKeys = Object.keys(this.currentCycledFields || {});
 
   constructor(
@@ -31,7 +29,6 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
-    public constructorService: FormPlayerService, // TODO: remove this from this layer
   ) {}
 
   ngOnInit(): void {

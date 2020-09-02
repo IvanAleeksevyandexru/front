@@ -11,12 +11,17 @@ import { ScreenContainerComponent } from '../../shared/components/screen-contain
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { QuestionsScreenComponent } from './questions-screen.component';
+import { ScreenService } from '../screen.service';
+import { ModalService } from '../../services/modal/modal.service';
+import { ModalServiceStub } from '../../services/modal/modal.service.stub';
+import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 
 describe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
   let fixture: ComponentFixture<QuestionsScreenComponent>;
   let navService: NavigationService;
   let constructorService: FormPlayerService;
+  let screenService: ScreenService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
   const mockData: QuestionsDisplayInterface = {
     components: [],
@@ -39,7 +44,9 @@ describe('QuestionsScreenComponent', () => {
       ],
       providers: [
         NavigationService,
-        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
+        ScreenService,
+        UnsubscribeService,
+        { provide: ModalService, useClass: ModalServiceStub },
       ]
     })
     .compileComponents();

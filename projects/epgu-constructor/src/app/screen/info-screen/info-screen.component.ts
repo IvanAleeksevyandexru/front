@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { INFO_SCREEN_COMPONENT } from '../../../constant/global';
 import { Screen, ScreenData } from '../../../interfaces/screen.interface';
-import { FormPlayerService } from '../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
@@ -23,7 +22,6 @@ export class InfoScreenComponent implements Screen, OnInit {
 
   constructor(
     private navigationService: NavigationService,
-    public constructorService: FormPlayerService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
   ) {}

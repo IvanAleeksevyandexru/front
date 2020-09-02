@@ -18,7 +18,7 @@
     </div>
 
     <div class="info__footer info-footer">
-      <lib-button [showLoader]="constructorService.isLoading" (click)="nextStep()" class="info-footer__submit">
+      <lib-button [showLoader]="formPlayerService.isLoading" (click)="nextStep()" class="info-footer__submit">
         {{screenData.componentData?.submitLabel || 'Продолжить'}}
       </lib-button>
     </div>
