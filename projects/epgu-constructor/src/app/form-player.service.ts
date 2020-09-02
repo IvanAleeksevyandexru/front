@@ -129,6 +129,7 @@ export class FormPlayerService {
     this.responseStore = response;
     const { display, errors, gender } = response.scenarioDto;
     this.componentId = display.components[0].id;
+    this.screenType = display.type;
 
     const currentCycledFields = response.scenarioDto?.currentCycledFields;
     const applicantAnswers = response.scenarioDto?.applicantAnswers;
