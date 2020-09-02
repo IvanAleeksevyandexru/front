@@ -13,20 +13,11 @@ interface SendDataOptionsInterface {
 
 @Injectable()
 export class FormPlayerService {
-  // TODO: remove unused fields, make used fields private, use reactive way
-  // <-- variable
-  response: ResponseInterface;
-  scenarioDto: ScenarioDto;
+  responseStore: ResponseInterface;
   componentId: string;
-  componentType: string;
+  screenType: string;
   playerLoaded = false;
   isLoading = false;
-  isError = false;
-
-  // TODO: remove when complete refactoring of screens
-  componentData: DisplayInterface;
-  componentErrors: object;
-  gender: Gender;
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
@@ -37,7 +28,7 @@ export class FormPlayerService {
   constructor(
     public restService: RestService,
     private screenService: ScreenService,
-    private componentStateService: ComponentStateService,
+    private componentStateService: ComponentStateService, // TODO: check service
   ) {}
 
   initData(): void {
@@ -50,13 +41,13 @@ export class FormPlayerService {
   }
 
   getScreenType(): string {
-    return this.componentData?.type;
+    return this.screenType;
   }
 
   nextStep(data?: any, options?: SendDataOptionsInterface): void {
     this.updateLoading(true);
     this.updateRequest(data, options);
-    this.restService.getNextStep(this.response).subscribe(
+    this.restService.getNextStep(this.responseStore).subscribe(
       (response) => {
         // TODO возможно стоит обернуть в pipe и делоть throwError
         if (response?.scenarioDto?.errors) {
@@ -78,7 +69,7 @@ export class FormPlayerService {
   prevStep(data?: any): void {
     this.updateLoading(true);
     this.updateRequest(data);
-    this.restService.getPrevStep(this.response).subscribe(
+    this.restService.getPrevStep(this.responseStore).subscribe(
       (response) => {
         if (response?.scenarioDto?.errors) {
           this.sendDataError(response);
@@ -95,14 +86,14 @@ export class FormPlayerService {
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}): void {
     const componentId = options.componentId || this.componentId;
-    const isCycledFields = !!Object.keys(this.response?.scenarioDto?.currentCycledFields).length;
-    this.response.scenarioDto.currentValue = {};
+    const isCycledFields = !!Object.keys(this.responseStore?.scenarioDto?.currentCycledFields).length;
+    this.responseStore.scenarioDto.currentValue = {};
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
-    if (this.componentData.type === SCREEN_TYPE.CUSTOM || isCycledFields) {
-      this.response.scenarioDto.currentValue = data;
+    if (this.screenType === SCREEN_TYPE.CUSTOM || isCycledFields) {
+      this.responseStore.scenarioDto.currentValue = data;
     } else {
-      this.response.scenarioDto.currentValue[componentId] = {
+      this.responseStore.scenarioDto.currentValue[componentId] = {
         visited: true,
         value: data || '',
       };
@@ -111,12 +102,11 @@ export class FormPlayerService {
 
   sendDataSuccess(response): void {
     console.log('----- SET DATA ---------');
-    console.log('request', this.response);
+    console.log('request', this.responseStore);
     this.initResponse(response);
   }
 
   sendDataError(response): void {
-    this.isError = true;
     this.updateLoading(false);
     console.error('----- ERROR DATA ---------');
     if (response.scenarioDto?.errors) {
@@ -136,16 +126,11 @@ export class FormPlayerService {
 
     this.componentStateService.state = '';
     this.componentStateService.isValid = true;
-    this.response = response;
-    this.scenarioDto = response.scenarioDto;
-    const { display, errors, gender } = response.scenarioDto;
 
+    this.responseStore = response;
+    const { display, errors, gender } = response.scenarioDto;
     this.componentId = display.components[0].id;
-    this.componentType = display.components[0].type;
-    this.componentData = display;
-    this.componentErrors = errors;
-    this.gender = gender;
-    this.isError = false;
+
     const currentCycledFields = response.scenarioDto?.currentCycledFields;
     const applicantAnswers = response.scenarioDto?.applicantAnswers;
     this.screenService.updateScreenData({
@@ -156,9 +141,10 @@ export class FormPlayerService {
       applicantAnswers: applicantAnswers ?? applicantAnswers
     });
     this.updatePlayerLoaded(true);
+
     console.log('----- GET DATA ---------');
     console.log('componentId:', this.componentId);
-    console.log('componentType:', this.componentType);
+    console.log('componentType:', display.components[0].type);
     console.log('initResponse:', response);
   }
 
