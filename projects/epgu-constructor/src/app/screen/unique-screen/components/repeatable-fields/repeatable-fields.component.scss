@@ -1,0 +1,54 @@
+@import "src/styles/core";
+
+.nav {
+  @include navigation-mt();
+}
+
+.cmp-group {
+  &__layer {
+    &:not(:last-child) {
+      margin-bottom: 25px;
+    }
+  }
+}
+
+.icon-close {
+  display: flex;
+  margin-left: auto;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+  @include tablets-up {
+    margin-top: 32px;
+  }
+  &__btns-group {
+    display: flex;
+    flex-flow: column;
+    & > * {
+      margin: 4px;
+    }
+  }
+  &__btn-submit {
+    width: auto;
+    &::ng-deep button {
+      width: inherit;
+      min-width: 100px;
+    }
+  }
+}
+
+.btn{
+  &__add {
+    padding: 15px;
+    border: 1px dashed $color-active-item;
+    box-sizing: border-box;
+    border-radius: 4px;
+    @include tablets-down {
+      width: 100%;
+    }
+  }
+}

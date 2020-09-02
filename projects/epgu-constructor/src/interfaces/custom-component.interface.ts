@@ -1,7 +1,9 @@
 import { ListItem } from 'epgu-lib';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../app/modules/custom/tools/custom-screen-tools';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../constant/global';
 import { DictionaryItem, DictionaryResponse } from './dictionary-options.interface';
 import { ComponentInterface, DisplayInterface } from './epgu.service.interface';
+
+export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
 export interface CustomComponentDictionaryState {
   loading: boolean,
@@ -15,6 +17,18 @@ export interface CustomComponentDictionaryState {
   selectedItem: DictionaryItem;
 }
 
+export interface CustomComponentDropDownStateInterface {
+  origin: CustomComponentDropDownItemList;
+  list: Array<Partial<ListItem>>;
+  selectedItem?: DictionaryItem;
+}
+
+export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
+export type CustomComponentDropDownItem = {
+  name: string;
+};
+
+
 
 /**
  * @property {Array<string>}ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
@@ -23,6 +37,7 @@ export interface CustomComponentDictionaryState {
  */
 export interface CustomComponentAttrInterface {
   [key:string]:any;
+  dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType: string;
   labelAttr: string;
   fields: Array<any>;
@@ -46,12 +61,19 @@ export interface CustomComponentAttrValidationInterface {
  * @property {string}errorMessage - сообщение для ощибки
  * @property {any}value - текущее значение
  */
-export interface CustomComponentState {
+export interface CustomComponentStateItem {
   valid: boolean;
   isShow: boolean;
   errorMessage: string;
   value: any;
   component: CustomComponentInterface
+}
+
+export interface CustomComponentOutputDataInterface {
+  [key: string]: {
+    value: string;
+    valid: boolean
+  }
 }
 
 /**

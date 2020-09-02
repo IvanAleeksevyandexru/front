@@ -4,7 +4,7 @@ export interface ConfirmUserDataInterface extends ComponentInterface{
   attrs: ConfirmUserDataAttrsInterface;
 }
 export interface ConfirmUserDataAttrsInterface {
-  fields: Array<ConfirmUserDataFieldsInterface>;
+  fields: Array<ConfirmUserDataFieldInterface>;
   actions: Array<ConfirmUserDataActionsInterface>;
 }
 
@@ -13,8 +13,17 @@ export interface ConfirmUserDataActionsInterface {
   method: string;
 }
 
-export interface ConfirmUserDataFieldsInterface {
+export interface ConfirmUserDataFieldInterface {
   fieldName: string;
   label: string;
 }
 
+export interface ConfirmUserDataAdaptiveFieldInterface {
+  label: string;
+  value: string;
+}
+
+export interface ConfirmUserDataFieldsStateInterface {
+  groupName: string;
+  list: Array<ConfirmUserDataAdaptiveFieldInterface>;
+}

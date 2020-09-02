@@ -1,0 +1,168 @@
+<epgu-constructor-screen-container class="employee-history">
+  <section class="employee-history__header" *ngIf="header">
+    <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
+  </section>
+  <section class="employee-history__addedGenerations"
+    *ngFor="let generation of employeeFormService.employeeHistory; let i = index">
+    <div class="employee-history__type">
+      <div>
+        <lib-radio *ngFor="let role of ds"
+                   [name]="i + '_typeGenerated'"
+                   [disabled]="true"
+                   [checked]="generation.type === role.type"
+                   [labelText]="role.label"
+                   [value]="role.type"
+        ></lib-radio>
+      </div>
+      <div class="employee-history__removeGeneration">
+        <button class="button-close" (click)="removeFormGroup(i)">
+          <div class="icon-close"></div>
+        </button>
+      </div>
+    </div>
+    <div class="employee-history__date">
+      <div>
+        <epgu-constructor-label [for]="i + '_fromGenerated'">Укажите дату (месяц, год)</epgu-constructor-label>
+        <lib-date-picker
+          [id]="i + '_fromGenerated'"
+          [disabled]="true"
+          [(ngModel)]="generation.from"
+        ></lib-date-picker>
+      </div>
+
+      <div>
+        <epgu-constructor-label [for]="i + '_toGenerated'">Укажите дату (месяц, год)</epgu-constructor-label>
+        <lib-date-picker
+          [id]="i + '_toGenerated'"
+          [disabled]="true"
+          [(ngModel)]="generation.to"
+        ></lib-date-picker>
+      </div>
+    </div>
+    <div class="employee-history__input" *ngIf="findData(generation.type)?.position as position">
+      <epgu-constructor-label [for]="i + '_position'">{{ position }}</epgu-constructor-label>
+      <lib-plain-input
+        [id]="i + '_position'"
+        [disabled]="true"
+        [(ngModel)]="generation.position"
+      ></lib-plain-input>
+    </div>
+    <div class="employee-history__input" *ngIf="findData(generation.type)?.place as place">
+      <epgu-constructor-label [for]="i + '_place'">{{ place }}</epgu-constructor-label>
+      <lib-plain-input
+        [id]="i + '_place'"
+        [disabled]="true"
+        [(ngModel)]="generation.place"
+      ></lib-plain-input>
+    </div>
+    <div class="employee-history__input">
+      <epgu-constructor-label [for]="i + '_address'">Адрес полностью, включая регион и город</epgu-constructor-label>
+      <lib-plain-input
+        [id]="i + '_address'"
+        [disabled]="true"
+        [(ngModel)]="generation.address"
+      ></lib-plain-input>
+    </div>
+  </section>
+  <section class="employee-history__generation">
+    <div class="employee-history__type">
+      <div>
+        <lib-radio *ngFor="let role of ds"
+          name="generationType"
+          [formControl]="employeeFormService.generateForm.get('type')"
+          [labelText]="role.label"
+          [value]="role.type"
+          (change)="resetForm(role.type)"
+        ></lib-radio>
+      </div>
+    </div>
+    <div class="employee-history__date">
+      <div>
+        <epgu-constructor-label for="from">Укажите дату с (месяц, год)</epgu-constructor-label>
+        <lib-date-picker
+          id="from"
+          name="minDate"
+          [formControl]="employeeFormService.generateForm.get('from')"
+          [minDate]="monthsService.minDateFrom"
+          [maxDate]="monthsService.maxDate"
+          [invalid]="employeeFormService.generateForm.get('from').invalid"
+          [validationShowOn]="validationShowOn"
+        ></lib-date-picker>
+        <div class="employee-history__date__hint">Заполняется при наличии</div>
+      </div>
+
+      <div>
+        <ng-container *ngIf="!employeeFormService.generateForm.get('checkboxToDate').value">
+          <epgu-constructor-label for="to">Укажите дату по (месяц, год)</epgu-constructor-label>
+          <lib-date-picker
+            id="to"
+            name="maxDate"
+            [formControl]="employeeFormService.generateForm.get('to')"
+            [minDate]="monthsService.minDateTo"
+            [maxDate]="monthsService.maxDate"
+            [invalid]="employeeFormService.generateForm.get('to').invalid"
+            [validationShowOn]="validationShowOn"
+          ></lib-date-picker>
+          <div class="employee-history__date__hint">Заполняется при наличии</div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="employee-history__input">
+      <lib-checkbox
+        [formControl]="employeeFormService.generateForm.get('checkboxToDate')"
+        labelText="По настоящее время"
+      ></lib-checkbox>
+    </div>
+    <div class="employee-history__input"
+         *ngIf="findData()?.position as position">
+      <epgu-constructor-label for="position">{{ position }}</epgu-constructor-label>
+      <lib-plain-input
+        id="position"
+        [formControl]="employeeFormService.generateForm.get('position')"
+        [invalid]="employeeFormService.generateForm.get('position').invalid"
+        [validationShowOn]="validationShowOn"
+      ></lib-plain-input>
+    </div>
+    <div class="employee-history__input"
+         *ngIf="findData()?.place as place">
+      <epgu-constructor-label for="place">{{ place }}</epgu-constructor-label>
+      <lib-plain-input
+        id="place"
+        [formControl]="employeeFormService.generateForm.get('place')"
+        [invalid]="employeeFormService.generateForm.get('place').invalid"
+        [validationShowOn]="validationShowOn"
+      ></lib-plain-input>
+    </div>
+    <div class="employee-history__input">
+      <epgu-constructor-label for="address">Адрес полностью, включая регион и город</epgu-constructor-label>
+      <lib-plain-input
+        id="address"
+        [formControl]="employeeFormService.generateForm.get('address')"
+        [invalid]="employeeFormService.generateForm.get('address').invalid"
+        [validationShowOn]="validationShowOn"
+      ></lib-plain-input>
+    </div>
+
+    <div class="employee-history__pushGeneration">
+      <button class="btn btn--light employee-history__pushGeneration__button"
+              (click)="pushFormGroup()"
+      >Добавить данные</button>
+    </div>
+  </section>
+  <section class="employee-history__completed" *ngIf="isCompleteForm()">
+    <div class="employee-history__completed__icon"></div>
+    <div class="employee-history__completed__msg">Вы заполнили {{ monthsService.years }} лет</div>
+  </section>
+  <section class="employee-history__footer">
+    <div class="employee-history__footer__msg" *ngIf="!isCompleteForm()">
+      Не заполнен весь период деятельности за {{ monthsService.years }} лет
+    </div>
+    <lib-button
+      (click)="getNextScreen()"
+      [disabled]="!isCompleteForm()"
+      class="employee-history__footer__btn-submit"
+    >
+        {{ data?.submitLabel || 'Продолжить' }}
+    </lib-button>
+  </section>
+</epgu-constructor-screen-container>

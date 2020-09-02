@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../shared-module/shared-components.module';
+import { SharedModule } from '../shared/shared.module';
 import { NavigationProgressComponent } from './component/navigation-progress/navigation-progress.component';
 
 

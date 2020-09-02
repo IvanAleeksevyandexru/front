@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ConstructorModule } from 'dist/epgu-constructor';
-import { ConstructorConfigInterface } from '../../projects/epgu-constructor/src/interfaces/constructor-config.interface';
+import { FormPlayerModule } from 'dist/epgu-constructor';
+import { FormPlayerConfigInterface } from '../../projects/epgu-constructor/src/interfaces/form-player-config.interface';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 
-const constructorConfig: ConstructorConfigInterface = {
+const formPlayerConfig: FormPlayerConfigInterface = {
   serviceId: environment.serviceId,
   apiUrl: environment.apiUrl,
   dictionaryUrl: environment.dictionaryUrl,
@@ -26,8 +26,7 @@ const constructorConfig: ConstructorConfigInterface = {
   ],
   imports: [
     BrowserModule,
-
-    ConstructorModule.forRoot(constructorConfig),
+    FormPlayerModule.forRoot(formPlayerConfig),
   ],
   providers: [],
   bootstrap: [AppComponent]
