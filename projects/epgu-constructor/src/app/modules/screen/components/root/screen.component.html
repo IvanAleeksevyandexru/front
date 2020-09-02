@@ -10,6 +10,7 @@
         <epgu-constructor-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
           [data]="data?.components[0]"
+          [errors]="errors"
         ></epgu-constructor-confirm-personal-user-address-screen>
 
         <epgu-constructor-confirm-personal-user-data-screen
@@ -83,7 +84,7 @@
         [showLoader]="constructorService.isLoading"
         (click)="nextStep()"
         class="footer__btn-submit"
-        [disabled]="!componentStateService.isValid"
+        [disabled]="!componentStateService.isValid || constructorService.isLoading"
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
       </lib-button>

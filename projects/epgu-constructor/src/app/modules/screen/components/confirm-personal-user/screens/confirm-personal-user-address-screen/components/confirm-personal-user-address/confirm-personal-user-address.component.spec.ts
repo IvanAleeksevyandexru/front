@@ -1,14 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
-import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
-import { SCREEN_COMPONENT_NAME } from '../../../../../../../../../constant/global';
-import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
-import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
-import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
-import { FormsModule } from '@angular/forms';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { SCREEN_COMPONENT_NAME } from '../../../../../../../../../constant/global';
+import { ConfirmAddressInterface } from '../../../../../../../../../interfaces/confirm-address.interface';
+import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
+import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
+import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
+import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
+
+
 
 describe('ConfirmPersonalUserAddressComponent', () => {
   let component: ConfirmPersonalUserAddressComponent;
@@ -42,7 +43,6 @@ describe('ConfirmPersonalUserAddressComponent', () => {
     fixture = TestBed.createComponent(ConfirmPersonalUserAddressComponent);
     component = fixture.componentInstance;
     component.data = mockData;
-    component.value = '{}';
     component.isEditable = false;
     fixture.detectChanges();
   });

@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as moment_ from 'moment';
+import { Moment } from 'moment';
+import { filter, takeUntil } from 'rxjs/operators';
 import {
   Employee,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel
 } from '../../../../../../interfaces/employee-history.interface';
-import { filter, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
-import * as moment_ from 'moment';
-import { Moment } from 'moment';
 
 const moment = moment_;
 
@@ -95,14 +95,14 @@ export class EmployeeHistoryFormService {
     Object.keys(this.generateForm.controls).forEach((controlName: string) => {
       if (controlName !== 'checkboxToDate') {
         this.generateForm.get(controlName).setValidators([Validators.required]);
-        this.generateForm.get(controlName).updateValueAndValidity({emitEvent: false});
+        this.generateForm.get(controlName).updateValueAndValidity({ emitEvent: false });
       }
     });
 
     this.unrequiredCheckedKeys.forEach((key: string) => {
       if (!selectedEmployee[key]) {
         this.generateForm.get(key).clearValidators();
-        this.generateForm.get(key).updateValueAndValidity({emitEvent: false});
+        this.generateForm.get(key).updateValueAndValidity({ emitEvent: false });
       }
     });
   }
