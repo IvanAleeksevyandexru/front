@@ -21,8 +21,8 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   cycledValues: Array<any>;
   screenData: ScreenData;
 
-  private readonly currentCycledFields = this.screenData?.currentCycledFields;
-  private readonly cycledFieldsKeys = Object.keys(this.currentCycledFields || {});
+  private currentCycledFields = this.screenData?.currentCycledFields || {};
+  private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
     private modalService: ModalService,
@@ -32,13 +32,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   ) {}
 
   ngOnInit(): void {
-    const currentCycledFields = this.currentCycledFields || {};
-    this.isCycledFields = !!Object.keys(currentCycledFields).length;
-    if (this.isCycledFields && typeof currentCycledFields === 'object') {
-      [this.cycledValues] = [
-        ...Object.values(currentCycledFields).map((value) => JSON.parse(value)),
-      ];
-    }
+    this.initCycledFields();
 
     this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -49,6 +43,19 @@ export class QuestionsScreenComponent implements OnInit, Screen {
       .subscribe((screenData: ScreenData) => {
         this.screenData = screenData;
       });
+  }
+
+  initCycledFields() {
+    this.currentCycledFields = this.screenData?.currentCycledFields || {};
+    this.cycledFieldsKeys = Object.keys(this.currentCycledFields);
+
+    const { currentCycledFields } = this;
+    this.isCycledFields = !!Object.keys(currentCycledFields).length;
+    if (this.isCycledFields && typeof currentCycledFields === 'object') {
+      [this.cycledValues] = [
+        ...Object.values(currentCycledFields).map((value) => JSON.parse(value)),
+      ];
+    }
   }
 
   prevStep(): void {

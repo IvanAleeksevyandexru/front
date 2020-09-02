@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../constant/global';
-import { FormPlayerService } from '../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { Screen, ScreenData } from '../../../interfaces/screen.interface';
@@ -22,20 +21,33 @@ export class CustomScreenComponent implements OnInit, Screen {
   cycledValues: any;
   screenData: ScreenData;
 
-  private readonly cycledFieldsKeys = Object.keys(
-    this.constructorService.response?.scenarioDto?.currentCycledFields,
-  );
+  private currentCycledFields = this.screenData?.currentCycledFields || {};
+  private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
     private navigationService: NavigationService,
-    public constructorService: FormPlayerService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {
-    // TODO: move this logic to method
-    const currentCycledFields = this.constructorService.response?.scenarioDto?.currentCycledFields;
+    this.navigationService.clickToBack$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.prevStep());
+
+    this.screenService.screenData$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((screenData: ScreenData) => {
+        this.screenData = screenData;
+        this.initCycledFields();
+      });
+  }
+
+  initCycledFields() {
+    this.currentCycledFields = this.screenData?.currentCycledFields || {};
+    this.cycledFieldsKeys = Object.keys(this.currentCycledFields);
+
+    const { currentCycledFields } = this;
     this.isCycledFields = !!Object.keys(currentCycledFields).length;
     if (this.isCycledFields) {
       const [firstCurrentCycledValues] = Object.values(currentCycledFields);
@@ -47,16 +59,6 @@ export class CustomScreenComponent implements OnInit, Screen {
         item.value = this.cycledValues[cycledFieldKey];
       });
     }
-
-    this.navigationService.clickToBack$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.prevStep());
-
-    this.screenService.screenData$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenData) => {
-        this.screenData = screenData;
-      });
   }
 
   prevStep(): void {

@@ -15,14 +15,15 @@ import { ScreenContainerComponent } from '../../shared/components/screen-contain
 import { PageNameComponent } from '../../shared/components/page-name/page-name.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 import { ComponentsListComponent } from '../../shared/components/components-list/components-list.component';
+import { ScreenService } from '../screen.service';
+import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
   let fixture: ComponentFixture<CustomScreenComponent>;
-  let restService: RestService;
   let navService: NavigationService;
-  let constructorService: FormPlayerService;
+  let screenService: ScreenService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
   let ComponentsListComponentMock = MockComponent(ComponentsListComponent);
   const mockData: CustomDisplayInterface = {
@@ -47,20 +48,19 @@ describe('CustomScreenComponent', () => {
       ],
       providers: [
         NavigationService,
-        { provide: RestService, useClass: RestServiceStub },
-        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
+        ScreenService,
+        UnsubscribeService,
       ]
     })
     .compileComponents();
-    restService = TestBed.inject(RestService);
     navService = TestBed.inject(NavigationService);
-    constructorService = TestBed.inject(FormPlayerService);
+    screenService = TestBed.inject(ScreenService);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomScreenComponent);
     component = fixture.componentInstance;
-    component.data = mockData;
+    screenService.updateScreenData(screenDataMock);
     component.changeComponentsList({});
     fixture.detectChanges();
   });

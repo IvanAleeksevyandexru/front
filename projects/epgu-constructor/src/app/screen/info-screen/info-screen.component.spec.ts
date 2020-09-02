@@ -42,10 +42,10 @@ describe('InfoScreenComponent', () => {
       ]
     })
     .compileComponents();
+    screenService = TestBed.inject(ScreenService);
   }));
 
   beforeEach(() => {
-    screenService = TestBed.inject(ScreenService);
     fixture = TestBed.createComponent(InfoScreenComponent);
     component = fixture.componentInstance;
     screenService.updateScreenData(screenDataMock);
