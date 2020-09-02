@@ -5,6 +5,7 @@ import { ConstructorConfigService } from '../config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
 import { RestService } from '../rest/rest.service';
 import { FormPlayerService } from '../../form-player.service';
+import { ScreenService } from '../../screen/screen.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -17,6 +18,7 @@ describe('PaymentService', () => {
       providers: [
         RestService,
         PaymentService,
+        ScreenService,
         ConstructorConfigService,
         FormPlayerService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
