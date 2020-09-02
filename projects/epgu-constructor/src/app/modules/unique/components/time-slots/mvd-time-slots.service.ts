@@ -102,7 +102,7 @@ export class MvdTimeSlotsService implements TimeSlotsService {
             if (response.error.errorDetail.errorCode === 0) {
               this.initSlotsMap(response.slots);
             } else {
-              this.errorMessage = response.error.errorDetail.errorMessage;
+              this.errorMessage = response.error.errorDetail.errorMessage || response.error.errorDetail.errorCode;
             }
             this.initActiveMonth();
           }

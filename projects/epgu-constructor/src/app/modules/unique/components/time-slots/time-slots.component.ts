@@ -240,6 +240,9 @@ export class TimeSlotsComponent implements OnInit {
         () => {
           if (this.currentService.hasError()) {
             this.errorMessage = this.currentService.getErrorMessage();
+            if (this.errorMessage === 101) {
+              this.errorMessage = `${this.errorMessage}: сервис недоступен. Повторите запрос позже.`;
+            }
             this.inProgress = false;
             this.showError(`Ошибка инициализации сервиса (${this.errorMessage})`);
           } else {
