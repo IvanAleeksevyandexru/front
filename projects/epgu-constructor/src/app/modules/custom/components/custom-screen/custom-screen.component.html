@@ -17,6 +17,7 @@
         [showLoader]="constructorService.isLoading"
         (click)="nextScreen()"
         class="footer__btn-submit"
+        [disabled]="constructorService.isLoading"
       >
         {{ data.submitLabel }}
       </lib-button>

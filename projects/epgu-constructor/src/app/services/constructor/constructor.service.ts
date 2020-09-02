@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface, ResponseInterface, Gender, ScenarioDto } from '../../../interfaces/epgu.service.interface';
-import { RestService } from '../rest/rest.service';
+import { DisplayInterface, Gender, ResponseInterface, ScenarioDto } from '../../../interfaces/epgu.service.interface';
 import { ComponentStateService } from '../component-state/component-state.service';
+import { RestService } from '../rest/rest.service';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -20,7 +20,6 @@ export class ConstructorService {
   componentErrors: object;
   gender: Gender;
   isLoading = false;
-  isError = false;
 
   constructor(
     public restService: RestService,
@@ -35,7 +34,10 @@ export class ConstructorService {
       (error) => {
         this.sendDataError(error);
       },
-      () => this.isLoading = false
+    ).add(
+      () => {
+        this.isLoading = false;
+      }
     );
   }
 
@@ -53,9 +55,9 @@ export class ConstructorService {
       },
       (error) => {
         this.sendDataError(error);
-      },
+      }
+    ).add(
       () => {
-        // TODO почему не отрабатывает если пришла ошибка 500;
         this.isLoading = false;
       }
     );
@@ -74,8 +76,11 @@ export class ConstructorService {
       },
       (error) => {
         this.sendDataError(error);
-      },
-      () => this.isLoading = false
+      }
+    ).add(
+      () => {
+        this.isLoading = false;
+      }
     );
   }
 
@@ -102,11 +107,14 @@ export class ConstructorService {
   }
 
   sendDataError(response) {
-    this.isError = true;
-    this.isLoading = false;
     console.error('----- ERROR DATA ---------');
-    console.error(JSON.stringify(response.scenarioDto?.errors));
-    this.initResponse(response);
+    if (response.scenarioDto?.errors) {
+      // business errors
+      console.error(response.scenarioDto?.errors);
+      this.initResponse(response);
+    } else {
+      console.error(response);
+    }
   }
 
   initResponse(response: ResponseInterface): void {
@@ -126,7 +134,6 @@ export class ConstructorService {
     this.componentData = display;
     this.componentErrors = errors;
     this.gender = gender;
-    this.isError = false;
     console.log('----- GET DATA ---------');
     console.log('componentId:', this.componentId);
     console.log('componentType:', this.componentType);
