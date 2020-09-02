@@ -17,14 +17,14 @@ export class FormPlayerComponent implements OnInit {
   @HostBinding('class.epgu-form-player') class = true;
 
   constructor(
-    public constructorService: FormPlayerService,
+    public formPlayerService: FormPlayerService,
     private screenResolverService: ScreenResolverService,
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
   ngOnInit(): void {
-    this.constructorService.initData();
+    this.formPlayerService.initData();
     this.navigationService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NextStepEventData) => this.nextStep(data));
@@ -36,7 +36,7 @@ export class FormPlayerComponent implements OnInit {
 
   // TODO: remove this to FormPlayerService when finish of splitting app's layers refactor
   get screenComponent() {
-    const screenType = this.constructorService.getScreenType();
+    const screenType = this.formPlayerService.getScreenType();
     const screenComponent = this.screenResolverService.getScreenComponentByType(screenType);
 
     if (!screenComponent) {
@@ -52,10 +52,10 @@ export class FormPlayerComponent implements OnInit {
   }
 
   nextStep(nextStepEventData?: NextStepEventData) {
-    this.constructorService.nextStep(nextStepEventData?.data, nextStepEventData?.options);
+    this.formPlayerService.nextStep(nextStepEventData?.data, nextStepEventData?.options);
   }
 
   prevStep(prevStepEventData?: PrevStepEventData) {
-    this.constructorService.prevStep(prevStepEventData?.data);
+    this.formPlayerService.prevStep(prevStepEventData?.data);
   }
 }

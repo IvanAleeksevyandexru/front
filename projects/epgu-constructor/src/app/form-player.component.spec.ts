@@ -12,7 +12,7 @@ import { ScreenResolverService } from './services/screen-resolver/screen-resolve
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 
 describe('FormPlayerComponent', () => {
-  let constructorService: FormPlayerService;
+  let formPlayerService: FormPlayerService;
   let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
 
   beforeEach(async(() => {
@@ -32,7 +32,7 @@ describe('FormPlayerComponent', () => {
         { provide: FormPlayerService, useClass: FormPlayerServiceStub }
       ]
     }).compileComponents();
-    constructorService = TestBed.inject(FormPlayerService);
+    formPlayerService = TestBed.inject(FormPlayerService);
   }));
 
   it('should create the app', () => {
