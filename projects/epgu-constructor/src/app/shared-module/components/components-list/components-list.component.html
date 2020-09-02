@@ -1,6 +1,6 @@
 <form #customForm="ngForm" action="" class="form">
   <ng-container *ngFor="let componentData of components">
-    <ng-container [ngSwitch]="componentData.type">bbb
+    <ng-container [ngSwitch]="componentData.type">
       <div class="form__item" *ngSwitchCase="componentType.LabelSection">
         <epgu-constructor-label class="label">
           {{componentData.label || state[componentData.id].value}}
