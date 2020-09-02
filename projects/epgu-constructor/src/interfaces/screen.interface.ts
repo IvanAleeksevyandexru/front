@@ -7,6 +7,7 @@ export interface ScreenData {
   errors?: object,
   gender?: Gender,
   currentCycledFields?: object
+  applicantAnswers?: object;
 }
 
 export interface Screen {

@@ -147,11 +147,13 @@ export class FormPlayerService {
     this.gender = gender;
     this.isError = false;
     const currentCycledFields = response.scenarioDto?.currentCycledFields;
+    const applicantAnswers = response.scenarioDto?.applicantAnswers;
     this.screenService.updateScreenData({
       componentData: display,
       errors: errors ?? errors,
       gender: gender ?? gender,
-      currentCycledFields: currentCycledFields ?? currentCycledFields
+      currentCycledFields: currentCycledFields ?? currentCycledFields,
+      applicantAnswers: applicantAnswers ?? applicantAnswers
     });
     this.updatePlayerLoaded(true);
     console.log('----- GET DATA ---------');

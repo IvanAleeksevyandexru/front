@@ -10,6 +10,8 @@
         <epgu-constructor-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
           [data]="screenData.componentData?.components[0]"
+          [currentCycledFields]="screenData.currentCycledFields"
+          [applicantAnswers]="screenData.applicantAnswers"
           [errors]="screenData.errors"
         ></epgu-constructor-confirm-personal-user-address-screen>
 

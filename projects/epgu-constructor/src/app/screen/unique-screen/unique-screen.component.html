@@ -27,6 +27,7 @@
   <epgu-constructor-time-slots
     *ngSwitchCase="uniqueComponentName.timeSlot"
     [data]="screenData.componentData"
+    [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextStep($event)">
   </epgu-constructor-time-slots>
   <epgu-constructor-car-info

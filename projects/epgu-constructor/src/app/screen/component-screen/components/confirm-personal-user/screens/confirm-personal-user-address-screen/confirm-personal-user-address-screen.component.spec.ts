@@ -2,8 +2,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SCREEN_COMPONENT_NAME } from '../../../../../../../constant/global';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
-import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
-import { FormPlayerServiceStub } from '../../../../../../services/form-player/form-player.service.stub';
 import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-user-address-screen.component';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
@@ -26,10 +24,7 @@ describe('ConfirmPersonalUserAddressScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ ConfirmPersonalUserAddressScreenComponent ],
-      providers: [
-        ComponentStateService,
-        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
-      ]
+      providers: [ ComponentStateService ]
     })
     .compileComponents();
   }));
@@ -38,6 +33,9 @@ describe('ConfirmPersonalUserAddressScreenComponent', () => {
     fixture = TestBed.createComponent(ConfirmPersonalUserAddressScreenComponent);
     component = fixture.componentInstance;
     component.data = mockData;
+    component.errors = {};
+    component.currentCycledFields = {};
+    component.applicantAnswers = {};
     fixture.detectChanges();
   });
 
