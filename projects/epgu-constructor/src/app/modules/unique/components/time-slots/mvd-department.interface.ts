@@ -1,9 +1,9 @@
-export interface ZagsDepartmentInterface {
+export interface MvdDepartmentInterface {
   value: string;
   title: string;
   attributeValues: {
-    CODE: string;
-    ADDRESS: string;
+    code: string;
+    address: string;
     FULLNAME: string;
     PHONE: string;
   };

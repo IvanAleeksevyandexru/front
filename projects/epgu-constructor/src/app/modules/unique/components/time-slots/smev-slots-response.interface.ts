@@ -1,4 +1,4 @@
-export interface ZagsSlotsResponseInterface {
+export interface SmevSlotsResponseInterface {
   slots: [
     {
       slotId: string;
