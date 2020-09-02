@@ -3,10 +3,14 @@
 
   <div class="question__wrapper">
     <epgu-constructor-page-name>{{screenData.componentData?.header}}</epgu-constructor-page-name>
-    <div class="question__wrapper__label"
-         (click)="clickToInnerHTML($event)"
-         *ngIf="screenData.componentData?.components[0]?.label"
-         [innerHTML]="screenData.componentData.components[0].label | safeHtml"></div>
+    <epgu-constructor-output-html
+      class="question__wrapper__label"
+      *ngIf="screenData.componentData?.components[0]?.label"
+      [html]="screenData.componentData.components[0].label"
+      [clarifications]="screenData.componentData.components[0]?.attrs.clarifications"
+    >
+    </epgu-constructor-output-html>
+
     <div class="answer">
       <epgu-constructor-answer-button
         class="answer__item"

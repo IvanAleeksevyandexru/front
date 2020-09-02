@@ -9,8 +9,6 @@ import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pa
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { QuestionsScreenComponent } from './questions-screen.component';
 import { ScreenService } from '../screen.service';
-import { ModalService } from '../../services/modal/modal.service';
-import { ModalServiceStub } from '../../services/modal/modal.service.stub';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ScreenData } from '../../../interfaces/screen.interface';
 
@@ -45,7 +43,6 @@ describe('QuestionsScreenComponent', () => {
         NavigationService,
         ScreenService,
         UnsubscribeService,
-        { provide: ModalService, useClass: ModalServiceStub },
       ]
     })
     .compileComponents();

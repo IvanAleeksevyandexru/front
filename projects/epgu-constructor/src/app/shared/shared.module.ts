@@ -16,6 +16,7 @@ import { ScreenPadComponent } from './components/screen-pad/screen-pad.component
 import { HelperTextComponent } from './components/helper-text/helper-text.component';
 import { ToJsonPipe } from './pipe/toJson/to-json.pipe';
 import { NavigationService } from './service/navigation/navigation.service';
+import { OutputHtmlComponent } from './components/output-html/output-html.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -29,6 +30,7 @@ const COMPONENTS = [
   ModalBaseComponent,
   ComponentsListComponent,
   HelperTextComponent,
+  OutputHtmlComponent,
 ];
 
 const PIPES = [

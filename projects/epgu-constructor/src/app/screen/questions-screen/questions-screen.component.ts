@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { QuestionsComponentActionsInterface } from '../../../interfaces/question-block.interface';
-import { ModalService } from '../../services/modal/modal.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
-import { QuestionScreenModalParams } from './questions-screen.constant';
 import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
 import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
@@ -25,7 +22,6 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
-    private modalService: ModalService,
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
@@ -82,21 +78,5 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     }
 
     this.nextStep({ data });
-  }
-
-  clickToInnerHTML($event: MouseEvent): void {
-    const targetElementId = ($event.target as HTMLElement).id;
-    const { clarifications = {} } = this.screenData.componentData.components[0]?.attrs as any;
-    const targetElementModalData = clarifications[targetElementId];
-    if (targetElementModalData) {
-      this.showModal(targetElementModalData);
-    }
-  }
-
-  showModal(params): void {
-    this.modalService.openModal(ConfirmationModalComponent, {
-      ...QuestionScreenModalParams,
-      ...params,
-    });
   }
 }

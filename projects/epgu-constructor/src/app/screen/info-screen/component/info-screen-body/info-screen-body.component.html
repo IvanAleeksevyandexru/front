@@ -2,6 +2,9 @@
 
 <div *ngIf="data?.attrs?.image?.alt" class="info__desc">{{data.attrs.image.alt}}</div>
 
-<div class="info__text" #innerHtml
-     [innerHTML]="data.label | safeHtml"
-     (click)="clickToInnerHTML($event, innerHtml)"></div>
+<epgu-constructor-output-html
+  class="info__text"
+  [html]="data.label"
+  [clarifications]="data?.attrs?.clarifications"
+>
+</epgu-constructor-output-html>
