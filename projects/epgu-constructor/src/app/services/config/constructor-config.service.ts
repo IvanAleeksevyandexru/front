@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@angular/core';
-import { ConstructorConfigInterface } from '../../../interfaces/constructor-config.interface';
+import { FormPlayerConfigInterface } from '../../../interfaces/form-player-config.interface';
 import { CONSTRUCTOR_CONFIG_TOKEN } from './constructor.config.token';
 
 @Injectable()
 export class ConstructorConfigService {
 
-  config: ConstructorConfigInterface;
+  config: FormPlayerConfigInterface;
   constructor(
-    @Inject(CONSTRUCTOR_CONFIG_TOKEN) constructorConfig: ConstructorConfigInterface,
+    @Inject(CONSTRUCTOR_CONFIG_TOKEN) constructorConfig: FormPlayerConfigInterface,
   ) {
     this.config = constructorConfig;
   }
