@@ -8,6 +8,7 @@
   <epgu-constructor-file-upload-screen
     *ngSwitchCase="uniqueComponentName.fileUploadComponent"
     [isLoading]="screenService.isLoading$ | async"
+    [applicantAnswers]="screenData.applicantAnswers"
     [header]="screenData.componentData?.header"
     [submitLabel]="screenData.componentData?.submitLabel"
     [data]="screenData.componentData?.components[0]"

@@ -10,6 +10,7 @@ import { IFileUploadItem } from '../../../../../interfaces/terabyte.interface';
 })
 export class FileUploadScreenComponent {
   @Input() isLoading: boolean;
+  @Input() applicantAnswers: object;
   private head: string;
   @Input() set header(header: string) {
     this.head = header;
