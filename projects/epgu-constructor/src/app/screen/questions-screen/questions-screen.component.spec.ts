@@ -15,21 +15,23 @@ import { ScreenService } from '../screen.service';
 import { ModalService } from '../../services/modal/modal.service';
 import { ModalServiceStub } from '../../services/modal/modal.service.stub';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { ScreenData } from '../../../interfaces/screen.interface';
 
 describe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
   let fixture: ComponentFixture<QuestionsScreenComponent>;
   let navService: NavigationService;
-  let constructorService: FormPlayerService;
   let screenService: ScreenService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
-  const mockData: QuestionsDisplayInterface = {
-    components: [],
-    header: '',
-    id: '',
-    name: '',
-    submitLabel: '',
-    type: SCREEN_TYPE.QUESTION
+  const screenDataMock: ScreenData = {
+    componentData: {
+      components: [],
+      header: '',
+      id: '',
+      name: '',
+      submitLabel: '',
+      type: SCREEN_TYPE.QUESTION
+    }
   };
 
   beforeEach(async(() => {
@@ -51,13 +53,13 @@ describe('QuestionsScreenComponent', () => {
     })
     .compileComponents();
     navService = TestBed.inject(NavigationService);
-    constructorService = TestBed.inject(FormPlayerService);
+    screenService = TestBed.inject(ScreenService);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(QuestionsScreenComponent);
     component = fixture.componentInstance;
-    component.data = mockData;
+    screenService.updateScreenData(screenDataMock);
     component.answerChoose({ action: '', label: '', value: '' });
     fixture.detectChanges();
   });

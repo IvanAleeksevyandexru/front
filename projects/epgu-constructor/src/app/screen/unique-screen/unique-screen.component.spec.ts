@@ -40,10 +40,10 @@ describe('UniqueScreenComponent', () => {
     })
     .compileComponents();
     navService = TestBed.inject(NavigationService);
+    screenService = TestBed.inject(ScreenService);
   }));
 
   beforeEach(() => {
-    screenService = TestBed.inject(ScreenService);
     fixture = TestBed.createComponent(UniqueScreenComponent);
     component = fixture.componentInstance;
     screenService.updateScreenData(screenDataMock);

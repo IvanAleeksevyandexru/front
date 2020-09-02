@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENT_NAME } from '../../../constant/global';
-import { FormPlayerService } from '../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { Screen, ScreenData } from '../../../interfaces/screen.interface';
@@ -20,7 +19,6 @@ export class InvitationErrorScreenComponent implements OnInit, Screen {
 
   constructor(
     private navigationService: NavigationService,
-    public constructorService: FormPlayerService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
   ) {}
