@@ -37,9 +37,7 @@ export class FormPlayerComponent implements OnInit {
   // TODO: remove this to FormPlayerService when finish of splitting app's layers refactor
   get screenComponent() {
     const screenType = this.constructorService.getScreenType();
-    const screenComponent =
-      this.screenResolverService.grepeatable -
-      fields.component.tsetScreenComponentByType(screenType);
+    const screenComponent = this.screenResolverService.getScreenComponentByType(screenType);
 
     if (!screenComponent) {
       this.handleScreenComponentError(screenType);
