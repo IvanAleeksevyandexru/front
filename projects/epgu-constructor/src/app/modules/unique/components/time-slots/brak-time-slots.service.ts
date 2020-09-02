@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
 import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
-import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { SlotsMapInterface } from './slots-map.interface';
 import { ZagsSlotsResponseInterface } from './zags-slots-response.interface';
 import { ZagsBookResponseInterface } from './zags-book-response.interface';
@@ -55,6 +55,10 @@ export class BrakTimeSlotsService implements TimeSlotsService {
           this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
           console.log(response.error);
         }
+      }),
+      catchError( error => {
+        this.errorMessage = error.message;
+        return throwError(error);
       })
     );
   }
@@ -98,7 +102,11 @@ export class BrakTimeSlotsService implements TimeSlotsService {
               this.errorMessage = response.error.errorDetail.errorMessage;
             }
           }
-        )
+        ),
+        catchError( error => {
+          this.errorMessage = error.message;
+          return throwError(error);
+        })
       );
     }
 

@@ -148,14 +148,21 @@ export class TimeSlotsComponent implements OnInit {
 
   public showTimeSlots(date: Date) {
     this.currentSlot = null;
-    this.currentService.getAvailableSlots(date).subscribe((timeSlots) => {
-      this.timeSlots = timeSlots;
-      if (this.currentService.hasError()) {
+    this.currentService.getAvailableSlots(date).subscribe(
+      (timeSlots) => {
+        this.timeSlots = timeSlots;
+        if (this.currentService.hasError()) {
+          this.showError(
+            `Не удалось загрузить доступные слоты времени (${this.currentService.getErrorMessage()})`,
+          );
+        }
+      },
+      () => {
         this.showError(
           `Не удалось загрузить доступные слоты времени (${this.currentService.getErrorMessage()})`,
         );
-      }
-    });
+      },
+    );
   }
 
   public monthChanged(ev) {
@@ -274,7 +281,7 @@ export class TimeSlotsComponent implements OnInit {
     return (
       !this.componentStateService.isValid ||
       this.inProgress ||
-      (this.bookedSlot && this.currentSlot && this.bookedSlot.slotId === this.currentSlot.slotId)
+      !(this.bookedSlot && this.currentSlot && this.bookedSlot.slotId === this.currentSlot.slotId)
     );
   }
 

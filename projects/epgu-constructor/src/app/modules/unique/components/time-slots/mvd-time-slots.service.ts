@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
 import { TimeSlotsService } from './time-slots.service';
-import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { RestService } from '../../../../services/rest/rest.service';
 import { formatDate } from '@angular/common';
 import { SlotsMapInterface } from './slots-map.interface';
@@ -65,6 +65,10 @@ export class MvdTimeSlotsService implements TimeSlotsService {
           this.errorMessage = response.error.message;
           return [];
         }
+      }),
+      catchError( error => {
+        this.errorMessage = error.message;
+        return throwError(error);
       })
     );
   }
