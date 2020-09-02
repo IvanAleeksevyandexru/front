@@ -81,10 +81,10 @@
     <div class="footer">
       <lib-button
         *ngIf="componentSetting.displayContinueBtn"
-        [showLoader]="formPlayerService.isLoading"
+        [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
         class="footer__btn-submit"
-        [disabled]="!componentStateService.isValid || constructorService.isLoading"
+        [disabled]="!componentStateService.isValid || (screenService.isLoading$ | async)"
       >
         <div class="secondary-font">{{ screenData.componentData?.submitLabel || 'Продолжить' }}</div>
       </lib-button>
