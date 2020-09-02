@@ -18,7 +18,7 @@ import {
   calcDependedComponent,
   CheckInputValidationComponentList,
   getInitStateItemComponentList,
-} from '../../../modules/custom/tools/custom-screen-tools';
+} from '../../../screen/custom-screen/tools/custom-screen-tools';
 import { RestService } from '../../../services/rest/rest.service';
 import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
