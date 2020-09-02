@@ -150,6 +150,11 @@ export class TimeSlotsComponent implements OnInit {
     this.currentSlot = null;
     this.currentService.getAvailableSlots(date).subscribe((timeSlots) => {
       this.timeSlots = timeSlots;
+      if (this.currentService.hasError()) {
+        this.showError(
+          `Не удалось загрузить доступные слоты времени (${this.currentService.getErrorMessage()})`,
+        );
+      }
     });
   }
 
@@ -173,6 +178,10 @@ export class TimeSlotsComponent implements OnInit {
     this.inProgress = true;
     this.currentService.book(this.currentSlot).subscribe((response) => {
       this.inProgress = false;
+      if (this.currentService.hasError()) {
+        this.showError(`Не удалось забронировать время (${this.currentService.getErrorMessage()})`);
+        return;
+      }
       this.nextStepEvent.emit(JSON.stringify(response));
     });
   };
@@ -196,6 +205,20 @@ export class TimeSlotsComponent implements OnInit {
     return modalParameters;
   }
 
+  showError(errorMessage: string) {
+    const params: ConfirmationModal = {
+      title: 'Ошибка',
+      text: errorMessage,
+      buttons: [
+        {
+          label: 'Ok',
+          closeModal: true,
+        },
+      ],
+    };
+    this.showModal(params);
+  }
+
   showModal(params) {
     this.modalService.openModal(ConfirmationModalComponent, params);
   }
@@ -209,6 +232,7 @@ export class TimeSlotsComponent implements OnInit {
       this.currentService.init(value).subscribe(() => {
         if (this.currentService.hasError()) {
           this.errorMessage = this.currentService.getErrorMessage();
+          this.showError(`Ошибка инициализации сервиса (${this.errorMessage})`);
         } else {
           this.errorMessage = undefined;
           this.activeMonthNumber = this.currentService.getCurrentMonth();

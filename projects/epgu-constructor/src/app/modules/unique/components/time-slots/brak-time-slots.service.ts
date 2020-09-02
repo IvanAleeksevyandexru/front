@@ -51,6 +51,9 @@ export class BrakTimeSlotsService implements TimeSlotsService {
         if (!response.error) {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;
+        } else {
+          this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
+          console.log(response.error);
         }
       })
     );
