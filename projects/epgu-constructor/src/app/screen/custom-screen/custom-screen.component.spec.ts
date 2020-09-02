@@ -3,11 +3,6 @@ import { MockComponent } from 'ng-mocks';
 import { ButtonComponent } from 'epgu-lib';
 
 import { CustomScreenComponent } from './custom-screen.component';
-import { RestService } from '../../services/rest/rest.service';
-import { RestServiceStub } from '../../services/rest/rest.service.stub';
-import { FormPlayerService } from '../../services/form-player/form-player.service';
-import { FormPlayerServiceStub } from '../../services/form-player/form-player.service.stub';
-import { CustomDisplayInterface } from '../../../interfaces/custom-component.interface';
 import { SCREEN_TYPE } from '../../../constant/global';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
@@ -17,22 +12,25 @@ import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pa
 import { ComponentsListComponent } from '../../shared/components/components-list/components-list.component';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { ScreenData } from '../../../interfaces/screen.interface';
 
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
   let fixture: ComponentFixture<CustomScreenComponent>;
-  let navService: NavigationService;
+  let navigationService: NavigationService;
   let screenService: ScreenService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
   let ComponentsListComponentMock = MockComponent(ComponentsListComponent);
-  const mockData: CustomDisplayInterface = {
-    components: [],
-    header: '',
-    id: '',
-    name: '',
-    submitLabel: '',
-    type: SCREEN_TYPE.COMPONENT
+  const screenDataMock: ScreenData = {
+    componentData: {
+      components: [],
+      header: '',
+      id: '',
+      name: '',
+      submitLabel: '',
+      type: SCREEN_TYPE.QUESTION
+    }
   };
 
   beforeEach(async(() => {
@@ -53,7 +51,7 @@ describe('CustomScreenComponent', () => {
       ]
     })
     .compileComponents();
-    navService = TestBed.inject(NavigationService);
+    navigationService = TestBed.inject(NavigationService);
     screenService = TestBed.inject(ScreenService);
   }));
 
@@ -82,16 +80,16 @@ describe('CustomScreenComponent', () => {
       expect(component.nextScreen).toHaveBeenCalled();
     });
 
-    it('nextScreen() should call nextStepEvent emit', () => {
-      spyOn(component.nextStepEvent, 'emit').and.callThrough();
+    it('nextScreen() should call next of nextStep subject from navigationService', () => {
+      spyOn(navigationService.nextStep, 'next').and.callThrough();
       component.nextScreen();
-      expect(component.nextStepEvent.emit).toHaveBeenCalled();
+      expect(navigationService.nextStep.next).toHaveBeenCalled();
     });
 
-    it('prevStep() should call prevStepEvent emit', () => {
-      spyOn(component.prevStepEvent, 'emit').and.callThrough();
+    it('prevStep() should call next of prevStep subject from navigationService', () => {
+      spyOn(navigationService.prevStep, 'next').and.callThrough();
       component.prevStep();
-      expect(component.prevStepEvent.emit).toHaveBeenCalled();
+      expect(navigationService.prevStep.next).toHaveBeenCalled();
     });
   });
 });

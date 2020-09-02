@@ -4,6 +4,7 @@ import { FormPlayerService } from './form-player.service';
 import { RestService } from '../rest/rest.service';
 import { RestServiceStub } from '../rest/rest.service.stub';
 import { ComponentStateService } from '../component-state/component-state.service';
+import { ScreenService } from '../../screen/screen.service';
 
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
@@ -13,6 +14,7 @@ describe('FormPlayerService', () => {
       providers: [
         FormPlayerService,
         ComponentStateService,
+        ScreenService,
         { provide: RestService, useClass: RestServiceStub },
       ]
     });

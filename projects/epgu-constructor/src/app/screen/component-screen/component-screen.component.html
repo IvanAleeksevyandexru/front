@@ -81,7 +81,7 @@
     <div class="footer">
       <lib-button
         *ngIf="componentSetting.displayContinueBtn"
-        [showLoader]="constructorService.isLoading"
+        [showLoader]="formPlayerService.isLoading"
         (click)="nextStep()"
         class="footer__btn-submit"
         [disabled]="!componentStateService.isValid"

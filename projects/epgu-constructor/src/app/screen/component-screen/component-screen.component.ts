@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENT_NAME } from '../../../constant/global';
-import { FormPlayerService } from '../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
@@ -31,11 +30,10 @@ export class ComponentScreenComponent implements OnInit, Screen {
   };
   componentData = null;
   form: FormGroup;
-  isCycledFields: boolean;
+  isCycledFields = false;
   screenData: ScreenData;
 
   constructor(
-    public constructorService: FormPlayerService,
     private navigationService: NavigationService,
     public componentStateService: ComponentStateService,
     private ngUnsubscribe$: UnsubscribeService,
@@ -45,9 +43,6 @@ export class ComponentScreenComponent implements OnInit, Screen {
 
   ngOnInit(): void {
     this.form = this.fb.group({});
-    this.isCycledFields = !!Object.keys(
-      this.constructorService.response?.scenarioDto?.currentCycledFields,
-    ).length;
 
     this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -57,7 +52,12 @@ export class ComponentScreenComponent implements OnInit, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((screenData: ScreenData) => {
         this.screenData = screenData;
+        this.initCycledFields();
       });
+  }
+
+  initCycledFields() {
+    this.isCycledFields = !!Object.keys(this.screenData?.currentCycledFields).length;
   }
 
   prevStep(): void {

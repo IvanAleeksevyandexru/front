@@ -8,8 +8,10 @@ import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
 import { NavigationService } from './shared/service/navigation/navigation.service';
 import { ModalContainerComponent } from './shared/components/modal-container/modal-container.component';
+import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
+import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 
-describe('ConstructorComponent', () => {
+describe('FormPlayerComponent', () => {
   let constructorService: FormPlayerService;
   let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
 
@@ -25,6 +27,8 @@ describe('ConstructorComponent', () => {
       ],
       providers: [
         NavigationService,
+        ScreenResolverService,
+        UnsubscribeService,
         { provide: FormPlayerService, useClass: FormPlayerServiceStub }
       ]
     }).compileComponents();

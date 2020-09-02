@@ -1,11 +1,11 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SCREEN_COMPONENT_NAME } from '../../../../../../../constant/global';
-import { ConfirmAddressInterface } from '../../../../../../../interfaces/confirm-address.interface';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
 import { FormPlayerServiceStub } from '../../../../../../services/form-player/form-player.service.stub';
 import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-user-address-screen.component';
+import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
 
 describe('ConfirmPersonalUserAddressScreenComponent', () => {

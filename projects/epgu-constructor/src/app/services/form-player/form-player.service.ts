@@ -159,6 +159,7 @@ export class FormPlayerService {
   private updateLoading(newState: boolean): void {
     this.isLoading = newState;
     this.isLoadingSubject.next(this.isLoading);
+    this.screenService.updateLoading(this.isLoading);
   }
 
   private updatePlayerLoaded(newState: boolean): void {

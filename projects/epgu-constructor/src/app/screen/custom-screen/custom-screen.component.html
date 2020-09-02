@@ -14,7 +14,7 @@
 
     <div class="footer">
       <lib-button
-        [showLoader]="formPlayerService.isLoading"
+        [showLoader]="screenService.isLoading$ | async"
         (click)="nextScreen()"
         class="footer__btn-submit">
         {{ screenData.componentData?.submitLabel }}

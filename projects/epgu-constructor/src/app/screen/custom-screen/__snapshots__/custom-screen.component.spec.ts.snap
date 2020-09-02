@@ -3,15 +3,14 @@
 exports[`CustomScreenComponent check snapshot 1`] = `
 <epgu-constructor-custom-screen
   __ngContext__={[Function LRootView]}
-  constructorService={[Function ConstructorServiceStub]}
+  currentCycledFields={[Function Object]}
   cycledFieldsKeys={[Function Array]}
-  data={[Function Object]}
   dataToSend={[Function Object]}
   isCycledFields="false"
-  navService={[Function NavigationService]}
-  nextStepEvent={[Function EventEmitter_]}
+  navigationService={[Function NavigationService]}
   ngUnsubscribe$={[Function UnsubscribeService]}
-  prevStepEvent={[Function EventEmitter_]}
+  screenData={[Function Object]}
+  screenService={[Function ScreenService]}
 >
   <epgu-constructor-navigation
     class="nav"
