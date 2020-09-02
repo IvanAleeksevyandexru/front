@@ -2,46 +2,63 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
 import { TimeSlotsService } from './time-slots.service';
+import * as uuid from 'uuid';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { RestService } from '../../../../services/rest/rest.service';
-import { formatDate } from '@angular/common';
-import { SlotsMapInterface } from './slots-map.interface';
+import { SmevSlotsMapInterface } from './smev-slots-map.interface';
+import { SmevSlotsResponseInterface } from './smev-slots-response.interface';
+import { SmevBookResponseInterface } from './smev-book-response.interface';
+import { SlotInterface } from './slot.interface';
+import { MvdDepartmentInterface } from './mvd-department.interface';
 
 @Injectable()
 export class MvdTimeSlotsService implements TimeSlotsService {
 
-  private department;
+  private department: MvdDepartmentInterface;
   private orderId;
-  private userId;
 
   public activeMonthNumber: number;
   public activeYearNumber: number;
   availableMonths: string[];
 
-  private slotsMap: SlotsMapInterface;
+  private slotsMap: SmevSlotsMapInterface;
 
-  private bookedSlot: { slotId, areaId, slotTime };
+  private bookedSlot: SlotInterface;
+  private bookId;
 
   private errorMessage;
 
   constructor(
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
-    private restService: RestService
+    private constructorConfigService: ConstructorConfigService
   ) {
 
   }
 
-  private getTimeSlots(options): Observable<any> {
-    return this.restService.getDictionary('getAppointment2_mvdr01', options);
+  private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
+    const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/slots`;
+    return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
   }
 
-  book(selectedSlot: any): Observable<any> {
-    this.bookedSlot = selectedSlot;
-    this.activeMonthNumber = selectedSlot.slotTime.getMonth();
-    this.activeYearNumber = selectedSlot.slotTime.getFullYear();
-    return of(selectedSlot);
+  private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
+    const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/book?srcSystem=BETA`;
+    return this.http.post<SmevBookResponseInterface>(path, requestBody);
+  }
+
+  book(selectedSlot: SlotInterface) {
+    return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
+      tap(response => {
+        if (!response.error) {
+          this.bookedSlot = selectedSlot;
+          this.bookId = response.bookId;
+          this.activeMonthNumber = selectedSlot.slotTime.getMonth();
+          this.activeYearNumber = selectedSlot.slotTime.getFullYear();
+        } else {
+          this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
+          console.log(response.error);
+        }
+      })
+    );
   }
 
   isDateLocked(date: Date): boolean {
@@ -55,18 +72,7 @@ export class MvdTimeSlotsService implements TimeSlotsService {
   }
 
   getAvailableSlots(selectedDay: Date): Observable<any[]> {
-    return this.getTimeSlots(this.getSlotsOptions(selectedDay)).pipe(
-      map(response => {
-        if (response.error.code === 0) {
-          return response.items.map(
-            slot => { slot.value; new Date(slot.value); }
-          );
-        } else {
-          this.errorMessage = response.error.message;
-          return [];
-        }
-      })
-    );
+    return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
   }
 
   getBookedSlot(): any {
@@ -87,7 +93,17 @@ export class MvdTimeSlotsService implements TimeSlotsService {
       this.slotsMap = {};
       this.availableMonths = [];
       this.errorMessage = undefined;
-      this.initSlotsMap();
+      return this.getTimeSlots(this.getSlotsRequest()).pipe(
+        map(response => {
+            if (response.error.errorDetail.errorCode === 0) {
+              this.initSlotsMap(response.slots);
+            } else {
+              this.errorMessage = response.error.errorDetail.errorMessage;
+            }
+            this.initActiveMonth();
+          }
+        )
+      );
     }
 
     return of(undefined);
@@ -116,163 +132,65 @@ export class MvdTimeSlotsService implements TimeSlotsService {
       this.orderId = orderId;
     }
 
-    let userId = data.userId;
-    if (!this.userId || this.userId !== userId) {
-      changed = true;
-      this.userId = userId;
-    }
-
     return changed;
   }
 
-  private getSlotsOptions(selectedDay: Date) {
-    var startOfDay = new Date(selectedDay);
-    startOfDay.setHours(0,0,0,0);
-    var endOfDay = new Date(selectedDay);
-    endOfDay.setHours(23,59,59,999);
-
+  private getSlotsRequest() {
+    // TODO HARDCODE, возможно, стоит перенести в json
     return {
-      filter: {
-        union: {
-          unionKind: 'AND',
-          subs: [
-            {
-              simple: {
-                attributeName: 'option_188getRegNum',
-                condition: 'EQUALS',
-                value: {
-                  asString: '361'
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'option_187Doc4',
-                condition: 'EQUALS',
-                value: {
-                  asString: 'false'
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'option_189passportTC',
-                condition: 'EQUALS',
-                value: {
-                  asString: '363'
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'option_190licensePlateNumberTR',
-                condition: 'EQUALS',
-                value: {
-                  asString: 'false'
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'option_181procedure',
-                condition: 'EQUALS',
-                value: {
-                  asString: '341'
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'option_182personType',
-                condition: 'EQUALS',
-                value: {
-                  asString: '346'
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'option_183registrationType',
-                condition: 'EQUALS',
-                value: {
-                  asString: '349'
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'option_184Doc1',
-                condition: 'EQUALS',
-                value: {
-                  asString: 'false'
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'option_185Doc2',
-                condition: 'EQUALS',
-                value: {
-                  asString: 'false'
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'option_186Doc3',
-                condition: 'EQUALS',
-                value: {
-                  asString: 'false'
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'departmentID',
-                condition: 'EQUALS',
-                value: {
-                  asString: '130863'
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'AppointmentDate',
-                condition: 'EQUALS',
-                value: {
-                  asString: formatDate(startOfDay.toISOString(), 'yyyy-MM-ddTHH:mm:ss', 'ru')
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'AppointmentDateTo',
-                condition: 'EQUALS',
-                value: {
-                  asString: formatDate(endOfDay.toISOString(), 'yyyy-MM-ddTHH:mm:ss', 'ru')
-                }
-              }
-            },
-            {
-              simple: {
-                attributeName: 'personSourceSystemID',
-                condition: 'EQUALS',
-                value: {
-                  asString: this.userId
-                }
-              }
-            }
-          ]
+      organizationId: [this.department.attributeValues.code],
+      caseNumber: this.orderId,
+      serviceId: ['10000593393'],
+      eserviceId: '10000070732',
+      routeNumber: '46000000000',
+      attributes: [
+        {
+          name: 'organizationId',
+          value: this.department.attributeValues.code
+        },
+        {
+          name: 'serviceId',
+          value: '10000593393'
         }
-      }
+      ]
     };
   }
 
-  private initSlotsMap(): void {
-    let slotDate = new Date();
-    for (let i = 0; i < 365; i++) {
-      slotDate.setDate( slotDate.getDate() + 1 );
+  private getBookRequest(selectedSlot: SlotInterface) {
+    if (!this.bookId) {
+      this.bookId = uuid.v4();
+    }
+    return {
+      preliminaryReservation: 'true',
+      address: this.department.attributeValues.address,
+      orgName: this.department.title,
+      routeNumber: '46000000000',
+      serviceCode: '-10001970000',
+      subject: 'Запись на прием',
+      eserviceId: '10000070732',
+      bookId: this.bookId,
+      organizationId: this.department.attributeValues.code,
+      calendarName: 'Запись на прием',
+      parentOrderId: this.orderId,
+      preliminaryReservationPeriod: '240',
+      attributes: [
+        {
+          name: 'serviceId',
+          value: '10000593393'
+        }
+      ],
+      slotId: [
+        selectedSlot.slotId
+      ],
+      serviceId: [
+        '10000593393'
+      ]
+    };
+  }
 
+  private initSlotsMap(slots: any[]): void {
+    slots.forEach((slot) => {
+      const slotDate = new Date(slot.visitTime);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
       }
@@ -287,8 +205,17 @@ export class MvdTimeSlotsService implements TimeSlotsService {
       if (!daySlots[slotDate.getDate()]) {
         daySlots[slotDate.getDate()] = [];
       }
-    }
 
+      daySlots[slotDate.getDate()].push({
+        slotId: slot.slotId,
+        areaId: slot.areaId,
+        slotTime: slotDate,
+        timezone: slot.visitTimeISO.substring(slot.visitTimeISO.length - 6)
+      });
+    });
+  }
+
+  initActiveMonth(): void {
     if (this.availableMonths.length == 0) {
       const today = new Date();
       this.activeMonthNumber = today.getMonth();

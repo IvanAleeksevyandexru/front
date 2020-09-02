@@ -44,7 +44,7 @@ export class TimeSlotsComponent implements OnInit {
 
   public weeks = [];
   public monthsYears: ListItem[] = [];
-  public timeSlots = [];
+  public timeSlots: SlotInterface[] = [];
   public dialogButtons = [];
   public currentSlot: any;
   public currentMonth: ListItem;

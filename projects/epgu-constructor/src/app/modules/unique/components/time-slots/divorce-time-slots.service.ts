@@ -5,24 +5,25 @@ import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { SlotsMapInterface } from './slots-map.interface';
-import { ZagsSlotInterface } from './zags-slot.interface';
-import { ZagsSlotsResponseInterface } from './zags-slots-response.interface';
-import { ZagsBookResponseInterface } from './zags-book-response.interface';
+import { SmevSlotsMapInterface } from './smev-slots-map.interface';
+import { SmevSlotInterface } from './smev-slot.interface';
+import { SmevSlotsResponseInterface } from './smev-slots-response.interface';
+import { SmevBookResponseInterface } from './smev-book-response.interface';
+import { ZagsDepartmentInterface } from './zags-department.interface';
 
 @Injectable()
 export class DivorceTimeSlotsService implements TimeSlotsService {
 
-  private department;
+  private department: ZagsDepartmentInterface;
   private orderId;
 
   public activeMonthNumber: number;
   public activeYearNumber: number;
   availableMonths: string[];
 
-  private slotsMap: SlotsMapInterface;
+  private slotsMap: SmevSlotsMapInterface;
 
-  private bookedSlot: ZagsSlotInterface;
+  private bookedSlot: SmevSlotInterface;
   private bookId;
 
   private errorMessage;
@@ -34,17 +35,17 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
 
   }
 
-  private getTimeSlots(requestBody): Observable<ZagsSlotsResponseInterface> {
+  private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
     const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/slots`;
-    return this.http.post<ZagsSlotsResponseInterface>(path, requestBody);
+    return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
   }
 
-  private bookTimeSlot(requestBody): Observable<ZagsBookResponseInterface> {
+  private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
     const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/book?srcSystem=BETA`;
-    return this.http.post<ZagsBookResponseInterface>(path, requestBody);
+    return this.http.post<SmevBookResponseInterface>(path, requestBody);
   }
 
-  book(selectedSlot: ZagsSlotInterface) {
+  book(selectedSlot: SmevSlotInterface) {
     return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
         if (!response.error) {
@@ -150,7 +151,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
     };
   }
 
-  private getBookRequest(selectedSlot: ZagsSlotInterface) {
+  private getBookRequest(selectedSlot: SmevSlotInterface) {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
@@ -217,6 +218,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
         slotId: slot.slotId,
         areaId: slot.areaId,
         slotTime: slotDate,
+        timezone: slot.visitTimeISO.substring(slot.visitTimeISO.length - 6)
       });
     });
 

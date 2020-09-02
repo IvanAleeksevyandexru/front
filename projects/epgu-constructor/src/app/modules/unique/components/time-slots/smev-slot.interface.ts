@@ -1,5 +1,5 @@
 import { SlotInterface } from './slot.interface';
 
-export interface ZagsSlotInterface extends SlotInterface{
+export interface SmevSlotInterface extends SlotInterface {
   areaId: string;
 }

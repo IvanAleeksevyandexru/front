@@ -1,4 +1,4 @@
-export interface ZagsBookResponseInterface {
+export interface SmevBookResponseInterface {
   bookId: string;
   esiaId: string;
   status: {
