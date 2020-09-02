@@ -9,6 +9,7 @@
   <epgu-constructor-file-upload
     *ngIf="upload?.relatedUploads"
     [isRelatedUploads]="true"
+    [applicantAnswers]="applicantAnswers"
     [uploadId]="upload.uploadId"
     [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(upload.relatedUploads?.ref)"
     [objectId]="objectId"

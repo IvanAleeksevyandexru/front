@@ -1,8 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { DisplayInterface } from '../../../../../../../interfaces/epgu.service.interface';
-import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
-
 import { CarInfoValues } from '../../models/car-info.interface';
 
 @Component({
@@ -11,12 +9,11 @@ import { CarInfoValues } from '../../models/car-info.interface';
   styleUrls: ['./car-info.component.scss'],
 })
 export class CarInfoComponent implements OnInit {
+  @Input() isLoading: boolean;
   @Input() data: DisplayInterface;
   @Output() nextStepEvent = new EventEmitter<void>();
 
   carInfo: CarInfoValues;
-
-  constructor(public constructorService: FormPlayerService) {}
 
   ngOnInit(): void {
     if (this.data.components[0].value) {

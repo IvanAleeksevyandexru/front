@@ -40,7 +40,7 @@
     <div class="car__info--item" *ngFor="let legal of carInfo.legals">
       {{legal.name | carInfoLegal}}: <span class="bold">{{ legal ? 'Да' : 'Нет' }}</span>
     </div>
-    <div class="car__info--item" *ngIf="carInfo.legal?.length === 0">Нет данных</div>
+    <div class="car__info--item" *ngIf="carInfo.legals?.length === 0">Нет данных</div>
   </epgu-constructor-screen-pad>
 
   <epgu-constructor-screen-pad *ngIf="carInfo.accidenceCount" class="car__info--block">
@@ -50,7 +50,7 @@
 
   <div class="footer">
     <lib-button
-      [showLoader]="constructorService.isLoading"
+      [showLoader]="isLoading"
       (click)="nextStep()"
       class="footer__btn-submit"
       >

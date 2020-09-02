@@ -54,7 +54,7 @@
     </epgu-constructor-screen-pad>
     <div class="footer">
       <lib-button
-        [showLoader]="constructorService.isLoading || inProgress"
+        [showLoader]="isLoading || inProgress"
         (click)="clickSubmit()"
         class="footer__btn-submit"
         [disabled]="buttonDisabled()"

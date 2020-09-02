@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
 import { IFileUploadItem } from '../../../../../interfaces/terabyte.interface';
@@ -10,6 +9,8 @@ import { IFileUploadItem } from '../../../../../interfaces/terabyte.interface';
   styleUrls: ['./file-upload-screen.component.scss'],
 })
 export class FileUploadScreenComponent {
+  @Input() isLoading: boolean;
+  @Input() applicantAnswers: object;
   private head: string;
   @Input() set header(header: string) {
     this.head = header;
@@ -38,8 +39,6 @@ export class FileUploadScreenComponent {
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
   private value: any = {}; // Здесь будет храниться значение на передачу
 
-  constructor(public constructorService: FormPlayerService) {}
-
   /**
    * Возвращает префикс для формирования мнемоники
    * @param componentData - данные компонента
@@ -54,8 +53,6 @@ export class FileUploadScreenComponent {
   get getOrderId(): number {
     // TODO: Пока заглушка с заведённым заявлением
     return 763418900;
-
-    // return Number(this.constructorService.response.orderId);
   }
 
   /**

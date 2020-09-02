@@ -5,7 +5,6 @@ import {
   IFileUploadAttributes,
   IFileUploadItem,
 } from '../../../../../../../interfaces/terabyte.interface';
-import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload',
@@ -14,7 +13,9 @@ import { FormPlayerService } from '../../../../../../services/form-player/form-p
 })
 export class FileUploadComponent {
   private attrs: IFileUploadAttributes;
-  @Input() set attributes(attrs: IFileUploadAttributes) {
+  @Input() applicantAnswers: object;
+  @Input()
+  set attributes(attrs: IFileUploadAttributes) {
     this.attrs = attrs;
     if (attrs?.ref) {
       this.refData = this.getRefValuesForApplicantAnswers(attrs);
@@ -33,8 +34,6 @@ export class FileUploadComponent {
   private value: IFileResponseToBackendUploadsItem[] = []; // Здесь будет храниться значение на передачу
   @Output() newValueSet: EventEmitter<object> = new EventEmitter<object>();
   @Output() newRelatedValueSet: EventEmitter<any> = new EventEmitter<any>();
-
-  constructor(private constructorService: FormPlayerService) {}
 
   /**
    * Заполняем значения по умолчанию для возврата на сервер
@@ -65,11 +64,10 @@ export class FileUploadComponent {
    * @param attrs - аттрибуты блока
    */
   getRefValuesForApplicantAnswers(attrs: IFileUploadAttributes) {
-    const { response } = this.constructorService;
     const sections = attrs.ref.split('.');
     const key = sections[0];
     const blockKey = sections[1];
-    const value = response?.scenarioDto?.applicantAnswers[key]?.value;
+    const value = this.applicantAnswers[key]?.value;
     if (value) {
       const refBlock = value[blockKey];
 

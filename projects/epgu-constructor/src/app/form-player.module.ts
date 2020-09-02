@@ -14,7 +14,7 @@ import { ComponentScreenModule } from './screen/component-screen/component-scree
 import { UniqueScreenModule } from './screen/unique-screen/unique-screen.module';
 import { ConstructorConfigService } from './services/config/constructor-config.service';
 import { CONSTRUCTOR_CONFIG_TOKEN } from './services/config/constructor.config.token';
-import { FormPlayerService } from './services/form-player/form-player.service';
+import { FormPlayerService } from './form-player.service';
 import { MockService } from './services/mock/mock.service';
 import { RestService } from './services/rest/rest.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';

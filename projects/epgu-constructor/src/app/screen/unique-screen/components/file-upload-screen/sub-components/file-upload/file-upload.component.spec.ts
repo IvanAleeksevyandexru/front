@@ -1,8 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileUploadComponent } from './file-upload.component';
-import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
-import { FormPlayerServiceStub } from '../../../../../../services/form-player/form-player.service.stub';
 import { IFileUploadAttributes } from '../../../../../../../interfaces/terabyte.interface';
 import { MockComponent } from 'ng-mocks';
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
@@ -26,9 +24,7 @@ describe('FileUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FileUploadComponent, FileUploadItemComponentMock ],
-      providers: [
-        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
-      ]
+      providers: []
     })
     .compileComponents();
   }));
