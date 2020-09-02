@@ -25,7 +25,6 @@ export class CustomScreenComponent implements OnInit, Screen {
   private readonly cycledFieldsKeys = Object.keys(
     this.constructorService.response?.scenarioDto?.currentCycledFields,
   );
-  private readonly flattenCycledFieldsValues = { ...this.cycledValues };
 
   constructor(
     private navigationService: NavigationService,
@@ -93,13 +92,11 @@ export class CustomScreenComponent implements OnInit, Screen {
   }
 
   changeComponentsList(changes): void {
-    const responseData = this.setState(changes);
-    this.dataToSend = responseData;
+    this.dataToSend = this.setState(changes);
   }
 
   private getPrepareResponseData(data = {}) {
     return Object.keys(data).reduce((acc, key) => {
-      // if (!this.dataToSend[key].valid) return; // TODO: add user-friendly validation logic
       acc[key] = {
         visited: true,
         value:

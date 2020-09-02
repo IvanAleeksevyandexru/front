@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
@@ -9,6 +9,7 @@ import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 })
 export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   @Input() data: ConfirmAddressInterface;
+  @Input() errors: object;
   @Output() actionSelect = new EventEmitter();
   isEditable: boolean;
   dataToSend: any;
@@ -19,7 +20,6 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   constructor(
     private componentStateService: ComponentStateService,
     public constructorService: FormPlayerService,
-    private changeDetection: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -52,12 +52,12 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     const valueRef = typeof rawValueRef === 'string' ? JSON.parse(rawValueRef) : rawValueRef;
     const { regAddr, regDate } = valueRef;
     this.data.value = JSON.stringify({ regDate, regAddr });
-    this.changeDetection.detectChanges();
+    this.data = { ...this.data };
   }
 
   noAddressAction() {
     this.data.value = JSON.stringify({ regDate: '', regAddr: '' });
-    this.changeDetection.detectChanges();
+    this.data = { ...this.data };
   }
 
   clickToAction(event): void {

@@ -9,9 +9,9 @@
         <lib-radio *ngFor="let role of ds"
                    [name]="i + '_typeGenerated'"
                    [disabled]="true"
-                   [checked]="generation.type === role.value"
+                   [checked]="generation.type === role.type"
                    [labelText]="role.label"
-                   [value]="role.value"
+                   [value]="role.type"
         ></lib-radio>
       </div>
       <div class="employee-history__removeGeneration">
@@ -39,7 +39,7 @@
         ></lib-date-picker>
       </div>
     </div>
-    <div class="employee-history__input" *ngIf="ds[generation.type]?.position as position">
+    <div class="employee-history__input" *ngIf="findData(generation.type)?.position as position">
       <epgu-constructor-label [for]="i + '_position'">{{ position }}</epgu-constructor-label>
       <lib-plain-input
         [id]="i + '_position'"
@@ -47,7 +47,7 @@
         [(ngModel)]="generation.position"
       ></lib-plain-input>
     </div>
-    <div class="employee-history__input" *ngIf="ds[generation.type]?.place as place">
+    <div class="employee-history__input" *ngIf="findData(generation.type)?.place as place">
       <epgu-constructor-label [for]="i + '_place'">{{ place }}</epgu-constructor-label>
       <lib-plain-input
         [id]="i + '_place'"
@@ -71,8 +71,8 @@
           name="generationType"
           [formControl]="employeeFormService.generateForm.get('type')"
           [labelText]="role.label"
-          [value]="role.value"
-          (change)="resetForm(role.value)"
+          [value]="role.type"
+          (change)="resetForm(role.type)"
         ></lib-radio>
       </div>
     </div>
@@ -85,6 +85,8 @@
           [formControl]="employeeFormService.generateForm.get('from')"
           [minDate]="monthsService.minDateFrom"
           [maxDate]="monthsService.maxDate"
+          [invalid]="employeeFormService.generateForm.get('from').invalid"
+          [validationShowOn]="validationShowOn"
         ></lib-date-picker>
         <div class="employee-history__date__hint">Заполняется при наличии</div>
       </div>
@@ -98,6 +100,8 @@
             [formControl]="employeeFormService.generateForm.get('to')"
             [minDate]="monthsService.minDateTo"
             [maxDate]="monthsService.maxDate"
+            [invalid]="employeeFormService.generateForm.get('to').invalid"
+            [validationShowOn]="validationShowOn"
           ></lib-date-picker>
           <div class="employee-history__date__hint">Заполняется при наличии</div>
         </ng-container>
@@ -110,19 +114,23 @@
       ></lib-checkbox>
     </div>
     <div class="employee-history__input"
-         *ngIf="ds[employeeFormService.generateForm.get('type').value]?.position as position">
+         *ngIf="findData()?.position as position">
       <epgu-constructor-label for="position">{{ position }}</epgu-constructor-label>
       <lib-plain-input
         id="position"
         [formControl]="employeeFormService.generateForm.get('position')"
+        [invalid]="employeeFormService.generateForm.get('position').invalid"
+        [validationShowOn]="validationShowOn"
       ></lib-plain-input>
     </div>
     <div class="employee-history__input"
-         *ngIf="ds[employeeFormService.generateForm.get('type').value]?.place as place">
+         *ngIf="findData()?.place as place">
       <epgu-constructor-label for="place">{{ place }}</epgu-constructor-label>
       <lib-plain-input
         id="place"
         [formControl]="employeeFormService.generateForm.get('place')"
+        [invalid]="employeeFormService.generateForm.get('place').invalid"
+        [validationShowOn]="validationShowOn"
       ></lib-plain-input>
     </div>
     <div class="employee-history__input">
@@ -130,6 +138,8 @@
       <lib-plain-input
         id="address"
         [formControl]="employeeFormService.generateForm.get('address')"
+        [invalid]="employeeFormService.generateForm.get('address').invalid"
+        [validationShowOn]="validationShowOn"
       ></lib-plain-input>
     </div>
 
