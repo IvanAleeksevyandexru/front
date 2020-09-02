@@ -14,7 +14,7 @@
     "moment": "^2.27.0",
     "ngx-perfect-scrollbar": "^10.0.1",
     "text-mask-core": "^5.1.2",
-    "epgu-lib": "^0.0.384"
+    "epgu-lib": "^0.0.418"
   },
   "dependencies": {
     "tslib": "^2.0.0"
