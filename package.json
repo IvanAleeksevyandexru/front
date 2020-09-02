@@ -55,7 +55,7 @@
     "moment": "2.24.0",
     "ngx-webcam": "^0.3.0",
     "ngx-cookie-service": "^10.0.1",
-    "epgu-lib": "^0.0.384",
+    "epgu-lib": "^0.0.418",
     "ngx-perfect-scrollbar": "8.0.0",
     "ru-validation-codes": "^2.8.0",
     "rxjs": "~6.5.5",
