@@ -35,6 +35,7 @@
   <epgu-constructor-car-info
     *ngSwitchCase="uniqueComponentName.carInfo"
     [data]="screenData.componentData"
+    [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextStep()"
   ></epgu-constructor-car-info>
   </ng-container>

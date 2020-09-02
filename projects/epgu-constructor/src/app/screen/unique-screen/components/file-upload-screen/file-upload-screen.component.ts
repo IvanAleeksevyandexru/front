@@ -52,8 +52,6 @@ export class FileUploadScreenComponent {
   get getOrderId(): number {
     // TODO: Пока заглушка с заведённым заявлением
     return 763418900;
-
-    // return Number(this.constructorService.response.orderId);
   }
 
   /**
