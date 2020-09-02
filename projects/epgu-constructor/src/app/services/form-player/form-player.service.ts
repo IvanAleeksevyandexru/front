@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface, ResponseInterface, Gender, ScenarioDto } from '../../../interfaces/epgu.service.interface';
-import { RestService } from '../rest/rest.service';
+import { DisplayInterface, Gender, ResponseInterface, ScenarioDto } from '../../../interfaces/epgu.service.interface';
 import { ComponentStateService } from '../component-state/component-state.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';
+import { RestService } from '../rest/rest.service';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -33,7 +33,6 @@ export class FormPlayerService {
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
-
 
   constructor(
     public restService: RestService,
@@ -120,8 +119,13 @@ export class FormPlayerService {
     this.isError = true;
     this.updateLoading(false);
     console.error('----- ERROR DATA ---------');
-    console.error(JSON.stringify(response.scenarioDto?.errors));
-    this.initResponse(response);
+    if (response.scenarioDto?.errors) {
+      // business errors
+      console.error(response.scenarioDto?.errors);
+      this.initResponse(response);
+    } else {
+      console.error(response);
+    }
   }
 
   initResponse(response: ResponseInterface): void {

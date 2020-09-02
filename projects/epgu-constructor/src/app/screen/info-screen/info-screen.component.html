@@ -4,21 +4,24 @@
 
     <epgu-constructor-page-name class="info__head">{{screenData.componentData?.header}}</epgu-constructor-page-name>
 
-    <hr class="divider">
+    <hr class="divider" />
 
     <div class="info__body">
       <ng-container [ngSwitch]="screenData.componentData?.components[0].type">
-
         <epgu-constructor-info-screen-body
           *ngSwitchCase="infoScreenComponent.info"
-          [data]="screenData.componentData?.components[0]"></epgu-constructor-info-screen-body>
-
+          [data]="screenData.componentData?.components[0]">
+        </epgu-constructor-info-screen-body>
       </ng-container>
-
     </div>
 
     <div class="info__footer info-footer">
-      <lib-button [showLoader]="screenService.isLoading$ | async" (click)="nextStep()" class="info-footer__submit">
+      <lib-button
+        [showLoader]="screenService.isLoading$ | async"
+        (click)="nextStep()"
+        class="info-footer__submit"
+        [disabled]="screenService.isLoading$ | async"
+      >
         {{screenData.componentData?.submitLabel || 'Продолжить'}}
       </lib-button>
     </div>

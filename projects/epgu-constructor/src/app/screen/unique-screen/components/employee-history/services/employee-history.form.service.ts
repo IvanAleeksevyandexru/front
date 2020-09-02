@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as moment_ from 'moment';
+import { Moment } from 'moment';
+import { filter, takeUntil } from 'rxjs/operators';
 import {
   Employee,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel
 } from '../../../../../../interfaces/employee-history.interface';
-import { filter, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
-import * as moment_ from 'moment';
-import { Moment } from 'moment';
 
 const moment = moment_;
 

@@ -16,7 +16,9 @@
       <lib-button
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextScreen()"
-        class="footer__btn-submit">
+        class="footer__btn-submit"
+        [disabled]="screenService.isLoading$ | async"
+      >
         {{ screenData.componentData?.submitLabel }}
       </lib-button>
     </div>
