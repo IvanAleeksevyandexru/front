@@ -57,6 +57,10 @@ export class MvdTimeSlotsService implements TimeSlotsService {
           this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
           console.log(response.error);
         }
+      }),
+      catchError( error => {
+        this.errorMessage = error.message;
+        return throwError(error);
       })
     );
   }
@@ -102,7 +106,11 @@ export class MvdTimeSlotsService implements TimeSlotsService {
             }
             this.initActiveMonth();
           }
-        )
+        ),
+        catchError( error => {
+          this.errorMessage = error.message;
+          return throwError(error);
+        })
       );
     }
 

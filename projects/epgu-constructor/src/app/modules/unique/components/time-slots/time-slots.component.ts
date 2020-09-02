@@ -236,44 +236,51 @@ export class TimeSlotsComponent implements OnInit {
       this.label = this.data.components[0].label;
       const value = JSON.parse(this.data.components[0].value);
       this.currentService = this.timeSlotServices[value.timeSlotType];
-      this.currentService.init(value).subscribe(() => {
-        if (this.currentService.hasError()) {
-          this.errorMessage = this.currentService.getErrorMessage();
-          this.showError(`Ошибка инициализации сервиса (${this.errorMessage})`);
-        } else {
-          this.errorMessage = undefined;
-          this.activeMonthNumber = this.currentService.getCurrentMonth();
-          this.activeYearNumber = this.currentService.getCurrentYear();
+      this.currentService.init(value).subscribe(
+        () => {
+          if (this.currentService.hasError()) {
+            this.errorMessage = this.currentService.getErrorMessage();
+            this.inProgress = false;
+            this.showError(`Ошибка инициализации сервиса (${this.errorMessage})`);
+          } else {
+            this.errorMessage = undefined;
+            this.activeMonthNumber = this.currentService.getCurrentMonth();
+            this.activeYearNumber = this.currentService.getCurrentYear();
 
-          const availableMonths = this.currentService.getAvailableMonths();
-          for (let i = 0; i < availableMonths.length; i += 1) {
-            const [activeYear, activeMonth] = availableMonths[i].split('-');
-            const monthNumber = parseInt(activeMonth, 10) - 1;
-            const yearNumber = parseInt(activeYear, 10);
-            this.monthsYears.push(
-              new ListItem({
-                id: `${availableMonths[i]}`,
-                text: `${this.months[monthNumber]} ${yearNumber}`,
-              }),
+            const availableMonths = this.currentService.getAvailableMonths();
+            for (let i = 0; i < availableMonths.length; i += 1) {
+              const [activeYear, activeMonth] = availableMonths[i].split('-');
+              const monthNumber = parseInt(activeMonth, 10) - 1;
+              const yearNumber = parseInt(activeYear, 10);
+              this.monthsYears.push(
+                new ListItem({
+                  id: `${availableMonths[i]}`,
+                  text: `${this.months[monthNumber]} ${yearNumber}`,
+                }),
+              );
+            }
+            this.currentMonth = this.monthsYears.find(
+              (item) => item.id === `${this.activeYearNumber}-${this.activeMonthNumber + 1}`,
             );
+            this.fixedMonth = this.monthsYears.length < 2;
+            this.renderSingleMonthGrid(this.weeks);
+
+            this.bookedSlot = this.currentService.getBookedSlot();
+            if (this.bookedSlot) {
+              this.selectDate(this.bookedSlot.slotTime);
+              this.chooseTimeSlot(this.bookedSlot);
+            }
           }
-          this.currentMonth = this.monthsYears.find(
-            (item) => item.id === `${this.activeYearNumber}-${this.activeMonthNumber + 1}`,
-          );
-          this.fixedMonth = this.monthsYears.length < 2;
 
-          this.renderSingleMonthGrid(this.weeks);
-
-          this.bookedSlot = this.currentService.getBookedSlot();
-          if (this.bookedSlot) {
-            this.selectDate(this.bookedSlot.slotTime);
-            this.chooseTimeSlot(this.bookedSlot);
-          }
-        }
-
-        this.inProgress = false;
-        this.initialized = true;
-      });
+          this.inProgress = false;
+          this.initialized = true;
+        },
+        () => {
+          this.errorMessage = this.currentService.getErrorMessage();
+          this.inProgress = false;
+          this.showError(`Ошибка инициализации сервиса (${this.errorMessage})`);
+        },
+      );
     }
   }
 
