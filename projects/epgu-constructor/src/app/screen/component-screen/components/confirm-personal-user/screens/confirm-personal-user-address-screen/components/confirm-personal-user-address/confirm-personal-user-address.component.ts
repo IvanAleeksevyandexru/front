@@ -11,9 +11,9 @@ import {
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../../constant/global';
-import { ConfirmAddressInterface } from '../../../../../../../../../interfaces/confirm-address.interface';
 import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 
 const moment = moment_;
 

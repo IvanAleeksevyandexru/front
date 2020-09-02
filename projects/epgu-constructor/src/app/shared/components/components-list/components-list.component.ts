@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
@@ -38,7 +30,7 @@ const moment = moment_;
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
 })
-export class ComponentsListComponent implements OnInit, OnChanges {
+export class ComponentsListComponent implements OnChanges {
   // <-- constant
   componentType = CUSTOM_COMPONENT_ITEM_TYPE;
 
@@ -52,8 +44,6 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   @Output() changes = new EventEmitter();
 
   constructor(private restService: RestService) {}
-
-  ngOnInit(): void {}
 
   // // TODO Где-то надо будет включить эту проверку
   // asdasd() {
@@ -144,6 +134,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
       try {
         return new RegExp(item.value);
       } catch {
+        // eslint-disable-next-line no-console
         console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
         return new RegExp(/.*/);
       }

@@ -33,7 +33,6 @@ export class RepeatableFieldsComponent implements OnInit {
 
   changeComponentsList(state, index) {
     this.screenData[index] = state;
-    console.log(state, index, this.screenData);
   }
 
   nextScreen() {

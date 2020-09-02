@@ -3,10 +3,8 @@ import { SCREEN_TYPE } from '../../../constant/global';
 import { DisplayInterface, ResponseInterface, Gender, ScenarioDto } from '../../../interfaces/epgu.service.interface';
 import { RestService } from '../rest/rest.service';
 import { ComponentStateService } from '../component-state/component-state.service';
-import { ScreenData } from '../../../interfaces/screen.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -21,6 +19,7 @@ export class FormPlayerService {
   scenarioDto: ScenarioDto;
   componentId: string;
   componentType: string;
+  playerLoaded = false;
   isLoading = false;
   isError = false;
 
@@ -30,7 +29,10 @@ export class FormPlayerService {
   gender: Gender;
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
+  private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
+
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
+  public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
 
 
   constructor(
@@ -145,6 +147,7 @@ export class FormPlayerService {
       errors: errors,
       gender: gender
     });
+    this.updatePlayerLoaded(true);
     console.log('----- GET DATA ---------');
     console.log('componentId:', this.componentId);
     console.log('componentType:', this.componentType);
@@ -154,5 +157,10 @@ export class FormPlayerService {
   private updateLoading(newState: boolean): void {
     this.isLoading = newState;
     this.isLoadingSubject.next(this.isLoading);
+  }
+
+  private updatePlayerLoaded(newState: boolean): void {
+    this.playerLoaded = newState;
+    this.playerLoadedSubject.next(this.playerLoaded);
   }
 }

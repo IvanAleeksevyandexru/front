@@ -1,7 +1,6 @@
-import { Component, ComponentRef, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { SCREEN_TYPE } from '../constant/global';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { NextStepEventData, PrevStepEventData } from '../interfaces/step-event-data.interface';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
@@ -16,8 +15,6 @@ import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 })
 export class FormPlayerComponent implements OnInit {
   @HostBinding('class.epgu-form-player') class = true;
-  componentRef: ComponentRef<Screen>;
-  public readonly constructorComponentType = SCREEN_TYPE;
 
   constructor(
     public constructorService: FormPlayerService,
@@ -40,7 +37,9 @@ export class FormPlayerComponent implements OnInit {
   // TODO: remove this to FormPlayerService when finish of splitting app's layers refactor
   get screenComponent() {
     const screenType = this.constructorService.getScreenType();
-    const screenComponent = this.screenResolverService.getScreenComponentByType(screenType);
+    const screenComponent =
+      this.screenResolverService.grepeatable -
+      fields.component.tsetScreenComponentByType(screenType);
 
     if (!screenComponent) {
       this.handleScreenComponentError(screenType);
@@ -55,7 +54,6 @@ export class FormPlayerComponent implements OnInit {
   }
 
   nextStep(nextStepEventData?: NextStepEventData) {
-    console.log('nextStepEventData', nextStepEventData);
     this.constructorService.nextStep(nextStepEventData?.data, nextStepEventData?.options);
   }
 

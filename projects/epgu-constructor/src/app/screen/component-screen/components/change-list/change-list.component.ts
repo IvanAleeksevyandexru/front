@@ -48,7 +48,6 @@ export class ChangeListComponent implements OnInit, OnChanges {
   }
 
   pushFormGroupToResponse(): void {
-    console.log(this.fields);
     if (this.fields.valid) {
       this.response.unshift(this.fields.getRawValue());
       this.fields.reset();
