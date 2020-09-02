@@ -20,7 +20,7 @@ export class UniqueScreenComponent implements OnInit, Screen {
   constructor(
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {

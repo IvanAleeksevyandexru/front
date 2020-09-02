@@ -37,7 +37,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
     private navigationService: NavigationService,
     public componentStateService: ComponentStateService,
     private ngUnsubscribe$: UnsubscribeService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
     private fb: FormBuilder,
   ) {}
 

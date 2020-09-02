@@ -28,7 +28,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     private modalService: ModalService,
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {

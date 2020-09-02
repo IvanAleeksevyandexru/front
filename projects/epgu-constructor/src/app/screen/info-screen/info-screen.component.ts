@@ -23,7 +23,7 @@ export class InfoScreenComponent implements Screen, OnInit {
   constructor(
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {
