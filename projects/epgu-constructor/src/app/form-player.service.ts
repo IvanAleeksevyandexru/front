@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../constant/global';
-import { DisplayInterface, Gender, ResponseInterface, ScenarioDto } from '../interfaces/epgu.service.interface';
+import { ResponseInterface } from '../interfaces/epgu.service.interface';
 import { ComponentStateService } from './services/component-state/component-state.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenService } from './screen/screen.service';
@@ -49,12 +49,7 @@ export class FormPlayerService {
     this.updateRequest(data, options);
     this.restService.getNextStep(this.responseStore).subscribe(
       (response) => {
-        // TODO возможно стоит обернуть в pipe и делоть throwError
-        if (response?.scenarioDto?.errors) {
-          this.sendDataError(response);
-        } else {
-          this.sendDataSuccess(response);
-        }
+        this.processResponse(response);
       },
       (error) => {
         this.sendDataError(error);
@@ -71,11 +66,7 @@ export class FormPlayerService {
     this.updateRequest(data);
     this.restService.getPrevStep(this.responseStore).subscribe(
       (response) => {
-        if (response?.scenarioDto?.errors) {
-          this.sendDataError(response);
-        } else {
-          this.sendDataSuccess(response);
-        }
+        this.processResponse(response);
       },
       (error) => {
         this.sendDataError(error);
@@ -83,6 +74,14 @@ export class FormPlayerService {
       () => this.updateLoading(false)
     );
   }
+
+  processResponse(response: ResponseInterface): void {
+    if (response?.scenarioDto?.errors) {
+      this.sendDataError(response);
+    } else {
+      this.sendDataSuccess(response);
+    }
+  };
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}): void {
     const componentId = options.componentId || this.componentId;
