@@ -24,7 +24,7 @@
     <div class="footer__btns-group">
       <button class="btn btn__add" (click)="duplicateScreen()">Добавить</button>
       <lib-button
-        [showLoader]="constructorService.isLoading"
+        [showLoader]="isLoading"
         (click)="nextScreen()"
         class="btn__submit"
       >{{ propData.submitLabel || 'Следующий экран' }}</lib-button

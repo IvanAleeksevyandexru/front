@@ -7,6 +7,7 @@
   </epgu-constructor-select-map-object>
   <epgu-constructor-file-upload-screen
     *ngSwitchCase="uniqueComponentName.fileUploadComponent"
+    [isLoading]="screenService.isLoading$ | async"
     [header]="screenData.componentData?.header"
     [submitLabel]="screenData.componentData?.submitLabel"
     [data]="screenData.componentData?.components[0]"
@@ -21,6 +22,7 @@
   ></epgu-constructor-employee-history>
   <epgu-constructor-repeatable-fields
     *ngSwitchCase="uniqueComponentName.repeatableFields"
+    [isLoading]="screenService.isLoading$ | async"
     [data]="screenData.componentData"
     (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-repeatable-fields>

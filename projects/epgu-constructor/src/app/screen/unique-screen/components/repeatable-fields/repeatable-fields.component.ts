@@ -1,18 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import {
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
 } from './repeatable-fields.constant';
-import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
   templateUrl: './repeatable-fields.component.html',
   styleUrls: ['./repeatable-fields.component.scss'],
-  providers: [FormPlayerService],
 })
-export class RepeatableFieldsComponent implements OnInit {
+export class RepeatableFieldsComponent {
   objectKeys = Object.keys;
   componentId;
 
@@ -22,6 +20,7 @@ export class RepeatableFieldsComponent implements OnInit {
   screens: { [key: string]: any };
   propData; // TODO указать тип
 
+  @Input() isLoading: boolean;
   @Input() set data(data) {
     this.initVariable();
     this.propData = data;
@@ -36,12 +35,7 @@ export class RepeatableFieldsComponent implements OnInit {
   getId = () => (this.componentId += 1);
   trackByFunction = (index, item) => item;
 
-  constructor(
-    private componentStateService: ComponentStateService,
-    public constructorService: FormPlayerService,
-  ) {}
-
-  ngOnInit(): void {}
+  constructor(private componentStateService: ComponentStateService) {}
 
   private initVariable() {
     this.screens = {};

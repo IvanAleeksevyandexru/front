@@ -1,8 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
-import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormPlayerServiceStub } from '../../../../services/form-player/form-player.service.stub';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 
 // TODO: Need to refactoring component
@@ -31,9 +29,7 @@ describe.skip('FileUploadScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ FileUploadScreenComponent ],
-      providers: [
-        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
-      ]
+      providers: []
     })
     .compileComponents();
   }));
