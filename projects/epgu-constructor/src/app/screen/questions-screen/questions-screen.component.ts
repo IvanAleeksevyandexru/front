@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { QuestionsComponentActionsInterface } from '../../../interfaces/question-block.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
+import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
 import { ModalService } from '../../services/modal/modal.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
-import { QuestionScreenModalParams } from './questions-screen.constant';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
-import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
+import { QuestionScreenModalParams } from './questions-screen.constant';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -42,6 +42,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((screenData: ScreenData) => {
         this.screenData = screenData;
+        this.initCycledFields();
       });
   }
 
