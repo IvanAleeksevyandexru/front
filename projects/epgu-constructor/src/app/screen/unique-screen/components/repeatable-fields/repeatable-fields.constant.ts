@@ -1,4 +1,4 @@
-import { CustomComponentOutputDataInterface } from '../../../interfaces/custom-component.interface';
+import { CustomComponentOutputDataInterface } from '../../../../../interfaces/custom-component.interface';
 
 export const removeItemFromArrByIndex = (arr,index) => arr.filter((_, i) => i !== index);
 

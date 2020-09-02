@@ -3,7 +3,7 @@ import { ComponentStateService } from '../../../../services/component-state/comp
 import {
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
-} from '../../../repeatable-fields/repeatable-fields.constant';
+} from './repeatable-fields.constant';
 import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 
 @Component({
