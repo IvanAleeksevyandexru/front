@@ -56,6 +56,22 @@ export class UtilsService {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
 
+  /**
+   * Метод для безопасного получения пропертей объекта по пути
+   * @param obj 
+   * @param path 
+   * @param defaultValue 
+   */
+  static getObjectProperty(obj, path, defaultValue = undefined) {
+    const travel = regexp =>
+      String.prototype.split
+        .call(path, regexp)
+        .filter(Boolean)
+        .reduce((res, key) => (res !== null && res !== undefined ? res[key] : res), obj);
+    const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
+    return result === undefined || result === obj ? defaultValue : result;
+  };
+
   public formatDate(date: Moment, format: string): string {
     return date.format(format);
   }

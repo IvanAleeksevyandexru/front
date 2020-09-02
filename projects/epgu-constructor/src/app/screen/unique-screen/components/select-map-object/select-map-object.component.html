@@ -1,14 +1,16 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <div class="widget">
   <div class="widget__form widget-form">
-    <span class="widget-form__title">Выберите ЗАГСы</span>
+    <span class="widget-form__title" [innerHTML]="data.label | safeHtml"></span>
     <div class="widget-form__input">
       <lib-lookup
         [searchCaseSensitive]="false"
-        [fixedItems]="mappedDictionaryForLookup"
+        [itemsProvider]="provider"
         [showSuggestion]="true"
-        (changed)="selectMapObject($event.originalItem)"
+        (changed)="selectMapObject($event?.originalItem); libLookup.clearInput()"
         [showExpandCollapse]="false"
         [queryMinSymbolsCount]="0"
+        #libLookup
       >
       </lib-lookup>
     </div>
@@ -21,3 +23,46 @@
     [controls]="mapControls">
   </lib-map>
 </div>
+
+<ng-template #detailsTemplate>
+  <h3>ЗАГС Кутузовский</h3>
+  <hr>
+  <div class="map-modal">
+    <div class="cross-btn"></div>
+    <div class="map-modal__bold">ЗАГС, осуществляющий регистрацию брака:</div>
+    <div class="map-modal__normal">Хамовнический отдел ЗАГС Управления ЗАГС Москвы</div>
+    <div class="map-modal__bold">Место регистрации брака:</div>
+    <div class="map-modal__normal">Башня "Око" - ресторан "Birds"</div>
+    <img class="modal-img" src="./assets/img/brak001.png" />
+    <img class="modal-img" src="./assets/img/brak002.png" />
+    <div class="map-modal__normal">Одна из новейших площадок для регистрации брака находится на 84 этаже 
+башни «Око» делового центра «Москва-Сити» в ресторане «Birds».</div>
+    <div class="map-modal__normal">Ресторан на высоте 354 метров открылся в начале октября 2019 года. По словам организаторов 
+, уже прославившихся известным рестораном Ruski, новая площадка станет самым высоким рестораном и клубом на планете.</div>
+    <div class="map-modal__normal">Концепция заведения предусматривает слияние кулинарии и театрального шоу. 
+Гостям на выбор предлагаются меню азиатской и европейской кухни, также в ресторане присутствуют два контактных бара.</div>
+    <div class="map-modal__bold">Режим работы:</div>
+    <div class="map-modal__normal">Рабочие дни: вторник - суббота с 9.00 до 18.00<br>Выходные дни: воскресенье, понедельник</div>
+    <div class="map-modal__normal">Четвертый четверг каждого месяца – санитарный день, приема нет</div>
+    <div class="map-modal__bold">Дополнительные услуги:</div>
+    <div class="map-modal__normal">предоставление штатного фотографа - 1 500 р.<br>предоставление штатного оператора - 1 500 р.
+<br>автомобиль для свадебного кортежа - 2 000 р./час</div>
+  </div>
+</ng-template>
+
+<ng-template #informationTemplate let-item="item">
+  <h3>Дополнительные условия оказания услуги</h3>
+  <hr>
+  <div class="map-modal">
+    <div class="cross-btn"></div>
+    <div class="map-modal__normal">{{item.attributeValues.AREA_DESCR}}</div>
+    <div *ngIf="item.attributeValues.GET_CONSENT === 'true'" class="map-modal__bottom-confirm">
+      <label>
+        <input
+          type="checkbox"
+          [(ngModel)]="item.agreement"
+        >Настоящим подтверждаю, что ознакомлен и согласен с дополнительными условиями оказания услуг
+      </label>
+    </div>
+  </div>
+</ng-template>
