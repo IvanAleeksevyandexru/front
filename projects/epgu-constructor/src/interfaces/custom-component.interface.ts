@@ -1,7 +1,9 @@
 import { ListItem } from 'epgu-lib';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../app/screen/custom-screen/tools/custom-screen-tools';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../constant/global';
 import { DictionaryItem, DictionaryResponse } from './dictionary-options.interface';
 import { ComponentInterface, DisplayInterface } from './epgu.service.interface';
+
+export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
 export interface CustomComponentDictionaryState {
   loading: boolean,
@@ -59,12 +61,19 @@ export interface CustomComponentAttrValidationInterface {
  * @property {string}errorMessage - сообщение для ощибки
  * @property {any}value - текущее значение
  */
-export interface CustomComponentState {
+export interface CustomComponentStateItem {
   valid: boolean;
   isShow: boolean;
   errorMessage: string;
   value: any;
   component: CustomComponentInterface
+}
+
+export interface CustomComponentOutputDataInterface {
+  [key: string]: {
+    value: string;
+    valid: boolean
+  }
 }
 
 /**

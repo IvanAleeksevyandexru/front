@@ -2,10 +2,9 @@
   <ng-container *ngFor="let componentData of components">
     <ng-container [ngSwitch]="componentData.type">
       <div class="form__item" *ngSwitchCase="componentType.LabelSection">
-        <epgu-constructor-label-section
-          class="label"
-          [name]="componentData.label || state[componentData.id].value"
-        ></epgu-constructor-label-section>
+        <epgu-constructor-label class="label">
+          {{componentData.label || state[componentData.id].value}}
+        </epgu-constructor-label>
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.Dictionary">

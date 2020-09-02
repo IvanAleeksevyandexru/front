@@ -39,6 +39,20 @@ export enum UNIQUE_COMPONENT_NAME {
   'employeeHistory' = 'EmployeeHistory',
 }
 
+export enum CUSTOM_COMPONENT_ITEM_TYPE {
+  LabelSection = 'LabelSection',
+  Dictionary = 'Dictionary',
+  HiddenDictionary = 'HiddenDictionary',
+  HiddenLookup = 'HiddenLookup',
+  HiddenInput = 'HiddenInput',
+  DropDown = 'DropDown',
+  StringInput = 'StringInput',
+  DateInput = 'DateInput',
+  RadioInput = 'RadioInput',
+  CompositeRadioButton = 'CompositeRadioButton',
+  Lookup = 'Lookup',
+}
+
 export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';
 export const DATE_STRING_DASH_FORMAT = 'DD-MM-YYYY';
 
