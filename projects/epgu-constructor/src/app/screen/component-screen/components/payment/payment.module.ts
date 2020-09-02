@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EpguLibModule } from 'epgu-lib';
-import { SharedModule } from '../../../../shared-module/shared-components.module';
 import { PaymentComponent } from './payment.component';
-
-const COMPONENTS = [
-	PaymentComponent
-];
+import { SharedModule } from '../../../../shared/shared.module';
+import { PaymentService } from '../../../../services/payment/payment.service';
 
 @NgModule({
-	declarations: [...COMPONENTS],
-	exports: [...COMPONENTS],
+	declarations: [
+	  PaymentComponent
+  ],
+	exports: [
+	  PaymentComponent
+  ],
+  providers: [
+    PaymentService
+  ],
 	imports: [
 		CommonModule,
 		SharedModule,

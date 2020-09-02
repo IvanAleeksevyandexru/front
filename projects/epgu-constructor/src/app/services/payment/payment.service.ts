@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ConstructorService } from '../constructor/constructor.service';
 import { RestService } from '../rest/rest.service';
 import { HttpClient } from '@angular/common/http';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { catchError, map } from 'rxjs/operators';
 import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from '../../../interfaces/payment.interface';
 import { Observable, throwError } from 'rxjs';
-import { getPaymentRequestOptions } from '../../modules/screen/components/payment/payment.constants';
+import { FormPlayerService } from '../../form-player.service';
+import { getPaymentRequestOptions } from '../../screen/component-screen/components/payment/payment.constants';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -21,7 +21,7 @@ export class PaymentService {
     private restService: RestService,
     private http: HttpClient,
     private constructorConfigService: ConstructorConfigService,
-    public constructorService: ConstructorService,
+    public formPlayerService: FormPlayerService,
   ) {
     this.apiUrl = this.constructorConfigService.config.apiUrl;
     this.externalUrl = this.constructorConfigService.config.externalUrl;
@@ -93,7 +93,7 @@ export class PaymentService {
    * @param dictItemCode - код элемента справочника на оплату
    */
   createPaymentRequestOptions(dictItemCode: string): PaymentDictionaryOptionsInterface {
-    const { applicantAnswers }: any = this.constructorService.response.scenarioDto;
+    const { applicantAnswers }: any = this.formPlayerService.responseStore.scenarioDto;
     // eslint-disable-next-line prettier/prettier
     const filterReg = JSON.parse(applicantAnswers.ms1.value);
 

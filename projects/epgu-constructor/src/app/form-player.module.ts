@@ -23,6 +23,7 @@ import { TerabyteService } from './services/terabyte/terabyte.service';
 import { ComponentStateService } from './services/component-state/component-state.service';
 import { ScreenService } from './screen/screen.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
+import { EmptyScreenModule } from './screen/empty-screen/empty-screen.module';
 
 
 const COMPONENTS = [
@@ -37,6 +38,7 @@ const COMPONENTS = [
     CommonModule,
     ComponentScreenModule,
     CustomScreenModule,
+    EmptyScreenModule,
     QuestionsScreenModule,
     UniqueScreenModule,
     InvitationErrorScreenModule,

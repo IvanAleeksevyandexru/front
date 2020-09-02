@@ -7,8 +7,7 @@ import { NavigationService } from '../../shared/service/navigation/navigation.se
 import { ComponentStateService } from '../../services/component-state/component-state.service';
 import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
-import { mockOrderId } from '../payment/payment.constants';
-
+import { mockOrderId } from './components/payment/payment.constants';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;

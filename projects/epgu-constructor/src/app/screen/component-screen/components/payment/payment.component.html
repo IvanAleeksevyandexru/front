@@ -1,22 +1,22 @@
 <div class="payment" [ngSwitch]="status">
-    <div *ngSwitchCase="paymentStatus.SUCCESS">
-      <p class="info__text"><strong>{{ data.label }}</strong></p>
-      <p class="info__text">УИН {{ uin }}</p>
-      <p class="info__text">Начисление на паспорт РФ 1234 123456 от ЗАГС г. Москвы</p>
-      <p class="payment__sum">{{ sum }} Р
-        <!-- <span class="secondary">4 000,00 Р</span> -->
-      </p>
-    </div>
+  <div class="info" *ngSwitchCase="paymentStatus.SUCCESS">
+    <p class="info__text"><strong>{{ data.label }}</strong></p>
+    <p class="info__text">УИН {{ uin }}</p>
+    <p class="info__text">Начисление на паспорт РФ 1234 123456 от ЗАГС г. Москвы</p>
+    <p class="payment__sum">{{ sum }} Р
+      <!-- <span class="secondary">4 000,00 Р</span> -->
+    </p>
+  </div>
 
-    <div *ngSwitchCase="paymentStatus.ERROR">
-      <img class="info__img" src="assets/icons/svg/error-icon.svg" alt=""/>
-      <p class="info__text">При получении реквизитов оплаты пошлины произошла ошибка.</p>
-      <p class="info__text">Попробуйте обновить страницу или <a href="#">обратитесь в службу поддержки</a>.
-        Ваш черновик автоматически сохранен.</p>
-    </div>
+  <div class="info" *ngSwitchCase="paymentStatus.ERROR">
+    <img class="info__img" src="assets/icons/svg/error-icon.svg" alt=""/>
+    <p class="info__text">При получении реквизитов оплаты пошлины произошла ошибка.</p>
+    <p class="info__text">Попробуйте обновить страницу или <a href="#">обратитесь в службу поддержки</a>.
+      Ваш черновик автоматически сохранен.</p>
+  </div>
 
-    <div *ngSwitchCase="paymentStatus.SERVER_ERROR">
-      <img class="info__img" src="assets/img/server-error.svg" />
-      <p class="info__text">Попробуйте зайти на страницу позже. Если ошибка не исчезнет, <a href="#">сообщите нам о ней</a></p>
-    </div>
+  <div class="info" *ngSwitchCase="paymentStatus.SERVER_ERROR">
+    <img class="info__img" src="assets/img/server-error.svg" alt=""/>
+    <p class="info__text">Попробуйте зайти на страницу позже. Если ошибка не исчезнет, <a href="#">сообщите нам о ней</a></p>
+  </div>
 </div>

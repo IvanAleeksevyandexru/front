@@ -69,7 +69,6 @@
         <epgu-constructor-doc-input
           *ngSwitchCase="screenComponentName.docInput"
           [data]="(screenData.componentData?.components)[0]"
-          (nextStepEvent)="changedComponentData($event)"
         ></epgu-constructor-doc-input>
 
         <epgu-constructor-add-children-screen
@@ -81,7 +80,7 @@
         <epgu-constructor-payment
           *ngSwitchCase="screenComponentName.paymentScr"
           [orderId]="getOrderId"
-          [data]="data?.components[0]"
+          [data]="(screenData.componentData?.components)[0]"
         ></epgu-constructor-payment>
       </ng-container>
     </epgu-constructor-screen-pad>

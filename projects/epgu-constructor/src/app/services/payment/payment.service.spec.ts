@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-
 import { PaymentService } from './payment.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
 import { RestService } from '../rest/rest.service';
-import { ConstructorService } from '../constructor/constructor.service';
+import { FormPlayerService } from '../../form-player.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -19,7 +18,7 @@ describe('PaymentService', () => {
         RestService,
         PaymentService,
         ConstructorConfigService,
-        ConstructorService,
+        FormPlayerService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });

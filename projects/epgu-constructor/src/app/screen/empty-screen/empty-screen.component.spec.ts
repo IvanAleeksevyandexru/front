@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SCREEN_TYPE } from '../../../../../constant/global';
-import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
+import { SCREEN_TYPE } from '../../../constant/global';
+import { DisplayInterface } from '../../../interfaces/epgu.service.interface';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { EmptyComponent } from './empty.component';
+import { EmptyScreenComponent } from './empty-screen.component';
 
 
 // TODO: Need to refactoring component
-describe.skip('EmptyComponent', () => {
-	let component: EmptyComponent;
-	let fixture: ComponentFixture<EmptyComponent>;
+describe.skip('EmptyScreenComponent', () => {
+	let component: EmptyScreenComponent;
+	let fixture: ComponentFixture<EmptyScreenComponent>;
 	const mockData: DisplayInterface = {
 		components: [{
 			attrs: {},
@@ -27,13 +27,13 @@ describe.skip('EmptyComponent', () => {
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
 			schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-			declarations: [EmptyComponent],
+			declarations: [EmptyScreenComponent],
 		})
 			.compileComponents();
 	}));
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(EmptyComponent);
+		fixture = TestBed.createComponent(EmptyScreenComponent);
 		component = fixture.componentInstance;
 		component.data = mockData;
 		fixture.detectChanges();
