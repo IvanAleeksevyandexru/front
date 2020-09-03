@@ -1,6 +1,5 @@
 <div class="data">
   <div class="data__group data-group" *ngFor="let groupItem of preparedData">
-    <!-- Бизнеслогика-->
     <div class="flex-row">
       <div class="data-group__title">{{ groupItem?.groupName }}</div>
     </div>
@@ -15,7 +14,7 @@
 <div class="data-footer" *ngIf="data?.attrs?.actions?.length === 1">
   <div class="divider"></div>
   <a class="btn-edit" [href]="constructorConfigService.config.externalLkUrl">
-    <span class="btn-edit__icon"></span>
+    <img src="/assets/icons/svg/ion_pencil-outline.svg" class="btn-edit__icon">
     <span class="btn-edit__text">Редактировать</span>
   </a>
 </div>

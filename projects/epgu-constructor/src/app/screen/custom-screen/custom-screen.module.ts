@@ -3,10 +3,9 @@ import { NgModule } from '@angular/core';
 import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomScreenComponent } from './custom-screen.component';
-import { RadioInputComponent } from './components/radio-input/radio-input.component';
 import { ScreenService } from '../screen.service';
 
-const COMPONENTS = [CustomScreenComponent, RadioInputComponent];
+const COMPONENTS = [CustomScreenComponent];
 
 @NgModule({
   declarations: [
