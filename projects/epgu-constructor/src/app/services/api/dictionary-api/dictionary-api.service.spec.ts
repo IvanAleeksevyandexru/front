@@ -5,7 +5,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ConstructorConfigService } from '../../config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../../config/constructor-config.service.stub';
 import { UserSessionService } from '../../user-session/user-session.service';
-import { CookieService } from 'ngx-cookie-service';
 
 describe('DictionaryApiService', () => {
   let service: DictionaryApiService;
@@ -18,7 +17,6 @@ describe('DictionaryApiService', () => {
       providers: [
         DictionaryApiService,
         UserSessionService,
-        CookieService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });
