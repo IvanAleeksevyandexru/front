@@ -13,7 +13,7 @@ import { InfoScreenBodyComponentModalParams } from '../../../info-screen/compone
 export class SelectMapObjectService {
 
   public dictionary;
-  public filteredDictionaryItems: Array<any> = [];
+  public filteredDictionaryItems = [];
   public map;
   public controlValue = new Subject();
   public ymaps;
@@ -182,7 +182,7 @@ export class SelectMapObjectService {
       '<a href="#!" class="details-link">Узнать подробнее</a></div>' +
       '{% if properties.res.attributeValues.AREA_DESCR %}' +
       '<div class="map-baloon-content-Bottom">' +
-      'На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы' + 
+      'На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы ' + 
       '<a href="#!" class="information-link">ознакомиться</a>' +
       '</div>' +
       '{% endif %}' +

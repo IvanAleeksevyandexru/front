@@ -58,11 +58,12 @@ export class UtilsService {
 
   /**
    * Метод для безопасного получения пропертей объекта по пути
-   * @param obj 
-   * @param path 
-   * @param defaultValue 
+   * @param obj объект, из которого необходимо получить свойство
+   * @param path путь до свойства
+   * @param defaultValue значение по умолчанию в случае не нахождения свойства
+   * @example getObjectProperty({a: {b: {c: 3}}}), 'a.b.c');
    */
-  static getObjectProperty(obj, path, defaultValue = undefined) {
+  static getObjectProperty(obj: any, path: string, defaultValue: any = undefined): any {
     const travel = regexp =>
       String.prototype.split
         .call(path, regexp)

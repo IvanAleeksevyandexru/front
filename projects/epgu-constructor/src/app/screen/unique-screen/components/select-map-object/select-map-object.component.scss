@@ -23,21 +23,14 @@ hr {
   &__normal {
     padding-bottom: 24px;
   }
+  
+}
 
-  &__bottom-confirm {
-    display: flex;
-
-    input[type="checkbox"] {
-      margin-right: 10px;
-    }
-  }
-
-  .modal-img {
-    border-radius: $border-round;
-    width: 230px;
-    height: 160px;
-    margin-right: 8px;
-  }
+.modal-img {
+  border-radius: $border-round;
+  width: 230px;
+  height: 160px;
+  margin-right: 8px;
 }
 
 .widget {

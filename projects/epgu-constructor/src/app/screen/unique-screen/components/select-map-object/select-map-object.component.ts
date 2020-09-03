@@ -170,9 +170,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   }
 
   // TODO Сделать интерфейс для mapObject
-  public selectMapObject(mapObject) {
+  private selectMapObject(mapObject) {
     if (!mapObject) return;
     this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.id);
+  }
+
+  public lookupChanged(mapObject, lookup) {
+    this.selectMapObject(mapObject);
+    lookup.clearInput();
   }
 
   /**

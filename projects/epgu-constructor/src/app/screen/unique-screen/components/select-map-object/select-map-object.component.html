@@ -7,7 +7,7 @@
         [searchCaseSensitive]="false"
         [itemsProvider]="provider"
         [showSuggestion]="true"
-        (changed)="selectMapObject($event?.originalItem); libLookup.clearInput()"
+        (changed)="lookupChanged($event?.originalItem, libLookup)"
         [showExpandCollapse]="false"
         [queryMinSymbolsCount]="0"
         #libLookup
@@ -57,12 +57,11 @@
     <div class="cross-btn"></div>
     <div class="map-modal__normal">{{item.attributeValues.AREA_DESCR}}</div>
     <div *ngIf="item.attributeValues.GET_CONSENT === 'true'" class="map-modal__bottom-confirm">
-      <label>
-        <input
-          type="checkbox"
-          [(ngModel)]="item.agreement"
-        >Настоящим подтверждаю, что ознакомлен и согласен с дополнительными условиями оказания услуг
-      </label>
+      <lib-checkbox
+        [(ngModel)]="item.agreement"
+        labelText="Настоящим подтверждаю, что ознакомлен и согласен с дополнительными условиями оказания услуг"
+      >
+      </lib-checkbox>
     </div>
   </div>
 </ng-template>
