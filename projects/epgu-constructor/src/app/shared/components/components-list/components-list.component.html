@@ -56,6 +56,9 @@
             (change)="inputChange($event, componentData)"
             [validationShowOn]="validationShowOn"
           ></lib-plain-input>
+          <div *ngIf="componentData.hint" class="form__item__hint">
+            {{ componentData.hint }}
+          </div>
           <epgu-constructor-helper-text *ngIf="!componentData.required">
             {{ getHelperText(componentData.required) }}
           </epgu-constructor-helper-text>

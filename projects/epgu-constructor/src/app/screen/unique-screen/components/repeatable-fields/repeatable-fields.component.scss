@@ -1,4 +1,6 @@
-@import "src/styles/core";
+@import "src/styles/core/functions";
+@import "src/styles/core/typography";
+@import "src/styles/core/variables";
 
 .nav {
   @include navigation-mt();
@@ -15,6 +17,18 @@
 .icon-close {
   display: flex;
   margin-left: auto;
+}
+
+.btn--add{
+  margin-top: $screen-pad-p;
+  display: flex;
+  button {
+    flex: 1;
+    padding: $screen-pad-p;
+    border-radius: $border-xl;
+    @include shadow-main();
+    @include typ-plain-text();
+  }
 }
 
 .footer {
@@ -41,14 +55,3 @@
   }
 }
 
-.btn{
-  &__add {
-    padding: 15px;
-    border: 1px dashed $color-active-item;
-    box-sizing: border-box;
-    border-radius: 4px;
-    @include tablets-down {
-      width: 100%;
-    }
-  }
-}

@@ -5,6 +5,7 @@
 }
 
 .info__text::ng-deep {
+  @include typ-plain-text();
   & > * {
     margin: 0;
     &:not(:first-child) {
@@ -33,7 +34,7 @@
       display: block;
       width: 8px;
       height: 8px;
-      margin-top: 5px;
+      margin-top: 9px;
       margin-right: 12px;
       background: $color-gosblue;
       flex-shrink: 0;

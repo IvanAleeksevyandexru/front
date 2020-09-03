@@ -25,7 +25,7 @@ export class FormPlayerServiceStub {
         type: SCREEN_TYPE.COMPONENT
       },
       errors: {},
-      gender: 'male',
+      gender: 'M',
       orderId: '1',
       sendNotification: [],
       token: 'someSecret',
