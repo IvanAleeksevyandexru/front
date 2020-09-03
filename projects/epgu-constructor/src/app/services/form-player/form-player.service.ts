@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_TYPE } from '../constant/global';
-import { ResponseInterface } from '../interfaces/epgu.service.interface';
-import { ComponentStateService } from './services/component-state/component-state.service';
+import { SCREEN_TYPE } from '../../../constant/global';
+import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
+import { ComponentStateService } from '../component-state/component-state.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ScreenService } from './screen/screen.service';
-import { RestService } from './services/rest/rest.service';
+import { ScreenService } from '../../screen/screen.service';
+import { RestService } from '../rest/rest.service';
 
 interface SendDataOptionsInterface {
   componentId?: string;
   goBack?: boolean;
 }
+
+type GetStepFuncName = 'getNextStep' | 'getPrevStep';
 
 @Injectable()
 export class FormPlayerService {
@@ -45,26 +47,17 @@ export class FormPlayerService {
   }
 
   nextStep(data?: any, options?: SendDataOptionsInterface): void {
-    this.updateLoading(true);
-    this.updateRequest(data, options);
-    this.restService.getNextStep(this.responseStore).subscribe(
-      (response) => {
-        this.processResponse(response);
-      },
-      (error) => {
-        this.sendDataError(error);
-      },
-      () => {
-        // TODO почему не отрабатывает если пришла ошибка 500;
-        this.updateLoading(false);
-      }
-    );
+    this.changeStep('getNextStep', data, options);
   }
 
-  prevStep(data?: any): void {
+  prevStep(data?: any, options?: SendDataOptionsInterface): void {
+    this.changeStep('getPrevStep', data, options);
+  }
+
+  changeStep(getStepFuncName: GetStepFuncName, data?: any, options?: SendDataOptionsInterface) {
     this.updateLoading(true);
-    this.updateRequest(data);
-    this.restService.getPrevStep(this.responseStore).subscribe(
+    this.updateRequest(data, options);
+    this.restService[getStepFuncName](this.responseStore).subscribe(
       (response) => {
         this.processResponse(response);
       },
@@ -142,6 +135,7 @@ export class FormPlayerService {
     });
     this.updatePlayerLoaded(true);
 
+    // TODO: move it to log service
     console.log('----- GET DATA ---------');
     console.log('componentId:', this.componentId);
     console.log('componentType:', display.components[0].type);

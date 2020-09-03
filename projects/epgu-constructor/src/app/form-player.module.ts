@@ -14,8 +14,7 @@ import { ComponentScreenModule } from './screen/component-screen/component-scree
 import { UniqueScreenModule } from './screen/unique-screen/unique-screen.module';
 import { ConstructorConfigService } from './services/config/constructor-config.service';
 import { CONSTRUCTOR_CONFIG_TOKEN } from './services/config/constructor.config.token';
-import { FormPlayerService } from './form-player.service';
-import { MockService } from './services/mock/mock.service';
+import { FormPlayerService } from './services/form-player/form-player.service';
 import { RestService } from './services/rest/rest.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { SharedModule } from './shared/shared.module';
@@ -23,6 +22,7 @@ import { TerabyteService } from './services/terabyte/terabyte.service';
 import { ComponentStateService } from './services/component-state/component-state.service';
 import { ScreenService } from './screen/screen.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
+import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
 
 
 const COMPONENTS = [
@@ -50,12 +50,12 @@ const COMPONENTS = [
     RestService,
     TerabyteService,
     FormPlayerService,
+    FormPlayerApiService,
     ScreenResolverService,
     ScreenService,
     ComponentStateService,
     ConstructorConfigService,
-    UnsubscribeService,
-    MockService,
+    UnsubscribeService
   ],
   exports: [
     ...COMPONENTS

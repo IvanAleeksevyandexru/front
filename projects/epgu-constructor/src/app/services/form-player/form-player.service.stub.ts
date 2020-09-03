@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   DisplayInterface,
   ResponseInterface
-} from '../interfaces/epgu.service.interface';
-import { SCREEN_TYPE } from '../constant/global';
+} from '../../../interfaces/epgu.service.interface';
+import { SCREEN_TYPE } from '../../../constant/global';
 
 
 @Injectable()
