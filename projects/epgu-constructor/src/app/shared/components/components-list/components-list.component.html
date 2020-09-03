@@ -53,6 +53,7 @@
           <lib-plain-input
             [invalid]="!state[componentData.id].valid"
             [name]="componentData.id"
+            [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
             [validationShowOn]="validationShowOn"
           ></lib-plain-input>
