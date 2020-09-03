@@ -6,7 +6,6 @@ import { ConstructorConfigServiceStub } from '../../../../services/config/constr
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../screen.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
-import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { UserSessionService } from '../../../../services/user-session/user-session.service';
 
 describe('PaymentService', () => {
@@ -24,7 +23,6 @@ describe('PaymentService', () => {
         ScreenService,
         ConstructorConfigService,
         ComponentStateService,
-        FormPlayerService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });

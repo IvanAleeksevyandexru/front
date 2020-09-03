@@ -1,26 +1,35 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { EMPTY_SCREEN_COMPONENT } from '../../../constant/global';
-import { DisplayInterface } from '../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { PaymentScenarioInterface } from '../../../interfaces/payment.interface';
-import { FormPlayerService } from '../../services/form-player/form-player.service';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
+import { ScreenService } from '../screen.service';
 
 @Component({
   selector: 'epgu-constructor-empty-screen',
   templateUrl: './empty-screen.component.html',
   providers: [UnsubscribeService],
 })
-export class EmptyScreenComponent {
-  // <-- constant
+export class EmptyScreenComponent implements Screen {
   emptyComponentName = EMPTY_SCREEN_COMPONENT;
+  screenData: ScreenData;
 
-  constructor(private formPlayerService: FormPlayerService) {}
-
-  @Input() data: DisplayInterface;
+  constructor(private screenService: ScreenService, private ngUnsubscribe$: UnsubscribeService) {
+    this.screenService.screenData$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((screenData: ScreenData) => {
+        this.screenData = screenData;
+      });
+  }
 
   get redirectLink() {
-    const applicantAnswers: PaymentScenarioInterface = this.formPlayerService.responseStore
-      .scenarioDto;
+    const applicantAnswers: PaymentScenarioInterface = this.screenData
+      .applicantAnswers as PaymentScenarioInterface;
     return applicantAnswers.applicantAnswers.pay1.value;
   }
+
+  nextStep(): void {}
+
+  prevStep(): void {}
 }
