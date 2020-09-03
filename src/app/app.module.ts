@@ -4,6 +4,7 @@ import { FormPlayerModule } from 'dist/epgu-constructor';
 import { FormPlayerConfigInterface } from '../../projects/epgu-constructor/src/interfaces/form-player-config.interface';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
+import { CookieService } from 'ngx-cookie-service'
 
 const formPlayerConfig: FormPlayerConfigInterface = {
   serviceId: environment.serviceId,
@@ -28,7 +29,7 @@ const formPlayerConfig: FormPlayerConfigInterface = {
     BrowserModule,
     FormPlayerModule.forRoot(formPlayerConfig),
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

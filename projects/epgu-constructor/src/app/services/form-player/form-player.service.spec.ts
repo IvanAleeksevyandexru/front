@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { CookieService } from 'ngx-cookie-service';
 
 import { FormPlayerService } from './form-player.service';
 import { ComponentStateService } from '../component-state/component-state.service';
@@ -18,7 +17,6 @@ describe('FormPlayerService', () => {
         FormPlayerService,
         ComponentStateService,
         ScreenService,
-        CookieService,
         ScreenResolverService,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
       ]
