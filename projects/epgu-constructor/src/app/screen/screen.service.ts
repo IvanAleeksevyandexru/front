@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ScreenData } from '../../interfaces/screen.interface';
+import { ScreenData } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 

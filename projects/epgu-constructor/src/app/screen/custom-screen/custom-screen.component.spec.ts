@@ -12,7 +12,7 @@ import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pa
 import { ComponentsListComponent } from '../../shared/components/components-list/components-list.component';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ScreenData } from '../../../interfaces/screen.interface';
+import { ScreenData } from '../screen.types';
 
 
 describe('CustomScreenComponent', () => {

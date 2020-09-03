@@ -6,7 +6,7 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { QuestionScreenModalParams } from './questions-screen.constant';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
+import { Screen, ScreenData } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationPayload } from '../../form-player.types';
 

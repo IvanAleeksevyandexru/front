@@ -8,7 +8,7 @@ import { ScreenContainerComponent } from '../../shared/components/screen-contain
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ScreenData } from '../../../interfaces/screen.interface';
+import { ScreenData } from '../screen.types';
 
 
 // TODO: Need to refactoring component

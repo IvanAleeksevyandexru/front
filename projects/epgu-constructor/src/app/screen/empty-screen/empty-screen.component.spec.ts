@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SCREEN_TYPE } from '../../../constant/global';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EmptyScreenComponent } from './empty-screen.component';
-import { ScreenData } from '../../../interfaces/screen.interface';
+import { ScreenData } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';

@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { EMPTY_SCREEN_COMPONENT } from '../../../constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { PaymentScenarioInterface } from '../../../interfaces/payment.interface';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
+import { Screen, ScreenData } from '../screen.types';
 import { ScreenService } from '../screen.service';
 
 @Component({

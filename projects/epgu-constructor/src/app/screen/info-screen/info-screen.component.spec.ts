@@ -5,7 +5,7 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { InfoScreenComponent } from './info-screen.component';
 import { ScreenService } from '../screen.service';
-import { ScreenData } from '../../../interfaces/screen.interface';
+import { ScreenData } from '../screen.types';
 
 
 describe('InfoScreenComponent', () => {

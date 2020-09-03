@@ -1,5 +1,5 @@
-import { DisplayInterface, Gender } from './epgu.service.interface';
-import { NavigationPayload } from '../app/form-player.types';
+import { DisplayInterface, Gender } from '../../interfaces/epgu.service.interface';
+import { NavigationPayload } from '../form-player.types';
 
 
 export interface ScreenData {
