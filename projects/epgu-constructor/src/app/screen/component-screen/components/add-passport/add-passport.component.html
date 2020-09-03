@@ -1,26 +1,15 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
-
 <section class="add-passport-screen">
-  <div class="add-passport-screen__header">
-    <epgu-constructor-page-name>{{header}}</epgu-constructor-page-name>
-  </div>
-
   <div class="add-passport-screen__form">
-    <div class="form__name">
-      Паспорт РФ
-    </div>
+    <div class="form__name">Паспорт РФ</div>
     <form [formGroup]="passportForm" class="form__inputs">
       <div class="inputs__field">
         <epgu-constructor-label for="series">Серия</epgu-constructor-label>
         <lib-plain-input id="series" formControlName="series" type="number"></lib-plain-input>
       </div>
       <div class="inputs__field">
-        <epgu-constructor-label class="field__label">
-          Номер
-        </epgu-constructor-label>
+        <epgu-constructor-label class="field__label"> Номер </epgu-constructor-label>
         <lib-plain-input formControlName="number" type="number"></lib-plain-input>
       </div>
     </form>
   </div>
 </section>
-
