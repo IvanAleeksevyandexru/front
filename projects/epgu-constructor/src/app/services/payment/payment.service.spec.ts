@@ -7,6 +7,7 @@ import { RestService } from '../rest/rest.service';
 import { ScreenService } from '../../screen/screen.service';
 import { ComponentStateService } from '../component-state/component-state.service';
 import { FormPlayerService } from '../form-player/form-player.service';
+import { UserSessionService } from '../user-session/user-session.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -19,6 +20,7 @@ describe('PaymentService', () => {
       providers: [
         RestService,
         PaymentService,
+        UserSessionService,
         ScreenService,
         ConstructorConfigService,
         ComponentStateService,
