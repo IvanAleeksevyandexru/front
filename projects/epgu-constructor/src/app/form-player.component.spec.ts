@@ -10,6 +10,7 @@ import { NavigationService } from './shared/service/navigation/navigation.servic
 import { ModalContainerComponent } from './shared/components/modal-container/modal-container.component';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
+import { UserSessionService } from './services/user-session/user-session.service';
 
 describe('FormPlayerComponent', () => {
   let formPlayerService: FormPlayerService;
@@ -29,6 +30,7 @@ describe('FormPlayerComponent', () => {
         NavigationService,
         ScreenResolverService,
         UnsubscribeService,
+        UserSessionService,
         { provide: FormPlayerService, useClass: FormPlayerServiceStub }
       ]
     }).compileComponents();

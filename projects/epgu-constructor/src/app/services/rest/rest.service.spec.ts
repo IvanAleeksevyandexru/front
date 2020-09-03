@@ -4,6 +4,7 @@ import { RestService } from './rest.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
+import { UserSessionService } from '../user-session/user-session.service';
 
 describe('RestService', () => {
   let service: RestService;
@@ -15,6 +16,7 @@ describe('RestService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         RestService,
+        UserSessionService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });
