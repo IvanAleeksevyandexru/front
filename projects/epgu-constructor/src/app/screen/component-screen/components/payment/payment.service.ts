@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { RestService } from '../rest/rest.service';
+import { RestService } from '../../../../services/rest/rest.service';
 import { HttpClient } from '@angular/common/http';
-import { ConstructorConfigService } from '../config/constructor-config.service';
+import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
 import { catchError, map } from 'rxjs/operators';
-import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from '../../../interfaces/payment.interface';
+import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from '../../../../../interfaces/payment.interface';
 import { Observable, throwError } from 'rxjs';
-import { getPaymentRequestOptions } from '../../screen/component-screen/components/payment/payment.constants';
-import { FormPlayerService } from '../form-player/form-player.service';
+import { getPaymentRequestOptions } from './payment.constants';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -21,7 +20,6 @@ export class PaymentService {
     private restService: RestService,
     private http: HttpClient,
     private constructorConfigService: ConstructorConfigService,
-    public formPlayerService: FormPlayerService,
   ) {
     this.apiUrl = this.constructorConfigService.config.apiUrl;
     this.externalUrl = this.constructorConfigService.config.externalUrl;
@@ -45,9 +43,10 @@ export class PaymentService {
    * @param orderId - идентификатор заявления
    * @param nsi - наименование справочника с информацией
    * @param dictItemCode - код нужного справочника
+   * @param filterReg - объект фильтра для оплаты
    */
-  loadPaymentInfo(orderId, nsi, dictItemCode): Observable<any> {
-    const dictionaryOptions = this.createPaymentRequestOptions(dictItemCode);
+  loadPaymentInfo(orderId, nsi, dictItemCode, filterReg): Observable<any> {
+    const dictionaryOptions = this.createPaymentRequestOptions(dictItemCode, filterReg);
 
     return this.restService.getDictionary(nsi, dictionaryOptions).pipe(
       map((res: any) => {
@@ -91,14 +90,11 @@ export class PaymentService {
   /**
    * Возвращает опции для запроса на оплату
    * @param dictItemCode - код элемента справочника на оплату
+   * @param filterReg - объект фильтра для оплаты
    */
-  createPaymentRequestOptions(dictItemCode: string): PaymentDictionaryOptionsInterface {
-    const { applicantAnswers }: any = this.formPlayerService.responseStore.scenarioDto;
-    // eslint-disable-next-line prettier/prettier
-    const filterReg = JSON.parse(applicantAnswers.ms1.value);
-
+  createPaymentRequestOptions(dictItemCode: string, filterReg: any): PaymentDictionaryOptionsInterface {
     console.log('filterReg', filterReg);
-    // TODO хардкод. доделать.
+    // TODO хардкод. доделать. Выглядит как
     return getPaymentRequestOptions(filterReg, dictItemCode);
   }
 }
