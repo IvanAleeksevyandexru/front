@@ -26,6 +26,9 @@
           (changed)="selectDropDown($event, componentData)"
           [items]="dropDown[componentData?.id]?.list"
         ></lib-dropdown>
+        <epgu-constructor-helper-text *ngIf="!componentData.required">
+          {{ getHelperText(componentData.required) }}
+        </epgu-constructor-helper-text>
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.HiddenLookup">

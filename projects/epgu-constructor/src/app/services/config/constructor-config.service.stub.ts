@@ -10,6 +10,7 @@ export class ConstructorConfigServiceStub {
     externalApiUrl: '',
     externalLkApiUrl: '',
     externalLkUrl: '',
+    paymentUrl: '',
     fileUploadApiUrl: '',
     fileUploadLocalhostApiUrl: '',
     externalUrl: '',

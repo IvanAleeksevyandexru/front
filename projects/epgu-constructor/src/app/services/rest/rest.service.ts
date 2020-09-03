@@ -63,7 +63,12 @@ export class RestService {
     });
   }
 
-   getDictionary(dictionaryName: string, options: DictionaryOptionsInterface = {}) {
+  /**
+   * Возвращает данные справочника
+   * @param dictionaryName - название справочника
+   * @param options - опции для получения данных
+   */
+  getDictionary(dictionaryName: string, options: DictionaryOptionsInterface = {}): Observable<DictionaryResponse> {
     const path = `${this.dictionaryUrl}/${dictionaryName}`;
     return this.http.post<DictionaryResponse>(path, {
       filter: options.filter,

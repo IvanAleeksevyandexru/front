@@ -22,7 +22,7 @@ import { TerabyteService } from './services/terabyte/terabyte.service';
 import { ComponentStateService } from './services/component-state/component-state.service';
 import { ScreenService } from './screen/screen.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
-import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
+import { EmptyScreenModule } from './screen/empty-screen/empty-screen.module';
 import { UserSessionService } from './services/user-session/user-session.service';
 
 
@@ -38,6 +38,7 @@ const COMPONENTS = [
     CommonModule,
     ComponentScreenModule,
     CustomScreenModule,
+    EmptyScreenModule,
     QuestionsScreenModule,
     UniqueScreenModule,
     InvitationErrorScreenModule,
@@ -51,7 +52,6 @@ const COMPONENTS = [
     RestService,
     TerabyteService,
     FormPlayerService,
-    FormPlayerApiService,
     ScreenResolverService,
     ScreenService,
     ComponentStateService,
