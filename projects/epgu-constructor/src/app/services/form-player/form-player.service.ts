@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../../../constant/global';
 import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { ComponentStateService } from '../component-state/component-state.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import { FormPlayerNavigation } from '../../form-player.types';
+import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -14,21 +15,24 @@ interface SendDataOptionsInterface {
 
 @Injectable()
 export class FormPlayerService {
-  responseStore: ResponseInterface;
-  componentId: string;
-  screenType: string;
-  playerLoaded = false;
-  isLoading = false;
+  private store: ResponseInterface;
+  private playerLoaded = false;
+  private isLoading = false;
+  private screenType: string;
+  private componentId: string;
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
+  private storeSubject = new Subject<ResponseInterface>();
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
+  public store$: Observable<ResponseInterface> = this.storeSubject.asObservable();
 
   constructor(
     public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
+    private screenResolverService: ScreenResolverService,
     private componentStateService: ComponentStateService, // TODO: check service
   ) {}
 
@@ -41,14 +45,26 @@ export class FormPlayerService {
     );
   }
 
-  getScreenType(): string {
-    return this.screenType;
+  get screenComponent() {
+    const screenComponent = this.screenResolverService.getScreenComponentByType(this.screenType);
+
+    if (!screenComponent) {
+      this.handleScreenComponentError(this.screenType);
+    }
+
+    return screenComponent;
   }
+
+  handleScreenComponentError(screenType: string) {
+    // TODO: need to find a better way for handling this error, maybe show it on UI
+    throw new Error(`We cant find screen component for this type: ${screenType}`);
+  }
+
 
   navigate(formPlayerNavigation: FormPlayerNavigation, data?: any, options?: SendDataOptionsInterface) {
     this.updateLoading(true);
     this.updateRequest(data, options);
-    this.formPlayerApiService.navigate(formPlayerNavigation, this.responseStore).subscribe(
+    this.formPlayerApiService.navigate(formPlayerNavigation, this.store).subscribe(
       (response) => {
         this.processResponse(response);
       },
@@ -69,14 +85,14 @@ export class FormPlayerService {
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}): void {
     const componentId = options.componentId || this.componentId;
-    const isCycledFields = !!Object.keys(this.responseStore?.scenarioDto?.currentCycledFields).length;
-    this.responseStore.scenarioDto.currentValue = {};
+    const isCycledFields = !!Object.keys(this.store?.scenarioDto?.currentCycledFields).length;
+    this.store.scenarioDto.currentValue = {};
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
     if (this.screenType === SCREEN_TYPE.CUSTOM || isCycledFields) {
-      this.responseStore.scenarioDto.currentValue = data;
+      this.store.scenarioDto.currentValue = data;
     } else {
-      this.responseStore.scenarioDto.currentValue[componentId] = {
+      this.store.scenarioDto.currentValue[componentId] = {
         visited: true,
         value: data || '',
       };
@@ -85,7 +101,7 @@ export class FormPlayerService {
 
   sendDataSuccess(response): void {
     console.log('----- SET DATA ---------');
-    console.log('request', this.responseStore);
+    console.log('request', this.store);
     this.initResponse(response);
   }
 
@@ -110,7 +126,7 @@ export class FormPlayerService {
     this.componentStateService.state = '';
     this.componentStateService.isValid = true;
 
-    this.responseStore = response;
+    this.store = response;
     const { display, errors, gender } = response.scenarioDto;
     this.componentId = display.components[0].id;
     this.screenType = display.type;
@@ -125,6 +141,7 @@ export class FormPlayerService {
       currentCycledFields: currentCycledFields ?? currentCycledFields,
       applicantAnswers: applicantAnswers ?? applicantAnswers
     });
+    this.storeSubject.next(this.store);
     this.updatePlayerLoaded(true);
 
     // TODO: move it to log service
