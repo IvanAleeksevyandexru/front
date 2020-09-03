@@ -6,7 +6,6 @@ export class ConstructorConfigServiceStub {
   config: FormPlayerConfigInterface = {
     apiUrl: '',
     dictionaryUrl: '',
-    serviceId: '',
     externalApiUrl: '',
     externalLkApiUrl: '',
     externalLkUrl: '',
