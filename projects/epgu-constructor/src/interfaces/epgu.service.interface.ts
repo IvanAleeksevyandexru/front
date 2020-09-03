@@ -24,8 +24,9 @@ export interface ScenarioDto {
   gender: Gender;
   orderId: string;
   sendNotification: Array<object>;
-  token: string
-  userId: string
+  token: string;
+  userId: string;
+  finishedAndCurrentScreens: [];
 }
 
 export interface ResponseInterface {
