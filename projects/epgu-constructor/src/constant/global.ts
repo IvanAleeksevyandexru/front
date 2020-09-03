@@ -48,9 +48,6 @@ export enum EMPTY_SCREEN_COMPONENT {
 export enum CUSTOM_COMPONENT_ITEM_TYPE {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
-  HiddenDictionary = 'HiddenDictionary',
-  HiddenLookup = 'HiddenLookup',
-  HiddenInput = 'HiddenInput',
   DropDown = 'DropDown',
   StringInput = 'StringInput',
   DateInput = 'DateInput',

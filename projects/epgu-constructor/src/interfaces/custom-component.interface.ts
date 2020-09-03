@@ -25,7 +25,8 @@ export interface CustomComponentDropDownStateInterface {
 
 export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
 export type CustomComponentDropDownItem = {
-  name: string;
+  label: string;
+  disable: boolean;
 };
 
 
