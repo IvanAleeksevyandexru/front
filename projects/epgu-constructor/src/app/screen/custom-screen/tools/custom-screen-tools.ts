@@ -1,11 +1,11 @@
 import { ListItem } from 'epgu-lib';
+import * as moment_ from 'moment';
+import { CUSTOM_COMPONENT_ITEM_TYPE, DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
 import {
   CustomComponentDictionaryState, CustomComponentDropDownItemList,
   CustomComponentInterface, CustomComponentState
 } from '../../../../interfaces/custom-component.interface';
 import { DictionaryItem } from '../../../../interfaces/dictionary-options.interface';
-import { CUSTOM_COMPONENT_ITEM_TYPE, DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
-import * as moment_ from 'moment';
 const moment = moment_;
 
 
@@ -90,12 +90,15 @@ export function calcDependedComponent(
   component: CustomComponentInterface,
   state: CustomComponentState,
   components: Array<CustomComponentInterface>) {
+  const isLookup = component.type === 'Lookup';
   const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
   const dependentComponents = components.filter((item) => isComponentDependOn(item.attrs?.ref));
 
   dependentComponents.forEach((dependentComponent) => {
-    state[dependentComponent.id].isShow =
-      dependentComponent.attrs.ref.every(item => state[item.relatedRel].value === item.val);
+    state[dependentComponent.id].isShow = dependentComponent.attrs.ref.some(item => {
+      const stateRelatedRel = isLookup ? state[item.relatedRel]?.value : state[item.relatedRel];
+      return stateRelatedRel?.value === item.val;
+    });
   });
 }
 

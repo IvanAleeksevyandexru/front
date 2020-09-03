@@ -43,6 +43,16 @@ export class CustomScreenComponent implements OnInit, Screen {
       });
   }
 
+  ngOnChanges(changes) {
+    // covers 'navigation' between two custom-screens and its initial data loading
+    const {
+      data: { firstChange, currentValue, previousValue },
+    } = changes;
+    if (firstChange || currentValue.id !== previousValue.id) {
+      this.initCycledFields();
+    }
+  }
+
   initCycledFields() {
     this.currentCycledFields = this.screenData?.currentCycledFields || {};
     this.cycledFieldsKeys = Object.keys(this.currentCycledFields);
@@ -114,8 +124,10 @@ export class CustomScreenComponent implements OnInit, Screen {
     return Object.keys(changes).reduce((result, key) => {
       const targetItem = changes[key];
       const targetItemValue = targetItem.value;
-      const fieldName =
-        targetItem.component.attrs.fields && targetItem.component.attrs.fields[0].fieldName;
+      const targetComponent = this.screenData.componentData.components.find(
+        (item) => item.id === key,
+      );
+      const fieldName = targetComponent.attrs.fields && targetComponent.attrs.fields[0].fieldName;
       if (!fieldName) return result;
 
       if (typeof targetItemValue === 'object' && moment(targetItemValue).isValid()) {

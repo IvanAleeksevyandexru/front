@@ -42,6 +42,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((screenData: ScreenData) => {
         this.screenData = screenData;
+        this.initCycledFields();
       });
   }
 
