@@ -76,4 +76,4 @@ export interface CurrentValue {
   value: any;
 }
 
-export type Gender = 'male' | 'female';
+export type Gender = 'M' | 'F';

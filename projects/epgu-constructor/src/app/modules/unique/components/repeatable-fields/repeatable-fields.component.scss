@@ -17,6 +17,16 @@
   margin-left: auto;
 }
 
+.btn--add{
+  display: flex;
+  button {
+    flex: 1;
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 4px;
+  }
+}
+
 .footer {
   display: flex;
   align-items: center;
@@ -41,14 +51,3 @@
   }
 }
 
-.btn{
-  &__add {
-    padding: 15px;
-    border: 1px dashed $color-active-item;
-    box-sizing: border-box;
-    border-radius: 4px;
-    @include tablets-down {
-      width: 100%;
-    }
-  }
-}
