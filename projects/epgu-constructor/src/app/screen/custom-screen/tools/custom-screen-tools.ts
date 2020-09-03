@@ -73,10 +73,10 @@ export function getNormalizeDataCustomScreenDictionary(
 export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
   return items.map((item, index) => {
     return {
-      id: `${item.name}-${index}`,
-      text: item.name,
+      id: `${item.label}-${index}`,
+      text: item.label,
       formatted: '',
-      // 'hidden': false,
+      unselectable: item.disable === false,
       originalItem: item,
       compare: () => false,
     };
