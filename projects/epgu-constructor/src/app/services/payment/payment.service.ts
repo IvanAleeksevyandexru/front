@@ -6,7 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from '../../../interfaces/payment.interface';
 import { Observable, throwError } from 'rxjs';
 import { getPaymentRequestOptions } from '../../screen/component-screen/components/payment/payment.constants';
-import { FormPlayerService } from '../form-player/form-player.service'
+import { FormPlayerService } from '../form-player/form-player.service';
 
 /**
  * Сервис для оплаты услуг пользователем

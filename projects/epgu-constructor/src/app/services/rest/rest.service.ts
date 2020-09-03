@@ -5,6 +5,7 @@ import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { CookieService } from 'ngx-cookie-service';
 import { UserSessionService } from '../user-session/user-session.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class RestService {
