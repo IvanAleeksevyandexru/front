@@ -1,0 +1,25 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+
+<epgu-constructor-screen-container class="screen-container">
+  <div *ngIf="header" class="head">
+    <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
+  </div>
+
+  <epgu-constructor-file-upload
+    [objectId]="getOrderId"
+    [applicantAnswers]="applicantAnswers"
+    [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
+    [attributes]="data.attrs"
+    (newValueSet)="handleNewValueSet($event)"
+  >
+  </epgu-constructor-file-upload>
+
+  <div class="footer">
+    <lib-button
+      [showLoader]="isLoading"
+      (click)="nextScreen()"
+      class="footer__btn-submit">
+      {{ submitLabel || "Продолжить" }}
+    </lib-button>
+  </div>
+</epgu-constructor-screen-container>
