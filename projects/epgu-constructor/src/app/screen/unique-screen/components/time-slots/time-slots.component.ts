@@ -4,15 +4,14 @@ import * as moment_ from 'moment';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
-import { ConstructorService } from '../../../../services/constructor/constructor.service';
 import { TimeSlotsService } from './time-slots.service';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
-import { ConfirmationModalComponent } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../services/modal/modal.service';
-import { ConfirmationModal } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.interface';
 import { SlotInterface } from './slot.interface';
 import { TimeSlotsConstants } from './time-slots.constants';
+import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
 
 const moment = moment_;
 
@@ -22,6 +21,8 @@ const moment = moment_;
   styleUrls: ['./time-slots.component.scss'],
 })
 export class TimeSlotsComponent implements OnInit {
+  @Input() isLoading: boolean;
+
   public date: Date = null;
   public label: string;
   public activeMonthNumber: number;
@@ -83,7 +84,6 @@ export class TimeSlotsComponent implements OnInit {
     private mvdTimeSlotsService: MvdTimeSlotsService,
     private modalService: ModalService,
     private componentStateService: ComponentStateService,
-    public constructorService: ConstructorService,
     public constants: TimeSlotsConstants,
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;
