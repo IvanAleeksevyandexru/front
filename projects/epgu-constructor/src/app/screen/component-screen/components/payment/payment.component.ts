@@ -9,7 +9,7 @@ import {
 } from '../../../../../interfaces/payment.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
-import { PaymentService } from '../../../../services/payment/payment.service';
+import { PaymentService } from './payment.service';
 import { PaymentStatus } from './payment.constants';
 
 export interface PaymentInterface extends ComponentInterface {
@@ -29,6 +29,7 @@ export class PaymentComponent {
 
   private attrData: PaymentInterface;
   @Input() orderId: string;
+  @Input() applicantAnswers: any;
   @Input()
   set data(data: PaymentInterface) {
     this.attrData = data;
@@ -50,9 +51,10 @@ export class PaymentComponent {
    */
   private loadPaymentInfo() {
     const { nsi, dictItemCode } = this.data.attrs;
+    const filterReg = JSON.parse(this.applicantAnswers?.ms1?.value);
 
     this.paymentService
-      .loadPaymentInfo(this.orderId, nsi, dictItemCode)
+      .loadPaymentInfo(this.orderId, nsi, dictItemCode, filterReg)
       .pipe(
         switchMap((attributeValues: PaymentInfoInterface) => {
           this.sum = PaymentService.transformSumForPenny(attributeValues.sum);
