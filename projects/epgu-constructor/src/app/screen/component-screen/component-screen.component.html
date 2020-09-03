@@ -79,6 +79,7 @@
 
         <epgu-constructor-payment
           *ngSwitchCase="screenComponentName.paymentScr"
+          [applicantAnswers]="screenData.applicantAnswers"
           [orderId]="getOrderId"
           [data]="(screenData.componentData?.components)[0]"
         ></epgu-constructor-payment>

@@ -1,24 +1,26 @@
 import { TestBed } from '@angular/core/testing';
 import { PaymentService } from './payment.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConstructorConfigService } from '../config/constructor-config.service';
-import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
-import { RestService } from '../rest/rest.service';
-import { FormPlayerService } from '../../form-player.service';
-import { ScreenService } from '../../screen/screen.service';
-import { ComponentStateService } from '../component-state/component-state.service';
+import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { ConstructorConfigServiceStub } from '../../../../services/config/constructor-config.service.stub';
+import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
+import { ScreenService } from '../../../screen.service';
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { FormPlayerService } from '../../../../services/form-player/form-player.service';
+import { UserSessionService } from '../../../../services/user-session/user-session.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
-  let restService: RestService;
+  let dictionaryApiService: DictionaryApiService;
   let http: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        RestService,
+        DictionaryApiService,
         PaymentService,
+        UserSessionService,
         ScreenService,
         ConstructorConfigService,
         ComponentStateService,
@@ -27,7 +29,7 @@ describe('PaymentService', () => {
       ]
     });
     service = TestBed.inject(PaymentService);
-    restService = TestBed.inject(RestService);
+    dictionaryApiService = TestBed.inject(DictionaryApiService);
     http = TestBed.inject(HttpTestingController);
   });
 

@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { EMPTY_SCREEN_COMPONENT } from '../../../constant/global';
 import { DisplayInterface } from '../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { FormPlayerService } from '../../form-player.service';
 import { PaymentScenarioInterface } from '../../../interfaces/payment.interface';
+import { FormPlayerService } from '../../services/form-player/form-player.service';
 
 @Component({
   selector: 'epgu-constructor-empty-screen',
