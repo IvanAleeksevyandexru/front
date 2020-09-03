@@ -42,9 +42,6 @@ export enum UNIQUE_COMPONENT_NAME {
 export enum CUSTOM_COMPONENT_ITEM_TYPE {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
-  HiddenDictionary = 'HiddenDictionary',
-  HiddenLookup = 'HiddenLookup',
-  HiddenInput = 'HiddenInput',
   DropDown = 'DropDown',
   StringInput = 'StringInput',
   DateInput = 'DateInput',

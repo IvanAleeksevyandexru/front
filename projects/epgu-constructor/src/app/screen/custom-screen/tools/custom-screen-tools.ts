@@ -72,7 +72,7 @@ export function getNormalizeDataCustomScreenDictionary(
  */
 export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
   return items.map((item, index) => {
-    return  {
+    return {
       id: `${item.name}-${index}`,
       text: item.name,
       formatted: '',
@@ -83,25 +83,19 @@ export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<
   });
 }
 
+/**
+ * Функция проверяет зависимые компоненты и перезаписывает состояние в state.
+*/
 export function calcDependedComponent(
   component: CustomComponentInterface,
   state: CustomComponentState,
   components: Array<CustomComponentInterface>) {
   const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
-  // TODO добавить возможность зависить от нескольких полей
-  const dependentComponents = components.filter((item) =>
-    isComponentDependOn(item.attrs?.ref),
-  );
+  const dependentComponents = components.filter((item) => isComponentDependOn(item.attrs?.ref));
 
   dependentComponents.forEach((dependentComponent) => {
-    if (likeDictionary(component.type)) {
-      const dictionaryOfTheDependentComponent: DictionaryItem = state[component.id]?.value;
-
-      // TODO Временный hardcode;
-      state[dependentComponent.id].isShow =
-        // TODO добавить возможность зависить от нескольких полей
-        dependentComponent.attrs.ref[0].val === dictionaryOfTheDependentComponent.value;
-    }
+    state[dependentComponent.id].isShow =
+      dependentComponent.attrs.ref.every(item => state[item.relatedRel].value === item.val);
   });
 }
 

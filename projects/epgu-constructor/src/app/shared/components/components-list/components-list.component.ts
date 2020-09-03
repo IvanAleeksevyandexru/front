@@ -43,54 +43,46 @@ export class ComponentsListComponent implements OnChanges {
 
   constructor(private restService: RestService) {}
 
-  // // TODO Где-то надо будет включить эту проверку
-  // asdasd() {
-  //   // TODO добавить валидацию и проверку заполнения всех полей помимо StringInput
-  //   const responseData = {};
-  //   let isValid = true;
-  //   Object.keys(this.state).forEach((key) => {
-  //     if (this.state[key].component.type === CUSTOM_COMPONENT_ITEM_TYPE.StringInput) {
-  //       const inputValidationResult = this.checkInputValidation(
-  //         this.state[key].value,
-  //         this.state[key].component,
-  //       );
-
-  //       this.setValidationState(
-  //         inputValidationResult,
-  //         this.state[key]?.component?.id,
-  //         this.state[key]?.value,
-  //       );
-
-  //       if (inputValidationResult > -1) {
-  //         isValid = false;
-  //       }
-  //     }
-  //   });
-
-  //   this.validationShowOn = ValidationShowOn.IMMEDIATE;
-
-  //   if (isValid) {
-  //     Object.keys(this.state).forEach((key) => {
-  //       responseData[key] = { visited: true, value: JSON.stringify(this.state[key].value || {}) };
-  //     });
-  //   }
-  // }
+  // TODO тут была информация о валидации смотри историю гита
 
   ngOnChanges(changes: SimpleChanges): void {
     this.state = {};
     if (changes?.components?.currentValue) {
-      this.components.forEach((component) => {
-        this.initState(component);
-        if (likeDictionary(component.type)) {
-          const dictionaryName = component.attrs.dictionaryType;
-          this.initDictionary(dictionaryName);
-          this.loadDictionary(dictionaryName, component);
-        } else if (isDropDown(component.type)) {
-          this.initDropDown(component);
-        }
-      });
+      this.components.forEach((component) => this.initComponent(component));
       this.emmitChanges();
+      this.checkDependenceOfTheComponent();
     }
+  }
+
+  /**
+   * Инициализирует стейт для компонента.
+   */
+  initComponent(component: CustomComponentInterface) {
+    this.initState(component);
+    if (likeDictionary(component.type)) {
+      const dictionaryName = component.attrs.dictionaryType;
+      this.initDictionary(dictionaryName);
+      this.loadDictionary(dictionaryName, component);
+    } else if (isDropDown(component.type)) {
+      this.initDropDown(component);
+    }
+  }
+
+  initState(component: CustomComponentInterface) {
+    this.state[component.id] = getInitStateItemComponentList(component);
+  }
+
+  initDictionary(dictionaryName) {
+    this.dictionary[dictionaryName] = getCustomScreenDictionaryFirstState();
+  }
+
+  initDropDown(component: CustomComponentInterface) {
+    const key = component.id;
+    const data = component.attrs.dictionaryList;
+    this.dropDown[key] = {
+      origin: data,
+      list: adaptiveDropDown(data),
+    };
   }
 
   selectDictionary(selectedItem: ListItem, component: CustomComponentInterface) {
@@ -98,33 +90,20 @@ export class ComponentsListComponent implements OnChanges {
     this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
     this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
-    calcDependedComponent(component, this.state, this.components);
-    this.emmitChanges();
+    this.emmitChanges(component);
   }
 
-  setValidationState(inputValidationResult, componentId, componentValue) {
-    const handleSetState = (isValid, errMsg?) => {
-      this.state[componentId].value = componentValue;
-      this.state[componentId].valid = isValid;
-      this.state[componentId].errorMessage = errMsg;
-      this.emmitChanges();
-    };
-
-    if (inputValidationResult === -1) {
-      handleSetState(true);
-    } else {
-      handleSetState(
-        false,
-        this.state[componentId]?.component.attrs.validation[inputValidationResult].errorMsg,
-      );
-    }
+  selectDropDown($event: any, componentData: CustomComponentInterface) {
+    this.state[componentData.id].value = $event.origin;
+    this.emmitChanges();
   }
 
   inputChange($event: Event, component: CustomComponentInterface) {
     const { value } = $event.target as HTMLInputElement;
+    this.state[component.id].value = value;
     const inputValidationResult = CheckInputValidationComponentList(value, component);
-
     this.setValidationState(inputValidationResult, component.id, value);
+    this.emmitChanges(component);
   }
 
   loadDictionary(dictionaryName: string, component: CustomComponentInterface) {
@@ -132,17 +111,10 @@ export class ComponentsListComponent implements OnChanges {
     this.restService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryName, data, component),
       () => this.loadDictionaryError(dictionaryName),
-      () => this.changes.emit(this.state),
+      () => {
+        /* this.changes.emit(this.state) */
+      },
     );
-  }
-
-  private initDropDown(component: CustomComponentInterface) {
-    const key = component.id;
-    const data = component.attrs.dictionaryList;
-    this.dropDown[key] = {
-      origin: data,
-      list: adaptiveDropDown(data),
-    };
   }
 
   loadDictionarySuccess(
@@ -164,25 +136,32 @@ export class ComponentsListComponent implements OnChanges {
     this.dictionary[key].loadEnd = false;
   }
 
-  initDictionary(dictionaryName) {
-    this.dictionary[dictionaryName] = getCustomScreenDictionaryFirstState();
+  setValidationState(inputValidationResult, componentId, componentValue) {
+    const handleSetState = (isValid, errMsg?) => {
+      this.state[componentId].value = componentValue;
+      this.state[componentId].valid = isValid;
+      this.state[componentId].errorMessage = errMsg;
+      this.emmitChanges();
+    };
+
+    if (inputValidationResult === -1) {
+      handleSetState(true);
+    } else {
+      handleSetState(
+        false,
+        this.state[componentId]?.component.attrs.validation[inputValidationResult].errorMsg,
+      );
+    }
   }
 
   getHelperText(required: boolean): string {
     return required ? '' : OPTIONAL_FIELD;
   }
 
-  private initState(component: CustomComponentInterface) {
-    this.state[component.id] = getInitStateItemComponentList(component);
-    this.emmitChanges();
-  }
-
-  selectDropDown($event: any, componentData: CustomComponentInterface) {
-    this.state[componentData.id].value = $event.origin;
-    this.emmitChanges();
-  }
-
-  emmitChanges() {
+  emmitChanges(component?: CustomComponentInterface) {
+    if (component) {
+      calcDependedComponent(component, this.state, this.components);
+    }
     const prepareStateForSending = this.getPreparedStateForSending();
     this.changes.emit(prepareStateForSending);
   }
@@ -197,5 +176,11 @@ export class ComponentsListComponent implements OnChanges {
       acc[key] = { value, valid };
       return acc;
     }, {});
+  }
+
+  private checkDependenceOfTheComponent() {
+    this.components.forEach((component) =>
+      calcDependedComponent(component, this.state, this.components),
+    );
   }
 }
