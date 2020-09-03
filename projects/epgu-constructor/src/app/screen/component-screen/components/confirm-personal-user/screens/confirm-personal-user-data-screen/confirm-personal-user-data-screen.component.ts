@@ -1,8 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  ConfirmUserDataFieldsStateInterface,
-  ConfirmUserDataInterface,
-} from '../../../../../../../interfaces/confirm-user-data.interface';
+import { ConfirmUserDataInterface } from '../../../../../../../interfaces/confirm-user-data.interface';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 @Component({
@@ -13,15 +10,15 @@ import { ComponentStateService } from '../../../../../../services/component-stat
 export class ConfirmPersonalUserDataScreenComponent implements OnInit {
   constructor(private componentStateService: ComponentStateService) {}
 
-  @Input() data: ConfirmUserDataInterface;
+  propData: ConfirmUserDataInterface;
+  @Input() set data(val: ConfirmUserDataInterface) {
+    this.propData = val;
+    this.componentStateService.state = val.value;
+  }
 
   clickToAction(action): void {
     console.log('click to action: ', action);
   }
 
   ngOnInit(): void {}
-
-  dataChange($event: Array<ConfirmUserDataFieldsStateInterface>) {
-    this.componentStateService.state = JSON.stringify($event);
-  }
 }
