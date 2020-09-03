@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RestService } from '../../../../services/rest/rest.service';
+import { DictionaryApiService } from '../../../../services/dictionary-api/dictionary-api.service';
 import { HttpClient } from '@angular/common/http';
 import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
 import { catchError, map } from 'rxjs/operators';
@@ -17,7 +17,7 @@ export class PaymentService {
   private paymentUrl: string;
 
   constructor(
-    private restService: RestService,
+    private dictionaryApiService: DictionaryApiService,
     private http: HttpClient,
     private constructorConfigService: ConstructorConfigService,
   ) {
@@ -48,7 +48,7 @@ export class PaymentService {
   loadPaymentInfo(orderId, nsi, dictItemCode, filterReg): Observable<any> {
     const dictionaryOptions = this.createPaymentRequestOptions(dictItemCode, filterReg);
 
-    return this.restService.getDictionary(nsi, dictionaryOptions).pipe(
+    return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
       map((res: any) => {
         if (res.error.code === 0) {
           return res.items[0].attributeValues;

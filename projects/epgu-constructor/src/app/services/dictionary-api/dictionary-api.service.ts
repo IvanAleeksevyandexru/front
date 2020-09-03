@@ -1,18 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DictionaryOptionsInterface, DictionaryResponse } from '../../../interfaces/dictionary-options.interface';
-import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { CookieService } from 'ngx-cookie-service';
 import { UserSessionService } from '../user-session/user-session.service';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class RestService {
-  apiUrl: string;
-  serviceId: string;
+export class DictionaryApiService {
   dictionaryUrl: string;
-  externalApiUrl: string;
   userId: string;
   token: string;
 
@@ -22,45 +18,13 @@ export class RestService {
     private userSessionService: UserSessionService,
     private cookieService: CookieService
   ) {
-    this.apiUrl = constructorConfigService.config.apiUrl;
-    this.serviceId = constructorConfigService.config.serviceId;
     this.dictionaryUrl = constructorConfigService.config.dictionaryUrl;
-    this.externalApiUrl = constructorConfigService.config.externalApiUrl;
 
     this.userSessionService.userSession$.subscribe(() => {
       this.userId = this.userSessionService.userId;
       this.token = this.userSessionService.token;
       this.cookieService.set('u', this.userId);
       this.cookieService.set('acc_t', this.token);
-    });
-  }
-
-  public getData() {
-    const path = `${this.apiUrl}/getService/${this.serviceId}`;
-    return this.http.get<ResponseInterface>(path, {
-      withCredentials: false
-    });
-  }
-
-  public getNextStep(data) {
-    const path = `${this.apiUrl}/service/${this.serviceId}/scenario/getNextStep`;
-    data.scenarioDto.userId = this.userId;
-    data.scenarioDto.token = this.token;
-    return this.http.post<ResponseInterface>(path, {
-      ...data,
-    }, {
-      withCredentials: false
-    });
-  }
-
-  public getPrevStep(data) {
-    const path = `${this.apiUrl}/service/${this.serviceId}/scenario/getPrevStep`;
-    data.scenarioDto.userId = this.userId;
-    data.scenarioDto.token = this.token;
-    return this.http.post<ResponseInterface>(path, {
-      ...data
-    }, {
-      withCredentials: false
     });
   }
 
@@ -82,10 +46,5 @@ export class RestService {
       // 2e641f4f-bc6a-11ea-b438-001a4a1660a6
       withCredentials: false
     });
-  }
-
-  getDadataByFias(fiasCode: string) {
-    const path = `${this.externalApiUrl}dadata/${fiasCode}`;
-    return this.http.get(path);
   }
 }

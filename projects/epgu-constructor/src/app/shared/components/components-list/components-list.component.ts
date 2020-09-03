@@ -19,7 +19,7 @@ import {
   CheckInputValidationComponentList,
   getInitStateItemComponentList,
 } from '../../../screen/custom-screen/tools/custom-screen-tools';
-import { RestService } from '../../../services/rest/rest.service';
+import { DictionaryApiService } from '../../../services/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
 
@@ -41,7 +41,7 @@ export class ComponentsListComponent implements OnChanges {
   @Input() components: Array<CustomComponentInterface>;
   @Output() changes = new EventEmitter<CustomComponentOutputDataInterface>();
 
-  constructor(private restService: RestService) {}
+  constructor(private dictionaryApiService: DictionaryApiService) {}
 
   // // TODO Где-то надо будет включить эту проверку
   // asdasd() {
@@ -129,7 +129,7 @@ export class ComponentsListComponent implements OnChanges {
 
   loadDictionary(dictionaryName: string, component: CustomComponentInterface) {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
-    this.restService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
+    this.dictionaryApiService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryName, data, component),
       () => this.loadDictionaryError(dictionaryName),
       () => this.changes.emit(this.state),

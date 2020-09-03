@@ -4,14 +4,13 @@ import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { ComponentStateService } from '../component-state/component-state.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';
-import { RestService } from '../rest/rest.service';
+import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
+import { FORM_PLAYER_NAVIGATION } from '../../form-player.types';
 
 interface SendDataOptionsInterface {
   componentId?: string;
   goBack?: boolean;
 }
-
-type GetStepFuncName = 'getNextStep' | 'getPrevStep';
 
 @Injectable()
 export class FormPlayerService {
@@ -28,14 +27,14 @@ export class FormPlayerService {
   public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
 
   constructor(
-    public restService: RestService,
+    public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private componentStateService: ComponentStateService, // TODO: check service
   ) {}
 
   initData(): void {
     this.updateLoading(true);
-    this.restService.getData().subscribe(
+    this.formPlayerApiService.getInitialData().subscribe(
       (response) => this.initResponse(response),
       (error) => this.sendDataError(error),
       () => this.updateLoading(false)
@@ -46,18 +45,10 @@ export class FormPlayerService {
     return this.screenType;
   }
 
-  nextStep(data?: any, options?: SendDataOptionsInterface): void {
-    this.changeStep('getNextStep', data, options);
-  }
-
-  prevStep(data?: any, options?: SendDataOptionsInterface): void {
-    this.changeStep('getPrevStep', data, options);
-  }
-
-  changeStep(getStepFuncName: GetStepFuncName, data?: any, options?: SendDataOptionsInterface) {
+  navigate(formPlayerNavigation: FORM_PLAYER_NAVIGATION, data?: any, options?: SendDataOptionsInterface) {
     this.updateLoading(true);
     this.updateRequest(data, options);
-    this.restService[getStepFuncName](this.responseStore).subscribe(
+    this.formPlayerApiService.navigate(formPlayerNavigation, this.responseStore).subscribe(
       (response) => {
         this.processResponse(response);
       },
@@ -126,6 +117,7 @@ export class FormPlayerService {
 
     const currentCycledFields = response.scenarioDto?.currentCycledFields;
     const applicantAnswers = response.scenarioDto?.applicantAnswers;
+
     this.screenService.updateScreenData({
       componentData: display,
       errors: errors ?? errors,
@@ -137,7 +129,7 @@ export class FormPlayerService {
 
     // TODO: move it to log service
     console.log('----- GET DATA ---------');
-    console.log('componentId:', this.componentId);
+    console.log('componentId:', display.components[0].id);
     console.log('componentType:', display.components[0].type);
     console.log('initResponse:', response);
   }

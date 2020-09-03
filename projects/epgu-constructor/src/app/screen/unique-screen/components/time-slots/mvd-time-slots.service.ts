@@ -4,7 +4,7 @@ import { ConstructorConfigService } from '../../../../services/config/constructo
 import { TimeSlotsService } from './time-slots.service';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { RestService } from '../../../../services/rest/rest.service';
+import { DictionaryApiService } from '../../../../services/dictionary-api/dictionary-api.service';
 import { formatDate } from '@angular/common';
 
 @Injectable()
@@ -27,13 +27,13 @@ export class MvdTimeSlotsService implements TimeSlotsService {
   constructor(
     private http: HttpClient,
     private constructorConfigService: ConstructorConfigService,
-    private restService: RestService
+    private dictionaryApiService: DictionaryApiService
   ) {
 
   }
 
   private getTimeSlots(options): Observable<any> {
-    return this.restService.getDictionary('getAppointment2_mvdr01', options);
+    return this.dictionaryApiService.getDictionary('getAppointment2_mvdr01', options);
   }
 
   book(selectedSlot: any): Observable<any> {

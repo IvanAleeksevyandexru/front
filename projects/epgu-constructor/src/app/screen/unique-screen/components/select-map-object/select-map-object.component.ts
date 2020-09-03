@@ -4,7 +4,7 @@ import { interval } from 'rxjs';
 import { filter, switchMap, takeUntil, takeWhile } from 'rxjs/operators';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
-import { RestService } from '../../../../services/rest/rest.service';
+import { DictionaryApiService } from '../../../../services/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapObjectService } from './select-map-object.service';
@@ -31,7 +31,7 @@ export class SelectMapObjectComponent implements OnInit {
   constructor(
     public selectMapObjectService: SelectMapObjectService,
     private yaMapService: YaMapService,
-    private restService: RestService,
+    private dictionaryApiService: DictionaryApiService,
     private constructorConfigService: ConstructorConfigService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {
@@ -72,7 +72,7 @@ export class SelectMapObjectComponent implements OnInit {
    * @param regCode код региона
    */
   private fillCoords(regCode) {
-    return this.restService
+    return this.dictionaryApiService
       .getDictionary(
         // TODO получить имя из response
         'FNS_ZAGS_ORGANIZATION_AREA',

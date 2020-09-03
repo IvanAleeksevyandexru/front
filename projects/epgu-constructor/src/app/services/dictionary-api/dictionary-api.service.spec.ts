@@ -1,13 +1,14 @@
 import { async, TestBed } from '@angular/core/testing';
 
-import { RestService } from './rest.service';
+import { DictionaryApiService } from './dictionary-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
 import { UserSessionService } from '../user-session/user-session.service';
+import { CookieService } from 'ngx-cookie-service';
 
-describe('RestService', () => {
-  let service: RestService;
+describe('DictionaryApiService', () => {
+  let service: DictionaryApiService;
   let http: HttpTestingController;
   let cnstrctrConfigSrv: ConstructorConfigService;
 
@@ -15,12 +16,13 @@ describe('RestService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        RestService,
+        DictionaryApiService,
         UserSessionService,
+        CookieService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });
-    service = TestBed.inject(RestService);
+    service = TestBed.inject(DictionaryApiService);
     http = TestBed.inject(HttpTestingController);
     cnstrctrConfigSrv = TestBed.inject(ConstructorConfigService);
   }));

@@ -1,13 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
 import { FormPlayerService } from './form-player.service';
-import { RestService } from '../rest/rest.service';
-import { RestServiceStub } from '../rest/rest.service.stub';
 import { ComponentStateService } from '../component-state/component-state.service';
 import { ScreenService } from '../../screen/screen.service';
+import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
+import { CookieService } from 'ngx-cookie-service';
 
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
+  let apiService: FormPlayerApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,10 +17,12 @@ describe('FormPlayerService', () => {
         FormPlayerService,
         ComponentStateService,
         ScreenService,
-        { provide: RestService, useClass: RestServiceStub },
+        CookieService,
+        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
       ]
     });
     service = TestBed.inject(FormPlayerService);
+    apiService = TestBed.inject(FormPlayerApiService);
   });
 
   it('should be created', () => {
