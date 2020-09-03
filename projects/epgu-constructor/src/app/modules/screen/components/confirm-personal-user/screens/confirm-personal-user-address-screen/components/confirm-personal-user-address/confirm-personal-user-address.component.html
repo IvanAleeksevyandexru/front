@@ -19,7 +19,6 @@
         [externalApiUrl]="externalApiUrl"
         [initValue]="valueParsed[field.fieldName]"
         [(ngModel)]="valueParsed[field.fieldName]"
-        [textModelValue]="true"
       >
       </lib-dadata-widget>
     </epgu-constructor-address-item>
@@ -29,7 +28,6 @@
       class="item"
       [label]="field.label"
       [name]="field.label"
-      [textModelValue]="true"
     >
       <lib-date-picker
         [disabled]="!isEditable"
@@ -55,4 +53,7 @@
       </lib-plain-input>
     </epgu-constructor-address-item>
   </ng-container>
+  <div class="error">
+    <small>{{ error }}</small>
+  </div>
 </form>

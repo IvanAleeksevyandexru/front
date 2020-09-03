@@ -21,8 +21,8 @@
   ></epgu-constructor-employee-history>
   <epgu-constructor-repeatable-fields
     *ngSwitchCase="uniqueComponentName.repeatableFields"
-    (nextStepEvent)="nextStep($event)"
     [data]="data"
+    (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-repeatable-fields>
   <epgu-constructor-time-slots
     *ngSwitchCase="uniqueComponentName.timeSlot"

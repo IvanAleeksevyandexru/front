@@ -7,7 +7,6 @@ exports[`CustomScreenComponent check snapshot 1`] = `
   cycledFieldsKeys={[Function Array]}
   data={[Function Object]}
   dataToSend={[Function Object]}
-  flattenCycledFieldsValues={[Function Object]}
   isCycledFields="false"
   navService={[Function NavigationService]}
   nextStepEvent={[Function EventEmitter_]}
@@ -45,7 +44,7 @@ exports[`CustomScreenComponent check snapshot 1`] = `
                 class="button font-"
                 tabindex="0"
               >
-                
+                  
                 
                 
                 
