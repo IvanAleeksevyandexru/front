@@ -80,12 +80,11 @@ export class CustomScreenComponent implements OnInit, Screen {
   }
 
   nextScreen(): void {
-    const data = this.getPrepareResponseData(this.dataToSend);
+    const data = this.dataToSend;
     this.nextStep({ data });
   }
 
-  // TODO: not clear what to do this logic, named set, but return value.
-  setState(changes) {
+  getFormattedData(changes) {
     let stateData = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
@@ -104,7 +103,7 @@ export class CustomScreenComponent implements OnInit, Screen {
   }
 
   changeComponentsList(changes): void {
-    this.dataToSend = this.setState(changes);
+    this.dataToSend = this.getFormattedData(changes);
   }
 
   private getPrepareResponseData(data = {}) {

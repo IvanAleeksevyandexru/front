@@ -95,7 +95,7 @@ export function calcDependedComponent(
   const dependentComponents = components.filter((item) => isComponentDependOn(item.attrs?.ref));
 
   dependentComponents.forEach((dependentComponent) => {
-    state[dependentComponent.id].isShow = dependentComponent.attrs.ref.some(item => {
+    state[dependentComponent.id].isShown = dependentComponent.attrs.ref.some(item => {
       const stateRelatedRel = isLookup ? state[item.relatedRel]?.value : state[item.relatedRel];
       return stateRelatedRel?.value === item.val;
     });
@@ -146,6 +146,6 @@ export function getInitStateItemComponentList(component: CustomComponentInterfac
     errorMessage: '',
     value: valueFormatted,
     component,
-    isShow: !hasRelatedRef,
+    isShown: !hasRelatedRef,
   };
 }
