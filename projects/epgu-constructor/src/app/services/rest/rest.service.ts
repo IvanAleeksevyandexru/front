@@ -25,10 +25,13 @@ export class RestService {
     this.serviceId = constructorConfigService.config.serviceId;
     this.dictionaryUrl = constructorConfigService.config.dictionaryUrl;
     this.externalApiUrl = constructorConfigService.config.externalApiUrl;
-    this.userId = this.userSessionService.userId;
-    this.token = this.userSessionService.token;
-    this.cookieService.set('u', this.userId);
-    this.cookieService.set('acc_t', this.token);
+
+    this.userSessionService.userSession$.subscribe(() => {
+      this.userId = this.userSessionService.userId;
+      this.token = this.userSessionService.token;
+      this.cookieService.set('u', this.userId);
+      this.cookieService.set('acc_t', this.token);
+    });
   }
 
   public getData() {
@@ -79,5 +82,4 @@ export class RestService {
     const path = `${this.externalApiUrl}dadata/${fiasCode}`;
     return this.http.get(path);
   }
-
 }

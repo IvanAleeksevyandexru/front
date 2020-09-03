@@ -23,6 +23,7 @@ import { ComponentStateService } from './services/component-state/component-stat
 import { ScreenService } from './screen/screen.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
+import { UserSessionService } from './services/user-session/user-session.service';
 
 
 const COMPONENTS = [
@@ -55,6 +56,7 @@ const COMPONENTS = [
     ScreenService,
     ComponentStateService,
     ConstructorConfigService,
+    UserSessionService,
     UnsubscribeService
   ],
   exports: [

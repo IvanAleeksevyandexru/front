@@ -1,4 +1,12 @@
-import { Component, HostBinding, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { FormPlayerService } from './services/form-player/form-player.service';
@@ -15,7 +23,7 @@ import { UserSessionService } from './services/user-session/user-session.service
   styleUrls: ['../styles/index.scss', 'form-player.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class FormPlayerComponent implements OnInit, OnChanges {
+export class FormPlayerComponent implements OnInit, OnChanges, OnDestroy {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() userSession: UserSession;
 
@@ -41,6 +49,10 @@ export class FormPlayerComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.userSessionService.setSession(this.userSession);
+  }
+
+  ngOnDestroy(): void {
+    this.userSessionService.onDestroy();
   }
 
   // TODO: remove this to FormPlayerService when finish of splitting app's layers refactor
