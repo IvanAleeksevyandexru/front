@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { CookieService } from 'ngx-cookie-service'
 
 const formPlayerConfig: FormPlayerConfigInterface = {
-  serviceId: environment.serviceId,
   apiUrl: environment.apiUrl,
   dictionaryUrl: environment.dictionaryUrl,
   externalApiUrl: environment.externalApiUrl,

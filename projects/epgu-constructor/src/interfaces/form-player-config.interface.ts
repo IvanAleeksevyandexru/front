@@ -4,7 +4,6 @@
 export interface FormPlayerConfigInterface {
   apiUrl: string;
   dictionaryUrl: string;
-  serviceId: string;
   externalApiUrl: string;
   externalLkApiUrl: string;
   externalLkUrl: string;
