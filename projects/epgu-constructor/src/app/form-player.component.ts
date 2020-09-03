@@ -10,12 +10,11 @@ import {
 import { takeUntil } from 'rxjs/operators';
 
 import { FormPlayerService } from './services/form-player/form-player.service';
-import { NextStepEventData, PrevStepEventData } from '../interfaces/step-event-data.interface';
 import { NavigationService } from './shared/service/navigation/navigation.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { UserSession } from './services/user-session/user-session.type';
 import { UserSessionService } from './services/user-session/user-session.service';
-import { FormPlayerNavigation } from './form-player.types';
+import { FormPlayerNavigation, NavigationPayload } from './form-player.types';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -26,6 +25,7 @@ import { FormPlayerNavigation } from './form-player.types';
 export class FormPlayerComponent implements OnInit, OnChanges, OnDestroy {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() userSession: UserSession;
+  @Input() serviceId: string;
   screenComponent;
 
   constructor(
@@ -36,22 +36,24 @@ export class FormPlayerComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.checkProps();
     this.userSessionService.setSession(this.userSession);
-    this.formPlayerService.initData();
+    this.formPlayerService.initData(this.serviceId);
     this.formPlayerService.store$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.screenComponent = this.formPlayerService.screenComponent;
     });
 
     this.navigationService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NextStepEventData) => this.nextStep(data));
+      .subscribe((data: NavigationPayload) => this.nextStep(data));
 
     this.navigationService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: PrevStepEventData) => this.prevStep(data));
+      .subscribe((data: NavigationPayload) => this.prevStep(data));
   }
 
   ngOnChanges(): void {
+    this.checkProps();
     this.userSessionService.setSession(this.userSession);
   }
 
@@ -59,19 +61,17 @@ export class FormPlayerComponent implements OnInit, OnChanges, OnDestroy {
     this.userSessionService.onDestroy();
   }
 
-  nextStep(nextStepEventData?: NextStepEventData) {
-    this.formPlayerService.navigate(
-      FormPlayerNavigation.NEXT,
-      nextStepEventData?.data,
-      nextStepEventData?.options,
-    );
+  checkProps() {
+    if (!this.serviceId) {
+      throw Error('Need to set serviceId for epgu form player');
+    }
   }
 
-  prevStep(prevStepEventData?: PrevStepEventData) {
-    this.formPlayerService.navigate(
-      FormPlayerNavigation.PREV,
-      prevStepEventData?.data,
-      prevStepEventData?.options,
-    );
+  nextStep(navigationPayload?: NavigationPayload) {
+    this.formPlayerService.navigate(this.serviceId, FormPlayerNavigation.NEXT, navigationPayload);
+  }
+
+  prevStep(navigationPayload?: NavigationPayload) {
+    this.formPlayerService.navigate(this.serviceId, FormPlayerNavigation.PREV, navigationPayload);
   }
 }

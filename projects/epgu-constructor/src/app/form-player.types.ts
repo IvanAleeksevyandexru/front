@@ -3,3 +3,7 @@ export enum FormPlayerNavigation {
   'PREV' = 'getPrevStep',
 }
 
+export interface NavigationPayload {
+  data?: any,
+  options?: any,
+}

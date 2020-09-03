@@ -5,7 +5,7 @@ import { ComponentStateService } from '../component-state/component-state.servic
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
-import { FormPlayerNavigation } from '../../form-player.types';
+import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 
 interface SendDataOptionsInterface {
@@ -36,9 +36,9 @@ export class FormPlayerService {
     private componentStateService: ComponentStateService, // TODO: check service
   ) {}
 
-  initData(): void {
+  initData(serviceId: string): void {
     this.updateLoading(true);
-    this.formPlayerApiService.getInitialData().subscribe(
+    this.formPlayerApiService.getInitialData(serviceId).subscribe(
       (response) => this.initResponse(response),
       (error) => this.sendDataError(error),
       () => this.updateLoading(false)
@@ -61,10 +61,10 @@ export class FormPlayerService {
   }
 
 
-  navigate(formPlayerNavigation: FormPlayerNavigation, data?: any, options?: SendDataOptionsInterface) {
+  navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, navigationPayload?: NavigationPayload) {
     this.updateLoading(true);
-    this.updateRequest(data, options);
-    this.formPlayerApiService.navigate(formPlayerNavigation, this.store).subscribe(
+    this.updateRequest(navigationPayload?.data, navigationPayload?.options);
+    this.formPlayerApiService.navigate(serviceId, formPlayerNavigation, this.store).subscribe(
       (response) => {
         this.processResponse(response);
       },
@@ -84,7 +84,7 @@ export class FormPlayerService {
   };
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}): void {
-    const componentId = options.componentId || this.componentId;
+    const componentId = options?.componentId || this.componentId;
     const isCycledFields = !!Object.keys(this.store?.scenarioDto?.currentCycledFields).length;
     this.store.scenarioDto.currentValue = {};
 

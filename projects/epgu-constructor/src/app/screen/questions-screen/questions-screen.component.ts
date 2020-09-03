@@ -8,7 +8,7 @@ import { NavigationService } from '../../shared/service/navigation/navigation.se
 import { QuestionScreenModalParams } from './questions-screen.constant';
 import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
-import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
+import { NavigationPayload } from '../../form-player.types';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -62,7 +62,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     this.navigationService.prevStep.next();
   }
 
-  nextStep(data?: NextStepEventData): void {
+  nextStep(data?: NavigationPayload): void {
     this.navigationService.nextStep.next(data);
   }
 

@@ -5,7 +5,7 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
 import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
-import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
+import { NavigationPayload } from '../../form-player.types';
 
 @Component({
   selector: 'epgu-constructor-invitation-screen',
@@ -39,7 +39,7 @@ export class InvitationErrorScreenComponent implements OnInit, Screen {
     this.navigationService.prevStep.next();
   }
 
-  nextStep(data?: NextStepEventData): void {
+  nextStep(data?: NavigationPayload): void {
     this.navigationService.nextStep.next(data);
   }
 

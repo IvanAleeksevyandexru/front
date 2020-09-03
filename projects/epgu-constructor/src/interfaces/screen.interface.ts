@@ -1,5 +1,5 @@
 import { DisplayInterface, Gender } from './epgu.service.interface';
-import { NextStepEventData, PrevStepEventData } from './step-event-data.interface';
+import { NavigationPayload } from '../app/form-player.types';
 
 
 export interface ScreenData {
@@ -12,6 +12,6 @@ export interface ScreenData {
 
 export interface Screen {
   screenData: ScreenData,
-  prevStep: (data?: PrevStepEventData) => void,
-  nextStep: (data?: NextStepEventData) => void,
+  prevStep: (data?: NavigationPayload) => void,
+  nextStep: (data?: NavigationPayload) => void,
 }
