@@ -1,0 +1,95 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
+import { ButtonComponent } from 'epgu-lib';
+
+import { CustomScreenComponent } from './custom-screen.component';
+import { SCREEN_TYPE } from '../../../constant/global';
+import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
+import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
+import { PageNameComponent } from '../../shared/components/page-name/page-name.component';
+import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
+import { ComponentsListComponent } from '../../shared/components/components-list/components-list.component';
+import { ScreenService } from '../screen.service';
+import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { ScreenData } from '../../../interfaces/screen.interface';
+
+
+describe('CustomScreenComponent', () => {
+  let component: CustomScreenComponent;
+  let fixture: ComponentFixture<CustomScreenComponent>;
+  let navigationService: NavigationService;
+  let screenService: ScreenService;
+  let NavigationComponentMock = MockComponent(NavigationComponent);
+  let ComponentsListComponentMock = MockComponent(ComponentsListComponent);
+  const screenDataMock: ScreenData = {
+    componentData: {
+      components: [],
+      header: '',
+      id: '',
+      name: '',
+      submitLabel: '',
+      type: SCREEN_TYPE.QUESTION
+    }
+  };
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        CustomScreenComponent,
+        PageNameComponent,
+        ScreenPadComponent,
+        ScreenContainerComponent,
+        NavigationComponentMock,
+        ComponentsListComponentMock,
+        ButtonComponent
+      ],
+      providers: [
+        NavigationService,
+        ScreenService,
+        UnsubscribeService,
+      ]
+    })
+    .compileComponents();
+    navigationService = TestBed.inject(NavigationService);
+    screenService = TestBed.inject(ScreenService);
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CustomScreenComponent);
+    component = fixture.componentInstance;
+    screenService.updateScreenData(screenDataMock);
+    component.changeComponentsList({});
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('check snapshot', () => {
+    expect(fixture).toMatchSnapshot();
+  });
+
+  describe('navigation cases', () => {
+    it('onClick lib button should call nextScreen()', () => {
+      spyOn(component, 'nextScreen').and.callThrough();
+      const button = fixture.debugElement.nativeElement.querySelector('.footer__btn-submit .button');
+      button.click();
+      fixture.detectChanges();
+      expect(component.nextScreen).toHaveBeenCalled();
+    });
+
+    it('nextScreen() should call next of nextStep subject from navigationService', () => {
+      spyOn(navigationService.nextStep, 'next').and.callThrough();
+      component.nextScreen();
+      expect(navigationService.nextStep.next).toHaveBeenCalled();
+    });
+
+    it('prevStep() should call next of prevStep subject from navigationService', () => {
+      spyOn(navigationService.prevStep, 'next').and.callThrough();
+      component.prevStep();
+      expect(navigationService.prevStep.next).toHaveBeenCalled();
+    });
+  });
+});

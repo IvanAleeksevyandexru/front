@@ -1,0 +1,43 @@
+import { TestBed, async } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
+import { RouterTestingModule } from '@angular/router/testing';
+import { EpguLibModule } from 'epgu-lib';
+
+import { FormPlayerComponent } from './form-player.component';
+import { FormPlayerService } from './form-player.service';
+import { FormPlayerServiceStub } from './form-player.service.stub';
+import { NavigationService } from './shared/service/navigation/navigation.service';
+import { ModalContainerComponent } from './shared/components/modal-container/modal-container.component';
+import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
+import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
+
+describe('FormPlayerComponent', () => {
+  let formPlayerService: FormPlayerService;
+  let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        EpguLibModule.forChild(),
+      ],
+      declarations: [
+        FormPlayerComponent,
+        ModalContainerComponentMock
+      ],
+      providers: [
+        NavigationService,
+        ScreenResolverService,
+        UnsubscribeService,
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub }
+      ]
+    }).compileComponents();
+    formPlayerService = TestBed.inject(FormPlayerService);
+  }));
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(FormPlayerComponent);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
+});

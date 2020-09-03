@@ -1,0 +1,35 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+
+<epgu-constructor-screen-container class="screen-container">
+
+  <epgu-constructor-page-name>{{ propData.header }}</epgu-constructor-page-name>
+
+  <div class="cmp-group">
+    <epgu-constructor-screen-pad
+      class="cmp-group__layer"
+      *ngFor="let screenKey of objectKeys(screens); let i = index; trackBy: trackByFunction">
+      <div class="icon-close"
+           *ngIf="objectKeys(screens).length !== 1"
+           (click)="removeItem(screenKey, i)"></div>
+      <epgu-constructor-components-list
+        class="cmp-group__item"
+        (changes)="changeComponentList($event, i)"
+        [components]="screens[screenKey]">
+      </epgu-constructor-components-list>
+
+    </epgu-constructor-screen-pad>
+  </div>
+  <div class="btn--add">
+    <button class="btn btn--light" (click)="duplicateScreen()">Добавить</button>
+  </div>
+  <div class="footer">
+    <div class="footer__btns-group">
+      <lib-button
+        [showLoader]="isLoading"
+        (click)="nextScreen()"
+        class="btn__submit"
+      >{{ propData.submitLabel || 'Следующий экран' }}</lib-button
+      >
+    </div>
+  </div>
+</epgu-constructor-screen-container>
