@@ -102,7 +102,8 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
             if (response.error.errorDetail.errorCode === 0) {
               this.initSlotsMap(response.slots);
             } else {
-              this.errorMessage = response.error.errorDetail.errorMessage || response.error.errorDetail.errorCode;;
+              const { errorMessage, errorCode } = response.error.errorDetail;
+              this.errorMessage = errorMessage || errorCode;
             }
           }
         ),

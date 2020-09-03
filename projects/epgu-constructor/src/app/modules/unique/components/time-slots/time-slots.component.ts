@@ -12,6 +12,7 @@ import { ConfirmationModalComponent } from '../../../../shared-module/components
 import { ModalService } from '../../../../services/modal/modal.service';
 import { ConfirmationModal } from '../../../../shared-module/components/confirmation-modal/confirmation-modal.interface';
 import { SlotInterface } from './slot.interface';
+import { TimeSlotsConstants } from './time-slots.constants';
 
 const moment = moment_;
 
@@ -25,6 +26,22 @@ export class TimeSlotsComponent implements OnInit {
   public label: string;
   public activeMonthNumber: number;
   public activeYearNumber: number;
+
+  confirmModalParameters: ConfirmationModal = {
+    text: 'Вы уверены, что хотите поменять забронированное время?',
+    buttons: [
+      {
+        label: 'Да',
+        closeModal: true,
+        handler: this.bookTimeSlot.bind(this),
+      },
+      {
+        label: 'Нет',
+        closeModal: true,
+        color: 'white',
+      },
+    ],
+  };
 
   public daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
   public months = [
@@ -67,6 +84,7 @@ export class TimeSlotsComponent implements OnInit {
     private modalService: ModalService,
     private componentStateService: ComponentStateService,
     public constructorService: ConstructorService,
+    public constants: TimeSlotsConstants,
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = divorceTimeSlotsService;
@@ -153,13 +171,13 @@ export class TimeSlotsComponent implements OnInit {
         this.timeSlots = timeSlots;
         if (this.currentService.hasError()) {
           this.showError(
-            `Не удалось загрузить доступные слоты времени (${this.currentService.getErrorMessage()})`,
+            `${this.constants.errorLoadingTimeSlots} (${this.currentService.getErrorMessage()})`,
           );
         }
       },
       () => {
         this.showError(
-          `Не удалось загрузить доступные слоты времени (${this.currentService.getErrorMessage()})`,
+          `${this.constants.errorLoadingTimeSlots}  (${this.currentService.getErrorMessage()})`,
         );
       },
     );
@@ -175,54 +193,29 @@ export class TimeSlotsComponent implements OnInit {
 
   public clickSubmit() {
     if (this.bookedSlot) {
-      this.showModal(this.setConfirmationParams());
+      this.showModal(this.confirmModalParameters);
     } else {
       this.bookTimeSlot();
     }
   }
 
-  public bookTimeSlot = () => {
+  public bookTimeSlot() {
     this.inProgress = true;
     this.currentService.book(this.currentSlot).subscribe((response) => {
       this.inProgress = false;
       if (this.currentService.hasError()) {
-        this.showError(`Не удалось забронировать время (${this.currentService.getErrorMessage()})`);
+        this.showError(
+          `${this.constants.errorFailBookTimeSlot}  (${this.currentService.getErrorMessage()})`,
+        );
         return;
       }
       this.nextStepEvent.emit(JSON.stringify(response));
     });
-  };
-
-  setConfirmationParams() {
-    const modalParameters: ConfirmationModal = {
-      text: 'Вы уверены, что хотите поменять забронированное время?',
-      buttons: [
-        {
-          label: 'Да',
-          closeModal: true,
-          handler: this.bookTimeSlot,
-        },
-        {
-          label: 'Нет',
-          closeModal: true,
-          color: 'white',
-        },
-      ],
-    };
-    return modalParameters;
   }
 
   showError(errorMessage: string) {
-    const params: ConfirmationModal = {
-      title: 'Ошибка',
-      text: errorMessage,
-      buttons: [
-        {
-          label: 'Ok',
-          closeModal: true,
-        },
-      ],
-    };
+    const params = this.constants.errorModal;
+    params.text = errorMessage;
     this.showModal(params);
   }
 
@@ -239,12 +232,12 @@ export class TimeSlotsComponent implements OnInit {
       this.currentService.init(value).subscribe(
         () => {
           if (this.currentService.hasError()) {
+            this.inProgress = false;
             this.errorMessage = this.currentService.getErrorMessage();
             if (this.errorMessage === 101) {
-              this.errorMessage = `${this.errorMessage}: сервис недоступен. Повторите запрос позже.`;
+              this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
             }
-            this.inProgress = false;
-            this.showError(`Ошибка инициализации сервиса (${this.errorMessage})`);
+            this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
           } else {
             this.errorMessage = undefined;
             this.activeMonthNumber = this.currentService.getCurrentMonth();
@@ -252,15 +245,7 @@ export class TimeSlotsComponent implements OnInit {
 
             const availableMonths = this.currentService.getAvailableMonths();
             for (let i = 0; i < availableMonths.length; i += 1) {
-              const [activeYear, activeMonth] = availableMonths[i].split('-');
-              const monthNumber = parseInt(activeMonth, 10) - 1;
-              const yearNumber = parseInt(activeYear, 10);
-              this.monthsYears.push(
-                new ListItem({
-                  id: `${availableMonths[i]}`,
-                  text: `${this.months[monthNumber]} ${yearNumber}`,
-                }),
-              );
+              this.monthsYears.push(this.getMonthsListItem(availableMonths[i]));
             }
             this.currentMonth = this.monthsYears.find(
               (item) => item.id === `${this.activeYearNumber}-${this.activeMonthNumber + 1}`,
@@ -281,18 +266,28 @@ export class TimeSlotsComponent implements OnInit {
         () => {
           this.errorMessage = this.currentService.getErrorMessage();
           this.inProgress = false;
-          this.showError(`Ошибка инициализации сервиса (${this.errorMessage})`);
+          this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
         },
       );
     }
   }
 
+  private getMonthsListItem(monthYear: string) {
+    const [activeYear, activeMonth] = monthYear.split('-');
+    const monthNumber = parseInt(activeMonth, 10) - 1;
+    const yearNumber = parseInt(activeYear, 10);
+    return new ListItem({
+      id: `${monthYear}`,
+      text: `${this.months[monthNumber]} ${yearNumber}`,
+    });
+  }
+
   buttonDisabled(): boolean {
-    return (
-      !this.componentStateService.isValid ||
-      this.inProgress ||
-      !(this.bookedSlot && this.currentSlot && this.bookedSlot.slotId === this.currentSlot.slotId)
-    );
+    return !this.componentStateService.isValid || this.inProgress || this.isBookSlotSelected();
+  }
+
+  isBookSlotSelected(): boolean {
+    return this.bookedSlot?.slotId === this.currentSlot?.slotId;
   }
 
   calendarAvailable(): boolean {

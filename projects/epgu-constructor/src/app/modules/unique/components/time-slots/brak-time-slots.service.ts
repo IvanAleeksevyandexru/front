@@ -49,12 +49,12 @@ export class BrakTimeSlotsService implements TimeSlotsService {
   book(selectedSlot: SmevSlotInterface) {
     return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
-        if (!response.error) {
-          this.bookedSlot = selectedSlot;
-          this.bookId = response.bookId;
-        } else {
+        if (response.error) {
           this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
           console.log(response.error);
+        } else {
+          this.bookedSlot = selectedSlot;
+          this.bookId = response.bookId;
         }
       }),
       catchError( error => {
@@ -100,7 +100,8 @@ export class BrakTimeSlotsService implements TimeSlotsService {
             if (response.error.errorDetail.errorCode === 0) {
               this.initSlotsMap(response.slots);
             } else {
-              this.errorMessage = response.error.errorDetail.errorMessage || response.error.errorDetail.errorCode;;
+              const { errorMessage, errorCode } = response.error.errorDetail;
+              this.errorMessage = errorMessage || errorCode;
             }
           }
         ),
