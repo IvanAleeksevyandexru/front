@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { UserSessionService } from '../user-session/user-session.service';
-import { FORM_PLAYER_NAVIGATION } from '../../form-player.types';
+import { FormPlayerNavigation } from '../../form-player.types';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class FormPlayerApiService {
     });
   }
 
-  public navigate(formPlayerNavigation: FORM_PLAYER_NAVIGATION, data) {
+  public navigate(formPlayerNavigation: FormPlayerNavigation, data) {
     const path = `${this.apiUrl}/service/${this.serviceId}/scenario/${formPlayerNavigation}`;
     data.scenarioDto.userId = this.userId;
     data.scenarioDto.token = this.token;

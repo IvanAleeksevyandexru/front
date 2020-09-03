@@ -16,7 +16,7 @@ import { NavigationService } from './shared/service/navigation/navigation.servic
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { UserSession } from './services/user-session/user-session.type';
 import { UserSessionService } from './services/user-session/user-session.service';
-import { FORM_PLAYER_NAVIGATION } from './form-player.types';
+import { FormPlayerNavigation } from './form-player.types';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -75,7 +75,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, OnDestroy {
 
   nextStep(nextStepEventData?: NextStepEventData) {
     this.formPlayerService.navigate(
-      FORM_PLAYER_NAVIGATION.NEXT,
+      FormPlayerNavigation.NEXT,
       nextStepEventData?.data,
       nextStepEventData?.options,
     );
@@ -83,7 +83,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, OnDestroy {
 
   prevStep(prevStepEventData?: PrevStepEventData) {
     this.formPlayerService.navigate(
-      FORM_PLAYER_NAVIGATION.PREV,
+      FormPlayerNavigation.PREV,
       prevStepEventData?.data,
       prevStepEventData?.options,
     );

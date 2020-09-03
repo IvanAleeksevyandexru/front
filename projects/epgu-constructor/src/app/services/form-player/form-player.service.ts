@@ -5,7 +5,7 @@ import { ComponentStateService } from '../component-state/component-state.servic
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
-import { FORM_PLAYER_NAVIGATION } from '../../form-player.types';
+import { FormPlayerNavigation } from '../../form-player.types';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -45,7 +45,7 @@ export class FormPlayerService {
     return this.screenType;
   }
 
-  navigate(formPlayerNavigation: FORM_PLAYER_NAVIGATION, data?: any, options?: SendDataOptionsInterface) {
+  navigate(formPlayerNavigation: FormPlayerNavigation, data?: any, options?: SendDataOptionsInterface) {
     this.updateLoading(true);
     this.updateRequest(data, options);
     this.formPlayerApiService.navigate(formPlayerNavigation, this.responseStore).subscribe(

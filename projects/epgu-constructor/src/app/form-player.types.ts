@@ -1,4 +1,4 @@
-export enum FORM_PLAYER_NAVIGATION {
+export enum FormPlayerNavigation {
   'NEXT' = 'getNextStep',
   'PREV' = 'getPrevStep',
 }
