@@ -2,13 +2,13 @@
   <ng-container *ngFor="let componentData of components">
     <ng-container [ngSwitch]="componentData.type">
       <div class="form__item" *ngSwitchCase="componentType.LabelSection">
-        <epgu-constructor-label class="label" *ngIf="state[componentData.id].isShow">
-          {{componentData.label || state[componentData.id].value}}
+        <epgu-constructor-label class="label" *ngIf="state[componentData.id].isShown">
+          {{ componentData.label || state[componentData.id].value }}
         </epgu-constructor-label>
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.Dictionary">
-        <ng-container *ngIf="state[componentData.id].isShow">
+        <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-dropdown
             class="cs__select cs-select"
@@ -22,7 +22,7 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.DropDown">
-        <ng-container *ngIf="state[componentData.id].isShow">
+        <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-dropdown
             class="cs__select cs-select"
@@ -36,7 +36,7 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.Lookup">
-        <ng-container *ngIf="state[componentData.id].isShow">
+        <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-lookup
             [queryMinSymbolsCount]="0"
@@ -48,7 +48,7 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.StringInput">
-        <ng-container *ngIf="state[componentData.id].isShow">
+        <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-plain-input
             [invalid]="!state[componentData.id].valid"
@@ -64,14 +64,14 @@
           </epgu-constructor-helper-text>
           <div class="form__error">
             <small *ngIf="!state[componentData.id].valid"
-            >{{ state[componentData.id]?.errorMessage }}
+              >{{ state[componentData.id]?.errorMessage }}
             </small>
           </div>
         </ng-container>
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.RadioInput">
-        <ng-container *ngIf="state[componentData.id].isShow">
+        <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <div class="form__radio__block">
             <lib-radio
@@ -79,14 +79,15 @@
               [name]="componentData.id"
               [labelText]="item.label"
               (change)="inputChange($event, componentData)"
-              [value]="item.value">
+              [value]="item.value"
+            >
             </lib-radio>
           </div>
         </ng-container>
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.CompositeRadioButton">
-        <ng-container *ngIf="state[componentData.id].isShow">
+        <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <div class="form__radio__inline">
             <lib-radio
@@ -109,7 +110,7 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.DateInput">
-        <ng-container *ngIf="state[componentData.id].isShow">
+        <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <!-- нужно добавить changes для проверки зависимости от даты-->
           <lib-date-picker
