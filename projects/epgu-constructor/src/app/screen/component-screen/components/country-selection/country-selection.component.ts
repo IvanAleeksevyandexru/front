@@ -5,7 +5,7 @@ import { ModalService } from '../../../../services/modal/modal.service';
 import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
 import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
-import { DictionaryApiService } from '../../../../services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../../../constant/helperTexts';
 
 interface WarningMessages {

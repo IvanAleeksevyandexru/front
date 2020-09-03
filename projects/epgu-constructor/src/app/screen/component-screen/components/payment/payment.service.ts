@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DictionaryApiService } from '../../../../services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { HttpClient } from '@angular/common/http';
 import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
 import { catchError, map } from 'rxjs/operators';

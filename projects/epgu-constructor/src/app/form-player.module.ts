@@ -15,7 +15,7 @@ import { UniqueScreenModule } from './screen/unique-screen/unique-screen.module'
 import { ConstructorConfigService } from './services/config/constructor-config.service';
 import { CONSTRUCTOR_CONFIG_TOKEN } from './services/config/constructor.config.token';
 import { FormPlayerService } from './services/form-player/form-player.service';
-import { DictionaryApiService } from './services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from './services/api/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { SharedModule } from './shared/shared.module';
 import { TerabyteService } from './services/terabyte/terabyte.service';
@@ -24,7 +24,7 @@ import { ScreenService } from './screen/screen.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { EmptyScreenModule } from './screen/empty-screen/empty-screen.module';
 import { UserSessionService } from './services/user-session/user-session.service';
-import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
+import { FormPlayerApiService } from './services/api/form-player-api/form-player-api.service';
 
 
 const COMPONENTS = [

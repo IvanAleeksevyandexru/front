@@ -19,7 +19,7 @@ import {
   CheckInputValidationComponentList,
   getInitStateItemComponentList,
 } from '../../../screen/custom-screen/tools/custom-screen-tools';
-import { DictionaryApiService } from '../../../services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
 

@@ -4,7 +4,7 @@ import { ConstructorConfigService } from '../../../../services/config/constructo
 import { TimeSlotsService } from './time-slots.service';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { DictionaryApiService } from '../../../../services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { formatDate } from '@angular/common';
 
 @Injectable()

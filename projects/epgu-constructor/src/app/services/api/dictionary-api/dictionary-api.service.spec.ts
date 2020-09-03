@@ -1,14 +1,14 @@
 import { async, TestBed } from '@angular/core/testing';
 
-import { DadataApiService } from './dadata-api.service';
+import { DictionaryApiService } from './dictionary-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConstructorConfigService } from '../config/constructor-config.service';
-import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
-import { UserSessionService } from '../user-session/user-session.service';
+import { ConstructorConfigService } from '../../config/constructor-config.service';
+import { ConstructorConfigServiceStub } from '../../config/constructor-config.service.stub';
+import { UserSessionService } from '../../user-session/user-session.service';
 import { CookieService } from 'ngx-cookie-service';
 
-describe('DadataApiService', () => {
-  let service: DadataApiService;
+describe('DictionaryApiService', () => {
+  let service: DictionaryApiService;
   let http: HttpTestingController;
   let cnstrctrConfigSrv: ConstructorConfigService;
 
@@ -16,13 +16,13 @@ describe('DadataApiService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        DadataApiService,
+        DictionaryApiService,
         UserSessionService,
         CookieService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });
-    service = TestBed.inject(DadataApiService);
+    service = TestBed.inject(DictionaryApiService);
     http = TestBed.inject(HttpTestingController);
     cnstrctrConfigSrv = TestBed.inject(ConstructorConfigService);
   }));

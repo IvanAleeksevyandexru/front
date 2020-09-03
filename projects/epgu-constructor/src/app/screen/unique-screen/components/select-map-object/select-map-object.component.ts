@@ -4,7 +4,7 @@ import { interval } from 'rxjs';
 import { filter, switchMap, takeUntil, takeWhile } from 'rxjs/operators';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
 import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
-import { DictionaryApiService } from '../../../../services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapObjectService } from './select-map-object.service';

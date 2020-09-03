@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
-import { ConstructorConfigService } from '../config/constructor-config.service';
-import { UserSessionService } from '../user-session/user-session.service';
-import { FormPlayerNavigation } from '../../form-player.types';
+import { ResponseInterface } from '../../../../interfaces/epgu.service.interface';
+import { ConstructorConfigService } from '../../config/constructor-config.service';
+import { UserSessionService } from '../../user-session/user-session.service';
+import { FormPlayerNavigation } from '../../../form-player.types';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()

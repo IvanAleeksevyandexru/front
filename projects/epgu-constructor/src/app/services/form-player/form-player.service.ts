@@ -4,7 +4,7 @@ import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
 import { ComponentStateService } from '../component-state/component-state.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';
-import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
+import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import { FormPlayerNavigation } from '../../form-player.types';
 
 interface SendDataOptionsInterface {

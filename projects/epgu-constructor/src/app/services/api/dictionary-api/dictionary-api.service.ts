@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DictionaryOptionsInterface, DictionaryResponse } from '../../../interfaces/dictionary-options.interface';
-import { ConstructorConfigService } from '../config/constructor-config.service';
+import { DictionaryOptionsInterface, DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
+import { ConstructorConfigService } from '../../config/constructor-config.service';
 import { CookieService } from 'ngx-cookie-service';
-import { UserSessionService } from '../user-session/user-session.service';
+import { UserSessionService } from '../../user-session/user-session.service';
 import { Observable } from 'rxjs';
 
 @Injectable()

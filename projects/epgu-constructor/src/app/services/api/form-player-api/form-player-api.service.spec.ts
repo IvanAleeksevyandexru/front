@@ -1,14 +1,13 @@
 import { async, TestBed } from '@angular/core/testing';
 
-import { DictionaryApiService } from './dictionary-api.service';
+import { FormPlayerApiService } from './form-player-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConstructorConfigService } from '../config/constructor-config.service';
-import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
-import { UserSessionService } from '../user-session/user-session.service';
-import { CookieService } from 'ngx-cookie-service';
+import { ConstructorConfigService } from '../../config/constructor-config.service';
+import { ConstructorConfigServiceStub } from '../../config/constructor-config.service.stub';
+import { UserSessionService } from '../../user-session/user-session.service';
 
-describe('DictionaryApiService', () => {
-  let service: DictionaryApiService;
+describe('FormPlayerApiService', () => {
+  let service: FormPlayerApiService;
   let http: HttpTestingController;
   let cnstrctrConfigSrv: ConstructorConfigService;
 
@@ -16,13 +15,12 @@ describe('DictionaryApiService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        DictionaryApiService,
+        FormPlayerApiService,
         UserSessionService,
-        CookieService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });
-    service = TestBed.inject(DictionaryApiService);
+    service = TestBed.inject(FormPlayerApiService);
     http = TestBed.inject(HttpTestingController);
     cnstrctrConfigSrv = TestBed.inject(ConstructorConfigService);
   }));
