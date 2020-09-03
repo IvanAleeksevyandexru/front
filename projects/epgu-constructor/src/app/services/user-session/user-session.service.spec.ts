@@ -1,12 +1,12 @@
 import { async, TestBed } from '@angular/core/testing';
 
-import { RestService } from './rest.service';
+import { UserSessionService } from './user-session.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
 
-describe('RestService', () => {
-  let service: RestService;
+describe('UserSessionService', () => {
+  let service: UserSessionService;
   let http: HttpTestingController;
   let cnstrctrConfigSrv: ConstructorConfigService;
 
@@ -14,11 +14,11 @@ describe('RestService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        RestService,
+        UserSessionService,
         { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
       ]
     });
-    service = TestBed.inject(RestService);
+    service = TestBed.inject(UserSessionService);
     http = TestBed.inject(HttpTestingController);
     cnstrctrConfigSrv = TestBed.inject(ConstructorConfigService);
   }));

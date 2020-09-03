@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_TYPE } from '../constant/global';
-import { ResponseInterface } from '../interfaces/epgu.service.interface';
-import { ComponentStateService } from './services/component-state/component-state.service';
+import { SCREEN_TYPE } from '../../../constant/global';
+import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
+import { ComponentStateService } from '../component-state/component-state.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ScreenService } from './screen/screen.service';
-import { RestService } from './services/rest/rest.service';
+import { ScreenService } from '../../screen/screen.service';
+import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
+import { FormPlayerNavigation } from '../../form-player.types';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -26,14 +27,14 @@ export class FormPlayerService {
   public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
 
   constructor(
-    public restService: RestService,
+    public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private componentStateService: ComponentStateService, // TODO: check service
   ) {}
 
   initData(): void {
     this.updateLoading(true);
-    this.restService.getData().subscribe(
+    this.formPlayerApiService.getInitialData().subscribe(
       (response) => this.initResponse(response),
       (error) => this.sendDataError(error),
       () => this.updateLoading(false)
@@ -44,27 +45,10 @@ export class FormPlayerService {
     return this.screenType;
   }
 
-  nextStep(data?: any, options?: SendDataOptionsInterface): void {
+  navigate(formPlayerNavigation: FormPlayerNavigation, data?: any, options?: SendDataOptionsInterface) {
     this.updateLoading(true);
     this.updateRequest(data, options);
-    this.restService.getNextStep(this.responseStore).subscribe(
-      (response) => {
-        this.processResponse(response);
-      },
-      (error) => {
-        this.sendDataError(error);
-      },
-      () => {
-        // TODO почему не отрабатывает если пришла ошибка 500;
-        this.updateLoading(false);
-      }
-    );
-  }
-
-  prevStep(data?: any): void {
-    this.updateLoading(true);
-    this.updateRequest(data);
-    this.restService.getPrevStep(this.responseStore).subscribe(
+    this.formPlayerApiService.navigate(formPlayerNavigation, this.responseStore).subscribe(
       (response) => {
         this.processResponse(response);
       },
@@ -133,6 +117,7 @@ export class FormPlayerService {
 
     const currentCycledFields = response.scenarioDto?.currentCycledFields;
     const applicantAnswers = response.scenarioDto?.applicantAnswers;
+
     this.screenService.updateScreenData({
       componentData: display,
       errors: errors ?? errors,
@@ -142,8 +127,9 @@ export class FormPlayerService {
     });
     this.updatePlayerLoaded(true);
 
+    // TODO: move it to log service
     console.log('----- GET DATA ---------');
-    console.log('componentId:', this.componentId);
+    console.log('componentId:', display.components[0].id);
     console.log('componentType:', display.components[0].type);
     console.log('initResponse:', response);
   }
