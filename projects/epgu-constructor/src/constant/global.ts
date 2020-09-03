@@ -5,6 +5,7 @@ export enum SCREEN_TYPE {
   'CUSTOM' = 'CUSTOM',
   'UNIQUE' = 'UNIQUE',
   'INVITATION_ERROR' = 'INVITATION_ERROR',
+  'EMPTY' = 'EMPTY'
 }
 
 export enum SCREEN_COMPONENT_NAME {
@@ -21,7 +22,8 @@ export enum SCREEN_COMPONENT_NAME {
   'childrenListAbove14' = 'ChildrenListAbove14',
   'snilsInput' = 'SnilsInput',
   'docInput' = 'DocInput',
-  'countryApostil' = 'CountryApostil'
+  'countryApostil' = 'CountryApostil',
+  'paymentScr' = 'PaymentScr'
 }
 
 export enum INFO_SCREEN_COMPONENT {
@@ -37,6 +39,10 @@ export enum UNIQUE_COMPONENT_NAME {
   'carInfo' = 'CarInfo',
   'repeatableFields' = 'RepeatableFields',
   'employeeHistory' = 'EmployeeHistory',
+}
+
+export enum EMPTY_SCREEN_COMPONENT {
+  'redirect' = 'Redirect',
 }
 
 export enum CUSTOM_COMPONENT_ITEM_TYPE {

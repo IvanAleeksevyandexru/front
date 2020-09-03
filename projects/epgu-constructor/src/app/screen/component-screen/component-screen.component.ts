@@ -7,6 +7,7 @@ import { NavigationService } from '../../shared/service/navigation/navigation.se
 import { ComponentStateService } from '../../services/component-state/component-state.service';
 import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
+import { mockOrderId } from './components/payment/payment.constants';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -60,11 +61,19 @@ export class ComponentScreenComponent implements OnInit, Screen {
     this.isCycledFields = !!Object.keys(this.screenData?.currentCycledFields).length;
   }
 
+  /**
+   * Возвращение на экран назад
+   */
   prevStep(): void {
     this.navigationService.prevStep.next();
   }
 
-  nextStep() {
+  /**
+   * Переход на следующую страницу и передача данных
+   * @param $event - событие следующего шага
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  nextStep($event) {
     let data: string | object;
     if (typeof this.componentStateService.state === 'object') {
       data = JSON.stringify(this.componentStateService.state);
@@ -79,14 +88,33 @@ export class ComponentScreenComponent implements OnInit, Screen {
     this.navigationService.nextStep.next({ data });
   }
 
+  /**
+   * Возвращает идентификатор заявления
+   */
+  get getOrderId(): string {
+    // TODO: Переделать на получение заявки из ранее данных ответов
+    return mockOrderId;
+  }
+
+  /**
+   * Смена данных компонента
+   * @param value - значение на установку
+   */
   changedComponentData(value: any): void {
     this.componentData = value;
   }
 
+  /**
+   * Смена настроек компонента
+   * @param settings - настройки компонента
+   */
   changeComponentSettings(settings: ComponentSetting): void {
     this.componentSetting = { ...this.componentSetting, ...settings };
   }
 
+  /**
+   * Возвращение на главную
+   */
   goToHomePage(): void {
     // TODO: navigate to Home Page
   }

@@ -4,6 +4,7 @@ import { InvitationErrorScreenComponent } from '../../screen/invitation-error-sc
 import { ComponentScreenComponent } from '../../screen/component-screen/component-screen.component';
 import { CustomScreenComponent } from '../../screen/custom-screen/custom-screen.component';
 import { UniqueScreenComponent } from '../../screen/unique-screen/unique-screen.component';
+import { EmptyScreenComponent } from '../../screen/empty-screen/empty-screen.component';
 
 export const SCREEN_COMPONENTS = {
   INFO: InfoScreenComponent,
@@ -12,4 +13,5 @@ export const SCREEN_COMPONENTS = {
   CUSTOM: CustomScreenComponent,
   UNIQUE: UniqueScreenComponent,
   INVITATION_ERROR: InvitationErrorScreenComponent,
+  EMPTY: EmptyScreenComponent,
 };
