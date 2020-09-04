@@ -64,7 +64,7 @@ export interface CustomComponentAttrValidationInterface {
  */
 export interface CustomComponentStateItem {
   valid: boolean;
-  isShow: boolean;
+  isShown: boolean;
   errorMessage: string;
   value: any;
   component: CustomComponentInterface

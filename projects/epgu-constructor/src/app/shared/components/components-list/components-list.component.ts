@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
+
 import {
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
@@ -183,8 +184,10 @@ export class ComponentsListComponent implements OnChanges {
    */
   private getPreparedStateForSending() {
     return Object.entries(this.state).reduce((acc, [key, val]) => {
-      const { value, valid } = val;
-      acc[key] = { value, valid };
+      const { value, valid, isShown } = val;
+      if (isShown) {
+        acc[key] = { value, valid };
+      }
       return acc;
     }, {});
   }
