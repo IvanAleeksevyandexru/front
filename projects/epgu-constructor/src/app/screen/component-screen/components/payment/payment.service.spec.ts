@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { PaymentService } from './payment.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
-import { ConstructorConfigServiceStub } from '../../../../services/config/constructor-config.service.stub';
+import { ConfigService } from '../../../../config/config.service';
+import { ConfigServiceStub } from '../../../../config/config.service.stub';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../screen.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
@@ -21,9 +21,9 @@ describe('PaymentService', () => {
         PaymentService,
         UserSessionService,
         ScreenService,
-        ConstructorConfigService,
+        ConfigService,
         ComponentStateService,
-        { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
+        { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });
     service = TestBed.inject(PaymentService);

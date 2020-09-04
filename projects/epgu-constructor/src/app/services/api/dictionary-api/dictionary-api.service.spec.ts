@@ -2,14 +2,14 @@ import { async, TestBed } from '@angular/core/testing';
 
 import { DictionaryApiService } from './dictionary-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConstructorConfigService } from '../../config/constructor-config.service';
-import { ConstructorConfigServiceStub } from '../../config/constructor-config.service.stub';
+import { ConfigService } from '../../../config/config.service';
+import { ConfigServiceStub } from '../../../config/config.service.stub';
 import { UserSessionService } from '../../user-session/user-session.service';
 
 describe('DictionaryApiService', () => {
   let service: DictionaryApiService;
   let http: HttpTestingController;
-  let cnstrctrConfigSrv: ConstructorConfigService;
+  let cnstrctrConfigSrv: ConfigService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -17,12 +17,12 @@ describe('DictionaryApiService', () => {
       providers: [
         DictionaryApiService,
         UserSessionService,
-        { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
+        { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });
     service = TestBed.inject(DictionaryApiService);
     http = TestBed.inject(HttpTestingController);
-    cnstrctrConfigSrv = TestBed.inject(ConstructorConfigService);
+    cnstrctrConfigSrv = TestBed.inject(ConfigService);
   }));
 
   afterEach(async(() => http.verify()));

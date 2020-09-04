@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subject, Observable } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
-import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../../config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class SelectMapObjectService {
 
   constructor(
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
     private yaMapService: YaMapService,
     private ngZone: NgZone,
   ) { }
@@ -31,7 +31,7 @@ export class SelectMapObjectService {
    * @param items
    */
   public getCoordsByAddress(items) {
-    const path = `${this.constructorConfigService.config.externalApiUrl}/address/resolve`;
+    const path = `${this.configService.config.externalApiUrl}/address/resolve`;
     return this.http.post<IGeoCoordsResponse>(path, {
       address: items.map(item => item.attributeValues.ADDRESS),
     });
@@ -39,8 +39,8 @@ export class SelectMapObjectService {
 
   /**
    * Fill map's objects in Dictionary with geo coords
-   * @param dictionary 
-   * @param coords 
+   * @param dictionary
+   * @param coords
    */
   public fillDictionaryItemsWithCoords(coords: IGeoCoordsResponse) {
     const hashMap = {};
@@ -232,8 +232,8 @@ export class SelectMapObjectService {
 
   /**
    * centers the map by coordinates
-   * @param coords 
-   * @param objectId 
+   * @param coords
+   * @param objectId
    */
   public centeredPlaceMark(coords, objectId) {
     let serviceContext = this as any;
@@ -274,7 +274,7 @@ export class SelectMapObjectService {
   /**
    * Returns array with attributes to show in balloon on map
    * @param attrs map with attributes to extract
-   * @param item 
+   * @param item
    */
   private getMappedAttrsForBaloon(attrs: Array<{ name: string, label: string }>, item) {
     const res = [];
@@ -290,7 +290,7 @@ export class SelectMapObjectService {
 
   /**
    * filter geo items by searchString and redraw map
-   * @param searchString 
+   * @param searchString
    */
   public searchMapObject(searchString: string) {
     const searchStringLower = searchString.toLowerCase();

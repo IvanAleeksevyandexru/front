@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { DynamicModule } from 'ng-dynamic-component';
 import { EpguLibModule } from 'epgu-lib';
 
-import { FormPlayerConfigInterface } from '../interfaces/form-player-config.interface';
+import { Config } from './config/config.types';
 import { FormPlayerComponent } from './form-player.component';
 import { LayoutModule } from './layout/layout.module';
 import { CustomScreenModule } from './screen/custom-screen/custom-screen.module';
@@ -12,8 +12,8 @@ import { InvitationErrorScreenModule } from './screen/invitation-error-screen/in
 import { QuestionsScreenModule } from './screen/questions-screen/questions-screen.module';
 import { ComponentScreenModule } from './screen/component-screen/component-screen.module';
 import { UniqueScreenModule } from './screen/unique-screen/unique-screen.module';
-import { ConstructorConfigService } from './services/config/constructor-config.service';
-import { CONSTRUCTOR_CONFIG_TOKEN } from './services/config/constructor.config.token';
+import { ConfigService } from './config/config.service';
+import { CONFIG_TOKEN } from './config/config.token';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { DictionaryApiService } from './services/api/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
@@ -27,13 +27,9 @@ import { UserSessionService } from './services/user-session/user-session.service
 import { FormPlayerApiService } from './services/api/form-player-api/form-player-api.service';
 
 
-const COMPONENTS = [
-  FormPlayerComponent
-];
-
 @NgModule({
   declarations: [
-    ...COMPONENTS,
+    FormPlayerComponent,
   ],
   imports: [
     CommonModule,
@@ -57,24 +53,22 @@ const COMPONENTS = [
     ScreenResolverService,
     ScreenService,
     ComponentStateService,
-    ConstructorConfigService,
+    ConfigService,
     UserSessionService,
     UnsubscribeService
   ],
   exports: [
-    ...COMPONENTS
+    FormPlayerComponent
   ]
 })
-
 export class FormPlayerModule {
-
-  static forRoot(formPlayerConfig: FormPlayerConfigInterface) {
+  static forRoot(config: Config) {
     return {
       ngModule: FormPlayerModule,
       providers: [
         {
-          provide: CONSTRUCTOR_CONFIG_TOKEN,
-          useValue: formPlayerConfig
+          provide: CONFIG_TOKEN,
+          useValue: config
         },
         FormPlayerService,
       ]

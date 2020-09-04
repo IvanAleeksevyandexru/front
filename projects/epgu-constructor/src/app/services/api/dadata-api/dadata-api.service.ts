@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ConstructorConfigService } from '../../config/constructor-config.service';
+import { ConfigService } from '../../../config/config.service';
 import { UserSessionService } from '../../user-session/user-session.service';
 
 @Injectable()
@@ -11,10 +11,10 @@ export class DadataApiService {
 
   constructor(
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
     private userSessionService: UserSessionService,
   ) {
-    this.externalApiUrl = constructorConfigService.config.externalApiUrl;
+    this.externalApiUrl = configService.config.externalApiUrl;
 
     this.userSessionService.userSession$.subscribe(() => {
       this.userId = this.userSessionService.userId;

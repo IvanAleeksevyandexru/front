@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ResponseInterface } from '../../../../interfaces/epgu.service.interface';
-import { ConstructorConfigService } from '../../config/constructor-config.service';
+import { ConfigService } from '../../../config/config.service';
 import { UserSessionService } from '../../user-session/user-session.service';
 import { FormPlayerNavigation } from '../../../form-player.types';
 
@@ -13,10 +13,10 @@ export class FormPlayerApiService {
 
   constructor(
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
     private userSessionService: UserSessionService,
   ) {
-    this.apiUrl = constructorConfigService.config.apiUrl;
+    this.apiUrl = configService.config.apiUrl;
     this.userSessionService.userSession$.subscribe(() => {
       this.userId = this.userSessionService.userId;
       this.token = this.userSessionService.token;

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { FormPlayerConfigInterface } from '../../../interfaces/form-player-config.interface';
+import { Config } from './config.types';
 
 @Injectable()
-export class ConstructorConfigServiceStub {
-  config: FormPlayerConfigInterface = {
+export class ConfigServiceStub {
+  config: Config = {
     apiUrl: '',
     dictionaryUrl: '',
     externalApiUrl: '',

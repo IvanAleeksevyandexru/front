@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { TerabyteService } from './terabyte.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConstructorConfigService } from '../config/constructor-config.service';
-import { ConstructorConfigServiceStub } from '../config/constructor-config.service.stub';
+import { ConfigService } from '../../config/config.service';
+import { ConfigServiceStub } from '../../config/config.service.stub';
 
 describe('TerabyteService', () => {
   let service: TerabyteService;
@@ -13,7 +13,7 @@ describe('TerabyteService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         TerabyteService,
-        { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
+        { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });
     service = TestBed.inject(TerabyteService);

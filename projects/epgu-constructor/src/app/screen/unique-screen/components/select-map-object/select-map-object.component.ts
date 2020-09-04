@@ -3,7 +3,7 @@ import { YaMapService } from 'epgu-lib';
 import { interval } from 'rxjs';
 import { filter, switchMap, takeUntil, takeWhile } from 'rxjs/operators';
 import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../../config/config.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
@@ -32,10 +32,10 @@ export class SelectMapObjectComponent implements OnInit {
     public selectMapObjectService: SelectMapObjectService,
     private yaMapService: YaMapService,
     private dictionaryApiService: DictionaryApiService,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {
-    this.yandexMapsApiKey = this.constructorConfigService.config.yandexMapsApiKey;
+    this.yandexMapsApiKey = this.configService.config.yandexMapsApiKey;
   }
 
   ngOnInit(): void {

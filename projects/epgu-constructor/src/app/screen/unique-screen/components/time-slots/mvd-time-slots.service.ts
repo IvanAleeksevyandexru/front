@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../../config/config.service';
 import { TimeSlotsService } from './time-slots.service';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -26,7 +26,7 @@ export class MvdTimeSlotsService implements TimeSlotsService {
 
   constructor(
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
     private dictionaryApiService: DictionaryApiService
   ) {
 

@@ -1,7 +1,7 @@
 /**
  * Интерфейс конфигурации модуля
  */
-export interface FormPlayerConfigInterface {
+export interface Config {
   apiUrl: string;
   dictionaryUrl: string;
   externalApiUrl: string;

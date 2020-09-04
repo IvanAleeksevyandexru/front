@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../../../interfaces/temporary-registration-addr.interface';
 import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
-import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../../../../../../config/config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class TemporaryRegistrationAddrComponent implements OnChanges {
   @Input() error: string;
 
   constructor(
-    public constructorConfigService: ConstructorConfigService,
+    public configService: ConfigService,
     private componentStateService: ComponentStateService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
