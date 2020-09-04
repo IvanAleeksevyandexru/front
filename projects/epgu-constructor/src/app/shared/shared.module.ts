@@ -14,8 +14,8 @@ import { PageNameComponent } from './components/page-name/page-name.component';
 import { ScreenContainerComponent } from './components/screen-container/screen-container.component';
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { HelperTextComponent } from './components/helper-text/helper-text.component';
-import { ToJsonPipe } from './pipe/toJson/to-json.pipe';
-import { NavigationService } from './service/navigation/navigation.service';
+import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
+import { NavigationService } from './services/navigation/navigation.service';
 
 const COMPONENTS = [
   PageNameComponent,

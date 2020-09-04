@@ -6,7 +6,7 @@ import { NavigationComponent } from '../../shared/components/navigation/navigati
 import { PageNameComponent } from '../../shared/components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { QuestionsScreenComponent } from './questions-screen.component';
 import { ScreenService } from '../screen.service';
 import { ModalService } from '../../services/modal/modal.service';

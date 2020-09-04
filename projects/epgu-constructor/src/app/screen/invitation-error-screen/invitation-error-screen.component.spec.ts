@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { MockComponent } from 'ng-mocks';
 import { InvitationErrorComponent } from './components/error/invitation-error.component';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';

@@ -6,7 +6,7 @@ import { EpguLibModule } from 'epgu-lib';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
-import { NavigationService } from './shared/service/navigation/navigation.service';
+import { NavigationService } from './shared/services/navigation/navigation.service';
 import { ModalContainerComponent } from './shared/components/modal-container/modal-container.component';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { UserSessionService } from './services/user-session/user-session.service';

@@ -10,7 +10,7 @@ import {
 import { takeUntil } from 'rxjs/operators';
 
 import { FormPlayerService } from './services/form-player/form-player.service';
-import { NavigationService } from './shared/service/navigation/navigation.service';
+import { NavigationService } from './shared/services/navigation/navigation.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { UserSession } from './services/user-session/user-session.type';
 import { UserSessionService } from './services/user-session/user-session.service';

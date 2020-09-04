@@ -4,7 +4,7 @@ import { QuestionsComponentActionsInterface } from '../../../interfaces/question
 import { ModalService } from '../../services/modal/modal.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { QuestionScreenModalParams } from './questions-screen.constant';
 import { Screen, ScreenData } from '../screen.types';
 import { ScreenService } from '../screen.service';

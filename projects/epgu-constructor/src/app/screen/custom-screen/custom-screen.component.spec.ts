@@ -4,7 +4,7 @@ import { ButtonComponent } from 'epgu-lib';
 
 import { CustomScreenComponent } from './custom-screen.component';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { PageNameComponent } from '../../shared/components/page-name/page-name.component';
