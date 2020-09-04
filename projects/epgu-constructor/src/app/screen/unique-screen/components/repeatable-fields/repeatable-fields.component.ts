@@ -40,7 +40,7 @@ export class RepeatableFieldsComponent {
   private initVariable() {
     this.screens = {};
     this.componentId = 0;
-    this.componentStateService.state = [];
+    this.saveState([]);
   }
 
   duplicateScreen() {
@@ -48,9 +48,9 @@ export class RepeatableFieldsComponent {
   }
 
   changeComponentList(changes, index: number) {
-    this.componentStateService.state[index] = prepareDataToSendForRepeatableFieldsComponent(
-      changes,
-    );
+    const state = this.getState();
+    state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
+    this.saveState(state);
   }
 
   nextScreen() {
@@ -59,9 +59,15 @@ export class RepeatableFieldsComponent {
 
   removeItem(key: string, index: number) {
     delete this.screens[key];
-    this.componentStateService.state = removeItemFromArrByIndex(
-      this.componentStateService.state,
-      index,
-    );
+    let state = this.getState();
+    state = removeItemFromArrByIndex(state, index);
+    this.saveState(state);
+  }
+
+  getState() {
+    return JSON.parse(this.componentStateService.state);
+  }
+  saveState(state) {
+    this.componentStateService.state = JSON.stringify(state);
   }
 }

@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../constant/global';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
+import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
-import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
 
 const moment = moment_;
 @Component({
@@ -29,6 +29,16 @@ export class CustomScreenComponent implements OnInit, Screen {
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
   ) {}
+
+  ngOnChanges(changes) {
+    // covers 'navigation' between two custom-screens and its initial data loading
+    const {
+      data: { firstChange, currentValue, previousValue },
+    } = changes;
+    if (firstChange || currentValue.id !== previousValue.id) {
+      this.initCycledFields();
+    }
+  }
 
   ngOnInit(): void {
     this.navigationService.clickToBack$
@@ -70,12 +80,11 @@ export class CustomScreenComponent implements OnInit, Screen {
   }
 
   nextScreen(): void {
-    const data = this.getPrepareResponseData(this.dataToSend);
+    const data = this.dataToSend;
     this.nextStep({ data });
   }
 
-  // TODO: not clear what to do this logic, named set, but return value.
-  setState(changes) {
+  getFormattedData(changes) {
     let stateData = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
@@ -94,7 +103,7 @@ export class CustomScreenComponent implements OnInit, Screen {
   }
 
   changeComponentsList(changes): void {
-    this.dataToSend = this.setState(changes);
+    this.dataToSend = this.getFormattedData(changes);
   }
 
   private getPrepareResponseData(data = {}) {
@@ -114,8 +123,10 @@ export class CustomScreenComponent implements OnInit, Screen {
     return Object.keys(changes).reduce((result, key) => {
       const targetItem = changes[key];
       const targetItemValue = targetItem.value;
-      const fieldName =
-        targetItem.component.attrs.fields && targetItem.component.attrs.fields[0].fieldName;
+      const targetComponent = this.screenData.componentData.components.find(
+        (item) => item.id === key,
+      );
+      const fieldName = targetComponent.attrs.fields && targetComponent.attrs.fields[0].fieldName;
       if (!fieldName) return result;
 
       if (typeof targetItemValue === 'object' && moment(targetItemValue).isValid()) {

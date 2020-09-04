@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { QuestionsComponentActionsInterface } from '../../../interfaces/question-block.interface';
+import { Screen, ScreenData } from '../../../interfaces/screen.interface';
+import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/service/navigation/navigation.service';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
 import { ScreenService } from '../screen.service';
-import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -38,6 +38,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((screenData: ScreenData) => {
         this.screenData = screenData;
+        this.initCycledFields();
       });
   }
 

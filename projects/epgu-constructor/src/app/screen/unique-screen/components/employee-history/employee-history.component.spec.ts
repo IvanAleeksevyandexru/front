@@ -51,7 +51,7 @@ describe('EmployeeHistoryComponent', () => {
       type: SCREEN_TYPE.UNIQUE,
     };
     component.header = '';
-    component.gender = 'male';
+    component.gender = 'M';
     // spyOn(formService, 'createEmployeeForm')
     fixture.detectChanges();
   });

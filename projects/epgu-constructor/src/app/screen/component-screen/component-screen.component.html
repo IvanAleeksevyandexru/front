@@ -69,7 +69,6 @@
         <epgu-constructor-doc-input
           *ngSwitchCase="screenComponentName.docInput"
           [data]="(screenData.componentData?.components)[0]"
-          (nextStepEvent)="changedComponentData($event)"
         ></epgu-constructor-doc-input>
 
         <epgu-constructor-add-children-screen
@@ -77,6 +76,19 @@
           [data]="(screenData.componentData?.components)[0]"
           (nextStepEvent)="nextStep()"
         ></epgu-constructor-add-children-screen>
+
+        <epgu-constructor-add-children-screen
+          *ngSwitchCase="screenComponentName.childrenListAbove14"
+          [data]="(screenData.componentData?.components)[0]"
+          (nextStepEvent)="nextStep()"
+        ></epgu-constructor-add-children-screen>
+
+        <epgu-constructor-payment
+          *ngSwitchCase="screenComponentName.paymentScr"
+          [applicantAnswers]="screenData.applicantAnswers"
+          [orderId]="getOrderId"
+          [data]="(screenData.componentData?.components)[0]"
+        ></epgu-constructor-payment>
       </ng-container>
     </epgu-constructor-screen-pad>
 
@@ -88,7 +100,9 @@
         class="footer__btn-submit"
         [disabled]="!componentStateService.isValid || (screenService.isLoading$ | async)"
       >
-        <div class="secondary-font">{{ screenData.componentData?.submitLabel || 'Продолжить' }}</div>
+        <div class="secondary-font">
+          {{ screenData.componentData?.submitLabel || 'Продолжить' }}
+        </div>
       </lib-button>
       <div *ngIf="componentSetting.displayWarningAnswers" class="footer__warning-answers">
         <epgu-constructor-answer-button

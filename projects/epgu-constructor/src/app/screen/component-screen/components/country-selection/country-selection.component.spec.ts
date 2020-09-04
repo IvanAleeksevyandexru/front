@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CountrySelectionComponent } from './country-selection.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RestServiceStub } from '../../../../services/rest/rest.service.stub';
-import { RestService } from '../../../../services/rest/rest.service';
+import { DictionaryApiServiceStub } from '../../../../services/api/dictionary-api/dictionary-api.service.stub';
+import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { ModalServiceStub } from '../../../../services/modal/modal.service.stub';
 
@@ -25,7 +25,7 @@ describe.skip('CountrySelectionComponent', () => {
       imports: [ReactiveFormsModule],
       declarations: [ CountrySelectionComponent ],
       providers: [
-        { provide: RestService, useClass: RestServiceStub },
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
       ]
     })

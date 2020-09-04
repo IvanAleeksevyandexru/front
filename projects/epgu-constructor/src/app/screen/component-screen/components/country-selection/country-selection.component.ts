@@ -5,7 +5,7 @@ import { ModalService } from '../../../../services/modal/modal.service';
 import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
 import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
-import { RestService } from '../../../../services/rest/rest.service';
+import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../../../constant/helperTexts';
 
 interface WarningMessages {
@@ -60,12 +60,17 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
     text: this.minskConvention,
   };
 
-  constructor(private restService: RestService, private modalService: ModalService) {}
+  constructor(
+    private dictionaryApiService: DictionaryApiService,
+    private modalService: ModalService,
+  ) {}
 
   ngOnInit(): void {
-    this.restService.getDictionary(this.data.attrs.dictionaryType).subscribe((dictionary) => {
-      this.mapToListItemModel(dictionary.items);
-    });
+    this.dictionaryApiService
+      .getDictionary(this.data.attrs.dictionaryType)
+      .subscribe((dictionary) => {
+        this.mapToListItemModel(dictionary.items);
+      });
     this.form.addControl('countryDropdown', new FormControl('', [Validators.required]));
     this.updateHelperText();
   }

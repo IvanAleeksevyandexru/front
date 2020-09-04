@@ -1,11 +1,11 @@
 import { ListItem } from 'epgu-lib';
+import * as moment_ from 'moment';
+import { CUSTOM_COMPONENT_ITEM_TYPE, DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
 import {
   CustomComponentDictionaryState, CustomComponentDropDownItemList,
   CustomComponentInterface, CustomComponentState
 } from '../../../../interfaces/custom-component.interface';
 import { DictionaryItem } from '../../../../interfaces/dictionary-options.interface';
-import { CUSTOM_COMPONENT_ITEM_TYPE, DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
-import * as moment_ from 'moment';
 const moment = moment_;
 
 
@@ -55,11 +55,15 @@ export function getNormalizeDataCustomScreenDictionary(
   dictionaryName: string,
   component: CustomComponentInterface): Array<ListItem> {
   const isRemoveRussiaFromList = component?.attrs.russia === false;
+  const isRemoveUssrFromList = component?.attrs.ussr === false;
+  const russiaCode = 'RUS'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
+  const ussrCode = 'SUN'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
   let arr = items;
   if (isRemoveRussiaFromList) {
-    const russiaCode = 'RUS'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
-    const sssrCode = 'SUN'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
-    arr = arr.filter(item => ![sssrCode, russiaCode].includes(item.value));
+    arr = arr.filter(item => ![ussrCode, russiaCode].includes(item.value));
+  }
+  if (isRemoveUssrFromList) {
+    arr = arr.filter(item => ![ussrCode].includes(item.value));
   }
   return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
 }
@@ -72,36 +76,33 @@ export function getNormalizeDataCustomScreenDictionary(
  */
 export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
   return items.map((item, index) => {
-    return  {
-      id: `${item.name}-${index}`,
-      text: item.name,
+    return {
+      id: `${item.label}-${index}`,
+      text: item.label,
       formatted: '',
-      // 'hidden': false,
+      unselectable: item.disable === false,
       originalItem: item,
       compare: () => false,
     };
   });
 }
 
+/**
+ * Функция проверяет зависимые компоненты и перезаписывает состояние в state.
+*/
 export function calcDependedComponent(
   component: CustomComponentInterface,
   state: CustomComponentState,
   components: Array<CustomComponentInterface>) {
+  const isLookup = component.type === 'Lookup';
   const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
-  // TODO добавить возможность зависить от нескольких полей
-  const dependentComponents = components.filter((item) =>
-    isComponentDependOn(item.attrs?.ref),
-  );
+  const dependentComponents = components.filter((item) => isComponentDependOn(item.attrs?.ref));
 
   dependentComponents.forEach((dependentComponent) => {
-    if (likeDictionary(component.type)) {
-      const dictionaryOfTheDependentComponent: DictionaryItem = state[component.id]?.value;
-
-      // TODO Временный hardcode;
-      state[dependentComponent.id].isShow =
-        // TODO добавить возможность зависить от нескольких полей
-        dependentComponent.attrs.ref[0].val === dictionaryOfTheDependentComponent.value;
-    }
+    state[dependentComponent.id].isShown = dependentComponent.attrs.ref.some(item => {
+      const stateRelatedRel = isLookup ? state[item.relatedRel]?.value : state[item.relatedRel];
+      return stateRelatedRel?.value === item.val;
+    });
   });
 }
 
@@ -149,6 +150,6 @@ export function getInitStateItemComponentList(component: CustomComponentInterfac
     errorMessage: '',
     value: valueFormatted,
     component,
-    isShow: !hasRelatedRef,
+    isShown: !hasRelatedRef,
   };
 }
