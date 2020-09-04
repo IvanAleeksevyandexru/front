@@ -22,7 +22,7 @@ import {
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
-import { ConstructorConfigService } from '../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../config/config.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -44,7 +44,7 @@ export class ComponentsListComponent implements OnChanges {
 
   constructor(
     private dictionaryApiService: DictionaryApiService,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
   ) {}
 
   // TODO тут была информация о валидации смотри историю гита
