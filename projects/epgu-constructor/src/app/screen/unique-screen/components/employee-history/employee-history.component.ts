@@ -61,6 +61,7 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
     this.validationShowOn = ValidationShowOn.IMMEDIATE;
     if (this.employeeFormService.generateForm.valid) {
       this.employeeFormService.pushFormGroup();
+      this.validationShowOn = ValidationShowOn.NEVER;
     }
   }
 
