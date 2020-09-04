@@ -5,7 +5,6 @@ import { EpguLibModule } from 'epgu-lib';
 
 import { Config } from './config/config.types';
 import { FormPlayerComponent } from './form-player.component';
-import { LayoutModule } from './layout/layout.module';
 import { CustomScreenModule } from './screen/custom-screen/custom-screen.module';
 import { InfoScreenModule } from './screen/info-screen/info-screen.module';
 import { InvitationErrorScreenModule } from './screen/invitation-error-screen/invitation-error-screen.module';
@@ -39,7 +38,6 @@ import { FormPlayerApiService } from './services/api/form-player-api/form-player
     QuestionsScreenModule,
     UniqueScreenModule,
     InvitationErrorScreenModule,
-    LayoutModule,
     DynamicModule,
     SharedModule,
     EpguLibModule.forChild(),
