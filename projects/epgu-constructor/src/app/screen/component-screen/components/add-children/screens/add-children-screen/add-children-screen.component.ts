@@ -49,7 +49,10 @@ export class AddChildrenScreenComponent implements OnInit {
   }
 
   addNewChild(idx): void {
-    this.itemsLength += 1;
+    if (this.itemsSelectedQueue.length === 1) {
+      this.itemsLength += 1;
+      this.addFormControl(this.itemsLength);
+    }
     const id = this.itemsLength;
     const newChild: ChildUnder14Interface = {
       isNew: true,
@@ -81,6 +84,7 @@ export class AddChildrenScreenComponent implements OnInit {
     }
     if (childIdx2 > -1) {
       delete this.selectedItems[childIdx2];
+      this.selectedItems = [...Object.values(this.selectedItems)];
     }
     this.passDataToSend(Object.values(this.selectedItems));
     this.setHideStateToSelectedItems();
@@ -102,8 +106,9 @@ export class AddChildrenScreenComponent implements OnInit {
   }
 
   addMoreChild(): void {
+    this.itemsLength += 1;
     this.itemsSelectedQueue.push(this.itemsList[0]);
-    this.addFormControl(this.itemsSelectedQueue.length - 1);
+    this.addFormControl(this.itemsLength);
   }
 
   handleSelect(event, idx: number): void {
@@ -134,8 +139,8 @@ export class AddChildrenScreenComponent implements OnInit {
   }
 
   private generateFormGroup(): void {
-    this.itemsSelectedQueue.forEach((item: any, idx) => {
-      this.addChildrenForm.addControl(idx.toString(), new FormControl());
+    this.itemsSelectedQueue.forEach(() => {
+      this.addChildrenForm.addControl(this.itemsLength.toString(), new FormControl());
     });
   }
 
