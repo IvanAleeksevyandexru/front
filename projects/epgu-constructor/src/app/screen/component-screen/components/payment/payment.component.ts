@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
-
 import {
+  BillsInfoResponse,
   PaymentAttrsInterface,
   PaymentInfoInterface,
 } from '../../../../../interfaces/payment.interface';
@@ -23,9 +23,15 @@ export interface PaymentInterface extends ComponentInterface {
 })
 export class PaymentComponent {
   public paymentStatus = PaymentStatus;
+  public paymentPurpose = '';
   public status: PaymentStatus;
-  public uin: string; // Уникальный идентификатор платежа
-  public sum: string; // Сумма на оплату
+  public uin = ''; // Уникальный идентификатор платежа
+  public sum = ''; // Сумма на оплату
+  public sumWithoutDiscount = ''; // Сумма на оплату без
+  public validDate = ''; // Сумма на оплату без
+  public payCode = 1; // Код типа плательщика
+  private payStatusTimeoutLink = null;
+  private payStatusTimeout = 30;
 
   private attrData: PaymentInterface;
   @Input() orderId: string;
@@ -55,13 +61,22 @@ export class PaymentComponent {
       .loadPaymentInfo(this.orderId, nsi, dictItemCode)
       .pipe(
         switchMap((attributeValues: PaymentInfoInterface) => {
+          this.paymentPurpose = attributeValues.paymentPurpose;
           this.sum = PaymentService.transformSumForPenny(attributeValues.sum);
-          return this.paymentService.getUinByOrderId(this.orderId, attributeValues);
+          if (this.paymentService.isLocalHost) {
+            // eslint-disable-next-line no-param-reassign
+            attributeValues.sum = '001';
+            this.sum = PaymentService.transformSumForPenny(attributeValues.sum);
+          }
+          return this.paymentService.getUinByOrderId(this.orderId, this.payCode, attributeValues);
         }),
       )
       .pipe(takeUntil(this.ngUnsubscribe$))
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      .subscribe(this.setPaymentStatusFromSuccessRequest, this.setPaymentStatusFromErrorRequest);
+      .subscribe(
+        (res) => this.setPaymentStatusFromSuccessRequest(res),
+        (error) => this.setPaymentStatusFromErrorRequest(error),
+      );
   }
 
   /**
@@ -71,7 +86,48 @@ export class PaymentComponent {
   private setPaymentStatusFromSuccessRequest(res: any) {
     this.status = PaymentStatus.SUCCESS;
     this.uin = res.value.replace('PRIOR', '');
+    console.log('this.uin', this.uin);
+    this.paymentService
+      .getBillsInfoByUIN(this.uin, this.orderId)
+      .pipe(
+        map((response: BillsInfoResponse) => {
+          console.log('response4', response);
+          return response;
+        }),
+      )
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(
+        (info) => {
+          console.log('setPaymentStatusFromSuccessRequest', info);
+        },
+        (error) => this.setPaymentStatusFromErrorRequest(error),
+      );
+    this.payStatusTimeoutLink = setTimeout(
+      () => this.getPaymentStatusByUIN(),
+      this.payStatusTimeout * 1000,
+    );
     this.componentStateService.state = this.paymentService.getPaymentLink(this.uin);
+  }
+
+  /**
+   * Получаем статус по УИН
+   * @private
+   */
+  private getPaymentStatusByUIN() {
+    this.paymentService
+      .getPaymentStatusByUIN(this.orderId, this.payCode)
+      .pipe(
+        tap(() => {
+          clearTimeout(this.payStatusTimeoutLink);
+        }),
+      )
+      .subscribe((response) => {
+        this.payStatusTimeoutLink = setTimeout(
+          () => this.getPaymentStatusByUIN(),
+          this.payStatusTimeout * 1000,
+        );
+        console.log('response3', response);
+      });
   }
 
   /**

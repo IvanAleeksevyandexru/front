@@ -1,7 +1,7 @@
 import { PaymentDictionaryOptionsInterface, SubInterface } from '../../../../../interfaces/payment.interface';
 
 // Тестовый id заявки на регистрацию брака
-export const mockOrderId = '763419899';
+export const mockOrderId = '763430121';
 
 // Статусы оплаты
 export enum PaymentStatus {

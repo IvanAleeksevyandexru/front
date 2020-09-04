@@ -4,9 +4,10 @@
   "scripts": {
     "postinstall": "ngcc --properties es2015 browser module main",
     "ng": "ng",
-    "start": "ng serve --proxy-config ./src/proxy.conf.json",
+    "start": "npm run proxy-config && ng serve",
     "start:stage": "ng serve --configuration staging",
     "start:backend": "java -jar fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api",
+    "proxy-config": "tsc --types node --module commonjs src/proxy.conf.ts",
     "build": "ng build",
     "library:build": "ng build epgu-constructor",
     "library:watch": "ng build epgu-constructor --watch",

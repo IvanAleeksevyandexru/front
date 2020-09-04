@@ -84,7 +84,7 @@
           "options": {
             "browserTarget": "epgu-form-frontend:build",
             "port": 4200,
-            "proxyConfig": "src/proxy.conf.json",
+            "proxyConfig": "src/proxy.conf.js",
             "sourceMap": {
               "scripts": true,
               "styles": true,

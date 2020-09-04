@@ -1,22 +1,25 @@
 <div class="payment" [ngSwitch]="status">
-  <div class="info" *ngSwitchCase="paymentStatus.SUCCESS">
-    <p class="info__text"><strong>{{ data.label }}</strong></p>
-    <p class="info__text">УИН {{ uin }}</p>
-    <p class="info__text">Начисление на паспорт РФ 1234 123456 от ЗАГС г. Москвы</p>
-    <p class="payment__sum">{{ sum }} Р
-      <!-- <span class="secondary">4 000,00 Р</span> -->
-    </p>
+  <div class="info" *ngSwitchCase="paymentStatus.SUCCESS || ''">
+    <div class="info__text"><strong>{{ paymentPurpose }}</strong></div>
+    <div class="info__text">УИН {{ uin }}</div>
+    <div class="info__text">Начисление на паспорт РФ 1234 123456 от ЗАГС г. Москвы</div>
+    <div class="payment__sum">{{ sum }} Р
+      <span class="secondary" *ngIf="sumWithoutDiscount.length">{{ sumWithoutDiscount }} Р</span>
+    </div>
+    <div class="info__hint" *ngIf="validDate.length">
+      Скидка действует при оплате до {{ validDate }}.
+    </div>
   </div>
 
   <div class="info" *ngSwitchCase="paymentStatus.ERROR">
     <img class="info__img" src="assets/icons/svg/error-icon.svg" alt=""/>
-    <p class="info__text">При получении реквизитов оплаты пошлины произошла ошибка.</p>
-    <p class="info__text">Попробуйте обновить страницу или <a href="#">обратитесь в службу поддержки</a>.
-      Ваш черновик автоматически сохранен.</p>
+    <div class="info__text">При получении реквизитов оплаты пошлины произошла ошибка.</div>
+    <div class="info__text">Попробуйте обновить страницу или <a href="https://www.gosuslugi.ru/help" target="_blank">обратитесь в службу поддержки</a>.
+      Ваш черновик автоматически сохранен.</div>
   </div>
 
   <div class="info" *ngSwitchCase="paymentStatus.SERVER_ERROR">
     <img class="info__img" src="assets/img/server-error.svg" alt=""/>
-    <p class="info__text">Попробуйте зайти на страницу позже. Если ошибка не исчезнет, <a href="#">сообщите нам о ней</a></p>
+    <div class="info__text">Попробуйте зайти на страницу позже. Если ошибка не исчезнет, <a href="https://www.gosuslugi.ru/help" target="_blank">сообщите нам о ней</a></div>
   </div>
 </div>

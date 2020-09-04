@@ -3,7 +3,11 @@ import { RestService } from '../rest/rest.service';
 import { HttpClient } from '@angular/common/http';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { catchError, map } from 'rxjs/operators';
-import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from '../../../interfaces/payment.interface';
+import {
+  BillsInfoResponse,
+  PaymentDictionaryOptionsInterface,
+  PaymentInfoInterface
+} from '../../../interfaces/payment.interface';
 import { Observable, throwError } from 'rxjs';
 import { FormPlayerService } from '../../form-player.service';
 import { getPaymentRequestOptions } from '../../screen/component-screen/components/payment/payment.constants';
@@ -16,6 +20,7 @@ export class PaymentService {
   private apiUrl: string;
   private externalUrl: string;
   private paymentUrl: string;
+  isLocalHost = false;
 
   constructor(
     private restService: RestService,
@@ -26,6 +31,7 @@ export class PaymentService {
     this.apiUrl = this.constructorConfigService.config.apiUrl;
     this.externalUrl = this.constructorConfigService.config.externalUrl;
     this.paymentUrl = this.constructorConfigService.config.paymentUrl;
+    this.isLocalHost = location.hostname === 'localhost';
   }
 
   /**
@@ -39,6 +45,14 @@ export class PaymentService {
   static transformSumForPenny(sum): string {
     return sum.padEnd(3, '0').replace(/\d{2}$/, ',$&');
   }
+
+  /**
+   * Возвращает путь API адреса для обращений к сервису TERABYTE
+   *
+   * @param relativePath - относительный путь от API для запросов
+   */
+  private getPayInfoApiUrl = (relativePath): string =>
+    (this.isLocalHost ? '/paymentuin/' : this.externalUrl) + relativePath;
 
   /**
    * Загружает данные по оплате с реквизитами
@@ -62,25 +76,67 @@ export class PaymentService {
     );
   }
 
+  //TODO: Идентификатор заявителя ниже должен откуда-то браться
   /**
    * Получение номера УИН для по номеру заявки
    * @param orderId - идентификатор заявления
+   * @param code - идентификатор заявителя
    * @param attributeValues - дополнительные параметры
    */
-  getUinByOrderId(orderId: string, attributeValues: PaymentInfoInterface): Observable<any> {
+  getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
     return this.http.post(
-      `${this.externalUrl}api/lk/v1/paygate/uin/1?orderId=${orderId}`,
+      this.getPayInfoApiUrl(`api/lk/v1/paygate/uin/${code}?orderId=${orderId}`),
       attributeValues,
       {
         withCredentials: true
       },
+    ).pipe(
+      catchError((err: any) => {
+        return throwError(err);
+      })
+    );
+  }
+
+  /**
+   * Получение данных (предначисления) по УИН, полная информация
+   * @param uin - уникальный идентификатор патежа
+   * @param orderId - идентификатор заявления
+   */
+  getBillsInfoByUIN(uin: string, orderId: string): Observable<any> {
+    return this.http.post(
+      this.getPayInfoApiUrl(`api/pay/v1/bills?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`), {},
+      {
+        withCredentials: true
+      },
+    ).pipe(
+      catchError((err: any) => {
+        return throwError(err);
+      }),
+    );
+  }
+
+  /**
+   * Получение статуса платежа по УИН, полная информация
+   * @param orderId - идентификатор заявления
+   * @param code - идентификатор заявителя
+   */
+  getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<any> {
+    return this.http.get(
+      this.getPayInfoApiUrl(`api/lk/v1/paygate/uin/status/${code}?orderId=${orderId}`),
+      {
+        withCredentials: true
+      },
+    ).pipe(
+      catchError((err: any) => {
+        return throwError(err);
+      }),
     );
   }
 
   /**
    * Возвращает ссылку на оплату для перехода пользователя
    *
-   * @param uin - уникальный идентификатор патедя
+   * @param uin - уникальный идентификатор патежа
    */
   getPaymentLink(uin: string): string {
     // TODO хардкод. доделать.
