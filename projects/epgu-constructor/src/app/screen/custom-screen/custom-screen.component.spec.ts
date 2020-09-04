@@ -13,6 +13,7 @@ import { ComponentsListComponent } from '../../shared/components/components-list
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ScreenStore } from '../screen.types';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 
 describe('CustomScreenComponent', () => {
@@ -48,6 +49,7 @@ describe('CustomScreenComponent', () => {
         NavigationService,
         ScreenService,
         UnsubscribeService,
+        ApplicantAnswersService
       ]
     })
     .compileComponents();

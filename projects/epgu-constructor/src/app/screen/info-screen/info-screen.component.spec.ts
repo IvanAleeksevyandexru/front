@@ -6,6 +6,7 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { InfoScreenComponent } from './info-screen.component';
 import { ScreenService } from '../screen.service';
 import { ScreenStore } from '../screen.types';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 
 describe('InfoScreenComponent', () => {
@@ -38,7 +39,8 @@ describe('InfoScreenComponent', () => {
       providers: [
         NavigationService,
         UnsubscribeService,
-        ScreenService
+        ScreenService,
+        ApplicantAnswersService
       ]
     })
     .compileComponents();

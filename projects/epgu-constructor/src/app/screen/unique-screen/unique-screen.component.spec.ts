@@ -7,6 +7,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 describe('UniqueScreenComponent', () => {
   let component: UniqueScreenComponent;
@@ -36,7 +37,7 @@ describe('UniqueScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ UniqueScreenComponent ],
-      providers: [NavigationService, ScreenService, UnsubscribeService]
+      providers: [NavigationService, ScreenService, UnsubscribeService, ApplicantAnswersService]
     })
     .compileComponents();
     navService = TestBed.inject(NavigationService);

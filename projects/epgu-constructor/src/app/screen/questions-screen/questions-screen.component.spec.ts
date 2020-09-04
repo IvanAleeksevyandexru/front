@@ -13,6 +13,7 @@ import { ModalService } from '../../services/modal/modal.service';
 import { ModalServiceStub } from '../../services/modal/modal.service.stub';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ScreenStore } from '../screen.types';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 describe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
@@ -45,6 +46,7 @@ describe('QuestionsScreenComponent', () => {
         NavigationService,
         ScreenService,
         UnsubscribeService,
+        ApplicantAnswersService,
         { provide: ModalService, useClass: ModalServiceStub },
       ]
     })

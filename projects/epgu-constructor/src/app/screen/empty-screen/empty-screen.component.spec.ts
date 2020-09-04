@@ -6,6 +6,7 @@ import { ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 
 // TODO: Need to refactoring component
@@ -36,7 +37,7 @@ describe.skip('EmptyScreenComponent', () => {
 		TestBed.configureTestingModule({
 			schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
 			declarations: [EmptyScreenComponent],
-      providers: [NavigationService, ScreenService, UnsubscribeService]
+      providers: [NavigationService, ScreenService, UnsubscribeService, ApplicantAnswersService]
 		})
 			.compileComponents();
     screenService = TestBed.inject(ScreenService);

@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ScreenStore } from '../screen.types';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 
 // TODO: Need to refactoring component
@@ -46,7 +47,8 @@ describe.skip('ScreenComponent', () => {
         NavigationService,
         ComponentStateService,
         ScreenService,
-        UnsubscribeService
+        UnsubscribeService,
+        ApplicantAnswersService
       ]
     })
     .compileComponents();

@@ -9,6 +9,7 @@ import { ScreenService } from '../screen.service';
 import { ScreenStore } from '../screen.types';
 import { SCREEN_TYPE } from '../../../constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 describe('InvitationScreenComponent', () => {
   let component: InvitationErrorScreenComponent;
@@ -42,7 +43,8 @@ describe('InvitationScreenComponent', () => {
       providers: [
         NavigationService,
         ScreenService,
-        UnsubscribeService
+        UnsubscribeService,
+        ApplicantAnswersService
       ]
     })
     .compileComponents();
