@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../constant/global';
@@ -15,7 +15,7 @@ const moment = moment_;
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class CustomScreenComponent implements OnInit, Screen {
+export class CustomScreenComponent implements OnInit, OnChanges, Screen {
   dataToSend: any;
   isCycledFields: boolean;
   cycledValues: any;
