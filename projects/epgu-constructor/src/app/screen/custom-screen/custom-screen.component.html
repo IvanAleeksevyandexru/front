@@ -2,7 +2,9 @@
 <epgu-constructor-screen-container class="screen-container">
   <div class="inner">
     <div *ngIf="screenData.componentData?.header" class="head">
-      <epgu-constructor-page-name>{{ screenData.componentData?.header }}</epgu-constructor-page-name>
+      <epgu-constructor-page-name>{{
+        screenData.componentData?.header
+      }}</epgu-constructor-page-name>
     </div>
 
     <epgu-constructor-screen-pad class="body">
