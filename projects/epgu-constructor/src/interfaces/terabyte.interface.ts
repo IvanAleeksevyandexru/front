@@ -37,12 +37,19 @@ export interface IFileResponseToBackendWithRelatedUploads{
  * Интерфейс для аттрибутов файла на загрузку из JSON
  */
 export interface IFileUploadAttributes{
+  clarifications: Array<IClarifications>;
   uploads: IFileUploadItem[],
   uploadId?: string;
   idAttrs?: string[];
   ref?: string;
   maxSize?: number;
   maxFileCount?: number;
+}
+
+export interface IClarifications {
+  [key: string]: {
+    text?: string;
+  }
 }
 
 

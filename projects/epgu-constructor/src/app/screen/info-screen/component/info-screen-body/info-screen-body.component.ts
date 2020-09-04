@@ -19,6 +19,8 @@ export class InfoScreenBodyComponent {
     if (targetElementId) {
       this.toggleHiddenBlockOrShowModal(el, targetElementId);
     }
+
+    console.log($event, el);
   }
 
   private toggleHiddenBlockOrShowModal(el: HTMLElement, targetElementId: string) {
