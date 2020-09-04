@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
-import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
+
 import {
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
@@ -22,6 +21,8 @@ import {
 } from '../../../screen/custom-screen/tools/custom-screen-tools';
 import { ScreenService } from '../../../screen/screen.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
+import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -107,6 +108,14 @@ export class ComponentsListComponent implements OnChanges {
 
   inputChange($event: Event, component: CustomComponentInterface) {
     const { value } = $event.target as HTMLInputElement;
+    this.state[component.id].value = value;
+    const inputValidationResult = CheckInputValidationComponentList(value, component);
+    this.setValidationState(inputValidationResult, component.id, value);
+    this.emmitChanges(component);
+  }
+
+  dateChange($event: string, component: CustomComponentInterface) {
+    const value = $event;
     this.state[component.id].value = value;
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationState(inputValidationResult, component.id, value);
