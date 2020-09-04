@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
@@ -15,7 +7,7 @@ import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsub
   templateUrl: './add-new-child-form.component.html',
   styleUrls: ['./add-new-child-form.component.scss'],
 })
-export class AddNewChildFormComponent implements AfterViewInit, OnDestroy {
+export class AddNewChildFormComponent implements AfterViewInit {
   @ViewChild('newChildForm') newChildForm;
 
   @Input() item: any;
@@ -34,8 +26,5 @@ export class AddNewChildFormComponent implements AfterViewInit, OnDestroy {
       this.item.gender = gender;
       this.childUpdateEvent.emit(this.item);
     });
-  }
-  ngOnDestroy() {
-    this.childUpdateEvent.emit(this.item);
   }
 }

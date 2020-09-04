@@ -16,6 +16,7 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'registrationAddr' = 'RegistrationAddr',
   'personLookup' = 'PersonLookup',
+  'mvdGiac' = 'MvdGiac',
   'addPassport' = 'AddPassport',
   'changeList' = 'ChangeList',
   'childrenListUnder14' = 'ChildrenListUnder14',
@@ -31,7 +32,6 @@ export enum INFO_SCREEN_COMPONENT {
 }
 
 export enum UNIQUE_COMPONENT_NAME {
-  childrenListUnder14 = 'ChildrenListUnder14',
   fileUploadComponent = 'FileUploadComponent',
   'addPassport' = 'AddPassport',
   'timeSlot' = 'TimeSlot',

@@ -10,19 +10,19 @@ import {
 } from '../../../../interfaces/custom-component.interface';
 import { DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
 import {
-  getCustomScreenDictionaryFirstState,
-  getNormalizeDataCustomScreenDictionary,
   adaptiveDropDown,
-  likeDictionary,
-  isDropDown,
   calcDependedComponent,
   CheckInputValidationComponentList,
+  getCustomScreenDictionaryFirstState,
   getInitStateItemComponentList,
+  getNormalizeDataCustomScreenDictionary,
+  isDropDown,
+  likeDictionary,
 } from '../../../screen/custom-screen/tools/custom-screen-tools';
+import { ScreenService } from '../../../screen/screen.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
-import { ConstructorConfigService } from '../../../services/config/constructor-config.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -44,10 +44,14 @@ export class ComponentsListComponent implements OnChanges {
 
   constructor(
     private dictionaryApiService: DictionaryApiService,
-    private constructorConfigService: ConstructorConfigService,
+    public screenService: ScreenService,
   ) {}
 
-  // TODO тут была информация о валидации смотри историю гита
+  // NOTICE: тут была информация о валидации смотри историю гита
+
+  ngOnInit(): void {
+    console.log(this.screenService);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.state = {};
