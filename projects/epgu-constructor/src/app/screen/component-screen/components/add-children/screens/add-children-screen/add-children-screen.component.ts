@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { ChildUnder14Interface } from '../../../../../../../interfaces/children.interface';
 import { ComponentInterface } from '../../../../../../services/api/form-player-api/form-player-api.types';
@@ -16,21 +17,43 @@ export class AddChildrenScreenComponent implements OnInit {
   valueParsed: any;
   itemsList: any = [];
   itemsSelectedQueue: any = [];
-  itemsInitialLength: number;
+  itemsLength: number;
   itemsToSelect: Array<ListItem>;
   itemsToSelectInitial: Array<ListItem>;
   selectedItems: any = {};
 
   headerMapped: any;
   confirmAddressData: any;
+  addChildrenForm = new FormGroup({});
 
-  constructor(
-    private componentStateService: ComponentStateService,
-    private changeDetection: ChangeDetectorRef,
-  ) {}
+  constructor(private componentStateService: ComponentStateService) {}
+
+  ngOnInit(): void {
+    this.valueParsed = JSON.parse(this.data.value);
+    this.itemsLength = this.valueParsed?.items?.length || 0;
+    this.itemsList = this.valueParsed?.items || [];
+    this.itemsSelectedQueue.push(this.itemsList[0] || {});
+    this.itemsToSelect = [
+      ...this.itemsList.map((child) => {
+        return {
+          id: child.id,
+          text: child.firstName,
+        };
+      }),
+      { id: 'new', text: 'Добавить нового ребенка' },
+    ];
+    this.itemsToSelectInitial = [...this.itemsToSelect];
+    this.selectedItems = {};
+    this.passDataToSend(Object.values(this.selectedItems));
+    this.generateFormGroup();
+  }
 
   addNewChild(idx): void {
-    const id = this.itemsInitialLength + 1;
+    if (this.itemsSelectedQueue.length === 1) {
+      this.itemsLength += 1;
+      this.addFormControl(this.itemsLength);
+    }
+    const id = this.itemsLength;
     const newChild: ChildUnder14Interface = {
       isNew: true,
       id,
@@ -61,6 +84,7 @@ export class AddChildrenScreenComponent implements OnInit {
     }
     if (childIdx2 > -1) {
       delete this.selectedItems[childIdx2];
+      this.selectedItems = [...Object.values(this.selectedItems)];
     }
     this.passDataToSend(Object.values(this.selectedItems));
     this.setHideStateToSelectedItems();
@@ -82,7 +106,9 @@ export class AddChildrenScreenComponent implements OnInit {
   }
 
   addMoreChild(): void {
+    this.itemsLength += 1;
     this.itemsSelectedQueue.push(this.itemsList[0]);
+    this.addFormControl(this.itemsLength);
   }
 
   handleSelect(event, idx: number): void {
@@ -99,33 +125,26 @@ export class AddChildrenScreenComponent implements OnInit {
   }
 
   private setHideStateToSelectedItems(): void {
-    this.itemsToSelect.forEach((item) => {
-      const selectedItemsKeys: Array<string | number> = Object.values(this.selectedItems).map(
-        (selectedItem: any) => selectedItem.id,
-      );
-      if (selectedItemsKeys.includes(item.id)) {
-        // eslint-disable-next-line no-param-reassign
-        // item.hidden = true;
+    const selectedItemsKeys: Array<string | number> = Object.values(this.selectedItems).map(
+      (selectedItem: any) => selectedItem.id,
+    );
+    this.itemsToSelect = this.itemsToSelect.map((item) => {
+      const newItem = item;
+      newItem.unselectable = false;
+      if (selectedItemsKeys.includes(newItem.id)) {
+        newItem.unselectable = true;
       }
+      return newItem;
     });
   }
 
-  ngOnInit(): void {
-    this.valueParsed = JSON.parse(this.data.value);
-    this.itemsInitialLength = this.valueParsed?.items?.length || 0;
-    this.itemsList = this.valueParsed?.items || [];
-    this.itemsSelectedQueue.push(this.itemsList[0] || {});
-    this.itemsToSelect = [
-      ...this.itemsList.map((child) => {
-        return {
-          id: child.id,
-          text: child.firstName,
-        };
-      }),
-      { id: 'new', text: 'Добавить нового ребенка' },
-    ];
-    this.itemsToSelectInitial = [...this.itemsToSelect];
-    this.selectedItems = {};
-    this.passDataToSend(Object.values(this.selectedItems));
+  private generateFormGroup(): void {
+    this.itemsSelectedQueue.forEach(() => {
+      this.addChildrenForm.addControl(this.itemsLength.toString(), new FormControl());
+    });
+  }
+
+  private addFormControl(idx): void {
+    this.addChildrenForm.addControl(idx.toString(), new FormControl());
   }
 }

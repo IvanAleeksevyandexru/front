@@ -1,13 +1,24 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
+import { switchMap, filter, takeWhile, takeUntil, tap, reduce } from 'rxjs/operators';
+import { interval, of, merge } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
-import { interval } from 'rxjs';
-import { filter, switchMap, takeUntil, takeWhile } from 'rxjs/operators';
-import { DisplayInterface } from '../../../../services/api/form-player-api/form-player-api.types';
+
 import { ConfigService } from '../../../../config/config.service';
+import { SelectMapObjectService } from './select-map-object.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
-import { SelectMapObjectService } from './select-map-object.service';
+import { UtilsService } from '../../../../services/utils/utils.service';
+import { Utilities } from './utilities';
+import { ComponentInterface } from '../../../../services/api/form-player-api/form-player-api.types'
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -15,18 +26,23 @@ import { SelectMapObjectService } from './select-map-object.service';
   styleUrls: ['./select-map-object.component.scss'],
   providers: [UnsubscribeService],
 })
-export class SelectMapObjectComponent implements OnInit {
-  @Input() data: DisplayInterface;
+export class SelectMapObjectComponent implements OnInit, AfterViewInit {
+  @Input() data: ComponentInterface;
+  @Input() applicantAnswers: { [key: string]: any };
   @Output() nextStepEvent = new EventEmitter<any>();
+
+  @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
+  @ViewChild('informationTemplate', { static: false }) informationTemplate;
 
   public mappedDictionaryForLookup;
   public mapCenter: Array<number>;
   public mapControls = ['zoomControl'];
   public yandexMapsApiKey: string;
+  public provider = { search: this.providerSearch() };
 
-  private isMapsScriptLoaded = false;
-  private regCode: string;
-  private componentValue;
+  private componentValue: any;
+  private selectedValue: any;
+  private selectedValueField: any;
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
@@ -39,52 +55,148 @@ export class SelectMapObjectComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data.components[0].value) {
-      this.componentValue = JSON.parse(this.data.components[0].value);
-      this.regCode = this.componentValue.regCode;
-    }
+    this.initVariable();
+    this.subscribeToEmmitNextStepData();
+  }
+
+  ngAfterViewInit(): void {
+    this.selectMapObjectService.templates.detailsTemplate = this.detailsTemplate;
+    this.selectMapObjectService.templates.informationTemplate = this.informationTemplate;
+  }
+
+  private initVariable() {
+    this.initComponentAttrs();
+    this.initComponentValue();
+    this.initSelectedValue();
     this.controlsLogicInit();
+  }
+
+  initComponentAttrs() {
+    this.selectMapObjectService.componentAttrs = this.data.attrs;
+  }
+
+  private initComponentValue() {
+    this.componentValue = JSON.parse(this.data?.value || '{}');
+  }
+
+  private initSelectedValue() {
+    if (this.data?.value && this.data?.attrs?.selectedValue) {
+      this.selectedValue = this.getSelectedValue();
+      this.selectedValueField = this.data.attrs.selectedValueMapping?.value;
+    }
+  }
+
+  private getSelectedValue() {
+    const selectedValue = UtilsService.getObjectProperty(
+      this.applicantAnswers,
+      this.data.attrs.selectedValue.value,
+    );
+    return JSON.parse(selectedValue);
+  }
+
+  private subscribeToEmmitNextStepData() {
     this.selectMapObjectService.controlValue
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: any) => this.nextStepEvent.emit(JSON.stringify(value)));
   }
 
   private controlsLogicInit() {
-    interval(1000)
+    interval(200)
       .pipe(
         filter(() => this.yaMapService.map),
-        takeWhile(() => !this.isMapsScriptLoaded),
+        tap(() => this.initMap()),
+        takeWhile(() => !this.yaMapService.map),
       )
-      .subscribe(() => {
-        this.selectMapObjectService.ymaps = (window as any).ymaps;
-        this.isMapsScriptLoaded = true; // флаг чтобы отписаться
-        this.mapCenter = [this.componentValue.geo_lon, this.componentValue.geo_lat];
-        this.fillCoords(this.regCode).subscribe((coords: IGeoCoordsResponse) => {
-          this.saveCoords(coords);
-          this.selectMapObjectService.placeOjectsOnMap(this.yaMapService.map);
-        });
-      });
+      .subscribe();
   }
 
   /**
-   * По фиас получаем кладр, по кладру справочник с объектами на карте, по адресам объектов список координат
-   * затем заполняем полученный справочник этими координтами и кладем в сервис
-   * @param regCode код региона
+   * Инициализация карты - попытка определения центра, получение и расстановка точек на карте
    */
-  private fillCoords(regCode) {
+  private initMap() {
+    this.tryInitMapCenter();
+    this.selectMapObjectService.ymaps = (window as any).ymaps;
+    this.fillCoords(
+      this.selectMapObjectService.componentAttrs.dictionaryFilter,
+    ).subscribe((coords: IGeoCoordsResponse) => this.handleFilledCoordinate(coords));
+  }
+
+  /**
+   * Обработка полученных координат - сохранение в массиве сервиса, расстановка на карте
+   * @param coords ответ с бэка с координатами точек
+   */
+  private handleFilledCoordinate(coords: IGeoCoordsResponse) {
+    this.saveCoords(coords);
+    this.selectMapObjectService.placeOjectsOnMap(this.yaMapService.map);
+    this.tryInitSelectedObject();
+  }
+
+  private tryInitSelectedObject() {
+    if (this.selectedValue) {
+      this.selectMapObject(this.getSelectedObject());
+    }
+  }
+
+  private getSelectedObject() {
+    return this.selectMapObjectService.findObjectByValue(this.selectedValue.value);
+  }
+
+  /**
+   * Функция пытается инициализировать центр карты
+   */
+  private tryInitMapCenter() {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { geo_lon, geo_lat } = this.componentValue;
+    if (geo_lon && geo_lat) {
+      this.mapCenter = [geo_lon, geo_lat];
+    }
+  }
+
+  /**
+   * настройки для справочника объектов на карте и фильтров берем из атрибутов компонента с бэка
+   * затем по адресам объектов получаем список координат
+   * затем заполняем полученный справочник этими координтами и кладем в сервис
+   * @param dictionaryFilters фильтры из атрибутов компонента
+   */
+  private fillCoords(dictionaryFilters) {
     return this.dictionaryApiService
-      .getDictionary(
-        // TODO получить имя из response
-        'FNS_ZAGS_ORGANIZATION_AREA',
-        this.getFilterOptions(regCode),
-      )
+      .getDictionary(this.getDictionaryType(), this.getOptions(dictionaryFilters))
       .pipe(
         switchMap((dictionary: any) => {
           this.selectMapObjectService.dictionary = dictionary;
-          this.mappedDictionaryForLookup = this.mapDictionaryForLookup(dictionary);
-          return this.selectMapObjectService.getCoordsByAddress(dictionary.items);
+          // Параллелим получение геоточек на 4 запроса
+          const items = [...dictionary.items];
+          const chunkSize = items.length / 4;
+          return merge(
+            this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
+            this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
+            this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
+            this.selectMapObjectService.getCoordsByAddress(items),
+          ).pipe(
+            reduce((acc, val) => {
+              acc.coords = acc.coords.concat(val.coords);
+              return acc;
+            }),
+          );
         }),
       );
+  }
+
+  /**
+   * Подготовка тела POST запроса dictionary
+   * @param dictionaryFilters фильтры из атрибутов компонента
+   */
+  private getOptions(dictionaryFilters) {
+    return {
+      ...Utilities.getFilterOptions(this.componentValue, dictionaryFilters),
+      // selectAttributes: ['ZAGS_NAME', 'ADDRESS', 'PHONE', 'EMAIL', 'GET_CONSENT', 'AREA_DESCR'],
+      // TODO add fields to JSON
+      selectAttributes: ['*'],
+    };
+  }
+
+  private getDictionaryType() {
+    return this.selectMapObjectService.componentAttrs.dictionaryType;
   }
 
   /**
@@ -97,59 +209,25 @@ export class SelectMapObjectComponent implements OnInit {
     this.selectMapObjectService.fillDictionaryItemsWithCoords(coords);
   }
 
-  private mapDictionaryForLookup(dictionary) {
-    return dictionary.items.map((item) => {
-      return {
-        originalItem: item,
-        id: item.value,
-        text: item.title,
-      };
-    });
-  }
-
-  public search(searchString) {
-    this.selectMapObjectService.searchMapObject(searchString);
-  }
-
   // TODO Сделать интерфейс для mapObject
-  public selectMapObject(mapObject) {
+  private selectMapObject(mapObject) {
+    if (!mapObject) return;
     this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.id);
   }
 
-  /**
-   * prepares options for dictionary
-   * @param kladr
-   */
-  private getFilterOptions(kladr) {
-    return {
-      filter: {
-        union: {
-          unionKind: 'AND',
-          subs: [
-            {
-              simple: {
-                attributeName: 'SHOW_ON_MAP',
-                condition: 'EQUALS',
-                value: { asString: 'true' },
-              },
-            },
-            {
-              simple: {
-                attributeName: 'CODE',
-                condition: 'CONTAINS',
-                value: { asString: `${kladr || 'R77'}` },
-              },
-            },
-            {
-              simple: {
-                attributeName: 'PR2',
-                condition: 'EQUALS',
-                value: { asString: 'true' },
-              },
-            },
-          ],
-        },
-      },
+  public lookupChanged(mapObject, lookup) {
+    this.selectMapObject(mapObject);
+    lookup.clearInput();
+  }
+
+  public providerSearch(): Function {
+    return (searchString) => {
+      this.selectMapObjectService.searchMapObject(searchString);
+      return of(
+        Utilities.adaptDictionaryForLookupForSelectMap(
+          this.selectMapObjectService.filteredDictionaryItems,
+        ),
+      );
     };
   }
 }

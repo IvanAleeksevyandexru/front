@@ -77,6 +77,12 @@
           (nextStepEvent)="nextStep()"
         ></epgu-constructor-add-children-screen>
 
+        <epgu-constructor-add-children-screen
+          *ngSwitchCase="screenComponentName.childrenListAbove14"
+          [data]="(screenStore.display?.components)[0]"
+          (nextStepEvent)="nextStep()"
+        ></epgu-constructor-add-children-screen>
+
         <epgu-constructor-payment
           *ngSwitchCase="screenComponentName.paymentScr"
           [applicantAnswers]="screenStore.applicantAnswers"
@@ -94,7 +100,9 @@
         class="footer__btn-submit"
         [disabled]="!componentStateService.isValid || (screenService.isLoading$ | async)"
       >
-        <div class="secondary-font">{{ screenStore.display?.submitLabel || 'Продолжить' }}</div>
+        <div class="secondary-font">
+          {{ screenStore.display?.submitLabel || 'Продолжить' }}
+        </div>
       </lib-button>
       <div *ngIf="componentSetting.displayWarningAnswers" class="footer__warning-answers">
         <epgu-constructor-answer-button

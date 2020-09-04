@@ -55,11 +55,15 @@ export function getNormalizeDataCustomScreenDictionary(
   dictionaryName: string,
   component: CustomComponentInterface): Array<ListItem> {
   const isRemoveRussiaFromList = component?.attrs.russia === false;
+  const isRemoveUssrFromList = component?.attrs.ussr === false;
+  const russiaCode = 'RUS'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
+  const ussrCode = 'SUN'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
   let arr = items;
   if (isRemoveRussiaFromList) {
-    const russiaCode = 'RUS'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
-    const sssrCode = 'SUN'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
-    arr = arr.filter(item => ![sssrCode, russiaCode].includes(item.value));
+    arr = arr.filter(item => ![ussrCode, russiaCode].includes(item.value));
+  }
+  if (isRemoveUssrFromList) {
+    arr = arr.filter(item => ![ussrCode].includes(item.value));
   }
   return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
 }

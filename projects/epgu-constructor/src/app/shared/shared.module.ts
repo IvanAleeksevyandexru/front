@@ -17,6 +17,7 @@ import { HelperTextComponent } from './components/helper-text/helper-text.compon
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { NavigationService } from './services/navigation/navigation.service';
 import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
+import { CommonModalComponent } from '../shared-module/components/common-modal/common-modal.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -26,6 +27,7 @@ const COMPONENTS = [
   NavigationComponent,
   AnswerButtonComponent,
   ConfirmationModalComponent,
+  CommonModalComponent,
   ModalContainerComponent,
   ModalBaseComponent,
   ComponentsListComponent,

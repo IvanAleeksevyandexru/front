@@ -1,7 +1,8 @@
 <ng-container [ngSwitch]="screenStore.display?.components[0].type">
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
-    [data]="screenStore.display"
+    [data]="screenStore.display?.components[0]"
+    [applicantAnswers]="screenStore.applicantAnswers"
     (nextStepEvent)="nextStep($event)"
   >
   </epgu-constructor-select-map-object>
@@ -37,6 +38,6 @@
     *ngSwitchCase="uniqueComponentName.carInfo"
     [data]="screenStore.display"
     [isLoading]="screenService.isLoading$ | async"
-    (nextStepEvent)="nextStep()"
+    (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-car-info>
   </ng-container>

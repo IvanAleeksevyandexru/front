@@ -11,7 +11,7 @@ import { CarInfoValues } from '../../models/car-info.interface';
 export class CarInfoComponent implements OnInit {
   @Input() isLoading: boolean;
   @Input() data: DisplayInterface;
-  @Output() nextStepEvent = new EventEmitter<void>();
+  @Output() nextStepEvent = new EventEmitter<string>();
 
   carInfo: CarInfoValues;
 
@@ -22,6 +22,6 @@ export class CarInfoComponent implements OnInit {
   }
 
   nextStep(): void {
-    this.nextStepEvent.emit();
+    this.nextStepEvent.emit(JSON.stringify(this.carInfo));
   }
 }
