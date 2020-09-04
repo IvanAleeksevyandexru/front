@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../services/api/form-player-api/form-player-api.types';
 import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
 import { IFileUploadItem } from '../../../../../interfaces/terabyte.interface';
 

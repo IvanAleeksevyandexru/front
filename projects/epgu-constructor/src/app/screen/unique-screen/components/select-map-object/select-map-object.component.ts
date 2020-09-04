@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { YaMapService } from 'epgu-lib';
 import { interval } from 'rxjs';
 import { filter, switchMap, takeUntil, takeWhile } from 'rxjs/operators';
-import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
+import { DisplayInterface } from '../../../../services/api/form-player-api/form-player-api.types';
 import { ConfigService } from '../../../../config/config.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';

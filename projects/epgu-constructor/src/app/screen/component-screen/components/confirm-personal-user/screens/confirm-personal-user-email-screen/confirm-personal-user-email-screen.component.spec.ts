@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmPersonalUserEmailScreenComponent } from './confirm-personal-user-email-screen.component';
-import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 

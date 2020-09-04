@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
+import { ResponseInterface } from '../api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../component-state/component-state.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';

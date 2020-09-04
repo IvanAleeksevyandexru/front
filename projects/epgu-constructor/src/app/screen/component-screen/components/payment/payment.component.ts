@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../services/api/form-player-api/form-player-api.types';
 
 import {
   PaymentAttrsInterface,

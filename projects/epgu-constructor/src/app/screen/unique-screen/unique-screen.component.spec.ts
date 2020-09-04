@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface } from '../../../interfaces/epgu.service.interface';
+import { DisplayInterface } from '../../services/api/form-player-api/form-player-api.types';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';

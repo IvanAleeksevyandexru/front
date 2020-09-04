@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ResponseInterface } from '../../../../interfaces/epgu.service.interface';
+import { ResponseInterface } from './form-player-api.types';
 import { ConfigService } from '../../../config/config.service';
 import { UserSessionService } from '../../user-session/user-session.service';
 import { FormPlayerNavigation } from '../../../form-player.types';

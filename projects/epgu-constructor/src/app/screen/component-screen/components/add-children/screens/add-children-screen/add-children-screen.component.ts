@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import { ChildUnder14Interface } from '../../../../../../../interfaces/children.interface';
-import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 @Component({
