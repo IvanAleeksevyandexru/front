@@ -7,6 +7,7 @@ import { SharedModule } from '../../../../shared/shared.module';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
+import { TimeSlotsConstants } from './time-slots.constants';
 
 const COMPONENTS = [
   TimeSlotsComponent
@@ -16,6 +17,7 @@ const COMPONENTS = [
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   providers: [
+    TimeSlotsConstants,
     BrakTimeSlotsService,
     DivorceTimeSlotsService,
     MvdTimeSlotsService],
