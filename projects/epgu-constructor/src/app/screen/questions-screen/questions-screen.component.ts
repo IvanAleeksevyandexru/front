@@ -6,7 +6,7 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { QuestionScreenModalParams } from './questions-screen.constant';
-import { Screen, ScreenData } from '../screen.types';
+import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationPayload } from '../../form-player.types';
 
@@ -19,9 +19,9 @@ import { NavigationPayload } from '../../form-player.types';
 export class QuestionsScreenComponent implements OnInit, Screen {
   isCycledFields = false;
   cycledValues: Array<any>;
-  screenData: ScreenData;
+  screenStore: ScreenStore;
 
-  private currentCycledFields = this.screenData?.currentCycledFields || {};
+  private currentCycledFields = this.screenStore?.currentCycledFields || {};
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
@@ -40,14 +40,14 @@ export class QuestionsScreenComponent implements OnInit, Screen {
 
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenData) => {
-        this.screenData = screenData;
+      .subscribe((screenData: ScreenStore) => {
+        this.screenStore = screenData;
         this.initCycledFields();
       });
   }
 
   initCycledFields() {
-    this.currentCycledFields = this.screenData?.currentCycledFields || {};
+    this.currentCycledFields = this.screenStore?.currentCycledFields || {};
     this.cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
     const { currentCycledFields } = this;
@@ -71,7 +71,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     let data = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
-      const fieldNameRef = this.screenData.componentData.components[0]?.attrs?.fields[0]?.fieldName;
+      const fieldNameRef = this.screenStore.display.components[0]?.attrs?.fields[0]?.fieldName;
       const cycledValuesPrepared = { ...this.cycledValues };
       const mergedCycledAndAnswerValues = { ...cycledValuesPrepared, [fieldNameRef]: answer.value };
       data[currentCycledFieldsKey] = {
@@ -87,7 +87,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
 
   clickToInnerHTML($event: MouseEvent): void {
     const targetElementId = ($event.target as HTMLElement).id;
-    const { clarifications = {} } = this.screenData.componentData.components[0]?.attrs as any;
+    const { clarifications = {} } = this.screenStore.display.components[0]?.attrs as any;
     const targetElementModalData = clarifications[targetElementId];
     if (targetElementModalData) {
       this.showModal(targetElementModalData);

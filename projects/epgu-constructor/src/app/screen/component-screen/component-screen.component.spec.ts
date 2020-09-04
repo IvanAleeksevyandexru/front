@@ -8,7 +8,7 @@ import { ScreenContainerComponent } from '../../shared/components/screen-contain
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ScreenData } from '../screen.types';
+import { ScreenStore } from '../screen.types';
 
 
 // TODO: Need to refactoring component
@@ -18,8 +18,8 @@ describe.skip('ScreenComponent', () => {
   let navService: NavigationService;
   let componentStateService: ComponentStateService;
   let screenService: ScreenService;
-  const screenDataMock: ScreenData = {
-    componentData: {
+  const screenDataMock: ScreenStore = {
+    display: {
       components: [
         {
           attrs: {},
@@ -58,7 +58,7 @@ describe.skip('ScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ComponentScreenComponent);
     component = fixture.componentInstance;
-    screenService.updateScreenData(screenDataMock);
+    screenService.updateScreenStore(screenDataMock);
     fixture.detectChanges();
   });
 

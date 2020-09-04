@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { EMPTY_SCREEN_COMPONENT } from '../../../constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { PaymentScenarioInterface } from '../../../interfaces/payment.interface';
-import { Screen, ScreenData } from '../screen.types';
+import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 
 @Component({
@@ -13,20 +12,20 @@ import { ScreenService } from '../screen.service';
 })
 export class EmptyScreenComponent implements Screen {
   emptyComponentName = EMPTY_SCREEN_COMPONENT;
-  screenData: ScreenData;
+  screenStore: ScreenStore;
 
   constructor(private screenService: ScreenService, private ngUnsubscribe$: UnsubscribeService) {
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenData) => {
-        this.screenData = screenData;
+      .subscribe((screenData: ScreenStore) => {
+        this.screenStore = screenData;
       });
   }
 
   get redirectLink() {
-    const applicantAnswers: PaymentScenarioInterface = this.screenData
-      .applicantAnswers as PaymentScenarioInterface;
-    return applicantAnswers.applicantAnswers.pay1.value;
+    const { applicantAnswers } = this.screenStore;
+    // TODO: handle case if there is no pay1 answered data
+    return applicantAnswers.pay1?.value;
   }
 
   nextStep(): void {}

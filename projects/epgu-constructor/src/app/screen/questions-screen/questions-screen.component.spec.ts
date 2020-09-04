@@ -12,7 +12,7 @@ import { ScreenService } from '../screen.service';
 import { ModalService } from '../../services/modal/modal.service';
 import { ModalServiceStub } from '../../services/modal/modal.service.stub';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ScreenData } from '../screen.types';
+import { ScreenStore } from '../screen.types';
 
 describe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
@@ -20,8 +20,8 @@ describe('QuestionsScreenComponent', () => {
   let navService: NavigationService;
   let screenService: ScreenService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
-  const screenDataMock: ScreenData = {
-    componentData: {
+  const screenDataMock: ScreenStore = {
+    display: {
       components: [],
       header: '',
       id: '',
@@ -56,7 +56,7 @@ describe('QuestionsScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(QuestionsScreenComponent);
     component = fixture.componentInstance;
-    screenService.updateScreenData(screenDataMock);
+    screenService.updateScreenStore(screenDataMock);
     component.answerChoose({ action: '', label: '', value: '' });
     fixture.detectChanges();
   });

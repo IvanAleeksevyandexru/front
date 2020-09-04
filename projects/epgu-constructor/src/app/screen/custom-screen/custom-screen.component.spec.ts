@@ -12,7 +12,7 @@ import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pa
 import { ComponentsListComponent } from '../../shared/components/components-list/components-list.component';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ScreenData } from '../screen.types';
+import { ScreenStore } from '../screen.types';
 
 
 describe('CustomScreenComponent', () => {
@@ -22,8 +22,8 @@ describe('CustomScreenComponent', () => {
   let screenService: ScreenService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
   let ComponentsListComponentMock = MockComponent(ComponentsListComponent);
-  const screenDataMock: ScreenData = {
-    componentData: {
+  const screenDataMock: ScreenStore = {
+    display: {
       components: [],
       header: '',
       id: '',
@@ -58,7 +58,7 @@ describe('CustomScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomScreenComponent);
     component = fixture.componentInstance;
-    screenService.updateScreenData(screenDataMock);
+    screenService.updateScreenStore(screenDataMock);
     component.changeComponentsList({});
     fixture.detectChanges();
   });

@@ -6,7 +6,7 @@ import { MockComponent } from 'ng-mocks';
 import { InvitationErrorComponent } from './components/error/invitation-error.component';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenService } from '../screen.service';
-import { ScreenData } from '../screen.types';
+import { ScreenStore } from '../screen.types';
 import { SCREEN_TYPE } from '../../../constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 
@@ -17,8 +17,8 @@ describe('InvitationScreenComponent', () => {
   let screenService: ScreenService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
   let InvitationErrorComponentMock = MockComponent(InvitationErrorComponent);
-  const screenDataMock: ScreenData = {
-    componentData: {
+  const screenDataMock: ScreenStore = {
+    display: {
       components: [
         {
           attrs: {},
@@ -53,7 +53,7 @@ describe('InvitationScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InvitationErrorScreenComponent);
     component = fixture.componentInstance;
-    screenService.updateScreenData(screenDataMock);
+    screenService.updateScreenStore(screenDataMock);
     fixture.detectChanges();
   });
 

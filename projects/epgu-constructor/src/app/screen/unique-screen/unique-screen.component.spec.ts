@@ -4,7 +4,7 @@ import { DisplayInterface } from '../../services/api/form-player-api/form-player
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ScreenData } from '../screen.types';
+import { ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 
@@ -13,8 +13,8 @@ describe('UniqueScreenComponent', () => {
   let fixture: ComponentFixture<UniqueScreenComponent>;
   let navService: NavigationService;
   let screenService: ScreenService;
-  const screenDataMock: ScreenData = {
-    componentData: {
+  const screenDataMock: ScreenStore = {
+    display: {
       components: [
         {
           attrs: {},
@@ -46,7 +46,7 @@ describe('UniqueScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UniqueScreenComponent);
     component = fixture.componentInstance;
-    screenService.updateScreenData(screenDataMock);
+    screenService.updateScreenStore(screenDataMock);
     fixture.detectChanges();
   });
 

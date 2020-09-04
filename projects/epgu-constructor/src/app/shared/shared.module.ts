@@ -16,6 +16,7 @@ import { ScreenPadComponent } from './components/screen-pad/screen-pad.component
 import { HelperTextComponent } from './components/helper-text/helper-text.component';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { NavigationService } from './services/navigation/navigation.service';
+import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -37,7 +38,7 @@ const PIPES = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES],
-  providers: [NavigationService],
+  providers: [NavigationService, ApplicantAnswersService],
   exports: [...COMPONENTS, ...PIPES],
     imports: [
         CommonModule,

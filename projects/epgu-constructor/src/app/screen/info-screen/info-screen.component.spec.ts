@@ -5,15 +5,15 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { InfoScreenComponent } from './info-screen.component';
 import { ScreenService } from '../screen.service';
-import { ScreenData } from '../screen.types';
+import { ScreenStore } from '../screen.types';
 
 
 describe('InfoScreenComponent', () => {
   let component: InfoScreenComponent;
   let fixture: ComponentFixture<InfoScreenComponent>;
   let screenService: ScreenService;
-  const screenDataMock: ScreenData = {
-    componentData: {
+  const screenDataMock: ScreenStore = {
+    display: {
       components: [
         {
           attrs: {},
@@ -48,7 +48,7 @@ describe('InfoScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoScreenComponent);
     component = fixture.componentInstance;
-    screenService.updateScreenData(screenDataMock);
+    screenService.updateScreenStore(screenDataMock);
     fixture.detectChanges();
   });
 

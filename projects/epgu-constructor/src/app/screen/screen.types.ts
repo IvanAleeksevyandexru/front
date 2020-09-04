@@ -1,17 +1,17 @@
-import { ComponentInterface, DisplayInterface, Gender } from '../services/api/form-player-api/form-player-api.types';
+import { ApplicantAnswers, DisplayInterface, Gender } from '../services/api/form-player-api/form-player-api.types';
 import { NavigationPayload } from '../form-player.types';
 
 
-export interface ScreenData {
-  componentData: DisplayInterface,
+export interface ScreenStore {
+  display: DisplayInterface,
   errors?: object,
   gender?: Gender,
   currentCycledFields?: object
-  applicantAnswers?: object;
+  applicantAnswers?: ApplicantAnswers;
 }
 
 export interface Screen {
-  screenData: ScreenData,
+  screenStore: ScreenStore,
   prevStep: (data?: NavigationPayload) => void,
   nextStep: (data?: NavigationPayload) => void,
 }

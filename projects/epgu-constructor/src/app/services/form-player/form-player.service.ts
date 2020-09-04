@@ -76,12 +76,17 @@ export class FormPlayerService {
   }
 
   processResponse(response: ResponseInterface): void {
-    if (response?.scenarioDto?.errors) {
+    if (this.hasBusinessErrors(response)) {
       this.sendDataError(response);
     } else {
       this.sendDataSuccess(response);
     }
   };
+
+  hasBusinessErrors(response: ResponseInterface): boolean {
+    const errors = response?.scenarioDto?.errors;
+    return errors && !!Object.keys(errors).length;
+  }
 
   updateRequest(data: any, options: SendDataOptionsInterface = {}): void {
     const componentId = options?.componentId || this.componentId;
@@ -127,28 +132,32 @@ export class FormPlayerService {
     this.componentStateService.isValid = true;
 
     this.store = response;
-    const { display, errors, gender } = response.scenarioDto;
+    const scenarioDto = response.scenarioDto;
+
+    this.initScreenStore(scenarioDto);
+    this.updatePlayerLoaded(true);
+
+    // TODO: move it to log service
+    console.log('----- GET DATA ---------');
+    console.log('componentId:', scenarioDto.display.components[0].id);
+    console.log('componentType:', scenarioDto.display.components[0].type);
+    console.log('initResponse:', response);
+  }
+
+  private initScreenStore(scenarioDto): void {
+    const { display, errors, gender, currentCycledFields, applicantAnswers } = scenarioDto;
     this.componentId = display.components[0].id;
     this.screenType = display.type;
 
-    const currentCycledFields = response.scenarioDto?.currentCycledFields;
-    const applicantAnswers = response.scenarioDto?.applicantAnswers;
-
-    this.screenService.updateScreenData({
-      componentData: display,
+    this.screenService.initScreenStore({
+      display: display,
       errors: errors ?? errors,
       gender: gender ?? gender,
       currentCycledFields: currentCycledFields ?? currentCycledFields,
       applicantAnswers: applicantAnswers ?? applicantAnswers
     });
     this.storeSubject.next(this.store);
-    this.updatePlayerLoaded(true);
 
-    // TODO: move it to log service
-    console.log('----- GET DATA ---------');
-    console.log('componentId:', display.components[0].id);
-    console.log('componentType:', display.components[0].type);
-    console.log('initResponse:', response);
   }
 
   private updateLoading(newState: boolean): void {
