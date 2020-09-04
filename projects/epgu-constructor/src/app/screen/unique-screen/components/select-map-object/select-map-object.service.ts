@@ -311,7 +311,7 @@ export class SelectMapObjectService {
   public searchMapObject(searchString: string) {
     const searchStringLower = searchString.toLowerCase();
     this.filteredDictionaryItems = this.dictionary?.items.filter((item) => {
-      const address = (item.attributeValues[this.componentAttrs.attributeNameWithAddress]).toLowerCase();
+      const address = (item.attributeValues[this.componentAttrs.attributeNameWithAddress])?.toLowerCase();
       return item.title?.toLowerCase().includes(searchStringLower)
         || address.includes(searchStringLower);
     });
