@@ -1,9 +1,10 @@
-import { DisplayInterface, Gender } from '../../interfaces/epgu.service.interface';
+import { ComponentInterface, DisplayInterface, Gender } from '../../interfaces/epgu.service.interface';
 import { NavigationPayload } from '../form-player.types';
 
 
 export interface ScreenData {
   componentData: DisplayInterface,
+  components: Array<ComponentInterface>
   errors?: object,
   gender?: Gender,
   currentCycledFields?: object
