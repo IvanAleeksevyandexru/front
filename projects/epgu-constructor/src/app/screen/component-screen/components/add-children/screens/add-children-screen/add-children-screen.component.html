@@ -1,5 +1,5 @@
 <section class="add-children-screen">
-  <section>
+  <form [formGroup]="addChildrenForm">
     <div class="add-children-screen__card" *ngFor="let item of itemsSelectedQueue; let idx = index">
       <div class="card">
         <div class="card__wrapper">
@@ -13,20 +13,20 @@
           </div>
           <div class="card__content">
             <div>
-              <epgu-constructor-label for="itemsList">
+              <epgu-constructor-label [for]="idx">
                 Выберите ребенка из вашего профиля
               </epgu-constructor-label>
             </div>
             <div class="card__select">
               <lib-dropdown
-                id="itemsList"
+                [id]="idx"
+                [formControlName]="itemsLength.toString()"
                 (changed)="handleSelect($event, idx)"
                 [items]="itemsToSelect"
               ></lib-dropdown>
             </div>
             <epgu-constructor-add-new-child-form
               *ngIf="item.isNew === true"
-              (ngModel)="(item)"
               [item]="item"
               (removeChildEvent)="removeChild($event)"
               (childUpdateEvent)="updateChild($event)"
@@ -41,5 +41,5 @@
         <label class="button__label">Добавить ребенка</label>
       </button>
     </div>
-  </section>
+  </form>
 </section>

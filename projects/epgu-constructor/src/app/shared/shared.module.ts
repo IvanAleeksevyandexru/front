@@ -16,6 +16,7 @@ import { ScreenPadComponent } from './components/screen-pad/screen-pad.component
 import { HelperTextComponent } from './components/helper-text/helper-text.component';
 import { ToJsonPipe } from './pipe/toJson/to-json.pipe';
 import { NavigationService } from './service/navigation/navigation.service';
+import { CommonModalComponent } from '../shared-module/components/common-modal/common-modal.component';
 import { GenderRadioButtonComponent } from './components/gender-radio-button/gender-radio-button.component';
 
 const COMPONENTS = [
@@ -26,6 +27,7 @@ const COMPONENTS = [
   NavigationComponent,
   AnswerButtonComponent,
   ConfirmationModalComponent,
+  CommonModalComponent,
   ModalContainerComponent,
   ModalBaseComponent,
   ComponentsListComponent,
