@@ -65,3 +65,11 @@ $font-main: $font-lato, 'Arial', sans-serif;
   font-size: $font-sm;
   line-height: 20px;
 }
+
+@mixin typ-plain-xs {
+  font-family: $font-main;
+  font-style: normal;
+  font-weight: $fw-regular;
+  font-size: $font-xs;
+  line-height: 20px;
+}

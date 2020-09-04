@@ -19,10 +19,11 @@
 
     </epgu-constructor-screen-pad>
   </div>
-
+  <div class="btn--add">
+    <button class="btn btn--light" (click)="duplicateScreen()">Добавить данные</button>
+  </div>
   <div class="footer">
     <div class="footer__btns-group">
-      <button class="btn btn__add" (click)="duplicateScreen()">Добавить</button>
       <lib-button
         [showLoader]="isLoading"
         (click)="nextScreen()"
