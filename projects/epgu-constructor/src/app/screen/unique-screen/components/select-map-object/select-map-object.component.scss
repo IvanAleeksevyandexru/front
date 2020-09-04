@@ -1,5 +1,38 @@
 @import "src/styles/core";
 
+hr {
+  width: 100%;
+}
+
+.map-modal {
+  font-size: $font-dflt;
+  overflow: auto;
+  white-space: pre-wrap;
+  line-height: 24px;
+
+  .cross-btn {
+    top: 32px;
+    right: 32px;
+  }
+
+  &__bold {
+    font-weight: bold;
+    padding-bottom: 8px;
+  }
+
+  &__normal {
+    padding-bottom: 24px;
+  }
+  
+}
+
+.modal-img {
+  border-radius: $border-round;
+  width: 230px;
+  height: 160px;
+  margin-right: 8px;
+}
+
 .widget {
   position: relative;
   height: 100vh;
@@ -19,6 +52,7 @@
 }
 
 ::ng-deep {
+
   .map-baloon {
     display: inline-block;
     padding: 24px;
@@ -26,11 +60,15 @@
     position: relative;
     background-color: $color-white;
     border-radius: $border-round;
-    font-family: 'Lato', sans-serif;
+    font-family: "Lato", sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 20px;
+
+    label {
+      font-weight: $fw-semi-bold;
+    }
 
     .map-baloon-close {
       position: absolute;

@@ -1,7 +1,8 @@
 <ng-container [ngSwitch]="screenData.componentData?.components[0].type">
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
-    [data]="screenData.componentData"
+    [data]="screenData.componentData?.components[0]"
+    [applicantAnswers]="screenData.applicantAnswers"
     (nextStepEvent)="nextStep($event)"
   >
   </epgu-constructor-select-map-object>
