@@ -116,9 +116,25 @@
           <!-- нужно добавить changes для проверки зависимости от даты-->
           <lib-date-picker
             [name]="componentData.id"
+            (ngModelChange)="dateChange($event, componentData)"
             [(ngModel)]="state[componentData.id].value"
             minDate="-18y"
           ></lib-date-picker>
+        </ng-container>
+      </div>
+
+      <div class="form__item" *ngSwitchCase="componentType.AddressInput">
+        <ng-container *ngIf="state[componentData.id].isShow">
+          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+          <lib-dadata-widget
+            [simpleMode]="true"
+            [name]="componentData.id"
+            (change)="inputChange($event, componentData)"
+            [externalApiUrl]="constructorConfigService.config.externalApiUrl"
+            [initValue]="state[componentData.id].value"
+            [(ngModel)]="state[componentData.id].value"
+          >
+          </lib-dadata-widget>
         </ng-container>
       </div>
     </ng-container>
