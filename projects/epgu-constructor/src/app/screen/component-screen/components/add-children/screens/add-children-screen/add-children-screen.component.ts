@@ -17,7 +17,7 @@ export class AddChildrenScreenComponent implements OnInit {
   valueParsed: any;
   itemsList: any = [];
   itemsSelectedQueue: any = [];
-  itemsInitialLength: number;
+  itemsLength: number;
   itemsToSelect: Array<ListItem>;
   itemsToSelectInitial: Array<ListItem>;
   selectedItems: any = {};
@@ -30,7 +30,7 @@ export class AddChildrenScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.valueParsed = JSON.parse(this.data.value);
-    this.itemsInitialLength = this.valueParsed?.items?.length || 0;
+    this.itemsLength = this.valueParsed?.items?.length || 0;
     this.itemsList = this.valueParsed?.items || [];
     this.itemsSelectedQueue.push(this.itemsList[0] || {});
     this.itemsToSelect = [
@@ -49,7 +49,8 @@ export class AddChildrenScreenComponent implements OnInit {
   }
 
   addNewChild(idx): void {
-    const id = this.itemsInitialLength + 1;
+    this.itemsLength += 1;
+    const id = this.itemsLength;
     const newChild: ChildUnder14Interface = {
       isNew: true,
       id,

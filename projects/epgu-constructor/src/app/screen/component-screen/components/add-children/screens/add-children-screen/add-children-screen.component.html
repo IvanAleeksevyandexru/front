@@ -28,7 +28,6 @@
             </div>
             <epgu-constructor-add-new-child-form
               *ngIf="item.isNew === true"
-              (ngModel)="(item)"
               [item]="item"
               (removeChildEvent)="removeChild($event)"
               (childUpdateEvent)="updateChild($event)"
