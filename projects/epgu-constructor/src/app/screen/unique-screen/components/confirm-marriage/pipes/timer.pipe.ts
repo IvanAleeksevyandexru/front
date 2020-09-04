@@ -12,8 +12,12 @@ export class TimerPipe implements PipeTransform {
     const minutes = moment.duration(value).minutes();
     const hours = Math.trunc(moment.duration(value).asHours());
 
-    return `${hours >= 10 ? '' : 0}${hours}:${minutes >= 10 ? '' : 0}${minutes}:${
-      seconds >= 10 ? '' : 0
-    }${seconds}`;
+    return `${this.getFormatTime(hours)}:${this.getFormatTime(minutes)}:${this.getFormatTime(
+      seconds,
+    )}`;
+  }
+
+  getFormatTime(time: number) {
+    return `${time > 9 ? '' : 0}${time}`;
   }
 }
