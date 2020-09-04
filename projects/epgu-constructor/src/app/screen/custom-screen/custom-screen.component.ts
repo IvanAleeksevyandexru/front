@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../constant/global';
@@ -15,7 +15,7 @@ const moment = moment_;
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class CustomScreenComponent implements OnInit, Screen {
+export class CustomScreenComponent implements OnInit, OnChanges, Screen {
   dataToSend: any;
   isCycledFields: boolean;
   cycledValues: any;
@@ -62,12 +62,15 @@ export class CustomScreenComponent implements OnInit, Screen {
     if (this.isCycledFields) {
       const [firstCurrentCycledValues] = Object.values(currentCycledFields);
       this.cycledValues = JSON.parse(firstCurrentCycledValues);
-      this.screenData.componentData.components.forEach((item) => {
-        const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
-        const cycledFieldKey = Object.keys(this.cycledValues).find((key) => key === fieldName);
-        // eslint-disable-next-line no-param-reassign
-        item.value = this.cycledValues[cycledFieldKey];
-      });
+      this.screenData.componentData.components = this.screenData.componentData.components.map(
+        (item) => {
+          const newItem = item;
+          const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
+          const cycledFieldKey = Object.keys(this.cycledValues).find((key) => key === fieldName);
+          newItem.value = this.cycledValues[cycledFieldKey];
+          return newItem;
+        },
+      );
     }
   }
 
@@ -120,7 +123,8 @@ export class CustomScreenComponent implements OnInit, Screen {
   }
 
   private formatCycledFieldsValues(changes: any) {
-    return Object.keys(changes).reduce((result, key) => {
+    return Object.keys(changes).reduce((accum, key) => {
+      const result = accum;
       const targetItem = changes[key];
       const targetItemValue = targetItem.value;
       const targetComponent = this.screenData.componentData.components.find(
@@ -130,10 +134,8 @@ export class CustomScreenComponent implements OnInit, Screen {
       if (!fieldName) return result;
 
       if (typeof targetItemValue === 'object' && moment(targetItemValue).isValid()) {
-        // eslint-disable-next-line no-param-reassign
         result[fieldName] = moment(targetItemValue).format(DATE_STRING_DOT_FORMAT);
       } else {
-        // eslint-disable-next-line no-param-reassign
         result[fieldName] = targetItemValue;
       }
       return result;
