@@ -51,6 +51,7 @@ export enum CUSTOM_COMPONENT_ITEM_TYPE {
   RadioInput = 'RadioInput',
   CompositeRadioButton = 'CompositeRadioButton',
   Lookup = 'Lookup',
+  HtmlString = 'HtmlString',
 }
 
 export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';

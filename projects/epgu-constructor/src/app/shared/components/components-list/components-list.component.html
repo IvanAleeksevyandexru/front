@@ -65,6 +65,15 @@
         ></lib-lookup>
       </div>
 
+      <div class="form__item" *ngSwitchCase="componentType.HtmlString">
+        <epgu-constructor-output-html
+          class="info__text"
+          [html]="componentData?.label"
+          [clarifications]="componentData?.attrs?.clarifications"
+        >
+        </epgu-constructor-output-html>
+      </div>
+
       <div class="form__item" *ngSwitchCase="componentType.StringInput">
         <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
         <lib-plain-input

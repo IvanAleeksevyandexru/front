@@ -184,11 +184,6 @@ export class TimeSlotsComponent implements OnInit {
           closeModal: true,
           handler: this.bookTimeSlot,
         },
-        {
-          label: 'Нет',
-          closeModal: true,
-          color: 'white',
-        },
       ],
     };
     return modalParameters;

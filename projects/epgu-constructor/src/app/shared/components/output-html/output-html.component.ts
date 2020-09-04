@@ -34,28 +34,16 @@ export class OutputHtmlComponent implements OnInit {
   private startToShowModal(clarifications = {}, targetElementId: string) {
     const targetElementModalData = clarifications[targetElementId];
     if (targetElementModalData) {
-      this.showModal(targetElementModalData);
+      this.showModal(targetElementModalData, targetElementId);
     }
   }
 
-  showModal(targetClarification) {
-    const elemEventHandlers = this.getElemEventHandlersInModal(
-      this.clarifications,
-      this.modalService,
-    );
+  showModal(targetClarification, targetElementId) {
+    const clarifications = { ...this.clarifications };
+    delete clarifications[targetElementId];
     this.modalService.openModal(ConfirmationModalComponent, {
-      buttons: [{ label: 'Закрыть', closeModal: true }],
-      text: targetClarification.text,
-      elemEventHandlers,
+      ...targetClarification,
+      clarifications,
     });
-  }
-
-  getElemEventHandlersInModal(clarifications = {}, modalService: ModalService) {
-    return Object.keys(clarifications).map((elemId) => ({
-      elemId,
-      event: 'click',
-      handler: () =>
-        modalService.openModal(ConfirmationModalComponent, { text: clarifications[elemId].text }),
-    }));
   }
 }
