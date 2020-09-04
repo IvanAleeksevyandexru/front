@@ -1,6 +1,6 @@
 @import "src/styles/core";
 
-.container {
+.radio-item {
   display: inline-block;
 
   height: 47px;
@@ -14,12 +14,12 @@
     background-color: $color-link-water;
   }
 
-  &.margin-left {
+  &:last-child {
     margin-left: 20px;
   }
 }
 
-.container__radio-label {
+.radio-item__label {
   display: inline-flex;
   align-items: center;
 
@@ -28,24 +28,24 @@
   cursor: pointer;
 }
 
-.icon-male:before {
+.icon-male:before, .icon-female:before {
   content: '';
   display: inline-block;
-  width: 20px;
-  height: 24px;
-  background-image: url("../../../../assets/icons/svg/male-icon.svg");
   background-repeat: no-repeat;
 }
 
+.icon-male:before {
+  width: 20px;
+  height: 24px;
+  background-image: url("../../../../assets/icons/svg/male-icon.svg");
+}
+
 .icon-female:before {
-  content: '';
-  display: inline-block;
   margin-left: 5px;
   padding-left: 1px;
   width: 15px;
   height: 24px;
   background-image: url("../../../../assets/icons/svg/female-icon.svg");
-  background-repeat: no-repeat;
 }
 
 .gender-radio {
