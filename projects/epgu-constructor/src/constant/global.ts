@@ -38,6 +38,7 @@ export enum UNIQUE_COMPONENT_NAME {
   'carInfo' = 'CarInfo',
   'repeatableFields' = 'RepeatableFields',
   'employeeHistory' = 'EmployeeHistory',
+  'confirmMarriage' = 'ConfirmMarriage',
 }
 
 export enum EMPTY_SCREEN_COMPONENT {

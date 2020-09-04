@@ -1,0 +1,46 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+
+<epgu-constructor-screen-container class="screen-container">
+  <epgu-constructor-screen-pad>
+    <epgu-constructor-page-name>{{ data?.header }}</epgu-constructor-page-name>
+
+    <div class="data-group">
+      <div class="data-item">
+        <div class="data-item__label">{{ marriageInfo?.place.label }}</div>
+        <div class="data-item__value">{{ marriageInfo?.place.value }}</div>
+      </div>
+
+      <div class="data-item">
+        <div class="data-item__label">{{ marriageInfo?.address.label }}</div>
+        <div class="data-item__value">{{ marriageInfo?.address.value }}</div>
+      </div>
+
+      <div class="data-item">
+        <div class="data-item__label">{{ marriageInfo?.ceremonyType.label }}</div>
+        <div class="data-item__value">{{ marriageInfo?.ceremonyType.value }}</div>
+      </div>
+
+      <div class="data-item">
+        <div class="data-item__label">{{ marriageInfo?.time.label }}</div>
+        <div class="data-item__value">{{ marriageInfo?.time.value }}</div>
+      </div>
+
+      <div class="data-item">
+        <div class="data-item__info">{{ data.components[0].label }}</div>
+      </div>
+
+      <epgu-constructor-timer [timer]="timer"></epgu-constructor-timer>
+    </div>
+  </epgu-constructor-screen-pad>
+
+  <div class="footer">
+    <lib-button
+      [showLoader]="isLoading"
+      [disabled]="isTimeCorrect()"
+      (click)="nextStep()"
+      class="footer__btn-submit"
+    >
+      {{ data?.submitLabel || 'Продолжить' }}
+    </lib-button>
+  </div>
+</epgu-constructor-screen-container>
