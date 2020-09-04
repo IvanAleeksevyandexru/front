@@ -107,7 +107,7 @@ export class AddChildrenScreenComponent implements OnInit {
 
   addMoreChild(): void {
     this.itemsLength += 1;
-    this.itemsSelectedQueue.push(this.itemsList[0]);
+    this.itemsSelectedQueue.push({});
     this.addFormControl(this.itemsLength);
   }
 
