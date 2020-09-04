@@ -94,6 +94,7 @@ export interface CustomDisplayInterface extends DisplayInterface {
 export interface CustomComponentInterface extends ComponentInterface{
   attrs: CustomComponentAttrInterface;
   type: CUSTOM_COMPONENT_ITEM_TYPE;
+  hint?: string;
 }
 
 interface ISupportedValue {

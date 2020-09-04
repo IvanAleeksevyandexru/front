@@ -1,8 +1,14 @@
-@import 'src/styles/core';
+@import 'src/styles/core/palettes';
+@import 'src/styles/core/typography';
 
 .form {
   &__item {
     margin-bottom: 24px;
+
+    &__hint {
+      margin-top: 4px;
+      @include typ-plain-xs();
+    }
   }
   &__title {
     font-size: 14px;

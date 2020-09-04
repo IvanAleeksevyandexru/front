@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment_ from 'moment';
 import { Moment } from 'moment';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -71,7 +71,6 @@ export class EmployeeHistoryFormService {
   }
 
    generateFormWatcher(): void {
-    this.generateForm.valueChanges.subscribe((a) => console.log(this.generateForm.getRawValue()));
     this.generateForm
       .get('checkboxToDate')
       .valueChanges.pipe(

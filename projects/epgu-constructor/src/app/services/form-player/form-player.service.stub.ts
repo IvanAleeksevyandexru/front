@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { SCREEN_TYPE } from '../../../constant/global';
 import {
   DisplayInterface,
   ResponseInterface
 } from '../../../interfaces/epgu.service.interface';
-import { SCREEN_TYPE } from '../../../constant/global';
 
 
 @Injectable()
@@ -14,6 +14,7 @@ export class FormPlayerServiceStub {
       currentValue: {},
       currentCycledFields: {},
       cycledFields: [],
+      finishedAndCurrentScreens: [],
       display: {
         components: [],
         header: 'some header',
@@ -24,7 +25,7 @@ export class FormPlayerServiceStub {
         type: SCREEN_TYPE.COMPONENT
       },
       errors: {},
-      gender: 'male',
+      gender: 'M',
       orderId: '1',
       sendNotification: [],
       token: 'someSecret',
