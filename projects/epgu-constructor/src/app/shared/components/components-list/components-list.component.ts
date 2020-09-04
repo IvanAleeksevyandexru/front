@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-
 import {
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
@@ -22,6 +21,7 @@ import {
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
+import { ConstructorConfigService } from '../../../services/config/constructor-config.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -41,7 +41,10 @@ export class ComponentsListComponent implements OnChanges {
   @Input() components: Array<CustomComponentInterface>;
   @Output() changes = new EventEmitter<CustomComponentOutputDataInterface>();
 
-  constructor(private dictionaryApiService: DictionaryApiService) {}
+  constructor(
+    private dictionaryApiService: DictionaryApiService,
+    private constructorConfigService: ConstructorConfigService,
+  ) {}
 
   // TODO тут была информация о валидации смотри историю гита
 
@@ -100,6 +103,14 @@ export class ComponentsListComponent implements OnChanges {
 
   inputChange($event: Event, component: CustomComponentInterface) {
     const { value } = $event.target as HTMLInputElement;
+    this.state[component.id].value = value;
+    const inputValidationResult = CheckInputValidationComponentList(value, component);
+    this.setValidationState(inputValidationResult, component.id, value);
+    this.emmitChanges(component);
+  }
+
+  dateChange($event: string, component: CustomComponentInterface) {
+    const value = $event;
     this.state[component.id].value = value;
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationState(inputValidationResult, component.id, value);

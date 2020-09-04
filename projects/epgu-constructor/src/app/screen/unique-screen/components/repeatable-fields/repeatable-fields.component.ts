@@ -54,7 +54,7 @@ export class RepeatableFieldsComponent {
   }
 
   nextScreen() {
-    this.nextStepEvent.emit(this.componentStateService.state);
+    this.nextStepEvent.emit(JSON.stringify(this.componentStateService.state));
   }
 
   removeItem(key: string, index: number) {
