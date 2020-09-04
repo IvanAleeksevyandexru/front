@@ -123,11 +123,13 @@ export class AddChildrenScreenComponent implements OnInit {
     const selectedItemsKeys: Array<string | number> = Object.values(this.selectedItems).map(
       (selectedItem: any) => selectedItem.id,
     );
-    this.itemsToSelect.forEach((item) => {
-      if (selectedItemsKeys.includes(item.id)) {
-        // eslint-disable-next-line no-param-reassign
-        item.unselectable = true;
+    this.itemsToSelect = this.itemsToSelect.map((item) => {
+      const newItem = item;
+      newItem.unselectable = false;
+      if (selectedItemsKeys.includes(newItem.id)) {
+        newItem.unselectable = true;
       }
+      return newItem;
     });
   }
 

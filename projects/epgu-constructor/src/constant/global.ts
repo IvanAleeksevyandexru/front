@@ -31,7 +31,6 @@ export enum INFO_SCREEN_COMPONENT {
 }
 
 export enum UNIQUE_COMPONENT_NAME {
-  childrenListUnder14 = 'ChildrenListUnder14',
   fileUploadComponent = 'FileUploadComponent',
   'addPassport' = 'AddPassport',
   'timeSlot' = 'TimeSlot',
