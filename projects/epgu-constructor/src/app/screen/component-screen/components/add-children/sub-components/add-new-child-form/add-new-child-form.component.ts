@@ -35,7 +35,8 @@ export class AddNewChildFormComponent implements AfterViewInit, OnDestroy {
       this.childUpdateEvent.emit(this.item);
     });
   }
+
   ngOnDestroy() {
-    this.childUpdateEvent.emit(this.item);
+    // this.childUpdateEvent.emit(this.item);
   }
 }

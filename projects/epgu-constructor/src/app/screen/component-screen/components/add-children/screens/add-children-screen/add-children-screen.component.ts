@@ -120,10 +120,10 @@ export class AddChildrenScreenComponent implements OnInit {
   }
 
   private setHideStateToSelectedItems(): void {
+    const selectedItemsKeys: Array<string | number> = Object.values(this.selectedItems).map(
+      (selectedItem: any) => selectedItem.id,
+    );
     this.itemsToSelect.forEach((item) => {
-      const selectedItemsKeys: Array<string | number> = Object.values(this.selectedItems).map(
-        (selectedItem: any) => selectedItem.id,
-      );
       if (selectedItemsKeys.includes(item.id)) {
         // eslint-disable-next-line no-param-reassign
         item.unselectable = true;

@@ -20,6 +20,7 @@ import {
   isDropDown,
   likeDictionary,
 } from '../../../screen/custom-screen/tools/custom-screen-tools';
+import { ScreenService } from '../../../screen/screen.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 
 @Component({
@@ -40,9 +41,16 @@ export class ComponentsListComponent implements OnChanges {
   @Input() components: Array<CustomComponentInterface>;
   @Output() changes = new EventEmitter<CustomComponentOutputDataInterface>();
 
-  constructor(private dictionaryApiService: DictionaryApiService) {}
+  constructor(
+    private dictionaryApiService: DictionaryApiService,
+    public screenService: ScreenService,
+  ) {}
 
-  // TODO тут была информация о валидации смотри историю гита
+  // NOTICE: тут была информация о валидации смотри историю гита
+
+  ngOnInit(): void {
+    console.log(this.screenService);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.state = {};
