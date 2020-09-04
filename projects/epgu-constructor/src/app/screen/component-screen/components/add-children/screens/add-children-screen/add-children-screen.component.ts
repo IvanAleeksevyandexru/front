@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { ChildUnder14Interface } from '../../../../../../../interfaces/children.interface';
 import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
@@ -23,11 +24,29 @@ export class AddChildrenScreenComponent implements OnInit {
 
   headerMapped: any;
   confirmAddressData: any;
+  addChildrenForm = new FormGroup({});
 
-  constructor(
-    private componentStateService: ComponentStateService,
-    private changeDetection: ChangeDetectorRef,
-  ) {}
+  constructor(private componentStateService: ComponentStateService) {}
+
+  ngOnInit(): void {
+    this.valueParsed = JSON.parse(this.data.value);
+    this.itemsInitialLength = this.valueParsed?.items?.length || 0;
+    this.itemsList = this.valueParsed?.items || [];
+    this.itemsSelectedQueue.push(this.itemsList[0] || {});
+    this.itemsToSelect = [
+      ...this.itemsList.map((child) => {
+        return {
+          id: child.id,
+          text: child.firstName,
+        };
+      }),
+      { id: 'new', text: 'Добавить нового ребенка' },
+    ];
+    this.itemsToSelectInitial = [...this.itemsToSelect];
+    this.selectedItems = {};
+    this.passDataToSend(Object.values(this.selectedItems));
+    this.generateFormGroup();
+  }
 
   addNewChild(idx): void {
     const id = this.itemsInitialLength + 1;
@@ -83,6 +102,7 @@ export class AddChildrenScreenComponent implements OnInit {
 
   addMoreChild(): void {
     this.itemsSelectedQueue.push(this.itemsList[0]);
+    this.addFormControl(this.itemsSelectedQueue.length - 1);
   }
 
   handleSelect(event, idx: number): void {
@@ -105,27 +125,18 @@ export class AddChildrenScreenComponent implements OnInit {
       );
       if (selectedItemsKeys.includes(item.id)) {
         // eslint-disable-next-line no-param-reassign
-        // item.hidden = true;
+        item.unselectable = true;
       }
     });
   }
 
-  ngOnInit(): void {
-    this.valueParsed = JSON.parse(this.data.value);
-    this.itemsInitialLength = this.valueParsed?.items?.length || 0;
-    this.itemsList = this.valueParsed?.items || [];
-    this.itemsSelectedQueue.push(this.itemsList[0] || {});
-    this.itemsToSelect = [
-      ...this.itemsList.map((child) => {
-        return {
-          id: child.id,
-          text: child.firstName,
-        };
-      }),
-      { id: 'new', text: 'Добавить нового ребенка' },
-    ];
-    this.itemsToSelectInitial = [...this.itemsToSelect];
-    this.selectedItems = {};
-    this.passDataToSend(Object.values(this.selectedItems));
+  private generateFormGroup(): void {
+    this.itemsSelectedQueue.forEach((item: any, idx) => {
+      this.addChildrenForm.addControl(idx.toString(), new FormControl());
+    });
+  }
+
+  private addFormControl(idx): void {
+    this.addChildrenForm.addControl(idx.toString(), new FormControl());
   }
 }
