@@ -21,17 +21,6 @@ const PROXY_CONFIG = {
     },
     changeOrigin: true,
   },
-  '/paymentservice': {
-    target: environment.paymentUrl,
-    secure: true,
-    headers: {
-      cookie: `acc_t=${MockCurrentUserToken}`,
-    },
-    pathRewrite: {
-      '^/paymentservice': '',
-    },
-    changeOrigin: true,
-  },
   '/api/lk/v1/equeue/agg': {
     target: 'https://svcdev-beta.test.gosuslugi.ru',
     secure: false,

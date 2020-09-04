@@ -86,15 +86,9 @@ export class PaymentComponent {
   private setPaymentStatusFromSuccessRequest(res: any) {
     this.status = PaymentStatus.SUCCESS;
     this.uin = res.value.replace('PRIOR', '');
-    console.log('this.uin', this.uin);
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
-      .pipe(
-        map((response: BillsInfoResponse) => {
-          console.log('response4', response);
-          return response;
-        }),
-      )
+      .pipe(map((answer: any) => this.filterBillInfoResponse(answer)))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
         (info) => {
@@ -110,6 +104,19 @@ export class PaymentComponent {
   }
 
   /**
+   * Фильтруем данные по нашему счёту
+   * @param answer - ответ сервера
+   * @private
+   */
+  private filterBillInfoResponse(answer: any): BillsInfoResponse {
+    if (answer?.response) {
+      console.log('answer?.response', answer?.response);
+      return answer.response;
+    }
+    return answer;
+  }
+
+  /**
    * Получаем статус по УИН
    * @private
    */
@@ -121,12 +128,11 @@ export class PaymentComponent {
           clearTimeout(this.payStatusTimeoutLink);
         }),
       )
-      .subscribe((response) => {
+      .subscribe(() => {
         this.payStatusTimeoutLink = setTimeout(
           () => this.getPaymentStatusByUIN(),
           this.payStatusTimeout * 1000,
         );
-        console.log('response3', response);
       });
   }
 
@@ -138,7 +144,6 @@ export class PaymentComponent {
     if (error.status === 500) {
       this.status = PaymentStatus.ERROR;
     } else {
-      console.log('error', error);
       this.status = PaymentStatus.SERVER_ERROR;
     }
   }

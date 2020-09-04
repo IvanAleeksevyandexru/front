@@ -1,5 +1,5 @@
 <div class="payment" [ngSwitch]="status">
-  <div class="info" *ngSwitchCase="paymentStatus.SUCCESS || ''">
+  <div class="info" *ngSwitchCase="paymentStatus.SUCCESS">
     <div class="info__text"><strong>{{ paymentPurpose }}</strong></div>
     <div class="info__text">УИН {{ uin }}</div>
     <div class="info__text">Начисление на паспорт РФ 1234 123456 от ЗАГС г. Москвы</div>
