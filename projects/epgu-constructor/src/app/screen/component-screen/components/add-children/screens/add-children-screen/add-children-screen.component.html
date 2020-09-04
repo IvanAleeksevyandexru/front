@@ -20,7 +20,7 @@
             <div class="card__select">
               <lib-dropdown
                 [id]="idx"
-                [formControlName]="idx.toString()"
+                [formControlName]="itemsLength.toString()"
                 (changed)="handleSelect($event, idx)"
                 [items]="itemsToSelect"
               ></lib-dropdown>
