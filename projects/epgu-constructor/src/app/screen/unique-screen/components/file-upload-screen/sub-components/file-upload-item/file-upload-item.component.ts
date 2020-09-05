@@ -27,7 +27,6 @@ import {
 import { getSizeInMB, UploadedFile, uploadObjectType } from './data';
 import { getHiddenBlock } from '../../../../../../../constant/uttils';
 import { ConfirmationModalComponent } from '../../../../../../shared/components/confirmation-modal/confirmation-modal.component';
-import { InfoScreenBodyComponentModalParams } from '../../../../../info-screen/component/info-screen-body/info-screen-body.constant';
 import { ModalService } from '../../../../../../services/modal/modal.service';
 
 @Component({
@@ -117,10 +116,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   }
 
   showModal(params) {
-    this.modalService.openModal(ConfirmationModalComponent, {
-      ...InfoScreenBodyComponentModalParams,
-      ...params,
-    });
+    this.modalService.openModal(ConfirmationModalComponent, params);
   }
 
   private toggleHiddenBlockOrShowModal(el: HTMLElement, targetElementId: string) {
