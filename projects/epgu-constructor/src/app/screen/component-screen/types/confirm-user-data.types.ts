@@ -1,6 +1,6 @@
-import { ComponentForm } from '../../../services/api/form-player-api/form-player-api.types';
+import { ComponentItem } from '../../../services/api/form-player-api/form-player-api.types';
 
-export interface ConfirmUserData extends ComponentForm{
+export interface ConfirmUserData extends ComponentItem{
   attrs: ConfirmUserDataAttrs;
 }
 export interface ConfirmUserDataAttrs {

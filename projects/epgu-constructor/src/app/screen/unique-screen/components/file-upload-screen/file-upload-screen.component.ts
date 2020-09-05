@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentForm } from '../../../../services/api/form-player-api/form-player-api.types';
+import { ComponentItem } from '../../../../services/api/form-player-api/form-player-api.types';
 import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
 import { IFileUploadItem } from '../../../../../interfaces/terabyte.interface';
 
@@ -18,8 +18,8 @@ export class FileUploadScreenComponent {
   get header() {
     return this.head ? this.head : this.data.label;
   }
-  private info: ComponentForm;
-  @Input() set data(data: ComponentForm) {
+  private info: ComponentItem;
+  @Input() set data(data: ComponentItem) {
     this.info = data;
     this.allMaxFiles = 0;
     // @ts-ignore
@@ -30,7 +30,7 @@ export class FileUploadScreenComponent {
       type: UNIQUE_COMPONENT_NAME.fileUploadComponent,
     };
   }
-  get data(): ComponentForm {
+  get data(): ComponentItem {
     return this.info;
   }
   @Input() submitLabel: string;
@@ -43,7 +43,7 @@ export class FileUploadScreenComponent {
    * Возвращает префикс для формирования мнемоники
    * @param componentData - данные компонента
    */
-  getUploadComponentPrefixForMnemonic(componentData: ComponentForm): string {
+  getUploadComponentPrefixForMnemonic(componentData: ComponentItem): string {
     return [componentData.id, 'FileUploadComponent'].join('.');
   }
 

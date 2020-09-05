@@ -1,7 +1,7 @@
 import { ListItem } from 'epgu-lib';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../constant/global';
 import { DictionaryItem, DictionaryResponse } from './dictionary-options.interface';
-import { ComponentForm, Display } from '../app/services/api/form-player-api/form-player-api.types';
+import { ComponentItem, Display } from '../app/services/api/form-player-api/form-player-api.types';
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
@@ -91,7 +91,7 @@ export interface CustomDisplayInterface extends Display {
   components: Array<CustomComponentInterface>;
 }
 
-export interface CustomComponentInterface extends ComponentForm{
+export interface CustomComponentInterface extends ComponentItem{
   attrs: CustomComponentAttrInterface;
   type: CUSTOM_COMPONENT_ITEM_TYPE;
   hint?: string;

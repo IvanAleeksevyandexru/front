@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmPersonalUserEmailScreenComponent } from './confirm-personal-user-email-screen.component';
-import { ComponentForm } from '../../../../../../services/api/form-player-api/form-player-api.types';
+import { ComponentItem } from '../../../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 
@@ -9,7 +9,7 @@ import { ComponentStateService } from '../../../../../../services/component-stat
 describe('ConfirmPersonalUserEmailComponent', () => {
   let component: ConfirmPersonalUserEmailScreenComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserEmailScreenComponent>;
-  const mockData: ComponentForm = {
+  const mockData: ComponentItem = {
     attrs: {},
     id: '',
     label: '',

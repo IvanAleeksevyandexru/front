@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { ChildLess14 } from './add-children-screen.type';
-import { ComponentForm } from '../../../../../../services/api/form-player-api/form-player-api.types';
+import { ComponentItem } from '../../../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { ComponentStateService } from '../../../../../../services/component-stat
   styleUrls: ['./add-children-screen.component.scss'],
 })
 export class AddChildrenScreenComponent implements OnInit {
-  @Input() data: ComponentForm;
+  @Input() data: ComponentItem;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
   valueParsed: any;

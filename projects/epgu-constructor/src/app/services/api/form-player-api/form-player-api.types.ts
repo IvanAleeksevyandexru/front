@@ -26,7 +26,7 @@ export interface ApplicantAnswers {
  * (например проверка персональные данные будут содержать json с персональными данными)
  * @property {boolean}visited? - булевый флаг пройдена ли пользователем бизнес-логика данного компонента
  */
-export interface ComponentForm {
+export interface ComponentItem {
   attrs: {[key: string]: any};
   id: string;
   label: string;
@@ -45,7 +45,7 @@ export interface ComponentForm {
  * @property {SCREEN_TYPE}type - тип компонента
  */
 export interface Display {
-  components: Array<ComponentForm>;
+  components: Array<ComponentItem>;
   header: string;
   label?: string;
   id: string;

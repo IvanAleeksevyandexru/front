@@ -18,7 +18,7 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { UtilsService } from '../../../../services/utils/utils.service';
 import { Utilities } from './utilities';
-import { ComponentForm } from '../../../../services/api/form-player-api/form-player-api.types';
+import { ComponentItem } from '../../../../services/api/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -27,7 +27,7 @@ import { ComponentForm } from '../../../../services/api/form-player-api/form-pla
   providers: [UnsubscribeService],
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit {
-  @Input() data: ComponentForm;
+  @Input() data: ComponentItem;
   @Input() applicantAnswers: { [key: string]: any };
   @Output() nextStepEvent = new EventEmitter<any>();
 

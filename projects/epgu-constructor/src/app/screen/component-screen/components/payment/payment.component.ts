@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { ComponentForm } from '../../../../services/api/form-player-api/form-player-api.types';
+import { ComponentItem } from '../../../../services/api/form-player-api/form-player-api.types';
 
 import {
   PaymentAttrsInterface,
@@ -12,7 +12,7 @@ import { ComponentStateService } from '../../../../services/component-state/comp
 import { PaymentService } from './payment.service';
 import { PaymentStatus } from './payment.constants';
 
-export interface PaymentInterface extends ComponentForm {
+export interface PaymentInterface extends ComponentItem {
   attrs: PaymentAttrsInterface;
 }
 @Component({
