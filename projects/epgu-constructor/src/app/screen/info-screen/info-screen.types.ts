@@ -1,3 +1,3 @@
-export enum InfoScreenComponents {
-  'info' = 'InfoScr',
+export enum InfoScreenComponentTypes {
+  info = 'InfoScr',
 }

@@ -7,7 +7,7 @@ import { ComponentStateService } from '../../services/component-state/component-
 import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { mockOrderId } from './components/payment/payment.constants';
-import { ComponentScreenComponents } from './component-screen.types';
+import { ComponentScreenComponentTypes } from './component-screen.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -22,7 +22,7 @@ interface ComponentSetting {
 })
 export class ComponentScreenComponent implements OnInit, Screen {
   // <-- constant
-  screenComponentName = ComponentScreenComponents;
+  screenComponentName = ComponentScreenComponentTypes;
 
   // <-- variables
   componentSetting: ComponentSetting = {

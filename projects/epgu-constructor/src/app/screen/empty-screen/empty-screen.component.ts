@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { EmptyScreenComponents } from './empty-screen.types';
+import { EmptyScreenComponentTypes } from './empty-screen.types';
 
 @Component({
   selector: 'epgu-constructor-empty-screen',
@@ -11,7 +11,7 @@ import { EmptyScreenComponents } from './empty-screen.types';
   providers: [UnsubscribeService],
 })
 export class EmptyScreenComponent implements Screen {
-  emptyComponentName = EmptyScreenComponents;
+  emptyComponentName = EmptyScreenComponentTypes;
   screenStore: ScreenStore;
 
   constructor(private screenService: ScreenService, private ngUnsubscribe$: UnsubscribeService) {

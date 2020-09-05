@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SCREEN_TYPE } from '../../shared/constants/global';
-import { Display } from '../../services/api/form-player-api/form-player-api.types';
+import { ScreenTypes } from '../../shared/types/screen.types';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -29,7 +28,7 @@ describe('UniqueScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: SCREEN_TYPE.COMPONENT
+      type: ScreenTypes.COMPONENT
     }
   };
 

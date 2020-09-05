@@ -7,7 +7,7 @@ import {
   CustomComponent,
   CustomComponentOutputData,
   CustomComponentState,
-  CustomScreenComponents,
+  CustomScreenComponentTypes,
 } from '../custom-screen.types';
 import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
@@ -32,7 +32,7 @@ import { ConfigService } from '../../../config/config.service';
 })
 export class ComponentsListComponent implements OnChanges {
   // <-- constant
-  componentType = CustomScreenComponents;
+  componentType = CustomScreenComponentTypes;
 
   // <-- variables
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;

@@ -7,7 +7,7 @@ import { InvitationErrorComponent } from './components/error/invitation-error.co
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenService } from '../screen.service';
 import { ScreenStore } from '../screen.types';
-import { SCREEN_TYPE } from '../../shared/constants/global';
+import { ScreenTypes } from '../../shared/types/screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
@@ -33,7 +33,7 @@ describe('InvitationScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: SCREEN_TYPE.COMPONENT
+      type: ScreenTypes.COMPONENT
     }
   };
 

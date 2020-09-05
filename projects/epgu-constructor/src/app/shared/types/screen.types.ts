@@ -1,4 +1,4 @@
-export enum SCREEN_TYPE {
+export enum ScreenTypes {
   'QUESTION' = 'QUESTION',
   'INFO' = 'INFO',
   'COMPONENT' = 'COMPONENT', // внутри этого компонента внутри ровна один компонент

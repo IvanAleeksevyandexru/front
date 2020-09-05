@@ -4,7 +4,7 @@ import { ComponentStateService } from '../../../../../../services/component-stat
 import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-user-address-screen.component';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 import { ComponentScreenComponent } from '../../../../component-screen.component';
-import { ComponentScreenComponents } from '../../../../component-screen.types';
+import { ComponentScreenComponentTypes } from '../../../../component-screen.types';
 
 
 describe('ConfirmPersonalUserAddressScreenComponent', () => {
@@ -17,7 +17,7 @@ describe('ConfirmPersonalUserAddressScreenComponent', () => {
     },
     id: '',
     label: '',
-    type: ComponentScreenComponents.confirmPersonalUserRegAddr,
+    type: ComponentScreenComponentTypes.confirmPersonalUserRegAddr,
     value: '',
   };
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_TYPE } from '../../shared/constants/global';
+import { ScreenTypes } from '../../shared/types/screen.types';
 import {
   Display,
   FormPlayerApiResponse
@@ -22,7 +22,7 @@ export class FormPlayerServiceStub {
         id: '123',
         name: 'some name',
         submitLabel: 'some submit label',
-        type: SCREEN_TYPE.COMPONENT
+        type: ScreenTypes.COMPONENT
       },
       errors: {},
       gender: 'M',

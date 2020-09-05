@@ -1,3 +1,3 @@
-export enum EmptyScreenComponents {
-  'redirect' = 'Redirect',
+export enum EmptyScreenComponentTypes {
+  redirect = 'Redirect',
 }

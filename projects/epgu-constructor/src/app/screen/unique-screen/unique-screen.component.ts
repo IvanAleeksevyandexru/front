@@ -4,7 +4,7 @@ import { Screen, ScreenStore } from '../screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
-import { UniqueScreenComponents } from './unique-screen.types';
+import { UniqueScreenComponentTypes } from './unique-screen.types';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',
@@ -14,7 +14,7 @@ import { UniqueScreenComponents } from './unique-screen.types';
 })
 export class UniqueScreenComponent implements OnInit, Screen {
   // <-- constant
-  uniqueComponentName = UniqueScreenComponents;
+  uniqueComponentName = UniqueScreenComponentTypes;
   screenStore: ScreenStore;
 
   constructor(

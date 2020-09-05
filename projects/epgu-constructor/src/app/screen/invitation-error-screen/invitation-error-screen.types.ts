@@ -1,3 +1,3 @@
-export enum InvitationErrorScreenComponents {
-  'invitationError' = 'InvitationError',
+export enum InvitationErrorScreenComponentTypes {
+  invitationError = 'InvitationError',
 }

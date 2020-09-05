@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SCREEN_TYPE } from '../../shared/constants/global';
+import { ScreenTypes } from '../../shared/types/screen.types';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EmptyScreenComponent } from './empty-screen.component';
 import { ScreenStore } from '../screen.types';
@@ -29,7 +29,7 @@ describe.skip('EmptyScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: SCREEN_TYPE.COMPONENT
+      type: ScreenTypes.COMPONENT
     }
   };
 

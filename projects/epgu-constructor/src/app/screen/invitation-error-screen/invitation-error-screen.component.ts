@@ -5,7 +5,7 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationPayload } from '../../form-player.types';
-import { InvitationErrorScreenComponents } from './invitation-error-screen.types';
+import { InvitationErrorScreenComponentTypes } from './invitation-error-screen.types';
 
 @Component({
   selector: 'epgu-constructor-invitation-screen',
@@ -14,7 +14,7 @@ import { InvitationErrorScreenComponents } from './invitation-error-screen.types
   providers: [UnsubscribeService],
 })
 export class InvitationErrorScreenComponent implements OnInit, Screen {
-  typeComponent = InvitationErrorScreenComponents;
+  typeComponent = InvitationErrorScreenComponentTypes;
   screenStore: ScreenStore;
 
   constructor(

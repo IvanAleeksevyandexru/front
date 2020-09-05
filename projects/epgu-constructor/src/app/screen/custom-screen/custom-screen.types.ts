@@ -2,7 +2,7 @@ import { ListItem } from 'epgu-lib';
 import { DictionaryItem, DictionaryResponse } from '../../services/api/dictionary-api/dictionary-api.types';
 import { ComponentBase, Display } from '../../services/api/form-player-api/form-player-api.types';
 
-export enum CustomScreenComponents {
+export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
   DropDown = 'DropDown',
@@ -104,7 +104,7 @@ export interface CustomDisplay extends Display {
 
 export interface CustomComponent extends ComponentBase{
   attrs: CustomComponentAttr;
-  type: CustomScreenComponents;
+  type: CustomScreenComponentTypes;
   hint?: string;
 }
 

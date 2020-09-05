@@ -7,7 +7,7 @@ import { ConfigServiceStub } from '../../../../../../../../config/config.service
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
-import { ComponentScreenComponents } from '../../../../../../component-screen.types';
+import { ComponentScreenComponentTypes } from '../../../../../../component-screen.types';
 
 
 
@@ -22,7 +22,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
     id: '',
     value: '{}',
     label: '',
-    type: ComponentScreenComponents.confirmPersonalUserRegAddr
+    type: ComponentScreenComponentTypes.confirmPersonalUserRegAddr
   };
 
   beforeEach(async(() => {

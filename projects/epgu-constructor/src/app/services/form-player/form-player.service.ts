@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_TYPE } from '../../shared/constants/global';
+import { ScreenTypes } from '../../shared/types/screen.types';
 import { FormPlayerApiResponse } from '../api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../component-state/component-state.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -94,7 +94,7 @@ export class FormPlayerService {
     this.store.scenarioDto.currentValue = {};
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
-    if (this.screenType === SCREEN_TYPE.CUSTOM || isCycledFields) {
+    if (this.screenType === ScreenTypes.CUSTOM || isCycledFields) {
       this.store.scenarioDto.currentValue = data;
     } else {
       this.store.scenarioDto.currentValue[componentId] = {

@@ -3,7 +3,7 @@ import { MockComponent } from 'ng-mocks';
 import { ButtonComponent } from 'epgu-lib';
 
 import { CustomScreenComponent } from './custom-screen.component';
-import { SCREEN_TYPE } from '../../shared/constants/global';
+import { ScreenTypes } from '../../shared/types/screen.types';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
@@ -30,7 +30,7 @@ describe('CustomScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: SCREEN_TYPE.QUESTION
+      type: ScreenTypes.QUESTION
     }
   };
 

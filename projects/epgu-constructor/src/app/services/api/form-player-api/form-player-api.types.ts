@@ -1,4 +1,4 @@
-import { SCREEN_TYPE } from '../../../shared/constants/global';
+import { ScreenTypes } from '../../../shared/types/screen.types';
 
 export type Gender = 'M' | 'F';
 
@@ -42,7 +42,7 @@ export interface ComponentBase {
  * @property {string}id - идентификатор экрана
  * @property {string}name - краткая информация о том что за компонент (на фронте не используется)
  * @property {string}submitLabel - текст для submit-button'a
- * @property {SCREEN_TYPE}type - тип компонента
+ * @property {ScreenTypes}type - тип компонента
  */
 export interface Display {
   components: Array<ComponentBase>;
@@ -51,7 +51,7 @@ export interface Display {
   id: string;
   name: string;
   submitLabel: string;
-  type: SCREEN_TYPE;
+  type: ScreenTypes;
 }
 
 /**

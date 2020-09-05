@@ -1,18 +1,18 @@
-import { ComponentScreenComponents } from '../../../../../component-screen.types';
+import { ComponentScreenComponentTypes } from '../../../../../component-screen.types';
 
 
 /**
  * @property {Array<object>}attrs
  * @property {string}id
  * @property {string}label
- * @property {ComponentScreenComponents}type
+ * @property {ComponentScreenComponentTypes}type
  * @property {string}value - JSON stringify, that contain data attr.fields
  */
 export interface ConfirmAddressInterface {
   attrs: ConfirmAddressInterfaceAttr;
   id: string;
   label: string;
-  type: ComponentScreenComponents;
+  type: ComponentScreenComponentTypes;
   value: string;
 }
 
