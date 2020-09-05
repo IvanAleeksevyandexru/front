@@ -3,17 +3,14 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { ComponentBase } from '../../../../services/api/form-player-api/form-player-api.types';
 
-import {
-  PaymentAttrsInterface,
-  PaymentInfoInterface,
-} from '../../../../../interfaces/payment.interface';
+import { PaymentAttrs, PaymentInfo } from './payment.types';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { PaymentService } from './payment.service';
 import { PaymentStatus } from './payment.constants';
 
 export interface PaymentInterface extends ComponentBase {
-  attrs: PaymentAttrsInterface;
+  attrs: PaymentAttrs;
 }
 @Component({
   selector: 'epgu-constructor-payment',
@@ -56,7 +53,7 @@ export class PaymentComponent {
     this.paymentService
       .loadPaymentInfo(this.orderId, nsi, dictItemCode, filterReg)
       .pipe(
-        switchMap((attributeValues: PaymentInfoInterface) => {
+        switchMap((attributeValues: PaymentInfo) => {
           this.sum = PaymentService.transformSumForPenny(attributeValues.sum);
           return this.paymentService.getUinByOrderId(this.orderId, attributeValues);
         }),

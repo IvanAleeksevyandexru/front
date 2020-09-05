@@ -1,15 +1,15 @@
-import { DictionaryOptions } from '../app/services/api/dictionary-api/dictionary-api.types';
-import { Display, Gender } from '../app/services/api/form-player-api/form-player-api.types';
+import { DictionaryOptions } from '../../../../services/api/dictionary-api/dictionary-api.types';
+import { Display, Gender } from '../../../../services/api/form-player-api/form-player-api.types';
 
 /**
  * Интерфейс атрибутов приходящих об оплате
  */
-export interface PaymentAttrsInterface {
+export interface PaymentAttrs {
   nsi: string;
   dictItemCode: string;
 }
 
-export interface PaymentScenarioInterface {
+export interface PaymentScenario {
   applicantAnswers: {
     pay1?: {
       value: string;
@@ -28,7 +28,7 @@ export interface PaymentScenarioInterface {
   userId: string
 }
 
-export interface PaymentInfoInterface {
+export interface PaymentInfo {
   codeOrg: string;
   paymentPurpose: string;
   recipientAccountNumberTOFK: any;
@@ -48,11 +48,11 @@ export interface PaymentInfoInterface {
   recipientTitle: string;
   sum: string;
 }
-export interface PaymentDictionaryOptionsInterface extends DictionaryOptions {
+export interface PaymentDictionaryOptions extends DictionaryOptions {
   filter: {
     union: {
       unionKind: string;
-      subs: SubInterface[];
+      subs: SubPayment[];
     };
   };
 }
@@ -60,7 +60,7 @@ export interface PaymentDictionaryOptionsInterface extends DictionaryOptions {
 /**
  * Интерфейс для части опции запроса на создание оплаты
  */
-export interface SubInterface {
+export interface SubPayment {
   simple: {
     attributeName: string;
     condition: string;
