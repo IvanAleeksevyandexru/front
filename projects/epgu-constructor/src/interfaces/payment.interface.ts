@@ -1,5 +1,5 @@
 import { DictionaryOptionsInterface } from './dictionary-options.interface';
-import { DisplayInterface, Gender } from '../app/services/api/form-player-api/form-player-api.types';
+import { Display, Gender } from '../app/services/api/form-player-api/form-player-api.types';
 
 /**
  * Интерфейс атрибутов приходящих об оплате
@@ -19,7 +19,7 @@ export interface PaymentScenarioInterface {
   currentValue: object;
   currentCycledFields: object;
   cycledFields: Array<object>;
-  display: DisplayInterface;
+  display: Display;
   errors: object;
   gender: Gender;
   orderId: string;

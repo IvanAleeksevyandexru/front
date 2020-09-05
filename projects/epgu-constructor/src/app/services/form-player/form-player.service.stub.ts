@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../../../constant/global';
 import {
-  DisplayInterface,
-  ResponseInterface
+  Display,
+  FormPlayerApiResponse
 } from '../api/form-player-api/form-player-api.types';
 
 
 @Injectable()
 export class FormPlayerServiceStub {
-  response: ResponseInterface = { scenarioDto: {
+  response: FormPlayerApiResponse = { scenarioDto: {
       applicantAnswers: {},
       currentRule: 1,
       currentValue: {},
@@ -33,7 +33,7 @@ export class FormPlayerServiceStub {
     }};
   componentId: string;
   componentType: string;
-  componentData: DisplayInterface;
+  componentData: Display;
   isLoading = false;
 
   getData(): void {}

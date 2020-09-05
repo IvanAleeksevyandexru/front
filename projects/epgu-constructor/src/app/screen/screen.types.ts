@@ -1,9 +1,9 @@
-import { ApplicantAnswers, DisplayInterface, Gender } from '../services/api/form-player-api/form-player-api.types';
+import { ApplicantAnswers, Display, Gender } from '../services/api/form-player-api/form-player-api.types';
 import { NavigationPayload } from '../form-player.types';
 
 
 export interface ScreenStore {
-  display: DisplayInterface,
+  display: Display,
   errors?: object,
   gender?: Gender,
   currentCycledFields?: object

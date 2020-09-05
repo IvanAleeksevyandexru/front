@@ -1,10 +1,10 @@
-import { ComponentInterface, DisplayInterface } from '../app/services/api/form-player-api/form-player-api.types';
+import { ComponentForm, Display } from '../app/services/api/form-player-api/form-player-api.types';
 
-export interface TemporaryRegistrationAddrDisplayInterface extends DisplayInterface {
+export interface TemporaryRegistrationAddrDisplayInterface extends Display {
   components: Array<TemporaryRegistrationAddrComponentInterface>;
 }
 
-export interface TemporaryRegistrationAddrComponentInterface extends ComponentInterface {
+export interface TemporaryRegistrationAddrComponentInterface extends ComponentForm {
   attrs: TemporaryRegistrationAddrComponentAttrsInterface;
 }
 

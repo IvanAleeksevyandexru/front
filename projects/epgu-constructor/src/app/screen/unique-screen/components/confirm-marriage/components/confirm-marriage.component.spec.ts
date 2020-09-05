@@ -11,14 +11,14 @@ import { PageNameComponent } from '../../../../../shared/components/page-name/pa
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
-import { DisplayInterface } from '../../../../../services/api/form-player-api/form-player-api.types';
+import { Display } from '../../../../../services/api/form-player-api/form-player-api.types';
 
 describe('TimerComponent', () => {
   let component: ConfirmMarriageComponent;
   let fixture: ComponentFixture<ConfirmMarriageComponent>;
   let navigationService: NavigationService;
 
-  const displayDataMock: DisplayInterface = {
+  const displayDataMock: Display = {
     components: [
       {
         id: 'pd9',

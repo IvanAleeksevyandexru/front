@@ -26,7 +26,7 @@ export interface ApplicantAnswers {
  * (например проверка персональные данные будут содержать json с персональными данными)
  * @property {boolean}visited? - булевый флаг пройдена ли пользователем бизнес-логика данного компонента
  */
-export interface ComponentInterface {
+export interface ComponentForm {
   attrs: {[key: string]: any};
   id: string;
   label: string;
@@ -44,8 +44,8 @@ export interface ComponentInterface {
  * @property {string}submitLabel - текст для submit-button'a
  * @property {SCREEN_TYPE}type - тип компонента
  */
-export interface DisplayInterface {
-  components: Array<ComponentInterface>;
+export interface Display {
+  components: Array<ComponentForm>;
   header: string;
   label?: string;
   id: string;
@@ -58,7 +58,7 @@ export interface DisplayInterface {
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
  * @property {number}currentRule - id сценария для управление порядком компонентов (наверное не нужен для фронта)
  * @property {object}currentValue - для отправляемых данных
- * @property {DisplayInterface}display - текущий экран с компонентами и данными для отрисовки
+ * @property {Display}display - текущий экран с компонентами и данными для отрисовки
  * @property {string}gender- пол пользователя
  * @property {string}orderId - идентификатор запорлнения черновика, (уже был черновик...)
  * @property {Array<object>}sendNotification - собственники жилья
@@ -73,7 +73,7 @@ export interface ScenarioDto {
   currentValue: object;
   currentCycledFields: object;
   cycledFields: Array<object>;
-  display: DisplayInterface;
+  display: Display;
   errors: object;
   gender: Gender;
   orderId: string;
@@ -83,6 +83,6 @@ export interface ScenarioDto {
   finishedAndCurrentScreens: [];
 }
 
-export interface ResponseInterface {
+export interface FormPlayerApiResponse {
   scenarioDto: ScenarioDto;
 }

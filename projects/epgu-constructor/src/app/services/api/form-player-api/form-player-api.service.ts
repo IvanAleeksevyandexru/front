@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ResponseInterface } from './form-player-api.types';
+import { FormPlayerApiResponse } from './form-player-api.types';
 import { ConfigService } from '../../../config/config.service';
 import { UserSessionService } from '../../user-session/user-session.service';
 import { FormPlayerNavigation } from '../../../form-player.types';
@@ -25,7 +25,7 @@ export class FormPlayerApiService {
 
   public getInitialData(serviceId: string) {
     const path = `${this.apiUrl}/getService/${serviceId}`;
-    return this.http.get<ResponseInterface>(path, {
+    return this.http.get<FormPlayerApiResponse>(path, {
       withCredentials: false
     });
   }
@@ -34,7 +34,7 @@ export class FormPlayerApiService {
     const path = `${this.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
     data.scenarioDto.userId = this.userId;
     data.scenarioDto.token = this.token;
-    return this.http.post<ResponseInterface>(path, {
+    return this.http.post<FormPlayerApiResponse>(path, {
       ...data,
     }, {
       withCredentials: false

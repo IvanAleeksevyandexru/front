@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { DisplayInterface } from '../../../../../../services/api/form-player-api/form-player-api.types';
+import { Display } from '../../../../../../services/api/form-player-api/form-player-api.types';
 import { CarInfoValues } from '../../models/car-info.interface';
 
 @Component({
@@ -10,7 +10,7 @@ import { CarInfoValues } from '../../models/car-info.interface';
 })
 export class CarInfoComponent implements OnInit {
   @Input() isLoading: boolean;
-  @Input() data: DisplayInterface;
+  @Input() data: Display;
   @Output() nextStepEvent = new EventEmitter<string>();
 
   carInfo: CarInfoValues;

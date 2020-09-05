@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { ResponseInterface } from '../api/form-player-api/form-player-api.types';
+import { FormPlayerApiResponse } from '../api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../component-state/component-state.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';
@@ -15,7 +15,7 @@ interface SendDataOptionsInterface {
 
 @Injectable()
 export class FormPlayerService {
-  private store: ResponseInterface;
+  private store: FormPlayerApiResponse;
   private playerLoaded = false;
   private isLoading = false;
   private screenType: string;
@@ -23,11 +23,11 @@ export class FormPlayerService {
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
-  private storeSubject = new Subject<ResponseInterface>();
+  private storeSubject = new Subject<FormPlayerApiResponse>();
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
-  public store$: Observable<ResponseInterface> = this.storeSubject.asObservable();
+  public store$: Observable<FormPlayerApiResponse> = this.storeSubject.asObservable();
 
   constructor(
     public formPlayerApiService: FormPlayerApiService,
@@ -75,7 +75,7 @@ export class FormPlayerService {
     );
   }
 
-  processResponse(response: ResponseInterface): void {
+  processResponse(response: FormPlayerApiResponse): void {
     if (this.hasBusinessErrors(response)) {
       this.sendDataError(response);
     } else {
@@ -83,7 +83,7 @@ export class FormPlayerService {
     }
   };
 
-  hasBusinessErrors(response: ResponseInterface): boolean {
+  hasBusinessErrors(response: FormPlayerApiResponse): boolean {
     const errors = response?.scenarioDto?.errors;
     return errors && !!Object.keys(errors).length;
   }
@@ -122,7 +122,7 @@ export class FormPlayerService {
     }
   }
 
-  initResponse(response: ResponseInterface): void {
+  initResponse(response: FormPlayerApiResponse): void {
     if (!response) {
       console.error('Invalid Reponse');
       return;
