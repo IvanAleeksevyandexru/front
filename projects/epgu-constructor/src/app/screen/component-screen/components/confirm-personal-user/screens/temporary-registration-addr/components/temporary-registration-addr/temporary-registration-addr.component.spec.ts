@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
@@ -7,11 +6,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { FormsModule } from '@angular/forms';
+import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
 
 
 describe('TemporaryRegistrationAddrComponent', () => {
-  let component: TemporaryRegistrationComponent;
-  let fixture: ComponentFixture<TemporaryRegistrationComponent>;
+  let component: TemporaryRegistrationAddrComponent;
+  let fixture: ComponentFixture<TemporaryRegistrationAddrComponent>;
   let configService: ConfigService;
   const mockData: TemporaryRegistrationComponent = {
     attrs: {
