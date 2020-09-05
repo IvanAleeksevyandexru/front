@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
-import { ChildUnder14Interface } from '../../../../../../../interfaces/children.interface';
+import { ChildLess14 } from './add-children-screen.type';
 import { ComponentForm } from '../../../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
@@ -54,7 +54,7 @@ export class AddChildrenScreenComponent implements OnInit {
       this.addFormControl(this.itemsLength);
     }
     const id = this.itemsLength;
-    const newChild: ChildUnder14Interface = {
+    const newChild: ChildLess14 = {
       isNew: true,
       id,
       birthDate: '',

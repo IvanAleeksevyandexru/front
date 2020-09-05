@@ -1,4 +1,4 @@
-export interface ChildUnder14Interface {
+export interface ChildLess14 {
   isNew?: boolean,
   id: number,
   birthDate: string,
