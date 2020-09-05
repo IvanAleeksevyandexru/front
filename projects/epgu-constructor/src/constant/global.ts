@@ -55,6 +55,7 @@ export enum CUSTOM_COMPONENT_ITEM_TYPE {
   CompositeRadioButton = 'CompositeRadioButton',
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
+  HtmlString = 'HtmlString',
   GenderSelector = 'GenderSelector'
 }
 

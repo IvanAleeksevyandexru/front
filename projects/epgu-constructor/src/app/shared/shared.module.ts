@@ -17,6 +17,7 @@ import { HelperTextComponent } from './components/helper-text/helper-text.compon
 import { ToJsonPipe } from './pipe/toJson/to-json.pipe';
 import { NavigationService } from './service/navigation/navigation.service';
 import { CommonModalComponent } from '../shared-module/components/common-modal/common-modal.component';
+import { OutputHtmlComponent } from './components/output-html/output-html.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -31,6 +32,7 @@ const COMPONENTS = [
   ModalBaseComponent,
   ComponentsListComponent,
   HelperTextComponent,
+  OutputHtmlComponent,
 ];
 
 const PIPES = [

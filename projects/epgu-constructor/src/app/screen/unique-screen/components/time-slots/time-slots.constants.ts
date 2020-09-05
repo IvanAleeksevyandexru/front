@@ -4,12 +4,6 @@ export class TimeSlotsConstants {
   errorModal: ConfirmationModal = {
     title: 'Ошибка',
     text: '',
-    buttons: [
-      {
-        label: 'Ok',
-        closeModal: true,
-      },
-    ],
   };
 
   errorLoadingTimeSlots = 'Не удалось загрузить доступные слоты времени';
