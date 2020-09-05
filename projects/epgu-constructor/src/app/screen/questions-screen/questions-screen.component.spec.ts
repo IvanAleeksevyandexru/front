@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ButtonComponent } from 'epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { SCREEN_TYPE } from '../../shared/constant/global';
+import { SCREEN_TYPE } from '../../shared/constants/global';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { PageNameComponent } from '../../shared/components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ButtonComponent } from 'epgu-lib';
 
 import { ConfirmMarriageComponent } from './confirm-marriage.component';
-import { SCREEN_TYPE } from '../../../../../shared/constant/global';
+import { SCREEN_TYPE } from '../../../../../shared/constants/global';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { TimerComponent } from './timer/timer.component';
 import { TimerPipe } from '../pipes/timer.pipe';

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { InfoScreenBodyComponentModalParams } from './info-screen-body.constant';
-import { getHiddenBlock } from '../../../../shared/constant/uttils';
+import { getHiddenBlock } from '../../../../shared/constants/uttils';
 
 @Component({
   selector: 'epgu-constructor-info-screen-body',

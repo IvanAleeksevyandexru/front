@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SCREEN_TYPE } from '../../shared/constant/global';
+import { SCREEN_TYPE } from '../../shared/constants/global';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
 import { ComponentScreenComponent } from './component-screen.component';

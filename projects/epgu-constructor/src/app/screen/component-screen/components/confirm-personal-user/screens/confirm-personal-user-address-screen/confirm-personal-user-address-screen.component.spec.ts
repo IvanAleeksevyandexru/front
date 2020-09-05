@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SCREEN_COMPONENT_NAME } from '../../../../../../shared/constant/global';
+import { SCREEN_COMPONENT_NAME } from '../../../../../../shared/constants/global';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-user-address-screen.component';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';

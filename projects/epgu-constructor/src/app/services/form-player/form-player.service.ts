@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_TYPE } from '../../shared/constant/global';
+import { SCREEN_TYPE } from '../../shared/constants/global';
 import { FormPlayerApiResponse } from '../api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../component-state/component-state.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';

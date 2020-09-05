@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { EMPTY_SCREEN_COMPONENT } from '../../shared/constant/global';
+import { EMPTY_SCREEN_COMPONENT } from '../../shared/constants/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';

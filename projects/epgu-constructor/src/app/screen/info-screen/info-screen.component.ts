@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { INFO_SCREEN_COMPONENT } from '../../shared/constant/global';
+import { INFO_SCREEN_COMPONENT } from '../../shared/constants/global';
 import { Screen, ScreenStore } from '../screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';

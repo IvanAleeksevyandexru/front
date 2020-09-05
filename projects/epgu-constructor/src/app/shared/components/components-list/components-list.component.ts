@@ -21,8 +21,8 @@ import {
 } from '../../../screen/custom-screen/tools/custom-screen-tools';
 import { ScreenService } from '../../../screen/screen.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { OPTIONAL_FIELD } from '../../constant/helper-texts';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../constant/global';
+import { OPTIONAL_FIELD } from '../../constants/helper-texts';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../constants/global';
 import { ConfigService } from '../../../config/config.service';
 
 @Component({

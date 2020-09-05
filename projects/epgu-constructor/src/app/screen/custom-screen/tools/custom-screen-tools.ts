@@ -1,11 +1,12 @@
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { CUSTOM_COMPONENT_ITEM_TYPE, DATE_STRING_DOT_FORMAT } from '../../../shared/constant/global';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../shared/constants/global';
 import {
   CustomComponentDictionaryState, CustomComponentDropDownItemList,
   CustomComponent, CustomComponentState
 } from '../types/custom-component.types';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
+import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 const moment = moment_;
 
 

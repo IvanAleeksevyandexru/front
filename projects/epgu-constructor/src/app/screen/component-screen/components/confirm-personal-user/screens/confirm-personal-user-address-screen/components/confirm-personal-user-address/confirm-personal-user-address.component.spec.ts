@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { SCREEN_COMPONENT_NAME } from '../../../../../../../../shared/constant/global';
+import { SCREEN_COMPONENT_NAME } from '../../../../../../../../shared/constants/global';
 import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
