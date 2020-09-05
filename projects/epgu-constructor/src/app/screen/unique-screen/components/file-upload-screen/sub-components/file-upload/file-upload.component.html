@@ -1,8 +1,9 @@
-<ng-template ngFor let-upload [ngForOf]="attributes.uploads">
+<ng-template ngFor let-upload [ngForOf]="attributes.uploads" let-i="index">
   <epgu-constructor-file-upload-item
     [refData]="refData"
     [objectId]="objectId"
     [data]="upload"
+    [clarification]="attributes.clarifications[i]"
     [prefixForMnemonic]="prefixForMnemonic"
     (newValueSet)="handleNewValueForItem($event)"
   ></epgu-constructor-file-upload-item>

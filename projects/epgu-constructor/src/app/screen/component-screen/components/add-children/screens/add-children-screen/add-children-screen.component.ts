@@ -1,9 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
+import { takeUntil } from 'rxjs/operators';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import * as uuid from 'uuid';
 import { ChildUnder14Interface } from '../../../../../../../interfaces/children.interface';
 import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-add-children-screen',
@@ -16,23 +20,19 @@ export class AddChildrenScreenComponent implements OnInit {
 
   valueParsed: any;
   itemsList: any = [];
-  itemsSelectedQueue: any = [];
-  itemsLength: number;
   itemsToSelect: Array<ListItem>;
-  itemsToSelectInitial: Array<ListItem>;
   selectedItems: any = {};
-
-  headerMapped: any;
-  confirmAddressData: any;
+  items: Array<string> = [];
   addChildrenForm = new FormGroup({});
 
-  constructor(private componentStateService: ComponentStateService) {}
+  constructor(
+    private componentStateService: ComponentStateService,
+    private ngUnsubscribe$: UnsubscribeService,
+  ) {}
 
   ngOnInit(): void {
     this.valueParsed = JSON.parse(this.data.value);
-    this.itemsLength = this.valueParsed?.items?.length || 0;
     this.itemsList = this.valueParsed?.items || [];
-    this.itemsSelectedQueue.push(this.itemsList[0] || {});
     this.itemsToSelect = [
       ...this.itemsList.map((child) => {
         return {
@@ -42,18 +42,16 @@ export class AddChildrenScreenComponent implements OnInit {
       }),
       { id: 'new', text: 'Добавить нового ребенка' },
     ];
-    this.itemsToSelectInitial = [...this.itemsToSelect];
     this.selectedItems = {};
     this.passDataToSend(Object.values(this.selectedItems));
     this.generateFormGroup();
+    this.addChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.items = Object.keys(this.addChildrenForm.controls);
+    });
   }
 
-  addNewChild(idx): void {
-    if (this.itemsSelectedQueue.length === 1) {
-      this.itemsLength += 1;
-      this.addFormControl(this.itemsLength);
-    }
-    const id = this.itemsLength;
+  addNewChild(item): void {
+    const id = item;
     const newChild: ChildUnder14Interface = {
       isNew: true,
       id,
@@ -73,19 +71,12 @@ export class AddChildrenScreenComponent implements OnInit {
     };
 
     this.itemsList.push(newChild);
-    this.handleSelect({ id }, idx);
+    this.handleSelect({ id }, item);
   }
 
-  removeChild(id): void {
-    const childIdx1 = this.itemsSelectedQueue.findIndex((child) => child.id === id);
-    const childIdx2 = Object.values(this.selectedItems).findIndex((child: any) => child.id === id);
-    if (childIdx1 > -1) {
-      this.itemsSelectedQueue.splice(childIdx1, 1);
-    }
-    if (childIdx2 > -1) {
-      delete this.selectedItems[childIdx2];
-      this.selectedItems = [...Object.values(this.selectedItems)];
-    }
+  removeChild(item: string): void {
+    this.addChildrenForm.removeControl(item);
+    delete this.selectedItems[item];
     this.passDataToSend(Object.values(this.selectedItems));
     this.setHideStateToSelectedItems();
   }
@@ -95,30 +86,25 @@ export class AddChildrenScreenComponent implements OnInit {
     this.componentStateService.state = this.valueParsed;
   }
 
-  updateChild(childData): void {
+  updateChild(childData, item): void {
     // augment new child data with data passed from add-new-child-form component
-    const childIdx = Object.values(this.selectedItems).findIndex(
-      (child: any) => child.id === childData.id,
-    );
-    this.selectedItems[childIdx] = childData;
+    this.addChildrenForm.controls[item].setValue(childData);
+    this.selectedItems[item] = childData;
     this.passDataToSend(Object.values(this.selectedItems));
     this.setHideStateToSelectedItems();
   }
 
   addMoreChild(): void {
-    this.itemsLength += 1;
-    this.itemsSelectedQueue.push(this.itemsList[0]);
-    this.addFormControl(this.itemsLength);
+    this.addFormControl(uuid.v4());
   }
 
-  handleSelect(event, idx: number): void {
+  handleSelect(event, item: string): void {
     const { id } = event;
     if (id === 'new') {
-      this.addNewChild(idx);
+      this.addNewChild(item);
     } else {
       const selectedChild = this.itemsList.find((child) => child.id === id);
-      this.selectedItems[idx] = selectedChild;
-      this.itemsSelectedQueue[idx] = selectedChild;
+      this.selectedItems[item] = selectedChild;
       this.passDataToSend(Object.values(this.selectedItems));
       this.setHideStateToSelectedItems();
     }
@@ -139,12 +125,12 @@ export class AddChildrenScreenComponent implements OnInit {
   }
 
   private generateFormGroup(): void {
-    this.itemsSelectedQueue.forEach(() => {
-      this.addChildrenForm.addControl(this.itemsLength.toString(), new FormControl());
-    });
+    const id = uuid.v4();
+    this.addChildrenForm.addControl(id, new FormControl());
+    this.items.push(id);
   }
 
-  private addFormControl(idx): void {
-    this.addChildrenForm.addControl(idx.toString(), new FormControl());
+  private addFormControl(id): void {
+    this.addChildrenForm.addControl(id, new FormControl());
   }
 }

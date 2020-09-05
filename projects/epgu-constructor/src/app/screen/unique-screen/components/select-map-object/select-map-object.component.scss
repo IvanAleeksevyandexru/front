@@ -33,6 +33,10 @@ hr {
   margin-right: 8px;
 }
 
+.nav::ng-deep .container {
+  padding-left: 0;
+}
+
 .widget {
   position: relative;
   height: 100vh;

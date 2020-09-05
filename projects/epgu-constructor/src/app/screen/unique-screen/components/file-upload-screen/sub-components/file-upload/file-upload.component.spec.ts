@@ -10,6 +10,7 @@ describe('FileUploadComponent', () => {
   let fixture: ComponentFixture<FileUploadComponent>;
   let FileUploadItemComponentMock = MockComponent(FileUploadItemComponent);
   let mockAttributes: IFileUploadAttributes = {
+    clarifications: [],
     uploads: [
       {
         uploadId: '1',

@@ -16,6 +16,7 @@ export enum SCREEN_COMPONENT_NAME {
   'confirmPersonalUserPhone' = 'ConfirmPersonalUserPhone',
   'registrationAddr' = 'RegistrationAddr',
   'personLookup' = 'PersonLookup',
+  'mvdGiac' = 'MvdGiac',
   'addPassport' = 'AddPassport',
   'changeList' = 'ChangeList',
   'childrenListUnder14' = 'ChildrenListUnder14',
@@ -55,6 +56,7 @@ export enum CUSTOM_COMPONENT_ITEM_TYPE {
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
   HtmlString = 'HtmlString',
+  GenderSelector = 'GenderSelector'
 }
 
 export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';
