@@ -19,14 +19,9 @@ export class AddChildrenScreenComponent implements OnInit {
 
   valueParsed: any;
   itemsList: any = [];
-  // itemsSelectedQueue: any = [];
-  itemsLength: number;
   itemsToSelect: Array<ListItem>;
   selectedItems: any = {};
   items: Array<string> = [];
-
-  headerMapped: any;
-  confirmAddressData: any;
   addChildrenForm = new FormGroup({});
 
   constructor(
