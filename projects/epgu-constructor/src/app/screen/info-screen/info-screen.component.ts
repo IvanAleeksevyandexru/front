@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { INFO_SCREEN_COMPONENT } from '../../shared/constants/global';
 import { Screen, ScreenStore } from '../screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
+import { InfoScreenComponents } from './info-screen.types';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.
@@ -17,7 +17,7 @@ import { ScreenService } from '../screen.service';
 })
 export class InfoScreenComponent implements Screen, OnInit {
   // <-- constant
-  infoScreenComponent = INFO_SCREEN_COMPONENT;
+  infoScreenComponent = InfoScreenComponents;
   screenStore: ScreenStore;
 
   constructor(

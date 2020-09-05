@@ -25,7 +25,3 @@ export enum SCREEN_COMPONENT_NAME {
   'countryApostil' = 'CountryApostil',
   'paymentScr' = 'PaymentScr'
 }
-
-export enum INFO_SCREEN_COMPONENT {
-  'info' = 'InfoScr',
-}
