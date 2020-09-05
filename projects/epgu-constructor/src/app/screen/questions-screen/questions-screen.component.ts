@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { QuestionsComponentActionsInterface } from '../../../interfaces/question-block.interface';
+import { QuestionsComponentActions } from './questions-screen.type';
 import { ModalService } from '../../services/modal/modal.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
@@ -67,7 +67,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     this.navigationService.nextStep.next(data);
   }
 
-  answerChoose(answer: QuestionsComponentActionsInterface): void {
+  answerChoose(answer: QuestionsComponentActions): void {
     let data = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
