@@ -6,7 +6,7 @@ import { Icons } from './constants';
 import { ConfigService } from '../../../../config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { ModalService } from '../../../../services/modal/modal.service';
-import { CommonModalComponent } from '../../../../shared-module/components/common-modal/common-modal.component';
+import { CommonModalComponent } from '../../../../shared/components/common-modal/common-modal.component';
 import { InfoScreenBodyComponentModalParams } from '../../../info-screen/component/info-screen-body/info-screen-body.constant';
 
 @Injectable()
