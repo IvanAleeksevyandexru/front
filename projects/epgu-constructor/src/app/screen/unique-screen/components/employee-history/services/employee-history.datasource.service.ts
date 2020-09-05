@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EmployeeHistoryDataSource } from '../../../../../../interfaces/employee-history.interface';
+import { EmployeeHistoryDataSource } from '../employee-history.types';
 import { Gender } from '../../../../../services/api/form-player-api/form-player-api.types';
 
 @Injectable({

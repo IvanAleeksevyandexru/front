@@ -10,7 +10,7 @@ import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel,
-} from '../../../../../interfaces/employee-history.interface';
+} from './employee-history.types';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 
 const moment = moment_;
