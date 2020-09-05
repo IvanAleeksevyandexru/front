@@ -5,7 +5,8 @@ import { ComponentStateService } from '../component-state/component-state.servic
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../api/form-player-api/form-player-api.service.stub';
-import { CookieService } from 'ngx-cookie-service';
+import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
@@ -17,7 +18,8 @@ describe('FormPlayerService', () => {
         FormPlayerService,
         ComponentStateService,
         ScreenService,
-        CookieService,
+        ScreenResolverService,
+        ApplicantAnswersService,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
       ]
     });

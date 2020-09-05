@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../services/api/form-player-api/form-player-api.types';
 
 // TODO: Need to refactoring component
 describe.skip('FileUploadScreenComponent', () => {

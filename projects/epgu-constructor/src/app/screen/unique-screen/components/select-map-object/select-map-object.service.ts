@@ -1,12 +1,12 @@
-import { Injectable, NgZone, TemplateRef } from '@angular/core';
+import { Injectable, TemplateRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
-import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../../config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { ModalService } from '../../../../services/modal/modal.service';
-import { CommonModalComponent } from '../../../../shared-module/components/common-modal/common-modal.component';
+import { CommonModalComponent } from '../../../../shared/components/common-modal/common-modal.component';
 import { InfoScreenBodyComponentModalParams } from '../../../info-screen/component/info-screen-body/info-screen-body.constant';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class SelectMapObjectService {
 
   constructor(
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
     private yaMapService: YaMapService,
     private modalService: ModalService,
   ) { }
@@ -35,7 +35,7 @@ export class SelectMapObjectService {
    * @param items
    */
   public getCoordsByAddress(items) {
-    const path = `${this.constructorConfigService.config.externalApiUrl}address/resolve`;
+    const path = `${this.configService.config.externalApiUrl}address/resolve`;
     return this.http.post<IGeoCoordsResponse>(path, {
       address: items.map(item => item.attributeValues[this.componentAttrs.attributeNameWithAddress]),
     });
@@ -43,8 +43,8 @@ export class SelectMapObjectService {
 
   /**
    * Fill map's objects in Dictionary with geo coords
-   * @param dictionary 
-   * @param coords 
+   * @param dictionary
+   * @param coords
    */
   public fillDictionaryItemsWithCoords(coords: IGeoCoordsResponse) {
     const hashMap = {};
@@ -182,7 +182,7 @@ export class SelectMapObjectService {
       '<a href="#!" class="details-link">Узнать подробнее</a></div>' +
       '{% if properties.res.attributeValues.AREA_DESCR %}' +
       '<div class="map-baloon-content-Bottom">' +
-      'На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы ' + 
+      'На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы ' +
       '<a href="#!" class="information-link">ознакомиться</a>' +
       '</div>' +
       '{% endif %}' +
@@ -248,8 +248,8 @@ export class SelectMapObjectService {
 
   /**
    * centers the map by coordinates
-   * @param coords 
-   * @param objectId 
+   * @param coords
+   * @param objectId
    */
   public centeredPlaceMark(coords, objectId) {
     let serviceContext = this as any;
@@ -290,7 +290,7 @@ export class SelectMapObjectService {
   /**
    * Returns array with attributes to show in balloon on map
    * @param attrs map with attributes to extract
-   * @param item 
+   * @param item
    */
   private getMappedAttrsForBaloon(attrs: Array<{ name: string, label: string }>, item) {
     const res = [];
@@ -306,7 +306,7 @@ export class SelectMapObjectService {
 
   /**
    * filter geo items by searchString and redraw map
-   * @param searchString 
+   * @param searchString
    */
   public searchMapObject(searchString: string) {
     const searchStringLower = searchString.toLowerCase();

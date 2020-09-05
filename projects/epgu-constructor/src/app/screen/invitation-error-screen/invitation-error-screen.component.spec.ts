@@ -1,14 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { MockComponent } from 'ng-mocks';
 import { InvitationErrorComponent } from './components/error/invitation-error.component';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenService } from '../screen.service';
-import { ScreenData } from '../../../interfaces/screen.interface';
+import { ScreenStore } from '../screen.types';
 import { SCREEN_TYPE } from '../../../constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 describe('InvitationScreenComponent', () => {
   let component: InvitationErrorScreenComponent;
@@ -17,8 +18,8 @@ describe('InvitationScreenComponent', () => {
   let screenService: ScreenService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
   let InvitationErrorComponentMock = MockComponent(InvitationErrorComponent);
-  const screenDataMock: ScreenData = {
-    componentData: {
+  const screenDataMock: ScreenStore = {
+    display: {
       components: [
         {
           attrs: {},
@@ -42,7 +43,8 @@ describe('InvitationScreenComponent', () => {
       providers: [
         NavigationService,
         ScreenService,
-        UnsubscribeService
+        UnsubscribeService,
+        ApplicantAnswersService
       ]
     })
     .compileComponents();
@@ -53,7 +55,7 @@ describe('InvitationScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InvitationErrorScreenComponent);
     component = fixture.componentInstance;
-    screenService.updateScreenData(screenDataMock);
+    screenService.updateScreenStore(screenDataMock);
     fixture.detectChanges();
   });
 

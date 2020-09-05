@@ -9,7 +9,6 @@ export const environment = {
   externalApiUrl: 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1/',
   externalLkApiUrl: 'http://localhost:4200/api/lk/v1/',
   externalUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/',
-  serviceId: 'local',
   yandexMapsApiKey: '9e8e2fc4-5970-4ca6-95c5-3e620095e8e3',
   externalLkUrl: 'https://pgu-dev-lk.test.gosuslugi.ru/info',
   paymentUrl: 'https://payment-dev-l14.test.gosuslugi.ru',

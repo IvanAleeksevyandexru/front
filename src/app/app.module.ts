@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormPlayerModule } from 'dist/epgu-constructor';
-import { FormPlayerConfigInterface } from '../../projects/epgu-constructor/src/interfaces/form-player-config.interface';
+import { Config } from '../../projects/epgu-constructor/src/app/config/config.types';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
+import { CookieService } from 'ngx-cookie-service'
 
-const formPlayerConfig: FormPlayerConfigInterface = {
-  serviceId: environment.serviceId,
+const formPlayerConfig: Config = {
   apiUrl: environment.apiUrl,
   dictionaryUrl: environment.dictionaryUrl,
   externalApiUrl: environment.externalApiUrl,
@@ -28,7 +28,7 @@ const formPlayerConfig: FormPlayerConfigInterface = {
     BrowserModule,
     FormPlayerModule.forRoot(formPlayerConfig),
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { DisplayInterface } from '../../../../../../../interfaces/epgu.service.interface';
+import { DisplayInterface } from '../../../../../../services/api/form-player-api/form-player-api.types';
 import { CarInfoValues } from '../../models/car-info.interface';
 
 @Component({

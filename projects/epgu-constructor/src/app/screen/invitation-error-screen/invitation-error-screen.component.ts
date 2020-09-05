@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENT_NAME } from '../../../constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
+import { NavigationPayload } from '../../form-player.types';
 
 @Component({
   selector: 'epgu-constructor-invitation-screen',
@@ -15,7 +15,7 @@ import { NextStepEventData } from '../../../interfaces/step-event-data.interface
 })
 export class InvitationErrorScreenComponent implements OnInit, Screen {
   typeComponent = SCREEN_COMPONENT_NAME;
-  screenData: ScreenData;
+  screenStore: ScreenStore;
 
   constructor(
     private navigationService: NavigationService,
@@ -30,8 +30,8 @@ export class InvitationErrorScreenComponent implements OnInit, Screen {
 
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenData) => {
-        this.screenData = screenData;
+      .subscribe((screenData: ScreenStore) => {
+        this.screenStore = screenData;
       });
   }
 
@@ -39,7 +39,7 @@ export class InvitationErrorScreenComponent implements OnInit, Screen {
     this.navigationService.prevStep.next();
   }
 
-  nextStep(data?: NextStepEventData): void {
+  nextStep(data?: NavigationPayload): void {
     this.navigationService.nextStep.next(data);
   }
 

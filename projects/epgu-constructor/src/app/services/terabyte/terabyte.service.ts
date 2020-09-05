@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ITerraFileOptions, ITerraUploadFileOptions } from '../../../interfaces/terabyte.interface';
 import { Observable } from 'rxjs';
 import { UploadedFile } from '../../screen/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
-import { ConstructorConfigService } from '../config/constructor-config.service';
+import { ConfigService } from '../../config/config.service';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
@@ -16,11 +16,11 @@ export class TerabyteService {
 
   constructor(
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
   ) {
     this.isLocalHost = location.hostname === 'localhost';
-    this.apiUrl = constructorConfigService.config.fileUploadApiUrl;
-    this.apiLocalhostUrl = constructorConfigService.config.fileUploadLocalhostApiUrl;
+    this.apiUrl = configService.config.fileUploadApiUrl;
+    this.apiLocalhostUrl = configService.config.fileUploadLocalhostApiUrl;
   }
 
   /**

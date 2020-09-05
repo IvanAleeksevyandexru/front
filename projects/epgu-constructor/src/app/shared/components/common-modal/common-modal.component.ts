@@ -1,5 +1,5 @@
 import { Component, TemplateRef } from '@angular/core';
-import { ModalBaseComponent } from '../../../shared/components/modal-base/modal-base.component';
+import { ModalBaseComponent } from '../modal-base/modal-base.component';
 
 @Component({
   selector: 'epgu-constructor-common-modal',

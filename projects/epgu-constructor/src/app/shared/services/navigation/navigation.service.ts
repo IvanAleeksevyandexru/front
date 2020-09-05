@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { NextStepEventData, PrevStepEventData } from '../../../../interfaces/step-event-data.interface';
+import { NavigationPayload } from '../../../form-player.types';
 
 @Injectable()
 export class NavigationService {
   clickToBack = new Subject();
   clickToBack$ = this.clickToBack.asObservable();
 
-  nextStep = new Subject<NextStepEventData>();
+  nextStep = new Subject<NavigationPayload>();
   nextStep$ = this.nextStep.asObservable();
 
-  prevStep = new Subject<PrevStepEventData>();
+  prevStep = new Subject<NavigationPayload>();
   prevStep$ = this.prevStep.asObservable();
 }

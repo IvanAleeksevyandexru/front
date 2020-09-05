@@ -1,4 +1,4 @@
-import { ComponentInterface } from './epgu.service.interface';
+import { ComponentInterface } from '../app/services/api/form-player-api/form-player-api.types';
 
 export interface ConfirmUserDataInterface extends ComponentInterface{
   attrs: ConfirmUserDataAttrsInterface;

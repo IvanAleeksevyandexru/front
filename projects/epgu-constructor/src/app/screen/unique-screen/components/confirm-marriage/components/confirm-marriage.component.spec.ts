@@ -3,7 +3,6 @@ import { ButtonComponent } from 'epgu-lib';
 
 import { ConfirmMarriageComponent } from './confirm-marriage.component';
 import { SCREEN_TYPE } from '../../../../../../constant/global';
-import { DisplayInterface } from '../../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { TimerComponent } from './timer/timer.component';
 import { TimerPipe } from '../pipes/timer.pipe';
@@ -11,7 +10,8 @@ import { ScreenContainerComponent } from '../../../../../shared/components/scree
 import { PageNameComponent } from '../../../../../shared/components/page-name/page-name.component';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
-import { NavigationService } from '../../../../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
+import { DisplayInterface } from '../../../../../services/api/form-player-api/form-player-api.types';
 
 describe('TimerComponent', () => {
   let component: ConfirmMarriageComponent;

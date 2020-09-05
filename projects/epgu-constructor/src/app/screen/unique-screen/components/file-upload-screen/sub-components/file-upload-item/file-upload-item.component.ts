@@ -17,12 +17,12 @@ import {
   TerabyteListItem,
 } from '../../../../../../../interfaces/terabyte.interface';
 import { TerabyteService } from '../../../../../../services/terabyte/terabyte.service';
-import { WebcamService } from '../../../../../../services/utils/webcam.service';
+import { WebcamService } from '../../../../../../services/webcam/webcam.service';
 import {
   isCloseAndSaveWebcamEvent,
   isCloseWebcamEvent,
   WebcamEvent,
-} from '../../../../../../services/utils/webcamevents';
+} from '../../../../../../services/webcam/webcamevents';
 import { getSizeInMB, UploadedFile, uploadObjectType } from './data';
 
 @Component({

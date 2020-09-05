@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { HttpClient } from '@angular/common/http';
-import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../../config/config.service';
 import { catchError, map } from 'rxjs/operators';
 import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from '../../../../../interfaces/payment.interface';
 import { Observable, throwError } from 'rxjs';
@@ -19,11 +19,11 @@ export class PaymentService {
   constructor(
     private dictionaryApiService: DictionaryApiService,
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
   ) {
-    this.apiUrl = this.constructorConfigService.config.apiUrl;
-    this.externalUrl = this.constructorConfigService.config.externalUrl;
-    this.paymentUrl = this.constructorConfigService.config.paymentUrl;
+    this.apiUrl = this.configService.config.apiUrl;
+    this.externalUrl = this.configService.config.externalUrl;
+    this.paymentUrl = this.configService.config.paymentUrl;
   }
 
   /**

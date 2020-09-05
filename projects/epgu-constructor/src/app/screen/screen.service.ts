@@ -1,26 +1,54 @@
 import { Injectable } from '@angular/core';
-import { ScreenData } from '../../interfaces/screen.interface';
+import { ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
 
 
 @Injectable()
 export class ScreenService {
-  private screenData: ScreenData;
+  private screenStore: ScreenStore;
   private isLoading = false;
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
-  private screenDataSubject = new BehaviorSubject<ScreenData>(this.screenData);
+  private screenStoreSubject = new BehaviorSubject<ScreenStore>(this.screenStore);
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
-  public screenData$: Observable<ScreenData> = this.screenDataSubject.asObservable();
+  public screenData$: Observable<ScreenStore> = this.screenStoreSubject.asObservable();
 
-  public updateScreenData(newState: ScreenData): void {
-    this.screenData = newState;
-    this.screenDataSubject.next(this.screenData);
+  constructor (private applicantAnswersService: ApplicantAnswersService) {}
+
+  public initScreenStore(store: ScreenStore): void {
+    this.screenStore = store;
+    this.loadAnsweredValues();
+    this.screenStoreSubject.next(this.screenStore);
   }
 
-  public updateLoading(newState: boolean): void {
-    this.isLoading = newState;
+  public updateScreenStore(newState: ScreenStore): void {
+    this.screenStore = { ...this.screenStore, ...newState };
+    this.screenStoreSubject.next(this.screenStore);
+  }
+
+  public updateLoading(isLoading: boolean): void {
+    this.isLoading = isLoading;
     this.isLoadingSubject.next(this.isLoading);
+  }
+
+  private loadAnsweredValues(): void {
+    const components = [];
+
+    this.screenStore.display.components.forEach(item => {
+      const answeredValue = this.applicantAnswersService
+        .getAnsweredValueById(this.screenStore.applicantAnswers, item.id);
+
+      const component = answeredValue ? { ...item, value: answeredValue } : item;
+      components.push(component);
+    });
+
+    this.screenStore.display = { ...this.screenStore.display, components };
+
+    console.log('________Store with answered data___________');
+    console.log('componentId:', this.screenStore.display.components[0].id);
+    console.log('componentType:', this.screenStore.display.components[0].type);
+    console.log('store', this.screenStore);
   }
 }

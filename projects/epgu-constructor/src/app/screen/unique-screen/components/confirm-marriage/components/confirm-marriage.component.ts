@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { timer } from 'rxjs';
 
-import { DisplayInterface } from '../../../../../../interfaces/epgu.service.interface';
 import { ConfirmMarriageInfoInterface } from '../models/confirm-marriage-info.interface';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { TimerInterface } from '../models/timer.interface';
 import { createTimerForConfirmMarriage } from './confirm-marriage.helper';
+import { DisplayInterface } from '../../../../../services/api/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-marriage',
