@@ -29,14 +29,3 @@ export enum SCREEN_COMPONENT_NAME {
 export enum INFO_SCREEN_COMPONENT {
   'info' = 'InfoScr',
 }
-
-export enum UNIQUE_COMPONENT_NAME {
-  fileUploadComponent = 'FileUploadComponent',
-  'addPassport' = 'AddPassport',
-  'timeSlot' = 'TimeSlot',
-  'mapService' = 'MapService',
-  'carInfo' = 'CarInfo',
-  'repeatableFields' = 'RepeatableFields',
-  'employeeHistory' = 'EmployeeHistory',
-  'confirmMarriage' = 'ConfirmMarriage',
-}

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { UNIQUE_COMPONENT_NAME } from '../../shared/constants/global';
 import { Screen, ScreenStore } from '../screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
+import { UniqueScreenComponents } from './unique-screen.types';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',
@@ -14,7 +14,7 @@ import { ScreenService } from '../screen.service';
 })
 export class UniqueScreenComponent implements OnInit, Screen {
   // <-- constant
-  uniqueComponentName = UNIQUE_COMPONENT_NAME;
+  uniqueComponentName = UniqueScreenComponents;
   screenStore: ScreenStore;
 
   constructor(

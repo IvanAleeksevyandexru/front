@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentBase } from '../../../../services/api/form-player-api/form-player-api.types';
-import { UNIQUE_COMPONENT_NAME } from '../../../../shared/constants/global';
 import { FileUploadItem } from './services/terra-byte-api/terra-byte-api.types';
+import { UniqueScreenComponents } from '../../unique-screen.types';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',
@@ -27,7 +27,7 @@ export class FileUploadScreenComponent {
     this.collectMaxFilesNumber(uploads);
     this.value = {
       id: data.id,
-      type: UNIQUE_COMPONENT_NAME.fileUploadComponent,
+      type: UniqueScreenComponents.fileUploadComponent,
     };
   }
   get data(): ComponentBase {
