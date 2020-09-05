@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { WebcamImage } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 import { WebcamEvents } from '../../webcam/webcamevents';
-import { imageCameraQuality } from '../../../../../../shared/constant/global';
+import { IMAGE_CAMERA_QUALITY } from './webcam-shoot.const';
 
 @Component({
   selector: 'epgu-constructor-webcam-shoot',
@@ -10,7 +10,7 @@ import { imageCameraQuality } from '../../../../../../shared/constant/global';
   styleUrls: ['./webcam-shoot.component.scss'],
 })
 export class WebcamShootComponent {
-  imageCameraQuality = imageCameraQuality;
+  imageCameraQuality = IMAGE_CAMERA_QUALITY;
   imageType = 'image/jpeg';
   width = 0;
   height = 0;

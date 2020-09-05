@@ -6,7 +6,7 @@ import { SCREEN_COMPONENT_NAME } from '../../../../shared/constant/global';
 import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
-import { OPTIONAL_FIELD } from '../../../../shared/constant/helperTexts';
+import { OPTIONAL_FIELD } from '../../../../shared/constant/helper-texts';
 
 interface WarningMessages {
   [countryType: number]: string;
