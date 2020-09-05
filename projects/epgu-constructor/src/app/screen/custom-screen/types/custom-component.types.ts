@@ -1,6 +1,6 @@
 import { ListItem } from 'epgu-lib';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
-import { DictionaryItem, DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
+import { DictionaryItem, DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
 import { ComponentBase, Display } from '../../../services/api/form-player-api/form-player-api.types';
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };

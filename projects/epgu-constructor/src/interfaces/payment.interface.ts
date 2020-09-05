@@ -1,4 +1,4 @@
-import { DictionaryOptionsInterface } from './dictionary-options.interface';
+import { DictionaryOptions } from '../app/services/api/dictionary-api/dictionary-api.types';
 import { Display, Gender } from '../app/services/api/form-player-api/form-player-api.types';
 
 /**
@@ -48,7 +48,7 @@ export interface PaymentInfoInterface {
   recipientTitle: string;
   sum: string;
 }
-export interface PaymentDictionaryOptionsInterface extends DictionaryOptionsInterface {
+export interface PaymentDictionaryOptionsInterface extends DictionaryOptions {
   filter: {
     union: {
       unionKind: string;

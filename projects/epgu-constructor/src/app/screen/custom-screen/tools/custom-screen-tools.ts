@@ -5,7 +5,7 @@ import {
   CustomComponentDictionaryState, CustomComponentDropDownItemList,
   CustomComponent, CustomComponentState
 } from '../types/custom-component.types';
-import { DictionaryItem } from '../../../../interfaces/dictionary-options.interface';
+import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 const moment = moment_;
 
 

@@ -6,7 +6,7 @@
  * @property {Array<string>}[selectAttributes='*'] -
  * @property {string}tx -
  */
-export interface DictionaryOptionsInterface {
+export interface DictionaryOptions {
   filter?: any;
   treeFiltering?: string;
   pageNum?: number;

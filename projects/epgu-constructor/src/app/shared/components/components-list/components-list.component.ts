@@ -8,7 +8,7 @@ import {
   CustomComponentOutputData,
   CustomComponentState,
 } from '../../../screen/custom-screen/types/custom-component.types';
-import { DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
+import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   adaptiveDropDown,
   calcDependedComponent,
