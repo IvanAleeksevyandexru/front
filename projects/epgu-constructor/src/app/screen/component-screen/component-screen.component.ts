@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { SCREEN_COMPONENT_NAME } from '../../shared/constants/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
 import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { mockOrderId } from './components/payment/payment.constants';
+import { ComponentScreenComponents } from './component-screen.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -22,7 +22,7 @@ interface ComponentSetting {
 })
 export class ComponentScreenComponent implements OnInit, Screen {
   // <-- constant
-  screenComponentName = SCREEN_COMPONENT_NAME;
+  screenComponentName = ComponentScreenComponents;
 
   // <-- variables
   componentSetting: ComponentSetting = {

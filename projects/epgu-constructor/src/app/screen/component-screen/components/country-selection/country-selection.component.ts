@@ -2,11 +2,11 @@ import { Component, Input, EventEmitter, OnInit, Output, AfterViewInit } from '@
 // @ts-ignore
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalService } from '../../../../services/modal/modal.service';
-import { SCREEN_COMPONENT_NAME } from '../../../../shared/constants/global';
 import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
+import { ComponentScreenComponent } from '../../component-screen.component';
 
 interface WarningMessages {
   [countryType: number]: string;
@@ -26,7 +26,7 @@ interface Country {
 export class CountrySelectionComponent implements OnInit, AfterViewInit {
   listItemDictionary: Country[];
   placeholder = 'Выберите страну';
-  screenComponentName = SCREEN_COMPONENT_NAME;
+  screenComponentName = ComponentScreenComponent;
   selectedCountry: Country;
   helperText: string;
 
