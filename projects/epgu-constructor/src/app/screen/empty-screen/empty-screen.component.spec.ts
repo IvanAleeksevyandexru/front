@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SCREEN_TYPE } from '../../../constant/global';
+import { SCREEN_TYPE } from '../../shared/constant/global';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EmptyScreenComponent } from './empty-screen.component';
 import { ScreenStore } from '../screen.types';

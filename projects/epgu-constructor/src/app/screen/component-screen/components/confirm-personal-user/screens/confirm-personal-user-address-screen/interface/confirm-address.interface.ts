@@ -1,4 +1,4 @@
-import { SCREEN_COMPONENT_NAME } from '../../../../../../../../constant/global';
+import { SCREEN_COMPONENT_NAME } from '../../../../../../../shared/constant/global';
 
 /**
  * @property {Array<object>}attrs

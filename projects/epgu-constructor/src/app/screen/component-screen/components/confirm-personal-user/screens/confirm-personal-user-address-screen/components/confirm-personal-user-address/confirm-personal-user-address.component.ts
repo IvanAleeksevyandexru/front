@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../../constant/global';
+import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constant/global';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';

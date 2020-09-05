@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_TYPE } from '../../../constant/global';
+import { SCREEN_TYPE } from '../../shared/constant/global';
 import {
   Display,
   FormPlayerApiResponse

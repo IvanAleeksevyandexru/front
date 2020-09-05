@@ -1,6 +1,6 @@
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { CUSTOM_COMPONENT_ITEM_TYPE, DATE_STRING_DOT_FORMAT } from '../../../../constant/global';
+import { CUSTOM_COMPONENT_ITEM_TYPE, DATE_STRING_DOT_FORMAT } from '../../../shared/constant/global';
 import {
   CustomComponentDictionaryState, CustomComponentDropDownItemList,
   CustomComponent, CustomComponentState

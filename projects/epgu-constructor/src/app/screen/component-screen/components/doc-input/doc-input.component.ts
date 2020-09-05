@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import * as moment_ from 'moment';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { map, takeUntil } from 'rxjs/operators';
-import { DATE_STRING_DOT_FORMAT } from '../../../../../constant/global';
+import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constant/global';
 import { ComponentBase } from '../../../../services/api/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';

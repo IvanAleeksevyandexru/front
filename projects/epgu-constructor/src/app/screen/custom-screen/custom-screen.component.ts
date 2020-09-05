@@ -1,7 +1,7 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { DATE_STRING_DOT_FORMAT } from '../../../constant/global';
+import { DATE_STRING_DOT_FORMAT } from '../../shared/constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { Screen, ScreenStore } from '../screen.types';

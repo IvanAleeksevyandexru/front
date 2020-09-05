@@ -1,4 +1,4 @@
-import { SCREEN_TYPE } from '../../../../constant/global';
+import { SCREEN_TYPE } from '../../../shared/constant/global';
 
 export type Gender = 'M' | 'F';
 
