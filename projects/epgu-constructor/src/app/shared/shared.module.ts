@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
 
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';
-import { ComponentsListComponent } from './components/components-list/components-list.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { LabelComponent } from './components/label/label.component';
 import { ModalBaseComponent } from './components/modal-base/modal-base.component';
@@ -30,7 +29,6 @@ const COMPONENTS = [
   CommonModalComponent,
   ModalContainerComponent,
   ModalBaseComponent,
-  ComponentsListComponent,
   HelperTextComponent,
 ];
 

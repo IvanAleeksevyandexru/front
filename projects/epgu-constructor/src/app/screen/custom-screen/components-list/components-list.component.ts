@@ -7,7 +7,8 @@ import {
   CustomComponent,
   CustomComponentOutputData,
   CustomComponentState,
-} from '../../../screen/custom-screen/types/custom-component.types';
+  CustomScreenComponents,
+} from '../custom-screen.types';
 import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   adaptiveDropDown,
@@ -18,11 +19,10 @@ import {
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
   likeDictionary,
-} from '../../../screen/custom-screen/tools/custom-screen-tools';
-import { ScreenService } from '../../../screen/screen.service';
+} from '../tools/custom-screen-tools';
+import { ScreenService } from '../../screen.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { OPTIONAL_FIELD } from '../../constants/helper-texts';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../constants/global';
+import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ConfigService } from '../../../config/config.service';
 
 @Component({
@@ -32,7 +32,7 @@ import { ConfigService } from '../../../config/config.service';
 })
 export class ComponentsListComponent implements OnChanges {
   // <-- constant
-  componentType = CUSTOM_COMPONENT_ITEM_TYPE;
+  componentType = CustomScreenComponents;
 
   // <-- variables
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;

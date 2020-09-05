@@ -1,10 +1,9 @@
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../shared/constants/global';
 import {
   CustomComponentDictionaryState, CustomComponentDropDownItemList,
-  CustomComponent, CustomComponentState
-} from '../types/custom-component.types';
+  CustomComponent, CustomComponentState, CustomScreenComponents
+} from '../custom-screen.types';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 const moment = moment_;
@@ -35,14 +34,14 @@ export function getCustomScreenDictionaryFirstState(): CustomComponentDictionary
   };
 }
 
-export function likeDictionary(type: CUSTOM_COMPONENT_ITEM_TYPE) {
+export function likeDictionary(type: CustomScreenComponents) {
   return (
-    CUSTOM_COMPONENT_ITEM_TYPE.Dictionary === type || CUSTOM_COMPONENT_ITEM_TYPE.Lookup === type
+    CustomScreenComponents.Dictionary === type || CustomScreenComponents.Lookup === type
   );
 }
 
-export function isDropDown(type: CUSTOM_COMPONENT_ITEM_TYPE) {
-  return CUSTOM_COMPONENT_ITEM_TYPE.DropDown === type;
+export function isDropDown(type: CustomScreenComponents) {
+  return CustomScreenComponents.DropDown === type;
 }
 
 /**
@@ -138,7 +137,7 @@ export function getInitStateItemComponentList(component: CustomComponent) {
 
   let valueFormatted: string | Date;
   switch (component.type) {
-    case CUSTOM_COMPONENT_ITEM_TYPE.DateInput:
+    case CustomScreenComponents.DateInput:
       valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate() || moment().toDate();
       break;
     default:

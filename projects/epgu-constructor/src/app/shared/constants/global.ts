@@ -40,15 +40,3 @@ export enum UNIQUE_COMPONENT_NAME {
   'employeeHistory' = 'EmployeeHistory',
   'confirmMarriage' = 'ConfirmMarriage',
 }
-
-export enum CUSTOM_COMPONENT_ITEM_TYPE {
-  LabelSection = 'LabelSection',
-  Dictionary = 'Dictionary',
-  DropDown = 'DropDown',
-  StringInput = 'StringInput',
-  DateInput = 'DateInput',
-  RadioInput = 'RadioInput',
-  CompositeRadioButton = 'CompositeRadioButton',
-  Lookup = 'Lookup',
-  AddressInput = 'AddressInput',
-}

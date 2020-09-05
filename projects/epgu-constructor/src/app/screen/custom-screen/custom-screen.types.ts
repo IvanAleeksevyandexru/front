@@ -1,7 +1,18 @@
 import { ListItem } from 'epgu-lib';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../shared/constants/global';
-import { DictionaryItem, DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
-import { ComponentBase, Display } from '../../../services/api/form-player-api/form-player-api.types';
+import { DictionaryItem, DictionaryResponse } from '../../services/api/dictionary-api/dictionary-api.types';
+import { ComponentBase, Display } from '../../services/api/form-player-api/form-player-api.types';
+
+export enum CustomScreenComponents {
+  LabelSection = 'LabelSection',
+  Dictionary = 'Dictionary',
+  DropDown = 'DropDown',
+  StringInput = 'StringInput',
+  DateInput = 'DateInput',
+  RadioInput = 'RadioInput',
+  CompositeRadioButton = 'CompositeRadioButton',
+  Lookup = 'Lookup',
+  AddressInput = 'AddressInput',
+}
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
@@ -93,7 +104,7 @@ export interface CustomDisplay extends Display {
 
 export interface CustomComponent extends ComponentBase{
   attrs: CustomComponentAttr;
-  type: CUSTOM_COMPONENT_ITEM_TYPE;
+  type: CustomScreenComponents;
   hint?: string;
 }
 
