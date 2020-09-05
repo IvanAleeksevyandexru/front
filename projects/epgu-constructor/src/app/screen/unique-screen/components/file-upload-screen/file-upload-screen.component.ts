@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentBase } from '../../../../services/api/form-player-api/form-player-api.types';
 import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
-import { IFileUploadItem } from '../../../../../interfaces/terabyte.interface';
+import { FileUploadItem } from './services/terra-byte-api/terra-byte-api.types';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',
@@ -59,7 +59,7 @@ export class FileUploadScreenComponent {
    * Собираем максимальное число файлов из всех форм
    * @private
    */
-  private collectMaxFilesNumber(uploads: IFileUploadItem[]) {
+  private collectMaxFilesNumber(uploads: FileUploadItem[]) {
     uploads.forEach((upload) => {
       if (upload?.maxFileCount) {
         this.allMaxFiles += upload.maxFileCount;

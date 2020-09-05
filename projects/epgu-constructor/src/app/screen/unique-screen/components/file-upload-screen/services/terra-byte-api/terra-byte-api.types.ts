@@ -1,7 +1,7 @@
 /**
  * Интерфейс для опций файла, при получении обновлении или удалении
  */
-export interface ITerraFileOptions{
+export interface TerraFileOptions {
   objectId: number; //идентификатор объекта, к которому прикреплён файл
   objectType: number; //тип объекта, к которому прикреплён файл
   mnemonic: string; //мнемоника файла
@@ -9,7 +9,7 @@ export interface ITerraFileOptions{
 /**
  * Интерфейс для опций загрузки файла на сервер
  */
-export interface ITerraUploadFileOptions extends ITerraFileOptions{
+export interface TerraUploadFileOptions extends TerraFileOptions {
   name: string;
   chunks?: number;
   chunk?: number;
@@ -18,26 +18,26 @@ export interface ITerraUploadFileOptions extends ITerraFileOptions{
 /**
  * Интерфейс для экспорта одного значения для компонента загрузки
  */
-export interface IFileResponseToBackendUploadsItem{
+export interface FileResponseToBackendUploadsItem {
   uploadId: string;
-  value?: IUploadedFile[]
+  value?: UploadedFile[]
   relatedUploads?: {
-    uploads: IFileResponseToBackendUploadsItem[]
+    uploads: FileResponseToBackendUploadsItem[]
   }
 }
 /**
  * Интерфейс для экспорта одного значения для компонента загрузки для связанных компонентов
  */
-export interface IFileResponseToBackendWithRelatedUploads{
+export interface FileResponseToBackendWithRelatedUploads {
   uploadId: string;
-  uploads?: IFileResponseToBackendUploadsItem[]
+  uploads?: FileResponseToBackendUploadsItem[]
 }
 
 /**
  * Интерфейс для аттрибутов файла на загрузку из JSON
  */
-export interface IFileUploadAttributes{
-  uploads: IFileUploadItem[],
+export interface FileUploadAttributes {
+  uploads: FileUploadItem[],
   uploadId?: string;
   idAttrs?: string[];
   ref?: string;
@@ -49,7 +49,7 @@ export interface IFileUploadAttributes{
 /**
  * Интерфейс для связанных файлов на загрузки из JSON
  */
-export interface IRelatedUploads extends IFileUploadAttributes{
+export interface RelatedUploads extends FileUploadAttributes {
   ref: string;
   idAttrs: string[];
 }
@@ -57,19 +57,19 @@ export interface IRelatedUploads extends IFileUploadAttributes{
 /**
  * Интерфейс для файла на загругку из JSON
  */
-export interface IFileUploadItem{
+export interface FileUploadItem {
   uploadId: string;
   label: string;
   fileType: string[];
   maxFileCount?: number;
   maxSize?: number;
-  relatedUploads?: IRelatedUploads
+  relatedUploads?: RelatedUploads
 }
 
 /**
  * Интерфейс для класса подгруженного файла
  */
-export interface IUploadedFile{
+export interface UploadedFile {
   fileName: string;
   objectId: number;
   objectTypeId: number;

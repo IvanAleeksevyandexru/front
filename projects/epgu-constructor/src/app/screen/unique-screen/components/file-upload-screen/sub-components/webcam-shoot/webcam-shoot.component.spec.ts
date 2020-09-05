@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WebcamShootComponent } from './webcam-shoot.component';
 import { WebcamModule } from 'ngx-webcam';
-import { WebcamEvents } from '../../../../../../services/webcam/webcamevents';
+import { WebcamEvents } from '../../webcam/webcamevents';
 
 describe('WebcamShootComponent', () => {
   let component: WebcamShootComponent;

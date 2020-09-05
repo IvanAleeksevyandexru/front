@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ITerraFileOptions, ITerraUploadFileOptions } from '../../../interfaces/terabyte.interface';
+import { TerraFileOptions, TerraUploadFileOptions } from './terra-byte-api.types';
 import { Observable } from 'rxjs';
-import { UploadedFile } from '../../screen/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
-import { ConfigService } from '../../config/config.service';
+import { TerraUploadedFile } from '../../sub-components/file-upload-item/data';
+import { ConfigService } from '../../../../../../config/config.service';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
  */
 @Injectable()
-export class TerabyteService {
+export class TerraByteApiService {
   isLocalHost = false;
   apiUrl: string;
   apiLocalhostUrl: string;
@@ -83,7 +83,7 @@ export class TerabyteService {
    * Возвращает информацию по файлу
    * @param options - параметры для получения файла
    */
-  getFileInfo(options: ITerraFileOptions): Observable<any>  {
+  getFileInfo(options: TerraFileOptions): Observable<any>  {
     // eslint-disable-next-line max-len
     return this.http.get(this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`), this.getServerRequestOptions());
   }
@@ -93,7 +93,7 @@ export class TerabyteService {
    * @param options - опции для отправки файла
    * @param file - данные файла
    */
-  uploadFile(options: ITerraUploadFileOptions, file: File | Blob): Observable<any> {
+  uploadFile(options: TerraUploadFileOptions, file: File | Blob): Observable<any> {
     const formData = new FormData();
     if (file instanceof File){
       formData.append('file', file, file.name);
@@ -111,7 +111,7 @@ export class TerabyteService {
    * Запрос на удаление файла
    * @param options - данные о файле
    */
-  deleteFile(options: ITerraFileOptions): Observable<any> {
+  deleteFile(options: TerraFileOptions): Observable<any> {
     const url = `/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`;
     // eslint-disable-next-line max-len
     return this.http.delete(this.getTerabyteApiUrl(url), this.getServerRequestOptions());
@@ -122,7 +122,7 @@ export class TerabyteService {
    * Запрос на загрузку уже существующего
    * @param options - данные о файле
    */
-  downloadFile(options: ITerraFileOptions): Observable<any> {
+  downloadFile(options: TerraFileOptions): Observable<any> {
     // eslint-disable-next-line max-len
     return this.http.get(this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`), this.getServerRequestOptions({
       responseType: 'blob'
@@ -133,7 +133,7 @@ export class TerabyteService {
    * Отдача пользователю файла прямо в браузер
    * @private
    */
-  pushFileToBrowserForDownload(data: Blob, file: UploadedFile) {
+  pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile) {
     const url = window.URL.createObjectURL(data);
     const a = document.createElement('a');
     document.body.appendChild(a);

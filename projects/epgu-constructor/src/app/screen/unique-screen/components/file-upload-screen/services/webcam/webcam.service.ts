@@ -1,10 +1,10 @@
 import { ComponentRef, ApplicationRef, ComponentFactoryResolver, Inject, Injectable, Injector } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ComponentPortal, DomPortalOutlet } from '@angular/cdk/portal';
-import { WebcamEvents } from './webcamevents';
+import { WebcamEvents } from '../../webcam/webcamevents';
 import {
   WebcamShootComponent
-} from '../../screen/unique-screen/components/file-upload-screen/sub-components/webcam-shoot/webcam-shoot.component';
+} from '../../sub-components/webcam-shoot/webcam-shoot.component';
 
 @Injectable({
   providedIn: 'root'
