@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../../../interfaces/temporary-registration-addr.interface';
+import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
@@ -10,10 +10,10 @@ import { FormsModule } from '@angular/forms';
 
 
 describe('TemporaryRegistrationAddrComponent', () => {
-  let component: TemporaryRegistrationAddrComponent;
-  let fixture: ComponentFixture<TemporaryRegistrationAddrComponent>;
+  let component: TemporaryRegistrationComponent;
+  let fixture: ComponentFixture<TemporaryRegistrationComponent>;
   let configService: ConfigService;
-  const mockData: TemporaryRegistrationAddrComponentInterface = {
+  const mockData: TemporaryRegistrationComponent = {
     attrs: {
       actions: [],
       fields: [],
