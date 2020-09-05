@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
 import { ChildUnder14Interface } from '../../../../../../../interfaces/children.interface';
 import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
@@ -44,7 +45,7 @@ export class AddChildrenScreenComponent implements OnInit {
     this.selectedItems = {};
     this.passDataToSend(Object.values(this.selectedItems));
     this.generateFormGroup();
-    this.addChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((changes) => {
+    this.addChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.items = Object.keys(this.addChildrenForm.controls);
     });
   }
