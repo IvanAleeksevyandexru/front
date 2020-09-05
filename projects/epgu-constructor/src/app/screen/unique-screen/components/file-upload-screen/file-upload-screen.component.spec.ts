@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentItem } from '../../../../services/api/form-player-api/form-player-api.types';
+import { ComponentBase } from '../../../../services/api/form-player-api/form-player-api.types';
 
 // TODO: Need to refactoring component
 describe.skip('FileUploadScreenComponent', () => {
   let component: FileUploadScreenComponent;
   let fixture: ComponentFixture<FileUploadScreenComponent>;
-  let mockData: ComponentItem = {
+  let mockData: ComponentBase = {
     attrs: {
       uploads: [
         {

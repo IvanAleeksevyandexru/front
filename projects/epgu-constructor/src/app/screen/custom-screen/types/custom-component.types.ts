@@ -1,7 +1,7 @@
 import { ListItem } from 'epgu-lib';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../constant/global';
-import { DictionaryItem, DictionaryResponse } from './dictionary-options.interface';
-import { ComponentItem, Display } from '../app/services/api/form-player-api/form-player-api.types';
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
+import { DictionaryItem, DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
+import { ComponentBase, Display } from '../../../services/api/form-player-api/form-player-api.types';
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
@@ -10,7 +10,7 @@ export interface CustomComponentDictionaryState {
   loadError: boolean,
   loadEnd: boolean,
   paginationLoading: boolean;
-  origin: CustomComponentInterface;
+  origin: CustomComponent;
   data: DictionaryResponse;
   list: Array<ListItem>;
   page: number;
@@ -36,7 +36,7 @@ export type CustomComponentDropDownItem = {
  * (например Регион связан со траной что и чтоб не выкачивать все регионы мира, в ссылке будет указана страна)
  * @property {string}dictionaryType - dictionary name for request {@see getDictionary}
  */
-export interface CustomComponentAttrInterface {
+export interface CustomComponentAttr {
   [key:string]:any;
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType: string;
@@ -44,11 +44,11 @@ export interface CustomComponentAttrInterface {
   fields: Array<any>;
   ref: Array<any>;
   requiredAttrs?: Array<string>;
-  validation: Array<CustomComponentAttrValidationInterface>;
-  supportedValues?: Array<ISupportedValue>;
+  validation: Array<CustomComponentAttrValidation>;
+  supportedValues?: Array<SupportedValue>;
 }
 
-export interface CustomComponentAttrValidationInterface {
+export interface CustomComponentAttrValidation {
   type: string;
   value: string;
   ref: string;
@@ -67,10 +67,10 @@ export interface CustomComponentStateItem {
   isShown: boolean;
   errorMessage: string;
   value: any;
-  component: CustomComponentInterface
+  component: CustomComponent
 }
 
-export interface CustomComponentOutputDataInterface {
+export interface CustomComponentOutputData {
   [key: string]: {
     value: string;
     valid: boolean
@@ -81,23 +81,23 @@ export interface CustomComponentOutputDataInterface {
  * @property {string}relatedRel - id компонента от которого зависим
  * @property {string}val - ключевое значение которое должен принимать компонент от которого заивисм
  */
-export interface CustomComponentRefInterface {
+export interface CustomComponentRef {
   'relatedRel': string,
   'val': string,
   'relation': string
 }
 
-export interface CustomDisplayInterface extends Display {
-  components: Array<CustomComponentInterface>;
+export interface CustomDisplay extends Display {
+  components: Array<CustomComponent>;
 }
 
-export interface CustomComponentInterface extends ComponentItem{
-  attrs: CustomComponentAttrInterface;
+export interface CustomComponent extends ComponentBase{
+  attrs: CustomComponentAttr;
   type: CUSTOM_COMPONENT_ITEM_TYPE;
   hint?: string;
 }
 
-interface ISupportedValue {
+interface SupportedValue {
   label: string;
   value: string;
 }

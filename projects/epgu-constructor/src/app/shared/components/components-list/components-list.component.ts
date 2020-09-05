@@ -4,10 +4,10 @@ import { ListItem, ValidationShowOn } from 'epgu-lib';
 import {
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
-  CustomComponentInterface,
-  CustomComponentOutputDataInterface,
+  CustomComponent,
+  CustomComponentOutputData,
   CustomComponentState,
-} from '../../../../interfaces/custom-component.interface';
+} from '../../../screen/custom-screen/types/custom-component.types';
 import { DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
 import {
   adaptiveDropDown,
@@ -40,8 +40,8 @@ export class ComponentsListComponent implements OnChanges {
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
   dropDown: { [key: string]: CustomComponentDropDownStateInterface } = {};
 
-  @Input() components: Array<CustomComponentInterface>;
-  @Output() changes = new EventEmitter<CustomComponentOutputDataInterface>();
+  @Input() components: Array<CustomComponent>;
+  @Output() changes = new EventEmitter<CustomComponentOutputData>();
 
   constructor(
     private dictionaryApiService: DictionaryApiService,
@@ -67,7 +67,7 @@ export class ComponentsListComponent implements OnChanges {
   /**
    * Инициализирует стейт для компонента.
    */
-  initComponent(component: CustomComponentInterface) {
+  initComponent(component: CustomComponent) {
     this.initState(component);
     if (likeDictionary(component.type)) {
       const dictionaryName = component.attrs.dictionaryType;
@@ -78,7 +78,7 @@ export class ComponentsListComponent implements OnChanges {
     }
   }
 
-  initState(component: CustomComponentInterface) {
+  initState(component: CustomComponent) {
     this.state[component.id] = getInitStateItemComponentList(component);
   }
 
@@ -86,7 +86,7 @@ export class ComponentsListComponent implements OnChanges {
     this.dictionary[dictionaryName] = getCustomScreenDictionaryFirstState();
   }
 
-  initDropDown(component: CustomComponentInterface) {
+  initDropDown(component: CustomComponent) {
     const key = component.id;
     const data = component.attrs.dictionaryList;
     this.dropDown[key] = {
@@ -95,7 +95,7 @@ export class ComponentsListComponent implements OnChanges {
     };
   }
 
-  selectDictionary(selectedItem: ListItem, component: CustomComponentInterface) {
+  selectDictionary(selectedItem: ListItem, component: CustomComponent) {
     const dictionaryName = component.attrs?.dictionaryType;
     this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
     this.state[component.id].value = selectedItem.originalItem;
@@ -103,12 +103,12 @@ export class ComponentsListComponent implements OnChanges {
     this.emmitChanges(component);
   }
 
-  selectDropDown($event: any, componentData: CustomComponentInterface) {
+  selectDropDown($event: any, componentData: CustomComponent) {
     this.state[componentData.id].value = $event.origin;
     this.emmitChanges();
   }
 
-  inputChange($event: Event, component: CustomComponentInterface) {
+  inputChange($event: Event, component: CustomComponent) {
     const { value } = $event.target as HTMLInputElement;
     this.state[component.id].value = value;
     const inputValidationResult = CheckInputValidationComponentList(value, component);
@@ -116,7 +116,7 @@ export class ComponentsListComponent implements OnChanges {
     this.emmitChanges(component);
   }
 
-  dateChange($event: string, component: CustomComponentInterface) {
+  dateChange($event: string, component: CustomComponent) {
     const value = $event;
     this.state[component.id].value = value;
     const inputValidationResult = CheckInputValidationComponentList(value, component);
@@ -124,7 +124,7 @@ export class ComponentsListComponent implements OnChanges {
     this.emmitChanges(component);
   }
 
-  loadDictionary(dictionaryName: string, component: CustomComponentInterface) {
+  loadDictionary(dictionaryName: string, component: CustomComponent) {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
     this.dictionaryApiService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryName, data, component),
@@ -135,11 +135,7 @@ export class ComponentsListComponent implements OnChanges {
     );
   }
 
-  loadDictionarySuccess(
-    key: string,
-    data: DictionaryResponse,
-    component: CustomComponentInterface,
-  ) {
+  loadDictionarySuccess(key: string, data: DictionaryResponse, component: CustomComponent) {
     this.dictionary[key].loading = false;
     this.dictionary[key].paginationLoading = false;
     this.dictionary[key].data = data;
@@ -176,7 +172,7 @@ export class ComponentsListComponent implements OnChanges {
     return required ? '' : OPTIONAL_FIELD;
   }
 
-  emmitChanges(component?: CustomComponentInterface) {
+  emmitChanges(component?: CustomComponent) {
     if (component) {
       calcDependedComponent(component, this.state, this.components);
     }

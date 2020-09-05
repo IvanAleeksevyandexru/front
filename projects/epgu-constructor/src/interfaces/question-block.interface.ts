@@ -1,11 +1,11 @@
-import { ComponentItem, Display } from '../app/services/api/form-player-api/form-player-api.types';
+import { ComponentBase, Display } from '../app/services/api/form-player-api/form-player-api.types';
 
 
 export interface QuestionsDisplayInterface extends Display {
   components: Array<QuestionsComponentInterface>;
 }
 
-interface QuestionsComponentInterface extends ComponentItem {
+interface QuestionsComponentInterface extends ComponentBase {
   attrs: {
     actions: Array<QuestionsComponentActionsInterface>;
     fields: object;
