@@ -41,10 +41,6 @@ export enum UNIQUE_COMPONENT_NAME {
   'confirmMarriage' = 'ConfirmMarriage',
 }
 
-export enum EMPTY_SCREEN_COMPONENT {
-  'redirect' = 'Redirect',
-}
-
 export enum CUSTOM_COMPONENT_ITEM_TYPE {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
