@@ -1,4 +1,4 @@
-import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
 
 export class TimeSlotsConstants {
   errorModal: ConfirmationModal = {

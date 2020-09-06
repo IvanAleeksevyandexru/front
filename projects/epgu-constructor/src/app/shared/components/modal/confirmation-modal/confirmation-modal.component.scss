@@ -1,4 +1,4 @@
-@import "../../../../styles/core";
+@import "../../../../../styles/core";
 
 // TODO Избавиться от ng-deep
 :host::ng-deep {
@@ -7,7 +7,7 @@
     flex-direction: column;
     @include modal-body();
     width: 634px;
-    max-height: 90vh;
+    max-height: 485px;
     padding: 32px;
     border-radius: 12px;
 
@@ -61,14 +61,13 @@
     }
 
     &__text {
-      @include typ-plain-text();
       white-space: pre-line;
+      font-size: 16px;
+      line-height: 24px;
     }
 
     &__text-wrapper {
       overflow-y: auto;
-      padding: 24px 20px 0 0;
-      margin-right: 6px;
     }
 
     &__controls {
@@ -76,6 +75,10 @@
       margin-top: 26px;
       justify-content: center;
       flex: 1;
+
+      & > * {
+        margin-right: 20px;
+      }
     }
 
     &__button {

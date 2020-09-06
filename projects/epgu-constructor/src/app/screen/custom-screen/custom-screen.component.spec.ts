@@ -7,7 +7,7 @@ import { ScreenTypes } from '../../shared/types/screen.types';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
-import { PageNameComponent } from '../../shared/components/page-name/page-name.component';
+import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 import { ComponentsListComponent } from './components-list/components-list.component';
 import { ScreenService } from '../screen.service';

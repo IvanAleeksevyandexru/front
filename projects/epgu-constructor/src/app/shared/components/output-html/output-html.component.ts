@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalService } from '../../../services/modal/modal.service';
-import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirmation-modal.component';
 import { getHiddenBlock } from '../../constants/uttils';
 
 @Component({

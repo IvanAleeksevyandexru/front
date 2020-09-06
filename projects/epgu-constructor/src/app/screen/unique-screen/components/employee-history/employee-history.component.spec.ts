@@ -5,8 +5,8 @@ import { EmployeeHistoryFormService } from './services/employee-history.form.ser
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { ButtonComponent, CheckboxComponent, DatePickerComponent, PlainInputComponent, RadioComponent } from 'epgu-lib';
-import { PageNameComponent } from '../../../../shared/components/page-name/page-name.component';
-import { LabelComponent } from '../../../../shared/components/label/label.component';
+import { PageNameComponent } from '../../../../shared/components/base/page-name/page-name.component';
+import { LabelComponent } from '../../../../shared/components/base/label/label.component';
 import { NavigationComponent } from '../../../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { NavigationService } from '../../../../shared/services/navigation/navigation.service';

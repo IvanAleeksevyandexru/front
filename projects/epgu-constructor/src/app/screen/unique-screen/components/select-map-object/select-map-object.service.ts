@@ -6,7 +6,7 @@ import { Icons } from './constants';
 import { ConfigService } from '../../../../config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { ModalService } from '../../../../services/modal/modal.service';
-import { CommonModalComponent } from '../../../../shared/components/common-modal/common-modal.component';
+import { CommonModalComponent } from '../../../../shared/components/modal/common-modal/common-modal.component';
 
 @Injectable()
 export class SelectMapObjectService {

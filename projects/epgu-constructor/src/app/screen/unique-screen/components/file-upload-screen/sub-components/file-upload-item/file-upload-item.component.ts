@@ -24,7 +24,7 @@ import {
   isCloseWebcamEvent,
   WebcamEvent,
 } from '../../webcam/webcamevents';
-import { ConfirmationModalComponent } from '../../../../../../shared/components/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../../../services/modal/modal.service';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 import { getHiddenBlock } from '../../../../../../shared/constants/uttils';

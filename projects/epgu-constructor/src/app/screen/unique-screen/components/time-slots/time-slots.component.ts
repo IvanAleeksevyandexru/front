@@ -10,8 +10,8 @@ import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { SlotInterface } from './slot.interface';
 import { TimeSlotsConstants } from './time-slots.constants';
-import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
 
 const moment = moment_;
 

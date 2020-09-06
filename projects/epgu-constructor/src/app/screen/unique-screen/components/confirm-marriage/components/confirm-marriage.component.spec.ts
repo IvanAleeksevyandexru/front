@@ -7,7 +7,7 @@ import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscr
 import { TimerComponent } from './timer/timer.component';
 import { TimerPipe } from '../pipes/timer.pipe';
 import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
-import { PageNameComponent } from '../../../../../shared/components/page-name/page-name.component';
+import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
