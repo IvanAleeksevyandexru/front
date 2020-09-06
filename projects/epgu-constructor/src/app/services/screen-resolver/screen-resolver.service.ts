@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_COMPONENTS } from '../../screen/screen.types';
+import { SCREEN_COMPONENTS } from '../../screen/screen.const';
 
 
 @Injectable()
