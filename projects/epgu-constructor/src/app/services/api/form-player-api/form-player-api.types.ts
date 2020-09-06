@@ -2,17 +2,17 @@ import { ScreenTypes } from '../../../shared/types/screen.types';
 
 export type Gender = 'M' | 'F';
 
-export interface CurrentValue {
-  visited: boolean;
-  value: any;
+export interface Answer {
+  visited: boolean,
+  value: string,
 }
 
-// TODO: maybe should use CurrentValue at ApplicantAnswers
 export interface ApplicantAnswers {
-  [key: string]: {
-    visited: boolean,
-    value: string,
-  }
+  [key: string]: Answer
+}
+
+export interface CurrentValue {
+  [key: string]: Answer
 }
 
 /**
@@ -54,6 +54,10 @@ export interface Display {
   type: ScreenTypes;
 }
 
+export interface CurrentCycledFields {
+  [key: string]: string
+}
+
 /**
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
  * @property {number}currentRule - id сценария для управление порядком компонентов (наверное не нужен для фронта)
@@ -70,8 +74,8 @@ export interface Display {
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswers;
   currentRule: number;
-  currentValue: object;
-  currentCycledFields: object;
+  currentValue: CurrentValue;
+  currentCycledFields: CurrentCycledFields;
   cycledFields: Array<object>;
   display: Display;
   errors: object;
