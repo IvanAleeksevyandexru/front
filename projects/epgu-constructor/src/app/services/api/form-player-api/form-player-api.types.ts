@@ -1,4 +1,4 @@
-import { ScreenTypes } from '../../../shared/types/screen.types';
+import { ScreenTypes } from '../../../screen/screen.types';
 
 export type Gender = 'M' | 'F';
 

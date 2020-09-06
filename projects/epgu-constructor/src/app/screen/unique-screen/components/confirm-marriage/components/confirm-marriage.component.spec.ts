@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ButtonComponent } from 'epgu-lib';
 
 import { ConfirmMarriageComponent } from './confirm-marriage.component';
-import { ScreenTypes } from '../../../../../shared/types/screen.types';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { TimerComponent } from './timer/timer.component';
 import { TimerPipe } from '../pipes/timer.pipe';
@@ -12,6 +11,7 @@ import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
 import { Display } from '../../../../../services/api/form-player-api/form-player-api.types';
+import { ScreenTypes } from '../../../../screen.types';
 
 describe('TimerComponent', () => {
   let component: ConfirmMarriageComponent;

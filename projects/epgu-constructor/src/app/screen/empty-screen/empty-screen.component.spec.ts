@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ScreenTypes } from '../../shared/types/screen.types';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EmptyScreenComponent } from './empty-screen.component';
-import { ScreenStore } from '../screen.types';
+import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';

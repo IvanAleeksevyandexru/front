@@ -6,8 +6,7 @@ import { MockComponent } from 'ng-mocks';
 import { InvitationErrorComponent } from './components/error/invitation-error.component';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenService } from '../screen.service';
-import { ScreenStore } from '../screen.types';
-import { ScreenTypes } from '../../shared/types/screen.types';
+import { ScreenStore, ScreenTypes } from '../screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 

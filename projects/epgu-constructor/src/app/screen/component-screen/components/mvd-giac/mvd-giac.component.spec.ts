@@ -9,7 +9,7 @@ import { DictionaryApiService } from '../../../../services/api/dictionary-api/di
 import { DictionaryApiServiceStub } from '../../../../services/api/dictionary-api/dictionary-api.service.stub';
 import { ApplicantAnswers, Display } from '../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentScreenComponentTypes } from '../../component-screen.types';
-import { ScreenTypes } from '../../../../shared/types/screen.types';
+import { ScreenTypes } from '../../../screen.types';
 
 describe('MvdGiacComponent', () => {
   let component: MvdGiacComponent;

@@ -11,7 +11,7 @@ import { NavigationComponent } from '../../../../shared/components/navigation/na
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { NavigationService } from '../../../../shared/services/navigation/navigation.service';
 import { MockComponent } from 'ng-mocks';
-import { ScreenTypes } from '../../../../shared/types/screen.types';
+import { ScreenTypes } from '../../../screen.types';
 
 describe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ScreenTypes } from '../../shared/types/screen.types';
 import {
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
@@ -11,6 +10,7 @@ import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
+import { ScreenTypes } from '../../screen/screen.types';
 
 
 @Injectable()

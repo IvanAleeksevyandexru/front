@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ScreenTypes } from '../../shared/types/screen.types';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
 import { ComponentScreenComponent } from './component-screen.component';
@@ -8,7 +7,7 @@ import { ScreenContainerComponent } from '../../shared/components/screen-contain
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ScreenStore } from '../screen.types';
+import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 

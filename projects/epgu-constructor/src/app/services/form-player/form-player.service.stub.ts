@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ScreenTypes } from '../../shared/types/screen.types';
 import {
   Display,
   FormPlayerApiSuccessResponse
 } from '../api/form-player-api/form-player-api.types';
+import { ScreenTypes } from '../../screen/screen.types';
 
 
 @Injectable()
