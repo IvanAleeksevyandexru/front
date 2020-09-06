@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-  Display,
+  DisplayDto,
   FormPlayerApiSuccessResponse
 } from '../api/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../screen/screen.types';
@@ -32,7 +32,7 @@ export class FormPlayerServiceStub {
     }};
   componentId: string;
   componentType: string;
-  componentData: Display;
+  componentData: DisplayDto;
   isLoading = false;
 
   getData(): void {}

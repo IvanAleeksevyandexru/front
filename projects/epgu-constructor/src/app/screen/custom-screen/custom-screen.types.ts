@@ -1,6 +1,6 @@
 import { ListItem } from 'epgu-lib';
 import { DictionaryItem, DictionaryResponse } from '../../services/api/dictionary-api/dictionary-api.types';
-import { ComponentBase, Display } from '../../services/api/form-player-api/form-player-api.types';
+import { ComponentDto, DisplayDto } from '../../services/api/form-player-api/form-player-api.types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -99,11 +99,11 @@ export interface CustomComponentRef {
   'relation': string
 }
 
-export interface CustomDisplay extends Display {
+export interface CustomDisplay extends DisplayDto {
   components: Array<CustomComponent>;
 }
 
-export interface CustomComponent extends ComponentBase{
+export interface CustomComponent extends ComponentDto{
   attrs: CustomComponentAttr;
   type: CustomScreenComponentTypes;
   hint?: string;

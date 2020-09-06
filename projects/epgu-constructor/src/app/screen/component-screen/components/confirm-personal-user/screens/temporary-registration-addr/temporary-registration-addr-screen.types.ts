@@ -1,4 +1,4 @@
-import { ComponentBase, Display } from '../../../../../../services/api/form-player-api/form-player-api.types';
+import { ComponentBase, Display } from '../../../../../screen.types';
 
 export interface TemporaryRegistrationDisplay extends Display {
   components: Array<TemporaryRegistrationComponent>;

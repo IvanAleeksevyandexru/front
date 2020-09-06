@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ComponentBase } from '../../../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { ComponentBase } from '../../../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-email-screen',

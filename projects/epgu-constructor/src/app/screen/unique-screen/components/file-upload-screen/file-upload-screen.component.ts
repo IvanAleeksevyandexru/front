@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentBase } from '../../../../services/api/form-player-api/form-player-api.types';
 import { FileUploadItem } from './services/terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen.types';
+import { ComponentBase } from '../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',

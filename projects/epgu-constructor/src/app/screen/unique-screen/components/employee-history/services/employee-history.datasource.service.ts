@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EmployeeHistoryDataSource } from '../employee-history.types';
-import { Gender } from '../../../../../services/api/form-player-api/form-player-api.types';
+import { Gender } from '../../../../screen.types';
 
 @Injectable({
   providedIn: 'root'

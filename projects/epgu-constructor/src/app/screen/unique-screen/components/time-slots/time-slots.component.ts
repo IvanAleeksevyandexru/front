@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { Display } from '../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { TimeSlotsService } from './time-slots.service';
@@ -12,6 +11,7 @@ import { SlotInterface } from './slot.interface';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
+import { Display } from '../../../screen.types';
 
 const moment = moment_;
 

@@ -6,7 +6,7 @@ import { ConfirmMarriageInfoInterface } from '../models/confirm-marriage-info.in
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { TimerInterface } from '../models/timer.interface';
 import { createTimerForConfirmMarriage } from './confirm-marriage.helper';
-import { Display } from '../../../../../services/api/form-player-api/form-player-api.types';
+import { Display } from '../../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-marriage',

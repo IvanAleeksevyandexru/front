@@ -6,8 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 import * as uuid from 'uuid';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
-import { ComponentBase } from '../../../../../../services/api/form-player-api/form-player-api.types';
 import { ChildUnder14 } from './add-children-screen.type';
+import { ComponentBase } from '../../../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-add-children-screen',

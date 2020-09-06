@@ -10,7 +10,7 @@ import {
 } from './mvd-giac.functions';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { DictionaryResponse } from '../../../../services/api/dictionary-api/dictionary-api.types';
-import { ApplicantAnswers } from '../../../../services/api/form-player-api/form-player-api.types';
+import { ApplicantAnswers } from '../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-mvd-giac',

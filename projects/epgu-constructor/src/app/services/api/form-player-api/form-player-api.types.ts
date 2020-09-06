@@ -1,18 +1,18 @@
 import { ScreenTypes } from '../../../screen/screen.types';
 
-export type Gender = 'M' | 'F';
+export type GenderDto = 'M' | 'F';
 
-export interface Answer {
+export interface AnswerDto {
   visited: boolean,
   value: string,
 }
 
-export interface ApplicantAnswers {
-  [key: string]: Answer
+export interface ApplicantAnswersDto {
+  [key: string]: AnswerDto
 }
 
-export interface CurrentValue {
-  [key: string]: Answer
+export interface CurrentValueDto {
+  [key: string]: AnswerDto
 }
 
 /**
@@ -26,7 +26,7 @@ export interface CurrentValue {
  * (например проверка персональные данные будут содержать json с персональными данными)
  * @property {boolean}visited? - булевый флаг пройдена ли пользователем бизнес-логика данного компонента
  */
-export interface ComponentBase {
+export interface ComponentDto {
   attrs: {[key: string]: any};
   id: string;
   label: string;
@@ -44,8 +44,8 @@ export interface ComponentBase {
  * @property {string}submitLabel - текст для submit-button'a
  * @property {ScreenTypes}type - тип компонента
  */
-export interface Display {
-  components: Array<ComponentBase>;
+export interface DisplayDto {
+  components: Array<ComponentDto>;
   header: string;
   label?: string;
   id: string;
@@ -54,11 +54,11 @@ export interface Display {
   type: ScreenTypes;
 }
 
-export interface CurrentCycledFields {
+export interface CurrentCycledFieldsDto {
   [key: string]: string
 }
 
-export interface ScenarioErrors {
+export interface ScenarioErrorsDto {
   [key: string]: string
 }
 
@@ -66,23 +66,22 @@ export interface ScenarioErrors {
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
  * @property {number}currentRule - id сценария для управление порядком компонентов (наверное не нужен для фронта)
  * @property {object}currentValue - для отправляемых данных
- * @property {Display}display - текущий экран с компонентами и данными для отрисовки
+ * @property {DisplayDto}display - текущий экран с компонентами и данными для отрисовки
  * @property {string}gender- пол пользователя
  * @property {string}orderId - идентификатор запорлнения черновика, (уже был черновик...)
  * (человек 1, человек 2) => эти людям прилетает уведомление о подтверждении ...
  * @property {string}token - в целях разработки, на проде через cookie;
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
- *
  */
 export interface ScenarioDto {
-  applicantAnswers: ApplicantAnswers;
-  currentCycledFields: CurrentCycledFields;
+  applicantAnswers: ApplicantAnswersDto;
+  currentCycledFields: CurrentCycledFieldsDto;
   currentScenarioId: string;
-  currentValue: CurrentValue;
+  currentValue: CurrentValueDto;
   cycledFields: Array<object>; // looks lice it unused property
-  display: Display;
-  errors: ScenarioErrors;
-  gender: Gender;
+  display: DisplayDto;
+  errors: ScenarioErrorsDto;
+  gender: GenderDto;
   finishedAndCurrentScreens: string[];
   orderId: string;
   token: string;

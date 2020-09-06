@@ -10,8 +10,7 @@ import { PageNameComponent } from '../../../../../shared/components/base/page-na
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
-import { Display } from '../../../../../services/api/form-player-api/form-player-api.types';
-import { ScreenTypes } from '../../../../screen.types';
+import { Display, ScreenTypes } from '../../../../screen.types';
 
 describe('TimerComponent', () => {
   let component: ConfirmMarriageComponent;

@@ -18,7 +18,7 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { UtilsService } from '../../../../services/utils/utils.service';
 import { Utilities } from './utilities';
-import { ComponentBase } from '../../../../services/api/form-player-api/form-player-api.types';
+import { ComponentBase } from '../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',

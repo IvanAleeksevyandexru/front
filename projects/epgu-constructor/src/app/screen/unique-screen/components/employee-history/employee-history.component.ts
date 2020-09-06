@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import * as moment_ from 'moment';
 import { ValidationShowOn } from 'epgu-lib';
-import { Display, Gender } from '../../../../services/api/form-player-api/form-player-api.types';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
@@ -12,6 +11,7 @@ import {
   EmployeeHistoryModel,
 } from './employee-history.types';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
+import { Display, Gender } from '../../../screen.types';
 
 const moment = moment_;
 

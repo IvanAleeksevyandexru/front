@@ -1,5 +1,5 @@
 import { DictionaryOptions } from '../../../../services/api/dictionary-api/dictionary-api.types';
-import { Display, Gender } from '../../../../services/api/form-player-api/form-player-api.types';
+import { Display, Gender } from '../../../screen.types';
 
 /**
  * Интерфейс атрибутов приходящих об оплате
