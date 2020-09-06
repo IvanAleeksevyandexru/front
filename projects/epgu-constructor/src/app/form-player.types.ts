@@ -3,10 +3,19 @@ export enum FormPlayerNavigation {
   'PREV' = 'getPrevStep',
 }
 
+export type NavigationPayloadData = {
+  [key: string]: {
+    value: string,
+    visited?: boolean,
+  }
+} | string;
+
+export type NavigationPayloadOptions = {
+  componentId?: string;
+  goBack?: boolean;
+};
+
 export interface NavigationPayload {
-  data?: any,
-  options?: {
-    componentId?: string;
-    goBack?: boolean;
-  },
+  data?: NavigationPayloadData;
+  options?: NavigationPayloadOptions,
 }

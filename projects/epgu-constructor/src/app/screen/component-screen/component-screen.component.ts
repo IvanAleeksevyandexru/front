@@ -74,7 +74,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   nextStep($event) {
-    let data: string | object;
+    let data: string;
     if (typeof this.componentStateService.state === 'object') {
       data = JSON.stringify(this.componentStateService.state);
     } else {

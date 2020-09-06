@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  CurrentValueDto,
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
@@ -110,11 +111,11 @@ export class FormPlayerService {
 
     // TODO HARDCODE наверное компоненты должны поднимать готовый state,
     if (this.screenType === ScreenTypes.CUSTOM || isCycledFields) {
-      this.store.scenarioDto.currentValue = data;
+      this.store.scenarioDto.currentValue = data as CurrentValueDto;
     } else {
       this.store.scenarioDto.currentValue[componentId] = {
         visited: true,
-        value: data || '',
+        value: data as string || '',
       };
     }
   }
