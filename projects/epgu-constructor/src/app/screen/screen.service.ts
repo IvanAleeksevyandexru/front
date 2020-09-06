@@ -45,10 +45,5 @@ export class ScreenService {
     });
 
     this.screenStore.display = { ...this.screenStore.display, components };
-
-    console.log('________Store with answered data___________');
-    console.log('componentId:', this.screenStore.display.components[0].id);
-    console.log('componentType:', this.screenStore.display.components[0].type);
-    console.log('store', this.screenStore);
   }
 }
