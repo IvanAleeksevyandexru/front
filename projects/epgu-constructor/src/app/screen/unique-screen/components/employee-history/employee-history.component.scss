@@ -2,6 +2,10 @@
 @import "src/styles/core/functions";
 @import "src/styles/core/typography";
 
+.nav {
+  @include navigation-mt();
+}
+
 .employee-history {
   &__generation,
   &__addedGenerations {

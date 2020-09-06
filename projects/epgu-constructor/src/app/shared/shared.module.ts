@@ -17,6 +17,7 @@ import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { NavigationService } from './services/navigation/navigation.service';
 import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
 import { CommonModalComponent } from './components/common-modal/common-modal.component';
+import { OutputHtmlComponent } from './components/output-html/output-html.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -30,6 +31,7 @@ const COMPONENTS = [
   ModalContainerComponent,
   ModalBaseComponent,
   HelperTextComponent,
+  OutputHtmlComponent,
 ];
 
 const PIPES = [

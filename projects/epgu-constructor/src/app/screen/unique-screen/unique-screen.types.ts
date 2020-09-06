@@ -7,4 +7,5 @@ export enum UniqueScreenComponentTypes {
   repeatableFields = 'RepeatableFields',
   employeeHistory = 'EmployeeHistory',
   confirmMarriage = 'ConfirmMarriage',
+  genderSelector = 'GenderSelector',
 }

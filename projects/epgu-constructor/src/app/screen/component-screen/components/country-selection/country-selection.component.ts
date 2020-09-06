@@ -58,12 +58,6 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
 
   modalParameters: ConfirmationModal = {
     text: this.minskConvention,
-    buttons: [
-      {
-        label: 'Закрыть',
-        closeModal: true,
-      },
-    ],
   };
 
   constructor(
@@ -105,10 +99,18 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
     this.changeComponentData.emit(country.id);
   }
 
-  showModal = () =>
-    this.modalService.openModal<null>(ConfirmationModalComponent, this.modalParameters);
-
   updateHelperText(): void {
     this.helperText = this.data.required ? '' : OPTIONAL_FIELD;
+  }
+
+  clickToInnerHTML($event: MouseEvent) {
+    const targetElementClass = ($event.target as HTMLElement).classList[0];
+    if (targetElementClass === 'country-apostil__minsk-convention-link') {
+      this.showModal();
+    }
+  }
+
+  showModal() {
+    this.modalService.openModal(ConfirmationModalComponent, this.modalParameters);
   }
 }

@@ -12,5 +12,6 @@ export enum ComponentScreenComponentTypes {
   snilsInput = 'SnilsInput',
   docInput = 'DocInput',
   countryApostil = 'CountryApostil',
-  paymentScr = 'PaymentScr'
+  paymentScr = 'PaymentScr',
+  mvdGiac = 'MvdGiac',
 }

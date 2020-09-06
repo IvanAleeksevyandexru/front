@@ -12,6 +12,7 @@ export enum CustomScreenComponentTypes {
   CompositeRadioButton = 'CompositeRadioButton',
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
+  htmlString = 'HtmlString',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };

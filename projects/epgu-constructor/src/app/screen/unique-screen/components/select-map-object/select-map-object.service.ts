@@ -7,7 +7,6 @@ import { ConfigService } from '../../../../config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { CommonModalComponent } from '../../../../shared/components/common-modal/common-modal.component';
-import { InfoScreenBodyComponentModalParams } from '../../../info-screen/component/info-screen-body/info-screen-body.constant';
 
 @Injectable()
 export class SelectMapObjectService {
@@ -329,7 +328,6 @@ export class SelectMapObjectService {
    */
   private showModalFromTemplate(templateName, balloon) {
     this.modalService.openModal(CommonModalComponent, {
-      ...InfoScreenBodyComponentModalParams,
       modalTemplateRef: this.templates[templateName],
       item: balloon?.getData && balloon.getData().properties.get('res'),
     }).subscribe(() => balloon?.rebuild()); // Перерисовка балуна чтобы IF в шаблоне заново отработали

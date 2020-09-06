@@ -1,6 +1,7 @@
 export interface ConfirmationModal {
   title?: string;
   text?: string;
+  showCloseButton?: boolean;
   elemEventHandlers?: {
     elemId: string;
     event: string;
@@ -13,4 +14,5 @@ export interface ConfirmationModal {
     handler?: Function;
     closeModal: boolean;
   }[];
+  clarifications?: object;
 }

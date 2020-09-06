@@ -14,6 +14,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import {
   FileResponseToBackendUploadsItem,
   FileUploadItem,
+  Clarifications,
   TerabyteListItem,
 } from '../../services/terra-byte-api/terra-byte-api.types';
 import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
@@ -23,7 +24,10 @@ import {
   isCloseWebcamEvent,
   WebcamEvent,
 } from '../../webcam/webcamevents';
+import { ConfirmationModalComponent } from '../../../../../../shared/components/confirmation-modal/confirmation-modal.component';
+import { ModalService } from '../../../../../../services/modal/modal.service';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
+import { getHiddenBlock } from '../../../../../../shared/constants/uttils';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -32,6 +36,7 @@ import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 })
 export class FileUploadItemComponent implements OnDestroy, OnInit {
   private loadData: FileUploadItem;
+  @Input() clarification: Clarifications;
   @Input()
   set data(data: FileUploadItem) {
     this.loadData = data;
@@ -97,8 +102,38 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     .subscribe();
   errors: string[] = [];
 
-  constructor(private terabyteService: TerraByteApiService, private webcamService: WebcamService) {}
+  constructor(
+    private terabyteService: TerraByteApiService,
+    private webcamService: WebcamService,
+    private modalService: ModalService,
+  ) {}
 
+  clickToInnerHTML($event: MouseEvent, el: HTMLElement): void {
+    const targetElementId = ($event.target as HTMLElement).id;
+    if (targetElementId) {
+      this.toggleHiddenBlockOrShowModal(el, targetElementId);
+    }
+  }
+
+  showModal(params) {
+    this.modalService.openModal(ConfirmationModalComponent, params);
+  }
+
+  private toggleHiddenBlockOrShowModal(el: HTMLElement, targetElementId: string) {
+    const hiddenBlock = getHiddenBlock(el, targetElementId);
+    if (hiddenBlock) {
+      hiddenBlock.hidden = !hiddenBlock.hidden;
+    } else {
+      this.startToShowModal(this.clarification, targetElementId);
+    }
+  }
+
+  private startToShowModal(clarifications = {}, targetElementId: string) {
+    const targetElementModalData = clarifications[targetElementId];
+    if (targetElementModalData) {
+      this.showModal(targetElementModalData);
+    }
+  }
   /**
    * Переводит список файлов с сервера в файлы для отображения
    * @param list - массив информациио файлах на сервере

@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { QuestionsComponentActions } from './questions-screen.types';
-import { ModalService } from '../../services/modal/modal.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { QuestionScreenModalParams } from './questions-screen.constant';
 import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationPayload } from '../../form-player.types';
@@ -25,7 +22,6 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
-    private modalService: ModalService,
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
@@ -83,21 +79,5 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     }
 
     this.nextStep({ data });
-  }
-
-  clickToInnerHTML($event: MouseEvent): void {
-    const targetElementId = ($event.target as HTMLElement).id;
-    const { clarifications = {} } = this.screenStore.display.components[0]?.attrs as any;
-    const targetElementModalData = clarifications[targetElementId];
-    if (targetElementModalData) {
-      this.showModal(targetElementModalData);
-    }
-  }
-
-  showModal(params): void {
-    this.modalService.openModal(ConfirmationModalComponent, {
-      ...QuestionScreenModalParams,
-      ...params,
-    });
   }
 }

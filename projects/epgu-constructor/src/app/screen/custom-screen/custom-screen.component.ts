@@ -59,11 +59,12 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     if (this.isCycledFields) {
       const [firstCurrentCycledValues] = Object.values(currentCycledFields);
       this.cycledValues = JSON.parse(firstCurrentCycledValues);
-      this.screenStore.display.components.forEach((item) => {
+      this.screenStore.display.components = this.screenStore.display.components.map((item) => {
+        const newItem = item;
         const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
         const cycledFieldKey = Object.keys(this.cycledValues).find((key) => key === fieldName);
-        // eslint-disable-next-line no-param-reassign
-        item.value = this.cycledValues[cycledFieldKey];
+        newItem.value = this.cycledValues[cycledFieldKey];
+        return newItem;
       });
     }
   }
@@ -117,7 +118,8 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
   }
 
   private formatCycledFieldsValues(changes: any) {
-    return Object.keys(changes).reduce((result, key) => {
+    return Object.keys(changes).reduce((accum, key) => {
+      const result = accum;
       const targetItem = changes[key];
       const targetItemValue = targetItem.value;
       const targetComponent = this.screenStore.display.components.find((item) => item.id === key);
@@ -125,10 +127,8 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
       if (!fieldName) return result;
 
       if (typeof targetItemValue === 'object' && moment(targetItemValue).isValid()) {
-        // eslint-disable-next-line no-param-reassign
         result[fieldName] = moment(targetItemValue).format(DATE_STRING_DOT_FORMAT);
       } else {
-        // eslint-disable-next-line no-param-reassign
         result[fieldName] = targetItemValue;
       }
       return result;

@@ -47,18 +47,27 @@
         </ng-container>
       </div>
 
+      <div class="form__item" *ngSwitchCase="componentType.htmlString">
+        <epgu-constructor-output-html
+          class="info__text"
+          [html]="componentData?.label"
+          [clarifications]="componentData?.attrs?.clarifications"
+        >
+        </epgu-constructor-output-html>
+      </div>
+
       <div class="form__item" *ngSwitchCase="componentType.StringInput">
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-plain-input
             [invalid]="!state[componentData.id].valid"
-            [name]="componentData.id"
+            [name]="componentData.id"output-html.component.ts
             [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
             [validationShowOn]="validationShowOn"
           ></lib-plain-input>
-          <div *ngIf="componentData.hint" class="form__item__hint">
-            {{ componentData.hint }}
+          <div *ngIf="componentData.attrs?.hint" class="form__item__hint">
+            {{ componentData.attrs?.hint }}
           </div>
           <epgu-constructor-helper-text *ngIf="!componentData.required">
             {{ getHelperText(componentData.required) }}
@@ -124,7 +133,7 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.AddressInput">
-        <ng-container *ngIf="state[componentData.id].isShow">
+        <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-dadata-widget
             [simpleMode]="true"

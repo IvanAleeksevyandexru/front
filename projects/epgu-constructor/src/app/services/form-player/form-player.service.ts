@@ -112,13 +112,13 @@ export class FormPlayerService {
 
   sendDataError(response): void {
     this.updateLoading(false);
-    console.error('----- ERROR DATA ---------');
-    if (response.scenarioDto?.errors) {
+    if (response.scenarioDto?.errors?.length) {
       // business errors
+      console.error('----- ERROR DATA ---------');
       console.error(response.scenarioDto?.errors);
-      this.initResponse(response);
+
     } else {
-      console.error(response);
+      this.initResponse(response);
     }
   }
 
