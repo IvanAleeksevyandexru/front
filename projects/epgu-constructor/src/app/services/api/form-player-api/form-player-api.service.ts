@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormPlayerApiResponse } from './form-player-api.types';
+import { FormPlayerApiResponse, FormPlayerApiSuccessResponse } from './form-player-api.types';
 import { ConfigService } from '../../../config/config.service';
 import { UserSessionService } from '../../user-session/user-session.service';
 import { FormPlayerNavigation } from '../../../form-player.types';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class FormPlayerApiService {
@@ -23,14 +24,14 @@ export class FormPlayerApiService {
     });
   }
 
-  public getInitialData(serviceId: string) {
+  public getInitialData(serviceId: string): Observable<FormPlayerApiResponse> {
     const path = `${this.apiUrl}/getService/${serviceId}`;
     return this.http.get<FormPlayerApiResponse>(path, {
       withCredentials: false
     });
   }
 
-  public navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, data) {
+  public navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, data): Observable<FormPlayerApiResponse> {
     const path = `${this.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
     data.scenarioDto.userId = this.userId;
     data.scenarioDto.token = this.token;

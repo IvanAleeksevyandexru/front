@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { ScreenTypes } from '../../shared/types/screen.types';
 import {
   Display,
-  FormPlayerApiResponse
+  FormPlayerApiSuccessResponse
 } from '../api/form-player-api/form-player-api.types';
 
 
 @Injectable()
 export class FormPlayerServiceStub {
-  response: FormPlayerApiResponse = { scenarioDto: {
+  response: FormPlayerApiSuccessResponse = { scenarioDto: {
       applicantAnswers: {},
       currentRule: 1,
       currentValue: {},

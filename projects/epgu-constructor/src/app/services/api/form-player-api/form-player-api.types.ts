@@ -83,6 +83,18 @@ export interface ScenarioDto {
   finishedAndCurrentScreens: [];
 }
 
-export interface FormPlayerApiResponse {
+export interface FormPlayerApiSuccessResponse {
   scenarioDto: ScenarioDto;
 }
+
+export enum FormPlayerApiErrorStatuses {
+  badRequest = 'BAD_REQUEST'
+}
+
+export interface FormPlayerApiErrorResponse {
+  description: string;
+  message: string;
+  status: FormPlayerApiErrorStatuses;
+}
+
+export type FormPlayerApiResponse = FormPlayerApiSuccessResponse | FormPlayerApiErrorResponse;

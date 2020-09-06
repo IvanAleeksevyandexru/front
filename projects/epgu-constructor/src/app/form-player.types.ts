@@ -5,5 +5,8 @@ export enum FormPlayerNavigation {
 
 export interface NavigationPayload {
   data?: any,
-  options?: any,
+  options?: {
+    componentId?: string;
+    goBack?: boolean;
+  },
 }
