@@ -18,6 +18,7 @@ export interface Display {
   id: string;
   name: string;
   submitLabel: string;
+  type: ScreenTypes
 }
 
 export interface Answer {
