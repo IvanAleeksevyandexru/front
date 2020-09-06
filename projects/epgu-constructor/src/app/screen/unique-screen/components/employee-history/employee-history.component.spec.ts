@@ -11,7 +11,7 @@ import { NavigationComponent } from '../../../../shared/components/navigation/na
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { NavigationService } from '../../../../shared/services/navigation/navigation.service';
 import { MockComponent } from 'ng-mocks';
-import { ScreenTypes } from '../../../screen.types';
+import { Gender } from '../../../../shared/types/gender';
 
 describe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;
@@ -48,10 +48,9 @@ describe('EmployeeHistoryComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: ScreenTypes.UNIQUE,
     };
     component.header = '';
-    component.gender = 'M';
+    component.gender = Gender.male;
     // spyOn(formService, 'createEmployeeForm')
     fixture.detectChanges();
   });

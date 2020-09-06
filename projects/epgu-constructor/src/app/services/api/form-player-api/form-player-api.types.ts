@@ -1,6 +1,5 @@
 import { ScreenTypes } from '../../../screen/screen.types';
-
-export type GenderDto = 'M' | 'F';
+import { Gender } from '../../../shared/types/gender';
 
 export interface AnswerDto {
   visited: boolean,
@@ -81,7 +80,7 @@ export interface ScenarioDto {
   cycledFields: Array<object>; // looks lice it unused property
   display: DisplayDto;
   errors: ScenarioErrorsDto;
-  gender: GenderDto;
+  gender: Gender;
   finishedAndCurrentScreens: string[];
   orderId: string;
   token: string;

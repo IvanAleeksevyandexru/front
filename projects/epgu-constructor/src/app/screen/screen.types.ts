@@ -1,9 +1,5 @@
 import { NavigationPayload } from '../form-player.types';
-
-export enum Gender {
-  male = 'M',
-  female = 'F',
-}
+import { Gender } from '../shared/types/gender';
 
 export interface ComponentBase {
   attrs: {[key: string]: any};

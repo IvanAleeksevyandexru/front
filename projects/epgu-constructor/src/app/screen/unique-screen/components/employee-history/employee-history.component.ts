@@ -11,7 +11,8 @@ import {
   EmployeeHistoryModel,
 } from './employee-history.types';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
-import { Display, Gender } from '../../../screen.types';
+import { Display } from '../../../screen.types';
+import { Gender } from '../../../../shared/types/gender';
 
 const moment = moment_;
 
