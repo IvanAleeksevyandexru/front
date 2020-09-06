@@ -58,6 +58,10 @@ export interface CurrentCycledFields {
   [key: string]: string
 }
 
+export interface ScenarioErrors {
+  [key: string]: string
+}
+
 /**
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
  * @property {number}currentRule - id сценария для управление порядком компонентов (наверное не нужен для фронта)
@@ -65,7 +69,6 @@ export interface CurrentCycledFields {
  * @property {Display}display - текущий экран с компонентами и данными для отрисовки
  * @property {string}gender- пол пользователя
  * @property {string}orderId - идентификатор запорлнения черновика, (уже был черновик...)
- * @property {Array<object>}sendNotification - собственники жилья
  * (человек 1, человек 2) => эти людям прилетает уведомление о подтверждении ...
  * @property {string}token - в целях разработки, на проде через cookie;
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
@@ -73,18 +76,17 @@ export interface CurrentCycledFields {
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswers;
-  currentRule: number;
-  currentValue: CurrentValue;
   currentCycledFields: CurrentCycledFields;
-  cycledFields: Array<object>;
+  currentScenarioId: string;
+  currentValue: CurrentValue;
+  cycledFields: Array<object>; // looks lice it unused property
   display: Display;
-  errors: object;
+  errors: ScenarioErrors;
   gender: Gender;
+  finishedAndCurrentScreens: string[];
   orderId: string;
-  sendNotification: Array<object>;
   token: string;
   userId: string;
-  finishedAndCurrentScreens: [];
 }
 
 export interface FormPlayerApiSuccessResponse {

@@ -10,7 +10,7 @@ import {
 export class FormPlayerServiceStub {
   response: FormPlayerApiSuccessResponse = { scenarioDto: {
       applicantAnswers: {},
-      currentRule: 1,
+      currentScenarioId: '1',
       currentValue: {},
       currentCycledFields: {},
       cycledFields: [],
@@ -27,7 +27,6 @@ export class FormPlayerServiceStub {
       errors: {},
       gender: 'M',
       orderId: '1',
-      sendNotification: [],
       token: 'someSecret',
       userId: '12552'
     }};
