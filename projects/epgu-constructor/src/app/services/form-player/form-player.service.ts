@@ -12,7 +12,11 @@ import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ScreenTypes } from '../../screen/screen.types';
 
-
+/**
+ * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
+ * Хранит текущий респонс в store и транслирует поток данных в screenService
+ * Не используйте этот сервис в скринах и компанентах, для этих нужд есть screenService
+ */
 @Injectable()
 export class FormPlayerService {
   private store: FormPlayerApiSuccessResponse;
