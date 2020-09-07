@@ -8,6 +8,7 @@ import { ScreenService } from '../../../screen.service';
 import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { UserSessionService } from '../../../../services/user-session/user-session.service';
+import { FormPlayerApiService } from '../../../../services/api/form-player-api/form-player-api.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -22,6 +23,7 @@ describe('PaymentService', () => {
         UserSessionService,
         PaymentService,
         FormPlayerService,
+        FormPlayerApiService,
         ScreenService,
         ConfigService,
         UnsubscribeService,
