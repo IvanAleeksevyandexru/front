@@ -114,7 +114,6 @@ export class FormPlayerService {
     const error = response as FormPlayerApiErrorResponse;
     const businessError = response as FormPlayerApiSuccessResponse;
 
-    // TODO: need to find a better way for handling errors, for example use ErrorService with UI components.
     console.error('----- ERROR DATA ---------');
     if (error.status) {
       console.error(error);
