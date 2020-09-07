@@ -78,26 +78,17 @@ export class FormPlayerService {
   }
 
   processResponse(response: FormPlayerApiResponse): void {
-    if (this.hasError(response)) {
-      this.sendDataError(response);
+    const errorResponse = response as FormPlayerApiErrorResponse;
+    if (this.hasError(errorResponse)) {
+      this.sendDataError(errorResponse);
     } else {
       this.sendDataSuccess(response);
     }
   };
 
-  hasError(response: FormPlayerApiResponse) {
-    return this.hasRequestErrors(response as FormPlayerApiErrorResponse)
-      || this.hasBusinessErrors(response as FormPlayerApiSuccessResponse);
-  }
-
-  hasRequestErrors(response: FormPlayerApiErrorResponse): boolean {
+  hasError(response: FormPlayerApiErrorResponse) {
     const errors = response?.status;
     return errors === FormPlayerApiErrorStatuses.badRequest;
-  }
-
-  hasBusinessErrors(response: FormPlayerApiSuccessResponse): boolean {
-    const errors = response?.scenarioDto?.errors;
-    return errors && !!Object.keys(errors).length;
   }
 
   updateRequest(navigationPayload?: NavigationPayload): void {
@@ -110,25 +101,17 @@ export class FormPlayerService {
     this.initResponse(response);
   }
 
-  sendDataError(response: FormPlayerApiResponse): void {
-    const error = response as FormPlayerApiErrorResponse;
-    const businessError = response as FormPlayerApiSuccessResponse;
-
+  sendDataError(response: FormPlayerApiErrorResponse): void {
     console.error('----- ERROR DATA ---------');
-    if (error.status) {
-      console.error(error);
-    } else {
-      // NOTICE: passing business errors to components layers, do not change this logic!
-      console.error(businessError.scenarioDto?.errors);
-      this.initResponse(businessError);
-    }
-
+    console.error(response);
     this.updateLoading(false);
   }
 
+
+
   initResponse(response: FormPlayerApiSuccessResponse): void {
     if (!response) {
-      console.error('Invalid Reponse');
+      this.handleInvalidResponse();
       return;
     }
 
@@ -143,6 +126,11 @@ export class FormPlayerService {
     console.log('componentId:', scenarioDto.display.components[0].id);
     console.log('componentType:', scenarioDto.display.components[0].type);
     console.log('initResponse:', response);
+  }
+
+  handleInvalidResponse() {
+    console.error('----- ERROR DATA ---------');
+    console.error('Invalid Response');
   }
 
   private initScreenStore(scenarioDto: ScenarioDto): void {
