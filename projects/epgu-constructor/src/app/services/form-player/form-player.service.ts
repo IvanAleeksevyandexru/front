@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
 import {
-  CurrentValueDto,
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
 } from '../api/form-player-api/form-player-api.types';
-import { ComponentStateService } from '../component-state/component-state.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
-import { ScreenTypes } from '../../screen/screen.types';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -38,7 +35,6 @@ export class FormPlayerService {
     public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private screenResolverService: ScreenResolverService,
-    private componentStateService: ComponentStateService, // TODO: check service
   ) {}
 
   initData(serviceId: string): void {
@@ -133,9 +129,6 @@ export class FormPlayerService {
       console.error('Invalid Reponse');
       return;
     }
-
-    this.componentStateService.state = '';
-    this.componentStateService.isValid = true;
 
     this.store = response;
     const scenarioDto = response.scenarioDto;

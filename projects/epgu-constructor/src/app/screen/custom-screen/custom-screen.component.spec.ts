@@ -13,6 +13,7 @@ import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { ComponentStateService } from '../../services/component-state/component-state.service';
 
 
 describe('CustomScreenComponent', () => {
@@ -48,7 +49,8 @@ describe('CustomScreenComponent', () => {
         NavigationService,
         ScreenService,
         UnsubscribeService,
-        ApplicantAnswersService
+        ApplicantAnswersService,
+        ComponentStateService
       ]
     })
     .compileComponents();

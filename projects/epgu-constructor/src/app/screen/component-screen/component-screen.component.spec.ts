@@ -47,7 +47,7 @@ describe.skip('ScreenComponent', () => {
         ComponentStateService,
         ScreenService,
         UnsubscribeService,
-        ApplicantAnswersService
+        ApplicantAnswersService,
       ]
     })
     .compileComponents();

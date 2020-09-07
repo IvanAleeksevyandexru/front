@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
+import { ComponentStateService } from '../services/component-state/component-state.service';
 
 
 @Injectable()
@@ -15,11 +16,15 @@ export class ScreenService {
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public screenData$: Observable<ScreenStore> = this.screenStoreSubject.asObservable();
 
-  constructor (private applicantAnswersService: ApplicantAnswersService) {}
+  constructor (
+    private applicantAnswersService: ApplicantAnswersService,
+    private componentStateService: ComponentStateService,
+  ) {}
 
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;
     this.loadAnsweredValues();
+    this.initComponentStateService();
     this.screenStoreSubject.next(this.screenStore);
   }
 
@@ -31,6 +36,11 @@ export class ScreenService {
   public updateLoading(isLoading: boolean): void {
     this.isLoading = isLoading;
     this.isLoadingSubject.next(this.isLoading);
+  }
+
+  private initComponentStateService() {
+    this.componentStateService.state = '';
+    this.componentStateService.isValid = true;
   }
 
   private loadAnsweredValues(): void {

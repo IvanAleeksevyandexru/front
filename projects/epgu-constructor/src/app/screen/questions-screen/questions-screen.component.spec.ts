@@ -11,6 +11,7 @@ import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { ComponentStateService } from '../../services/component-state/component-state.service';
 
 describe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
@@ -53,6 +54,7 @@ describe('QuestionsScreenComponent', () => {
         ScreenService,
         UnsubscribeService,
         ApplicantAnswersService,
+        ComponentStateService
       ]
     })
     .compileComponents();
