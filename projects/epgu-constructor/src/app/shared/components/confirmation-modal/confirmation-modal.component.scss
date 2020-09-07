@@ -1,4 +1,7 @@
-@import "src/styles/core";
+@import "src/styles/core/palettes";
+@import "src/styles/core/breakpoint";
+@import "src/styles/core/functions";
+@import "src/styles/core/typography";
 
 // TODO Избавиться от ng-deep
 :host::ng-deep {
@@ -64,6 +67,19 @@
       white-space: pre-line;
       font-size: 16px;
       line-height: 24px;
+
+      div.photoSimple {
+        p {
+          @include typ-plain-small();
+          margin-top: 10px;
+          margin-bottom: 10px;
+          text-align: center;
+        }
+
+        p.large-m {
+          margin-bottom: $screen-pad-p;
+        }
+      }
     }
 
     &__text-wrapper {
