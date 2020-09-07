@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalService } from '../../../services/modal/modal.service';
 import { getHiddenBlock } from '../../../../constant/uttils';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { IClarifications } from '../../../../interfaces/terabyte.interface';
 
 @Component({
   selector: 'epgu-constructor-output-html',
@@ -10,7 +11,7 @@ import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-m
 })
 export class OutputHtmlComponent implements OnInit {
   @Input() html: string;
-  @Input() clarifications: Object;
+  @Input() clarifications: IClarifications;
   constructor(private modalService: ModalService) {}
 
   ngOnInit(): void {}
