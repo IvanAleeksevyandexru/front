@@ -47,3 +47,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+/src/proxy.conf.js
+/src/app/app.constants.js
+/src/environments/environment.js
