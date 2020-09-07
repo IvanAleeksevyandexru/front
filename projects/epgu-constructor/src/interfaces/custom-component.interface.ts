@@ -1,7 +1,7 @@
 import { ListItem } from 'epgu-lib';
 import { CUSTOM_COMPONENT_ITEM_TYPE } from '../constant/global';
 import { DictionaryItem, DictionaryResponse } from './dictionary-options.interface';
-import { ComponentInterface, DisplayInterface } from './epgu.service.interface';
+import { ComponentInterface, DisplayInterface } from '../app/services/api/form-player-api/form-player-api.types';
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
@@ -25,7 +25,8 @@ export interface CustomComponentDropDownStateInterface {
 
 export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
 export type CustomComponentDropDownItem = {
-  name: string;
+  label: string;
+  disable: boolean;
 };
 
 
@@ -63,7 +64,7 @@ export interface CustomComponentAttrValidationInterface {
  */
 export interface CustomComponentStateItem {
   valid: boolean;
-  isShow: boolean;
+  isShown: boolean;
   errorMessage: string;
   value: any;
   component: CustomComponentInterface
@@ -93,6 +94,7 @@ export interface CustomDisplayInterface extends DisplayInterface {
 export interface CustomComponentInterface extends ComponentInterface{
   attrs: CustomComponentAttrInterface;
   type: CUSTOM_COMPONENT_ITEM_TYPE;
+  hint?: string;
 }
 
 interface ISupportedValue {

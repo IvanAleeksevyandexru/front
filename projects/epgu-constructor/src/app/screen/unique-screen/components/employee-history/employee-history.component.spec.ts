@@ -9,7 +9,7 @@ import { PageNameComponent } from '../../../../shared/components/page-name/page-
 import { LabelComponent } from '../../../../shared/components/label/label.component';
 import { NavigationComponent } from '../../../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
-import { NavigationService } from '../../../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../../../shared/services/navigation/navigation.service';
 import { MockComponent } from 'ng-mocks';
 import { SCREEN_TYPE } from '../../../../../constant/global';
 
@@ -51,7 +51,7 @@ describe('EmployeeHistoryComponent', () => {
       type: SCREEN_TYPE.UNIQUE,
     };
     component.header = '';
-    component.gender = 'male';
+    component.gender = 'M';
     // spyOn(formService, 'createEmployeeForm')
     fixture.detectChanges();
   });

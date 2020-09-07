@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
   ConfirmUserDataFieldsStateInterface,
   ConfirmUserDataInterface,
 } from '../../../../../../../../../interfaces/confirm-user-data.interface';
-import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../../../../../../config/config.service';
 import {
   getBirthDayConfirmPersonalUserData,
   getFullNameConfirmPersonalUserData,
@@ -20,13 +20,11 @@ export class ConfirmPersonalUserDataComponent implements OnChanges {
   preparedData: Array<ConfirmUserDataFieldsStateInterface> = [];
 
   @Input() data: ConfirmUserDataInterface;
-  @Output() dataChange = new EventEmitter();
-  constructor(public constructorConfigService: ConstructorConfigService) {}
+  constructor(public configService: ConfigService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
       this.preparedData = this.adaptiveData(this.data);
-      this.dataChange.emit(this.preparedData);
     }
   }
 

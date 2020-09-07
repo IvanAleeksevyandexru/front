@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NavigationComponent } from './navigation.component';
-import { NavigationService } from '../../service/navigation/navigation.service';
+import { NavigationService } from '../../services/navigation/navigation.service';
 import { MockComponent } from 'ng-mocks';
 import { ScreenContainerComponent } from '../screen-container/screen-container.component';
 

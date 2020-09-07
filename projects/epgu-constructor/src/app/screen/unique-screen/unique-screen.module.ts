@@ -10,6 +10,7 @@ import { SelectMapObjectModule } from './components/select-map-object/select-map
 import { UniqueScreenComponent } from './unique-screen.component';
 import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { ScreenService } from '../screen.service';
+import { ConfirmMarriageModule } from './components/confirm-marriage/confirm-marriage.module';
 
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
@@ -32,6 +33,7 @@ const COMPONENTS = [UniqueScreenComponent];
     CarInfoModule,
     EmployeeHistoryModule,
     TimeSlotsModule,
+    ConfirmMarriageModule,
   ],
   providers: [
     ScreenService

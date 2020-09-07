@@ -1,4 +1,4 @@
-import { ComponentInterface, DisplayInterface } from './epgu.service.interface';
+import { ComponentInterface, DisplayInterface } from '../app/services/api/form-player-api/form-player-api.types';
 
 export interface TemporaryRegistrationAddrDisplayInterface extends DisplayInterface {
   components: Array<TemporaryRegistrationAddrComponentInterface>;

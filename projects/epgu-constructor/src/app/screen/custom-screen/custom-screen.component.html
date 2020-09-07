@@ -1,14 +1,16 @@
 <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <epgu-constructor-screen-container class="screen-container">
   <div class="inner">
-    <div *ngIf="screenData.componentData?.header" class="head">
-      <epgu-constructor-page-name>{{ screenData.componentData?.header }}</epgu-constructor-page-name>
+    <div *ngIf="screenStore.display?.header" class="head">
+      <epgu-constructor-page-name>{{
+        screenStore.display?.header
+      }}</epgu-constructor-page-name>
     </div>
 
     <epgu-constructor-screen-pad class="body">
       <epgu-constructor-components-list
         (changes)="changeComponentsList($event)"
-        [components]="screenData.componentData?.components"
+        [components]="screenStore.display?.components"
       ></epgu-constructor-components-list>
     </epgu-constructor-screen-pad>
 
@@ -19,7 +21,7 @@
         class="footer__btn-submit"
         [disabled]="screenService.isLoading$ | async"
       >
-        {{ screenData.componentData?.submitLabel }}
+        {{ screenStore.display?.submitLabel }}
       </lib-button>
     </div>
   </div>

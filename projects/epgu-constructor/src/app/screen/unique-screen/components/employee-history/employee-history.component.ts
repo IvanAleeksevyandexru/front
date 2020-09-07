@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import * as moment_ from 'moment';
 import { ValidationShowOn } from 'epgu-lib';
-import { DisplayInterface, Gender } from '../../../../../interfaces/epgu.service.interface';
+import {
+  DisplayInterface,
+  Gender,
+} from '../../../../services/api/form-player-api/form-player-api.types';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
@@ -28,7 +31,7 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
   ds: Array<EmployeeHistoryDataSource>;
-  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  validationShowOn = ValidationShowOn.NEVER;
 
   constructor(
     public employeeFormService: EmployeeHistoryFormService,
@@ -49,6 +52,7 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
   }
 
   resetForm(currentType: Employee): void {
+    this.validationShowOn = ValidationShowOn.NEVER;
     this.employeeFormService.resetForm(currentType);
   }
 
@@ -57,6 +61,7 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
     this.validationShowOn = ValidationShowOn.IMMEDIATE;
     if (this.employeeFormService.generateForm.valid) {
       this.employeeFormService.pushFormGroup();
+      this.validationShowOn = ValidationShowOn.NEVER;
     }
   }
 

@@ -1,10 +1,10 @@
 <section class="add-children-screen">
-  <section>
-    <div class="add-children-screen__card" *ngFor="let item of itemsList">
-      <div *ngIf="item.isNew !== true" class="card">
+  <form [formGroup]="addChildrenForm">
+    <div class="add-children-screen__card" *ngFor="let item of itemsSelectedQueue; let idx = index">
+      <div class="card">
         <div class="card__wrapper">
           <div class="card__header">
-            <div class="card__title">Ребенок {{ item?.id }}</div>
+            <div class="card__title">Ребенок {{ idx + 1 }}</div>
             <div class="card__close">
               <button (click)="removeChild(item?.id)" class="button-close">
                 <div class="icon-close"></div>
@@ -13,40 +13,33 @@
           </div>
           <div class="card__content">
             <div>
-              <epgu-constructor-label for="itemsList">
+              <epgu-constructor-label [for]="idx">
                 Выберите ребенка из вашего профиля
               </epgu-constructor-label>
             </div>
             <div class="card__select">
               <lib-dropdown
-                id="itemsList"
-                (changed)="handleSelect($event)"
+                [id]="idx"
+                [formControlName]="itemsLength.toString()"
+                (changed)="handleSelect($event, idx)"
                 [items]="itemsToSelect"
               ></lib-dropdown>
             </div>
+            <epgu-constructor-add-new-child-form
+              *ngIf="item.isNew === true"
+              [item]="item"
+              (removeChildEvent)="removeChild($event)"
+              (childUpdateEvent)="updateChild($event)"
+            ></epgu-constructor-add-new-child-form>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="add-children-screen__form" *ngFor="let item of itemsList">
-      <epgu-constructor-add-new-child-form
-        *ngIf="item.isNew === true"
-        (ngModel)="(item)"
-        [data]="{
-          itemsToSelect: itemsToSelect,
-          items: itemsList,
-          item: item
-        }"
-        (removeChildEvent)="removeChild($event)"
-        (childUpdateEvent)="updateChild($event)"
-      ></epgu-constructor-add-new-child-form>
-    </div>
-
     <div class="add-children-screen__action">
-      <button class="add-children-screen__button button" (click)="addNewChild()">
+      <button class="add-children-screen__button button" (click)="addMoreChild()">
         <label class="button__label">Добавить ребенка</label>
       </button>
     </div>
-  </section>
+  </form>
 </section>

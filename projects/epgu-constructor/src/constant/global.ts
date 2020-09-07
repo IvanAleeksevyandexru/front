@@ -31,7 +31,6 @@ export enum INFO_SCREEN_COMPONENT {
 }
 
 export enum UNIQUE_COMPONENT_NAME {
-  childrenListUnder14 = 'ChildrenListUnder14',
   fileUploadComponent = 'FileUploadComponent',
   addPassport = 'AddPassport',
   timeSlot = 'TimeSlot',
@@ -39,6 +38,7 @@ export enum UNIQUE_COMPONENT_NAME {
   carInfo = 'CarInfo',
   repeatableFields = 'RepeatableFields',
   employeeHistory = 'EmployeeHistory',
+  confirmMarriage = 'ConfirmMarriage',
 }
 
 export enum EMPTY_SCREEN_COMPONENT {
@@ -48,15 +48,13 @@ export enum EMPTY_SCREEN_COMPONENT {
 export enum CUSTOM_COMPONENT_ITEM_TYPE {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
-  HiddenDictionary = 'HiddenDictionary',
-  HiddenLookup = 'HiddenLookup',
-  HiddenInput = 'HiddenInput',
   DropDown = 'DropDown',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
   RadioInput = 'RadioInput',
   CompositeRadioButton = 'CompositeRadioButton',
   Lookup = 'Lookup',
+  AddressInput = 'AddressInput',
 }
 
 export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';

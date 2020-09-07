@@ -11,7 +11,7 @@ import {
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../../constant/global';
-import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../../../../../../config/config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 
@@ -34,11 +34,11 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
   externalApiUrl: string;
 
   constructor(
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
   ) {
-    this.externalApiUrl = this.constructorConfigService.config.externalApiUrl;
+    this.externalApiUrl = this.configService.config.externalApiUrl;
   }
 
   handleDataChange(change) {

@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { DATE_STRING_DOT_FORMAT } from '../../../constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
+import { NavigationPayload } from '../../form-player.types';
 
 const moment = moment_;
 @Component({
@@ -15,13 +15,13 @@ const moment = moment_;
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class CustomScreenComponent implements OnInit, Screen {
+export class CustomScreenComponent implements OnInit, OnChanges, Screen {
   dataToSend: any;
   isCycledFields: boolean;
   cycledValues: any;
-  screenData: ScreenData;
+  screenStore: ScreenStore;
 
-  private currentCycledFields = this.screenData?.currentCycledFields || {};
+  private currentCycledFields = this.screenStore?.currentCycledFields || {};
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
@@ -37,14 +37,21 @@ export class CustomScreenComponent implements OnInit, Screen {
 
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenData) => {
-        this.screenData = screenData;
+      .subscribe((screenData: ScreenStore) => {
+        this.screenStore = screenData;
         this.initCycledFields();
       });
   }
 
+  ngOnChanges(changes) {
+    const { firstChange, currentValue, previousValue } = changes.data;
+    if (firstChange || currentValue.id !== previousValue.id) {
+      this.initCycledFields();
+    }
+  }
+
   initCycledFields() {
-    this.currentCycledFields = this.screenData?.currentCycledFields || {};
+    this.currentCycledFields = this.screenStore?.currentCycledFields || {};
     this.cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
     const { currentCycledFields } = this;
@@ -52,7 +59,7 @@ export class CustomScreenComponent implements OnInit, Screen {
     if (this.isCycledFields) {
       const [firstCurrentCycledValues] = Object.values(currentCycledFields);
       this.cycledValues = JSON.parse(firstCurrentCycledValues);
-      this.screenData.componentData.components.forEach((item) => {
+      this.screenStore.display.components.forEach((item) => {
         const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
         const cycledFieldKey = Object.keys(this.cycledValues).find((key) => key === fieldName);
         // eslint-disable-next-line no-param-reassign
@@ -65,17 +72,16 @@ export class CustomScreenComponent implements OnInit, Screen {
     this.navigationService.prevStep.next();
   }
 
-  nextStep(data?: NextStepEventData): void {
+  nextStep(data?: NavigationPayload): void {
     this.navigationService.nextStep.next(data);
   }
 
   nextScreen(): void {
-    const data = this.getPrepareResponseData(this.dataToSend);
+    const data = this.dataToSend;
     this.nextStep({ data });
   }
 
-  // TODO: not clear what to do this logic, named set, but return value.
-  setState(changes) {
+  getFormattedData(changes) {
     let stateData = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
@@ -94,7 +100,7 @@ export class CustomScreenComponent implements OnInit, Screen {
   }
 
   changeComponentsList(changes): void {
-    this.dataToSend = this.setState(changes);
+    this.dataToSend = this.getFormattedData(changes);
   }
 
   private getPrepareResponseData(data = {}) {
@@ -114,8 +120,8 @@ export class CustomScreenComponent implements OnInit, Screen {
     return Object.keys(changes).reduce((result, key) => {
       const targetItem = changes[key];
       const targetItemValue = targetItem.value;
-      const fieldName =
-        targetItem.component.attrs.fields && targetItem.component.attrs.fields[0].fieldName;
+      const targetComponent = this.screenStore.display.components.find((item) => item.id === key);
+      const fieldName = targetComponent.attrs.fields && targetComponent.attrs.fields[0].fieldName;
       if (!fieldName) return result;
 
       if (typeof targetItemValue === 'object' && moment(targetItemValue).isValid()) {

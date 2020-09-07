@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { INFO_SCREEN_COMPONENT } from '../../../constant/global';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
+import { Screen, ScreenStore } from '../screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 
 /**
@@ -18,7 +18,7 @@ import { ScreenService } from '../screen.service';
 export class InfoScreenComponent implements Screen, OnInit {
   // <-- constant
   infoScreenComponent = INFO_SCREEN_COMPONENT;
-  screenData: ScreenData;
+  screenStore: ScreenStore;
 
   constructor(
     private navigationService: NavigationService,
@@ -33,8 +33,8 @@ export class InfoScreenComponent implements Screen, OnInit {
 
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenData) => {
-        this.screenData = screenData;
+      .subscribe((screenData: ScreenStore) => {
+        this.screenStore = screenData;
       });
   }
 

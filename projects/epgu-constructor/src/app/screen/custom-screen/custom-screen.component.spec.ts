@@ -4,7 +4,7 @@ import { ButtonComponent } from 'epgu-lib';
 
 import { CustomScreenComponent } from './custom-screen.component';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { PageNameComponent } from '../../shared/components/page-name/page-name.component';
@@ -12,7 +12,8 @@ import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pa
 import { ComponentsListComponent } from '../../shared/components/components-list/components-list.component';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ScreenData } from '../../../interfaces/screen.interface';
+import { ScreenStore } from '../screen.types';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 
 describe('CustomScreenComponent', () => {
@@ -22,8 +23,8 @@ describe('CustomScreenComponent', () => {
   let screenService: ScreenService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
   let ComponentsListComponentMock = MockComponent(ComponentsListComponent);
-  const screenDataMock: ScreenData = {
-    componentData: {
+  const screenDataMock: ScreenStore = {
+    display: {
       components: [],
       header: '',
       id: '',
@@ -48,6 +49,7 @@ describe('CustomScreenComponent', () => {
         NavigationService,
         ScreenService,
         UnsubscribeService,
+        ApplicantAnswersService
       ]
     })
     .compileComponents();
@@ -58,7 +60,7 @@ describe('CustomScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomScreenComponent);
     component = fixture.componentInstance;
-    screenService.updateScreenData(screenDataMock);
+    screenService.updateScreenStore(screenDataMock);
     component.changeComponentsList({});
     fixture.detectChanges();
   });

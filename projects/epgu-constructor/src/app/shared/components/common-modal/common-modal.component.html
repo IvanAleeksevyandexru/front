@@ -1,0 +1,12 @@
+<div class="conf-modal">
+  <ng-content></ng-content>
+  <ng-container *ngTemplateOutlet="modalTemplateRef; context: this"></ng-container>
+  <div *ngIf="modalTemplateHTML" [innerHTML]="modalTemplateHTML | safeHtml"></div>
+  <div class="conf-modal__controls">
+    <lib-button
+      class="conf-modal__button"
+      (click)="closeModal()"
+    >Закрыть
+    </lib-button>
+  </div>
+</div>

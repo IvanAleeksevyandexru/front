@@ -4,13 +4,12 @@
   display: block;
   background: $color-white;
   padding: $screen-pad-p;
-  border-radius: $border-lg;
+  border-radius: $border-xl;
   @include shadow-second();
 
   @include tablets-up {
     padding: $screen-pad-p;
     @include shadow-main();
-    border-radius: 4px;
   }
 }
 
