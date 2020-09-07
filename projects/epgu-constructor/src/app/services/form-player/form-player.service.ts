@@ -9,6 +9,7 @@ import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
+import { ScreenComponent } from '../../screen/screen.const';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -46,7 +47,7 @@ export class FormPlayerService {
     );
   }
 
-  get screenComponent() {
+  getScreenComponent(): ScreenComponent {
     const screenComponent = this.screenResolverService.getScreenComponentByType(this.screenType);
 
     if (!screenComponent) {

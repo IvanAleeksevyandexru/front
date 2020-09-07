@@ -15,6 +15,7 @@ import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { UserSession } from './services/user-session/user-session.type';
 import { UserSessionService } from './services/user-session/user-session.service';
 import { FormPlayerNavigation, NavigationPayload } from './form-player.types';
+import { ScreenComponent } from './screen/screen.const';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -26,7 +27,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, OnDestroy {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() userSession: UserSession;
   @Input() serviceId: string;
-  screenComponent;
+  screenComponent: ScreenComponent;
 
   constructor(
     public userSessionService: UserSessionService,
@@ -40,7 +41,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, OnDestroy {
     this.userSessionService.setSession(this.userSession);
     this.formPlayerService.initData(this.serviceId);
     this.formPlayerService.store$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.screenComponent = this.formPlayerService.screenComponent;
+      this.screenComponent = this.formPlayerService.getScreenComponent();
     });
 
     this.navigationService.nextStep$

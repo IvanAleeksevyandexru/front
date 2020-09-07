@@ -7,7 +7,15 @@ import { InvitationErrorScreenComponent } from './invitation-error-screen/invita
 import { EmptyScreenComponent } from './empty-screen/empty-screen.component';
 import { ScreenTypes } from './screen.types';
 
-export const SCREEN_COMPONENTS: Readonly<{ [key in ScreenTypes]: any }> = {
+export type ScreenComponent = typeof InfoScreenComponent
+  | typeof QuestionsScreenComponent
+  | typeof ComponentScreenComponent
+  | typeof CustomScreenComponent
+  | typeof UniqueScreenComponent
+  | typeof InvitationErrorScreenComponent
+  | typeof EmptyScreenComponent;
+
+export const SCREEN_COMPONENTS: Readonly<{ [key in ScreenTypes]: ScreenComponent }> = {
   INFO: InfoScreenComponent,
   QUESTION: QuestionsScreenComponent,
   COMPONENT: ComponentScreenComponent,
