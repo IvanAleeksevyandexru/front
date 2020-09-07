@@ -101,7 +101,19 @@ export class FormPlayerService {
   }
 
   updateRequest(navigationPayload?: NavigationPayload): void {
-    this.store.scenarioDto.currentValue = navigationPayload;
+    if (this.isEmptyNavigationPayload(navigationPayload)) {
+      this.store.scenarioDto.currentValue = {};
+      this.store.scenarioDto.currentValue[this.componentId] = {
+        value: '',
+        visited: true
+      };
+    } else {
+      this.store.scenarioDto.currentValue = navigationPayload;
+    }
+  }
+
+  isEmptyNavigationPayload(navigationPayload) {
+    return !(navigationPayload && Object.keys(navigationPayload).length);
   }
 
   sendDataSuccess(response): void {
