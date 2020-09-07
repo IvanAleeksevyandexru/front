@@ -9,6 +9,9 @@ import { FormPlayerService } from '../../../../services/form-player/form-player.
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { UserSessionService } from '../../../../services/user-session/user-session.service';
 import { FormPlayerApiService } from '../../../../services/api/form-player-api/form-player-api.service';
+import { ApplicantAnswersService } from '../../../../shared/services/applicant-answers/applicant-answers.service';
+import { ScreenResolverService } from '../../../../services/screen-resolver/screen-resolver.service';
+import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -23,6 +26,9 @@ describe('PaymentService', () => {
         UserSessionService,
         PaymentService,
         FormPlayerService,
+        ApplicantAnswersService,
+        ComponentStateService,
+        ScreenResolverService,
         FormPlayerApiService,
         ScreenService,
         ConfigService,
