@@ -80,7 +80,7 @@ export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<
       id: `${item.label}-${index}`,
       text: item.label,
       formatted: '',
-      unselectable: item.disable === false,
+      unselectable: item.disable === true,
       originalItem: item,
       compare: () => false,
     };
