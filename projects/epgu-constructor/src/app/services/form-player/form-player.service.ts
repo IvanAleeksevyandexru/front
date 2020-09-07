@@ -119,7 +119,9 @@ export class FormPlayerService {
     if (error.status) {
       console.error(error);
     } else {
+      // NOTICE: passing business errors to components layers, do not change this logic!
       console.error(businessError.scenarioDto?.errors);
+      this.initResponse(businessError);
     }
 
     this.updateLoading(false);
