@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
 import { ComponentScreenComponent } from './component-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -8,7 +8,8 @@ import { ScreenContainerComponent } from '../../shared/components/screen-contain
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ScreenData } from '../../../interfaces/screen.interface';
+import { ScreenStore } from '../screen.types';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 
 // TODO: Need to refactoring component
@@ -18,8 +19,8 @@ describe.skip('ScreenComponent', () => {
   let navService: NavigationService;
   let componentStateService: ComponentStateService;
   let screenService: ScreenService;
-  const screenDataMock: ScreenData = {
-    componentData: {
+  const screenDataMock: ScreenStore = {
+    display: {
       components: [
         {
           attrs: {},
@@ -46,7 +47,8 @@ describe.skip('ScreenComponent', () => {
         NavigationService,
         ComponentStateService,
         ScreenService,
-        UnsubscribeService
+        UnsubscribeService,
+        ApplicantAnswersService
       ]
     })
     .compileComponents();
@@ -58,7 +60,7 @@ describe.skip('ScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ComponentScreenComponent);
     component = fixture.componentInstance;
-    screenService.updateScreenData(screenDataMock);
+    screenService.updateScreenStore(screenDataMock);
     fixture.detectChanges();
   });
 

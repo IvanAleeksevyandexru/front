@@ -1,5 +1,5 @@
 import { DictionaryOptionsInterface } from './dictionary-options.interface';
-import { DisplayInterface, Gender } from './epgu.service.interface';
+import { DisplayInterface, Gender } from '../app/services/api/form-player-api/form-player-api.types';
 
 /**
  * Интерфейс атрибутов приходящих об оплате

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EmployeeHistoryDataSource } from '../../../../../../interfaces/employee-history.interface';
-import { Gender } from '../../../../../../interfaces/epgu.service.interface';
+import { Gender } from '../../../../../services/api/form-player-api/form-player-api.types';
 
 @Injectable({
   providedIn: 'root'

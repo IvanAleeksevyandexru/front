@@ -3,7 +3,7 @@ import { SCREEN_TYPE } from '../../../constant/global';
 import {
   DisplayInterface,
   ResponseInterface
-} from '../../../interfaces/epgu.service.interface';
+} from '../api/form-player-api/form-player-api.types';
 
 
 @Injectable()

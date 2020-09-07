@@ -14,9 +14,10 @@ import { PageNameComponent } from './components/page-name/page-name.component';
 import { ScreenContainerComponent } from './components/screen-container/screen-container.component';
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { HelperTextComponent } from './components/helper-text/helper-text.component';
-import { ToJsonPipe } from './pipe/toJson/to-json.pipe';
-import { NavigationService } from './service/navigation/navigation.service';
-import { CommonModalComponent } from '../shared-module/components/common-modal/common-modal.component';
+import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
+import { NavigationService } from './services/navigation/navigation.service';
+import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
+import { CommonModalComponent } from './components/common-modal/common-modal.component';
 import { GenderRadioButtonComponent } from './components/gender-radio-button/gender-radio-button.component';
 
 const COMPONENTS = [
@@ -41,7 +42,7 @@ const PIPES = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES],
-  providers: [NavigationService],
+  providers: [NavigationService, ApplicantAnswersService],
   exports: [...COMPONENTS, ...PIPES],
     imports: [
         CommonModule,

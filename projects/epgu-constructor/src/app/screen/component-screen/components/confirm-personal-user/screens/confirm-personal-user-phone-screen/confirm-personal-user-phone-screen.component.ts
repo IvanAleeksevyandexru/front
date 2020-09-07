@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
+import { ComponentInterface } from '../../../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 @Component({

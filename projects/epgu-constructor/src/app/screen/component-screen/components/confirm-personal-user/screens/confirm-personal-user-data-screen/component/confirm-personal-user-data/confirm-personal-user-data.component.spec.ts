@@ -2,10 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ConfirmUserDataInterface } from '../../../../../../../../../interfaces/confirm-user-data.interface';
-import { ToJsonPipe } from '../../../../../../../../shared/pipe/toJson/to-json.pipe';
+import { ToJsonPipe } from '../../../../../../../../shared/pipes/toJson/to-json.pipe';
 import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
-import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
-import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
+import { ConfigService } from '../../../../../../../../config/config.service';
+import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
 
 describe('ConfirmPersonalUserDataComponent', () => {
   let component: ConfirmPersonalUserDataComponent;
@@ -34,7 +34,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ConfirmPersonalUserDataComponent, ToJsonPipe ],
-      providers: [ ComponentStateService, { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub } ]
+      providers: [ ComponentStateService, { provide: ConfigService, useClass: ConfigServiceStub } ]
     })
     .compileComponents();
   }));

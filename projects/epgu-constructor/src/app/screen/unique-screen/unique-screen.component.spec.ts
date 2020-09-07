@@ -1,20 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface } from '../../../interfaces/epgu.service.interface';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { DisplayInterface } from '../../services/api/form-player-api/form-player-api.types';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ScreenData } from '../../../interfaces/screen.interface';
+import { ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 
 describe('UniqueScreenComponent', () => {
   let component: UniqueScreenComponent;
   let fixture: ComponentFixture<UniqueScreenComponent>;
   let navService: NavigationService;
   let screenService: ScreenService;
-  const screenDataMock: ScreenData = {
-    componentData: {
+  const screenDataMock: ScreenStore = {
+    display: {
       components: [
         {
           attrs: {},
@@ -36,7 +37,7 @@ describe('UniqueScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ UniqueScreenComponent ],
-      providers: [NavigationService, ScreenService, UnsubscribeService]
+      providers: [NavigationService, ScreenService, UnsubscribeService, ApplicantAnswersService]
     })
     .compileComponents();
     navService = TestBed.inject(NavigationService);
@@ -46,7 +47,7 @@ describe('UniqueScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UniqueScreenComponent);
     component = fixture.componentInstance;
-    screenService.updateScreenData(screenDataMock);
+    screenService.updateScreenStore(screenDataMock);
     fixture.detectChanges();
   });
 

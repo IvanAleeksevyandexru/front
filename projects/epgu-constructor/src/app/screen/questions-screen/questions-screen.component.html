@@ -2,15 +2,15 @@
 <epgu-constructor-screen-container>
 
   <div class="question__wrapper">
-    <epgu-constructor-page-name>{{screenData.componentData?.header}}</epgu-constructor-page-name>
+    <epgu-constructor-page-name>{{screenStore.display?.header}}</epgu-constructor-page-name>
     <div class="question__wrapper__label"
          (click)="clickToInnerHTML($event)"
-         *ngIf="screenData.componentData?.components[0]?.label"
-         [innerHTML]="screenData.componentData.components[0].label | safeHtml"></div>
+         *ngIf="screenStore.display?.components[0]?.label"
+         [innerHTML]="screenStore.display.components[0].label | safeHtml"></div>
     <div class="answer">
       <epgu-constructor-answer-button
         class="answer__item"
-        *ngFor="let answer of screenData.componentData?.components[0]?.attrs.actions"
+        *ngFor="let answer of screenStore.display?.components[0]?.attrs.actions"
         (click)="answerChoose(answer)"
         [data]="answer">
       </epgu-constructor-answer-button>
