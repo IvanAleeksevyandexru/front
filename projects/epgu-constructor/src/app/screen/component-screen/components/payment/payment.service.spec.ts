@@ -7,6 +7,7 @@ import { DictionaryApiService } from '../../../../services/api/dictionary-api/di
 import { ScreenService } from '../../../screen.service';
 import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { UserSessionService } from '../../../../services/user-session/user-session.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -18,6 +19,7 @@ describe('PaymentService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         DictionaryApiService,
+        UserSessionService,
         PaymentService,
         FormPlayerService,
         ScreenService,
