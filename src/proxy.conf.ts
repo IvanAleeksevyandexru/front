@@ -1,8 +1,5 @@
 import { environment } from './environments/environment';
-import {
-  MockCurrentUserId,
-  MockCurrentUserToken
-} from '../projects/epgu-constructor/src/app/services/mock/mock.constants';
+import { MockCurrentUserId, MockCurrentUserToken } from './app/app.constants';
 
 const PROXY_CONFIG = {
   '/api': {

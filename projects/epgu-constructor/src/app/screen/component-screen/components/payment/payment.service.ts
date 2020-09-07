@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
-import { RestService } from '../rest/rest.service';
 import { HttpClient } from '@angular/common/http';
-import { ConstructorConfigService } from '../config/constructor-config.service';
-import { catchError, map } from 'rxjs/operators';
-import {
-  PaymentDictionaryOptionsInterface,
-  PaymentInfoInterface
-} from '../../../interfaces/payment.interface';
+import { catchError, map, takeUntil } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import { FormPlayerService } from '../../form-player.service';
-import {
-  getPaymentRequestOptions,
-} from '../../screen/component-screen/components/payment/payment.constants';
+import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from '../../../../../interfaces/payment.interface';
+import { getPaymentRequestOptions } from './payment.constants';
+import { FormPlayerService } from '../../../../services/form-player/form-player.service';
+import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
+import { ScreenStore } from '../../../screen.types';
+import { ScreenService } from '../../../screen.service';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { ConfigService } from '../../../../config/config.service';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -21,18 +19,27 @@ export class PaymentService {
   private apiUrl: string;
   private externalUrl: string;
   private paymentUrl: string;
+  screenStore: ScreenStore;
   isLocalHost = false;
 
   constructor(
-    private restService: RestService,
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
+    private dictionaryApiService: DictionaryApiService,
+    private configService: ConfigService,
     public formPlayerService: FormPlayerService,
+    private screenService: ScreenService,
+    private ngUnsubscribe$: UnsubscribeService
   ) {
-    this.apiUrl = this.constructorConfigService.config.apiUrl;
-    this.externalUrl = this.constructorConfigService.config.externalUrl;
-    this.paymentUrl = this.constructorConfigService.config.paymentUrl;
+    this.apiUrl = this.configService.config.apiUrl;
+    this.externalUrl = this.configService.config.externalUrl;
+    this.paymentUrl = this.configService.config.paymentUrl;
     this.isLocalHost = location.hostname === 'localhost';
+
+    this.screenService.screenData$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((screenData: ScreenStore) => {
+        this.screenStore = screenData;
+      });
   }
 
   /**
@@ -64,7 +71,7 @@ export class PaymentService {
   loadPaymentInfo(orderId, nsi, dictItemCode): Observable<any> {
     const dictionaryOptions = this.createPaymentRequestOptions(dictItemCode);
 
-    return this.restService.getDictionary(nsi, dictionaryOptions).pipe(
+    return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
       map((res: any) => {
         if (res.error.code === 0) {
           return res.items[0].attributeValues;
@@ -160,7 +167,7 @@ export class PaymentService {
    * @param dictItemCode - код элемента справочника на оплату
    */
   createPaymentRequestOptions(dictItemCode: string): PaymentDictionaryOptionsInterface {
-    const { applicantAnswers }: any = this.formPlayerService.responseStore.scenarioDto;
+    const { applicantAnswers } = this.screenStore;
     // eslint-disable-next-line prettier/prettier
     const filterReg = JSON.parse(applicantAnswers.ms1.value);
 

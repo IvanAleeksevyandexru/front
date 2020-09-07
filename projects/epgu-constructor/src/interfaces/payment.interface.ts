@@ -1,35 +1,4 @@
 import { DictionaryOptionsInterface } from './dictionary-options.interface';
-import { ComponentInterface, DisplayInterface, Gender } from './epgu.service.interface';
-
-/**
- * Интерфейс атрибутов приходящих об оплате
- */
-export interface PaymentAttrsInterface {
-  nsi: string;
-  dictItemCode: string;
-}
-
-/***
- * Интерфейс для сценария ответа об оплате
- */
-export interface PaymentScenarioInterface {
-  applicantAnswers: {
-    pay1?: {
-      value: string;
-    }
-  };
-  currentRule: number;
-  currentValue: object;
-  currentCycledFields: object;
-  cycledFields: Array<object>;
-  display: DisplayInterface;
-  errors: object;
-  gender: Gender;
-  orderId: string;
-  sendNotification: Array<object>;
-  token: string
-  userId: string
-}
 
 /**
  * Информация о нужном платеже
@@ -181,11 +150,4 @@ export interface BillsInfoResponse{
   unidentifiedBillIds: number[],
   fkSmevVersion: number,
   hasUnidentifiedBills: boolean
-}
-
-/**
- * Интерфейс аттрибута для компонента оплаты
- */
-export interface PaymentInterface extends ComponentInterface {
-  attrs: PaymentAttrsInterface;
 }

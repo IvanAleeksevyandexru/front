@@ -10,10 +10,10 @@ import {
 } from '../../../../../interfaces/payment.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
-import { PaymentService } from '../../../../services/payment/payment.service';
 import { PaymentStatus } from './payment.constants';
 import { ScreenService } from '../../../screen.service';
-import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
+import { PaymentService } from './payment.service';
+import { ComponentInterface } from '../../../../services/api/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-payment',
@@ -67,6 +67,18 @@ export class PaymentComponent implements OnDestroy {
   ) {}
 
   /**
+   * Фильтруем данные по нашему счёту
+   * @param answer - ответ сервера
+   * @private
+   */
+  static filterBillInfoResponse(answer: any): BillsInfoResponse {
+    if (answer?.response) {
+      return answer.response;
+    }
+    return answer;
+  }
+
+  /**
    * Получает информацию для оплате
    * @private
    */
@@ -113,7 +125,7 @@ export class PaymentComponent implements OnDestroy {
     this.uin = res.value.replace('PRIOR', '');
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
-      .pipe(map((answer: any) => this.filterBillInfoResponse(answer)))
+      .pipe(map((answer: any) => PaymentComponent.filterBillInfoResponse(answer)))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
         (info) => this.getBillsInfo(info),
@@ -194,18 +206,6 @@ export class PaymentComponent implements OnDestroy {
     this.inLoading = false;
     this.screenService.updateLoading(this.inLoading);
     this.componentStateService.state = this.paymentService.getPaymentLink(this.uin);
-  }
-
-  /**
-   * Фильтруем данные по нашему счёту
-   * @param answer - ответ сервера
-   * @private
-   */
-  private filterBillInfoResponse(answer: any): BillsInfoResponse {
-    if (answer?.response) {
-      return answer.response;
-    }
-    return answer;
   }
 
   /**
