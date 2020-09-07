@@ -1,13 +1,16 @@
-<div class="payment" [ngSwitch]="status">
+<div class="payment" [class.inloading]="inLoading" [ngSwitch]="status">
   <div class="info" *ngSwitchCase="paymentStatus.SUCCESS">
     <div class="info__text"><strong>{{ paymentPurpose }}</strong></div>
-    <div class="info__text">УИН {{ uin }}</div>
-    <div class="info__text">Начисление на паспорт РФ 1234 123456 от ЗАГС г. Москвы</div>
-    <div class="payment__sum">{{ sum }} Р
-      <span class="secondary" *ngIf="sumWithoutDiscount.length">{{ sumWithoutDiscount }} Р</span>
+    <div class="info__text" *ngIf="uin.length">УИН {{ uin }}</div>
+    <div class="info__text" *ngIf="docInfo.length">Начисление на {{ docInfo }}</div>
+    <div class="payment__sum" *ngIf="sum.length">{{ sum }} Р
+      <span class="del" *ngIf="sumWithoutDiscount.length">{{ sumWithoutDiscount }} Р</span>
     </div>
-    <div class="info__hint" *ngIf="validDate.length">
-      Скидка действует при оплате до {{ validDate }}.
+    <div class="info__hint" *ngIf="validDiscountDate.length">
+      Скидка действует при оплате до {{ validDiscountDate }}.
+    </div>
+    <div class="is__payed" *ngIf="isPaid">
+      Оплачено
     </div>
   </div>
 

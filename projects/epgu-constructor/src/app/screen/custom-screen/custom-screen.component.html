@@ -13,7 +13,7 @@
     </epgu-constructor-screen-pad>
 
     <div class="footer">
-      <lib-button
+      <lib-button *ngIf="screenService.isShow$ | async"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextScreen()"
         class="footer__btn-submit"

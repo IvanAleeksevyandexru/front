@@ -4,6 +4,10 @@
   display: block;
 }
 
+.info__img-wrapper{
+  text-align: center;
+}
+
 .info__text::ng-deep {
   & > * {
     margin: 0;

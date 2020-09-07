@@ -9,7 +9,7 @@ const PROXY_CONFIG = {
     target: 'http://localhost:8080',
     secure: false,
   },
-  '/paymentuin/': {
+  '/payment/': {
     target: environment.externalUrl,
     secure: true,
     headers: {
@@ -17,7 +17,7 @@ const PROXY_CONFIG = {
       cookie: `u=${MockCurrentUserId}; acc_t=${MockCurrentUserToken}`,
     },
     pathRewrite: {
-      '^/paymentuin/': '',
+      '^/payment/': '',
     },
     changeOrigin: true,
   },

@@ -87,7 +87,7 @@
 
     <div class="footer">
       <lib-button
-        *ngIf="componentSetting.displayContinueBtn"
+        *ngIf="componentSetting.displayContinueBtn && (screenService.isShow$ | async)"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
         class="footer__btn-submit"

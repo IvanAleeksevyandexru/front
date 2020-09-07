@@ -1,5 +1,5 @@
 import { DictionaryOptionsInterface } from './dictionary-options.interface';
-import { DisplayInterface, Gender } from './epgu.service.interface';
+import { ComponentInterface, DisplayInterface, Gender } from './epgu.service.interface';
 
 /**
  * Интерфейс атрибутов приходящих об оплате
@@ -53,6 +53,27 @@ export interface PaymentInfoInterface {
   recipientTaxAuthorityName: any;
   recipientTitle: string;
   sum: string;
+}
+
+/**
+ * Интерфейс для статуса опчеченого или нет счета
+ */
+export interface PaymentInfoForPaidStatus{
+  date: string,
+  eventWhen: string,
+  number: number,
+  paid: boolean,
+  source: string,
+  status: string,
+  uin: string
+}
+
+/**
+ * Интерфейс для данные ответа по ответу на проверку статуса счета
+ */
+export interface PaymentInfoForPaidStatusData {
+  data: PaymentInfoForPaidStatus[],
+  total: number
 }
 
 /**
@@ -160,4 +181,11 @@ export interface BillsInfoResponse{
   unidentifiedBillIds: number[],
   fkSmevVersion: number,
   hasUnidentifiedBills: boolean
+}
+
+/**
+ * Интерфейс аттрибута для компонента оплаты
+ */
+export interface PaymentInterface extends ComponentInterface {
+  attrs: PaymentAttrsInterface;
 }

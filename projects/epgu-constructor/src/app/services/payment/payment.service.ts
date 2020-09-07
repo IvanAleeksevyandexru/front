@@ -4,13 +4,14 @@ import { HttpClient } from '@angular/common/http';
 import { ConstructorConfigService } from '../config/constructor-config.service';
 import { catchError, map } from 'rxjs/operators';
 import {
-  BillsInfoResponse,
   PaymentDictionaryOptionsInterface,
   PaymentInfoInterface
 } from '../../../interfaces/payment.interface';
 import { Observable, throwError } from 'rxjs';
 import { FormPlayerService } from '../../form-player.service';
-import { getPaymentRequestOptions } from '../../screen/component-screen/components/payment/payment.constants';
+import {
+  getPaymentRequestOptions,
+} from '../../screen/component-screen/components/payment/payment.constants';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -52,7 +53,7 @@ export class PaymentService {
    * @param relativePath - относительный путь от API для запросов
    */
   private getPayInfoApiUrl = (relativePath): string =>
-    (this.isLocalHost ? '/paymentuin/' : this.externalUrl) + relativePath;
+    (this.isLocalHost ? '/payment/' : this.externalUrl) + relativePath;
 
   /**
    * Загружает данные по оплате с реквизитами
@@ -84,6 +85,12 @@ export class PaymentService {
    * @param attributeValues - дополнительные параметры
    */
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
+    // На случай если сервис лежит, только для теста
+    // const uinMockUp = new BehaviorSubject({
+    //   value: mockUpUIN
+    // });
+    // return uinMockUp.asObservable();
+
     return this.http.post(
       this.getPayInfoApiUrl(`api/lk/v1/paygate/uin/${code}?orderId=${orderId}`),
       attributeValues,
@@ -103,6 +110,10 @@ export class PaymentService {
    * @param orderId - идентификатор заявления
    */
   getBillsInfoByUIN(uin: string, orderId: string): Observable<any> {
+    // На случай если сервис лежит, только для теста
+    // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
+    // return billMockUp.asObservable();
+
     return this.http.post(
       this.getPayInfoApiUrl(`api/pay/v1/bills?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`), {},
       {
@@ -141,7 +152,7 @@ export class PaymentService {
   getPaymentLink(uin: string): string {
     // TODO хардкод. доделать.
     // eslint-disable-next-line prettier/prettier
-    return `${this.paymentUrl}/?billNumber=${uin}&returnUrl=${encodeURIComponent(this.apiUrl)}&subscribe=true`;
+    return `${this.paymentUrl}?billIds=${uin}&returnUrl=${encodeURIComponent(this.apiUrl)}&subscribe=true`;
   }
 
   /**
@@ -153,7 +164,6 @@ export class PaymentService {
     // eslint-disable-next-line prettier/prettier
     const filterReg = JSON.parse(applicantAnswers.ms1.value);
 
-    console.log('filterReg', filterReg);
     // TODO хардкод. доделать.
     return getPaymentRequestOptions(filterReg, dictItemCode);
   }
