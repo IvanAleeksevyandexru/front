@@ -54,6 +54,7 @@ export enum CUSTOM_COMPONENT_ITEM_TYPE {
   CompositeRadioButton = 'CompositeRadioButton',
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
+  GenderSelection = 'GenderSelection',
 }
 
 export const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';

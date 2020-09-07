@@ -1,53 +1,9 @@
-@import "src/styles/core";
-
-.radio-item {
-  display: inline-block;
-
-  height: 47px;
-
-  padding: 0 12px 0 6px;
-  border-radius: 4px;
-
-  color: $color-black;
-
-  &.active {
-    background-color: $color-link-water;
-  }
-
-  &:last-child {
-    margin-left: 20px;
-  }
+$px: 16px;
+:host{
+  display: flex;
+  margin-left: -$px;
+  margin-right: -$px;
 }
-
-.radio-item__label {
-  display: inline-flex;
-  align-items: center;
-
-  height: 100%;
-
-  cursor: pointer;
-}
-
-.icon-male:before, .icon-female:before {
-  content: '';
-  display: inline-block;
-  background-repeat: no-repeat;
-}
-
-.icon-male:before {
-  width: 20px;
-  height: 24px;
-  background-image: url("../../../../assets/icons/svg/male-icon.svg");
-}
-
-.icon-female:before {
-  margin-left: 5px;
-  padding-left: 1px;
-  width: 15px;
-  height: 24px;
-  background-image: url("../../../../assets/icons/svg/female-icon.svg");
-}
-
-.gender-radio {
-  appearance: none;
+.item {
+  padding: 0 $px;
 }

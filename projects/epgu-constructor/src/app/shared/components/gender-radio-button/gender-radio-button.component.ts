@@ -1,5 +1,10 @@
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+enum GenderOrder {
+  male = 0,
+  female = 1,
+}
 
 @Component({
   selector: 'epgu-constructor-gender-radio-button',
@@ -15,7 +20,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class GenderRadioButtonComponent implements ControlValueAccessor {
-  @Input() value: string | number | boolean;
+  genders = [
+    { name: 'male', label: 'Мальчик', value: 'M' },
+    { name: 'female', label: 'Девочка', value: 'F' },
+  ];
 
   onChange: Function;
   onTouched: Function;
@@ -23,9 +31,7 @@ export class GenderRadioButtonComponent implements ControlValueAccessor {
   innerValue: string | number | boolean;
 
   writeValue(value: string | number | boolean) {
-    if (value !== this.innerValue) {
-      this.innerValue = value;
-    }
+    this.innerValue = value || GenderOrder.male;
   }
 
   registerOnChange(fn: Function): void {
@@ -36,9 +42,13 @@ export class GenderRadioButtonComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  change(value: string | number | boolean) {
-    this.innerValue = value;
-    this.onChange(value);
-    this.onTouched(value);
+  change(gender) {
+    this.innerValue = gender.value;
+    if (this.onChange) {
+      this.onChange(gender.value);
+      this.onTouched(gender.value);
+    } else {
+      console.error('You should apply data binding');
+    }
   }
 }

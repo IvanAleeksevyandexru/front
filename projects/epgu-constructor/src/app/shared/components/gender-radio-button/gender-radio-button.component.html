@@ -1,25 +1,10 @@
-<div class="radio-item" [ngClass]="{active: innerValue === 'male'}">
-  <label class="radio-item__label">
-    <span class="icon-male"></span>
-    <input class="gender-radio"
-           type="radio"
-           value="male"
-           [ngModel]="innerValue"
-           (ngModelChange)="change($event)"
-           name="gender" />
-    <span>Мальчик</span>
-  </label>
-</div>
-
-<div class="radio-item" [ngClass]="{active: innerValue === 'female'}">
-  <label class="radio-item__label">
-    <span class="icon-female"></span>
-    <input class="gender-radio"
-           type="radio"
-           value="female"
-           [ngModel]="innerValue"
-           (ngModelChange)="change($event)"
-           name="gender" />
-    <span>Девочка</span>
-  </label>
-</div>
+<lib-radio
+  class="item"
+  name="gender"
+  *ngFor="let gender of genders"
+  [disabled]=""
+  [checked]="gender.value === innerValue"
+  [labelText]="gender.label"
+  [value]="gender.value"
+  (click)="change(gender)"
+></lib-radio>
