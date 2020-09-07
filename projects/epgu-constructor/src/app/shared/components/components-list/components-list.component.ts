@@ -95,8 +95,8 @@ export class ComponentsListComponent implements OnChanges {
   }
 
   selectDictionary(selectedItem: ListItem, component: CustomComponentInterface) {
-    const dictionaryName = component.attrs?.dictionaryType;
-    this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
+    const dictionaryType = component.attrs?.dictionaryType;
+    this.dictionary[dictionaryType + component.id].selectedItem = selectedItem.originalItem;
     this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
     this.emmitChanges(component);
@@ -123,11 +123,11 @@ export class ComponentsListComponent implements OnChanges {
     this.emmitChanges(component);
   }
 
-  loadDictionary(dictionaryName: string, component: CustomComponentInterface) {
+  loadDictionary(dictionaryType: string, component: CustomComponentInterface) {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
-    this.dictionaryApiService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
-      (data) => this.loadDictionarySuccess(dictionaryName, data, component),
-      () => this.loadDictionaryError(dictionaryName, component.id),
+    this.dictionaryApiService.getDictionary(dictionaryType, { pageNum: 0 }).subscribe(
+      (data) => this.loadDictionarySuccess(dictionaryType, data, component),
+      () => this.loadDictionaryError(dictionaryType, component.id),
       () => {
         /* this.changes.emit(this.state) */
       },
