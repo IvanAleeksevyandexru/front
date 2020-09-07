@@ -70,6 +70,7 @@ export class AddChildrenScreenComponent implements OnInit {
       registrationAddressDate: '',
     };
 
+    this.addChildrenForm.controls[item].disable();
     this.itemsList.push(newChild);
     this.handleSelect({ id }, item);
   }
