@@ -13,7 +13,7 @@
           <lib-dropdown
             class="cs__select cs-select"
             (changed)="selectDictionary($event, componentData)"
-            [items]="dictionary[componentData?.attrs?.dictionaryType]?.list"
+            [items]="dictionary[componentData?.attrs?.dictionaryType + componentData?.id]?.list"
           ></lib-dropdown>
           <epgu-constructor-helper-text *ngIf="!componentData.required">
             {{ getHelperText(componentData.required) }}
@@ -42,7 +42,9 @@
             [queryMinSymbolsCount]="0"
             [searchCaseSensitive]="false"
             (changed)="selectDictionary($event, componentData)"
-            [fixedItems]="dictionary[componentData?.attrs?.dictionaryType]?.list"
+            [fixedItems]="
+              dictionary[componentData?.attrs?.dictionaryType + componentData?.id]?.list
+            "
           ></lib-lookup>
         </ng-container>
       </div>

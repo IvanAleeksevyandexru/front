@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-
+import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
+import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
 import {
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
@@ -21,8 +22,6 @@ import {
 } from '../../../screen/custom-screen/tools/custom-screen-tools';
 import { ScreenService } from '../../../screen/screen.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { OPTIONAL_FIELD } from '../../../../constant/helperTexts';
-import { CUSTOM_COMPONENT_ITEM_TYPE } from '../../../../constant/global';
 import { ConstructorConfigService } from '../../../services/config/constructor-config.service';
 
 @Component({
@@ -70,9 +69,9 @@ export class ComponentsListComponent implements OnChanges {
   initComponent(component: CustomComponentInterface) {
     this.initState(component);
     if (likeDictionary(component.type)) {
-      const dictionaryName = component.attrs.dictionaryType;
-      this.initDictionary(dictionaryName);
-      this.loadDictionary(dictionaryName, component);
+      const { dictionaryType } = component.attrs;
+      this.initDictionary(dictionaryType, component.id);
+      this.loadDictionary(dictionaryType, component);
     } else if (isDropDown(component.type)) {
       this.initDropDown(component);
     }
@@ -82,8 +81,8 @@ export class ComponentsListComponent implements OnChanges {
     this.state[component.id] = getInitStateItemComponentList(component);
   }
 
-  initDictionary(dictionaryName) {
-    this.dictionary[dictionaryName] = getCustomScreenDictionaryFirstState();
+  initDictionary(dictionaryType, componentId) {
+    this.dictionary[dictionaryType + componentId] = getCustomScreenDictionaryFirstState();
   }
 
   initDropDown(component: CustomComponentInterface) {
@@ -128,7 +127,7 @@ export class ComponentsListComponent implements OnChanges {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
     this.dictionaryApiService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryName, data, component),
-      () => this.loadDictionaryError(dictionaryName),
+      () => this.loadDictionaryError(dictionaryName, component.id),
       () => {
         /* this.changes.emit(this.state) */
       },
@@ -140,18 +139,22 @@ export class ComponentsListComponent implements OnChanges {
     data: DictionaryResponse,
     component: CustomComponentInterface,
   ) {
-    this.dictionary[key].loading = false;
-    this.dictionary[key].paginationLoading = false;
-    this.dictionary[key].data = data;
-    this.dictionary[key].origin = component;
-    this.dictionary[key].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
+    this.dictionary[key + component.id].loading = false;
+    this.dictionary[key + component.id].paginationLoading = false;
+    this.dictionary[key + component.id].data = data;
+    this.dictionary[key + component.id].origin = component;
+    this.dictionary[key + component.id].list = getNormalizeDataCustomScreenDictionary(
+      data.items,
+      key,
+      component,
+    );
   }
 
-  loadDictionaryError(key: string) {
-    this.dictionary[key].loading = false;
-    this.dictionary[key].paginationLoading = false;
-    this.dictionary[key].loadError = true;
-    this.dictionary[key].loadEnd = false;
+  loadDictionaryError(key: string, componentId: string) {
+    this.dictionary[key + componentId].loading = false;
+    this.dictionary[key + componentId].paginationLoading = false;
+    this.dictionary[key + componentId].loadError = true;
+    this.dictionary[key + componentId].loadEnd = false;
   }
 
   setValidationState(inputValidationResult, componentId, componentValue) {
