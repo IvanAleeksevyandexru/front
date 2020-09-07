@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { SCREEN_TYPE } from '../../../constant/global';
 import { ResponseInterface } from '../../../interfaces/epgu.service.interface';
-import { ComponentStateService } from '../component-state/component-state.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { FormPlayerNavigation } from '../../form-player.types';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
-import { FormPlayerNavigation } from '../../form-player.types';
+import { ComponentStateService } from '../component-state/component-state.service';
 
 interface SendDataOptionsInterface {
   componentId?: string;
@@ -60,7 +60,7 @@ export class FormPlayerService {
   }
 
   processResponse(response: ResponseInterface): void {
-    if (response?.scenarioDto?.errors) {
+    if (Object.keys(response?.scenarioDto?.errors || '{}').length) {
       this.sendDataError(response);
     } else {
       this.sendDataSuccess(response);
@@ -91,13 +91,13 @@ export class FormPlayerService {
 
   sendDataError(response): void {
     this.updateLoading(false);
+    console.error('----- ERROR DATA ---------');
     if (response.scenarioDto?.errors?.length) {
-      // business errors
-      console.error('----- ERROR DATA ---------');
+      // NOTICE: passing business errors to components layers, do not change this logic!
       console.error(response.scenarioDto?.errors);
-
-    } else {
       this.initResponse(response);
+    } else {
+      console.error(response);
     }
   }
 
