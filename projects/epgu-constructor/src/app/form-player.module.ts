@@ -21,7 +21,6 @@ import { ComponentStateService } from './services/component-state/component-stat
 import { ScreenService } from './screen/screen.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { EmptyScreenModule } from './screen/empty-screen/empty-screen.module';
-import { UserSessionService } from './services/user-session/user-session.service';
 import { FormPlayerApiService } from './services/api/form-player-api/form-player-api.service';
 
 
@@ -50,7 +49,6 @@ import { FormPlayerApiService } from './services/api/form-player-api/form-player
     ScreenService,
     ComponentStateService,
     ConfigService,
-    UserSessionService,
     UnsubscribeService
   ],
   exports: [

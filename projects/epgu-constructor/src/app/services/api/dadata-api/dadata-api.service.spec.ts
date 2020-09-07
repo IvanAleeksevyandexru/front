@@ -4,7 +4,6 @@ import { DadataApiService } from './dadata-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConfigService } from '../../../config/config.service';
 import { ConfigServiceStub } from '../../../config/config.service.stub';
-import { UserSessionService } from '../../user-session/user-session.service';
 
 describe('DadataApiService', () => {
   let service: DadataApiService;
@@ -16,7 +15,6 @@ describe('DadataApiService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         DadataApiService,
-        UserSessionService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });

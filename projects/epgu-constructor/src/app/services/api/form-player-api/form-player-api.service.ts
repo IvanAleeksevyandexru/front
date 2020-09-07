@@ -1,27 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormPlayerApiResponse, FormPlayerApiSuccessResponse } from './form-player-api.types';
+import { FormPlayerApiResponse } from './form-player-api.types';
 import { ConfigService } from '../../../config/config.service';
-import { UserSessionService } from '../../user-session/user-session.service';
 import { FormPlayerNavigation } from '../../../form-player.types';
 import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class FormPlayerApiService {
   apiUrl: string;
-  userId: string;
-  token: string;
 
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
-    private userSessionService: UserSessionService,
+    private cookieService: CookieService
   ) {
     this.apiUrl = configService.config.apiUrl;
-    this.userSessionService.userSession$.subscribe(() => {
-      this.userId = this.userSessionService.userId;
-      this.token = this.userSessionService.token;
-    });
   }
 
   public getInitialData(serviceId: string): Observable<FormPlayerApiResponse> {
@@ -33,8 +27,8 @@ export class FormPlayerApiService {
 
   public navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, data): Observable<FormPlayerApiResponse> {
     const path = `${this.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
-    data.scenarioDto.userId = this.userId;
-    data.scenarioDto.token = this.token;
+    data.scenarioDto.userId = this.cookieService.get('u') || ''; // TODO: remove when api switch auth to cookie
+    data.scenarioDto.token = this.cookieService.get('acc_t') || ''; // TODO: remove when api switch auth to cookie
     return this.http.post<FormPlayerApiResponse>(path, {
       ...data,
     }, {
