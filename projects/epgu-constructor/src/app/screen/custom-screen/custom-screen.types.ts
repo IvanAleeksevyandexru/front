@@ -106,6 +106,7 @@ export interface CustomDisplay extends Display {
 export interface CustomComponent extends ComponentBase {
   attrs: CustomComponentAttr;
   type: CustomScreenComponentTypes;
+  id: string;
   hint?: string;
 }
 

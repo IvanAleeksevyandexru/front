@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 
 import {
@@ -30,7 +38,7 @@ import { ConfigService } from '../../../config/config.service';
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
 })
-export class ComponentsListComponent implements OnChanges {
+export class ComponentsListComponent implements OnInit, OnChanges {
   // <-- constant
   componentType = CustomScreenComponentTypes;
 
@@ -70,9 +78,9 @@ export class ComponentsListComponent implements OnChanges {
   initComponent(component: CustomComponent) {
     this.initState(component);
     if (likeDictionary(component.type)) {
-      const dictionaryName = component.attrs.dictionaryType;
-      this.initDictionary(dictionaryName);
-      this.loadDictionary(dictionaryName, component);
+      const { dictionaryType } = component.attrs;
+      this.initDictionary(dictionaryType, component.id);
+      this.loadDictionary(dictionaryType, component);
     } else if (isDropDown(component.type)) {
       this.initDropDown(component);
     }
@@ -82,8 +90,8 @@ export class ComponentsListComponent implements OnChanges {
     this.state[component.id] = getInitStateItemComponentList(component);
   }
 
-  initDictionary(dictionaryName) {
-    this.dictionary[dictionaryName] = getCustomScreenDictionaryFirstState();
+  initDictionary(dictionaryType, componentId) {
+    this.dictionary[dictionaryType + componentId] = getCustomScreenDictionaryFirstState();
   }
 
   initDropDown(component: CustomComponent) {
@@ -96,8 +104,8 @@ export class ComponentsListComponent implements OnChanges {
   }
 
   selectDictionary(selectedItem: ListItem, component: CustomComponent) {
-    const dictionaryName = component.attrs?.dictionaryType;
-    this.dictionary[dictionaryName].selectedItem = selectedItem.originalItem;
+    const dictionaryType = component.attrs?.dictionaryType;
+    this.dictionary[dictionaryType + component.id].selectedItem = selectedItem.originalItem;
     this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
     this.emmitChanges(component);
@@ -124,11 +132,11 @@ export class ComponentsListComponent implements OnChanges {
     this.emmitChanges(component);
   }
 
-  loadDictionary(dictionaryName: string, component: CustomComponent) {
+  loadDictionary(dictionaryType: string, component: CustomComponent) {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
-    this.dictionaryApiService.getDictionary(dictionaryName, { pageNum: 0 }).subscribe(
-      (data) => this.loadDictionarySuccess(dictionaryName, data, component),
-      () => this.loadDictionaryError(dictionaryName),
+    this.dictionaryApiService.getDictionary(dictionaryType, { pageNum: 0 }).subscribe(
+      (data) => this.loadDictionarySuccess(dictionaryType, data, component),
+      () => this.loadDictionaryError(dictionaryType, component.id),
       () => {
         /* this.changes.emit(this.state) */
       },
@@ -136,18 +144,20 @@ export class ComponentsListComponent implements OnChanges {
   }
 
   loadDictionarySuccess(key: string, data: DictionaryResponse, component: CustomComponent) {
-    this.dictionary[key].loading = false;
-    this.dictionary[key].paginationLoading = false;
-    this.dictionary[key].data = data;
-    this.dictionary[key].origin = component;
-    this.dictionary[key].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
+    const id = key + component.id;
+    this.dictionary[id].loading = false;
+    this.dictionary[id].paginationLoading = false;
+    this.dictionary[id].data = data;
+    this.dictionary[id].origin = component;
+    this.dictionary[id].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
   }
 
-  loadDictionaryError(key: string) {
-    this.dictionary[key].loading = false;
-    this.dictionary[key].paginationLoading = false;
-    this.dictionary[key].loadError = true;
-    this.dictionary[key].loadEnd = false;
+  loadDictionaryError(key: string, componentId: string) {
+    const id = key + componentId;
+    this.dictionary[id].loading = false;
+    this.dictionary[id].paginationLoading = false;
+    this.dictionary[id].loadError = true;
+    this.dictionary[id].loadEnd = false;
   }
 
   setValidationState(inputValidationResult, componentId, componentValue) {
