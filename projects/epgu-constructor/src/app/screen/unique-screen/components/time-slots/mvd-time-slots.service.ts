@@ -46,6 +46,7 @@ export class MvdTimeSlotsService implements TimeSlotsService {
   }
 
   book(selectedSlot: SlotInterface) {
+    this.errorMessage = undefined;
     return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
         if (!response.error) {

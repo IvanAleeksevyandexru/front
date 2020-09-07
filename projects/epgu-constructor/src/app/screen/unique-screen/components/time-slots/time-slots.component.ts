@@ -223,11 +223,20 @@ export class TimeSlotsComponent implements OnInit {
     this.modalService.openModal(ConfirmationModalComponent, params);
   }
 
+  initCalendar(data: any) {
+    const slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
+    const [activeYearNumber, activeMonthNumber] = slotsPeriod.split('-');
+    this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
+    this.activeYearNumber = parseInt(activeYearNumber, 10);
+    this.renderSingleMonthGrid(this.weeks);
+  }
+
   ngOnInit(): void {
     if (this.data.components[0]) {
       this.inProgress = true;
       this.label = this.data.components[0].label;
       const value = JSON.parse(this.data.components[0].value);
+      this.initCalendar(value);
       this.currentService = this.timeSlotServices[value.timeSlotType];
       this.currentService.init(value).subscribe(
         () => {

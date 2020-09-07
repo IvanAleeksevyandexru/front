@@ -47,6 +47,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
   }
 
   book(selectedSlot: SmevSlotInterface) {
+    this.errorMessage = undefined;
     return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
         if (response.error) {
