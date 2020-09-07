@@ -5,6 +5,7 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { InfoScreenComponentTypes } from './info-screen.types';
+import { NavigationPayload } from '../../form-player.types';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.
@@ -43,6 +44,12 @@ export class InfoScreenComponent implements Screen, OnInit {
   }
 
   nextStep(): void {
-    this.navigationService.nextStep.next();
+    const data: NavigationPayload = {};
+    const componentId = this.screenStore.display.components[0].id;
+    data[componentId] = {
+      visited: true,
+      value: '',
+    };
+    this.navigationService.nextStep.next(data);
   }
 }

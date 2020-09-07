@@ -12,12 +12,21 @@ import { ScreenContainerComponent } from '../../../../shared/components/screen-c
 import { NavigationService } from '../../../../shared/services/navigation/navigation.service';
 import { MockComponent } from 'ng-mocks';
 import { Gender } from '../../../../shared/types/gender';
+import { Display, ScreenTypes } from '../../../screen.types';
 
 describe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;
   let fixture: ComponentFixture<EmployeeHistoryComponent>;
   let RadioComponentMock = MockComponent(RadioComponent);
   let DatePickerComponentMock = MockComponent(DatePickerComponent);
+  let mockDisplay: Display = {
+    components: [],
+    header: '',
+    id: '',
+    name: '',
+    submitLabel: '',
+    type: ScreenTypes.UNIQUE
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -42,13 +51,7 @@ describe('EmployeeHistoryComponent', () => {
     let formService = TestBed.inject(EmployeeHistoryFormService);
     fixture = TestBed.createComponent(EmployeeHistoryComponent);
     component = fixture.componentInstance;
-    component.data = {
-      components: [],
-      header: '',
-      id: '',
-      name: '',
-      submitLabel: '',
-    };
+    component.display = mockDisplay;
     component.header = '';
     component.gender = Gender.male;
     // spyOn(formService, 'createEmployeeForm')

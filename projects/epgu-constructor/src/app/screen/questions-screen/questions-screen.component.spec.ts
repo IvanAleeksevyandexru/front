@@ -20,7 +20,16 @@ describe('QuestionsScreenComponent', () => {
   let NavigationComponentMock = MockComponent(NavigationComponent);
   const screenDataMock: ScreenStore = {
     display: {
-      components: [],
+      components: [
+        {
+          attrs: {},
+          id: 'sd',
+          label: '',
+          type: '',
+          visited: true,
+          value: ''
+        }
+      ],
       header: '',
       id: '',
       name: '',
@@ -55,7 +64,6 @@ describe('QuestionsScreenComponent', () => {
     fixture = TestBed.createComponent(QuestionsScreenComponent);
     component = fixture.componentInstance;
     screenService.updateScreenStore(screenDataMock);
-    component.answerChoose({ action: '', label: '', value: '' });
     fixture.detectChanges();
   });
 

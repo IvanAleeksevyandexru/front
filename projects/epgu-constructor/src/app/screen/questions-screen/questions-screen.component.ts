@@ -64,7 +64,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   }
 
   answerChoose(answer: QuestionsComponentActions): void {
-    let data = {};
+    const data: NavigationPayload = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
       const fieldNameRef = this.screenStore.display.components[0]?.attrs?.fields[0]?.fieldName;
@@ -75,9 +75,13 @@ export class QuestionsScreenComponent implements OnInit, Screen {
         value: JSON.stringify(mergedCycledAndAnswerValues),
       };
     } else {
-      data = answer.value;
+      const componentId = this.screenStore.display.components[0].id;
+      data[componentId] = {
+        visited: true,
+        value: answer.value || '',
+      };
     }
 
-    this.nextStep({ data });
+    this.nextStep(data);
   }
 }

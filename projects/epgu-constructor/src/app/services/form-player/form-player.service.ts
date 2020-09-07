@@ -104,20 +104,7 @@ export class FormPlayerService {
   }
 
   updateRequest(navigationPayload?: NavigationPayload): void {
-    const data = navigationPayload?.data;
-    const componentId = navigationPayload?.options?.componentId || this.componentId;
-    const isCycledFields = !!Object.keys(this.store?.scenarioDto?.currentCycledFields).length;
-    this.store.scenarioDto.currentValue = {};
-
-    // TODO HARDCODE наверное компоненты должны поднимать готовый state,
-    if (this.screenType === ScreenTypes.CUSTOM || isCycledFields) {
-      this.store.scenarioDto.currentValue = data as CurrentValueDto;
-    } else {
-      this.store.scenarioDto.currentValue[componentId] = {
-        visited: true,
-        value: data as string || '',
-      };
-    }
+    this.store.scenarioDto.currentValue = navigationPayload;
   }
 
   sendDataSuccess(response): void {

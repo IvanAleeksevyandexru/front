@@ -5,6 +5,7 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { UniqueScreenComponentTypes } from './unique-screen.types';
+import { NavigationPayload } from '../../form-player.types';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',
@@ -35,12 +36,22 @@ export class UniqueScreenComponent implements OnInit, Screen {
       });
   }
 
-  prevStep(): void {
-    this.navigationService.prevStep.next();
+  nextDataForStep(value?: string): void {
+    const data: NavigationPayload = {};
+    const componentId = this.screenStore.display.components[0].id;
+    data[componentId] = {
+      visited: true,
+      value: value || '',
+    };
+
+    this.nextStep(data);
   }
 
-  // TODO: add NextStepData typing support
-  nextStep(data?): void {
-    this.navigationService.nextStep.next({ data });
+  nextStep(data?: NavigationPayload): void {
+    this.navigationService.nextStep.next(data);
+  }
+
+  prevStep(): void {
+    this.navigationService.prevStep.next();
   }
 }

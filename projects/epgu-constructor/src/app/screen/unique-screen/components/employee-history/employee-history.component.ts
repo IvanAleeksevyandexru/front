@@ -22,7 +22,7 @@ const moment = moment_;
   styleUrls: ['./employee-history.component.scss'],
 })
 export class EmployeeHistoryComponent implements OnInit, OnChanges {
-  @Input() data: Display;
+  @Input() display: Display;
   @Input() header: string;
   @Input() gender: Gender;
 
@@ -39,7 +39,7 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.monthsService.years = this.data?.components[0]?.attrs?.years;
+    this.monthsService.years = this.display?.components[0]?.attrs?.years;
     this.monthsService.initSettings();
     this.ds = this.datasourceService.getDataSourceByGender(this.gender);
     this.employeeFormService.generateFormWatcher();
@@ -68,7 +68,7 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
   }
 
   isCompleteForm(): boolean {
-    if (this.data?.components[0]?.attrs?.nonStop) {
+    if (this.display?.components[0]?.attrs?.nonStop) {
       return this.monthsService.availableMonths.every(
         (e: EmployeeHistoryAvailableDates) => e.checked,
       );

@@ -16,7 +16,7 @@ const moment = moment_;
   providers: [UnsubscribeService],
 })
 export class CustomScreenComponent implements OnInit, OnChanges, Screen {
-  dataToSend: any;
+  dataToSend: NavigationPayload;
   isCycledFields: boolean;
   cycledValues: any;
   screenStore: ScreenStore;
@@ -79,7 +79,7 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
 
   nextScreen(): void {
     const data = this.dataToSend;
-    this.nextStep({ data });
+    this.nextStep(data);
   }
 
   getFormattedData(changes) {

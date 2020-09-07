@@ -2,8 +2,8 @@
 
 <epgu-constructor-screen-container class="screen-container">
 <div class="inner">
-  <div *ngIf="data?.header" class="head">
-    <epgu-constructor-page-name>{{ data?.header }}</epgu-constructor-page-name>
+  <div *ngIf="display?.header" class="head">
+    <epgu-constructor-page-name>{{ display?.header }}</epgu-constructor-page-name>
   </div>
 
   <epgu-constructor-screen-pad
@@ -54,7 +54,7 @@
       (click)="nextStep()"
       class="footer__btn-submit"
       >
-        {{ data?.submitLabel || 'Продолжить' }}
+        {{ display?.submitLabel || 'Продолжить' }}
       </lib-button
     >
   </div>

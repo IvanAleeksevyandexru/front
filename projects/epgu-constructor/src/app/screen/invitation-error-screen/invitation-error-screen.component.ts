@@ -44,7 +44,12 @@ export class InvitationErrorScreenComponent implements OnInit, Screen {
   }
 
   sendEmail(email: string): void {
-    const nextStepData = { data: email, options: { componentId: 'errorScr' } };
-    this.nextStep(nextStepData);
+    const data: NavigationPayload = {};
+    const componentId = 'errorScr';
+    data[componentId] = {
+      visited: true,
+      value: email || '',
+    };
+    this.nextStep(data);
   }
 }
