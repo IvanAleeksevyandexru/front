@@ -60,7 +60,7 @@ export class FormPlayerService {
   }
 
   processResponse(response: ResponseInterface): void {
-    if (response?.scenarioDto?.errors) {
+    if (Object.keys(response?.scenarioDto?.errors).length) {
       this.sendDataError(response);
     } else {
       this.sendDataSuccess(response);
@@ -92,7 +92,7 @@ export class FormPlayerService {
   sendDataError(response): void {
     this.updateLoading(false);
     console.error('----- ERROR DATA ---------');
-    if (response.scenarioDto?.errors?.length) {
+    if (Object.keys(response?.scenarioDto?.errors).length) {
       // NOTICE: passing business errors to components layers, do not change this logic!
       console.error(response.scenarioDto?.errors);
       this.initResponse(response);
