@@ -1,8 +1,10 @@
-import { CurrentValueDto } from './services/api/form-player-api/form-player-api.types';
+import { Answer } from './shared/types/answer';
 
 export enum FormPlayerNavigation {
   'NEXT' = 'getNextStep',
   'PREV' = 'getPrevStep',
 }
 
-export interface NavigationPayload extends CurrentValueDto{}
+export interface NavigationPayload {
+  [key: string]: Answer
+}

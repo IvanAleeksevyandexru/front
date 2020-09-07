@@ -1,17 +1,13 @@
 import { ScreenTypes } from '../../../screen/screen.types';
 import { Gender } from '../../../shared/types/gender';
-
-export interface AnswerDto {
-  visited: boolean,
-  value: string,
-}
+import { Answer } from '../../../shared/types/answer';
 
 export interface ApplicantAnswersDto {
-  [key: string]: AnswerDto
+  [key: string]: Answer
 }
 
 export interface CurrentValueDto {
-  [key: string]: AnswerDto
+  [key: string]: Answer
 }
 
 /**

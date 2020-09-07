@@ -1,5 +1,6 @@
 import { NavigationPayload } from '../form-player.types';
 import { Gender } from '../shared/types/gender';
+import { Answer } from '../shared/types/answer';
 
 export interface ComponentBase {
   attrs: {[key: string]: any};
@@ -19,11 +20,6 @@ export interface Display {
   name: string;
   submitLabel: string;
   type: ScreenTypes
-}
-
-export interface Answer {
-  visited: boolean,
-  value: string,
 }
 
 export interface ApplicantAnswers {
