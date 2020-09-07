@@ -61,8 +61,7 @@ export function getNormalizeDataCustomScreenDictionary(
   let arr = items;
   if (isRemoveRussiaFromList) {
     arr = arr.filter(item => ![ussrCode, russiaCode].includes(item.value));
-  }
-  if (isRemoveUssrFromList) {
+  } else if (isRemoveUssrFromList) {
     arr = arr.filter(item => ![ussrCode].includes(item.value));
   }
   return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
