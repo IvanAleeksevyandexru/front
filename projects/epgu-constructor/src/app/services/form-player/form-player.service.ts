@@ -128,7 +128,7 @@ export class FormPlayerService {
 
   initResponse(response: FormPlayerApiSuccessResponse): void {
     if (!response) {
-      console.error('Invalid Reponse');
+      this.handleInvalidResponse();
       return;
     }
 
@@ -143,6 +143,11 @@ export class FormPlayerService {
     console.log('componentId:', scenarioDto.display.components[0].id);
     console.log('componentType:', scenarioDto.display.components[0].type);
     console.log('initResponse:', response);
+  }
+
+  handleInvalidResponse() {
+    console.error('----- ERROR DATA ---------');
+    console.error('Invalid Response');
   }
 
   private initScreenStore(scenarioDto: ScenarioDto): void {
