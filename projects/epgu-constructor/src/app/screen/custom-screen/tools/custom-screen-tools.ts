@@ -1,11 +1,11 @@
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import {
-  CustomComponentDictionaryState, CustomComponentDropDownItemList,
-  CustomComponent, CustomComponentState, CustomScreenComponentTypes
-} from '../custom-screen.types';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
+import {
+  CustomComponent, CustomComponentDictionaryState, CustomComponentDropDownItemList,
+  CustomComponentState, CustomScreenComponentTypes
+} from '../custom-screen.types';
 const moment = moment_;
 
 
@@ -80,7 +80,7 @@ export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<
       id: `${item.label}-${index}`,
       text: item.label,
       formatted: '',
-      unselectable: item.disable === false,
+      unselectable: item.disable === true,
       originalItem: item,
       compare: () => false,
     };
