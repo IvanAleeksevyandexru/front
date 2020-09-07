@@ -60,7 +60,7 @@ export class FormPlayerService {
   }
 
   processResponse(response: ResponseInterface): void {
-    if (Object.keys(response?.scenarioDto?.errors).length) {
+    if (Object.keys(response?.scenarioDto?.errors || {}).length) {
       this.sendDataError(response);
     } else {
       this.sendDataSuccess(response);
