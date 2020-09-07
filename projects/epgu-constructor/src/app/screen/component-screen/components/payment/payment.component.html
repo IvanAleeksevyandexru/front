@@ -17,12 +17,17 @@
   <div class="info" *ngSwitchCase="paymentStatus.ERROR">
     <img class="info__img" src="assets/icons/svg/error-icon.svg" alt=""/>
     <div class="info__text">При получении реквизитов оплаты пошлины произошла ошибка.</div>
-    <div class="info__text">Попробуйте обновить страницу или <a href="https://www.gosuslugi.ru/help" target="_blank">обратитесь в службу поддержки</a>.
-      Ваш черновик автоматически сохранен.</div>
+    <div class="info__text">
+      Попробуйте обновить страницу или <a href="https://www.gosuslugi.ru/help" target="_blank">обратитесь в службу поддержки</a>.
+      Ваш черновик автоматически сохранен.
+    </div>
   </div>
 
   <div class="info" *ngSwitchCase="paymentStatus.SERVER_ERROR">
     <img class="info__img" src="assets/img/server-error.svg" alt=""/>
-    <div class="info__text">Попробуйте зайти на страницу позже. Если ошибка не исчезнет, <a href="https://www.gosuslugi.ru/help" target="_blank">сообщите нам о ней</a></div>
+    <div class="info__text">
+      Попробуйте зайти на страницу позже. Если ошибка не исчезнет,
+      <a href="https://www.gosuslugi.ru/help" target="_blank">сообщите нам о ней</a>
+    </div>
   </div>
 </div>
