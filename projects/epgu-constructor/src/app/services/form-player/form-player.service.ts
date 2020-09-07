@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_TYPE } from '../../../constant/global';
-import { ResponseInterface } from '../api/form-player-api/form-player-api.types';
-import { ComponentStateService } from '../component-state/component-state.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { SCREEN_TYPE } from '../../../constant/global';
+import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
-import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
+import { ResponseInterface } from '../api/form-player-api/form-player-api.types';
+import { ComponentStateService } from '../component-state/component-state.service';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 
 interface SendDataOptionsInterface {
@@ -113,8 +113,8 @@ export class FormPlayerService {
   sendDataError(response): void {
     this.updateLoading(false);
     console.error('----- ERROR DATA ---------');
-    if (response.scenarioDto?.errors) {
-      // business errors
+    if (response.scenarioDto?.errors?.length) {
+      // NOTICE: passing business errors to components layers, do not change this logic!
       console.error(response.scenarioDto?.errors);
       this.initResponse(response);
     } else {
