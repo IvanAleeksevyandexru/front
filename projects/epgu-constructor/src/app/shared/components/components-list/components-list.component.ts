@@ -139,22 +139,20 @@ export class ComponentsListComponent implements OnChanges {
     data: DictionaryResponse,
     component: CustomComponentInterface,
   ) {
-    this.dictionary[key + component.id].loading = false;
-    this.dictionary[key + component.id].paginationLoading = false;
-    this.dictionary[key + component.id].data = data;
-    this.dictionary[key + component.id].origin = component;
-    this.dictionary[key + component.id].list = getNormalizeDataCustomScreenDictionary(
-      data.items,
-      key,
-      component,
-    );
+    const id = key + component.id;
+    this.dictionary[id].loading = false;
+    this.dictionary[id].paginationLoading = false;
+    this.dictionary[id].data = data;
+    this.dictionary[id].origin = component;
+    this.dictionary[id].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
   }
 
   loadDictionaryError(key: string, componentId: string) {
-    this.dictionary[key + componentId].loading = false;
-    this.dictionary[key + componentId].paginationLoading = false;
-    this.dictionary[key + componentId].loadError = true;
-    this.dictionary[key + componentId].loadEnd = false;
+    const id = key + componentId;
+    this.dictionary[id].loading = false;
+    this.dictionary[id].paginationLoading = false;
+    this.dictionary[id].loadError = true;
+    this.dictionary[id].loadEnd = false;
   }
 
   setValidationState(inputValidationResult, componentId, componentValue) {
