@@ -18,7 +18,8 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { UtilsService } from '../../../../services/utils/utils.service';
 import { Utilities } from './utilities';
-import { ComponentBase } from '../../../screen.types';
+import { ComponentBase, ScreenStore } from '../../../screen.types';
+import { ScreenService } from '../../../screen.service';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -43,6 +44,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   private componentValue: any;
   private selectedValue: any;
   private selectedValueField: any;
+  private scenarioDto: ScreenStore;
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
@@ -50,6 +52,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
     private dictionaryApiService: DictionaryApiService,
     private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
+    private screenService: ScreenService,
   ) {
     this.yandexMapsApiKey = this.configService.config.yandexMapsApiKey;
   }
@@ -66,17 +69,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
 
   private initVariable() {
     this.initComponentAttrs();
-    this.initComponentValue();
     this.initSelectedValue();
     this.controlsLogicInit();
   }
 
   initComponentAttrs() {
     this.selectMapObjectService.componentAttrs = this.data.attrs;
-  }
-
-  private initComponentValue() {
     this.componentValue = JSON.parse(this.data?.value || '{}');
+    this.scenarioDto = this.screenService.getStore();
   }
 
   private initSelectedValue() {
@@ -188,10 +188,11 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
    */
   private getOptions(dictionaryFilters) {
     return {
-      ...Utilities.getFilterOptions(this.componentValue, dictionaryFilters),
+      ...Utilities.getFilterOptions(this.componentValue, this.scenarioDto, dictionaryFilters),
       // selectAttributes: ['ZAGS_NAME', 'ADDRESS', 'PHONE', 'EMAIL', 'GET_CONSENT', 'AREA_DESCR'],
       // TODO add fields to JSON
       selectAttributes: ['*'],
+      pageSize: '100000',
     };
   }
 

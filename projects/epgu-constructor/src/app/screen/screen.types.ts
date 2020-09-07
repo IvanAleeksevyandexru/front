@@ -35,11 +35,19 @@ export interface CurrentCycledFields {
 }
 
 export interface ScreenStore {
-  display: Display,
-  errors?: ScenarioErrors,
-  gender?: Gender,
-  currentCycledFields?: CurrentCycledFields
   applicantAnswers?: ApplicantAnswers;
+  currentRule?: number;
+  currentValue?: object;
+  currentCycledFields?: CurrentCycledFields;
+  cycledFields?: Array<object>;
+  display: Display;
+  errors?: ScenarioErrors;
+  gender?: Gender;
+  orderId?: string;
+  sendNotification?: Array<object>;
+  token?: string;
+  userId?: string;
+  finishedAndCurrentScreens?: [];
 }
 
 export interface Screen {
