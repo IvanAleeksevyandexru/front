@@ -5,8 +5,8 @@ import { ConfigService } from '../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../config/config.service.stub';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../screen.service';
-import { ComponentStateService } from '../../../../services/component-state/component-state.service';
-import { UserSessionService } from '../../../../services/user-session/user-session.service';
+import { FormPlayerService } from '../../../../services/form-player/form-player.service';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -19,10 +19,10 @@ describe('PaymentService', () => {
       providers: [
         DictionaryApiService,
         PaymentService,
-        UserSessionService,
+        FormPlayerService,
         ScreenService,
         ConfigService,
-        ComponentStateService,
+        UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });
