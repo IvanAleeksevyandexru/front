@@ -24,10 +24,7 @@ import {
   isCloseWebcamEvent,
   WebcamEvent,
 } from '../../webcam/webcamevents';
-import { ConfirmationModalComponent } from '../../../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../../../../../../services/modal/modal.service';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
-import { getHiddenBlock } from '../../../../../../shared/constants/uttils';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -102,38 +99,8 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     .subscribe();
   errors: string[] = [];
 
-  constructor(
-    private terabyteService: TerraByteApiService,
-    private webcamService: WebcamService,
-    private modalService: ModalService,
-  ) {}
+  constructor(private terabyteService: TerraByteApiService, private webcamService: WebcamService) {}
 
-  clickToInnerHTML($event: MouseEvent, el: HTMLElement): void {
-    const targetElementId = ($event.target as HTMLElement).id;
-    if (targetElementId) {
-      this.toggleHiddenBlockOrShowModal(el, targetElementId);
-    }
-  }
-
-  showModal(params) {
-    this.modalService.openModal(ConfirmationModalComponent, params);
-  }
-
-  private toggleHiddenBlockOrShowModal(el: HTMLElement, targetElementId: string) {
-    const hiddenBlock = getHiddenBlock(el, targetElementId);
-    if (hiddenBlock) {
-      hiddenBlock.hidden = !hiddenBlock.hidden;
-    } else {
-      this.startToShowModal(this.clarification, targetElementId);
-    }
-  }
-
-  private startToShowModal(clarifications = {}, targetElementId: string) {
-    const targetElementModalData = clarifications[targetElementId];
-    if (targetElementModalData) {
-      this.showModal(targetElementModalData);
-    }
-  }
   /**
    * Переводит список файлов с сервера в файлы для отображения
    * @param list - массив информациио файлах на сервере
