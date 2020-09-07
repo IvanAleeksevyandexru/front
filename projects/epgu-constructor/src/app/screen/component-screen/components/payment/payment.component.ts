@@ -139,7 +139,6 @@ export class PaymentComponent implements OnDestroy {
         this.payStatusTimeout * 1000,
       );
     }
-    this.componentStateService.state = this.paymentService.getPaymentLink(this.uin);
   }
 
   /**
@@ -205,7 +204,7 @@ export class PaymentComponent implements OnDestroy {
     this.sum = String(bill.amount);
     this.inLoading = false;
     this.screenService.updateLoading(this.inLoading);
-    this.componentStateService.state = this.paymentService.getPaymentLink(this.uin);
+    this.componentStateService.state = this.paymentService.getPaymentLink(bill.billId);
   }
 
   /**

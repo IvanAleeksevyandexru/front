@@ -154,12 +154,12 @@ export class PaymentService {
   /**
    * Возвращает ссылку на оплату для перехода пользователя
    *
-   * @param uin - уникальный идентификатор патежа
+   * @param billId - уникальный идентификатор патежа
    */
-  getPaymentLink(uin: string): string {
+  getPaymentLink(billId: number): string {
     // TODO хардкод. доделать.
     // eslint-disable-next-line prettier/prettier
-    return `${this.paymentUrl}?billIds=${uin}&returnUrl=${encodeURIComponent(this.apiUrl)}&subscribe=true`;
+    return `${this.paymentUrl}?billIds=${billId}&returnUrl=${encodeURIComponent(this.apiUrl)}&subscribe=true`;
   }
 
   /**
