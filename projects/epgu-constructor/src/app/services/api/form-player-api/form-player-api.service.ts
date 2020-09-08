@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormPlayerApiResponse } from './form-player-api.types';
+import { FormPlayerApiDraftResponse, FormPlayerApiResponse } from './form-player-api.types';
 import { ConfigService } from '../../../config/config.service';
 import { FormPlayerNavigation } from '../../../form-player.types';
 import { Observable } from 'rxjs';
@@ -18,7 +18,14 @@ export class FormPlayerApiService {
     this.apiUrl = configService.config.apiUrl;
   }
 
-  public getInitialData(serviceId: string): Observable<FormPlayerApiResponse> {
+  public getDraftData(orderId: string): Observable<FormPlayerApiDraftResponse> {
+    const path = `${this.apiUrl}/drafts/${orderId}`;
+    return this.http.get<FormPlayerApiDraftResponse>(path, {
+      withCredentials: false
+    });
+  }
+
+  public getServiceData(serviceId: string): Observable<FormPlayerApiResponse> {
     const path = `${this.apiUrl}/getService/${serviceId}`;
     return this.http.get<FormPlayerApiResponse>(path, {
       withCredentials: false
