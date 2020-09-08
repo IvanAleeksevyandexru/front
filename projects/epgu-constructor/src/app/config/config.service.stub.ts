@@ -3,8 +3,8 @@ import { Config } from './config.types';
 
 @Injectable()
 export class ConfigServiceStub {
-  config: Config = {
-    apiUrl: '',
+  _config: Config = {
+    apiUrl: '/api',
     dictionaryUrl: '',
     externalApiUrl: '',
     externalLkApiUrl: '',
@@ -16,4 +16,8 @@ export class ConfigServiceStub {
     yandexMapsApiKey: '',
     isProd: false,
   };
+
+  get config(): Config {
+    return this._config;
+  }
 }
