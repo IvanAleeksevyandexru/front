@@ -1,4 +1,4 @@
-@import "src/styles/core";
+@import 'src/styles/core';
 
 :host {
   display: flex;
@@ -6,11 +6,18 @@
   height: 100%;
 }
 
+.invitation-error {
+  &__button {
+    &::ng-deep .button-container {
+      margin-top: 16px;
+    }
+  }
+}
+
 .invitation-error__content {
   flex: 1 1 auto;
   font-size: 14px;
   line-height: 20px;
-  text-align: center;
   margin-bottom: 32px;
 
   .invitation-error__image {
@@ -26,14 +33,11 @@
   }
 
   .invitation-error__actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 32px;
-
-    .invitation-error__button {
-      font-size: 16px;
-      padding: 15px;
-      display: inline-block;
-      margin-top: 10px;
-    }
   }
 
   @include tablets-up {

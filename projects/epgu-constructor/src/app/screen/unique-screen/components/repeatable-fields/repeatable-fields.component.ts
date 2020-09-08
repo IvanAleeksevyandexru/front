@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { ScreenService } from '../../../screen.service';
 import {
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
@@ -35,7 +36,10 @@ export class RepeatableFieldsComponent {
   getId = () => (this.componentId += 1);
   trackByFunction = (index, item) => item;
 
-  constructor(private componentStateService: ComponentStateService) {}
+  constructor(
+    private componentStateService: ComponentStateService,
+    public screenService: ScreenService,
+  ) {}
 
   private initVariable() {
     this.screens = {};

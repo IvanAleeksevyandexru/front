@@ -2,10 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormControl } from '@angular/forms';
 
-export interface IAttrsError {
-  msg: string;
-  url: string;
-}
 @Component({
   selector: 'epgu-constructor-invitation-error',
   templateUrl: './invitation-error.component.html',
@@ -15,11 +11,13 @@ export class InvitationErrorComponent implements OnInit {
   readyToRegistration: boolean;
   email: FormControl = new FormControl('');
 
-  @Input() attrs: IAttrsError;
+  @Input() data: any;
   @Output() getEmail: EventEmitter<string> = new EventEmitter<string>();
 
   sendEmail(): void {
     this.getEmail.emit(this.email.value);
+    // TODO: добавить бизнес-логику отправки email на ручку /sendInvitation
+    window.location.reload();
   }
 
   ngOnInit(): void {}

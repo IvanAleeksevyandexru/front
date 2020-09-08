@@ -2,4 +2,5 @@
 <epgu-constructor-invitation-error
   *ngIf="screenData.componentData?.components[0].type === typeComponent.invitationError"
   (getEmail)="sendEmail($event)"
-  [attrs]="screenData.componentData?.components[0].attrs"></epgu-constructor-invitation-error>
+  [data]="screenData.componentData?.components[0]"
+></epgu-constructor-invitation-error>
