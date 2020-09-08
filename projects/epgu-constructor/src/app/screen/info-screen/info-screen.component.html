@@ -16,7 +16,7 @@
     </div>
 
     <div class="info__footer info-footer">
-      <lib-button *ngIf="screenService.isShow$ | async"
+      <lib-button *ngIf="screenService.isShown$ | async"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
         class="info-footer__submit"

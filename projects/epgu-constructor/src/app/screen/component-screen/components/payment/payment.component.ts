@@ -1,8 +1,7 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 import {
-  BillInfoAddAttrsResponse,
   BillInfoResponse,
   BillsInfoResponse,
   PaymentInfoForPaidStatusData,
@@ -14,6 +13,12 @@ import { PaymentStatus } from './payment.constants';
 import { ScreenService } from '../../../screen.service';
 import { PaymentService } from './payment.service';
 import { ComponentInterface } from '../../../../services/api/form-player-api/form-player-api.types';
+import {
+  filterBillInfoResponse,
+  getDiscountDate,
+  getDiscountPrice,
+  getDocInfo,
+} from './payment.component.functions';
 
 @Component({
   selector: 'epgu-constructor-payment',
@@ -32,8 +37,9 @@ export class PaymentComponent implements OnDestroy {
   public inLoading = true; // В загрузке?
   public isPaid = false; // Оплачен или нет
   private payCode = 1; // Код типа плательщика
-  private payStatusTimeoutLink = null;
-  private payStatusTimeout = 30;
+  private payStatusIntervalLink = null;
+  private payStatusInterval = 30;
+  private billPosition = 0; // Какой счет брать из списка
 
   // Текущий статус получения данных об оплате
   private dataStatus: PaymentStatus;
@@ -65,18 +71,6 @@ export class PaymentComponent implements OnDestroy {
     private componentStateService: ComponentStateService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
-
-  /**
-   * Фильтруем данные по нашему счёту
-   * @param answer - ответ сервера
-   * @private
-   */
-  static filterBillInfoResponse(answer: any): BillsInfoResponse {
-    if (answer?.response) {
-      return answer.response;
-    }
-    return answer;
-  }
 
   /**
    * Получает информацию для оплате
@@ -125,7 +119,7 @@ export class PaymentComponent implements OnDestroy {
     this.uin = res.value.replace('PRIOR', '');
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
-      .pipe(map((answer: any) => PaymentComponent.filterBillInfoResponse(answer)))
+      .pipe(map((answer: any) => filterBillInfoResponse(answer)))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
         (info) => this.getBillsInfo(info),
@@ -134,43 +128,10 @@ export class PaymentComponent implements OnDestroy {
 
     // Если не оплачено, то периодически проверяем оплачено или нет
     if (!this.isPaid) {
-      this.payStatusTimeoutLink = setTimeout(
+      this.payStatusIntervalLink = setInterval(
         () => this.getPaymentStatusByUIN(),
-        this.payStatusTimeout * 1000,
+        this.payStatusInterval * 1000,
       );
-    }
-  }
-
-  /**
-   * Возвращает значение аттрибута объекта счета или null
-   * @param bill - сведения о счете
-   * @param attrName - ключ аттрибута, который надо найти
-   * @private
-   */
-  private getBillAttributeValueByKey(bill: BillInfoResponse, attrName: string): string | null {
-    const attrIndex = bill.addAttrs.findIndex((attrInfo: BillInfoAddAttrsResponse) => {
-      return attrInfo.name === attrName;
-    });
-    if (attrIndex !== -1) {
-      return bill.addAttrs[attrIndex].value;
-    }
-    return null;
-  }
-
-  /**
-   * Устанавливаем дату действия скидки
-   * @param bill
-   * @private
-   */
-  private setDiscountDate(bill: BillInfoResponse) {
-    const discountDate =
-      this.getBillAttributeValueByKey(bill, 'DiscountDate') || bill.actualBeforeDate;
-
-    if (discountDate) {
-      const validDiscountDate = new Date(discountDate);
-      this.validDiscountDate = `${validDiscountDate.getDate()}.${
-        validDiscountDate.getMonth() + 1
-      }.${validDiscountDate.getFullYear()}`;
     }
   }
 
@@ -180,23 +141,15 @@ export class PaymentComponent implements OnDestroy {
    * @private
    */
   private getBillsInfo(info: BillsInfoResponse) {
-    const bill: BillInfoResponse = info.bills[0];
+    const bill: BillInfoResponse = info.bills[this.billPosition];
 
     this.isPaid = bill.isPaid;
 
-    // Ищем сведения по скидке и цене
-    this.setDiscountDate(bill);
-    const discountSize =
-      this.getBillAttributeValueByKey(bill, 'OriginalAmount') ||
-      this.getBillAttributeValueByKey(bill, 'DiscountSize');
-    if (discountSize) {
-      this.sumWithoutDiscount = discountSize;
-    }
-    // Смотрим комментарий по направлению
-    this.docInfo = [
-      this.getBillAttributeValueByKey(bill, 'type_doc'),
-      this.getBillAttributeValueByKey(bill, 'number_doc'),
-    ].join(' ');
+    // Ищем сведения по скидке, цене и начислению
+    this.validDiscountDate = getDiscountDate(bill);
+    this.sumWithoutDiscount = getDiscountPrice(bill);
+    this.docInfo = getDocInfo(bill);
+
     if (bill?.comment.length) {
       this.paymentPurpose = bill.comment;
     }
@@ -208,29 +161,29 @@ export class PaymentComponent implements OnDestroy {
   }
 
   /**
-   * Получаем статус по УИН
+   * Получаем статус оплачено или нет по УИН
    * @private
    */
   private getPaymentStatusByUIN() {
     this.paymentService
       .getPaymentStatusByUIN(this.orderId, this.payCode)
-      .pipe(
-        tap(() => {
-          clearTimeout(this.payStatusTimeoutLink);
-        }),
-      )
-      .subscribe((response: PaymentInfoForPaidStatusData) => {
-        if (response.data) {
-          this.isPaid = Boolean(response?.data[0]?.paid);
-        }
+      .subscribe((response: PaymentInfoForPaidStatusData) =>
+        this.getPaymentStatusByUINSuccess(response),
+      );
+  }
 
-        if (!this.isPaid) {
-          this.payStatusTimeoutLink = setTimeout(
-            () => this.getPaymentStatusByUIN(),
-            this.payStatusTimeout * 1000,
-          );
-        }
-      });
+  /**
+   * Обработка успешного ответа на статус оплачено или нет по УИН
+   * @param response - ответ сервера
+   * @private
+   */
+  private getPaymentStatusByUINSuccess(response: PaymentInfoForPaidStatusData) {
+    if (response.data) {
+      this.isPaid = Boolean(response?.data[this.billPosition]?.paid);
+    }
+    if (this.isPaid) {
+      clearInterval(this.payStatusIntervalLink);
+    }
   }
 
   /**
@@ -240,7 +193,7 @@ export class PaymentComponent implements OnDestroy {
   private setPaymentStatusFromErrorRequest(error: HttpErrorResponse) {
     this.inLoading = false;
     this.screenService.updateLoading(this.inLoading);
-    this.screenService.updateIsShow(false);
+    this.screenService.updateIsShown(false);
     if (error.status === 500) {
       this.status = PaymentStatus.ERROR;
     } else {
@@ -249,6 +202,6 @@ export class PaymentComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    clearTimeout(this.payStatusTimeout);
+    clearInterval(this.payStatusInterval);
   }
 }

@@ -8,14 +8,14 @@ import { ApplicantAnswersService } from '../shared/services/applicant-answers/ap
 export class ScreenService {
   private screenStore: ScreenStore;
   private isLoading = false;
-  private isShow = true; // Показываем или нет
+  private isShown = true; // Показываем или нет кнопку
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
-  private isShowSubject = new BehaviorSubject<boolean>(this.isShow);
+  private isShownSubject = new BehaviorSubject<boolean>(this.isShown);
   private screenStoreSubject = new BehaviorSubject<ScreenStore>(this.screenStore);
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
-  public isShow$: Observable<boolean> = this.isShowSubject.asObservable();
+  public isShown$: Observable<boolean> = this.isShownSubject.asObservable();
   public screenData$: Observable<ScreenStore> = this.screenStoreSubject.asObservable();
 
   constructor (private applicantAnswersService: ApplicantAnswersService) {}
@@ -72,10 +72,10 @@ export class ScreenService {
 
   /**
    * Обновляет статус показывать кнопку или нет
-   * @param newState - показывать кнопку?
+   * @param val - показывать кнопку?
    */
-  public updateIsShow(newState: boolean): void {
-    this.isShow = newState;
-    this.isShowSubject.next(this.isShow);
+  public updateIsShown(val: boolean): void {
+    this.isShown = val;
+    this.isShownSubject.next(val);
   }
 }
