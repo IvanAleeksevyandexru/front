@@ -5,11 +5,12 @@ import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { SmevSlotsMapInterface } from './smev-slots-map.interface';
-import { SmevSlotsResponseInterface } from './smev-slots-response.interface';
-import { SmevBookResponseInterface } from './smev-book-response.interface';
-import { SlotInterface } from './slot.interface';
-import { MvdDepartmentInterface } from './mvd-department.interface';
+import {
+  MvdDepartmentInterface,
+  SlotInterface, SmevBookResponseInterface,
+  SmevSlotsMapInterface,
+  SmevSlotsResponseInterface, TimeSlotValueInterface
+} from './time-slots.types';
 
 @Injectable()
 export class MvdTimeSlotsService implements TimeSlotsService {
@@ -92,7 +93,7 @@ export class MvdTimeSlotsService implements TimeSlotsService {
     return this.activeYearNumber;
   }
 
-  init(data: any): Observable<any> {
+  init(data: TimeSlotValueInterface): Observable<any> {
 
     if (this.changed(data) || this.errorMessage) {
       this.slotsMap = {};
@@ -127,7 +128,7 @@ export class MvdTimeSlotsService implements TimeSlotsService {
     return this.errorMessage;
   }
 
-  changed(data: any): boolean {
+  changed(data: TimeSlotValueInterface): boolean {
     let changed = false;
 
     let department = JSON.parse(data.department);

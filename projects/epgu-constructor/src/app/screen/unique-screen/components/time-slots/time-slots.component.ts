@@ -8,10 +8,10 @@ import { TimeSlotsService } from './time-slots.service';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { ModalService } from '../../../../services/modal/modal.service';
-import { SlotInterface } from './slot.interface';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
+import { SlotInterface, TimeSlotValueInterface } from './time-slots.types';
 
 const moment = moment_;
 
@@ -223,7 +223,7 @@ export class TimeSlotsComponent implements OnInit {
     this.modalService.openModal(ConfirmationModalComponent, params);
   }
 
-  initCalendar(data: any) {
+  initCalendar(data: TimeSlotValueInterface) {
     const slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
     const [activeYearNumber, activeMonthNumber] = slotsPeriod.split('-');
     this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
