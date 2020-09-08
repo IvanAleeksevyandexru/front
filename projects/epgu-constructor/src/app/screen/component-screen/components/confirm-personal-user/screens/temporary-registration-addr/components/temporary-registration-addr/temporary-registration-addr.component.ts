@@ -26,7 +26,7 @@ export class TemporaryRegistrationAddrComponent implements OnChanges, AfterViewI
   @ViewChild('dataForm', { static: false }) dataForm: NgForm;
   @Input() data: TemporaryRegistrationComponent;
   @Input() error: string;
-  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  validationShowOn = ValidationShowOn.IMMEDIATE;
 
   constructor(
     public configService: ConfigService,
@@ -55,13 +55,12 @@ export class TemporaryRegistrationAddrComponent implements OnChanges, AfterViewI
     this.componentStateService.state = changesData;
   }
 
-  private setValidatorsToForm() {
+  private setValidatorsToForm(): void {
     Object.keys(this.dataForm.controls).forEach((key) => {
-      const regExp =
-        this.data.attrs?.fields.find((field) => field.fieldName === key)?.regexp || null;
+      const currentField = this.data.attrs?.fields.find((field) => field.fieldName === key);
+      const regExp = currentField?.regexp || null;
       const isRequired = this.data.required;
-      const isDateType =
-        this.data.attrs?.fields.find((field) => field.fieldName === key).type === 'date';
+      const isDateType = currentField?.type === 'date';
       const validators: Array<ValidatorFn> = [];
       if (regExp) {
         validators.push(Validators.pattern(regExp));
@@ -79,7 +78,7 @@ export class TemporaryRegistrationAddrComponent implements OnChanges, AfterViewI
     });
   }
 
-  private subscribeToFormChanges() {
+  private subscribeToFormChanges(): void {
     this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((changes) => {
       if (this.dataForm.invalid) {
         this.componentStateService.isValid = false;
