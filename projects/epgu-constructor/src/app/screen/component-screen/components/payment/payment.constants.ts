@@ -4,7 +4,7 @@ import { PaymentDictionaryOptionsInterface, SubInterface } from '../../../../../
 export const mockOrderId = '763430121';
 
 // Тестовый УИН, на случай если сервис лежит
-export const mockUpUIN = 'PRIOR0316373317011700000057047';
+export const mockUpUIN = 'PRIOR0315867900000007308202727';
 
 // Тестовая информация о счете на оплату, если сервис лежит
 // eslint-disable-next-line max-len

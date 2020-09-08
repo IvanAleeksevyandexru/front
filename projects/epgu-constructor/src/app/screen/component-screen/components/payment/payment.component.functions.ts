@@ -26,7 +26,7 @@ export const getBillAttributeValueByKey = (bill: BillInfoResponse, attrName: str
  */
 export const getDiscountDate = (bill: BillInfoResponse): string => {
   const discountDate =
-    this.getBillAttributeValueByKey(bill, 'DiscountDate') || bill.actualBeforeDate;
+    getBillAttributeValueByKey(bill, 'DiscountDate') || bill.actualBeforeDate;
   return discountDate ? moment(discountDate).format(DATE_STRING_DOT_FORMAT) : '';
 };
 
@@ -37,8 +37,8 @@ export const getDiscountDate = (bill: BillInfoResponse): string => {
  */
 export const getDiscountPrice = (bill: BillInfoResponse): string => {
   return (
-    this.getBillAttributeValueByKey(bill, 'OriginalAmount') ||
-    this.getBillAttributeValueByKey(bill, 'DiscountSize') ||
+    getBillAttributeValueByKey(bill, 'OriginalAmount') ||
+    getBillAttributeValueByKey(bill, 'DiscountSize') ||
     ''
   );
 };
@@ -50,8 +50,8 @@ export const getDiscountPrice = (bill: BillInfoResponse): string => {
  */
 export const getDocInfo = (bill: BillInfoResponse): string => {
   return [
-    this.getBillAttributeValueByKey(bill, 'type_doc'),
-    this.getBillAttributeValueByKey(bill, 'number_doc'),
+    getBillAttributeValueByKey(bill, 'type_doc'),
+    getBillAttributeValueByKey(bill, 'number_doc'),
   ].join(' ');
 };
 

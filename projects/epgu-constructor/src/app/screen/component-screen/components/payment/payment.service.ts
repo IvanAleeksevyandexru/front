@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, takeUntil } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from '../../../../../interfaces/payment.interface';
-import { getPaymentRequestOptions } from './payment.constants';
+import { getPaymentRequestOptions, mockUpUIN } from './payment.constants';
 import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { ScreenStore } from '../../../screen.types';
@@ -93,10 +93,11 @@ export class PaymentService {
    */
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
     // На случай если сервис лежит, только для теста
-    // const uinMockUp = new BehaviorSubject({
-    //   value: mockUpUIN
-    // });
-    // return uinMockUp.asObservable();
+    // TODO: Специальная подмена на оплату 1,4 рубля гос пошлины, иначе будет как есть снятие
+    const uinMockUp = new BehaviorSubject({
+      value: mockUpUIN
+    });
+    return uinMockUp.asObservable();
 
     const path = `api/lk/v1/paygate/uin/${code}?orderId=${orderId}`;
     return this.http.post(
