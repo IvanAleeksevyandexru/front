@@ -32,5 +32,6 @@ export interface TemporaryRegistrationHints {
 export interface TemporaryRegistrationFields {
   fieldName: 'regDate' | 'regAddr',
   label: string,
-  type: 'input'
+  type: 'input'|'date',
+  regexp: string | RegExp,
 }

@@ -1,10 +1,19 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+import { NgForm, ValidatorFn, Validators } from '@angular/forms';
+import { ValidationShowOn } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
-import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { ConfigService } from '../../../../../../../../config/config.service';
+import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
+import { DateValidator } from './date-validator';
 
 @Component({
   selector: 'epgu-constructor-temporary-registration-addr',
@@ -12,11 +21,12 @@ import { UnsubscribeService } from '../../../../../../../../services/unsubscribe
   styleUrls: ['./temporary-registration-addr.component.scss'],
   providers: [UnsubscribeService],
 })
-export class TemporaryRegistrationAddrComponent implements OnChanges {
+export class TemporaryRegistrationAddrComponent implements OnChanges, AfterViewInit {
   forms: any = {};
   @ViewChild('dataForm', { static: false }) dataForm: NgForm;
   @Input() data: TemporaryRegistrationComponent;
   @Input() error: string;
+  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
   constructor(
     public configService: ConfigService,
@@ -24,10 +34,14 @@ export class TemporaryRegistrationAddrComponent implements OnChanges {
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
+  ngAfterViewInit(): void {
+    this.subscribeToFormChanges();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
       setTimeout(() => {
-        this.subscribeToFormChanges();
+        this.setValidatorsToForm();
       });
     }
   }
@@ -41,9 +55,38 @@ export class TemporaryRegistrationAddrComponent implements OnChanges {
     this.componentStateService.state = changesData;
   }
 
+  private setValidatorsToForm() {
+    Object.keys(this.dataForm.controls).forEach((key) => {
+      const regExp =
+        this.data.attrs?.fields.find((field) => field.fieldName === key)?.regexp || null;
+      const isRequired = this.data.required;
+      const isDateType =
+        this.data.attrs?.fields.find((field) => field.fieldName === key).type === 'date';
+      const validators: Array<ValidatorFn> = [];
+      if (regExp) {
+        validators.push(Validators.pattern(regExp));
+      }
+
+      if (isDateType) {
+        validators.push(DateValidator.date);
+      }
+
+      if (isRequired) {
+        validators.push(Validators.required);
+      }
+
+      this.dataForm.controls[key].setValidators(validators);
+    });
+  }
+
   private subscribeToFormChanges() {
-    this.dataForm.form.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((dt) => this.formChanges(dt));
+    this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((changes) => {
+      if (this.dataForm.invalid) {
+        this.componentStateService.isValid = false;
+      } else {
+        this.componentStateService.isValid = true;
+        this.formChanges(changes);
+      }
+    });
   }
 }
