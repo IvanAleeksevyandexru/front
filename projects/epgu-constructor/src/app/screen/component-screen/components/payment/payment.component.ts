@@ -101,12 +101,6 @@ export class PaymentComponent implements OnDestroy {
    */
   private getRequestForUinByOrder(attributeValues: PaymentInfoInterface) {
     this.paymentPurpose = attributeValues.paymentPurpose;
-
-    // Локально поставим одну копейку для проверки
-    if (this.paymentService.isLocalHost) {
-      // eslint-disable-next-line no-param-reassign
-      attributeValues.sum = '001';
-    }
     this.status = PaymentStatus.SUCCESS;
     return this.paymentService.getUinByOrderId(this.orderId, this.payCode, attributeValues);
   }

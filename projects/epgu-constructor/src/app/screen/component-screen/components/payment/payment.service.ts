@@ -89,7 +89,7 @@ export class PaymentService {
    * @param attributeValues - дополнительные параметры
    */
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
-    // TODO: Специальная подмена на оплату 1,4 рубля гос пошлины, иначе будет как есть снятие
+    // TODO: HARDCODE Специальная подмена на оплату 1,4 рубля гос пошлины, иначе будет как есть снятие
     if (location.hostname === 'local.test.gosuslugi.ru') {
       const uinMockUp = new BehaviorSubject({
         value: mockUpUIN
