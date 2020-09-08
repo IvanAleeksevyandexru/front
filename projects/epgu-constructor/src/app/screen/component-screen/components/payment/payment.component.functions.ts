@@ -1,10 +1,6 @@
-import {
-  BillInfoAddAttrsResponse,
-  BillInfoResponse,
-  BillsInfoResponse
-} from '../../../../../interfaces/payment.interface';
 import * as moment from 'moment';
-import { DATE_STRING_DOT_FORMAT } from '../../../../../constant/global';
+import { BillInfoAddAttrsResponse, BillInfoResponse, BillsInfoResponse } from './payment.types';
+import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 
 /**
  * Возвращает значение аттрибута объекта счета или null

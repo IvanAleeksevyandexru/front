@@ -1,4 +1,4 @@
-import { PaymentDictionaryOptions, SubPayment } from './payment.types';
+import { PaymentDictionaryOptionsInterface, SubPaymentDictionaryInterface } from './payment.types';
 
 // Тестовый id заявки на регистрацию брака
 export const mockOrderId = '763430121';
@@ -94,7 +94,7 @@ export enum PaymentStatus {
  * @param dictItemCode - код элемента справочника на оплату
  * @constructor
  */
-export const getPaymentRequestOptions = (filterReg, dictItemCode): PaymentDictionaryOptions => {
+export const getPaymentRequestOptions = (filterReg, dictItemCode): PaymentDictionaryOptionsInterface => {
   return {
     pageSize: '258',
     filter: {
@@ -115,7 +115,7 @@ export const getPaymentRequestOptions = (filterReg, dictItemCode): PaymentDictio
  * Возвращает опции атрибута запроса FiasCode
  * @param filterReg - объект фильтра для оплаты
  */
-export const getPaymentRequestOptionFiasCode = (filterReg): SubPayment => {
+export const getPaymentRequestOptionFiasCode = (filterReg): SubPaymentDictionaryInterface => {
   return {
     simple: {
       attributeName: 'FiasCode',
@@ -131,7 +131,7 @@ export const getPaymentRequestOptionFiasCode = (filterReg): SubPayment => {
  * Возвращает опции атрибута запроса filter_reg
  * @param filterReg - объект фильтра для оплаты
  */
-export const getPaymentRequestOptionFilterReg = (filterReg): SubPayment => {
+export const getPaymentRequestOptionFilterReg = (filterReg): SubPaymentDictionaryInterface => {
   return {
     simple: {
       attributeName: 'filter_reg',
@@ -148,7 +148,7 @@ export const getPaymentRequestOptionFilterReg = (filterReg): SubPayment => {
  * @param filterReg - объект фильтра для оплаты
  * @param dictItemCode - код элемента справочника на оплату
  */
-export const getPaymentRequestOptionDictemCode = (filterReg, dictItemCode): SubPayment => {
+export const getPaymentRequestOptionDictemCode = (filterReg, dictItemCode): SubPaymentDictionaryInterface => {
   return {
     simple: {
       attributeName: 'dictem_code',

@@ -205,4 +205,6 @@ export class ComponentsListComponent implements OnInit, OnChanges {
       calcDependedComponent(component, this.state, this.components),
     );
   }
+
+  ngOnInit(): void {}
 }

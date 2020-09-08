@@ -85,7 +85,7 @@
             "host": "local.test.gosuslugi.ru",
             "browserTarget": "epgu-form-frontend:build",
             "port": 4200,
-            "proxyConfig": "src/proxy.conf.js",
+            "proxyConfig": "src/proxy.conf.json",
             "sourceMap": {
               "scripts": true,
               "styles": true,

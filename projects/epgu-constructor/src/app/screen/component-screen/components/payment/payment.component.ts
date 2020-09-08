@@ -1,24 +1,24 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
-import {
-  BillInfoResponse,
-  BillsInfoResponse,
-  PaymentInfoForPaidStatusData,
-  PaymentInfoInterface,
-} from '../../../../../interfaces/payment.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { PaymentStatus } from './payment.constants';
 import { ScreenService } from '../../../screen.service';
 import { PaymentService } from './payment.service';
-import { ComponentInterface } from '../../../../services/api/form-player-api/form-player-api.types';
+import { ComponentBase } from '../../../screen.types';
 import {
   filterBillInfoResponse,
   getDiscountDate,
   getDiscountPrice,
   getDocInfo,
 } from './payment.component.functions';
+import {
+  BillInfoResponse,
+  BillsInfoResponse,
+  PaymentInfoForPaidStatusData,
+  PaymentInfoInterface,
+} from './payment.types';
 
 @Component({
   selector: 'epgu-constructor-payment',
@@ -52,9 +52,9 @@ export class PaymentComponent implements OnDestroy {
 
   // Номер заявления
   @Input() orderId: string;
-  private attrData: ComponentInterface;
+  private attrData: ComponentBase;
   @Input()
-  set data(data: ComponentInterface) {
+  set data(data: ComponentBase) {
     this.isPaid = false;
     this.inLoading = true;
     this.attrData = data;

@@ -1,4 +1,4 @@
-import { DictionaryOptionsInterface } from './dictionary-options.interface';
+import { DictionaryOptions } from '../../../../services/api/dictionary-api/dictionary-api.types';
 
 /**
  * Информация о нужном платеже
@@ -48,11 +48,11 @@ export interface PaymentInfoForPaidStatusData {
 /**
  * Интерфейс для части опции запроса на создание оплаты с фильтрацией
  */
-export interface PaymentDictionaryOptionsInterface extends DictionaryOptionsInterface {
+export interface PaymentDictionaryOptionsInterface extends DictionaryOptions {
   filter: {
     union: {
       unionKind: string;
-      subs: SubInterface[];
+      subs: SubPaymentDictionaryInterface[];
     };
   };
 }
@@ -60,7 +60,7 @@ export interface PaymentDictionaryOptionsInterface extends DictionaryOptionsInte
 /**
  * Интерфейс для части опции запроса на создание оплаты
  */
-export interface SubInterface {
+export interface SubPaymentDictionaryInterface {
   simple: {
     attributeName: string;
     condition: string;

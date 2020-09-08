@@ -27,4 +27,8 @@ export class EmptyScreenComponent implements Screen {
     const ref = this.screenStore.display?.components[0]?.attrs.ref;
     return applicantAnswers[ref]?.value;
   }
+
+  nextStep(): void {}
+
+  prevStep(): void {}
 }

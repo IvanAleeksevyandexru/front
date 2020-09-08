@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, takeUntil } from 'rxjs/operators';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from '../../../../../interfaces/payment.interface';
 import { getPaymentRequestOptions, mockUpUIN } from './payment.constants';
 import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
@@ -10,6 +9,7 @@ import { ScreenStore } from '../../../screen.types';
 import { ScreenService } from '../../../screen.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ConfigService } from '../../../../config/config.service';
+import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payment.types';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -20,7 +20,6 @@ export class PaymentService {
   private externalUrl: string;
   private paymentUrl: string;
   screenStore: ScreenStore;
-  isLocalHost = false;
 
   constructor(
     private http: HttpClient,
@@ -33,7 +32,6 @@ export class PaymentService {
     this.apiUrl = this.configService.config.apiUrl;
     this.externalUrl = this.configService.config.externalUrl;
     this.paymentUrl = this.configService.config.paymentUrl;
-    this.isLocalHost = location.hostname === 'localhost';
 
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -59,8 +57,7 @@ export class PaymentService {
    *
    * @param relativePath - относительный путь от API для запросов
    */
-  private getPayInfoApiUrl = (relativePath): string =>
-    (this.isLocalHost ? '/payment/' : this.externalUrl) + relativePath;
+  private getPayInfoApiUrl = (relativePath): string => this.externalUrl + relativePath;
 
   /**
    * Загружает данные по оплате с реквизитами
@@ -92,12 +89,13 @@ export class PaymentService {
    * @param attributeValues - дополнительные параметры
    */
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
-    // На случай если сервис лежит, только для теста
     // TODO: Специальная подмена на оплату 1,4 рубля гос пошлины, иначе будет как есть снятие
-    const uinMockUp = new BehaviorSubject({
-      value: mockUpUIN
-    });
-    return uinMockUp.asObservable();
+    if (location.hostname === 'local.test.gosuslugi.ru') {
+      const uinMockUp = new BehaviorSubject({
+        value: mockUpUIN
+      });
+      return uinMockUp.asObservable();
+    }
 
     const path = `api/lk/v1/paygate/uin/${code}?orderId=${orderId}`;
     return this.http.post(
