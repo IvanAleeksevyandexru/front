@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  FormPlayerApiDraftResponse, FormPlayerApiDraftSuccessResponse,
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
@@ -10,6 +11,7 @@ import { FormPlayerApiService } from '../api/form-player-api/form-player-api.ser
 import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ScreenComponent } from '../../screen/screen.const';
+import { map } from 'rxjs/operators';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -38,9 +40,38 @@ export class FormPlayerService {
     private screenResolverService: ScreenResolverService,
   ) {}
 
-  initData(serviceId: string): void {
+  initData(serviceId: string, orderId?: string): void {
     this.updateLoading(true);
-    this.formPlayerApiService.getInitialData(serviceId).subscribe(
+
+    if (orderId) {
+      this.getDraftOrderData(orderId);
+    } else {
+      this.getNewOrderData(serviceId);
+    }
+  }
+
+  getDraftOrderData(orderId: string) {
+    this.formPlayerApiService.getDraftData(orderId)
+      .pipe(
+        map(this.mapDraftDataToOrderData)
+      )
+      .subscribe(
+        (response) => this.processResponse(response),
+        (error) => this.sendDataError(error),
+        () => this.updateLoading(false)
+      );
+  }
+
+  mapDraftDataToOrderData(response: FormPlayerApiDraftResponse) {
+    if(this.hasRequestErrors(response as FormPlayerApiErrorResponse)) {
+      return response as FormPlayerApiResponse;
+    }
+    const successResponse = response as FormPlayerApiDraftSuccessResponse;
+    return { scenarioDto: successResponse.body } as FormPlayerApiResponse;
+  }
+
+  getNewOrderData(serviceId: string) {
+    this.formPlayerApiService.getServiceData(serviceId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
       () => this.updateLoading(false)

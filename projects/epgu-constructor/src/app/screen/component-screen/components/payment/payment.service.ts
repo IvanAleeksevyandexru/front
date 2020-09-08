@@ -68,7 +68,7 @@ export class PaymentService {
    */
   getUinByOrderId(orderId: string, attributeValues: PaymentInfo): Observable<any> {
     return this.http.post(
-      `${this.externalUrl}api/lk/v1/paygate/uin/1?orderId=${orderId}`,
+      `${this.externalUrl}/api/lk/v1/paygate/uin/1?orderId=${orderId}`,
       attributeValues,
       {
         withCredentials: true

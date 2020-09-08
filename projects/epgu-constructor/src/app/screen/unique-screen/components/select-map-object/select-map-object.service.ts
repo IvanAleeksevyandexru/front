@@ -34,7 +34,7 @@ export class SelectMapObjectService {
    * @param items
    */
   public getCoordsByAddress(items) {
-    const path = `${this.configService.config.externalApiUrl}address/resolve`;
+    const path = `${this.configService.config.externalApiUrl}/address/resolve`;
     return this.http.post<IGeoCoordsResponse>(path, {
       address: items.map(item => item.attributeValues[this.componentAttrs.attributeNameWithAddress]),
     });
