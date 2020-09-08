@@ -6,7 +6,7 @@ export class ConfigServiceStub {
   _config: Config = {
     apiUrl: '/api',
     dictionaryUrl: 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary',
-    externalApiUrl: '',
+    externalApiUrl: 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1',
     externalLkApiUrl: '',
     externalLkUrl: '',
     paymentUrl: '',

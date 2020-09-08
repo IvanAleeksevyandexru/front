@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DadataApiService } from './dadata-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -9,6 +9,9 @@ describe('DadataApiService', () => {
   let service: DadataApiService;
   let http: HttpTestingController;
   let cnstrctrConfigSrv: ConfigService;
+  let responseMock = [42];
+  let fiasCode = '738429';
+  let externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,7 +28,14 @@ describe('DadataApiService', () => {
 
   afterEach(async(() => http.verify()));
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe('getDadataByFias()', () => {
+    it('should call http with get method', fakeAsync(() => {
+      service.getDadataByFias(fiasCode).subscribe(response => expect(response).toBe(responseMock));
+      const path = `${externalApiUrl}/dadata/${fiasCode}`;
+      const req = http.expectOne(path);
+      expect(req.request.method).toBe('POST');
+      req.flush(responseMock);
+      tick();
+    }));
   });
 });
