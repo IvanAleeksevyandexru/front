@@ -1,12 +1,12 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../interfaces/temporary-registration-addr.interface';
+import { TemporaryRegistrationComponent } from './temporary-registration-addr-screen.types';
 import { TemporaryRegistrationAddrScreenComponent } from './temporary-registration-addr-screen.component';
 
 describe('TemporaryRegistrationAddrScreenComponent', () => {
   let component: TemporaryRegistrationAddrScreenComponent;
   let fixture: ComponentFixture<TemporaryRegistrationAddrScreenComponent>;
-  const mockData: TemporaryRegistrationAddrComponentInterface = {
+  const mockData: TemporaryRegistrationComponent = {
     attrs: {
       actions: [],
       fields: [],

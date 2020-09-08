@@ -47,6 +47,12 @@
           [data]="(screenStore.display?.components)[0]"
         ></epgu-constructor-add-passport>
 
+        <epgu-constructor-mvd-giac
+          *ngSwitchCase="screenComponentName.mvdGiac"
+          [applicantAnswers]="screenStore.applicantAnswers"
+          [data]="(screenStore.display?.components)[0]"
+        ></epgu-constructor-mvd-giac>
+
         <epgu-constructor-change-list
           *ngSwitchCase="screenComponentName.changeList"
           [data]="(screenStore.display?.components)[0]"

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
+import { ComponentStateService } from '../services/component-state/component-state.service';
 
 
 @Injectable()
@@ -18,7 +19,10 @@ export class ScreenService {
   public isShown$: Observable<boolean> = this.isShownSubject.asObservable();
   public screenData$: Observable<ScreenStore> = this.screenStoreSubject.asObservable();
 
-  constructor (private applicantAnswersService: ApplicantAnswersService) {}
+  constructor (
+    private applicantAnswersService: ApplicantAnswersService,
+    private componentStateService: ComponentStateService,
+  ) {}
 
   /**
    * Инициализирует работу хранилища
@@ -27,6 +31,7 @@ export class ScreenService {
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;
     this.loadAnsweredValues();
+    this.initComponentStateService();
     this.screenStoreSubject.next(this.screenStore);
   }
 
@@ -48,6 +53,11 @@ export class ScreenService {
     this.isLoadingSubject.next(this.isLoading);
   }
 
+  private initComponentStateService() {
+    this.componentStateService.state = '';
+    this.componentStateService.isValid = true;
+  }
+
   /**
    * Подгружает ответы пользователя
    */
@@ -63,11 +73,6 @@ export class ScreenService {
     });
 
     this.screenStore.display = { ...this.screenStore.display, components };
-
-    console.log('________Store with answered data___________');
-    console.log('componentId:', this.screenStore.display.components[0].id);
-    console.log('componentType:', this.screenStore.display.components[0].type);
-    console.log('store', this.screenStore);
   }
 
   /**

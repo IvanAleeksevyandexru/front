@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_TYPE } from '../../../constant/global';
-import {
-  DisplayInterface,
-  ResponseInterface
-} from '../api/form-player-api/form-player-api.types';
-
+import { FormPlayerApiSuccessResponse } from '../api/form-player-api/form-player-api.types';
+import { Display, ScreenTypes } from '../../screen/screen.types';
+import { Gender } from '../../shared/types/gender';
 
 @Injectable()
 export class FormPlayerServiceStub {
-  response: ResponseInterface = { scenarioDto: {
+  response: FormPlayerApiSuccessResponse = { scenarioDto: {
       applicantAnswers: {},
-      currentRule: 1,
+      currentScenarioId: '1',
       currentValue: {},
       currentCycledFields: {},
       cycledFields: [],
@@ -22,18 +19,17 @@ export class FormPlayerServiceStub {
         id: '123',
         name: 'some name',
         submitLabel: 'some submit label',
-        type: SCREEN_TYPE.COMPONENT
+        type: ScreenTypes.COMPONENT
       },
       errors: {},
-      gender: 'M',
+      gender: Gender.male,
       orderId: '1',
-      sendNotification: [],
       token: 'someSecret',
       userId: '12552'
     }};
   componentId: string;
   componentType: string;
-  componentData: DisplayInterface;
+  componentData: Display;
   isLoading = false;
 
   getData(): void {}

@@ -4,7 +4,7 @@ import { Moment } from 'moment';
 import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryModel
-} from '../../../../../../interfaces/employee-history.interface';
+} from '../employee-history.types';
 
 const moment = moment_;
 

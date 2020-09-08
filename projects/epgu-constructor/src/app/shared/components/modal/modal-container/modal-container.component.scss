@@ -1,0 +1,16 @@
+@import "../../../../../styles/core";
+
+:host::ng-deep {
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    background: rgba($color-summer-night, 0.62);
+    transition: background .25s;
+    z-index: $modal-z-index;
+    backdrop-filter: blur(8px);
+  }
+}
+

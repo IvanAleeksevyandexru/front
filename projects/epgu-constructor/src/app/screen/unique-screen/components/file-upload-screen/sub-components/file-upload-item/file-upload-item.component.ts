@@ -12,18 +12,19 @@ import { WebcamInitError } from 'ngx-webcam';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import {
-  IFileResponseToBackendUploadsItem,
-  IFileUploadItem,
+  FileResponseToBackendUploadsItem,
+  FileUploadItem,
+  Clarifications,
   TerabyteListItem,
-} from '../../../../../../../interfaces/terabyte.interface';
-import { TerabyteService } from '../../../../../../services/terabyte/terabyte.service';
-import { WebcamService } from '../../../../../../services/webcam/webcam.service';
+} from '../../services/terra-byte-api/terra-byte-api.types';
+import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
+import { WebcamService } from '../../services/webcam/webcam.service';
 import {
   isCloseAndSaveWebcamEvent,
   isCloseWebcamEvent,
   WebcamEvent,
-} from '../../../../../../services/webcam/webcamevents';
-import { getSizeInMB, UploadedFile, uploadObjectType } from './data';
+} from '../../webcam/webcamevents';
+import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -31,9 +32,10 @@ import { getSizeInMB, UploadedFile, uploadObjectType } from './data';
   styleUrls: ['./file-upload-item.component.scss'],
 })
 export class FileUploadItemComponent implements OnDestroy, OnInit {
-  private loadData: IFileUploadItem;
+  private loadData: FileUploadItem;
+  @Input() clarification: Clarifications;
   @Input()
-  set data(data: IFileUploadItem) {
+  set data(data: FileUploadItem) {
     this.loadData = data;
     this.listIsUploadingNow = true;
     this.files$$.next([]);
@@ -66,8 +68,8 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   @Input() objectId: number;
   @Input() refData: any = null;
 
-  @Output() newValueSet: EventEmitter<IFileResponseToBackendUploadsItem> = new EventEmitter<
-    IFileResponseToBackendUploadsItem
+  @Output() newValueSet: EventEmitter<FileResponseToBackendUploadsItem> = new EventEmitter<
+    FileResponseToBackendUploadsItem
   >();
 
   @ViewChild('fileUploadInput', {
@@ -81,7 +83,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   cameraNotAllowed = false; // Флаг, что камеры нет или она запрещена
   listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
-  files$$ = new BehaviorSubject<UploadedFile[]>([]); // Список уже загруженных файлов
+  files$$ = new BehaviorSubject<TerraUploadedFile[]>([]); // Список уже загруженных файлов
   files$ = this.files$$
     .asObservable()
     .pipe(
@@ -90,25 +92,27 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
           this.newValueSet.emit({
             uploadId: this.loadData.uploadId,
             value: files,
-          } as IFileResponseToBackendUploadsItem);
+          } as FileResponseToBackendUploadsItem);
         }
       }),
     )
     .subscribe();
   errors: string[] = [];
 
-  constructor(private terabyteService: TerabyteService, private webcamService: WebcamService) {}
+  constructor(private terabyteService: TerraByteApiService, private webcamService: WebcamService) {}
 
   /**
    * Переводит список файлов с сервера в файлы для отображения
    * @param list - массив информациио файлах на сервере
    * @private
    */
-  private transformTerabyteItemsToUploadedFiles(list: TerabyteListItem[] = []): UploadedFile[] {
-    let filesList: UploadedFile[] = [];
+  private transformTerabyteItemsToUploadedFiles(
+    list: TerabyteListItem[] = [],
+  ): TerraUploadedFile[] {
+    let filesList: TerraUploadedFile[] = [];
     if (list.length) {
       filesList = list.map((terraFile: TerabyteListItem) => {
-        const file = new UploadedFile(terraFile);
+        const file = new TerraUploadedFile(terraFile);
         file.uploaded = true;
         return file;
       });
@@ -153,9 +157,13 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * @param uploaded - файл загружен?
    * @private
    */
-  private setFileInfoUploaded(uploadedFile: UploadedFile, fileSize: number, uploaded: boolean) {
+  private setFileInfoUploaded(
+    uploadedFile: TerraUploadedFile,
+    fileSize: number,
+    uploaded: boolean,
+  ) {
     const files = this.files$$.value;
-    files.forEach((f: UploadedFile) => {
+    files.forEach((f: TerraUploadedFile) => {
       if (f.mnemonic === uploadedFile.mnemonic) {
         // eslint-disable-next-line no-param-reassign
         f.uploaded = uploaded;
@@ -175,7 +183,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * @param uploaded - признак что файл загружен
    * @private
    */
-  private updateFileInfoFromServer(uploadedFile: UploadedFile, uploaded: boolean = true) {
+  private updateFileInfoFromServer(uploadedFile: TerraUploadedFile, uploaded: boolean = true) {
     if (uploaded) {
       this.terabyteService
         .getFileInfo(uploadedFile.getParamsForFileOptions())
@@ -195,10 +203,10 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   private sendFile(file: File | Blob) {
     this.filesInUploading += 1;
 
-    const fileToUpload = new UploadedFile({
+    const fileToUpload = new TerraUploadedFile({
       fileName: file instanceof File ? file.name : `camera_${this.filesInUploading}.jpg`,
       objectId: this.objectId,
-      objectTypeId: uploadObjectType,
+      objectTypeId: UPLOAD_OBJECT_TYPE,
       mnemonic: this.getMnemonic(),
     });
     const files = this.files$$.value;
@@ -247,7 +255,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * @param list - список файлов загруженных с сервера
    * @private
    */
-  private getMaxFileNumberFromList(list: UploadedFile[]): number {
+  private getMaxFileNumberFromList(list: TerraUploadedFile[]): number {
     const maxIndex = -1;
     return list.reduce((item, file) => {
       const index = Number(file.mnemonic.split('.').pop());
@@ -272,7 +280,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * Удаление файла из стека
    * @param file - объект файла на удаление
    */
-  deleteFile(file: UploadedFile) {
+  deleteFile(file: TerraUploadedFile) {
     this.errors = [];
 
     if (file.uploaded) {
@@ -339,7 +347,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
           if (isCloseAndSaveWebcamEvent(event)) {
             // Если данные нужно сохранить и отправить
             const { data } = event;
-            this.sendFile(TerabyteService.base64toBlob(data, ''));
+            this.sendFile(TerraByteApiService.base64toBlob(data, ''));
           }
           this.webcamService.close();
         }
@@ -351,7 +359,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * Запрос на скачивание файла и отдачу пользователю
    * @param file - объект файла
    */
-  downloadFile(file: UploadedFile) {
+  downloadFile(file: TerraUploadedFile) {
     this.errors = [];
     const subs: Subscription = this.terabyteService
       .downloadFile(file.getParamsForFileOptions())

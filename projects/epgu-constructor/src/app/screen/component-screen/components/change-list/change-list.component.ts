@@ -9,10 +9,10 @@ import {
 } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ComponentInterface } from '../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { ComponentBase } from '../../../screen.types';
 
-export interface ChangeListComponentInterface extends ComponentInterface {
+export interface ChangeListComponentInterface extends ComponentBase {
   attrs: {
     fields: Array<IField>;
   };

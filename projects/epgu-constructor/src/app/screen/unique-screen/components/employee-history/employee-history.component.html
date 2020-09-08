@@ -1,3 +1,5 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+
 <epgu-constructor-screen-container class="employee-history">
   <section class="employee-history__header" *ngIf="header">
     <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
@@ -56,7 +58,9 @@
       ></lib-plain-input>
     </div>
     <div class="employee-history__input">
-      <epgu-constructor-label [for]="i + '_address'">Адрес полностью, включая регион и город</epgu-constructor-label>
+      <epgu-constructor-label [for]="i + '_address'">
+        Адрес постоянной регистрации (прописки) или временной регистрации (место пребывания) в этот период
+      </epgu-constructor-label>
       <lib-plain-input
         [id]="i + '_address'"
         [disabled]="true"
@@ -135,7 +139,9 @@
       ></lib-plain-input>
     </div>
     <div class="employee-history__input">
-      <epgu-constructor-label for="address">Адрес полностью, включая регион и город</epgu-constructor-label>
+      <epgu-constructor-label for="address">
+        Адрес постоянной регистрации (прописки) или временной регистрации (место пребывания) в этот период
+      </epgu-constructor-label>
       <lib-plain-input
         id="address"
         [formControl]="employeeFormService.generateForm.get('address')"
@@ -163,7 +169,7 @@
       [disabled]="!isCompleteForm()"
       class="employee-history__footer__btn-submit"
     >
-        {{ data?.submitLabel || 'Продолжить' }}
+        {{ display?.submitLabel || 'Продолжить' }}
     </lib-button>
   </section>
 </epgu-constructor-screen-container>

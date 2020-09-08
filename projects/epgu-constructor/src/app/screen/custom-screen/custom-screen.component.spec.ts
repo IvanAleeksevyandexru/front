@@ -3,17 +3,17 @@ import { MockComponent } from 'ng-mocks';
 import { ButtonComponent } from 'epgu-lib';
 
 import { CustomScreenComponent } from './custom-screen.component';
-import { SCREEN_TYPE } from '../../../constant/global';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
-import { PageNameComponent } from '../../shared/components/page-name/page-name.component';
+import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
-import { ComponentsListComponent } from '../../shared/components/components-list/components-list.component';
+import { ComponentsListComponent } from './components-list/components-list.component';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ScreenStore } from '../screen.types';
+import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { ComponentStateService } from '../../services/component-state/component-state.service';
 
 
 describe('CustomScreenComponent', () => {
@@ -30,7 +30,7 @@ describe('CustomScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: SCREEN_TYPE.QUESTION
+      type: ScreenTypes.QUESTION
     }
   };
 
@@ -49,7 +49,8 @@ describe('CustomScreenComponent', () => {
         NavigationService,
         ScreenService,
         UnsubscribeService,
-        ApplicantAnswersService
+        ApplicantAnswersService,
+        ComponentStateService
       ]
     })
     .compileComponents();

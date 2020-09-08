@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { SCREEN_COMPONENT_NAME } from '../../../constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationPayload } from '../../form-player.types';
+import { InvitationErrorScreenComponentTypes } from './invitation-error-screen.types';
 
 @Component({
   selector: 'epgu-constructor-invitation-screen',
@@ -14,7 +14,7 @@ import { NavigationPayload } from '../../form-player.types';
   providers: [UnsubscribeService],
 })
 export class InvitationErrorScreenComponent implements OnInit, Screen {
-  typeComponent = SCREEN_COMPONENT_NAME;
+  typeComponent = InvitationErrorScreenComponentTypes;
   screenStore: ScreenStore;
 
   constructor(
@@ -44,7 +44,12 @@ export class InvitationErrorScreenComponent implements OnInit, Screen {
   }
 
   sendEmail(email: string): void {
-    const nextStepData = { data: email, options: { componentId: 'errorScr' } };
-    this.nextStep(nextStepData);
+    const data: NavigationPayload = {};
+    const componentId = 'errorScr';
+    data[componentId] = {
+      visited: true,
+      value: email || '',
+    };
+    this.nextStep(data);
   }
 }
