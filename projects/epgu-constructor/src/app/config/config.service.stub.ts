@@ -5,7 +5,7 @@ import { Config } from './config.types';
 export class ConfigServiceStub {
   _config: Config = {
     apiUrl: '/api',
-    dictionaryUrl: '',
+    dictionaryUrl: 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary',
     externalApiUrl: '',
     externalLkApiUrl: '',
     externalLkUrl: '',
