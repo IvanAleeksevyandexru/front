@@ -33,7 +33,7 @@ describe('DadataApiService', () => {
       service.getDadataByFias(fiasCode).subscribe(response => expect(response).toBe(responseMock));
       const path = `${externalApiUrl}/dadata/${fiasCode}`;
       const req = http.expectOne(path);
-      expect(req.request.method).toBe('POST');
+      expect(req.request.method).toBe('GET');
       req.flush(responseMock);
       tick();
     }));
