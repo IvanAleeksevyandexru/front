@@ -13,6 +13,7 @@ export enum CustomScreenComponentTypes {
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
   htmlString = 'HtmlString',
+  GenderSelection = 'GenderSelection',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
