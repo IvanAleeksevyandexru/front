@@ -19,7 +19,7 @@
     *ngSwitchCase="uniqueComponentName.employeeHistory"
     [header]="screenStore.display?.header"
     [gender]="screenStore.gender"
-    [data]="screenStore.display"
+    [display]="screenStore.display"
     (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-employee-history>
   <epgu-constructor-repeatable-fields
@@ -36,13 +36,13 @@
   </epgu-constructor-time-slots>
   <epgu-constructor-car-info
     *ngSwitchCase="uniqueComponentName.carInfo"
-    [data]="screenStore.display"
+    [display]="screenStore.display"
     [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextStep($event)"
   ></epgu-constructor-car-info>
   <epgu-constructor-confirm-marriage
     *ngSwitchCase="uniqueComponentName.confirmMarriage"
-    [data]="screenData.componentData"
+    [data]="screenStore.display"
     [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextStep($event)">
   </epgu-constructor-confirm-marriage>

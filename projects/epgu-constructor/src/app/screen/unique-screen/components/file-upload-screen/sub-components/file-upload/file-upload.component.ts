@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
-  IFileResponseToBackendUploadsItem,
-  IFileResponseToBackendWithRelatedUploads,
-  IFileUploadAttributes,
-  IFileUploadItem,
-} from '../../../../../../../interfaces/terabyte.interface';
+  FileResponseToBackendUploadsItem,
+  FileResponseToBackendWithRelatedUploads,
+  FileUploadAttributes,
+  FileUploadItem,
+} from '../../services/terra-byte-api/terra-byte-api.types';
 
 @Component({
   selector: 'epgu-constructor-file-upload',
@@ -12,10 +12,10 @@ import {
   styleUrls: ['./file-upload.component.scss'],
 })
 export class FileUploadComponent {
-  private attrs: IFileUploadAttributes;
+  private attrs: FileUploadAttributes;
   @Input() applicantAnswers: object;
   @Input()
-  set attributes(attrs: IFileUploadAttributes) {
+  set attributes(attrs: FileUploadAttributes) {
     this.attrs = attrs;
     if (attrs?.ref) {
       this.refData = this.getRefValuesForApplicantAnswers(attrs);
@@ -23,7 +23,7 @@ export class FileUploadComponent {
     this.value = this.fillUploadsDefaultValue();
     this.newValueSet.emit(this.value);
   }
-  get attributes(): IFileUploadAttributes {
+  get attributes(): FileUploadAttributes {
     return this.attrs;
   }
   @Input() prefixForMnemonic: string;
@@ -31,7 +31,7 @@ export class FileUploadComponent {
   @Input() isRelatedUploads = false;
   @Input() uploadId: string = null;
   refData: string = null;
-  private value: IFileResponseToBackendUploadsItem[] = []; // Здесь будет храниться значение на передачу
+  private value: FileResponseToBackendUploadsItem[] = []; // Здесь будет храниться значение на передачу
   @Output() newValueSet: EventEmitter<object> = new EventEmitter<object>();
   @Output() newRelatedValueSet: EventEmitter<any> = new EventEmitter<any>();
 
@@ -39,10 +39,10 @@ export class FileUploadComponent {
    * Заполняем значения по умолчанию для возврата на сервер
    * @private
    */
-  private fillUploadsDefaultValue(): IFileResponseToBackendUploadsItem[] {
-    const value: IFileResponseToBackendUploadsItem[] = [];
-    this.attrs?.uploads.forEach((upload: IFileUploadItem) => {
-      const newValue: IFileResponseToBackendUploadsItem = {
+  private fillUploadsDefaultValue(): FileResponseToBackendUploadsItem[] {
+    const value: FileResponseToBackendUploadsItem[] = [];
+    this.attrs?.uploads.forEach((upload: FileUploadItem) => {
+      const newValue: FileResponseToBackendUploadsItem = {
         uploadId: upload.uploadId,
         value: [],
       };
@@ -63,7 +63,7 @@ export class FileUploadComponent {
    * Возвращает данные по ref параметру из applicantAnswers для формирования дополнительного заголовка
    * @param attrs - аттрибуты блока
    */
-  getRefValuesForApplicantAnswers(attrs: IFileUploadAttributes) {
+  getRefValuesForApplicantAnswers(attrs: FileUploadAttributes) {
     const sections = attrs.ref.split('.');
     const key = sections[0];
     const blockKey = sections[1];
@@ -90,8 +90,8 @@ export class FileUploadComponent {
    * Обрабатывает новое значение от формы загрузки
    * @param $eventData - новые значения от формы
    */
-  handleNewValueForItem($eventData: IFileResponseToBackendUploadsItem) {
-    this.value.map((valueItem: IFileResponseToBackendUploadsItem) => {
+  handleNewValueForItem($eventData: FileResponseToBackendUploadsItem) {
+    this.value.map((valueItem: FileResponseToBackendUploadsItem) => {
       if (valueItem.uploadId === $eventData.uploadId) {
         // eslint-disable-next-line no-param-reassign
         valueItem.value = $eventData.value;
@@ -105,7 +105,7 @@ export class FileUploadComponent {
       this.newRelatedValueSet.emit({
         uploadId: this.uploadId,
         uploads: this.value,
-      } as IFileResponseToBackendWithRelatedUploads);
+      } as FileResponseToBackendWithRelatedUploads);
     }
   }
 
@@ -113,12 +113,12 @@ export class FileUploadComponent {
    * Обрабатывает новое значение от формы загрузки по связанным документам
    * @param $eventData - новые значения от формы
    */
-  handleNewRelatedValueForItem($eventData: IFileResponseToBackendWithRelatedUploads) {
+  handleNewRelatedValueForItem($eventData: FileResponseToBackendWithRelatedUploads) {
     this.newValueSet.emit({
       uploadId: $eventData.uploadId,
       relatedUploads: {
         uploads: $eventData.uploads,
       },
-    } as IFileResponseToBackendUploadsItem);
+    } as FileResponseToBackendUploadsItem);
   }
 }

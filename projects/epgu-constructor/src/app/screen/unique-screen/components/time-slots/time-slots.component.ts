@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { DisplayInterface } from '../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { TimeSlotsService } from './time-slots.service';
@@ -10,8 +9,9 @@ import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { SlotInterface } from './slot.interface';
 import { TimeSlotsConstants } from './time-slots.constants';
-import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
+import { Display } from '../../../screen.types';
 
 const moment = moment_;
 
@@ -91,7 +91,7 @@ export class TimeSlotsComponent implements OnInit {
     this.timeSlotServices.MVD = mvdTimeSlotsService;
   }
 
-  @Input() data: DisplayInterface;
+  @Input() data: Display;
   @Output() nextStepEvent = new EventEmitter<any>();
 
   private renderSingleMonthGrid(output) {

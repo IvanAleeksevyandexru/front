@@ -1,8 +1,8 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
-  ConfirmUserDataFieldsStateInterface,
-  ConfirmUserDataInterface,
-} from '../../../../../../../../../interfaces/confirm-user-data.interface';
+  ConfirmUserDataFieldsState,
+  ConfirmUserData,
+} from '../../../../../../types/confirm-user-data.types';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import {
   getBirthDayConfirmPersonalUserData,
@@ -17,9 +17,9 @@ import {
 })
 export class ConfirmPersonalUserDataComponent implements OnChanges {
   // <-- variable
-  preparedData: Array<ConfirmUserDataFieldsStateInterface> = [];
+  preparedData: Array<ConfirmUserDataFieldsState> = [];
 
-  @Input() data: ConfirmUserDataInterface;
+  @Input() data: ConfirmUserData;
   constructor(public configService: ConfigService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -28,7 +28,7 @@ export class ConfirmPersonalUserDataComponent implements OnChanges {
     }
   }
 
-  private adaptiveData(data: ConfirmUserDataInterface) {
+  private adaptiveData(data: ConfirmUserData) {
     const fullName = getFullNameConfirmPersonalUserData(data);
     const birthDay = getBirthDayConfirmPersonalUserData(data);
     const otherFields = getOtherFieldsConfirmPersonalUserData(data);

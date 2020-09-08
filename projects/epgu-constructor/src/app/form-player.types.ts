@@ -1,9 +1,10 @@
+import { Answer } from './shared/types/answer';
+
 export enum FormPlayerNavigation {
   'NEXT' = 'getNextStep',
   'PREV' = 'getPrevStep',
 }
 
 export interface NavigationPayload {
-  data?: any,
-  options?: any,
+  [key: string]: Answer
 }

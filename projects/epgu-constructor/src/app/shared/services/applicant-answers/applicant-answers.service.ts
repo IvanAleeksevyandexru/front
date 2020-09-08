@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApplicantAnswers } from '../../../services/api/form-player-api/form-player-api.types';
+import { ApplicantAnswers } from '../../../screen/screen.types';
 
 
 @Injectable()

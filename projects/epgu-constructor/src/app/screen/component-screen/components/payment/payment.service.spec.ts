@@ -6,7 +6,6 @@ import { ConfigServiceStub } from '../../../../config/config.service.stub';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../screen.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
-import { UserSessionService } from '../../../../services/user-session/user-session.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -19,7 +18,6 @@ describe('PaymentService', () => {
       providers: [
         DictionaryApiService,
         PaymentService,
-        UserSessionService,
         ScreenService,
         ConfigService,
         ComponentStateService,

@@ -1,0 +1,48 @@
+@import '../../../../styles/core/palettes';
+@import '../../../../styles/core/typography';
+
+// test
+.form {
+  &__item {
+    margin-bottom: 24px;
+
+    &__hint {
+      margin-top: 4px;
+      @include typ-plain-xs();
+    }
+  }
+  &__title {
+    font-size: 14px;
+    font-family: $font-main;
+    line-height: 20px;
+    color: $color-summer-night;
+    margin-bottom: 4px;
+  }
+  &__error {
+    margin-top: 4px;
+    color: $color-gosred;
+  }
+  &__radio {
+    &__block {
+      display: inline-block;
+      lib-radio {
+        display: block;
+        margin-bottom: 16px;
+      }
+    }
+    &__inline {
+      margin-top: 24px;
+      display: inline-flex;
+      lib-radio:not(:first-child) {
+        margin-left: 24px;
+      }
+    }
+  }
+}
+
+.label {
+  margin-bottom: 24px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: bold;
+}
