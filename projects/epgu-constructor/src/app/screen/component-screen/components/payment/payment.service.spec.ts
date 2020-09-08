@@ -7,7 +7,6 @@ import { DictionaryApiService } from '../../../../services/api/dictionary-api/di
 import { ScreenService } from '../../../screen.service';
 import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { UserSessionService } from '../../../../services/user-session/user-session.service';
 import { FormPlayerApiService } from '../../../../services/api/form-player-api/form-player-api.service';
 import { ApplicantAnswersService } from '../../../../shared/services/applicant-answers/applicant-answers.service';
 import { ScreenResolverService } from '../../../../services/screen-resolver/screen-resolver.service';
@@ -23,7 +22,6 @@ describe('PaymentService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         DictionaryApiService,
-        UserSessionService,
         PaymentService,
         FormPlayerService,
         ApplicantAnswersService,
