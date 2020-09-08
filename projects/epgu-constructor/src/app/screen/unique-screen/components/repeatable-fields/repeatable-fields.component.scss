@@ -1,6 +1,6 @@
-@import "src/styles/core/functions";
-@import "src/styles/core/typography";
-@import "src/styles/core/variables";
+@import 'src/styles/core/functions';
+@import 'src/styles/core/typography';
+@import 'src/styles/core/variables';
 
 .nav {
   @include navigation-mt();
@@ -19,7 +19,7 @@
   margin-left: auto;
 }
 
-.btn--add{
+.btn--add {
   margin-top: $screen-pad-p;
   display: flex;
   button {
@@ -39,19 +39,11 @@
   @include tablets-up {
     margin-top: 32px;
   }
-  &__btns-group {
-    display: flex;
-    flex-flow: column;
-    & > * {
-      margin: 4px;
-    }
-  }
   &__btn-submit {
     width: auto;
-    &::ng-deep button {
+    &::ng-deep .button {
       width: inherit;
       min-width: 100px;
     }
   }
 }
-

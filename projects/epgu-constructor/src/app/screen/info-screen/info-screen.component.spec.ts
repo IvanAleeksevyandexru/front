@@ -1,12 +1,12 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SCREEN_TYPE } from '../../../constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { InfoScreenComponent } from './info-screen.component';
 import { ScreenService } from '../screen.service';
-import { ScreenStore } from '../screen.types';
+import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { ComponentStateService } from '../../services/component-state/component-state.service';
 
 
 describe('InfoScreenComponent', () => {
@@ -28,7 +28,7 @@ describe('InfoScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: SCREEN_TYPE.COMPONENT
+      type: ScreenTypes.COMPONENT
     }
   };
 
@@ -40,7 +40,8 @@ describe('InfoScreenComponent', () => {
         NavigationService,
         UnsubscribeService,
         ScreenService,
-        ApplicantAnswersService
+        ApplicantAnswersService,
+        ComponentStateService
       ]
     })
     .compileComponents();

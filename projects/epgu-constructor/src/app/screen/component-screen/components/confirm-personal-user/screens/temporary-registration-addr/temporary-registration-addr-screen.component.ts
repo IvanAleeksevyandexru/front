@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../interfaces/temporary-registration-addr.interface';
+import { TemporaryRegistrationComponent } from './temporary-registration-addr-screen.types';
 
 @Component({
   selector: 'epgu-constructor-temporary-registration-addr-screen',
@@ -7,7 +7,7 @@ import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../.
   styleUrls: ['./temporary-registration-addr-screen.component.scss'],
 })
 export class TemporaryRegistrationAddrScreenComponent {
-  @Input() data: TemporaryRegistrationAddrComponentInterface;
+  @Input() data: TemporaryRegistrationComponent;
   @Input() errors: object;
   @Output() actionSelect = new EventEmitter();
 

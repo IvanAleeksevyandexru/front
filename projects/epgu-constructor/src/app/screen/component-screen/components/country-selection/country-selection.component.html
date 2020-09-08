@@ -11,6 +11,7 @@
   <div *ngIf="selectedCountry && selectedCountry.countryType !== '1'"
        class="country-apostil__warning">
     <lib-disclaimer-elk
+      (click)="clickToInnerHTML($event)"
       color="#FFD54C"
       title="Предупреждение"
       [text]="warningMessages[selectedCountry.countryType]"></lib-disclaimer-elk>

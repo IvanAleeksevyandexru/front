@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { QuestionsComponentActionsInterface } from '../../../../interfaces/question-block.interface';
+import { QuestionsComponentActions } from '../../../screen/questions-screen/questions-screen.types';
 
-interface IData extends QuestionsComponentActionsInterface {
+interface IData extends QuestionsComponentActions {
   hint: string;
 }
 @Component({

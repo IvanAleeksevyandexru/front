@@ -4,7 +4,7 @@ import { FormPlayerApiService } from './form-player-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConfigService } from '../../../config/config.service';
 import { ConfigServiceStub } from '../../../config/config.service.stub';
-import { UserSessionService } from '../../user-session/user-session.service';
+import { CookieService } from 'ngx-cookie-service';
 
 describe('FormPlayerApiService', () => {
   let service: FormPlayerApiService;
@@ -16,7 +16,7 @@ describe('FormPlayerApiService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
-        UserSessionService,
+        CookieService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });

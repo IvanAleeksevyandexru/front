@@ -1,15 +1,9 @@
-import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
 
 export class TimeSlotsConstants {
   errorModal: ConfirmationModal = {
     title: 'Ошибка',
     text: '',
-    buttons: [
-      {
-        label: 'Ok',
-        closeModal: true,
-      },
-    ],
   };
 
   errorLoadingTimeSlots = 'Не удалось загрузить доступные слоты времени';

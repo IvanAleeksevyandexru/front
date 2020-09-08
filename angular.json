@@ -82,6 +82,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+            "host": "local.test.gosuslugi.ru",
             "browserTarget": "epgu-form-frontend:build",
             "port": 4200,
             "proxyConfig": "src/proxy.conf.json",

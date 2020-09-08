@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SCREEN_TYPE } from '../../../constant/global';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EmptyScreenComponent } from './empty-screen.component';
-import { ScreenStore } from '../screen.types';
+import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { ComponentStateService } from '../../services/component-state/component-state.service';
 
 
 // TODO: Need to refactoring component
@@ -29,7 +29,7 @@ describe.skip('EmptyScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: SCREEN_TYPE.COMPONENT
+      type: ScreenTypes.COMPONENT
     }
   };
 
@@ -37,7 +37,13 @@ describe.skip('EmptyScreenComponent', () => {
 		TestBed.configureTestingModule({
 			schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
 			declarations: [EmptyScreenComponent],
-      providers: [NavigationService, ScreenService, UnsubscribeService, ApplicantAnswersService]
+      providers: [
+        NavigationService,
+        ScreenService,
+        UnsubscribeService,
+        ApplicantAnswersService,
+        ComponentStateService
+      ]
 		})
 			.compileComponents();
     screenService = TestBed.inject(ScreenService);
