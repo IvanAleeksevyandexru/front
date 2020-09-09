@@ -11,10 +11,8 @@ export class ConfigServiceStub {
     externalLkUrl: '',
     paymentUrl: '',
     fileUploadApiUrl: '',
-    fileUploadLocalhostApiUrl: '',
     uinApiUrl: '',
     yandexMapsApiKey: '',
-    isProd: false,
   };
 
   get config(): Config {

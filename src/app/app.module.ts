@@ -14,10 +14,8 @@ const formPlayerConfig: Config = {
   uinApiUrl: environment.uinApiUrl,
   paymentUrl: environment.paymentUrl,
   yandexMapsApiKey: environment.yandexMapsApiKey,
-  isProd: environment.production,
   fileUploadApiUrl: environment.fileUploadApiUrl,
   externalLkUrl: environment.externalLkUrl,
-  fileUploadLocalhostApiUrl: environment.fileUploadLocalhostApiUrl,
 };
 
 @NgModule({

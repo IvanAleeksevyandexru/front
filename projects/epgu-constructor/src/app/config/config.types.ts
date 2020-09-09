@@ -10,7 +10,5 @@ export interface Config {
   uinApiUrl: string;
   paymentUrl: string;
   yandexMapsApiKey: string;
-  isProd: boolean;
   fileUploadApiUrl: string;
-  fileUploadLocalhostApiUrl: string;
 }
