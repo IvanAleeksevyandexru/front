@@ -7,7 +7,7 @@ export interface Config {
   externalApiUrl: string;
   timeSlotApiUrl: string;
   externalLkUrl: string;
-  externalUrl: string;
+  uinApiUrl: string;
   paymentUrl: string;
   yandexMapsApiKey: string;
   isProd: boolean;

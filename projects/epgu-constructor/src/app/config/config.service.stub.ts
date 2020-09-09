@@ -12,7 +12,7 @@ export class ConfigServiceStub {
     paymentUrl: '',
     fileUploadApiUrl: '',
     fileUploadLocalhostApiUrl: '',
-    externalUrl: '',
+    uinApiUrl: '',
     yandexMapsApiKey: '',
     isProd: false,
   };
