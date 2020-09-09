@@ -23,6 +23,9 @@
         minDate="-50y"
         maxDate="+50y"
         [(ngModel)]="forms[field.fieldName]"
+        [invalid]="!dataForm?.controls[field.fieldName]?.valid"
+        [validationShowOn]="validationShowOn"
+        clearable="true"
       >
       </lib-date-picker>
 

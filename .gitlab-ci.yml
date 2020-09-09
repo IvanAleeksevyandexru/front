@@ -1,22 +1,23 @@
 image: node:latest
 
-cache:
+cache: &global_cache
+  key: cache-${CI_COMMIT_REF_SLUG}
   paths:
-    - node_modules
-    - dist
-    - .yarn
+    - node_modules/
+    - dist/
 
 stages:
   - install
   - lint
   - test
   - library-build
+  - publish
   - build
 
 Install:
   stage: install
   before_script:
-    - yarn config set cache-folder .yarn
+    - rm -rf dist
   script:
     - yarn install
   only:
@@ -25,8 +26,9 @@ Install:
 
 Lint:
   stage: lint
-  before_script:
-    - yarn config set cache-folder .yarn
+  cache:
+    <<: *global_cache
+    policy: pull  
   script:
     - yarn lint
   only:
@@ -35,8 +37,9 @@ Lint:
 
 Test:
   stage: test
-  before_script:
-    - yarn config set cache-folder .yarn
+  cache:
+    <<: *global_cache
+    policy: pull  
   script:
     - yarn test:coverage
   only:
@@ -45,18 +48,34 @@ Test:
 
 Library-build:
   stage: library-build
-  before_script:
-    - yarn config set cache-folder .yarn
   script:
     - yarn library:build
   only:
     - merge_requests
     - master
 
+Library-publish:
+  stage: publish
+  cache:
+    <<: *global_cache
+    policy: pull  
+  before_script:
+    - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
+    - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
+  script:
+    - cd dist/epgu-constructor
+    - CURRENT_VERSION=$(npm view epgu-constructor version)
+    - npm version $CURRENT_VERSION
+    - npm version patch
+    - npm publish
+  only:
+    - master    
+    
 Build:
   stage: build
-  before_script:
-    - yarn config set cache-folder .yarn
+  cache:
+    <<: *global_cache
+    policy: pull
   script:
     - yarn build
     - /devops/notify/notify.sh fronted_new_master_available

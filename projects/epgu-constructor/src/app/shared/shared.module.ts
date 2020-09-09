@@ -18,6 +18,7 @@ import { NavigationService } from './services/navigation/navigation.service';
 import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
 import { CommonModalComponent } from './components/modal/common-modal/common-modal.component';
 import { OutputHtmlComponent } from './components/output-html/output-html.component';
+import { GenderRadioButtonComponent } from './components/gender-radio-button/gender-radio-button.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -31,6 +32,7 @@ const COMPONENTS = [
   ModalContainerComponent,
   ModalBaseComponent,
   HelperTextComponent,
+  GenderRadioButtonComponent,
   OutputHtmlComponent,
 ];
 

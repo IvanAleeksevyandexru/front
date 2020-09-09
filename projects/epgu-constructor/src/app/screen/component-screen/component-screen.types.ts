@@ -14,4 +14,5 @@ export enum ComponentScreenComponentTypes {
   countryApostil = 'CountryApostil',
   paymentScr = 'PaymentScr',
   mvdGiac = 'MvdGiac',
+
 }
