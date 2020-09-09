@@ -46,3 +46,31 @@ export interface DictionaryItem {
   title: string;
   value: string;
 }
+
+export interface DictionarySimpleFilter {
+  attributeName: string,
+  condition: 'EQUALS' | 'CONTAINS',
+  value: {
+    asString: string,
+  }
+}
+export interface DictionarySubFilter {
+  simple: DictionarySimpleFilter,
+}
+
+export interface DictionaryFilters {
+  filter: {
+    union?:
+    {
+      unionKind: 'AND' | 'OR',
+      subs: Array<DictionarySubFilter>,
+    }
+    pageNum?: number,
+    pageSize?: string,
+    parentRefItemValue?: string,
+    selectAttributes?: Array<string>,
+    treeFiltering?: 'ONELEVEL',
+    tx?: string
+    withCredentials?: boolean
+  }
+}
