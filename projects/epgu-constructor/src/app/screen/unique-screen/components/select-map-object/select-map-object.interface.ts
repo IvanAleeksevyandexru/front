@@ -11,7 +11,7 @@ export interface IGeoCoordsResponse {
 
 export interface IdictionaryFilter {
   attributeName: string;
-  condition: string;
+  condition: 'EQUALS' | 'CONTAINS';
   value: string;
   valueType: string;
 }

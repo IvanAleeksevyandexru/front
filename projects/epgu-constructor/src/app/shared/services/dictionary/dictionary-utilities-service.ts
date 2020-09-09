@@ -1,7 +1,8 @@
-import { IdictionaryFilter } from './select-map-object.interface';
-import { ApplicantAnswers, ScreenStore } from '../../../screen.types';
+import { IdictionaryFilter } from '../../../screen/unique-screen/components/select-map-object/select-map-object.interface';
+import { ApplicantAnswers, ScreenStore } from '../../../screen/screen.types';
+import { DictionaryFilters } from '../../../services/api/dictionary-api/dictionary-api.types';
 
-export class Utilities {
+export class DictionaryUtilities {
 
   /**
    * Подготавливает объект с фильтрами для получения словаря
@@ -9,8 +10,12 @@ export class Utilities {
    * @param scenarioDto значение scenarioDto пришедшение с бэкэнда
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  public static getFilterOptions(componentValue: any, screenStore: ScreenStore, dictionaryFilters?: Array<IdictionaryFilter>) {
-    const filters = dictionaryFilters.map((dFilter) => {
+  public static getFilterOptions(
+    componentValue: any,
+    screenStore: ScreenStore,
+    dictionaryFilters?: Array<IdictionaryFilter>,
+  ): DictionaryFilters {
+    const filters = dictionaryFilters.map((dFilter: IdictionaryFilter) => {
       return {
         simple: {
           attributeName: dFilter.attributeName,
