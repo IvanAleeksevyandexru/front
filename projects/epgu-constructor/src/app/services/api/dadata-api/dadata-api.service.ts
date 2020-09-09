@@ -14,7 +14,7 @@ export class DadataApiService {
   }
 
   getDadataByFias(fiasCode: string) {
-    const path = `${this.externalApiUrl}dadata/${fiasCode}`;
+    const path = `${this.externalApiUrl}/dadata/${fiasCode}`;
     return this.http.get(path);
   }
 }

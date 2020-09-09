@@ -3,10 +3,10 @@ import { Config } from './config.types';
 
 @Injectable()
 export class ConfigServiceStub {
-  config: Config = {
-    apiUrl: '',
-    dictionaryUrl: '',
-    externalApiUrl: '',
+  _config: Config = {
+    apiUrl: '/api',
+    dictionaryUrl: 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary',
+    externalApiUrl: 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1',
     externalLkApiUrl: '',
     externalLkUrl: '',
     paymentUrl: '',
@@ -16,4 +16,8 @@ export class ConfigServiceStub {
     yandexMapsApiKey: '',
     isProd: false,
   };
+
+  get config(): Config {
+    return this._config;
+  }
 }

@@ -4,8 +4,7 @@
     [data]="screenStore.display?.components[0]"
     [applicantAnswers]="screenStore.applicantAnswers"
     (nextStepEvent)="nextDataForStep($event)"
-  >
-  </epgu-constructor-select-map-object>
+  ></epgu-constructor-select-map-object>
   <epgu-constructor-file-upload-screen
     *ngSwitchCase="uniqueComponentName.fileUploadComponent"
     [isLoading]="screenService.isLoading$ | async"
@@ -13,37 +12,37 @@
     [header]="screenStore.display?.header"
     [submitLabel]="screenStore.display?.submitLabel"
     [data]="screenStore.display?.components[0]"
-    (nextStepEvent)="nextStep($event)"
+    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-file-upload-screen>
   <epgu-constructor-employee-history
     *ngSwitchCase="uniqueComponentName.employeeHistory"
     [header]="screenStore.display?.header"
     [gender]="screenStore.gender"
     [display]="screenStore.display"
-    (nextStepEvent)="nextStep($event)"
+    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-employee-history>
   <epgu-constructor-repeatable-fields
     *ngSwitchCase="uniqueComponentName.repeatableFields"
     [isLoading]="screenService.isLoading$ | async"
     [data]="screenStore.display"
-    (nextStepEvent)="nextStep($event)"
+    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-repeatable-fields>
   <epgu-constructor-time-slots
     *ngSwitchCase="uniqueComponentName.timeSlot"
     [data]="screenStore.display"
     [isLoading]="screenService.isLoading$ | async"
-    (nextStepEvent)="nextStep($event)">
+    (nextStepEvent)="nextDataForStep($event)">
   </epgu-constructor-time-slots>
   <epgu-constructor-car-info
     *ngSwitchCase="uniqueComponentName.carInfo"
     [display]="screenStore.display"
     [isLoading]="screenService.isLoading$ | async"
-    (nextStepEvent)="nextStep($event)"
+    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-car-info>
   <epgu-constructor-confirm-marriage
     *ngSwitchCase="uniqueComponentName.confirmMarriage"
     [data]="screenStore.display"
     [isLoading]="screenService.isLoading$ | async"
-    (nextStepEvent)="nextStep($event)">
+    (nextStepEvent)="nextDataForStep()">
   </epgu-constructor-confirm-marriage>
   </ng-container>

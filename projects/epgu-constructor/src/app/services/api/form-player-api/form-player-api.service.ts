@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormPlayerApiResponse } from './form-player-api.types';
+import { FormPlayerApiDraftResponse, FormPlayerApiResponse } from './form-player-api.types';
 import { ConfigService } from '../../../config/config.service';
 import { FormPlayerNavigation } from '../../../form-player.types';
 import { Observable } from 'rxjs';
@@ -18,7 +18,14 @@ export class FormPlayerApiService {
     this.apiUrl = configService.config.apiUrl;
   }
 
-  public getInitialData(serviceId: string): Observable<FormPlayerApiResponse> {
+  public getDraftData(orderId: string): Observable<FormPlayerApiDraftResponse> {
+    const path = `${this.apiUrl}/drafts/${orderId}`;
+    return this.http.get<FormPlayerApiDraftResponse>(path, {
+      withCredentials: false
+    });
+  }
+
+  public getServiceData(serviceId: string): Observable<FormPlayerApiResponse> {
     const path = `${this.apiUrl}/getService/${serviceId}`;
     return this.http.get<FormPlayerApiResponse>(path, {
       withCredentials: false
@@ -27,8 +34,17 @@ export class FormPlayerApiService {
 
   public navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, data): Observable<FormPlayerApiResponse> {
     const path = `${this.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
-    data.scenarioDto.userId = this.cookieService.get('u') || ''; // TODO: remove when api switch auth to cookie
-    data.scenarioDto.token = this.cookieService.get('acc_t') || ''; // TODO: remove when api switch auth to cookie
+
+    // TODO: remove when api switch auth to cookie
+    const userId = this.cookieService.get('u') || '';
+    const token = this.cookieService.get('acc_t') || '';
+    if (userId) {
+      data.scenarioDto.userId = userId;
+    }
+    if (token) {
+      data.scenarioDto.token = token;
+    }
+
     return this.http.post<FormPlayerApiResponse>(path, {
       ...data,
     }, {

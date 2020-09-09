@@ -97,4 +97,13 @@ export interface FormPlayerApiErrorResponse {
   status: FormPlayerApiErrorStatuses;
 }
 
+export interface FormPlayerApiDraftSuccessResponse {
+  orderId: string;
+  type: string;
+  locked: boolean;
+  updated: string;
+  body: ScenarioDto;
+}
+
 export type FormPlayerApiResponse = FormPlayerApiSuccessResponse | FormPlayerApiErrorResponse;
+export type FormPlayerApiDraftResponse = FormPlayerApiDraftSuccessResponse | FormPlayerApiErrorResponse;

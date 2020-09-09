@@ -21,6 +21,17 @@
         </ng-container>
       </div>
 
+      <div class="form__item" *ngSwitchCase="componentType.GenderSelection">
+        <ng-container *ngIf="state[componentData.id].isShown">
+          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+          <epgu-constructor-gender-radio-button [(ngModel)]="state[componentData.id].value">
+          </epgu-constructor-gender-radio-button>
+          <epgu-constructor-helper-text *ngIf="!componentData.required">
+            {{ getHelperText(componentData.required) }}
+          </epgu-constructor-helper-text>
+        </ng-container>
+      </div>
+
       <div class="form__item" *ngSwitchCase="componentType.DropDown">
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
@@ -141,7 +152,7 @@
             [simpleMode]="true"
             [name]="componentData.id"
             (change)="inputChange($event, componentData)"
-            [externalApiUrl]="configService.config.externalApiUrl"
+            [externalApiUrl]="configService.config.externalApiUrl + '/'"
             [initValue]="state[componentData.id].value"
             [(ngModel)]="state[componentData.id].value"
           >

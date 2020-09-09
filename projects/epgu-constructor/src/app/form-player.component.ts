@@ -16,6 +16,7 @@ import { ScreenComponent } from './screen/screen.const';
 export class FormPlayerComponent implements OnInit, OnChanges {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() serviceId: string;
+  @Input() orderId: string;
   screenComponent: ScreenComponent;
 
   constructor(
@@ -26,7 +27,8 @@ export class FormPlayerComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.checkProps();
-    this.formPlayerService.initData(this.serviceId);
+    const orderId = this.getDraftOrderId();
+    this.formPlayerService.initData(this.serviceId, orderId);
     this.formPlayerService.store$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.screenComponent = this.formPlayerService.getScreenComponent();
     });
@@ -38,6 +40,17 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     this.navigationService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.prevStep(data));
+  }
+
+  getDraftOrderId() {
+    let orderId;
+    if (this.orderId) {
+      // TODO: add better handling for draft case;
+      // eslint-disable-next-line no-restricted-globals
+      const result = confirm('У вас есть предыдущее заявление, продолжить его заполнять?');
+      orderId = result ? this.orderId : null;
+    }
+    return orderId;
   }
 
   ngOnChanges(): void {
