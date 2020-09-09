@@ -2,18 +2,18 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { ConfirmPersonalUserPhoneScreenComponent } from './confirm-personal-user-phone-screen.component';
-import { ComponentInterface } from '../../../../../../services/api/form-player-api/form-player-api.types';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserScreenLayoutComponent } from '../../sub-components/confirm-personal-user-screen-layout/confirm-personal-user-screen-layout.component';
 import { ConfirmPersonalUserPhoneComponent } from './components/confirm-personal-user-phone/confirm-personal-user-phone.component';
+import { ComponentBase } from '../../../../../screen.types';
 
 
 describe('ConfirmPersonalUserPhoneScreenComponent', () => {
   let component: ConfirmPersonalUserPhoneScreenComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserPhoneScreenComponent>;
   let ConfirmPersonalUserPhoneComponentMock = MockComponent(ConfirmPersonalUserPhoneComponent);
-  const mockData: ComponentInterface = {
+  const mockData: ComponentBase = {
     attrs: {},
     id: '',
     label: '',

@@ -1,4 +1,6 @@
-@import "src/styles/core";
+@import "src/styles/core/typography";
+@import "src/styles/core/palettes";
+@import "src/styles/core/breakpoint";
 
 .info {
   font-size: 14px;
@@ -18,27 +20,6 @@
 .file__bottom {
   border-bottom: 1px solid $color-devider;
   margin-bottom: 24px;
-}
-
-.fileupload__label {
-  font-size: 16px;
-  line-height: 24px;
-  color: $color-summer-night;
-  margin-bottom: 8px;
-
-  &::ng-deep ul {
-    list-style: none;
-    padding: 0;
-    padding-left: 15px;
-    margin: 0;
-    margin-bottom: 10px;
-
-    li {
-      padding: 0;
-      margin: 0;
-      margin-bottom: 10px;
-    }
-  }
 }
 
 input[type="file"] {

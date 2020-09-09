@@ -1,27 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DictionaryOptionsInterface, DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
+import { DictionaryOptions, DictionaryResponse } from './dictionary-api.types';
 import { ConfigService } from '../../../config/config.service';
-import { UserSessionService } from '../../user-session/user-session.service';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class DictionaryApiService {
   dictionaryUrl: string;
-  userId: string;
-  token: string;
 
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
-    private userSessionService: UserSessionService,
   ) {
     this.dictionaryUrl = configService.config.dictionaryUrl;
-
-    this.userSessionService.userSession$.subscribe(() => {
-      this.userId = this.userSessionService.userId;
-      this.token = this.userSessionService.token;
-    });
   }
 
   /**
@@ -29,7 +20,7 @@ export class DictionaryApiService {
    * @param dictionaryName - название справочника
    * @param options - опции для получения данных
    */
-  getDictionary(dictionaryName: string, options: DictionaryOptionsInterface = {}): Observable<DictionaryResponse> {
+  getDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
     const path = `${this.dictionaryUrl}/${dictionaryName}`;
     return this.http.post<DictionaryResponse>(path, {
       filter: options.filter,

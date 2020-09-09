@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_TYPE } from '../../../constant/global';
-import { ResponseInterface } from '../api/form-player-api/form-player-api.types';
-import { ComponentStateService } from '../component-state/component-state.service';
+import {
+  FormPlayerApiDraftResponse, FormPlayerApiDraftSuccessResponse,
+  FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
+  FormPlayerApiSuccessResponse,
+  ScenarioDto
+} from '../api/form-player-api/form-player-api.types';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
+import { ScreenComponent } from '../../screen/screen.const';
+import { map } from 'rxjs/operators';
 
-interface SendDataOptionsInterface {
-  componentId?: string;
-  goBack?: boolean;
-}
-
+/**
+ * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
+ * Хранит текущий респонс в store и транслирует поток данных в screenService
+ * Не используйте этот сервис в скринах и компанентах, для этих нужд есть screenService
+ */
 @Injectable()
 export class FormPlayerService {
-  private store: ResponseInterface;
+  private store: FormPlayerApiSuccessResponse;
   private playerLoaded = false;
   private isLoading = false;
   private screenType: string;
@@ -23,29 +28,57 @@ export class FormPlayerService {
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
-  private storeSubject = new Subject<ResponseInterface>();
+  private storeSubject = new Subject<FormPlayerApiSuccessResponse>();
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
-  public store$: Observable<ResponseInterface> = this.storeSubject.asObservable();
+  public store$: Observable<FormPlayerApiSuccessResponse> = this.storeSubject.asObservable();
 
   constructor(
     public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private screenResolverService: ScreenResolverService,
-    private componentStateService: ComponentStateService, // TODO: check service
   ) {}
 
-  initData(serviceId: string): void {
+  initData(serviceId: string, orderId?: string): void {
     this.updateLoading(true);
-    this.formPlayerApiService.getInitialData(serviceId).subscribe(
-      (response) => this.initResponse(response),
+
+    if (orderId) {
+      this.getDraftOrderData(orderId);
+    } else {
+      this.getNewOrderData(serviceId);
+    }
+  }
+
+  getDraftOrderData(orderId: string) {
+    this.formPlayerApiService.getDraftData(orderId)
+      .pipe(
+        map(this.mapDraftDataToOrderData)
+      )
+      .subscribe(
+        (response) => this.processResponse(response),
+        (error) => this.sendDataError(error),
+        () => this.updateLoading(false)
+      );
+  }
+
+  mapDraftDataToOrderData(response: FormPlayerApiDraftResponse) {
+    if(this.hasRequestErrors(response as FormPlayerApiErrorResponse)) {
+      return response as FormPlayerApiResponse;
+    }
+    const successResponse = response as FormPlayerApiDraftSuccessResponse;
+    return { scenarioDto: successResponse.body } as FormPlayerApiResponse;
+  }
+
+  getNewOrderData(serviceId: string) {
+    this.formPlayerApiService.getServiceData(serviceId).subscribe(
+      (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
       () => this.updateLoading(false)
     );
   }
 
-  get screenComponent() {
+  getScreenComponent(): ScreenComponent {
     const screenComponent = this.screenResolverService.getScreenComponentByType(this.screenType);
 
     if (!screenComponent) {
@@ -63,7 +96,7 @@ export class FormPlayerService {
 
   navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, navigationPayload?: NavigationPayload) {
     this.updateLoading(true);
-    this.updateRequest(navigationPayload?.data, navigationPayload?.options);
+    this.updateRequest(navigationPayload);
     this.formPlayerApiService.navigate(serviceId, formPlayerNavigation, this.store).subscribe(
       (response) => {
         this.processResponse(response);
@@ -75,33 +108,43 @@ export class FormPlayerService {
     );
   }
 
-  processResponse(response: ResponseInterface): void {
-    if (this.hasBusinessErrors(response)) {
+  processResponse(response: FormPlayerApiResponse): void {
+    if (this.hasError(response)) {
       this.sendDataError(response);
     } else {
       this.sendDataSuccess(response);
     }
   };
 
-  hasBusinessErrors(response: ResponseInterface): boolean {
+  hasError(response: FormPlayerApiResponse) {
+    return this.hasRequestErrors(response as FormPlayerApiErrorResponse)
+      || this.hasBusinessErrors(response as FormPlayerApiSuccessResponse);
+  }
+
+  hasRequestErrors(response: FormPlayerApiErrorResponse): boolean {
+    const errors = response?.status;
+    return errors === FormPlayerApiErrorStatuses.badRequest;
+  }
+
+  hasBusinessErrors(response: FormPlayerApiSuccessResponse): boolean {
     const errors = response?.scenarioDto?.errors;
     return errors && !!Object.keys(errors).length;
   }
 
-  updateRequest(data: any, options: SendDataOptionsInterface = {}): void {
-    const componentId = options?.componentId || this.componentId;
-    const isCycledFields = !!Object.keys(this.store?.scenarioDto?.currentCycledFields).length;
-    this.store.scenarioDto.currentValue = {};
-
-    // TODO HARDCODE наверное компоненты должны поднимать готовый state,
-    if (this.screenType === SCREEN_TYPE.CUSTOM || isCycledFields) {
-      this.store.scenarioDto.currentValue = data;
-    } else {
-      this.store.scenarioDto.currentValue[componentId] = {
-        visited: true,
-        value: data || '',
+  updateRequest(navigationPayload?: NavigationPayload): void {
+    if (this.isEmptyNavigationPayload(navigationPayload)) {
+      this.store.scenarioDto.currentValue = {};
+      this.store.scenarioDto.currentValue[this.componentId] = {
+        value: '',
+        visited: true
       };
+    } else {
+      this.store.scenarioDto.currentValue = navigationPayload;
     }
+  }
+
+  isEmptyNavigationPayload(navigationPayload) {
+    return !(navigationPayload && Object.keys(navigationPayload).length);
   }
 
   sendDataSuccess(response): void {
@@ -110,26 +153,27 @@ export class FormPlayerService {
     this.initResponse(response);
   }
 
-  sendDataError(response): void {
-    this.updateLoading(false);
+  sendDataError(response: FormPlayerApiResponse): void {
+    const error = response as FormPlayerApiErrorResponse;
+    const businessError = response as FormPlayerApiSuccessResponse;
+
     console.error('----- ERROR DATA ---------');
-    if (response.scenarioDto?.errors) {
-      // business errors
-      console.error(response.scenarioDto?.errors);
-      this.initResponse(response);
+    if (error.status) {
+      console.error(error);
     } else {
-      console.error(response);
+      // NOTICE: passing business errors to components layers, do not change this logic!
+      console.error(businessError.scenarioDto?.errors);
+      this.initResponse(businessError);
     }
+
+    this.updateLoading(false);
   }
 
-  initResponse(response: ResponseInterface): void {
+  initResponse(response: FormPlayerApiSuccessResponse): void {
     if (!response) {
-      console.error('Invalid Reponse');
+      this.handleInvalidResponse();
       return;
     }
-
-    this.componentStateService.state = '';
-    this.componentStateService.isValid = true;
 
     this.store = response;
     const scenarioDto = response.scenarioDto;
@@ -144,7 +188,12 @@ export class FormPlayerService {
     console.log('initResponse:', response);
   }
 
-  private initScreenStore(scenarioDto): void {
+  handleInvalidResponse() {
+    console.error('----- ERROR DATA ---------');
+    console.error('Invalid Response');
+  }
+
+  private initScreenStore(scenarioDto: ScenarioDto): void {
     const { display, errors, gender, currentCycledFields, applicantAnswers } = scenarioDto;
     this.componentId = display.components[0].id;
     this.screenType = display.type;

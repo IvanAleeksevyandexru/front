@@ -2,11 +2,11 @@ import { Component, Input, EventEmitter, OnInit, Output, AfterViewInit } from '@
 // @ts-ignore
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalService } from '../../../../services/modal/modal.service';
-import { SCREEN_COMPONENT_NAME } from '../../../../../constant/global';
-import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
-import { OPTIONAL_FIELD } from '../../../../../constant/helperTexts';
+import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
+import { ComponentScreenComponent } from '../../component-screen.component';
 
 interface WarningMessages {
   [countryType: number]: string;
@@ -26,7 +26,7 @@ interface Country {
 export class CountrySelectionComponent implements OnInit, AfterViewInit {
   listItemDictionary: Country[];
   placeholder = 'Выберите страну';
-  screenComponentName = SCREEN_COMPONENT_NAME;
+  screenComponentName = ComponentScreenComponent;
   selectedCountry: Country;
   helperText: string;
 
@@ -58,12 +58,6 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
 
   modalParameters: ConfirmationModal = {
     text: this.minskConvention,
-    buttons: [
-      {
-        label: 'Закрыть',
-        closeModal: true,
-      },
-    ],
   };
 
   constructor(
@@ -105,10 +99,18 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
     this.changeComponentData.emit(country.id);
   }
 
-  showModal = () =>
-    this.modalService.openModal<null>(ConfirmationModalComponent, this.modalParameters);
-
   updateHelperText(): void {
     this.helperText = this.data.required ? '' : OPTIONAL_FIELD;
+  }
+
+  clickToInnerHTML($event: MouseEvent) {
+    const targetElementClass = ($event.target as HTMLElement).classList[0];
+    if (targetElementClass === 'country-apostil__minsk-convention-link') {
+      this.showModal();
+    }
+  }
+
+  showModal() {
+    this.modalService.openModal(ConfirmationModalComponent, this.modalParameters);
   }
 }

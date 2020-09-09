@@ -7,7 +7,7 @@ import {
   Employee,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel
-} from '../../../../../../interfaces/employee-history.interface';
+} from '../employee-history.types';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 

@@ -2,14 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { ConfirmPersonalUserDataScreenComponent } from './confirm-personal-user-data-screen.component';
-import { ConfirmUserDataInterface } from '../../../../../../../interfaces/confirm-user-data.interface';
+import { ConfirmUserData } from '../../../../types/confirm-user-data.types';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 
 describe('ConfirmPersonalUserDataScreenComponent', () => {
   let component: ConfirmPersonalUserDataScreenComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserDataScreenComponent>;
-  const mockData: ConfirmUserDataInterface = {
+  const mockData: ConfirmUserData = {
     attrs: {
       fields: [],
       actions: []

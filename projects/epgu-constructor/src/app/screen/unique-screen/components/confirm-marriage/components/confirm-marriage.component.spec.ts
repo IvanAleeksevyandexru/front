@@ -2,23 +2,22 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ButtonComponent } from 'epgu-lib';
 
 import { ConfirmMarriageComponent } from './confirm-marriage.component';
-import { SCREEN_TYPE } from '../../../../../../constant/global';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { TimerComponent } from './timer/timer.component';
 import { TimerPipe } from '../pipes/timer.pipe';
 import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
-import { PageNameComponent } from '../../../../../shared/components/page-name/page-name.component';
+import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
-import { DisplayInterface } from '../../../../../services/api/form-player-api/form-player-api.types';
+import { Display, ScreenTypes } from '../../../../screen.types';
 
 describe('TimerComponent', () => {
   let component: ConfirmMarriageComponent;
   let fixture: ComponentFixture<ConfirmMarriageComponent>;
   let navigationService: NavigationService;
 
-  const displayDataMock: DisplayInterface = {
+  const displayDataMock: Display = {
     components: [
       {
         id: 'pd9',
@@ -41,7 +40,7 @@ describe('TimerComponent', () => {
     id: '',
     name: '',
     submitLabel: '',
-    type: SCREEN_TYPE.UNIQUE,
+    type: ScreenTypes.UNIQUE,
   };
 
   const timer = {

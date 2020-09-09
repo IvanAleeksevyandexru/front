@@ -1,7 +1,11 @@
 <div class="fileupload__wrapper">
   <div class="file__bottom">
-    <div class="fileupload__label" *ngIf="data?.label.length"
-         [innerHTML]="data.label"></div>
+    <epgu-constructor-output-html
+      class="info__text"
+      [html]="data.label"
+      [clarifications]="clarification">
+    </epgu-constructor-output-html>
+
     <div class="fileupload__label" *ngIf="refData?.length"
          [innerHTML]="refData"></div>
      <div class="info">

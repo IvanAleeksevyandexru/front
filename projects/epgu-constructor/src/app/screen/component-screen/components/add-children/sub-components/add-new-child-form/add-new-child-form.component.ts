@@ -11,7 +11,6 @@ export class AddNewChildFormComponent implements AfterViewInit {
   @ViewChild('newChildForm') newChildForm;
 
   @Input() item: any;
-  @Output() removeChildEvent = new EventEmitter();
   @Output() childUpdateEvent = new EventEmitter();
 
   constructor(private ngUnsubscribe$: UnsubscribeService) {}

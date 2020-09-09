@@ -3,14 +3,6 @@
     <div class="title">{{ field.label }}</div>
 
     <ng-container [ngSwitch]="field.fieldName">
-      <lib-date-picker
-        *ngSwitchCase="'regDate'"
-        [name]="field.fieldName"
-        minDate="-50y"
-        [(ngModel)]="forms[field.fieldName]"
-      >
-      </lib-date-picker>
-
       <lib-dadata-widget
         *ngSwitchCase="'regAddr'"
         [simpleMode]="true"
@@ -20,6 +12,22 @@
         [(ngModel)]="forms[field.fieldName]"
       >
       </lib-dadata-widget>
+
+      <lib-date-picker
+        *ngSwitchCase="
+          ['regFrom', 'regTo', 'regDate'].includes(field?.fieldName)
+            ? field?.fieldName
+            : !field?.fieldName
+        "
+        [name]="field.fieldName"
+        minDate="-50y"
+        maxDate="+50y"
+        [(ngModel)]="forms[field.fieldName]"
+        [invalid]="!dataForm?.controls[field.fieldName]?.valid"
+        [validationShowOn]="validationShowOn"
+        clearable="true"
+      >
+      </lib-date-picker>
 
       <lib-plain-input *ngSwitchDefault></lib-plain-input>
     </ng-container>

@@ -1,13 +1,13 @@
 import {
-  ConfirmUserDataAdaptiveFieldInterface,
-  ConfirmUserDataInterface
-} from '../../../../../../../../../interfaces/confirm-user-data.interface';
+  ConfirmUserDataAdaptiveField,
+  ConfirmUserData
+} from '../../../../../../types/confirm-user-data.types';
 
 export const FULL_NAME_FIELD_ITEMS = ['firstName', 'lastName', 'middleName'];
 export const CONFIRM_USER_DATA_BIRTHDAY_FIELD_NAME = 'birthDate';
 
 
-export function getFullNameConfirmPersonalUserData(data: ConfirmUserDataInterface): string {
+export function getFullNameConfirmPersonalUserData(data: ConfirmUserData): string {
   const includeItem = (arr, item) => arr.includes(item);
   return (
     data.attrs.fields
@@ -18,7 +18,7 @@ export function getFullNameConfirmPersonalUserData(data: ConfirmUserDataInterfac
   );
 }
 
-export function getBirthDayConfirmPersonalUserData(data: ConfirmUserDataInterface): ConfirmUserDataAdaptiveFieldInterface {
+export function getBirthDayConfirmPersonalUserData(data: ConfirmUserData): ConfirmUserDataAdaptiveField {
   const birthDate = data.attrs.fields.find((item) => item.fieldName === CONFIRM_USER_DATA_BIRTHDAY_FIELD_NAME);
   return {
     label: birthDate.label,
@@ -29,7 +29,7 @@ export function getBirthDayConfirmPersonalUserData(data: ConfirmUserDataInterfac
 /**
  * Функция исключает список список filed(-ов) {@link getBirthDay} {@link getFullName}
  */
-export function getOtherFieldsConfirmPersonalUserData(data: ConfirmUserDataInterface): Array<ConfirmUserDataAdaptiveFieldInterface> {
+export function getOtherFieldsConfirmPersonalUserData(data: ConfirmUserData): Array<ConfirmUserDataAdaptiveField> {
   const includeItem = (arr, item) => arr.includes(item);
   const excludeFieldList = FULL_NAME_FIELD_ITEMS.concat([CONFIRM_USER_DATA_BIRTHDAY_FIELD_NAME]);
   return data.attrs.fields
@@ -37,6 +37,6 @@ export function getOtherFieldsConfirmPersonalUserData(data: ConfirmUserDataInter
     .map((item) => ({ label: item.label, value: getPropFromStringJson(data, item.fieldName) }));
 }
 
-function getPropFromStringJson(data: ConfirmUserDataInterface, fieldName) {
+function getPropFromStringJson(data: ConfirmUserData, fieldName) {
   return JSON.parse(data.value)[fieldName];
 }

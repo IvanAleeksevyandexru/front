@@ -1,12 +1,12 @@
 <section class="add-children-screen">
   <form [formGroup]="addChildrenForm">
-    <div class="add-children-screen__card" *ngFor="let item of itemsSelectedQueue; let idx = index">
+    <div class="add-children-screen__card" *ngFor="let item of items; let idx = index">
       <div class="card">
         <div class="card__wrapper">
           <div class="card__header">
             <div class="card__title">Ребенок {{ idx + 1 }}</div>
             <div class="card__close">
-              <button (click)="removeChild(item?.id)" class="button-close">
+              <button (click)="removeChild(item)" class="button-close">
                 <div class="icon-close"></div>
               </button>
             </div>
@@ -20,16 +20,15 @@
             <div class="card__select">
               <lib-dropdown
                 [id]="idx"
-                [formControlName]="itemsLength.toString()"
-                (changed)="handleSelect($event, idx)"
+                [formControlName]="item"
+                (changed)="handleSelect($event, item)"
                 [items]="itemsToSelect"
               ></lib-dropdown>
             </div>
             <epgu-constructor-add-new-child-form
-              *ngIf="item.isNew === true"
-              [item]="item"
-              (removeChildEvent)="removeChild($event)"
-              (childUpdateEvent)="updateChild($event)"
+              *ngIf="selectedItems[item] && selectedItems[item].isNew === true"
+              [item]="selectedItems[item]"
+              (childUpdateEvent)="updateChild($event, item)"
             ></epgu-constructor-add-new-child-form>
           </div>
         </div>

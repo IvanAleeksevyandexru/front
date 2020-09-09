@@ -1,18 +1,13 @@
-import { SCREEN_TYPE } from '../../../../constant/global';
+import { ScreenTypes } from '../../../screen/screen.types';
+import { Gender } from '../../../shared/types/gender';
+import { Answer } from '../../../shared/types/answer';
 
-export type Gender = 'M' | 'F';
-
-export interface CurrentValue {
-  visited: boolean;
-  value: any;
+export interface ApplicantAnswersDto {
+  [key: string]: Answer
 }
 
-// TODO: maybe should use CurrentValue at ApplicantAnswers
-export interface ApplicantAnswers {
-  [key: string]: {
-    visited: boolean,
-    value: string,
-  }
+export interface CurrentValueDto {
+  [key: string]: Answer
 }
 
 /**
@@ -26,7 +21,7 @@ export interface ApplicantAnswers {
  * (например проверка персональные данные будут содержать json с персональными данными)
  * @property {boolean}visited? - булевый флаг пройдена ли пользователем бизнес-логика данного компонента
  */
-export interface ComponentInterface {
+export interface ComponentDto {
   attrs: {[key: string]: any};
   id: string;
   label: string;
@@ -42,47 +37,73 @@ export interface ComponentInterface {
  * @property {string}id - идентификатор экрана
  * @property {string}name - краткая информация о том что за компонент (на фронте не используется)
  * @property {string}submitLabel - текст для submit-button'a
- * @property {SCREEN_TYPE}type - тип компонента
+ * @property {ScreenTypes}type - тип компонента
  */
-export interface DisplayInterface {
-  components: Array<ComponentInterface>;
+export interface DisplayDto {
+  components: Array<ComponentDto>;
   header: string;
   label?: string;
   id: string;
   name: string;
   submitLabel: string;
-  type: SCREEN_TYPE;
+  type: ScreenTypes;
+}
+
+export interface CurrentCycledFieldsDto {
+  [key: string]: string
+}
+
+export interface ScenarioErrorsDto {
+  [key: string]: string
 }
 
 /**
  * @property {Object}applicantAnswers - состояние компонента на backend(-e), для воостановление данных.
  * @property {number}currentRule - id сценария для управление порядком компонентов (наверное не нужен для фронта)
  * @property {object}currentValue - для отправляемых данных
- * @property {DisplayInterface}display - текущий экран с компонентами и данными для отрисовки
+ * @property {DisplayDto}display - текущий экран с компонентами и данными для отрисовки
  * @property {string}gender- пол пользователя
  * @property {string}orderId - идентификатор запорлнения черновика, (уже был черновик...)
- * @property {Array<object>}sendNotification - собственники жилья
  * (человек 1, человек 2) => эти людям прилетает уведомление о подтверждении ...
  * @property {string}token - в целях разработки, на проде через cookie;
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
- *
  */
 export interface ScenarioDto {
-  applicantAnswers: ApplicantAnswers;
-  currentRule: number;
-  currentValue: object;
-  currentCycledFields: object;
-  cycledFields: Array<object>;
-  display: DisplayInterface;
-  errors: object;
+  applicantAnswers: ApplicantAnswersDto;
+  currentCycledFields: CurrentCycledFieldsDto;
+  currentScenarioId: string;
+  currentValue: CurrentValueDto;
+  cycledFields: Array<object>; // looks lice it unused property
+  display: DisplayDto;
+  errors: ScenarioErrorsDto;
   gender: Gender;
+  finishedAndCurrentScreens: string[];
   orderId: string;
-  sendNotification: Array<object>;
   token: string;
   userId: string;
-  finishedAndCurrentScreens: [];
 }
 
-export interface ResponseInterface {
+export interface FormPlayerApiSuccessResponse {
   scenarioDto: ScenarioDto;
 }
+
+export enum FormPlayerApiErrorStatuses {
+  badRequest = 'BAD_REQUEST'
+}
+
+export interface FormPlayerApiErrorResponse {
+  description: string;
+  message: string;
+  status: FormPlayerApiErrorStatuses;
+}
+
+export interface FormPlayerApiDraftSuccessResponse {
+  orderId: string;
+  type: string;
+  locked: boolean;
+  updated: string;
+  body: ScenarioDto;
+}
+
+export type FormPlayerApiResponse = FormPlayerApiSuccessResponse | FormPlayerApiErrorResponse;
+export type FormPlayerApiDraftResponse = FormPlayerApiDraftSuccessResponse | FormPlayerApiErrorResponse;

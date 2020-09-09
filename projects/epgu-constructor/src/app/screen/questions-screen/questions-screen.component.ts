@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { QuestionsComponentActionsInterface } from '../../../interfaces/question-block.interface';
-import { ModalService } from '../../services/modal/modal.service';
+import { QuestionsComponentActions } from './questions-screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { QuestionScreenModalParams } from './questions-screen.constant';
 import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationPayload } from '../../form-player.types';
@@ -25,7 +22,6 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
-    private modalService: ModalService,
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
@@ -67,8 +63,8 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     this.navigationService.nextStep.next(data);
   }
 
-  answerChoose(answer: QuestionsComponentActionsInterface): void {
-    let data = {};
+  answerChoose(answer: QuestionsComponentActions): void {
+    const data: NavigationPayload = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
       const fieldNameRef = this.screenStore.display.components[0]?.attrs?.fields[0]?.fieldName;
@@ -79,25 +75,13 @@ export class QuestionsScreenComponent implements OnInit, Screen {
         value: JSON.stringify(mergedCycledAndAnswerValues),
       };
     } else {
-      data = answer.value;
+      const componentId = this.screenStore.display.components[0].id;
+      data[componentId] = {
+        visited: true,
+        value: answer.value || '',
+      };
     }
 
-    this.nextStep({ data });
-  }
-
-  clickToInnerHTML($event: MouseEvent): void {
-    const targetElementId = ($event.target as HTMLElement).id;
-    const { clarifications = {} } = this.screenStore.display.components[0]?.attrs as any;
-    const targetElementModalData = clarifications[targetElementId];
-    if (targetElementModalData) {
-      this.showModal(targetElementModalData);
-    }
-  }
-
-  showModal(params): void {
-    this.modalService.openModal(ConfirmationModalComponent, {
-      ...QuestionScreenModalParams,
-      ...params,
-    });
+    this.nextStep(data);
   }
 }

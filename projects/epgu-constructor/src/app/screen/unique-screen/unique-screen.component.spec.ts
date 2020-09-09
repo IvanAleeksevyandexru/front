@@ -1,13 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SCREEN_TYPE } from '../../../constant/global';
-import { DisplayInterface } from '../../services/api/form-player-api/form-player-api.types';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ScreenStore } from '../screen.types';
+import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { ComponentStateService } from '../../services/component-state/component-state.service';
 
 describe('UniqueScreenComponent', () => {
   let component: UniqueScreenComponent;
@@ -29,7 +28,7 @@ describe('UniqueScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: SCREEN_TYPE.COMPONENT
+      type: ScreenTypes.COMPONENT
     }
   };
 
@@ -37,7 +36,13 @@ describe('UniqueScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ UniqueScreenComponent ],
-      providers: [NavigationService, ScreenService, UnsubscribeService, ApplicantAnswersService]
+      providers: [
+        NavigationService,
+        ScreenService,
+        UnsubscribeService,
+        ApplicantAnswersService,
+        ComponentStateService
+      ]
     })
     .compileComponents();
     navService = TestBed.inject(NavigationService);

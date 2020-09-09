@@ -1,13 +1,13 @@
 import {
-  ITerraFileOptions,
-  ITerraUploadFileOptions,
-  IUploadedFile
-} from '../../../../../../../interfaces/terabyte.interface';
+  TerraFileOptions,
+  TerraUploadFileOptions,
+  UploadedFile
+} from '../../services/terra-byte-api/terra-byte-api.types';
 
 /**
  * Класс подгруженного файла
  */
-export class UploadedFile implements IUploadedFile{
+export class TerraUploadedFile implements UploadedFile{
   fileName = '';
   objectId = 0;
   objectTypeId = 0;
@@ -25,24 +25,24 @@ export class UploadedFile implements IUploadedFile{
   /**
    * Возвращает объект с данными и параметрами для загрузки на сервер файла
    */
-  getParamsForUploadFileOptions(): ITerraUploadFileOptions {
+  getParamsForUploadFileOptions(): TerraUploadFileOptions {
     return {
       name: this.fileName,
       objectId: this.objectId,
       objectType: this.objectTypeId,
       mnemonic: this.mnemonic,
-    } as ITerraUploadFileOptions;
+    } as TerraUploadFileOptions;
   }
 
   /**
    * Возвращает объект с данными с параметрами получения сведений о файле
    */
-  getParamsForFileOptions(): ITerraFileOptions {
+  getParamsForFileOptions(): TerraFileOptions {
     return {
       objectId: this.objectId,
       objectType: this.objectTypeId,
       mnemonic: this.mnemonic,
-    } as ITerraFileOptions;
+    } as TerraFileOptions;
   }
 
   /**
@@ -57,7 +57,7 @@ export class UploadedFile implements IUploadedFile{
 /**
  * Тип загружаемого документа
  */
-export const uploadObjectType = 2;
+export const UPLOAD_OBJECT_TYPE = 2;
 
 /**
  * Количество байт в килобайте

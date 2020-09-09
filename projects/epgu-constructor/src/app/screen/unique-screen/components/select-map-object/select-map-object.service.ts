@@ -6,8 +6,7 @@ import { Icons } from './constants';
 import { ConfigService } from '../../../../config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { ModalService } from '../../../../services/modal/modal.service';
-import { CommonModalComponent } from '../../../../shared/components/common-modal/common-modal.component';
-import { InfoScreenBodyComponentModalParams } from '../../../info-screen/component/info-screen-body/info-screen-body.constant';
+import { CommonModalComponent } from '../../../../shared/components/modal/common-modal/common-modal.component';
 
 @Injectable()
 export class SelectMapObjectService {
@@ -35,7 +34,7 @@ export class SelectMapObjectService {
    * @param items
    */
   public getCoordsByAddress(items) {
-    const path = `${this.configService.config.externalApiUrl}address/resolve`;
+    const path = `${this.configService.config.externalApiUrl}/address/resolve`;
     return this.http.post<IGeoCoordsResponse>(path, {
       address: items.map(item => item.attributeValues[this.componentAttrs.attributeNameWithAddress]),
     });
@@ -329,7 +328,6 @@ export class SelectMapObjectService {
    */
   private showModalFromTemplate(templateName, balloon) {
     this.modalService.openModal(CommonModalComponent, {
-      ...InfoScreenBodyComponentModalParams,
       modalTemplateRef: this.templates[templateName],
       item: balloon?.getData && balloon.getData().properties.get('res'),
     }).subscribe(() => balloon?.rebuild()); // Перерисовка балуна чтобы IF в шаблоне заново отработали

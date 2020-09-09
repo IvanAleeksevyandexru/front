@@ -11,6 +11,7 @@ import {
 // eslint-disable-next-line max-len
 import { SubComponentsModule as ConfirmPersonalUserSubComponentsModule } from '../../confirm-personal-user/sub-components/sub-components.module';
 import { AddNewChildFormComponent } from './add-new-child-form/add-new-child-form.component';
+import { FormsModule } from '@angular/forms';
 
 const COMPONENTS = [
   AddNewChildFormComponent
@@ -19,14 +20,15 @@ const COMPONENTS = [
 @NgModule({
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
-  imports: [
-    CommonModule,
-    BrowserAnimationsModule,
-    SharedModule,
-    QuestionsScreenModule,
-    ConfirmPersonalUserAddressScreenModule,
-    ConfirmPersonalUserSubComponentsModule,
-    EpguLibModule.forChild(),
-  ],
+    imports: [
+        CommonModule,
+        BrowserAnimationsModule,
+        SharedModule,
+        QuestionsScreenModule,
+        ConfirmPersonalUserAddressScreenModule,
+        ConfirmPersonalUserSubComponentsModule,
+        EpguLibModule.forChild(),
+        FormsModule,
+    ],
 })
 export class SubComponentsModule {}
