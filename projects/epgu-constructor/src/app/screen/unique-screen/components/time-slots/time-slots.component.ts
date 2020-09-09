@@ -13,7 +13,6 @@ import { ConfirmationModal } from '../../../../shared/components/confirmation-mo
 import { SlotInterface, TimeSlotValueInterface } from './time-slots.types';
 import { Display } from '../../../screen.types';
 
-
 const moment = moment_;
 
 @Component({
