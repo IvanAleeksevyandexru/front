@@ -1,0 +1,11 @@
+@import "../../../projects/epgu-constructor/src/styles/core";
+
+.page-container {
+  min-height: calc(100vh - 112px);
+  padding-top: 104px;
+  background-color: #FAFCFF;
+
+  @include phones-down {
+    padding-top: 44px;
+  }
+}
