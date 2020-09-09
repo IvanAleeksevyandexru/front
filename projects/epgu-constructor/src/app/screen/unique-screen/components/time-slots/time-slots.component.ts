@@ -8,10 +8,10 @@ import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { TimeSlotsConstants } from './time-slots.constants';
-import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../shared/components/confirmation-modal/confirmation-modal.interface';
 import { SlotInterface, TimeSlotValueInterface } from './time-slots.types';
 import { Display } from '../../../screen.types';
+import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
 
 const moment = moment_;
 
