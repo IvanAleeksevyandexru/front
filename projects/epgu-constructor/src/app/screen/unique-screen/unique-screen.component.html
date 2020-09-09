@@ -3,7 +3,7 @@
     *ngSwitchCase="uniqueComponentName.mapService"
     [data]="screenStore.display?.components[0]"
     [applicantAnswers]="screenStore.applicantAnswers"
-    (nextStepEvent)="nextStep($event)"
+    (nextStepEvent)="nextDataForStep($event)"
   >
   </epgu-constructor-select-map-object>
   <epgu-constructor-file-upload-screen

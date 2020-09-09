@@ -144,7 +144,7 @@ export class PaymentComponent implements OnDestroy {
     this.sumWithoutDiscount = getDiscountPrice(bill);
     this.docInfo = getDocInfo(bill);
 
-    if (bill?.comment.length) {
+    if (bill?.comment?.length) {
       this.paymentPurpose = bill.comment;
     }
 
