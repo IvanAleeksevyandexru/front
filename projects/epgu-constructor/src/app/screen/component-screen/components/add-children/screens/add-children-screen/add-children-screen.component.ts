@@ -4,10 +4,10 @@ import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
-import { ChildUnder14Interface } from '../../../../../../../interfaces/children.interface';
-import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { ChildUnder14 } from './add-children-screen.type';
+import { ComponentBase } from '../../../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-add-children-screen',
@@ -15,7 +15,7 @@ import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsub
   styleUrls: ['./add-children-screen.component.scss'],
 })
 export class AddChildrenScreenComponent implements OnInit {
-  @Input() data: ComponentInterface;
+  @Input() data: ComponentBase;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
   valueParsed: any;
@@ -52,7 +52,7 @@ export class AddChildrenScreenComponent implements OnInit {
 
   addNewChild(item): void {
     const id = item;
-    const newChild: ChildUnder14Interface = {
+    const newChild: ChildUnder14 = {
       isNew: true,
       id,
       birthDate: '',
@@ -70,6 +70,7 @@ export class AddChildrenScreenComponent implements OnInit {
       registrationAddressDate: '',
     };
 
+    this.addChildrenForm.controls[item].disable();
     this.itemsList.push(newChild);
     this.handleSelect({ id }, item);
   }

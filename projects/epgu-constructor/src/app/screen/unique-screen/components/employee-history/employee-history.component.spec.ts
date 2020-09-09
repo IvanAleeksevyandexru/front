@@ -5,19 +5,28 @@ import { EmployeeHistoryFormService } from './services/employee-history.form.ser
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { ButtonComponent, CheckboxComponent, DatePickerComponent, PlainInputComponent, RadioComponent } from 'epgu-lib';
-import { PageNameComponent } from '../../../../shared/components/page-name/page-name.component';
-import { LabelComponent } from '../../../../shared/components/label/label.component';
+import { PageNameComponent } from '../../../../shared/components/base/page-name/page-name.component';
+import { LabelComponent } from '../../../../shared/components/base/label/label.component';
 import { NavigationComponent } from '../../../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
-import { NavigationService } from '../../../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../../../shared/services/navigation/navigation.service';
 import { MockComponent } from 'ng-mocks';
-import { SCREEN_TYPE } from '../../../../../constant/global';
+import { Gender } from '../../../../shared/types/gender';
+import { Display, ScreenTypes } from '../../../screen.types';
 
 describe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;
   let fixture: ComponentFixture<EmployeeHistoryComponent>;
   let RadioComponentMock = MockComponent(RadioComponent);
   let DatePickerComponentMock = MockComponent(DatePickerComponent);
+  let mockDisplay: Display = {
+    components: [],
+    header: '',
+    id: '',
+    name: '',
+    submitLabel: '',
+    type: ScreenTypes.UNIQUE
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -42,16 +51,9 @@ describe('EmployeeHistoryComponent', () => {
     let formService = TestBed.inject(EmployeeHistoryFormService);
     fixture = TestBed.createComponent(EmployeeHistoryComponent);
     component = fixture.componentInstance;
-    component.data = {
-      components: [],
-      header: '',
-      id: '',
-      name: '',
-      submitLabel: '',
-      type: SCREEN_TYPE.UNIQUE,
-    };
+    component.display = mockDisplay;
     component.header = '';
-    component.gender = 'M';
+    component.gender = Gender.male;
     // spyOn(formService, 'createEmployeeForm')
     fixture.detectChanges();
   });

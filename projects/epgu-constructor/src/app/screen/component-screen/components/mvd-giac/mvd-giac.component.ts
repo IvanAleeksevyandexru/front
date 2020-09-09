@@ -2,15 +2,15 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { filter, takeUntil } from 'rxjs/operators';
-import { DictionaryResponse } from '../../../../../interfaces/dictionary-options.interface';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
-import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import {
   getFilteredDictionaryForMvdGiac,
   getTransformedDictionaryForMvgGiac,
 } from './mvd-giac.functions';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { DictionaryResponse } from '../../../../services/api/dictionary-api/dictionary-api.types';
+import { ApplicantAnswers } from '../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-mvd-giac',
@@ -20,6 +20,7 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
 })
 export class MvdGiacComponent implements OnInit {
   @Input() data: any;
+  @Input() applicantAnswers: ApplicantAnswers;
   @Output() valueChangedEvent = new EventEmitter();
 
   regionForm: FormGroup;
@@ -30,7 +31,6 @@ export class MvdGiacComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private componentStateService: ComponentStateService,
-    private formPlayerService: FormPlayerService,
     private dictionaryApiService: DictionaryApiService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
@@ -80,8 +80,7 @@ export class MvdGiacComponent implements OnInit {
   }
 
   private filterRegion() {
-    const { applicantAnswers } = this.formPlayerService.responseStore.scenarioDto;
-    const { q1, q5, pd4, pd5 } = applicantAnswers as any;
+    const { q1, q5, pd4, pd5 } = this.applicantAnswers;
     // <--- значение предыдущих экранов
     const getCurrentRegion = () => JSON.parse(pd4.value).regAddr.region;
     const getRegistrationRegion = () => JSON.parse(pd5.value).regAddr.region;

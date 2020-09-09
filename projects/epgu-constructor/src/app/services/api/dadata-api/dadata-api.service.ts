@@ -1,35 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DictionaryOptionsInterface, DictionaryResponse } from '../../../../interfaces/dictionary-options.interface';
-import { ConstructorConfigService } from '../../config/constructor-config.service';
-import { CookieService } from 'ngx-cookie-service';
-import { UserSessionService } from '../../user-session/user-session.service';
-import { Observable } from 'rxjs';
+import { ConfigService } from '../../../config/config.service';
 
 @Injectable()
 export class DadataApiService {
   externalApiUrl: string;
-  userId: string;
-  token: string;
 
   constructor(
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
-    private userSessionService: UserSessionService,
-    private cookieService: CookieService
+    private configService: ConfigService,
   ) {
-    this.externalApiUrl = constructorConfigService.config.externalApiUrl;
-
-    this.userSessionService.userSession$.subscribe(() => {
-      this.userId = this.userSessionService.userId;
-      this.token = this.userSessionService.token;
-      this.cookieService.set('u', this.userId);
-      this.cookieService.set('acc_t', this.token);
-    });
+    this.externalApiUrl = configService.config.externalApiUrl;
   }
 
   getDadataByFias(fiasCode: string) {
-    const path = `${this.externalApiUrl}dadata/${fiasCode}`;
+    const path = `${this.externalApiUrl}/dadata/${fiasCode}`;
     return this.http.get(path);
   }
 }

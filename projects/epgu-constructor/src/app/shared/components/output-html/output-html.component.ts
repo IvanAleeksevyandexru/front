@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalService } from '../../../services/modal/modal.service';
-import { getHiddenBlock } from '../../../../constant/uttils';
-import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirmation-modal.component';
+import { getHiddenBlock } from '../../constants/uttils';
 import { IClarifications } from '../../../../interfaces/terabyte.interface';
 
 @Component({

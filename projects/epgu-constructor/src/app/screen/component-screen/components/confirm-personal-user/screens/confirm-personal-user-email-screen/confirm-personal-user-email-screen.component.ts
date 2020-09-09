@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { ComponentBase } from '../../../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-email-screen',
@@ -8,7 +8,7 @@ import { ComponentStateService } from '../../../../../../services/component-stat
   styleUrls: ['./confirm-personal-user-email-screen.component.scss'],
 })
 export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
-  @Input() data: ComponentInterface;
+  @Input() data: ComponentBase;
   @Input() errors: object;
   @Output() nextStepEvent = new EventEmitter();
   isEditable: boolean;

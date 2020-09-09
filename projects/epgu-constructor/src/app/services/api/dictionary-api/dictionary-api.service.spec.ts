@@ -1,35 +1,79 @@
-import { async, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DictionaryApiService } from './dictionary-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConstructorConfigService } from '../../config/constructor-config.service';
-import { ConstructorConfigServiceStub } from '../../config/constructor-config.service.stub';
-import { UserSessionService } from '../../user-session/user-session.service';
-import { CookieService } from 'ngx-cookie-service';
+import { ConfigService } from '../../../config/config.service';
+import { ConfigServiceStub } from '../../../config/config.service.stub';
 
 describe('DictionaryApiService', () => {
   let service: DictionaryApiService;
   let http: HttpTestingController;
-  let cnstrctrConfigSrv: ConstructorConfigService;
+  let cnstrctrConfigSrv: ConfigService;
+  let dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
+  let responseMock = [42];
+  let dictionaryName = 'someDictionary';
+  let optionsMock = {
+    filter: {
+      someFilter: 'asd'
+    },
+    treeFiltering: 'TWOLEVEL',
+    pageNum: 2,
+    pageSize: '3000',
+    parentRefItemValue: 'someRef',
+    selectAttributes: ['//'],
+    tx: 'someTx'
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         DictionaryApiService,
-        UserSessionService,
-        CookieService,
-        { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
+        { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });
     service = TestBed.inject(DictionaryApiService);
     http = TestBed.inject(HttpTestingController);
-    cnstrctrConfigSrv = TestBed.inject(ConstructorConfigService);
+    cnstrctrConfigSrv = TestBed.inject(ConfigService);
   }));
 
   afterEach(async(() => http.verify()));
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe('getDictionary()', () => {
+    it('should call http with post method', fakeAsync(() => {
+      service.getDictionary(dictionaryName, optionsMock).subscribe(response => expect(response).toBe(responseMock));
+      const path = `${dictionaryUrl}/${dictionaryName}`;
+      const req = http.expectOne(path);
+      expect(req.request.method).toBe('POST');
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should call http with body if set options', fakeAsync(() => {
+      service.getDictionary(dictionaryName, optionsMock).subscribe(response => expect(response).toBe(responseMock));
+      const path = `${dictionaryUrl}/${dictionaryName}`;
+      const req = http.expectOne(path);
+      expect(req.request.body).toEqual({ ...optionsMock, withCredentials: false });
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should call http with body if not set options', fakeAsync(() => {
+      service.getDictionary(dictionaryName).subscribe(response => expect(response).toBe(responseMock));
+      const path = `${dictionaryUrl}/${dictionaryName}`;
+      const req = http.expectOne(path);
+      expect(req.request.body).toEqual({
+        filter: undefined,
+        treeFiltering: 'ONELEVEL',
+        pageNum: 1,
+        pageSize: '1000',
+        parentRefItemValue: '',
+        selectAttributes: ['*'],
+        tx: '',
+        withCredentials: false
+      });
+      req.flush(responseMock);
+      tick();
+    }));
   });
 });

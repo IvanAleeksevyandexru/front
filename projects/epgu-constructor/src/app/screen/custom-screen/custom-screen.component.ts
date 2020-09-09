@@ -1,12 +1,12 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { DATE_STRING_DOT_FORMAT } from '../../../constant/global';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
-import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
+import { NavigationPayload } from '../../form-player.types';
+import { DATE_STRING_DOT_FORMAT } from '../../shared/constants/dates';
 
 const moment = moment_;
 @Component({
@@ -16,12 +16,12 @@ const moment = moment_;
   providers: [UnsubscribeService],
 })
 export class CustomScreenComponent implements OnInit, OnChanges, Screen {
-  dataToSend: any;
+  dataToSend: NavigationPayload;
   isCycledFields: boolean;
   cycledValues: any;
-  screenData: ScreenData;
+  screenStore: ScreenStore;
 
-  private currentCycledFields = this.screenData?.currentCycledFields || {};
+  private currentCycledFields = this.screenStore?.currentCycledFields || {};
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
@@ -30,16 +30,6 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     public screenService: ScreenService,
   ) {}
 
-  ngOnChanges(changes) {
-    // covers 'navigation' between two custom-screens and its initial data loading
-    const {
-      data: { firstChange, currentValue, previousValue },
-    } = changes;
-    if (firstChange || currentValue.id !== previousValue.id) {
-      this.initCycledFields();
-    }
-  }
-
   ngOnInit(): void {
     this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -47,14 +37,21 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
 
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenData) => {
-        this.screenData = screenData;
+      .subscribe((screenData: ScreenStore) => {
+        this.screenStore = screenData;
         this.initCycledFields();
       });
   }
 
+  ngOnChanges(changes) {
+    const { firstChange, currentValue, previousValue } = changes.data;
+    if (firstChange || currentValue.id !== previousValue.id) {
+      this.initCycledFields();
+    }
+  }
+
   initCycledFields() {
-    this.currentCycledFields = this.screenData?.currentCycledFields || {};
+    this.currentCycledFields = this.screenStore?.currentCycledFields || {};
     this.cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
     const { currentCycledFields } = this;
@@ -62,15 +59,13 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     if (this.isCycledFields) {
       const [firstCurrentCycledValues] = Object.values(currentCycledFields);
       this.cycledValues = JSON.parse(firstCurrentCycledValues);
-      this.screenData.componentData.components = this.screenData.componentData.components.map(
-        (item) => {
-          const newItem = item;
-          const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
-          const cycledFieldKey = Object.keys(this.cycledValues).find((key) => key === fieldName);
-          newItem.value = this.cycledValues[cycledFieldKey];
-          return newItem;
-        },
-      );
+      this.screenStore.display.components = this.screenStore.display.components.map((item) => {
+        const newItem = item;
+        const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
+        const cycledFieldKey = Object.keys(this.cycledValues).find((key) => key === fieldName);
+        newItem.value = this.cycledValues[cycledFieldKey];
+        return newItem;
+      });
     }
   }
 
@@ -78,13 +73,13 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     this.navigationService.prevStep.next();
   }
 
-  nextStep(data?: NextStepEventData): void {
+  nextStep(data?: NavigationPayload): void {
     this.navigationService.nextStep.next(data);
   }
 
   nextScreen(): void {
     const data = this.dataToSend;
-    this.nextStep({ data });
+    this.nextStep(data);
   }
 
   getFormattedData(changes) {
@@ -127,9 +122,7 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
       const result = accum;
       const targetItem = changes[key];
       const targetItemValue = targetItem.value;
-      const targetComponent = this.screenData.componentData.components.find(
-        (item) => item.id === key,
-      );
+      const targetComponent = this.screenStore.display.components.find((item) => item.id === key);
       const fieldName = targetComponent.attrs.fields && targetComponent.attrs.fields[0].fieldName;
       if (!fieldName) return result;
 

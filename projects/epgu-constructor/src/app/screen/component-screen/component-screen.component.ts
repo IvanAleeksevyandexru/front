@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { SCREEN_COMPONENT_NAME } from '../../../constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
+import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { mockOrderId } from './components/payment/payment.constants';
+import { ComponentScreenComponentTypes } from './component-screen.types';
+import { NavigationPayload } from '../../form-player.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -22,7 +23,7 @@ interface ComponentSetting {
 })
 export class ComponentScreenComponent implements OnInit, Screen {
   // <-- constant
-  screenComponentName = SCREEN_COMPONENT_NAME;
+  screenComponentName = ComponentScreenComponentTypes;
 
   // <-- variables
   componentSetting: ComponentSetting = {
@@ -32,7 +33,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
   componentData = null;
   form: FormGroup;
   isCycledFields = false;
-  screenData: ScreenData;
+  screenStore: ScreenStore;
 
   constructor(
     private navigationService: NavigationService,
@@ -51,14 +52,14 @@ export class ComponentScreenComponent implements OnInit, Screen {
 
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenData) => {
-        this.screenData = screenData;
+      .subscribe((screenData: ScreenStore) => {
+        this.screenStore = screenData;
         this.initCycledFields();
       });
   }
 
   initCycledFields() {
-    this.isCycledFields = !!Object.keys(this.screenData?.currentCycledFields).length;
+    this.isCycledFields = !!Object.keys(this.screenStore?.currentCycledFields).length;
   }
 
   /**
@@ -70,22 +71,27 @@ export class ComponentScreenComponent implements OnInit, Screen {
 
   /**
    * Переход на следующую страницу и передача данных
-   * @param $event - событие следующего шага
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  nextStep($event) {
-    let data: string | object;
+  nextStep() {
+    const componentId = this.screenStore.display.components[0].id;
+    let data: NavigationPayload = {};
+    let value: string;
     if (typeof this.componentStateService.state === 'object') {
-      data = JSON.stringify(this.componentStateService.state);
+      value = JSON.stringify(this.componentStateService.state);
     } else {
-      data = this.componentStateService.state;
+      value = this.componentStateService.state;
     }
+
+    data[componentId] = {
+      visited: true,
+      value: value || '',
+    };
 
     if (this.isCycledFields) {
-      data = this.componentStateService.state;
+      data = this.componentStateService.state as NavigationPayload; // TODO: need clarify case
     }
 
-    this.navigationService.nextStep.next({ data });
+    this.navigationService.nextStep.next(data);
   }
 
   /**

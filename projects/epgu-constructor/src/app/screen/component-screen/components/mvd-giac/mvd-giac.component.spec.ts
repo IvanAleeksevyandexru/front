@@ -1,15 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MvdGiacComponent } from './mvd-giac.component';
-import { DisplayInterface } from '../../../../../interfaces/epgu.service.interface';
-import { SCREEN_COMPONENT_NAME, SCREEN_TYPE } from '../../../../../constant/global';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { FormPlayerService } from '../../../../services/form-player/form-player.service';
-import { FormPlayerServiceStub } from '../../../../services/form-player/form-player.service.stub';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../services/api/dictionary-api/dictionary-api.service.stub';
+import { ComponentScreenComponentTypes } from '../../component-screen.types';
+import { ApplicantAnswers, Display, ScreenTypes } from '../../../screen.types';
 
 describe('MvdGiacComponent', () => {
   let component: MvdGiacComponent;
@@ -31,21 +30,40 @@ describe('MvdGiacComponent', () => {
     });
   }
 
-  const mockData: DisplayInterface = {
+  const mockData: Display = {
     components: [{
       attrs: {
         dictionaryType: 'MVD_TER_ORGAN_GIAC'
       },
       id: '',
       label: '',
-      type: SCREEN_COMPONENT_NAME.mvdGiac,
+      type: ComponentScreenComponentTypes.mvdGiac,
       value: ''
     }],
     header: '',
     id: '',
     name: '',
     submitLabel: '',
-    type: SCREEN_TYPE.COMPONENT
+    type: ScreenTypes.COMPONENT
+  };
+
+  const applicantAnswersMock: ApplicantAnswers = {
+    q1: {
+      value: '',
+      visited: true
+    },
+    q5: {
+      value: '',
+      visited: true
+    },
+    pd4: {
+      value: JSON.stringify({ regAddr: { region: '' }}),
+      visited: true
+    },
+    pd5: {
+      value: JSON.stringify({ regAddr: { region: '' }}),
+      visited: true
+    }
   };
 
   beforeEach(async(() => {
@@ -55,7 +73,6 @@ describe('MvdGiacComponent', () => {
       declarations: [ MvdGiacComponent ],
       providers: [
         ComponentStateService,
-        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub }
       ]
     })
@@ -71,9 +88,9 @@ describe('MvdGiacComponent', () => {
     fixture = TestBed.createComponent(MvdGiacComponent);
     component = fixture.componentInstance;
     component.data = mockData.components[0];
+    component.applicantAnswers = applicantAnswersMock;
 
     dictionaryApiService = TestBed.inject(DictionaryApiService);
-    formPlayerService = TestBed.inject(FormPlayerService);
     componentStateService = TestBed.inject(ComponentStateService);
 
     let regionList = [
@@ -102,25 +119,6 @@ describe('MvdGiacComponent', () => {
     getDictionarySpy = spyOn(dictionaryApiService, 'getDictionary').and.returnValue(dictionarySubject);
 
     componentStateService.state = null;
-
-    formPlayerService.responseStore = {
-      scenarioDto: {
-        applicantAnswers: {
-          q1: {
-            value: ''
-          },
-          q5: {
-            value: ''
-          },
-          pd4: {
-            value: JSON.stringify({ regAddr: { region: '' }})
-          },
-          pd5: {
-            value: JSON.stringify({ regAddr: { region: '' }})
-          }
-        }
-      }
-    } as any;
   });
 
   describe('ngOnInit', () => {
@@ -197,9 +195,9 @@ describe('MvdGiacComponent', () => {
         describe('document type is \'Эелектронная справка\'', () => {
           describe('same address', () => {
             beforeEach(() => {
-              formPlayerService.responseStore.scenarioDto.applicantAnswers['q1'].value = 'Электронная справка';
-              formPlayerService.responseStore.scenarioDto.applicantAnswers['q5'].value = 'Да';
-              formPlayerService.responseStore.scenarioDto.applicantAnswers['pd4'].value = JSON.stringify({
+              component.applicantAnswers['q1'].value = 'Электронная справка';
+              component.applicantAnswers['q5'].value = 'Да';
+              component.applicantAnswers['pd4'].value = JSON.stringify({
                 regAddr: {
                   region: 'Москва'
                 }
@@ -223,9 +221,9 @@ describe('MvdGiacComponent', () => {
 
           describe('not same address', () => {
             beforeEach(() => {
-              formPlayerService.responseStore.scenarioDto.applicantAnswers['q1'].value = 'Электронная справка';
-              formPlayerService.responseStore.scenarioDto.applicantAnswers['q5'].value = 'Нет';
-              formPlayerService.responseStore.scenarioDto.applicantAnswers['pd4'].value = JSON.stringify({
+              component.applicantAnswers['q1'].value = 'Электронная справка';
+              component.applicantAnswers['q5'].value = 'Нет';
+              component.applicantAnswers['pd4'].value = JSON.stringify({
                 regAddr: {
                   region: 'Москва'
                 }
@@ -234,7 +232,7 @@ describe('MvdGiacComponent', () => {
 
             describe('same region', () => {
               beforeEach(() => {
-                formPlayerService.responseStore.scenarioDto.applicantAnswers['pd5'].value = JSON.stringify({
+                component.applicantAnswers['pd5'].value = JSON.stringify({
                   regAddr: {
                     region: 'Москва'
                   }
@@ -258,7 +256,7 @@ describe('MvdGiacComponent', () => {
 
             describe('not same region', () => {
               beforeEach(() => {
-                formPlayerService.responseStore.scenarioDto.applicantAnswers['pd5'].value = JSON.stringify({
+                component.applicantAnswers['pd5'].value = JSON.stringify({
                   regAddr: {
                     region: 'Другой'
                   }
@@ -283,13 +281,13 @@ describe('MvdGiacComponent', () => {
 
           describe('finding region', () => {
             beforeEach(() => {
-              formPlayerService.responseStore.scenarioDto.applicantAnswers['q1'].value = 'Электронная справка';
-              formPlayerService.responseStore.scenarioDto.applicantAnswers['q5'].value = 'Да';
+              component.applicantAnswers['q1'].value = 'Электронная справка';
+              component.applicantAnswers['q5'].value = 'Да';
             });
 
             describe('find region without slicing', () => {
               beforeEach(() => {
-                formPlayerService.responseStore.scenarioDto.applicantAnswers['pd4'].value = JSON.stringify({
+                component.applicantAnswers['pd4'].value = JSON.stringify({
                   regAddr: {
                     region: 'Татарстан'
                   }
@@ -313,7 +311,7 @@ describe('MvdGiacComponent', () => {
 
             describe('find region without slicing 1 symbol', () => {
               beforeEach(() => {
-                formPlayerService.responseStore.scenarioDto.applicantAnswers['pd4'].value = JSON.stringify({
+                component.applicantAnswers['pd4'].value = JSON.stringify({
                   regAddr: {
                     region: 'Москва'
                   }
@@ -337,7 +335,7 @@ describe('MvdGiacComponent', () => {
 
             describe('find region without slicing 2 symbol', () => {
               beforeEach(() => {
-                formPlayerService.responseStore.scenarioDto.applicantAnswers['pd4'].value = JSON.stringify({
+                component.applicantAnswers['pd4'].value = JSON.stringify({
                   regAddr: {
                     region: 'Московская'
                   }
@@ -361,9 +359,9 @@ describe('MvdGiacComponent', () => {
 
             describe('check region is \'Байконур\'', () => {
               beforeEach(() => {
-                formPlayerService.responseStore.scenarioDto.applicantAnswers['q1'].value = 'Электронная справка';
-                formPlayerService.responseStore.scenarioDto.applicantAnswers['q5'].value = 'Да';
-                formPlayerService.responseStore.scenarioDto.applicantAnswers['pd4'].value = JSON.stringify({
+                component.applicantAnswers['q1'].value = 'Электронная справка';
+                component.applicantAnswers['q5'].value = 'Да';
+                component.applicantAnswers['pd4'].value = JSON.stringify({
                   regAddr: {
                     region: 'Байконур'
                   }
@@ -387,9 +385,9 @@ describe('MvdGiacComponent', () => {
 
             describe('when region wasn\'t found', () => {
               beforeEach(() => {
-                formPlayerService.responseStore.scenarioDto.applicantAnswers['q1'].value = 'Электронная справка';
-                formPlayerService.responseStore.scenarioDto.applicantAnswers['q5'].value = 'Да';
-                formPlayerService.responseStore.scenarioDto.applicantAnswers['pd4'].value = JSON.stringify({
+                component.applicantAnswers['q1'].value = 'Электронная справка';
+                component.applicantAnswers['q5'].value = 'Да';
+                component.applicantAnswers['pd4'].value = JSON.stringify({
                   regAddr: {
                     region: 'Регион'
                   }

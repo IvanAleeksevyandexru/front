@@ -1,5 +1,5 @@
-import { DictionaryItem, DictionaryResponse } from '../../../../../interfaces/dictionary-options.interface';
 import { ListItem } from 'epgu-lib';
+import { DictionaryItem, DictionaryResponse } from '../../../../services/api/dictionary-api/dictionary-api.types';
 
 export function getTransformedDictionaryForMvgGiac(data: DictionaryResponse): Array<Partial<ListItem>> {
   return data.items.map((item) => adaptiveData(item));

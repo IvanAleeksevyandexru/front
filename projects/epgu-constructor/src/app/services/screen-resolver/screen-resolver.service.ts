@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SCREEN_COMPONENTS } from './screen-resolver.const';
+import { SCREEN_COMPONENTS } from '../../screen/screen.const';
 
 
 @Injectable()

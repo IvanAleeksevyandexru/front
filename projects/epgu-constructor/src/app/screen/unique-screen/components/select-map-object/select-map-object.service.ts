@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
-import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../../config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { ModalService } from '../../../../services/modal/modal.service';
-import { CommonModalComponent } from '../../../../shared-module/components/common-modal/common-modal.component';
+import { CommonModalComponent } from '../../../../shared/components/modal/common-modal/common-modal.component';
 
 @Injectable()
 export class SelectMapObjectService {
@@ -24,7 +24,7 @@ export class SelectMapObjectService {
 
   constructor(
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
     private yaMapService: YaMapService,
     private modalService: ModalService,
   ) { }
@@ -34,7 +34,7 @@ export class SelectMapObjectService {
    * @param items
    */
   public getCoordsByAddress(items) {
-    const path = `${this.constructorConfigService.config.externalApiUrl}address/resolve`;
+    const path = `${this.configService.config.externalApiUrl}/address/resolve`;
     return this.http.post<IGeoCoordsResponse>(path, {
       address: items.map(item => item.attributeValues[this.componentAttrs.attributeNameWithAddress]),
     });

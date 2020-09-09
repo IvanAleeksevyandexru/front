@@ -9,8 +9,8 @@ exports[`CustomScreenComponent check snapshot 1`] = `
   isCycledFields="false"
   navigationService={[Function NavigationService]}
   ngUnsubscribe$={[Function UnsubscribeService]}
-  screenData={[Function Object]}
   screenService={[Function ScreenService]}
+  screenStore={[Function Object]}
 >
   <epgu-constructor-navigation
     class="nav"

@@ -8,17 +8,17 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { switchMap, filter, takeWhile, takeUntil, tap, reduce } from 'rxjs/operators';
-
-import { YaMapService } from 'epgu-lib';
 import { interval, of, merge } from 'rxjs';
+import { YaMapService } from 'epgu-lib';
+
+import { ConfigService } from '../../../../config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
-import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
-import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UtilsService } from '../../../../services/utils/utils.service';
 import { Utilities } from './utilities';
+import { ComponentBase } from '../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -27,7 +27,7 @@ import { Utilities } from './utilities';
   providers: [UnsubscribeService],
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit {
-  @Input() data: ComponentInterface;
+  @Input() data: ComponentBase;
   @Input() applicantAnswers: { [key: string]: any };
   @Output() nextStepEvent = new EventEmitter<any>();
 
@@ -48,10 +48,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
     public selectMapObjectService: SelectMapObjectService,
     private yaMapService: YaMapService,
     private dictionaryApiService: DictionaryApiService,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {
-    this.yandexMapsApiKey = this.constructorConfigService.config.yandexMapsApiKey;
+    this.yandexMapsApiKey = this.configService.config.yandexMapsApiKey;
   }
 
   ngOnInit(): void {

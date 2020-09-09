@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TemporaryRegistrationAddrComponentInterface } from '../../../../../../../../../interfaces/temporary-registration-addr.interface';
-import { ConstructorConfigService } from '../../../../../../../../services/config/constructor-config.service';
-import { ConstructorConfigServiceStub } from '../../../../../../../../services/config/constructor-config.service.stub';
+import { ConfigService } from '../../../../../../../../config/config.service';
+import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { FormsModule } from '@angular/forms';
+import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
 
 
 describe('TemporaryRegistrationAddrComponent', () => {
   let component: TemporaryRegistrationAddrComponent;
   let fixture: ComponentFixture<TemporaryRegistrationAddrComponent>;
-  let constructorConfigService: ConstructorConfigService;
-  const mockData: TemporaryRegistrationAddrComponentInterface = {
+  let configService: ConfigService;
+  const mockData: TemporaryRegistrationComponent = {
     attrs: {
       actions: [],
       fields: [],
@@ -33,11 +33,11 @@ describe('TemporaryRegistrationAddrComponent', () => {
       providers: [
         UnsubscribeService,
         ComponentStateService,
-        { provide: ConstructorConfigService, useClass: ConstructorConfigServiceStub }
+        { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     })
     .compileComponents();
-    constructorConfigService = TestBed.inject(ConstructorConfigService);
+    configService = TestBed.inject(ConfigService);
   }));
 
   beforeEach(() => {

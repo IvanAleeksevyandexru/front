@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { QuestionsComponentActionsInterface } from '../../../interfaces/question-block.interface';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
-import { NextStepEventData } from '../../../interfaces/step-event-data.interface';
+import { QuestionsComponentActions } from './questions-screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
+import { NavigationPayload } from '../../form-player.types';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -16,9 +16,9 @@ import { ScreenService } from '../screen.service';
 export class QuestionsScreenComponent implements OnInit, Screen {
   isCycledFields = false;
   cycledValues: Array<any>;
-  screenData: ScreenData;
+  screenStore: ScreenStore;
 
-  private currentCycledFields = this.screenData?.currentCycledFields || {};
+  private currentCycledFields = this.screenStore?.currentCycledFields || {};
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
@@ -36,14 +36,14 @@ export class QuestionsScreenComponent implements OnInit, Screen {
 
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenData) => {
-        this.screenData = screenData;
+      .subscribe((screenData: ScreenStore) => {
+        this.screenStore = screenData;
         this.initCycledFields();
       });
   }
 
   initCycledFields() {
-    this.currentCycledFields = this.screenData?.currentCycledFields || {};
+    this.currentCycledFields = this.screenStore?.currentCycledFields || {};
     this.cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
     const { currentCycledFields } = this;
@@ -59,15 +59,15 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     this.navigationService.prevStep.next();
   }
 
-  nextStep(data?: NextStepEventData): void {
+  nextStep(data?: NavigationPayload): void {
     this.navigationService.nextStep.next(data);
   }
 
-  answerChoose(answer: QuestionsComponentActionsInterface): void {
-    let data = {};
+  answerChoose(answer: QuestionsComponentActions): void {
+    const data: NavigationPayload = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
-      const fieldNameRef = this.screenData.componentData.components[0]?.attrs?.fields[0]?.fieldName;
+      const fieldNameRef = this.screenStore.display.components[0]?.attrs?.fields[0]?.fieldName;
       const cycledValuesPrepared = { ...this.cycledValues };
       const mergedCycledAndAnswerValues = { ...cycledValuesPrepared, [fieldNameRef]: answer.value };
       data[currentCycledFieldsKey] = {
@@ -75,9 +75,13 @@ export class QuestionsScreenComponent implements OnInit, Screen {
         value: JSON.stringify(mergedCycledAndAnswerValues),
       };
     } else {
-      data = answer.value;
+      const componentId = this.screenStore.display.components[0].id;
+      data[componentId] = {
+        visited: true,
+        value: answer.value || '',
+      };
     }
 
-    this.nextStep({ data });
+    this.nextStep(data);
   }
 }

@@ -1,19 +1,20 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SCREEN_TYPE } from '../../../constant/global';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { InfoScreenComponent } from './info-screen.component';
 import { ScreenService } from '../screen.service';
-import { ScreenData } from '../../../interfaces/screen.interface';
+import { ScreenStore, ScreenTypes } from '../screen.types';
+import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { ComponentStateService } from '../../services/component-state/component-state.service';
 
 
 describe('InfoScreenComponent', () => {
   let component: InfoScreenComponent;
   let fixture: ComponentFixture<InfoScreenComponent>;
   let screenService: ScreenService;
-  const screenDataMock: ScreenData = {
-    componentData: {
+  const screenDataMock: ScreenStore = {
+    display: {
       components: [
         {
           attrs: {},
@@ -27,7 +28,7 @@ describe('InfoScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: SCREEN_TYPE.COMPONENT
+      type: ScreenTypes.COMPONENT
     }
   };
 
@@ -38,7 +39,9 @@ describe('InfoScreenComponent', () => {
       providers: [
         NavigationService,
         UnsubscribeService,
-        ScreenService
+        ScreenService,
+        ApplicantAnswersService,
+        ComponentStateService
       ]
     })
     .compileComponents();
@@ -48,7 +51,7 @@ describe('InfoScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoScreenComponent);
     component = fixture.componentInstance;
-    screenService.updateScreenData(screenDataMock);
+    screenService.updateScreenStore(screenDataMock);
     fixture.detectChanges();
   });
 

@@ -1,13 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { InvitationErrorComponent } from './invitation-error.component';
 
-import { IAttrsError, InvitationErrorComponent } from './invitation-error.component';
 
 
 describe('InvitationErrorComponent', () => {
   let component: InvitationErrorComponent;
   let fixture: ComponentFixture<InvitationErrorComponent>;
-  const mockData: IAttrsError = { msg: '', url: '' };
+  const mockData: any = { label: '', attrs: { url: '' }};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,7 +20,7 @@ describe('InvitationErrorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InvitationErrorComponent);
     component = fixture.componentInstance;
-    component.attrs = mockData;
+    component.data = mockData;
     fixture.detectChanges();
   });
 

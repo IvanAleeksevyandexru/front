@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ConfirmUserDataInterface } from '../../../../../../../interfaces/confirm-user-data.interface';
+import { ConfirmUserData } from '../../../../types/confirm-user-data.types';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 @Component({
@@ -10,8 +10,8 @@ import { ComponentStateService } from '../../../../../../services/component-stat
 export class ConfirmPersonalUserDataScreenComponent implements OnInit {
   constructor(private componentStateService: ComponentStateService) {}
 
-  propData: ConfirmUserDataInterface;
-  @Input() set data(val: ConfirmUserDataInterface) {
+  propData: ConfirmUserData;
+  @Input() set data(val: ConfirmUserData) {
     this.propData = val;
     this.componentStateService.state = val.value;
   }

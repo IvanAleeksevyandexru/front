@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { HttpClient } from '@angular/common/http';
-import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../../config/config.service';
 import { catchError, map } from 'rxjs/operators';
-import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from '../../../../../interfaces/payment.interface';
+import { PaymentDictionaryOptions, PaymentInfo } from './payment.types';
 import { Observable, throwError } from 'rxjs';
 import { getPaymentRequestOptions } from './payment.constants';
 
@@ -19,11 +19,11 @@ export class PaymentService {
   constructor(
     private dictionaryApiService: DictionaryApiService,
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService,
+    private configService: ConfigService,
   ) {
-    this.apiUrl = this.constructorConfigService.config.apiUrl;
-    this.externalUrl = this.constructorConfigService.config.externalUrl;
-    this.paymentUrl = this.constructorConfigService.config.paymentUrl;
+    this.apiUrl = this.configService.config.apiUrl;
+    this.externalUrl = this.configService.config.externalUrl;
+    this.paymentUrl = this.configService.config.paymentUrl;
   }
 
   /**
@@ -66,9 +66,9 @@ export class PaymentService {
    * @param orderId - идентификатор заявления
    * @param attributeValues - дополнительные параметры
    */
-  getUinByOrderId(orderId: string, attributeValues: PaymentInfoInterface): Observable<any> {
+  getUinByOrderId(orderId: string, attributeValues: PaymentInfo): Observable<any> {
     return this.http.post(
-      `${this.externalUrl}api/lk/v1/paygate/uin/1?orderId=${orderId}`,
+      `${this.externalUrl}/api/lk/v1/paygate/uin/1?orderId=${orderId}`,
       attributeValues,
       {
         withCredentials: true
@@ -92,7 +92,7 @@ export class PaymentService {
    * @param dictItemCode - код элемента справочника на оплату
    * @param filterReg - объект фильтра для оплаты
    */
-  createPaymentRequestOptions(dictItemCode: string, filterReg: any): PaymentDictionaryOptionsInterface {
+  createPaymentRequestOptions(dictItemCode: string, filterReg: any): PaymentDictionaryOptions {
     console.log('filterReg', filterReg);
     // TODO хардкод. доделать. Выглядит как
     return getPaymentRequestOptions(filterReg, dictItemCode);

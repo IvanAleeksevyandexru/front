@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import * as moment_ from 'moment';
 import { ValidationShowOn } from 'epgu-lib';
-import { DisplayInterface, Gender } from '../../../../../interfaces/epgu.service.interface';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
@@ -10,8 +9,10 @@ import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel,
-} from '../../../../../interfaces/employee-history.interface';
+} from './employee-history.types';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
+import { Display } from '../../../screen.types';
+import { Gender } from '../../../../shared/types/gender';
 
 const moment = moment_;
 
@@ -21,7 +22,7 @@ const moment = moment_;
   styleUrls: ['./employee-history.component.scss'],
 })
 export class EmployeeHistoryComponent implements OnInit, OnChanges {
-  @Input() data: DisplayInterface;
+  @Input() display: Display;
   @Input() header: string;
   @Input() gender: Gender;
 
@@ -38,7 +39,7 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.monthsService.years = this.data?.components[0]?.attrs?.years;
+    this.monthsService.years = this.display?.components[0]?.attrs?.years;
     this.monthsService.initSettings();
     this.ds = this.datasourceService.getDataSourceByGender(this.gender);
     this.employeeFormService.generateFormWatcher();
@@ -67,7 +68,7 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
   }
 
   isCompleteForm(): boolean {
-    if (this.data?.components[0]?.attrs?.nonStop) {
+    if (this.display?.components[0]?.attrs?.nonStop) {
       return this.monthsService.availableMonths.every(
         (e: EmployeeHistoryAvailableDates) => e.checked,
       );

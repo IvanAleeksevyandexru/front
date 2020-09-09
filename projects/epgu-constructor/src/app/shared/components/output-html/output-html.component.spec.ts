@@ -1,10 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 
 import { OutputHtmlComponent } from './output-html.component';
-import { ModalService } from '../../../services/modal/modal.service';
-import { ModalServiceStub } from '../../../services/modal/modal.service.stub';
-import { ScreenData } from '../../../../interfaces/screen.interface';
-import { SCREEN_TYPE } from '../../../../constant/global';
 import { ScreenService } from '../../../screen/screen.service';
 
 describe('OutputHtmlComponent', () => {

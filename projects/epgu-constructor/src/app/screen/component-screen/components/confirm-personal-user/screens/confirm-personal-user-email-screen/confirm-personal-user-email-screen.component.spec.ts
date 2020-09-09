@@ -1,15 +1,15 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmPersonalUserEmailScreenComponent } from './confirm-personal-user-email-screen.component';
-import { ComponentInterface } from '../../../../../../../interfaces/epgu.service.interface';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { ComponentBase } from '../../../../../screen.types';
 
 
 
 describe('ConfirmPersonalUserEmailComponent', () => {
   let component: ConfirmPersonalUserEmailScreenComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserEmailScreenComponent>;
-  const mockData: ComponentInterface = {
+  const mockData: ComponentBase = {
     attrs: {},
     id: '',
     label: '',

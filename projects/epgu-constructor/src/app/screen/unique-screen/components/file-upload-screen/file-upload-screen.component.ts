@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
-import { UNIQUE_COMPONENT_NAME } from '../../../../../constant/global';
-import { IFileUploadItem } from '../../../../../interfaces/terabyte.interface';
+import { FileUploadItem } from './services/terra-byte-api/terra-byte-api.types';
+import { UniqueScreenComponentTypes } from '../../unique-screen.types';
+import { ComponentBase } from '../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',
@@ -18,8 +18,8 @@ export class FileUploadScreenComponent {
   get header() {
     return this.head ? this.head : this.data.label;
   }
-  private info: ComponentInterface;
-  @Input() set data(data: ComponentInterface) {
+  private info: ComponentBase;
+  @Input() set data(data: ComponentBase) {
     this.info = data;
     this.allMaxFiles = 0;
     // @ts-ignore
@@ -27,10 +27,10 @@ export class FileUploadScreenComponent {
     this.collectMaxFilesNumber(uploads);
     this.value = {
       id: data.id,
-      type: UNIQUE_COMPONENT_NAME.fileUploadComponent,
+      type: UniqueScreenComponentTypes.fileUploadComponent,
     };
   }
-  get data(): ComponentInterface {
+  get data(): ComponentBase {
     return this.info;
   }
   @Input() submitLabel: string;
@@ -43,7 +43,7 @@ export class FileUploadScreenComponent {
    * Возвращает префикс для формирования мнемоники
    * @param componentData - данные компонента
    */
-  getUploadComponentPrefixForMnemonic(componentData: ComponentInterface): string {
+  getUploadComponentPrefixForMnemonic(componentData: ComponentBase): string {
     return [componentData.id, 'FileUploadComponent'].join('.');
   }
 
@@ -59,7 +59,7 @@ export class FileUploadScreenComponent {
    * Собираем максимальное число файлов из всех форм
    * @private
    */
-  private collectMaxFilesNumber(uploads: IFileUploadItem[]) {
+  private collectMaxFilesNumber(uploads: FileUploadItem[]) {
     uploads.forEach((upload) => {
       if (upload?.maxFileCount) {
         this.allMaxFiles += upload.maxFileCount;

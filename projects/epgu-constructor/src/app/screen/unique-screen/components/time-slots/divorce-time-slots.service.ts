@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ConstructorConfigService } from '../../../../services/config/constructor-config.service';
+import { ConfigService } from '../../../../config/config.service';
 import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
 import { Observable, of, throwError } from 'rxjs';
@@ -30,18 +30,18 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
 
   constructor(
     private http: HttpClient,
-    private constructorConfigService: ConstructorConfigService
+    private configService: ConfigService
   ) {
 
   }
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/slots`;
+    const path = `${this.configService.config.externalLkApiUrl}/equeue/agg/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
   }
 
   private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const path = `${this.constructorConfigService.config.externalLkApiUrl}equeue/agg/book?srcSystem=BETA`;
+    const path = `${this.configService.config.externalLkApiUrl}/equeue/agg/book?srcSystem=BETA`;
     return this.http.post<SmevBookResponseInterface>(path, requestBody);
   }
 

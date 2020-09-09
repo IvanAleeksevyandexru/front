@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileUploadComponent } from './file-upload.component';
-import { IFileUploadAttributes } from '../../../../../../../interfaces/terabyte.interface';
+import { FileUploadAttributes } from '../../services/terra-byte-api/terra-byte-api.types';
 import { MockComponent } from 'ng-mocks';
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
 
@@ -9,7 +9,7 @@ describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
   let fixture: ComponentFixture<FileUploadComponent>;
   let FileUploadItemComponentMock = MockComponent(FileUploadItemComponent);
-  let mockAttributes: IFileUploadAttributes = {
+  let mockAttributes: FileUploadAttributes = {
     clarifications: [],
     uploads: [
       {

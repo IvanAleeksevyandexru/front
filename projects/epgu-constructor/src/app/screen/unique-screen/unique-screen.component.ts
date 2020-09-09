@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { UNIQUE_COMPONENT_NAME } from '../../../constant/global';
-import { Screen, ScreenData } from '../../../interfaces/screen.interface';
+import { Screen, ScreenStore } from '../screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/service/navigation/navigation.service';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
+import { UniqueScreenComponentTypes } from './unique-screen.types';
+import { NavigationPayload } from '../../form-player.types';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',
@@ -14,8 +15,8 @@ import { ScreenService } from '../screen.service';
 })
 export class UniqueScreenComponent implements OnInit, Screen {
   // <-- constant
-  uniqueComponentName = UNIQUE_COMPONENT_NAME;
-  screenData: ScreenData;
+  uniqueComponentName = UniqueScreenComponentTypes;
+  screenStore: ScreenStore;
 
   constructor(
     private navigationService: NavigationService,
@@ -30,17 +31,27 @@ export class UniqueScreenComponent implements OnInit, Screen {
 
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenData) => {
-        this.screenData = screenData;
+      .subscribe((screenData: ScreenStore) => {
+        this.screenStore = screenData;
       });
+  }
+
+  nextDataForStep(value?: string): void {
+    const data: NavigationPayload = {};
+    const componentId = this.screenStore.display.components[0].id;
+    data[componentId] = {
+      visited: true,
+      value: value || '',
+    };
+
+    this.nextStep(data);
+  }
+
+  nextStep(data?: NavigationPayload): void {
+    this.navigationService.nextStep.next(data);
   }
 
   prevStep(): void {
     this.navigationService.prevStep.next();
-  }
-
-  // TODO: add NextStepData typing support
-  nextStep(data?): void {
-    this.navigationService.nextStep.next({ data });
   }
 }

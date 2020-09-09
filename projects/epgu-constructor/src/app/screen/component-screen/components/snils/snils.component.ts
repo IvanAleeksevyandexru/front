@@ -5,8 +5,8 @@ import { ValidationService } from 'epgu-lib';
 import { checkSnils } from 'ru-validation-codes';
 import { takeUntil } from 'rxjs/operators';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
-import { ComponentInterface } from '../../../../../interfaces/epgu.service.interface';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { ComponentBase } from '../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-snils',
@@ -14,7 +14,7 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
   styleUrls: ['./snils.component.scss'],
 })
 export class SnilsComponent implements OnInit {
-  @Input() data: ComponentInterface;
+  @Input() data: ComponentBase;
   public mask = this.validationService.masks.snils;
   public snils = new FormControl('', [
     Validators.required,
