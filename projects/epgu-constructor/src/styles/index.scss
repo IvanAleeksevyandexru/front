@@ -4,6 +4,7 @@
 // stylelint-disable
 
 .epgu-form-player {
+  margin-bottom: 40px;
   color: $color-summer-night;
 
   *, *:before, *:after {
@@ -67,7 +68,7 @@
   strike {
     color: $color-text-helper;
   }
-  
+
   blockquote {
     background: rgba(11, 64, 179, 0.1);
     border: 1px solid $color-button-hit;
