@@ -7,7 +7,7 @@
         *ngSwitchCase="'regAddr'"
         [simpleMode]="true"
         [name]="field.fieldName"
-        [externalApiUrl]="configService.config.externalApiUrl"
+        [externalApiUrl]="configService.config.externalApiUrl + '/'"
         [initValue]="forms[field.fieldName]"
         [(ngModel)]="forms[field.fieldName]"
       >
