@@ -10,14 +10,12 @@ const formPlayerConfig: Config = {
   apiUrl: environment.apiUrl,
   dictionaryUrl: environment.dictionaryUrl,
   externalApiUrl: environment.externalApiUrl,
-  externalLkApiUrl: environment.externalLkApiUrl,
-  externalUrl: environment.externalUrl,
+  timeSlotApiUrl: environment.timeSlotApiUrl,
+  uinApiUrl: environment.uinApiUrl,
   paymentUrl: environment.paymentUrl,
   yandexMapsApiKey: environment.yandexMapsApiKey,
-  isProd: environment.production,
   fileUploadApiUrl: environment.fileUploadApiUrl,
   externalLkUrl: environment.externalLkUrl,
-  fileUploadLocalhostApiUrl: environment.fileUploadLocalhostApiUrl,
 };
 
 @NgModule({

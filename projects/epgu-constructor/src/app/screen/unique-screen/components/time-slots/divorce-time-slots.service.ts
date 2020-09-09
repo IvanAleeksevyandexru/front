@@ -36,12 +36,12 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
   }
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.configService.config.externalLkApiUrl}/equeue/agg/slots`;
+    const path = `${this.configService.config.timeSlotApiUrl}/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
   }
 
   private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const path = `${this.configService.config.externalLkApiUrl}/equeue/agg/book?srcSystem=BETA`;
+    const path = `${this.configService.config.timeSlotApiUrl}/book?srcSystem=BETA`;
     return this.http.post<SmevBookResponseInterface>(path, requestBody);
   }
 
