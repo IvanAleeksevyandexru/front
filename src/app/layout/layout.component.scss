@@ -7,5 +7,6 @@
 
   @include phones-down {
     padding-top: 44px;
+    min-height: calc(100vh - 80px);
   }
 }

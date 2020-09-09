@@ -5,6 +5,10 @@
   min-height: 112px;
   background-color: #F2F5F7;
 
+  @include phones-down {
+    min-height: 80px;
+  }
+
   &__container {
     position: relative;
     max-width: 670px;
@@ -21,7 +25,14 @@
     left: 0;
 
     @include phones-down {
-      left: 50px;
+      top: 16px;
+      left: 0;
+    }
+
+    &-img {
+      @include phones-down {
+        width: 40px;
+      }
     }
   }
 
@@ -31,7 +42,14 @@
     right: 30px;
 
     @include phones-down {
-      right: 50px;
+      top: 16px;
+      right: 0;
+    }
+
+    &-img {
+      @include phones-down {
+        width: 40px;
+      }
     }
   }
 
@@ -47,11 +65,12 @@
     color: #515A63;
 
     @include phones-down {
-      width: 100%;
+      margin: 0 40px;
       text-align: center;
-      top: 100px;
+      font-size: 14px;
+      line-height: 18px;
+      top: 16px;
       left: 0;
-      margin: 0;
     }
   }
 }
