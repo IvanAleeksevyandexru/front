@@ -97,7 +97,7 @@ export class PaymentService {
       return uinMockUp.asObservable();
     }
 
-    const path = `api/lk/v1/paygate/uin/${code}?orderId=${orderId}`;
+    const path = `/api/lk/v1/paygate/uin/${code}?orderId=${orderId}`;
     return this.http.post(
       this.getPayInfoApiUrl(path),
       attributeValues,
@@ -121,7 +121,7 @@ export class PaymentService {
     // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
     // return billMockUp.asObservable();
 
-    const path = `api/pay/v1/bills?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    const path = `/api/pay/v1/bills?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
     return this.http.post(
       this.getPayInfoApiUrl(path), {},
       {
@@ -140,7 +140,7 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    */
   getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<any> {
-    const path = `api/lk/v1/paygate/uin/status/${code}?orderId=${orderId}`;
+    const path = `/api/lk/v1/paygate/uin/status/${code}?orderId=${orderId}`;
     return this.http.get(
       this.getPayInfoApiUrl(path),
       {
