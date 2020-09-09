@@ -1,14 +1,13 @@
 export const environment = {
-  production: true,
-  apiUrl: 'http://188.93.23.27:18080',
-  dictionaryUrl: 'https://www.gosuslugi.ru/api/nsi/v1/dictionary',
-  externalApiUrl: 'https://www.gosuslugi.ru/api/nsi/v1',
+  production: false,
+  apiUrl: '/api',
+  dictionaryUrl: 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary',
+  externalApiUrl: 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1',
   timeSlotApiUrl: 'https://svcdev-beta.test.gosuslugi.ru/api/lk/v1/equeue/agg',
-  externalUrl: 'https://www.gosuslugi.ru',
-  serviceId: 'local',
-  yandexMapsApiKey: '',
-  externalLkUrl: 'https://www.gosuslugi.ru/info',
-  paymentUrl: 'https://gosuslugi.ru',
+  externalUrl: 'https://pgu-dev-fed.test.gosuslugi.ru',
+  yandexMapsApiKey: '9e8e2fc4-5970-4ca6-95c5-3e620095e8e3',
+  externalLkUrl: 'https://pgu-dev-lk.test.gosuslugi.ru/info',
+  paymentUrl: 'https://payment-dev-l14.test.gosuslugi.ru',
   fileUploadApiUrl: 'https://gosuslugi.ru/api/storage/v1/files',
-  fileUploadLocalhostApiUrl: 'https://localhost/api/storage/v1/files'
+  fileUploadLocalhostApiUrl: 'http://localhost/api/storage/v1/files'
 };
