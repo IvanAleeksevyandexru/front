@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalService } from '../../../services/modal/modal.service';
 import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirmation-modal.component';
 import { getHiddenBlock } from '../../constants/uttils';
-import { IClarifications } from '../../../../interfaces/terabyte.interface';
+import { Clarifications } from '../../../screen/unique-screen/components/file-upload-screen/services/terra-byte-api/terra-byte-api.types';
 
 @Component({
   selector: 'epgu-constructor-output-html',
@@ -11,7 +11,7 @@ import { IClarifications } from '../../../../interfaces/terabyte.interface';
 })
 export class OutputHtmlComponent implements OnInit {
   @Input() html: string;
-  @Input() clarifications: IClarifications;
+  @Input() clarifications: Clarifications;
   constructor(private modalService: ModalService) {}
 
   ngOnInit(): void {}
