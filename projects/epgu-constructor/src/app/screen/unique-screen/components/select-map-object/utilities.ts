@@ -1,5 +1,5 @@
 import { IdictionaryFilter } from './select-map-object.interface';
-import { ScenarioDto } from '../../../../services/api/form-player-api/form-player-api.types';
+import { ApplicantAnswers, ScreenStore } from '../../../screen.types';
 
 export class Utilities {
 
@@ -9,13 +9,13 @@ export class Utilities {
    * @param scenarioDto значение scenarioDto пришедшение с бэкэнда
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  public static getFilterOptions(componentValue: any, scenarioDto: any, dictionaryFilters?: Array<IdictionaryFilter>) {
+  public static getFilterOptions(componentValue: any, screenStore: ScreenStore, dictionaryFilters?: Array<IdictionaryFilter>) {
     const filters = dictionaryFilters.map((dFilter) => {
       return {
         simple: {
           attributeName: dFilter.attributeName,
           condition: dFilter.condition,
-          value: this.getValueForFilter(componentValue, scenarioDto, dFilter),
+          value: this.getValueForFilter(componentValue, screenStore, dFilter),
         },
       };
     });
@@ -32,10 +32,10 @@ export class Utilities {
   /**
    * Получение значения типа ref из dictionaryFilter (настроечный JSON) из applicantAnswers по пути path
    * @param applicantAnswers ответы с экранов в scenarioDto
-   * @param path путь до значения в applicantAnswers
+   * @param path путь до значения в applicantAnswers (примеp: pd1.value.firstName)
    */
-  private static getValueViaRef(applicantAnswers, path) {
-    return path.split('.').reduce((ret, current, index) => {
+  private static getValueViaRef(applicantAnswers: ApplicantAnswers, path: string): any {
+    return path.split('.').reduce((ret: any, current, index) => {
       // Eсли путь ссылается на поле в value, то его (value) необходимо предварительно распарсить, всегда index === 2
       if (index === 2) {
         ret = JSON.parse(ret);
@@ -50,12 +50,12 @@ export class Utilities {
    * @param scenarioDto значение scenarioDto пришедшение с бэкэнда
    * @param dFilter фильтр из атрибутов компонента
    */
-  private static getValueForFilter(componentValue: any, scenarioDto: ScenarioDto, dFilter: IdictionaryFilter) {
+  private static getValueForFilter(componentValue: any, screenStore: ScreenStore, dFilter: IdictionaryFilter): any {
     const filterTypes = {
       value: (dFilter) => JSON.parse(dFilter.value),
       preset: (dFilter) => ({ asString: componentValue[dFilter.value] }),
-      root: (dFilter) => ({ asString: scenarioDto[dFilter.value] }),
-      ref: (dFilter) => ({ asString: this.getValueViaRef(scenarioDto.applicantAnswers, dFilter.value) }),
+      root: (dFilter) => ({ asString: screenStore[dFilter.value] }),
+      ref: (dFilter) => ({ asString: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value) }),
     };
     return filterTypes[dFilter.valueType](dFilter);
   }

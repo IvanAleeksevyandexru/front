@@ -1,6 +1,7 @@
 import { NavigationPayload } from '../form-player.types';
 import { Gender } from '../shared/types/gender';
 import { Answer } from '../shared/types/answer';
+import { ScenarioDto } from '../services/api/form-player-api/form-player-api.types';
 
 export interface ComponentBase {
   attrs: {[key: string]: any};
@@ -34,21 +35,7 @@ export interface CurrentCycledFields {
   [key: string]: string
 }
 
-export interface ScreenStore {
-  applicantAnswers?: ApplicantAnswers;
-  currentRule?: number;
-  currentValue?: object;
-  currentCycledFields?: CurrentCycledFields;
-  cycledFields?: Array<object>;
-  display: Display;
-  errors?: ScenarioErrors;
-  gender?: Gender;
-  orderId?: string;
-  sendNotification?: Array<object>;
-  token?: string;
-  userId?: string;
-  finishedAndCurrentScreens?: [];
-}
+export interface ScreenStore extends Partial<ScenarioDto>{ }
 
 export interface Screen {
   screenStore: ScreenStore,

@@ -44,7 +44,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   private componentValue: any;
   private selectedValue: any;
   private selectedValueField: any;
-  private scenarioDto: ScreenStore;
+  private screenStore: ScreenStore;
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
@@ -73,10 +73,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
     this.controlsLogicInit();
   }
 
-  initComponentAttrs() {
+  private initComponentAttrs(): void {
     this.selectMapObjectService.componentAttrs = this.data.attrs;
     this.componentValue = JSON.parse(this.data?.value || '{}');
-    this.scenarioDto = this.screenService.getStore();
+    this.screenStore = this.screenService.getStore();
   }
 
   private initSelectedValue() {
@@ -188,7 +188,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
    */
   private getOptions(dictionaryFilters) {
     return {
-      ...Utilities.getFilterOptions(this.componentValue, this.scenarioDto, dictionaryFilters),
+      ...Utilities.getFilterOptions(this.componentValue, this.screenStore, dictionaryFilters),
       // selectAttributes: ['ZAGS_NAME', 'ADDRESS', 'PHONE', 'EMAIL', 'GET_CONSENT', 'AREA_DESCR'],
       // TODO add fields to JSON
       selectAttributes: ['*'],

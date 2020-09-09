@@ -198,7 +198,7 @@ export class FormPlayerService {
     this.componentId = display.components[0].id;
     this.screenType = display.type;
 
-    this.screenService.initScreenStore(scenarioDto as any);
+    this.screenService.initScreenStore(scenarioDto);
     this.storeSubject.next(this.store);
 
   }
