@@ -5,7 +5,7 @@ export interface Config {
   apiUrl: string;
   dictionaryUrl: string;
   externalApiUrl: string;
-  externalLkApiUrl: string;
+  timeSlotApiUrl: string;
   externalLkUrl: string;
   externalUrl: string;
   paymentUrl: string;

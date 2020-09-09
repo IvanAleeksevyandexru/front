@@ -69,11 +69,11 @@
                 }
               ]
             },
-            "staging": {
+            "test": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.staging.ts"
+                  "with": "src/environments/environment.test.ts"
                 }
               ]
             }
