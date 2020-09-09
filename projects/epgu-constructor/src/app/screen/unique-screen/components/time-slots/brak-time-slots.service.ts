@@ -23,26 +23,25 @@ export class BrakTimeSlotsService implements TimeSlotsService {
   public activeYearNumber: number;
 
   private slotsMap: SmevSlotsMapInterface;
-
   private bookedSlot: SmevSlotInterface;
   private bookId;
-
   private errorMessage;
+  private readonly externalLkApiUrl;
 
   constructor(
     private http: HttpClient,
     private configService: ConfigService
   ) {
-
+    this.externalLkApiUrl = this.configService.config.externalLkApiUrl;
   }
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.configService.config.externalLkApiUrl}/equeue/agg/slots`;
+    const path = `${this.externalLkApiUrl}/equeue/agg/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
   }
 
   private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const path = `${this.configService.config.externalLkApiUrl}/equeue/agg/book?srcSystem=BETA`;
+    const path = `${this.externalLkApiUrl}/equeue/agg/book?srcSystem=BETA`;
     return this.http.post<SmevBookResponseInterface>(path, requestBody);
   }
 
