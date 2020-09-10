@@ -1,0 +1,76 @@
+@import "../../../../projects/epgu-constructor/src/styles/core";
+
+.footer {
+  width: 100%;
+  min-height: 112px;
+  background-color: #F2F5F7;
+
+  @include phones-down {
+    min-height: 80px;
+  }
+
+  &__container {
+    position: relative;
+    max-width: 670px;
+    margin: 0 auto;
+
+    @include phones-down {
+      width: calc(100% - 32px);
+    }
+  }
+
+  &__ministerstvo-svazy-rf-logo {
+    position: absolute;
+    top: 24px;
+    left: 0;
+
+    @include phones-down {
+      top: 16px;
+      left: 0;
+    }
+
+    &-img {
+      @include phones-down {
+        width: 40px;
+      }
+    }
+  }
+
+  &__rostelecom-logo {
+    position: absolute;
+    top: 24px;
+    right: 30px;
+
+    @include phones-down {
+      top: 16px;
+      right: 0;
+    }
+
+    &-img {
+      @include phones-down {
+        width: 40px;
+      }
+    }
+  }
+
+  &__text {
+    position: absolute;
+    left: 80px;
+    top: 44px;
+    display: inline-block;
+    font-family: Helvetica Neue;
+    margin: 0 69px 0 0;
+    font-size: 16px;
+    line-height: 24px;
+    color: #515A63;
+
+    @include phones-down {
+      margin: 0 40px;
+      text-align: center;
+      font-size: 14px;
+      line-height: 18px;
+      top: 24px;
+      left: 0;
+    }
+  }
+}

@@ -83,4 +83,11 @@ export class ScreenService {
     this.isShown = val;
     this.isShownSubject.next(val);
   }
+
+  /**
+   * Возвращает хранилище данных для экрана
+   */
+  public getStore(): ScreenStore {
+    return this.screenStore;
+  }
 }

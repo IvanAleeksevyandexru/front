@@ -5,11 +5,13 @@ import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { SmevSlotsMapInterface } from './smev-slots-map.interface';
-import { SmevSlotsResponseInterface } from './smev-slots-response.interface';
-import { SmevBookResponseInterface } from './smev-book-response.interface';
-import { SmevSlotInterface } from './smev-slot.interface';
-import { ZagsDepartmentInterface } from './zags-department.interface';
+import {
+  SmevBookResponseInterface,
+  SmevSlotInterface,
+  SmevSlotsMapInterface,
+  SmevSlotsResponseInterface, TimeSlotValueInterface,
+  ZagsDepartmentInterface
+} from './time-slots.types';
 
 @Injectable()
 export class BrakTimeSlotsService implements TimeSlotsService {
@@ -36,12 +38,12 @@ export class BrakTimeSlotsService implements TimeSlotsService {
   }
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.externalLkApiUrl}/equeue/agg/slots`;
+    const path = `${this.configService.config.timeSlotApiUrl}/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
   }
 
   private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const path = `${this.externalLkApiUrl}/equeue/agg/book?srcSystem=BETA`;
+    const path = `${this.configService.config.timeSlotApiUrl}/book?srcSystem=BETA`;
     return this.http.post<SmevBookResponseInterface>(path, requestBody);
   }
 
@@ -89,7 +91,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
     return this.activeYearNumber;
   }
 
-  init(data: any): Observable<any> {
+  init(data: TimeSlotValueInterface): Observable<any> {
 
     if (this.changed(data) || this.errorMessage) {
       this.slotsMap = {};

@@ -1,8 +1,4 @@
 {
-  "/api/lk/v1/equeue/agg": {
-    "target": "https://svcdev-beta.test.gosuslugi.ru",
-    "secure": false
-  },
   "/api": {
     "target": "http://localhost:8080",
     "secure": false

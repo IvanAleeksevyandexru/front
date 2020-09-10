@@ -17,7 +17,7 @@ import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payme
 @Injectable()
 export class PaymentService {
   private apiUrl: string;
-  private externalUrl: string;
+  private uinApiUrl: string;
   private paymentUrl: string;
   screenStore: ScreenStore;
 
@@ -30,7 +30,7 @@ export class PaymentService {
     private ngUnsubscribe$: UnsubscribeService
   ) {
     this.apiUrl = this.configService.config.apiUrl;
-    this.externalUrl = this.configService.config.externalUrl;
+    this.uinApiUrl = this.configService.config.uinApiUrl;
     this.paymentUrl = this.configService.config.paymentUrl;
 
     this.screenService.screenData$
