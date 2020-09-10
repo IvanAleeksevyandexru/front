@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
+import { ScreenComponent } from '../../screen/screen.const';
+import { ScreenService } from '../../screen/screen.service';
+import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
   FormPlayerApiDraftResponse, FormPlayerApiDraftSuccessResponse,
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
 } from '../api/form-player-api/form-player-api.types';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { ScreenService } from '../../screen/screen.service';
-import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
-import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
-import { ScreenComponent } from '../../screen/screen.const';
-import { map } from 'rxjs/operators';
+
+interface ServiceType {
+  serviceId: string;
+  targetId: string;
+}
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -40,13 +45,14 @@ export class FormPlayerService {
     private screenResolverService: ScreenResolverService,
   ) {}
 
-  initData(serviceId: string, orderId?: string): void {
+  initData(service: ServiceType, orderId?: string): void {
     this.updateLoading(true);
 
     if (orderId) {
       this.getDraftOrderData(orderId);
     } else {
-      this.getNewOrderData(serviceId);
+      const { serviceId, targetId } = service;
+      this.getNewOrderData(serviceId, targetId);
     }
   }
 
@@ -70,8 +76,8 @@ export class FormPlayerService {
     return { scenarioDto: successResponse.body } as FormPlayerApiResponse;
   }
 
-  getNewOrderData(serviceId: string) {
-    this.formPlayerApiService.getServiceData(serviceId).subscribe(
+  getNewOrderData(serviceId: string, targetId?: string) {
+    this.formPlayerApiService.getServiceData(serviceId, targetId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
       () => this.updateLoading(false)

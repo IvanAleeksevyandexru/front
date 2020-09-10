@@ -1,11 +1,11 @@
-import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
-
-import { FormPlayerApiService } from './form-player-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { CookieService } from 'ngx-cookie-service';
 import { ConfigService } from '../../../config/config.service';
 import { ConfigServiceStub } from '../../../config/config.service.stub';
-import { CookieService } from 'ngx-cookie-service';
 import { FormPlayerNavigation } from '../../../form-player.types';
+import { FormPlayerApiService } from './form-player-api.service';
+
 
 describe('FormPlayerApiService', () => {
   let service: FormPlayerApiService;
@@ -53,17 +53,17 @@ describe('FormPlayerApiService', () => {
   });
 
   describe('getServiceData()', () => {
-    it('should call http with get method', fakeAsync(() => {
+    it('should call http with post method', fakeAsync(() => {
       service.getServiceData(serviceId).subscribe(response => expect(response).toBe(responseMock));
-      const req = http.expectOne(`${apiUrl}/getService/${serviceId}`);
-      expect(req.request.method).toBe('GET');
+      const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getService`);
+      expect(req.request.method).toBe('POST');
       req.flush(responseMock);
       tick();
     }));
 
-    it('should call http get with withCredentials equal false', fakeAsync(() => {
+    it('should call http post with withCredentials equal false', fakeAsync(() => {
       service.getServiceData(serviceId).subscribe(response => expect(response).toBe(responseMock));
-      const req = http.expectOne(`${apiUrl}/getService/${serviceId}`);
+      const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getService`);
       const withCredentials = req.request.withCredentials;
       expect(withCredentials).toBe(false);
       req.flush(responseMock);
