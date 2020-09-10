@@ -1,4 +1,5 @@
-@import "src/styles/core";
+@import "src/styles/core/palettes";
+@import "src/styles/core/functions";
 
 :host {
   display: block;
@@ -22,7 +23,11 @@
   @include tablets-up {
     padding: 24px 32px;
   }
+  &:hover {
+    background: $color-button-disabled;
+    color: $color-button-hover;
 
+  }
   &:focus,
   &:active {
     outline: none;

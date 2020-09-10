@@ -194,7 +194,7 @@ export class FormPlayerService {
   }
 
   private initScreenStore(scenarioDto: ScenarioDto): void {
-    const { display, errors, gender, currentCycledFields, applicantAnswers } = scenarioDto;
+    const { display, errors, gender, currentCycledFields, applicantAnswers, currentValue } = scenarioDto;
     this.componentId = display.components[0].id;
     this.screenType = display.type;
 
@@ -203,7 +203,8 @@ export class FormPlayerService {
       errors: errors ?? errors,
       gender: gender ?? gender,
       currentCycledFields: currentCycledFields ?? currentCycledFields,
-      applicantAnswers: applicantAnswers ?? applicantAnswers
+      applicantAnswers: applicantAnswers ?? applicantAnswers,
+      currentValue: currentValue ?? currentValue,
     });
     this.storeSubject.next(this.store);
 

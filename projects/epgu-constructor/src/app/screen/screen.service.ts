@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ScreenStore } from './screen.types';
+import { ComponentBase, ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
 import { ComponentStateService } from '../services/component-state/component-state.service';
@@ -23,7 +23,7 @@ export class ScreenService {
 
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;
-    this.loadAnsweredValues();
+    this.loadValueFromApplicationAnswer();
     this.initComponentStateService();
     this.screenStoreSubject.next(this.screenStore);
   }
@@ -43,17 +43,38 @@ export class ScreenService {
     this.componentStateService.isValid = true;
   }
 
-  private loadAnsweredValues(): void {
-    const components = [];
+  private loadValueFromApplicationAnswer(): void {
+    const components: Array<ComponentBase> = [];
 
-    this.screenStore.display.components.forEach(item => {
-      const answeredValue = this.applicantAnswersService
-        .getAnsweredValueById(this.screenStore.applicantAnswers, item.id);
-
-      const component = answeredValue ? { ...item, value: answeredValue } : item;
-      components.push(component);
-    });
+    if (Object.keys(this.screenStore.errors).length) {
+      console.log('ScreenStore patched from a CurrentValue');
+      this.screenStore.display.components.forEach((item: ComponentBase) => {
+        components.push(
+          this.getUpdatedComponentByValue(
+            this.screenStore.currentValue[item.id]?.value,
+            item,
+          )
+        );
+      });
+    } else {
+      console.log('ScreenStore patched from an ApplicantAnswers');
+      this.screenStore.display.components.forEach((item: ComponentBase) => {
+        components.push(
+          this.getUpdatedComponentByValue(
+            this.applicantAnswersService.getAnsweredValueById(
+              this.screenStore.applicantAnswers,
+              item.id,
+            ),
+            item,
+          )
+        );
+      });
+    }
 
     this.screenStore.display = { ...this.screenStore.display, components };
+  }
+
+  private getUpdatedComponentByValue(value: string, component: ComponentBase): ComponentBase {
+    return value ? { ... component, value } : component;
   }
 }

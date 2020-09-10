@@ -1,14 +1,7 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 
+import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import {
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
@@ -32,19 +25,22 @@ import { ScreenService } from '../../screen.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ConfigService } from '../../../config/config.service';
+import { ComponentBase, ScreenStore } from '../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-components-list',
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
 })
-export class ComponentsListComponent implements OnInit, OnChanges {
+export class ComponentsListComponent implements OnInit {
   // <-- constant
   componentType = CustomScreenComponentTypes;
 
   // <-- variables
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   state: CustomComponentState = {};
+  businessErrors: { [key: string]: string } = {};
+  selectedDropDown: { [key: string]: any } = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
   dropDown: { [key: string]: CustomComponentDropDownStateInterface } = {};
 
@@ -60,16 +56,30 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   // NOTICE: тут была информация о валидации смотри историю гита
 
   ngOnInit(): void {
-    console.log(this.screenService);
-  }
+    this.screenService.screenData$
+      .pipe(
+        distinctUntilChanged(
+          (prev: ScreenStore, next: ScreenStore) => JSON.stringify(prev) === JSON.stringify(next),
+        ),
+        tap((screen: ScreenStore) => {
+          this.businessErrors = screen.errors;
+        }),
+        map((screen: ScreenStore): Array<ComponentBase> => screen.display.components),
+      )
+      // TODO тут должен приходить <ComponentBase>.
+      //  Нужно будет переделать, когда полностью откажемся от локального стэйта компонента
+      //  и будем юзать реактивный
+      .subscribe((components: Array<CustomComponent>) => {
+        console.group('ScreenStore detected changes');
+        console.log(components);
+        console.groupEnd();
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.state = {};
-    if (changes?.components?.currentValue) {
-      this.components.forEach((component) => this.initComponent(component));
-      this.emmitChanges();
-      this.checkDependenceOfTheComponent();
-    }
+        this.state = {};
+        this.components = components;
+        this.components.forEach((component: CustomComponent) => this.initComponent(component));
+        this.emmitChanges();
+        this.checkDependenceOfTheComponent();
+      });
   }
 
   /**
@@ -101,6 +111,12 @@ export class ComponentsListComponent implements OnInit, OnChanges {
       origin: data,
       list: adaptiveDropDown(data),
     };
+
+    if (component?.value) {
+      this.selectedDropDown[key] = this.dropDown[key].list.find(
+        (list: Partial<ListItem>) => JSON.stringify(list.originalItem) === component.value,
+      );
+    }
   }
 
   selectDictionary(selectedItem: ListItem, component: CustomComponent) {
@@ -112,7 +128,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   selectDropDown($event: any, componentData: CustomComponent) {
-    this.state[componentData.id].value = $event.origin;
+    this.state[componentData.id].value = $event.originalItem;
     this.emmitChanges();
   }
 

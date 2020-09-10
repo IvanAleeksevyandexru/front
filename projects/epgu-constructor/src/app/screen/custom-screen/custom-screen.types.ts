@@ -9,7 +9,6 @@ export enum CustomScreenComponentTypes {
   StringInput = 'StringInput',
   DateInput = 'DateInput',
   RadioInput = 'RadioInput',
-  CompositeRadioButton = 'CompositeRadioButton',
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
   htmlString = 'HtmlString',

@@ -10,6 +10,7 @@ export interface ComponentBase {
   value: string;
   required?: boolean
   visited?: boolean
+  hint?: string;
 }
 
 export interface Display {
@@ -35,11 +36,12 @@ export interface CurrentCycledFields {
 }
 
 export interface ScreenStore {
-  display: Display,
-  errors?: ScenarioErrors,
-  gender?: Gender,
-  currentCycledFields?: CurrentCycledFields
+  display: Display;
+  errors?: ScenarioErrors;
+  gender?: Gender;
+  currentCycledFields?: CurrentCycledFields;
   applicantAnswers?: ApplicantAnswers;
+  currentValue?: any;
 }
 
 export interface Screen {

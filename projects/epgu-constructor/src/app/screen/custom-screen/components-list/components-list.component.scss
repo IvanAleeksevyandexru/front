@@ -1,10 +1,11 @@
 @import '../../../../styles/core/palettes';
 @import '../../../../styles/core/typography';
+@import '../../../../styles/core/variables';
 
 // test
 .form {
   &__item {
-    margin-bottom: 24px;
+    margin-bottom: $screen-pad-p;
 
     &__hint {
       margin-top: 4px;
@@ -23,7 +24,9 @@
     color: $color-gosred;
   }
   &__radio {
+
     &__block {
+      margin-top: $screen-pad-p;
       display: inline-block;
       lib-radio {
         display: block;
@@ -31,17 +34,17 @@
       }
     }
     &__inline {
-      margin-top: 24px;
+      margin-top: $screen-pad-p;
       display: inline-flex;
       lib-radio:not(:first-child) {
-        margin-left: 24px;
+        margin-left: $screen-pad-p;
       }
     }
   }
 }
 
 .label {
-  margin-bottom: 24px;
+  margin-bottom: $screen-pad-p;
   font-size: 16px;
   line-height: 24px;
   font-weight: bold;

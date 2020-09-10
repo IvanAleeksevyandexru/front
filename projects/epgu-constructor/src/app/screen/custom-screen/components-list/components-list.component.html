@@ -36,9 +36,12 @@
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-dropdown
+            [name]="'dropDown_' + componentData.id"
             class="cs__select cs-select"
             (changed)="selectDropDown($event, componentData)"
+            [invalid]="componentData.required && !state[componentData.id].value"
             [items]="dropDown[componentData?.id]?.list"
+            [(ngModel)]="selectedDropDown[componentData.id]"
           ></lib-dropdown>
           <epgu-constructor-helper-text *ngIf="!componentData.required">
             {{ getHelperText(componentData.required) }}
@@ -74,7 +77,7 @@
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-plain-input
             [invalid]="!state[componentData.id].valid"
-            [name]="componentData.id"output-html.component.ts
+            [name]="componentData.id"
             [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
             [validationShowOn]="validationShowOn"
@@ -86,8 +89,10 @@
             {{ getHelperText(componentData.required) }}
           </epgu-constructor-helper-text>
           <div class="form__error">
-            <small *ngIf="!state[componentData.id].valid"
-              >{{ state[componentData.id]?.errorMessage }}
+            <small
+              *ngIf="businessErrors[componentData.id] || !state[componentData.id].valid"
+              >
+              {{ businessErrors[componentData.id] || state[componentData.id]?.errorMessage }}
             </small>
           </div>
         </ng-container>
@@ -96,36 +101,16 @@
       <div class="form__item" *ngSwitchCase="componentType.RadioInput">
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
-          <div class="form__radio__block">
+          <div
+            [ngClass]="componentData?.attrs?.isHorizontal ? 'form__radio__inline' : 'form__radio__block'"
+          >
             <lib-radio
               *ngFor="let item of componentData?.attrs?.supportedValues"
               [name]="componentData.id"
               [labelText]="item.label"
               (change)="inputChange($event, componentData)"
               [value]="item.value"
-            >
-            </lib-radio>
-          </div>
-        </ng-container>
-      </div>
-
-      <div class="form__item" *ngSwitchCase="componentType.CompositeRadioButton">
-        <ng-container *ngIf="state[componentData.id].isShown">
-          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
-          <div class="form__radio__inline">
-            <lib-radio
-              [name]="componentData.id"
-              (change)="inputChange($event, componentData)"
-              [value]="true"
-              labelText="Да"
-            >
-            </lib-radio>
-            <lib-radio
-              [name]="componentData.id"
-              (change)="inputChange($event, componentData)"
-              [value]="false"
-              checked="checked"
-              labelText="Нет"
+              [checked]="componentData.value === '' && item.value === 'false' || item.value === componentData.value"
             >
             </lib-radio>
           </div>
