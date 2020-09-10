@@ -1,1 +1,8 @@
-<p>config works!</p>
+<form class="config" [formGroup]="configForm" (ngSubmit)="submit()">
+  <div class="config__input" *ngFor="let fieldName of fieldsName">
+    <label [for]="fieldName">fieldName</label>
+    <lib-plain-input id="series" [formControl]="configForm.get(fieldName)"></lib-plain-input>
+  </div>
+
+  <lib-button class="config__submit" type="button">Сохранить настройки</lib-button>
+</form>
