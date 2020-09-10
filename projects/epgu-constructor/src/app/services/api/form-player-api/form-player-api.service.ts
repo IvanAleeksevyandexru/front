@@ -31,7 +31,7 @@ export class FormPlayerApiService {
   }
 
   public getServiceData(serviceId: string, targetId?: string): Observable<FormPlayerApiResponse> {
-    const path = `${this.apiUrl}/getService/${serviceId}`;
+    const path = `${this.apiUrl}/service/${serviceId}/scenario/getService`;
     const userId = this.userId;
     const token = this.token;
     return this.http.post<FormPlayerApiResponse>(path, {
