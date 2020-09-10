@@ -6,8 +6,9 @@
       <lib-dadata-widget
         *ngSwitchCase="'regAddr'"
         [simpleMode]="true"
+        [hideLevels]="field?.hideLevels || []"
         [name]="field.fieldName"
-        [externalApiUrl]="configService.config.externalApiUrl"
+        [externalApiUrl]="configService.config.externalApiUrl + '/'"
         [initValue]="forms[field.fieldName]"
         [(ngModel)]="forms[field.fieldName]"
       >

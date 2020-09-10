@@ -1,11 +1,15 @@
-FROM node:12.16.1 AS compile-image
+#FROM node:12.16.1 AS build-image
 
-WORKDIR /opt/ng
-COPY package.json yarn.lock ./
-RUN /bin/sh -c yarn install
+#WORKDIR /app
+#COPY package.json yarn.lock ./
+#RUN yarn install
 
-ENV PATH="./node_modules/.bin:$PATH"
+#COPY . ./
+#RUN yarn library:build
+#RUN yarn build
 
-COPY . ./
-RUN ng build --prod
-RUN yarn lint
+FROM nginx
+COPY ./dist/epgu-form-frontend/ /usr/share/nginx/html
+COPY /nginx-custom.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80/tcp

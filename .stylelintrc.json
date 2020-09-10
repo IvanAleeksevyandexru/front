@@ -41,6 +41,7 @@
     ]
   },
   "ignoreFiles": [
+    "./src/app/**",
     "./dist/**",
     "./projects/epgu-constructor/src/styles/core/_palettes.scss"
   ]

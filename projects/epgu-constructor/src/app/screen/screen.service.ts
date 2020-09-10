@@ -56,4 +56,8 @@ export class ScreenService {
 
     this.screenStore.display = { ...this.screenStore.display, components };
   }
+
+  public getStore(): ScreenStore {
+    return this.screenStore;
+  }
 }

@@ -13,7 +13,7 @@ import { getPaymentRequestOptions } from './payment.constants';
 @Injectable()
 export class PaymentService {
   private apiUrl: string;
-  private externalUrl: string;
+  private uinApiUrl: string;
   private paymentUrl: string;
 
   constructor(
@@ -22,7 +22,7 @@ export class PaymentService {
     private configService: ConfigService,
   ) {
     this.apiUrl = this.configService.config.apiUrl;
-    this.externalUrl = this.configService.config.externalUrl;
+    this.uinApiUrl = this.configService.config.uinApiUrl;
     this.paymentUrl = this.configService.config.paymentUrl;
   }
 
@@ -68,7 +68,7 @@ export class PaymentService {
    */
   getUinByOrderId(orderId: string, attributeValues: PaymentInfo): Observable<any> {
     return this.http.post(
-      `${this.externalUrl}/api/lk/v1/paygate/uin/1?orderId=${orderId}`,
+      `${this.uinApiUrl}/1?orderId=${orderId}`,
       attributeValues,
       {
         withCredentials: true

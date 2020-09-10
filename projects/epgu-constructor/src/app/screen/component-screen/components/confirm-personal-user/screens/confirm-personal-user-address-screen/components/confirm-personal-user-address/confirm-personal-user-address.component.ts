@@ -38,7 +38,7 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
   ) {
-    this.externalApiUrl = this.configService.config.externalApiUrl;
+    this.externalApiUrl = `${this.configService.config.externalApiUrl}/`;
   }
 
   handleDataChange(change) {

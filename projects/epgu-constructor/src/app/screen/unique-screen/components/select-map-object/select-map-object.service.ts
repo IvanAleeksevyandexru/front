@@ -178,7 +178,9 @@ export class SelectMapObjectService {
       '{% endif %}' +
       '{% endfor  %}' +
       '{% endif %}' +
+      '{% if properties.res.showExtraInfoLink %}' +
       '<a href="#!" class="details-link">Узнать подробнее</a></div>' +
+      '{% endif %}' +
       '{% if properties.res.attributeValues.AREA_DESCR %}' +
       '<div class="map-baloon-content-Bottom">' +
       'На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы ' +
@@ -203,7 +205,7 @@ export class SelectMapObjectService {
           this.onCloseClickWithContext = this.onCloseClick.bind(this);
           parentElement.querySelector('.cross-btn').addEventListener('click', this.onCloseClickWithContext);
           this.detailsLinkModal = () => componentContext.showModalFromTemplate.apply(componentContext, ['detailsTemplate']);
-          parentElement.querySelector('.details-link').addEventListener('click', this.detailsLinkModal);
+          parentElement.querySelector('.details-link')?.addEventListener('click', this.detailsLinkModal);
           this.informationLinkModal = () => componentContext.showModalFromTemplate.apply(componentContext, ['informationTemplate', this]);
           parentElement.querySelector('.information-link')?.addEventListener('click', this.informationLinkModal);
         },

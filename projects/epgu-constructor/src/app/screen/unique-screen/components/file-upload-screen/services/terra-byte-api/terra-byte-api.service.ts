@@ -10,17 +10,13 @@ import { ConfigService } from '../../../../../../config/config.service';
  */
 @Injectable()
 export class TerraByteApiService {
-  isLocalHost = false;
-  apiUrl: string;
-  apiLocalhostUrl: string;
+  fileUploadApiUrl: string;
 
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
   ) {
-    this.isLocalHost = location.hostname === 'localhost';
-    this.apiUrl = configService.config.fileUploadApiUrl;
-    this.apiLocalhostUrl = configService.config.fileUploadLocalhostApiUrl;
+    this.fileUploadApiUrl = configService.config.fileUploadApiUrl;
   }
 
   /**
@@ -57,7 +53,7 @@ export class TerraByteApiService {
    * @param relativePath - относительный путь от API для запросов
    */
   private getTerabyteApiUrl = (relativePath): string =>
-      (this.isLocalHost ? this.apiLocalhostUrl : this.apiUrl) + relativePath;
+      this.fileUploadApiUrl + relativePath;
 
   /**
    * Возращает опции запроса
