@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  appUrl: '',
   apiUrl: '/api',
   dictionaryUrl: 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary',
   externalApiUrl: 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1',
