@@ -15,10 +15,12 @@ import { ConfigService } from '../../../../config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { IGeoCoordsResponse } from './select-map-object.interface';
+import { IGeoCoordsResponse, IdictionaryFilter } from './select-map-object.interface';
 import { UtilsService } from '../../../../services/utils/utils.service';
-import { Utilities } from './utilities';
-import { ComponentBase } from '../../../screen.types';
+import { DictionaryUtilities } from '../../../../shared/services/dictionary/dictionary-utilities-service';
+import { ComponentBase, ScreenStore } from '../../../screen.types';
+import { ScreenService } from '../../../screen.service';
+import { DictionaryFilters } from '../../../../services/api/dictionary-api/dictionary-api.types';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -43,6 +45,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   private componentValue: any;
   private selectedValue: any;
   private selectedValueField: any;
+  private screenStore: ScreenStore;
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
@@ -50,6 +53,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
     private dictionaryApiService: DictionaryApiService,
     private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
+    private screenService: ScreenService,
   ) {
     this.yandexMapsApiKey = this.configService.config.yandexMapsApiKey;
   }
@@ -66,17 +70,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
 
   private initVariable() {
     this.initComponentAttrs();
-    this.initComponentValue();
     this.initSelectedValue();
     this.controlsLogicInit();
   }
 
-  initComponentAttrs() {
+  private initComponentAttrs(): void {
     this.selectMapObjectService.componentAttrs = this.data.attrs;
-  }
-
-  private initComponentValue() {
     this.componentValue = JSON.parse(this.data?.value || '{}');
+    this.screenStore = this.screenService.getStore();
   }
 
   private initSelectedValue() {
@@ -186,13 +187,15 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
    * Подготовка тела POST запроса dictionary
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  private getOptions(dictionaryFilters) {
-    return {
-      ...Utilities.getFilterOptions(this.componentValue, dictionaryFilters),
-      // selectAttributes: ['ZAGS_NAME', 'ADDRESS', 'PHONE', 'EMAIL', 'GET_CONSENT', 'AREA_DESCR'],
-      // TODO add fields to JSON
-      selectAttributes: ['*'],
-    };
+  private getOptions(dictionaryFilters: Array<IdictionaryFilter>): DictionaryFilters {
+    const options = DictionaryUtilities.getFilterOptions(
+      this.componentValue,
+      this.screenStore,
+      dictionaryFilters,
+    );
+    options.filter.selectAttributes = ['*'];
+    options.filter.pageSize = '1000';
+    return options;
   }
 
   private getDictionaryType() {
@@ -224,7 +227,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
     return (searchString) => {
       this.selectMapObjectService.searchMapObject(searchString);
       return of(
-        Utilities.adaptDictionaryForLookupForSelectMap(
+        DictionaryUtilities.adaptDictionaryForLookupForSelectMap(
           this.selectMapObjectService.filteredDictionaryItems,
         ),
       );

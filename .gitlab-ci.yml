@@ -13,6 +13,7 @@ stages:
   - library-build
   - publish
   - build
+  - image
 
 Install:
   stage: install
@@ -79,6 +80,27 @@ Build:
   script:
     - yarn build
     - /devops/notify/notify.sh fronted_new_master_available
+  only:
+    - merge_requests
+    - master
+
+Build-image:
+  stage: image
+  cache:
+    <<: *global_cache
+    policy: pull  
+  services:
+    - name: docker:dind
+      command: ["--insecure-registry", "registry.gosuslugi.local"]
+  image: docker:latest
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD $REGISTRY
+  script:
+    - docker build --tag $REGISTRY/$IMAGE:$CI_COMMIT_SHA --tag $REGISTRY/$IMAGE:$CI_COMMIT_REF_SLUG .
+    - docker push $REGISTRY/$IMAGE:$CI_COMMIT_SHA
+    - docker push $REGISTRY/$IMAGE:$CI_COMMIT_REF_SLUG
   only:
     - merge_requests
     - master
