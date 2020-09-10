@@ -16,7 +16,7 @@
         [simpleMode]="true"
         [disabled]="!isEditable"
         [name]="field.fieldName"
-        [externalApiUrl]="externalApiUrl"
+        [externalApiUrl]="configService.config.externalApiUrl + '/'"
         [initValue]="valueParsed[field.fieldName]"
         [(ngModel)]="valueParsed[field.fieldName]"
       >
