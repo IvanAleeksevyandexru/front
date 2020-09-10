@@ -24,26 +24,25 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
   availableMonths: string[];
 
   private slotsMap: SmevSlotsMapInterface;
-
   private bookedSlot: SmevSlotInterface;
   private bookId;
-
   private errorMessage;
+  private readonly timeSlotApiUrl;
 
   constructor(
     private http: HttpClient,
     private configService: ConfigService
   ) {
-
+    this.timeSlotApiUrl = this.configService.config.timeSlotApiUrl;
   }
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.configService.config.timeSlotApiUrl}/slots`;
+    const path = `${this.timeSlotApiUrl}/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
   }
 
   private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const path = `${this.configService.config.timeSlotApiUrl}/book?srcSystem=BETA`;
+    const path = `${this.timeSlotApiUrl}/book?srcSystem=BETA`;
     return this.http.post<SmevBookResponseInterface>(path, requestBody);
   }
 

@@ -6,6 +6,7 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { ScreenService } from '../screen.service';
 import { UniqueScreenComponentTypes } from './unique-screen.types';
 import { NavigationPayload } from '../../form-player.types';
+import { mockOrderId } from './components/payment/payment.constants';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',
@@ -34,6 +35,14 @@ export class UniqueScreenComponent implements OnInit, Screen {
       .subscribe((screenData: ScreenStore) => {
         this.screenStore = screenData;
       });
+  }
+
+  /**
+   * Возвращает идентификатор заявления
+   */
+  get getOrderId(): string {
+    // TODO: Переделать на получение заявки из ранее данных ответов
+    return mockOrderId;
   }
 
   nextDataForStep(value?: string): void {
