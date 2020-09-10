@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./fp-container.component.scss'],
 })
 export class FpContainerComponent {
-  serviceId = 'local';
+  // NOTICE: for demo purpose
+  serviceId = '10000056555';
+  targetId = '10000006704';
 }

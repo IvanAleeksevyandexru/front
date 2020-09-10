@@ -1,14 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormPlayerApiDraftResponse, FormPlayerApiResponse } from './form-player-api.types';
+import { CookieService } from 'ngx-cookie-service';
+import { Observable } from 'rxjs';
 import { ConfigService } from '../../../config/config.service';
 import { FormPlayerNavigation } from '../../../form-player.types';
-import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
+import { FormPlayerApiDraftResponse, FormPlayerApiResponse } from './form-player-api.types';
 
 @Injectable()
 export class FormPlayerApiService {
   apiUrl: string;
+  userId: string;
+  token: string;
 
   constructor(
     private http: HttpClient,
@@ -16,6 +18,9 @@ export class FormPlayerApiService {
     private cookieService: CookieService
   ) {
     this.apiUrl = configService.config.apiUrl;
+    // TODO: remove when api switch auth to cookie
+    this.userId = this.cookieService.get('u') || '';
+    this.token = this.cookieService.get('acc_t') || '';
   }
 
   public getDraftData(orderId: string): Observable<FormPlayerApiDraftResponse> {
@@ -25,24 +30,26 @@ export class FormPlayerApiService {
     });
   }
 
-  public getServiceData(serviceId: string): Observable<FormPlayerApiResponse> {
-    const path = `${this.apiUrl}/getService/${serviceId}`;
-    return this.http.get<FormPlayerApiResponse>(path, {
+  public getServiceData(serviceId: string, targetId?: string): Observable<FormPlayerApiResponse> {
+    const path = `${this.apiUrl}/service/${serviceId}/scenario/getService`;
+    const userId = this.userId;
+    const token = this.token;
+    return this.http.post<FormPlayerApiResponse>(path, {
+      targetId,
+      userId,
+      token
+    }, {
       withCredentials: false
     });
   }
 
   public navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, data): Observable<FormPlayerApiResponse> {
     const path = `${this.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
-
-    // TODO: remove when api switch auth to cookie
-    const userId = this.cookieService.get('u') || '';
-    const token = this.cookieService.get('acc_t') || '';
-    if (userId) {
-      data.scenarioDto.userId = userId;
+    if (this.userId) {
+      data.scenarioDto.userId = this.userId;
     }
-    if (token) {
-      data.scenarioDto.token = token;
+    if (this.token) {
+      data.scenarioDto.token = this.token;
     }
 
     return this.http.post<FormPlayerApiResponse>(path, {
