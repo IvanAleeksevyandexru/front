@@ -26,10 +26,8 @@ export interface MvdDepartmentInterface {
   value: string;
   title: string;
   attributeValues: {
-    code: string;
-    address: string;
-    FULLNAME: string;
-    PHONE: string;
+    ADDRESS_OUT: string;
+    phone: string;
   };
 }
 
@@ -39,6 +37,17 @@ export interface ZagsDepartmentInterface {
   attributeValues: {
     CODE: string;
     ADDRESS: string;
+    FULLNAME: string;
+    PHONE: string;
+  };
+}
+
+export interface GibddDepartmentInterface {
+  value: string;
+  title: string;
+  attributeValues: {
+    code: string;
+    address: string;
     FULLNAME: string;
     PHONE: string;
   };
