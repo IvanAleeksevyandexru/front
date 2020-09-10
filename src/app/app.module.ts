@@ -5,7 +5,10 @@ import { Config } from '../../projects/epgu-constructor/src/app/config/config.ty
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { CookieService } from 'ngx-cookie-service';
-import { LayoutModule } from './layout/layout.module'
+import { LayoutModule } from './layout/layout.module';
+import { ConfigComponent } from './config/config.component';
+import { FpContainerComponent } from './fp-container/fp-container.component'
+import { AppRoutingModule } from './app.routing'
 
 const formPlayerConfig: Config = {
   apiUrl: environment.apiUrl,
@@ -16,17 +19,20 @@ const formPlayerConfig: Config = {
   paymentUrl: environment.paymentUrl,
   yandexMapsApiKey: environment.yandexMapsApiKey,
   fileUploadApiUrl: environment.fileUploadApiUrl,
-  externalLkUrl: environment.externalLkUrl,
+  lkUrl: environment.lkUrl,
 };
 
 @NgModule({
   declarations: [
     AppComponent,
+    ConfigComponent,
+    FpContainerComponent,
   ],
   imports: [
     BrowserModule,
     LayoutModule,
     FormPlayerModule.forRoot(formPlayerConfig),
+    AppRoutingModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]
