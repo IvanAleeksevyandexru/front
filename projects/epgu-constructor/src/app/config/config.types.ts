@@ -3,7 +3,8 @@
  * @property {string}dictionaryUrl - url до сервиса словарей, как правило apiHostName/api/nsi/v1/dictionary
  * @property {string}externalApiUrl - url до сервиса dadata, как правило apiHostName/api/nsi/v1
  * @property {string}timeSlotApiUrl - url до сервиса тайм слотов, как правило apiHostName/api/lk/v1/equeue/agg
- * @property {string}uinApiUrl - url до сервиса по получению uin для платежей, как правило apiHostName/api/lk/v1/paygate/uin
+ * @property {string}uinApiUrl - url до сервиса по получению УИН для платежей, как правило apiHostName/api/lk/v1/paygate/uin
+ * @property {string}billsApiUrl - url до сервиса по получению информации о счете на оплату, как правило apiHostName/api/pay/v1/bills
  * @property {string}paymentUrl - url до сервиса оплаты, как правило apiHostName
  * @property {string}fileUploadApiUrl - url до хранилища файлов, как правило apiHostName/api/storage/v1/files
  * @property {string}lkUrl - url до личного кабинета, как правило hostName/info
@@ -15,6 +16,7 @@ export interface Config {
   externalApiUrl: string;
   timeSlotApiUrl: string;
   uinApiUrl: string;
+  billsApiUrl: string;
   paymentUrl: string;
   fileUploadApiUrl: string;
   lkUrl: string;

@@ -16,9 +16,11 @@ import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payme
  */
 @Injectable()
 export class PaymentService {
-  private apiUrl: string;
-  private uinApiUrl: string;
-  private paymentUrl: string;
+  private readonly apiUrl: string;
+  private readonly uinApiUrl: string; // API сведений по УИН
+  private readonly paymentUrl: string; // URL для перехода на оплату
+  private readonly billsApiUrl: string; // API сведений по параметрам счета
+  private requestOptions = { withCredentials: true };
   screenStore: ScreenStore;
 
   constructor(
@@ -31,6 +33,7 @@ export class PaymentService {
   ) {
     this.apiUrl = this.configService.config.apiUrl;
     this.uinApiUrl = this.configService.config.uinApiUrl;
+    this.billsApiUrl = this.configService.config.billsApiUrl;
     this.paymentUrl = this.configService.config.paymentUrl;
 
     this.screenService.screenData$
@@ -51,13 +54,6 @@ export class PaymentService {
   static transformSumForPenny(sum): string {
     return sum.padEnd(3, '0').replace(/\d{2}$/, ',$&');
   }
-
-  /**
-   * Возвращает путь API адреса для обращений к сервису TERABYTE
-   *
-   * @param relativePath - относительный путь от API для запросов
-   */
-  private getPayInfoApiUrl = (relativePath): string => this.externalUrl + relativePath;
 
   /**
    * Загружает данные по оплате с реквизитами
@@ -97,14 +93,8 @@ export class PaymentService {
       return uinMockUp.asObservable();
     }
 
-    const path = `/api/lk/v1/paygate/uin/${code}?orderId=${orderId}`;
-    return this.http.post(
-      this.getPayInfoApiUrl(path),
-      attributeValues,
-      {
-        withCredentials: true
-      },
-    ).pipe(
+    const path = `${this.uinApiUrl}/${code}?orderId=${orderId}`;
+    return this.http.post(path, attributeValues, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
       })
@@ -121,13 +111,8 @@ export class PaymentService {
     // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
     // return billMockUp.asObservable();
 
-    const path = `/api/pay/v1/bills?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
-    return this.http.post(
-      this.getPayInfoApiUrl(path), {},
-      {
-        withCredentials: true
-      },
-    ).pipe(
+    const path = `${this.billsApiUrl}?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    return this.http.post(path, {}, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
       }),
@@ -140,13 +125,8 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    */
   getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<any> {
-    const path = `/api/lk/v1/paygate/uin/status/${code}?orderId=${orderId}`;
-    return this.http.get(
-      this.getPayInfoApiUrl(path),
-      {
-        withCredentials: true
-      },
-    ).pipe(
+    const path = `${this.uinApiUrl}/status/${code}?orderId=${orderId}`;
+    return this.http.get(path, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
       }),
@@ -160,8 +140,8 @@ export class PaymentService {
    */
   getPaymentLink(billId: number): string {
     // TODO хардкод. доделать.
-    // eslint-disable-next-line prettier/prettier
-    return `${this.paymentUrl}/?billIds=${billId}&returnUrl=${encodeURIComponent(this.apiUrl)}&subscribe=true`;
+    const returnUrl = encodeURIComponent(`${location.href}${this.apiUrl.replace(/^\//,'')}?getLastScreen=1`);
+    return `${this.paymentUrl}/?billIds=${billId}&returnUrl=${returnUrl}&subscribe=true`;
   }
 
   /**
@@ -170,7 +150,6 @@ export class PaymentService {
    */
   createPaymentRequestOptions(dictItemCode: string): PaymentDictionaryOptionsInterface {
     const { applicantAnswers } = this.screenStore;
-    // eslint-disable-next-line prettier/prettier
     const filterReg = JSON.parse(applicantAnswers.ms1.value);
 
     // TODO хардкод. доделать.

@@ -45,4 +45,11 @@
     [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextDataForStep()">
   </epgu-constructor-confirm-marriage>
+  <epgu-constructor-payment
+    *ngSwitchCase="uniqueComponentName.paymentScr"
+    [header]="screenStore.display?.header"
+    [orderId]="getOrderId"
+    [data]="screenStore.display.components[0]"
+    (nextStepEvent)="nextDataForStep()"
+  ></epgu-constructor-payment>
   </ng-container>

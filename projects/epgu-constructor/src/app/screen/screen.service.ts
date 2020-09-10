@@ -53,6 +53,10 @@ export class ScreenService {
     this.isLoadingSubject.next(this.isLoading);
   }
 
+  /**
+   * Инициализирует начальное состояние ответа компонента
+   * @private
+   */
   private initComponentStateService() {
     this.componentStateService.state = '';
     this.componentStateService.isValid = true;

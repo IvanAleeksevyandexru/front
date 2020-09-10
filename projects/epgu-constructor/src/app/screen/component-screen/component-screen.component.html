@@ -88,13 +88,6 @@
           [data]="(screenStore.display?.components)[0]"
           (nextStepEvent)="nextStep()"
         ></epgu-constructor-add-children-screen>
-
-        <epgu-constructor-payment
-          *ngSwitchCase="screenComponentName.paymentScr"
-          [applicantAnswers]="screenStore.applicantAnswers"
-          [orderId]="getOrderId"
-          [data]="(screenStore.display?.components)[0]"
-        ></epgu-constructor-payment>
       </ng-container>
     </epgu-constructor-screen-pad>
 

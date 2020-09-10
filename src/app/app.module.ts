@@ -16,6 +16,7 @@ const formPlayerConfig: Config = {
   externalApiUrl: environment.externalApiUrl,
   timeSlotApiUrl: environment.timeSlotApiUrl,
   uinApiUrl: environment.uinApiUrl,
+  billsApiUrl: environment.billsApiUrl,
   paymentUrl: environment.paymentUrl,
   yandexMapsApiKey: environment.yandexMapsApiKey,
   fileUploadApiUrl: environment.fileUploadApiUrl,

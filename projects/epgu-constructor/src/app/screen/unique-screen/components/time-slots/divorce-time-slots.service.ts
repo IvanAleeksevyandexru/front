@@ -27,22 +27,22 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
   private bookedSlot: SmevSlotInterface;
   private bookId;
   private errorMessage;
-  private readonly externalLkApiUrl;
+  private readonly timeSlotApiUrl;
 
   constructor(
     private http: HttpClient,
     private configService: ConfigService
   ) {
-    this.externalLkApiUrl = this.configService.config.externalLkApiUrl;
+    this.timeSlotApiUrl = this.configService.config.timeSlotApiUrl;
   }
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.configService.config.timeSlotApiUrl}/slots`;
+    const path = `${this.timeSlotApiUrl}/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
   }
 
   private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const path = `${this.configService.config.timeSlotApiUrl}/book?srcSystem=BETA`;
+    const path = `${this.timeSlotApiUrl}/book?srcSystem=BETA`;
     return this.http.post<SmevBookResponseInterface>(path, requestBody);
   }
 
@@ -127,7 +127,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
     return this.errorMessage;
   }
 
-  changed(data: any): boolean {
+  changed(data: TimeSlotValueInterface): boolean {
     let changed = false;
 
     let department = JSON.parse(data.department);

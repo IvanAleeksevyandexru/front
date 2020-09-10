@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
@@ -36,20 +36,15 @@ export class PaymentComponent implements OnDestroy {
   public validDiscountDate = ''; // Дата до которой действует скидка
   public inLoading = true; // В загрузке?
   public isPaid = false; // Оплачен или нет
+  public isShown = true; // Показывать кнопку или нет
+  public status: PaymentStatus; // Текущий статус получения данных об оплате
   private payCode = 1; // Код типа плательщика
   private payStatusIntervalLink = null;
   private payStatusInterval = 30;
   private billPosition = 0; // Какой счет брать из списка
+  private billId: number;
 
-  // Текущий статус получения данных об оплате
-  private dataStatus: PaymentStatus;
-  set status(status: PaymentStatus) {
-    this.dataStatus = status;
-  }
-  get status(): PaymentStatus {
-    return this.dataStatus;
-  }
-
+  @Input() header = 'Оплата госпошлины'; // Заголовок
   // Номер заявления
   @Input() orderId: string;
   private attrData: ComponentBase;
@@ -58,12 +53,12 @@ export class PaymentComponent implements OnDestroy {
     this.isPaid = false;
     this.inLoading = true;
     this.attrData = data;
-    this.screenService.updateLoading(true);
     this.loadPaymentInfo();
   }
   get data() {
     return this.attrData;
   }
+  @Output() nextStepEvent = new EventEmitter<void>();
 
   constructor(
     private paymentService: PaymentService,
@@ -138,6 +133,9 @@ export class PaymentComponent implements OnDestroy {
     const bill: BillInfoResponse = info.bills[this.billPosition];
 
     this.isPaid = bill.isPaid;
+    if (this.isPaid) {
+      this.nextStep();
+    }
 
     // Ищем сведения по скидке, цене и начислению
     this.validDiscountDate = getDiscountDate(bill);
@@ -150,8 +148,7 @@ export class PaymentComponent implements OnDestroy {
 
     this.sum = String(bill.amount);
     this.inLoading = false;
-    this.screenService.updateLoading(this.inLoading);
-    this.componentStateService.state = this.paymentService.getPaymentLink(bill.billId);
+    this.billId = bill.billId;
   }
 
   /**
@@ -177,6 +174,7 @@ export class PaymentComponent implements OnDestroy {
     }
     if (this.isPaid) {
       clearInterval(this.payStatusIntervalLink);
+      this.nextStep();
     }
   }
 
@@ -186,13 +184,27 @@ export class PaymentComponent implements OnDestroy {
    */
   private setPaymentStatusFromErrorRequest(error: HttpErrorResponse) {
     this.inLoading = false;
-    this.screenService.updateLoading(this.inLoading);
-    this.screenService.updateIsShown(false);
+    this.isShown = false;
     if (error.status === 500) {
       this.status = PaymentStatus.ERROR;
     } else {
       this.status = PaymentStatus.SERVER_ERROR;
     }
+  }
+
+  /**
+   * Переход к следующему экрану
+   */
+  private nextStep(): void {
+    this.nextStepEvent.emit();
+  }
+
+  /**
+   * Переход к экрану оплаты
+   */
+  redirectToPayWindow() {
+    this.inLoading = true;
+    window.location.href = this.paymentService.getPaymentLink(this.billId);
   }
 
   ngOnDestroy() {
