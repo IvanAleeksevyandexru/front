@@ -6,7 +6,7 @@
  * @property {string}uinApiUrl - url до сервиса по получению uin для платежей, как правило apiHostName/api/lk/v1/paygate/uin
  * @property {string}paymentUrl - url до сервиса оплаты, как правило apiHostName
  * @property {string}fileUploadApiUrl - url до хранилища файлов, как правило apiHostName/api/storage/v1/files
- * @property {string}externalLkUrl - url до редактирования личных данных, как правило hostName/info
+ * @property {string}lkUrl - url до личного кабинета, как правило hostName/info
  * @property {string}yandexMapsApiKey - токен для яндекс карт
  */
 export interface Config {
@@ -17,6 +17,6 @@ export interface Config {
   uinApiUrl: string;
   paymentUrl: string;
   fileUploadApiUrl: string;
-  externalLkUrl: string;
+  lkUrl: string;
   yandexMapsApiKey: string;
 }
