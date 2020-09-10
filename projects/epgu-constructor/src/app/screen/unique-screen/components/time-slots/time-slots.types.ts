@@ -16,9 +16,9 @@ export interface SmevSlotsMapInterface {
 
 export interface TimeSlotValueInterface {
   department: string;
-  solemn: string;
-  slotsPeriod: string;
   timeSlotType: string;
+  solemn?: string;
+  slotsPeriod?: string;
   orderId?: string;
 }
 
