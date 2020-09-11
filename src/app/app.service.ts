@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AppConfig } from './app.type'
+import { AppConfig, FormPlayerConfig } from './app.type'
 import { getConfigFromEnvs } from './app.utils'
 
 const LOCAL_STORAGE_KEY = 'EPGU_FORM_PLAYER_TEST_STAND_CONFIG';
+
+
+const initValues: FormPlayerConfig = {
+  serviceId: '',
+  targetId: '',
+  orderId: '',
+}
 
 @Injectable()
 export class AppService {
@@ -23,21 +30,50 @@ export class AppService {
   }
 
   initConfig() {
-    const savedConfig = window.localStorage.getItem(LOCAL_STORAGE_KEY)
+    const savedConfigRaw = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+    let savedConfig: AppConfig;
+    if (savedConfigRaw) {
+      savedConfig = JSON.parse(savedConfigRaw) as AppConfig;
+    }
+
+    const initConfig = this.getInitConfigs();
     if (savedConfig) {
-      this.config = JSON.parse(savedConfig) as AppConfig;
-    } else {
-      this.config = {
-        serviceId: '',
-        ...getConfigFromEnvs()
-      }
+      this.removeNotExistingFieldsFromSavedConfig(savedConfig, initConfig)
+    }
+
+    this.config = {
+      ...initConfig,
+      ...savedConfig
     }
     this.configSubject.next(this.config)
   }
 
+  getInitConfigs() {
+    return {
+      ...initValues,
+      ...getConfigFromEnvs(),
+    }
+  }
+
+  removeNotExistingFieldsFromSavedConfig(savedConfig: AppConfig, initConfig: AppConfig) {
+    const savedKeys = Object.keys(savedConfig);
+    const initKeys = Object.keys(initConfig);
+    const oldKeys = [];
+
+    savedKeys.forEach(savedKey => {
+      if(!initKeys.includes(savedKey)) {
+        oldKeys.push(savedKey);
+      }
+    });
+
+    oldKeys.forEach(key => {
+      delete savedConfig[key]
+    });
+  }
+
   resetConfig() {
     let config = this.config;
-    config = { ...config, ...getConfigFromEnvs() };
+    config = { ...initValues, ...config, ...getConfigFromEnvs() };
     this.saveConfig(config);
   }
 }

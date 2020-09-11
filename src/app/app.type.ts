@@ -1,17 +1,13 @@
-export interface ConfigEnv {
-  apiUrl: string;
-  dictionaryUrl: string;
-  externalApiUrl: string;
-  timeSlotApiUrl: string;
-  uinApiUrl: string;
-  paymentUrl: string;
-  fileUploadApiUrl: string;
-  lkUrl: string;
-  yandexMapsApiKey: string;
+import { Config } from '../../projects/epgu-constructor/src/app/config/config.types'
+
+export interface ConfigEnv extends Config {}
+
+export interface FormPlayerConfig {
+  serviceId: string;
+  targetId: string;
+  orderId: string;
 }
 
-export interface AppConfig extends ConfigEnv {
-  serviceId: string;
-  targetId?: string;
-  orderId?: string;
+export interface AppConfig extends ConfigEnv, FormPlayerConfig  {
+
 }

@@ -1,0 +1,30 @@
+@import "../../../projects/epgu-constructor/src/styles/core";
+
+.config {
+  margin: 40px auto;
+  max-width: 592px;
+  width: 100%;
+  padding: 0 16px;
+
+  &__input {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      text-align: left;
+      color: $color-summer-night;
+
+      @include typ-plain-small;
+    }
+  }
+
+  &__cta-wrapper {
+    height: 50px;
+  }
+
+  &__cta {
+    display: inline-block;
+    margin: 10px 0 0 10px;
+    float: right;
+  }
+}

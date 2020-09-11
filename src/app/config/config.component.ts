@@ -13,6 +13,7 @@ export class ConfigComponent implements OnInit {
   configForm: FormGroup;
   private config;
   fieldsName = [];
+
   constructor(private appService: AppService, private ngUnsubscribe$: UnsubscribeService) {}
 
   ngOnInit(): void {
@@ -32,7 +33,11 @@ export class ConfigComponent implements OnInit {
     this.configForm = new FormGroup(fields);
   }
 
-  submit(): void {
-    console.log(this.configForm.value);
+  saveConfig(): void {
+    this.appService.saveConfig(this.configForm.value);
+  }
+
+  resetConfig(): void {
+    this.appService.resetConfig();
   }
 }
