@@ -28,13 +28,17 @@ hr {
   margin-right: 8px;
 }
 
-.nav::ng-deep .container {
-  padding-left: 0;
+.nav::ng-deep {
+  margin-bottom: 0;
+
+  & .container {
+    padding-left: 0;
+  }
 }
 
 .widget {
   position: relative;
-  height: calc(100vh - 272px);
+  height: calc(100vh - 216px);
   width: 100%;
 
   &__form {
