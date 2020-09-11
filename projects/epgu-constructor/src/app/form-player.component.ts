@@ -24,15 +24,14 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     public formPlayerService: FormPlayerService,
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
-  ) {
-    this.formPlayerService.store$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.screenComponent = this.formPlayerService.getScreenComponent();
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.checkProps();
     const orderId = this.getDraftOrderId();
+    this.formPlayerService.store$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.screenComponent = this.formPlayerService.getScreenComponent();
+    });
     this.formPlayerService.initData(this.serviceId, orderId);
 
     this.navigationService.nextStep$
