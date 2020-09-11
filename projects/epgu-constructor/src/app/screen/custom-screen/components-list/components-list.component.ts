@@ -54,14 +54,10 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   constructor(
     private dictionaryApiService: DictionaryApiService,
     public screenService: ScreenService,
-    private configService: ConfigService,
+    public configService: ConfigService,
   ) {}
 
   // NOTICE: тут была информация о валидации смотри историю гита
-
-  ngOnInit(): void {
-    console.log(this.screenService);
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.state = {};
@@ -209,4 +205,6 @@ export class ComponentsListComponent implements OnInit, OnChanges {
       calcDependedComponent(component, this.state, this.components),
     );
   }
+
+  ngOnInit(): void {}
 }

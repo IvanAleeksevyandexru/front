@@ -1,5 +1,4 @@
 import { NavigationPayload } from '../form-player.types';
-import { Gender } from '../shared/types/gender';
 import { Answer } from '../shared/types/answer';
 import { ScenarioDto } from '../services/api/form-player-api/form-player-api.types';
 

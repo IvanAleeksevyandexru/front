@@ -24,8 +24,8 @@ export class EmptyScreenComponent implements Screen {
 
   get redirectLink() {
     const { applicantAnswers } = this.screenStore;
-    // TODO: handle case if there is no pay1 answered data
-    return applicantAnswers.pay1?.value;
+    const ref = this.screenStore.display?.components[0]?.attrs.ref;
+    return applicantAnswers[ref]?.value;
   }
 
   nextStep(): void {}
