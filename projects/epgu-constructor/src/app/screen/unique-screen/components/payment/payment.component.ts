@@ -210,6 +210,7 @@ export class PaymentComponent implements OnDestroy {
     this.inLoading = true;
     const data = { scenarioDto: this.screenService.getStore() };
     UtilsService.setLocalStorageJSON(FormPlayerService.localStorageComponentDataKey, data);
+    clearInterval(this.payStatusInterval);
     window.location.href = this.paymentService.getPaymentLink(this.billId);
   }
 
