@@ -108,6 +108,7 @@ export interface CustomComponent extends ComponentBase {
   type: CustomScreenComponentTypes;
   id: string;
   hint?: string;
+  isShown?: boolean;
 }
 
 interface SupportedValue {
