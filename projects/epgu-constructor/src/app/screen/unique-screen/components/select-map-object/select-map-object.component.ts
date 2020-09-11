@@ -55,7 +55,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
   ) {
-    this.yandexMapsApiKey = this.configService.config.yandexMapsApiKey;
+    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((config) => {
+      this.yandexMapsApiKey = config.yandexMapsApiKey;
+    });
   }
 
   ngOnInit(): void {

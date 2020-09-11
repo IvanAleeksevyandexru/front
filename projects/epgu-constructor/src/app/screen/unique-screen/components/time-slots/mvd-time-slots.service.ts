@@ -4,13 +4,14 @@ import { ConfigService } from '../../../../config/config.service';
 import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, takeUntil, tap } from 'rxjs/operators';
 import {
   MvdDepartmentInterface,
   SlotInterface, SmevBookResponseInterface,
   SmevSlotsMapInterface,
   SmevSlotsResponseInterface, TimeSlotValueInterface
 } from './time-slots.types';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Injectable()
 export class MvdTimeSlotsService implements TimeSlotsService {
@@ -26,13 +27,16 @@ export class MvdTimeSlotsService implements TimeSlotsService {
   private bookedSlot: SlotInterface;
   private bookId;
   private errorMessage;
-  private readonly timeSlotApiUrl;
+  private timeSlotApiUrl;
 
   constructor(
     private http: HttpClient,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private ngUnsubscribe$: UnsubscribeService
   ) {
-    this.timeSlotApiUrl = this.configService.config.timeSlotApiUrl;
+    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
+      this.timeSlotApiUrl = config.timeSlotApiUrl;
+    });
   }
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {

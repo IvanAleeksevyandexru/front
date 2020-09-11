@@ -12,6 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { getConfigFromEnvs } from './app.utils'
 import { UnsubscribeService } from '../../projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
 import { EpguLibModule } from 'epgu-lib'
+import { ConfigService } from '../../projects/epgu-constructor/src/app/config/config.service'
+import { CONFIG_TOKEN } from '../../projects/epgu-constructor/src/app/config/config.token'
 
 
 
@@ -31,7 +33,16 @@ const formPlayerConfig = getConfigFromEnvs();
     ReactiveFormsModule,
     EpguLibModule,
   ],
-  providers: [CookieService, AppService, UnsubscribeService],
+  providers: [
+    CookieService,
+    AppService,
+    UnsubscribeService,
+    ConfigService,
+    {
+      provide: CONFIG_TOKEN,
+      useValue: formPlayerConfig
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { DictionaryOptions, DictionaryResponse } from './dictionary-api.types';
 import { ConfigService } from '../../../config/config.service';
 import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 
 @Injectable()
 export class DictionaryApiService {
@@ -11,8 +13,11 @@ export class DictionaryApiService {
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
+    private ngUnsubscribe$: UnsubscribeService
   ) {
-    this.dictionaryUrl = configService.config.dictionaryUrl;
+    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
+      this.dictionaryUrl = config.dictionaryUrl;
+    });
   }
 
   /**
