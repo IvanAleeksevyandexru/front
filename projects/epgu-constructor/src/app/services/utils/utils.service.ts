@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as moment_ from 'moment';
 import { Moment } from 'moment';
-
-const moment = moment_;
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +8,22 @@ export class UtilsService {
 
   // TODO: add shared utils
 
+  /**
+   * Получает данные JSON из LocalStorage по ключу
+   * @param key - ключ хранилища
+   */
+  static getLocalStorageJSON(key: string): any | null {
+    return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
+  }
+
+  /**
+   * Устанавливае данные JSON в LocalStorage по ключу
+   * @param key - ключ хранилища
+   * @param data - данные для сохранения
+   */
+  static setLocalStorageJSON(key: string, data: any) {
+    localStorage.setItem(key, JSON.stringify(data));
+  }
 
   /**
    * Устанавливает куку
@@ -50,7 +63,7 @@ export class UtilsService {
 
   /**
    * Удаляет куку с нужным именем
-   * @param name
+   * @param name - имя куки
    */
   static removeCookie(name) {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -73,6 +86,11 @@ export class UtilsService {
     return result === undefined || result === obj ? defaultValue : result;
   };
 
+  /**
+   * Форматирует объект moment даты в нужны формат и возвращает его
+   * @param date - объект даты обёрнутый в библитеку moment
+   * @param format - формат в котором выводить дату (из документации к moment.js)
+   */
   public formatDate(date: Moment, format: string): string {
     return date.format(format);
   }

@@ -19,6 +19,8 @@ import {
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
 } from './payment.types';
+import { UtilsService } from '../../../../services/utils/utils.service';
+import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 
 @Component({
   selector: 'epgu-constructor-payment',
@@ -43,10 +45,9 @@ export class PaymentComponent implements OnDestroy {
   private payStatusInterval = 30;
   private billPosition = 0; // Какой счет брать из списка
   private billId: number;
+  private orderId: string; // Номер заявления
 
   @Input() header = 'Оплата госпошлины'; // Заголовок
-  // Номер заявления
-  @Input() orderId: string;
   private attrData: ComponentBase;
   @Input()
   set data(data: ComponentBase) {
@@ -73,6 +74,9 @@ export class PaymentComponent implements OnDestroy {
    */
   private loadPaymentInfo() {
     const { nsi, dictItemCode } = this.data.attrs;
+
+    const { orderId } = this.screenService.getStore();
+    this.orderId = orderId;
 
     this.paymentService
       .loadPaymentInfo(this.orderId, nsi, dictItemCode)
@@ -204,6 +208,8 @@ export class PaymentComponent implements OnDestroy {
    */
   redirectToPayWindow() {
     this.inLoading = true;
+    const data = { scenarioDto: this.screenService.getStore() };
+    UtilsService.setLocalStorageJSON(FormPlayerService.localStorageComponentDataKey, data);
     window.location.href = this.paymentService.getPaymentLink(this.billId);
   }
 

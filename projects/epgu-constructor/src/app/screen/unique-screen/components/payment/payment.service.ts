@@ -140,7 +140,7 @@ export class PaymentService {
    */
   getPaymentLink(billId: number): string {
     // TODO хардкод. доделать.
-    const returnUrl = encodeURIComponent(`${location.href}${this.apiUrl.replace(/^\//,'')}?getLastScreen=1`);
+    const returnUrl = encodeURIComponent(`${location.href.replace(/\/$/,'')}${this.apiUrl}?getLastScreen=1`);
     return `${this.paymentUrl}/?billIds=${billId}&returnUrl=${returnUrl}&subscribe=true`;
   }
 

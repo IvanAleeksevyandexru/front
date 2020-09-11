@@ -17,21 +17,23 @@ export class FormPlayerComponent implements OnInit, OnChanges {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() serviceId: string;
   @Input() orderId: string;
+
   screenComponent: ScreenComponent;
 
   constructor(
     public formPlayerService: FormPlayerService,
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
-  ) {}
+  ) {
+    this.formPlayerService.store$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.screenComponent = this.formPlayerService.getScreenComponent();
+    });
+  }
 
   ngOnInit(): void {
     this.checkProps();
     const orderId = this.getDraftOrderId();
     this.formPlayerService.initData(this.serviceId, orderId);
-    this.formPlayerService.store$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.screenComponent = this.formPlayerService.getScreenComponent();
-    });
 
     this.navigationService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))

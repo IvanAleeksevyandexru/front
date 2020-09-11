@@ -12,6 +12,7 @@ import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ScreenComponent } from '../../screen/screen.const';
 import { map } from 'rxjs/operators';
+import { UtilsService } from '../utils/utils.service';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -20,6 +21,9 @@ import { map } from 'rxjs/operators';
  */
 @Injectable()
 export class FormPlayerService {
+  // Ключ localStorage, где хранятся данные по компонентам для отображения, если нам подменить сценарий
+  public static localStorageComponentDataKey = 'lastScenarioDto';
+
   private store: FormPlayerApiSuccessResponse;
   private playerLoaded = false;
   private isLoading = false;
@@ -40,16 +44,48 @@ export class FormPlayerService {
     private screenResolverService: ScreenResolverService,
   ) {}
 
+  /**
+   * Возвращает true, если в LocalStorage если данные для показа
+   * @private
+   */
+  private static isHaveOrderDataInLocalStorage(): boolean {
+    return !!localStorage.getItem(FormPlayerService.localStorageComponentDataKey);
+  }
+
+  /**
+   * Проверяет нужно ли нам достать ранее сохранённые данные
+   * для подмены экрана на тот на котором остановились
+   * @private
+   */
+  private isNeedToShowLastScreen(): boolean {
+    return location.href.search(/getLastScreen=/) !== -1 && FormPlayerService.isHaveOrderDataInLocalStorage();
+  }
+
+  /**
+   * Инициализирует данные для показа, смотрим откуда брать данные
+   * @param serviceId - id услуги
+   * @param orderId - id заявления
+   */
   initData(serviceId: string, orderId?: string): void {
     this.updateLoading(true);
 
-    if (orderId) {
-      this.getDraftOrderData(orderId);
+    if (this.isNeedToShowLastScreen()) {
+       this.getDataFromLocalStorage();
     } else {
-      this.getNewOrderData(serviceId);
+      if (orderId) {
+        this.getDraftOrderData(orderId);
+      } else {
+        this.getNewOrderData(serviceId);
+      }
     }
   }
 
+
+
+  /**
+   * Получает и устанавливает данные из черновика по id заявления
+   * @param orderId - id заявления
+   */
   getDraftOrderData(orderId: string) {
     this.formPlayerApiService.getDraftData(orderId)
       .pipe(
@@ -70,6 +106,10 @@ export class FormPlayerService {
     return { scenarioDto: successResponse.body } as FormPlayerApiResponse;
   }
 
+  /**
+   * Получает и устанавливает данные для нового черновика для id услуги
+   * @param serviceId
+   */
   getNewOrderData(serviceId: string) {
     this.formPlayerApiService.getServiceData(serviceId).subscribe(
       (response) => this.processResponse(response),
@@ -78,6 +118,20 @@ export class FormPlayerService {
     );
   }
 
+  /**
+   * Получает и устанавливает данные из localStorage для текущего экрана
+   */
+  getDataFromLocalStorage() {
+    // eslint-disable-next-line max-len
+    const store = UtilsService.getLocalStorageJSON(FormPlayerService.localStorageComponentDataKey);
+    this.processResponse(store);
+    this.updateLoading(false);
+    localStorage.removeItem(FormPlayerService.localStorageComponentDataKey);
+  }
+
+  /**
+   * Возвращает компонент для показа экрана переданного типа
+   */
   getScreenComponent(): ScreenComponent {
     const screenComponent = this.screenResolverService.getScreenComponentByType(this.screenType);
 
@@ -108,6 +162,10 @@ export class FormPlayerService {
     );
   }
 
+  /**
+   * Обработка ответа сервера
+   * @param response - ответ сервера на запрос
+   */
   processResponse(response: FormPlayerApiResponse): void {
     if (this.hasError(response)) {
       this.sendDataError(response);
@@ -116,16 +174,28 @@ export class FormPlayerService {
     }
   };
 
+  /**
+   * Возвращает true, если есть ошибки
+   * @param response - ответ сервера
+   */
   hasError(response: FormPlayerApiResponse) {
     return this.hasRequestErrors(response as FormPlayerApiErrorResponse)
       || this.hasBusinessErrors(response as FormPlayerApiSuccessResponse);
   }
 
+  /**
+   * Возвращает true, если есть ошибки в ответе на запрос
+   * @param response - ответ сервера
+   */
   hasRequestErrors(response: FormPlayerApiErrorResponse): boolean {
     const errors = response?.status;
     return errors === FormPlayerApiErrorStatuses.badRequest;
   }
 
+  /**
+   * Возвращает true, если есть ошибки в ответе с DTO секцией ошибок
+   * @param response - ответ сервера
+   */
   hasBusinessErrors(response: FormPlayerApiSuccessResponse): boolean {
     const errors = response?.scenarioDto?.errors;
     return errors && !!Object.keys(errors).length;
@@ -193,6 +263,11 @@ export class FormPlayerService {
     console.error('Invalid Response');
   }
 
+  /**
+   * Инициализирует хранилища данных для текущего хранилища данных экрана
+   * @param scenarioDto - данные DTO сценария
+   * @private
+   */
   private initScreenStore(scenarioDto: ScenarioDto): void {
     const { display, errors, gender, currentCycledFields, applicantAnswers } = scenarioDto;
     this.componentId = display.components[0].id;
@@ -200,17 +275,26 @@ export class FormPlayerService {
 
     this.screenService.initScreenStore(scenarioDto);
     this.storeSubject.next(this.store);
-
   }
 
+  /**
+   * Обновляет статус в загрузке экран или нет
+   * @param newState - состояние загрузки
+   * @private
+   */
   private updateLoading(newState: boolean): void {
     this.isLoading = newState;
-    this.isLoadingSubject.next(this.isLoading);
-    this.screenService.updateLoading(this.isLoading);
+    this.isLoadingSubject.next(newState);
+    this.screenService.updateLoading(newState);
   }
 
+  /**
+   * Обновляет статус загрузки плеера
+   * param newState - состояние загрузки
+   * @private
+   */
   private updatePlayerLoaded(newState: boolean): void {
     this.playerLoaded = newState;
-    this.playerLoadedSubject.next(this.playerLoaded);
+    this.playerLoadedSubject.next(newState);
   }
 }
