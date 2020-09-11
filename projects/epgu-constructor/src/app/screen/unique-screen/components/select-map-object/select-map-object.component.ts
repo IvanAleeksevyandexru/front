@@ -6,6 +6,7 @@ import {
   EventEmitter,
   ViewChild,
   AfterViewInit,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { switchMap, filter, takeWhile, takeUntil, tap, reduce } from 'rxjs/operators';
 import { interval, of, merge } from 'rxjs';
@@ -20,7 +21,12 @@ import { UtilsService } from '../../../../services/utils/utils.service';
 import { DictionaryUtilities } from '../../../../shared/services/dictionary/dictionary-utilities-service';
 import { ComponentBase, ScreenStore } from '../../../screen.types';
 import { ScreenService } from '../../../screen.service';
-import { DictionaryFilters } from '../../../../services/api/dictionary-api/dictionary-api.types';
+import {
+  DictionaryOptions,
+  DictionaryYMapItem,
+} from '../../../../services/api/dictionary-api/dictionary-api.types';
+import { ModalService } from '../../../../services/modal/modal.service';
+import { CommonModalComponent } from '../../../../shared/components/modal/common-modal/common-modal.component';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -41,9 +47,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   public mapControls = ['zoomControl'];
   public yandexMapsApiKey: string;
   public provider = { search: this.providerSearch() };
+  public selectedValue: any;
+  public mapIsLoaded = false;
 
   private componentValue: any;
-  private selectedValue: any;
   private selectedValueField: any;
   private screenStore: ScreenStore;
 
@@ -54,6 +61,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
     private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
+    private cdr: ChangeDetectorRef,
+    private modalService: ModalService,
   ) {
     this.yandexMapsApiKey = this.configService.config.yandexMapsApiKey;
   }
@@ -81,7 +90,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   }
 
   private initSelectedValue() {
-    if (this.data?.value && this.data?.attrs?.selectedValue) {
+    if (this.data?.value && this.data?.value !== '{}' && this.data?.attrs?.selectedValue) {
       this.selectedValue = this.getSelectedValue();
       this.selectedValueField = this.data.attrs.selectedValueMapping?.value;
     }
@@ -96,9 +105,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   }
 
   private subscribeToEmmitNextStepData() {
-    this.selectMapObjectService.controlValue
+    this.selectMapObjectService.selectedValue
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((value: any) => this.nextStepEvent.emit(JSON.stringify(value)));
+      .subscribe((value: any) => {
+        this.selectedValue = value;
+        this.cdr.detectChanges();
+      });
   }
 
   private controlsLogicInit() {
@@ -117,9 +129,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   private initMap() {
     this.tryInitMapCenter();
     this.selectMapObjectService.ymaps = (window as any).ymaps;
-    this.fillCoords(
-      this.selectMapObjectService.componentAttrs.dictionaryFilter,
-    ).subscribe((coords: IGeoCoordsResponse) => this.handleFilledCoordinate(coords));
+    this.yaMapService.map.copyrights.togglePromo();
+    this.fillCoords(this.selectMapObjectService.componentAttrs.dictionaryFilter).subscribe(
+      (coords: IGeoCoordsResponse) => {
+        this.handleFilledCoordinate(coords);
+        this.mapIsLoaded = true;
+      },
+    );
   }
 
   /**
@@ -127,7 +143,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
    * @param coords ответ с бэка с координатами точек
    */
   private handleFilledCoordinate(coords: IGeoCoordsResponse) {
-    this.saveCoords(coords);
+    this.selectMapObjectService.saveCoords(coords);
     this.selectMapObjectService.placeOjectsOnMap(this.yaMapService.map);
     this.tryInitSelectedObject();
   }
@@ -187,29 +203,20 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
    * Подготовка тела POST запроса dictionary
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  private getOptions(dictionaryFilters: Array<IdictionaryFilter>): DictionaryFilters {
-    const options = DictionaryUtilities.getFilterOptions(
-      this.componentValue,
-      this.screenStore,
-      dictionaryFilters,
-    );
-    options.filter.selectAttributes = ['*'];
-    options.filter.pageSize = '1000';
-    return options;
+  private getOptions(dictionaryFilters: Array<IdictionaryFilter>): DictionaryOptions {
+    return {
+      ...DictionaryUtilities.getFilterOptions(
+        this.componentValue,
+        this.screenStore,
+        dictionaryFilters,
+      ),
+      selectAttributes: ['*'],
+      pageSize: '10000',
+    };
   }
 
   private getDictionaryType() {
     return this.selectMapObjectService.componentAttrs.dictionaryType;
-  }
-
-  /**
-   * Заполняет словарь в сервисе полученными координатами
-   * @param coords массив гео координат для объектов
-   */
-  private saveCoords(coords: IGeoCoordsResponse) {
-    this.selectMapObjectService.filteredDictionaryItems =
-      this.selectMapObjectService.dictionary.items || [];
-    this.selectMapObjectService.fillDictionaryItemsWithCoords(coords);
   }
 
   // TODO Сделать интерфейс для mapObject
@@ -232,5 +239,36 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
         ),
       );
     };
+  }
+
+  public selectObject() {
+    const answer = { ...this.selectedValue, children: null };
+    this.nextStepEvent.emit(JSON.stringify(answer));
+  }
+
+  /**
+   * Показывает модальное окно на основе шаблона
+   * @param templateName имя шаблона из this.templates
+   * @param item контекст балуна
+   */
+  public showModalFromTemplate(templateName, item) {
+    this.modalService.openModal(CommonModalComponent, {
+      modalTemplateRef: this[templateName],
+      item,
+    });
+  }
+
+  /**
+   * Метод раскрывает выбранный зал на панели слева
+   * @param mapObject объект на карте
+   */
+  public expandObject(mapObject: DictionaryYMapItem): void {
+    if (mapObject.expanded) return;
+    this.selectedValue.children.forEach((child: DictionaryYMapItem) => {
+      // eslint-disable-next-line no-param-reassign
+      child.expanded = false;
+    });
+    // eslint-disable-next-line no-param-reassign
+    mapObject.expanded = true;
   }
 }

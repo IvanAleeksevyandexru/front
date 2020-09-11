@@ -1,6 +1,6 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <div class="widget">
-  <div class="widget__form widget-form">
-    <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+  <div *ngIf="mapIsLoaded" class="widget__form widget-form">
     <span class="widget-form__title" [innerHTML]="data.label | safeHtml"></span>
     <div class="widget-form__input">
       <lib-lookup
@@ -10,6 +10,7 @@
         (changed)="lookupChanged($event?.originalItem, libLookup)"
         [showExpandCollapse]="false"
         [queryMinSymbolsCount]="0"
+        [virtualScroll]="true"
         #libLookup
       >
       </lib-lookup>
@@ -22,6 +23,28 @@
     [center]="mapCenter"
     [controls]="mapControls">
   </lib-map>
+  <div *ngIf="selectedValue" class="map-objects-list">
+    <div class="cross-btn" (click)="selectMapObjectService.closeBalloon()"></div>
+    <div
+      *ngFor="let mapObject of selectedValue.children"
+      [ngClass]="{ expanded: mapObject.expanded }"
+      (click)="expandObject(mapObject)"
+      class="map-object"
+    >
+      <h6 class="map-object__header">{{mapObject.title}}</h6>
+      <ng-container *ngIf="mapObject.expanded">
+        <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
+          <span class="map-object__label">{{itemContent.label}}: </span>
+          <span class="PGU-AttrsValue">{{itemContent.value}}</span>
+        </div>
+        <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">На данной площадке действуют дополнительные 
+условия оказания услуг нажмите чтобы 
+          <a href="#!" (click)="showModalFromTemplate('informationTemplate', mapObject)" class="information-link">ознакомиться</a>
+        </div>
+        <lib-button *ngIf="mapObject.agreement" width="wide" (click)="selectObject()">Выбрать</lib-button>
+      </ng-container>
+    </div>
+  </div>
 </div>
 
 <ng-template #detailsTemplate>
