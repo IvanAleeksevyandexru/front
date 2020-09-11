@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared.module';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
+import { GibddTimeSlotsService } from './gibdd-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { TimeSlotsConstants } from './time-slots.constants';
 
@@ -20,6 +21,7 @@ const COMPONENTS = [
     TimeSlotsConstants,
     BrakTimeSlotsService,
     DivorceTimeSlotsService,
+    GibddTimeSlotsService,
     MvdTimeSlotsService],
   imports: [
     CommonModule,
