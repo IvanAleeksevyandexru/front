@@ -191,58 +191,73 @@ hr {
   }
 }
 
-// @include tablets-down {
-//   .widget {
-//     height: calc(100vh - 102px);
-//     overflow: hidden;
-//   }
+ @include laptop-down {
+   .widget {
+     height: calc(100vh - 104px);
+     overflow: hidden;
+   }
 
-//   .widget__form {
-//     position: static;
-//     width: auto;
-//     padding: 0 0 12px 0;
-//   }
+   .widget__form {
+     position: static;
+     width: auto;
+     padding: 0 0 12px 0;
+   }
 
-//   .widget-form__title {
-//     display: none;
-//   }
+   .widget-form__title {
+     display: none;
+   }
 
-//   .widget-form__input {
-//     padding: 0 12px;
-//   }
+   .widget-form__input {
+     padding: 0 12px;
+   }
 
-//   .cross-btn {
-//     position: relative;
-//     left: calc(100% - 44px);
-//   }
+   .cross-btn {
+     position: relative;
+     left: calc(100% - 44px);
+   }
 
-//   .map-objects-list {
-//     height: auto;
-//     left: 0;
-//     top: initial;
-//     width: auto;
-//     bottom: 0;
-//     max-height: calc(100vh - 250px);
-//     overflow-y: auto;
-//   }
+   .map-objects-list {
+     height: auto;
+     left: 0;
+     top: initial;
+     width: 100%;
+     bottom: 0;
+     max-height: calc(100vh - 250px);
+     overflow-y: auto;
+   }
 
-//   .nav::ng-deep {
-//     .container {
-//       padding: 0 16px;
-//     }
+   .nav::ng-deep {
+     .container {
+       padding: 0 16px;
+       margin: 0;
+     }
 
-//     margin-bottom: 12px;
-//   }
+     margin-bottom: 12px;
+   }
 
-//   ::ng-deep {
-//     .footer {
-//       display: none;
-//     }
-//   }
+   ::ng-deep {
+     .footer {
+       display: none;
+     }
+   }
 
-//   .map-object {
-//     &__header-close {
-//       color: $color-gosblue;
-//     }
-//   }
-// }
+   .map-object {
+     &__header-close {
+       color: $color-gosblue;
+     }
+   }
+ }
+
+ @include tablets-down() {
+   .widget {
+     height: calc(100vh - 104px);
+     overflow: hidden;
+   }
+ }
+
+@include phones-down() {
+  .widget {
+    height: calc(100vh - 44px);
+    overflow: hidden;
+  }
+}
