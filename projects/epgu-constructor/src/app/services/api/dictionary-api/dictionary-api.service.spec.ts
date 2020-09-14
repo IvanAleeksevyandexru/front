@@ -4,6 +4,7 @@ import { DictionaryApiService } from './dictionary-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConfigService } from '../../../config/config.service';
 import { ConfigServiceStub } from '../../../config/config.service.stub';
+import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 
 describe('DictionaryApiService', () => {
   let service: DictionaryApiService;
@@ -29,6 +30,7 @@ describe('DictionaryApiService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         DictionaryApiService,
+        UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });

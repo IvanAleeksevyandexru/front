@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Config } from './config.types';
+import { of } from 'rxjs';
 
 @Injectable()
 export class ConfigServiceStub {
@@ -16,7 +17,13 @@ export class ConfigServiceStub {
     yandexMapsApiKey: '',
   };
 
+  config$ = of(this._config);
+
   get config(): Config {
     return this._config;
+  }
+
+  set config(newConfig) {
+    this._config = newConfig;
   }
 }
