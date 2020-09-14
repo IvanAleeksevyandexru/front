@@ -19,7 +19,7 @@ const COMPONENTS = [
     CommonModule,
     SharedModule,
     SubComponentsModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
   ]
 })
 export class ConfirmPersonalUserDataScreenModule { }

@@ -35,7 +35,7 @@ import { FormPlayerApiService } from './services/api/form-player-api/form-player
     UniqueScreenModule,
     InvitationErrorScreenModule,
     SharedModule,
-    EpguLibModule.forRoot(),
+    EpguLibModule,
     InfoScreenModule,
   ],
   providers: [

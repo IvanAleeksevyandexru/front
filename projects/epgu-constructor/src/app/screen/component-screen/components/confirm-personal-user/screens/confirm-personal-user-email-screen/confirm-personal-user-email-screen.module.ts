@@ -15,7 +15,7 @@ const COMPONENTS = [ConfirmPersonalUserEmailScreenComponent, ConfirmPersonalUser
     CommonModule,
     SharedModule,
     SubComponentsModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
   ]
 })
 export class ConfirmPersonalUserEmailScreenModule { }

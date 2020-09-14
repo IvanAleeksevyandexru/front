@@ -50,7 +50,7 @@ const PIPES = [
   exports: [...COMPONENTS, ...PIPES],
   imports: [
       CommonModule,
-      EpguLibModule.forChild(),
+      EpguLibModule,
       FormsModule,
   ],
   entryComponents: [
