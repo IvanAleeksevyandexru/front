@@ -20,6 +20,7 @@ import { CommonModalComponent } from './components/modal/common-modal/common-mod
 import { OutputHtmlComponent } from './components/output-html/output-html.component';
 import { GenderRadioButtonComponent } from './components/gender-radio-button/gender-radio-button.component';
 import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
+import { LongButtonComponent } from './components/long-button/long-button.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -36,6 +37,7 @@ const COMPONENTS = [
   GenderRadioButtonComponent,
   OutputHtmlComponent,
   ComponentsListComponent,
+  LongButtonComponent,
 ];
 
 const PIPES = [
