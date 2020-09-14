@@ -1,11 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
+  CustomComponent,
+  CustomComponentAttrValidation,
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
-  CustomComponent,
   CustomComponentOutputData,
   CustomComponentState,
   CustomScreenComponentTypes,
@@ -26,6 +28,7 @@ import { DictionaryApiService } from '../../../services/api/dictionary-api/dicti
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ConfigService } from '../../../config/config.service';
 import { ComponentBase, ScreenStore } from '../../screen.types';
+import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -33,13 +36,21 @@ import { ComponentBase, ScreenStore } from '../../screen.types';
   styleUrls: ['./components-list.component.scss'],
 })
 export class ComponentsListComponent implements OnInit {
-  // <-- constant
-  componentType = CustomScreenComponentTypes;
+  form: FormArray;
+
+  private readonly componentType = CustomScreenComponentTypes;
+  private availableTypesForCheckDependence: Array<CustomScreenComponentTypes> = [
+    CustomScreenComponentTypes.RadioInput,
+    CustomScreenComponentTypes.Dictionary,
+    CustomScreenComponentTypes.Lookup,
+    CustomScreenComponentTypes.StringInput,
+    CustomScreenComponentTypes.DateInput,
+    CustomScreenComponentTypes.AddressInput,
+  ];
 
   // <-- variables
-  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  validationShowOn = ValidationShowOn.IMMEDIATE;
   state: CustomComponentState = {};
-  businessErrors: { [key: string]: string } = {};
   selectedDropDown: { [key: string]: any } = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
   dropDown: { [key: string]: CustomComponentDropDownStateInterface } = {};
@@ -51,35 +62,82 @@ export class ComponentsListComponent implements OnInit {
     private dictionaryApiService: DictionaryApiService,
     public screenService: ScreenService,
     private configService: ConfigService,
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
+    private unsubscribe$: UnsubscribeService,
   ) {}
 
-  // NOTICE: тут была информация о валидации смотри историю гита
-
   ngOnInit(): void {
+    this.form = this.fb.array([]);
     this.screenService.screenData$
       .pipe(
         distinctUntilChanged(
           (prev: ScreenStore, next: ScreenStore) => JSON.stringify(prev) === JSON.stringify(next),
         ),
-        tap((screen: ScreenStore) => {
-          this.businessErrors = screen.errors;
-        }),
         map((screen: ScreenStore): Array<ComponentBase> => screen.display.components),
-      )
-      // TODO тут должен приходить <ComponentBase>.
-      //  Нужно будет переделать, когда полностью откажемся от локального стэйта компонента
-      //  и будем юзать реактивный
-      .subscribe((components: Array<CustomComponent>) => {
-        console.group('ScreenStore detected changes');
-        console.log(components);
-        console.groupEnd();
+        tap((components: Array<CustomComponent>) => {
+          this.form = this.fb.array([]);
+          components.forEach((component: CustomComponent) => {
+            const hasRelatedRef: number = component.attrs?.ref?.length;
+            const validators: Array<Validators> = (component.attrs?.validation || [])
+              .filter((v: CustomComponentAttrValidation) => v.type === 'RegExp')
+              .map((v: CustomComponentAttrValidation) => Validators.pattern(v.value));
 
-        this.state = {};
-        this.components = components;
-        this.components.forEach((component: CustomComponent) => this.initComponent(component));
-        this.emmitChanges();
-        this.checkDependenceOfTheComponent();
+            if (component.required) {
+              validators.push(Validators.required);
+            }
+
+            const group: FormGroup = this.fb.group({
+              ...component,
+              value: [component.value, validators],
+              isShown: !hasRelatedRef,
+            });
+
+            this.form.push(group);
+          });
+        }),
+        switchMap(() =>
+          this.form.valueChanges.pipe(
+            startWith(this.form.getRawValue()),
+            takeUntil(this.unsubscribe$),
+          ),
+        ),
+      )
+      .subscribe((components: Array<CustomComponent>) => {
+        console.log(this.form);
+        components.forEach((component: CustomComponent) => {
+          if (this.availableTypesForCheckDependence.includes(component.type)) {
+            this.emmitChanges(component);
+          } else {
+            this.emmitChanges();
+          }
+        });
       });
+  }
+
+  private calcDependedFormGroup(component: CustomComponent) {
+    const isLookup: boolean = component.type === CustomScreenComponentTypes.Lookup;
+    const components: Array<any> = this.form.getRawValue();
+    const dependentComponents: Array<CustomComponent> = components.filter((c: CustomComponent) =>
+      c.attrs?.ref?.some((el) => el.relatedRel === component.id),
+    );
+
+    dependentComponents.forEach((dependentComponent: CustomComponent) => {
+      const index: number = components.findIndex(
+        (c: CustomComponent) => c.id === dependentComponent.id,
+      );
+
+      const isShown = dependentComponent.attrs.ref.some((item) => {
+        const stateRelatedRel = isLookup
+          ? components.find((f) => f.id === item.relatedRel)?.value
+          : components.find((f) => f.id === item.relatedRel);
+        return stateRelatedRel?.value === item.val;
+      });
+
+      this.form.get(`${index}.isShown`).patchValue(isShown, { emitEvent: false });
+    });
+
+    this.cdr.detectChanges();
   }
 
   /**
@@ -129,15 +187,36 @@ export class ComponentsListComponent implements OnInit {
 
   selectDropDown($event: any, componentData: CustomComponent) {
     this.state[componentData.id].value = $event.originalItem;
+    // this.checkDropDownValidation(componentData);
     this.emmitChanges();
+  }
+
+  dropDownValidationOnBlur(componentData: CustomComponent): void {
+    this.checkDropDownValidation(componentData);
+    this.emmitChanges();
+  }
+
+  private checkDropDownValidation(component: CustomComponent): void {
+    const text = this.selectedDropDown[component.id]?.text || '';
+    const validationResult = CheckInputValidationComponentList(text, component);
+    this.setValidationState(validationResult, component.id, text);
   }
 
   inputChange($event: Event, component: CustomComponent) {
     const { value } = $event.target as HTMLInputElement;
     this.state[component.id].value = value;
+    this.checkInputValidation(component, value);
+    this.emmitChanges(component);
+  }
+
+  inputValidationOnBlur(component: CustomComponent): void {
+    const { value } = this.state[component.id];
+    this.checkInputValidation(component, value);
+  }
+
+  private checkInputValidation(component: CustomComponent, value: string): void {
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationState(inputValidationResult, component.id, value);
-    this.emmitChanges(component);
   }
 
   dateChange($event: string, component: CustomComponent) {
@@ -183,7 +262,6 @@ export class ComponentsListComponent implements OnInit {
       this.state[componentId].errorMessage = errMsg;
       this.emmitChanges();
     };
-
     if (inputValidationResult === -1) {
       handleSetState(true);
     } else {
@@ -200,7 +278,7 @@ export class ComponentsListComponent implements OnInit {
 
   emmitChanges(component?: CustomComponent) {
     if (component) {
-      calcDependedComponent(component, this.state, this.components);
+      this.calcDependedFormGroup(component);
     }
     const prepareStateForSending = this.getPreparedStateForSending();
     this.changes.emit(prepareStateForSending);
@@ -211,10 +289,10 @@ export class ComponentsListComponent implements OnInit {
    * Родительскому компоненту нужны данные компонента и состояние валидности.
    */
   private getPreparedStateForSending() {
-    return Object.entries(this.state).reduce((acc, [key, val]) => {
-      const { value, valid, isShown } = val;
+    return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
+      const { value, valid = this.form.get([key, 'value']).valid, isShown } = val;
       if (isShown) {
-        acc[key] = { value, valid };
+        acc[val.id] = { value, valid };
       }
       return acc;
     }, {});
