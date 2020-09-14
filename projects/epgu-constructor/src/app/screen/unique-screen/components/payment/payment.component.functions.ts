@@ -1,6 +1,8 @@
-import * as moment from 'moment';
-import { BillInfoAddAttrsResponse, BillInfoResponse, BillsInfoResponse } from './payment.types';
+import * as moment_ from 'moment';
 import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
+import { BillInfoAddAttrsResponse, BillInfoResponse, BillsInfoResponse } from './payment.types';
+
+const moment = moment_;
 
 /**
  * Возвращает значение аттрибута объекта счета или null
