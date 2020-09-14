@@ -19,6 +19,8 @@ import { ApplicantAnswersService } from './services/applicant-answers/applicant-
 import { CommonModalComponent } from './components/modal/common-modal/common-modal.component';
 import { OutputHtmlComponent } from './components/output-html/output-html.component';
 import { GenderRadioButtonComponent } from './components/gender-radio-button/gender-radio-button.component';
+import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
+import { LongButtonComponent } from './components/long-button/long-button.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -34,6 +36,8 @@ const COMPONENTS = [
   HelperTextComponent,
   GenderRadioButtonComponent,
   OutputHtmlComponent,
+  ComponentsListComponent,
+  LongButtonComponent,
 ];
 
 const PIPES = [

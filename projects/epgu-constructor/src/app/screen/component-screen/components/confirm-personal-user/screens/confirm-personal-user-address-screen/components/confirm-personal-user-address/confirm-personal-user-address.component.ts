@@ -4,13 +4,12 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../../../config/config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constants/dates';
@@ -23,7 +22,7 @@ const moment = moment_;
   styleUrls: ['./confirm-personal-user-address.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
+export class ConfirmPersonalUserAddressComponent implements OnChanges {
   @ViewChild('dataForm', { static: false }) dataForm;
 
   @Input() data: ConfirmAddressInterface;
@@ -31,61 +30,64 @@ export class ConfirmPersonalUserAddressComponent implements OnInit, OnChanges {
   @Input() isEditable: boolean;
   @Output() dataEditedEvent = new EventEmitter();
   valueParsed: any;
-  externalApiUrl: string;
 
   constructor(
-    private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
-  ) {
-    this.externalApiUrl = `${this.configService.config.externalApiUrl}/`;
-  }
+  ) {}
 
-  handleDataChange(change) {
-    const { regAddr, regDate, ...restFields } = change;
-    const { fullAddress } = regAddr || {};
-    return JSON.stringify({
-      regAddr: fullAddress || '',
-      regDate:
-        moment(regDate).format(DATE_STRING_DOT_FORMAT) || moment().format(DATE_STRING_DOT_FORMAT),
-      ...restFields,
-    });
-  }
-
-  ngOnInit(): void {
-    this.setState();
-  }
-
-  setState() {
-    this.valueParsed = JSON.parse(this.data.value);
-    if (this.valueParsed.regDate) {
-      const date = moment(this.valueParsed.regDate);
-      const isValidDate = date.isValid();
-      if (isValidDate) {
-        this.valueParsed.regDate = date.toDate();
-      } else {
-        this.valueParsed.regDate = moment().toDate();
-      }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.isEditable.currentValue && this.isEditable) {
+      this.subscribeFormChanges();
     }
-    this.changeDetection.detectChanges();
+    if (changes.data?.currentValue) {
+      this.setState();
+      this.emmitData();
+      setTimeout(() => {
+        this.changeDetection.detectChanges();
+      });
+    }
   }
 
-  handleClick() {
+  setState(): void {
+    this.valueParsed = JSON.parse(this.data.value);
+    if (this.valueParsed?.regDate) {
+      this.valueParsed.regDate = this.getDate(this.valueParsed.regDate);
+    }
+  }
+
+  private subscribeFormChanges(): void {
+    this.dataForm.form.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((change) => this.formChangesHandler(change));
+  }
+
+  private formChangesHandler(change): void {
+    this.valueParsed = change;
+    this.emmitData();
+  }
+
+  private emmitData(): void {
+    const dataToSend = this.prepareDataToSend();
+    this.dataEditedEvent.emit(dataToSend);
+  }
+
+  prepareDataToSend(): string {
+    const { regAddr, regDate } = this.valueParsed;
+    const dataToSend = { ...this.valueParsed };
+    if (typeof regAddr === 'string') {
+      dataToSend.regAddr = { fullAddress: regAddr };
+    }
+    dataToSend.regDate = moment(regDate).format(DATE_STRING_DOT_FORMAT);
+    return JSON.stringify(dataToSend);
+  }
+
+  handleClick(): void {
     this.isEditable = true;
   }
 
-  ngOnChanges() {
-    if (this.isEditable) {
-      this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
-        this.valueParsed = change;
-        this.data.value = this.handleDataChange(change);
-        this.dataEditedEvent.emit(this.data.value);
-      });
-    } else {
-      setTimeout(() => {
-        this.setState();
-      });
-      this.dataEditedEvent.emit(this.data.value);
-    }
+  private getDate(regDate: string): Date {
+    const date = moment(regDate);
+    return date.isValid() ? date.toDate() : moment().toDate();
   }
 }

@@ -16,10 +16,10 @@ import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payme
  */
 @Injectable()
 export class PaymentService {
-  private readonly apiUrl: string;
-  private readonly uinApiUrl: string; // API сведений по УИН
-  private readonly paymentUrl: string; // URL для перехода на оплату
-  private readonly billsApiUrl: string; // API сведений по параметрам счета
+  private apiUrl: string;
+  private uinApiUrl: string; // API сведений по УИН
+  private paymentUrl: string; // URL для перехода на оплату
+  private billsApiUrl: string; // API сведений по параметрам счета
   private requestOptions = { withCredentials: true };
   screenStore: ScreenStore;
 
@@ -31,10 +31,12 @@ export class PaymentService {
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService
   ) {
-    this.apiUrl = this.configService.config.apiUrl;
-    this.uinApiUrl = this.configService.config.uinApiUrl;
-    this.billsApiUrl = this.configService.config.billsApiUrl;
-    this.paymentUrl = this.configService.config.paymentUrl;
+    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
+      this.apiUrl = config.apiUrl;
+      this.uinApiUrl = config.uinApiUrl;
+      this.billsApiUrl = config.billsApiUrl;
+      this.paymentUrl = config.paymentUrl;
+    });
 
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))

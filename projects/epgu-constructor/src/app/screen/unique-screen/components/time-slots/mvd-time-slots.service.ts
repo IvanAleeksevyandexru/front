@@ -4,13 +4,15 @@ import { ConfigService } from '../../../../config/config.service';
 import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, takeUntil, tap } from 'rxjs/operators';
 import {
   MvdDepartmentInterface,
   SlotInterface, SmevBookResponseInterface,
   SmevSlotsMapInterface,
-  SmevSlotsResponseInterface, TimeSlotValueInterface
+  SmevSlotsResponseInterface,
+  TimeSlotValueInterface
 } from './time-slots.types';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Injectable()
 export class MvdTimeSlotsService implements TimeSlotsService {
@@ -26,13 +28,16 @@ export class MvdTimeSlotsService implements TimeSlotsService {
   private bookedSlot: SlotInterface;
   private bookId;
   private errorMessage;
-  private readonly timeSlotApiUrl;
+  private timeSlotApiUrl;
 
   constructor(
     private http: HttpClient,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private ngUnsubscribe$: UnsubscribeService
   ) {
-    this.timeSlotApiUrl = this.configService.config.timeSlotApiUrl;
+    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
+      this.timeSlotApiUrl = config.timeSlotApiUrl;
+    });
   }
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
@@ -148,21 +153,11 @@ export class MvdTimeSlotsService implements TimeSlotsService {
   private getSlotsRequest() {
     // TODO HARDCODE, возможно, стоит перенести в json
     return {
-      organizationId: [this.department.attributeValues.code],
-      caseNumber: this.orderId,
-      serviceId: ['10000593393'],
-      eserviceId: '10000070732',
-      routeNumber: '46000000000',
-      attributes: [
-        {
-          name: 'organizationId',
-          value: this.department.attributeValues.code
-        },
-        {
-          name: 'serviceId',
-          value: '10000593393'
-        }
-      ]
+      organizationId: [this.department.value],
+      serviceId: ['10000014784'],
+      eserviceId: '555666777',
+      serviceCode: '-10000019911',
+      attributes: []
     };
   }
 
@@ -171,29 +166,21 @@ export class MvdTimeSlotsService implements TimeSlotsService {
       this.bookId = uuid.v4();
     }
     return {
-      preliminaryReservation: 'true',
-      address: this.department.attributeValues.address,
+      address: this.department.attributeValues.ADDRESS_OUT,
       orgName: this.department.title,
-      routeNumber: '46000000000',
-      serviceCode: '-10001970000',
-      subject: 'Запись на прием',
-      eserviceId: '10000070732',
+      serviceCode: '-10000019911',
+      subject: 'Выдача паспорта гражданина Российской Федерации в случае утраты (хищения) паспорта',
+      eserviceId: '555666777',
       bookId: this.bookId,
-      organizationId: this.department.attributeValues.code,
-      calendarName: 'Запись на прием',
-      parentOrderId: this.orderId,
-      preliminaryReservationPeriod: '240',
-      attributes: [
-        {
-          name: 'serviceId',
-          value: '10000593393'
-        }
-      ],
+      organizationId: this.department.value,
+      calendarName: 'на приём в подразделения МВД РФ',
+      caseNumber: this.orderId,
+      attributes: [],
       slotId: [
         selectedSlot.slotId
       ],
       serviceId: [
-        '10000593393'
+        '10000014784'
       ]
     };
   }

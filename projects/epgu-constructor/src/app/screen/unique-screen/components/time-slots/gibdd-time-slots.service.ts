@@ -4,62 +4,62 @@ import { ConfigService } from '../../../../config/config.service';
 import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, takeUntil, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import {
   SmevBookResponseInterface,
-  SmevSlotInterface,
+  SlotInterface,
   SmevSlotsMapInterface,
-  SmevSlotsResponseInterface, TimeSlotValueInterface,
-  ZagsDepartmentInterface
+  SmevSlotsResponseInterface,
+  GibddDepartmentInterface,
+  TimeSlotValueInterface
 } from './time-slots.types';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Injectable()
-export class BrakTimeSlotsService implements TimeSlotsService {
+export class GibddTimeSlotsService implements TimeSlotsService {
 
-  private department: ZagsDepartmentInterface;
-  private solemn: boolean;
-  private slotsPeriod;
+  private department: GibddDepartmentInterface;
   private orderId;
 
   public activeMonthNumber: number;
   public activeYearNumber: number;
+  availableMonths: string[];
 
   private slotsMap: SmevSlotsMapInterface;
-  private bookedSlot: SmevSlotInterface;
+
+  private bookedSlot: SlotInterface;
   private bookId;
+
   private errorMessage;
-  private timeSlotApiUrl;
 
   constructor(
     private http: HttpClient,
-    private configService: ConfigService,
-    private ngUnsubscribe$: UnsubscribeService
+    private configService: ConfigService
   ) {
-    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
-      this.timeSlotApiUrl = config.timeSlotApiUrl;
-    });
+
   }
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.timeSlotApiUrl}/slots`;
+    const path = `${this.configService.config.timeSlotApiUrl}/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
   }
 
   private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const path = `${this.timeSlotApiUrl}/book?srcSystem=BETA`;
+    const path = `${this.configService.config.timeSlotApiUrl}/book?srcSystem=BETA`;
     return this.http.post<SmevBookResponseInterface>(path, requestBody);
   }
 
-  book(selectedSlot: SmevSlotInterface) {
+  book(selectedSlot: SlotInterface) {
+    this.errorMessage = undefined;
     return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
-        if (response.error) {
-          this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
-          console.log(response.error);
-        } else {
+        if (!response.error) {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;
+          this.activeMonthNumber = selectedSlot.slotTime.getMonth();
+          this.activeYearNumber = selectedSlot.slotTime.getFullYear();
+        } else {
+          this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
+          console.log(response.error);
         }
       }),
       catchError( error => {
@@ -76,7 +76,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
   }
 
   getAvailableMonths(): string[] {
-    return [this.slotsPeriod];
+    return this.availableMonths;
   }
 
   getAvailableSlots(selectedDay: Date): Observable<any[]> {
@@ -99,6 +99,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
 
     if (this.changed(data) || this.errorMessage) {
       this.slotsMap = {};
+      this.availableMonths = [];
       this.errorMessage = undefined;
       return this.getTimeSlots(this.getSlotsRequest()).pipe(
         map(response => {
@@ -108,6 +109,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
               const { errorMessage, errorCode } = response.error.errorDetail;
               this.errorMessage = errorMessage || errorCode;
             }
+            this.initActiveMonth();
           }
         ),
         catchError( error => {
@@ -137,21 +139,6 @@ export class BrakTimeSlotsService implements TimeSlotsService {
       this.department = department;
     }
 
-    let solemn = data.solemn == 'Да';
-    if (this.solemn !== solemn) {
-      changed = true;
-      this.solemn = solemn;
-    }
-
-    let slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
-    if (this.slotsPeriod !== slotsPeriod) {
-      changed = true;
-      this.slotsPeriod = slotsPeriod;
-      const [activeYearNumber, activeMonthNumber] = slotsPeriod.split('-');
-      this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
-      this.activeYearNumber = parseInt(activeYearNumber, 10);
-    }
-
     let orderId = data.orderId;
     if (!this.orderId || this.orderId !== orderId) {
       changed = true;
@@ -162,59 +149,54 @@ export class BrakTimeSlotsService implements TimeSlotsService {
   }
 
   private getSlotsRequest() {
+    // TODO HARDCODE, возможно, стоит перенести в json
     return {
-      organizationId: [this.department.attributeValues.CODE],
+      organizationId: [this.department.attributeValues.code],
       caseNumber: this.orderId,
-      serviceId: ['ЗагсБрак'],
-      eserviceId: '10000057526',
-      routeNumber: '45382000',
+      serviceId: ['10000593393'],
+      eserviceId: '10000070732',
+      routeNumber: '46000000000',
       attributes: [
         {
-          name: 'SolemnRegistration',
-          value: this.solemn
+          name: 'organizationId',
+          value: this.department.attributeValues.code
         },
         {
-          name: 'SlotsPeriod',
-          value: this.slotsPeriod
+          name: 'serviceId',
+          value: '10000593393'
         }
       ]
     };
   }
 
-  private getBookRequest(selectedSlot: SmevSlotInterface) {
+  private getBookRequest(selectedSlot: SlotInterface) {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
-    // TODO HARDCODE, возможно, стоит перенести в json
     return {
       preliminaryReservation: 'true',
-      address: this.department.attributeValues.ADDRESS,
-      orgName: this.department.attributeValues.FULLNAME,
-      routeNumber: '45382000',
-      serviceCode: '-100000100821',
-      subject: 'Регистрация заключения брака',
-      params: [
+      address: this.department.attributeValues.address,
+      orgName: this.department.title,
+      routeNumber: '46000000000',
+      serviceCode: '-10001970000',
+      subject: 'Запись на прием',
+      eserviceId: '10000070732',
+      bookId: this.bookId,
+      organizationId: this.department.attributeValues.code,
+      calendarName: 'Запись на прием',
+      parentOrderId: this.orderId,
+      preliminaryReservationPeriod: '240',
+      attributes: [
         {
-          name: 'phone',
-          value: this.department.attributeValues.PHONE
+          name: 'serviceId',
+          value: '10000593393'
         }
       ],
-      eserviceId: '10000057526',
-      bookId: this.bookId,
-      organizationId: this.department.attributeValues.CODE,
-      calendarName: 'на услугу «Регистрация заключения брака»',
-      areaId: [
-        selectedSlot.slotId
-      ],
-      selectedHallTitle: selectedSlot.slotId,
-      parentOrderId: this.orderId,
-      preliminaryReservationPeriod: '1440',
-      attributes: [],
       slotId: [
         selectedSlot.slotId
       ],
       serviceId: [
-        'ЗагсБрак'
+        '10000593393'
       ]
     };
   }
@@ -229,6 +211,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
       let monthSlots = this.slotsMap[slotDate.getFullYear()];
       if (!monthSlots[slotDate.getMonth()]) {
         monthSlots[slotDate.getMonth()] = {};
+        this.availableMonths.push(`${slotDate.getFullYear()}-${slotDate.getMonth()+1}`);
       }
 
       let daySlots = monthSlots[slotDate.getMonth()];
@@ -243,5 +226,17 @@ export class BrakTimeSlotsService implements TimeSlotsService {
         timezone: slot.visitTimeISO.substring(slot.visitTimeISO.length - 6)
       });
     });
+  }
+
+  initActiveMonth(): void {
+    if (this.availableMonths.length == 0) {
+      const today = new Date();
+      this.activeMonthNumber = today.getMonth();
+      this.activeYearNumber = today.getFullYear();
+    } else {
+      const [activeYearNumber, activeMonthNumber] = this.availableMonths[0].split('-');
+      this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
+      this.activeYearNumber = parseInt(activeYearNumber, 10);
+    }
   }
 }

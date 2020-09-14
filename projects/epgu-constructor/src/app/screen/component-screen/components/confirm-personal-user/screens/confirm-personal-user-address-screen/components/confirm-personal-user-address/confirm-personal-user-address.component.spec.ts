@@ -33,6 +33,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
       providers: [
         UnsubscribeService,
         ComponentStateService,
+        UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     })

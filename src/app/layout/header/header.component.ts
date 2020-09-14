@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -7,6 +6,6 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  scenarioUrl = environment.appUrl;
-  configUrl = `${environment.appUrl}/config`;
+  scenarioUrl = '';
+  configUrl = 'config';
 }

@@ -4,6 +4,7 @@
   min-height: calc(100vh - 112px);
   padding-top: 104px;
   background-color: #FAFCFF;
+  padding-bottom: 24px;
 
   @include phones-down {
     padding-top: 44px;
