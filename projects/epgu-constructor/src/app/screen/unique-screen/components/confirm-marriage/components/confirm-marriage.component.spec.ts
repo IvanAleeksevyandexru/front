@@ -1,16 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ButtonComponent } from 'epgu-lib';
-
-import { ConfirmMarriageComponent } from './confirm-marriage.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ButtonComponent, LoaderComponent } from 'epgu-lib';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
-import { TimerComponent } from './timer/timer.component';
-import { TimerPipe } from '../pipes/timer.pipe';
-import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
 import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
-import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
+import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
+import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
 import { Display, ScreenTypes } from '../../../../screen.types';
+import { TimerPipe } from '../pipes/timer.pipe';
+import { ConfirmMarriageComponent } from './confirm-marriage.component';
+import { TimerComponent } from './timer/timer.component';
+
 
 describe('TimerComponent', () => {
   let component: ConfirmMarriageComponent;
@@ -59,6 +60,9 @@ describe('TimerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule
+      ],
       declarations: [
         ConfirmMarriageComponent,
         ButtonComponent,
@@ -68,6 +72,7 @@ describe('TimerComponent', () => {
         PageNameComponent,
         ScreenPadComponent,
         NavigationComponent,
+        LoaderComponent,
       ],
       providers: [UnsubscribeService, NavigationService],
     }).compileComponents();

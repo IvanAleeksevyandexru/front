@@ -27,7 +27,7 @@ const COMPONENTS = [
     CommonModule,
     SharedModule,
     ReactiveFormsModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
   ]
 })
 export class TimeSlotsModule { }

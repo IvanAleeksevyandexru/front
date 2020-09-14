@@ -1,14 +1,15 @@
-import { TestBed, async } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EpguLibModule } from 'epgu-lib';
-
+import { MockComponent } from 'ng-mocks';
 import { FormPlayerComponent } from './form-player.component';
+import { FormPlayerModule } from './form-player.module';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
-import { NavigationService } from './shared/services/navigation/navigation.service';
-import { ModalContainerComponent } from './shared/components/modal/modal-container/modal-container.component';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
+import { ModalContainerComponent } from './shared/components/modal/modal-container/modal-container.component';
+import { NavigationService } from './shared/services/navigation/navigation.service';
+
 
 describe('FormPlayerComponent', () => {
   let formPlayerService: FormPlayerService;
@@ -17,13 +18,11 @@ describe('FormPlayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        FormPlayerModule,
         RouterTestingModule,
-        EpguLibModule.forChild(),
+        EpguLibModule.forRoot(),
       ],
-      declarations: [
-        FormPlayerComponent,
-        ModalContainerComponentMock
-      ],
+      declarations: [],
       providers: [
         NavigationService,
         UnsubscribeService,

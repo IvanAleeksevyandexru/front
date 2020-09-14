@@ -9,7 +9,6 @@ import { FormPlayerService } from '../../../../services/form-player/form-player.
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { FormPlayerApiService } from '../../../../services/api/form-player-api/form-player-api.service';
 import { ApplicantAnswersService } from '../../../../shared/services/applicant-answers/applicant-answers.service';
-import { ScreenResolverService } from '../../../../services/screen-resolver/screen-resolver.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 
 describe('PaymentService', () => {
@@ -26,7 +25,6 @@ describe('PaymentService', () => {
         FormPlayerService,
         ApplicantAnswersService,
         ComponentStateService,
-        ScreenResolverService,
         FormPlayerApiService,
         ScreenService,
         ConfigService,

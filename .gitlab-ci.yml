@@ -29,7 +29,7 @@ Lint:
   stage: lint
   cache:
     <<: *global_cache
-    policy: pull  
+    policy: pull
   script:
     - yarn lint
   only:
@@ -40,7 +40,7 @@ Test:
   stage: test
   cache:
     <<: *global_cache
-    policy: pull  
+    policy: pull
   script:
     - yarn test:coverage
   only:
@@ -50,7 +50,7 @@ Test:
 Library-build:
   stage: library-build
   script:
-    - yarn library:build
+    - yarn lib:build
   only:
     - merge_requests
     - master
@@ -59,7 +59,7 @@ Library-publish:
   stage: publish
   cache:
     <<: *global_cache
-    policy: pull  
+    policy: pull
   before_script:
     - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
@@ -70,8 +70,8 @@ Library-publish:
     - npm version patch
     - npm publish
   only:
-    - master    
-    
+    - master
+
 Build:
   stage: build
   cache:
@@ -88,10 +88,10 @@ Build-image:
   stage: image
   cache:
     <<: *global_cache
-    policy: pull  
+    policy: pull
   services:
     - name: docker:dind
-      command: ["--insecure-registry", "registry.gosuslugi.local"]
+      command: ['--insecure-registry', 'registry.gosuslugi.local']
   image: docker:latest
   variables:
     GIT_STRATEGY: none
