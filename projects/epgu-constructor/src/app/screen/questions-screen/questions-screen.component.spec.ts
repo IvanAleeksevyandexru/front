@@ -12,6 +12,7 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
@@ -41,6 +42,7 @@ describe('QuestionsScreenComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [
         QuestionsScreenComponent,
         PageNameComponent,

@@ -16,7 +16,7 @@ const COMPONENTS = [
   imports: [
       CommonModule,
       SharedModule,
-      EpguLibModule.forChild(),
+      EpguLibModule,
   ],
   providers: [
     ScreenService

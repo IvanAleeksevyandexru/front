@@ -22,7 +22,7 @@ const COMPONENTS = [
     CommonModule,
     SharedModule,
     WebcamModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
   ],
 })
 export class SubComponentsModule {}

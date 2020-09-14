@@ -20,7 +20,7 @@ const COMPONENTS = [
     CommonModule,
     SharedModule,
     SubComponentsModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
   ],
   providers: [TerraByteApiService, WebcamService]
 })
