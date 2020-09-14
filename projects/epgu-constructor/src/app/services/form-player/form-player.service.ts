@@ -13,6 +13,7 @@ import { ScreenResolverService } from '../screen-resolver/screen-resolver.servic
 import { ScreenComponent } from '../../screen/screen.const';
 import { map } from 'rxjs/operators';
 import { UtilsService } from '../utils/utils.service';
+import { localStorageComponentDataKey } from '../../shared/constants/form-player';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -22,7 +23,7 @@ import { UtilsService } from '../utils/utils.service';
 @Injectable()
 export class FormPlayerService {
   // Ключ localStorage, где хранятся данные по компонентам для отображения, если нам подменить сценарий
-  public static localStorageComponentDataKey = 'lastScenarioDto';
+  public static localStorageComponentDataKey = localStorageComponentDataKey;
 
   private store: FormPlayerApiSuccessResponse;
   private playerLoaded = false;
@@ -118,9 +119,7 @@ export class FormPlayerService {
     );
   }
 
-  /**
-   * Получает и устанавливает данные из localStorage для текущего экрана
-   */
+
   getDataFromLocalStorage() {
     // eslint-disable-next-line max-len
     const store = UtilsService.getLocalStorageJSON(FormPlayerService.localStorageComponentDataKey);
