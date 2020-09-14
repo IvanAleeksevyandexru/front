@@ -1,0 +1,89 @@
+.payments-modal {
+  display: flex;
+  flex-direction: column;
+  @include modal-body();
+  width: 634px;
+  padding: 32px;
+  border-radius: 12px;
+
+  &__close {
+    float: right;
+    width: 16px;
+    height: 16px;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 20px;
+      background: $color-button-hit;
+      transform: rotate(45deg);
+    }
+
+    &:before {
+      transform: rotate(45deg);
+    }
+
+    &:after {
+      transform: rotate(-45deg);
+    }
+  }
+
+  &__title {
+    padding-right: 50px;
+    font-size: 24px;
+    line-height: 32px;
+    color: $color-summer-night;
+  }
+
+  &__header {
+    border-bottom: 1px solid $color-devider;
+    padding-bottom: 24px;
+  }
+
+  &__body {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__text-wrapper {
+    overflow-y: auto;
+  }
+
+  .payment-box {
+    border: 1px solid $color-link-water;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    padding: 28px 32px;
+    font-size: 14px;
+
+    .payment-value {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .payment-info {
+      font-family: Helvetica, serif;
+      font-size: 16px;
+      line-height: 24px;
+      padding-left: 32px;
+      text-decoration: none;
+      color: $color-button-hit;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    margin-top: 26px;
+    justify-content: center;
+    flex: 1;
+
+    & > * {
+      margin-right: 20px;
+    }
+  }
+}

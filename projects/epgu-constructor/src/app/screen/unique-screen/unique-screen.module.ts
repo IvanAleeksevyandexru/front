@@ -12,6 +12,7 @@ import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { ScreenService } from '../screen.service';
 import { ConfirmMarriageModule } from './components/confirm-marriage/confirm-marriage.module';
 import { PaymentModule } from './components/payment/payment.module';
+import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
 
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
@@ -36,6 +37,7 @@ const COMPONENTS = [UniqueScreenComponent];
         TimeSlotsModule,
         ConfirmMarriageModule,
         PaymentModule,
+        UnusedPaymentsModule,
     ],
   providers: [
     ScreenService
