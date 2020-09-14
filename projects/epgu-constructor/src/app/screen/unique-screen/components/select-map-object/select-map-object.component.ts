@@ -264,11 +264,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
    */
   public expandObject(mapObject: DictionaryYMapItem): void {
     if (mapObject.expanded) return;
-    this.selectedValue.children.forEach((child: DictionaryYMapItem) => {
-      // eslint-disable-next-line no-param-reassign
-      child.expanded = false;
+    this.selectedValue.children = this.selectedValue.children.map((child: DictionaryYMapItem) => {
+      return { ...child, expanded: child.id === mapObject.id };
     });
-    // eslint-disable-next-line no-param-reassign
-    mapObject.expanded = true;
   }
 }

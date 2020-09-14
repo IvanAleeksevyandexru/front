@@ -37,6 +37,7 @@
           <span class="map-object__label">{{itemContent.label}}: </span>
           <span class="PGU-AttrsValue">{{itemContent.value}}</span>
         </div>
+        <a (click)="showModalFromTemplate('detailsTemplate', mapObject)" href="#!" class="details-link">Узнать подробнее</a>
         <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">На данной площадке действуют дополнительные 
 условия оказания услуг нажмите чтобы 
           <a href="#!" (click)="showModalFromTemplate('informationTemplate', mapObject)" class="information-link">ознакомиться</a>
