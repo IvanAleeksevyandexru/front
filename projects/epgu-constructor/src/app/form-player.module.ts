@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DynamicModule } from 'ng-dynamic-component';
 import { EpguLibModule } from 'epgu-lib';
 
 import { Config } from './config/config.types';
@@ -19,7 +18,6 @@ import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { SharedModule } from './shared/shared.module';
 import { ComponentStateService } from './services/component-state/component-state.service';
 import { ScreenService } from './screen/screen.service';
-import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { EmptyScreenModule } from './screen/empty-screen/empty-screen.module';
 import { FormPlayerApiService } from './services/api/form-player-api/form-player-api.service';
 
@@ -36,16 +34,14 @@ import { FormPlayerApiService } from './services/api/form-player-api/form-player
     QuestionsScreenModule,
     UniqueScreenModule,
     InvitationErrorScreenModule,
-    DynamicModule,
     SharedModule,
-    EpguLibModule.forChild(),
+    EpguLibModule.forRoot(),
     InfoScreenModule,
   ],
   providers: [
     DictionaryApiService,
     FormPlayerService,
     FormPlayerApiService,
-    ScreenResolverService,
     ScreenService,
     ComponentStateService,
     ConfigService,

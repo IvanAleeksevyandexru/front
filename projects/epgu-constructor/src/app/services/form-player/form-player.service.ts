@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
-import { ScreenComponent } from '../../screen/screen.const';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
@@ -11,7 +10,7 @@ import {
   FormPlayerApiSuccessResponse,
   ScenarioDto
 } from '../api/form-player-api/form-player-api.types';
-import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
+import { ScreenTypes } from '../../screen/screen.types';
 
 interface ServiceType {
   serviceId: string;
@@ -29,6 +28,7 @@ export class FormPlayerService {
   private playerLoaded = false;
   private isLoading = false;
   private screenType: string;
+  public screenType$ = new BehaviorSubject<ScreenTypes>('' as any);
   private componentId: string;
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
@@ -42,7 +42,6 @@ export class FormPlayerService {
   constructor(
     public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
-    private screenResolverService: ScreenResolverService,
   ) {}
 
   initData(service: ServiceType, orderId?: string): void {
@@ -82,21 +81,6 @@ export class FormPlayerService {
       (error) => this.sendDataError(error),
       () => this.updateLoading(false)
     );
-  }
-
-  getScreenComponent(): ScreenComponent {
-    const screenComponent = this.screenResolverService.getScreenComponentByType(this.screenType);
-
-    if (!screenComponent) {
-      this.handleScreenComponentError(this.screenType);
-    }
-
-    return screenComponent;
-  }
-
-  handleScreenComponentError(screenType: string) {
-    // TODO: need to find a better way for handling this error, maybe show it on UI
-    throw new Error(`We cant find screen component for this type: ${screenType}`);
   }
 
 
@@ -203,6 +187,7 @@ export class FormPlayerService {
     const { display, errors, gender, currentCycledFields, applicantAnswers } = scenarioDto;
     this.componentId = display.components[0].id;
     this.screenType = display.type;
+    this.screenType$.next(display.type);
 
     this.screenService.initScreenStore(scenarioDto);
     this.storeSubject.next(this.store);

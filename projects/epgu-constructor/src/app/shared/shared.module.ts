@@ -48,11 +48,14 @@ const PIPES = [
   declarations: [...COMPONENTS, ...PIPES],
   providers: [NavigationService, ApplicantAnswersService],
   exports: [...COMPONENTS, ...PIPES],
-    imports: [
-        CommonModule,
-        EpguLibModule,
-        FormsModule,
-    ]
+  imports: [
+      CommonModule,
+      EpguLibModule.forChild(),
+      FormsModule,
+  ],
+  entryComponents: [
+    ConfirmationModalComponent
+  ]
 })
 export class SharedModule { }
 
