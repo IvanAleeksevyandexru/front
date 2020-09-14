@@ -18,7 +18,7 @@
     "test": "jest --ci",
     "test:dev": "jest --watch -o",
     "test:coverage": "jest --ci --coverage --no-cache --reporters=default --reporters=jest-junit --coverageDirectory=coverage/jest",
-    "ci": "yarn lint && yarn stylelint && yarn test && yarn library:build && yarn build",
+    "ci": "yarn lint && yarn stylelint && yarn test && yarn lib:build && yarn build",
     "e2e": "ng e2e"
   },
   "private": true,
