@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Moment } from 'moment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UtilsService {
 
   // TODO: add shared utils
@@ -23,6 +21,14 @@ export class UtilsService {
    */
   static setLocalStorageJSON(key: string, data: any) {
     localStorage.setItem(key, JSON.stringify(data));
+  }
+
+  /**
+   * Удаляет из хранилища Local Storage по ключу
+   * @param key
+   */
+  static deleteFromLocalStorage(key: string) {
+    localStorage.removeItem(key);
   }
 
   /**

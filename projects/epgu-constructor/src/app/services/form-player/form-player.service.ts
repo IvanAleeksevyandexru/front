@@ -64,7 +64,7 @@ export class FormPlayerService {
    * @private
    */
   private isNeedToShowLastScreen(): boolean {
-    return location.href.search(/getLastScreen=/) !== -1 && FormPlayerService.isHaveOrderDataInLocalStorage();
+    return location.href.includes('getLastScreen=') && FormPlayerService.isHaveOrderDataInLocalStorage();
   }
 
   /**
@@ -131,7 +131,7 @@ export class FormPlayerService {
     const store = UtilsService.getLocalStorageJSON(FormPlayerService.localStorageComponentDataKey);
     this.processResponse(store);
     this.updateLoading(false);
-    localStorage.removeItem(FormPlayerService.localStorageComponentDataKey);
+    UtilsService.deleteFromLocalStorage(FormPlayerService.localStorageComponentDataKey);
   }
 
   /**

@@ -22,6 +22,7 @@ import { ScreenService } from './screen/screen.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { EmptyScreenModule } from './screen/empty-screen/empty-screen.module';
 import { FormPlayerApiService } from './services/api/form-player-api/form-player-api.service';
+import { UtilsService } from './services/utils/utils.service';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { FormPlayerApiService } from './services/api/form-player-api/form-player
     ScreenService,
     ComponentStateService,
     ConfigService,
-    UnsubscribeService
+    UnsubscribeService,
+    UtilsService
   ],
   exports: [
     FormPlayerComponent
