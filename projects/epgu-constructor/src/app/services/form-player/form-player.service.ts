@@ -69,7 +69,7 @@ export class FormPlayerService {
 
   /**
    * Инициализирует данные для показа, смотрим откуда брать данные
-   * @param serviceId - id услуги
+   * @param service - услуга
    * @param orderId - id заявления
    */
   initData(service: ServiceType, orderId?: string): void {
@@ -114,7 +114,8 @@ export class FormPlayerService {
 
   /**
    * Получает и устанавливает данные для нового черновика для id услуги
-   * @param serviceId
+   * @param serviceId - id сервиса
+   * @param targetId
    */
   getNewOrderData(serviceId: string, targetId?: string) {
     this.formPlayerApiService.getServiceData(serviceId, targetId).subscribe(
