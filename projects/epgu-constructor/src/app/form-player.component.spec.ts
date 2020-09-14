@@ -95,7 +95,7 @@ describe('FormPlayerComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        EpguLibModule,
+        EpguLibModule.forRoot(),
       ],
       declarations: [
         FormPlayerComponent,

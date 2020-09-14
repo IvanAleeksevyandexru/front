@@ -1,18 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ButtonComponent } from 'epgu-lib';
+import { RouterTestingModule } from '@angular/router/testing';
+import { EpguLibModule } from 'epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
+import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
 import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
+import { LongButtonComponent } from '../../shared/components/long-button/long-button.component';
+import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
+import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { QuestionsScreenComponent } from './questions-screen.component';
-import { ScreenService } from '../screen.service';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { ScreenService } from '../screen.service';
+import { ScreenStore, ScreenTypes } from '../screen.types';
+import { QuestionsScreenComponent } from './questions-screen.component';
 
 describe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
@@ -42,14 +45,19 @@ describe('QuestionsScreenComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      imports: [
+        RouterTestingModule,
+        EpguLibModule.forChild(),
+      ],
       declarations: [
         QuestionsScreenComponent,
         PageNameComponent,
         ScreenPadComponent,
         ScreenContainerComponent,
         NavigationComponentMock,
-        ButtonComponent
+        OutputHtmlComponent,
+        AnswerButtonComponent,
+        LongButtonComponent
       ],
       providers: [
         NavigationService,
