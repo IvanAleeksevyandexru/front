@@ -187,7 +187,7 @@ export class FormPlayerService {
     this.screenType = display.type;
     this.screenType$.next(display.type);
   }
-  
+
   private initScreenStore(scenarioDto: ScenarioDto): void {
     const screenStore = JSON.parse(JSON.stringify(scenarioDto)); // deep clone of scenarioDto
     this.screenService.initScreenStore(screenStore);
