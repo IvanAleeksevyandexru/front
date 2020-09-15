@@ -74,9 +74,6 @@ Library-publish:
 
 Build:
   stage: build
-  cache:
-    <<: *global_cache
-    policy: pull
   script:
     - yarn build --prod
     - /devops/notify/notify.sh fronted_new_master_available
