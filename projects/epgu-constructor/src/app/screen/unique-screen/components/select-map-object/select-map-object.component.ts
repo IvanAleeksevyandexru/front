@@ -45,7 +45,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   public mappedDictionaryForLookup;
   public mapCenter: Array<number>;
   public mapControls = ['zoomControl'];
-  public yandexMapsApiKey: string;
   public provider = { search: this.providerSearch() };
   public selectedValue: any;
   public mapIsLoaded = false;
@@ -56,18 +55,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
+    public config: ConfigService,
     private yaMapService: YaMapService,
     private dictionaryApiService: DictionaryApiService,
-    private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
-  ) {
-    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((config) => {
-      this.yandexMapsApiKey = config.yandexMapsApiKey;
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.initVariable();

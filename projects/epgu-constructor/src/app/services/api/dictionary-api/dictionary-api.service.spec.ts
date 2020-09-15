@@ -9,7 +9,7 @@ import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 describe('DictionaryApiService', () => {
   let service: DictionaryApiService;
   let http: HttpTestingController;
-  let cnstrctrConfigSrv: ConfigService;
+  let config: ConfigService;
   let dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   let responseMock = [42];
   let dictionaryName = 'someDictionary';
@@ -36,7 +36,7 @@ describe('DictionaryApiService', () => {
     });
     service = TestBed.inject(DictionaryApiService);
     http = TestBed.inject(HttpTestingController);
-    cnstrctrConfigSrv = TestBed.inject(ConfigService);
+    config = TestBed.inject(ConfigService);
   }));
 
   afterEach(async(() => http.verify()));

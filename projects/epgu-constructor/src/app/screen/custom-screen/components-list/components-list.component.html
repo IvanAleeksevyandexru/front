@@ -152,7 +152,7 @@
             [simpleMode]="true"
             [name]="componentData.id"
             (change)="inputChange($event, componentData)"
-            [externalApiUrl]="configService.config.externalApiUrl + '/'"
+            [externalApiUrl]="config.externalApiUrl + '/'"
             [initValue]="state[componentData.id].value"
             [(ngModel)]="state[componentData.id].value"
           >
