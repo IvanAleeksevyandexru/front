@@ -11,7 +11,7 @@ import { ConfigService } from '../../../../../../config/config.service';
 @Injectable()
 export class TerraByteApiService {
 
-  constructor(private http: HttpClient, private configService: ConfigService) {}
+  constructor(private http: HttpClient, private config: ConfigService) {}
 
   /**
    * Переводит base64 картинку в Blob
@@ -47,7 +47,7 @@ export class TerraByteApiService {
    * @param relativePath - относительный путь от API для запросов
    */
   private getTerabyteApiUrl = (relativePath): string =>
-      this.configService.config.fileUploadApiUrl + relativePath;
+      this.config.fileUploadApiUrl + relativePath;
 
   /**
    * Возращает опции запроса

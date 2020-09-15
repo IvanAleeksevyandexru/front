@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class DictionaryApiService {
 
-  constructor(private http: HttpClient, private configService: ConfigService) {}
+  constructor(private http: HttpClient, private config: ConfigService) {}
 
   /**
    * Возвращает данные справочника
@@ -15,7 +15,7 @@ export class DictionaryApiService {
    * @param options - опции для получения данных
    */
   getDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
-    const path = `${this.configService.config.dictionaryUrl}/${dictionaryName}`;
+    const path = `${this.config.dictionaryUrl}/${dictionaryName}`;
     return this.http.post<DictionaryResponse>(path, {
       filter: options.filter,
       treeFiltering: options.treeFiltering || 'ONELEVEL',

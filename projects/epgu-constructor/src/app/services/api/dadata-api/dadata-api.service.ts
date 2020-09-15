@@ -4,10 +4,10 @@ import { ConfigService } from '../../../config/config.service';
 
 @Injectable()
 export class DadataApiService {
-  constructor(private http: HttpClient, private configService: ConfigService) {}
+  constructor(private http: HttpClient, private config: ConfigService) {}
 
   getDadataByFias(fiasCode: string) {
-    const path = `${this.configService.config.externalApiUrl}/dadata/${fiasCode}`;
+    const path = `${this.config.externalApiUrl}/dadata/${fiasCode}`;
     return this.http.get(path);
   }
 }

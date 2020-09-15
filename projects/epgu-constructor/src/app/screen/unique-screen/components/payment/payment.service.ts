@@ -22,7 +22,7 @@ export class PaymentService {
   constructor(
     private http: HttpClient,
     private dictionaryApiService: DictionaryApiService,
-    private configService: ConfigService,
+    private config: ConfigService,
     public formPlayerService: FormPlayerService,
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService
@@ -84,7 +84,7 @@ export class PaymentService {
       return uinMockUp.asObservable();
     }
 
-    const path = `${this.configService.config.uinApiUrl}/${code}?orderId=${orderId}`;
+    const path = `${this.config.uinApiUrl}/${code}?orderId=${orderId}`;
     return this.http.post(path, attributeValues, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -103,7 +103,7 @@ export class PaymentService {
     // return billMockUp.asObservable();
 
     // eslint-disable-next-line max-len
-    const path = `${this.configService.config.billsApiUrl}?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    const path = `${this.config.billsApiUrl}?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
     return this.http.post(path, {}, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -117,7 +117,7 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    */
   getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<any> {
-    const path = `${this.configService.config.uinApiUrl}/status/${code}?orderId=${orderId}`;
+    const path = `${this.config.uinApiUrl}/status/${code}?orderId=${orderId}`;
     return this.http.get(path, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -132,8 +132,8 @@ export class PaymentService {
    */
   getPaymentLink(billId: number): string {
     // TODO хардкод. доделать.
-    const returnUrl = encodeURIComponent(`${location.href}${this.configService.config.apiUrl.replace(/^\//,'')}?getLastScreen=1`);
-    return `${this.configService.config.paymentUrl}/?billIds=${billId}&returnUrl=${returnUrl}&subscribe=true`;
+    const returnUrl = encodeURIComponent(`${location.href}${this.config.apiUrl.replace(/^\//,'')}?getLastScreen=1`);
+    return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${returnUrl}&subscribe=true`;
   }
 
   /**

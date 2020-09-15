@@ -12,19 +12,19 @@ import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 export class FormPlayerApiService {
   constructor(
     private http: HttpClient,
-    private configService: ConfigService,
+    private config: ConfigService,
     private cookieService: CookieService,
   ) {}
 
   public getDraftData(orderId: string): Observable<FormPlayerApiDraftResponse> {
-    const path = `${this.configService.config.apiUrl}/drafts/${orderId}`;
+    const path = `${this.config.apiUrl}/drafts/${orderId}`;
     return this.http.get<FormPlayerApiDraftResponse>(path, {
       withCredentials: false
     });
   }
 
   public getServiceData(serviceId: string, targetId?: string): Observable<FormPlayerApiResponse> {
-    const path = `${this.configService.config.apiUrl}/service/${serviceId}/scenario/getService`;
+    const path = `${this.config.apiUrl}/service/${serviceId}/scenario/getService`;
     const userId = this.cookieService.get('u') || '';
     const token = this.cookieService.get('acc_t') || '';
     return this.http.post<FormPlayerApiResponse>(path, {
@@ -37,7 +37,7 @@ export class FormPlayerApiService {
   }
 
   public navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, data): Observable<FormPlayerApiResponse> {
-    const path = `${this.configService.config.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
+    const path = `${this.config.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
 
     const userId = this.cookieService.get('u') || '';
     const token = this.cookieService.get('acc_t') || '';

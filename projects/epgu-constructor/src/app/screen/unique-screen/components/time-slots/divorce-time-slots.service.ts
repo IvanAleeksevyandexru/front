@@ -30,16 +30,16 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
 
   constructor(
     private http: HttpClient,
-    private configService: ConfigService
+    private config: ConfigService
   ) {}
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.configService.config.timeSlotApiUrl}/slots`;
+    const path = `${this.config.timeSlotApiUrl}/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
   }
 
   private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const path = `${this.configService.config.timeSlotApiUrl}/book?srcSystem=BETA`;
+    const path = `${this.config.timeSlotApiUrl}/book?srcSystem=BETA`;
     return this.http.post<SmevBookResponseInterface>(path, requestBody);
   }
 
