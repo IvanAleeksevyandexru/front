@@ -23,6 +23,10 @@ export interface DictionaryResponse {
   total: number;
 }
 
+export interface DictionaryResponseForYMap extends DictionaryResponse {
+  items: Array<DictionaryYMapItem>;
+}
+
 export interface DictionaryResponseError {
   code: number;
   message: string;
@@ -38,13 +42,22 @@ export interface DictionaryResponseError {
  * @property {string}value - example: RUS
  */
 export interface DictionaryItem {
-  attributeValues: object;
+  attributeValues: {[key: string]: any};
   attributes: Array<any>;
   children: Array<any>;
   isLeaf: boolean;
   parentValue: null;
   title: string;
   value: string;
+}
+
+export interface DictionaryYMapItem extends DictionaryItem {
+  center: Array<number>;
+  baloonContent: Object;
+  id: number
+  fullListItems;
+  agreement: boolean;
+  expanded: boolean;
 }
 
 export interface DictionarySimpleFilter {

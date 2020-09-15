@@ -4,6 +4,9 @@ import { TerraFileOptions, TerraUploadFileOptions } from './terra-byte-api.types
 import { Observable } from 'rxjs';
 import { TerraUploadedFile } from '../../sub-components/file-upload-item/data';
 import { ConfigService } from '../../../../../../config/config.service';
+import { takeUntil } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
+import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
@@ -15,8 +18,11 @@ export class TerraByteApiService {
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {
-    this.fileUploadApiUrl = configService.config.fileUploadApiUrl;
+    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
+      this.fileUploadApiUrl = config.fileUploadApiUrl;
+    });
   }
 
   /**

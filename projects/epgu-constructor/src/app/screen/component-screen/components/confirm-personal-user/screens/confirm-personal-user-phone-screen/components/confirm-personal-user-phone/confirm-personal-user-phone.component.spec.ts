@@ -1,7 +1,8 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { EpguLibModule } from 'epgu-lib';
 import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
+import { LabelComponent } from '../../../../../../../../shared/components/base/label/label.component';
 import { ConfirmPersonalUserPhoneComponent } from './confirm-personal-user-phone.component';
 
 describe('ConfirmPersonalUserPhoneComponent', () => {
@@ -11,8 +12,8 @@ describe('ConfirmPersonalUserPhoneComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [ ConfirmPersonalUserPhoneComponent ],
+      imports: [ ReactiveFormsModule, EpguLibModule.forChild() ],
+      declarations: [ ConfirmPersonalUserPhoneComponent, LabelComponent ],
       providers: [ ComponentStateService, FormBuilder ]
     })
     .compileComponents();

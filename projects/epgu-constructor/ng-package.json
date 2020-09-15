@@ -7,10 +7,11 @@
     "umdModuleIds": {
       "epgu-lib": "epgu-lib",
       "moment": "moment",
-      "ru-validation-codes": "ru-validation-codes"
+      "ru-validation-codes": "ru-validation-codes",
+      "ngx-cookie-service": "ngx-cookie-service",
+      "uuid": "uuid",
+      "ngx-webcam": "ngx-webcam"
     },
-    "styleIncludePaths": [
-      "."
-    ]
+    "styleIncludePaths": ["."]
   }
 }

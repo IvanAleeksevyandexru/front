@@ -14,6 +14,6 @@ const COMPONENTS = [ConfirmMarriageComponent, TimerComponent, TimerPipe];
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   providers: [],
-  imports: [CommonModule, SharedModule, ReactiveFormsModule, EpguLibModule.forChild()],
+  imports: [CommonModule, SharedModule, ReactiveFormsModule, EpguLibModule],
 })
 export class ConfirmMarriageModule {}

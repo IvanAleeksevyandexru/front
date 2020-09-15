@@ -17,7 +17,7 @@ const COMPONENT = [
     CommonModule,
     SharedModule,
     InfoScreenBodyModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
   ],
   providers: [
     ScreenService

@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { ConfigService } from '../../../config/config.service';
 import { FormPlayerNavigation } from '../../../form-player.types';
 import { FormPlayerApiDraftResponse, FormPlayerApiResponse } from './form-player-api.types';
+import { takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 
 @Injectable()
 export class FormPlayerApiService {
@@ -15,12 +17,12 @@ export class FormPlayerApiService {
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private ngUnsubscribe$: UnsubscribeService
   ) {
-    this.apiUrl = configService.config.apiUrl;
-    // TODO: remove when api switch auth to cookie
-    this.userId = this.cookieService.get('u') || '';
-    this.token = this.cookieService.get('acc_t') || '';
+    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
+      this.apiUrl = config.apiUrl;
+    });
   }
 
   public getDraftData(orderId: string): Observable<FormPlayerApiDraftResponse> {
@@ -32,8 +34,8 @@ export class FormPlayerApiService {
 
   public getServiceData(serviceId: string, targetId?: string): Observable<FormPlayerApiResponse> {
     const path = `${this.apiUrl}/service/${serviceId}/scenario/getService`;
-    const userId = this.userId;
-    const token = this.token;
+    const userId = this.cookieService.get('u') || '';
+    const token = this.cookieService.get('acc_t') || '';
     return this.http.post<FormPlayerApiResponse>(path, {
       targetId,
       userId,
@@ -46,10 +48,10 @@ export class FormPlayerApiService {
   public navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, data): Observable<FormPlayerApiResponse> {
     const path = `${this.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
     if (this.userId) {
-      data.scenarioDto.userId = this.userId;
+      data.scenarioDto.userId = this.cookieService.get('u') || '';
     }
     if (this.token) {
-      data.scenarioDto.token = this.token;
+      data.scenarioDto.token = this.cookieService.get('acc_t') || '';
     }
 
     return this.http.post<FormPlayerApiResponse>(path, {
