@@ -29,15 +29,12 @@ export class FormPlayerService {
   private isLoading = false;
   private screenType: string;
   public screenType$ = new BehaviorSubject<ScreenTypes>('' as any);
-  private componentId: string;
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
-  private storeSubject = new Subject<FormPlayerApiSuccessResponse>();
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
-  public store$: Observable<FormPlayerApiSuccessResponse> = this.storeSubject.asObservable();
 
   constructor(
     public formPlayerApiService: FormPlayerApiService,
@@ -124,7 +121,8 @@ export class FormPlayerService {
   updateRequest(navigationPayload?: NavigationPayload): void {
     if (this.isEmptyNavigationPayload(navigationPayload)) {
       this.store.scenarioDto.currentValue = {};
-      this.store.scenarioDto.currentValue[this.componentId] = {
+      const componentId = this.store.scenarioDto.display.components[0].id;
+      this.store.scenarioDto.currentValue[componentId] = {
         value: '',
         visited: true
       };
@@ -169,6 +167,7 @@ export class FormPlayerService {
     const scenarioDto = response.scenarioDto;
 
     this.initScreenStore(scenarioDto);
+    this.updateScreenType(scenarioDto);
     this.updatePlayerLoaded(true);
 
     // TODO: move it to log service
@@ -183,16 +182,15 @@ export class FormPlayerService {
     console.error('Invalid Response');
   }
 
-  private initScreenStore(scenarioDto: ScenarioDto): void {
-    const { display, errors, gender, currentCycledFields, applicantAnswers } = scenarioDto;
-    this.componentId = display.components[0].id;
+  private updateScreenType(scenarioDto: ScenarioDto): void {
+    const { display } = scenarioDto;
     this.screenType = display.type;
     this.screenType$.next(display.type);
-
-    const deepCopyOfStore = JSON.parse(JSON.stringify(scenarioDto));
-    this.screenService.initScreenStore(deepCopyOfStore);
-    this.storeSubject.next(this.store);
-
+  }
+  
+  private initScreenStore(scenarioDto: ScenarioDto): void {
+    const screenStore = JSON.parse(JSON.stringify(scenarioDto)); // deep clone of scenarioDto
+    this.screenService.initScreenStore(screenStore);
   }
 
   private updateLoading(newState: boolean): void {
