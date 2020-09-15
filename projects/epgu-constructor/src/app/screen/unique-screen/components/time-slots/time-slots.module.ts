@@ -9,6 +9,7 @@ import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 import { GibddTimeSlotsService } from './gibdd-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { TimeSlotsConstants } from './time-slots.constants';
+import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 
 const COMPONENTS = [
   TimeSlotsComponent
@@ -22,12 +23,13 @@ const COMPONENTS = [
     BrakTimeSlotsService,
     DivorceTimeSlotsService,
     GibddTimeSlotsService,
-    MvdTimeSlotsService],
+    MvdTimeSlotsService,
+    Smev3TimeSlotsRestService],
   imports: [
     CommonModule,
     SharedModule,
     ReactiveFormsModule,
-    EpguLibModule,
+    EpguLibModule.forChild(),
   ]
 })
 export class TimeSlotsModule { }
