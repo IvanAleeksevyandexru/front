@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.1](https://git.gosuslugi.local///compare/v0.0.0...v0.0.1) (2020-09-15)
+
+
+### Features
+
+* add standard-version support [ref EPGUCORE-36712] ([d0f3685](https://git.gosuslugi.local///commit/d0f3685ca3a62a4f06c91e6bc5f89f9e7ae918b4))
+
 ## 0.0.0 (2020-09-15)
 
 
