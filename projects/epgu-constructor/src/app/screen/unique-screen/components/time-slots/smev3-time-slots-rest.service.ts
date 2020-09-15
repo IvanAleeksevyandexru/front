@@ -16,7 +16,7 @@ export class Smev3TimeSlotsRestService {
   ) {}
 
   public getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.config.timeSlotApiUrl}/book?srcSystem=BETA`;
+    const path = `${this.config.timeSlotApiUrl}/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody, { withCredentials: true });
   }
 
