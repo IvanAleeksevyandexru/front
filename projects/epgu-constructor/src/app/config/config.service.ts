@@ -39,6 +39,7 @@ export class ConfigService implements Config {
   }
 
   get externalApiUrl(): string {
+    console.log(this._externalApiUrl);
     return this._externalApiUrl;
   }
 
