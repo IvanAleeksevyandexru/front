@@ -36,6 +36,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
     public configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
+    private config: ConfigService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {

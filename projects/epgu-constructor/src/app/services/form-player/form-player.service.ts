@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
-import { ScreenComponent } from '../../screen/screen.const';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
@@ -11,6 +10,7 @@ import {
   FormPlayerApiSuccessResponse,
   ScenarioDto
 } from '../api/form-player-api/form-player-api.types';
+import { ScreenTypes } from '../../screen/screen.types';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { UtilsService } from '../utils/utils.service';
 import { localStorageComponentDataKey } from '../../shared/constants/form-player';
@@ -34,20 +34,17 @@ export class FormPlayerService {
   private playerLoaded = false;
   private isLoading = false;
   private screenType: string;
-  private componentId: string;
+  public screenType$ = new BehaviorSubject<ScreenTypes>('' as any);
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
-  private storeSubject = new Subject<FormPlayerApiSuccessResponse>();
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
-  public store$: Observable<FormPlayerApiSuccessResponse> = this.storeSubject.asObservable();
 
   constructor(
     public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
-    private screenResolverService: ScreenResolverService,
   ) {}
 
   /**
@@ -209,7 +206,8 @@ export class FormPlayerService {
   updateRequest(navigationPayload?: NavigationPayload): void {
     if (this.isEmptyNavigationPayload(navigationPayload)) {
       this.store.scenarioDto.currentValue = {};
-      this.store.scenarioDto.currentValue[this.componentId] = {
+      const componentId = this.store.scenarioDto.display.components[0].id;
+      this.store.scenarioDto.currentValue[componentId] = {
         value: '',
         visited: true
       };
@@ -254,6 +252,7 @@ export class FormPlayerService {
     const scenarioDto = response.scenarioDto;
 
     this.initScreenStore(scenarioDto);
+    this.updateScreenType(scenarioDto);
     this.updatePlayerLoaded(true);
 
     // TODO: move it to log service
@@ -274,12 +273,8 @@ export class FormPlayerService {
    * @private
    */
   private initScreenStore(scenarioDto: ScenarioDto): void {
-    const { display, errors, gender, currentCycledFields, applicantAnswers } = scenarioDto;
-    this.componentId = display.components[0].id;
-    this.screenType = display.type;
-
-    this.screenService.initScreenStore(scenarioDto);
-    this.storeSubject.next(this.store);
+    const screenStore = JSON.parse(JSON.stringify(scenarioDto)); // deep clone of scenarioDto
+    this.screenService.initScreenStore(screenStore);
   }
 
   /**

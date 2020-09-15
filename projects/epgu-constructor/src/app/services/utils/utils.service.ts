@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Moment } from 'moment';
+import { createEvent, EventAttributes } from 'ics';
 
 @Injectable()
 export class UtilsService {
@@ -118,5 +119,24 @@ export class UtilsService {
     }
 
     return forms[2];
+  }
+
+  // При передачи аргумента event необходимо указывать тип EventAttributes
+  public downloadCalendar(event: EventAttributes) {
+    const ics = createEvent(event);
+    const blob = new Blob([ics.value], { type: 'text/calendar; charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    link.href = url;
+    link.setAttribute('download', event.description || 'calendar');
+    document.body.appendChild(link);
+    link.click();
+
+    setTimeout( () => {
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }, 200);
   }
 }

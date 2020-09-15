@@ -29,7 +29,7 @@ const COMPONENTS = [UniqueScreenComponent];
         CommonModule,
         SharedModule,
         FileUploadModule,
-        EpguLibModule.forChild(),
+        EpguLibModule,
         SelectMapObjectModule,
         CarInfoModule,
         EmployeeHistoryModule,

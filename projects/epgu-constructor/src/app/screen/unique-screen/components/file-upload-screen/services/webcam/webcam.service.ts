@@ -6,9 +6,7 @@ import {
   WebcamShootComponent
 } from '../../sub-components/webcam-shoot/webcam-shoot.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class WebcamService {
   private loadComponent: ComponentPortal<WebcamShootComponent>;
   private containerRef: ComponentRef<WebcamShootComponent>;
@@ -17,7 +15,6 @@ export class WebcamService {
     private appRef: ApplicationRef,
     private _CFR: ComponentFactoryResolver,
     private _injector: Injector,
-    @Inject(DOCUMENT) private document: Document
   ) {
     this.loadComponent = new ComponentPortal(WebcamShootComponent);
   }
@@ -26,7 +23,7 @@ export class WebcamService {
    * Open chat on site
    */
   open(): WebcamEvents {
-    const hostElement = this.document.body;
+    const hostElement = window.document.body;
 
     const chatEvents = new WebcamEvents(); // Create an object to pass modal methods to target component
     const injector = Injector.create({

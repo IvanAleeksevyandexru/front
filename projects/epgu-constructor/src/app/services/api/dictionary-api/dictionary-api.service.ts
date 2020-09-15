@@ -3,22 +3,11 @@ import { Injectable } from '@angular/core';
 import { DictionaryOptions, DictionaryResponse } from './dictionary-api.types';
 import { ConfigService } from '../../../config/config.service';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 
 @Injectable()
 export class DictionaryApiService {
-  dictionaryUrl: string;
 
-  constructor(
-    private http: HttpClient,
-    private configService: ConfigService,
-    private ngUnsubscribe$: UnsubscribeService
-  ) {
-    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
-      this.dictionaryUrl = config.dictionaryUrl;
-    });
-  }
+  constructor(private http: HttpClient, private config: ConfigService) {}
 
   /**
    * Возвращает данные справочника
@@ -26,7 +15,7 @@ export class DictionaryApiService {
    * @param options - опции для получения данных
    */
   getDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
-    const path = `${this.dictionaryUrl}/${dictionaryName}`;
+    const path = `${this.config.dictionaryUrl}/${dictionaryName}`;
     return this.http.post<DictionaryResponse>(path, {
       filter: options.filter,
       treeFiltering: options.treeFiltering || 'ONELEVEL',

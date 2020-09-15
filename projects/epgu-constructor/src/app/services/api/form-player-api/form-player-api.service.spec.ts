@@ -11,7 +11,7 @@ import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 describe('FormPlayerApiService', () => {
   let service: FormPlayerApiService;
   let http: HttpTestingController;
-  let configService: ConfigService;
+  let config: ConfigService;
   let apiUrl = '/api';
   let serviceId = 'local';
   let orderId = '12345';
@@ -30,7 +30,7 @@ describe('FormPlayerApiService', () => {
     });
     service = TestBed.inject(FormPlayerApiService);
     http = TestBed.inject(HttpTestingController);
-    configService = TestBed.inject(ConfigService);
+    config = TestBed.inject(ConfigService);
   }));
 
   afterEach(async(() => http.verify()));
