@@ -13,6 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constants/dates';
+import { ConfigService } from '../../../../../../../../config/config.service';
 
 const moment = moment_;
 
@@ -32,6 +33,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
   valueParsed: any;
 
   constructor(
+    public configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
   ) {}
