@@ -55,9 +55,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
+    public configService: ConfigService,
     private yaMapService: YaMapService,
     private dictionaryApiService: DictionaryApiService,
-    private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
     private cdr: ChangeDetectorRef,

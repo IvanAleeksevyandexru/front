@@ -189,7 +189,8 @@ export class FormPlayerService {
     this.screenType = display.type;
     this.screenType$.next(display.type);
 
-    this.screenService.initScreenStore(scenarioDto);
+    const deepCopyOfStore = JSON.parse(JSON.stringify(scenarioDto));
+    this.screenService.initScreenStore(deepCopyOfStore);
     this.storeSubject.next(this.store);
 
   }
