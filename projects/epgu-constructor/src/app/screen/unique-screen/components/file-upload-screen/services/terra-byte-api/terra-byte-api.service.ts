@@ -4,26 +4,14 @@ import { TerraFileOptions, TerraUploadFileOptions } from './terra-byte-api.types
 import { Observable } from 'rxjs';
 import { TerraUploadedFile } from '../../sub-components/file-upload-item/data';
 import { ConfigService } from '../../../../../../config/config.service';
-import { takeUntil } from 'rxjs/operators';
-import { CookieService } from 'ngx-cookie-service';
-import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
  */
 @Injectable()
 export class TerraByteApiService {
-  fileUploadApiUrl: string;
 
-  constructor(
-    private http: HttpClient,
-    private configService: ConfigService,
-    private ngUnsubscribe$: UnsubscribeService,
-  ) {
-    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
-      this.fileUploadApiUrl = config.fileUploadApiUrl;
-    });
-  }
+  constructor(private http: HttpClient, private configService: ConfigService) {}
 
   /**
    * Переводит base64 картинку в Blob
@@ -59,7 +47,7 @@ export class TerraByteApiService {
    * @param relativePath - относительный путь от API для запросов
    */
   private getTerabyteApiUrl = (relativePath): string =>
-      this.fileUploadApiUrl + relativePath;
+      this.configService.config.fileUploadApiUrl + relativePath;
 
   /**
    * Возращает опции запроса

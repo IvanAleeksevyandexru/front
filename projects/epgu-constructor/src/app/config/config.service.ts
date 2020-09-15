@@ -1,13 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { Config } from './config.types';
 import { CONFIG_TOKEN } from './config.token';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class ConfigService {
   private _config: Config;
-  private configSubject = new BehaviorSubject(this._config);
-  public config$ = this.configSubject.asObservable();
 
   constructor(@Inject(CONFIG_TOKEN) config: Config) {
     this.checkConfig(config);
@@ -27,6 +24,5 @@ export class ConfigService {
   // Do not use this method, only for testing stand
   set config(newConfig: Config) {
     this._config = newConfig;
-    this.configSubject.next(this._config);
   }
 }

@@ -10,30 +10,21 @@ import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 
 @Injectable()
 export class FormPlayerApiService {
-  apiUrl: string;
-  userId: string;
-  token: string;
-
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
     private cookieService: CookieService,
-    private ngUnsubscribe$: UnsubscribeService
-  ) {
-    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
-      this.apiUrl = config.apiUrl;
-    });
-  }
+  ) {}
 
   public getDraftData(orderId: string): Observable<FormPlayerApiDraftResponse> {
-    const path = `${this.apiUrl}/drafts/${orderId}`;
+    const path = `${this.configService.config.apiUrl}/drafts/${orderId}`;
     return this.http.get<FormPlayerApiDraftResponse>(path, {
       withCredentials: false
     });
   }
 
   public getServiceData(serviceId: string, targetId?: string): Observable<FormPlayerApiResponse> {
-    const path = `${this.apiUrl}/service/${serviceId}/scenario/getService`;
+    const path = `${this.configService.config.apiUrl}/service/${serviceId}/scenario/getService`;
     const userId = this.cookieService.get('u') || '';
     const token = this.cookieService.get('acc_t') || '';
     return this.http.post<FormPlayerApiResponse>(path, {
@@ -46,13 +37,12 @@ export class FormPlayerApiService {
   }
 
   public navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, data): Observable<FormPlayerApiResponse> {
-    const path = `${this.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
-    if (this.userId) {
-      data.scenarioDto.userId = this.cookieService.get('u') || '';
-    }
-    if (this.token) {
-      data.scenarioDto.token = this.cookieService.get('acc_t') || '';
-    }
+    const path = `${this.configService.config.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
+
+    const userId = this.cookieService.get('u') || '';
+    const token = this.cookieService.get('acc_t') || '';
+    data.scenarioDto.userId = userId;
+    data.scenarioDto.token = token;
 
     return this.http.post<FormPlayerApiResponse>(path, {
       ...data,

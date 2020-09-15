@@ -31,12 +31,7 @@ export class GibddTimeSlotsService implements TimeSlotsService {
 
   private errorMessage;
 
-  constructor(
-    private http: HttpClient,
-    private configService: ConfigService
-  ) {
-
-  }
+  constructor(private http: HttpClient, private configService: ConfigService) {}
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
     const path = `${this.configService.config.timeSlotApiUrl}/slots`;

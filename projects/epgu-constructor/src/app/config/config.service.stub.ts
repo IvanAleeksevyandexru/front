@@ -17,8 +17,6 @@ export class ConfigServiceStub {
     yandexMapsApiKey: '',
   };
 
-  config$ = of(this._config);
-
   get config(): Config {
     return this._config;
   }
