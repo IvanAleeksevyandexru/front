@@ -1,6 +1,6 @@
 {
   "name": "epgu-form-frontend",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -19,6 +19,7 @@
     "test:dev": "jest --watch -o",
     "test:coverage": "jest --ci --coverage --no-cache --reporters=default --reporters=jest-junit --coverageDirectory=coverage/jest",
     "ci": "yarn lint && yarn stylelint && yarn test && yarn lib:build && yarn build",
+    "release": "standard-version",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -52,7 +53,7 @@
     "@ngx-translate/http-loader": "6.0.0",
     "@types/uuid": "8.3.0",
     "angular2-text-mask": "9.0.0",
-    "epgu-lib": "0.0.486",
+    "epgu-lib": "^0.0.493",
     "moment": "2.24.0",
     "ngx-cookie-service": "10.0.1",
     "ngx-perfect-scrollbar": "8.0.0",
@@ -93,6 +94,7 @@
     "ng-packagr": "10.0.0",
     "prettier": "2.0.5",
     "protractor": "7.0.0",
+    "standard-version": "^9.0.0",
     "stylelint": "13.6.1",
     "stylelint-config-recommended-scss": "4.2.0",
     "stylelint-scss": "3.18.0",
