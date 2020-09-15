@@ -45,7 +45,7 @@ const COMPONENTS = [
     MvdGiacModule,
     DocInputModule,
     SharedModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
   ],
   providers: [
     ScreenService

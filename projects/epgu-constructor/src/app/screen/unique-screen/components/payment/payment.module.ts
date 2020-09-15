@@ -18,7 +18,7 @@ import { PaymentService } from './payment.service';
 	imports: [
 		CommonModule,
 		SharedModule,
-		EpguLibModule.forChild(),
+		EpguLibModule,
 	]
 })
 export class PaymentModule { }

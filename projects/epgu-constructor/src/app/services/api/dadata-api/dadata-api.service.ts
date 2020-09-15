@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigService } from '../../../config/config.service';
+import { takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 
 @Injectable()
 export class DadataApiService {
@@ -9,8 +11,11 @@ export class DadataApiService {
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
+    private ngUnsubscribe$: UnsubscribeService
   ) {
-    this.externalApiUrl = configService.config.externalApiUrl;
+    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
+      this.externalApiUrl = config.externalApiUrl;
+    });
   }
 
   getDadataByFias(fiasCode: string) {

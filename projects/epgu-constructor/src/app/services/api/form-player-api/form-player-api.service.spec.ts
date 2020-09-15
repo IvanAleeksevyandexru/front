@@ -5,6 +5,7 @@ import { ConfigService } from '../../../config/config.service';
 import { ConfigServiceStub } from '../../../config/config.service.stub';
 import { FormPlayerNavigation } from '../../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
+import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 
 
 describe('FormPlayerApiService', () => {
@@ -23,6 +24,7 @@ describe('FormPlayerApiService', () => {
       providers: [
         FormPlayerApiService,
         CookieService,
+        UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });

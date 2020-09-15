@@ -1,28 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DynamicModule } from 'ng-dynamic-component';
 import { EpguLibModule } from 'epgu-lib';
-
+import { ConfigService } from './config/config.service';
+import { CONFIG_TOKEN } from './config/config.token';
 import { Config } from './config/config.types';
 import { FormPlayerComponent } from './form-player.component';
+import { ComponentScreenModule } from './screen/component-screen/component-screen.module';
 import { CustomScreenModule } from './screen/custom-screen/custom-screen.module';
+import { EmptyScreenModule } from './screen/empty-screen/empty-screen.module';
 import { InfoScreenModule } from './screen/info-screen/info-screen.module';
 import { InvitationErrorScreenModule } from './screen/invitation-error-screen/invitation-error-screen.module';
 import { QuestionsScreenModule } from './screen/questions-screen/questions-screen.module';
-import { ComponentScreenModule } from './screen/component-screen/component-screen.module';
+import { ScreenService } from './screen/screen.service';
 import { UniqueScreenModule } from './screen/unique-screen/unique-screen.module';
-import { ConfigService } from './config/config.service';
-import { CONFIG_TOKEN } from './config/config.token';
-import { FormPlayerService } from './services/form-player/form-player.service';
 import { DictionaryApiService } from './services/api/dictionary-api/dictionary-api.service';
+import { FormPlayerApiService } from './services/api/form-player-api/form-player-api.service';
+import { ComponentStateService } from './services/component-state/component-state.service';
+import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { SharedModule } from './shared/shared.module';
-import { ComponentStateService } from './services/component-state/component-state.service';
-import { ScreenService } from './screen/screen.service';
-import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
-import { EmptyScreenModule } from './screen/empty-screen/empty-screen.module';
-import { FormPlayerApiService } from './services/api/form-player-api/form-player-api.service';
 
+export const epguLibModule = EpguLibModule.forRoot();
 
 @NgModule({
   declarations: [
@@ -36,16 +34,14 @@ import { FormPlayerApiService } from './services/api/form-player-api/form-player
     QuestionsScreenModule,
     UniqueScreenModule,
     InvitationErrorScreenModule,
-    DynamicModule,
     SharedModule,
-    EpguLibModule.forChild(),
+    epguLibModule,
     InfoScreenModule,
   ],
   providers: [
     DictionaryApiService,
     FormPlayerService,
     FormPlayerApiService,
-    ScreenResolverService,
     ScreenService,
     ComponentStateService,
     ConfigService,
