@@ -10,7 +10,6 @@
         (changed)="lookupChanged($event?.originalItem, libLookup)"
         [showExpandCollapse]="false"
         [queryMinSymbolsCount]="0"
-        [virtualScroll]="true"
         #libLookup
       >
       </lib-lookup>
@@ -38,8 +37,8 @@
           <span class="PGU-AttrsValue">{{itemContent.value}}</span>
         </div>
         <a (click)="showModalFromTemplate('detailsTemplate', mapObject)" href="#!" class="details-link">Узнать подробнее</a>
-        <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">На данной площадке действуют дополнительные 
-условия оказания услуг нажмите чтобы 
+        <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">На данной площадке действуют дополнительные
+условия оказания услуг нажмите чтобы
           <a href="#!" (click)="showModalFromTemplate('informationTemplate', mapObject)" class="information-link">ознакомиться</a>
         </div>
         <lib-button *ngIf="mapObject.agreement" width="wide" (click)="selectObject()">Выбрать</lib-button>
@@ -59,11 +58,11 @@
     <div class="map-modal__normal">Башня "Око" - ресторан "Birds"</div>
     <img class="modal-img" src="./assets/img/brak001.png" />
     <img class="modal-img" src="./assets/img/brak002.png" />
-    <div class="map-modal__normal">Одна из новейших площадок для регистрации брака находится на 84 этаже 
+    <div class="map-modal__normal">Одна из новейших площадок для регистрации брака находится на 84 этаже
 башни «Око» делового центра «Москва-Сити» в ресторане «Birds».</div>
-    <div class="map-modal__normal">Ресторан на высоте 354 метров открылся в начале октября 2019 года. По словам организаторов 
+    <div class="map-modal__normal">Ресторан на высоте 354 метров открылся в начале октября 2019 года. По словам организаторов
 , уже прославившихся известным рестораном Ruski, новая площадка станет самым высоким рестораном и клубом на планете.</div>
-    <div class="map-modal__normal">Концепция заведения предусматривает слияние кулинарии и театрального шоу. 
+    <div class="map-modal__normal">Концепция заведения предусматривает слияние кулинарии и театрального шоу.
 Гостям на выбор предлагаются меню азиатской и европейской кухни, также в ресторане присутствуют два контактных бара.</div>
     <div class="map-modal__bold">Режим работы:</div>
     <div class="map-modal__normal">Рабочие дни: вторник - суббота с 9.00 до 18.00<br>Выходные дни: воскресенье, понедельник</div>
