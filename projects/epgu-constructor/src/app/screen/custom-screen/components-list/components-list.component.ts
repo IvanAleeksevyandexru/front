@@ -8,16 +8,19 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-
+import { ConfigService } from '../../../config/config.service';
+import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
+import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
+import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
+import { ScreenService } from '../../screen.service';
 import {
+  CustomComponent,
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
-  CustomComponent,
   CustomComponentOutputData,
   CustomComponentState,
   CustomScreenComponentTypes,
 } from '../custom-screen.types';
-import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   adaptiveDropDown,
   calcDependedComponent,
@@ -28,10 +31,6 @@ import {
   isDropDown,
   likeDictionary,
 } from '../tools/custom-screen-tools';
-import { ScreenService } from '../../screen.service';
-import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
-import { ConfigService } from '../../../config/config.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -161,7 +160,6 @@ export class ComponentsListComponent implements OnInit, OnChanges {
       this.state[componentId].value = componentValue;
       this.state[componentId].valid = isValid;
       this.state[componentId].errorMessage = errMsg;
-      this.emmitChanges();
     };
 
     if (inputValidationResult === -1) {
