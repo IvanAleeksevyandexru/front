@@ -4,7 +4,7 @@ import { ConfigService } from '../../../../config/config.service';
 import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, takeUntil, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import {
   SmevBookResponseInterface,
   SmevSlotInterface,
@@ -12,7 +12,6 @@ import {
   SmevSlotsResponseInterface, TimeSlotValueInterface,
   ZagsDepartmentInterface
 } from './time-slots.types';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Injectable()
 export class BrakTimeSlotsService implements TimeSlotsService {
@@ -29,25 +28,16 @@ export class BrakTimeSlotsService implements TimeSlotsService {
   private bookedSlot: SmevSlotInterface;
   private bookId;
   private errorMessage;
-  private timeSlotApiUrl;
 
-  constructor(
-    private http: HttpClient,
-    private configService: ConfigService,
-    private ngUnsubscribe$: UnsubscribeService
-  ) {
-    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
-      this.timeSlotApiUrl = config.timeSlotApiUrl;
-    });
-  }
+  constructor(private http: HttpClient, private config: ConfigService) {}
 
   private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.timeSlotApiUrl}/slots`;
+    const path = `${this.config.timeSlotApiUrl}/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
   }
 
   private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const path = `${this.timeSlotApiUrl}/book?srcSystem=BETA`;
+    const path = `${this.config.timeSlotApiUrl}/book?srcSystem=BETA`;
     return this.http.post<SmevBookResponseInterface>(path, requestBody);
   }
 

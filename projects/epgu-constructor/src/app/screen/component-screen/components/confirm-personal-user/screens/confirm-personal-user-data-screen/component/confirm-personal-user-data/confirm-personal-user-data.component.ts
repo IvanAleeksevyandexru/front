@@ -20,7 +20,7 @@ export class ConfirmPersonalUserDataComponent implements OnChanges {
   preparedData: Array<ConfirmUserDataFieldsState> = [];
 
   @Input() data: ConfirmUserData;
-  constructor(public configService: ConfigService) {}
+  constructor(public config: ConfigService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
