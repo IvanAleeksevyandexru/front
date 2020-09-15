@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
 import { ScreenService } from '../../screen/screen.service';
@@ -11,7 +11,6 @@ import {
   ScenarioDto
 } from '../api/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../screen/screen.types';
-import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { UtilsService } from '../utils/utils.service';
 import { localStorageComponentDataKey } from '../../shared/constants/form-player';
 
@@ -129,19 +128,6 @@ export class FormPlayerService {
     this.processResponse(store);
     this.updateLoading(false);
     UtilsService.deleteFromLocalStorage(FormPlayerService.localStorageComponentDataKey);
-  }
-
-  /**
-   * Возвращает компонент для показа экрана переданного типа
-   */
-  getScreenComponent(): ScreenComponent {
-    const screenComponent = this.screenResolverService.getScreenComponentByType(this.screenType);
-
-    if (!screenComponent) {
-      this.handleScreenComponentError(this.screenType);
-    }
-
-    return screenComponent;
   }
 
   handleScreenComponentError(screenType: string) {
@@ -265,6 +251,12 @@ export class FormPlayerService {
   handleInvalidResponse() {
     console.error('----- ERROR DATA ---------');
     console.error('Invalid Response');
+  }
+
+  private updateScreenType(scenarioDto: ScenarioDto): void {
+    const { display } = scenarioDto;
+    this.screenType = display.type;
+    this.screenType$.next(display.type);
   }
 
   /**

@@ -30,9 +30,6 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     this.checkProps();
     const orderId = this.getDraftOrderId();
     const service = { serviceId: this.serviceId, targetId: this.targetId };
-    this.formPlayerService.store$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.screenComponent = this.formPlayerService.getScreenComponent();
-    });
     this.formPlayerService.initData(service, orderId);
 
     this.navigationService.nextStep$

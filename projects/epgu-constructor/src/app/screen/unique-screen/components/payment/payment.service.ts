@@ -134,7 +134,7 @@ export class PaymentService {
     // TODO хардкод. доделать.
     const slashInEndRex = /\/$/;
     const host = location.href.replace(slashInEndRex,'');
-    const returnUrl = encodeURIComponent(`${host}${this.apiUrl}?getLastScreen=1`);
+    const returnUrl = encodeURIComponent(`${host}${this.config.apiUrl}?getLastScreen=1`);
     return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${returnUrl}&subscribe=true`;
   }
 
