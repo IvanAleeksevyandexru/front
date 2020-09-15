@@ -4,8 +4,8 @@
       <div class="form__item" *ngSwitchCase="componentType.LabelSection">
         <epgu-constructor-output-html
           class="label"
-          *ngIf="componentData?.label"
-          [html]="componentData?.label"
+          *ngIf="state[componentData.id].isShown"
+          [html]="componentData.label || state[componentData.id].value"
           [clarifications]="componentData?.attrs.clarifications"
         >
         </epgu-constructor-output-html>
