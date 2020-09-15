@@ -9,20 +9,44 @@ import { FormPlayerServiceStub } from './services/form-player/form-player.servic
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { ModalContainerComponent } from './shared/components/modal/modal-container/modal-container.component';
 import { NavigationService } from './shared/services/navigation/navigation.service';
+import { InfoScreenComponent } from './screen/info-screen/info-screen.component';
+import { InvitationErrorScreenComponent } from './screen/invitation-error-screen/invitation-error-screen.component';
+import { UniqueScreenComponent } from './screen/unique-screen/unique-screen.component';
+import { QuestionsScreenComponent } from './screen/questions-screen/questions-screen.component';
+import { EmptyScreenComponent } from './screen/empty-screen/empty-screen.component';
+import { CustomScreenComponent } from './screen/custom-screen/custom-screen.component';
+import { ComponentScreenComponent } from './screen/component-screen/component-screen.component';
 
+export const epguLibModule = EpguLibModule.forRoot();
 
 describe('FormPlayerComponent', () => {
   let formPlayerService: FormPlayerService;
   let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
+  let InfoScreenComponentMock = MockComponent(InfoScreenComponent);
+  let InvitationErrorScreenComponentMock = MockComponent(InvitationErrorScreenComponent);
+  let UniqueScreenComponentMock = MockComponent(UniqueScreenComponent);
+  let QuestionsScreenComponentMock = MockComponent(QuestionsScreenComponent);
+  let EmptyScreenComponentMock = MockComponent(EmptyScreenComponent);
+  let CustomScreenComponentMock = MockComponent(CustomScreenComponent);
+  let ComponentScreenComponentMock = MockComponent(ComponentScreenComponent);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         FormPlayerModule,
         RouterTestingModule,
-        EpguLibModule.forRoot(),
+        epguLibModule,
       ],
-      declarations: [],
+      declarations: [
+        ModalContainerComponentMock,
+        InfoScreenComponentMock,
+        InvitationErrorScreenComponentMock,
+        UniqueScreenComponentMock,
+        QuestionsScreenComponentMock,
+        EmptyScreenComponentMock,
+        CustomScreenComponentMock,
+        ComponentScreenComponentMock,
+      ],
       providers: [
         NavigationService,
         UnsubscribeService,

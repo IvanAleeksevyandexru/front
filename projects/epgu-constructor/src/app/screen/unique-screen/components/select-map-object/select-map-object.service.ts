@@ -23,7 +23,7 @@ export class SelectMapObjectService {
 
   constructor(
     private http: HttpClient,
-    private configService: ConfigService,
+    private config: ConfigService,
     private yaMapService: YaMapService,
   ) { }
 
@@ -32,7 +32,7 @@ export class SelectMapObjectService {
    * @param items
    */
   public getCoordsByAddress(items) {
-    const path = `${this.configService.config.externalApiUrl}/address/resolve`;
+    const path = `${this.config.externalApiUrl}/address/resolve`;
     return this.http.post<IGeoCoordsResponse>(path, {
       address: items.map(item => item.attributeValues[this.componentAttrs.attributeNameWithAddress]),
     });

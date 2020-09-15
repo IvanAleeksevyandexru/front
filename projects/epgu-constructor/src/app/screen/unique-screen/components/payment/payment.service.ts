@@ -16,28 +16,17 @@ import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payme
  */
 @Injectable()
 export class PaymentService {
-  private apiUrl: string;
-  private uinApiUrl: string; // API сведений по УИН
-  private paymentUrl: string; // URL для перехода на оплату
-  private billsApiUrl: string; // API сведений по параметрам счета
   private requestOptions = { withCredentials: true };
   screenStore: ScreenStore;
 
   constructor(
     private http: HttpClient,
     private dictionaryApiService: DictionaryApiService,
-    private configService: ConfigService,
+    private config: ConfigService,
     public formPlayerService: FormPlayerService,
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService
   ) {
-    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
-      this.apiUrl = config.apiUrl;
-      this.uinApiUrl = config.uinApiUrl;
-      this.billsApiUrl = config.billsApiUrl;
-      this.paymentUrl = config.paymentUrl;
-    });
-
     this.screenService.screenData$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((screenData: ScreenStore) => {
@@ -95,7 +84,7 @@ export class PaymentService {
       return uinMockUp.asObservable();
     }
 
-    const path = `${this.uinApiUrl}/${code}?orderId=${orderId}`;
+    const path = `${this.config.uinApiUrl}/${code}?orderId=${orderId}`;
     return this.http.post(path, attributeValues, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -113,7 +102,8 @@ export class PaymentService {
     // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
     // return billMockUp.asObservable();
 
-    const path = `${this.billsApiUrl}?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    // eslint-disable-next-line max-len
+    const path = `${this.config.billsApiUrl}?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
     return this.http.post(path, {}, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -127,7 +117,7 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    */
   getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<any> {
-    const path = `${this.uinApiUrl}/status/${code}?orderId=${orderId}`;
+    const path = `${this.config.uinApiUrl}/status/${code}?orderId=${orderId}`;
     return this.http.get(path, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -142,8 +132,8 @@ export class PaymentService {
    */
   getPaymentLink(billId: number): string {
     // TODO хардкод. доделать.
-    const returnUrl = encodeURIComponent(`${location.href}${this.apiUrl.replace(/^\//,'')}?getLastScreen=1`);
-    return `${this.paymentUrl}/?billIds=${billId}&returnUrl=${returnUrl}&subscribe=true`;
+    const returnUrl = encodeURIComponent(`${location.href}${this.config.apiUrl.replace(/^\//,'')}?getLastScreen=1`);
+    return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${returnUrl}&subscribe=true`;
   }
 
   /**

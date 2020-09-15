@@ -29,7 +29,7 @@ export class TemporaryRegistrationAddrComponent implements OnChanges, AfterViewI
   validationShowOn = ValidationShowOn.IMMEDIATE;
 
   constructor(
-    public configService: ConfigService,
+    public config: ConfigService,
     private componentStateService: ComponentStateService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}

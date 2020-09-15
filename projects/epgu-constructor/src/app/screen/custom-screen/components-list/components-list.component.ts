@@ -54,7 +54,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   constructor(
     private dictionaryApiService: DictionaryApiService,
     public screenService: ScreenService,
-    public configService: ConfigService,
+    public config: ConfigService,
   ) {}
 
   // NOTICE: тут была информация о валидации смотри историю гита

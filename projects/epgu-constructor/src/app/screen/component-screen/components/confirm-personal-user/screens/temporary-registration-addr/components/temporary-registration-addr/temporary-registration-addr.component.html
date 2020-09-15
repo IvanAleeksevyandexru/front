@@ -8,7 +8,7 @@
         [simpleMode]="true"
         [hideLevels]="field?.hideLevels || []"
         [name]="field.fieldName"
-        [externalApiUrl]="configService.config.externalApiUrl + '/'"
+        [externalApiUrl]="config.externalApiUrl + '/'"
         [initValue]="forms[field.fieldName]"
         [(ngModel)]="forms[field.fieldName]"
       >
