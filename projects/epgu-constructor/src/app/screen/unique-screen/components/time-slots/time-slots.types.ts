@@ -78,6 +78,8 @@ export interface SmevBookResponseInterface {
     };
     fieldErrors: [];
   };
+  timeStart: Date;
+  timeFinish: Date;
 }
 
 export interface SmevSlotsResponseInterface {
@@ -101,5 +103,5 @@ export interface SmevSlotsResponseInterface {
       errorMessage: string;
     };
     fieldErrors: [];
-  }
+  };
 }
