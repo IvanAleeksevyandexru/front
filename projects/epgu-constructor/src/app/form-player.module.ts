@@ -19,6 +19,7 @@ import { ComponentStateService } from './services/component-state/component-stat
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { SharedModule } from './shared/shared.module';
+import { UtilsService } from './services/utils/utils.service';
 
 export const epguLibModule = EpguLibModule.forRoot();
 
@@ -45,7 +46,8 @@ export const epguLibModule = EpguLibModule.forRoot();
     ScreenService,
     ComponentStateService,
     ConfigService,
-    UnsubscribeService
+    UnsubscribeService,
+    UtilsService
   ],
   exports: [
     FormPlayerComponent

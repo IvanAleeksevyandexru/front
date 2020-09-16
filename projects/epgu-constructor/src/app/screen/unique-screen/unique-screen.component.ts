@@ -6,7 +6,6 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { ScreenService } from '../screen.service';
 import { UniqueScreenComponentTypes } from './unique-screen.types';
 import { NavigationPayload } from '../../form-player.types';
-import { mockOrderId } from './components/payment/payment.constants';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',
@@ -38,13 +37,9 @@ export class UniqueScreenComponent implements OnInit, Screen {
   }
 
   /**
-   * Возвращает идентификатор заявления
+   * Переход на следущий экран с передачей данных
+   * @param value - данные для передачи
    */
-  get getOrderId(): string {
-    // TODO: Переделать на получение заявки из ранее данных ответов
-    return mockOrderId;
-  }
-
   nextDataForStep(value?: string): void {
     const data: NavigationPayload = {};
     const componentId = this.screenStore.display.components[0].id;
@@ -56,10 +51,17 @@ export class UniqueScreenComponent implements OnInit, Screen {
     this.nextStep(data);
   }
 
+  /**
+   * Переход на следущий экран
+   * @param data - данные
+   */
   nextStep(data?: NavigationPayload): void {
     this.navigationService.nextStep.next(data);
   }
 
+  /**
+   * Переход на предыдущий экран
+   */
   prevStep(): void {
     this.navigationService.prevStep.next();
   }

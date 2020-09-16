@@ -132,7 +132,9 @@ export class PaymentService {
    */
   getPaymentLink(billId: number): string {
     // TODO хардкод. доделать.
-    const returnUrl = encodeURIComponent(`${location.href}${this.config.apiUrl.replace(/^\//,'')}?getLastScreen=1`);
+    const slashInEndRex = /\/$/;
+    const host = location.href.replace(slashInEndRex,'');
+    const returnUrl = encodeURIComponent(`${host}${this.config.apiUrl}?getLastScreen=1`);
     return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${returnUrl}&subscribe=true`;
   }
 
