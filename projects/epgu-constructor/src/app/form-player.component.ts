@@ -4,7 +4,7 @@ import { FormPlayerNavigation, NavigationPayload } from './form-player.types';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { NavigationService } from './shared/services/navigation/navigation.service';
-import { ScreenTypes } from './screen/screen.types';
+import { ScreenComponent } from './screen/screen.const';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -13,12 +13,11 @@ import { ScreenTypes } from './screen/screen.types';
   encapsulation: ViewEncapsulation.None,
 })
 export class FormPlayerComponent implements OnInit, OnChanges {
-  screenComponents = ScreenTypes;
-
   @HostBinding('class.epgu-form-player') class = true;
   @Input() serviceId: string;
   @Input() orderId: string;
   @Input() targetId: string;
+  screenComponent: ScreenComponent;
 
   constructor(
     public formPlayerService: FormPlayerService,
@@ -31,6 +30,10 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     const orderId = this.getDraftOrderId();
     const service = { serviceId: this.serviceId, targetId: this.targetId };
     this.formPlayerService.initData(service, orderId);
+
+    this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.screenComponent = this.formPlayerService.getScreenComponent();
+    });
 
     this.navigationService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))

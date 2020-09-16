@@ -5,7 +5,6 @@ import { ConfigService } from '../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../config/config.service.stub';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../screen.service';
-import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { FormPlayerApiService } from '../../../../services/api/form-player-api/form-player-api.service';
 import { ApplicantAnswersService } from '../../../../shared/services/applicant-answers/applicant-answers.service';
@@ -22,7 +21,6 @@ describe('PaymentService', () => {
       providers: [
         DictionaryApiService,
         PaymentService,
-        FormPlayerService,
         ApplicantAnswersService,
         ComponentStateService,
         FormPlayerApiService,

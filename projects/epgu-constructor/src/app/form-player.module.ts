@@ -20,6 +20,7 @@ import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { SharedModule } from './shared/shared.module';
 import { UtilsService } from './services/utils/utils.service';
+import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 
 export const epguLibModule = EpguLibModule.forRoot();
 
@@ -37,7 +38,7 @@ export const epguLibModule = EpguLibModule.forRoot();
     InvitationErrorScreenModule,
     SharedModule,
     epguLibModule,
-    InfoScreenModule,
+    InfoScreenModule
   ],
   providers: [
     DictionaryApiService,
@@ -47,6 +48,7 @@ export const epguLibModule = EpguLibModule.forRoot();
     ComponentStateService,
     ConfigService,
     UnsubscribeService,
+    ScreenResolverService,
     UtilsService
   ],
   exports: [
