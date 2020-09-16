@@ -4,6 +4,7 @@ import { SharedModule } from '../../../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
 import { UnusedPaymentsComponent } from './unused-payments.component';
+import { UnusedPaymentsService } from './unused-payments.service';
 
 const COMPONENTS = [
   UnusedPaymentsComponent
@@ -13,6 +14,7 @@ const COMPONENTS = [
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   providers: [
+    UnusedPaymentsService
   ],
   imports: [
     CommonModule,

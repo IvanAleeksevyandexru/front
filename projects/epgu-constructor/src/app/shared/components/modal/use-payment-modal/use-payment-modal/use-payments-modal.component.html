@@ -7,11 +7,11 @@
     <h6>Ранее вы уже оплачивали пошлину по этой услуге, но не воспользовались ей.</h6>
     <div class="payments-modal__text-wrapper">
       <div *ngFor="let payment of paymentsList" class="payment-box">
-        <div>Сумма: <b class="payment-value">{{payment.sum}} руб.</b></div>
-        <div>УИН: <b class="payment-value">{{payment.uin}}</b></div>
-        <div>
+        <div>Сумма: <br><b class="payment-value">{{payment.amount}} руб.</b></div>
+        <div>УИН: <br><b class="payment-value">{{payment.uin}}</b></div>
+        <div class="row-wide">
           <lib-button (click)="clickUsePayment(payment.uin)">Использовать пошлину</lib-button>
-          <a [href]="payment.linkToOrderForm" class="payment-info">Просмотреть платеж</a>
+          <a [href]="payment.link" target="_blank" class="payment-info">Просмотреть платеж</a>
         </div>
       </div>
       <div>Или вы можете дождаться выставления новой пошлины ведомством и оплатить ее.</div>

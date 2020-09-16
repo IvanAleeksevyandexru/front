@@ -1,7 +1,8 @@
 <ng-container [ngSwitch]="screenStore.display?.components[0].type">
   <epgu-constructor-unused-payments
     *ngSwitchCase="uniqueComponentName.unusedPayments"
-    [data]="screenStore.display?.components[0]">
+    [orderId]="getOrderId"
+    [data]="screenStore.display">
   </epgu-constructor-unused-payments>
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"

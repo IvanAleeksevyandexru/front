@@ -1,7 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ComponentBase } from '../../../screen.types';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Display } from '../../../screen.types';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { UsePaymentsModalComponent } from '../../../../shared/components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
+import { UnusedPaymentsService } from './unused-payments.service';
+import { UnusedPaymentInterface } from './unused-payment.interface';
 
 @Component({
   selector: 'epgu-constructor-unused-payments',
@@ -9,39 +11,55 @@ import { UsePaymentsModalComponent } from '../../../../shared/components/modal/u
   styleUrls: ['./unused-payments.component.scss'],
 })
 export class UnusedPaymentsComponent implements OnInit {
-  @Input() data: ComponentBase;
-  paymentsList: [];
+  @Input() orderId: string;
+  @Input() data: Display;
+  @Output() nextStepEvent = new EventEmitter<any>();
+
+  paymentsList: UnusedPaymentInterface[];
   paymentUIN: string;
 
-  mockValue = [
-    {
-      orderId: 1,
-      sum: 530.06,
-      uin: '18810187160209113620',
-      linkToOrderForm: 'http://yandex.ru',
-    },
-    {
-      orderId: 2,
-      sum: 530.06,
-      uin: '18810187160209113622',
-      linkToOrderForm: 'http://yandex.ru',
-    },
-  ];
+  mockOrderId = '763438139';
 
-  constructor(private modalService: ModalService) {}
+  constructor(
+    private modalService: ModalService,
+    private listPaymentsService: UnusedPaymentsService,
+  ) {}
 
   public usePayment = (uin: string) => {
     this.paymentUIN = uin;
+    this.nextStep({ value: this.paymentUIN });
   };
+
+  public skipPayment = () => {
+    this.nextStep({ value: null });
+  };
+
+  /**
+   * Переход к следующему экрану
+   */
+  private nextStep(data: any): void {
+    this.nextStepEvent.emit(data);
+  }
 
   showModal(params) {
     this.modalService.openModal(UsePaymentsModalComponent, params);
   }
 
   public ngOnInit() {
-    this.paymentsList = this.data?.value ? JSON.parse(this.data.value) : this.mockValue;
-    if (this.paymentsList.length) {
-      this.showModal({ paymentsList: this.paymentsList, usePaymentHandler: this.usePayment });
-    }
+    this.listPaymentsService.getListPaymentsInfo({ orderId: this.mockOrderId }).subscribe(
+      (data) => {
+        if (data.length) {
+          this.paymentsList = data;
+          this.showModal({
+            paymentsList: this.paymentsList,
+            usePaymentHandler: this.usePayment,
+            skipPaymentHandler: this.skipPayment,
+          });
+        }
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
   }
 }
