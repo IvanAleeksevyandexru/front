@@ -1,6 +1,6 @@
 <form #dataForm="ngForm">
   <div class="flex-row" *ngIf="data?.attrs?.actions?.length === 1">
-    <a href="javascript:void(0);" (click)="handleClick()" class="button-change"> Редактирова </a>
+    <a href="javascript:void(0);" (click)="handleClick()" class="button-change"> Редактировать </a>
   </div>
   <ng-container
     *ngFor="let field of data?.attrs?.fields; let i = index"

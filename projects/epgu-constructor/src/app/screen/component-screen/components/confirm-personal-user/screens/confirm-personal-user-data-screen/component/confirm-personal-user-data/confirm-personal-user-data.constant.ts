@@ -8,8 +8,10 @@ export const CONFIRM_USER_DATA_BIRTHDAY_FIELD_NAME = 'birthDate';
 
 
 export function getFullNameConfirmPersonalUserData(data: ConfirmUserData): string {
-
-  return `${data.attrs.fields['lastName']} ${data.attrs.fields['firstName']} ${data.attrs.fields['middleName']}`
+  const firstName = JSON.parse(data.value)['firstName'];
+  const lastName = JSON.parse(data.value)['lastName'];
+  const middleName = JSON.parse(data.value)['middleName'];
+  return `${lastName} ${firstName} ${middleName}`;
 }
 
 export function getBirthDayConfirmPersonalUserData(data: ConfirmUserData): ConfirmUserDataAdaptiveField {
