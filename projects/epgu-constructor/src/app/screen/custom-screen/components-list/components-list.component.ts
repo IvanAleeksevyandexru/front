@@ -24,12 +24,14 @@ import {
 import {
   adaptiveDropDown,
   calcDependedComponent,
+  checkLegalInn,
   CheckInputValidationComponentList,
   getCustomScreenDictionaryFirstState,
   getInitStateItemComponentList,
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
   likeDictionary,
+  checkPersonInn,
 } from '../tools/custom-screen-tools';
 
 @Component({
@@ -182,6 +184,22 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     }
     const prepareStateForSending = this.getPreparedStateForSending();
     this.changes.emit(prepareStateForSending);
+  }
+
+  legalInnInputChange($event: Event, component: CustomComponent) {
+    const { value } = $event.target as HTMLInputElement;
+    this.state[component.id].value = value;
+    const inputValidationResult = checkLegalInn(value);
+    this.setValidationState(inputValidationResult, component.id, value);
+    this.emmitChanges(component);
+  }
+
+  personInnInputChange($event: Event, component: CustomComponent) {
+    const { value } = $event.target as HTMLInputElement;
+    this.state[component.id].value = value;
+    const inputValidationResult = checkPersonInn(value);
+    this.setValidationState(inputValidationResult, component.id, value);
+    this.emmitChanges(component);
   }
 
   /**

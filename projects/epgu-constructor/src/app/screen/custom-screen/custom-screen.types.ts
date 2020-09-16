@@ -13,6 +13,8 @@ export enum CustomScreenComponentTypes {
   AddressInput = 'AddressInput',
   htmlString = 'HtmlString',
   GenderSelection = 'GenderSelection',
+  LegalInnInput = 'LegalInnInput',
+  PersonInnInput = 'PersonInnInput'
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };

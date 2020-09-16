@@ -152,3 +152,43 @@ export function getInitStateItemComponentList(component: CustomComponent) {
     isShown: !hasRelatedRef,
   };
 }
+
+export function checkLegalInn(value: string) {
+  const inn = value.split('').map((char) => parseInt(char, 0));
+  const sumInn =
+    2 * inn[0] +
+    4 * inn[1] +
+    10 * inn[2] +
+    3 * inn[3] +
+    5 * inn[4] +
+    9 * inn[5] +
+    4 * inn[6] +
+    6 * inn[7] +
+    8 * inn[8];
+
+  const controlSum = sumInn - Math.trunc(sumInn / 11) * 11;
+  const isCorrectInn = controlSum === inn[9] || (controlSum === 10 && inn[9] === 0);
+
+  return isCorrectInn ? -1 : 0;
+}
+
+export function checkPersonInn(value: string) {
+  const inn = value.split('').map((char) => parseInt(char, 0));
+  const sumInn =
+    3 * inn[0] +
+    7 * inn[1] +
+    2 * inn[2] +
+    4 * inn[3] +
+    10 * inn[4] +
+    3 * inn[5] +
+    5 * inn[6] +
+    9 * inn[7] +
+    4 * inn[8] +
+    6 * inn[9] +
+    8 * inn[10];
+
+  const controlSum = sumInn - Math.trunc(sumInn / 11) * 11;
+  const isCorrectInn = controlSum === inn[11] || (controlSum === 10 && inn[11] === 0);
+
+  return isCorrectInn ? -1 : 0;
+}
