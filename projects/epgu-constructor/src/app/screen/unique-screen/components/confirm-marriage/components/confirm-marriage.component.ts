@@ -17,7 +17,7 @@ import { Display } from '../../../../screen.types';
 export class ConfirmMarriageComponent implements OnInit {
   @Input() isLoading: boolean;
   @Input() data: Display;
-  @Output() nextStepEvent = new EventEmitter<void>();
+  @Output() nextStepEvent = new EventEmitter<string>();
 
   get marriageInfo() {
     return this.data.components[0].attrs as ConfirmMarriageInfoInterface;
@@ -36,7 +36,7 @@ export class ConfirmMarriageComponent implements OnInit {
   }
 
   nextStep(): void {
-    this.nextStepEvent.emit();
+    this.nextStepEvent.emit(JSON.stringify({ isExpired: this.timer.progress === 0 }));
   }
 
   startTimer() {
