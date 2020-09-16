@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TimeSlotsService } from './time-slots.service';
-import * as uuid from 'uuid';
+import { Injectable } from '@angular/core';
+import * as moment_ from 'moment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import * as uuid from 'uuid';
+import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
+import { TimeSlotsService } from './time-slots.service';
 import {
   SmevSlotInterface,
   SmevSlotsMapInterface,
   TimeSlotValueInterface,
   ZagsDepartmentInterface
 } from './time-slots.types';
-import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import * as moment from 'moment';
+
+const moment = moment_;
 
 @Injectable()
 export class DivorceTimeSlotsService implements TimeSlotsService {

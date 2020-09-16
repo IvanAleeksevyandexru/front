@@ -1,12 +1,12 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { Screen, ScreenStore } from '../screen.types';
-import { ScreenService } from '../screen.service';
 import { NavigationPayload } from '../../form-player.types';
+import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { DATE_STRING_DOT_FORMAT } from '../../shared/constants/dates';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { ScreenService } from '../screen.service';
+import { Screen, ScreenStore } from '../screen.types';
 
 const moment = moment_;
 @Component({
@@ -109,9 +109,9 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
       acc[key] = {
         visited: true,
         value:
-          typeof data[key].value !== 'object'
-            ? data[key].value
-            : JSON.stringify(data[key].value || {}),
+          typeof data[key].value === 'object'
+            ? JSON.stringify(data[key].value || {})
+            : data[key].value,
       };
       return acc;
     }, {});
