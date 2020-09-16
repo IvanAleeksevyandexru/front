@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AppConfig, FormPlayerConfig } from './app.type'
 import { getConfigFromEnvs } from './app.utils'
+import { environment } from '../environments/environment'
 
 const LOCAL_STORAGE_KEY = 'EPGU_FORM_PLAYER_TEST_STAND_CONFIG';
 
 
 const initValues: FormPlayerConfig = {
-  serviceId: '',
-  targetId: '',
-  orderId: '',
+  serviceId: environment.serviceId,
+  targetId: environment.targetId,
+  orderId: environment.orderId,
 }
 
 @Injectable()
