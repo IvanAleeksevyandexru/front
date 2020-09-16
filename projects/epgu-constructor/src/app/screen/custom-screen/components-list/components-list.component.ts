@@ -116,8 +116,11 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   inputChange($event: Event, component: CustomComponent) {
-    const { value } = $event.target as HTMLInputElement;
-    this.state[component.id].value = value;
+    let { value } = $event.target as HTMLInputElement;
+    if (component.type === 'AddressInput') {
+      const fullAddressObject = this.state[component.id].value;
+      value = fullAddressObject;
+    }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
@@ -125,7 +128,6 @@ export class ComponentsListComponent implements OnInit, OnChanges {
 
   dateChange($event: string, component: CustomComponent) {
     const value = moment($event).format(DATE_STRING_DOT_FORMAT);
-    this.state[component.id].value = value;
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
