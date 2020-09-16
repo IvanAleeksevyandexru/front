@@ -63,8 +63,6 @@ export class ConfigService implements Config {
   // Do not use this method, only for testing stand
   set config(config: Config) {
     this.checkConfig(config);
-    console.log('set config');
-    console.log(config);
     this._apiUrl = config.apiUrl;
     this._billsApiUrl = config.billsApiUrl;
     this._dictionaryUrl = config.dictionaryUrl;

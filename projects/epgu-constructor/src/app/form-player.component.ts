@@ -68,6 +68,10 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     if (!this.serviceId) {
       throw Error('Need to set serviceId for epgu form player');
     }
+
+    if (!this.config) {
+      throw Error('Need to set config for epgu form player');
+    }
   }
 
   nextStep(navigationPayload?: NavigationPayload) {
