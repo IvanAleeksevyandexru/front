@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
 import { ScreenService } from '../../screen/screen.service';
@@ -13,6 +13,8 @@ import {
 import { ScreenTypes } from '../../screen/screen.types';
 import { UtilsService } from '../utils/utils.service';
 import { localStorageComponentDataKey } from '../../shared/constants/form-player';
+import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
+import { ScreenComponent } from '../../screen/screen.const';
 
 interface ServiceType {
   serviceId: string;
@@ -33,7 +35,7 @@ export class FormPlayerService {
   private playerLoaded = false;
   private isLoading = false;
   private screenType: string;
-  public screenType$ = new BehaviorSubject<ScreenTypes>('' as any);
+  public screenType$ = new Subject<ScreenTypes>();
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
@@ -43,6 +45,7 @@ export class FormPlayerService {
 
   constructor(
     public formPlayerApiService: FormPlayerApiService,
+    private screenResolverService: ScreenResolverService,
     private screenService: ScreenService,
   ) {}
 
@@ -128,6 +131,19 @@ export class FormPlayerService {
     this.processResponse(store);
     this.updateLoading(false);
     UtilsService.deleteFromLocalStorage(FormPlayerService.localStorageComponentDataKey);
+  }
+
+  /**
+   * Возвращает компонент для показа экрана переданного типа
+   */
+  getScreenComponent(): ScreenComponent {
+    const screenComponent = this.screenResolverService.getScreenComponentByType(this.screenType);
+
+    if (!screenComponent) {
+      this.handleScreenComponentError(this.screenType);
+    }
+
+    return screenComponent;
   }
 
   handleScreenComponentError(screenType: string) {
