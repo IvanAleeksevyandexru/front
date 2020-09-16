@@ -77,12 +77,12 @@ export class PaymentService {
    */
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
     // TODO: HARDCODE Специальная подмена на оплату 1,4 рубля гос пошлины, иначе будет как есть снятие
-    if (location.hostname === 'local.test.gosuslugi.ru') {
-      const uinMockUp = new BehaviorSubject({
-        value: mockUpUIN
-      });
-      return uinMockUp.asObservable();
-    }
+    // if (location.hostname === 'local.test.gosuslugi.ru') {
+    //   const uinMockUp = new BehaviorSubject({
+    //     value: mockUpUIN
+    //   });
+    //   return uinMockUp.asObservable();
+    // }
 
     const path = `${this.config.uinApiUrl}/${code}?orderId=${orderId}`;
     return this.http.post(path, attributeValues, this.requestOptions).pipe(
