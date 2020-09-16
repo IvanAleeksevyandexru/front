@@ -1,6 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Config } from './config.types';
-import { CONFIG_TOKEN } from './config.token';
 
 @Injectable()
 export class ConfigService implements Config {
@@ -14,11 +13,6 @@ export class ConfigService implements Config {
   private _timeSlotApiUrl: string;
   private _uinApiUrl: string;
   private _yandexMapsApiKey: string;
-
-  constructor(@Inject(CONFIG_TOKEN) config: Config) {
-    this.checkConfig(config);
-    this.config = config;
-  }
 
   checkConfig(config: Config) {
     if (!config) {
@@ -39,7 +33,6 @@ export class ConfigService implements Config {
   }
 
   get externalApiUrl(): string {
-    console.log(this._externalApiUrl);
     return this._externalApiUrl;
   }
 
@@ -69,6 +62,9 @@ export class ConfigService implements Config {
 
   // Do not use this method, only for testing stand
   set config(config: Config) {
+    this.checkConfig(config);
+    console.log('set config');
+    console.log(config);
     this._apiUrl = config.apiUrl;
     this._billsApiUrl = config.billsApiUrl;
     this._dictionaryUrl = config.dictionaryUrl;

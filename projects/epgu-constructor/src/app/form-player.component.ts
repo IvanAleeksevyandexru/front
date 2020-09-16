@@ -5,6 +5,8 @@ import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { NavigationService } from './shared/services/navigation/navigation.service';
 import { ScreenComponent } from './screen/screen.const';
+import { ConfigService } from './config/config.service';
+import { Config } from './config/config.types';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -17,18 +19,21 @@ export class FormPlayerComponent implements OnInit, OnChanges {
   @Input() serviceId: string;
   @Input() orderId: string;
   @Input() targetId: string;
+  @Input() config: Config;
   screenComponent: ScreenComponent;
 
   constructor(
     public formPlayerService: FormPlayerService,
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
+    private configService: ConfigService,
   ) {}
 
   ngOnInit(): void {
     this.checkProps();
     const orderId = this.getDraftOrderId();
     const service = { serviceId: this.serviceId, targetId: this.targetId };
+    this.configService.config = this.config;
     this.formPlayerService.initData(service, orderId);
 
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {

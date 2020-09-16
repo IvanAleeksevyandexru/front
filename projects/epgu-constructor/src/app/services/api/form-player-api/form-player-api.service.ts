@@ -25,6 +25,8 @@ export class FormPlayerApiService {
 
   public getServiceData(serviceId: string, targetId?: string): Observable<FormPlayerApiResponse> {
     const path = `${this.config.apiUrl}/service/${serviceId}/scenario/getService`;
+    console.log('this.config');
+    console.log(this.config);
     const userId = this.cookieService.get('u') || '';
     const token = this.cookieService.get('acc_t') || '';
     return this.http.post<FormPlayerApiResponse>(path, {
