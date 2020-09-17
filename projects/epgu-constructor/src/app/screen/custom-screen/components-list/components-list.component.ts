@@ -1,17 +1,18 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-
 import { BehaviorSubject } from 'rxjs';
+import * as moment from 'moment';
+import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
+import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import {
+  CustomComponent,
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
-  CustomComponent,
   CustomComponentOutputData,
   CustomComponentState,
   CustomScreenComponentTypes,
   ToggleFields,
 } from '../custom-screen.types';
-import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   adaptiveDropDown,
   calcDependedComponent,
@@ -22,11 +23,11 @@ import {
   isDropDown,
   likeDictionary,
 } from '../tools/custom-screen-tools';
-import { ScreenService } from '../../screen.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
-import { ConfigService } from '../../../config/config.service';
+import { ScreenService } from '../../screen.service';
 import { ApplicantAnswersService } from '../../../shared/services/applicant-answers/applicant-answers.service';
+import { ConfigService } from '../../../config/config.service';
+import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -205,7 +206,7 @@ export class ComponentsListComponent implements OnChanges {
    * @param component - данные компонента
    */
   dateChange($event: string, component: CustomComponent) {
-    const value = $event;
+    const value = moment($event).format(DATE_STRING_DOT_FORMAT);
     this.state[component.id].value = value;
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationState(inputValidationResult, component.id, value);
@@ -275,7 +276,6 @@ export class ComponentsListComponent implements OnChanges {
       this.state[componentId].value = componentValue;
       this.state[componentId].valid = isValid;
       this.state[componentId].errorMessage = errMsg;
-      this.emmitChanges();
     };
 
     if (inputValidationResult === -1) {

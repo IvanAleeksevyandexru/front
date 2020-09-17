@@ -119,39 +119,19 @@
       <div class="form__item" *ngSwitchCase="componentType.RadioInput">
         <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
-          <div class="form__radio__block">
+          <div
+            [ngClass]="
+              componentData?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'
+            "
+          >
             <lib-radio
               *ngFor="let item of componentData?.attrs?.supportedValues"
               [name]="componentData.id"
               [labelText]="item.label"
               [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
               [value]="item.value"
+              [checked]="item.isDefault"
               (change)="inputChange($event, componentData)"
-            >
-            </lib-radio>
-          </div>
-        </ng-container>
-      </div>
-
-      <div class="form__item" *ngSwitchCase="componentType.CompositeRadioButton">
-        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
-          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
-          <div class="form__radio__inline">
-            <lib-radio
-              [name]="componentData.id"
-              [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
-              [value]="true"
-              (change)="inputChange($event, componentData)"
-              labelText="Да"
-            >
-            </lib-radio>
-            <lib-radio
-              [name]="componentData.id"
-              [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
-              [value]="false"
-              (change)="inputChange($event, componentData)"
-              checked="checked"
-              labelText="Нет"
             >
             </lib-radio>
           </div>

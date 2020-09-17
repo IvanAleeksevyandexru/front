@@ -23,7 +23,7 @@
     color: $color-gosred;
   }
   &__radio {
-    &__block {
+    &_block {
       display: inline-block;
 
       lib-radio{
@@ -34,10 +34,13 @@
       lib-checkbox{
         display: block;
         margin-bottom: 16px;
+        &:first-child {
+          margin-top: 4px;
+        }
       }
     }
-    &__inline {
-      margin-top: 24px;
+    &_inline {
+      margin-top: 4px;
       display: inline-flex;
       lib-radio:not(:first-child) {
         margin-left: 24px;

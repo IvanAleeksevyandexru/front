@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map, takeUntil } from 'rxjs/operators';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { getPaymentRequestOptions, mockUpUIN } from './payment.constants';
-import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { ScreenStore } from '../../../screen.types';
 import { ScreenService } from '../../../screen.service';
@@ -23,7 +22,6 @@ export class PaymentService {
     private http: HttpClient,
     private dictionaryApiService: DictionaryApiService,
     private config: ConfigService,
-    public formPlayerService: FormPlayerService,
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService
   ) {
@@ -132,7 +130,9 @@ export class PaymentService {
    */
   getPaymentLink(billId: number): string {
     // TODO хардкод. доделать.
-    const returnUrl = encodeURIComponent(`${location.href}${this.config.apiUrl.replace(/^\//,'')}?getLastScreen=1`);
+    const slashInEndRex = /\/$/;
+    const host = location.href.replace(slashInEndRex,'');
+    const returnUrl = encodeURIComponent(`${host}${this.config.apiUrl}?getLastScreen=1`);
     return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${returnUrl}&subscribe=true`;
   }
 

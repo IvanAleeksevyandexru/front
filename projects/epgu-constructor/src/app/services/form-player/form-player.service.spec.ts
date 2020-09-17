@@ -5,6 +5,7 @@ import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../api/form-player-api/form-player-api.service.stub';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ComponentStateService } from '../component-state/component-state.service';
 
 describe('FormPlayerService', () => {
@@ -18,6 +19,7 @@ describe('FormPlayerService', () => {
         ScreenService,
         ApplicantAnswersService,
         ComponentStateService,
+        ScreenResolverService,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
       ]
     });
