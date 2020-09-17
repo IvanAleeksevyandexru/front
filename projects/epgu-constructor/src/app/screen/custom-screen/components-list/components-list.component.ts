@@ -122,14 +122,14 @@ export class ComponentsListComponent implements OnInit, OnChanges {
       value = fullAddressObject;
     }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
-    this.setValidationState(inputValidationResult, component.id, value);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
   }
 
   dateChange($event: string, component: CustomComponent) {
     const value = moment($event).format(DATE_STRING_DOT_FORMAT);
     const inputValidationResult = CheckInputValidationComponentList(value, component);
-    this.setValidationState(inputValidationResult, component.id, value);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
   }
 
@@ -161,7 +161,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.dictionary[id].loadEnd = false;
   }
 
-  setValidationState(inputValidationResult, componentId, componentValue) {
+  setValidationAndValueState(inputValidationResult, componentId, componentValue) {
     const handleSetState = (isValid, errMsg?) => {
       this.state[componentId].value = componentValue;
       this.state[componentId].valid = isValid;
