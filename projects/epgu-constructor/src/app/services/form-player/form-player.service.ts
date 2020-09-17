@@ -12,9 +12,9 @@ import {
 } from '../api/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../screen/screen.types';
 import { UtilsService } from '../utils/utils.service';
-import { localStorageComponentDataKey } from '../../shared/constants/form-player';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ScreenComponent } from '../../screen/screen.const';
+import { localStorageComponentDataKey } from '../../shared/constants/form-player';
 
 interface ServiceType {
   serviceId: string;

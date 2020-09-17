@@ -82,6 +82,10 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     this.nextStep(data);
   }
 
+  /**
+   * Форматиркем данные перед отправкой
+   * @param changes - данные на отправку
+   */
   getFormattedData(changes) {
     let stateData = {};
     if (this.isCycledFields) {
@@ -89,6 +93,7 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
       const stateDataPrepared = this.formatCycledFieldsValues(changes);
       const cycledValuesPrepared = { ...this.cycledValues };
       const mergedCycledAndStateData = { ...cycledValuesPrepared, ...stateDataPrepared };
+
       stateData[currentCycledFieldsKey] = {
         visited: true,
         value: JSON.stringify(mergedCycledAndStateData),
@@ -104,6 +109,11 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     this.dataToSend = this.getFormattedData(changes);
   }
 
+  /**
+   * Подготавливаем данные для ответа
+   * @param data
+   * @private
+   */
   private getPrepareResponseData(data = {}) {
     return Object.keys(data).reduce((acc, key) => {
       acc[key] = {
@@ -112,11 +122,17 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
           typeof data[key].value === 'object'
             ? JSON.stringify(data[key].value || {})
             : data[key].value,
+        disabled: data[key].disabled,
       };
       return acc;
     }, {});
   }
 
+  /**
+   * Форматирует значения полей с вложенностью
+   * @param changes - данные
+   * @private
+   */
   private formatCycledFieldsValues(changes: any) {
     return Object.keys(changes).reduce((accum, key) => {
       const result = accum;

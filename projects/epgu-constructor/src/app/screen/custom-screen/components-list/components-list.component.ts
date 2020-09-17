@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
+import { tap } from 'rxjs/operators';
 import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import {
@@ -42,10 +43,18 @@ export class ComponentsListComponent implements OnChanges {
   state: CustomComponentState = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
   dropDown: { [key: string]: CustomComponentDropDownStateInterface } = {};
-  toggleFieldsData$: BehaviorSubject<ToggleFields> = new BehaviorSubject<ToggleFields>({
+  toggleFieldsData$$: BehaviorSubject<ToggleFields> = new BehaviorSubject<ToggleFields>({
     disabled: {},
     hide: {},
   });
+  toggleFieldsData$ = this.toggleFieldsData$$
+    .asObservable()
+    .pipe(
+      tap((toggleFields) => {
+        this.toggleDisabledStateInComponents(toggleFields);
+      }),
+    )
+    .subscribe();
 
   private list: Array<CustomComponent>;
   @Input() set components(components: Array<CustomComponent>) {
@@ -86,11 +95,11 @@ export class ComponentsListComponent implements OnChanges {
    * @private
    */
   private setComponentToggleFieldsData(toggleFields: ToggleFields, component: CustomComponent) {
-    const value = Object.assign(this.toggleFieldsData$.getValue(), toggleFields);
+    const value = Object.assign(this.toggleFieldsData$$.getValue(), toggleFields);
     if (this.state[component.id]?.value) {
       this.state[component.id].value = value;
     }
-    this.toggleFieldsData$.next(value);
+    this.toggleFieldsData$$.next(value);
   }
 
   /**
@@ -201,6 +210,7 @@ export class ComponentsListComponent implements OnChanges {
       toggleFields.hide = this.mapFieldsTogglerChange(toggleFields.hide);
     }
     this.setComponentToggleFieldsData(toggleFields, component);
+    this.emmitChanges();
   }
 
   /**
@@ -317,9 +327,13 @@ export class ComponentsListComponent implements OnChanges {
    */
   private getPreparedStateForSending() {
     return Object.entries(this.state).reduce((acc, [key, val]) => {
-      const { value, valid, isShown } = val;
+      const { value, valid, disabled, isShown } = val;
       if (isShown) {
-        acc[key] = { value, valid };
+        acc[key] = {
+          value: disabled ? '' : value,
+          valid,
+          disabled: !!disabled,
+        };
       }
       return acc;
     }, {});
@@ -335,10 +349,27 @@ export class ComponentsListComponent implements OnChanges {
     );
   }
 
+  /**
+   * Переключает состояние в state для компонентов проставляя disabled true или false у поля, для последующей валидации
+   * @param toggleFields - поля со сведениями о состоянии
+   * @private
+   */
+  private toggleDisabledStateInComponents(toggleFields: ToggleFields) {
+    if (this.components?.length) {
+      this.components.forEach((component: CustomComponent) => {
+        if (this.state[component.id]) {
+          this.state[component.id].disabled =
+            !!toggleFields?.disabled[component.id] || !!toggleFields?.hide[component.id];
+        }
+      });
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.state = {};
     if (changes?.components?.currentValue) {
       this.components.forEach((component) => this.initComponent(component));
+      this.toggleDisabledStateInComponents(this.toggleFieldsData$$.getValue());
       this.emmitChanges();
       this.checkDependenceOfTheComponent();
     }

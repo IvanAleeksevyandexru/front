@@ -34,13 +34,21 @@ export function getCustomScreenDictionaryFirstState(): CustomComponentDictionary
   };
 }
 
-export function likeDictionary(type: CustomScreenComponentTypes) {
+/**
+ * Возвращает true, если это выбор из справочника
+ * @param type - тип поля
+ */
+export function likeDictionary(type: CustomScreenComponentTypes): boolean {
   return (
     CustomScreenComponentTypes.Dictionary === type || CustomScreenComponentTypes.Lookup === type
   );
 }
 
-export function isDropDown(type: CustomScreenComponentTypes) {
+/**
+ * Возвращает true, если это выпадающий список
+ * @param type - тип поля
+ */
+export function isDropDown(type: CustomScreenComponentTypes): boolean {
   return CustomScreenComponentTypes.DropDown === type;
 }
 
@@ -135,7 +143,6 @@ export function getInitStateItemComponentList(component: CustomComponent) {
   let valueFormatted: string | Date;
   switch (component.type) {
     case CustomScreenComponentTypes.DateInput:
-      console.log('DateInput value', value);
       valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate() || moment().toDate();
       break;
     case CustomScreenComponentTypes.FieldsToggler:

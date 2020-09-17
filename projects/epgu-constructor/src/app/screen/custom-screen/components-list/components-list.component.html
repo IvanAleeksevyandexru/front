@@ -2,17 +2,17 @@
   <ng-container *ngFor="let componentData of components">
     <ng-container [ngSwitch]="componentData.type">
       <div class="form__item" *ngSwitchCase="componentType.LabelSection">
-        <div class="label" *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
+        <div class="label" *ngIf="state[componentData.id].isShown && !(toggleFieldsData$$ | async)?.hide[componentData.id]">
           {{ componentData.label || state[componentData.id].value }}
         </div>
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.Dictionary">
-        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
+        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$$ | async)?.hide[componentData.id]">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-dropdown
             class="cs__select cs-select"
-            [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
+            [disabled]="(toggleFieldsData$$ | async)?.disabled[componentData.id]"
             [items]="dictionary[componentData?.attrs?.dictionaryType + componentData?.id]?.list"
             (changed)="selectDictionary($event, componentData)"
           ></lib-dropdown>
@@ -23,10 +23,10 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.GenderSelection">
-        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
+        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$$ | async)?.hide[componentData.id]">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <epgu-constructor-gender-radio-button
-            [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
+            [disabled]="(toggleFieldsData$$ | async)?.disabled[componentData.id]"
             [(ngModel)]="state[componentData.id].value">
           </epgu-constructor-gender-radio-button>
           <epgu-constructor-helper-text *ngIf="!componentData.required">
@@ -36,11 +36,11 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.DropDown">
-        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
+        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$$ | async)?.hide[componentData.id]">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-dropdown
             class="cs__select cs-select"
-            [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
+            [disabled]="(toggleFieldsData$$ | async)?.disabled[componentData.id]"
             [items]="dropDown[componentData?.id]?.list"
             (changed)="selectDropDown($event, componentData)"
           ></lib-dropdown>
@@ -51,12 +51,12 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.Lookup">
-        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
+        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$$ | async)?.hide[componentData.id]">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-lookup
             [queryMinSymbolsCount]="0"
             [searchCaseSensitive]="false"
-            [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
+            [disabled]="(toggleFieldsData$$ | async)?.disabled[componentData.id]"
             [fixedItems]="
               dictionary[componentData?.attrs?.dictionaryType + componentData?.id]?.list
             "
@@ -67,7 +67,7 @@
 
       <div class="form__item" *ngSwitchCase="componentType.htmlString">
         <epgu-constructor-output-html
-          *ngIf="!(toggleFieldsData$ | async)?.hide[componentData.id]"
+          *ngIf="!(toggleFieldsData$$ | async)?.hide[componentData.id]"
           class="info__text"
           [html]="componentData?.label"
           [clarifications]="componentData?.attrs?.clarifications"
@@ -76,13 +76,13 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.StringInput">
-        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
+        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$$ | async)?.hide[componentData.id]">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-plain-input
             [invalid]="!state[componentData.id].valid"
             [name]="componentData.id"
             [(ngModel)]="state[componentData.id].value"
-            [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
+            [disabled]="(toggleFieldsData$$ | async)?.disabled[componentData.id]"
             [validationShowOn]="validationShowOn"
             (change)="inputChange($event, componentData)"
           ></lib-plain-input>
@@ -101,13 +101,13 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.FieldsToggler">
-        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
+        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$$ | async)?.hide[componentData.id]">
           <epgu-constructor-label *ngIf="componentData?.label?.length">{{ componentData.label }}</epgu-constructor-label>
           <div class="form__radio__block">
             <lib-checkbox
               [checkboxId]="componentData.id"
               [checked]="componentData?.attrs?.checked"
-              [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
+              [disabled]="(toggleFieldsData$$ | async)?.disabled[componentData.id]"
               [labelText]="componentData?.attrs?.labelAttr"
               (change)="checkboxFieldsTogglerChange($event, componentData)"
             >
@@ -117,7 +117,7 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.RadioInput">
-        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
+        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$$ | async)?.hide[componentData.id]">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <div
             [ngClass]="
@@ -128,7 +128,7 @@
               *ngFor="let item of componentData?.attrs?.supportedValues"
               [name]="componentData.id"
               [labelText]="item.label"
-              [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
+              [disabled]="(toggleFieldsData$$ | async)?.disabled[componentData.id]"
               [value]="item.value"
               [checked]="item.isDefault"
               (change)="inputChange($event, componentData)"
@@ -139,12 +139,12 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.DateInput">
-        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
+        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$$ | async)?.hide[componentData.id]">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <!-- нужно добавить changes для проверки зависимости от даты-->
           <lib-date-picker
             [name]="componentData.id"
-            [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
+            [disabled]="(toggleFieldsData$$ | async)?.disabled[componentData.id]"
             (ngModelChange)="dateChange($event, componentData)"
             [(ngModel)]="state[componentData.id].value"
             minDate="-18y"
@@ -153,12 +153,12 @@
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.AddressInput">
-        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$ | async)?.hide[componentData.id]">
+        <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$$ | async)?.hide[componentData.id]">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-dadata-widget
             [simpleMode]="true"
             [name]="componentData.id"
-            [disabled]="(toggleFieldsData$ | async)?.disabled[componentData.id]"
+            [disabled]="(toggleFieldsData$$ | async)?.disabled[componentData.id]"
             [externalApiUrl]="config.externalApiUrl + '/'"
             [initValue]="state[componentData.id].value"
             [(ngModel)]="state[componentData.id].value"

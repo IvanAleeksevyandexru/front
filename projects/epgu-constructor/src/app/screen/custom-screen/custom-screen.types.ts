@@ -90,6 +90,7 @@ export interface CustomComponentAttrValidation {
 export interface CustomComponentStateItem {
   valid: boolean;
   isShown: boolean;
+  disabled?: boolean;
   errorMessage: string;
   value: any;
   component: CustomComponent
