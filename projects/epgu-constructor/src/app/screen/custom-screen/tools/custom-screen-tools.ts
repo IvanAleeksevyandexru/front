@@ -143,7 +143,7 @@ export function getInitStateItemComponentList(component: CustomComponent) {
   let valueFormatted: string | Date;
   switch (component.type) {
     case CustomScreenComponentTypes.DateInput:
-      valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate() || moment().toDate();
+      valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate();
       break;
     case CustomScreenComponentTypes.FieldsToggler:
       valueFormatted = (value) ? JSON.parse(value) : component.attrs.toggleFields;

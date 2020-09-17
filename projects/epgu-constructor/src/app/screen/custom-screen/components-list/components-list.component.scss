@@ -26,14 +26,13 @@
     &_block {
       display: inline-block;
 
-      lib-radio{
+      lib-radio,
+      lib-checkbox {
         display: block;
         margin-bottom: 16px;
       }
 
-      lib-checkbox{
-        display: block;
-        margin-bottom: 16px;
+      lib-checkbox {
         &:first-child {
           margin-top: 4px;
         }

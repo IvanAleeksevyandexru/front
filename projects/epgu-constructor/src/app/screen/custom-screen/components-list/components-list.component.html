@@ -103,7 +103,9 @@
       <div class="form__item" *ngSwitchCase="componentType.FieldsToggler">
         <ng-container *ngIf="state[componentData.id].isShown && !(toggleFieldsData$$ | async)?.hide[componentData.id]">
           <epgu-constructor-label *ngIf="componentData?.label?.length">{{ componentData.label }}</epgu-constructor-label>
-          <div class="form__radio__block">
+          <div [ngClass]="
+              componentData?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'
+            ">
             <lib-checkbox
               [checkboxId]="componentData.id"
               [checked]="componentData?.attrs?.checked"
