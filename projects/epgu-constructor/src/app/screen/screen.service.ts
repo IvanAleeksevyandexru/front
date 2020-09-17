@@ -3,10 +3,11 @@ import { ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
 import { ComponentStateService } from '../services/component-state/component-state.service';
+import { ScreenContent } from './screen-content';
 
 
 @Injectable()
-export class ScreenService {
+export class ScreenService extends ScreenContent{
   private screenStore: ScreenStore;
   private isLoading = false;
   private isShown = true; // Показываем или нет кнопку
@@ -33,6 +34,7 @@ export class ScreenService {
     this.loadAnsweredValues();
     this.initComponentStateService();
     this.screenStoreSubject.next(this.screenStore);
+    this.updateScreenContent(store);
   }
 
   /**
@@ -42,6 +44,7 @@ export class ScreenService {
   public updateScreenStore(newState: ScreenStore): void {
     this.screenStore = { ...this.screenStore, ...newState };
     this.screenStoreSubject.next(this.screenStore);
+    this.updateScreenContent(newState);
   }
 
   /**
