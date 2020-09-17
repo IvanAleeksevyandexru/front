@@ -7,6 +7,7 @@ import {
   ViewChild,
   AfterViewInit,
   ChangeDetectorRef,
+  NgZone,
 } from '@angular/core';
 import { switchMap, filter, takeWhile, takeUntil, tap, reduce } from 'rxjs/operators';
 import { interval, of, merge } from 'rxjs';
@@ -48,6 +49,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   public provider = { search: this.providerSearch() };
   public selectedValue: any;
   public mapIsLoaded = false;
+  public scrollConfig = { ressScrollX: true, wheelPropagation: false };
 
   private componentValue: any;
   private selectedValueField: any;
@@ -62,6 +64,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
     private screenService: ScreenService,
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
+    private zone: NgZone,
   ) {}
 
   ngOnInit(): void {
@@ -239,8 +242,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   }
 
   public selectObject() {
-    const answer = { ...this.selectedValue, children: null };
-    this.nextStepEvent.emit(JSON.stringify(answer));
+    this.zone.run(() => {
+      const answer = { ...this.selectedValue, children: null };
+      this.nextStepEvent.emit(JSON.stringify(answer));
+    });
   }
 
   /**

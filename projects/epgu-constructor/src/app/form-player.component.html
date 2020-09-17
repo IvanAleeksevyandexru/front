@@ -1,31 +1,4 @@
-<ng-container [ngSwitch]="formPlayerService.screenType$ | async">
-  <epgu-constructor-info-screen
-    *ngSwitchCase="screenComponents.INFO"
-  ></epgu-constructor-info-screen>
-
-  <epgu-constructor-invitation-screen
-    *ngSwitchCase="screenComponents.INVITATION_ERROR"
-  ></epgu-constructor-invitation-screen>
-
-  <epgu-constructor-unique-screen
-    *ngSwitchCase="screenComponents.UNIQUE"
-  ></epgu-constructor-unique-screen>
-
-  <epgu-constructor-question-screen
-    *ngSwitchCase="screenComponents.QUESTION"
-  ></epgu-constructor-question-screen>
-
-  <epgu-constructor-empty-screen
-    *ngSwitchCase="screenComponents.EMPTY"
-  ></epgu-constructor-empty-screen>
-
-  <epgu-constructor-custom-screen
-    *ngSwitchCase="screenComponents.CUSTOM"
-  ></epgu-constructor-custom-screen>
-
-  <epgu-constructor-component-screen
-    *ngSwitchCase="screenComponents.COMPONENT"
-  ></epgu-constructor-component-screen>
+<ng-container *ngIf="formPlayerService.playerLoaded$ | async">
+  <ng-container *ngComponentOutlet="screenComponent"></ng-container>
 </ng-container>
-
 <epgu-constructor-modal-container></epgu-constructor-modal-container>

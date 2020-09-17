@@ -1,9 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { EpguLibModule } from 'epgu-lib';
-import { ConfigService } from './config/config.service';
-import { CONFIG_TOKEN } from './config/config.token';
-import { Config } from './config/config.types';
 import { FormPlayerComponent } from './form-player.component';
 import { ComponentScreenModule } from './screen/component-screen/component-screen.module';
 import { CustomScreenModule } from './screen/custom-screen/custom-screen.module';
@@ -20,6 +17,8 @@ import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { SharedModule } from './shared/shared.module';
 import { UtilsService } from './services/utils/utils.service';
+import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
+import { ConfigService } from './config/config.service';
 
 export const epguLibModule = EpguLibModule.forRoot();
 
@@ -37,7 +36,7 @@ export const epguLibModule = EpguLibModule.forRoot();
     InvitationErrorScreenModule,
     SharedModule,
     epguLibModule,
-    InfoScreenModule,
+    InfoScreenModule
   ],
   providers: [
     DictionaryApiService,
@@ -45,25 +44,19 @@ export const epguLibModule = EpguLibModule.forRoot();
     FormPlayerApiService,
     ScreenService,
     ComponentStateService,
-    ConfigService,
     UnsubscribeService,
-    UtilsService
+    ScreenResolverService,
+    UtilsService,
+    ConfigService
   ],
   exports: [
     FormPlayerComponent
   ]
 })
 export class FormPlayerModule {
-  static forRoot(config: Config) {
+  static forRoot() {
     return {
       ngModule: FormPlayerModule,
-      providers: [
-        {
-          provide: CONFIG_TOKEN,
-          useValue: config
-        },
-        FormPlayerService,
-      ]
     };
   }
 }

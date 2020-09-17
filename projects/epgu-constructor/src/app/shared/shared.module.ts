@@ -44,6 +44,7 @@ const COMPONENTS = [
 
 const PIPES = [
   ToJsonPipe,
+  MaskHandlePipe,
 ];
 
 @NgModule({
