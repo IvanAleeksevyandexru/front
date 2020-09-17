@@ -33,6 +33,7 @@ import {
   isDropDown,
   likeDictionary,
 } from '../tools/custom-screen-tools';
+import { ValidationValueService } from './validation-value.service';
 
 const moment = moment_;
 
@@ -58,6 +59,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     private dictionaryApiService: DictionaryApiService,
     public screenService: ScreenService,
     public config: ConfigService,
+    private validationValueService: ValidationValueService,
   ) {}
 
   // NOTICE: тут была информация о валидации смотри историю гита
@@ -188,6 +190,10 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     }
     const prepareStateForSending = this.getPreparedStateForSending();
     this.changes.emit(prepareStateForSending);
+  }
+
+  isValid(type, value): boolean {
+    return this.validationValueService.isValueValid(type, value);
   }
 
   /**
