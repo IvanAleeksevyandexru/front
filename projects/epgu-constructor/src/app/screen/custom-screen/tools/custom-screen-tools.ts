@@ -153,6 +153,9 @@ export function getInitStateItemComponentList(component: CustomComponent) {
   };
 }
 
+/**
+ * Проверка для ИНН для юр.лица
+ */
 export function checkLegalInn(value: string) {
   const inn = value.split('').map((char) => parseInt(char, 0));
   const sumInn =
@@ -172,6 +175,9 @@ export function checkLegalInn(value: string) {
   return isCorrectInn ? -1 : 0;
 }
 
+/**
+ * Проверка для ИНН для физ.лица
+ */
 export function checkPersonInn(value: string) {
   const inn = value.split('').map((char) => parseInt(char, 0));
   const sumInn =
