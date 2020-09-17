@@ -118,8 +118,8 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   inputChange($event: Event, component: CustomComponent) {
     let { value } = $event.target as HTMLInputElement;
     if (component.type === 'AddressInput') {
-      const fullAddressObject = this.state[component.id].value;
-      value = fullAddressObject;
+      const { fullAddress } = this.state[component.id].value;
+      value = fullAddress || '';
     }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
