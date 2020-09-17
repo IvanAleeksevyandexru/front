@@ -8,7 +8,7 @@ import { EmployeeHistoryComponent } from './employee-history.component';
   declarations: [EmployeeHistoryComponent],
   imports: [
     CommonModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
     SharedModule,
   ],
   exports: [

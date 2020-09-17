@@ -36,6 +36,10 @@ export class UniqueScreenComponent implements OnInit, Screen {
       });
   }
 
+  /**
+   * Переход на следущий экран с передачей данных
+   * @param value - данные для передачи
+   */
   nextDataForStep(value?: string): void {
     const data: NavigationPayload = {};
     const componentId = this.screenStore.display.components[0].id;
@@ -47,10 +51,17 @@ export class UniqueScreenComponent implements OnInit, Screen {
     this.nextStep(data);
   }
 
+  /**
+   * Переход на следущий экран
+   * @param data - данные
+   */
   nextStep(data?: NavigationPayload): void {
     this.navigationService.nextStep.next(data);
   }
 
+  /**
+   * Переход на предыдущий экран
+   */
   prevStep(): void {
     this.navigationService.prevStep.next();
   }

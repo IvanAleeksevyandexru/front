@@ -14,7 +14,7 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     SharedModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
   ]
 })
 export class InfoScreenBodyModule { }

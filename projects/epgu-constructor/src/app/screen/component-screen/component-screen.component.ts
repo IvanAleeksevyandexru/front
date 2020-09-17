@@ -6,7 +6,6 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { ComponentStateService } from '../../services/component-state/component-state.service';
 import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { mockOrderId } from './components/payment/payment.constants';
 import { ComponentScreenComponentTypes } from './component-screen.types';
 import { NavigationPayload } from '../../form-player.types';
 
@@ -92,14 +91,6 @@ export class ComponentScreenComponent implements OnInit, Screen {
     }
 
     this.navigationService.nextStep.next(data);
-  }
-
-  /**
-   * Возвращает идентификатор заявления
-   */
-  get getOrderId(): string {
-    // TODO: Переделать на получение заявки из ранее данных ответов
-    return mockOrderId;
   }
 
   /**

@@ -2,7 +2,6 @@
 
 exports[`ConfirmPersonalUserPhoneScreenComponent check snapshot 1`] = `
 <epgu-constructor-confirm-personal-user-phone-screen
-  __ngContext__={[Function LRootView]}
   componentStateService={[Function ComponentStateService]}
   data={[Function Object]}
   nextStepEvent={[Function EventEmitter_]}

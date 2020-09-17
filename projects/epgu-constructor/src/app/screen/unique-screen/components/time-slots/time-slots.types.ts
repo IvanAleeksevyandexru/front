@@ -16,9 +16,9 @@ export interface SmevSlotsMapInterface {
 
 export interface TimeSlotValueInterface {
   department: string;
-  solemn: string;
-  slotsPeriod: string;
   timeSlotType: string;
+  solemn?: string;
+  slotsPeriod?: string;
   orderId?: string;
 }
 
@@ -26,10 +26,8 @@ export interface MvdDepartmentInterface {
   value: string;
   title: string;
   attributeValues: {
-    code: string;
-    address: string;
-    FULLNAME: string;
-    PHONE: string;
+    ADDRESS_OUT: string;
+    phone: string;
   };
 }
 
@@ -39,6 +37,17 @@ export interface ZagsDepartmentInterface {
   attributeValues: {
     CODE: string;
     ADDRESS: string;
+    FULLNAME: string;
+    PHONE: string;
+  };
+}
+
+export interface GibddDepartmentInterface {
+  value: string;
+  title: string;
+  attributeValues: {
+    code: string;
+    address: string;
     FULLNAME: string;
     PHONE: string;
   };
@@ -69,6 +78,8 @@ export interface SmevBookResponseInterface {
     };
     fieldErrors: [];
   };
+  timeStart: Date;
+  timeFinish: Date;
 }
 
 export interface SmevSlotsResponseInterface {
@@ -92,5 +103,5 @@ export interface SmevSlotsResponseInterface {
       errorMessage: string;
     };
     fieldErrors: [];
-  }
+  };
 }

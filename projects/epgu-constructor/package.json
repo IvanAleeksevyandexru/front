@@ -2,21 +2,22 @@
   "name": "epgu-constructor",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "^10.0.6",
-    "@angular/cdk": "~10.0.0",
-    "@angular/core": "^10.0.6",
-    "@angular/forms": "^10.0.10",
-    "@ngx-translate/http-loader": "^6.0.0",
-    "angular2-text-mask": "^9.0.0",
-    "ngx-webcam": "^0.3.0",
-    "file-saver": "^2.0.2",
-    "rxjs": "~6.5.5",
-    "moment": "^2.27.0",
-    "ngx-perfect-scrollbar": "^10.0.1",
-    "text-mask-core": "^5.1.2",
-    "epgu-lib": "^0.0.418"
+    "@angular/common": "10.1.1",
+    "@angular/cdk": "10.2.0",
+    "@angular/core": "10.1.1",
+    "@angular/forms": "10.1.1",
+    "@ngx-translate/http-loader": "6.0.0",
+    "angular2-text-mask": "9.0.0",
+    "ngx-webcam": "0.3.0",
+    "file-saver": "2.0.2",
+    "rxjs": "6.5.3",
+    "moment": "2.24.0",
+    "ngx-perfect-scrollbar": "8.0.0",
+    "text-mask-core": "5.1.2",
+    "epgu-lib": "0.0.493",
+    "ics": "^2.24.0"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "2.0.0"
   }
 }

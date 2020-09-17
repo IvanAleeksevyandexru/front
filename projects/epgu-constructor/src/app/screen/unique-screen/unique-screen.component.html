@@ -51,4 +51,10 @@
     [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextDataForStep()">
   </epgu-constructor-signature-application>
+  <epgu-constructor-payment
+    *ngSwitchCase="uniqueComponentName.paymentScr"
+    [header]="screenStore.display?.header"
+    [data]="screenStore.display.components[0]"
+    (nextStepEvent)="nextDataForStep()"
+  ></epgu-constructor-payment>
   </ng-container>

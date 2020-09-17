@@ -19,7 +19,6 @@ import { CountrySelectionComponent } from './components/country-selection/countr
 import { DocInputModule } from './components/doc-input/doc-input.module';
 import { ComponentScreenComponent } from './component-screen.component';
 import { SnilsModule } from './components/snils/snils.module';
-import { PaymentModule } from './components/payment/payment.module';
 import { ScreenService } from '../screen.service';
 import { MvdGiacModule } from './components/mvd-giac/mvd-giac.module';
 
@@ -43,11 +42,10 @@ const COMPONENTS = [
     TemporaryRegistrationAddrScreenModule,
     AddPassportModule,
     SnilsModule,
-    PaymentModule,
     MvdGiacModule,
     DocInputModule,
     SharedModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
   ],
   providers: [
     ScreenService

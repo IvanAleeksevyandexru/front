@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ConfigService } from './config.service';
-import { CONFIG_TOKEN } from './config.token';
 
 
 describe('ConfigService', () => {
@@ -10,7 +9,6 @@ describe('ConfigService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: CONFIG_TOKEN, useValue: {}},
         ConfigService
       ]
     });

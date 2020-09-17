@@ -10,11 +10,6 @@ hr {
   white-space: pre-wrap;
   line-height: 24px;
 
-  .cross-btn {
-    top: 32px;
-    right: 32px;
-  }
-
   &__bold {
     font-weight: bold;
     padding-bottom: 8px;
@@ -33,13 +28,17 @@ hr {
   margin-right: 8px;
 }
 
-.nav::ng-deep .container {
-  padding-left: 0;
+.nav::ng-deep {
+  margin-bottom: 0;
+
+  & .container {
+    padding-left: 0;
+  }
 }
 
 .widget {
   position: relative;
-  height: 100vh;
+  height: calc(100vh - 216px);
   width: 100%;
 
   &__form {
@@ -52,6 +51,45 @@ hr {
     padding: 32px;
     border-radius: $border-round;
     box-shadow: 0px 24px 48px rgba($color-shadow, 0.4);
+  }
+}
+
+.map-objects-list {
+  width: 288px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: $color-white;
+  overflow-y: auto;
+
+  .cross-btn {
+    top: 12px;
+    position: sticky;
+    left: calc(100% - 30px);
+  }
+}
+
+.map-object {
+  padding: 24px;
+  border-bottom: 1px solid $color-mercury;
+  @include typ-plain-small;
+
+  &__header {
+    padding-bottom: 16px;
+  }
+
+  &__attr:last-of-type {
+    padding-bottom: 24px;
+  }
+
+  &__label {
+    font-weight: $fw-semi-bold;
+  }
+
+  &:not(.expanded) {
+    cursor: pointer;
+    color: $color-gosblue;
   }
 }
 
@@ -146,5 +184,76 @@ hr {
         color: $color-white;
       }
     }
+  }
+}
+
+ @include laptop-down {
+   .widget {
+     height: calc(100vh - 104px);
+     overflow: hidden;
+   }
+
+   .widget__form {
+     position: static;
+     width: auto;
+     padding: 0 0 12px 0;
+   }
+
+   .widget-form__title {
+     display: none;
+   }
+
+   .widget-form__input {
+     padding: 0 12px;
+   }
+
+   .cross-btn {
+     position: relative;
+     left: calc(100% - 44px);
+   }
+
+   .map-objects-list {
+     height: auto;
+     left: 0;
+     top: initial;
+     width: 100%;
+     bottom: 0;
+     max-height: calc(100vh - 250px);
+     overflow-y: auto;
+   }
+
+   .nav::ng-deep {
+     .container {
+       padding: 0 16px;
+       margin: 0;
+     }
+
+     margin-bottom: 12px;
+   }
+
+   ::ng-deep {
+     .footer {
+       display: none;
+     }
+   }
+
+   .map-object {
+     &__header-close {
+       color: $color-gosblue;
+     }
+   }
+ }
+
+ @include tablets-down() {
+   .widget {
+     height: calc(100vh - 104px);
+     overflow: hidden;
+   }
+ }
+
+@include phones-down() {
+  .widget {
+    height: calc(100vh - 44px);
+    overflow: hidden;
   }
 }

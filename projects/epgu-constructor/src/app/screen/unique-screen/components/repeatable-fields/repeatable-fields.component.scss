@@ -21,13 +21,9 @@
 
 .btn--add {
   margin-top: $screen-pad-p;
-  display: flex;
-  button {
-    flex: 1;
-    padding: $screen-pad-p;
-    border-radius: $border-xl;
-    @include shadow-main();
-    @include typ-plain-text();
+  &__text {
+    width: 100%;
+    text-align: center;
   }
 }
 

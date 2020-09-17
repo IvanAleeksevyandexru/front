@@ -27,7 +27,7 @@ const COMPONENTS = [
         QuestionsScreenModule,
         ConfirmPersonalUserAddressScreenModule,
         ConfirmPersonalUserSubComponentsModule,
-        EpguLibModule.forChild(),
+        EpguLibModule,
         FormsModule,
     ],
 })

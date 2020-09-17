@@ -5,6 +5,7 @@ import { SubComponentsModule } from '../../sub-components/sub-components.module'
 import { ConfirmPersonalUserAddressComponent } from './components/confirm-personal-user-address/confirm-personal-user-address.component';
 import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../../../../../shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 const COMPONENTS = [
   ConfirmPersonalUserAddressScreenComponent,
@@ -19,7 +20,8 @@ const COMPONENTS = [
     CommonModule,
     SharedModule,
     SubComponentsModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
+    FormsModule,
   ]
 })
 export class ConfirmPersonalUserAddressScreenModule { }
