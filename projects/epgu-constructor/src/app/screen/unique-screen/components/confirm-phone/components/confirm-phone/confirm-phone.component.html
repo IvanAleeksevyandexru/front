@@ -16,9 +16,16 @@
       [showConstantMaskSymbols]="true">
     </lib-standard-masked-input>
 
-    <div class="form__hint form-hint" [hidden]="(timerEnd$ | async) === false">
+    <div class="form__error">{{screenService.componentError$ | async}}</div>
+
+    <div class="form__hint form-hint" >
       Повторная отправка кода будет возможна через
-      <b class="form-hint__timer">{{timer$ | async | formatTime}}</b>
+<!--      <b class="form-hint__timer"-->
+<!--         [counter]="60"-->
+<!--         [interval]="1000"-->
+<!--         (value)="timer = $event">{{timer | formatTime}}</b>-->
+      <p>timer</p>
+
     </div>
 
   </epgu-constructor-screen-pad>
@@ -26,7 +33,7 @@
 
   <div class="footer">
     <lib-button
-      [disabled]="timerEnd$ | async"
+      [disabled]=""
       (click)="sendCodeAgain()"
       class="footer__btn-submit"
     >

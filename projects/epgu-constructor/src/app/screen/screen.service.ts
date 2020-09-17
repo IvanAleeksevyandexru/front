@@ -23,7 +23,9 @@ export class ScreenService extends ScreenContent{
   constructor (
     private applicantAnswersService: ApplicantAnswersService,
     private componentStateService: ComponentStateService,
-  ) {}
+  ) {
+    super();
+  }
 
   /**
    * Инициализирует работу хранилища

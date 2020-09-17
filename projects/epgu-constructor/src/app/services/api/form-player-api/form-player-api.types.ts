@@ -67,6 +67,8 @@ export interface ScenarioErrorsDto {
  * (человек 1, человек 2) => эти людям прилетает уведомление о подтверждении ...
  * @property {string}token - в целях разработки, на проде через cookie;
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
+ * @property {boolean}[isInternalScenario] - появляется при internal сценарии;
+ * @property {string}[serviceId] - добавляется при internal сценариев(подсценариев);
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
@@ -81,6 +83,8 @@ export interface ScenarioDto {
   orderId: string;
   token: string;
   userId: string;
+  isInternalScenario?: boolean;
+  serviceId?: string;
 }
 
 export interface FormPlayerApiSuccessResponse {

@@ -1,4 +1,4 @@
-import { ComponentDto, DisplayDto } from '../services/api/form-player-api/form-player-api.types';
+import { ComponentDto, DisplayDto, ScenarioErrorsDto } from '../services/api/form-player-api/form-player-api.types';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { BehaviorSubject } from 'rxjs';
 
@@ -67,10 +67,28 @@ export class ScreenContent {
   }
   public componentType$ = this._componentType.asObservable();
 
+  private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
+  public get componentErrors() {
+    return this._componentErrors.getValue();
+  }
+  public set componentErrors(val: ScenarioErrorsDto) {
+    this._componentErrors.next(val);
+  }
+  public _componentErrors$ = this._componentErrors.asObservable();
+
+  private _componentError = new BehaviorSubject<string>(null);
+  public get componentError() {
+    return this._componentError.getValue();
+  }
+  public set componentError(val: string) {
+    this._componentError.next(val);
+  }
+  public componentError$ = this._componentError.asObservable();
+
   constructor() {}
 
   updateScreenContent(screenStore: ScreenStore) {
-    const { display = {} as any, orderId } = screenStore;
+    const { display = {} as any, orderId, errors = {} as any } = screenStore;
     const { header, submitLabel, type, components = [] } = display;
     this.display = display;
     this.header = header;
@@ -79,5 +97,7 @@ export class ScreenContent {
     this.component = components[0];
     this.componentType = components[0]?.type;
     this.orderId = orderId;
+    this.componentErrors = errors;
+    this.componentError = errors[components[0].id];
   }
 }
