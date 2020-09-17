@@ -12,15 +12,17 @@ import { Service } from '../../../projects/epgu-constructor/src/app/form-player.
 })
 export class FpContainerComponent implements OnInit {
   service: Service;
-  orderId: string;
   config: Config;
 
   constructor(private appService: AppService, private ngUnsubscribe$: UnsubscribeService) {}
 
   ngOnInit() {
     this.appService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((config) => {
-      this.service = { serviceId: config.serviceId, targetId: config.targetId };
-      this.orderId = config.orderId;
+      this.service = {
+        serviceId: config.serviceId,
+        targetId: config.targetId,
+        orderId: config.orderId,
+      };
       this.config = config;
     });
   }

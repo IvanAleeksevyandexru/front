@@ -17,7 +17,6 @@ import { Config } from './config/config.types';
 export class FormPlayerComponent implements OnInit, OnChanges {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() service: Service;
-  @Input() orderId: string;
   @Input() config: Config;
   screenComponent: ScreenComponent;
 
@@ -49,11 +48,11 @@ export class FormPlayerComponent implements OnInit, OnChanges {
 
   getDraftOrderId() {
     let orderId;
-    if (this.orderId) {
+    if (this.service.orderId) {
       // TODO: add better handling for draft case;
       // eslint-disable-next-line no-restricted-globals
       const result = confirm('У вас есть предыдущее заявление, продолжить его заполнять?');
-      orderId = result ? this.orderId : null;
+      orderId = result ? this.service.orderId : null;
     }
     return orderId;
   }
