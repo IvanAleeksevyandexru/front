@@ -1,6 +1,6 @@
 import { Component, HostBinding, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { FormPlayerNavigation, NavigationPayload } from './form-player.types';
+import { FormPlayerNavigation, NavigationPayload, Service } from './form-player.types';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { NavigationService } from './shared/services/navigation/navigation.service';
@@ -16,9 +16,8 @@ import { Config } from './config/config.types';
 })
 export class FormPlayerComponent implements OnInit, OnChanges {
   @HostBinding('class.epgu-form-player') class = true;
-  @Input() serviceId: string;
+  @Input() service: Service;
   @Input() orderId: string;
-  @Input() targetId: string;
   @Input() config: Config;
   screenComponent: ScreenComponent;
 
@@ -32,9 +31,8 @@ export class FormPlayerComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.checkProps();
     const orderId = this.getDraftOrderId();
-    const service = { serviceId: this.serviceId, targetId: this.targetId };
     this.configService.config = this.config;
-    this.formPlayerService.initData(service, orderId);
+    this.formPlayerService.initData(this.service, orderId);
 
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.screenComponent = this.formPlayerService.getScreenComponent();
@@ -65,8 +63,8 @@ export class FormPlayerComponent implements OnInit, OnChanges {
   }
 
   checkProps() {
-    if (!this.serviceId) {
-      throw Error('Need to set serviceId for epgu form player');
+    if (!this.service) {
+      throw Error('Need to set Service for epgu form player');
     }
 
     if (!this.config) {
@@ -75,10 +73,18 @@ export class FormPlayerComponent implements OnInit, OnChanges {
   }
 
   nextStep(navigationPayload?: NavigationPayload) {
-    this.formPlayerService.navigate(this.serviceId, FormPlayerNavigation.NEXT, navigationPayload);
+    this.formPlayerService.navigate(
+      this.service.serviceId,
+      FormPlayerNavigation.NEXT,
+      navigationPayload,
+    );
   }
 
   prevStep(navigationPayload?: NavigationPayload) {
-    this.formPlayerService.navigate(this.serviceId, FormPlayerNavigation.PREV, navigationPayload);
+    this.formPlayerService.navigate(
+      this.service.serviceId,
+      FormPlayerNavigation.PREV,
+      navigationPayload,
+    );
   }
 }
