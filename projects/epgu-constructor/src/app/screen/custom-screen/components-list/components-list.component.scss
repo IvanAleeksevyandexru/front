@@ -10,6 +10,10 @@
       margin-top: 4px;
       @include typ-plain-xs();
     }
+
+    &--date {
+      width: 50%;
+    }
   }
   &__title {
     font-size: 14px;

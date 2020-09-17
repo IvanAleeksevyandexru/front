@@ -7,6 +7,11 @@
 .item {
   display: block;
   margin-bottom: 20px;
+
+  &--date {
+    width: 50%;
+  }
+
   &__label {
     font-size: 14px;
     color: $color-black;

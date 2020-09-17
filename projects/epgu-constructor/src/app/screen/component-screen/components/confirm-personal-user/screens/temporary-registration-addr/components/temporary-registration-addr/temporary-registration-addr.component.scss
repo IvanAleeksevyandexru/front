@@ -5,22 +5,30 @@ $item-hint-mx: 13px;
   display: block;
 }
 
+.item {
+  &__data {
+    display: block;
+    width: 50%;
+  }
+
+  &__hint {
+    background: $color-light-gray;
+    border-radius: 4px;
+    padding: 12px;
+    margin: $item-hint-mx $item-hint-mx 0;
+    cursor: pointer;
+
+    &:hover {
+      background: $color-hawkes-blue;
+    }
+  }
+}
+
 .item:not(:last-child),
 .form {
   margin-bottom: 20px;
 }
 
-.item__hint {
-  background: $color-light-gray;
-  border-radius: 4px;
-  padding: 12px;
-  margin: $item-hint-mx $item-hint-mx 0;
-  cursor: pointer;
-
-  &:hover {
-    background: $color-hawkes-blue;
-  }
-}
 .hint-wrapper {
   margin-left: -$item-hint-mx;
   margin-right: -$item-hint-mx;

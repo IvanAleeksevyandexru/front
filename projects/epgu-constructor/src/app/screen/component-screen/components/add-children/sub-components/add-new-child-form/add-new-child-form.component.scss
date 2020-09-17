@@ -22,6 +22,10 @@
   }
   &__field {
     margin-top: 16px;
+
+    &--date {
+      width: 50%;
+    }
   }
   &__radio-group {
     display: flex;

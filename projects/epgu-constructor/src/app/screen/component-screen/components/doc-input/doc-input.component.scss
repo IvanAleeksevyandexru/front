@@ -10,6 +10,10 @@
   &__input {
     flex: 1 1 auto;
     margin: 10px;
+
+    &--data {
+      width: 50%;
+    }
   }
 
   &__label {
