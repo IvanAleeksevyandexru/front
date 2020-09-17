@@ -49,6 +49,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   public provider = { search: this.providerSearch() };
   public selectedValue: any;
   public mapIsLoaded = false;
+  public scrollConfig = { ressScrollX: true, wheelPropagation: false };
 
   private componentValue: any;
   private selectedValueField: any;
