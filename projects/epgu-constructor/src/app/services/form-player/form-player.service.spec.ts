@@ -10,7 +10,7 @@ import { ComponentStateService } from '../component-state/component-state.servic
 
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
-  let apiService: FormPlayerApiService;
+  let formPlayerApiService: FormPlayerApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -24,7 +24,7 @@ describe('FormPlayerService', () => {
       ]
     });
     service = TestBed.inject(FormPlayerService);
-    apiService = TestBed.inject(FormPlayerApiService);
+    formPlayerApiService = TestBed.inject(FormPlayerApiService);
   });
 
   it('should be created', () => {

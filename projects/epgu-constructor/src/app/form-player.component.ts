@@ -1,6 +1,6 @@
 import { Component, HostBinding, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { FormPlayerNavigation, NavigationPayload } from './form-player.types';
+import { FormPlayerNavigation, NavigationPayload, Service } from './form-player.types';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { NavigationService } from './shared/services/navigation/navigation.service';
@@ -17,9 +17,7 @@ import { ServiceDataService } from './services/service-data/service-data.service
 })
 export class FormPlayerComponent implements OnInit, OnChanges {
   @HostBinding('class.epgu-form-player') class = true;
-  @Input() serviceId: string;
-  @Input() orderId: string;
-  @Input() targetId: string;
+  @Input() service: Service;
   @Input() config: Config;
   screenComponent: ScreenComponent;
 
@@ -66,8 +64,8 @@ export class FormPlayerComponent implements OnInit, OnChanges {
   }
 
   checkProps() {
-    if (!this.serviceDataService.serviceId) {
-      throw Error('Need to set serviceId for epgu form player');
+    if (!this.service) {
+      throw Error('Need to set Service for epgu form player');
     }
 
     if (!this.config) {

@@ -16,14 +16,9 @@ import {
 import { ScreenTypes } from '../../screen/screen.types';
 import { ServiceDataService } from '../service-data/service-data.service';
 import { UtilsService } from '../utils/utils.service';
-import { localStorageComponentDataKey } from '../../shared/constants/form-player';
+import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ScreenComponent } from '../../screen/screen.const';
-
-interface ServiceType {
-  serviceId: string;
-  targetId: string;
-}
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -32,9 +27,6 @@ interface ServiceType {
  */
 @Injectable()
 export class FormPlayerService {
-  // Ключ localStorage, где хранятся данные по компонентам для отображения, если нам подменить сценарий
-  public static localStorageComponentDataKey = localStorageComponentDataKey;
-
   private store: FormPlayerApiSuccessResponse;
   private playerLoaded = false;
   private isLoading = false;
@@ -59,7 +51,7 @@ export class FormPlayerService {
    * @private
    */
   private static isHaveOrderDataInLocalStorage(): boolean {
-    return !!localStorage.getItem(FormPlayerService.localStorageComponentDataKey);
+    return !!localStorage.getItem(COMPONENT_DATA_KEY);
   }
 
   /**
@@ -129,10 +121,10 @@ export class FormPlayerService {
 
   getDataFromLocalStorage() {
     // eslint-disable-next-line max-len
-    const store = UtilsService.getLocalStorageJSON(FormPlayerService.localStorageComponentDataKey);
+    const store = UtilsService.getLocalStorageJSON(COMPONENT_DATA_KEY);
     this.processResponse(store);
     this.updateLoading(false);
-    UtilsService.deleteFromLocalStorage(FormPlayerService.localStorageComponentDataKey);
+    UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
   }
 
   /**
