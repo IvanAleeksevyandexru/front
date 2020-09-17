@@ -33,14 +33,13 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
   valueParsed: any;
 
   constructor(
-    public configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
     private config: ConfigService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.isEditable?.currentValue && this.isEditable) {
+    if (changes.isEditable?.currentValue) {
       this.subscribeFormChanges();
     }
     if (changes.data?.currentValue) {
