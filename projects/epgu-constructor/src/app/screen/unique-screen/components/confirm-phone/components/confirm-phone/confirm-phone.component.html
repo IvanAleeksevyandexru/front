@@ -9,7 +9,7 @@
     <lib-standard-masked-input
       class="form__item"
       id="snils"
-      [ngModel]="code"
+      [ngModel]="enteredCode"
       (ngModelChange)="enterCode($event)"
       [mask]="mask"
       [showMaskAsPlaceholder]="true"
@@ -20,12 +20,11 @@
 
     <div class="form__hint form-hint" >
       Повторная отправка кода будет возможна через
-<!--      <b class="form-hint__timer"-->
-<!--         [counter]="60"-->
-<!--         [interval]="1000"-->
-<!--         (value)="timer = $event">{{timer | formatTime}}</b>-->
-      <p>timer</p>
-
+      <b class="form-hint__timer"
+         *ngIf="isTimerShow"
+         [counter]="count"
+         [interval]="countInterval"
+         (value)="timerChange($event)">{{timer | formatTime}}</b>
     </div>
 
   </epgu-constructor-screen-pad>
@@ -33,7 +32,7 @@
 
   <div class="footer">
     <lib-button
-      [disabled]=""
+      [disabled]="isTimerShow"
       (click)="sendCodeAgain()"
       class="footer__btn-submit"
     >

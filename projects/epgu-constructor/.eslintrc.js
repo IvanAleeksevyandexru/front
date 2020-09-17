@@ -3,7 +3,7 @@ module.exports = {
   rules: {
     '@angular-eslint/directive-selector': [
       'error',
-      { type: 'attribute', prefix: 'epgu-constructor', style: 'camelCase' },
+      { type: 'attribute', style: 'camelCase' },
     ],
     '@angular-eslint/component-selector': [
       'error',

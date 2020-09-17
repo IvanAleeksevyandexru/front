@@ -16,12 +16,16 @@ import { FormPlayerService } from '../../../../../../services/form-player/form-p
   providers: [UnsubscribeService],
 })
 export class ConfirmPhoneComponent {
+  // <-- variable
+  enteredCode: number;
+  timer: number;
+  isTimerShow = true;
+
   // <-- constant
-  timerSecond = 59;
   correctCodeLength = 4;
   mask = [/\d/, /\d/, /\d/, /\d/];
-  code: number;
-  timer: number;
+  count = 59;
+  countInterval = 1000;
 
   constructor(
     public screenService: ScreenService,
@@ -33,13 +37,14 @@ export class ConfirmPhoneComponent {
   sendCodeAgain() {
     const options: NavigationFullOptions = {
       direction: FormPlayerNavigation.NEXT,
-      url: 'service/actions/resendPhoneConfirmationCode',
+      url: 'service/actions/resendPhoneConfirmationCode', // TODO вынести куда нибудь
     };
     this.formPlayerService.navigate({}, options);
+    this.isTimerShow = true;
   }
 
   enterCode(code: any) {
-    this.code = code;
+    this.enteredCode = code;
     if (String(code).length === this.correctCodeLength) {
       this.navigationService.nextStep.next(this.getComponentState());
     }
@@ -49,8 +54,16 @@ export class ConfirmPhoneComponent {
     return {
       [this.screenService.component.id]: {
         visited: true,
-        value: String(this.code),
+        value: String(this.enteredCode),
       },
     };
+  }
+
+  timerChange(num: number) {
+    if (num) {
+      this.timer = num;
+    } else {
+      this.isTimerShow = false;
+    }
   }
 }
