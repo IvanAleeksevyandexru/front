@@ -150,7 +150,7 @@
           <lib-dadata-widget
             [simpleMode]="true"
             [name]="componentData.id"
-            [hideLevels]="componentData?.hideLevels || []"
+            [hideLevels]="componentData?.attrs?.hideLevels || []"
             (change)="inputChange($event, componentData)"
             [externalApiUrl]="config.externalApiUrl + '/'"
             [initValue]="state[componentData.id].value"
