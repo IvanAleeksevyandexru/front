@@ -21,6 +21,7 @@ import { OutputHtmlComponent } from './components/output-html/output-html.compon
 import { GenderRadioButtonComponent } from './components/gender-radio-button/gender-radio-button.component';
 import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
 import { LongButtonComponent } from './components/long-button/long-button.component';
+import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -42,6 +43,7 @@ const COMPONENTS = [
 
 const PIPES = [
   ToJsonPipe,
+  MaskHandlePipe,
 ];
 
 @NgModule({
