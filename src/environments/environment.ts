@@ -4,6 +4,9 @@
 
 export const environment = {
   production: false,
+  serviceId: 'local',
+  targetId: '',
+  orderId: '',
   apiUrl: '/api',
   dictionaryUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
   externalApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1',

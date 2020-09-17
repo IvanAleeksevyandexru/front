@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '../../../../config/config.service';
 import { TimeSlotsService } from './time-slots.service';
 import * as uuid from 'uuid';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, takeUntil, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import {
   MvdDepartmentInterface,
-  SlotInterface, SmevBookResponseInterface,
+  SlotInterface,
   SmevSlotsMapInterface,
-  SmevSlotsResponseInterface,
   TimeSlotValueInterface
 } from './time-slots.types';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 
 @Injectable()
 export class MvdTimeSlotsService implements TimeSlotsService {
@@ -28,31 +26,15 @@ export class MvdTimeSlotsService implements TimeSlotsService {
   private bookedSlot: SlotInterface;
   private bookId;
   private errorMessage;
-  private timeSlotApiUrl;
 
   constructor(
     private http: HttpClient,
-    private configService: ConfigService,
-    private ngUnsubscribe$: UnsubscribeService
-  ) {
-    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
-      this.timeSlotApiUrl = config.timeSlotApiUrl;
-    });
-  }
-
-  private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.timeSlotApiUrl}/slots`;
-    return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
-  }
-
-  private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const path = `${this.timeSlotApiUrl}/book?srcSystem=BETA`;
-    return this.http.post<SmevBookResponseInterface>(path, requestBody);
-  }
+    private smev3TimeSlotsRestService: Smev3TimeSlotsRestService
+  ) {}
 
   book(selectedSlot: SlotInterface) {
     this.errorMessage = undefined;
-    return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
+    return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
         if (!response.error) {
           this.bookedSlot = selectedSlot;
@@ -103,7 +85,7 @@ export class MvdTimeSlotsService implements TimeSlotsService {
       this.slotsMap = {};
       this.availableMonths = [];
       this.errorMessage = undefined;
-      return this.getTimeSlots(this.getSlotsRequest()).pipe(
+      return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
         map(response => {
             if (response.error.errorDetail.errorCode === 0) {
               this.initSlotsMap(response.slots);

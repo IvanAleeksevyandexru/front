@@ -1,16 +1,36 @@
 import { Injectable } from '@angular/core';
-import * as moment_ from 'moment';
 import { Moment } from 'moment';
+import { createEvent, EventAttributes } from 'ics';
 
-const moment = moment_;
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UtilsService {
 
   // TODO: add shared utils
 
+  /**
+   * Получает данные JSON из LocalStorage по ключу
+   * @param key - ключ хранилища
+   */
+  static getLocalStorageJSON(key: string): any | null {
+    return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
+  }
+
+  /**
+   * Устанавливае данные JSON в LocalStorage по ключу
+   * @param key - ключ хранилища
+   * @param data - данные для сохранения
+   */
+  static setLocalStorageJSON(key: string, data: any) {
+    localStorage.setItem(key, JSON.stringify(data));
+  }
+
+  /**
+   * Удаляет из хранилища Local Storage по ключу
+   * @param key
+   */
+  static deleteFromLocalStorage(key: string) {
+    localStorage.removeItem(key);
+  }
 
   /**
    * Устанавливает куку
@@ -50,7 +70,7 @@ export class UtilsService {
 
   /**
    * Удаляет куку с нужным именем
-   * @param name
+   * @param name - имя куки
    */
   static removeCookie(name) {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -73,6 +93,11 @@ export class UtilsService {
     return result === undefined || result === obj ? defaultValue : result;
   };
 
+  /**
+   * Форматирует объект moment даты в нужны формат и возвращает его
+   * @param date - объект даты обёрнутый в библитеку moment
+   * @param format - формат в котором выводить дату (из документации к moment.js)
+   */
   public formatDate(date: Moment, format: string): string {
     return date.format(format);
   }
@@ -94,5 +119,24 @@ export class UtilsService {
     }
 
     return forms[2];
+  }
+
+  // При передачи аргумента event необходимо указывать тип EventAttributes
+  public downloadCalendar(event: EventAttributes) {
+    const ics = createEvent(event);
+    const blob = new Blob([ics.value], { type: 'text/calendar; charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    link.href = url;
+    link.setAttribute('download', event.description || 'calendar');
+    document.body.appendChild(link);
+    link.click();
+
+    setTimeout( () => {
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }, 200);
   }
 }

@@ -8,16 +8,20 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-
+import * as moment_ from 'moment';
+import { ConfigService } from '../../../config/config.service';
+import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
+import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
+import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
+import { ScreenService } from '../../screen.service';
 import {
+  CustomComponent,
   CustomComponentDictionaryState,
   CustomComponentDropDownStateInterface,
-  CustomComponent,
   CustomComponentOutputData,
   CustomComponentState,
   CustomScreenComponentTypes,
 } from '../custom-screen.types';
-import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   adaptiveDropDown,
   calcDependedComponent,
@@ -28,10 +32,8 @@ import {
   isDropDown,
   likeDictionary,
 } from '../tools/custom-screen-tools';
-import { ScreenService } from '../../screen.service';
-import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
-import { ConfigService } from '../../../config/config.service';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -54,7 +56,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   constructor(
     private dictionaryApiService: DictionaryApiService,
     public screenService: ScreenService,
-    public configService: ConfigService,
+    public config: ConfigService,
   ) {}
 
   // NOTICE: тут была информация о валидации смотри историю гита
@@ -113,18 +115,20 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   inputChange($event: Event, component: CustomComponent) {
-    const { value } = $event.target as HTMLInputElement;
-    this.state[component.id].value = value;
+    let { value } = $event.target as HTMLInputElement;
+    if (component.type === 'AddressInput') {
+      const fullAddressObject = this.state[component.id].value;
+      value = fullAddressObject;
+    }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
-    this.setValidationState(inputValidationResult, component.id, value);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
   }
 
   dateChange($event: string, component: CustomComponent) {
-    const value = $event;
-    this.state[component.id].value = value;
+    const value = moment($event).toISOString();
     const inputValidationResult = CheckInputValidationComponentList(value, component);
-    this.setValidationState(inputValidationResult, component.id, value);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
   }
 
@@ -156,12 +160,11 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.dictionary[id].loadEnd = false;
   }
 
-  setValidationState(inputValidationResult, componentId, componentValue) {
+  setValidationAndValueState(inputValidationResult, componentId, componentValue) {
     const handleSetState = (isValid, errMsg?) => {
       this.state[componentId].value = componentValue;
       this.state[componentId].valid = isValid;
       this.state[componentId].errorMessage = errMsg;
-      this.emmitChanges();
     };
 
     if (inputValidationResult === -1) {

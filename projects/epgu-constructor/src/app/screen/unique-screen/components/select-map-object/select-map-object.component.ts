@@ -7,6 +7,7 @@ import {
   ViewChild,
   AfterViewInit,
   ChangeDetectorRef,
+  NgZone,
 } from '@angular/core';
 import { switchMap, filter, takeWhile, takeUntil, tap, reduce } from 'rxjs/operators';
 import { interval, of, merge } from 'rxjs';
@@ -45,10 +46,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   public mappedDictionaryForLookup;
   public mapCenter: Array<number>;
   public mapControls = ['zoomControl'];
-  public yandexMapsApiKey: string;
   public provider = { search: this.providerSearch() };
   public selectedValue: any;
   public mapIsLoaded = false;
+  public scrollConfig = { ressScrollX: true, wheelPropagation: false };
 
   private componentValue: any;
   private selectedValueField: any;
@@ -56,18 +57,15 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
+    public config: ConfigService,
     private yaMapService: YaMapService,
     private dictionaryApiService: DictionaryApiService,
-    private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
-  ) {
-    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((config) => {
-      this.yandexMapsApiKey = config.yandexMapsApiKey;
-    });
-  }
+    private zone: NgZone,
+  ) {}
 
   ngOnInit(): void {
     this.initVariable();
@@ -244,8 +242,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   }
 
   public selectObject() {
-    const answer = { ...this.selectedValue, children: null };
-    this.nextStepEvent.emit(JSON.stringify(answer));
+    this.zone.run(() => {
+      const answer = { ...this.selectedValue, children: null };
+      this.nextStepEvent.emit(JSON.stringify(answer));
+    });
   }
 
   /**

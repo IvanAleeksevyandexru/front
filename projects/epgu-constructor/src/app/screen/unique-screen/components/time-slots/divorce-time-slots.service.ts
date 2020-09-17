@@ -1,18 +1,19 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '../../../../config/config.service';
-import { TimeSlotsService } from './time-slots.service';
-import * as uuid from 'uuid';
+import { Injectable } from '@angular/core';
+import * as moment_ from 'moment';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, takeUntil, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
+import * as uuid from 'uuid';
+import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
+import { TimeSlotsService } from './time-slots.service';
 import {
-  SmevBookResponseInterface,
   SmevSlotInterface,
   SmevSlotsMapInterface,
-  SmevSlotsResponseInterface, TimeSlotValueInterface,
+  TimeSlotValueInterface,
   ZagsDepartmentInterface
 } from './time-slots.types';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+
+const moment = moment_;
 
 @Injectable()
 export class DivorceTimeSlotsService implements TimeSlotsService {
@@ -28,37 +29,23 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
   private bookedSlot: SmevSlotInterface;
   private bookId;
   private errorMessage;
-  private timeSlotApiUrl;
 
   constructor(
     private http: HttpClient,
-    private configService: ConfigService,
-    private ngUnsubscribe$: UnsubscribeService
-  ) {
-    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
-      this.timeSlotApiUrl = config.timeSlotApiUrl;
-    });
-  }
-
-  private getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.timeSlotApiUrl}/slots`;
-    return this.http.post<SmevSlotsResponseInterface>(path, requestBody);
-  }
-
-  private bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const path = `${this.timeSlotApiUrl}/book?srcSystem=BETA`;
-    return this.http.post<SmevBookResponseInterface>(path, requestBody);
-  }
+    private smev3TimeSlotsRestService: Smev3TimeSlotsRestService
+  ) {}
 
   book(selectedSlot: SmevSlotInterface) {
     this.errorMessage = undefined;
-    return this.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
+    return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
         if (!response.error) {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;
           this.activeMonthNumber = selectedSlot.slotTime.getMonth();
           this.activeYearNumber = selectedSlot.slotTime.getFullYear();
+          response.timeStart = new Date();
+          response.timeFinish = moment(response.timeStart).add(1440, 'm').toDate();
         } else {
           this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
           console.log(response.error);
@@ -103,7 +90,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
       this.slotsMap = {};
       this.availableMonths = [];
       this.errorMessage = undefined;
-      return this.getTimeSlots(this.getSlotsRequest()).pipe(
+      return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
         map(response => {
             if (response.error.errorDetail.errorCode === 0) {
               this.initSlotsMap(response.slots);

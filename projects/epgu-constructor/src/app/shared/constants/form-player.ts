@@ -1,0 +1,1 @@
+export const COMPONENT_DATA_KEY = 'LAST_SCENARIO_DTO';

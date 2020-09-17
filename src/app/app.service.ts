@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AppConfig, FormPlayerConfig } from './app.type'
-import { getConfigFromEnvs } from './app.utils'
+import { AppConfig, FormPlayerConfig } from './app.type';
+import { getConfigFromEnvs } from './app.utils';
+import { environment } from '../environments/environment';
+import { ConfigService } from '../../projects/epgu-constructor/src/app/config/config.service';
+import { ActivatedRoute } from '@angular/router';
 
-const LOCAL_STORAGE_KEY = 'EPGU_FORM_PLAYER_TEST_STAND_CONFIG';
+export const LOCAL_STORAGE_KEY = 'EPGU_FORM_PLAYER_TEST_STAND_CONFIG';
 
 
 const initValues: FormPlayerConfig = {
-  serviceId: '',
-  targetId: '',
-  orderId: '',
+  serviceId: environment.serviceId,
+  targetId: environment.targetId,
+  orderId: environment.orderId,
 }
 
 @Injectable()
@@ -19,13 +22,27 @@ export class AppService {
   configSubject = new BehaviorSubject(this.config);
   config$ = this.configSubject.asObservable();
 
-  constructor () {
+  constructor (private configService: ConfigService, private route: ActivatedRoute) {
     this.initConfig();
+  }
+
+  valuesFromQueryParams(): void {
+    const { serviceId, targetId, orderId } = this.route.snapshot.queryParams;
+    if(serviceId) {
+      this.config.serviceId = serviceId;
+    }
+    if(targetId) {
+      this.config.targetId = targetId;
+    }
+    if(orderId) {
+      this.config.orderId = orderId;
+    }
   }
 
   saveConfig(newConfig: AppConfig) {
     this.config = newConfig;
     window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.config));
+    this.updateConfigToConfigService();
     this.configSubject.next(this.config)
   }
 
@@ -45,7 +62,13 @@ export class AppService {
       ...initConfig,
       ...savedConfig
     }
+    this.valuesFromQueryParams();
+    this.updateConfigToConfigService();
     this.configSubject.next(this.config)
+  }
+
+  updateConfigToConfigService() {
+    this.configService.config = this.config;
   }
 
   getInitConfigs() {

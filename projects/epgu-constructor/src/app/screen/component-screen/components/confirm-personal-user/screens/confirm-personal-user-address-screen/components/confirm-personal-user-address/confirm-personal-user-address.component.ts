@@ -10,9 +10,10 @@ import {
 } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
+import { ConfigService } from '../../../../../../../../config/config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
-import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constants/dates';
+import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 
 const moment = moment_;
 
@@ -32,12 +33,14 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
   valueParsed: any;
 
   constructor(
+    public configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
+    private config: ConfigService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.isEditable.currentValue && this.isEditable) {
+    if (changes.isEditable?.currentValue && this.isEditable) {
       this.subscribeFormChanges();
     }
     if (changes.data?.currentValue) {

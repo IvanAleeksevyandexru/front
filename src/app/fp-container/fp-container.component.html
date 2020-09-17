@@ -1,5 +1,5 @@
 <epgu-constructor-form-player
-  [serviceId]="serviceId"
-  [targetId]="targetId"
-  [orderId]="orderId"
+  *ngIf="service"
+  [service]="service"
+  [config]="config"
 ></epgu-constructor-form-player>

@@ -9,7 +9,6 @@ export enum CustomScreenComponentTypes {
   StringInput = 'StringInput',
   DateInput = 'DateInput',
   RadioInput = 'RadioInput',
-  CompositeRadioButton = 'CompositeRadioButton',
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
   htmlString = 'HtmlString',
@@ -114,4 +113,5 @@ export interface CustomComponent extends ComponentBase {
 interface SupportedValue {
   label: string;
   value: string;
+  isDefault?: boolean;
 }
