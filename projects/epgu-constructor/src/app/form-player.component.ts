@@ -7,6 +7,7 @@ import { NavigationService } from './shared/services/navigation/navigation.servi
 import { ScreenComponent } from './screen/screen.const';
 import { ConfigService } from './config/config.service';
 import { Config } from './config/config.types';
+import { ServiceDataService } from './services/service-data/service-data.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -23,6 +24,7 @@ export class FormPlayerComponent implements OnInit, OnChanges {
   screenComponent: ScreenComponent;
 
   constructor(
+    private serviceDataService: ServiceDataService,
     public formPlayerService: FormPlayerService,
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
@@ -32,10 +34,8 @@ export class FormPlayerComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.checkProps();
     const orderId = this.getDraftOrderId();
-    const service = { serviceId: this.serviceId, targetId: this.targetId };
     this.configService.config = this.config;
-    this.formPlayerService.initData(service, orderId);
-
+    this.formPlayerService.initData(orderId);
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.screenComponent = this.formPlayerService.getScreenComponent();
     });
@@ -51,21 +51,22 @@ export class FormPlayerComponent implements OnInit, OnChanges {
 
   getDraftOrderId() {
     let orderId;
-    if (this.orderId) {
+    if (this.serviceDataService.orderId) {
       // TODO: add better handling for draft case;
       // eslint-disable-next-line no-restricted-globals
       const result = confirm('У вас есть предыдущее заявление, продолжить его заполнять?');
-      orderId = result ? this.orderId : null;
+      orderId = result ? this.serviceDataService.orderId : null;
     }
     return orderId;
   }
 
   ngOnChanges(): void {
+    this.serviceDataService.init(this.serviceId, this.orderId, this.targetId);
     this.checkProps();
   }
 
   checkProps() {
-    if (!this.serviceId) {
+    if (!this.serviceDataService.serviceId) {
       throw Error('Need to set serviceId for epgu form player');
     }
 
@@ -75,10 +76,10 @@ export class FormPlayerComponent implements OnInit, OnChanges {
   }
 
   nextStep(navigationPayload?: NavigationPayload) {
-    this.formPlayerService.navigate(this.serviceId, FormPlayerNavigation.NEXT, navigationPayload);
+    this.formPlayerService.navigate(navigationPayload, { direction: FormPlayerNavigation.NEXT });
   }
 
   prevStep(navigationPayload?: NavigationPayload) {
-    this.formPlayerService.navigate(this.serviceId, FormPlayerNavigation.PREV, navigationPayload);
+    this.formPlayerService.navigate(navigationPayload, { direction: FormPlayerNavigation.PREV });
   }
 }

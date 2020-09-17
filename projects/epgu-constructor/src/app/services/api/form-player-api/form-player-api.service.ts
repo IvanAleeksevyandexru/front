@@ -3,10 +3,8 @@ import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { ConfigService } from '../../../config/config.service';
-import { FormPlayerNavigation } from '../../../form-player.types';
+import { NavigationFullOptions } from '../../../form-player.types';
 import { FormPlayerApiDraftResponse, FormPlayerApiResponse } from './form-player-api.types';
-import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 
 @Injectable()
 export class FormPlayerApiService {
@@ -36,8 +34,13 @@ export class FormPlayerApiService {
     });
   }
 
-  public navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, data): Observable<FormPlayerApiResponse> {
-    const path = `${this.config.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
+  public navigate(serviceId: string, data, options: NavigationFullOptions): Observable<FormPlayerApiResponse> {
+    let path = this.config.apiUrl;
+    if (options.url) {
+      path += options.url;
+    } else {
+      path += `/${data.isInternal ?  'internal' : 'service'}/${serviceId}/scenario/${options.direction}`;
+    }
 
     const userId = this.cookieService.get('u') || '';
     const token = this.cookieService.get('acc_t') || '';

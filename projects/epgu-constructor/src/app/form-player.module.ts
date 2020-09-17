@@ -19,6 +19,8 @@ import { SharedModule } from './shared/shared.module';
 import { UtilsService } from './services/utils/utils.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { ConfigService } from './config/config.service';
+import { ServiceDataService } from './services/service-data/service-data.service';
+
 
 export const epguLibModule = EpguLibModule.forRoot();
 
@@ -36,7 +38,7 @@ export const epguLibModule = EpguLibModule.forRoot();
     InvitationErrorScreenModule,
     SharedModule,
     epguLibModule,
-    InfoScreenModule
+    InfoScreenModule,
   ],
   providers: [
     DictionaryApiService,
@@ -47,16 +49,11 @@ export const epguLibModule = EpguLibModule.forRoot();
     UnsubscribeService,
     ScreenResolverService,
     UtilsService,
-    ConfigService
+    ConfigService,
+    ServiceDataService,
   ],
   exports: [
     FormPlayerComponent
   ]
 })
-export class FormPlayerModule {
-  static forRoot() {
-    return {
-      ngModule: FormPlayerModule,
-    };
-  }
-}
+export class FormPlayerModule {}

@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
+import {
+  NavigationFullOptions,
+  NavigationPayload
+} from '../../form-player.types';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
@@ -11,6 +14,7 @@ import {
   ScenarioDto
 } from '../api/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../screen/screen.types';
+import { ServiceDataService } from '../service-data/service-data.service';
 import { UtilsService } from '../utils/utils.service';
 import { localStorageComponentDataKey } from '../../shared/constants/form-player';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
@@ -46,6 +50,7 @@ export class FormPlayerService {
   constructor(
     public formPlayerApiService: FormPlayerApiService,
     private screenResolverService: ScreenResolverService,
+    private serviceDataService: ServiceDataService,
     private screenService: ScreenService,
   ) {}
 
@@ -68,10 +73,9 @@ export class FormPlayerService {
 
   /**
    * Инициализирует данные для показа, смотрим откуда брать данные
-   * @param service - услуга
    * @param orderId - id заявления
    */
-  initData(service: ServiceType, orderId?: string): void {
+  initData(orderId?: string): void {
     this.updateLoading(true);
 
     if (this.isNeedToShowLastScreen()) {
@@ -80,8 +84,7 @@ export class FormPlayerService {
       if (orderId) {
         this.getDraftOrderData(orderId);
       } else {
-        const { serviceId, targetId } = service;
-        this.getNewOrderData(serviceId, targetId);
+        this.getNewOrderData();
       }
     }
   }
@@ -112,11 +115,10 @@ export class FormPlayerService {
   }
 
   /**
-   * Получает и устанавливает данные для нового черновика для id услуги
-   * @param serviceId - id сервиса
-   * @param targetId
+   * Устанавливает данные для нового черновика для id услуги
    */
-  getNewOrderData(serviceId: string, targetId?: string) {
+  getNewOrderData() {
+    const { serviceId, targetId } = this.serviceDataService;
     this.formPlayerApiService.getServiceData(serviceId, targetId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
@@ -152,10 +154,11 @@ export class FormPlayerService {
   }
 
 
-  navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, navigationPayload?: NavigationPayload) {
+  navigate(navigationPayload: NavigationPayload = undefined, options: NavigationFullOptions) {
+    const serviceId = this.serviceDataService.serviceId;
     this.updateLoading(true);
     this.updateRequest(navigationPayload);
-    this.formPlayerApiService.navigate(serviceId, formPlayerNavigation, this.store).subscribe(
+    this.formPlayerApiService.navigate(serviceId, this.store, options).subscribe(
       (response) => {
         this.processResponse(response);
       },
