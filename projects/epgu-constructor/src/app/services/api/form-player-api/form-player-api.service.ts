@@ -41,6 +41,9 @@ export class FormPlayerApiService {
     data /*добавить тип как response*/,
     options: NavigationFullOptions): Observable<FormPlayerApiResponse> {
     let path = this.getNavigatePath(serviceId, data, options);
+    if (options.isInternalScenarioFinish) {
+      data.isInternalScenario = true;
+    }
 
     const userId = this.cookieService.get('u') || '';
     const token = this.cookieService.get('acc_t') || '';

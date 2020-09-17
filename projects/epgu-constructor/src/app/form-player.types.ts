@@ -26,6 +26,7 @@ export interface NavigationPayload {
  */
 export interface NavigationFullOptions extends NavigationShortOptions {
   direction: FormPlayerNavigation;
+  isInternalScenarioFinish?: boolean
 }
 
 export interface NavigationShortOptions {

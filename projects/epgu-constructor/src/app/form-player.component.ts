@@ -8,6 +8,8 @@ import { ScreenComponent } from './screen/screen.const';
 import { ConfigService } from './config/config.service';
 import { Config } from './config/config.types';
 import { ServiceDataService } from './services/service-data/service-data.service';
+import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
+import { ScreenService } from './screen/screen.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -27,6 +29,8 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private configService: ConfigService,
+    private screenService: ScreenService,
+    private screenResolverService: ScreenResolverService,
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +39,7 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     this.configService.config = this.config;
     this.formPlayerService.initData(orderId);
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.screenComponent = this.formPlayerService.getScreenComponent();
+      this.screenComponent = this.getScreenComponent();
     });
 
     this.navigationService.nextStep$
@@ -45,6 +49,11 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     this.navigationService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.prevStep(data));
+  }
+
+  ngOnChanges(): void {
+    this.serviceDataService.init(this.service);
+    this.checkProps();
   }
 
   getDraftOrderId() {
@@ -58,9 +67,31 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     return orderId;
   }
 
-  ngOnChanges(): void {
-    this.serviceDataService.init(this.serviceId, this.orderId, this.targetId);
-    this.checkProps();
+  /**
+   * Возвращает компонент для показа экрана переданного типа
+   */
+  getScreenComponent(): ScreenComponent {
+    const screenType = this.screenService.screenType as string;
+    const screenComponent = this.screenResolverService.getScreenComponentByType(screenType);
+
+    if (!screenComponent) {
+      this.handleScreenComponentError(this.screenService.screenType);
+    }
+
+    return screenComponent;
+  }
+
+  nextStep(navigationPayload?: NavigationPayload) {
+    this.formPlayerService.navigate(navigationPayload, { direction: FormPlayerNavigation.NEXT });
+  }
+
+  prevStep(navigationPayload?: NavigationPayload) {
+    this.formPlayerService.navigate(navigationPayload, { direction: FormPlayerNavigation.PREV });
+  }
+
+  handleScreenComponentError(screenType: string) {
+    // TODO: need to find a better way for handling this error, maybe show it on UI
+    throw new Error(`We cant find screen component for this type: ${screenType}`);
   }
 
   checkProps() {
@@ -71,13 +102,5 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     if (!this.config) {
       throw Error('Need to set config for epgu form player');
     }
-  }
-
-  nextStep(navigationPayload?: NavigationPayload) {
-    this.formPlayerService.navigate(navigationPayload, { direction: FormPlayerNavigation.NEXT });
-  }
-
-  prevStep(navigationPayload?: NavigationPayload) {
-    this.formPlayerService.navigate(navigationPayload, { direction: FormPlayerNavigation.PREV });
   }
 }

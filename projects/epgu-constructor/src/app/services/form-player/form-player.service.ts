@@ -17,8 +17,6 @@ import { ScreenTypes } from '../../screen/screen.types';
 import { ServiceDataService } from '../service-data/service-data.service';
 import { UtilsService } from '../utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
-import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
-import { ScreenComponent } from '../../screen/screen.const';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -41,7 +39,6 @@ export class FormPlayerService {
 
   constructor(
     public formPlayerApiService: FormPlayerApiService,
-    private screenResolverService: ScreenResolverService,
     private serviceDataService: ServiceDataService,
     private screenService: ScreenService,
   ) {}
@@ -125,24 +122,6 @@ export class FormPlayerService {
     this.processResponse(store);
     this.updateLoading(false);
     UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
-  }
-
-  /**
-   * Возвращает компонент для показа экрана переданного типа
-   */
-  getScreenComponent(): ScreenComponent {
-    const screenComponent = this.screenResolverService.getScreenComponentByType(this.screenType);
-
-    if (!screenComponent) {
-      this.handleScreenComponentError(this.screenType);
-    }
-
-    return screenComponent;
-  }
-
-  handleScreenComponentError(screenType: string) {
-    // TODO: need to find a better way for handling this error, maybe show it on UI
-    throw new Error(`We cant find screen component for this type: ${screenType}`);
   }
 
 

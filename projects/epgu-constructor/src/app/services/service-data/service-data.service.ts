@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Service } from '../../form-player.types';
 
 @Injectable()
 export class ServiceDataService {
@@ -22,9 +22,9 @@ export class ServiceDataService {
   constructor() {
   }
 
-  init(serviceId: string, orderId: string, targetId: string) {
-    this._serviceId = serviceId;
-    this._orderId = orderId;
-    this._targetId = targetId;
+  init(service: Service) {
+    this._serviceId = service.serviceId;
+    this._orderId = service.orderId;
+    this._targetId = service.targetId;
   }
 }

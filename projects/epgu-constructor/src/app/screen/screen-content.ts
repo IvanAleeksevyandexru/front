@@ -1,4 +1,9 @@
-import { ComponentDto, DisplayDto, ScenarioErrorsDto } from '../services/api/form-player-api/form-player-api.types';
+import {
+  ComponentDto,
+  ComponentDtoAction,
+  DisplayDto,
+  ScenarioErrorsDto
+} from '../services/api/form-player-api/form-player-api.types';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { BehaviorSubject } from 'rxjs';
 
@@ -85,6 +90,15 @@ export class ScreenContent {
   }
   public componentError$ = this._componentError.asObservable();
 
+  private _actions = new BehaviorSubject<Array<ComponentDtoAction>>(null);
+  public get actions() {
+    return this._actions.getValue();
+  }
+  public set actions(val: Array<ComponentDtoAction>) {
+    this._actions.next(val);
+  }
+  public actions$ = this._actions.asObservable();
+
   constructor() {}
 
   updateScreenContent(screenStore: ScreenStore) {
@@ -99,5 +113,6 @@ export class ScreenContent {
     this.orderId = orderId;
     this.componentErrors = errors;
     this.componentError = errors[components[0].id];
+    this.actions = components[0].attrs?.actions || [];
   }
 }
