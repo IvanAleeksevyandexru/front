@@ -13,6 +13,10 @@
 
     &--data {
       width: 50%;
+
+      @include phones-down {
+        width: 100%;
+      }
     }
   }
 
