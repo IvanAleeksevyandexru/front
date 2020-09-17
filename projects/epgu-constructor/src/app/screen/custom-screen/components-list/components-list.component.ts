@@ -117,9 +117,13 @@ export class ComponentsListComponent implements OnInit, OnChanges {
 
   inputChange($event: Event, component: CustomComponent) {
     let { value } = $event.target as HTMLInputElement;
-    if (component.type === 'AddressInput') {
+    if (component.type === this.componentType.AddressInput) {
       const fullAddressObject = this.state[component.id].value;
       value = fullAddressObject;
+    }
+    if (component.type === this.componentType.PhoneNumberChangeInput) {
+      const maskSymbolRegExp = /\s|-|\(|\)/g;
+      value = value.replace(maskSymbolRegExp, ''); // удаляет скобки, проблемы, трие
     }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
@@ -211,4 +215,10 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {}
+
+  likeMaskType(componentType: CustomScreenComponentTypes) {
+    const { StringInput, PhoneNumberChangeInput } = this.componentType;
+    const isLikeMask = [StringInput, PhoneNumberChangeInput].includes(componentType);
+    return isLikeMask ? componentType : !componentType;
+  }
 }

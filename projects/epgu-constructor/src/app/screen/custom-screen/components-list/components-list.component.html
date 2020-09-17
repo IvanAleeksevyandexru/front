@@ -69,7 +69,7 @@
         </epgu-constructor-output-html>
       </div>
 
-      <div class="form__item" *ngSwitchCase="componentType.StringInput">
+      <div class="form__item" *ngSwitchCase="likeMaskType(componentData.type)">
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-standard-masked-input
@@ -78,7 +78,7 @@
             [mask]="componentData.attrs?.mask | maskHandle"
             [placeholder]="componentData.attrs?.placeholder"
             [name]="componentData.id"
-            [showMaskAsPlaceholder]="false"
+            [showMaskAsPlaceholder]="true"
             [showConstantMaskSymbols]="true"
             [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
