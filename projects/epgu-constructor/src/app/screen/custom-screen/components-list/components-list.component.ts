@@ -25,7 +25,6 @@ import {
 } from '../tools/custom-screen-tools';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../screen.service';
-import { ApplicantAnswersService } from '../../../shared/services/applicant-answers/applicant-answers.service';
 import { ConfigService } from '../../../config/config.service';
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 
@@ -61,7 +60,6 @@ export class ComponentsListComponent implements OnChanges {
   constructor(
     private dictionaryApiService: DictionaryApiService,
     public screenService: ScreenService,
-    public applicantAnswersService: ApplicantAnswersService,
     public config: ConfigService,
   ) {}
 
@@ -76,7 +74,7 @@ export class ComponentsListComponent implements OnChanges {
     components.forEach((component) => {
       if (component.type === CustomScreenComponentTypes.FieldsToggler) {
         const { toggleFields } = component.attrs;
-        this.setComponentToggleFieldsData(toggleFields);
+        this.setComponentToggleFieldsData(toggleFields, component);
       }
     });
   }
@@ -84,10 +82,15 @@ export class ComponentsListComponent implements OnChanges {
   /**
    * Устанавливает сведения о полях и их показе/скрытии и/или доступности/недоступности
    * @param toggleFields - данные о переключаемых состояниях полях
+   * @param component - данные компонента
    * @private
    */
-  private setComponentToggleFieldsData(toggleFields: ToggleFields) {
-    this.toggleFieldsData$.next(Object.assign(this.toggleFieldsData$.getValue(), toggleFields));
+  private setComponentToggleFieldsData(toggleFields: ToggleFields, component: CustomComponent) {
+    const value = Object.assign(this.toggleFieldsData$.getValue(), toggleFields);
+    if (this.state[component.id]?.value) {
+      this.state[component.id].value = value;
+    }
+    this.toggleFieldsData$.next(value);
   }
 
   /**
@@ -197,7 +200,7 @@ export class ComponentsListComponent implements OnChanges {
     if (toggleFields.hide) {
       toggleFields.hide = this.mapFieldsTogglerChange(toggleFields.hide);
     }
-    this.setComponentToggleFieldsData(toggleFields);
+    this.setComponentToggleFieldsData(toggleFields, component);
   }
 
   /**

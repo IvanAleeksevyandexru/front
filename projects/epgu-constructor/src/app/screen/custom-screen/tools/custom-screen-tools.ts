@@ -69,9 +69,7 @@ export function getNormalizeDataCustomScreenDictionary(
 
 /**
  * Адаптирует массив в вид необходимый для компонентов из библлиотеки
- * @param {CustomComponentDropDownItemList}items
- * @param {string}dictionaryName
- * @param {CustomComponent}component - тут хранится флаг, для удаление россии из словаря.
+ * @param items - массив элементов для преобразования
  */
 export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
   return items.map((item, index) => {
@@ -137,7 +135,11 @@ export function getInitStateItemComponentList(component: CustomComponent) {
   let valueFormatted: string | Date;
   switch (component.type) {
     case CustomScreenComponentTypes.DateInput:
+      console.log('DateInput value', value);
       valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate() || moment().toDate();
+      break;
+    case CustomScreenComponentTypes.FieldsToggler:
+      valueFormatted = (value) ? JSON.parse(value) : component.attrs.toggleFields;
       break;
     default:
       valueFormatted = value;
