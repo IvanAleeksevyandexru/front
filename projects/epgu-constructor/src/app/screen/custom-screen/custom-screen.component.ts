@@ -104,15 +104,30 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     this.dataToSend = this.getFormattedData(changes);
   }
 
+  private isValidDate(date): boolean {
+    return new Date(date).toString() !== 'Invalid Date';
+  }
+
   private getPrepareResponseData(data = {}) {
     return Object.keys(data).reduce((acc, key) => {
+      let value = '';
+      const dataValue = data[key].value;
+
+      if (typeof dataValue === 'object') {
+        if (this.isValidDate(dataValue)) {
+          value = moment(dataValue).toISOString();
+        } else {
+          value = JSON.stringify(dataValue || {});
+        }
+      } else {
+        value = dataValue;
+      }
+
       acc[key] = {
         visited: true,
-        value:
-          typeof data[key].value === 'object'
-            ? JSON.stringify(data[key].value || {})
-            : data[key].value,
+        value,
       };
+
       return acc;
     }, {});
   }
