@@ -12,15 +12,12 @@ export class UnusedPaymentsService {
 
   constructor(
     private http: HttpClient,
-    private configService: ConfigService,
-    private ngUnsubscribe$: UnsubscribeService
+    private config: ConfigService,
   ) {
-    this.configService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(config => {
-      this.listPaymentsApiUrl = config.listPaymentsApiUrl;
-    });
+
   }
 
   public getListPaymentsInfo(requestBody): Observable<UnusedPaymentInterface[]> {
-    return this.http.post<UnusedPaymentInterface[]>(this.listPaymentsApiUrl, requestBody, { withCredentials: true });
+    return this.http.post<UnusedPaymentInterface[]>(this.config.listPaymentsApiUrl, requestBody, { withCredentials: true });
   }
 }

@@ -7,6 +7,7 @@ export class ConfigServiceStub implements Config {
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
   _timeSlotApiUrl = '';
+  _listPaymentsApiUrl = '';
   _lkUrl = '';
   _paymentUrl = '';
   _fileUploadApiUrl = '';
@@ -46,6 +47,10 @@ export class ConfigServiceStub implements Config {
     return this._timeSlotApiUrl;
   }
 
+  get listPaymentsApiUrl(): string {
+    return this._listPaymentsApiUrl;
+  }
+
   get uinApiUrl(): string {
     return this._uinApiUrl;
   }
@@ -63,6 +68,7 @@ export class ConfigServiceStub implements Config {
     this._lkUrl = config.lkUrl;
     this._paymentUrl = config.paymentUrl;
     this._timeSlotApiUrl = config.timeSlotApiUrl;
+    this._listPaymentsApiUrl = config.listPaymentsApiUrl;
     this._uinApiUrl = config.uinApiUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
   }

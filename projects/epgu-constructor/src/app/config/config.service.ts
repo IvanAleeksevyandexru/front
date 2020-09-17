@@ -11,6 +11,7 @@ export class ConfigService implements Config {
   private _lkUrl: string;
   private _paymentUrl: string;
   private _timeSlotApiUrl: string;
+  private _listPaymentsApiUrl: string;
   private _uinApiUrl: string;
   private _yandexMapsApiKey: string;
 
@@ -52,6 +53,10 @@ export class ConfigService implements Config {
     return this._timeSlotApiUrl;
   }
 
+  get listPaymentsApiUrl(): string {
+    return this._listPaymentsApiUrl;
+  }
+
   get uinApiUrl(): string {
     return this._uinApiUrl;
   }
@@ -71,6 +76,7 @@ export class ConfigService implements Config {
     this._lkUrl = config.lkUrl;
     this._paymentUrl = config.paymentUrl;
     this._timeSlotApiUrl = config.timeSlotApiUrl;
+    this._listPaymentsApiUrl = config.listPaymentsApiUrl;
     this._uinApiUrl = config.uinApiUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
   }
