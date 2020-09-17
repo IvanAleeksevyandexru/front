@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map, takeUntil } from 'rxjs/operators';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { getPaymentRequestOptions, mockUpUIN } from './payment.constants';
-import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { ScreenStore } from '../../../screen.types';
 import { ScreenService } from '../../../screen.service';
@@ -23,7 +22,6 @@ export class PaymentService {
     private http: HttpClient,
     private dictionaryApiService: DictionaryApiService,
     private config: ConfigService,
-    public formPlayerService: FormPlayerService,
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService
   ) {
