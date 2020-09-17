@@ -72,16 +72,8 @@
       <div class="form__item" *ngSwitchCase="componentType.StringInput">
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
-          <lib-plain-input
-            *ngIf="!componentData.attrs?.mask"
-            [invalid]="!state[componentData.id].valid"
-            [name]="componentData.id"
-            [(ngModel)]="state[componentData.id].value"
-            (change)="inputChange($event, componentData)"
-            [validationShowOn]="validationShowOn"
-          ></lib-plain-input>
           <lib-standard-masked-input
-            *ngIf="componentData.attrs?.mask"
+            *ngIf="componentData.attrs?.mask; else plainInput"
             [clearable]='true'
             [mask]="componentData.attrs?.mask | maskHandle"
             [placeholder]="componentData.attrs?.placeholder"
@@ -89,7 +81,17 @@
             [showMaskAsPlaceholder]="false"
             [showConstantMaskSymbols]="true"
             [(ngModel)]="state[componentData.id].value"
+            (change)="inputChange($event, componentData)"
           ></lib-standard-masked-input>
+          <ng-template #plainInput>
+            <lib-plain-input
+              [invalid]="!state[componentData.id].valid"
+              [name]="componentData.id"
+              [(ngModel)]="state[componentData.id].value"
+              (change)="inputChange($event, componentData)"
+              [validationShowOn]="validationShowOn"
+            ></lib-plain-input>
+          </ng-template>
           <div *ngIf="componentData.attrs?.hint" class="form__item__hint">
             {{ componentData.attrs?.hint }}
           </div>
