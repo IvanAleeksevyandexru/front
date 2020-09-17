@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
+import { FormPlayerNavigation, NavigationPayload, Service } from '../../form-player.types';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
@@ -12,14 +12,9 @@ import {
 } from '../api/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../screen/screen.types';
 import { UtilsService } from '../utils/utils.service';
-import { localStorageComponentDataKey } from '../../shared/constants/form-player';
+import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ScreenComponent } from '../../screen/screen.const';
-
-interface ServiceType {
-  serviceId: string;
-  targetId: string;
-}
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -28,9 +23,6 @@ interface ServiceType {
  */
 @Injectable()
 export class FormPlayerService {
-  // Ключ localStorage, где хранятся данные по компонентам для отображения, если нам подменить сценарий
-  public static localStorageComponentDataKey = localStorageComponentDataKey;
-
   private store: FormPlayerApiSuccessResponse;
   private playerLoaded = false;
   private isLoading = false;
@@ -54,7 +46,7 @@ export class FormPlayerService {
    * @private
    */
   private static isHaveOrderDataInLocalStorage(): boolean {
-    return !!localStorage.getItem(FormPlayerService.localStorageComponentDataKey);
+    return !!localStorage.getItem(COMPONENT_DATA_KEY);
   }
 
   /**
@@ -71,7 +63,7 @@ export class FormPlayerService {
    * @param service - услуга
    * @param orderId - id заявления
    */
-  initData(service: ServiceType, orderId?: string): void {
+  initData(service: Service, orderId?: string): void {
     this.updateLoading(true);
 
     if (this.isNeedToShowLastScreen()) {
@@ -127,10 +119,10 @@ export class FormPlayerService {
 
   getDataFromLocalStorage() {
     // eslint-disable-next-line max-len
-    const store = UtilsService.getLocalStorageJSON(FormPlayerService.localStorageComponentDataKey);
+    const store = UtilsService.getLocalStorageJSON(COMPONENT_DATA_KEY);
     this.processResponse(store);
     this.updateLoading(false);
-    UtilsService.deleteFromLocalStorage(FormPlayerService.localStorageComponentDataKey);
+    UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
   }
 
   /**
