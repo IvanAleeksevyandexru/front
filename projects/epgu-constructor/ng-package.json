@@ -10,7 +10,8 @@
       "ru-validation-codes": "ru-validation-codes",
       "ngx-cookie-service": "ngx-cookie-service",
       "uuid": "uuid",
-      "ngx-webcam": "ngx-webcam"
+      "ngx-webcam": "ngx-webcam",
+      "ics": "ics"
     },
     "styleIncludePaths": ["."]
   }

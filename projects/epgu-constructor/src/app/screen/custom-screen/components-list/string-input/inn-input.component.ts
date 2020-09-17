@@ -4,10 +4,10 @@ import { ValidationShowOn } from 'epgu-lib';
 import { CustomComponent } from '../../custom-screen.types';
 
 @Component({
-  selector: 'epgu-constructor-string-input',
-  templateUrl: './string-input.component.html',
+  selector: 'epgu-constructor-inn-input',
+  templateUrl: './inn-input.component.html',
 })
-export class StringInputComponent {
+export class InnInputComponent {
   @Input() data: CustomComponent;
   @Input() invalid: boolean;
   @Input() value: string;

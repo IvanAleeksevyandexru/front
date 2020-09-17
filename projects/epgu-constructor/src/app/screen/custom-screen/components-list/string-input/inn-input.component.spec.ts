@@ -8,14 +8,14 @@ import {
   ValidationShowOn,
 } from 'epgu-lib';
 
-import { StringInputComponent } from './string-input.component';
+import { InnInputComponent } from './inn-input.component';
 import { CustomComponent, CustomScreenComponentTypes } from '../../custom-screen.types';
 import { LabelComponent } from '../../../../shared/components/base/label/label.component';
 import { HelperTextComponent } from '../../../../shared/components/base/helper-text/helper-text.component';
 
-describe('StringInputComponent', () => {
-  let component: StringInputComponent;
-  let fixture: ComponentFixture<StringInputComponent>;
+describe('InnInputComponent', () => {
+  let component: InnInputComponent;
+  let fixture: ComponentFixture<InnInputComponent>;
   const data: CustomComponent = {
     id: 'linn',
     label: 'ИНН юридического лица',
@@ -48,7 +48,7 @@ describe('StringInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        StringInputComponent,
+        InnInputComponent,
         PlainInputComponent,
         LabelComponent,
         HelperTextComponent,
@@ -61,7 +61,7 @@ describe('StringInputComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StringInputComponent);
+    fixture = TestBed.createComponent(InnInputComponent);
     component = fixture.componentInstance;
     component.data = data;
     component.invalid = invalid;

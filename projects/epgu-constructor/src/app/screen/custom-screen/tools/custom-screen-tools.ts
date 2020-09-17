@@ -156,7 +156,7 @@ export function getInitStateItemComponentList(component: CustomComponent) {
 /**
  * Проверка для ИНН для юр.лица
  */
-export function checkLegalInn(value: string) {
+export function checkLegalInn(value: string): number {
   const inn = value.split('').map((char) => parseInt(char, 0));
   const sumInn =
     2 * inn[0] +
@@ -178,7 +178,7 @@ export function checkLegalInn(value: string) {
 /**
  * Проверка для ИНН для физ.лица
  */
-export function checkPersonInn(value: string) {
+export function checkPersonInn(value: string): number {
   const inn = value.split('').map((char) => parseInt(char, 0));
   const sumInn =
     3 * inn[0] +

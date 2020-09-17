@@ -8,9 +8,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
+import * as moment_ from 'moment';
 import { ConfigService } from '../../../config/config.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
+import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ScreenService } from '../../screen.service';
 import {
@@ -33,6 +35,8 @@ import {
   likeDictionary,
   checkPersonInn,
 } from '../tools/custom-screen-tools';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -114,18 +118,20 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   inputChange($event: Event, component: CustomComponent) {
-    const { value } = $event.target as HTMLInputElement;
-    this.state[component.id].value = value;
+    let { value } = $event.target as HTMLInputElement;
+    if (component.type === 'AddressInput') {
+      const fullAddressObject = this.state[component.id].value;
+      value = fullAddressObject;
+    }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
-    this.setValidationState(inputValidationResult, component.id, value);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
   }
 
   dateChange($event: string, component: CustomComponent) {
-    const value = $event;
-    this.state[component.id].value = value;
+    const value = moment($event).format(DATE_STRING_DOT_FORMAT);
     const inputValidationResult = CheckInputValidationComponentList(value, component);
-    this.setValidationState(inputValidationResult, component.id, value);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
   }
 
@@ -157,7 +163,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.dictionary[id].loadEnd = false;
   }
 
-  setValidationState(inputValidationResult, componentId, componentValue) {
+  setValidationAndValueState(inputValidationResult, componentId, componentValue) {
     const handleSetState = (isValid, errMsg?) => {
       this.state[componentId].value = componentValue;
       this.state[componentId].valid = isValid;
@@ -186,19 +192,11 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.changes.emit(prepareStateForSending);
   }
 
-  legalInnInputChange($event: Event, component: CustomComponent) {
+  innInputChange($event: Event, component: CustomComponent, type: 'person' | 'legal'): void {
     const { value } = $event.target as HTMLInputElement;
     this.state[component.id].value = value;
-    const inputValidationResult = checkLegalInn(value);
-    this.setValidationState(inputValidationResult, component.id, value);
-    this.emmitChanges(component);
-  }
-
-  personInnInputChange($event: Event, component: CustomComponent) {
-    const { value } = $event.target as HTMLInputElement;
-    this.state[component.id].value = value;
-    const inputValidationResult = checkPersonInn(value);
-    this.setValidationState(inputValidationResult, component.id, value);
+    const inputValidationResult = type === 'person' ? checkPersonInn(value) : checkLegalInn(value);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
   }
 
