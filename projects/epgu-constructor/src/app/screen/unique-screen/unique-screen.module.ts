@@ -12,6 +12,7 @@ import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { ScreenService } from '../screen.service';
 import { ConfirmMarriageModule } from './components/confirm-marriage/confirm-marriage.module';
 import { PaymentModule } from './components/payment/payment.module';
+import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
@@ -25,18 +26,19 @@ const COMPONENTS = [UniqueScreenComponent];
   exports: [
     ...COMPONENTS,
   ],
-    imports: [
-        CommonModule,
-        SharedModule,
-        FileUploadModule,
-        EpguLibModule,
-        SelectMapObjectModule,
-        CarInfoModule,
-        EmployeeHistoryModule,
-        TimeSlotsModule,
-        ConfirmMarriageModule,
-        PaymentModule,
-    ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FileUploadModule,
+    EpguLibModule,
+    SelectMapObjectModule,
+    CarInfoModule,
+    EmployeeHistoryModule,
+    TimeSlotsModule,
+    ConfirmMarriageModule,
+    PaymentModule,
+    UploadAndEditPhotoModule,
+  ],
   providers: [
     ScreenService
   ]

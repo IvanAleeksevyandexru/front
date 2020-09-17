@@ -1,0 +1,8 @@
+<svg width="306" height="350" viewBox="0 0 306 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.2">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M306 0H0V350H306V0ZM153.5 324C214.527 324 264 257.738 264 176C264 94.2619 214.527 28 153.5 28C92.4725 28 43 94.2619 43 176C43 257.738 92.4725 324 153.5 324Z" fill="#0B1F33"/>
+<line x1="3" y1="27" x2="306" y2="27" stroke="white" stroke-width="2" stroke-dasharray="10 10"/>
+<line y1="325" x2="306" y2="325" stroke="white" stroke-width="2" stroke-dasharray="10 10"/>
+<line y1="276" x2="306" y2="276" stroke="white" stroke-width="2" stroke-dasharray="10 10"/>
+</g>
+</svg>

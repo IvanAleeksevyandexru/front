@@ -51,4 +51,11 @@
     [data]="screenStore.display.components[0]"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-payment>
+  <epgu-constructor-upload-and-edit-photo
+    *ngSwitchCase="'PhotoUploadComponent'"
+    [data]="screenStore.display.components[0]"
+    [header]="screenStore.display?.header"
+    [isLoading]="screenService.isLoading$ | async"
+    (nextStepEvent)="nextDataForStep()">
+  </epgu-constructor-upload-and-edit-photo>
   </ng-container>

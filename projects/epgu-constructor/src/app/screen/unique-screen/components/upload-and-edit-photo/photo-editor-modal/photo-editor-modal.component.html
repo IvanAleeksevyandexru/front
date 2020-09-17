@@ -1,0 +1,24 @@
+<div class="conf-modal">
+  <div class="conf-modal__header">
+    <a class="conf-modal__close cursor-pointer" (click)="closeModal()"></a>
+    <h4 class="conf-modal__title">Отредактируйте Фото</h4>
+  </div>
+  <div class="conf-modal__body">
+    <div class="conf-modal__text-wrapper">
+      <span class="conf-modal__text" [innerHTML]="text | safeHtml"></span>
+    </div>
+    <div class="conf-modal__controls">
+      <lib-button
+        [showLoader]="button.loader"
+        class="conf-modal__button"
+        [color]="'white'"
+        (click)="button.handler()">Выбрать другое фото
+      </lib-button>
+      <lib-button
+        [showLoader]="button.loader"
+        class="conf-modal__button"
+        (click)="button.handler()">Сохранить и продолжить
+      </lib-button>
+    </div>
+  </div>
+</div>

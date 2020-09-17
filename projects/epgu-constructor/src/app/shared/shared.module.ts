@@ -22,6 +22,7 @@ import { GenderRadioButtonComponent } from './components/gender-radio-button/gen
 import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
 import { LongButtonComponent } from './components/long-button/long-button.component';
 import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
+import { DragAndDropDirective } from './directives/drag-and-drop/drag-and-drop.directive';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -47,9 +48,9 @@ const PIPES = [
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS, ...PIPES],
+  declarations: [...COMPONENTS, ...PIPES, DragAndDropDirective],
   providers: [NavigationService, ApplicantAnswersService],
-  exports: [...COMPONENTS, ...PIPES],
+  exports: [...COMPONENTS, ...PIPES, DragAndDropDirective],
   imports: [
       CommonModule,
       EpguLibModule,

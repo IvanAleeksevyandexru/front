@@ -1,0 +1,101 @@
+@import "src/styles/core/palettes";
+@import "src/styles/core/breakpoint";
+
+.screen-container::ng-deep {
+  .container {
+    @include phones-up {
+      padding: 0;
+    }
+  }
+}
+
+.photo-setting {
+  display: flex;
+
+  @include phones-down {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  &__uploading-container {
+    background-color: white;
+    border-radius: 8px;
+    width: 344px;
+    padding: 32px;
+
+    @include phones-down {
+      width: 288px;
+      padding: 24px;
+      border-radius: 12px;
+    }
+
+    .file-over {
+      opacity: .7;
+    }
+  }
+
+  &__uploading-area {
+    position: relative;
+  }
+
+  &__text {
+    @include phones-up {
+      margin-left: 32px;
+    }
+  }
+
+  &__uploading-inner-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    flex-direction: column;
+    text-align: center;
+    width: 200px;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @include tablets-down {
+      width: 188px;
+      top: 52px;
+    }
+  }
+
+  &__uploading-text {
+    font-size: 16px;
+    line-height: 24px;
+    color: $color-text-helper;
+    margin-bottom: 12px;
+
+    @include tablets-up {
+      width: 240px;
+    }
+
+    @include tablets-down {
+      margin-bottom: 16px;
+    }
+  }
+
+  &__uploading-button {
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+    padding: 0 24px;
+    color: $color-gosblue;
+    cursor: pointer;
+    height: 52px;
+    border: 2px solid $color-gosblue;
+    border-radius: 8px;
+    background-color: white;
+    margin-bottom: 18px;
+    width: 100%;
+
+    img {
+      margin-right: auto;
+    }
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}

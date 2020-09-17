@@ -1,0 +1,48 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+
+<epgu-constructor-screen-container class="screen-container">
+  <div *ngIf="header" class="head">
+    <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
+  </div>
+  <div class="photo-setting">
+    <input #hiddenFileInput
+           style="display: none"
+           type="file"
+           (change)="onFileSelected($event.target.files)">
+    <div class="photo-setting__uploading-container">
+      <div dragAndDrop
+           (fileDropped)="onFileSelected($event)"
+           class="photo-setting__uploading-area">
+        <img *ngIf="this.isDesktop"
+             src="assets/img/photo-upload-area-desktop.svg"/>
+        <img *ngIf="!this.isDesktop"
+             src="assets/img/photo-upload-area-mobile.svg"/>
+
+        <div class="photo-setting__uploading-inner-container">
+          <p *ngIf="this.isDesktop" class="photo-setting__uploading-text">
+            Перетащите фото сюда или выберите на компьютере
+          </p>
+          <p *ngIf="!this.isDesktop" class="photo-setting__uploading-text">
+            Выберите файл или сделайте фото
+          </p>
+          <button *ngIf="!this.isDesktop"
+                  class="photo-setting__uploading-button"
+                  (click)="takePhoto()">
+            <img src="assets/icons/svg/camera.svg"/>
+            Сделать фото
+          </button>
+          <button class="photo-setting__uploading-button"
+                  (click)="hiddenFileInput.click()">
+            <img src="assets/icons/svg/clip.svg"/>
+            Загрузить фото
+          </button>
+        </div>
+      </div>
+    </div>
+    <epgu-constructor-output-html
+      class="photo-setting__text"
+      [html]="data?.label"
+    >
+    </epgu-constructor-output-html>
+  </div>
+</epgu-constructor-screen-container>
