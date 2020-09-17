@@ -2,9 +2,13 @@
   <ng-container *ngFor="let componentData of components">
     <ng-container [ngSwitch]="componentData.type">
       <div class="form__item" *ngSwitchCase="componentType.LabelSection">
-        <div class="label" *ngIf="state[componentData.id].isShown">
-          {{ componentData.label || state[componentData.id].value }}
-        </div>
+        <epgu-constructor-output-html
+          class="label"
+          *ngIf="state[componentData.id].isShown"
+          [html]="componentData.label || state[componentData.id].value"
+          [clarifications]="componentData?.attrs.clarifications"
+        >
+        </epgu-constructor-output-html>
       </div>
 
       <div class="form__item" *ngSwitchCase="componentType.Dictionary">
@@ -74,7 +78,7 @@
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-standard-masked-input
             *ngIf="componentData.attrs?.mask; else plainInput"
-            [clearable]='true'
+            [clearable]="true"
             [mask]="componentData.attrs?.mask | maskHandle"
             [placeholder]="componentData.attrs?.placeholder"
             [name]="componentData.id"
@@ -127,7 +131,7 @@
         </ng-container>
       </div>
 
-      <div class="form__item" *ngSwitchCase="componentType.DateInput">
+      <div class="form__item form__item--date" *ngSwitchCase="componentType.DateInput">
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <!-- нужно добавить changes для проверки зависимости от даты-->
@@ -146,6 +150,7 @@
           <lib-dadata-widget
             [simpleMode]="true"
             [name]="componentData.id"
+            [hideLevels]="componentData?.attrs?.hideLevels || []"
             (change)="inputChange($event, componentData)"
             [externalApiUrl]="config.externalApiUrl + '/'"
             [initValue]="state[componentData.id].value"

@@ -23,6 +23,7 @@
         [name]="field.fieldName"
         minDate="-50y"
         maxDate="+50y"
+        class="item__data"
         [(ngModel)]="forms[field.fieldName]"
         [invalid]="!dataForm?.controls[field.fieldName]?.valid"
         [validationShowOn]="validationShowOn"

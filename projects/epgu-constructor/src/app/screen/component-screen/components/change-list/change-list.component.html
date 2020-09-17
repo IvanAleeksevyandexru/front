@@ -19,7 +19,7 @@
   <ng-container *ngIf="field.type === 'date'">
     <epgu-constructor-label [for]="field.fieldName">{{ field.label }}</epgu-constructor-label>
     <lib-date-picker
-      class="change-list__input"
+      class="change-list__input change-list__input--date"
       [formControl]="fields.get(field.fieldName)">
     </lib-date-picker>
   </ng-container>
