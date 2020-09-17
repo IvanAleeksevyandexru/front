@@ -73,12 +73,23 @@
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-plain-input
+            *ngIf="!componentData.attrs?.mask"
             [invalid]="!state[componentData.id].valid"
             [name]="componentData.id"
             [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
             [validationShowOn]="validationShowOn"
           ></lib-plain-input>
+          <lib-standard-masked-input
+            *ngIf="componentData.attrs?.mask"
+            [clearable]='true'
+            [mask]="componentData.attrs?.mask | maskHandle"
+            [placeholder]="componentData.attrs?.placeholder"
+            [name]="componentData.id"
+            [showMaskAsPlaceholder]="false"
+            [showConstantMaskSymbols]="true"
+            [(ngModel)]="state[componentData.id].value"
+          ></lib-standard-masked-input>
           <div *ngIf="componentData.attrs?.hint" class="form__item__hint">
             {{ componentData.attrs?.hint }}
           </div>
