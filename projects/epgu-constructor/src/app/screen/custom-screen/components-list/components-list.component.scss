@@ -25,7 +25,13 @@
   &__radio {
     &__block {
       display: inline-block;
-      lib-radio {
+
+      lib-radio{
+        display: block;
+        margin-bottom: 16px;
+      }
+
+      lib-checkbox{
         display: block;
         margin-bottom: 16px;
       }

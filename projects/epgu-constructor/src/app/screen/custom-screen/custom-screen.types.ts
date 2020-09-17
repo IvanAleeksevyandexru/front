@@ -14,6 +14,7 @@ export enum CustomScreenComponentTypes {
   AddressInput = 'AddressInput',
   htmlString = 'HtmlString',
   GenderSelection = 'GenderSelection',
+  FieldsToggler = 'FieldsToggler',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
@@ -59,6 +60,18 @@ export interface CustomComponentAttr {
   requiredAttrs?: Array<string>;
   validation: Array<CustomComponentAttrValidation>;
   supportedValues?: Array<SupportedValue>;
+}
+
+/**
+ * Интерфейс атрибута для списка полей на преключения
+ */
+export interface ToggleFields {
+  disabled: {
+    [key: string]: boolean
+  },
+  hide: {
+    [key: string]: boolean
+  }
 }
 
 export interface CustomComponentAttrValidation {
