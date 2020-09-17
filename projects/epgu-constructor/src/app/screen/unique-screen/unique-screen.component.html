@@ -51,4 +51,8 @@
     [data]="screenStore.display.components[0]"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-payment>
+  <epgu-constructor-confirm-phone
+    *ngSwitchCase="uniqueComponentName.paymentScr">
+
+  </epgu-constructor-confirm-phone>
   </ng-container>

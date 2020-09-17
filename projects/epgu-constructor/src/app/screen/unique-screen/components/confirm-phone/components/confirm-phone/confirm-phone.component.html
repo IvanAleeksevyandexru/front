@@ -1,0 +1,37 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+
+<epgu-constructor-screen-container class="screen-container">
+
+  <epgu-constructor-page-name>{{ screenService.header$ | async }}</epgu-constructor-page-name>
+
+  <epgu-constructor-screen-pad class="form">
+
+    <lib-standard-masked-input
+      class="form__item"
+      id="snils"
+      [ngModel]="code"
+      (ngModelChange)="enterCode($event)"
+      [mask]="mask"
+      [showMaskAsPlaceholder]="true"
+      [showConstantMaskSymbols]="true">
+    </lib-standard-masked-input>
+
+    <div class="form__hint form-hint" [hidden]="(timerEnd$ | async) === false">
+      Повторная отправка кода будет возможна через
+      <b class="form-hint__timer">{{timer$ | async | formatTime}}</b>
+    </div>
+
+  </epgu-constructor-screen-pad>
+
+
+  <div class="footer">
+    <lib-button
+      [disabled]="timerEnd$ | async"
+      (click)="sendCodeAgain()"
+      class="footer__btn-submit"
+    >
+      {{ (screenService?.submitLabel$ | async) }}
+    </lib-button>
+  </div>
+
+</epgu-constructor-screen-container>
