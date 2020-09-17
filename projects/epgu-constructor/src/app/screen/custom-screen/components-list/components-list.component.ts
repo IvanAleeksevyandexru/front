@@ -12,7 +12,6 @@ import * as moment_ from 'moment';
 import { ConfigService } from '../../../config/config.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
-import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ScreenService } from '../../screen.service';
 import {
@@ -129,7 +128,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   dateChange($event: string, component: CustomComponent) {
-    const value = moment($event).format(DATE_STRING_DOT_FORMAT);
+    const value = moment($event).toISOString();
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);

@@ -131,7 +131,7 @@
         </ng-container>
       </div>
 
-      <div class="form__item" *ngSwitchCase="componentType.DateInput">
+      <div class="form__item form__item--date" *ngSwitchCase="componentType.DateInput">
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <!-- нужно добавить changes для проверки зависимости от даты-->
