@@ -4,6 +4,7 @@ import { ModalService } from '../../../../services/modal/modal.service';
 import { UsePaymentsModalComponent } from '../../../../shared/components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
 import { UnusedPaymentsService } from './unused-payments.service';
 import { UnusedPaymentInterface } from './unused-payment.interface';
+import { NavigationService } from '../../../../shared/services/navigation/navigation.service';
 
 @Component({
   selector: 'epgu-constructor-unused-payments',
@@ -18,20 +19,21 @@ export class UnusedPaymentsComponent implements OnInit {
   paymentsList: UnusedPaymentInterface[];
   paymentUIN: string;
 
-  mockOrderId = '763438139';
+  mockOrderId = '9887374938';
 
   constructor(
     private modalService: ModalService,
+    private navigationService: NavigationService,
     private listPaymentsService: UnusedPaymentsService,
   ) {}
 
   public usePayment = (uin: string) => {
     this.paymentUIN = uin;
-    this.nextStep({ value: this.paymentUIN });
+    this.nextStep(JSON.stringify({ reusePaymentUin: this.paymentUIN }));
   };
 
-  public skipPayment = () => {
-    this.nextStep({ value: null });
+  public cancelUsePayment = () => {
+    this.navigationService.prevStep.next();
   };
 
   /**
@@ -41,24 +43,39 @@ export class UnusedPaymentsComponent implements OnInit {
     this.nextStepEvent.emit(data);
   }
 
+  usePaymentsListData() {
+    const value = JSON.parse(this.data.components[0].value);
+    if (value.length) {
+      this.paymentsList = value;
+      this.showModal({
+        paymentsList: this.paymentsList,
+        usePaymentHandler: this.usePayment,
+        skipPaymentHandler: this.cancelUsePayment,
+      });
+    }
+  }
+
   showModal(params) {
     this.modalService.openModal(UsePaymentsModalComponent, params);
   }
 
   public ngOnInit() {
-    this.listPaymentsService.getListPaymentsInfo({ orderId: this.mockOrderId }).subscribe(
+    this.listPaymentsService.getListPaymentsInfo({ orderId: this.orderId }).subscribe(
       (data) => {
         if (data.length) {
           this.paymentsList = data;
           this.showModal({
             paymentsList: this.paymentsList,
             usePaymentHandler: this.usePayment,
-            skipPaymentHandler: this.skipPayment,
+            skipPaymentHandler: this.cancelUsePayment,
           });
+        } else {
+          this.usePaymentsListData();
         }
       },
       (error) => {
-        console.log(error);
+        console.log('Error', error);
+        this.usePaymentsListData();
       },
     );
   }
