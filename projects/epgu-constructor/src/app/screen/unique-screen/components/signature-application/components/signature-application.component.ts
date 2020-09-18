@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HelperService } from 'epgu-lib';
 
 import { Display } from '../../../../screen.types';
 import { ApplicationInterface } from '../models/application.interface';
-import { UtilsService } from '../../../../../services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
@@ -14,7 +14,7 @@ export class SignatureApplicationComponent implements OnInit {
   @Input() isLoading: boolean;
   @Input() data: Display;
 
-  isMobile = this.utilsService.isMobile();
+  isMobile = HelperService.isMobile();
   isVisibilityLinks = false;
 
   form: FormGroup;
@@ -28,7 +28,7 @@ export class SignatureApplicationComponent implements OnInit {
     },
   };
 
-  constructor(private fb: FormBuilder, private utilsService: UtilsService) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.initForm();

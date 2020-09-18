@@ -11,7 +11,6 @@ import { ScreenContainerComponent } from '../../../../../shared/components/scree
 import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
-import { UtilsService } from '../../../../../services/utils/utils.service';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
 
 describe('SignatureApplicationComponent', () => {
@@ -57,7 +56,7 @@ describe('SignatureApplicationComponent', () => {
         FeedIconComponent,
         LoaderComponent,
       ],
-      providers: [FormBuilder, UtilsService, NavigationService],
+      providers: [FormBuilder, NavigationService],
     }).compileComponents();
   }));
 
