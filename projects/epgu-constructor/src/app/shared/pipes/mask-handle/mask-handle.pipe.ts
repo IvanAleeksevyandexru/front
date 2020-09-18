@@ -7,8 +7,12 @@ export class MaskHandlePipe implements PipeTransform {
 
   public transform(input: Array<string>): Array<string | RegExp> {
     return input.map((char) => {
-      return char[0] === '/' ? new RegExp(char.slice(1, -1)) : char;
+      const isRegExp = char[0] === '/';
+      return isRegExp ? this.strToRegExp(char) : char;
     });
   }
 
+  private strToRegExp(str: string): RegExp {
+    return new RegExp(str.slice(1, -1));
+  }
 }
