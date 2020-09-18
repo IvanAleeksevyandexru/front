@@ -1,12 +1,12 @@
 import { Component, HostBinding, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { ConfigService } from './config/config.service';
+import { Config } from './config/config.types';
 import { FormPlayerNavigation, NavigationPayload, Service } from './form-player.types';
+import { ScreenComponent } from './screen/screen.const';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { NavigationService } from './shared/services/navigation/navigation.service';
-import { ScreenComponent } from './screen/screen.const';
-import { ConfigService } from './config/config.service';
-import { Config } from './config/config.types';
 import { ServiceDataService } from './services/service-data/service-data.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { ScreenService } from './screen/screen.service';
@@ -15,6 +15,7 @@ import { ScreenService } from './screen/screen.service';
   selector: 'epgu-constructor-form-player',
   templateUrl: './form-player.component.html',
   styleUrls: ['../styles/index.scss', 'form-player.component.scss'],
+  providers: [UnsubscribeService],
   encapsulation: ViewEncapsulation.None,
 })
 export class FormPlayerComponent implements OnInit, OnChanges {
