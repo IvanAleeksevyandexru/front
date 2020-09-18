@@ -36,17 +36,14 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
     public configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
-    private config: ConfigService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.isEditable?.currentValue && this.isEditable) {
-      this.subscribeFormChanges();
-    }
     if (changes.data?.currentValue) {
       this.setState();
       this.emmitData();
       setTimeout(() => {
+        this.subscribeFormChanges();
         this.changeDetection.detectChanges();
       });
     }
@@ -71,11 +68,11 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
   }
 
   private emmitData(): void {
-    const dataToSend = this.prepareDataToSend();
+    const dataToSend = this.getPreparedDataToSend();
     this.dataEditedEvent.emit(dataToSend);
   }
 
-  prepareDataToSend(): string {
+  getPreparedDataToSend(): string {
     const { regAddr, regDate } = this.valueParsed;
     const dataToSend = { ...this.valueParsed };
     if (typeof regAddr === 'string') {
