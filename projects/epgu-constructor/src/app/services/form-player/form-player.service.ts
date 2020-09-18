@@ -67,7 +67,7 @@ export class FormPlayerService {
     this.updateLoading(true);
 
     if (this.isNeedToShowLastScreen()) {
-       this.getDataFromLocalStorage();
+      this.getDataFromLocalStorage();
     } else {
       if (orderId) {
         this.getDraftOrderData(orderId);
