@@ -1,4 +1,4 @@
-import { Directive, Input, Output, EventEmitter } from '@angular/core';
+import { Directive, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 import { Subject, timer } from 'rxjs';
 import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
@@ -7,7 +7,7 @@ import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
   selector: '[counter]',
   providers: [UnsubscribeService]
 })
-export class CounterDirective {
+export class CounterDirective implements OnChanges{
 
   private counter$ = new Subject<any>();
 

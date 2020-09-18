@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationService } from 'epgu-lib';
@@ -12,6 +12,7 @@ import { ComponentBase } from '../../../screen.types';
   selector: 'epgu-constructor-snils',
   templateUrl: './snils.component.html',
   styleUrls: ['./snils.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class SnilsComponent implements OnInit {
   @Input() data: ComponentBase;
