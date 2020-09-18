@@ -13,7 +13,7 @@ export enum CustomScreenComponentTypes {
   AddressInput = 'AddressInput',
   htmlString = 'HtmlString',
   GenderSelection = 'GenderSelection',
-  FieldsToggler = 'FieldsToggler',
+  CheckBox = 'CheckBox',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
@@ -61,17 +61,6 @@ export interface CustomComponentAttr {
   supportedValues?: Array<SupportedValue>;
 }
 
-/**
- * Интерфейс атрибута для списка полей на преключения
- */
-export interface ToggleFields {
-  disabled: {
-    [key: string]: boolean
-  },
-  hide: {
-    [key: string]: boolean
-  }
-}
 
 export interface CustomComponentAttrValidation {
   type: string;
@@ -104,13 +93,22 @@ export interface CustomComponentOutputData {
 }
 
 /**
- * @property {string}relatedRel - id компонента от которого зависим
- * @property {string}val - ключевое значение которое должен принимать компонент от которого заивисм
+ * Тип зависимости от другого компонента
+ */
+export enum CustomComponentRefRelation {
+  displayOn = 'displayOn',
+  disabled = 'disabled'
+}
+
+/**
+ * @property relatedRel - id компонента от которого зависим
+ * @property val - ключевое значение которое должен принимать компонент от которого заивисм
+ * @property relation - тип зависимости
  */
 export interface CustomComponentRef {
-  'relatedRel': string,
-  'val': string,
-  'relation': string
+  relatedRel: string,
+  val: string,
+  relation: CustomComponentRefRelation
 }
 
 export interface CustomDisplay extends Display {

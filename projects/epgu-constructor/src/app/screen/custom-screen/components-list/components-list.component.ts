@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
-import { tap } from 'rxjs/operators';
 import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import {
@@ -12,7 +10,6 @@ import {
   CustomComponentOutputData,
   CustomComponentState,
   CustomScreenComponentTypes,
-  ToggleFields,
 } from '../custom-screen.types';
 import {
   adaptiveDropDown,
@@ -43,27 +40,8 @@ export class ComponentsListComponent implements OnChanges {
   state: CustomComponentState = {};
   dictionary: { [key: string]: CustomComponentDictionaryState } = {};
   dropDown: { [key: string]: CustomComponentDropDownStateInterface } = {};
-  toggleFieldsData$$: BehaviorSubject<ToggleFields> = new BehaviorSubject<ToggleFields>({
-    disabled: {},
-    hide: {},
-  });
-  toggleFieldsData$ = this.toggleFieldsData$$
-    .asObservable()
-    .pipe(
-      tap((toggleFields) => {
-        this.toggleDisabledStateInComponents(toggleFields);
-      }),
-    )
-    .subscribe();
 
-  private list: Array<CustomComponent>;
-  @Input() set components(components: Array<CustomComponent>) {
-    this.list = components;
-    this.setComponentsToggleFieldsData(components);
-  }
-  get components(): Array<CustomComponent> {
-    return this.list;
-  }
+  @Input() components: Array<CustomComponent>;
   @Output() changes = new EventEmitter<CustomComponentOutputData>();
 
   constructor(
@@ -73,33 +51,13 @@ export class ComponentsListComponent implements OnChanges {
   ) {}
 
   // NOTICE: тут была информация о валидации смотри историю гита
-
-  /**
-   * Перебираем компоненты и ищем сведении о переключании состояня полей
-   * @param components - компоненты на странице
-   * @private
-   */
-  private setComponentsToggleFieldsData(components: Array<CustomComponent>) {
-    components.forEach((component) => {
-      if (component.type === CustomScreenComponentTypes.FieldsToggler) {
-        const { toggleFields } = component.attrs;
-        this.setComponentToggleFieldsData(toggleFields, component);
-      }
-    });
-  }
-
-  /**
-   * Устанавливает сведения о полях и их показе/скрытии и/или доступности/недоступности
-   * @param toggleFields - данные о переключаемых состояниях полях
-   * @param component - данные компонента
-   * @private
-   */
-  private setComponentToggleFieldsData(toggleFields: ToggleFields, component: CustomComponent) {
-    const value = Object.assign(this.toggleFieldsData$$.getValue(), toggleFields);
-    if (this.state[component.id]?.value) {
-      this.state[component.id].value = value;
+  ngOnChanges(changes: SimpleChanges): void {
+    this.state = {};
+    if (changes?.components?.currentValue) {
+      this.components.forEach((component) => this.initComponent(component));
+      this.emmitChanges();
+      this.checkDependenceOfTheComponent();
     }
-    this.toggleFieldsData$$.next(value);
   }
 
   /**
@@ -184,33 +142,15 @@ export class ComponentsListComponent implements OnChanges {
   }
 
   /**
-   * Переключает состояние полей на противоположное для компонента переключения видимости полей
-   * @param toggleFields - объект с полями для переключения
-   * @private
-   */
-  private mapFieldsTogglerChange(toggleFields: any) {
-    return Object.keys(toggleFields).reduce((result, k: string) => {
-      // eslint-disable-next-line no-param-reassign
-      result[k] = !toggleFields[k];
-      return result;
-    }, {});
-  }
-
-  /**
    * Переключение состояния чекбокса отвечающего за видимость или скрытие полей
    * @param $event - событие с элементом
    * @param component - данные компонента
    */
   checkboxFieldsTogglerChange($event: Event, component: CustomComponent) {
-    const { toggleFields } = component.attrs;
-    if (toggleFields.disabled) {
-      toggleFields.disabled = this.mapFieldsTogglerChange(toggleFields.disabled);
-    }
-    if (toggleFields.hide) {
-      toggleFields.hide = this.mapFieldsTogglerChange(toggleFields.hide);
-    }
-    this.setComponentToggleFieldsData(toggleFields, component);
-    this.emmitChanges();
+    const { checked } = $event.target as HTMLInputElement;
+    this.state[component.id].component.attrs.checked = checked;
+    this.state[component.id].value = checked ? component.value : '';
+    this.emmitChanges(component);
   }
 
   /**
@@ -328,13 +268,12 @@ export class ComponentsListComponent implements OnChanges {
   private getPreparedStateForSending() {
     return Object.entries(this.state).reduce((acc, [key, val]) => {
       const { value, valid, disabled, isShown } = val;
-      if (isShown) {
-        acc[key] = {
-          value: disabled ? '' : value,
-          valid,
-          disabled: !!disabled,
-        };
-      }
+      const disabledValue = !isShown || disabled;
+      acc[key] = {
+        value: disabledValue ? '' : value,
+        valid,
+        disabled: disabledValue,
+      };
       return acc;
     }, {});
   }
@@ -347,31 +286,5 @@ export class ComponentsListComponent implements OnChanges {
     this.components.forEach((component) =>
       calcDependedComponent(component, this.state, this.components),
     );
-  }
-
-  /**
-   * Переключает состояние в state для компонентов проставляя disabled true или false у поля, для последующей валидации
-   * @param toggleFields - поля со сведениями о состоянии
-   * @private
-   */
-  private toggleDisabledStateInComponents(toggleFields: ToggleFields) {
-    if (this.components?.length) {
-      this.components.forEach((component: CustomComponent) => {
-        if (this.state[component.id]) {
-          this.state[component.id].disabled =
-            !!toggleFields?.disabled[component.id] || !!toggleFields?.hide[component.id];
-        }
-      });
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.state = {};
-    if (changes?.components?.currentValue) {
-      this.components.forEach((component) => this.initComponent(component));
-      this.toggleDisabledStateInComponents(this.toggleFieldsData$$.getValue());
-      this.emmitChanges();
-      this.checkDependenceOfTheComponent();
-    }
   }
 }
