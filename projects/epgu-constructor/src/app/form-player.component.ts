@@ -1,17 +1,18 @@
 import { Component, HostBinding, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { ConfigService } from './config/config.service';
+import { Config } from './config/config.types';
 import { FormPlayerNavigation, NavigationPayload, Service } from './form-player.types';
+import { ScreenComponent } from './screen/screen.const';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { NavigationService } from './shared/services/navigation/navigation.service';
-import { ScreenComponent } from './screen/screen.const';
-import { ConfigService } from './config/config.service';
-import { Config } from './config/config.types';
 
 @Component({
   selector: 'epgu-constructor-form-player',
   templateUrl: './form-player.component.html',
   styleUrls: ['../styles/index.scss', 'form-player.component.scss'],
+  providers: [UnsubscribeService],
   encapsulation: ViewEncapsulation.None,
 })
 export class FormPlayerComponent implements OnInit, OnChanges {
@@ -46,6 +47,10 @@ export class FormPlayerComponent implements OnInit, OnChanges {
       .subscribe((data: NavigationPayload) => this.prevStep(data));
   }
 
+  ngOnChanges(): void {
+    this.checkProps();
+  }
+
   getDraftOrderId() {
     let orderId;
     if (this.service.orderId) {
@@ -55,10 +60,6 @@ export class FormPlayerComponent implements OnInit, OnChanges {
       orderId = result ? this.service.orderId : null;
     }
     return orderId;
-  }
-
-  ngOnChanges(): void {
-    this.checkProps();
   }
 
   checkProps() {
