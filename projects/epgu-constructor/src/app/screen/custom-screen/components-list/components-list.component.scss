@@ -5,7 +5,7 @@
   &__item {
     margin-bottom: 24px;
 
-    &__hint {
+    &-hint {
       margin-top: 4px;
       @include typ-plain-xs();
     }
