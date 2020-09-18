@@ -6,13 +6,14 @@ import { takeUntil } from 'rxjs/operators';
 import * as uuid from 'uuid';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
-import { ChildUnder14 } from './add-children-screen.type';
 import { ComponentBase } from '../../../../../screen.types';
+import { ChildUnder14 } from './add-children-screen.type';
 
 @Component({
   selector: 'epgu-constructor-add-children-screen',
   templateUrl: './add-children-screen.component.html',
   styleUrls: ['./add-children-screen.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class AddChildrenScreenComponent implements OnInit {
   @Input() data: ComponentBase;

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment_ from 'moment';
 import { Moment } from 'moment';
 import { filter, takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import {
   Employee,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel
 } from '../employee-history.types';
-import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 
 const moment = moment_;
@@ -70,7 +70,7 @@ export class EmployeeHistoryFormService {
     this.employeeHistory.splice(index, 1);
   }
 
-   generateFormWatcher(): void {
+  generateFormWatcher(): void {
     this.generateForm
       .get('checkboxToDate')
       .valueChanges.pipe(
