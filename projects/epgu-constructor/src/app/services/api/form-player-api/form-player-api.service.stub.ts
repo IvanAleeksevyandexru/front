@@ -4,7 +4,11 @@ import { Observable, of } from 'rxjs';
 @Injectable()
 export class FormPlayerApiServiceStub {
 
-  public getInitialData(): Observable<any> {
+  public getInviteServiceData(): Observable<any> {
+    return of({});
+  }
+
+  public getServiceData(): Observable<any> {
     return of({});
   }
 

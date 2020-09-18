@@ -19,12 +19,6 @@ export class FormPlayerApiService {
     private cookieService: CookieService,
   ) {}
 
-  public getSession(): Session {
-    const userId = this.cookieService.get('u') || '';
-    const token = this.cookieService.get('acc_t') || '';
-    return { userId, token };
-  }
-
   public getInviteServiceData(serviceId: string, targetId: string, orderId: string): Observable<FormPlayerApiResponse> {
     const path = `${this.config.apiUrl}/invite/service/${serviceId}/scenario`;
     const { userId, token } = this.getSession();
@@ -56,6 +50,12 @@ export class FormPlayerApiService {
     };
 
     return this.post<FormPlayerApiResponse>(path, body);
+  }
+
+  private getSession(): Session {
+    const userId = this.cookieService.get('u') || '';
+    const token = this.cookieService.get('acc_t') || '';
+    return { userId, token };
   }
 
   private post<T>(path: string, body): Observable<T> {
