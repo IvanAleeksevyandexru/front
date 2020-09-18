@@ -337,7 +337,7 @@ export class CompressionService {
 
     const orientationFixedCanvas = (await this.isAutoOrientationInBrowser()) && this.isBrowser()
       ? maxWidthOrHeightFixedCanvas :
-        this.followExifOrientation(maxWidthOrHeightFixedCanvas, options.exifOrientation);
+        this.followExifOrientation(maxWidthOrHeightFixedCanvas, options['exifOrientation']);
 
     let quality = 1;
 
