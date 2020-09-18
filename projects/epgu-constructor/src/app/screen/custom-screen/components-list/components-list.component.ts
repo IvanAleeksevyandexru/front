@@ -193,7 +193,10 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   isValid(type, value): boolean {
-    return this.validationValueService.isValueValid(type, value);
+    return (
+      type === this.componentType.StringInput ||
+      this.validationValueService.isValueValid(type, value)
+    );
   }
 
   /**
