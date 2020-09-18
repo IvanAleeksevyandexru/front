@@ -1,7 +1,6 @@
 <ng-container [ngSwitch]="screenStore.display?.components[0].type">
   <epgu-constructor-unused-payments
     *ngSwitchCase="uniqueComponentName.unusedPayments"
-    [orderId]="getOrderId"
     [data]="screenStore.display"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-unused-payments>

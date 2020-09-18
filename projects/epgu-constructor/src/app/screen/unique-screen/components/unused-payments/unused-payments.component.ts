@@ -5,6 +5,7 @@ import { UsePaymentsModalComponent } from '../../../../shared/components/modal/u
 import { UnusedPaymentsService } from './unused-payments.service';
 import { UnusedPaymentInterface } from './unused-payment.interface';
 import { NavigationService } from '../../../../shared/services/navigation/navigation.service';
+import { ScreenService } from '../../../screen.service';
 
 @Component({
   selector: 'epgu-constructor-unused-payments',
@@ -12,10 +13,11 @@ import { NavigationService } from '../../../../shared/services/navigation/naviga
   styleUrls: ['./unused-payments.component.scss'],
 })
 export class UnusedPaymentsComponent implements OnInit {
-  @Input() orderId: string;
+  // @Input() orderId: string;
   @Input() data: Display;
   @Output() nextStepEvent = new EventEmitter<any>();
 
+  orderId: string;
   paymentsList: UnusedPaymentInterface[];
   paymentUIN: string;
 
@@ -24,6 +26,7 @@ export class UnusedPaymentsComponent implements OnInit {
   constructor(
     private modalService: ModalService,
     private navigationService: NavigationService,
+    private screenService: ScreenService,
     private listPaymentsService: UnusedPaymentsService,
   ) {}
 
@@ -60,6 +63,8 @@ export class UnusedPaymentsComponent implements OnInit {
   }
 
   public ngOnInit() {
+    const { orderId } = this.screenService.getStore();
+    this.orderId = orderId;
     this.listPaymentsService.getListPaymentsInfo({ orderId: this.orderId }).subscribe(
       (data) => {
         if (data.length) {
