@@ -31,6 +31,7 @@ export class TimeSlotsComponent implements OnInit {
 
   confirmModalParameters: ConfirmationModal = {
     text: 'Вы уверены, что хотите поменять забронированное время?',
+    showCloseButton: false,
     buttons: [
       {
         label: 'Да',
