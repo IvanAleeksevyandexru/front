@@ -3,7 +3,7 @@
 <epgu-constructor-screen-container class="screen-container">
   <epgu-constructor-page-name>{{ data?.header }}</epgu-constructor-page-name>
 
-  <form (ngSubmit)="nextStep()" [formGroup]="form" *ngIf="form">
+  <form (ngSubmit)="redirectToSignatureWindow()" [formGroup]="form" *ngIf="form">
     <epgu-constructor-screen-pad>
       <div class="application">
         <lib-feed-icon status="done" class="application__icon-done"></lib-feed-icon>
@@ -32,7 +32,11 @@
     </lib-checkbox>
 
     <div class="footer">
-      <lib-button [disabled]="form.invalid" [showLoader]="isLoading" class="footer__btn-submit">
+      <lib-button
+        [disabled]="form.invalid || isMobile"
+        [showLoader]="isLoading"
+        class="footer__btn-submit"
+      >
         {{ data?.submitLabel || 'Продолжить' }}
       </lib-button>
     </div>

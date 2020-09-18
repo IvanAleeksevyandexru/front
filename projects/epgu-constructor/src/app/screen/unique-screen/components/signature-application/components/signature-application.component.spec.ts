@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ButtonComponent, CheckboxComponent, FeedIconComponent } from 'epgu-lib';
+import { ButtonComponent, CheckboxComponent, FeedIconComponent, LoaderComponent } from 'epgu-lib';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { SignatureApplicationComponent } from './signature-application.component';
 import { Display, ScreenTypes } from '../../../../screen.types';
@@ -10,6 +11,7 @@ import { ScreenContainerComponent } from '../../../../../shared/components/scree
 import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
+import { UtilsService } from '../../../../../services/utils/utils.service';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
 
 describe('SignatureApplicationComponent', () => {
@@ -17,7 +19,16 @@ describe('SignatureApplicationComponent', () => {
   let fixture: ComponentFixture<SignatureApplicationComponent>;
   let navigationService: NavigationService;
   const displayDataMock: Display = {
-    components: [],
+    components: [
+      {
+        attrs: {},
+        id: 'sig1',
+        label: '',
+        required: true,
+        type: 'EsepSign',
+        value: '"{"url":"http://yandex.ru"}"',
+      },
+    ],
     header: 'Подписание заявления',
     id: 's42',
     name: 'Подписание заявления',
@@ -34,7 +45,7 @@ describe('SignatureApplicationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, RouterTestingModule],
       declarations: [
         SignatureApplicationComponent,
         LinkComponent,
@@ -45,8 +56,9 @@ describe('SignatureApplicationComponent', () => {
         ButtonComponent,
         CheckboxComponent,
         FeedIconComponent,
+        LoaderComponent,
       ],
-      providers: [NavigationService, FormBuilder],
+      providers: [FormBuilder, UtilsService],
     }).compileComponents();
 
     navigationService = TestBed.inject(NavigationService);

@@ -48,8 +48,7 @@
   <epgu-constructor-signature-application
     *ngSwitchCase="uniqueComponentName.signatureApplication"
     [data]="screenStore.display"
-    [isLoading]="screenService.isLoading$ | async"
-    (nextStepEvent)="nextDataForStep()">
+    [isLoading]="screenService.isLoading$ | async">
   </epgu-constructor-signature-application>
   <epgu-constructor-payment
     *ngSwitchCase="uniqueComponentName.paymentScr"
