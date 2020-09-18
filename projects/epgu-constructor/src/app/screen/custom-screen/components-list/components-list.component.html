@@ -13,7 +13,7 @@
 
       <div class="form__item" *ngSwitchCase="componentType.Dictionary">
         <ng-container *ngIf="state[componentData.id].isShown">
-          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
           <lib-dropdown
             class="cs__select cs-select"
             (changed)="selectDictionary($event, componentData)"
@@ -27,7 +27,7 @@
 
       <div class="form__item" *ngSwitchCase="componentType.GenderSelection">
         <ng-container *ngIf="state[componentData.id].isShown">
-          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
           <epgu-constructor-gender-radio-button [(ngModel)]="state[componentData.id].value">
           </epgu-constructor-gender-radio-button>
           <epgu-constructor-helper-text *ngIf="!componentData.required">
@@ -38,7 +38,7 @@
 
       <div class="form__item" *ngSwitchCase="componentType.DropDown">
         <ng-container *ngIf="state[componentData.id].isShown">
-          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
           <lib-dropdown
             class="cs__select cs-select"
             (changed)="selectDropDown($event, componentData)"
@@ -52,7 +52,7 @@
 
       <div class="form__item" *ngSwitchCase="componentType.Lookup">
         <ng-container *ngIf="state[componentData.id].isShown">
-          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
           <lib-lookup
             [queryMinSymbolsCount]="0"
             [searchCaseSensitive]="false"
@@ -73,7 +73,7 @@
         </epgu-constructor-output-html>
       </div>
 
-      <div class="form__item" *ngSwitchCase="isMask(componentData.type)">
+      <div class="form__item" *ngSwitchCase="isInputString(componentData.type)">
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-standard-masked-input
@@ -95,9 +95,7 @@
               [validationShowOn]="validationShowOn"
             ></lib-plain-input>
           </ng-template>
-          <div *ngIf="componentData.attrs?.hint" class="form__item__hint">
-            {{ componentData.attrs?.hint }}
-          </div>
+          <ng-container *ngTemplateOutlet="fromHint; context componentData.attrs"></ng-container>
           <epgu-constructor-helper-text *ngIf="!componentData.required">
             {{ getHelperText(componentData.required) }}
           </epgu-constructor-helper-text>
@@ -111,7 +109,7 @@
 
       <div class="form__item" *ngSwitchCase="componentType.RadioInput">
         <ng-container *ngIf="state[componentData.id].isShown">
-          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
           <div
             [ngClass]="
               componentData?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'
@@ -132,7 +130,7 @@
 
       <div class="form__item form__item--date" *ngSwitchCase="componentType.DateInput">
         <ng-container *ngIf="state[componentData.id].isShown">
-          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
           <!-- нужно добавить changes для проверки зависимости от даты-->
           <lib-date-picker
             [name]="componentData.id"
@@ -145,7 +143,7 @@
 
       <div class="form__item" *ngSwitchCase="componentType.AddressInput">
         <ng-container *ngIf="state[componentData.id].isShown">
-          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
           <lib-dadata-widget
             [simpleMode]="true"
             [name]="componentData.id"
@@ -161,3 +159,14 @@
     </ng-container>
   </ng-container>
 </form>
+
+
+
+<ng-template #formLabel let-label let-id>
+  <epgu-constructor-label for="id">{{ label }}</epgu-constructor-label>
+</ng-template>
+
+<ng-template #fromHint let-hint>
+  <div *ngIf="hint" class="form__item__hint">{{ hint }}</div>
+</ng-template>
+

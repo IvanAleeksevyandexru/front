@@ -8,9 +8,12 @@
   </a>
 </div>
 
-<lib-plain-input
+<lib-base-masked-input
   class="content content__input"
   [disabled]="true"
-  [(ngModel)]="data">
-</lib-plain-input>
+  [(ngModel)]="data"
+  [mask]="phoneMask"
+></lib-base-masked-input>
+
+
 

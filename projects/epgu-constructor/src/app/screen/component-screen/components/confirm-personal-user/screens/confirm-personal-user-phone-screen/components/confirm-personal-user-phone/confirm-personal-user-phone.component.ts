@@ -17,6 +17,27 @@ export class ConfirmPersonalUserPhoneComponent implements OnChanges {
   @Input() actions: Array<{ label: string; value: string; action: string }>; // TODO HARDCODE
   @Input() isEditButtonShown: boolean;
 
+  phoneMask = [
+    '+',
+    '7',
+    ' ',
+    '(',
+    /[1-9]/,
+    /\d/,
+    /\d/,
+    ')',
+    ' ',
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+  ];
+
   constructor(
     private componentStateService: ComponentStateService,
     private screenService: ScreenService,

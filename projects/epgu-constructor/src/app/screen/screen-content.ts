@@ -72,6 +72,15 @@ export class ScreenContent {
   }
   public componentType$ = this._componentType.asObservable();
 
+  private _componentValue = new BehaviorSubject<{[key: string]: any} | string>(null);
+  public get componentValue() {
+    return this._componentValue.getValue();
+  }
+  public set componentValue(val: {[key: string]: any} | string ) {
+    this._componentValue.next(val);
+  }
+  public componentValue$ = this._componentType.asObservable();
+
   private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
   public get componentErrors() {
     return this._componentErrors.getValue();
@@ -89,6 +98,15 @@ export class ScreenContent {
     this._componentError.next(val);
   }
   public componentError$ = this._componentError.asObservable();
+
+  private _componentLabel = new BehaviorSubject<string>(null);
+  public get componentLabel() {
+    return this._componentLabel.getValue();
+  }
+  public set componentLabel(val: string) {
+    this._componentLabel.next(val);
+  }
+  public componentLabel$ = this._componentLabel.asObservable();
 
   private _actions = new BehaviorSubject<Array<ComponentDtoAction>>(null);
   public get actions() {
@@ -108,11 +126,21 @@ export class ScreenContent {
     this.header = header;
     this.submitLabel = submitLabel;
     this.screenType = type;
-    this.component = components[0];
-    this.componentType = components[0]?.type;
     this.orderId = orderId;
     this.componentErrors = errors;
     this.componentError = errors[components[0]?.id];
+    this.component = components[0];
+    this.componentType = components[0]?.type;
+    this.componentLabel = components[0]?.label;
     this.actions = components[0]?.attrs?.actions || [];
+    this.componentValue = this.getComponentData(components[0]?.value);
+  }
+
+  getComponentData(str: string) {
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      return str;
+    }
   }
 }

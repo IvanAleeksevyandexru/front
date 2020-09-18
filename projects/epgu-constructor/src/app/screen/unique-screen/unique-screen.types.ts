@@ -9,5 +9,6 @@ export enum UniqueScreenComponentTypes {
   confirmMarriage = 'ConfirmMarriage',
   genderSelector = 'GenderSelector',
   paymentScr = 'PaymentScr',
-  phoneNumberConfirmCodeInput = 'PhoneNumberConfirmCodeInput'
+  phoneNumberConfirmCodeInput = 'PhoneNumberConfirmCodeInput',
+  ConfirmNewEmail = 'ConfirmNewEmail',
 }

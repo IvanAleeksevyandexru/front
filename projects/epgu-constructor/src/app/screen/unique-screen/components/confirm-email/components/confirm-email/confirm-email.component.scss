@@ -4,23 +4,22 @@
   @include navigation-mt();
 }
 
-.form {
-  &__item {
-    display: block;
-    margin: 0 auto;
-    width: 175px;
-    &::ng-deep input {
-      letter-spacing: 8px;
-      text-align: center;
-    }
-  }
-  &__error {
-    color: $color-gosred;
-    text-align: center;
-  }
+.head {
+  margin-bottom: 32px;
 }
 
-.form-hint {
+.icon {
+  display: block;
+  margin: 0 auto 16px;
+  max-width: 100%;
+}
+
+.error {
+  color: $color-gosred;
+  text-align: center;
+}
+
+.hint {
   width: 269px;
   @include typ-plain-small();
   color: $color-text-helper;
@@ -31,6 +30,12 @@
   }
 }
 
+.action {
+  margin-top: 24px;
+  &__item {
+    justify-content: center;
+  }
+}
 
 .footer {
   display: flex;

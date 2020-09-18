@@ -58,7 +58,7 @@ export class InfoScreenComponent implements Screen, OnInit {
     const isFinishInternalScenario =
       this.screenService.actions[0]?.action === 'goBackToMainScenario';
     if (isFinishInternalScenario) {
-      options.isInternalScenarioFinish = false;
+      options.isInternalScenarioFinish = true;
     }
 
     return options;

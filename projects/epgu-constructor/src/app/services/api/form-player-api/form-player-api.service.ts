@@ -42,7 +42,7 @@ export class FormPlayerApiService {
     options: NavigationFullOptions): Observable<FormPlayerApiResponse> {
     let path = this.getNavigatePath(serviceId, data, options);
     if (options.isInternalScenarioFinish) {
-      data.isInternalScenario = true;
+      data.isInternalScenario = false;
     }
 
     const userId = this.cookieService.get('u') || '';

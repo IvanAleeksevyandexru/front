@@ -22,8 +22,8 @@ export class ConfirmPhoneComponent {
   isTimerShow = true;
 
   // <-- constant
-  correctCodeLength = 4;
-  mask = [/\d/, /\d/, /\d/, /\d/];
+  correctCodeLength = 8;
+  mask = [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
   count = 59;
   countInterval = 1000;
 
