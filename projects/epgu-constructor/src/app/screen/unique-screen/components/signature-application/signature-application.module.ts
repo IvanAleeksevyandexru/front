@@ -13,6 +13,6 @@ const COMPONENTS = [SignatureApplicationComponent, LinkComponent];
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   providers: [],
-  imports: [CommonModule, SharedModule, ReactiveFormsModule, EpguLibModule.forChild()],
+  imports: [CommonModule, SharedModule, ReactiveFormsModule, EpguLibModule],
 })
 export class SignatureApplicationModule {}

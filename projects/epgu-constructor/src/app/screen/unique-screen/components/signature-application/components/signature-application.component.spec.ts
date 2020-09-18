@@ -17,7 +17,6 @@ import { NavigationService } from '../../../../../shared/services/navigation/nav
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
   let fixture: ComponentFixture<SignatureApplicationComponent>;
-  let navigationService: NavigationService;
   const displayDataMock: Display = {
     components: [
       {
@@ -58,10 +57,8 @@ describe('SignatureApplicationComponent', () => {
         FeedIconComponent,
         LoaderComponent,
       ],
-      providers: [FormBuilder, UtilsService],
+      providers: [FormBuilder, UtilsService, NavigationService],
     }).compileComponents();
-
-    navigationService = TestBed.inject(NavigationService);
   }));
 
   beforeEach(() => {
