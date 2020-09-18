@@ -101,7 +101,7 @@ export class PaymentService {
     // return billMockUp.asObservable();
 
     // eslint-disable-next-line max-len
-    const path = `${this.config.billsApiUrl}?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    const path = `${this.config.billsApiUrl}?billNumber=${uin}&urlReturnCheck=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
     return this.http.post(path, {}, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -124,16 +124,21 @@ export class PaymentService {
   }
 
   /**
+   * Возвращает адрес куда нужно сделать возврат
+   */
+  getReturnUrl(): string {
+    const slashInEndRex = /\/$/;
+    const host = location.href.replace(slashInEndRex,'');
+    return encodeURIComponent(`${host}${this.config.apiUrl}?getLastScreen=1`);
+  }
+
+  /**
    * Возвращает ссылку на оплату для перехода пользователя
    *
    * @param billId - уникальный идентификатор патежа
    */
   getPaymentLink(billId: number): string {
-    // TODO хардкод. доделать.
-    const slashInEndRex = /\/$/;
-    const host = location.href.replace(slashInEndRex,'');
-    const returnUrl = encodeURIComponent(`${host}${this.config.apiUrl}?getLastScreen=1`);
-    return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${returnUrl}&subscribe=true`;
+    return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${this.getReturnUrl()}&subscribe=true`;
   }
 
   /**
