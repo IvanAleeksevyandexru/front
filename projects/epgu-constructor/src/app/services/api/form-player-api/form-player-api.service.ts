@@ -62,7 +62,7 @@ export class FormPlayerApiService {
     if (options.url) {
       path += `/${options.url}`;
     } else {
-      const pathDir = data.isInternalScenario ?  'internal' : `service/${serviceId}`;
+      const pathDir = data.isInternalScenario ? 'internal' : `service/${serviceId}`;
       path += `/${pathDir}/scenario/${options.direction}`;
     }
     return path;

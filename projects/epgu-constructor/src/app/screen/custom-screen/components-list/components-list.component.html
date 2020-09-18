@@ -73,14 +73,13 @@
         </epgu-constructor-output-html>
       </div>
 
-      <div class="form__item" *ngSwitchCase="likeMaskType(componentData.type)">
+      <div class="form__item" *ngSwitchCase="isMask(componentData.type)">
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-standard-masked-input
             *ngIf="componentData.attrs?.mask; else plainInput"
             [clearable]='true'
             [mask]="componentData.attrs?.mask | maskHandle"
-            [placeholder]="componentData.attrs?.placeholder"
             [name]="componentData.id"
             [showMaskAsPlaceholder]="true"
             [showConstantMaskSymbols]="true"

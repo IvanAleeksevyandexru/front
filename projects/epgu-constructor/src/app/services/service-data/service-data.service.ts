@@ -19,9 +19,6 @@ export class ServiceDataService {
     return this._targetId;
   }
 
-  constructor() {
-  }
-
   init(service: Service) {
     this._serviceId = service.serviceId;
     this._orderId = service.orderId;

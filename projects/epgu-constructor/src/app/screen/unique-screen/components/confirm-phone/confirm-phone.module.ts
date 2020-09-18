@@ -12,7 +12,7 @@ import { EpguLibModule } from 'epgu-lib';
   imports: [
     CommonModule,
     SharedModule,
-    EpguLibModule
+    EpguLibModule,
   ]
 })
 export class ConfirmPhoneModule { }

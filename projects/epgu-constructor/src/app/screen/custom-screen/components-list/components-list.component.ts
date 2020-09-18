@@ -122,7 +122,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     }
     if (component.type === this.componentType.PhoneNumberChangeInput) {
       const maskSymbolRegExp = /\s|-|\(|\)/g;
-      value = value.replace(maskSymbolRegExp, ''); // удаляет скобки, проблемы, трие
+      value = value.replace(maskSymbolRegExp, ''); // удаляет скобки, проблемы, тире
     }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
@@ -215,7 +215,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {}
 
-  likeMaskType(componentType: CustomScreenComponentTypes) {
+  isMask(componentType: CustomScreenComponentTypes): boolean | CustomScreenComponentTypes {
     const { StringInput, PhoneNumberChangeInput } = this.componentType;
     const isLikeMask = [StringInput, PhoneNumberChangeInput].includes(componentType);
     return isLikeMask ? componentType : !componentType;

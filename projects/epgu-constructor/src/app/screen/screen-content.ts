@@ -16,7 +16,7 @@ export class ScreenContent {
   public set display(val: DisplayDto) {
     this._display.next(val);
   }
-  private display$ = this._display.asObservable();
+  public display$ = this._display.asObservable();
 
   private _header = new BehaviorSubject<string>(null);
   public get header() {
@@ -79,7 +79,7 @@ export class ScreenContent {
   public set componentErrors(val: ScenarioErrorsDto) {
     this._componentErrors.next(val);
   }
-  public _componentErrors$ = this._componentErrors.asObservable();
+  public componentErrors$ = this._componentErrors.asObservable();
 
   private _componentError = new BehaviorSubject<string>(null);
   public get componentError() {
