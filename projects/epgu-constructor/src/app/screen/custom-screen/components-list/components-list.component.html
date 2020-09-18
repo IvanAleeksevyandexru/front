@@ -78,7 +78,7 @@
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <lib-standard-masked-input
             *ngIf="componentData.attrs?.mask; else plainInput"
-            [clearable]='true'
+            [clearable]="true"
             [mask]="componentData.attrs?.mask | maskHandle"
             [placeholder]="componentData.attrs?.placeholder"
             [name]="componentData.id"
@@ -150,6 +150,7 @@
           <lib-dadata-widget
             [simpleMode]="true"
             [name]="componentData.id"
+            [hideLevels]="componentData?.attrs?.hideLevels || []"
             (change)="inputChange($event, componentData)"
             [externalApiUrl]="config.externalApiUrl + '/'"
             [initValue]="state[componentData.id].value"
