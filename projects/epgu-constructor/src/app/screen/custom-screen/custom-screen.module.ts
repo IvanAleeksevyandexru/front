@@ -4,6 +4,7 @@ import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomScreenComponent } from './custom-screen.component';
 import { ScreenService } from '../screen.service';
+import { ValidationValueService } from './components-list/validation-value.service';
 
 const COMPONENTS = [
   CustomScreenComponent,
@@ -22,7 +23,8 @@ const COMPONENTS = [
     EpguLibModule,
   ],
   providers: [
-    ScreenService
+    ScreenService,
+    ValidationValueService,
   ]
 })
 export class CustomScreenModule { }
