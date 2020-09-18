@@ -4,7 +4,6 @@ import { MvdGiacComponent } from './mvd-giac.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
-import { FormPlayerService } from '../../../../services/form-player/form-player.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../services/api/dictionary-api/dictionary-api.service.stub';
 import { ComponentScreenComponentTypes } from '../../component-screen.types';
@@ -15,7 +14,6 @@ describe('MvdGiacComponent', () => {
   let fixture: ComponentFixture<MvdGiacComponent>;
 
   let dictionaryApiService: DictionaryApiService;
-  let formPlayerService: FormPlayerService;
   let componentStateService: ComponentStateService;
 
   let getDictionarySpy: jasmine.Spy;

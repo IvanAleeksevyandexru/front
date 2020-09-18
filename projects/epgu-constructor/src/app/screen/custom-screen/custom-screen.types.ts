@@ -113,4 +113,5 @@ export interface CustomComponent extends ComponentBase {
 interface SupportedValue {
   label: string;
   value: string;
+  isDefault?: boolean;
 }
