@@ -24,39 +24,42 @@
   >
   </lib-map>
   <div *ngIf="selectedValue" class="map-objects-list">
-    <div class="cross-btn" (click)="selectMapObjectService.closeBalloon()"></div>
-    <div
-      *ngFor="let mapObject of selectedValue.children"
-      [ngClass]="{ expanded: mapObject.expanded }"
-      (click)="expandObject(mapObject)"
-      class="map-object"
+    <perfect-scrollbar
+      [config]="scrollConfig"
     >
-      <h6 class="map-object__header">{{ mapObject.title }}</h6>
-      <ng-container *ngIf="mapObject.expanded">
-        <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
-          <span class="map-object__label">{{ itemContent.label }}: </span>
-          <span class="PGU-AttrsValue">{{ itemContent.value }}</span>
-        </div>
-        <a
-          (click)="showModalFromTemplate('detailsTemplate', mapObject)"
-          href="#!"
-          class="details-link"
-          >Узнать подробнее</a
-        >
-        <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">
-          На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы
+      <div class="cross-btn" (click)="selectMapObjectService.closeBalloon()"></div>
+      <div
+        *ngFor="let mapObject of selectedValue.children"
+        [ngClass]="{ expanded: mapObject.expanded }"
+        (click)="expandObject(mapObject)"
+        class="map-object"
+      >
+        <h6 class="map-object__header">{{mapObject.title}}</h6>
+        <ng-container *ngIf="mapObject.expanded">
+          <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
+            <span class="map-object__label">{{itemContent.label}}: </span>
+            <span class="PGU-AttrsValue">{{itemContent.value}}</span>
+          </div>
           <a
+            *ngIf="data.attrs.showExtraInfoLink"
+            (click)="showModalFromTemplate('detailsTemplate', mapObject)"
             href="#!"
-            (click)="showModalFromTemplate('informationTemplate', mapObject)"
-            class="information-link"
-            >ознакомиться</a
-          >
-        </div>
-        <lib-button *ngIf="mapObject.agreement" width="wide" (click)="selectObject()"
-          >Выбрать</lib-button
-        >
-      </ng-container>
-    </div>
+            class="details-link"
+          >Узнать подробнее
+          </a>
+          <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">На данной площадке действуют дополнительные 
+  условия оказания услуг нажмите чтобы 
+            <a href="#!" (click)="showModalFromTemplate('informationTemplate', mapObject)" class="information-link">ознакомиться</a>
+          </div>
+          <lib-button
+            [disabled]="!mapObject.agreement"
+            width="wide"
+            (click)="selectObject()"
+          >Выбрать
+          </lib-button>
+        </ng-container>
+      </div>
+    </perfect-scrollbar>
   </div>
 </div>
 
@@ -64,7 +67,6 @@
   <h3>ЗАГС Кутузовский</h3>
   <hr />
   <div class="map-modal">
-    <div class="cross-btn"></div>
     <div class="map-modal__bold">ЗАГС, осуществляющий регистрацию брака:</div>
     <div class="map-modal__normal">Хамовнический отдел ЗАГС Управления ЗАГС Москвы</div>
     <div class="map-modal__bold">Место регистрации брака:</div>
@@ -104,8 +106,7 @@
   <h3>Дополнительные условия оказания услуги</h3>
   <hr />
   <div class="map-modal">
-    <div class="cross-btn"></div>
-    <div class="map-modal__normal">{{ item.attributeValues.AREA_DESCR }}</div>
+    <div class="map-modal__normal">{{item.attributeValues.AREA_DESCR}}</div>
     <div *ngIf="item.attributeValues.GET_CONSENT === 'true'" class="map-modal__bottom-confirm">
       <lib-checkbox
         [(ngModel)]="item.agreement"

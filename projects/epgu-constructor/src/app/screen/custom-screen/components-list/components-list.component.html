@@ -3,9 +3,12 @@
     <ng-container [ngSwitch]="componentData.type">
       <ng-container *ngSwitchCase="componentType.LabelSection">
         <div class="form__item" *ngIf="state[componentData.id].isShown">
-          <div class="label">
-            {{ componentData.label || state[componentData.id].value }}
-          </div>
+          <epgu-constructor-output-html
+            class="label"
+            [html]="componentData.label || state[componentData.id].value"
+            [clarifications]="componentData?.attrs.clarifications"
+          >
+          </epgu-constructor-output-html>
         </div>
       </ng-container>
 
@@ -82,14 +85,28 @@
       <ng-container *ngSwitchCase="componentType.StringInput">
         <div class="form__item" *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
-          <lib-plain-input
-            [invalid]="!state[componentData.id].valid"
+          <lib-standard-masked-input
+            *ngIf="componentData.attrs?.mask; else plainInput"
+            [clearable]="true"
+            [mask]="componentData.attrs?.mask | maskHandle"
+            [placeholder]="componentData.attrs?.placeholder"
             [name]="componentData.id"
-            [(ngModel)]="state[componentData.id].value"
             [disabled]="state[componentData.id].disabled"
-            [validationShowOn]="validationShowOn"
+            [showMaskAsPlaceholder]="false"
+            [showConstantMaskSymbols]="true"
+            [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
-          ></lib-plain-input>
+          ></lib-standard-masked-input>
+          <ng-template #plainInput>
+            <lib-plain-input
+              [invalid]="!state[componentData.id].valid"
+              [name]="componentData.id"
+              [disabled]="state[componentData.id].disabled"
+              [(ngModel)]="state[componentData.id].value"
+              (change)="inputChange($event, componentData)"
+              [validationShowOn]="validationShowOn"
+            ></lib-plain-input>
+          </ng-template>
           <div *ngIf="componentData.attrs?.hint" class="form__item__hint">
             {{ componentData.attrs?.hint }}
           </div>
@@ -144,7 +161,7 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.DateInput">
-        <div class="form__item" *ngIf="state[componentData.id].isShown">
+        <div class="form__item form__item--date" *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
           <!-- нужно добавить changes для проверки зависимости от даты-->
           <lib-date-picker
@@ -163,6 +180,7 @@
           <lib-dadata-widget
             [simpleMode]="true"
             [name]="componentData.id"
+            [hideLevels]="componentData?.attrs?.hideLevels || []"
             [disabled]="state[componentData.id].disabled"
             [externalApiUrl]="config.externalApiUrl + '/'"
             [initValue]="state[componentData.id].value"

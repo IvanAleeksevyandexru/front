@@ -20,7 +20,7 @@ import {
   PaymentInfoInterface,
 } from './payment.types';
 import { UtilsService } from '../../../../services/utils/utils.service';
-import { FormPlayerService } from '../../../../services/form-player/form-player.service';
+import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
 
 @Component({
   selector: 'epgu-constructor-payment',
@@ -209,7 +209,7 @@ export class PaymentComponent implements OnDestroy {
   redirectToPayWindow() {
     this.inLoading = true;
     const data = { scenarioDto: this.screenService.getStore() };
-    UtilsService.setLocalStorageJSON(FormPlayerService.localStorageComponentDataKey, data);
+    UtilsService.setLocalStorageJSON(COMPONENT_DATA_KEY, data);
     clearInterval(this.payStatusInterval);
     window.location.href = this.paymentService.getPaymentLink(this.billId);
   }

@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 import * as moment from 'moment';
 import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
-import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import {
   CustomComponent,
   CustomComponentDictionaryState,
@@ -134,10 +133,13 @@ export class ComponentsListComponent implements OnChanges {
    * @param component - данные компонента
    */
   inputChange($event: Event, component: CustomComponent) {
-    const { value } = $event.target as HTMLInputElement;
-    this.state[component.id].value = value;
+    let { value } = $event.target as HTMLInputElement;
+    if (component.type === 'AddressInput') {
+      const fullAddressObject = this.state[component.id].value;
+      value = fullAddressObject;
+    }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
-    this.setValidationState(inputValidationResult, component.id, value);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
   }
 
@@ -159,10 +161,9 @@ export class ComponentsListComponent implements OnChanges {
    * @param component - данные компонента
    */
   dateChange($event: string, component: CustomComponent) {
-    const value = moment($event).format(DATE_STRING_DOT_FORMAT);
-    this.state[component.id].value = value;
+    const value = moment($event).toISOString();
     const inputValidationResult = CheckInputValidationComponentList(value, component);
-    this.setValidationState(inputValidationResult, component.id, value);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
   }
 
@@ -224,7 +225,7 @@ export class ComponentsListComponent implements OnChanges {
    * @param componentId - id компоненота
    * @param componentValue - значение компонента
    */
-  setValidationState(inputValidationResult, componentId, componentValue) {
+  setValidationAndValueState(inputValidationResult, componentId, componentValue) {
     const handleSetState = (isValid, errMsg?) => {
       this.state[componentId].value = componentValue;
       this.state[componentId].valid = isValid;

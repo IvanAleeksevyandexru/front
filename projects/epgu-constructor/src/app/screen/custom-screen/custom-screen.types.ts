@@ -61,7 +61,6 @@ export interface CustomComponentAttr {
   supportedValues?: Array<SupportedValue>;
 }
 
-
 export interface CustomComponentAttrValidation {
   type: string;
   value: string;
@@ -125,5 +124,5 @@ export interface CustomComponent extends ComponentBase {
 interface SupportedValue {
   label: string;
   value: string;
-  isDefault?: boolean
+  isDefault?: boolean;
 }

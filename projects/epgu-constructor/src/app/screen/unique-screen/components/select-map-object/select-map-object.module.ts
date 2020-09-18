@@ -4,6 +4,8 @@ import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../../../shared/shared.module';
 import { SelectMapObjectComponent } from './select-map-object.component';
 import { SelectMapObjectService } from './select-map-object.service';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+
 
 const COMPONENTS = [
   SelectMapObjectComponent
@@ -17,6 +19,7 @@ const COMPONENTS = [
     CommonModule,
     SharedModule,
     EpguLibModule,
+    PerfectScrollbarModule,
   ]
 })
 export class SelectMapObjectModule { }
