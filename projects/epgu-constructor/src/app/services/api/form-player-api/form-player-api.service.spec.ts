@@ -6,6 +6,7 @@ import { ConfigServiceStub } from '../../../config/config.service.stub';
 import { FormPlayerNavigation } from '../../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
 import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
+import { ServiceDataService } from '../../service-data/service-data.service';
 
 
 describe('FormPlayerApiService', () => {
@@ -23,8 +24,8 @@ describe('FormPlayerApiService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
+        ServiceDataService,
         CookieService,
-        UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });
@@ -75,7 +76,8 @@ describe('FormPlayerApiService', () => {
 
   describe('navigate()', () => {
     it('should call http with post method', fakeAsync(() => {
-      service.navigate(serviceId, FormPlayerNavigation.NEXT, mockData).subscribe(response => expect(response).toBe(responseMock));
+      service.navigate(serviceId, mockData, { direction: FormPlayerNavigation.NEXT })
+        .subscribe(response => expect(response).toBe(responseMock));
       const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.NEXT}`;
       const req = http.expectOne(url);
       expect(req.request.method).toBe('POST');
@@ -84,7 +86,8 @@ describe('FormPlayerApiService', () => {
     }));
 
     it('should call http with getNextStep path', fakeAsync(() => {
-      service.navigate(serviceId, FormPlayerNavigation.NEXT, mockData).subscribe(response => expect(response).toBe(responseMock));
+      service.navigate(serviceId, mockData, { direction: FormPlayerNavigation.NEXT })
+        .subscribe(response => expect(response).toBe(responseMock));
       const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.NEXT}`;
       const req = http.expectOne(url);
       expect(req.request.url).toBe(url);
@@ -93,7 +96,8 @@ describe('FormPlayerApiService', () => {
     }));
 
     it('should call http with getPrevStep path', fakeAsync(() => {
-      service.navigate(serviceId, FormPlayerNavigation.PREV, mockData).subscribe(response => expect(response).toBe(responseMock));
+      service.navigate(serviceId, mockData, { direction: FormPlayerNavigation.PREV })
+        .subscribe(response => expect(response).toBe(responseMock));
       const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.PREV}`;
       const req = http.expectOne(url);
       expect(req.request.url).toBe(url);
@@ -102,7 +106,8 @@ describe('FormPlayerApiService', () => {
     }));
 
     it('should call http with body', fakeAsync(() => {
-      service.navigate(serviceId, FormPlayerNavigation.PREV, mockData).subscribe(response => expect(response).toBe(responseMock));
+      service.navigate(serviceId, mockData,{ direction: FormPlayerNavigation.PREV })
+        .subscribe(response => expect(response).toBe(responseMock));
       const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.PREV}`;
       const req = http.expectOne(url);
       expect(req.request.body).toEqual(mockData);

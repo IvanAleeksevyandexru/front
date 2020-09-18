@@ -112,7 +112,7 @@ export class ScreenContent {
     this.componentType = components[0]?.type;
     this.orderId = orderId;
     this.componentErrors = errors;
-    this.componentError = errors[components[0].id];
-    this.actions = components[0].attrs?.actions || [];
+    this.componentError = errors[components[0]?.id];
+    this.actions = components[0]?.attrs?.actions || [];
   }
 }
