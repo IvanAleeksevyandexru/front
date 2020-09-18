@@ -9,6 +9,7 @@ export interface Service {
   serviceId: string;
   targetId: string;
   orderId?: string;
+  invited?: boolean;
 }
 
 export enum FormPlayerNavigation {
