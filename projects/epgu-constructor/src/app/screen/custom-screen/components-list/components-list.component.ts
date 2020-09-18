@@ -191,12 +191,22 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.changes.emit(prepareStateForSending);
   }
 
-  innInputChange($event: Event, component: CustomComponent, type: 'person' | 'legal'): void {
+  innInputChange($event: Event, component: CustomComponent, type: string): void {
     const { value } = $event.target as HTMLInputElement;
     this.state[component.id].value = value;
-    const inputValidationResult = type === 'person' ? checkPersonInn(value) : checkLegalInn(value);
+    const inputValidationResult =
+      type === 'PersonInnInput' ? checkPersonInn(value) : checkLegalInn(value);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
+  }
+
+  switchInnType(type: string) {
+    const hasInnType = ['LegalInnInput', 'PersonInnInput'].includes(type);
+    if (hasInnType) {
+      return type === 'LegalInnInput' ? 'LegalInnInput' : 'PersonInnInput';
+    }
+
+    return '';
   }
 
   /**
