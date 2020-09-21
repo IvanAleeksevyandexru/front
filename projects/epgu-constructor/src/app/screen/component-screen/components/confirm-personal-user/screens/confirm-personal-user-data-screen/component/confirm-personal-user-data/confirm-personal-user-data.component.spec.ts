@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
-import { ConfirmUserData } from '../../../../../../types/confirm-user-data.types';
-import { ToJsonPipe } from '../../../../../../../../shared/pipes/toJson/to-json.pipe';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
+import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
+import { ToJsonPipe } from '../../../../../../../../shared/pipes/toJson/to-json.pipe';
+import { ConfirmUserData } from '../../../../../../types/confirm-user-data.types';
+import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
+
 
 describe('ConfirmPersonalUserDataComponent', () => {
   let component: ConfirmPersonalUserDataComponent;
@@ -15,7 +15,8 @@ describe('ConfirmPersonalUserDataComponent', () => {
       actions: [
         {
           label: '',
-          method: ''
+          value: '',
+          action: ''
         }
       ],
       fields: [
