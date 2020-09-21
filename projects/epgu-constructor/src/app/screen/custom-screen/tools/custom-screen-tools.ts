@@ -3,8 +3,13 @@ import * as moment_ from 'moment';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import {
-  CustomComponent, CustomComponentDictionaryState, CustomComponentDropDownItemList,
-  CustomComponentState, CustomScreenComponentTypes
+  CustomComponent,
+  CustomComponentDictionaryState,
+  CustomComponentDropDownItemList,
+  CustomComponentRef,
+  CustomComponentRefRelation,
+  CustomComponentState,
+  CustomScreenComponentTypes
 } from '../custom-screen.types';
 import { checkOgrn, checkOgrnip } from 'ru-validation-codes';
 const moment = moment_;
@@ -35,13 +40,21 @@ export function getCustomScreenDictionaryFirstState(): CustomComponentDictionary
   };
 }
 
-export function likeDictionary(type: CustomScreenComponentTypes) {
+/**
+ * Возвращает true, если это выбор из справочника
+ * @param type - тип поля
+ */
+export function likeDictionary(type: CustomScreenComponentTypes): boolean {
   return (
     CustomScreenComponentTypes.Dictionary === type || CustomScreenComponentTypes.Lookup === type
   );
 }
 
-export function isDropDown(type: CustomScreenComponentTypes) {
+/**
+ * Возвращает true, если это выпадающий список
+ * @param type - тип поля
+ */
+export function isDropDown(type: CustomScreenComponentTypes): boolean {
   return CustomScreenComponentTypes.DropDown === type;
 }
 
@@ -70,9 +83,7 @@ export function getNormalizeDataCustomScreenDictionary(
 
 /**
  * Адаптирует массив в вид необходимый для компонентов из библлиотеки
- * @param {CustomComponentDropDownItemList}items
- * @param {string}dictionaryName
- * @param {CustomComponent}component - тут хранится флаг, для удаление россии из словаря.
+ * @param items - массив элементов для преобразования
  */
 export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
   return items.map((item, index) => {
@@ -88,21 +99,57 @@ export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<
 }
 
 /**
+ * Возвращает true, если это компонент с типом Lookup
+ * @param component - компонент
+ */
+export const isLookup = (component: CustomComponent) => component.type === CustomScreenComponentTypes.Lookup;
+
+/**
+ * Возвращает true, если это компонент с типом CheckBox
+ * @param component - компонент
+ */
+export const isCheckBox = (component: CustomComponent) => component.type === CustomScreenComponentTypes.CheckBox;
+
+/**
+ * Возвращает true, если текущее состояние зависимости соответствует значению проверяемого компонента
+ * @param state - Хранилище данных
+ * @param component - компонент
+ * @param item - сведения о зависимости
+ * @param relation - тип зависимости
+ */
+export const isHaveNeededValue = (
+  state: CustomComponentState,
+  component: CustomComponent,
+  item: CustomComponentRef,
+  relation: CustomComponentRefRelation,
+): boolean => {
+  if (item.relation == relation) {
+    if (isCheckBox(component)) {
+      return state[item.relatedRel]?.component?.attrs.checked === item.val;
+    }
+    const stateRelatedRel = isLookup(component) ? state[item.relatedRel]?.value : state[item.relatedRel];
+    return stateRelatedRel?.value === item.val;
+  }
+  return relation === CustomComponentRefRelation.displayOn;
+};
+
+/**
  * Функция проверяет зависимые компоненты и перезаписывает состояние в state.
 */
 export function calcDependedComponent(
   component: CustomComponent,
   state: CustomComponentState,
   components: Array<CustomComponent>) {
-  const isLookup = component.type === 'Lookup';
+
   const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
   const dependentComponents = components.filter((item) => isComponentDependOn(item.attrs?.ref));
 
   dependentComponents.forEach((dependentComponent) => {
-    state[dependentComponent.id].isShown = dependentComponent.attrs.ref.some(item => {
-      const stateRelatedRel = isLookup ? state[item.relatedRel]?.value : state[item.relatedRel];
-      return stateRelatedRel?.value === item.val;
-    });
+    //Проверяем статусы показа и отключённости
+    state[dependentComponent.id].isShown = dependentComponent.attrs.ref.some(item =>
+      isHaveNeededValue(state, component, item, CustomComponentRefRelation.displayOn));
+    state[dependentComponent.id].disabled = dependentComponent.attrs.ref.some(item =>
+      isHaveNeededValue(state, component, item, CustomComponentRefRelation.disabled));
   });
 }
 

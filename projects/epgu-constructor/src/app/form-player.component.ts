@@ -32,11 +32,11 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     this.checkProps();
     const orderId = this.getDraftOrderId();
     this.configService.config = this.config;
-    this.formPlayerService.initData(this.service, orderId);
 
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.screenComponent = this.formPlayerService.getScreenComponent();
     });
+    this.formPlayerService.initData(this.service, orderId);
 
     this.navigationService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
