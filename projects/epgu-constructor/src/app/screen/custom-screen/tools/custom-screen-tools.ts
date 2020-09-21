@@ -162,4 +162,5 @@ export function isValueValid(type, value): boolean {
   if (type === customcomponentType.OgrnipInput) {
     return checkOgrnip(value);
   }
+  return false;
 }
