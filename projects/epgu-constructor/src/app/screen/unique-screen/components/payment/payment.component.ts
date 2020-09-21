@@ -73,13 +73,14 @@ export class PaymentComponent implements OnDestroy {
    * @private
    */
   private loadPaymentInfo() {
-    const { nsi, dictItemCode } = this.data.attrs;
+    const { nsi, dictItemCode, ref } = this.data.attrs;
+    const { fiasCode } = ref;
 
     const { orderId } = this.screenService.getStore();
     this.orderId = orderId;
 
     this.paymentService
-      .loadPaymentInfo(this.orderId, nsi, dictItemCode)
+      .loadPaymentInfo(this.orderId, nsi, dictItemCode, fiasCode)
       .pipe(
         switchMap((attributeValues: PaymentInfoInterface) =>
           this.getRequestForUinByOrder(attributeValues),
