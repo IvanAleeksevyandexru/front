@@ -149,8 +149,6 @@ export function calcDependedComponent(
       isHaveNeededValue(state, component, item, CustomComponentRefRelation.displayOn));
     state[dependentComponent.id].disabled = dependentComponent.attrs.ref.some(item =>
       isHaveNeededValue(state, component, item, CustomComponentRefRelation.disabled));
-    console.log('state[dependentComponent.id].isShown', state[dependentComponent.id].isShown);
-    console.log('state[dependentComponent.id].disabled', state[dependentComponent.id].disabled);
   });
 }
 
