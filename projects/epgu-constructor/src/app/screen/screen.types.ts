@@ -2,6 +2,9 @@ import { NavigationPayload } from '../form-player.types';
 import { Answer } from '../shared/types/answer';
 import { ScenarioDto } from '../services/api/form-player-api/form-player-api.types';
 
+/**
+ * Интерфейс для базового компонента
+ */
 export interface ComponentBase {
   attrs: {[key: string]: any};
   id: string;
