@@ -1,6 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ConfirmEmailComponent } from './confirm-email.component';
+import { ScreenService } from '../../../../../screen.service';
+import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
+import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
+import { FormPlayerServiceStub } from '../../../../../../services/form-player/form-player.service.stub';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ScreenServiceStub } from '../../../../../screen.service.stub';
 
 describe('ConfirmEmailComponent', () => {
   // let component: ConfirmEmailComponent;
@@ -8,7 +14,14 @@ describe('ConfirmEmailComponent', () => {
   //
   // beforeEach(async () => {
   //   await TestBed.configureTestingModule({
-  //     declarations: [ ConfirmEmailComponent ]
+  //     schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+  //     declarations: [ ConfirmEmailComponent ],
+  //     providers: [
+  //       UnsubscribeService,
+  //       NavigationService,
+  //       { provide: ScreenService,useClass: ScreenServiceStub },
+  //       { provide: FormPlayerService,useClass: FormPlayerServiceStub },
+  //     ]
   //   })
   //   .compileComponents();
   // });
@@ -16,7 +29,11 @@ describe('ConfirmEmailComponent', () => {
   // beforeEach(() => {
   //   fixture = TestBed.createComponent(ConfirmEmailComponent);
   //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
+  //
+  //   fixture.debugElement.injector.get(ScreenService);
+  //   fixture.debugElement.injector.get(FormPlayerService);
+  //   fixture.debugElement.injector.get(UnsubscribeService);
+  //   fixture.debugElement.injector.get(NavigationService);
   // });
 
   it('should create', () => {

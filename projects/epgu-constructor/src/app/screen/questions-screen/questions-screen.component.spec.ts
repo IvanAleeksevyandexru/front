@@ -1,20 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { EpguLibModule } from 'epgu-lib';
-import { MockComponent } from 'ng-mocks';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
-import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
-import { LongButtonComponent } from '../../shared/components/long-button/long-button.component';
-import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
-import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
-import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
-import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
-import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
+import { SharedModule } from '../../shared/shared.module';
 import { QuestionsScreenComponent } from './questions-screen.component';
 
 describe('QuestionsScreenComponent', () => {
@@ -22,7 +11,6 @@ describe('QuestionsScreenComponent', () => {
   // let fixture: ComponentFixture<QuestionsScreenComponent>;
   // let navService: NavigationService;
   // let screenService: ScreenService;
-  // let NavigationComponentMock = MockComponent(NavigationComponent);
   // const screenDataMock: ScreenStore = {
   //   display: {
   //     components: [
@@ -43,48 +31,23 @@ describe('QuestionsScreenComponent', () => {
   //   }
   // };
   //
-  // beforeEach(async(() => {
+  // beforeEach(() => {
   //   TestBed.configureTestingModule({
   //     imports: [
-  //       RouterTestingModule,
-  //       EpguLibModule,
+  //       SharedModule,
+  //       EpguLibModule
   //     ],
-  //     declarations: [
-  //       QuestionsScreenComponent,
-  //       PageNameComponent,
-  //       ScreenPadComponent,
-  //       ScreenContainerComponent,
-  //       NavigationComponentMock,
-  //       OutputHtmlComponent,
-  //       AnswerButtonComponent,
-  //       LongButtonComponent
-  //     ],
+  //     declarations: [QuestionsScreenComponent],
   //     providers: [
   //       NavigationService,
-  //       ScreenService,
   //       UnsubscribeService,
-  //       ApplicantAnswersService,
-  //       ComponentStateService
+  //       ScreenService,
   //     ]
   //   })
   //   .compileComponents();
-  //   navService = TestBed.inject(NavigationService);
-  //   screenService = TestBed.inject(ScreenService);
-  // }));
-  //
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(QuestionsScreenComponent);
-  //   component = fixture.componentInstance;
-  //   screenService.updateScreenStore(screenDataMock);
-  //   fixture.detectChanges();
   // });
-  //
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
-  //
-  //
-  it('should create', () => {
+
+  it ('shout nothing', () =>{
     expect(true).toBeTruthy();
   });
 });

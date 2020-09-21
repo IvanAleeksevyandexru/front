@@ -1,27 +1,23 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
-import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ComponentsListComponent } from './components-list/components-list.component';
 import { CustomScreenComponent } from './custom-screen.component';
 
-
-
 describe('CustomScreenComponent', () => {
   // let component: CustomScreenComponent;
   // let fixture: ComponentFixture<CustomScreenComponent>;
   // let navigationService: NavigationService;
   // let screenService: ScreenService;
+  // let unsubscribeService: UnsubscribeService;
   // let NavigationComponentMock = MockComponent(NavigationComponent);
   // let ComponentsListComponentMock = MockComponent(ComponentsListComponent);
   // const screenDataMock: ScreenStore = {
@@ -35,10 +31,9 @@ describe('CustomScreenComponent', () => {
   //   }
   // };
   //
-  // beforeEach(async(() => {
+  // beforeEach(() => {
   //   TestBed.configureTestingModule({
   //     imports: [
-  //       RouterTestingModule,
   //       EpguLibModule,
   //     ],
   //     declarations: [
@@ -51,20 +46,21 @@ describe('CustomScreenComponent', () => {
   //     ],
   //     providers: [
   //       NavigationService,
-  //       ScreenService,
   //       UnsubscribeService,
-  //       ApplicantAnswersService,
-  //       ComponentStateService
+  //       ScreenService,
   //     ]
   //   })
   //   .compileComponents();
-  //   navigationService = TestBed.inject(NavigationService);
-  //   screenService = TestBed.inject(ScreenService);
-  // }));
+  // });
   //
   // beforeEach(() => {
   //   fixture = TestBed.createComponent(CustomScreenComponent);
   //   component = fixture.componentInstance;
+  //
+  //   navigationService = fixture.debugElement.injector.get(NavigationService);
+  //   unsubscribeService = fixture.debugElement.injector.get(UnsubscribeService);
+  //   screenService = fixture.debugElement.injector.get(ScreenService);
+  //
   //   screenService.updateScreenStore(screenDataMock);
   //   component.changeComponentsList({});
   //   fixture.detectChanges();
@@ -101,8 +97,7 @@ describe('CustomScreenComponent', () => {
   //   });
   // });
 
-    it('empty', () => {
-
+    it('nothing', () => {
       expect(true).toBeTruthy();
     });
 });

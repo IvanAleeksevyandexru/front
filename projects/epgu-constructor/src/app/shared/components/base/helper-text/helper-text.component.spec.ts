@@ -12,33 +12,33 @@ const helperTextMock = 'Awesome useful helper text.';
 class WrapperTestComponent {}
 
 describe('HelperTextComponent', () => {
-  // let component: WrapperTestComponent;
-  // let fixture: ComponentFixture<WrapperTestComponent>;
-  //
-  // beforeEach(async(() => {
-  //   TestBed.configureTestingModule({
-  //     declarations: [ WrapperTestComponent, HelperTextComponent ]
-  //   })
-  //   .compileComponents();
-  // }));
-  //
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(WrapperTestComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
-  //
+  let component: WrapperTestComponent;
+  let fixture: ComponentFixture<WrapperTestComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [ WrapperTestComponent, HelperTextComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(WrapperTestComponent);
+    component = fixture.componentInstance;
+  });
+
+  // TODO
   // it('should match snapshot', () => {
   //   expect(fixture).toMatchSnapshot();
   // });
-  //
-  // it('component should render passed text', () => {
-  //   const helperText = fixture.debugElement
-  //     .query(By.css('.helper-text')).nativeElement.textContent;
-  //   expect(helperText).toEqual(helperTextMock);
-  // });
 
   it('component should render passed text', () => {
-    expect(true).toBeTruthy;
+    const helperText = fixture.debugElement
+      .query(By.css('.helper-text')).nativeElement.textContent;
+    expect(helperText).toEqual(helperTextMock);
+  });
+
+  it('should created', () => {
+    expect(component).toBeTruthy;
   });
 });

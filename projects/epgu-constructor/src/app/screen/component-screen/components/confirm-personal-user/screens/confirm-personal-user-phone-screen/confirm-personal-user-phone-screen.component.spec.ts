@@ -12,7 +12,6 @@ import { ComponentBase } from '../../../../../screen.types';
 describe('ConfirmPersonalUserPhoneScreenComponent', () => {
   let component: ConfirmPersonalUserPhoneScreenComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserPhoneScreenComponent>;
-  let ConfirmPersonalUserPhoneComponentMock = MockComponent(ConfirmPersonalUserPhoneComponent);
   const mockData: ComponentBase = {
     attrs: {},
     id: '',
@@ -26,7 +25,6 @@ describe('ConfirmPersonalUserPhoneScreenComponent', () => {
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [
         ConfirmPersonalUserPhoneScreenComponent,
-        ConfirmPersonalUserPhoneComponentMock,
         ConfirmPersonalUserScreenLayoutComponent
       ],
       providers: [ ComponentStateService ]
@@ -43,9 +41,5 @@ describe('ConfirmPersonalUserPhoneScreenComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('check snapshot', () => {
-    // expect(fixture).toMatchSnapshot();
   });
 });
