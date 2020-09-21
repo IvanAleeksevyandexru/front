@@ -77,6 +77,10 @@
         <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
       </div>
 
+      <div class="form__item" *ngSwitchCase="componentType.OgrnipInput">
+        <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
+      </div>
+
       <ng-template #textInputTemplate>
         <ng-container *ngIf="state[componentData.id].isShown">
           <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>

@@ -6,6 +6,7 @@ import {
   CustomComponent, CustomComponentDictionaryState, CustomComponentDropDownItemList,
   CustomComponentState, CustomScreenComponentTypes
 } from '../custom-screen.types';
+import { checkOgrn, checkOgrnip } from 'ru-validation-codes';
 const moment = moment_;
 
 
@@ -151,4 +152,14 @@ export function getInitStateItemComponentList(component: CustomComponent) {
     component,
     isShown: !hasRelatedRef,
   };
+}
+
+export function isValueValid(type, value): boolean {
+  const customcomponentType = CustomScreenComponentTypes;
+  if (type === customcomponentType.OgrnInput) {
+    return checkOgrn(value);
+  }
+  if (type === customcomponentType.OgrnipInput) {
+    return checkOgrnip(value);
+  }
 }
