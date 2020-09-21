@@ -8,11 +8,11 @@ import { ActivatedRoute } from '@angular/router';
 
 export const LOCAL_STORAGE_KEY = 'EPGU_FORM_PLAYER_TEST_STAND_CONFIG';
 
-
 const initValues: FormPlayerConfig = {
   serviceId: environment.serviceId,
   targetId: environment.targetId,
   orderId: environment.orderId,
+  invited: false
 }
 
 @Injectable()
@@ -27,7 +27,7 @@ export class AppService {
   }
 
   valuesFromQueryParams(): void {
-    const { serviceId, targetId, orderId } = this.route.snapshot.queryParams;
+    const { serviceId, targetId, orderId, invited } = this.route.snapshot.queryParams;
     if(serviceId) {
       this.config.serviceId = serviceId;
     }
@@ -36,6 +36,9 @@ export class AppService {
     }
     if(orderId) {
       this.config.orderId = orderId;
+    }
+    if(invited) {
+      this.config.invited = invited;
     }
   }
 
