@@ -32,6 +32,7 @@
           "lib-question-help-tip",
           "lib-dropdown",
           "lib-radio",
+          "lib-checkbox",
           "app-label-section",
           "app-screen-pad",
           "epguc-screen-container",
