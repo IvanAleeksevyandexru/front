@@ -8,14 +8,10 @@ export const CONFIRM_USER_DATA_BIRTHDAY_FIELD_NAME = 'birthDate';
 
 
 export function getFullNameConfirmPersonalUserData(data: ConfirmUserData): string {
-  const includeItem = (arr, item) => arr.includes(item);
-  return (
-    data.attrs.fields
-      .filter((item) => includeItem(FULL_NAME_FIELD_ITEMS, item.fieldName))
-      // eslint-disable-next-line no-return-assign, no-param-reassign
-      .reduce((acc, item) => (acc += ` ${getPropFromStringJson(data, item.fieldName)}`), '')
-      .trim()
-  );
+  const firstName = JSON.parse(data.value)['firstName'];
+  const lastName = JSON.parse(data.value)['lastName'];
+  const middleName = JSON.parse(data.value)['middleName'];
+  return `${lastName} ${firstName} ${middleName}`;
 }
 
 export function getBirthDayConfirmPersonalUserData(data: ConfirmUserData): ConfirmUserDataAdaptiveField {
