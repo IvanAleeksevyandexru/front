@@ -1,25 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { FormPlayerNavigation, NavigationPayload } from '../../form-player.types';
+import { FormPlayerNavigation, NavigationPayload, Service } from '../../form-player.types';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
-  FormPlayerApiDraftResponse, FormPlayerApiDraftSuccessResponse,
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
 } from '../api/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../screen/screen.types';
 import { UtilsService } from '../utils/utils.service';
-import { localStorageComponentDataKey } from '../../shared/constants/form-player';
+import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ScreenComponent } from '../../screen/screen.const';
-
-interface ServiceType {
-  serviceId: string;
-  targetId: string;
-}
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -28,9 +21,6 @@ interface ServiceType {
  */
 @Injectable()
 export class FormPlayerService {
-  // Ключ localStorage, где хранятся данные по компонентам для отображения, если нам подменить сценарий
-  public static localStorageComponentDataKey = localStorageComponentDataKey;
-
   private store: FormPlayerApiSuccessResponse;
   private playerLoaded = false;
   private isLoading = false;
@@ -54,7 +44,7 @@ export class FormPlayerService {
    * @private
    */
   private static isHaveOrderDataInLocalStorage(): boolean {
-    return !!localStorage.getItem(FormPlayerService.localStorageComponentDataKey);
+    return !!localStorage.getItem(COMPONENT_DATA_KEY);
   }
 
   /**
@@ -71,53 +61,44 @@ export class FormPlayerService {
    * @param service - услуга
    * @param orderId - id заявления
    */
-  initData(service: ServiceType, orderId?: string): void {
+  initData(service: Service, orderId?: string): void {
     this.updateLoading(true);
 
     if (this.isNeedToShowLastScreen()) {
-       this.getDataFromLocalStorage();
+      this.getDataFromLocalStorage();
     } else {
-      if (orderId) {
-        this.getDraftOrderData(orderId);
+      const { serviceId, targetId, invited } = service;
+      if (invited) {
+        const { orderId } = service;
+        this.getInviteOrderData(serviceId, targetId, orderId);
       } else {
-        const { serviceId, targetId } = service;
-        this.getNewOrderData(serviceId, targetId);
+        this.getOrderData(serviceId, targetId, orderId);
       }
     }
   }
 
-
   /**
-   * Получает и устанавливает данные из черновика по id заявления
-   * @param orderId - id заявления
+   * Получает и устанавливает данные для заявления для id услуги по приглашению
+   * @param serviceId - идентификатор сервиса
+   * @param targetId - идентификатор услуги в ФРГУ
+   * @param orderId - идентификатор черновика
    */
-  getDraftOrderData(orderId: string) {
-    this.formPlayerApiService.getDraftData(orderId)
-      .pipe(
-        map(this.mapDraftDataToOrderData)
-      )
-      .subscribe(
-        (response) => this.processResponse(response),
-        (error) => this.sendDataError(error),
-        () => this.updateLoading(false)
-      );
-  }
-
-  mapDraftDataToOrderData(response: FormPlayerApiDraftResponse) {
-    if(this.hasRequestErrors(response as FormPlayerApiErrorResponse)) {
-      return response as FormPlayerApiResponse;
-    }
-    const successResponse = response as FormPlayerApiDraftSuccessResponse;
-    return { scenarioDto: successResponse.body } as FormPlayerApiResponse;
+  getInviteOrderData(serviceId: string, targetId: string, orderId: string) {
+    this.formPlayerApiService.getInviteServiceData(serviceId, targetId, orderId).subscribe(
+      (response) => this.processResponse(response),
+      (error) => this.sendDataError(error),
+      () => this.updateLoading(false)
+    );
   }
 
   /**
-   * Получает и устанавливает данные для нового черновика для id услуги
-   * @param serviceId - id сервиса
-   * @param targetId
+   * Получает и устанавливает данные для заявления для id услуги
+   * @param serviceId - идентификатор сервиса
+   * @param targetId - идентификатор услуги в ФРГУ
+   * @param orderId - идентификатор черновика
    */
-  getNewOrderData(serviceId: string, targetId?: string) {
-    this.formPlayerApiService.getServiceData(serviceId, targetId).subscribe(
+  getOrderData(serviceId: string, targetId: string, orderId?: string) {
+    this.formPlayerApiService.getServiceData(serviceId, targetId, orderId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
       () => this.updateLoading(false)
@@ -126,11 +107,10 @@ export class FormPlayerService {
 
 
   getDataFromLocalStorage() {
-    // eslint-disable-next-line max-len
-    const store = UtilsService.getLocalStorageJSON(FormPlayerService.localStorageComponentDataKey);
+    const store = UtilsService.getLocalStorageJSON(COMPONENT_DATA_KEY);
     this.processResponse(store);
     this.updateLoading(false);
-    UtilsService.deleteFromLocalStorage(FormPlayerService.localStorageComponentDataKey);
+    UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
   }
 
   /**

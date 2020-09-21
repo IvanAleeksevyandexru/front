@@ -1,18 +1,18 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import * as moment_ from 'moment';
 import { ValidationShowOn } from 'epgu-lib';
-import { EmployeeHistoryFormService } from './services/employee-history.form.service';
+import * as moment_ from 'moment';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
+import { Gender } from '../../../../shared/types/gender';
+import { Display } from '../../../screen.types';
 import {
   Employee,
   EmployeeHistoryAvailableDates,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel,
 } from './employee-history.types';
+import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
+import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
-import { Display } from '../../../screen.types';
-import { Gender } from '../../../../shared/types/gender';
 
 const moment = moment_;
 
@@ -20,6 +20,7 @@ const moment = moment_;
   selector: 'epgu-constructor-employee-history',
   templateUrl: './employee-history.component.html',
   styleUrls: ['./employee-history.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class EmployeeHistoryComponent implements OnInit, OnChanges {
   @Input() display: Display;

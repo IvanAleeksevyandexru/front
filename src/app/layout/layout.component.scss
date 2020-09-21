@@ -11,3 +11,9 @@
     min-height: calc(100vh - 80px);
   }
 }
+
+app-footer {
+  @include tablets-down {
+    display: none;
+  }
+}
