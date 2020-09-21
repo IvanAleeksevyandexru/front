@@ -19,7 +19,6 @@ import {
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
   likeDictionary,
-  isValueValid,
 } from '../tools/custom-screen-tools';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../screen.service';
@@ -136,8 +135,7 @@ export class ComponentsListComponent implements OnChanges {
   inputChange($event: Event, component: CustomComponent) {
     let { value } = $event.target as HTMLInputElement;
     if (component.type === 'AddressInput') {
-      const fullAddressObject = this.state[component.id].value;
-      value = fullAddressObject;
+      value = this.state[component.id].value;
     }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
@@ -261,10 +259,6 @@ export class ComponentsListComponent implements OnChanges {
     }
     const prepareStateForSending = this.getPreparedStateForSending();
     this.changes.emit(prepareStateForSending);
-  }
-
-  isValid(type, value): boolean {
-    return type === this.componentType.StringInput || isValueValid(type, value);
   }
 
   /**

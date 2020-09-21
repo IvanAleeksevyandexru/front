@@ -111,12 +111,12 @@
             [showConstantMaskSymbols]="true"
             [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
-            [validation]="state[componentData.id].valid && isValid(componentData.type, state[componentData.id].value)"
+            [validation]="state[componentData.id].valid"
           ></lib-standard-masked-input>
            
           <ng-template #plainInput>
             <lib-plain-input
-              [invalid]="!(state[componentData.id].valid && isValid(componentData.type, state[componentData.id].value))"
+              [invalid]="!(state[componentData.id].valid)"
               [name]="componentData.id"
               [disabled]="state[componentData.id].disabled"
               [(ngModel)]="state[componentData.id].value"
