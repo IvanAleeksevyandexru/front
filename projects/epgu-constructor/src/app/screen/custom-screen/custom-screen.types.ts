@@ -45,9 +45,9 @@ export type CustomComponentDropDownItem = {
 
 
 /**
- * @property {Array<string>}ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
+ * @property ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
  * (например Регион связан со траной что и чтоб не выкачивать все регионы мира, в ссылке будет указана страна)
- * @property {string}dictionaryType - dictionary name for request {@see getDictionary}
+ * @property dictionaryType - dictionary name for request {@see getDictionary}
  */
 export interface CustomComponentAttr {
   [key:string]:any;
@@ -56,8 +56,8 @@ export interface CustomComponentAttr {
   labelAttr: string;
   fields: Array<any>;
   ref: Array<any>;
-  requiredAttrs?: Array<string>;
   validation: Array<CustomComponentAttrValidation>;
+  requiredAttrs?: Array<string>;
   supportedValues?: Array<SupportedValue>;
 }
 

@@ -1,32 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { FormControl, FormGroup } from '@angular/forms';
-import * as moment_ from 'moment';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import * as moment from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
-import { ComponentBase } from '../../../screen.types';
-
-const moment = moment_;
-
-export interface DocInputComponentInterface extends ComponentBase {
-  attrs: {
-    fields: Array<IField>;
-  };
-}
-interface IField {
-  fieldName: string;
-  label: string;
-  type: 'input';
-}
-
-interface IForm {
-  series: string;
-  number: string;
-  date: string;
-  emiter: string;
-}
+import { DocInputComponentInterface, IField, IForm } from './doc-input.types';
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -51,7 +31,14 @@ export class DocInputComponent implements OnInit {
 
   private generateFormGroup(): void {
     this.data.attrs.fields.forEach((field: IField) => {
-      this.form.addControl(field.fieldName, new FormControl());
+      const validators = [Validators.required];
+      if (field.maxlength) {
+        validators.push(Validators.maxLength(field.maxlength));
+      }
+      if (field.minlength) {
+        validators.push(Validators.minLength(field.minlength));
+      }
+      this.form.addControl(field.fieldName, new FormControl(null, validators));
     });
 
     this.form.valueChanges

@@ -284,8 +284,11 @@ export class ComponentsListComponent implements OnChanges {
    * @private
    */
   private checkDependenceOfTheComponent() {
-    this.components.forEach((component) =>
-      calcDependedComponent(component, this.state, this.components),
-    );
+    this.components.forEach((component) => {
+      calcDependedComponent(component, this.state, this.components);
+      if (component.attrs?.disabled) {
+        this.state[component.id].disabled = true;
+      }
+    });
   }
 }

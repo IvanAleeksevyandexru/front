@@ -1,0 +1,31 @@
+import { ComponentBase } from '../../../screen.types';
+
+/**
+ * Интерфейс компонента с полями
+ */
+export interface DocInputComponentInterface extends ComponentBase {
+  attrs: {
+    fields: Array<IField>;
+  };
+}
+
+/**
+ * Интерфейс для поля на проверку
+ */
+export interface IField {
+  fieldName: string;
+  label: string;
+  type: 'input';
+  maxlength?: number;
+  minlength?: number;
+}
+
+/**
+ * Интерфейс полей формы
+ */
+export interface IForm {
+  series: string;
+  number: string;
+  date: string;
+  emiter: string;
+}

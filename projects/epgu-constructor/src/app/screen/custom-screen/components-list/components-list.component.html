@@ -94,6 +94,7 @@
             [disabled]="state[componentData.id].disabled"
             [showMaskAsPlaceholder]="false"
             [showConstantMaskSymbols]="true"
+            [maxlength]="componentData.attrs?.maxlength"
             [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
           ></lib-standard-masked-input>
@@ -102,9 +103,10 @@
               [invalid]="!state[componentData.id].valid"
               [name]="componentData.id"
               [disabled]="state[componentData.id].disabled"
+              [maxlength]="componentData.attrs?.maxlength"
+              [validationShowOn]="validationShowOn"
               [(ngModel)]="state[componentData.id].value"
               (change)="inputChange($event, componentData)"
-              [validationShowOn]="validationShowOn"
             ></lib-plain-input>
           </ng-template>
           <div *ngIf="componentData.attrs?.hint" class="form__item__hint">
@@ -185,6 +187,7 @@
             [externalApiUrl]="config.externalApiUrl + '/'"
             [initValue]="state[componentData.id].value"
             [(ngModel)]="state[componentData.id].value"
+            [maxlength]="componentData.attrs?.maxlength"
             (change)="inputChange($event, componentData)"
           >
           </lib-dadata-widget>
