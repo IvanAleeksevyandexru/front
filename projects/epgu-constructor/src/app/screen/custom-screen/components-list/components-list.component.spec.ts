@@ -5,8 +5,8 @@ import { DictionaryApiService } from '../../../services/api/dictionary-api/dicti
 import { ScreenService } from '../../screen.service';
 import { ConfigService } from '../../../config/config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ApplicantAnswersService } from '../../../shared/services/applicant-answers/applicant-answers.service';
-import { ComponentStateService } from '../../../services/component-state/component-state.service';
+import { ScreenServiceStub } from '../../screen.service.stub';
+import { MaskHandlePipe } from '../../../shared/pipes/mask-handle/mask-handle.pipe';
 import { FormsModule } from '@angular/forms';
 
 
@@ -17,14 +17,11 @@ describe('ComponentsListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [ ComponentsListComponent ],
+      declarations: [ ComponentsListComponent, MaskHandlePipe ],
       providers: [
         DictionaryApiService,
-        ScreenService,
         ConfigService,
-        // почему надо импортить этот сервис?
-        ApplicantAnswersService,
-        ComponentStateService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
       ],
       imports: [
         HttpClientTestingModule,
