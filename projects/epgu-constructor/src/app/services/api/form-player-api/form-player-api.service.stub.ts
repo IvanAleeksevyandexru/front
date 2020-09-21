@@ -4,19 +4,15 @@ import { Observable, of } from 'rxjs';
 @Injectable()
 export class FormPlayerApiServiceStub {
 
-  public getDraftData() {
+  public getInviteServiceData(): Observable<any> {
     return of({});
   }
 
-  public getInitialData(): Observable<any> {
+  public getServiceData(): Observable<any> {
     return of({});
   }
 
   public navigate(): Observable<any> {
     return of({});
-  }
-
-  public getNavigatePath(): string {
-    return '';
   }
 }

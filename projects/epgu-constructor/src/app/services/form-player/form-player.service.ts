@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import {
-  NavigationFullOptions,
-  NavigationPayload
-} from '../../form-player.types';
+import { FormPlayerNavigation, NavigationPayload, Service } from '../../form-player.types';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
-  FormPlayerApiDraftResponse, FormPlayerApiDraftSuccessResponse,
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
@@ -70,45 +65,32 @@ export class FormPlayerService {
     if (this.isNeedToShowLastScreen()) {
       this.getDataFromLocalStorage();
     } else {
-      if (orderId) {
-        this.getDraftOrderData(orderId);
+      if (this.serviceDataService.invited) {
+        this.getInviteOrderData(orderId);
       } else {
-        this.getNewOrderData();
+        this.getOrderData(orderId);
       }
     }
   }
 
-
   /**
-   * Получает и устанавливает данные из черновика по id заявления
-   * @param orderId - id заявления
+   * Получает и устанавливает данные для заявления для id услуги по приглашению
+   * @param orderId - идентификатор черновика
    */
-  getDraftOrderData(orderId: string) {
-    this.formPlayerApiService.getDraftData(orderId)
-      .pipe(
-        map(this.mapDraftDataToOrderData)
-      )
-      .subscribe(
-        (response) => this.processResponse(response),
-        (error) => this.sendDataError(error),
-        () => this.updateLoading(false)
-      );
-  }
-
-  mapDraftDataToOrderData(response: FormPlayerApiDraftResponse) {
-    if(this.hasRequestErrors(response as FormPlayerApiErrorResponse)) {
-      return response as FormPlayerApiResponse;
-    }
-    const successResponse = response as FormPlayerApiDraftSuccessResponse;
-    return { scenarioDto: successResponse.body } as FormPlayerApiResponse;
+  getInviteOrderData(orderId: string) {
+    this.formPlayerApiService.getInviteServiceData(orderId).subscribe(
+      (response) => this.processResponse(response),
+      (error) => this.sendDataError(error),
+      () => this.updateLoading(false)
+    );
   }
 
   /**
-   * Устанавливает данные для нового черновика для id услуги
+   * Получает и устанавливает данные для заявления для id услуги
+   * @param orderId - идентификатор черновика
    */
-  getNewOrderData() {
-    const { serviceId, targetId } = this.serviceDataService;
-    this.formPlayerApiService.getServiceData(serviceId, targetId).subscribe(
+  getOrderData(orderId?: string) {
+    this.formPlayerApiService.getServiceData(orderId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
       () => this.updateLoading(false)
@@ -117,11 +99,9 @@ export class FormPlayerService {
 
 
   getDataFromLocalStorage() {
-    // eslint-disable-next-line max-len
     const store = UtilsService.getLocalStorageJSON(COMPONENT_DATA_KEY);
     this.processResponse(store);
     this.updateLoading(false);
-    UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
   }
 
 
