@@ -1,9 +1,9 @@
 import { Answer } from './shared/types/answer';
 
 /**
- * @property {string}serviceId - идентификатор услуги в formPlayerApi
- * @property {string}targetId - идентификатор услуги в ФРГУ
- * @property {string}orderId - идентификатор черновика заявления
+ * @property serviceId - идентификатор услуги в formPlayerApi
+ * @property targetId - идентификатор услуги в ФРГУ
+ * @property orderId - идентификатор черновика заявления
  */
 export interface Service {
   serviceId: string;
@@ -11,11 +11,17 @@ export interface Service {
   orderId?: string;
 }
 
+/**
+ * Типы навигации
+ */
 export enum FormPlayerNavigation {
   'NEXT' = 'getNextStep',
   'PREV' = 'getPrevStep',
 }
 
+/**
+ * Данные для отправки и навигации
+ */
 export interface NavigationPayload {
   [key: string]: Answer
 }

@@ -32,9 +32,20 @@
   &__radio {
     &_block {
       display: inline-block;
+
       lib-radio {
         display: block;
         margin-bottom: 16px;
+      }
+
+      lib-checkbox {
+        display: block;
+        margin-bottom: 16px;
+
+        &::ng-deep .labelText{
+          line-height: 24px;
+        }
+
         &:first-child {
           margin-top: 4px;
         }

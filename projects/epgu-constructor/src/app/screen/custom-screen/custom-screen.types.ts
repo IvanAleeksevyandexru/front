@@ -13,6 +13,7 @@ export enum CustomScreenComponentTypes {
   AddressInput = 'AddressInput',
   htmlString = 'HtmlString',
   GenderSelection = 'GenderSelection',
+  CheckBox = 'CheckBox',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
@@ -77,6 +78,7 @@ export interface CustomComponentAttrValidation {
 export interface CustomComponentStateItem {
   valid: boolean;
   isShown: boolean;
+  disabled?: boolean;
   errorMessage: string;
   value: any;
   component: CustomComponent
@@ -90,13 +92,22 @@ export interface CustomComponentOutputData {
 }
 
 /**
- * @property {string}relatedRel - id компонента от которого зависим
- * @property {string}val - ключевое значение которое должен принимать компонент от которого заивисм
+ * Тип зависимости от другого компонента
+ */
+export enum CustomComponentRefRelation {
+  displayOn = 'displayOn',
+  disabled = 'disabled'
+}
+
+/**
+ * @property relatedRel - id компонента от которого зависим
+ * @property val - ключевое значение которое должен принимать компонент от которого заивисм
+ * @property relation - тип зависимости
  */
 export interface CustomComponentRef {
-  'relatedRel': string,
-  'val': string,
-  'relation': string
+  relatedRel: string,
+  val: string,
+  relation: CustomComponentRefRelation
 }
 
 export interface CustomDisplay extends Display {
