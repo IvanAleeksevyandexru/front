@@ -110,7 +110,6 @@ export class FormPlayerService {
     const store = UtilsService.getLocalStorageJSON(COMPONENT_DATA_KEY);
     this.processResponse(store);
     this.updateLoading(false);
-    UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
   }
 
   /**
@@ -122,7 +121,9 @@ export class FormPlayerService {
     if (!screenComponent) {
       this.handleScreenComponentError(this.screenType);
     }
-
+    if (this.isNeedToShowLastScreen()) {
+      UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
+    }
     return screenComponent;
   }
 
