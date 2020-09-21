@@ -139,6 +139,7 @@ export class PaymentComponent implements OnDestroy {
 
     this.isPaid = bill.isPaid;
     if (this.isPaid) {
+      this.isShown = false;
       this.nextStep();
     }
 
@@ -178,6 +179,7 @@ export class PaymentComponent implements OnDestroy {
       this.isPaid = Boolean(response?.data[this.billPosition]?.paid);
     }
     if (this.isPaid) {
+      this.isShown = false;
       clearInterval(this.payStatusIntervalLink);
       this.nextStep();
     }
