@@ -130,7 +130,7 @@ export class PaymentService {
   getReturnUrl(): string {
     const slashInEndRex = /\/$/;
     const host = location.href.replace(slashInEndRex,'');
-    return encodeURIComponent(`${host}${this.config.apiUrl}?getLastScreen=1`);
+    return encodeURIComponent(`${host}?getLastScreen=1`);
   }
 
   /**
