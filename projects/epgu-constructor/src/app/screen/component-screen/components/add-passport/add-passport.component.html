@@ -4,11 +4,24 @@
     <form [formGroup]="passportForm" class="form__inputs">
       <div class="inputs__field">
         <epgu-constructor-label for="series">Серия</epgu-constructor-label>
-        <lib-plain-input id="series" formControlName="series" type="number"></lib-plain-input>
+        <lib-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
+          id="series"
+          formControlName="series"
+          type="number"
+        ></lib-plain-input>
       </div>
       <div class="inputs__field">
         <epgu-constructor-label class="field__label"> Номер </epgu-constructor-label>
-        <lib-plain-input formControlName="number" type="number"></lib-plain-input>
+        <lib-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
+          formControlName="number"
+          type="number"
+        ></lib-plain-input>
       </div>
     </form>
   </div>

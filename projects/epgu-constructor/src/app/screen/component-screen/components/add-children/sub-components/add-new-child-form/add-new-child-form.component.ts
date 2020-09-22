@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { TextTransform } from '../../../../../../shared/types/textTransform';
+import { ComponentBase } from '../../../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-add-new-child-form',
@@ -10,6 +12,7 @@ import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsub
 export class AddNewChildFormComponent implements AfterViewInit {
   @ViewChild('newChildForm') newChildForm;
 
+  @Input() data: ComponentBase;
   @Input() item: any;
   @Output() childUpdateEvent = new EventEmitter();
 
@@ -25,5 +28,9 @@ export class AddNewChildFormComponent implements AfterViewInit {
       this.item.gender = gender;
       this.childUpdateEvent.emit(this.item);
     });
+  }
+
+  get textTransformType(): TextTransform {
+    return this.data?.attrs?.fstuc;
   }
 }

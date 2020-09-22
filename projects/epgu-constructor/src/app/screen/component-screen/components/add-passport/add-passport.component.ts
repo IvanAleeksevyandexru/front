@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { TextTransform } from '../../../../shared/types/textTransform';
 
 @Component({
   selector: 'epgu-constructor-add-passport',
@@ -39,5 +40,9 @@ export class AddPassportComponent implements OnInit {
 
         this.componentStateService.state = value;
       });
+  }
+
+  get textTransformType(): TextTransform {
+    return this.data?.attrs?.fstuc;
   }
 }

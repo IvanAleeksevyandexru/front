@@ -44,6 +44,9 @@
     <div class="employee-history__input" *ngIf="findData(generation.type)?.position as position">
       <epgu-constructor-label [for]="i + '_position'">{{ position }}</epgu-constructor-label>
       <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
         [id]="i + '_position'"
         [disabled]="true"
         [(ngModel)]="generation.position"
@@ -52,6 +55,9 @@
     <div class="employee-history__input" *ngIf="findData(generation.type)?.place as place">
       <epgu-constructor-label [for]="i + '_place'">{{ place }}</epgu-constructor-label>
       <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
         [id]="i + '_place'"
         [disabled]="true"
         [(ngModel)]="generation.place"
@@ -62,6 +68,9 @@
         Адрес постоянной регистрации (прописки) или временной регистрации (место пребывания) в этот период
       </epgu-constructor-label>
       <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
         [id]="i + '_address'"
         [disabled]="true"
         [(ngModel)]="generation.address"
@@ -122,6 +131,9 @@
          *ngIf="findData()?.position as position">
       <epgu-constructor-label for="position">{{ position }}</epgu-constructor-label>
       <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
         id="position"
         [formControl]="employeeFormService.generateForm.get('position')"
         [invalid]="employeeFormService.generateForm.get('position').invalid"
@@ -132,6 +144,9 @@
          *ngIf="findData()?.place as place">
       <epgu-constructor-label for="place">{{ place }}</epgu-constructor-label>
       <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
         id="place"
         [formControl]="employeeFormService.generateForm.get('place')"
         [invalid]="employeeFormService.generateForm.get('place').invalid"
@@ -143,6 +158,9 @@
         Адрес постоянной регистрации (прописки) или временной регистрации (место пребывания) в этот период
       </epgu-constructor-label>
       <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
         id="address"
         [formControl]="employeeFormService.generateForm.get('address')"
         [invalid]="employeeFormService.generateForm.get('address').invalid"
