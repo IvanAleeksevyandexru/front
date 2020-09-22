@@ -47,6 +47,8 @@
     >
       <lib-plain-input
         epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
         [disabled]="!isEditable"
         [(ngModel)]="valueParsed[field.fieldName]"
         [name]="field.fieldName"

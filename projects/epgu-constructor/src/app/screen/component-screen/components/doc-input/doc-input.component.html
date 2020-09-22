@@ -2,11 +2,23 @@
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input">
       <epgu-constructor-label for="series">Серия</epgu-constructor-label>
-      <lib-plain-input epgu-constructor-trim id="series" [formControl]="form.get('series')"></lib-plain-input>
+      <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
+        id="series"
+        [formControl]="form.get('series')"
+      ></lib-plain-input>
     </div>
     <div class="doc-input-screen__input">
       <epgu-constructor-label for="number">Номер</epgu-constructor-label>
-      <lib-plain-input epgu-constructor-trim id="number" [formControl]="form.get('number')"></lib-plain-input>
+      <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
+        id="number"
+        [formControl]="form.get('number')"
+      ></lib-plain-input>
     </div>
   </div>
   <div class="doc-input-screen__inputs-row">
@@ -18,7 +30,13 @@
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input">
       <epgu-constructor-label for="emitter">Кем выдано</epgu-constructor-label>
-      <lib-plain-input epgu-constructor-trim id="emitter" [formControl]="form.get('emiter')"></lib-plain-input>
+      <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
+        id="emitter"
+        [formControl]="form.get('emiter')"
+      ></lib-plain-input>
     </div>
   </div>
 </section>

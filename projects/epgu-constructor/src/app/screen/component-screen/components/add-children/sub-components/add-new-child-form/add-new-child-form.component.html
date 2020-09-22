@@ -21,6 +21,8 @@
         <epgu-constructor-label for="lastName"> Фамилия </epgu-constructor-label>
         <lib-plain-input
           epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
           id="lastName"
           name="lastName"
           [(ngModel)]="item.lastName"
@@ -30,6 +32,8 @@
         <epgu-constructor-label for="firstName"> Имя </epgu-constructor-label>
         <lib-plain-input
           epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
           id="firstName"
           name="firstName"
           [(ngModel)]="item.firstName"
@@ -39,6 +43,8 @@
         <epgu-constructor-label for="middleName"> Отчество </epgu-constructor-label>
         <lib-plain-input
           epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
           id="middleName"
           name="middleName"
           [(ngModel)]="item.middleName"

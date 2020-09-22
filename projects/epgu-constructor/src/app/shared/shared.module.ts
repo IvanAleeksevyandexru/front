@@ -23,6 +23,7 @@ import { ComponentsListComponent } from '../screen/custom-screen/components-list
 import { LongButtonComponent } from './components/long-button/long-button.component';
 import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 import { TrimDirective } from './directives/trim/trim.directive';
+import { TextTransformDirective } from './directives/text-transform/text-transform.directive';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -48,7 +49,8 @@ const PIPES = [
 ];
 
 const DIRECTIVES = [
-  TrimDirective
+  TrimDirective,
+  TextTransformDirective
 ];
 
 @NgModule({

@@ -1,6 +1,7 @@
 import { ListItem } from 'epgu-lib';
 import { DictionaryItem, DictionaryResponse } from '../../services/api/dictionary-api/dictionary-api.types';
 import { ComponentBase, Display } from '../screen.types';
+import { TextTransform } from '../../shared/types/textTransform';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -121,6 +122,7 @@ export interface CustomComponent extends ComponentBase {
   type: CustomScreenComponentTypes;
   id: string;
   hint?: string;
+  fstuc?: TextTransform;
 }
 
 interface SupportedValue {
