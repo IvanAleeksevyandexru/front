@@ -10,37 +10,33 @@ import { EpguLibModule } from 'epgu-lib';
 import { ScreenServiceStub } from '../../../../../screen.service.stub';
 import { FormPlayerServiceStub } from '../../../../../../services/form-player/form-player.service.stub';
 
-describe('ConfirmPhoneComponent', () => {
-  // let component: ConfirmPhoneComponent;
-  // let fixture: ComponentFixture<ConfirmPhoneComponent>;
-  //
-  // beforeEach(async () => {
-  //   await TestBed.configureTestingModule({
-  //     declarations: [ConfirmPhoneComponent, CounterDirective],
-  //     imports: [EpguLibModule],
-  //     providers: [
-  //       UnsubscribeService,
-  //       NavigationService,
-  //       { provide: ScreenService,useClass: ScreenServiceStub },
-  //       { provide: FormPlayerService,useClass: FormPlayerServiceStub },
-  //     ],
-  //     schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-  //   })
-  //     .compileComponents();
-  // });
-  //
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(ConfirmPhoneComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.debugElement.injector.get(ScreenService);
-  //   fixture.debugElement.injector.get(UnsubscribeService);
-  //   fixture.debugElement.injector.get(NavigationService);
-  //   fixture.debugElement.injector.get(FormPlayerService);
-  //
-  //   fixture.detectChanges();
-  // });
+describe.skip('ConfirmPhoneComponent', () => {
+  let component: ConfirmPhoneComponent;
+  let fixture: ComponentFixture<ConfirmPhoneComponent>;
 
-  it('should create', () => {
-    expect(true).toBeTruthy(); // TODO подправить
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ConfirmPhoneComponent, CounterDirective],
+      imports: [EpguLibModule],
+      providers: [
+        UnsubscribeService,
+        NavigationService,
+        { provide: ScreenService,useClass: ScreenServiceStub },
+        { provide: FormPlayerService,useClass: FormPlayerServiceStub },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+    })
+      .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ConfirmPhoneComponent);
+    component = fixture.componentInstance;
+    fixture.debugElement.injector.get(ScreenService);
+    fixture.debugElement.injector.get(UnsubscribeService);
+    fixture.debugElement.injector.get(NavigationService);
+    fixture.debugElement.injector.get(FormPlayerService);
+
+    fixture.detectChanges();
   });
 });

@@ -5,49 +5,46 @@ import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { SharedModule } from '../../shared/shared.module';
 import { QuestionsScreenComponent } from './questions-screen.component';
+import { EpguLibModule } from 'epgu-lib';
 
-describe('QuestionsScreenComponent', () => {
-  // let component: QuestionsScreenComponent;
-  // let fixture: ComponentFixture<QuestionsScreenComponent>;
-  // let navService: NavigationService;
-  // let screenService: ScreenService;
-  // const screenDataMock: ScreenStore = {
-  //   display: {
-  //     components: [
-  //       {
-  //         attrs: {},
-  //         id: 'sd',
-  //         label: '',
-  //         type: '',
-  //         visited: true,
-  //         value: ''
-  //       }
-  //     ],
-  //     header: '',
-  //     id: '',
-  //     name: '',
-  //     submitLabel: '',
-  //     type: ScreenTypes.QUESTION
-  //   }
-  // };
-  //
-  // beforeEach(() => {
-  //   TestBed.configureTestingModule({
-  //     imports: [
-  //       SharedModule,
-  //       EpguLibModule
-  //     ],
-  //     declarations: [QuestionsScreenComponent],
-  //     providers: [
-  //       NavigationService,
-  //       UnsubscribeService,
-  //       ScreenService,
-  //     ]
-  //   })
-  //   .compileComponents();
-  // });
+describe.skip('QuestionsScreenComponent', () => {
+  let component: QuestionsScreenComponent;
+  let fixture: ComponentFixture<QuestionsScreenComponent>;
+  let navService: NavigationService;
+  let screenService: ScreenService;
+  const screenDataMock: ScreenStore = {
+    display: {
+      components: [
+        {
+          attrs: {},
+          id: 'sd',
+          label: '',
+          type: '',
+          visited: true,
+          value: ''
+        }
+      ],
+      header: '',
+      id: '',
+      name: '',
+      submitLabel: '',
+      type: ScreenTypes.QUESTION
+    }
+  };
 
-  it ('shout nothing', () =>{
-    expect(true).toBeTruthy();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        SharedModule,
+        EpguLibModule
+      ],
+      declarations: [QuestionsScreenComponent],
+      providers: [
+        NavigationService,
+        UnsubscribeService,
+        ScreenService,
+      ]
+    })
+    .compileComponents();
   });
 });

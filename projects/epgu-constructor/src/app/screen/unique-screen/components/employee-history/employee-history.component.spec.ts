@@ -13,55 +13,52 @@ import { EpguLibModule } from 'epgu-lib';
 import { Gender } from '../../../../shared/types/gender';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 
-describe('EmployeeHistoryComponent', () => {
-  // let component: EmployeeHistoryComponent;
-  // let fixture: ComponentFixture<EmployeeHistoryComponent>;
-  // let mockDisplay: Display = {
-  //   components: [],
-  //   header: '',
-  //   id: '',
-  //   name: '',
-  //   submitLabel: '',
-  //   type: ScreenTypes.UNIQUE
-  // };
-  // beforeEach(() => {
-  //   TestBed.configureTestingModule({
-  //     imports: [
-  //       ReactiveFormsModule,
-  //       EpguLibModule,
-  //     ],
-  //     declarations: [
-  //       EmployeeHistoryComponent,
-  //       PageNameComponent,
-  //       LabelComponent,
-  //       NavigationComponent,
-  //       ScreenContainerComponent,
-  //     ],
-  //     providers: [
-  //       EmployeeHistoryFormService,
-  //       UnsubscribeService,
-  //       EmployeeHistoryDatasourceService,
-  //       EmployeeHistoryMonthsService,
-  //     ]
-  //   })
-  //   .compileComponents();
-  // });
-  //
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(EmployeeHistoryComponent);
-  //   fixture.debugElement.injector.get(EmployeeHistoryFormService);
-  //   fixture.debugElement.injector.get(UnsubscribeService);
-  //   fixture.debugElement.injector.get(EmployeeHistoryDatasourceService);
-  //   fixture.debugElement.injector.get(EmployeeHistoryMonthsService);
-  //
-  //   component = fixture.componentInstance;
-  //   component.display = mockDisplay;
-  //   component.header = '';
-  //   component.gender = Gender.male;
-  //   // spyOn(formService, 'createEmployeeForm')
-  //   fixture.detectChanges();
-  // });
-  it('should create', () => {
-    expect(true).toBeTruthy();
+describe.skip('EmployeeHistoryComponent', () => {
+  let component: EmployeeHistoryComponent;
+  let fixture: ComponentFixture<EmployeeHistoryComponent>;
+  let mockDisplay: Display = {
+    components: [],
+    header: '',
+    id: '',
+    name: '',
+    submitLabel: '',
+    type: ScreenTypes.UNIQUE
+  };
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        EpguLibModule,
+      ],
+      declarations: [
+        EmployeeHistoryComponent,
+        PageNameComponent,
+        LabelComponent,
+        NavigationComponent,
+        ScreenContainerComponent,
+      ],
+      providers: [
+        EmployeeHistoryFormService,
+        UnsubscribeService,
+        EmployeeHistoryDatasourceService,
+        EmployeeHistoryMonthsService,
+      ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(EmployeeHistoryComponent);
+    fixture.debugElement.injector.get(EmployeeHistoryFormService);
+    fixture.debugElement.injector.get(UnsubscribeService);
+    fixture.debugElement.injector.get(EmployeeHistoryDatasourceService);
+    fixture.debugElement.injector.get(EmployeeHistoryMonthsService);
+
+    component = fixture.componentInstance;
+    component.display = mockDisplay;
+    component.header = '';
+    component.gender = Gender.male;
+    // spyOn(formService, 'createEmployeeForm')
+    fixture.detectChanges();
   });
 });

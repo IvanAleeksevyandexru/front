@@ -1,29 +1,27 @@
+import { RepeatableFieldsComponent } from './repeatable-fields.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
-describe('RepeatableFieldsComponent', () => {
-  it('TODO: remove it when resolve issue with @ifc/plugin and @ifc/common dependencies', () => {
-    expect(true).toBeTruthy();
+describe.skip('RepeatableFieldsComponent', () => {
+  let component: RepeatableFieldsComponent;
+  let fixture: ComponentFixture<RepeatableFieldsComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      declarations: [ RepeatableFieldsComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(RepeatableFieldsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  // let component: RepeatableFieldsComponent;
-  // let fixture: ComponentFixture<RepeatableFieldsComponent>;
-
-  // beforeEach(async(() => {
-  //   TestBed.configureTestingModule({
-  //     schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-  //     declarations: [ RepeatableFieldsComponent ]
-  //   })
-  //   .compileComponents();
-  // }));
-
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(RepeatableFieldsComponent);
-  //   component = fixture.componentInstance;
-  //   component.screens;
-  //   fixture.detectChanges();
-  // });
-
-  // it('should create', () => {
-  //   expect(true).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

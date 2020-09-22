@@ -14,9 +14,9 @@ describe('CounterDirective', () => {
       providers: [UnsubscribeService]
     });
 
-    // fixture = TestBed.createComponent(CounterDirective);
-    // counter = fixture.componentInstance;
-    // unsubscribeService = fixture.debugElement.injector.get(UnsubscribeService);
+    fixture = TestBed.createComponent(CounterDirective);
+    counter = fixture.componentInstance;
+    unsubscribeService = fixture.debugElement.injector.get(UnsubscribeService);
 
   });
 

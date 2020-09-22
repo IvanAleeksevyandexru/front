@@ -8,35 +8,31 @@ import { FormPlayerServiceStub } from '../../../../../../services/form-player/fo
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenServiceStub } from '../../../../../screen.service.stub';
 
-describe('ConfirmEmailComponent', () => {
-  // let component: ConfirmEmailComponent;
-  // let fixture: ComponentFixture<ConfirmEmailComponent>;
-  //
-  // beforeEach(async () => {
-  //   await TestBed.configureTestingModule({
-  //     schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-  //     declarations: [ ConfirmEmailComponent ],
-  //     providers: [
-  //       UnsubscribeService,
-  //       NavigationService,
-  //       { provide: ScreenService,useClass: ScreenServiceStub },
-  //       { provide: FormPlayerService,useClass: FormPlayerServiceStub },
-  //     ]
-  //   })
-  //   .compileComponents();
-  // });
-  //
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(ConfirmEmailComponent);
-  //   component = fixture.componentInstance;
-  //
-  //   fixture.debugElement.injector.get(ScreenService);
-  //   fixture.debugElement.injector.get(FormPlayerService);
-  //   fixture.debugElement.injector.get(UnsubscribeService);
-  //   fixture.debugElement.injector.get(NavigationService);
-  // });
+describe.skip('ConfirmEmailComponent', () => {
+  let component: ConfirmEmailComponent;
+  let fixture: ComponentFixture<ConfirmEmailComponent>;
 
-  it('should create', () => {
-    expect(true).toBeTruthy();
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      declarations: [ ConfirmEmailComponent ],
+      providers: [
+        UnsubscribeService,
+        NavigationService,
+        { provide: ScreenService,useClass: ScreenServiceStub },
+        { provide: FormPlayerService,useClass: FormPlayerServiceStub },
+      ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ConfirmEmailComponent);
+    component = fixture.componentInstance;
+
+    fixture.debugElement.injector.get(ScreenService);
+    fixture.debugElement.injector.get(FormPlayerService);
+    fixture.debugElement.injector.get(UnsubscribeService);
+    fixture.debugElement.injector.get(NavigationService);
   });
 });

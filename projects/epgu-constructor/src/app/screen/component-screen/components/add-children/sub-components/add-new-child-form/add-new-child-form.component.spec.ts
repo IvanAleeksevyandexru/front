@@ -5,38 +5,34 @@ import { FormsModule } from '@angular/forms';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
 
-describe('AddNewChildFormComponent', () => {
-  // let component: AddNewChildFormComponent;
-  // let fixture: ComponentFixture<AddNewChildFormComponent>;
-  // const mockData = {
-  //   items: {
-  //     birthDate: '',
-  //     firstName: '',
-  //     lastName: '',
-  //     middleName: '',
-  //     gender: '',
-  //   }
-  // };
-  //
-  // beforeEach(() => {
-  //   TestBed.configureTestingModule({
-  //     schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-  //     imports: [ FormsModule ],
-  //     declarations: [ AddNewChildFormComponent ],
-  //     providers: [ UnsubscribeService ]
-  //   })
-  //   .compileComponents();
-  // });
-  //
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(AddNewChildFormComponent);
-  //   fixture.debugElement.injector.get(UnsubscribeService);
-  //   component = fixture.componentInstance;
-  //   component.item = mockData;
-  //   fixture.detectChanges();
-  // });
+describe.skip('AddNewChildFormComponent', () => {
+  let component: AddNewChildFormComponent;
+  let fixture: ComponentFixture<AddNewChildFormComponent>;
+  const mockData = {
+    items: {
+      birthDate: '',
+      firstName: '',
+      lastName: '',
+      middleName: '',
+      gender: '',
+    }
+  };
 
-  it('should create', () => {
-    expect(true).toBeTruthy();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      imports: [ FormsModule ],
+      declarations: [ AddNewChildFormComponent ],
+      providers: [ UnsubscribeService ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AddNewChildFormComponent);
+    fixture.debugElement.injector.get(UnsubscribeService);
+    component = fixture.componentInstance;
+    component.item = mockData;
+    fixture.detectChanges();
   });
 });
