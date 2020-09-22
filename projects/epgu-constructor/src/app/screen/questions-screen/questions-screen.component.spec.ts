@@ -7,7 +7,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { QuestionsScreenComponent } from './questions-screen.component';
 import { EpguLibModule } from 'epgu-lib';
 
-describe.skip('QuestionsScreenComponent', () => {
+xdescribe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
   let fixture: ComponentFixture<QuestionsScreenComponent>;
   let navService: NavigationService;
@@ -46,5 +46,9 @@ describe.skip('QuestionsScreenComponent', () => {
       ]
     })
     .compileComponents();
+  });
+
+  it('nothing', () => {
+    expect(true).toBeTruthy();
   });
 });

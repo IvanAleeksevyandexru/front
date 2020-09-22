@@ -13,7 +13,7 @@ import { EpguLibModule } from 'epgu-lib';
 import { Gender } from '../../../../shared/types/gender';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 
-describe.skip('EmployeeHistoryComponent', () => {
+xdescribe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;
   let fixture: ComponentFixture<EmployeeHistoryComponent>;
   let mockDisplay: Display = {
@@ -60,5 +60,10 @@ describe.skip('EmployeeHistoryComponent', () => {
     component.gender = Gender.male;
     // spyOn(formService, 'createEmployeeForm')
     fixture.detectChanges();
+  });
+
+
+  it('nothing', () => {
+    expect(true).toBeTruthy();
   });
 });

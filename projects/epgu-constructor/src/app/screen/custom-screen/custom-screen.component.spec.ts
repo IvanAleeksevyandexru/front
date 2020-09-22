@@ -12,7 +12,7 @@ import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ComponentsListComponent } from './components-list/components-list.component';
 import { CustomScreenComponent } from './custom-screen.component';
 
-describe.skip('CustomScreenComponent', () => {
+xdescribe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
   let fixture: ComponentFixture<CustomScreenComponent>;
   let navigationService: NavigationService;

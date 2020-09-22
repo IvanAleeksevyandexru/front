@@ -6,7 +6,7 @@ import { ScreenTypes } from '../../../screen/screen.types';
 import { ModalService } from '../../../services/modal/modal.service';
 import { ModalServiceStub } from '../../../services/modal/modal.service.stub';
 
-describe.skip('OutputHtmlComponent', () => {
+xdescribe('OutputHtmlComponent', () => {
   let component: OutputHtmlComponent;
   let fixture: ComponentFixture<OutputHtmlComponent>;
   let screenService: ScreenService;
@@ -37,5 +37,9 @@ describe.skip('OutputHtmlComponent', () => {
     fixture = TestBed.createComponent(OutputHtmlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  it('nothing', () => {
+    expect(true).toBeTruthy();
   });
 });

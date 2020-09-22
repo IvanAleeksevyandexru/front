@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
 
-describe.skip('AddNewChildFormComponent', () => {
+xdescribe('AddNewChildFormComponent', () => {
   let component: AddNewChildFormComponent;
   let fixture: ComponentFixture<AddNewChildFormComponent>;
   const mockData = {
@@ -34,5 +34,9 @@ describe.skip('AddNewChildFormComponent', () => {
     component = fixture.componentInstance;
     component.item = mockData;
     fixture.detectChanges();
+  });
+
+  it('nothing', () => {
+    expect(true).toBeTruthy();
   });
 });

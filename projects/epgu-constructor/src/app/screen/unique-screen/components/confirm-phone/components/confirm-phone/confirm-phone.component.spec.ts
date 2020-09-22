@@ -10,7 +10,7 @@ import { EpguLibModule } from 'epgu-lib';
 import { ScreenServiceStub } from '../../../../../screen.service.stub';
 import { FormPlayerServiceStub } from '../../../../../../services/form-player/form-player.service.stub';
 
-describe.skip('ConfirmPhoneComponent', () => {
+xdescribe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
   let fixture: ComponentFixture<ConfirmPhoneComponent>;
 
@@ -38,5 +38,9 @@ describe.skip('ConfirmPhoneComponent', () => {
     fixture.debugElement.injector.get(FormPlayerService);
 
     fixture.detectChanges();
+  });
+
+  it('nothing', () => {
+    expect(true).toBeTruthy();
   });
 });

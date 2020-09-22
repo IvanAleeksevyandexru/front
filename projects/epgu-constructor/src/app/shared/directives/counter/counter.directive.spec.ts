@@ -2,7 +2,7 @@ import { CounterDirective } from './counter.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 
-describe('CounterDirective', () => {
+xdescribe('CounterDirective', () => {
   let fixture: ComponentFixture<CounterDirective>;
   let counter: CounterDirective;
   let unsubscribeService: UnsubscribeService;

@@ -8,7 +8,7 @@ import { FormPlayerApiService } from './form-player-api.service';
 import { ServiceDataService } from '../../service-data/service-data.service';
 
 
-describe.skip('FormPlayerApiService', () => {
+xdescribe('FormPlayerApiService', () => {
   let service: FormPlayerApiService;
   let http: HttpTestingController;
   let config: ConfigService;

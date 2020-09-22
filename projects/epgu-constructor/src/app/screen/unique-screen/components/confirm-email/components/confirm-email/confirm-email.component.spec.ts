@@ -8,7 +8,7 @@ import { FormPlayerServiceStub } from '../../../../../../services/form-player/fo
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenServiceStub } from '../../../../../screen.service.stub';
 
-describe.skip('ConfirmEmailComponent', () => {
+xdescribe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;
   let fixture: ComponentFixture<ConfirmEmailComponent>;
 
@@ -34,5 +34,9 @@ describe.skip('ConfirmEmailComponent', () => {
     fixture.debugElement.injector.get(FormPlayerService);
     fixture.debugElement.injector.get(UnsubscribeService);
     fixture.debugElement.injector.get(NavigationService);
+  });
+
+  it('nothing', () => {
+    expect(true).toBeTruthy();
   });
 });
