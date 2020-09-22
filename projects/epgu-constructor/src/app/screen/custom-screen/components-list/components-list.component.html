@@ -80,7 +80,7 @@
             [placeholder]="componentData.attrs?.placeholder"
             [name]="componentData.id"
             [disabled]="state[componentData.id].disabled"
-            [showMaskAsPlaceholder]="false"
+            [showMaskAsPlaceholder]="true"
             [showConstantMaskSymbols]="true"
             [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"

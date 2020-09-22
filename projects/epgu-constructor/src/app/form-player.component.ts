@@ -59,7 +59,7 @@ export class FormPlayerComponent implements OnInit, OnChanges {
 
   getDraftOrderId() {
     let orderId;
-    if (!this.service.invited && this.serviceDataService.orderId) {
+    if (!this.serviceDataService.invited && this.serviceDataService.orderId) {
       // TODO: add better handling for draft case;
       // eslint-disable-next-line no-restricted-globals
       const result = confirm('У вас есть предыдущее заявление, продолжить его заполнять?');
@@ -96,11 +96,12 @@ export class FormPlayerComponent implements OnInit, OnChanges {
   }
 
   checkProps() {
-    if (!this.service) {
+    const { invited, orderId } = this.serviceDataService;
+    if (!this.serviceDataService) {
       throw Error('Need to set Service for epgu form player');
     }
 
-    if (this.service?.invited && !this.service?.orderId) {
+    if (invited && !orderId) {
       throw Error('Should set orderId when invited');
     }
 
