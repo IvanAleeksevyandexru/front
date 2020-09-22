@@ -39,7 +39,7 @@ export class AddPassportComponent implements OnInit {
 
     this.passportForm = this.fb.group(controls);
 
-    this.isCycledFields = !!Object.keys(this.currentCycledFields).length;
+    this.isCycledFields = Boolean(Object.keys(this.currentCycledFields).length);
     if (this.isCycledFields) {
       [this.cycledValues] = [
         ...Object.values(this.currentCycledFields).map((value) => JSON.parse(value)),
