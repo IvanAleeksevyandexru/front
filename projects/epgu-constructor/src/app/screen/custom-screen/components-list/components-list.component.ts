@@ -240,7 +240,7 @@ export class ComponentsListComponent implements OnChanges {
     } else {
       handleSetState(
         false,
-        this.state[componentId]?.component.attrs.validation[inputValidationResult].errorMsg,
+        this.state[componentId]?.component?.attrs?.validation[inputValidationResult]?.errorMsg,
       );
     }
   }
