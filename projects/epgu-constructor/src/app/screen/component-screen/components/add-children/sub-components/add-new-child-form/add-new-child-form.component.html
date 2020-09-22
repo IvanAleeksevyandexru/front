@@ -20,6 +20,7 @@
       <div class="component__field">
         <epgu-constructor-label for="lastName"> Фамилия </epgu-constructor-label>
         <lib-plain-input
+          epguConstructorTrim
           id="lastName"
           name="lastName"
           [(ngModel)]="item.lastName"
@@ -28,6 +29,7 @@
       <div class="component__field">
         <epgu-constructor-label for="firstName"> Имя </epgu-constructor-label>
         <lib-plain-input
+          epguConstructorTrim
           id="firstName"
           name="firstName"
           [(ngModel)]="item.firstName"
@@ -36,6 +38,7 @@
       <div class="component__field">
         <epgu-constructor-label for="middleName"> Отчество </epgu-constructor-label>
         <lib-plain-input
+          epguConstructorTrim
           id="middleName"
           name="middleName"
           [(ngModel)]="item.middleName"
