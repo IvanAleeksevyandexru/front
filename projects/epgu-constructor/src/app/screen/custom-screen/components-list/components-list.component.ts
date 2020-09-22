@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
+import { ConfigService } from '../../../config/config.service';
+import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
+import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
+import { ScreenService } from '../../screen.service';
 import {
   CustomComponent,
   CustomComponentDictionaryState,
@@ -20,10 +24,8 @@ import {
   isDropDown,
   likeDictionary,
 } from '../tools/custom-screen-tools';
-import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { ScreenService } from '../../screen.service';
-import { ConfigService } from '../../../config/config.service';
-import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -260,11 +262,15 @@ export class ComponentsListComponent implements OnChanges {
   private getPreparedStateForSending() {
     return Object.entries(this.state).reduce((acc, [key, val]) => {
       const { value, valid, disabled, isShown } = val;
-      const disabledValue = !isShown || disabled;
+
+      if (!isShown) {
+        return acc;
+      }
+
       acc[key] = {
-        value: disabledValue ? '' : value,
+        value: disabled ? '' : value,
         valid,
-        disabled: disabledValue,
+        disabled,
       };
       return acc;
     }, {});

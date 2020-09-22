@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-/* eslint-disable import/no-extraneous-dependencies */
-import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UnsubscribeService } from 'projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
+import { ToolsService } from 'projects/epgu-constructor/src/app/shared/services/tools/tools.service';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 
@@ -9,18 +9,25 @@ import { ComponentStateService } from '../../../../services/component-state/comp
   selector: 'epgu-constructor-add-passport',
   templateUrl: './add-passport.component.html',
   styleUrls: ['./add-passport.component.scss'],
+  providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddPassportComponent implements OnInit {
-  private ngUnsubscribe$: Subject<any> = new Subject<any>();
-
   @Input() data: any;
   @Input() header: string;
+  @Input() currentCycledFields: object = {};
   @Input() submitLabel: string;
 
   passportForm: FormGroup;
+  isCycledFields: boolean;
+  cycledValues: any;
 
-  constructor(private fb: FormBuilder, private componentStateService: ComponentStateService) {}
+  constructor(
+    private fb: FormBuilder,
+    private componentStateService: ComponentStateService,
+    private ngUnsubscribe$: UnsubscribeService,
+    private toolsService: ToolsService,
+  ) {}
 
   ngOnInit(): void {
     const controls = {};
@@ -30,14 +37,43 @@ export class AddPassportComponent implements OnInit {
     });
 
     this.passportForm = this.fb.group(controls);
+
+    this.isCycledFields = !!Object.keys(this.currentCycledFields).length;
+    if (this.isCycledFields) {
+      [this.cycledValues] = [
+        ...Object.values(this.currentCycledFields).map((value) => JSON.parse(value)),
+      ];
+      // format state data to {fieldName: value} format
+      const data = this.data.attrs.fields.reduce((result, item) => {
+        const { fieldName } = item;
+        if (!fieldName) return result;
+
+        // eslint-disable-next-line no-param-reassign
+        result[fieldName] = this.cycledValues[fieldName];
+        return result;
+      }, {});
+      this.data.value = JSON.stringify(data);
+    }
+
     this.passportForm.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
-      .subscribe((value) => {
+      .subscribe((changes) => {
         if (!this.passportForm.valid) {
           return;
         }
 
-        this.componentStateService.state = value;
+        let stateData: any;
+        if (this.isCycledFields) {
+          stateData = this.toolsService.getFormattedCycledValues(
+            changes,
+            this.currentCycledFields,
+            this.cycledValues,
+          );
+        } else {
+          stateData = changes;
+        }
+
+        this.componentStateService.state = stateData;
       });
   }
 }
