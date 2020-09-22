@@ -39,13 +39,14 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.isEditable?.currentValue) {
+      this.subscribeFormChanges();
+      this.changeDetection.detectChanges();
+    }
+
     if (changes.data?.currentValue) {
       this.setState();
       this.emmitData();
-      setTimeout(() => {
-        this.subscribeFormChanges();
-        this.changeDetection.detectChanges();
-      });
     }
   }
 
