@@ -11,6 +11,7 @@ import {
   CustomComponentState,
   CustomScreenComponentTypes
 } from '../custom-screen.types';
+import { checkOgrn, checkOgrnip } from 'ru-validation-codes';
 const moment = moment_;
 
 
@@ -153,25 +154,19 @@ export function calcDependedComponent(
 }
 
 export function CheckInputValidationComponentList(value: string, component: CustomComponent): number {
-  const regExpArr = component?.attrs?.validation?.map((item) => {
+  // Ищет первое невалидное выражение
+  let result = component?.attrs?.validation?.findIndex(item => {
     try {
-      return new RegExp(item.value);
+      const regexp = new RegExp(item.value);
+      return !regexp.test(value);
     } catch {
       console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
-      return new RegExp(/.*/);
     }
-  });
+  }) ?? -1;
 
-  let result = -1; // if result === -1 input value is considered valid
-
-  if (regExpArr) {
-    regExpArr.every((regExp, index) => {
-      if (!regExp.test(value)) {
-        result = index;
-        return false;
-      }
-      return true;
-    });
+  // Если не было невалидного значения, проверяет следующую валидацию
+  if (!~result && !isValueValid(component.type, value)) {
+    result = 0;
   }
 
   return result;
@@ -198,4 +193,15 @@ export function getInitStateItemComponentList(component: CustomComponent) {
     component,
     isShown: !hasRelatedRef,
   };
+}
+
+export function isValueValid(type, value): boolean {
+  const customcomponentType = CustomScreenComponentTypes;
+  if (type === customcomponentType.OgrnInput) {
+    return checkOgrn(value);
+  }
+  if (type === customcomponentType.OgrnipInput) {
+    return checkOgrnip(value);
+  }
+  return true;
 }

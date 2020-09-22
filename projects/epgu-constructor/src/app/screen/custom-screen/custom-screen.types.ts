@@ -15,7 +15,9 @@ export enum CustomScreenComponentTypes {
   GenderSelection = 'GenderSelection',
   CheckBox = 'CheckBox',
   PhoneNumberChangeInput = 'PhoneNumberChangeInput',
-  NewEmailInput = 'NewEmailInput'
+  NewEmailInput = 'NewEmailInput',
+  OgrnInput = 'OgrnInput',
+  OgrnipInput = 'OgrnipInput',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };

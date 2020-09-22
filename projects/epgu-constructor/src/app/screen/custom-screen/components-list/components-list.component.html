@@ -1,63 +1,44 @@
 <form #customForm="ngForm" action="" class="form">
-  <ng-container *ngFor="let componentData of components">
-    <ng-container [ngSwitch]="componentData.type">
+  <div class="form__item" *ngFor="let componentData of components">
+    <ng-container [ngSwitch]="componentData.type" *ngIf="state[componentData.id].isShown">
       <ng-container *ngSwitchCase="componentType.LabelSection">
-        <div class="form__item" *ngIf="state[componentData.id].isShown">
           <epgu-constructor-output-html
             class="label"
             [html]="componentData.label || state[componentData.id].value"
-            [clarifications]="componentData?.attrs.clarifications"
-          >
+            [clarifications]="componentData?.attrs.clarifications">
           </epgu-constructor-output-html>
-        </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.Dictionary">
-        <div class="form__item" *ngIf="state[componentData.id].isShown">
-          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
+          <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
           <lib-dropdown
             class="cs__select cs-select"
             [disabled]="state[componentData.id].disabled"
             [items]="dictionary[componentData?.attrs?.dictionaryType + componentData?.id]?.list"
             (changed)="selectDictionary($event, componentData)"
           ></lib-dropdown>
-          <epgu-constructor-helper-text *ngIf="!componentData.required">
-            {{ getHelperText(componentData.required) }}
-          </epgu-constructor-helper-text>
-        </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.GenderSelection">
-        <div class="form__item" *ngIf="state[componentData.id].isShown">
-          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
+         <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
           <epgu-constructor-gender-radio-button
             [disabled]="state[componentData.id].disabled"
             [(ngModel)]="state[componentData.id].value">
           </epgu-constructor-gender-radio-button>
-          <epgu-constructor-helper-text *ngIf="!componentData.required">
-            {{ getHelperText(componentData.required) }}
-          </epgu-constructor-helper-text>
-        </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.DropDown">
-        <div class="form__item" *ngIf="state[componentData.id].isShown">
-          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
+          <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
           <lib-dropdown
             class="cs__select cs-select"
             [disabled]="state[componentData.id].disabled"
             [items]="dropDown[componentData?.id]?.list"
             (changed)="selectDropDown($event, componentData)"
           ></lib-dropdown>
-          <epgu-constructor-helper-text *ngIf="!componentData.required">
-            {{ getHelperText(componentData.required) }}
-          </epgu-constructor-helper-text>
-        </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.Lookup">
-        <div class="form__item" *ngIf="state[componentData.id].isShown">
-          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
+          <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
           <lib-lookup
             [queryMinSymbolsCount]="0"
             [searchCaseSensitive]="false"
@@ -67,35 +48,45 @@
             "
             (changed)="selectDictionary($event, componentData)"
           ></lib-lookup>
-        </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.htmlString">
-        <div class="form__item" *ngIf="state[componentData.id].isShown">
           <epgu-constructor-output-html
-            *ngIf="!state[componentData.id].disabled"
             class="info__text"
+            *ngIf="!state[componentData.id].disabled"
             [html]="componentData?.label"
-            [clarifications]="componentData?.attrs?.clarifications"
-          >
+            [clarifications]="componentData?.attrs?.clarifications">
           </epgu-constructor-output-html>
-        </div>
       </ng-container>
 
-      <ng-container *ngSwitchCase="isInputString(componentData.type)">
-        <div class="form__item" *ngIf="state[componentData.id].isShown">
-          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>
+      <ng-container *ngSwitchCase="componentType.StringInput">
+          <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.OgrnInput">
+        <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.OgrnipInput">
+        <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
+      </ng-container>
+
+      <ng-template #textInputTemplate>
+          <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
           <lib-standard-masked-input
             *ngIf="componentData.attrs?.mask; else plainInput"
             [clearable]="true"
             [mask]="componentData.attrs?.mask | maskHandle"
+            [placeholder]="componentData.attrs?.placeholder"
             [name]="componentData.id"
             [disabled]="state[componentData.id].disabled"
-            [showMaskAsPlaceholder]="true"
+            [showMaskAsPlaceholder]="false"
             [showConstantMaskSymbols]="true"
             [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
+            [validation]="state[componentData.id].valid"
           ></lib-standard-masked-input>
+
           <ng-template #plainInput>
             <lib-plain-input
               [invalid]="!state[componentData.id].valid"
@@ -104,22 +95,15 @@
               [(ngModel)]="state[componentData.id].value"
               (change)="inputChange($event, componentData)"
               [validationShowOn]="validationShowOn"
+              [clearable]="true"
             ></lib-plain-input>
           </ng-template>
-          <ng-container *ngTemplateOutlet="fromHint; context componentData.attrs"></ng-container>
-          <epgu-constructor-helper-text *ngIf="!componentData.required">
-            {{ getHelperText(componentData.required) }}
-          </epgu-constructor-helper-text>
           <div class="form__error">
-            <small *ngIf="!state[componentData.id].valid"
-            >{{ state[componentData.id]?.errorMessage }}
-            </small>
+            <small *ngIf="!state[componentData.id].valid">{{ state[componentData.id]?.errorMessage }}</small>
           </div>
-        </div>
-      </ng-container>
+      </ng-template>
 
       <ng-container *ngSwitchCase="componentType.CheckBox">
-        <div class="form__item" *ngIf="state[componentData.id].isShown">
           <div [ngClass]="
               componentData?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'
             ">
@@ -132,12 +116,10 @@
             >
             </lib-checkbox>
           </div>
-        </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.RadioInput">
-        <div class="form__item" *ngIf="state[componentData.id].isShown">
-          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
+          <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
           <div
             [ngClass]="
               componentData?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'
@@ -154,12 +136,11 @@
             >
             </lib-radio>
           </div>
-        </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.DateInput">
-        <div class="form__item form__item--date" *ngIf="state[componentData.id].isShown">
-          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
+        <div class="form__item--date">
+          <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
           <!-- нужно добавить changes для проверки зависимости от даты-->
           <lib-date-picker
             [name]="componentData.id"
@@ -172,8 +153,7 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.AddressInput">
-        <div class="form__item" *ngIf="state[componentData.id].isShown">
-          <ng-container *ngTemplateOutlet="formLabel; context componentData"></ng-container>
+          <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
           <lib-dadata-widget
             [simpleMode]="true"
             [name]="componentData.id"
@@ -185,19 +165,21 @@
             (change)="inputChange($event, componentData)"
           >
           </lib-dadata-widget>
-        </div>
       </ng-container>
     </ng-container>
-  </ng-container>
+
+    <div class="form__info">
+      <ng-container *ngTemplateOutlet="formHintAndRequired; context: componentData"></ng-container>
+    </div>
+  </div>
 </form>
 
 
-
-<ng-template #formLabel let-label let-id>
-  <epgu-constructor-label for="id">{{ label }}</epgu-constructor-label>
+<ng-template #formLabel let-label="label">
+  <epgu-constructor-label>{{ label }}</epgu-constructor-label>
 </ng-template>
 
-<ng-template #fromHint let-hint>
-  <div *ngIf="hint" class="form__item__hint">{{ hint }}</div>
+<ng-template #formHintAndRequired let-attrs="attrs" let-required="required">
+  <span *ngIf="attrs?.hint" class="form__item__hint">{{ attrs.hint}}</span>
+  <epgu-constructor-helper-text *ngIf="!required">{{ optionalField }}</epgu-constructor-helper-text>
 </ng-template>
-

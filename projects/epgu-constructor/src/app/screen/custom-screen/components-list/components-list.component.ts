@@ -33,6 +33,7 @@ import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 export class ComponentsListComponent implements OnChanges {
   // <-- constant
   componentType = CustomScreenComponentTypes;
+  optionalField = OPTIONAL_FIELD;
 
   // <-- variables
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
@@ -135,8 +136,7 @@ export class ComponentsListComponent implements OnChanges {
   inputChange($event: Event, component: CustomComponent) {
     let { value } = $event.target as HTMLInputElement;
     if (component.type === this.componentType.AddressInput) {
-      const fullAddressObject = this.state[component.id].value;
-      value = fullAddressObject;
+      value = this.state[component.id].value;
     }
     if (component.type === this.componentType.PhoneNumberChangeInput) {
       const maskSymbolRegExp = /\s|-/g;
@@ -244,14 +244,6 @@ export class ComponentsListComponent implements OnChanges {
         this.state[componentId]?.component.attrs.validation[inputValidationResult].errorMsg,
       );
     }
-  }
-
-  /**
-   * Позвращает подпись
-   * @param required - обязательное поле или нет
-   */
-  getHelperText(required: boolean): string {
-    return required ? '' : OPTIONAL_FIELD;
   }
 
   /**
