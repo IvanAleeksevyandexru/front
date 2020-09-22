@@ -71,6 +71,14 @@
         <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
       </ng-container>
 
+      <ng-container *ngSwitchCase="componentType.PersonInnInput">
+        <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.LegalInnInput">
+        <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
+      </ng-container>
+
       <ng-template #textInputTemplate>
           <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
           <lib-standard-masked-input

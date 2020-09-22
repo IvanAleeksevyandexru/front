@@ -16,6 +16,8 @@ export enum CustomScreenComponentTypes {
   CheckBox = 'CheckBox',
   OgrnInput = 'OgrnInput',
   OgrnipInput = 'OgrnipInput',
+  LegalInnInput = 'LegalInnInput',
+  PersonInnInput = 'PersonInnInput',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
