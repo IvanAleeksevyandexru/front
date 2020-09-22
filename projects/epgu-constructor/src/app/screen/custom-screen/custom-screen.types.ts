@@ -14,6 +14,8 @@ export enum CustomScreenComponentTypes {
   htmlString = 'HtmlString',
   GenderSelection = 'GenderSelection',
   CheckBox = 'CheckBox',
+  OgrnInput = 'OgrnInput',
+  OgrnipInput = 'OgrnipInput',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
