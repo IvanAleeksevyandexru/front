@@ -286,8 +286,13 @@ export class ComponentsListComponent implements OnChanges {
   }
 
   isInputString(componentType: CustomScreenComponentTypes): boolean | CustomScreenComponentTypes {
-    const { StringInput, PhoneNumberChangeInput, NewEmailInput } = this.componentType;
-    const isLikeMask = [StringInput, PhoneNumberChangeInput, NewEmailInput].includes(componentType);
+    const isLikeMask = [
+      CustomScreenComponentTypes.StringInput,
+      CustomScreenComponentTypes.PhoneNumberChangeInput,
+      CustomScreenComponentTypes.NewEmailInput,
+      CustomScreenComponentTypes.OgrnInput,
+      CustomScreenComponentTypes.OgrnipInput,
+    ].includes(componentType);
     return isLikeMask ? componentType : !componentType;
   }
 }
