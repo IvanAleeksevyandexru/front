@@ -5,9 +5,11 @@
   &__item {
     margin-bottom: 24px;
 
-    &-hint {
-      margin-top: 4px;
-      @include typ-plain-xs();
+    &__hint {
+      @include first-letter-uppercase();
+      margin: 4px 4px 0 0;
+      color: $color-blue-bayoux;
+      @include typ-plain-small();
     }
 
     &--date {
@@ -32,9 +34,20 @@
   &__radio {
     &_block {
       display: inline-block;
+
       lib-radio {
         display: block;
         margin-bottom: 16px;
+      }
+
+      lib-checkbox {
+        display: block;
+        margin-bottom: 16px;
+
+        &::ng-deep .labelText{
+          line-height: 24px;
+        }
+
         &:first-child {
           margin-top: 4px;
         }
