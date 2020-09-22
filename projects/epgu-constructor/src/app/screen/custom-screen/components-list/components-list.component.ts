@@ -291,6 +291,8 @@ export class ComponentsListComponent implements OnChanges {
       CustomScreenComponentTypes.NewEmailInput,
       CustomScreenComponentTypes.OgrnInput,
       CustomScreenComponentTypes.OgrnipInput,
+      CustomScreenComponentTypes.PersonInnInput,
+      CustomScreenComponentTypes.LegalInnInput,
     ].includes(componentType);
     return isLikeMask ? componentType : !componentType;
   }
