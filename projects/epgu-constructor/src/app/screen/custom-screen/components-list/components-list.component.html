@@ -30,10 +30,11 @@
           <epgu-constructor-label>{{ componentData.value?.label }}</epgu-constructor-label>
           <lib-dropdown
             [invalid]="componentData.invalid && componentData.touched"
-            [name]="componentData.value?.id"
+            [id]="componentData.value?.id"
             class="cs__select cs-select"
-            [items]="componentData"
+            [items]="adaptiveDropDown(componentData.value?.attrs?.dictionaryList)"
             [validationShowOn]="validationShowOn"
+            (changed)="selectDropDown($event, componentData)"
             [formControl]="componentData.get('value')"
           ></lib-dropdown>
           <epgu-constructor-helper-text *ngIf="!componentData.value?.required">

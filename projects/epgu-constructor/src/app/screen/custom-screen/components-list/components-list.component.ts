@@ -7,6 +7,7 @@ import {
   CustomComponent,
   CustomComponentAttrValidation,
   CustomComponentDictionaryState,
+  CustomComponentDropDownItemList,
   CustomComponentDropDownStateInterface,
   CustomComponentOutputData,
   CustomComponentState,
@@ -115,6 +116,19 @@ export class ComponentsListComponent implements OnInit {
       });
   }
 
+  adaptiveDropDown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
+    return items.map((item, index) => {
+      return {
+        id: `${item.label}-${index}`,
+        text: item.label,
+        formatted: '',
+        unselectable: item.disable === true,
+        originalItem: item,
+        compare: () => false,
+      };
+    });
+  }
+
   private calcDependedFormGroup(component: CustomComponent) {
     const isLookup: boolean = component.type === CustomScreenComponentTypes.Lookup;
     const components: Array<any> = this.form.getRawValue();
@@ -185,8 +199,9 @@ export class ComponentsListComponent implements OnInit {
     this.emmitChanges(component);
   }
 
-  selectDropDown($event: any, componentData: CustomComponent) {
-    this.state[componentData.id].value = $event.originalItem;
+  selectDropDown($event: any, componentData: any) {
+    console.log($event, componentData);
+    // this.state[componentData.id].value = $event.originalItem;
     // this.checkDropDownValidation(componentData);
     this.emmitChanges();
   }
