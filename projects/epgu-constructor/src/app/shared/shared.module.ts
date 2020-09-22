@@ -22,6 +22,7 @@ import { GenderRadioButtonComponent } from './components/gender-radio-button/gen
 import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
 import { LongButtonComponent } from './components/long-button/long-button.component';
 import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
+import { CounterDirective } from './directives/counter/counter.directive';
 import { TrimDirective } from './directives/trim/trim.directive';
 import { TextTransformDirective } from './directives/text-transform/text-transform.directive';
 
@@ -50,7 +51,8 @@ const PIPES = [
 
 const DIRECTIVES = [
   TrimDirective,
-  TextTransformDirective
+  TextTransformDirective,
+  CounterDirective
 ];
 
 @NgModule({

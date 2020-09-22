@@ -135,8 +135,12 @@ export class ComponentsListComponent implements OnChanges {
    */
   inputChange($event: Event, component: CustomComponent) {
     let { value } = $event.target as HTMLInputElement;
-    if (component.type === 'AddressInput') {
+    if (component.type === this.componentType.AddressInput) {
       value = this.state[component.id].value;
+    }
+    if (component.type === this.componentType.PhoneNumberChangeInput) {
+      const maskSymbolRegExp = /\s|-/g;
+      value = value.replace(maskSymbolRegExp, ''); // удаляет скобки, проблемы, тире
     }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
@@ -148,10 +152,9 @@ export class ComponentsListComponent implements OnChanges {
    * @param $event - событие с элементом
    * @param component - данные компонента
    */
-  checkboxFieldsTogglerChange($event: Event, component: CustomComponent) {
+  checkboxChange($event: Event, component: CustomComponent) {
     const { checked } = $event.target as HTMLInputElement;
-    this.state[component.id].component.attrs.checked = checked;
-    this.state[component.id].value = checked ? component.value : '';
+    this.state[component.id].value = checked;
     this.emmitChanges(component);
   }
 
@@ -279,5 +282,18 @@ export class ComponentsListComponent implements OnChanges {
     this.components.forEach((component) =>
       calcDependedComponent(component, this.state, this.components),
     );
+  }
+
+  isInputString(componentType: CustomScreenComponentTypes): boolean | CustomScreenComponentTypes {
+    const isLikeMask = [
+      CustomScreenComponentTypes.StringInput,
+      CustomScreenComponentTypes.PhoneNumberChangeInput,
+      CustomScreenComponentTypes.NewEmailInput,
+      CustomScreenComponentTypes.OgrnInput,
+      CustomScreenComponentTypes.OgrnipInput,
+      CustomScreenComponentTypes.PersonInnInput,
+      CustomScreenComponentTypes.LegalInnInput,
+    ].includes(componentType);
+    return isLikeMask ? componentType : !componentType;
   }
 }

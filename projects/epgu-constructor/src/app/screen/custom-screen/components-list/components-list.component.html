@@ -59,19 +59,7 @@
           </epgu-constructor-output-html>
       </ng-container>
 
-      <ng-container *ngSwitchCase="componentType.StringInput">
-          <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="componentType.OgrnInput">
-        <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="componentType.OgrnipInput">
-        <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
-      </ng-container>
-
-      <ng-template #textInputTemplate>
+      <ng-container *ngSwitchCase="isInputString(componentData.type)">
           <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
           <lib-standard-masked-input
             *ngIf="componentData.attrs?.mask; else plainInput"
@@ -80,7 +68,7 @@
             [placeholder]="componentData.attrs?.placeholder"
             [name]="componentData.id"
             [disabled]="state[componentData.id].disabled"
-            [showMaskAsPlaceholder]="false"
+            [showMaskAsPlaceholder]="true"
             [showConstantMaskSymbols]="true"
             [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
@@ -104,7 +92,7 @@
           <div class="form__error">
             <small *ngIf="!state[componentData.id].valid">{{ state[componentData.id]?.errorMessage }}</small>
           </div>
-      </ng-template>
+      </ng-container>
 
       <ng-container *ngSwitchCase="componentType.CheckBox">
           <div [ngClass]="
@@ -112,10 +100,10 @@
             ">
             <lib-checkbox
               [checkboxId]="componentData.id"
-              [checked]="componentData?.attrs?.checked"
+              [checked]="state[componentData.id].value"
               [disabled]="state[componentData.id].disabled"
               [labelText]="componentData?.label"
-              (change)="checkboxFieldsTogglerChange($event, componentData)"
+              (change)="checkboxChange($event, componentData)"
             >
             </lib-checkbox>
           </div>

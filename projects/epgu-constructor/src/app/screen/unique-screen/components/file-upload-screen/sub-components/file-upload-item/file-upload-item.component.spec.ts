@@ -4,7 +4,7 @@ import { FileUploadItemComponent } from './file-upload-item.component';
 
 
 // TODO: Need to refactoring component
-describe.skip('FileUploadItemComponent', () => {
+xdescribe('FileUploadItemComponent', () => {
   let component: FileUploadItemComponent;
   let fixture: ComponentFixture<FileUploadItemComponent>;
 

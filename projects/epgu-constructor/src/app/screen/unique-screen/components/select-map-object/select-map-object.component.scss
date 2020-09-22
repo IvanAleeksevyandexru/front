@@ -185,6 +185,10 @@ hr {
       }
     }
   }
+
+  .page-container {
+    padding-bottom: 0!important;
+  }
 }
 
  @include laptop-down {
