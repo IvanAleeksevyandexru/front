@@ -27,10 +27,9 @@ describe('HelperTextComponent', () => {
     component = fixture.componentInstance;
   });
 
-  // TODO
-  // it('should match snapshot', () => {
-  //   expect(fixture).toMatchSnapshot();
-  // });
+  it('should match snapshot', () => {
+    expect(fixture).toMatchSnapshot();
+  });
 
   it('component should render passed text', () => {
     const helperText = fixture.debugElement

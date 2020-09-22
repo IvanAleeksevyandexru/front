@@ -72,7 +72,7 @@ xdescribe('CustomScreenComponent', () => {
 
   it('check snapshot', () => {
     // TODO: Нужен рефакторинг, т.к. тест не проходит
-    //expect(fixture).toMatchSnapshot();
+    expect(fixture).toMatchSnapshot();
   });
 
   describe('navigation cases', () => {
