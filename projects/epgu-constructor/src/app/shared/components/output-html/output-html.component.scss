@@ -1,6 +1,6 @@
 @import 'src/styles/core';
 
-:host{
+:host {
   display: block;
 }
 :host::ng-deep {
@@ -23,7 +23,7 @@
     padding-left: 16px;
 
     &:first-letter {
-     text-transform: uppercase;
+      text-transform: uppercase;
     }
     &:not(:first-child) {
       margin-top: 16px;
