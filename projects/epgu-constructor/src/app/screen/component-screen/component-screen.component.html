@@ -53,6 +53,7 @@
 
         <epgu-constructor-add-passport
           *ngSwitchCase="screenComponentName.personLookup"
+          [currentCycledFields]="screenStore.currentCycledFields"
           [data]="(screenStore.display?.components)[0]"
         ></epgu-constructor-add-passport>
 
