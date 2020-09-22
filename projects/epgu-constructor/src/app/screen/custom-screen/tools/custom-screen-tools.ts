@@ -1,5 +1,6 @@
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
+import { checkINN, checkOgrn, checkOgrnip } from 'ru-validation-codes';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import {
@@ -9,9 +10,8 @@ import {
   CustomComponentRef,
   CustomComponentRefRelation,
   CustomComponentState,
-  CustomScreenComponentTypes,
+  CustomScreenComponentTypes
 } from '../custom-screen.types';
-import { checkOgrn, checkOgrnip, checkINN, } from 'ru-validation-codes';
 const moment = moment_;
 
 function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
@@ -216,7 +216,7 @@ export function isValueValid(type, value): boolean {
   if (type === customComponentType.OgrnipInput) {
     return checkOgrnip(value);
   }
-  if (type === customComponentType.PersonInnInput || customComponentType.LegalInnInput) {
+  if (type === customComponentType.PersonInnInput || type === customComponentType.LegalInnInput) {
     return checkINN(value);
   }
   return true;
