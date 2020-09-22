@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ComponentStateService } from 'projects/epgu-constructor/src/app/services/component-state/component-state.service';
-import { ToolsService } from 'projects/epgu-constructor/src/app/shared/services/tools/tools.service';
+import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
 @Component({

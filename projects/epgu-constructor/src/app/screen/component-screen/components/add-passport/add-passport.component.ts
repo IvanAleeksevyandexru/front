@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UnsubscribeService } from 'projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
-import { ToolsService } from 'projects/epgu-constructor/src/app/shared/services/tools/tools.service';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { ToolsService } from '../../../../shared/services/tools/tools.service';
 
 @Component({
   selector: 'epgu-constructor-add-passport',
