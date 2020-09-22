@@ -17,6 +17,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { OutputHtmlComponent } from './components/output-html/output-html.component';
 import { ScreenContainerComponent } from './components/screen-container/screen-container.component';
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
+import { CounterDirective } from './directives/counter/counter.directive';
 import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
@@ -47,10 +48,14 @@ const PIPES = [
   MaskHandlePipe,
 ];
 
+const DIRECTIVES = [
+  CounterDirective,
+];
+
 @NgModule({
-  declarations: [...COMPONENTS, ...PIPES],
+  declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   providers: [NavigationService, ApplicantAnswersService, ToolsService],
-  exports: [...COMPONENTS, ...PIPES],
+  exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [
       CommonModule,
       EpguLibModule,

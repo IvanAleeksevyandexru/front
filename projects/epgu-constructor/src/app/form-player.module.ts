@@ -22,10 +22,12 @@ import { DictionaryApiService } from './services/api/dictionary-api/dictionary-a
 import { FormPlayerApiService } from './services/api/form-player-api/form-player-api.service';
 import { ComponentStateService } from './services/component-state/component-state.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
-import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { UtilsService } from './services/utils/utils.service';
 import { SharedModule } from './shared/shared.module';
+import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
+import { ServiceDataService } from './services/service-data/service-data.service';
+
 
 export const epguLibModule = EpguLibModule.forRoot();
 
@@ -55,6 +57,7 @@ export const epguLibModule = EpguLibModule.forRoot();
     ScreenResolverService,
     UtilsService,
     ConfigService,
+    ServiceDataService,
   ],
   exports: [
     FormPlayerComponent,
@@ -70,10 +73,4 @@ export const epguLibModule = EpguLibModule.forRoot();
     EmptyScreenComponent,
   ]
 })
-export class FormPlayerModule {
-  static forRoot() {
-    return {
-      ngModule: FormPlayerModule,
-    };
-  }
-}
+export class FormPlayerModule {}
