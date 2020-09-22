@@ -10,6 +10,7 @@ import {
   EmployeeHistoryModel
 } from '../employee-history.types';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
+import { MonthYear } from 'epgu-lib';
 
 const moment = moment_;
 
@@ -71,6 +72,7 @@ export class EmployeeHistoryFormService {
   }
 
   generateFormWatcher(): void {
+    this.generateForm.valueChanges.subscribe((f) => console.log(this.generateForm, f));
     this.generateForm
       .get('checkboxToDate')
       .valueChanges.pipe(
@@ -86,7 +88,8 @@ export class EmployeeHistoryFormService {
         if (!this.generateForm.getRawValue().checkboxToDate) {
           this.generateForm.get('to').reset();
         }
-        this.monthsService.minDateTo = date;
+        console.log(date);
+        this.monthsService.minDateTo = MonthYear.fromDate(date);
       });
   }
 

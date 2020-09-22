@@ -5,6 +5,7 @@ import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryModel
 } from '../employee-history.types';
+import { MonthYear } from 'epgu-lib';
 
 const moment = moment_;
 
@@ -13,14 +14,14 @@ const moment = moment_;
 })
 export class EmployeeHistoryMonthsService {
   years = 10;
-  maxDate: Date;
-  minDateFrom: Date;
-  minDateTo: Date;
+  maxDate: MonthYear;
+  minDateFrom: MonthYear;
+  minDateTo: MonthYear;
   availableMonths: EmployeeHistoryAvailableDates[];
 
   initSettings(): void {
-    this.maxDate = new Date();
-    this.minDateFrom = new Date(moment().subtract(this.years, 'years').format());
+    this.maxDate = MonthYear.fromDate(moment().endOf('month').toDate());
+    this.minDateFrom = MonthYear.fromDate(moment().subtract(this.years, 'years').toDate());
     this.minDateTo = this.minDateFrom;
     this.availableMonths = this.getAvailableMonths();
   }
