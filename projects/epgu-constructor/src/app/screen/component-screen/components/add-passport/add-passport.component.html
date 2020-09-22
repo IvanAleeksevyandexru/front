@@ -6,17 +6,22 @@
     <div class="form__name">Паспорт РФ</div>
     <form [formGroup]="passportForm" class="form__inputs">
       <div class="inputs__field">
-        <epgu-constructor-label [for]="'rfPassportSeries'">Серия</epgu-constructor-label>
+        <epgu-constructor-label for="rfPassportSeries">Серия</epgu-constructor-label>
         <lib-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
           id="rfPassportSeries"
           formControlName="rfPassportSeries"
           type="number"
         ></lib-plain-input>
       </div>
       <div class="inputs__field">
-        <epgu-constructor-label [for]="'rfPassportNumber'">Номер</epgu-constructor-label>
+        <epgu-constructor-label for="rfPassportNumber"> Номер </epgu-constructor-label>
         <lib-plain-input
-          id="rfPassportNumber"
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
           formControlName="rfPassportNumber"
           type="number"
         ></lib-plain-input>

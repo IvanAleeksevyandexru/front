@@ -4,6 +4,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ToolsService } from '../../../../shared/services/tools/tools.service';
+import { TextTransform } from '../../../../shared/types/textTransform';
 
 @Component({
   selector: 'epgu-constructor-add-passport',
@@ -75,5 +76,9 @@ export class AddPassportComponent implements OnInit {
 
         this.componentStateService.state = stateData;
       });
+  }
+
+  get textTransformType(): TextTransform {
+    return this.data?.attrs?.fstuc;
   }
 }

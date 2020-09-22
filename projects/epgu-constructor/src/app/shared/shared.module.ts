@@ -18,11 +18,12 @@ import { OutputHtmlComponent } from './components/output-html/output-html.compon
 import { ScreenContainerComponent } from './components/screen-container/screen-container.component';
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { CounterDirective } from './directives/counter/counter.directive';
+import { TextTransformDirective } from './directives/text-transform/text-transform.directive';
+import { TrimDirective } from './directives/trim/trim.directive';
 import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
 import { NavigationService } from './services/navigation/navigation.service';
-import { ToolsService } from './services/tools/tools.service';
 
 
 const COMPONENTS = [
@@ -50,11 +51,13 @@ const PIPES = [
 
 const DIRECTIVES = [
   CounterDirective,
+  TrimDirective,
+  TextTransformDirective,
 ];
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  providers: [NavigationService, ApplicantAnswersService, ToolsService],
+  providers: [NavigationService, ApplicantAnswersService],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [
       CommonModule,

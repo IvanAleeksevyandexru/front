@@ -77,6 +77,9 @@
 
           <ng-template #plainInput>
             <lib-plain-input
+              epgu-constructor-trim
+              epgu-constructor-text-transform
+              [textTransformType]="componentData.attrs?.fstuc"
               [invalid]="!state[componentData.id].valid"
               [name]="componentData.id"
               [disabled]="state[componentData.id].disabled"
