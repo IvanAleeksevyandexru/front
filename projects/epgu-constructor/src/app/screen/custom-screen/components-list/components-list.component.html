@@ -60,6 +60,18 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.StringInput">
+          <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.OgrnInput">
+        <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.OgrnipInput">
+        <ng-container *ngTemplateOutlet="textInputTemplate"></ng-container>
+      </ng-container>
+
+      <ng-template #textInputTemplate>
           <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
           <lib-standard-masked-input
             *ngIf="componentData.attrs?.mask; else plainInput"
@@ -72,7 +84,9 @@
             [showConstantMaskSymbols]="true"
             [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
+            [validation]="state[componentData.id].valid"
           ></lib-standard-masked-input>
+
           <ng-template #plainInput>
             <lib-plain-input
               [invalid]="!state[componentData.id].valid"
@@ -81,12 +95,13 @@
               [(ngModel)]="state[componentData.id].value"
               (change)="inputChange($event, componentData)"
               [validationShowOn]="validationShowOn"
+              [clearable]="true"
             ></lib-plain-input>
           </ng-template>
           <div class="form__error">
             <small *ngIf="!state[componentData.id].valid">{{ state[componentData.id]?.errorMessage }}</small>
           </div>
-      </ng-container>
+      </ng-template>
 
       <ng-container *ngSwitchCase="componentType.CheckBox">
           <div [ngClass]="
