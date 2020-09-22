@@ -128,10 +128,10 @@
             ">
             <lib-checkbox
               [checkboxId]="componentData.id"
-              [checked]="componentData?.attrs?.checked"
+              [checked]="state[componentData.id].value"
               [disabled]="state[componentData.id].disabled"
               [labelText]="componentData?.label"
-              (change)="checkboxFieldsTogglerChange($event, componentData)"
+              (change)="checkboxChange($event, componentData)"
             >
             </lib-checkbox>
           </div>
