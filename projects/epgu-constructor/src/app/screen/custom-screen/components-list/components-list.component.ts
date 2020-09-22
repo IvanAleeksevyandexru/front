@@ -89,7 +89,7 @@ export class ComponentsListComponent implements OnInit {
 
             const group: FormGroup = this.fb.group({
               ...component,
-              value: [component.value, validators],
+              value: [component.attrs?.defaultValue || component.value, validators],
               isShown: !hasRelatedRef,
             });
 
