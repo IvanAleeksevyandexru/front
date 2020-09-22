@@ -152,10 +152,9 @@ export class ComponentsListComponent implements OnChanges {
    * @param $event - событие с элементом
    * @param component - данные компонента
    */
-  checkboxFieldsTogglerChange($event: Event, component: CustomComponent) {
+  checkboxChange($event: Event, component: CustomComponent) {
     const { checked } = $event.target as HTMLInputElement;
-    this.state[component.id].component.attrs.checked = checked;
-    this.state[component.id].value = checked ? component.value : '';
+    this.state[component.id].value = checked;
     this.emmitChanges(component);
   }
 

@@ -1,4 +1,6 @@
-@import 'src/styles/core';
+@import 'src/styles/core/palettes';
+@import 'src/styles/core/typography';
+@import 'src/styles/core/breakpoint';
 
 .add-new-child-form {
   background-color: $color-light-gray;
@@ -28,6 +30,10 @@
 
       @include phones-down {
         width: 100%;
+      }
+
+      @include phones-up {
+        padding-right: 8px;
       }
     }
   }

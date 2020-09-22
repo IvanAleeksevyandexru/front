@@ -125,7 +125,7 @@ export const isHaveNeededValue = (
 ): boolean => {
   if (item.relation == relation) {
     if (isCheckBox(component)) {
-      return state[item.relatedRel]?.component?.attrs.checked === item.val;
+      return state[item.relatedRel]?.value === item.val;
     }
     const stateRelatedRel = isLookup(component) ? state[item.relatedRel]?.value : state[item.relatedRel];
     return stateRelatedRel?.value === item.val;
@@ -135,7 +135,7 @@ export const isHaveNeededValue = (
 
 /**
  * Функция проверяет зависимые компоненты и перезаписывает состояние в state.
-*/
+ */
 export function calcDependedComponent(
   component: CustomComponent,
   state: CustomComponentState,
@@ -180,6 +180,9 @@ export function getInitStateItemComponentList(component: CustomComponent) {
   switch (component.type) {
     case CustomScreenComponentTypes.DateInput:
       valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate();
+      break;
+    case CustomScreenComponentTypes.CheckBox:
+      valueFormatted = component.attrs?.checked;
       break;
     default:
       valueFormatted = value;
