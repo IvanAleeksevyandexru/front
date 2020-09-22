@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
 @Component({
@@ -18,7 +19,10 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   isCycledFields: boolean;
   cycledValues: any;
 
-  constructor(private componentStateService: ComponentStateService) {}
+  constructor(
+    private componentStateService: ComponentStateService,
+    private toolsService: ToolsService,
+  ) {}
 
   ngOnInit(): void {
     this.isCycledFields = !!Object.keys(this.currentCycledFields).length;
@@ -76,18 +80,11 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   setState(changes) {
     let stateData: any;
     if (this.isCycledFields) {
-      stateData = {};
-      // take currentCycledFields object first key
-      const [currentCycledFieldsKey] = Object.keys(this.currentCycledFields);
-      // flat cycledValues
-      const cycledValuesPrepared = { ...this.cycledValues };
-      // merge cycledValue data and state data, which could be updated
-      const changesPrepared = JSON.parse(changes);
-      const data = { ...cycledValuesPrepared, ...changesPrepared };
-      stateData[currentCycledFieldsKey] = {
-        visited: true,
-        value: JSON.stringify(data),
-      };
+      stateData = this.toolsService.getFormattedCycledValues(
+        changes,
+        this.currentCycledFields,
+        this.cycledValues,
+      );
     } else {
       stateData = changes;
     }

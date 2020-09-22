@@ -1,25 +1,28 @@
 <section class="add-passport-screen">
   <div class="add-passport-screen__form">
+    <epgu-constructor-label *ngIf="cycledValues?.firstName" class="add-passport-screen__label">
+      {{ cycledValues?.lastName + ' ' + cycledValues?.firstName + ' ' + cycledValues?.middleName }}
+    </epgu-constructor-label>
     <div class="form__name">Паспорт РФ</div>
     <form [formGroup]="passportForm" class="form__inputs">
       <div class="inputs__field">
-        <epgu-constructor-label for="series">Серия</epgu-constructor-label>
+        <epgu-constructor-label for="rfPassportSeries">Серия</epgu-constructor-label>
         <lib-plain-input
           epgu-constructor-trim
           epgu-constructor-text-transform
           [textTransformType]="textTransformType"
-          id="series"
-          formControlName="series"
+          id="rfPassportSeries"
+          formControlName="rfPassportSeries"
           type="number"
         ></lib-plain-input>
       </div>
       <div class="inputs__field">
-        <epgu-constructor-label class="field__label"> Номер </epgu-constructor-label>
+        <epgu-constructor-label for="rfPassportNumber"> Номер </epgu-constructor-label>
         <lib-plain-input
           epgu-constructor-trim
           epgu-constructor-text-transform
           [textTransformType]="textTransformType"
-          formControlName="number"
+          formControlName="rfPassportNumber"
           type="number"
         ></lib-plain-input>
       </div>

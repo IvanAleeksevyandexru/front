@@ -184,7 +184,7 @@ export function CheckInputValidationComponentList(
 
 export function getInitStateItemComponentList(component: CustomComponent) {
   const { value } = component;
-  const hasRelatedRef = component.attrs.ref?.length;
+  const hasRelatedRef = !component.attrs.ref?.length;
 
   let valueFormatted: string | Date;
   switch (component.type) {
@@ -204,7 +204,7 @@ export function getInitStateItemComponentList(component: CustomComponent) {
     errorMessage: '',
     value: valueFormatted,
     component,
-    isShown: !hasRelatedRef,
+    isShown: hasRelatedRef,
   };
 }
 
