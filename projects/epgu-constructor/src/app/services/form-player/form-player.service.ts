@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { FormPlayerNavigation, NavigationPayload, Service } from '../../form-player.types';
+import { NavigationFullOptions, NavigationPayload } from '../../form-player.types';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
