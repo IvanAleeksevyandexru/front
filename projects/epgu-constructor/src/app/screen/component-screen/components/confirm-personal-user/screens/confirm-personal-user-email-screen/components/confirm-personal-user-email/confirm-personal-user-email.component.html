@@ -1,24 +1,15 @@
-<form [formGroup]="emailForm">
-  <div class="flex-row">
-    <epgu-constructor-label for="email">{{ label }}</epgu-constructor-label>
-    <a
-      href="javascript:void(0);"
-      (click)="handleClick()"
-      class="button-change"
-      *ngIf="isEditButtonShown"
-    >
-      Редактировать
-    </a>
-  </div>
-  <lib-plain-input
-    formControlName="email"
-    name="email"
-    id="email"
-    [invalid]="!emailForm.controls.email.valid"
-    [validationShowOn]="validationShowOn"
-    class="content content__input"
-  ></lib-plain-input>
-  <div class="error">
-    <small>{{ error }}</small>
-  </div>
-</form>
+<div class="flex-row">
+  <epgu-constructor-label for="email">{{ label }}</epgu-constructor-label>
+  <a href="javascript:void(0);"
+     class="button-change"
+     (click)="handleClick()"
+     *ngIf="isEditButtonShown">
+    Редактировать
+  </a>
+</div>
+
+<lib-plain-input
+  class="content content__input"
+  [disabled]="true"
+  [(ngModel)]="data">
+</lib-plain-input>

@@ -26,3 +26,16 @@ export enum FormPlayerNavigation {
 export interface NavigationPayload {
   [key: string]: Answer
 }
+
+/**
+ * @property {FormPlayerNavigation}direction - направление движения навигации
+ * @property {string}url - адресс на который нужно стучатся (иногда в actions приходит url)
+ */
+export interface NavigationFullOptions extends NavigationShortOptions {
+  direction: FormPlayerNavigation;
+  isInternalScenarioFinish?: boolean
+}
+
+export interface NavigationShortOptions {
+  url?: string;
+}
