@@ -6,8 +6,10 @@
     margin-bottom: 24px;
 
     &__hint {
-      margin-top: 4px;
-      @include typ-plain-xs();
+      @include first-letter-uppercase();
+      margin: 4px 4px 0 0;
+      color: $color-blue-bayoux;
+      @include typ-plain-small();
     }
 
     &--date {

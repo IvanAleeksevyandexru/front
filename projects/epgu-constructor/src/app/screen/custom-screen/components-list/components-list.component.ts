@@ -33,6 +33,7 @@ import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 export class ComponentsListComponent implements OnChanges {
   // <-- constant
   componentType = CustomScreenComponentTypes;
+  optionalField = OPTIONAL_FIELD;
 
   // <-- variables
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
@@ -240,14 +241,6 @@ export class ComponentsListComponent implements OnChanges {
         this.state[componentId]?.component.attrs.validation[inputValidationResult].errorMsg,
       );
     }
-  }
-
-  /**
-   * Позвращает подпись
-   * @param required - обязательное поле или нет
-   */
-  getHelperText(required: boolean): string {
-    return required ? '' : OPTIONAL_FIELD;
   }
 
   /**
