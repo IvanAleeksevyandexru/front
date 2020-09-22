@@ -4,14 +4,14 @@ import { Subject, timer } from 'rxjs';
 import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 @Directive({
-  selector: '[counter]',
+  selector: '[epgu-constructor-counter]',
   providers: [UnsubscribeService]
 })
 export class CounterDirective implements OnChanges{
 
   private counter$ = new Subject<any>();
 
-  @Input() counter: number;
+  @Input('epgu-constructor-counter') counter: number;
   @Input() interval: number;
   @Output() value = new EventEmitter<number>();
 
