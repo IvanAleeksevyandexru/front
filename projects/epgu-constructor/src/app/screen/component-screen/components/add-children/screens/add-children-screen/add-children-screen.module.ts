@@ -12,7 +12,7 @@ const COMPONENTS = [ AddChildrenScreenComponent ];
     imports: [
         CommonModule,
         SubComponentsModule,
-        EpguLibModule.forChild(),
+        EpguLibModule,
         SharedModule,
     ],
   exports: [ ...COMPONENTS ]

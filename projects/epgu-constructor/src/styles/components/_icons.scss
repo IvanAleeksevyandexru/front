@@ -1,19 +1,26 @@
-.icon-arrow, .icon-arrow-white {
+.icon-arrow,
+.icon-arrow-white {
   display: inline-block;
   width: 14px;
   height: 20px;
 }
 .icon-arrow {
-  background-image: url("../../assets/icons/svg/arrow.svg");
+  background-image: url('assets/icons/svg/arrow.svg');
 }
 
 .icon-arrow-white {
-  background-image: url("../../assets/icons/svg/arrow-forward.svg");
+  background-image: url('assets/icons/svg/arrow-forward.svg');
 }
 
 .icon-close {
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: url("../../assets/icons/svg/close.svg");
+  background-image: url('assets/icons/svg/close.svg');
+}
+
+.icon-ellipsis {
+  width: 24px;
+  height: 24px;
+  background-image: url('assets/icons/svg/ellipsis.svg');
 }

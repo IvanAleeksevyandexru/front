@@ -10,7 +10,8 @@ export interface ConfirmUserDataAttrs {
 
 export interface ConfirmUserDataActions {
   label: string;
-  method: string;
+  value: string;
+  action: string;
 }
 
 export interface ConfirmUserDataField {

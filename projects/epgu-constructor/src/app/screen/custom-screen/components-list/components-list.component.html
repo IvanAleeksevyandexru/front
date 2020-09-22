@@ -227,3 +227,13 @@
 <!--  </ng-container>-->
 <!--</form>-->
 
+
+
+<ng-template #formLabel let-label="label">
+  <epgu-constructor-label>{{ label }}</epgu-constructor-label>
+</ng-template>
+
+<ng-template #formHintAndRequired let-attrs="attrs" let-required="required">
+  <span *ngIf="attrs?.hint" class="form__item__hint">{{ attrs.hint}}</span>
+  <epgu-constructor-helper-text *ngIf="!required">{{ optionalField }}</epgu-constructor-helper-text>
+</ng-template>

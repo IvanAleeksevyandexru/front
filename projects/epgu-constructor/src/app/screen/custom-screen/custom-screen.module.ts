@@ -4,11 +4,9 @@ import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomScreenComponent } from './custom-screen.component';
 import { ScreenService } from '../screen.service';
-import { ComponentsListComponent } from './components-list/components-list.component';
 
 const COMPONENTS = [
   CustomScreenComponent,
-  ComponentsListComponent,
 ];
 
 @NgModule({
@@ -21,10 +19,10 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     SharedModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
   ],
   providers: [
-    ScreenService
+    ScreenService,
   ]
 })
 export class CustomScreenModule { }

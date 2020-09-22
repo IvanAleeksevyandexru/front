@@ -21,9 +21,11 @@
       </epgu-constructor-components-list>
     </epgu-constructor-screen-pad>
   </div>
-  <div class="btn--add">
-    <button class="btn btn--light" (click)="duplicateScreen()">Добавить данные</button>
-  </div>
+
+  <epgu-constructor-long-button class="btn--add" (click)="duplicateScreen()">
+    <div class="btn--add__text">Добавить данные</div>
+  </epgu-constructor-long-button>
+
   <div class="footer">
     <lib-button
       [showLoader]="isLoading"

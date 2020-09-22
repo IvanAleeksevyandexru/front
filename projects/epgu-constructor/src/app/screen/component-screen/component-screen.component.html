@@ -6,10 +6,10 @@
     </div>
 
     <epgu-constructor-screen-pad class="body">
-      <ng-container [ngSwitch]="screenStore.display?.components[0].type">
+      <ng-container [ngSwitch]="(screenStore.display?.components)[0].type">
         <epgu-constructor-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
-          [data]="screenStore.display?.components[0]"
+          [data]="(screenStore.display?.components)[0]"
           [currentCycledFields]="screenStore.currentCycledFields"
           [applicantAnswers]="screenStore.applicantAnswers"
           [errors]="screenStore.errors"
@@ -17,27 +17,36 @@
 
         <epgu-constructor-confirm-personal-user-data-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserData"
-          [data]="screenStore.display?.components[0]"
+          [data]="(screenStore.display?.components)[0]"
+          [errors]="screenStore.errors"
+        >
+        </epgu-constructor-confirm-personal-user-data-screen>
+
+        <epgu-constructor-confirm-personal-user-data-screen
+          *ngSwitchCase="screenComponentName.confirmAnotherUserData"
+          [data]="(screenStore.display?.components)[0]"
+          [currentCycledFields]="screenStore.currentCycledFields"
+          [errors]="screenStore.errors"
         >
         </epgu-constructor-confirm-personal-user-data-screen>
 
         <epgu-constructor-confirm-personal-user-email-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserEmail"
-          [data]="screenStore.display?.components[0]"
+          [data]="(screenStore.display?.components)[0]"
           [errors]="screenStore.errors"
         >
         </epgu-constructor-confirm-personal-user-email-screen>
 
         <epgu-constructor-confirm-personal-user-phone-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserPhone"
-          [data]="screenStore.display?.components[0]"
+          [data]="(screenStore.display?.components)[0]"
           [errors]="screenStore.errors"
         >
         </epgu-constructor-confirm-personal-user-phone-screen>
 
         <epgu-constructor-temporary-registration-addr-screen
           *ngSwitchCase="screenComponentName.registrationAddr"
-          [data]="screenStore.display?.components[0]"
+          [data]="(screenStore.display?.components)[0]"
           [errors]="screenStore.errors"
         >
         </epgu-constructor-temporary-registration-addr-screen>
@@ -88,19 +97,12 @@
           [data]="(screenStore.display?.components)[0]"
           (nextStepEvent)="nextStep()"
         ></epgu-constructor-add-children-screen>
-
-        <epgu-constructor-payment
-          *ngSwitchCase="screenComponentName.paymentScr"
-          [applicantAnswers]="screenStore.applicantAnswers"
-          [orderId]="getOrderId"
-          [data]="(screenStore.display?.components)[0]"
-        ></epgu-constructor-payment>
       </ng-container>
     </epgu-constructor-screen-pad>
 
     <div class="footer">
       <lib-button
-        *ngIf="componentSetting.displayContinueBtn"
+        *ngIf="componentSetting.displayContinueBtn && (screenService.isShown$ | async)"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
         class="footer__btn-submit"

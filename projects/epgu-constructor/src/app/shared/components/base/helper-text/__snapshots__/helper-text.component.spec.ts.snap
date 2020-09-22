@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`HelperTextComponent should match snapshot 1`] = `
-<ng-component
-  __ngContext__={[Function LRootView]}
->
+<ng-component>
   <epgu-constructor-helper-text>
     <span
       class="helper-text"

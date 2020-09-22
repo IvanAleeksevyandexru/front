@@ -5,13 +5,14 @@ import { ComponentStateService } from '../../../../services/component-state/comp
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { TimeSlotsService } from './time-slots.service';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
+import { GibddTimeSlotsService } from './gibdd-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { ModalService } from '../../../../services/modal/modal.service';
-import { SlotInterface } from './slot.interface';
 import { TimeSlotsConstants } from './time-slots.constants';
-import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
+import { SlotInterface } from './time-slots.types';
 import { Display } from '../../../screen.types';
+import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
 
 const moment = moment_;
 
@@ -81,6 +82,7 @@ export class TimeSlotsComponent implements OnInit {
     private changeDetection: ChangeDetectorRef,
     private brakTimeSlotsService: BrakTimeSlotsService,
     private divorceTimeSlotsService: DivorceTimeSlotsService,
+    private gibddTimeSlotsService: GibddTimeSlotsService,
     private mvdTimeSlotsService: MvdTimeSlotsService,
     private modalService: ModalService,
     private componentStateService: ComponentStateService,
@@ -88,6 +90,7 @@ export class TimeSlotsComponent implements OnInit {
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = divorceTimeSlotsService;
+    this.timeSlotServices.GIBDD = gibddTimeSlotsService;
     this.timeSlotServices.MVD = mvdTimeSlotsService;
   }
 
@@ -223,11 +226,19 @@ export class TimeSlotsComponent implements OnInit {
     this.modalService.openModal(ConfirmationModalComponent, params);
   }
 
+  initCalendar() {
+    const initDate = new Date();
+    this.activeMonthNumber = initDate.getMonth();
+    this.activeYearNumber = initDate.getFullYear();
+    this.renderSingleMonthGrid(this.weeks);
+  }
+
   ngOnInit(): void {
     if (this.data.components[0]) {
       this.inProgress = true;
       this.label = this.data.components[0].label;
       const value = JSON.parse(this.data.components[0].value);
+      this.initCalendar();
       this.currentService = this.timeSlotServices[value.timeSlotType];
       this.currentService.init(value).subscribe(
         () => {
@@ -240,6 +251,7 @@ export class TimeSlotsComponent implements OnInit {
             this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
           } else {
             this.errorMessage = undefined;
+            this.monthsYears = [];
             this.activeMonthNumber = this.currentService.getCurrentMonth();
             this.activeYearNumber = this.currentService.getCurrentYear();
 

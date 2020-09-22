@@ -8,4 +8,6 @@ export enum UniqueScreenComponentTypes {
   employeeHistory = 'EmployeeHistory',
   confirmMarriage = 'ConfirmMarriage',
   genderSelector = 'GenderSelector',
+  signatureApplication = 'EsepSign',
+  paymentScr = 'PaymentScr',
 }

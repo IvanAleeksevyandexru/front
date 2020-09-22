@@ -4,6 +4,7 @@
 // stylelint-disable
 
 .epgu-form-player {
+  margin-bottom: 40px;
   color: $color-summer-night;
 
   *, *:before, *:after {
@@ -60,14 +61,13 @@
   }
 
   button {
-    background: none;
     border: 0;
   }
 
   strike {
     color: $color-text-helper;
   }
-  
+
   blockquote {
     background: rgba(11, 64, 179, 0.1);
     border: 1px solid $color-button-hit;
@@ -81,5 +81,5 @@
     height: 1px;
   }
   // Implement styleguide for all library's components
-  @import "components";
+  @import "components/index.scss";
 }

@@ -8,12 +8,13 @@ cache: &global_cache
 
 stages:
   - install
-  - lint
-  - test
+  - code-quality
   - library-build
   - publish
   - build
-
+  - image
+  - deploy
+  
 Install:
   stage: install
   before_script:
@@ -25,10 +26,10 @@ Install:
     - master
 
 Lint:
-  stage: lint
+  stage: code-quality
   cache:
     <<: *global_cache
-    policy: pull  
+    policy: pull
   script:
     - yarn lint
   only:
@@ -36,10 +37,10 @@ Lint:
     - master
 
 Test:
-  stage: test
+  stage: code-quality
   cache:
     <<: *global_cache
-    policy: pull  
+    policy: pull
   script:
     - yarn test:coverage
   only:
@@ -49,7 +50,7 @@ Test:
 Library-build:
   stage: library-build
   script:
-    - yarn library:build
+    - yarn lib:build
   only:
     - merge_requests
     - master
@@ -58,7 +59,7 @@ Library-publish:
   stage: publish
   cache:
     <<: *global_cache
-    policy: pull  
+    policy: pull
   before_script:
     - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
@@ -69,16 +70,70 @@ Library-publish:
     - npm version patch
     - npm publish
   only:
-    - master    
-    
+    - master
+
 Build:
   stage: build
+  script:
+    - yarn build --prod
+    - /devops/notify/notify.sh fronted_new_master_available
+  only:
+    - merge_requests
+    - master
+
+Build-image:
+  stage: image
   cache:
     <<: *global_cache
     policy: pull
+  services:
+    - name: docker:dind
+      command: ['--insecure-registry', 'registry.gosuslugi.local']
+  image: docker:latest
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD $REGISTRY
   script:
-    - yarn build
-    - /devops/notify/notify.sh fronted_new_master_available
+    - docker build --tag $REGISTRY/$IMAGE:$CI_COMMIT_SHA --tag $REGISTRY/$IMAGE:$CI_COMMIT_REF_SLUG .
+    - docker push $REGISTRY/$IMAGE:$CI_COMMIT_SHA
+    - docker push $REGISTRY/$IMAGE:$CI_COMMIT_REF_SLUG
+  only:
+    - merge_requests
+    - master
+
+Deploy to review env:
+  stage: deploy
+  cache: {}
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - export PATH=$PATH:/devops/k8s/bin
+  script:
+    - echo http://review-$CI_COMMIT_REF_SLUG.pgu2-dev.test.gosuslugi.ru
+    - deploy
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: http://review-$CI_COMMIT_REF_SLUG.pgu2-dev.test.gosuslugi.ru
+    on_stop: "Drop review env"
+  only:
+    - merge_requests
+    - master
+
+Drop review env:
+  stage: deploy
+  cache: {}
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - export PATH=$PATH:/devops/k8s/bin    
+  script:
+    - echo "Delete environment $CI_COMMIT_REF_SLUG"
+    - stop
+  when: manual
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
   only:
     - merge_requests
     - master

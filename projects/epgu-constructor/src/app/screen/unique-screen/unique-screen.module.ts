@@ -11,6 +11,8 @@ import { UniqueScreenComponent } from './unique-screen.component';
 import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { ScreenService } from '../screen.service';
 import { ConfirmMarriageModule } from './components/confirm-marriage/confirm-marriage.module';
+import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
+import { PaymentModule } from './components/payment/payment.module';
 
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
@@ -28,12 +30,14 @@ const COMPONENTS = [UniqueScreenComponent];
     CommonModule,
     SharedModule,
     FileUploadModule,
-    EpguLibModule.forChild(),
+    EpguLibModule,
     SelectMapObjectModule,
     CarInfoModule,
     EmployeeHistoryModule,
     TimeSlotsModule,
     ConfirmMarriageModule,
+    SignatureApplicationModule,
+    PaymentModule,
   ],
   providers: [
     ScreenService

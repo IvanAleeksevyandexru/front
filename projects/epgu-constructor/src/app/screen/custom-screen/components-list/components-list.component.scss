@@ -8,8 +8,18 @@
     margin-bottom: $screen-pad-p;
 
     &__hint {
-      margin-top: 4px;
-      @include typ-plain-xs();
+      @include first-letter-uppercase();
+      margin: 4px 4px 0 0;
+      color: $color-blue-bayoux;
+      @include typ-plain-small();
+    }
+
+    &--date {
+      width: 50%;
+
+      @include phones-down {
+        width: 100%;
+      }
     }
   }
   &__title {
@@ -28,9 +38,23 @@
     &__block {
       margin-top: $screen-pad-p;
       display: inline-block;
+
       lib-radio {
         display: block;
         margin-bottom: 16px;
+      }
+
+      lib-checkbox {
+        display: block;
+        margin-bottom: 16px;
+
+        &::ng-deep .labelText{
+          line-height: 24px;
+        }
+
+        &:first-child {
+          margin-top: 4px;
+        }
       }
     }
     &__inline {

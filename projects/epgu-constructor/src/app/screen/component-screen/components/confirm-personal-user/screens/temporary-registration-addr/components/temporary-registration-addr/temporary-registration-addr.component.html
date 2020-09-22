@@ -6,8 +6,9 @@
       <lib-dadata-widget
         *ngSwitchCase="'regAddr'"
         [simpleMode]="true"
+        [hideLevels]="field?.hideLevels || []"
         [name]="field.fieldName"
-        [externalApiUrl]="configService.config.externalApiUrl + '/'"
+        [externalApiUrl]="config.externalApiUrl + '/'"
         [initValue]="forms[field.fieldName]"
         [(ngModel)]="forms[field.fieldName]"
       >
@@ -22,6 +23,7 @@
         [name]="field.fieldName"
         minDate="-50y"
         maxDate="+50y"
+        class="item__data"
         [(ngModel)]="forms[field.fieldName]"
         [invalid]="!dataForm?.controls[field.fieldName]?.valid"
         [validationShowOn]="validationShowOn"

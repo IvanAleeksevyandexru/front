@@ -1,14 +1,13 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
-import * as moment_ from 'moment';
+import * as moment from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { Screen, ScreenStore } from '../screen.types';
-import { ScreenService } from '../screen.service';
 import { NavigationPayload } from '../../form-player.types';
+import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { DATE_STRING_DOT_FORMAT } from '../../shared/constants/dates';
+import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { ScreenService } from '../screen.service';
+import { Screen, ScreenStore } from '../screen.types';
 
-const moment = moment_;
 @Component({
   selector: 'epgu-constructor-custom-screen',
   templateUrl: './custom-screen.component.html',
@@ -83,6 +82,10 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     this.nextStep(data);
   }
 
+  /**
+   * Форматиркем данные перед отправкой
+   * @param changes - данные на отправку
+   */
   getFormattedData(changes) {
     let stateData = {};
     if (this.isCycledFields) {
@@ -90,6 +93,7 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
       const stateDataPrepared = this.formatCycledFieldsValues(changes);
       const cycledValuesPrepared = { ...this.cycledValues };
       const mergedCycledAndStateData = { ...cycledValuesPrepared, ...stateDataPrepared };
+
       stateData[currentCycledFieldsKey] = {
         visited: true,
         value: JSON.stringify(mergedCycledAndStateData),
@@ -110,19 +114,50 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     }
   }
 
+  /**
+   * Возвращает true, если дата валидна
+   * @param date - дата для проверки
+   * @private
+   */
+  private isValidDate(date): boolean {
+    return new Date(date).toString() !== 'Invalid Date';
+  }
+
+  /**
+   * Подготавливаем данные для ответа
+   * @param data - данные для пребразования
+   * @private
+   */
   private getPrepareResponseData(data = {}) {
     return Object.keys(data).reduce((acc, key) => {
+      let value = '';
+      const dataValue = data[key].value;
+
+      if (typeof dataValue === 'object') {
+        if (this.isValidDate(dataValue)) {
+          value = moment(dataValue).toISOString();
+        } else {
+          value = JSON.stringify(dataValue || {});
+        }
+      } else {
+        value = dataValue;
+      }
+
       acc[key] = {
         visited: true,
-        value:
-          typeof data[key].value !== 'object'
-            ? data[key].value
-            : JSON.stringify(data[key].value || {}),
+        value,
+        disabled: data[key].disabled,
       };
+
       return acc;
     }, {});
   }
 
+  /**
+   * Форматирует значения полей с вложенностью
+   * @param changes - данные
+   * @private
+   */
   private formatCycledFieldsValues(changes: any) {
     return Object.keys(changes).reduce((accum, key) => {
       const result = accum;

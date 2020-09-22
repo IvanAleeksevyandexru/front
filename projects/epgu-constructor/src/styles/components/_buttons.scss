@@ -5,6 +5,7 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
 .btn--light {
   @include btn--light();
 }
@@ -35,9 +36,11 @@
     width: 2px;
     background-color: $color-black;
   }
+
   &:before {
     transform: rotate(45deg);
   }
+
   &:after {
     transform: rotate(-45deg);
   }

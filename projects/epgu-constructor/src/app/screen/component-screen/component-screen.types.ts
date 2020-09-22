@@ -1,6 +1,7 @@
 export enum ComponentScreenComponentTypes {
   confirmPersonalUserRegAddr = 'ConfirmPersonalUserRegAddr',
   confirmPersonalUserData = 'ConfirmPersonalUserData',
+  confirmAnotherUserData = 'ConfirmAnotherUserData',
   confirmPersonalUserEmail = 'ConfirmPersonalUserEmail',
   confirmPersonalUserPhone = 'ConfirmPersonalUserPhone',
   registrationAddr = 'RegistrationAddr',
@@ -12,7 +13,5 @@ export enum ComponentScreenComponentTypes {
   snilsInput = 'SnilsInput',
   docInput = 'DocInput',
   countryApostil = 'CountryApostil',
-  paymentScr = 'PaymentScr',
   mvdGiac = 'MvdGiac',
-
 }

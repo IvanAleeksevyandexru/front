@@ -1,53 +1,65 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormPlayerApiDraftResponse, FormPlayerApiResponse } from './form-player-api.types';
+import { CookieService } from 'ngx-cookie-service';
+import { Observable } from 'rxjs';
 import { ConfigService } from '../../../config/config.service';
 import { FormPlayerNavigation } from '../../../form-player.types';
-import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
+import { FormPlayerApiResponse } from './form-player-api.types';
+
+interface Session {
+  userId: string;
+  token: string;
+}
 
 @Injectable()
 export class FormPlayerApiService {
-  apiUrl: string;
-
   constructor(
     private http: HttpClient,
-    private configService: ConfigService,
-    private cookieService: CookieService
-  ) {
-    this.apiUrl = configService.config.apiUrl;
+    private config: ConfigService,
+    private cookieService: CookieService,
+  ) {}
+
+  public getInviteServiceData(serviceId: string, targetId: string, orderId: string): Observable<FormPlayerApiResponse> {
+    const path = `${this.config.apiUrl}/invite/service/${serviceId}/scenario`;
+    const { userId, token } = this.getSession();
+    const body = { targetId, userId, token, orderId };
+
+    return this.post<FormPlayerApiResponse>(path, body);
   }
 
-  public getDraftData(orderId: string): Observable<FormPlayerApiDraftResponse> {
-    const path = `${this.apiUrl}/drafts/${orderId}`;
-    return this.http.get<FormPlayerApiDraftResponse>(path, {
-      withCredentials: false
-    });
-  }
+  public getServiceData(serviceId: string, targetId: string, orderId?: string): Observable<FormPlayerApiResponse> {
+    const path = `${this.config.apiUrl}/service/${serviceId}/scenario/getService`;
+    const { userId, token } = this.getSession();
+    const body = { targetId, userId, token };
 
-  public getServiceData(serviceId: string): Observable<FormPlayerApiResponse> {
-    const path = `${this.apiUrl}/getService/${serviceId}`;
-    return this.http.get<FormPlayerApiResponse>(path, {
-      withCredentials: false
-    });
+    if(orderId) {
+      body['orderId'] = orderId;
+    }
+
+    return this.post<FormPlayerApiResponse>(path, body);
   }
 
   public navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, data): Observable<FormPlayerApiResponse> {
-    const path = `${this.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
+    const path = `${this.config.apiUrl}/service/${serviceId}/scenario/${formPlayerNavigation}`;
+    const { userId, token } = this.getSession();
+    data.scenarioDto.userId = userId;
+    data.scenarioDto.token = token;
 
-    // TODO: remove when api switch auth to cookie
+    const body = {
+      ...data,
+    };
+
+    return this.post<FormPlayerApiResponse>(path, body);
+  }
+
+  private getSession(): Session {
     const userId = this.cookieService.get('u') || '';
     const token = this.cookieService.get('acc_t') || '';
-    if (userId) {
-      data.scenarioDto.userId = userId;
-    }
-    if (token) {
-      data.scenarioDto.token = token;
-    }
+    return { userId, token };
+  }
 
-    return this.http.post<FormPlayerApiResponse>(path, {
-      ...data,
-    }, {
+  private post<T>(path: string, body): Observable<T> {
+    return this.http.post<T>(path, body, {
       withCredentials: false
     });
   }

@@ -43,6 +43,17 @@
     *ngSwitchCase="uniqueComponentName.confirmMarriage"
     [data]="screenStore.display"
     [isLoading]="screenService.isLoading$ | async"
-    (nextStepEvent)="nextDataForStep()">
+    (nextStepEvent)="nextDataForStep($event)">
   </epgu-constructor-confirm-marriage>
+  <epgu-constructor-signature-application
+    *ngSwitchCase="uniqueComponentName.signatureApplication"
+    [data]="screenStore.display"
+    [isLoading]="screenService.isLoading$ | async">
+  </epgu-constructor-signature-application>
+  <epgu-constructor-payment
+    *ngSwitchCase="uniqueComponentName.paymentScr"
+    [header]="screenStore.display?.header"
+    [data]="screenStore.display.components[0]"
+    (nextStepEvent)="nextDataForStep()"
+  ></epgu-constructor-payment>
   </ng-container>

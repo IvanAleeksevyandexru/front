@@ -1,34 +1,38 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormPlayerModule } from 'dist/epgu-constructor';
-import { Config } from '../../projects/epgu-constructor/src/app/config/config.types';
-import { environment } from '../environments/environment';
+import { EpguLibCommonModule, EpguLibModule } from 'epgu-lib';
+import { CookieService } from 'ngx-cookie-service';
+import { ConfigService } from '../../projects/epgu-constructor/src/app/config/config.service';
+import { UnsubscribeService } from '../../projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
 import { AppComponent } from './app.component';
-import { CookieService } from 'ngx-cookie-service'
+import { AppRoutingModule } from './app.routing';
+import { AppService } from './app.service';
+import { ConfigComponent } from './config/config.component';
+import { FpContainerComponent } from './fp-container/fp-container.component';
+import { LayoutModule } from './layout/layout.module';
 
-const formPlayerConfig: Config = {
-  apiUrl: environment.apiUrl,
-  dictionaryUrl: environment.dictionaryUrl,
-  externalApiUrl: environment.externalApiUrl,
-  externalLkApiUrl: environment.externalLkApiUrl,
-  externalUrl: environment.externalUrl,
-  paymentUrl: environment.paymentUrl,
-  yandexMapsApiKey: environment.yandexMapsApiKey,
-  isProd: environment.production,
-  fileUploadApiUrl: environment.fileUploadApiUrl,
-  externalLkUrl: environment.externalLkUrl,
-  fileUploadLocalhostApiUrl: environment.fileUploadLocalhostApiUrl,
-};
 
 @NgModule({
   declarations: [
     AppComponent,
+    ConfigComponent,
+    FpContainerComponent,
   ],
   imports: [
-    BrowserModule,
-    FormPlayerModule.forRoot(formPlayerConfig),
+    EpguLibCommonModule,
+    LayoutModule,
+    FormPlayerModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    EpguLibModule,
   ],
-  providers: [CookieService],
+  providers: [
+    CookieService,
+    AppService,
+    UnsubscribeService,
+    ConfigService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

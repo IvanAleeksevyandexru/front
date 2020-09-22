@@ -4,11 +4,12 @@ import { DictionaryApiService } from './dictionary-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConfigService } from '../../../config/config.service';
 import { ConfigServiceStub } from '../../../config/config.service.stub';
+import { UnsubscribeService } from '../../unsubscribe/unsubscribe.service';
 
 describe('DictionaryApiService', () => {
   let service: DictionaryApiService;
   let http: HttpTestingController;
-  let cnstrctrConfigSrv: ConfigService;
+  let config: ConfigService;
   let dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   let responseMock = [42];
   let dictionaryName = 'someDictionary';
@@ -29,12 +30,13 @@ describe('DictionaryApiService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         DictionaryApiService,
+        UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });
     service = TestBed.inject(DictionaryApiService);
     http = TestBed.inject(HttpTestingController);
-    cnstrctrConfigSrv = TestBed.inject(ConfigService);
+    config = TestBed.inject(ConfigService);
   }));
 
   afterEach(async(() => http.verify()));

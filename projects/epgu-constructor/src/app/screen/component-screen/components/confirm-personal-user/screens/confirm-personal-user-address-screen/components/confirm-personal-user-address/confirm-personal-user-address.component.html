@@ -1,6 +1,6 @@
 <form #dataForm="ngForm">
   <div class="flex-row" *ngIf="data?.attrs?.actions?.length === 1">
-    <a href="javascript:void(0);" (click)="handleClick()" class="button-change"> Изменить </a>
+    <a href="javascript:void(0);" (click)="handleClick()" class="button-change"> Редактировать </a>
   </div>
   <ng-container
     *ngFor="let field of data?.attrs?.fields; let i = index"
@@ -10,13 +10,12 @@
       *ngSwitchCase="'regAddr'"
       class="item"
       [label]="field.label"
-      [name]="field.label"
     >
       <lib-dadata-widget
         [simpleMode]="true"
         [disabled]="!isEditable"
         [name]="field.fieldName"
-        [externalApiUrl]="externalApiUrl"
+        [externalApiUrl]="configService.externalApiUrl + '/'"
         [initValue]="valueParsed[field.fieldName]"
         [(ngModel)]="valueParsed[field.fieldName]"
       >
@@ -29,9 +28,8 @@
           ? field?.fieldName
           : !field?.fieldName
       "
-      class="item"
+      class="item item--date"
       [label]="field.label"
-      [name]="field.label"
     >
       <lib-date-picker
         [disabled]="!isEditable"
@@ -46,7 +44,6 @@
       *ngSwitchDefault
       class="item"
       [label]="field.label"
-      [name]="field.label"
     >
       <lib-plain-input
         [disabled]="!isEditable"

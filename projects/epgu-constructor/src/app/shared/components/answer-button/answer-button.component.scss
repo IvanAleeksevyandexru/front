@@ -7,45 +7,6 @@
 }
 
 .answer-btn {
-  text-align: left;
-  display: flex;
-  width: 100%;
-  padding: 16px;
-  background: $color-white;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 16px;
-  line-height: 24px;
-  color: $color-button-hit;
-  border-radius: $border-xl;
-  cursor: pointer;
-  @include shadow-main();
-  @include tablets-up {
-    padding: 24px 32px;
-  }
-  &:hover {
-    background: $color-button-disabled;
-    color: $color-button-hover;
-
-  }
-  &:focus,
-  &:active {
-    outline: none;
-  }
-  &:focus {
-    border: 1px dashed $color-devider;
-    @include tablets-up {
-      padding: 23px 31px;
-    }
-    transition-delay: .1s;
-  }
-  &:active {
-    background: $color-background;
-    border: none;
-    @include tablets-up {
-      padding: 24px 32px;
-    }
-  }
 
   &__icon {
     flex-shrink: 0;
@@ -60,4 +21,3 @@
     margin-left: auto;
   }
 }
-
