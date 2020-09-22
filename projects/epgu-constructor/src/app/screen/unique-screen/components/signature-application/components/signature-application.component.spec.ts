@@ -1,17 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ButtonComponent, CheckboxComponent, FeedIconComponent, LoaderComponent } from 'epgu-lib';
+import { ButtonComponent, LoaderComponent, SafeHtmlPipe } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { SignatureApplicationComponent } from './signature-application.component';
 import { Display, ScreenTypes } from '../../../../screen.types';
-import { ApplicationInterface } from '../models/application.interface';
-import { LinkComponent } from './link/link.component';
 import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
 import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
-import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
+import { OutputHtmlComponent } from '../../../../../shared/components/output-html/output-html.component';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -19,7 +16,10 @@ describe('SignatureApplicationComponent', () => {
   const displayDataMock: Display = {
     components: [
       {
-        attrs: {},
+        attrs: {
+          actions: [{ action: 'getNextScreen', label: 'Перейти  в личный кабинет', value: '' }],
+          image: { src: 'link_to_img_MP' },
+        },
         id: 'sig1',
         label: '',
         required: true,
@@ -33,37 +33,27 @@ describe('SignatureApplicationComponent', () => {
     submitLabel: 'Подписать',
     type: ScreenTypes.UNIQUE,
   };
-  const applicationInfoMock: ApplicationInterface = {
-    name: '2020_06_22_2.PDF',
-    link: {
-      pdf: '',
-      xml: '',
-    },
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule],
+      imports: [RouterTestingModule],
       declarations: [
         SignatureApplicationComponent,
-        LinkComponent,
         ScreenContainerComponent,
         PageNameComponent,
-        ScreenPadComponent,
         NavigationComponent,
         ButtonComponent,
-        CheckboxComponent,
-        FeedIconComponent,
         LoaderComponent,
+        OutputHtmlComponent,
+        SafeHtmlPipe,
       ],
-      providers: [FormBuilder, NavigationService],
+      providers: [NavigationService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SignatureApplicationComponent);
     component = fixture.componentInstance;
-    component.applicationInfo = applicationInfoMock;
     component.data = displayDataMock;
     fixture.detectChanges();
   });

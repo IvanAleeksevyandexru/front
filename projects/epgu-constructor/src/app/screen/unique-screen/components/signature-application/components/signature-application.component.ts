@@ -1,9 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HelperService } from 'epgu-lib';
 
-import { Display } from '../../../../screen.types';
-import { ApplicationInterface } from '../models/application.interface';
+import { ComponentBase, Display } from '../../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
@@ -13,38 +11,24 @@ import { ApplicationInterface } from '../models/application.interface';
 export class SignatureApplicationComponent implements OnInit {
   @Input() isLoading: boolean;
   @Input() data: Display;
+  @Output() nextStepEvent = new EventEmitter<void>();
 
   isMobile = HelperService.isMobile();
-  isVisibilityLinks = false;
-
-  form: FormGroup;
-
-  // TODO: заменить на данные, когда будет готов бэк. Возможно этого не будет
-  applicationInfo: ApplicationInterface = {
-    name: '2020_06_22_2.PDF',
-    link: {
-      pdf: '',
-      xml: '',
-    },
-  };
-
-  constructor(private fb: FormBuilder) {}
+  get signatureApplication() {
+    return this.data.components[0] as ComponentBase;
+  }
 
   ngOnInit(): void {
-    this.initForm();
+    if (!this.isMobile) {
+      this.redirectToSignatureWindow();
+    }
   }
 
-  initForm() {
-    this.form = this.fb.group({
-      condition: [null, Validators.requiredTrue],
-    });
+  nextStep(): void {
+    this.nextStepEvent.emit();
   }
 
-  changeVisibility(isVisibility: boolean) {
-    this.isVisibilityLinks = isVisibility;
-  }
-
-  redirectToSignatureWindow() {
+  private redirectToSignatureWindow(): void {
     const value = JSON.parse(this.data.components[0].value);
     window.location.href = value.url;
   }

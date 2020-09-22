@@ -1,44 +1,27 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+<epgu-constructor-navigation *ngIf="!isMobile" class="nav"></epgu-constructor-navigation>
 
 <epgu-constructor-screen-container class="screen-container">
   <epgu-constructor-page-name>{{ data?.header }}</epgu-constructor-page-name>
 
-  <form (ngSubmit)="redirectToSignatureWindow()" [formGroup]="form" *ngIf="form">
-    <epgu-constructor-screen-pad>
-      <div class="application">
-        <lib-feed-icon status="done" class="application__icon-done"></lib-feed-icon>
-
-        <div class="application__info">
-          {{ applicationInfo.name }}
-        </div>
-
-        <div (click)="changeVisibility(true)" class="application__open-link">
-          <div class="icon-ellipsis"></div>
-        </div>
-
-        <epgu-constructor-signature-application-link
-          [links]="applicationInfo.link"
-          [isVisibility]="isVisibilityLinks"
-          (changeVisibilityEvent)="changeVisibility($event)"
-        ></epgu-constructor-signature-application-link>
-      </div>
-    </epgu-constructor-screen-pad>
-
-    <lib-checkbox
-      [formControl]="form.controls['condition']"
-      labelText="Настоящим подтверждаю, что я просматривал и подписывал документы"
-      class=""
-    >
-    </lib-checkbox>
-
-    <div class="footer">
-      <lib-button
-        [disabled]="form.invalid || isMobile"
-        [showLoader]="isLoading"
-        class="footer__btn-submit"
-      >
-        {{ data?.submitLabel || 'Продолжить' }}
-      </lib-button>
-    </div>
-  </form>
+  <div class="application__center" *ngIf="!isMobile; else mobileTemplate">
+    <lib-loader></lib-loader>
+  </div>
 </epgu-constructor-screen-container>
+
+<ng-template #mobileTemplate>
+  <div class="application">
+    <div class="application__center">
+      <img [src]="signatureApplication.attrs.image.src" />
+    </div>
+
+    <epgu-constructor-output-html
+      [html]="signatureApplication.label"
+    ></epgu-constructor-output-html>
+  </div>
+
+  <div class="footer">
+    <lib-button [showLoader]="isLoading" (click)="nextStep()" class="footer__btn-submit">
+      {{ (signatureApplication?.attrs.actions)[0].label || 'Продолжить' }}
+    </lib-button>
+  </div>
+</ng-template>
