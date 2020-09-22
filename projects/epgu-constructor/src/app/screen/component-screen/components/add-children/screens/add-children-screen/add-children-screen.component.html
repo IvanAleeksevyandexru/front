@@ -28,6 +28,7 @@
             <epgu-constructor-add-new-child-form
               *ngIf="selectedItems[item] && selectedItems[item].isNew === true"
               [item]="selectedItems[item]"
+              [data]="data"
               (childUpdateEvent)="updateChild($event, item)"
             ></epgu-constructor-add-new-child-form>
           </div>
