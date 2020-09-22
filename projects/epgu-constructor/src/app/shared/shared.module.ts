@@ -54,7 +54,7 @@ const DIRECTIVES = [
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   providers: [NavigationService, ApplicantAnswersService],
-  exports: [...COMPONENTS, ...PIPES, TrimDirective],
+  exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [
       CommonModule,
       EpguLibModule,
