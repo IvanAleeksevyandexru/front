@@ -102,7 +102,7 @@ export class PaymentService {
     // return billMockUp.asObservable();
 
     // eslint-disable-next-line max-len
-    const path = `${this.config.billsApiUrl}?billNumber=${uin}&urlReturnCheck=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    const path = `${this.config.billsApiUrl}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
     return this.http.post(path, {}, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
