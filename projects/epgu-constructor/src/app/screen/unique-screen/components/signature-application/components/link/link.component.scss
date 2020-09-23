@@ -1,0 +1,33 @@
+@import 'src/styles/core';
+
+.link-container {
+  width: 184px;
+  height: 112px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
+  background: $color-white;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .close {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    cursor: pointer;
+    transform: scale(0.6);
+  }
+
+  .link__item {
+    padding: 8px 0;
+
+    a {
+      color: $color-summer-night;
+    }
+  }
+}

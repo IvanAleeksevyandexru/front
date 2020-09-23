@@ -12,7 +12,7 @@ import { ApplicantAnswersService } from '../../shared/services/applicant-answers
 
 
 // TODO: Need to refactoring component
-describe.skip('ScreenComponent', () => {
+xdescribe('ScreenComponent', () => {
   let component: ComponentScreenComponent;
   let fixture: ComponentFixture<ComponentScreenComponent>;
   let navService: NavigationService;

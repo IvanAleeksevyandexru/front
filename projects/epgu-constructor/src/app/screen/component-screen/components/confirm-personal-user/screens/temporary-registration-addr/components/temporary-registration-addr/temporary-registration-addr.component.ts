@@ -14,6 +14,7 @@ import { ComponentStateService } from '../../../../../../../../services/componen
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
 import { DateValidator } from './date-validator';
+import { TextTransform } from '../../../../../../../../shared/types/textTransform';
 
 @Component({
   selector: 'epgu-constructor-temporary-registration-addr',
@@ -49,6 +50,10 @@ export class TemporaryRegistrationAddrComponent implements OnChanges, AfterViewI
   hintClick(timestamp: number) {
     const currentDayTimestamp = new Date().getTime();
     this.forms.regDate = new Date(currentDayTimestamp + timestamp);
+  }
+
+  get textTransformType(): TextTransform {
+    return this.data?.attrs?.fstuc;
   }
 
   private formChanges(changesData) {

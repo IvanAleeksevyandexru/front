@@ -1,0 +1,38 @@
+@import 'src/styles/core';
+
+.nav {
+  @include navigation-mt();
+}
+
+.application {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  &__icon-done {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+  }
+
+  &__open-link {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 24px;
+
+  &__btn-submit {
+    width: auto;
+    &::ng-deep button {
+      width: inherit;
+      min-width: 100px;
+    }
+  }
+}

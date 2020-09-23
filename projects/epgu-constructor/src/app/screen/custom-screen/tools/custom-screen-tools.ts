@@ -1,5 +1,6 @@
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
+import { checkINN, checkOgrn, checkOgrnip } from 'ru-validation-codes';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import {
@@ -12,7 +13,6 @@ import {
   CustomScreenComponentTypes
 } from '../custom-screen.types';
 const moment = moment_;
-
 
 function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
   return {
@@ -66,16 +66,17 @@ export function isDropDown(type: CustomScreenComponentTypes): boolean {
 export function getNormalizeDataCustomScreenDictionary(
   items: Array<DictionaryItem>,
   dictionaryName: string,
-  component: CustomComponent): Array<ListItem> {
+  component: CustomComponent,
+): Array<ListItem> {
   const isRemoveRussiaFromList = component?.attrs.russia === false;
   const isRemoveUssrFromList = component?.attrs.ussr === false;
   const russiaCode = 'RUS'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
   const ussrCode = 'SUN'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
   let arr = items;
   if (isRemoveRussiaFromList) {
-    arr = arr.filter(item => ![ussrCode, russiaCode].includes(item.value));
+    arr = arr.filter((item) => ![ussrCode, russiaCode].includes(item.value));
   } else if (isRemoveUssrFromList) {
-    arr = arr.filter(item => ![ussrCode].includes(item.value));
+    arr = arr.filter((item) => ![ussrCode].includes(item.value));
   }
   return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
 }
@@ -101,13 +102,15 @@ export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<
  * Возвращает true, если это компонент с типом Lookup
  * @param component - компонент
  */
-export const isLookup = (component: CustomComponent) => component.type === CustomScreenComponentTypes.Lookup;
+export const isLookup = (component: CustomComponent) =>
+  component.type === CustomScreenComponentTypes.Lookup;
 
 /**
  * Возвращает true, если это компонент с типом CheckBox
  * @param component - компонент
  */
-export const isCheckBox = (component: CustomComponent) => component.type === CustomScreenComponentTypes.CheckBox;
+export const isCheckBox = (component: CustomComponent) =>
+  component.type === CustomScreenComponentTypes.CheckBox;
 
 /**
  * Возвращает true, если текущее состояние зависимости соответствует значению проверяемого компонента
@@ -124,9 +127,11 @@ export const isHaveNeededValue = (
 ): boolean => {
   if (item.relation == relation) {
     if (isCheckBox(component)) {
-      return state[item.relatedRel]?.component?.attrs.checked === item.val;
+      return state[item.relatedRel]?.value === item.val;
     }
-    const stateRelatedRel = isLookup(component) ? state[item.relatedRel]?.value : state[item.relatedRel];
+    const stateRelatedRel = isLookup(component)
+      ? state[item.relatedRel]?.value
+      : state[item.relatedRel];
     return stateRelatedRel?.value === item.val;
   }
   return relation === CustomComponentRefRelation.displayOn;
@@ -134,46 +139,44 @@ export const isHaveNeededValue = (
 
 /**
  * Функция проверяет зависимые компоненты и перезаписывает состояние в state.
-*/
+ */
 export function calcDependedComponent(
   component: CustomComponent,
   state: CustomComponentState,
-  components: Array<CustomComponent>) {
-
+  components: Array<CustomComponent>,
+) {
   const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
   const dependentComponents = components.filter((item) => isComponentDependOn(item.attrs?.ref));
 
   dependentComponents.forEach((dependentComponent) => {
     //Проверяем статусы показа и отключённости
-    state[dependentComponent.id].isShown = dependentComponent.attrs.ref.some(item =>
-      isHaveNeededValue(state, component, item, CustomComponentRefRelation.displayOn));
-    state[dependentComponent.id].disabled = dependentComponent.attrs.ref.some(item =>
-      isHaveNeededValue(state, component, item, CustomComponentRefRelation.disabled));
-    console.log('state[dependentComponent.id].isShown', state[dependentComponent.id].isShown);
-    console.log('state[dependentComponent.id].disabled', state[dependentComponent.id].disabled);
+    state[dependentComponent.id].isShown = dependentComponent.attrs.ref.some((item) =>
+      isHaveNeededValue(state, component, item, CustomComponentRefRelation.displayOn),
+    );
+    state[dependentComponent.id].disabled = dependentComponent.attrs.ref.some((item) =>
+      isHaveNeededValue(state, component, item, CustomComponentRefRelation.disabled),
+    );
   });
 }
 
-export function CheckInputValidationComponentList(value: string, component: CustomComponent): number {
-  const regExpArr = component?.attrs?.validation?.map((item) => {
-    try {
-      return new RegExp(item.value);
-    } catch {
-      console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
-      return new RegExp(/.*/);
-    }
-  });
-
-  let result = -1; // if result === -1 input value is considered valid
-
-  if (regExpArr) {
-    regExpArr.every((regExp, index) => {
-      if (!regExp.test(value)) {
-        result = index;
-        return false;
+export function CheckInputValidationComponentList(
+  value: string,
+  component: CustomComponent,
+): number {
+  // Ищет первое невалидное выражение
+  let result =
+    component?.attrs?.validation?.findIndex((item) => {
+      try {
+        const regexp = new RegExp(item.value);
+        return !regexp.test(value);
+      } catch {
+        console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
       }
-      return true;
-    });
+    }) ?? -1;
+
+  // Если не было невалидного значения, проверяет следующую валидацию
+  if (!~result && !isValueValid(component.type, value)) {
+    result = 0;
   }
 
   return result;
@@ -181,12 +184,15 @@ export function CheckInputValidationComponentList(value: string, component: Cust
 
 export function getInitStateItemComponentList(component: CustomComponent) {
   const { value } = component;
-  const hasRelatedRef = component.attrs.ref?.length;
+  const hasRelatedRef = !component.attrs.ref?.length;
 
   let valueFormatted: string | Date;
   switch (component.type) {
     case CustomScreenComponentTypes.DateInput:
       valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate();
+      break;
+    case CustomScreenComponentTypes.CheckBox:
+      valueFormatted = component.attrs?.checked;
       break;
     default:
       valueFormatted = value;
@@ -198,6 +204,20 @@ export function getInitStateItemComponentList(component: CustomComponent) {
     errorMessage: '',
     value: valueFormatted,
     component,
-    isShown: !hasRelatedRef,
+    isShown: hasRelatedRef,
   };
+}
+
+export function isValueValid(type, value): boolean {
+  const customComponentType = CustomScreenComponentTypes;
+  if (type === customComponentType.OgrnInput) {
+    return checkOgrn(value);
+  }
+  if (type === customComponentType.OgrnipInput) {
+    return checkOgrnip(value);
+  }
+  if ([customComponentType.PersonInnInput, customComponentType.LegalInnInput].includes(type)) {
+    return checkINN(value);
+  }
+  return true;
 }
