@@ -5,7 +5,9 @@ describe('EmployeeHistoryMonthsService', () => {
   let service: EmployeeHistoryMonthsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [EmployeeHistoryMonthsService]
+    });
     service = TestBed.inject(EmployeeHistoryMonthsService);
   });
 
