@@ -1,96 +1,103 @@
 <form class="form">
-  <ng-container *ngFor="let componentData of form.controls; let idx = index">
-    <ng-container [ngSwitch]="componentData.value?.type">
-      <div class="form__item" *ngSwitchCase="componentType.StringInput">
-        <ng-container *ngIf="componentData.value?.isShown">
-          <epgu-constructor-label>{{ componentData.value?.label }}</epgu-constructor-label>
-          <lib-plain-input
-            [invalid]="componentData.invalid && componentData.touched"
-            [name]="componentData.value?.id"
-            [validationShowOn]="validationShowOn"
+  <div class="form__item" *ngFor="let componentData of form.controls; let idx = index;">
+    <ng-container [ngSwitch]="componentData.value?.type" *ngIf="shownElements[componentData.value?.id]">
+      <ng-container *ngSwitchCase="componentType.LabelSection">
+        <epgu-constructor-output-html
+          class="label"
+          [html]="componentData.value?.label"
+          [clarifications]="componentData.value?.attrs?.clarifications">
+        </epgu-constructor-output-html>
+      </ng-container>
+      <ng-container *ngSwitchCase="componentType.HtmlString">
+        <epgu-constructor-output-html
+          class="info__text"
+          [html]="componentData.value?.label"
+          [clarifications]="componentData.value?.attrs?.clarifications">
+        </epgu-constructor-output-html>
+      </ng-container>
+      <ng-container *ngSwitchCase="componentType.StringInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <lib-plain-input
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [name]="componentData.value?.id"
+          [validationShowOn]="validationShowOn"
+          [formControl]="componentData.get('value')">
+        </lib-plain-input>
+      </ng-container>
+      <ng-container *ngSwitchCase="componentType.DropDown">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <lib-dropdown
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [items]="dropDowns[componentData.value?.id]"
+          [validationShowOn]="validationShowOn"
+          [formControl]="componentData.get('value')"
+          class="cs__select cs-select">
+        </lib-dropdown>
+      </ng-container>
+      <ng-container *ngSwitchCase="componentType.Dictionary">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <lib-dropdown
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [items]="dictionaries[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
+          [validationShowOn]="validationShowOn"
+          [formControl]="componentData.get('value')"
+          class="cs__select cs-select">
+        </lib-dropdown>
+      </ng-container>
+      <ng-container *ngSwitchCase="componentType.Lookup">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <lib-lookup
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [validationShowOn]="validationShowOn"
+          [formControl]="componentData.get('value')"
+          [queryMinSymbolsCount]="0"
+          [searchCaseSensitive]="false"
+          [fixedItems]="dictionaries[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list">
+        </lib-lookup>
+      </ng-container>
+      <ng-container *ngSwitchCase="componentType.RadioInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio__inline' : 'form__radio__block'">
+          <lib-radio
+            *ngFor="let item of componentData.value?.attrs?.supportedValues"
+            [name]="componentData.value.id"
+            [labelText]="item.label"
             [formControl]="componentData.get('value')"
-          ></lib-plain-input>
-          <div *ngIf="componentData.value?.attrs?.hint" class="form__item__hint">
-            {{ componentData.value?.attrs?.hint }}
-          </div>
-          <epgu-constructor-helper-text *ngIf="!componentData.value?.required">
-            {{ getHelperText(componentData.value?.required) }}
-          </epgu-constructor-helper-text>
-          <div class="form__error">
-            <small
-              *ngIf="componentData.invalid"
-              >
-              {{ componentData.value?.errorMessage }}
-            </small>
-          </div>
-        </ng-container>
-      </div>
-      <div class="form__item" *ngSwitchCase="componentType.DropDown">
-        <ng-container *ngIf="componentData.value?.isShown">
-          <epgu-constructor-label>{{ componentData.value?.label }}</epgu-constructor-label>
-          <lib-dropdown
-            [invalid]="componentData.invalid && componentData.touched"
-            [id]="componentData.value?.id"
-            class="cs__select cs-select"
-            [items]="adaptiveDropDown(componentData.value?.attrs?.dictionaryList)"
-            [validationShowOn]="validationShowOn"
-            (changed)="selectDropDown($event, componentData)"
-            [formControl]="componentData.get('value')"
-          ></lib-dropdown>
-          <epgu-constructor-helper-text *ngIf="!componentData.value?.required">
-            {{ getHelperText(componentData.value?.required) }}
-          </epgu-constructor-helper-text>
-          <div class="form__error">
-            <small
-              *ngIf="componentData.invalid"
-            >
-              {{ componentData.value?.errorMessage }}
-            </small>
-          </div>
-        </ng-container>
-      </div>
-      <div class="form__item" *ngSwitchCase="componentType.RadioInput">
-        <ng-container *ngIf="componentData.value?.isShown">
-          <epgu-constructor-label>{{ componentData.value?.label }}</epgu-constructor-label>
-          <div
-            [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio__inline' : 'form__radio__block'"
-          >
-            <lib-radio
-              *ngFor="let item of componentData.value?.attrs?.supportedValues"
-              [name]="componentData.value.id"
-              [labelText]="item.label"
-              [formControl]="componentData.get('value')"
-              [value]="item.value"
-            >
-            </lib-radio>
-          </div>
-        </ng-container>
-      </div>
+            [value]="item.value">
+          </lib-radio>
+        </div>
+      </ng-container>
+      <ng-template
+        [ngTemplateOutlet]="formHintAndRequired"
+        [ngTemplateOutletContext]="{
+                attrs : componentData.value?.attrs,
+                required: componentData.value?.required,
+                optionalField: optionalField
+              }"
+      ></ng-template>
+      <ng-template
+        [ngTemplateOutlet]="formErrors"
+        [ngTemplateOutletContext]="{ $implicit: componentData.get('value') }">
+      </ng-template>
     </ng-container>
-  </ng-container>
+  </div>
 </form>
-<!--<form #customForm="ngForm" action="" class="form">-->
-<!--  <ng-container *ngFor="let componentData of components">-->
-<!--    <ng-container [ngSwitch]="componentData.type">-->
-<!--      <div class="form__item" *ngSwitchCase="componentType.LabelSection">-->
-<!--        <div class="label" *ngIf="state[componentData.id].isShown">-->
-<!--          {{ componentData.label || state[componentData.id].value }}-->
-<!--        </div>-->
-<!--      </div>-->
 
-<!--      <div class="form__item" *ngSwitchCase="componentType.Dictionary">-->
-<!--        <ng-container *ngIf="state[componentData.id].isShown">-->
-<!--          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>-->
-<!--          <lib-dropdown-->
-<!--            class="cs__select cs-select"-->
-<!--            (changed)="selectDictionary($event, componentData)"-->
-<!--            [items]="dictionary[componentData?.attrs?.dictionaryType + componentData?.id]?.list"-->
-<!--          ></lib-dropdown>-->
-<!--          <epgu-constructor-helper-text *ngIf="!componentData.required">-->
-<!--            {{ getHelperText(componentData.required) }}-->
-<!--          </epgu-constructor-helper-text>-->
-<!--        </ng-container>-->
-<!--      </div>-->
 
 <!--      <div class="form__item" *ngSwitchCase="componentType.GenderSelection">-->
 <!--        <ng-container *ngIf="state[componentData.id].isShown">-->
@@ -103,99 +110,7 @@
 <!--        </ng-container>-->
 <!--      </div>-->
 
-<!--      <div class="form__item" *ngSwitchCase="componentType.DropDown">-->
-<!--        <ng-container *ngIf="state[componentData.id].isShown">-->
-<!--          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>-->
-<!--          <lib-dropdown-->
-<!--            [name]="'dropDown_' + componentData.id"-->
-<!--            class="cs__select cs-select"-->
-<!--            (changed)="selectDropDown($event, componentData)"-->
-<!--            (blur)="dropDownValidationOnBlur(componentData)"-->
-<!--            [invalid]="componentData.required && !state[componentData.id].value"-->
-<!--            [items]="dropDown[componentData?.id]?.list"-->
-<!--            [(ngModel)]="selectedDropDown[componentData.id]"-->
-<!--            [validationShowOn]="validationShowOn"-->
-<!--          ></lib-dropdown>-->
-<!--          <epgu-constructor-helper-text *ngIf="!componentData.required">-->
-<!--            {{ getHelperText(componentData.required) }}-->
-<!--          </epgu-constructor-helper-text>-->
-<!--          <div class="form__error">-->
-<!--            <small-->
-<!--              *ngIf="businessErrors[componentData.id] || !state[componentData.id].valid"-->
-<!--            >-->
-<!--              {{ businessErrors[componentData.id] || state[componentData.id]?.errorMessage }}-->
-<!--            </small>-->
-<!--          </div>-->
-<!--        </ng-container>-->
-<!--      </div>-->
 
-<!--      <div class="form__item" *ngSwitchCase="componentType.Lookup">-->
-<!--        <ng-container *ngIf="state[componentData.id].isShown">-->
-<!--          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>-->
-<!--          <lib-lookup-->
-<!--            [queryMinSymbolsCount]="0"-->
-<!--            [searchCaseSensitive]="false"-->
-<!--            (changed)="selectDictionary($event, componentData)"-->
-<!--            [fixedItems]="-->
-<!--              dictionary[componentData?.attrs?.dictionaryType + componentData?.id]?.list-->
-<!--            "-->
-<!--          ></lib-lookup>-->
-<!--        </ng-container>-->
-<!--      </div>-->
-
-<!--      <div class="form__item" *ngSwitchCase="componentType.htmlString">-->
-<!--        <epgu-constructor-output-html-->
-<!--          class="info__text"-->
-<!--          [html]="componentData?.label"-->
-<!--          [clarifications]="componentData?.attrs?.clarifications"-->
-<!--        >-->
-<!--        </epgu-constructor-output-html>-->
-<!--      </div>-->
-
-<!--      <div class="form__item" *ngSwitchCase="componentType.StringInput">-->
-<!--        <ng-container *ngIf="state[componentData.id].isShown">-->
-<!--          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>-->
-<!--          <lib-plain-input-->
-<!--            [invalid]="!state[componentData.id].valid"-->
-<!--            [name]="componentData.id"-->
-<!--            [(ngModel)]="state[componentData.id].value"-->
-<!--            (change)="inputChange($event, componentData)"-->
-<!--            [validationShowOn]="validationShowOn"-->
-<!--          ></lib-plain-input>-->
-<!--          <div *ngIf="componentData.attrs?.hint" class="form__item__hint">-->
-<!--            {{ componentData.attrs?.hint }}-->
-<!--          </div>-->
-<!--          <epgu-constructor-helper-text *ngIf="!componentData.required">-->
-<!--            {{ getHelperText(componentData.required) }}-->
-<!--          </epgu-constructor-helper-text>-->
-<!--          <div class="form__error">-->
-<!--            <small-->
-<!--              *ngIf="businessErrors[componentData.id] || !state[componentData.id].valid"-->
-<!--              >-->
-<!--              {{ businessErrors[componentData.id] || state[componentData.id]?.errorMessage }}-->
-<!--            </small>-->
-<!--          </div>-->
-<!--        </ng-container>-->
-<!--      </div>-->
-
-<!--      <div class="form__item" *ngSwitchCase="componentType.RadioInput">-->
-<!--        <ng-container *ngIf="state[componentData.id].isShown">-->
-<!--          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>-->
-<!--          <div-->
-<!--            [ngClass]="componentData?.attrs?.isHorizontal ? 'form__radio__inline' : 'form__radio__block'"-->
-<!--          >-->
-<!--            <lib-radio-->
-<!--              *ngFor="let item of componentData?.attrs?.supportedValues"-->
-<!--              [name]="componentData.id"-->
-<!--              [labelText]="item.label"-->
-<!--              (change)="inputChange($event, componentData)"-->
-<!--              [value]="item.value"-->
-<!--              [checked]="componentData.value === '' && item.value === 'false' || item.value === componentData.value"-->
-<!--            >-->
-<!--            </lib-radio>-->
-<!--          </div>-->
-<!--        </ng-container>-->
-<!--      </div>-->
 
 <!--      <div class="form__item" *ngSwitchCase="componentType.DateInput">-->
 <!--        <ng-container *ngIf="state[componentData.id].isShown">-->
@@ -224,17 +139,23 @@
 <!--          </lib-dadata-widget>-->
 <!--        </ng-container>-->
 <!--      </div>-->
-<!--    </ng-container>-->
-<!--  </ng-container>-->
-<!--</form>-->
 
 
 
-<ng-template #formLabel let-label="label">
+
+<ng-template #formLabel let-label>
   <epgu-constructor-label>{{ label }}</epgu-constructor-label>
 </ng-template>
 
-<ng-template #formHintAndRequired let-attrs="attrs" let-required="required">
+<ng-template #formHintAndRequired let-attrs let-required let-optionalField>
   <span *ngIf="attrs?.hint" class="form__item__hint">{{ attrs.hint}}</span>
   <epgu-constructor-helper-text *ngIf="!required">{{ optionalField }}</epgu-constructor-helper-text>
+</ng-template>
+
+<ng-template #formErrors let-control>
+  <div class="form__error">
+    <small *ngIf="control.invalid && control.touched">
+      {{ control.getError('msg') }}
+    </small>
+  </div>
 </ng-template>

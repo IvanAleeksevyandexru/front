@@ -11,7 +11,7 @@ export enum CustomScreenComponentTypes {
   RadioInput = 'RadioInput',
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
-  htmlString = 'HtmlString',
+  HtmlString = 'HtmlString',
   GenderSelection = 'GenderSelection',
   CheckBox = 'CheckBox',
   OgrnInput = 'OgrnInput',
