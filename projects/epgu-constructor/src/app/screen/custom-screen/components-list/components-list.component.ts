@@ -130,6 +130,10 @@ export class ComponentsListComponent implements OnChanges {
     this.emmitChanges();
   }
 
+  onPassportDataChange(passportData: { [key: string]: number }, componentId: string) {
+    this.state[componentId].value = passportData;
+    this.emmitChanges();
+  }
   /**
    * Обработка изменений данных в компонентах ввода
    * @param $event - событие с элементом

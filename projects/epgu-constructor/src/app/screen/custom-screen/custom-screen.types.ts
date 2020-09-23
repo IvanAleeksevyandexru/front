@@ -21,6 +21,7 @@ export enum CustomScreenComponentTypes {
   OgrnipInput = 'OgrnipInput',
   LegalInnInput = 'LegalInnInput',
   PersonInnInput = 'PersonInnInput',
+  PassportLookup = 'PassportLookup',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };

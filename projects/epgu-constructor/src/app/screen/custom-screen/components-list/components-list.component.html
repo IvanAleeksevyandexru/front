@@ -157,6 +157,13 @@
           >
           </lib-dadata-widget>
       </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.PassportLookup">
+        <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
+        <epgu-constructor-passport (valueChangedEvent)="onPassportDataChange($event, componentData?.id)"
+                                   [attrs]="componentData?.attrs">
+        </epgu-constructor-passport>
+      </ng-container>
     </ng-container>
 
     <div class="form__info">

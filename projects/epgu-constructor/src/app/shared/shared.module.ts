@@ -24,6 +24,7 @@ import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
 import { NavigationService } from './services/navigation/navigation.service';
+import { PassportComponent } from './components/add-passport/passport.component';
 
 
 const COMPONENTS = [
@@ -42,6 +43,7 @@ const COMPONENTS = [
   OutputHtmlComponent,
   ComponentsListComponent,
   LongButtonComponent,
+  PassportComponent,
 ];
 
 const PIPES = [
@@ -68,5 +70,4 @@ const DIRECTIVES = [
     ConfirmationModalComponent
   ]
 })
-export class SharedModule { }
-
+export class SharedModule {}
