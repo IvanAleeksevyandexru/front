@@ -19,7 +19,7 @@ export class FormPlayerApiService {
   public getInviteServiceData(orderId: string): Observable<FormPlayerApiResponse> {
     const { targetId, serviceId } = this.serviceDataService;
     const { userId, token } = this.getSession();
-    const path = `${this.config.apiUrl}/invite/service/${serviceId}/scenario`;
+    const path = `${this.config.apiUrl}/invintation/${serviceId}/getService`;
     const body = { targetId, userId, token, orderId };
 
     return this.post<FormPlayerApiResponse>(path, body);
