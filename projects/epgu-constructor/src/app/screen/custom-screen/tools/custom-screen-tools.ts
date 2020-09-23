@@ -94,17 +94,17 @@ export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<
  * Возвращает true, если это компонент с типом Lookup
  * @param component - компонент
  */
-export const isLookup = (component: CustomComponent): boolean => CustomScreenComponentTypes.Lookup === component.type;
+export const isLookup = (component: CustomComponent): boolean => component.type === CustomScreenComponentTypes.Lookup;
 /**
  * Возвращает true, если это выпадающий список
  * @param component - компонент
  */
-export const isDropDown = (component: CustomComponent): boolean => CustomScreenComponentTypes.DropDown === component.type;
+export const isDropDown = (component: CustomComponent): boolean => component.type === CustomScreenComponentTypes.DropDown;
 /**
  * Возвращает true, если это компонент с типом CheckBox
  * @param component - компонент
  */
-export const isCheckBox = (component: CustomComponent): boolean => CustomScreenComponentTypes.CheckBox === component.type;
+export const isCheckBox = (component: CustomComponent): boolean => component.type === CustomScreenComponentTypes.CheckBox;
 
 /**
  * Возвращает true, если текущее состояние зависимости соответствует значению проверяемого компонента
@@ -121,9 +121,8 @@ export const isHaveNeededValue = (
 ): boolean => {
   if (item.relation == relation) {
     let stateRelatedRelValue: any;
-    if (isCheckBox(component)) {
-      stateRelatedRelValue = state[item.relatedRel].value;
-    } else if (isLookup(component)) {
+
+    if (isLookup(component)) {
       stateRelatedRelValue = state[item.relatedRel]?.value?.value;
     } else if (isDropDown(component)) {
       stateRelatedRelValue = state[item.relatedRel]?.value?.code;
