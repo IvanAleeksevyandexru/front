@@ -1,13 +1,13 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
+import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
-import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
-import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { ComponentScreenComponentTypes } from '../../../../../../component-screen.types';
+import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
+import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
 
 
 

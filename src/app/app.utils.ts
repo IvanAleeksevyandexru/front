@@ -13,5 +13,6 @@ export const getConfigFromEnvs = (): Config => {
     yandexMapsApiKey: environment.yandexMapsApiKey,
     fileUploadApiUrl: environment.fileUploadApiUrl,
     lkUrl: environment.lkUrl,
+    staticDomainAssetsPath: environment.staticDomainAssetsPath,
   }
 }
