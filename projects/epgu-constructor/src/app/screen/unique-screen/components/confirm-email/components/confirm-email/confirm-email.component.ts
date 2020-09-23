@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ScreenService } from '../../../../../screen.service';
+import { ConfigService } from '../../../../../../config/config.service';
 import {
   FormPlayerNavigation,
   NavigationFullOptions,
@@ -10,6 +10,7 @@ import {
 import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
+import { ScreenService } from '../../../../../screen.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-email',
@@ -31,6 +32,7 @@ export class ConfirmEmailComponent {
     private formPlayerService: FormPlayerService,
     private ngUnsubscribe$: UnsubscribeService,
     private navigationService: NavigationService,
+    public config: ConfigService,
   ) {
     interval(5000)
       .pipe(takeUntil(ngUnsubscribe$))
