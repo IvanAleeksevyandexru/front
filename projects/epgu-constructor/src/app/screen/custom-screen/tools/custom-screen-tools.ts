@@ -170,7 +170,7 @@ export function CheckInputValidationComponentList(
         const regexp = new RegExp(item.value);
         return !regexp.test(value);
       } catch {
-        console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
+        console.error(`Неверный формат RegExp выражения: ${item.value}`);
       }
     }) ?? -1;
 
@@ -182,7 +182,7 @@ export function CheckInputValidationComponentList(
   return result;
 }
 
-export function getInitStateItemComponentList(component: CustomComponent) {
+export function getInitStateItemComponentList(component: CustomComponent, errorMessage: string = '') {
   const { value } = component;
   const hasRelatedRef = !component.attrs.ref?.length;
 
@@ -201,7 +201,7 @@ export function getInitStateItemComponentList(component: CustomComponent) {
 
   return {
     valid: false,
-    errorMessage: '',
+    errorMessage,
     value: valueFormatted,
     component,
     isShown: hasRelatedRef,

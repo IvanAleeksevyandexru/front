@@ -17,6 +17,11 @@
             [items]="dictionary[componentData?.attrs?.dictionaryType + componentData?.id]?.list"
             (changed)="selectDictionary($event, componentData)"
           ></lib-dropdown>
+          <div class="form__error">
+            <small *ngIf="!state[componentData.id].valid">{{
+              state[componentData.id]?.errorMessage
+            }}</small>
+          </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.GenderSelection">
@@ -25,6 +30,11 @@
             [disabled]="state[componentData.id].disabled"
             [(ngModel)]="state[componentData.id].value">
           </epgu-constructor-gender-radio-button>
+          <div class="form__error">
+            <small *ngIf="!state[componentData.id].valid">{{
+              state[componentData.id]?.errorMessage
+            }}</small>
+          </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.DropDown">
@@ -35,6 +45,11 @@
             [items]="dropDown[componentData?.id]?.list"
             (changed)="selectDropDown($event, componentData)"
           ></lib-dropdown>
+          <div class="form__error">
+            <small *ngIf="!state[componentData.id].valid">{{
+              state[componentData.id]?.errorMessage
+            }}</small>
+          </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.Lookup">
@@ -48,6 +63,11 @@
             "
             (changed)="selectDictionary($event, componentData)"
           ></lib-lookup>
+          <div class="form__error">
+            <small *ngIf="!state[componentData.id].valid">{{
+              state[componentData.id]?.errorMessage
+            }}</small>
+          </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.htmlString">
@@ -72,6 +92,7 @@
             [showConstantMaskSymbols]="true"
             [(ngModel)]="state[componentData.id].value"
             (change)="inputChange($event, componentData)"
+            (blur)="inputBlur(componentData)"
             [validation]="state[componentData.id].valid"
           ></lib-standard-masked-input>
 
@@ -85,8 +106,8 @@
               [disabled]="state[componentData.id].disabled"
               [(ngModel)]="state[componentData.id].value"
               (change)="inputChange($event, componentData)"
+              (blur)="inputBlur(componentData)"
               [validationShowOn]="validationShowOn"
-              [clearable]="true"
             ></lib-plain-input>
           </ng-template>
           <div class="form__error">
@@ -106,6 +127,11 @@
               (change)="checkboxChange($event, componentData)"
             >
             </lib-checkbox>
+          </div>
+          <div class="form__error">
+            <small *ngIf="!state[componentData.id].valid">{{
+              state[componentData.id]?.errorMessage
+            }}</small>
           </div>
       </ng-container>
 
@@ -127,6 +153,11 @@
             >
             </lib-radio>
           </div>
+          <div class="form__error">
+            <small *ngIf="!state[componentData.id].valid">{{
+              state[componentData.id]?.errorMessage
+            }}</small>
+          </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.DateInput">
@@ -140,6 +171,11 @@
             [(ngModel)]="state[componentData.id].value"
             minDate="-18y"
           ></lib-date-picker>
+        </div>
+        <div class="form__error">
+          <small *ngIf="!state[componentData.id].valid">{{
+            state[componentData.id]?.errorMessage
+          }}</small>
         </div>
       </ng-container>
 
@@ -156,6 +192,11 @@
             (change)="inputChange($event, componentData)"
           >
           </lib-dadata-widget>
+          <div class="form__error">
+            <small *ngIf="!state[componentData.id].valid">{{
+              state[componentData.id]?.errorMessage
+            }}</small>
+          </div>
       </ng-container>
     </ng-container>
 

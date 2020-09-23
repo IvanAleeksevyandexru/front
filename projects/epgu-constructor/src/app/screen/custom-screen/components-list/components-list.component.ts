@@ -52,7 +52,6 @@ export class ComponentsListComponent implements OnChanges {
     public config: ConfigService,
   ) {}
 
-  // NOTICE: тут была информация о валидации смотри историю гита
   ngOnChanges(changes: SimpleChanges): void {
     this.state = {};
     if (changes?.components?.currentValue) {
@@ -82,7 +81,8 @@ export class ComponentsListComponent implements OnChanges {
    * @param component - данные компонента
    */
   initState(component: CustomComponent) {
-    this.state[component.id] = getInitStateItemComponentList(component);
+    const errorMessage = this.screenService.getStore()?.errors[component.id] || '';
+    this.state[component.id] = getInitStateItemComponentList(component, errorMessage);
   }
 
   /**
@@ -144,6 +144,13 @@ export class ComponentsListComponent implements OnChanges {
       const maskSymbolRegExp = /\s|-/g;
       value = value.replace(maskSymbolRegExp, ''); // удаляет скобки, проблемы, тире
     }
+    const inputValidationResult = CheckInputValidationComponentList(value, component);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
+    this.emmitChanges(component);
+  }
+
+  inputBlur(component: CustomComponent) {
+    const { value } = this.state[component.id];
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
