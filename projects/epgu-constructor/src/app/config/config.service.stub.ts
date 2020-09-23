@@ -13,6 +13,7 @@ export class ConfigServiceStub implements Config {
   _uinApiUrl = '';
   _billsApiUrl = '';
   _yandexMapsApiKey = '';
+  _staticDomainAssetsPath = '';
 
   get apiUrl(): string {
     return this._apiUrl;
@@ -54,6 +55,10 @@ export class ConfigServiceStub implements Config {
     return this._yandexMapsApiKey;
   }
 
+  get staticDomainAssetsPath(): string {
+    return this._staticDomainAssetsPath;
+  }
+
   set config(config: Config) {
     this._apiUrl = config.apiUrl;
     this._billsApiUrl = config.billsApiUrl;
@@ -65,5 +70,6 @@ export class ConfigServiceStub implements Config {
     this._timeSlotApiUrl = config.timeSlotApiUrl;
     this._uinApiUrl = config.uinApiUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
+    this._staticDomainAssetsPath = config.staticDomainAssetsPath;
   }
 }
