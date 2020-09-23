@@ -63,7 +63,7 @@
     *ngSwitchCase="uniqueComponentName.ConfirmNewEmail">
   </epgu-constructor-confirm-email>
   <epgu-constructor-upload-and-edit-photo
-    *ngSwitchCase="'PhotoUploadComponent'"
+    *ngSwitchCase="uniqueComponentName.photoUploadComponent"
     [data]="screenStore.display.components[0]"
     [header]="screenStore.display?.header"
     [orderId]="screenStore.orderId"

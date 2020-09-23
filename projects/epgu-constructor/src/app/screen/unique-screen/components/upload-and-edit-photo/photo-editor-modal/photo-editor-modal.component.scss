@@ -143,9 +143,9 @@
 
     &__container {
       display: flex;
-      font-size: 14px;
-      line-height: 20px;
       color: $color-summer-night;
+
+      @include typ-plain-small;
 
       @include phones-down {
         flex-direction: column;

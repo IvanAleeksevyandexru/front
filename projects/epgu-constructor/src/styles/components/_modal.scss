@@ -27,8 +27,8 @@
 
   &__title {
     padding-right: 50px;
-    font-size: 24px;
-    line-height: 32px;
     color: $color-summer-night;
+
+    @include typ-h3;
   }
 }
