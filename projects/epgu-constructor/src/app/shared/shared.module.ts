@@ -15,6 +15,9 @@ import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { SafePipe } from './pipes/safe/safe.pipe';
 
 import { DragAndDropDirective } from './directives/drag-and-drop/drag-and-drop.directive';
+import { TextTransformDirective } from './directives/text-transform/text-transform.directive';
+import { CounterDirective } from './directives/counter/counter.directive';
+import { TrimDirective } from './directives/trim/trim.directive';
 
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';
 import { HelperTextComponent } from './components/base/helper-text/helper-text.component';
@@ -30,13 +33,6 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { OutputHtmlComponent } from './components/output-html/output-html.component';
 import { ScreenContainerComponent } from './components/screen-container/screen-container.component';
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
-import { CounterDirective } from './directives/counter/counter.directive';
-import { TextTransformDirective } from './directives/text-transform/text-transform.directive';
-import { TrimDirective } from './directives/trim/trim.directive';
-import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
-import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
-import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
-import { NavigationService } from './services/navigation/navigation.service';
 import { WebcamShootComponent } from './components/webcam-shoot/webcam-shoot.component';
 
 
