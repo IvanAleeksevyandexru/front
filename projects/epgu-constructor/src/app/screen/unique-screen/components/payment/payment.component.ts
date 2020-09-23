@@ -110,7 +110,7 @@ export class PaymentComponent implements OnDestroy {
    * @param res - объект ответа на запрос
    */
   private setPaymentStatusFromSuccessRequest(res: any) {
-    this.uin = res.value.replace('PRIOR', '');
+    this.uin = res.value;
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
       .pipe(map((answer: any) => filterBillInfoResponse(answer)))
@@ -135,26 +135,33 @@ export class PaymentComponent implements OnDestroy {
    * @private
    */
   private getBillsInfo(info: BillsInfoResponse) {
-    const bill: BillInfoResponse = info.bills[this.billPosition];
+    if (info.bills) {
+      const bill: BillInfoResponse = info.bills[this.billPosition];
 
-    this.isPaid = bill.isPaid;
-    if (this.isPaid) {
+      this.isPaid = bill.isPaid;
+      if (this.isPaid) {
+        this.isShown = false;
+        this.nextStep();
+      }
+
+      // Ищем сведения по скидке, цене и начислению
+      this.validDiscountDate = getDiscountDate(bill);
+      this.sumWithoutDiscount = getDiscountPrice(bill);
+      this.docInfo = getDocInfo(bill);
+
+      if (bill?.comment?.length) {
+        this.paymentPurpose = bill.comment;
+      }
+
+      this.sum = String(bill.amount);
+      this.inLoading = false;
+      this.billId = bill.billId;
+    } else {
+      // Если сведений всё-таки не пришло
+      this.inLoading = false;
       this.isShown = false;
-      this.nextStep();
+      this.status = PaymentStatus.SERVER_ERROR;
     }
-
-    // Ищем сведения по скидке, цене и начислению
-    this.validDiscountDate = getDiscountDate(bill);
-    this.sumWithoutDiscount = getDiscountPrice(bill);
-    this.docInfo = getDocInfo(bill);
-
-    if (bill?.comment?.length) {
-      this.paymentPurpose = bill.comment;
-    }
-
-    this.sum = String(bill.amount);
-    this.inLoading = false;
-    this.billId = bill.billId;
   }
 
   /**
