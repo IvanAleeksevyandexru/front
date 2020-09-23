@@ -10,9 +10,23 @@ export class TextTransformDirective {
   @HostListener('keyup', ['$event.target'])
   onChange(target) {
     if(this.textTransformType === TextTransform.ALL) {
-      target.value = target.value.toUpperCase();
+      target.value = this.firstLetterOfEachWordToUpperCase(target.value);
     } else if (this.textTransformType === TextTransform.FIRST) {
-      target.value = target.value.charAt(0).toUpperCase() + target.value.slice(1);
+      target.value = this.firstLetterToUpperCase(target.value);
     }
+  }
+
+  firstLetterOfEachWordToUpperCase(value: string): string {
+    let transformedValue = this.splitAndTransformString(value, ' ');
+    transformedValue = this.splitAndTransformString(transformedValue, '‐');
+    return transformedValue;
+  }
+
+  splitAndTransformString(value: string, separator: string): string {
+    return value.split(separator).map(this.firstLetterToUpperCase).join(separator);
+  }
+
+  firstLetterToUpperCase(value: string): string {
+    return value ? value.charAt(0).toUpperCase() + value.slice(1) : '';
   }
 }
