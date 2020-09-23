@@ -19,11 +19,8 @@
   }
 
   li {
-    //position: relative;
-    //padding-left: 16px;
+    padding-left: 16px;
     line-height: 24px;
-    display: flex;
-    align-items: baseline;
 
     &:first-letter {
       text-transform: uppercase;
@@ -33,20 +30,14 @@
     }
 
     &::before {
-      $boolet-w: 8px;
-      content: '';
-      //position: absolute;
-      //left: 0;
-      display: block;
-      //top: 5px;
-      flex-shrink: 0;
-      width: $boolet-w;
-      height: $boolet-w;
-      background: $color-gosblue;
-      border-radius: 50%;
-      margin-right: 10px;
-      position: relative;
-      top: -1px;
+      color: $color-gosblue;
+      content: "•";
+      display: inline-block;
+      font-weight: 900;
+      margin-left: -1em;
+      width: 1em;
+      vertical-align: top;
+      font-size: 17px;
     }
   }
 }
