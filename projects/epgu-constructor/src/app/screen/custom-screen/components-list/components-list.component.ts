@@ -71,7 +71,7 @@ export class ComponentsListComponent implements OnChanges {
       const { dictionaryType } = component.attrs;
       this.initDictionary(dictionaryType, component.id);
       this.loadDictionary(dictionaryType, component);
-    } else if (isDropDown(component.type)) {
+    } else if (isDropDown(component)) {
       this.initDropDown(component);
     }
   }
@@ -126,8 +126,9 @@ export class ComponentsListComponent implements OnChanges {
    * @param component - данные компонента
    */
   selectDropDown($event: any, component: CustomComponent) {
-    this.state[component.id].value = $event.origin;
-    this.emmitChanges();
+    this.state[component.id].value = $event.originalItem;
+    this.state[component.id].valid = true;
+    this.emmitChanges(component);
   }
 
   /**

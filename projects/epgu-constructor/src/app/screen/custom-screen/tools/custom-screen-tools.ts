@@ -50,14 +50,6 @@ export function likeDictionary(type: CustomScreenComponentTypes): boolean {
 }
 
 /**
- * Возвращает true, если это выпадающий список
- * @param type - тип поля
- */
-export function isDropDown(type: CustomScreenComponentTypes): boolean {
-  return CustomScreenComponentTypes.DropDown === type;
-}
-
-/**
  * Адаптирует массив в вид необходимый для компонентов из библлиотеки и если нужно то удаляет РОССИЮ из списка
  * @param {Array<DictionaryItem>}items
  * @param {string}dictionaryName
@@ -102,15 +94,17 @@ export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<
  * Возвращает true, если это компонент с типом Lookup
  * @param component - компонент
  */
-export const isLookup = (component: CustomComponent) =>
-  component.type === CustomScreenComponentTypes.Lookup;
-
+export const isLookup = (component: CustomComponent): boolean => CustomScreenComponentTypes.Lookup === component.type;
+/**
+ * Возвращает true, если это выпадающий список
+ * @param component - компонент
+ */
+export const isDropDown = (component: CustomComponent): boolean => CustomScreenComponentTypes.DropDown === component.type;
 /**
  * Возвращает true, если это компонент с типом CheckBox
  * @param component - компонент
  */
-export const isCheckBox = (component: CustomComponent) =>
-  component.type === CustomScreenComponentTypes.CheckBox;
+export const isCheckBox = (component: CustomComponent): boolean => CustomScreenComponentTypes.CheckBox === component.type;
 
 /**
  * Возвращает true, если текущее состояние зависимости соответствует значению проверяемого компонента
@@ -126,13 +120,18 @@ export const isHaveNeededValue = (
   relation: CustomComponentRefRelation,
 ): boolean => {
   if (item.relation == relation) {
+    let stateRelatedRelValue: any;
     if (isCheckBox(component)) {
-      return state[item.relatedRel]?.value === item.val;
+      stateRelatedRelValue = state[item.relatedRel].value;
+    } else if (isLookup(component)) {
+      stateRelatedRelValue = state[item.relatedRel]?.value?.value;
+    } else if (isDropDown(component)) {
+      stateRelatedRelValue = state[item.relatedRel]?.value?.code;
+    } else {
+      stateRelatedRelValue = state[item.relatedRel].value;
     }
-    const stateRelatedRel = isLookup(component)
-      ? state[item.relatedRel]?.value
-      : state[item.relatedRel];
-    return stateRelatedRel?.value === item.val;
+
+    return stateRelatedRelValue === item.val;
   }
   return relation === CustomComponentRefRelation.displayOn;
 };
