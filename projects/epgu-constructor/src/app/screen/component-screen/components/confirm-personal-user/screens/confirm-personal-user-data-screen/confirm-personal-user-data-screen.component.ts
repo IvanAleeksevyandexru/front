@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmUserData } from '../../../../types/confirm-user-data.types';
 
 @Component({
@@ -8,12 +9,16 @@ import { ConfirmUserData } from '../../../../types/confirm-user-data.types';
   styleUrls: ['./confirm-personal-user-data-screen.component.scss'],
 })
 export class ConfirmPersonalUserDataScreenComponent implements OnInit {
-  constructor(private componentStateService: ComponentStateService) {}
+  constructor(
+    private componentStateService: ComponentStateService,
+    private toolsService: ToolsService,
+  ) {}
 
   propData: ConfirmUserData;
   @Input() set data(val: ConfirmUserData) {
     this.propData = val;
-    this.componentStateService.state = val.value;
+    const { value } = val;
+    this.componentStateService.state = value;
   }
   @Input() errors: object;
   @Input() currentCycledFields: object = {};
@@ -21,10 +26,6 @@ export class ConfirmPersonalUserDataScreenComponent implements OnInit {
 
   isCycledFields: boolean;
   cycledValues: any;
-
-  clickToAction(action): void {
-    console.log('click to action: ', action);
-  }
 
   ngOnInit(): void {
     this.isCycledFields = !!Object.keys(this.currentCycledFields).length;
@@ -41,7 +42,19 @@ export class ConfirmPersonalUserDataScreenComponent implements OnInit {
         result[fieldName] = this.cycledValues[fieldName];
         return result;
       }, {});
+      const changes = this.cycledValues;
+      const value = this.toolsService.getFormattedCycledValues(
+        changes,
+        this.currentCycledFields,
+        this.cycledValues,
+      );
+
       this.propData.value = JSON.stringify(data);
+      this.componentStateService.state = value;
     }
+  }
+
+  clickToAction(action): void {
+    console.log('click to action: ', action);
   }
 }
