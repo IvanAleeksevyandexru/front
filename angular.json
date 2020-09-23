@@ -27,7 +27,7 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "dist/epgu-constructor/assets",
+                "input": "dist/epgu-constructor/src/assets",
                 "output": "assets"
               },
               {
