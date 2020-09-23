@@ -81,7 +81,7 @@ export class ComponentsListComponent implements OnChanges {
    * @param component - данные компонента
    */
   initState(component: CustomComponent) {
-    const errorMessage = this.screenService.getStore()?.errors[component.id] || '';
+    const errorMessage = this.screenService.componentErrors[component.id] || '';
     this.state[component.id] = getInitStateItemComponentList(component, errorMessage);
   }
 
