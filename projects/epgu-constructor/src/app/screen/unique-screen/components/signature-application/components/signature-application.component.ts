@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { HelperService } from 'epgu-lib';
 
 import { ComponentBase, Display } from '../../../../screen.types';
+import { ConfigService } from '../../../../../config/config.service';
+import { SignatureApplicationAttr } from '../models/application.interface';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
@@ -14,9 +16,24 @@ export class SignatureApplicationComponent implements OnInit {
   @Output() nextStepEvent = new EventEmitter<void>();
 
   isMobile = HelperService.isMobile();
+
   get signatureApplication() {
     return this.data.components[0] as ComponentBase;
   }
+
+  get attrs() {
+    return this.signatureApplication.attrs as SignatureApplicationAttr;
+  }
+
+  @HostListener('click', ['$event']) onClick($event: Event) {
+    const { id } = $event.target as HTMLElement;
+    if (id === 'linkToLK') {
+      $event.preventDefault();
+      this.nextStep();
+    }
+  }
+
+  constructor(public config: ConfigService) {}
 
   ngOnInit(): void {
     if (!this.isMobile) {
@@ -25,7 +42,9 @@ export class SignatureApplicationComponent implements OnInit {
   }
 
   nextStep(): void {
-    this.nextStepEvent.emit();
+    // TODO: изменить window.location.href на this.nextStepEvent.emit(), когда будет известно как делать переход в ЛК с стороны бэка
+    // this.nextStepEvent.emit();
+    window.location.href = this.config.lkUrl;
   }
 
   private redirectToSignatureWindow(): void {

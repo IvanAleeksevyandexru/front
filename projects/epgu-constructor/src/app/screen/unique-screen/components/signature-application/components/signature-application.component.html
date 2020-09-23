@@ -11,7 +11,7 @@
 <ng-template #mobileTemplate>
   <div class="application">
     <div class="application__center">
-      <img [src]="signatureApplication.attrs.image.src" />
+      <img [src]="attrs.image.src" />
     </div>
 
     <epgu-constructor-output-html
@@ -21,7 +21,7 @@
 
   <div class="footer">
     <lib-button [showLoader]="isLoading" (click)="nextStep()" class="footer__btn-submit">
-      {{ (signatureApplication?.attrs.actions)[0].label || 'Продолжить' }}
+      {{ attrs.actions[0].label || 'Продолжить' }}
     </lib-button>
   </div>
 </ng-template>
