@@ -55,7 +55,8 @@
     *ngSwitchCase="'PhotoUploadComponent'"
     [data]="screenStore.display.components[0]"
     [header]="screenStore.display?.header"
+    [orderId]="screenStore.orderId"
     [isLoading]="screenService.isLoading$ | async"
-    (nextStepEvent)="nextDataForStep()">
+    (nextStepEvent)="nextDataForStep($event)">
   </epgu-constructor-upload-and-edit-photo>
   </ng-container>

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TerraFileOptions, TerraUploadFileOptions } from './terra-byte-api.types';
 import { Observable } from 'rxjs';
-import { TerraUploadedFile } from '../../sub-components/file-upload-item/data';
-import { ConfigService } from '../../../../../../config/config.service';
+import { TerraUploadedFile } from '../../../screen/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { ConfigService } from '../../../config/config.service';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
@@ -16,9 +16,8 @@ export class TerraByteApiService {
   /**
    * Переводит base64 картинку в Blob
    * @param base64Data - base64 закодированная строка
-   * @param contentType - тип контента
    */
-  static base64toBlob(base64Data: string, contentType: string): Blob {
+  static base64toBlob(base64Data: string): Blob {
     const parts = base64Data.split(';base64,');
     const imageType = parts[0].split(':')[1];
     const decodedData = window.atob(parts[1]);
@@ -87,7 +86,7 @@ export class TerraByteApiService {
     const formData = new FormData();
     if (file instanceof File){
       formData.append('file', file, file.name);
-    }else{
+    } else {
       formData.append('file', file);
     }
     Object.keys(options).forEach(k => {

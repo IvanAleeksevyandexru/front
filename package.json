@@ -53,6 +53,7 @@
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
     "@types/uuid": "8.3.0",
+    "angular-resize-event": "^2.0.0",
     "angular2-text-mask": "9.0.0",
     "epgu-lib": "0.0.493",
     "ics": "^2.24.0",

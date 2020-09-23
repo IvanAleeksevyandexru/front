@@ -4,28 +4,36 @@
   <div *ngIf="header" class="head">
     <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
   </div>
-  <div class="photo-setting">
+  <div class="photo-setting"
+       [ngClass]="{ 'photo-setting--flex-column': croppedImageUrl }">
     <input #hiddenFileInput
            style="display: none"
+           [attr.accept]="getAcceptTypes()"
            type="file"
-           (change)="onFileSelected($event.target.files)">
+           (change)="onFileSelected($event.target.files, hiddenFileInput)">
     <div class="photo-setting__uploading-container">
-      <div dragAndDrop
+      <img *ngIf="croppedImageUrl"
+           class="photo-setting__cropped-image"
+           [src]="croppedImageUrl | safe: 'resourceUrl'">
+      <div *ngIf="!croppedImageUrl"
+           dragAndDrop
            (fileDropped)="onFileSelected($event)"
            class="photo-setting__uploading-area">
-        <img *ngIf="this.isDesktop"
+        <img *ngIf="isDesktop"
              src="assets/img/photo-upload-area-desktop.svg"/>
-        <img *ngIf="!this.isDesktop"
+        <img *ngIf="!isDesktop"
              src="assets/img/photo-upload-area-mobile.svg"/>
 
         <div class="photo-setting__uploading-inner-container">
-          <p *ngIf="this.isDesktop" class="photo-setting__uploading-text">
+          <p *ngIf="isDesktop"
+             class="photo-setting__uploading-text photo-setting__uploading-text--margin-top-80">
             Перетащите фото сюда или выберите на компьютере
           </p>
-          <p *ngIf="!this.isDesktop" class="photo-setting__uploading-text">
+          <p *ngIf="!isDesktop"
+             class="photo-setting__uploading-text photo-setting__uploading-text--margin-top-68">
             Выберите файл или сделайте фото
           </p>
-          <button *ngIf="!this.isDesktop"
+          <button *ngIf="!isDesktop && isWebcamAvailable"
                   class="photo-setting__uploading-button"
                   (click)="takePhoto()">
             <img src="assets/icons/svg/camera.svg"/>
@@ -41,8 +49,19 @@
     </div>
     <epgu-constructor-output-html
       class="photo-setting__text"
-      [html]="data?.label"
-    >
+      [html]="data?.label">
     </epgu-constructor-output-html>
+  </div>
+  <div *ngIf="croppedImageUrl"
+       class="photo-setting__footer">
+    <lib-button
+      class="photo-setting__footer-button"
+      color="white"
+      (click)="changeCroppedPhoto()">Изменить
+    </lib-button>
+    <lib-button
+      class="photo-setting__footer-button"
+      (click)="nextStep()">Продолжить
+    </lib-button>
   </div>
 </epgu-constructor-screen-container>

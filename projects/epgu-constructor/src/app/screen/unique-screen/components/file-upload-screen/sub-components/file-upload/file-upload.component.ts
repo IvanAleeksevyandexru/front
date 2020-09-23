@@ -4,7 +4,7 @@ import {
   FileResponseToBackendWithRelatedUploads,
   FileUploadAttributes,
   FileUploadItem,
-} from '../../services/terra-byte-api/terra-byte-api.types';
+} from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 @Component({
   selector: 'epgu-constructor-file-upload',

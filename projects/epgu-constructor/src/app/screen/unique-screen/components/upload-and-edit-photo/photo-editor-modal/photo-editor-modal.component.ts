@@ -1,55 +1,71 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ImgCropperConfig, ImgCropperEvent, LyImageCropper } from '@alyle/ui/image-cropper';
+import { Subject } from 'rxjs';
+import { ModalBaseComponent } from '../../../../../shared/components/modal/modal-base/modal-base.component';
+import { ImageErrorText, NewSizeEvent } from '../upload-and-edit-photo.model';
+import { imageErrorText, minCropSize } from '../upload-and-edit-photo.constant';
+import { aspectRatio, hintSetting } from './photo-editor-modal.constant';
 
 @Component({
   selector: 'epgu-constructor-photo-editor-modal',
   templateUrl: './photo-editor-modal.component.html',
   styleUrls: ['./photo-editor-modal.component.scss'],
 })
-export class PhotoEditorModalComponent implements OnInit {
+export class PhotoEditorModalComponent extends ModalBaseComponent implements AfterViewInit {
+  @ViewChild('cropper') cropper: LyImageCropper;
 
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-
-  /*
-  @ViewChild('cropper') set setCropper(cropper: LyImageCropper) {
-    this.cropper = cropper;
-  }
-
-  image: string;
-
-  cropper: LyImageCropper;
+  cropConfig: ImgCropperConfig = minCropSize;
   cropping = new Subject<ImgCropperEvent>();
+  hintSetting = hintSetting;
+
+  imageObjectUrl: string;
+
+  imageErrors: string[][];
+  imageErrorText: ImageErrorText = imageErrorText;
+  errorTextIsShown = false;
 
   scale: number;
   isScalingAvailable = false;
 
-  hintSetting = {
-    title: 'Подсказка',
-    text: 'Перетащите фото, чтобы изменить положение',
-    color: '#FFD54C',
-  };
+  isPhoneSize: boolean;
 
-
-  /!**
-   * Method for calling in parent component
-   *!/
-  crop(): ImgCropperEvent {
-    return this.cropper.crop();
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  constructor() {
+    super();
   }
 
-  /!**
+  ngAfterViewInit(): void {
+    if (this.imageObjectUrl) {
+      this.cropper.setImageUrl(this.imageObjectUrl);
+    }
+
+    if (this.imageErrors) {
+      this.showErrorText();
+    }
+  }
+
+  showErrorText(): void {
+    this.errorTextIsShown = true;
+    setTimeout(() => {
+      this.errorTextIsShown = false;
+    }, 7000);
+  }
+
+  getCroppedImageUrl(): string {
+    return this.cropper.crop().dataURL;
+  }
+
+  /**
    * Image loaded hook
-   *!/
+   */
   imageLoaded(): void {
     this.setScaling();
   }
 
-  /!**
+  /**
    * Check if scaling is available and set it.
-   *!/
+   */
   setScaling(): void {
     const initScale = this.scale;
     this.cropper.zoomIn();
@@ -57,25 +73,36 @@ export class PhotoEditorModalComponent implements OnInit {
     this.cropper.zoomOut();
   }
 
-  deleteImage(): void {
-    this.deleteImageEvent.emit(this.image);
-    this.cropper.clean();
+  setCropperSize(newSize: NewSizeEvent): void {
+    this.isPhoneSize = matchMedia('(max-width: 576px)').matches;
+    this.cropConfig = this.isPhoneSize
+      ? { width: newSize.newWidth, height: newSize.newWidth * aspectRatio }
+      : minCropSize;
   }
 
-  onResized(event: ResizedEvent): void {
-    this.cropper.setImageUrl(URL.createObjectURL(this.image));
-    this.myConfig = {width: event.newWidth, height: event.newHeight};
+  fitImageToCropArea(): void {
+    this.cropper.rotate(0);
+    this.cropper.center();
+    this.cropper.fit();
+  }
+
+  onResized(newSize: NewSizeEvent): void {
+    if (newSize.newWidth !== newSize.oldWidth) {
+      this.setCropperSize(newSize);
+    }
     if (this.cropper.isLoaded) {
-      // This block fixes image displaying on resize.
-      this.cropper.rotate(0);
-      this.cropper.center();
-      this.cropper.fit();
+      this.fitImageToCropArea();
     }
   }
 
-  */
-  closeModal() {
+  takeAnotherPhoto(): void {
+    this.modalResult.next({ changeImage: true });
+    this.closeModal();
+  }
 
+  saveAndExit(): void {
+    const croppedImageUrl = this.getCroppedImageUrl();
+    this.modalResult.next({ imageObjectUrl: croppedImageUrl });
+    this.closeModal();
   }
 }
-

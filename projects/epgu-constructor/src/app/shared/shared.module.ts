@@ -2,6 +2,18 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
+import { WebcamModule } from 'ngx-webcam';
+
+import { WebcamService } from './services/webcam/webcam.service';
+import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
+import { NavigationService } from './services/navigation/navigation.service';
+import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
+
+import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
+import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
+import { SafePipe } from './pipes/safe/safe.pipe';
+
+import { DragAndDropDirective } from './directives/drag-and-drop/drag-and-drop.directive';
 
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';
 import { ConfirmationModalComponent } from './components/modal/confirmation-modal/confirmation-modal.component';
@@ -13,16 +25,12 @@ import { PageNameComponent } from './components/base/page-name/page-name.compone
 import { ScreenContainerComponent } from './components/screen-container/screen-container.component';
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { HelperTextComponent } from './components/base/helper-text/helper-text.component';
-import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
-import { NavigationService } from './services/navigation/navigation.service';
-import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
 import { CommonModalComponent } from './components/modal/common-modal/common-modal.component';
 import { OutputHtmlComponent } from './components/output-html/output-html.component';
 import { GenderRadioButtonComponent } from './components/gender-radio-button/gender-radio-button.component';
 import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
 import { LongButtonComponent } from './components/long-button/long-button.component';
-import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
-import { DragAndDropDirective } from './directives/drag-and-drop/drag-and-drop.directive';
+import { WebcamShootComponent } from './components/webcam-shoot/webcam-shoot.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -40,21 +48,24 @@ const COMPONENTS = [
   OutputHtmlComponent,
   ComponentsListComponent,
   LongButtonComponent,
+  WebcamShootComponent,
 ];
 
 const PIPES = [
   ToJsonPipe,
   MaskHandlePipe,
+  SafePipe,
 ];
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, DragAndDropDirective],
-  providers: [NavigationService, ApplicantAnswersService],
+  providers: [NavigationService, ApplicantAnswersService, WebcamService, TerraByteApiService],
   exports: [...COMPONENTS, ...PIPES, DragAndDropDirective],
   imports: [
       CommonModule,
       EpguLibModule,
       FormsModule,
+      WebcamModule,
   ],
   entryComponents: [
     ConfirmationModalComponent

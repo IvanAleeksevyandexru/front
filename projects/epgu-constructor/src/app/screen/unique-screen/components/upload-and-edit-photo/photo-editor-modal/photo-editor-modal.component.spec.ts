@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PhotoEditorModalComponent } from './photo-editor-modal.component';
+import { LyImageCropperModule } from '@alyle/ui/image-cropper';
+import { EpguLibModule } from 'epgu-lib';
+import { SliderComponent } from '../slider/slider.component';
+import { LY_THEME, LY_THEME_NAME, LyTheme2, StyleRenderer } from '@alyle/ui';
+import { MinimaDark, MinimaLight } from '@alyle/ui/themes/minima';
 
 describe('PhotoEditorModalComponent', () => {
   let component: PhotoEditorModalComponent;
@@ -8,7 +13,16 @@ describe('PhotoEditorModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PhotoEditorModalComponent ]
+      imports: [ LyImageCropperModule, EpguLibModule ],
+      providers: [
+        [ LyTheme2 ],
+        [ StyleRenderer ],
+        // Theme that will be applied to this module
+        { provide: LY_THEME_NAME, useValue: 'minima-light' },
+        { provide: LY_THEME, useClass: MinimaLight, multi: true }, // name: `minima-light`
+        { provide: LY_THEME, useClass: MinimaDark, multi: true },
+      ],
+      declarations: [ PhotoEditorModalComponent, SliderComponent ],
     })
     .compileComponents();
   });

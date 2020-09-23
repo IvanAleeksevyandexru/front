@@ -8,6 +8,7 @@ import  {
   Type,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +43,7 @@ export class ModalService {
       modalResult.next(data);
     };
 
-    return modalResult.asObservable();
+    return modalResult.asObservable().pipe(take(1));
   }
 
   public registerInjector(injector: Injector): void {

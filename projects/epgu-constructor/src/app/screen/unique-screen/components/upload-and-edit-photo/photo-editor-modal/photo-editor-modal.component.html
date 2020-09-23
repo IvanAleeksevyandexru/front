@@ -1,24 +1,91 @@
-<div class="conf-modal">
-  <div class="conf-modal__header">
-    <a class="conf-modal__close cursor-pointer" (click)="closeModal()"></a>
-    <h4 class="conf-modal__title">Отредактируйте Фото</h4>
+<div class="photo-editor-modal">
+  <div class="photo-editor-modal__header">
+    <a class="modal__close cursor-pointer"
+       (click)="closeModal()"></a>
+    <h4 class="modal__title">Отредактируйте Фото</h4>
   </div>
-  <div class="conf-modal__body">
-    <div class="conf-modal__text-wrapper">
-      <span class="conf-modal__text" [innerHTML]="text | safeHtml"></span>
-    </div>
-    <div class="conf-modal__controls">
-      <lib-button
-        [showLoader]="button.loader"
-        class="conf-modal__button"
-        [color]="'white'"
-        (click)="button.handler()">Выбрать другое фото
-      </lib-button>
-      <lib-button
-        [showLoader]="button.loader"
-        class="conf-modal__button"
-        (click)="button.handler()">Сохранить и продолжить
-      </lib-button>
+  <div class="photo-editor-modal__body-scroll">
+    <div class="photo-editor-modal__body">
+      <div class="photo-editor__container">
+        <div *ngIf="!isPhoneSize"
+             class="photo-editor__moving-hint">
+          <img src="assets/icons/svg/move-icon.svg">
+          <span>Перетащите фото,<br>чтобы изменить<br>положение</span>
+        </div>
+        <div class="photo-editor__cropper-container"
+             (resized)="onResized($event)">
+          <div class="photo-editor__cropper"
+               [style.width.px]="cropConfig.width"
+               [style.height.px]="cropConfig.height">
+            <ly-img-cropper #cropper
+                            class="photo-editor__cropper-lib"
+                            [config]="cropConfig"
+                            [(scale)]="scale"
+                            (ready)="imageLoaded()"
+            ></ly-img-cropper>
+            <img *ngIf="!isPhoneSize"
+                 class="photo-editor__mask"
+                 src="assets/img/photo-mask-desktop.svg"/>
+            <img *ngIf="isPhoneSize"
+                 class="photo-editor__mask"
+                 src="assets/img/photo-mask-mobile.svg"/>
+          </div>
+          <div *ngIf="cropper.isLoaded"
+               class="photo-editor__actions">
+            <button class="photo-editor__button"
+                    (click)="cropper.zoomOut()">
+              <img src="assets/icons/svg/zoom-out.svg"/>
+            </button>
+            <epgu-constructor-slider class="photo-editor__slider"
+                                     [max]="1"
+                                     [min]="cropper.minScale"
+                                     [(value)]="scale">
+            </epgu-constructor-slider>
+            <button class="photo-editor__button"
+                    (click)="cropper.zoomIn()">
+              <img src="assets/icons/svg/zoom-in.svg"/>
+            </button>
+            <button class="photo-editor__button"
+                    (click)="cropper.rotate(90)">
+              <img src="assets/icons/svg/rotate.svg"/>
+            </button>
+          </div>
+        </div>
+        <div class="photo-editor__position-hints-container">
+          <div class="photo-editor__position-hint">
+            <img *ngIf="isPhoneSize"
+                 src="assets/icons/svg/list-first.svg"/>
+            <span>Голова не должна быть выше этой линии</span>
+          </div>
+          <div class="photo-editor__position-hint">
+            <img *ngIf="isPhoneSize"
+                 src="assets/icons/svg/list-second.svg"/>
+            <span>Подбородок должен быть между двумя линиями</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-editor-modal__footer">
+        <div *ngIf="errorTextIsShown"
+             class="photo-editor-modal__error-text">
+          <span *ngFor="let error of imageErrors">
+            {{imageErrorText[error[0]]?.title}}.
+            {{imageErrorText[error[0]]?.text}}
+            {{error[1] || imageErrorText[error[0]]?.textRules}}
+          </span>
+        </div>
+        <div class="photo-editor-modal__buttons">
+          <lib-button
+            class="photo-editor-modal__button"
+            color="white"
+            (click)="takeAnotherPhoto()">Выбрать другое фото
+          </lib-button>
+          <lib-button
+            class="photo-editor-modal__button"
+            (click)="saveAndExit()">Сохранить и продолжить
+          </lib-button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
