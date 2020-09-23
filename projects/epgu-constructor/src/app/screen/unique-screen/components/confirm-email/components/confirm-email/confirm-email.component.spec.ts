@@ -5,6 +5,8 @@ import { FormPlayerService } from '../../../../../../services/form-player/form-p
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
 import { FormPlayerServiceStub } from '../../../../../../services/form-player/form-player.service.stub';
+import { ConfigService } from '../../../../../../config/config.service';
+import { ConfigServiceStub } from '../../../../../../config/config.service.stub';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenServiceStub } from '../../../../../screen.service.stub';
 
@@ -20,7 +22,8 @@ xdescribe('ConfirmEmailComponent', () => {
         UnsubscribeService,
         NavigationService,
         { provide: ScreenService,useClass: ScreenServiceStub },
-        { provide: FormPlayerService,useClass: FormPlayerServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     })
     .compileComponents();

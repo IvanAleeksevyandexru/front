@@ -10,10 +10,11 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { ConfigService } from '../../../../../../config/config.service';
 import {
+  Clarifications,
   FileResponseToBackendUploadsItem,
   FileUploadItem,
-  Clarifications,
   TerabyteListItem,
 } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { TerraByteApiService } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.service';
@@ -97,7 +98,11 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     .subscribe();
   errors: string[] = [];
 
-  constructor(private terabyteService: TerraByteApiService, private webcamService: WebcamService) {}
+  constructor(
+    private terabyteService: TerraByteApiService,
+    private webcamService: WebcamService,
+    public config: ConfigService,
+  ) {}
 
   /**
    * Переводит список файлов с сервера в файлы для отображения

@@ -1,6 +1,6 @@
-@import "core";
+@import 'core';
 // Implement styleguide for all library's components
-@import "components/index.scss";
+@import 'components/index.scss';
 
 // TODO: remove all normalize css styles, it may affect app's style
 // stylelint-disable
@@ -8,12 +8,20 @@
 .epgu-form-player {
   margin-bottom: 40px;
   color: $color-summer-night;
+  font-family: $font-main;
 
-  *, *:before, *:after {
+  *,
+  *:before,
+  *:after {
     box-sizing: border-box;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin: 0;
   }
 
@@ -48,7 +56,8 @@
     }
   }
 
-  small, label {
+  small,
+  label {
     @include typ-plain-small;
   }
 
