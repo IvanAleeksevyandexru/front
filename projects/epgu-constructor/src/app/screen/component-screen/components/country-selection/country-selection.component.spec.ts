@@ -9,7 +9,7 @@ import { ModalService } from '../../../../services/modal/modal.service';
 import { ModalServiceStub } from '../../../../services/modal/modal.service.stub';
 
 // TODO: Need to refactoring component
-describe.skip('CountrySelectionComponent', () => {
+xdescribe('CountrySelectionComponent', () => {
   let component: CountrySelectionComponent;
   let fixture: ComponentFixture<CountrySelectionComponent>;
   let mockData = {

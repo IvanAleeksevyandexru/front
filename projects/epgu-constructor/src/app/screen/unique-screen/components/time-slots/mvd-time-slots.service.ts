@@ -87,7 +87,7 @@ export class MvdTimeSlotsService implements TimeSlotsService {
       this.errorMessage = undefined;
       return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
         map(response => {
-            if (response.error.errorDetail.errorCode === 0) {
+            if (response.error === null || response.error.errorDetail.errorCode === 0) {
               this.initSlotsMap(response.slots);
             } else {
               const { errorMessage, errorCode } = response.error.errorDetail;

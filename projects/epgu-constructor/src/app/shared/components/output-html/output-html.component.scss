@@ -1,11 +1,12 @@
 @import 'src/styles/core';
 
-:host{
+:host {
   display: block;
 }
 :host::ng-deep {
   & > * {
     margin: 0;
+    line-height: 24px;
     &:not(:first-child) {
       margin-top: 24px;
     }
@@ -13,33 +14,30 @@
 
   ul {
     padding: 0;
-    margin-top: 24px;
+    margin: 24px 0 0;
     list-style: none;
   }
 
   li {
-    position: relative;
     padding-left: 16px;
+    line-height: 24px;
 
     &:first-letter {
-     text-transform: uppercase;
+      text-transform: uppercase;
     }
     &:not(:first-child) {
       margin-top: 16px;
     }
 
     &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      display: block;
-      width: 8px;
-      height: 8px;
-      margin-top: 6px;
-      margin-right: 12px;
-      background: $color-gosblue;
-      flex-shrink: 0;
-      border-radius: 50%;
+      color: $color-gosblue;
+      content: "•";
+      display: inline-block;
+      font-weight: 900;
+      margin-left: -1em;
+      width: 1em;
+      vertical-align: top;
+      font-size: 17px;
     }
   }
 }

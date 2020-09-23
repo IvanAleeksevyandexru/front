@@ -54,7 +54,6 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
         this.listIsUploadingNow = false;
         if (list.length) {
           // eslint-disable-next-line no-console
-          console.log('list', list);
           this.files$$.next([...list]);
           this.maxFileNumber = this.getMaxFileNumberFromList(list);
         }
