@@ -13,8 +13,8 @@ import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constants/dates';
-import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { TextTransform } from '../../../../../../../../shared/types/textTransform';
+import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 
 const moment = moment_;
 
@@ -34,7 +34,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
   valueParsed: any;
 
   constructor(
-    public configService: ConfigService,
+    public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
   ) {}
