@@ -24,6 +24,7 @@
         minDate="-50y"
         maxDate="+50y"
         class="item__data"
+        align="left"
         [(ngModel)]="forms[field.fieldName]"
         [invalid]="!dataForm?.controls[field.fieldName]?.valid"
         [validationShowOn]="validationShowOn"
