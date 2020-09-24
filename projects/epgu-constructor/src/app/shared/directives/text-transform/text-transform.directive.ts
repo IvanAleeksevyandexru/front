@@ -16,17 +16,30 @@ export class TextTransformDirective {
     }
   }
 
+  /**
+   * Трансформирует первые буквы во всех словах, уичитывает разделитили пробел и тире/деффис
+   * @param value - строка на трансформацию
+   */
   firstLetterOfEachWordToUpperCase(value: string): string {
     let transformedValue = this.splitAndTransformString(value, ' ');
     transformedValue = this.splitAndTransformString(transformedValue, '‐');
     return transformedValue;
   }
 
+  /**
+   * Разделяет, трансформирует и соединяет строки с учетом разделителя
+   * @param value - строка на трансформацию
+   * @param separator - разделитель
+   */
   splitAndTransformString(value: string, separator: string): string {
     return value.split(separator).map(this.firstLetterToUpperCase).join(separator);
   }
 
-  firstLetterToUpperCase(value: string): string {
-    return value ? value.charAt(0).toUpperCase() + value.slice(1) : '';
+  /**
+   * Трансформирует первую букву в строке
+   * @param value - строка на трансформацию
+   */
+  firstLetterToUpperCase(value: string = ''): string {
+    return value.charAt(0).toUpperCase() + value.slice(1);
   }
 }
