@@ -2,17 +2,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
-import {
-  AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
 import {
   CustomComponent,
-  CustomComponentAttrValidation,
   CustomComponentDictionaryState,
   CustomComponentDropDownItemList,
   CustomComponentOutputData,
@@ -27,10 +19,11 @@ import {
 } from '../tools/custom-screen-tools';
 import { ScreenService } from '../../screen.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { OPTIONAL_FIELD, REQUIRED_FIELD } from '../../../shared/constants/helper-texts';
+import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ConfigService } from '../../../config/config.service';
 import { ComponentBase, ScreenStore } from '../../screen.types';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
+import { ValidationService } from '../services/validation.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -56,11 +49,6 @@ export class ComponentsListComponent implements OnInit {
     CustomScreenComponentTypes.AddressInput,
   ];
 
-  private readonly typesWithoutValidation: Array<CustomScreenComponentTypes> = [
-    CustomScreenComponentTypes.LabelSection,
-    CustomScreenComponentTypes.HtmlString,
-  ];
-
   @Input() components: Array<CustomComponent>;
   @Output() changes = new EventEmitter<CustomComponentOutputData>();
 
@@ -70,6 +58,7 @@ export class ComponentsListComponent implements OnInit {
     public configService: ConfigService,
     private fb: FormBuilder,
     private unsubscribe$: UnsubscribeService,
+    private validationService: ValidationService,
   ) {}
 
   ngOnInit(): void {
@@ -93,7 +82,6 @@ export class ComponentsListComponent implements OnInit {
         ),
       )
       .subscribe((components: Array<CustomComponent>) => {
-        console.log(this.form);
         components.forEach((component: CustomComponent) => {
           if (this.availableTypesForCheckDependence.includes(component.type)) {
             this.emmitChanges(component);
@@ -127,27 +115,13 @@ export class ComponentsListComponent implements OnInit {
     });
   }
 
+  /**
+   * Метод кастомной валидации контролов
+   * @param component
+   * @private
+   */
   private validationFn(component: CustomComponent): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors => {
-      if (this.typesWithoutValidation.includes(component.type)) {
-        return null;
-      }
-
-      if (component.required && !control.value) {
-        return this.validationErrorMsg(REQUIRED_FIELD);
-      }
-
-      const err = component.attrs?.validation?.find(
-        (validator: CustomComponentAttrValidation) =>
-          validator.type === 'RegExp' && !new RegExp(validator.value).test(control.value),
-      );
-
-      return err ? this.validationErrorMsg(err.errorMsg) : null;
-    };
-  }
-
-  private validationErrorMsg(error: string): ValidationErrors {
-    return { msg: error };
+    return this.validationService.customValidator(component);
   }
 
   private adaptiveDropDown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
