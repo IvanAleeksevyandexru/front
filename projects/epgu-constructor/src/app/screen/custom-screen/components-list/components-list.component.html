@@ -116,19 +116,20 @@
             [formControl]="componentData.get('value')">
           </lib-dadata-widget>
       </ng-container>
-      <ng-container *ngSwitchCase="componentType.PhoneNumberChangeInput"></ng-container>
-      <lib-standard-masked-input
-        *ngIf="componentData.value?.attrs?.mask; else plainInput"
-        [clearable]="true"
-        [mask]="componentData.value?.attrs?.mask | maskHandle"
-        [placeholder]="componentData.value?.attrs?.placeholder"
-        [name]="componentData.value?.id"
-        [disabled]="state[componentData.id].disabled"
-        [showMaskAsPlaceholder]="true"
-        [showConstantMaskSymbols]="true"
-        [formControl]="componentData.get('value')"
-        [validation]="state[componentData.id].valid"
-      ></lib-standard-masked-input>
+      <ng-container *ngSwitchCase="componentType.PhoneNumberChangeInput">
+        <lib-standard-masked-input
+          *ngIf="componentData.value?.attrs?.mask; else plainInput"
+          [clearable]="true"
+          [mask]="componentData.value?.attrs?.mask | maskHandle"
+          [placeholder]="componentData.value?.attrs?.placeholder"
+          [name]="componentData.value?.id"
+          [showMaskAsPlaceholder]="true"
+          [showConstantMaskSymbols]="true"
+          [formControl]="componentData.get('value')"
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [validationShowOn]="validationShowOn">
+        </lib-standard-masked-input>
+      </ng-container>
 
       <ng-template
         [ngTemplateOutlet]="formHintAndRequired"
@@ -141,6 +142,18 @@
       <ng-template
         [ngTemplateOutlet]="formErrors"
         [ngTemplateOutletContext]="{ $implicit: componentData.get('value') }">
+      </ng-template>
+
+      <ng-template #plainInput>
+        <lib-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="componentData.value?.attrs?.fstuc"
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [name]="componentData.value?.id"
+          [formControl]="componentData.get('value')"
+          [validationShowOn]="validationShowOn"
+        ></lib-plain-input>
       </ng-template>
 
     </ng-container>
@@ -171,3 +184,4 @@
     [clarifications]="data.value?.attrs?.clarifications">
   </epgu-constructor-output-html>
 </ng-template>
+
