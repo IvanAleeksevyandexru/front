@@ -8,8 +8,6 @@ import { ApplicantAnswersService } from '../../shared/services/applicant-answers
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ComponentStateService } from '../component-state/component-state.service';
 import { ServiceDataService } from '../service-data/service-data.service';
-import { CookieService } from 'ngx-cookie-service';
-import { ConfigService } from '../../config/config.service';
 
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
@@ -23,6 +21,7 @@ describe('FormPlayerService', () => {
         ServiceDataService,
         ApplicantAnswersService,
         ComponentStateService,
+        ScreenResolverService,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
       ]
     });

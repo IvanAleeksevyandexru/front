@@ -1,5 +1,4 @@
-@import "src/styles/core";
-
+@import 'src/styles/core';
 
 :host {
   width: 100%;
@@ -51,5 +50,5 @@
 }
 
 .btn--light:hover .icon-arrow {
-  background-image: url("/assets/icons/svg/arrow-forward.svg");
+  background-image: url('../../../../../../../assets/icons/svg/arrow-forward.svg');
 }

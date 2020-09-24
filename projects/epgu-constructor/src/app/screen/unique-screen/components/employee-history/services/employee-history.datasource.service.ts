@@ -3,9 +3,7 @@ import { EmployeeHistoryDataSource } from '../employee-history.types';
 import { Gender } from '../../../../../shared/types/gender';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class EmployeeHistoryDatasourceService {
 
   constructor() { }

@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { NavigationFullOptions, NavigationPayload } from '../../form-player.types';
+import { FormPlayerNavigation, Navigation, NavigationPayload } from '../../form-player.types';
+import { ScreenComponent } from '../../screen/screen.const';
 import { ScreenService } from '../../screen/screen.service';
+import { ScreenTypes } from '../../screen/screen.types';
+import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
 } from '../api/form-player-api/form-player-api.types';
-import { ScreenTypes } from '../../screen/screen.types';
+import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ServiceDataService } from '../service-data/service-data.service';
 import { UtilsService } from '../utils/utils.service';
-import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -36,14 +38,26 @@ export class FormPlayerService {
     public formPlayerApiService: FormPlayerApiService,
     private serviceDataService: ServiceDataService,
     private screenService: ScreenService,
+    private screenResolverService: ScreenResolverService,
   ) {}
 
   /**
-   * Возвращает true, если в LocalStorage если данные для показа
-   * @private
+   * Возвращает компонент для показа экрана переданного типа
    */
-  private static isHaveOrderDataInLocalStorage(): boolean {
-    return !!localStorage.getItem(COMPONENT_DATA_KEY);
+  getScreenComponent(): ScreenComponent {
+    const screenType = this.screenService.screenType as string;
+    const screenComponent = this.screenResolverService.getScreenComponentByType(screenType);
+
+    if (!screenComponent) {
+      this.handleScreenComponentError(this.screenService.screenType);
+    }
+
+    return screenComponent;
+  }
+
+  private handleScreenComponentError(screenType: string) {
+    // TODO: need to find a better way for handling this error, maybe show it on UI
+    throw new Error(`We cant find screen component for this type: ${screenType}`);
   }
 
   /**
@@ -52,7 +66,15 @@ export class FormPlayerService {
    * @private
    */
   private isNeedToShowLastScreen(): boolean {
-    return location.href.includes('getLastScreen=') && FormPlayerService.isHaveOrderDataInLocalStorage();
+    return location.href.includes('getLastScreen=') && this.isHaveOrderDataInLocalStorage();
+  }
+
+  /**
+   * Возвращает true, если в LocalStorage если данные для показа
+   * @private
+   */
+  private isHaveOrderDataInLocalStorage(): boolean {
+    return !!localStorage.getItem(COMPONENT_DATA_KEY);
   }
 
   /**
@@ -105,11 +127,10 @@ export class FormPlayerService {
   }
 
 
-  navigate(navigationPayload: NavigationPayload = undefined, options: NavigationFullOptions) {
-    const serviceId = this.serviceDataService.serviceId;
+  navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation) {
     this.updateLoading(true);
-    this.updateRequest(navigationPayload);
-    this.formPlayerApiService.navigate(serviceId, this.store, options).subscribe(
+    this.updateRequest(navigation.payload);
+    this.formPlayerApiService.navigate(this.store, navigation.options, formPlayerNavigation).subscribe(
       (response) => {
         this.processResponse(response);
       },
@@ -129,6 +150,8 @@ export class FormPlayerService {
       this.sendDataError(response);
     } else {
       this.sendDataSuccess(response);
+      // reset view by scrolling to top
+      window.scroll(0,0);
     }
   };
 
@@ -160,6 +183,8 @@ export class FormPlayerService {
   }
 
   updateRequest(navigationPayload?: NavigationPayload): void {
+    console.log('updateRequest');
+    console.log(navigationPayload);
     if (this.isEmptyNavigationPayload(navigationPayload)) {
       this.store.scenarioDto.currentValue = {};
       const componentId = this.store.scenarioDto.display.components[0].id;

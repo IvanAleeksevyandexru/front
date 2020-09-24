@@ -73,7 +73,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
    */
   nextStep() {
     const componentId = this.screenStore.display.components[0].id;
-    let data: NavigationPayload = {};
+    let payload: NavigationPayload = {};
     let value: string;
     if (typeof this.componentStateService.state === 'object') {
       value = JSON.stringify(this.componentStateService.state);
@@ -81,16 +81,16 @@ export class ComponentScreenComponent implements OnInit, Screen {
       value = this.componentStateService.state;
     }
 
-    data[componentId] = {
+    payload[componentId] = {
       visited: true,
       value: value || '',
     };
 
     if (this.isCycledFields) {
-      data = this.componentStateService.state as NavigationPayload; // TODO: need clarify case
+      payload = this.componentStateService.state as NavigationPayload; // TODO: need clarify case
     }
 
-    this.navigationService.nextStep.next(data);
+    this.navigationService.nextStep.next({ payload });
   }
 
   /**
