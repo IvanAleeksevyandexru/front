@@ -14,7 +14,10 @@
 <div class="data-footer" *ngIf="data?.attrs?.actions?.length === 1">
   <div class="divider"></div>
   <a class="btn-edit" [href]="config.lkUrl">
-    <img src="/assets/icons/svg/ion_pencil-outline.svg" class="btn-edit__icon">
+    <img
+      src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"
+      class="btn-edit__icon"
+    />
     <span class="btn-edit__text">Редактировать</span>
   </a>
 </div>

@@ -1,6 +1,5 @@
 import {
-  ConfirmUserDataAdaptiveField,
-  ConfirmUserData
+  ConfirmUserData, ConfirmUserDataAdaptiveField
 } from '../../../../../../types/confirm-user-data.types';
 
 export const FULL_NAME_FIELD_ITEMS = ['firstName', 'lastName', 'middleName'];
@@ -8,14 +7,11 @@ export const CONFIRM_USER_DATA_BIRTHDAY_FIELD_NAME = 'birthDate';
 
 
 export function getFullNameConfirmPersonalUserData(data: ConfirmUserData): string {
-  const includeItem = (arr, item) => arr.includes(item);
-  return (
-    data.attrs.fields
-      .filter((item) => includeItem(FULL_NAME_FIELD_ITEMS, item.fieldName))
-      // eslint-disable-next-line no-return-assign, no-param-reassign
-      .reduce((acc, item) => (acc += ` ${getPropFromStringJson(data, item.fieldName)}`), '')
-      .trim()
-  );
+  const dataParsed = JSON.parse(data.value);
+  const firstName = dataParsed['firstName'];
+  const lastName = dataParsed['lastName'];
+  const middleName = dataParsed['middleName'];
+  return `${lastName} ${firstName} ${middleName}`;
 }
 
 export function getBirthDayConfirmPersonalUserData(data: ConfirmUserData): ConfirmUserDataAdaptiveField {

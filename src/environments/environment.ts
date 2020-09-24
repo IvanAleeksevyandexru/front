@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  serviceId: 'local',
+  serviceId: '10000056555',
   targetId: '',
   orderId: '',
   apiUrl: '/api',
@@ -18,6 +18,7 @@ export const environment = {
   lkUrl: 'https://pgu-dev-lk.test.gosuslugi.ru/info',
   paymentUrl: 'https://payment-dev-l14.test.gosuslugi.ru',
   fileUploadApiUrl: 'https://gosuslugi.ru/api/storage/v1/files',
+  staticDomainAssetsPath: '',
 };
 
 /*

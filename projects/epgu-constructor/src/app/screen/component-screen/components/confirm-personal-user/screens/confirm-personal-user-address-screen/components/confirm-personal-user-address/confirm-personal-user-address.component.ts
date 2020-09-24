@@ -13,6 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constants/dates';
+import { TextTransform } from '../../../../../../../../shared/types/textTransform';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 
 const moment = moment_;
@@ -33,22 +34,20 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
   valueParsed: any;
 
   constructor(
-    public configService: ConfigService,
+    public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
-    private config: ConfigService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.isEditable?.currentValue && this.isEditable) {
+    if (changes.isEditable?.currentValue) {
       this.subscribeFormChanges();
+      this.changeDetection.detectChanges();
     }
+
     if (changes.data?.currentValue) {
       this.setState();
       this.emmitData();
-      setTimeout(() => {
-        this.changeDetection.detectChanges();
-      });
     }
   }
 
@@ -71,11 +70,11 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
   }
 
   private emmitData(): void {
-    const dataToSend = this.prepareDataToSend();
+    const dataToSend = this.getPreparedDataToSend();
     this.dataEditedEvent.emit(dataToSend);
   }
 
-  prepareDataToSend(): string {
+  getPreparedDataToSend(): string {
     const { regAddr, regDate } = this.valueParsed;
     const dataToSend = { ...this.valueParsed };
     if (typeof regAddr === 'string') {
@@ -87,6 +86,10 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
 
   handleClick(): void {
     this.isEditable = true;
+  }
+
+  get textTransformType(): TextTransform {
+    return this.data?.attrs?.fstuc;
   }
 
   private getDate(regDate: string): Date {

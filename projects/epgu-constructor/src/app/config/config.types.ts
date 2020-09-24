@@ -22,4 +22,5 @@ export interface Config {
   fileUploadApiUrl: string;
   lkUrl: string;
   yandexMapsApiKey: string;
+  staticDomainAssetsPath: string;
 }

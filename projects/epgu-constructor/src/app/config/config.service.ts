@@ -14,6 +14,7 @@ export class ConfigService implements Config {
   private _listPaymentsApiUrl: string;
   private _uinApiUrl: string;
   private _yandexMapsApiKey: string;
+  private _staticDomainAssetsPath: string;
 
   checkConfig(config: Config) {
     if (!config) {
@@ -65,6 +66,10 @@ export class ConfigService implements Config {
     return this._yandexMapsApiKey;
   }
 
+  get staticDomainAssetsPath(): string {
+    return this._staticDomainAssetsPath;
+  }
+
   // Do not use this method, only for testing stand
   set config(config: Config) {
     this.checkConfig(config);
@@ -79,5 +84,6 @@ export class ConfigService implements Config {
     this._listPaymentsApiUrl = config.listPaymentsApiUrl;
     this._uinApiUrl = config.uinApiUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
+    this._staticDomainAssetsPath = config.staticDomainAssetsPath;
   }
 }

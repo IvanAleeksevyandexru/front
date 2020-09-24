@@ -1,25 +1,33 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import * as moment_ from 'moment';
 import { ValidationShowOn } from 'epgu-lib';
-import { EmployeeHistoryFormService } from './services/employee-history.form.service';
+import * as moment_ from 'moment';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
+import { Gender } from '../../../../shared/types/gender';
+import { ComponentBase, Display } from '../../../screen.types';
 import {
   Employee,
   EmployeeHistoryAvailableDates,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel,
 } from './employee-history.types';
+import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
+import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
-import { Display } from '../../../screen.types';
-import { Gender } from '../../../../shared/types/gender';
+import { TextTransform } from '../../../../shared/types/textTransform';
 
 const moment = moment_;
+
+export interface EmployeeHistoryComponentInterface extends ComponentBase {
+  attrs: {
+    fstuc?: TextTransform;
+  };
+}
 
 @Component({
   selector: 'epgu-constructor-employee-history',
   templateUrl: './employee-history.component.html',
   styleUrls: ['./employee-history.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class EmployeeHistoryComponent implements OnInit, OnChanges {
   @Input() display: Display;
@@ -95,6 +103,11 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
       (e) =>
         String(e.type) === String(type || this.employeeFormService.generateForm.get('type').value),
     );
+  }
+
+  get textTransformType(): TextTransform {
+    const component = this.display?.components[0] as EmployeeHistoryComponentInterface;
+    return component?.attrs?.fstuc;
   }
 
   private convertEmployeeHistory(): EmployeeHistoryModel[] {

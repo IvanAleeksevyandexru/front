@@ -11,7 +11,10 @@ import { UniqueScreenComponent } from './unique-screen.component';
 import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { ScreenService } from '../screen.service';
 import { ConfirmMarriageModule } from './components/confirm-marriage/confirm-marriage.module';
+import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
 import { PaymentModule } from './components/payment/payment.module';
+import { ConfirmPhoneModule } from './components/confirm-phone/confirm-phone.module';
+import { ConfirmEmailModule } from './components/confirm-email/confirm-email.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
 
 
@@ -26,19 +29,22 @@ const COMPONENTS = [UniqueScreenComponent];
   exports: [
     ...COMPONENTS,
   ],
-    imports: [
-        CommonModule,
-        SharedModule,
-        FileUploadModule,
-        EpguLibModule,
-        SelectMapObjectModule,
-        CarInfoModule,
-        EmployeeHistoryModule,
-        TimeSlotsModule,
-        ConfirmMarriageModule,
-        PaymentModule,
-        UnusedPaymentsModule,
-    ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FileUploadModule,
+    EpguLibModule,
+    SelectMapObjectModule,
+    CarInfoModule,
+    ConfirmPhoneModule,
+    ConfirmEmailModule,
+    EmployeeHistoryModule,
+    SignatureApplicationModule,
+    TimeSlotsModule,
+    ConfirmMarriageModule,
+    PaymentModule,
+    UnusedPaymentsModule,
+  ],
   providers: [
     ScreenService
   ]

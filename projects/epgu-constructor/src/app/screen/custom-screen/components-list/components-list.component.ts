@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { ConfigService } from '../../../config/config.service';
@@ -40,9 +32,10 @@ const moment = moment_;
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
 })
-export class ComponentsListComponent implements OnInit, OnChanges {
+export class ComponentsListComponent implements OnChanges {
   // <-- constant
   componentType = CustomScreenComponentTypes;
+  optionalField = OPTIONAL_FIELD;
 
   // <-- variables
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
@@ -60,7 +53,6 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   ) {}
 
   // NOTICE: тут была информация о валидации смотри историю гита
-
   ngOnChanges(changes: SimpleChanges): void {
     this.state = {};
     if (changes?.components?.currentValue) {
@@ -71,7 +63,8 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Инициализирует стейт для компонента.
+   * Инициализирует хранилище для компонента и подгружает необходимые данные
+   * @param component - данные компонента
    */
   initComponent(component: CustomComponent) {
     this.initState(component);
@@ -84,14 +77,27 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Инициализирует хранилище для компонента
+   * @param component - данные компонента
+   */
   initState(component: CustomComponent) {
     this.state[component.id] = getInitStateItemComponentList(component);
   }
 
+  /**
+   * Инициализация справочника
+   * @param dictionaryType - тип справочника
+   * @param componentId - id компонента
+   */
   initDictionary(dictionaryType, componentId) {
     this.dictionary[dictionaryType + componentId] = getCustomScreenDictionaryFirstState();
   }
 
+  /**
+   * Инициализирует работу выпадающего списка
+   * @param component - данные компонента
+   */
   initDropDown(component: CustomComponent) {
     const key = component.id;
     const data = component.attrs.dictionaryList;
@@ -101,6 +107,11 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     };
   }
 
+  /**
+   * Выбор элемента из справочника
+   * @param selectedItem - выбранный элемент
+   * @param component - данные компонента
+   */
   selectDictionary(selectedItem: ListItem, component: CustomComponent) {
     const dictionaryType = component.attrs?.dictionaryType;
     this.dictionary[dictionaryType + component.id].selectedItem = selectedItem.originalItem;
@@ -109,22 +120,51 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.emmitChanges(component);
   }
 
-  selectDropDown($event: any, componentData: CustomComponent) {
-    this.state[componentData.id].value = $event.origin;
+  /**
+   * Выбор элемента из выпадающего списка
+   * @param $event - событие с данными
+   * @param component - данные компонента
+   */
+  selectDropDown($event: any, component: CustomComponent) {
+    this.state[component.id].value = $event.origin;
     this.emmitChanges();
   }
 
+  /**
+   * Обработка изменений данных в компонентах ввода
+   * @param $event - событие с элементом
+   * @param component - данные компонента
+   */
   inputChange($event: Event, component: CustomComponent) {
     let { value } = $event.target as HTMLInputElement;
-    if (component.type === 'AddressInput') {
-      const fullAddressObject = this.state[component.id].value;
-      value = fullAddressObject;
+    if (component.type === this.componentType.AddressInput) {
+      value = this.state[component.id].value;
+    }
+    if (component.type === this.componentType.PhoneNumberChangeInput) {
+      const maskSymbolRegExp = /\s|-/g;
+      value = value.replace(maskSymbolRegExp, ''); // удаляет скобки, проблемы, тире
     }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
   }
 
+  /**
+   * Переключение состояния чекбокса отвечающего за видимость или скрытие полей
+   * @param $event - событие с элементом
+   * @param component - данные компонента
+   */
+  checkboxChange($event: Event, component: CustomComponent) {
+    const { checked } = $event.target as HTMLInputElement;
+    this.state[component.id].value = checked;
+    this.emmitChanges(component);
+  }
+
+  /**
+   * Изменение даты в специальном выборе даты
+   * @param $event - значение выбранной даты
+   * @param component - данные компонента
+   */
   dateChange($event: string, component: CustomComponent) {
     const value = moment($event).toISOString();
     const inputValidationResult = CheckInputValidationComponentList(value, component);
@@ -132,6 +172,11 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     this.emmitChanges(component);
   }
 
+  /**
+   * Подгрузка данныъ из справочника
+   * @param dictionaryType - тип справочника
+   * @param component - данные компонента
+   */
   loadDictionary(dictionaryType: string, component: CustomComponent) {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
     this.dictionaryApiService.getDictionary(dictionaryType, { pageNum: 0 }).subscribe(
@@ -143,23 +188,48 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     );
   }
 
-  loadDictionarySuccess(key: string, data: DictionaryResponse, component: CustomComponent) {
-    const id = key + component.id;
+  /**
+   * Обработка ситуации когда произошла успешная подгрузка данных справочника и мы получает список значений
+   * @param dictionaryType - тип справочника
+   * @param data - данные из запроса
+   * @param component - данные компонента
+   */
+  loadDictionarySuccess(
+    dictionaryType: string,
+    data: DictionaryResponse,
+    component: CustomComponent,
+  ) {
+    const id = dictionaryType + component.id;
     this.dictionary[id].loading = false;
     this.dictionary[id].paginationLoading = false;
     this.dictionary[id].data = data;
     this.dictionary[id].origin = component;
-    this.dictionary[id].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
+    this.dictionary[id].list = getNormalizeDataCustomScreenDictionary(
+      data.items,
+      dictionaryType,
+      component,
+    );
   }
 
-  loadDictionaryError(key: string, componentId: string) {
-    const id = key + componentId;
+  /**
+   * Обработка ситуации когда подгрузка данных справочника произошла ошибкой
+   * @param dictionaryType - тип справочника
+   * @param componentId - id компонента
+   */
+  loadDictionaryError(dictionaryType: string, componentId: string) {
+    const id = dictionaryType + componentId;
     this.dictionary[id].loading = false;
     this.dictionary[id].paginationLoading = false;
     this.dictionary[id].loadError = true;
     this.dictionary[id].loadEnd = false;
   }
 
+  /**
+   * Устанавливает состояние валидности для компонента
+   * @param inputValidationResult - результат валидации
+   * @param componentId - id компоненота
+   * @param componentValue - значение компонента
+   */
   setValidationAndValueState(inputValidationResult, componentId, componentValue) {
     const handleSetState = (isValid, errMsg?) => {
       this.state[componentId].value = componentValue;
@@ -172,15 +242,16 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     } else {
       handleSetState(
         false,
-        this.state[componentId]?.component.attrs.validation[inputValidationResult].errorMsg,
+        this.state[componentId]?.component?.attrs?.validation &&
+          this.state[componentId]?.component?.attrs?.validation[inputValidationResult]?.errorMsg,
       );
     }
   }
 
-  getHelperText(required: boolean): string {
-    return required ? '' : OPTIONAL_FIELD;
-  }
-
+  /**
+   * Отправляем данные на следующий экран
+   * @param component - данные компонента
+   */
   emmitChanges(component?: CustomComponent) {
     if (component) {
       calcDependedComponent(component, this.state, this.components);
@@ -195,19 +266,41 @@ export class ComponentsListComponent implements OnInit, OnChanges {
    */
   private getPreparedStateForSending() {
     return Object.entries(this.state).reduce((acc, [key, val]) => {
-      const { value, valid, isShown } = val;
-      if (isShown) {
-        acc[key] = { value, valid };
+      const { value, valid, disabled, isShown } = val;
+
+      if (!isShown) {
+        return acc;
       }
+
+      acc[key] = {
+        value: disabled ? '' : value,
+        valid,
+        disabled,
+      };
       return acc;
     }, {});
   }
 
+  /**
+   * Проверяем зависимости компонентов и перезаписывает состояние в state
+   * @private
+   */
   private checkDependenceOfTheComponent() {
     this.components.forEach((component) =>
       calcDependedComponent(component, this.state, this.components),
     );
   }
 
-  ngOnInit(): void {}
+  isInputString(componentType: CustomScreenComponentTypes): boolean | CustomScreenComponentTypes {
+    const isLikeMask = [
+      CustomScreenComponentTypes.StringInput,
+      CustomScreenComponentTypes.PhoneNumberChangeInput,
+      CustomScreenComponentTypes.NewEmailInput,
+      CustomScreenComponentTypes.OgrnInput,
+      CustomScreenComponentTypes.OgrnipInput,
+      CustomScreenComponentTypes.PersonInnInput,
+      CustomScreenComponentTypes.LegalInnInput,
+    ].includes(componentType);
+    return isLikeMask ? componentType : !componentType;
+  }
 }
