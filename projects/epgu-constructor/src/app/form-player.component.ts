@@ -1,4 +1,12 @@
-import { Component, HostBinding, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from './config/config.service';
 import { Config } from './config/config.types';
@@ -8,6 +16,8 @@ import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { NavigationService } from './shared/services/navigation/navigation.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
+import { ModalService } from './services/modal/modal.service';
+import { ConfirmationModalComponent } from './shared/components/modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -16,7 +26,7 @@ import { ServiceDataService } from './services/service-data/service-data.service
   providers: [UnsubscribeService],
   encapsulation: ViewEncapsulation.None,
 })
-export class FormPlayerComponent implements OnInit, OnChanges {
+export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() service: Service;
   @Input() config: Config;
@@ -28,11 +38,12 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private configService: ConfigService,
+    private modalService: ModalService,
   ) {}
 
   ngOnInit(): void {
     this.checkProps();
-    const orderId = this.getDraftOrderId();
+    const orderId = null;
     this.configService.config = this.config;
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.screenComponent = this.formPlayerService.getScreenComponent();
@@ -53,15 +64,34 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     this.checkProps();
   }
 
-  getDraftOrderId() {
-    let orderId;
+  ngAfterViewInit(): void {
     if (!this.serviceDataService.invited && this.serviceDataService.orderId) {
-      // TODO: add better handling for draft case;
-      // eslint-disable-next-line no-restricted-globals
-      const result = confirm('У вас есть предыдущее заявление, продолжить его заполнять?');
-      orderId = result ? this.serviceDataService.orderId : null;
+      this.showModal();
     }
-    return orderId;
+  }
+
+  showModal() {
+    const modalResult$ = this.modalService.openModal(ConfirmationModalComponent, {
+      text: `<div><img style="display:block; margin: 56px auto 24px" src="${this.config.staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
+        <h4 style="text-align: center">У вас есть черновик заявления</h4>
+        <p class="helper-text" style="text-align: center; margin: -20px 0 0">Продолжить его заполнение?</p></div>`,
+      showCloseButton: false,
+      showCrossButton: true,
+      buttons: [
+        {
+          label: 'Начать заново',
+          color: 'white',
+          closeModal: true,
+        },
+        {
+          label: 'Продолжить',
+          closeModal: true,
+        },
+      ],
+    });
+    modalResult$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((result) => {
+      console.log(result);
+    });
   }
 
   nextStep(navigation?: Navigation) {

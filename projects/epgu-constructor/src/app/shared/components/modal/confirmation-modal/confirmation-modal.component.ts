@@ -22,6 +22,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent implements Af
   elemEventHandlers: ConfirmationModal['elemEventHandlers'] = [];
   clarifications?: ConfirmationModal['buttons'];
   buttons: ConfirmationModal['buttons'] = [];
+  showCrossButton = false;
 
   constructor(private modalService: ModalService, private elemRef: ElementRef) {
     super();
