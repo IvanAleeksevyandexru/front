@@ -68,11 +68,6 @@
           [data]="(screenStore.display?.components)[0]"
         ></epgu-constructor-change-list>
 
-        <epgu-constructor-snils
-          *ngSwitchCase="screenComponentName.snilsInput"
-          [data]="(screenStore.display?.components)[0]"
-        ></epgu-constructor-snils>
-
         <epgu-constructor-country-selection
           *ngSwitchCase="screenComponentName.countryApostil"
           [form]="form"
