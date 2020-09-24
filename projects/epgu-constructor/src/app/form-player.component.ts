@@ -8,6 +8,10 @@ import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { NavigationService } from './shared/services/navigation/navigation.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
+import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
+import { ScreenService } from './screen/screen.service';
+// eslint-disable-next-line import/named,
+import { libVersionFromPackageJson } from '../version';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -28,7 +32,11 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private configService: ConfigService,
-  ) {}
+    private screenService: ScreenService,
+    private screenResolverService: ScreenResolverService,
+  ) {
+    console.log(libVersionFromPackageJson);
+  }
 
   ngOnInit(): void {
     this.checkProps();
