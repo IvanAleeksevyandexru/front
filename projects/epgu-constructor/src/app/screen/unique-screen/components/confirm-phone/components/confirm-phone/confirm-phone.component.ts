@@ -2,12 +2,7 @@ import { Component } from '@angular/core';
 import { ScreenService } from '../../../../../screen.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
-import {
-  FormPlayerNavigation,
-  NavigationFullOptions,
-  NavigationPayload,
-} from '../../../../../../form-player.types';
-import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
+import { NavigationOptions, NavigationPayload } from '../../../../../../form-player.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-phone',
@@ -31,22 +26,20 @@ export class ConfirmPhoneComponent {
     public screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
     private navigationService: NavigationService,
-    private formPlayerService: FormPlayerService,
   ) {}
 
   sendCodeAgain() {
-    const options: NavigationFullOptions = {
-      direction: FormPlayerNavigation.NEXT,
+    const options: NavigationOptions = {
       url: 'service/actions/resendPhoneConfirmationCode', // TODO вынести куда нибудь
     };
-    this.formPlayerService.navigate({}, options);
+    this.navigationService.nextStep.next({ options });
     this.isTimerShow = true;
   }
 
   enterCode(code: any) {
     this.enteredCode = code;
     if (String(code).length === this.correctCodeLength) {
-      this.navigationService.nextStep.next(this.getComponentState());
+      this.navigationService.nextStep.next({ payload: this.getComponentState() });
     }
   }
 

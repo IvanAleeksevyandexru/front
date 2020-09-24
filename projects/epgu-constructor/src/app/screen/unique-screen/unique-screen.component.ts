@@ -55,8 +55,8 @@ export class UniqueScreenComponent implements OnInit, Screen {
    * Переход на следущий экран
    * @param data - данные
    */
-  nextStep(data?: NavigationPayload): void {
-    this.navigationService.nextStep.next(data);
+  nextStep(payload?: NavigationPayload): void {
+    this.navigationService.nextStep.next({ payload });
   }
 
   /**

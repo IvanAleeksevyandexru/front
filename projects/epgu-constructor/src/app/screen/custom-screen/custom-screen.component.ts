@@ -74,8 +74,8 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     this.navigationService.prevStep.next();
   }
 
-  nextStep(data?: NavigationPayload): void {
-    this.navigationService.nextStep.next(data);
+  nextStep(payload?: NavigationPayload): void {
+    this.navigationService.nextStep.next({ payload });
   }
 
   nextScreen(): void {

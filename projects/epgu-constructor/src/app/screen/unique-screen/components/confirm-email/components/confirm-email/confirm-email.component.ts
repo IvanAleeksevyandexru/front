@@ -3,11 +3,10 @@ import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../config/config.service';
 import {
-  FormPlayerNavigation,
-  NavigationFullOptions,
+  Navigation,
+  NavigationOptions,
   NavigationPayload,
 } from '../../../../../../form-player.types';
-import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../../../../../screen.service';
@@ -29,7 +28,6 @@ export class ConfirmEmailComponent {
 
   constructor(
     public screenService: ScreenService,
-    private formPlayerService: FormPlayerService,
     private ngUnsubscribe$: UnsubscribeService,
     private navigationService: NavigationService,
     public config: ConfigService,
@@ -37,20 +35,23 @@ export class ConfirmEmailComponent {
     interval(5000)
       .pipe(takeUntil(ngUnsubscribe$))
       .subscribe(() => {
-        this.navigationService.nextStep.next(this.getComponentState());
+        this.navigationService.nextStep.next({ payload: this.getComponentState() });
       });
   }
 
   goBackTo() {
-    this.formPlayerService.navigate(this.getComponentState(), this.getOptions());
+    const navigation: Navigation = {
+      payload: this.getComponentState(),
+      options: this.getOptions(),
+    };
+    this.navigationService.nextStep.next(navigation);
   }
 
   sendPostAgain() {
-    const options: NavigationFullOptions = {
-      direction: FormPlayerNavigation.NEXT,
+    const options: NavigationOptions = {
       url: 'service/actions/resendEmailConfirmation', // TODO вынести куда нибудь
     };
-    this.formPlayerService.navigate({}, options);
+    this.navigationService.nextStep.next({ options });
     this.isTimerShow = true;
   }
 
@@ -71,8 +72,8 @@ export class ConfirmEmailComponent {
     }
   }
 
-  private getOptions(): NavigationFullOptions {
-    const options: NavigationFullOptions = { direction: FormPlayerNavigation.NEXT };
+  private getOptions(): NavigationOptions {
+    const options: NavigationOptions = {};
     const isFinishInternalScenario =
       this.screenService.actions[0]?.action === 'goBackToMainScenario';
     if (isFinishInternalScenario) {
