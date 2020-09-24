@@ -96,8 +96,14 @@ export interface ScenarioDto {
   serviceId?: string;
 }
 
+/**
+ * @property {boolean}[isInternalScenario] - есть шаги когда мы выходим из основного сценария в подсценарий,
+ * тогда DTO обагатится этим самым полем, который в значении true говорит что мы находимся в подсценарии,
+ * а значение false, сообщит backend(-у) что нужно удалить это свойство из DTO и выйти из подсценария
+ */
 export interface FormPlayerApiSuccessResponse {
   scenarioDto: ScenarioDto;
+  isInternalScenario?: boolean
 }
 
 export enum FormPlayerApiErrorStatuses {

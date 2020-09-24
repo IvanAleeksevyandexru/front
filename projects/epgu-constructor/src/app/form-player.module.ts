@@ -26,10 +26,6 @@ import { ScreenResolverService } from './services/screen-resolver/screen-resolve
 import { ServiceDataService } from './services/service-data/service-data.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { UtilsService } from './services/utils/utils.service';
-import { CommonModalComponent } from './shared/components/modal/common-modal/common-modal.component';
-import { ConfirmationModalComponent } from './shared/components/modal/confirmation-modal/confirmation-modal.component';
-import { ModalBaseComponent } from './shared/components/modal/modal-base/modal-base.component';
-import { ModalContainerComponent } from './shared/components/modal/modal-container/modal-container.component';
 import { ToolsService } from './shared/services/tools/tools.service';
 import { SharedModule } from './shared/shared.module';
 
@@ -77,10 +73,6 @@ export const epguLibModule = EpguLibModule.forRoot();
     UniqueScreenComponent,
     InvitationErrorScreenComponent,
     EmptyScreenComponent,
-    ModalBaseComponent,
-    ModalContainerComponent,
-    ConfirmationModalComponent,
-    CommonModalComponent
   ]
 })
 export class FormPlayerModule {}
