@@ -232,6 +232,10 @@ export class ComponentsListComponent implements OnInit {
     }
     const prepareStateForSending = this.getPreparedStateForSending();
     this.changes.emit(prepareStateForSending);
+
+    console.group('Console');
+    console.log(prepareStateForSending);
+    console.groupEnd();
   }
 
   /**

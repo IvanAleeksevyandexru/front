@@ -2,18 +2,16 @@
   <div class="form__item" *ngFor="let componentData of form.controls; let idx = index;">
     <ng-container [ngSwitch]="componentData.value?.type" *ngIf="shownElements[componentData.value?.id]">
       <ng-container *ngSwitchCase="componentType.LabelSection">
-        <epgu-constructor-output-html
-          class="label"
-          [html]="componentData.value?.label"
-          [clarifications]="componentData.value?.attrs?.clarifications">
-        </epgu-constructor-output-html>
+        <ng-template
+          [ngTemplateOutlet]="formOutputHtml"
+          [ngTemplateOutletContext]="{$implicit: {class: 'label', value: componentData.value }}">
+        </ng-template>
       </ng-container>
       <ng-container *ngSwitchCase="componentType.HtmlString">
-        <epgu-constructor-output-html
-          class="info__text"
-          [html]="componentData.value?.label"
-          [clarifications]="componentData.value?.attrs?.clarifications">
-        </epgu-constructor-output-html>
+        <ng-template
+          [ngTemplateOutlet]="formOutputHtml"
+          [ngTemplateOutletContext]="{$implicit: {class: 'info__text', value: componentData.value }}">
+        </ng-template>
       </ng-container>
       <ng-container *ngSwitchCase="componentType.StringInput">
         <ng-template
@@ -82,6 +80,28 @@
           </lib-radio>
         </div>
       </ng-container>
+      <ng-container *ngSwitchCase="componentType.CheckBox">
+        <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'">
+          <lib-checkbox
+            [checkboxId]="componentData.value?.id"
+            [formControl]="componentData.get('value')"
+            [disabled]="componentData.value?.disabled"
+            [labelText]="componentData.value?.label">
+          </lib-checkbox>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="componentType.DateInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <lib-date-picker
+          [name]="componentData.value?.id"
+          [formControl]="componentData.get('value')"
+          minDate="-18y"
+        ></lib-date-picker>
+      </ng-container>
+
       <ng-template
         [ngTemplateOutlet]="formHintAndRequired"
         [ngTemplateOutletContext]="{
@@ -94,6 +114,7 @@
         [ngTemplateOutlet]="formErrors"
         [ngTemplateOutletContext]="{ $implicit: componentData.get('value') }">
       </ng-template>
+
     </ng-container>
   </div>
 </form>
@@ -112,18 +133,7 @@
 
 
 
-<!--      <div class="form__item" *ngSwitchCase="componentType.DateInput">-->
-<!--        <ng-container *ngIf="state[componentData.id].isShown">-->
-<!--          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>-->
-<!--          &lt;!&ndash; нужно добавить changes для проверки зависимости от даты&ndash;&gt;-->
-<!--          <lib-date-picker-->
-<!--            [name]="componentData.id"-->
-<!--            (ngModelChange)="dateChange($event, componentData)"-->
-<!--            [(ngModel)]="state[componentData.id].value"-->
-<!--            minDate="-18y"-->
-<!--          ></lib-date-picker>-->
-<!--        </ng-container>-->
-<!--      </div>-->
+
 
 <!--      <div class="form__item" *ngSwitchCase="componentType.AddressInput">-->
 <!--        <ng-container *ngIf="state[componentData.id].isShown">-->
@@ -158,4 +168,12 @@
       {{ control.getError('msg') }}
     </small>
   </div>
+</ng-template>
+
+<ng-template #formOutputHtml let-data>
+  <epgu-constructor-output-html
+    [class]="data.class"
+    [html]="data.value?.label"
+    [clarifications]="data.value?.attrs?.clarifications">
+  </epgu-constructor-output-html>
 </ng-template>
