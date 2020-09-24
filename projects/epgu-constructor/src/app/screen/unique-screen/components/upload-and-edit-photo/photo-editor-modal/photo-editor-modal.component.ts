@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { ModalBaseComponent } from '../../../../../shared/components/modal/modal-base/modal-base.component';
 import { ImageErrorText, NewSizeEvent } from '../upload-and-edit-photo.model';
 import { imageErrorText, minCropSize } from '../upload-and-edit-photo.constant';
-import { aspectRatio, hintSetting } from './photo-editor-modal.constant';
+import { aspectRatio, hintSetting, photoMaskSrc } from './photo-editor-modal.constant';
 import { ConfigService } from '../../../../../config/config.service';
 
 @Component({
@@ -21,6 +21,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
   hintSetting = hintSetting;
 
   imageObjectUrl: string;
+  maskSrc: string;
 
   imageErrors: string[][];
   imageErrorText: ImageErrorText = imageErrorText;
@@ -79,6 +80,10 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
     this.cropConfig = this.isPhoneSize
       ? { width: newSize.newWidth, height: newSize.newWidth * aspectRatio }
       : minCropSize;
+
+    this.maskSrc = `${this.config.staticDomainAssetsPath}/${
+      this.isPhoneSize ? photoMaskSrc.phone : photoMaskSrc.desktop
+    }`;
   }
 
   fitImageToCropArea(): void {

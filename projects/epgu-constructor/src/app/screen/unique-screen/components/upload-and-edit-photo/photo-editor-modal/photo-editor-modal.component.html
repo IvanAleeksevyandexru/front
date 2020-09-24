@@ -23,12 +23,8 @@
                             [(scale)]="scale"
                             (ready)="imageLoaded()"
             ></ly-img-cropper>
-            <img *ngIf="!isPhoneSize"
-                 class="photo-editor__mask"
-                 src="{{ config.staticDomainAssetsPath }}/assets/img/photo-mask-desktop.svg"/>
-            <img *ngIf="isPhoneSize"
-                 class="photo-editor__mask"
-                 src="{{ config.staticDomainAssetsPath }}/assets/img/photo-mask-mobile.svg"/>
+            <img class="photo-editor__mask"
+                 [src]="maskSrc"/>
           </div>
           <div *ngIf="cropper.isLoaded"
                class="photo-editor__actions">
