@@ -7,12 +7,14 @@
           [ngTemplateOutletContext]="{$implicit: {class: 'label', value: componentData.value }}">
         </ng-template>
       </ng-container>
+
       <ng-container *ngSwitchCase="componentType.HtmlString">
         <ng-template
           [ngTemplateOutlet]="formOutputHtml"
           [ngTemplateOutletContext]="{$implicit: {class: 'info__text', value: componentData.value }}">
         </ng-template>
       </ng-container>
+
       <ng-container *ngSwitchCase="componentType.StringInput">
         <ng-template
           [ngTemplateOutlet]="formLabel"
@@ -25,6 +27,7 @@
           [formControl]="componentData.get('value')">
         </lib-plain-input>
       </ng-container>
+
       <ng-container *ngSwitchCase="componentType.DropDown">
         <ng-template
           [ngTemplateOutlet]="formLabel"
@@ -38,6 +41,7 @@
           class="cs__select cs-select">
         </lib-dropdown>
       </ng-container>
+
       <ng-container *ngSwitchCase="componentType.Dictionary">
         <ng-template
           [ngTemplateOutlet]="formLabel"
@@ -51,6 +55,7 @@
           class="cs__select cs-select">
         </lib-dropdown>
       </ng-container>
+
       <ng-container *ngSwitchCase="componentType.Lookup">
         <ng-template
           [ngTemplateOutlet]="formLabel"
@@ -65,6 +70,7 @@
           [fixedItems]="dictionaries[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list">
         </lib-lookup>
       </ng-container>
+
       <ng-container *ngSwitchCase="componentType.RadioInput">
         <ng-template
           [ngTemplateOutlet]="formLabel"
@@ -80,6 +86,7 @@
           </lib-radio>
         </div>
       </ng-container>
+
       <ng-container *ngSwitchCase="componentType.CheckBox">
         <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'">
           <lib-checkbox
@@ -90,6 +97,7 @@
           </lib-checkbox>
         </div>
       </ng-container>
+
       <ng-container *ngSwitchCase="componentType.DateInput">
         <ng-template
           [ngTemplateOutlet]="formLabel"
@@ -116,19 +124,45 @@
             [formControl]="componentData.get('value')">
           </lib-dadata-widget>
       </ng-container>
+
       <ng-container *ngSwitchCase="componentType.PhoneNumberChangeInput">
-        <lib-standard-masked-input
-          *ngIf="componentData.value?.attrs?.mask; else plainInput"
-          [clearable]="true"
-          [mask]="componentData.value?.attrs?.mask | maskHandle"
-          [placeholder]="componentData.value?.attrs?.placeholder"
-          [name]="componentData.value?.id"
-          [showMaskAsPlaceholder]="true"
-          [showConstantMaskSymbols]="true"
-          [formControl]="componentData.get('value')"
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [validationShowOn]="validationShowOn">
-        </lib-standard-masked-input>
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.OgrnInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.OgrnipInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.LegalInnInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.PersonInnInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
       </ng-container>
 
       <ng-template
@@ -139,6 +173,7 @@
                 optionalField: optionalField
               }"
       ></ng-template>
+
       <ng-template
         [ngTemplateOutlet]="formErrors"
         [ngTemplateOutletContext]="{ $implicit: componentData.get('value') }">
@@ -154,6 +189,21 @@
           [formControl]="componentData.get('value')"
           [validationShowOn]="validationShowOn"
         ></lib-plain-input>
+      </ng-template>
+
+      <ng-template #maskedInput>
+        <lib-standard-masked-input
+          *ngIf="componentData.value?.attrs?.mask; else plainInput"
+          [clearable]="true"
+          [mask]="componentData.value?.attrs?.mask | maskHandle"
+          [placeholder]="componentData.value?.attrs?.placeholder"
+          [name]="componentData.value?.id"
+          [showMaskAsPlaceholder]="true"
+          [showConstantMaskSymbols]="true"
+          [formControl]="componentData.get('value')"
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [validationShowOn]="validationShowOn">
+        </lib-standard-masked-input>
       </ng-template>
 
     </ng-container>
