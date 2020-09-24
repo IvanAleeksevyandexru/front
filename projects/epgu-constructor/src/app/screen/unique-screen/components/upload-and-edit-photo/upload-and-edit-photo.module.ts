@@ -15,6 +15,7 @@ import { UploadAndEditPhotoComponent } from './upload-and-edit-photo.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
 import { SharedModule } from '../../../../shared/shared.module';
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
+import { CompressionService } from '../../../../services/utils/compression.service';
 
 
 @NgModule({
@@ -35,13 +36,13 @@ import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.
     UploadAndEditPhotoComponent,
   ],
   providers: [
+    CompressionService,
     [ LyTheme2 ],
     [ StyleRenderer ],
     // Theme that will be applied to this module
     { provide: LY_THEME_NAME, useValue: 'minima-light' },
     { provide: LY_THEME, useClass: MinimaLight, multi: true }, // name: `minima-light`
     { provide: LY_THEME, useClass: MinimaDark, multi: true },
-
   ]
 })
 export class UploadAndEditPhotoModule { }

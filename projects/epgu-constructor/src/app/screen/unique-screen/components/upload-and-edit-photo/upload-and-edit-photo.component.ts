@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { fromEvent, of, Subject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { fromPromise } from 'rxjs/internal-compatibility';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ComponentBase } from '../../../screen.types';
@@ -24,6 +25,7 @@ import {
   isCloseAndSaveWebcamEvent,
   WebcamEvent,
 } from '../../../../shared/components/webcam-shoot/webcamevents';
+import { CompressionService } from '../../../../services/utils/compression.service';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',
@@ -65,6 +67,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
+    private compressionService: CompressionService,
   ) {}
 
   ngOnInit(): void {
@@ -205,7 +208,6 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   }
 
   nextStep() {
-    const imageForUpload = TerraByteApiService.base64toBlob(this.croppedImageUrl);
     let requestData = this.getRequestData();
 
     of(requestData.name)
@@ -214,8 +216,12 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
           fileName ? this.terabyteService.deleteFile(requestData) : of(null),
         ),
         switchMap(() => {
+          const blobFile = TerraByteApiService.base64toBlob(this.croppedImageUrl);
+          return fromPromise(this.compressionService.imageCompression(blobFile, { maxSizeMB: 5 }));
+        }),
+        switchMap((compressedFile) => {
           requestData = { ...requestData, name: this.fileName };
-          return this.terabyteService.uploadFile(requestData, imageForUpload);
+          return this.terabyteService.uploadFile(requestData, compressedFile);
         }),
       )
       .subscribe(() => {
