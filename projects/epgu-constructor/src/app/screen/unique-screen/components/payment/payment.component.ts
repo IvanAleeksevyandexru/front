@@ -111,7 +111,11 @@ export class PaymentComponent implements OnDestroy {
    * @param res - объект ответа на запрос
    */
   private setPaymentStatusFromSuccessRequest(res: any) {
-    this.uin = res.value.replace('PRIOR', '');
+    let { value } = res;
+    if (!value.includes('PRIOR')) {
+      value = `PRIOR${value}`;
+    }
+    this.uin = value;
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
       .pipe(map((answer: any) => filterBillInfoResponse(answer)))
