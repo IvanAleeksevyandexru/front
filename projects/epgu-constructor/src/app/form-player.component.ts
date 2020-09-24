@@ -65,11 +65,11 @@ export class FormPlayerComponent implements OnInit, OnChanges {
   }
 
   nextStep(navigation?: Navigation) {
-    this.formPlayerService.navigate(navigation.payload, FormPlayerNavigation.NEXT);
+    this.formPlayerService.navigate(navigation, FormPlayerNavigation.NEXT);
   }
 
   prevStep(navigation?: Navigation) {
-    this.formPlayerService.navigate(navigation.payload, FormPlayerNavigation.PREV);
+    this.formPlayerService.navigate(navigation, FormPlayerNavigation.PREV);
   }
 
   checkProps() {
