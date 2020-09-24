@@ -139,7 +139,7 @@ export class CompressionService {
       const dataUrl = await this.getDataUrlFromFile(file);
       img = await this.loadImage(dataUrl as string);
     }
-    console.log('createImageBitmap', img)
+
     const canvas = this.drawImageInCanvas(img);
     return [img, canvas];
   }
