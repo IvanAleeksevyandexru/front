@@ -181,6 +181,8 @@ export class FormPlayerService {
   }
 
   updateRequest(navigationPayload?: NavigationPayload): void {
+    console.log('updateRequest');
+    console.log(navigationPayload);
     if (this.isEmptyNavigationPayload(navigationPayload)) {
       this.store.scenarioDto.currentValue = {};
       const componentId = this.store.scenarioDto.display.components[0].id;
