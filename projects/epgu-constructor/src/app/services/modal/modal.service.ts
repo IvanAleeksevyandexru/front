@@ -1,18 +1,16 @@
-import  {
+import {
   ApplicationRef,
   ComponentFactoryResolver,
   Injectable,
   Injector,
   Renderer2,
   RendererFactory2,
-  Type,
+  Type
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ModalService {
   private injector: Injector;
   private renderer: Renderer2;

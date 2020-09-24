@@ -2,12 +2,7 @@
 @import 'src/styles/core/typography';
 @import 'src/styles/core/breakpoint';
 
-.add-new-child-form {
-  background-color: $color-light-gray;
-}
-
 .component {
-  padding: 24px 16px;
   &__header {
     display: flex;
     justify-content: flex-start;

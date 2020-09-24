@@ -9,6 +9,7 @@ import { WebcamService } from './services/webcam/webcam.service';
 import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
 import { NavigationService } from './services/navigation/navigation.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
+import { ModalService } from '../services/modal/modal.service';
 
 import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
@@ -70,7 +71,7 @@ const DIRECTIVES = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  providers: [NavigationService, ApplicantAnswersService, WebcamService, TerraByteApiService],
+  providers: [NavigationService, ApplicantAnswersService, WebcamService, TerraByteApiService, ModalService],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [
       CommonModule,
@@ -79,7 +80,10 @@ const DIRECTIVES = [
       WebcamModule,
   ],
   entryComponents: [
-    ConfirmationModalComponent
+    ModalBaseComponent,
+    ModalContainerComponent,
+    ConfirmationModalComponent,
+    CommonModalComponent,
   ]
 })
 export class SharedModule { }

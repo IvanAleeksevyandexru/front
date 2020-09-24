@@ -2,8 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { NavigationService } from '../../../../../../../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../../../../../../../screen.service';
-import { FormPlayerNavigation } from '../../../../../../../../form-player.types';
-import { FormPlayerService } from '../../../../../../../../services/form-player/form-player.service';
+import { Navigation } from '../../../../../../../../form-player.types';
 
 // TODO удалить этот компонент в пользу CUSTOM SCREEN c поддержкой actions;
 @Component({
@@ -42,14 +41,15 @@ export class ConfirmPersonalUserPhoneComponent implements OnChanges {
     private componentStateService: ComponentStateService,
     private screenService: ScreenService,
     private navigationService: NavigationService,
-    private formPlayerService: FormPlayerService,
   ) {}
 
   handleClick() {
     const action = this.actions[0];
-    const data = this.getComponentStateForNavigate();
-    const options = { url: action.action, direction: FormPlayerNavigation.NEXT };
-    this.formPlayerService.navigate(data, options);
+    const navigation: Navigation = {
+      payload: this.getComponentStateForNavigate(),
+      options: { url: action.action },
+    };
+    this.navigationService.nextStep.next(navigation);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -59,8 +59,8 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     this.navigationService.prevStep.next();
   }
 
-  nextStep(data?: NavigationPayload): void {
-    this.navigationService.nextStep.next(data);
+  nextStep(payload?: NavigationPayload): void {
+    this.navigationService.nextStep.next({ payload });
   }
 
   answerChoose(answer: QuestionsComponentActions): void {

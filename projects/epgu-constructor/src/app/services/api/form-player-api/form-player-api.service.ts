@@ -3,9 +3,11 @@ import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { ConfigService } from '../../../config/config.service';
-import { NavigationFullOptions } from '../../../form-player.types';
-import { FormPlayerApiResponse } from './form-player-api.types';
+import { FormPlayerNavigation, NavigationOptions } from '../../../form-player.types';
+import { FormPlayerApiResponse, FormPlayerApiSuccessResponse } from './form-player-api.types';
 import { ServiceDataService } from '../../service-data/service-data.service';
+
+type CookieSession = { userId: string, token: string };
 
 @Injectable()
 export class FormPlayerApiService {
@@ -18,7 +20,7 @@ export class FormPlayerApiService {
 
   public getInviteServiceData(orderId: string): Observable<FormPlayerApiResponse> {
     const { targetId, serviceId } = this.serviceDataService;
-    const { userId, token } = this.getSession();
+    const { userId, token } = this.getSessionFromCookie();
     const path = `${this.config.apiUrl}/invitation/${serviceId}/getService`;
     const body = { targetId, userId, token, orderId };
 
@@ -27,7 +29,7 @@ export class FormPlayerApiService {
 
   public getServiceData(orderId?: string): Observable<FormPlayerApiResponse> {
     const { serviceId, targetId } = this.serviceDataService;
-    const { userId, token } = this.getSession();
+    const { userId, token } = this.getSessionFromCookie();
     const path = `${this.config.apiUrl}/service/${serviceId}/scenario/getService`;
     const body = { targetId, userId, token, orderId };
 
@@ -35,17 +37,19 @@ export class FormPlayerApiService {
   }
 
   public navigate(
-    serviceId: string,
-    data /*добавить тип как response*/,
-    options: NavigationFullOptions): Observable<FormPlayerApiResponse> {
-    let path = this.getNavigatePath(serviceId, data, options);
-    if (options.isInternalScenarioFinish) {
-      data.isInternalScenario = false;
-    }
+    data: FormPlayerApiSuccessResponse,
+    options: NavigationOptions = {},
+    formPlayerNavigation: FormPlayerNavigation
+  ): Observable<FormPlayerApiResponse> {
 
-    const { userId, token } = this.getSession();
+    let path = this.getNavigatePath(data, options, formPlayerNavigation);
+    const { userId, token } = this.getSessionFromCookie();
+
     data.scenarioDto.userId = userId;
     data.scenarioDto.token = token;
+    if (options.isInternalScenarioFinish) {
+      data.scenarioDto.isInternalScenario = false;
+    }
 
     const body = {
       ...data,
@@ -54,19 +58,21 @@ export class FormPlayerApiService {
     return this.post<FormPlayerApiResponse>(path, body);
   }
 
-  private getSession(): {userId, token} {
+  // TODO: remove when backend team delete session from ScenarioDto
+  private getSessionFromCookie(): CookieSession {
     const userId = this.cookieService.get('u') || '';
     const token = this.cookieService.get('acc_t') || '';
     return { userId, token };
   }
 
-  private getNavigatePath(serviceId, data, options) {
+  private getNavigatePath(data, options: NavigationOptions, formPlayerNavigation: FormPlayerNavigation): string {
+    const { serviceId } = this.serviceDataService;
     let path = this.config.apiUrl;
     if (options.url) {
       path += `/${options.url}`;
     } else {
       const pathDir = data.isInternalScenario ? 'internal' : `service/${serviceId}`;
-      path += `/${pathDir}/scenario/${options.direction}`;
+      path += `/${pathDir}/scenario/${formPlayerNavigation}`;
     }
     return path;
   }
