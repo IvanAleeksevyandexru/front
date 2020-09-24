@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { FormPlayerNavigation, Navigation, NavigationOptions, NavigationPayload } from '../../form-player.types';
+import { FormPlayerNavigation, Navigation, NavigationPayload } from '../../form-player.types';
+import { ScreenComponent } from '../../screen/screen.const';
 import { ScreenService } from '../../screen/screen.service';
+import { ScreenTypes } from '../../screen/screen.types';
+import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
 } from '../api/form-player-api/form-player-api.types';
-import { ScreenTypes } from '../../screen/screen.types';
+import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ServiceDataService } from '../service-data/service-data.service';
 import { UtilsService } from '../utils/utils.service';
-import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
-import { ScreenComponent } from '../../screen/screen.const';
-import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -150,6 +150,8 @@ export class FormPlayerService {
       this.sendDataError(response);
     } else {
       this.sendDataSuccess(response);
+      // reset view by scrolling to top
+      window.scroll(0,0);
     }
   };
 
