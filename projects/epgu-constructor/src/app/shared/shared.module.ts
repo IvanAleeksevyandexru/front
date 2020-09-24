@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
 import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
+import { ModalService } from '../services/modal/modal.service';
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';
 import { HelperTextComponent } from './components/base/helper-text/helper-text.component';
 import { LabelComponent } from './components/base/label/label.component';
@@ -57,7 +58,7 @@ const DIRECTIVES = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  providers: [NavigationService, ApplicantAnswersService],
+  providers: [NavigationService, ApplicantAnswersService, ModalService],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [
       CommonModule,
@@ -65,7 +66,10 @@ const DIRECTIVES = [
       FormsModule,
   ],
   entryComponents: [
-    ConfirmationModalComponent
+    ModalBaseComponent,
+    ModalContainerComponent,
+    ConfirmationModalComponent,
+    CommonModalComponent,
   ]
 })
 export class SharedModule { }
