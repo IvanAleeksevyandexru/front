@@ -5,6 +5,7 @@
     <lib-plain-input
       epgu-constructor-trim
       epgu-constructor-text-transform
+      [attr.id]="field.fieldName"
       [textTransformType]="attrs.fstuc"
       [validationShowOn]="touchedUnfocused"
       [invalid]="passportForm.controls[field.fieldName].invalid"
