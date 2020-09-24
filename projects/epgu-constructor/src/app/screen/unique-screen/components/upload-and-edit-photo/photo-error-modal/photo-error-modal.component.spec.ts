@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PhotoErrorModalComponent } from './photo-error-modal.component';
 import { EpguLibModule } from 'epgu-lib';
+import { ConfigService } from '../../../../../config/config.service';
 
 describe('PhotoErrorModalComponent', () => {
   let component: PhotoErrorModalComponent;
@@ -9,7 +10,8 @@ describe('PhotoErrorModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ EpguLibModule ],
-      declarations: [ PhotoErrorModalComponent ]
+      declarations: [ PhotoErrorModalComponent ],
+      providers: [ ConfigService ]
     })
     .compileComponents();
   });

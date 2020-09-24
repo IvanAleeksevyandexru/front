@@ -6,6 +6,7 @@ import { ModalBaseComponent } from '../../../../../shared/components/modal/modal
 import { ImageErrorText, NewSizeEvent } from '../upload-and-edit-photo.model';
 import { imageErrorText, minCropSize } from '../upload-and-edit-photo.constant';
 import { aspectRatio, hintSetting } from './photo-editor-modal.constant';
+import { ConfigService } from '../../../../../config/config.service';
 
 @Component({
   selector: 'epgu-constructor-photo-editor-modal',
@@ -31,7 +32,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
   isPhoneSize: boolean;
 
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-  constructor() {
+  constructor(public config: ConfigService) {
     super();
   }
 

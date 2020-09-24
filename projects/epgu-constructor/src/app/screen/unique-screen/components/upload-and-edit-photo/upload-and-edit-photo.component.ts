@@ -26,6 +26,7 @@ import {
   WebcamEvent,
 } from '../../../../shared/components/webcam-shoot/webcamevents';
 import { CompressionService } from '../../../../services/utils/compression.service';
+import { ConfigService } from '../../../../config/config.service';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',
@@ -53,6 +54,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   allowedImgTypes: string[];
   isDesktop: boolean;
   isWebcamAvailable: boolean;
+  isModalOpened: boolean; // flag is for keeping one modal instance opened
 
   previousImageObjectUrl: string; // keep previous image url if image is changing from modal window
   croppedImageUrl: string;
@@ -68,6 +70,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
     private compressionService: CompressionService,
+    public config: ConfigService,
   ) {}
 
   ngOnInit(): void {
@@ -96,6 +99,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       .add(
         this.imgSubject.subscribe((imageObject) => {
           this.previousImageObjectUrl = imageObject?.imageObjectUrl;
+          this.isModalOpened = true;
           this.modalService
             .openModal(PhotoEditorModalComponent, imageObject)
             .subscribe((data: { changeImage?: boolean; imageObjectUrl?: string }) => {
@@ -104,6 +108,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
               } else if (data?.imageObjectUrl) {
                 this.croppedImageUrl = data.imageObjectUrl;
               }
+              this.isModalOpened = false;
             });
         }),
       )
@@ -178,7 +183,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   }
 
   onFileSelected(fileList: FileList, fileInput?: HTMLInputElement): void {
-    if (fileList?.length) {
+    if (fileList?.length && !this.isModalOpened) {
       this.setFile(fileList[0]);
     }
     if (fileInput) {

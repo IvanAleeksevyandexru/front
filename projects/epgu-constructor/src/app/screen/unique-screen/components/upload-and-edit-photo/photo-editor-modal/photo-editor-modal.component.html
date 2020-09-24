@@ -9,7 +9,7 @@
       <div class="photo-editor__container">
         <div *ngIf="!isPhoneSize"
              class="photo-editor__moving-hint">
-          <img src="assets/icons/svg/move-icon.svg">
+          <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/move-icon.svg">
           <span>Перетащите фото,<br>чтобы изменить<br>положение</span>
         </div>
         <div class="photo-editor__cropper-container"
@@ -25,16 +25,16 @@
             ></ly-img-cropper>
             <img *ngIf="!isPhoneSize"
                  class="photo-editor__mask"
-                 src="assets/img/photo-mask-desktop.svg"/>
+                 src="{{ config.staticDomainAssetsPath }}/assets/img/photo-mask-desktop.svg"/>
             <img *ngIf="isPhoneSize"
                  class="photo-editor__mask"
-                 src="assets/img/photo-mask-mobile.svg"/>
+                 src="{{ config.staticDomainAssetsPath }}/assets/img/photo-mask-mobile.svg"/>
           </div>
           <div *ngIf="cropper.isLoaded"
                class="photo-editor__actions">
             <button class="photo-editor__button"
                     (click)="cropper.zoomOut()">
-              <img src="assets/icons/svg/zoom-out.svg"/>
+              <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/zoom-out.svg"/>
             </button>
             <epgu-constructor-slider class="photo-editor__slider"
                                      [max]="1"
@@ -43,23 +43,23 @@
             </epgu-constructor-slider>
             <button class="photo-editor__button"
                     (click)="cropper.zoomIn()">
-              <img src="assets/icons/svg/zoom-in.svg"/>
+              <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/zoom-in.svg"/>
             </button>
             <button class="photo-editor__button"
                     (click)="cropper.rotate(90)">
-              <img src="assets/icons/svg/rotate.svg"/>
+              <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/rotate.svg"/>
             </button>
           </div>
         </div>
         <div class="photo-editor__position-hints-container">
           <div class="photo-editor__position-hint">
             <img *ngIf="isPhoneSize"
-                 src="assets/icons/svg/list-first.svg"/>
+                 src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/list-first.svg"/>
             <span>Голова не должна быть выше этой линии</span>
           </div>
           <div class="photo-editor__position-hint">
             <img *ngIf="isPhoneSize"
-                 src="assets/icons/svg/list-second.svg"/>
+                 src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/list-second.svg"/>
             <span>Подбородок должен быть между двумя линиями</span>
           </div>
         </div>

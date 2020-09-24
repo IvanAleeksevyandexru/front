@@ -20,9 +20,9 @@
            (fileDropped)="onFileSelected($event)"
            class="photo-setting__uploading-area">
         <img *ngIf="isDesktop"
-             src="assets/img/photo-upload-area-desktop.svg"/>
+             src="{{ config.staticDomainAssetsPath }}/assets/img/photo-upload-area-desktop.svg"/>
         <img *ngIf="!isDesktop"
-             src="assets/img/photo-upload-area-mobile.svg"/>
+             src="{{ config.staticDomainAssetsPath }}/assets/img/photo-upload-area-mobile.svg"/>
 
         <div class="photo-setting__uploading-inner-container">
           <p *ngIf="isDesktop"
@@ -36,12 +36,12 @@
           <button *ngIf="!isDesktop && isWebcamAvailable"
                   class="photo-setting__uploading-button"
                   (click)="takePhoto()">
-            <img src="assets/icons/svg/camera.svg"/>
+            <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"/>
             Сделать фото
           </button>
           <button class="photo-setting__uploading-button"
                   (click)="hiddenFileInput.click()">
-            <img src="assets/icons/svg/clip.svg"/>
+            <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"/>
             Загрузить фото
           </button>
         </div>

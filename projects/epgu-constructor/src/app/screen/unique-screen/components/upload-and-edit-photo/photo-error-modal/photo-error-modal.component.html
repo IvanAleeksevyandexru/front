@@ -7,7 +7,7 @@
   <div class="photo-error-modal__body-scroll">
     <div class="photo-error-modal__body">
       <div class="photo-error-modal__image">
-        <img src="assets/img/image-error.svg">
+        <img src="{{ config.staticDomainAssetsPath }}/assets/img/image-error.svg">
       </div>
       <div *ngFor="let error of imageErrors"
            class="photo-error-modal__description">
@@ -19,7 +19,7 @@
         <lib-button
           color="white"
           (click)="choseAnotherPhoto()">
-          <img src="assets/icons/svg/clip.svg"/>
+          <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"/>
           Загрузить фото
         </lib-button>
       </div>

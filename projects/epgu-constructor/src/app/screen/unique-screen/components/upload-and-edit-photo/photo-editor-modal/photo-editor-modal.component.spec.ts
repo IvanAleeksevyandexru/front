@@ -6,6 +6,7 @@ import { EpguLibModule } from 'epgu-lib';
 import { SliderComponent } from '../slider/slider.component';
 import { LY_THEME, LY_THEME_NAME, LyTheme2, StyleRenderer } from '@alyle/ui';
 import { MinimaDark, MinimaLight } from '@alyle/ui/themes/minima';
+import { ConfigService } from '../../../../../config/config.service';
 
 describe('PhotoEditorModalComponent', () => {
   let component: PhotoEditorModalComponent;
@@ -15,6 +16,7 @@ describe('PhotoEditorModalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ LyImageCropperModule, EpguLibModule ],
       providers: [
+        ConfigService,
         [ LyTheme2 ],
         [ StyleRenderer ],
         // Theme that will be applied to this module
