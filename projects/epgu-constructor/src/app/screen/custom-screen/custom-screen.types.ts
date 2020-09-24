@@ -13,8 +13,12 @@ export enum CustomScreenComponentTypes {
   AddressInput = 'AddressInput',
   HtmlString = 'HtmlString',
   CheckBox = 'CheckBox',
+  PhoneNumberChangeInput = 'PhoneNumberChangeInput',
+  NewEmailInput = 'NewEmailInput',
   OgrnInput = 'OgrnInput',
   OgrnipInput = 'OgrnipInput',
+  LegalInnInput = 'LegalInnInput',
+  PersonInnInput = 'PersonInnInput',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };

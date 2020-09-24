@@ -116,6 +116,19 @@
             [formControl]="componentData.get('value')">
           </lib-dadata-widget>
       </ng-container>
+      <ng-container *ngSwitchCase="componentType.PhoneNumberChangeInput"></ng-container>
+      <lib-standard-masked-input
+        *ngIf="componentData.value?.attrs?.mask; else plainInput"
+        [clearable]="true"
+        [mask]="componentData.value?.attrs?.mask | maskHandle"
+        [placeholder]="componentData.value?.attrs?.placeholder"
+        [name]="componentData.value?.id"
+        [disabled]="state[componentData.id].disabled"
+        [showMaskAsPlaceholder]="true"
+        [showConstantMaskSymbols]="true"
+        [formControl]="componentData.get('value')"
+        [validation]="state[componentData.id].valid"
+      ></lib-standard-masked-input>
 
       <ng-template
         [ngTemplateOutlet]="formHintAndRequired"
