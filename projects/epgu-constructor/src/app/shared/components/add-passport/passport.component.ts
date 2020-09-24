@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { ValidationShowOn } from 'epgu-lib';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 
@@ -9,6 +9,7 @@ import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.se
   selector: 'epgu-constructor-passport',
   templateUrl: './passport.component.html',
   styleUrls: ['./passport.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class PassportComponent implements OnInit {
   @Input() attrs: { [key: string]: any };
@@ -38,11 +39,12 @@ export class PassportComponent implements OnInit {
 
   subscribeToFormChanges(): void {
     this.passportForm.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        debounceTime(300),
+        filter(() => this.passportForm.valid),
+      )
       .subscribe((value) => {
-        if (!this.passportForm.valid) {
-          return;
-        }
         this.valueChangedEvent.emit(value);
       });
   }

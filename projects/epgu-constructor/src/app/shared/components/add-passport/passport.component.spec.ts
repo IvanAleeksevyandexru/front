@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PassportComponent } from './passport.component';
 import { EpguLibModule } from 'epgu-lib';
@@ -12,14 +12,14 @@ describe('PassportComponent', () => {
   let component: PassportComponent;
   let fixture: ComponentFixture<PassportComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
       imports: [ EpguLibModule, FormsModule ],
       declarations: [ PassportComponent, LabelComponent, TextTransformDirective, TrimDirective ],
       providers: [ UnsubscribeService ],
     })
     .compileComponents();
-  });
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PassportComponent);
