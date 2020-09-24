@@ -78,8 +78,7 @@ export class PaymentComponent implements OnDestroy {
     const { nsi, dictItemCode, ref } = this.data.attrs;
     const { fiasCode } = ref;
 
-    const { orderId } = this.screenService.getStore();
-    this.orderId = orderId;
+    this.orderId = this.screenService.orderId;
 
     this.paymentService
       .loadPaymentInfo(this.orderId, nsi, dictItemCode, fiasCode)
@@ -112,7 +111,7 @@ export class PaymentComponent implements OnDestroy {
    * @param res - объект ответа на запрос
    */
   private setPaymentStatusFromSuccessRequest(res: any) {
-    this.uin = res.value;
+    this.uin = res.value.replace('PRIOR', '');
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
       .pipe(map((answer: any) => filterBillInfoResponse(answer)))
@@ -137,33 +136,26 @@ export class PaymentComponent implements OnDestroy {
    * @private
    */
   private getBillsInfo(info: BillsInfoResponse) {
-    if (info.bills) {
-      const bill: BillInfoResponse = info.bills[this.billPosition];
+    const bill: BillInfoResponse = info.bills[this.billPosition];
 
-      this.isPaid = bill.isPaid;
-      if (this.isPaid) {
-        this.isShown = false;
-        this.nextStep();
-      }
-
-      // Ищем сведения по скидке, цене и начислению
-      this.validDiscountDate = getDiscountDate(bill);
-      this.sumWithoutDiscount = getDiscountPrice(bill);
-      this.docInfo = getDocInfo(bill);
-
-      if (bill?.comment?.length) {
-        this.paymentPurpose = bill.comment;
-      }
-
-      this.sum = String(bill.amount);
-      this.inLoading = false;
-      this.billId = bill.billId;
-    } else {
-      // Если сведений всё-таки не пришло
-      this.inLoading = false;
+    this.isPaid = bill.isPaid;
+    if (this.isPaid) {
       this.isShown = false;
-      this.status = PaymentStatus.SERVER_ERROR;
+      this.nextStep();
     }
+
+    // Ищем сведения по скидке, цене и начислению
+    this.validDiscountDate = getDiscountDate(bill);
+    this.sumWithoutDiscount = getDiscountPrice(bill);
+    this.docInfo = getDocInfo(bill);
+
+    if (bill?.comment?.length) {
+      this.paymentPurpose = bill.comment;
+    }
+
+    this.sum = String(bill.amount);
+    this.inLoading = false;
+    this.billId = bill.billId;
   }
 
   /**
