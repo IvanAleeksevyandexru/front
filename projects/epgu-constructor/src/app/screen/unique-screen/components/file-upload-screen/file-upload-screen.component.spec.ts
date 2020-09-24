@@ -4,7 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentBase } from '../../../screen.types';
 
 // TODO: Need to refactoring component
-describe.skip('FileUploadScreenComponent', () => {
+xdescribe('FileUploadScreenComponent', () => {
   let component: FileUploadScreenComponent;
   let fixture: ComponentFixture<FileUploadScreenComponent>;
   let mockData: ComponentBase = {

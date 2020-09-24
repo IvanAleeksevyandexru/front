@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
+import { ConfigService } from '../../../config/config.service';
+import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
+import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
+import { ScreenService } from '../../screen.service';
 import {
   CustomComponent,
   CustomComponentDictionaryState,
@@ -20,10 +24,8 @@ import {
   isDropDown,
   likeDictionary,
 } from '../tools/custom-screen-tools';
-import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { ScreenService } from '../../screen.service';
-import { ConfigService } from '../../../config/config.service';
-import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -33,6 +35,7 @@ import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 export class ComponentsListComponent implements OnChanges {
   // <-- constant
   componentType = CustomScreenComponentTypes;
+  optionalField = OPTIONAL_FIELD;
 
   // <-- variables
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
@@ -49,7 +52,6 @@ export class ComponentsListComponent implements OnChanges {
     public config: ConfigService,
   ) {}
 
-  // NOTICE: тут была информация о валидации смотри историю гита
   ngOnChanges(changes: SimpleChanges): void {
     this.state = {};
     if (changes?.components?.currentValue) {
@@ -69,7 +71,7 @@ export class ComponentsListComponent implements OnChanges {
       const { dictionaryType } = component.attrs;
       this.initDictionary(dictionaryType, component.id);
       this.loadDictionary(dictionaryType, component);
-    } else if (isDropDown(component.type)) {
+    } else if (isDropDown(component)) {
       this.initDropDown(component);
     }
   }
@@ -79,7 +81,8 @@ export class ComponentsListComponent implements OnChanges {
    * @param component - данные компонента
    */
   initState(component: CustomComponent) {
-    this.state[component.id] = getInitStateItemComponentList(component);
+    const errorMessage = this.screenService.componentErrors[component.id] || '';
+    this.state[component.id] = getInitStateItemComponentList(component, errorMessage);
   }
 
   /**
@@ -123,8 +126,9 @@ export class ComponentsListComponent implements OnChanges {
    * @param component - данные компонента
    */
   selectDropDown($event: any, component: CustomComponent) {
-    this.state[component.id].value = $event.origin;
-    this.emmitChanges();
+    this.state[component.id].value = $event.originalItem;
+    this.state[component.id].valid = true;
+    this.emmitChanges(component);
   }
 
   /**
@@ -134,10 +138,20 @@ export class ComponentsListComponent implements OnChanges {
    */
   inputChange($event: Event, component: CustomComponent) {
     let { value } = $event.target as HTMLInputElement;
-    if (component.type === 'AddressInput') {
-      const fullAddressObject = this.state[component.id].value;
-      value = fullAddressObject;
+    if (component.type === this.componentType.AddressInput) {
+      value = this.state[component.id].value;
     }
+    if (component.type === this.componentType.PhoneNumberChangeInput) {
+      const maskSymbolRegExp = /\s|-/g;
+      value = value.replace(maskSymbolRegExp, ''); // удаляет скобки, проблемы, тире
+    }
+    const inputValidationResult = CheckInputValidationComponentList(value, component);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
+    this.emmitChanges(component);
+  }
+
+  inputBlur(component: CustomComponent) {
+    const { value } = this.state[component.id];
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
@@ -148,10 +162,9 @@ export class ComponentsListComponent implements OnChanges {
    * @param $event - событие с элементом
    * @param component - данные компонента
    */
-  checkboxFieldsTogglerChange($event: Event, component: CustomComponent) {
+  checkboxChange($event: Event, component: CustomComponent) {
     const { checked } = $event.target as HTMLInputElement;
-    this.state[component.id].component.attrs.checked = checked;
-    this.state[component.id].value = checked ? component.value : '';
+    this.state[component.id].value = checked;
     this.emmitChanges(component);
   }
 
@@ -237,17 +250,10 @@ export class ComponentsListComponent implements OnChanges {
     } else {
       handleSetState(
         false,
-        this.state[componentId]?.component.attrs.validation[inputValidationResult].errorMsg,
+        this.state[componentId]?.component?.attrs?.validation &&
+          this.state[componentId]?.component?.attrs?.validation[inputValidationResult]?.errorMsg,
       );
     }
-  }
-
-  /**
-   * Позвращает подпись
-   * @param required - обязательное поле или нет
-   */
-  getHelperText(required: boolean): string {
-    return required ? '' : OPTIONAL_FIELD;
   }
 
   /**
@@ -269,11 +275,15 @@ export class ComponentsListComponent implements OnChanges {
   private getPreparedStateForSending() {
     return Object.entries(this.state).reduce((acc, [key, val]) => {
       const { value, valid, disabled, isShown } = val;
-      const disabledValue = !isShown || disabled;
+
+      if (!isShown) {
+        return acc;
+      }
+
       acc[key] = {
-        value: disabledValue ? '' : value,
+        value: disabled ? '' : value,
         valid,
-        disabled: disabledValue,
+        disabled,
       };
       return acc;
     }, {});
@@ -290,5 +300,18 @@ export class ComponentsListComponent implements OnChanges {
         this.state[component.id].disabled = true;
       }
     });
+  }
+
+  isInputString(componentType: CustomScreenComponentTypes): boolean | CustomScreenComponentTypes {
+    const isLikeMask = [
+      CustomScreenComponentTypes.StringInput,
+      CustomScreenComponentTypes.PhoneNumberChangeInput,
+      CustomScreenComponentTypes.NewEmailInput,
+      CustomScreenComponentTypes.OgrnInput,
+      CustomScreenComponentTypes.OgrnipInput,
+      CustomScreenComponentTypes.PersonInnInput,
+      CustomScreenComponentTypes.LegalInnInput,
+    ].includes(componentType);
+    return isLikeMask ? componentType : !componentType;
   }
 }

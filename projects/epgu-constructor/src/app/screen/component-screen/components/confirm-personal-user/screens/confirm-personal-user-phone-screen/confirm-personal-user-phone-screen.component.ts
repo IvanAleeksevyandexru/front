@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { ComponentBase } from '../../../../../screen.types';
 
@@ -10,7 +10,6 @@ import { ComponentBase } from '../../../../../screen.types';
 export class ConfirmPersonalUserPhoneScreenComponent implements OnInit {
   @Input() data: ComponentBase;
   @Input() errors: object;
-  @Output() nextStepEvent = new EventEmitter();
 
   constructor(private componentStateService: ComponentStateService) {}
 

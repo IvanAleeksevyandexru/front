@@ -22,7 +22,7 @@ const COMPONENTS = [
     EpguLibModule,
   ],
   providers: [
-    ScreenService
+    ScreenService,
   ]
 })
 export class CustomScreenModule { }

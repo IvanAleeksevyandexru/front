@@ -4,6 +4,7 @@
   "assets": ["src/assets"],
   "lib": {
     "entryFile": "src/public-api.ts",
+    "cssUrl": "inline",
     "umdModuleIds": {
       "epgu-lib": "epgu-lib",
       "moment": "moment",
@@ -11,7 +12,8 @@
       "ngx-cookie-service": "ngx-cookie-service",
       "uuid": "uuid",
       "ngx-webcam": "ngx-webcam",
-      "ics": "ics"
+      "ics": "ics",
+      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar"
     },
     "styleIncludePaths": ["."]
   }

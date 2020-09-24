@@ -23,9 +23,16 @@ import { FormPlayerApiService } from './services/api/form-player-api/form-player
 import { ComponentStateService } from './services/component-state/component-state.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
+import { ServiceDataService } from './services/service-data/service-data.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { UtilsService } from './services/utils/utils.service';
+import { CommonModalComponent } from './shared/components/modal/common-modal/common-modal.component';
+import { ConfirmationModalComponent } from './shared/components/modal/confirmation-modal/confirmation-modal.component';
+import { ModalBaseComponent } from './shared/components/modal/modal-base/modal-base.component';
+import { ModalContainerComponent } from './shared/components/modal/modal-container/modal-container.component';
+import { ToolsService } from './shared/services/tools/tools.service';
 import { SharedModule } from './shared/shared.module';
+
 
 export const epguLibModule = EpguLibModule.forRoot();
 
@@ -55,6 +62,8 @@ export const epguLibModule = EpguLibModule.forRoot();
     ScreenResolverService,
     UtilsService,
     ConfigService,
+    ServiceDataService,
+    ToolsService,
   ],
   exports: [
     FormPlayerComponent,
@@ -68,12 +77,10 @@ export const epguLibModule = EpguLibModule.forRoot();
     UniqueScreenComponent,
     InvitationErrorScreenComponent,
     EmptyScreenComponent,
+    ModalBaseComponent,
+    ModalContainerComponent,
+    ConfirmationModalComponent,
+    CommonModalComponent
   ]
 })
-export class FormPlayerModule {
-  static forRoot() {
-    return {
-      ngModule: FormPlayerModule,
-    };
-  }
-}
+export class FormPlayerModule {}

@@ -10,4 +10,6 @@ export enum UniqueScreenComponentTypes {
   genderSelector = 'GenderSelector',
   signatureApplication = 'EsepSign',
   paymentScr = 'PaymentScr',
+  phoneNumberConfirmCodeInput = 'PhoneNumberConfirmCodeInput',
+  ConfirmNewEmail = 'ConfirmNewEmail',
 }

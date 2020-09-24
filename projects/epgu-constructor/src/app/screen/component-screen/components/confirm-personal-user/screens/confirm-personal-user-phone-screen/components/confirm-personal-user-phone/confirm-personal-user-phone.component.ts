@@ -1,34 +1,21 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BaseMaskedInputComponent, ValidationShowOn } from 'epgu-lib';
-import { delay, takeUntil } from 'rxjs/operators';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
-import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../../../../../shared/services/navigation/navigation.service';
+import { ScreenService } from '../../../../../../../screen.service';
+import { Navigation } from '../../../../../../../../form-player.types';
 
+// TODO удалить этот компонент в пользу CUSTOM SCREEN c поддержкой actions;
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-phone',
   templateUrl: './confirm-personal-user-phone.component.html',
   styleUrls: ['./confirm-personal-user-phone.component.scss'],
-  providers: [UnsubscribeService],
 })
-export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
-  @ViewChild('mask', { static: true }) mask: BaseMaskedInputComponent;
+export class ConfirmPersonalUserPhoneComponent implements OnChanges {
   @Input() label: string;
   @Input() data: string;
-  @Input() error: string;
+  @Input() actions: Array<{ label: string; value: string; action: string }>; // TODO HARDCODE
   @Input() isEditButtonShown: boolean;
-  @Output() dataChanged = new EventEmitter();
 
-  phoneForm: FormGroup;
-  validationShowOn = ValidationShowOn.TOUCHED;
   phoneMask = [
     '+',
     '7',
@@ -51,55 +38,32 @@ export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
   ];
 
   constructor(
-    private formBuilder: FormBuilder,
-    private ngUnsubscribe$: UnsubscribeService,
     private componentStateService: ComponentStateService,
+    private screenService: ScreenService,
+    private navigationService: NavigationService,
   ) {}
 
-  ngOnInit(): void {
-    this.phoneForm = this.formBuilder.group({
-      phone: this.formBuilder.control(
-        {
-          value: this.data || '',
-          disabled: true,
-        },
-        {
-          validators: Validators.compose([Validators.required, Validators.minLength(18)]),
-        },
-      ),
-    });
-
-    this.phoneForm.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$), delay(0))
-      .subscribe((change) => {
-        const { phone } = change;
-        const phoneUnmasked = phone.replace(/[\s|-]+/g, ''); // backend-friendly format +7(999)1234567
-        this.componentStateService.isValid = this.phoneForm.controls.phone.valid;
-        this.componentStateService.state = phoneUnmasked;
-        this.dataChanged.emit(phoneUnmasked);
-      });
-
-    this.componentStateService.state = this.data;
-    this.componentStateService.isValid = true;
+  handleClick() {
+    const action = this.actions[0];
+    const navigation: Navigation = {
+      payload: this.getComponentStateForNavigate(),
+      options: { url: action.action },
+    };
+    this.navigationService.nextStep.next(navigation);
   }
 
-  ngOnChanges(): void {
-    if (this.phoneForm) {
-      if (this.error) {
-        this.phoneForm.controls.phone.setErrors({ incorrect: true });
-        this.phoneForm.controls.phone.enable();
-      } else {
-        this.phoneForm.controls.phone.setErrors(null);
-      }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.data?.currentValue) {
+      this.componentStateService.state = this.data;
     }
   }
 
-  handleClick() {
-    this.phoneForm.controls.phone.enable();
-    // @ts-ignore
-    const data = this.mask.textMaskInputElement.state.previousConformedValue || this.data;
-    this.mask.writeValue(data);
-    // @ts-ignore
-    this.phoneForm.patchValue({ phone: this.mask.lastModelValue });
+  getComponentStateForNavigate() {
+    return {
+      [this.screenService.component.id]: {
+        visited: true,
+        value: this.componentStateService.state,
+      },
+    };
   }
 }

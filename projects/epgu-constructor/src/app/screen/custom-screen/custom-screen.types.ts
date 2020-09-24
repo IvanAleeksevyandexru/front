@@ -1,6 +1,7 @@
 import { ListItem } from 'epgu-lib';
 import { DictionaryItem, DictionaryResponse } from '../../services/api/dictionary-api/dictionary-api.types';
 import { ComponentBase, Display } from '../screen.types';
+import { TextTransform } from '../../shared/types/textTransform';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -14,6 +15,12 @@ export enum CustomScreenComponentTypes {
   htmlString = 'HtmlString',
   GenderSelection = 'GenderSelection',
   CheckBox = 'CheckBox',
+  PhoneNumberChangeInput = 'PhoneNumberChangeInput',
+  NewEmailInput = 'NewEmailInput',
+  OgrnInput = 'OgrnInput',
+  OgrnipInput = 'OgrnipInput',
+  LegalInnInput = 'LegalInnInput',
+  PersonInnInput = 'PersonInnInput',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
@@ -119,6 +126,7 @@ export interface CustomComponent extends ComponentBase {
   type: CustomScreenComponentTypes;
   id: string;
   hint?: string;
+  fstuc?: TextTransform;
 }
 
 interface SupportedValue {

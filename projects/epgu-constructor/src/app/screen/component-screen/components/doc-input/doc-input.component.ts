@@ -7,6 +7,27 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import { DocInputComponentInterface, IField, IForm } from './doc-input.types';
+import { ComponentBase } from '../../../screen.types';
+import { TextTransform } from '../../../../shared/types/textTransform';
+
+export interface DocInputComponentInterface extends ComponentBase {
+  attrs: {
+    fields: Array<IField>;
+    fstuc?: TextTransform;
+  };
+}
+interface IField {
+  fieldName: string;
+  label: string;
+  type: 'input';
+}
+
+interface IForm {
+  series: string;
+  number: string;
+  date: string;
+  emiter: string;
+}
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -27,6 +48,10 @@ export class DocInputComponent implements OnInit {
 
   ngOnInit(): void {
     this.generateFormGroup();
+  }
+
+  get textTransformType(): TextTransform {
+    return this.data?.attrs?.fstuc;
   }
 
   private generateFormGroup(): void {
