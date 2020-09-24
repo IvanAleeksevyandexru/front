@@ -5,6 +5,8 @@ import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsub
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenServiceStub } from '../../../../../screen.service.stub';
+import { ConfigService } from '../../../../../../config/config.service';
+import { ConfigServiceStub } from '../../../../../../config/config.service.stub';
 
 xdescribe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;
@@ -18,6 +20,7 @@ xdescribe('ConfirmEmailComponent', () => {
         UnsubscribeService,
         NavigationService,
         { provide: ScreenService,useClass: ScreenServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     })
     .compileComponents();

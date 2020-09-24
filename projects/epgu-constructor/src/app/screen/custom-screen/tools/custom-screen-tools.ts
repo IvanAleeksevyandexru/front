@@ -50,14 +50,6 @@ export function likeDictionary(type: CustomScreenComponentTypes): boolean {
 }
 
 /**
- * Возвращает true, если это выпадающий список
- * @param type - тип поля
- */
-export function isDropDown(type: CustomScreenComponentTypes): boolean {
-  return CustomScreenComponentTypes.DropDown === type;
-}
-
-/**
  * Адаптирует массив в вид необходимый для компонентов из библлиотеки и если нужно то удаляет РОССИЮ из списка
  * @param {Array<DictionaryItem>}items
  * @param {string}dictionaryName
@@ -102,15 +94,17 @@ export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<
  * Возвращает true, если это компонент с типом Lookup
  * @param component - компонент
  */
-export const isLookup = (component: CustomComponent) =>
-  component.type === CustomScreenComponentTypes.Lookup;
-
+export const isLookup = (component: CustomComponent): boolean => component.type === CustomScreenComponentTypes.Lookup;
+/**
+ * Возвращает true, если это выпадающий список
+ * @param component - компонент
+ */
+export const isDropDown = (component: CustomComponent): boolean => component.type === CustomScreenComponentTypes.DropDown;
 /**
  * Возвращает true, если это компонент с типом CheckBox
  * @param component - компонент
  */
-export const isCheckBox = (component: CustomComponent) =>
-  component.type === CustomScreenComponentTypes.CheckBox;
+export const isCheckBox = (component: CustomComponent): boolean => component.type === CustomScreenComponentTypes.CheckBox;
 
 /**
  * Возвращает true, если текущее состояние зависимости соответствует значению проверяемого компонента
@@ -126,13 +120,17 @@ export const isHaveNeededValue = (
   relation: CustomComponentRefRelation,
 ): boolean => {
   if (item.relation == relation) {
-    if (isCheckBox(component)) {
-      return state[item.relatedRel]?.value === item.val;
+    let stateRelatedRelValue: any;
+
+    if (isLookup(component)) {
+      stateRelatedRelValue = state[item.relatedRel]?.value?.value;
+    } else if (isDropDown(component)) {
+      stateRelatedRelValue = state[item.relatedRel]?.value?.code;
+    } else {
+      stateRelatedRelValue = state[item.relatedRel].value;
     }
-    const stateRelatedRel = isLookup(component)
-      ? state[item.relatedRel]?.value
-      : state[item.relatedRel];
-    return stateRelatedRel?.value === item.val;
+
+    return stateRelatedRelValue === item.val;
   }
   return relation === CustomComponentRefRelation.displayOn;
 };
@@ -170,7 +168,7 @@ export function CheckInputValidationComponentList(
         const regexp = new RegExp(item.value);
         return !regexp.test(value);
       } catch {
-        console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
+        console.error(`Неверный формат RegExp выражения: ${item.value}`);
       }
     }) ?? -1;
 
@@ -182,7 +180,7 @@ export function CheckInputValidationComponentList(
   return result;
 }
 
-export function getInitStateItemComponentList(component: CustomComponent) {
+export function getInitStateItemComponentList(component: CustomComponent, errorMessage: string = '') {
   const { value } = component;
   const hasRelatedRef = !component.attrs.ref?.length;
 
@@ -201,7 +199,7 @@ export function getInitStateItemComponentList(component: CustomComponent) {
 
   return {
     valid: false,
-    errorMessage: '',
+    errorMessage,
     value: valueFormatted,
     component,
     isShown: hasRelatedRef,

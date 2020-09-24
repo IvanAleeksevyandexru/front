@@ -25,7 +25,6 @@ describe('PaymentService', () => {
         ComponentStateService,
         FormPlayerApiService,
         ScreenService,
-        ConfigService,
         UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
