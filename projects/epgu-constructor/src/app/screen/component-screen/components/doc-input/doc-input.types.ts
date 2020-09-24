@@ -1,4 +1,5 @@
 import { ComponentBase } from '../../../screen.types';
+import { TextTransform } from '../../../../shared/types/textTransform';
 
 /**
  * Интерфейс компонента с полями
@@ -6,6 +7,7 @@ import { ComponentBase } from '../../../screen.types';
 export interface DocInputComponentInterface extends ComponentBase {
   attrs: {
     fields: Array<IField>;
+    fstuc?: TextTransform;
   };
 }
 
