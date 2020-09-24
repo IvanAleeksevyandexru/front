@@ -36,6 +36,7 @@ import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.se
   selector: 'epgu-constructor-components-list',
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class ComponentsListComponent implements OnInit {
   form: FormArray;
@@ -66,7 +67,7 @@ export class ComponentsListComponent implements OnInit {
   constructor(
     private dictionaryApiService: DictionaryApiService,
     public screenService: ScreenService,
-    private configService: ConfigService,
+    public configService: ConfigService,
     private fb: FormBuilder,
     private unsubscribe$: UnsubscribeService,
   ) {}
@@ -214,10 +215,6 @@ export class ComponentsListComponent implements OnInit {
     this.dictionaries[id].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
   }
 
-  dateChange($event: string, component: CustomComponent) {
-    this.emmitChanges(component);
-  }
-
   private loadDictionaryError(key: string, componentId: string): void {
     const id = key + componentId;
     this.dictionaries[id].loading = false;
@@ -232,16 +229,8 @@ export class ComponentsListComponent implements OnInit {
     }
     const prepareStateForSending = this.getPreparedStateForSending();
     this.changes.emit(prepareStateForSending);
-
-    console.group('Console');
-    console.log(prepareStateForSending);
-    console.groupEnd();
   }
 
-  /**
-   * Подгатавливаются данные для пробраса на верх.
-   * Родительскому компоненту нужны данные компонента и состояние валидности.
-   */
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
       const { value, valid = this.form.get([key, 'value']).valid } = val;

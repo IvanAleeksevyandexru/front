@@ -96,10 +96,25 @@
           [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
         </ng-template>
         <lib-date-picker
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [validationShowOn]="validationShowOn"
           [name]="componentData.value?.id"
           [formControl]="componentData.get('value')"
           minDate="-18y"
+          align="left"
         ></lib-date-picker>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.AddressInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+          <lib-dadata-widget
+            [simpleMode]="true"
+            [externalApiUrl]="configService.externalApiUrl + '/'"
+            [formControl]="componentData.get('value')">
+          </lib-dadata-widget>
       </ng-container>
 
       <ng-template
@@ -118,40 +133,6 @@
     </ng-container>
   </div>
 </form>
-
-
-<!--      <div class="form__item" *ngSwitchCase="componentType.GenderSelection">-->
-<!--        <ng-container *ngIf="state[componentData.id].isShown">-->
-<!--          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>-->
-<!--          <epgu-constructor-gender-radio-button [(ngModel)]="state[componentData.id].value">-->
-<!--          </epgu-constructor-gender-radio-button>-->
-<!--          <epgu-constructor-helper-text *ngIf="!componentData.required">-->
-<!--            {{ getHelperText(componentData.required) }}-->
-<!--          </epgu-constructor-helper-text>-->
-<!--        </ng-container>-->
-<!--      </div>-->
-
-
-
-
-
-<!--      <div class="form__item" *ngSwitchCase="componentType.AddressInput">-->
-<!--        <ng-container *ngIf="state[componentData.id].isShown">-->
-<!--          <epgu-constructor-label>{{ componentData.label }}</epgu-constructor-label>-->
-<!--          <lib-dadata-widget-->
-<!--            [simpleMode]="true"-->
-<!--            [name]="componentData.id"-->
-<!--            (change)="inputChange($event, componentData)"-->
-<!--            [externalApiUrl]="configService.config.externalApiUrl + '/'"-->
-<!--            [initValue]="state[componentData.id].value"-->
-<!--            [(ngModel)]="state[componentData.id].value"-->
-<!--          >-->
-<!--          </lib-dadata-widget>-->
-<!--        </ng-container>-->
-<!--      </div>-->
-
-
-
 
 <ng-template #formLabel let-label>
   <epgu-constructor-label>{{ label }}</epgu-constructor-label>
