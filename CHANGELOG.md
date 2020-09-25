@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://git.gosuslugi.local///compare/v0.1.1...v0.1.2) (2020-09-25)
+
+
+### Bug Fixes
+
+* Again right return url ([e55d746](https://git.gosuslugi.local///commit/e55d746161971b825fc00a432f400b99140b676d))
+* Again right return url ([f9f4056](https://git.gosuslugi.local///commit/f9f4056c384cf802e247d22ae7503b41251f6f0c))
+* fixed file uploading ([11bcd72](https://git.gosuslugi.local///commit/11bcd72e90bc9e015d3caf1a174810eaaff25e4d))
+* hotfix for right payment ([a03ce67](https://git.gosuslugi.local///commit/a03ce672ff01d4dabdd16a6e36fc769959ae583a))
+* на мобильной верси, на экране вопрос/ответ прибил кнопки action к низу ([793848a](https://git.gosuslugi.local///commit/793848a1f93b0de2ca2bcc7a6589f6463554a5f0))
+
 ### [0.1.1](https://git.gosuslugi.local///compare/v0.1.0...v0.1.1) (2020-09-25)
 
 ## [0.1.0](https://git.gosuslugi.local///compare/v0.0.1...v0.1.0) (2020-09-25)
