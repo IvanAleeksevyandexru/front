@@ -21,4 +21,16 @@ export class DictionaryApiServiceStub {
       items: []
     });
   }
+
+  getMvdDictionary(): Observable<any> {
+    return of({
+      items: []
+    });
+  }
+
+  getSelectMapDictionary(): Observable<any> {
+    return of({
+      items: []
+    });
+  }
 }
