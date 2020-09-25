@@ -22,7 +22,7 @@
   margin-bottom: 24px;
 }
 
-input[type='file'] {
+input[type="file"] {
   display: none;
 }
 
@@ -44,8 +44,7 @@ input[type='file'] {
   height: 24px;
   flex-shrink: 0;
   margin-right: 12px;
-  background: no-repeat center center
-    url('../../../../../../../assets/icons/svg/file_inprogress.svg');
+  background: no-repeat center center url('../../../../../../../assets/icons/svg/file_inprogress.svg');
 
   &.uploaded {
     background-image: url('../../../../../../../assets/icons/svg/file_accept.svg');
@@ -139,6 +138,7 @@ input[type='file'] {
     .nocamera & {
       margin-right: 0;
     }
+
 
     @include phones-down {
       margin-right: 15px;

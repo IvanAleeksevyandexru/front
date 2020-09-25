@@ -76,11 +76,16 @@ export class PaymentService {
    */
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
     // TODO: HARDCODE Специальная подмена на оплату 1,4 рубля гос пошлины, иначе будет как есть снятие
+    // if (location.hostname === 'local.test.gosuslugi.ru') {
+    //   const uinMockUp = new BehaviorSubject({
+    //     value: mockUpUIN
+    //   });
+    //   return uinMockUp.asObservable();
+    // }
+
+    // TODO: Хардкод для локальной отладки
     if (location.hostname === 'local.test.gosuslugi.ru') {
-      const uinMockUp = new BehaviorSubject({
-        value: mockUpUIN
-      });
-      return uinMockUp.asObservable();
+      attributeValues.sum = '200';
     }
 
     const path = `${this.config.uinApiUrl}/${code}?orderId=${orderId}`;
@@ -102,7 +107,7 @@ export class PaymentService {
     // return billMockUp.asObservable();
 
     // eslint-disable-next-line max-len
-    const path = `${this.config.billsApiUrl}?billNumber=${uin}&urlReturnCheck=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    const path = `${this.config.billsApiUrl}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
     return this.http.post(path, {}, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
