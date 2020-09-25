@@ -6,7 +6,7 @@
   </div>
 
   <epgu-constructor-file-upload
-    [objectId]="getOrderId"
+    [objectId]="screenService.orderId$ | async"
     [applicantAnswers]="applicantAnswers"
     [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
     [attributes]="data.attrs"
