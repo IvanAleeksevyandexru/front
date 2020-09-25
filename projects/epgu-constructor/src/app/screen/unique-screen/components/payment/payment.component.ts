@@ -78,8 +78,7 @@ export class PaymentComponent implements OnDestroy {
     const { nsi, dictItemCode, ref } = this.data.attrs;
     const { fiasCode } = ref;
 
-    const { orderId } = this.screenService.getStore();
-    this.orderId = orderId;
+    this.orderId = this.screenService.orderId;
 
     this.paymentService
       .loadPaymentInfo(this.orderId, nsi, dictItemCode, fiasCode)
@@ -109,10 +108,14 @@ export class PaymentComponent implements OnDestroy {
 
   /**
    * Устанавливает статус оплаты из успешного запроса
-   * @param res - объект ответа на запрос
+   * @param value - УИН
    */
-  private setPaymentStatusFromSuccessRequest(res: any) {
-    this.uin = res.value.replace('PRIOR', '');
+  private setPaymentStatusFromSuccessRequest({ value }) {
+    if (!value.includes('PRIOR')) {
+      // eslint-disable-next-line no-param-reassign
+      value = `PRIOR${value}`;
+    }
+    this.uin = value;
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
       .pipe(map((answer: any) => filterBillInfoResponse(answer)))

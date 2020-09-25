@@ -13,6 +13,8 @@
 export interface Config {
   apiUrl: string;
   dictionaryUrl: string;
+  mvdUrl: string;
+  selectMapUrl: string;
   externalApiUrl: string;
   timeSlotApiUrl: string;
   uinApiUrl: string;

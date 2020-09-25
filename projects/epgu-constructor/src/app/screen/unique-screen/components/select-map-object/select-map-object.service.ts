@@ -25,6 +25,7 @@ export class SelectMapObjectService {
     private http: HttpClient,
     private config: ConfigService,
     private yaMapService: YaMapService,
+    private icons: Icons,
   ) { }
 
   /**
@@ -89,7 +90,7 @@ export class SelectMapObjectService {
     const objects = this.prepareFeatureCollection(this.filteredDictionaryItems);
 
     this.objectManager = this.createMapsObjectManager();
-    this.objectManager.objects.options.set(Icons.blue);
+    this.objectManager.objects.options.set(this.icons.blue);
     this.objectManager.objects.options.set('balloonContentLayout', this.getCustomBalloonContentLayout());
     this.objectManager.objects.options.set('balloonLayout', this.getCustomBalloonContentLayout());
     this.objectManager.add(objects);
@@ -126,7 +127,7 @@ export class SelectMapObjectService {
 
     objectManager.objects.balloon.events.add('userclose', () => {
       objectManager.objects.setObjectOptions(this.activePlacemarkId, {
-        iconImageHref: Icons.blue.iconImageHref
+        iconImageHref: this.icons.blue.iconImageHref
       });
       this.selectedValue.next(null);
     });
@@ -188,7 +189,7 @@ export class SelectMapObjectService {
     let offset = 0.0003;
 
     this.objectManager && this.objectManager.objects.setObjectOptions(objectId, {
-      iconImageHref: Icons.red.iconImageHref
+      iconImageHref: this.icons.red.iconImageHref
     });
     this.activePlacemarkId = objectId;
 

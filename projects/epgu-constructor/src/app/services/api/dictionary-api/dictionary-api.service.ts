@@ -16,6 +16,20 @@ export class DictionaryApiService {
    */
   getDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
     const path = `${this.config.dictionaryUrl}/${dictionaryName}`;
+    return this.post(path, options);
+  }
+
+  getMvdDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
+    const path = `${this.config.mvdUrl}/${dictionaryName}`;
+    return this.post(path, options);
+  }
+
+  getSelectMapDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
+    const path = `${this.config.selectMapUrl}/${dictionaryName}`;
+    return this.post(path, options);
+  }
+
+  private post(path: string, options): Observable<DictionaryResponse> {
     return this.http.post<DictionaryResponse>(path, {
       filter: options.filter,
       treeFiltering: options.treeFiltering || 'ONELEVEL',

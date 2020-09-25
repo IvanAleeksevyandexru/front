@@ -31,17 +31,6 @@ export class TerraByteApiService {
   }
 
   /**
-   * Возвращает объект заголовков, которые нужны для запуска на тестовом домене
-   */
-  private getTestHeaders(): HttpHeaders {
-    // return new HttpHeaders({
-    //   Cookie: 'acc_t=' + this.testToken + '; Path=/; Domain=.pgu-dev-fed.test.gosuslugi.ru; Expires=Mon, 30 Aug 2021 09:32:01 GMT;',
-    // });
-
-    return new HttpHeaders();
-  }
-
-  /**
    * Возвращает путь API адреса для обращений к сервису TERABYTE
    *
    * @param relativePath - относительный путь от API для запросов
@@ -65,7 +54,7 @@ export class TerraByteApiService {
    * Возвращает список файлов, для определённого объекта
    * @param objectId - идентификатор объекта
    */
-  getListByObjectId(objectId: number): Observable<any>  {
+  getListByObjectId(objectId: string): Observable<any>  {
     return this.http.get(this.getTerabyteApiUrl(`/${objectId}`));
   }
 
