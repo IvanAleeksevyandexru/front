@@ -1,8 +1,13 @@
-export class Icons {
+import { Injectable } from '@angular/core';
+import { ConfigService } from '../../../../config/config.service';
 
-  public static readonly red = {
+@Injectable()
+export class Icons {
+  constructor(public config: ConfigService) { }
+
+  public readonly red = {
     iconLayout: 'default#image',
-    iconImageHref: '/assets/icons/svg/point_red.svg',
+    iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/point_red.svg`,
     iconContentOffset: [11, 15],
     iconShape: {
       type: 'Circle',
@@ -13,9 +18,9 @@ export class Icons {
     openEmptyBalloon: true
   };
 
-  public static readonly blue = {
+  public readonly blue = {
     iconLayout: 'default#image',
-    iconImageHref: '/assets/icons/svg/point_blue.svg',
+    iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/point_blue.svg`,
     iconImageSize: [24, 40],
     iconImageOffset: [-12, -20],
     iconContentOffset: [11, 15],
