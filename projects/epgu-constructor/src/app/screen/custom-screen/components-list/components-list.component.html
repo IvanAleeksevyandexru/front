@@ -71,11 +71,11 @@
           [disabled]="state[componentData.id].disabled"
           [showMaskAsPlaceholder]="false"
           [showConstantMaskSymbols]="true"
+          [maxlength]="componentData.attrs?.maxlength"
+          [validation]="state[componentData.id].valid"
           [(ngModel)]="state[componentData.id].value"
           (change)="inputChange($event, componentData)"
-          [maxlength]="componentData.attrs?.maxlength"
           (blur)="inputBlur(componentData)"
-          [validation]="state[componentData.id].valid"
         ></lib-standard-masked-input>
 
         <ng-template #plainInput>
@@ -87,10 +87,10 @@
             [name]="componentData.id"
             [maxlength]="componentData.attrs?.maxlength"
             [disabled]="state[componentData.id].disabled"
-            [(ngModel)]="state[componentData.id].value"
-            (change)="inputChange($event, componentData)"
-            (blur)="inputBlur(componentData)"
             [validationShowOn]="validationShowOn"
+            [(ngModel)]="state[componentData.id].value"
+            (input)="inputChange($event, componentData)"
+            (blur)="inputBlur(componentData)"
           ></lib-plain-input>
         </ng-template>
       </ng-container>

@@ -113,7 +113,7 @@ export const isCheckBox = (component: CustomComponent): boolean => component.typ
  * @param item - сведения о зависимости
  * @param relation - тип зависимости
  */
-export const isHaveNeededValue = (
+const isHaveNeededValue = (
   state: CustomComponentState,
   component: CustomComponent,
   item: CustomComponentRef,
@@ -136,9 +136,59 @@ export const isHaveNeededValue = (
 };
 
 /**
- * Функция проверяет зависимые компоненты и перезаписывает состояние в state.
+ * Проверяет есть ли связь с типом калькуляция и если есть возвращает её
+ * @param item - объект с информацией о связи
  */
-export function calcDependedComponent(
+const findCalcRelation = (item: CustomComponentRef) => item.relation === CustomComponentRefRelation.calc;
+
+/**
+ * Возвращает найденую связь компонента с типом калькуляция
+ * @param checkComponent - компонент для проверки
+ */
+const getCalcRelation = (checkComponent: CustomComponent) => checkComponent.attrs.ref.find(findCalcRelation);
+
+/**
+ * Подсчитывает автовычисляемое значение из формулы, которую передали
+ * @param item - объект с информацией о связи
+ * @param state - хранилище данных о компонентов
+ */
+function calculateValueFromRelation(item: CustomComponentRef, state: CustomComponentState) {
+  let str = item.val;
+  const componentKeys = [...str.match(/\{\w+\}/gm)];
+  let haveAllValues = true;
+
+  componentKeys.forEach((key: string) => {
+    const k = key.replace('{', '').replace('}', '');
+    const val = Number(state[k]?.value);
+    if (isNaN(val)){
+      haveAllValues = false;
+    } else {
+      str = str.replace(key, val.toString());
+    }
+  });
+
+  return haveAllValues ? Function(`'use strict'; return (Math.round(${str}))`)() : '';
+}
+
+/**
+ * Проверяет всегда ли поле в disable стусе и если да устанавливает в хранилище
+ * @param component - компонент
+ * @param state - хранилище данных о компонентов
+ * @private
+ */
+export function checkDisabledAlwaysState(component: CustomComponent, state: CustomComponentState) {
+  if (component.attrs?.disabled) {
+    state[component.id].disabled = true;
+  }
+}
+
+/**
+ * Функция проверяет зависимые компоненты и перезаписывает состояние в state.
+ * @param component - компонент
+ * @param state - хранилище данных о компонентов
+ * @param components - список всех компонентов
+ */
+export function checkStatesOfDependedComponent(
   component: CustomComponent,
   state: CustomComponentState,
   components: Array<CustomComponent>,
@@ -151,9 +201,15 @@ export function calcDependedComponent(
     state[dependentComponent.id].isShown = dependentComponent.attrs.ref.some((item) =>
       isHaveNeededValue(state, component, item, CustomComponentRefRelation.displayOn),
     );
-    state[dependentComponent.id].disabled = dependentComponent.attrs.ref.some((item) =>
-      isHaveNeededValue(state, component, item, CustomComponentRefRelation.disabled),
-    );
+    if (!dependentComponent.attrs?.disabled) { // Если принудительно всегда не выключено
+      state[dependentComponent.id].disabled = dependentComponent.attrs.ref.some((item) =>
+        isHaveNeededValue(state, component, item, CustomComponentRefRelation.disabled),
+      );
+    }
+    const calcRelation = getCalcRelation(dependentComponent);
+    if (calcRelation) {
+      state[dependentComponent.id].value = calculateValueFromRelation(calcRelation, state);
+    }
   });
 }
 
@@ -206,19 +262,23 @@ export function getInitStateItemComponentList(component: CustomComponent, errorM
   };
 }
 
+/**
+ * Валидируем значение особых значений
+ * @param type - тип валидируемого поля
+ * @param value - значение для проверки
+ */
 export function isValueValid(type, value): boolean {
-  const customComponentType = CustomScreenComponentTypes;
-  if (type === customComponentType.OgrnInput) {
-    return checkOgrn(value);
+  switch (type) {
+    case CustomScreenComponentTypes.OgrnInput:
+      return checkOgrn(value);
+    case CustomScreenComponentTypes.OgrnipInput:
+      return checkOgrnip(value);
+    case CustomScreenComponentTypes.SnilsInput:
+      return checkSnils(value);
+    case CustomScreenComponentTypes.PersonInnInput:
+    case CustomScreenComponentTypes.LegalInnInput:
+      return checkINN(value);
+    default:
+      return true;
   }
-  if (type === customComponentType.OgrnipInput) {
-    return checkOgrnip(value);
-  }
-  if ([customComponentType.PersonInnInput, customComponentType.LegalInnInput].includes(type)) {
-    return checkINN(value);
-  }
-  if (customComponentType.SnilsInput) {
-    return checkSnils(value);
-  }
-  return true;
 }

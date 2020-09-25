@@ -104,7 +104,8 @@ export interface CustomComponentOutputData {
  */
 export enum CustomComponentRefRelation {
   displayOn = 'displayOn',
-  disabled = 'disabled'
+  disabled = 'disabled',
+  calc = 'calc',
 }
 
 /**
