@@ -71,6 +71,7 @@ const DIRECTIVES = [
     ModalContainerComponent,
     ConfirmationModalComponent,
     CommonModalComponent,
+    UsePaymentsModalComponent,
   ]
 })
 export class SharedModule { }

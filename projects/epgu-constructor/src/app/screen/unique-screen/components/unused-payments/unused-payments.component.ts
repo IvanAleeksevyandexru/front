@@ -50,38 +50,39 @@ export class UnusedPaymentsComponent implements OnInit {
     const value = JSON.parse(this.data.components[0].value);
     if (value.length) {
       this.paymentsList = value;
-      this.showModal({
-        paymentsList: this.paymentsList,
-        usePaymentHandler: this.usePayment,
-        skipPaymentHandler: this.cancelUsePayment,
-      });
+      this.showModal();
     }
   }
 
-  showModal(params) {
-    this.modalService.openModal(UsePaymentsModalComponent, params);
+  showModal() {
+    this.modalService.openModal(UsePaymentsModalComponent, {
+      paymentsList: this.paymentsList,
+      usePaymentHandler: this.usePayment,
+      skipPaymentHandler: this.cancelUsePayment,
+    });
   }
+
+  getListPaymentsInfoSuccess = (data) => {
+    if (data.length) {
+      this.paymentsList = data;
+      this.showModal();
+    } else {
+      // TODO: должно заменить вызов usePaymentsListData, когда будет работать rest api
+      // this.navigationService.prevStep.next();
+      this.usePaymentsListData();
+    }
+  };
+
+  getListPaymentsInfoError = (error) => {
+    console.log('Error', error);
+    this.usePaymentsListData();
+  };
 
   public ngOnInit() {
     const { orderId } = this.screenService.getStore();
     this.orderId = orderId;
-    this.listPaymentsService.getListPaymentsInfo({ orderId: this.orderId }).subscribe(
-      (data) => {
-        if (data.length) {
-          this.paymentsList = data;
-          this.showModal({
-            paymentsList: this.paymentsList,
-            usePaymentHandler: this.usePayment,
-            skipPaymentHandler: this.cancelUsePayment,
-          });
-        } else {
-          this.usePaymentsListData();
-        }
-      },
-      (error) => {
-        console.log('Error', error);
-        this.usePaymentsListData();
-      },
-    );
+    this.listPaymentsService
+      .getListPaymentsInfo({ orderId: this.orderId })
+      .subscribe(this.getListPaymentsInfoSuccess, this.getListPaymentsInfoError);
   }
 }
