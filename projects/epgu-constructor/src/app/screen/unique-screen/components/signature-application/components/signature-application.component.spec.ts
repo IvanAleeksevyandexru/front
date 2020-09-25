@@ -9,6 +9,7 @@ import { PageNameComponent } from '../../../../../shared/components/base/page-na
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
 import { OutputHtmlComponent } from '../../../../../shared/components/output-html/output-html.component';
+import { ConfigService } from '../../../../../config/config.service';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -24,7 +25,7 @@ describe('SignatureApplicationComponent', () => {
         label: '',
         required: true,
         type: 'EsepSign',
-        value: '"{"url":"http://yandex.ru"}"',
+        value: JSON.stringify({ url: 'http://yandex.ru' }),
       },
     ],
     header: 'Подписание заявления',
@@ -47,11 +48,16 @@ describe('SignatureApplicationComponent', () => {
         OutputHtmlComponent,
         SafeHtmlPipe,
       ],
-      providers: [NavigationService],
+      providers: [NavigationService, ConfigService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    delete window.location;
+    // @ts-ignore
+    window.location = {
+      href: '',
+    };
     fixture = TestBed.createComponent(SignatureApplicationComponent);
     component = fixture.componentInstance;
     component.data = displayDataMock;
