@@ -41,7 +41,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   data: ComponentBase;
   isLoading: Observable<boolean>;
   header: string;
-  orderId: number;
+  orderId: string;
 
   subs = new Subscription();
 
@@ -131,7 +131,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       .add(fromEvent(this.imageValidator, 'error').subscribe(() => this.validateImage()));
   }
 
-  getRequestData(): { mnemonic: string; name: string; objectType: number; objectId: number } {
+  getRequestData(): { mnemonic: string; name: string; objectType: number; objectId: string } {
     const { mnemonic = null, name = null, objectType = 2 } = this.data?.attrs?.uploadedFile;
     return { mnemonic, name, objectType, objectId: this.orderId };
   }

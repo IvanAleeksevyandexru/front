@@ -46,7 +46,7 @@ export class PaymentComponent implements OnDestroy {
   private payStatusInterval = 30;
   private billPosition = 0; // Какой счет брать из списка
   private billId: number;
-  private orderId: number; // Номер заявления
+  private orderId: string; // Номер заявления
 
   @Input() header = 'Оплата госпошлины'; // Заголовок
   private attrData: ComponentBase;

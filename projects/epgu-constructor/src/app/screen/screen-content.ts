@@ -45,11 +45,11 @@ export class ScreenContent {
   }
   public screenType$ = this._screenType.asObservable();
 
-  private _orderId = new BehaviorSubject<number>(null);
+  private _orderId = new BehaviorSubject<string>(null);
   public get orderId() {
     return this._orderId.getValue();
   }
-  public set orderId(val: number) {
+  public set orderId(val: string) {
     this._orderId.next(val);
   }
   public orderId$ = this._orderId.asObservable();
