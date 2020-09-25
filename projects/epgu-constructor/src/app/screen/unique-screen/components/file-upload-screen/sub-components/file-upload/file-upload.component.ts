@@ -4,6 +4,7 @@ import {
   FileResponseToBackendWithRelatedUploads,
   FileUploadAttributes,
   FileUploadItem,
+  FileUploadItemTypes,
 } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 @Component({
@@ -12,7 +13,10 @@ import {
   styleUrls: ['./file-upload.component.scss'],
 })
 export class FileUploadComponent {
+  fileUploadItemTypes = FileUploadItemTypes;
   private attrs: FileUploadAttributes;
+  @Input() objectId: string;
+  @Input() isRelatedUploads = false;
   @Input() applicantAnswers: object;
   @Input()
   set attributes(attrs: FileUploadAttributes) {
@@ -27,8 +31,6 @@ export class FileUploadComponent {
     return this.attrs;
   }
   @Input() prefixForMnemonic: string;
-  @Input() objectId: number;
-  @Input() isRelatedUploads = false;
   @Input() uploadId: string = null;
   refData: string = null;
   private value: FileResponseToBackendUploadsItem[] = []; // Здесь будет храниться значение на передачу
@@ -41,7 +43,7 @@ export class FileUploadComponent {
    */
   private fillUploadsDefaultValue(): FileResponseToBackendUploadsItem[] {
     const value: FileResponseToBackendUploadsItem[] = [];
-    this.attrs?.uploads.forEach((upload: FileUploadItem) => {
+    this.attrs?.uploads?.forEach((upload: FileUploadItem) => {
       const newValue: FileResponseToBackendUploadsItem = {
         uploadId: upload.uploadId,
         value: [],
@@ -60,27 +62,41 @@ export class FileUploadComponent {
   }
 
   /**
+   * Возвращает массив из строк связанных с компонентом ответов польвателя
+   * @param attrs - аттрибуты блока
+   * @param refBlock - блок ответов связанного компонента
+   * @private
+   */
+  private getRefSubLabels(attrs: FileUploadAttributes, refBlock: any): string | null {
+    const subLabel = [];
+    const isArrData = Array.isArray(refBlock);
+
+    attrs.idAttrs.forEach((id) => {
+      if (isArrData) {
+        refBlock.filter((ref) => ref[id]).forEach((ref) => subLabel.push(ref[id]));
+      } else if (refBlock[id]) {
+        subLabel.push(refBlock[id]);
+      }
+    });
+    return subLabel.length ? subLabel.join(' ') : null;
+  }
+
+  /**
    * Возвращает данные по ref параметру из applicantAnswers для формирования дополнительного заголовка
    * @param attrs - аттрибуты блока
    */
-  getRefValuesForApplicantAnswers(attrs: FileUploadAttributes) {
+  private getRefValuesForApplicantAnswers(attrs: FileUploadAttributes) {
     const sections = attrs.ref.split('.');
     const key = sections[0];
     const blockKey = sections[1];
-    const value = this.applicantAnswers[key]?.value;
+    let value = this.applicantAnswers[key]?.value;
+
     if (value) {
+      value = JSON.parse(value);
       const refBlock = value[blockKey];
 
       if (refBlock) {
-        const subLabel = [];
-        attrs.idAttrs.forEach((id) => {
-          if (refBlock[id]) {
-            subLabel.push(refBlock[id]);
-          }
-        });
-        if (subLabel.length) {
-          return subLabel.join(' ');
-        }
+        return this.getRefSubLabels(attrs, refBlock);
       }
     }
     return null;

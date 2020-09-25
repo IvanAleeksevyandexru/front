@@ -1,6 +1,6 @@
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { checkINN, checkOgrn, checkOgrnip } from 'ru-validation-codes';
+import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import {
@@ -216,6 +216,9 @@ export function isValueValid(type, value): boolean {
   }
   if ([customComponentType.PersonInnInput, customComponentType.LegalInnInput].includes(type)) {
     return checkINN(value);
+  }
+  if (customComponentType.SnilsInput) {
+    return checkSnils(value);
   }
   return true;
 }

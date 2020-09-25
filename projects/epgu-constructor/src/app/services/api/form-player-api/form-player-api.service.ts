@@ -48,7 +48,7 @@ export class FormPlayerApiService {
     data.scenarioDto.userId = userId;
     data.scenarioDto.token = token;
     if (options.isInternalScenarioFinish) {
-      data.scenarioDto.isInternalScenario = false;
+      data.isInternalScenario = false;
     }
 
     const body = {

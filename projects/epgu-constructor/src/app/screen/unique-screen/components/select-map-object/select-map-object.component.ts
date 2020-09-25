@@ -177,7 +177,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
    */
   private fillCoords(dictionaryFilters) {
     return this.dictionaryApiService
-      .getDictionary(this.getDictionaryType(), this.getOptions(dictionaryFilters))
+      .getSelectMapDictionary(this.getDictionaryType(), this.getOptions(dictionaryFilters))
       .pipe(
         switchMap((dictionary: any) => {
           this.selectMapObjectService.dictionary = dictionary;

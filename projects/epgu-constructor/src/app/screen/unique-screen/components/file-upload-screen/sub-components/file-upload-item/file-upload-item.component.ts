@@ -10,11 +10,10 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../config/config.service';
 import {
-  Clarifications,
   FileResponseToBackendUploadsItem,
   FileUploadItem,
+  Clarifications,
   TerabyteListItem,
 } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { TerraByteApiService } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.service';
@@ -25,6 +24,7 @@ import {
   WebcamEvent,
 } from '../../../../../../shared/components/webcam-shoot/webcamevents';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
+import { ConfigService } from '../../../../../../config/config.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -33,6 +33,7 @@ import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 })
 export class FileUploadItemComponent implements OnDestroy, OnInit {
   private loadData: FileUploadItem;
+  @Input() objectId: string;
   @Input() clarification: Clarifications;
   @Input()
   set data(data: FileUploadItem) {
@@ -64,7 +65,6 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     return this.loadData;
   }
   @Input() prefixForMnemonic: string;
-  @Input() objectId: number;
   @Input() refData: any = null;
 
   @Output() newValueSet: EventEmitter<FileResponseToBackendUploadsItem> = new EventEmitter<
@@ -75,6 +75,9 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     static: true,
   })
   uploadInput: ElementRef;
+  get isButtonsDisabled() {
+    return this.listIsUploadingNow || this.filesInUploading > 0;
+  }
 
   private subs: Subscription[] = [];
   private maxFileNumber = -1;

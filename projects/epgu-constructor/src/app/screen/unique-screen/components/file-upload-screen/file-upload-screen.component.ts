@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FileUploadItem } from '../../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen.types';
 import { ComponentBase } from '../../../screen.types';
+import { ScreenService } from '../../../screen.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',
@@ -39,20 +40,14 @@ export class FileUploadScreenComponent {
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
   private value: any = {}; // Здесь будет храниться значение на передачу
 
+  constructor(public screenService: ScreenService) {}
+
   /**
    * Возвращает префикс для формирования мнемоники
    * @param componentData - данные компонента
    */
   getUploadComponentPrefixForMnemonic(componentData: ComponentBase): string {
     return [componentData.id, 'FileUploadComponent'].join('.');
-  }
-
-  /**
-   * Возвращает идентификатор заявлявления
-   */
-  get getOrderId(): number {
-    // TODO: Пока заглушка с заведённым заявлением
-    return 763418900;
   }
 
   /**
