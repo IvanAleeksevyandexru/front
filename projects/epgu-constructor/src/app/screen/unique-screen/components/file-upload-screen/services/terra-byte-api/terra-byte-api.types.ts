@@ -2,7 +2,7 @@
  * Интерфейс для опций файла, при получении обновлении или удалении
  */
 export interface TerraFileOptions {
-  objectId: number; //идентификатор объекта, к которому прикреплён файл
+  objectId: string; //идентификатор объекта, к которому прикреплён файл
   objectType: number; //тип объекта, к которому прикреплён файл
   mnemonic: string; //мнемоника файла
 }
@@ -41,6 +41,7 @@ export interface FileUploadAttributes {
   uploads: FileUploadItem[],
   uploadId?: string;
   idAttrs?: string[];
+  relatedUploads?: FileUploadAttributes[];
   ref?: string;
   maxSize?: number;
   maxFileCount?: number;
@@ -62,10 +63,19 @@ export interface RelatedUploads extends FileUploadAttributes {
 }
 
 /**
+ * Интерфейс для типов загружаемых данных
+ */
+export enum FileUploadItemTypes{
+  single = 'single',
+  cycle = 'cycle'
+}
+
+/**
  * Интерфейс для файла на загругку из JSON
  */
 export interface FileUploadItem {
   uploadId: string;
+  type: FileUploadItemTypes;
   label: string;
   fileType: string[];
   maxFileCount?: number;
@@ -78,7 +88,7 @@ export interface FileUploadItem {
  */
 export interface UploadedFile {
   fileName: string;
-  objectId: number;
+  objectId: string;
   objectTypeId: number;
   mnemonic: string;
   uploaded: boolean;
@@ -114,7 +124,7 @@ export interface TerabyteListItem{
   metaId: number;
   mnemonic: string;
   nodeId: string;
-  objectId: number;
+  objectId: string;
   objectTypeId: number;
   realPath: string;
   relativePath: string;
