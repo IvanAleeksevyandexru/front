@@ -5,6 +5,8 @@ export const getConfigFromEnvs = (): Config => {
   return {
     apiUrl: environment.apiUrl,
     dictionaryUrl: environment.dictionaryUrl,
+    mvdUrl: environment.mvdUrl,
+    selectMapUrl: environment.selectMapUrl,
     externalApiUrl: environment.externalApiUrl,
     timeSlotApiUrl: environment.timeSlotApiUrl,
     billsApiUrl: environment.billsApiUrl,

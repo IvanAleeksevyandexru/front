@@ -6,6 +6,8 @@ export class ConfigService implements Config {
   private _apiUrl: string;
   private _billsApiUrl: string;
   private _dictionaryUrl: string;
+  private _mvdUrl: string;
+  private _selectMapUrl: string;
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
   private _lkUrl: string;
@@ -30,6 +32,14 @@ export class ConfigService implements Config {
 
   get dictionaryUrl(): string {
     return this._dictionaryUrl;
+  }
+
+  get mvdUrl(): string {
+    return this._mvdUrl;
+  }
+
+  get selectMapUrl(): string {
+    return this._selectMapUrl;
   }
 
   get externalApiUrl(): string {
@@ -66,6 +76,8 @@ export class ConfigService implements Config {
     this._apiUrl = config.apiUrl;
     this._billsApiUrl = config.billsApiUrl;
     this._dictionaryUrl = config.dictionaryUrl;
+    this._mvdUrl = config.mvdUrl;
+    this._selectMapUrl = config.selectMapUrl;
     this._externalApiUrl = config.externalApiUrl;
     this._fileUploadApiUrl = config.fileUploadApiUrl;
     this._lkUrl = config.lkUrl;
