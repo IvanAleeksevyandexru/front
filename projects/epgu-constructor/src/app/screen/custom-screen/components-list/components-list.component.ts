@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
+import { ConfigService } from '../../../config/config.service';
+import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
+import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
+import { ScreenService } from '../../screen.service';
 import {
   CustomComponent,
   CustomComponentDictionaryState,
@@ -20,10 +24,8 @@ import {
   isDropDown,
   likeDictionary,
 } from '../tools/custom-screen-tools';
-import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { ScreenService } from '../../screen.service';
-import { ConfigService } from '../../../config/config.service';
-import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -50,7 +52,6 @@ export class ComponentsListComponent implements OnChanges {
     public config: ConfigService,
   ) {}
 
-  // NOTICE: тут была информация о валидации смотри историю гита
   ngOnChanges(changes: SimpleChanges): void {
     this.state = {};
     if (changes?.components?.currentValue) {
@@ -70,7 +71,7 @@ export class ComponentsListComponent implements OnChanges {
       const { dictionaryType } = component.attrs;
       this.initDictionary(dictionaryType, component.id);
       this.loadDictionary(dictionaryType, component);
-    } else if (isDropDown(component.type)) {
+    } else if (isDropDown(component)) {
       this.initDropDown(component);
     }
   }
@@ -80,7 +81,8 @@ export class ComponentsListComponent implements OnChanges {
    * @param component - данные компонента
    */
   initState(component: CustomComponent) {
-    this.state[component.id] = getInitStateItemComponentList(component);
+    const errorMessage = this.screenService.componentErrors[component.id] || '';
+    this.state[component.id] = getInitStateItemComponentList(component, errorMessage);
   }
 
   /**
@@ -124,8 +126,9 @@ export class ComponentsListComponent implements OnChanges {
    * @param component - данные компонента
    */
   selectDropDown($event: any, component: CustomComponent) {
-    this.state[component.id].value = $event.origin;
-    this.emmitChanges();
+    this.state[component.id].value = $event.originalItem;
+    this.state[component.id].valid = true;
+    this.emmitChanges(component);
   }
 
   /**
@@ -142,6 +145,13 @@ export class ComponentsListComponent implements OnChanges {
       const maskSymbolRegExp = /\s|-/g;
       value = value.replace(maskSymbolRegExp, ''); // удаляет скобки, проблемы, тире
     }
+    const inputValidationResult = CheckInputValidationComponentList(value, component);
+    this.setValidationAndValueState(inputValidationResult, component.id, value);
+    this.emmitChanges(component);
+  }
+
+  inputBlur(component: CustomComponent) {
+    const { value } = this.state[component.id];
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
@@ -240,7 +250,8 @@ export class ComponentsListComponent implements OnChanges {
     } else {
       handleSetState(
         false,
-        this.state[componentId]?.component.attrs.validation[inputValidationResult].errorMsg,
+        this.state[componentId]?.component?.attrs?.validation &&
+          this.state[componentId]?.component?.attrs?.validation[inputValidationResult]?.errorMsg,
       );
     }
   }
@@ -264,11 +275,15 @@ export class ComponentsListComponent implements OnChanges {
   private getPreparedStateForSending() {
     return Object.entries(this.state).reduce((acc, [key, val]) => {
       const { value, valid, disabled, isShown } = val;
-      const disabledValue = !isShown || disabled;
+
+      if (!isShown) {
+        return acc;
+      }
+
       acc[key] = {
-        value: disabledValue ? '' : value,
+        value: disabled ? '' : value,
         valid,
-        disabled: disabledValue,
+        disabled,
       };
       return acc;
     }, {});

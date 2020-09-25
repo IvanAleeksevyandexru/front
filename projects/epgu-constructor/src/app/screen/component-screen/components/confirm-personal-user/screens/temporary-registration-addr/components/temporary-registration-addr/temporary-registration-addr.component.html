@@ -24,6 +24,7 @@
         minDate="-50y"
         maxDate="+50y"
         class="item__data"
+        align="left"
         [(ngModel)]="forms[field.fieldName]"
         [invalid]="!dataForm?.controls[field.fieldName]?.valid"
         [validationShowOn]="validationShowOn"
@@ -31,7 +32,11 @@
       >
       </lib-date-picker>
 
-      <lib-plain-input *ngSwitchDefault></lib-plain-input>
+      <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
+        *ngSwitchDefault></lib-plain-input>
     </ng-container>
   </div>
   <div class="error">

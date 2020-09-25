@@ -1,5 +1,6 @@
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
+import { checkINN, checkOgrn, checkOgrnip } from 'ru-validation-codes';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import {
@@ -9,9 +10,8 @@ import {
   CustomComponentRef,
   CustomComponentRefRelation,
   CustomComponentState,
-  CustomScreenComponentTypes,
+  CustomScreenComponentTypes
 } from '../custom-screen.types';
-import { checkOgrn, checkOgrnip, checkINN, } from 'ru-validation-codes';
 const moment = moment_;
 
 function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
@@ -47,14 +47,6 @@ export function likeDictionary(type: CustomScreenComponentTypes): boolean {
   return (
     CustomScreenComponentTypes.Dictionary === type || CustomScreenComponentTypes.Lookup === type
   );
-}
-
-/**
- * Возвращает true, если это выпадающий список
- * @param type - тип поля
- */
-export function isDropDown(type: CustomScreenComponentTypes): boolean {
-  return CustomScreenComponentTypes.DropDown === type;
 }
 
 /**
@@ -102,15 +94,17 @@ export function adaptiveDropDown(items: CustomComponentDropDownItemList): Array<
  * Возвращает true, если это компонент с типом Lookup
  * @param component - компонент
  */
-export const isLookup = (component: CustomComponent) =>
-  component.type === CustomScreenComponentTypes.Lookup;
-
+export const isLookup = (component: CustomComponent): boolean => component.type === CustomScreenComponentTypes.Lookup;
+/**
+ * Возвращает true, если это выпадающий список
+ * @param component - компонент
+ */
+export const isDropDown = (component: CustomComponent): boolean => component.type === CustomScreenComponentTypes.DropDown;
 /**
  * Возвращает true, если это компонент с типом CheckBox
  * @param component - компонент
  */
-export const isCheckBox = (component: CustomComponent) =>
-  component.type === CustomScreenComponentTypes.CheckBox;
+export const isCheckBox = (component: CustomComponent): boolean => component.type === CustomScreenComponentTypes.CheckBox;
 
 /**
  * Возвращает true, если текущее состояние зависимости соответствует значению проверяемого компонента
@@ -126,13 +120,17 @@ export const isHaveNeededValue = (
   relation: CustomComponentRefRelation,
 ): boolean => {
   if (item.relation == relation) {
-    if (isCheckBox(component)) {
-      return state[item.relatedRel]?.value === item.val;
+    let stateRelatedRelValue: any;
+
+    if (isLookup(component)) {
+      stateRelatedRelValue = state[item.relatedRel]?.value?.value;
+    } else if (isDropDown(component)) {
+      stateRelatedRelValue = state[item.relatedRel]?.value?.code;
+    } else {
+      stateRelatedRelValue = state[item.relatedRel].value;
     }
-    const stateRelatedRel = isLookup(component)
-      ? state[item.relatedRel]?.value
-      : state[item.relatedRel];
-    return stateRelatedRel?.value === item.val;
+
+    return stateRelatedRelValue === item.val;
   }
   return relation === CustomComponentRefRelation.displayOn;
 };
@@ -170,7 +168,7 @@ export function CheckInputValidationComponentList(
         const regexp = new RegExp(item.value);
         return !regexp.test(value);
       } catch {
-        console.error(`Неверный формат RegExp выражения: ${item.value}. Заменено на /.*/`);
+        console.error(`Неверный формат RegExp выражения: ${item.value}`);
       }
     }) ?? -1;
 
@@ -182,9 +180,9 @@ export function CheckInputValidationComponentList(
   return result;
 }
 
-export function getInitStateItemComponentList(component: CustomComponent) {
+export function getInitStateItemComponentList(component: CustomComponent, errorMessage: string = '') {
   const { value } = component;
-  const hasRelatedRef = component.attrs.ref?.length;
+  const hasRelatedRef = !component.attrs.ref?.length;
 
   let valueFormatted: string | Date;
   switch (component.type) {
@@ -201,10 +199,10 @@ export function getInitStateItemComponentList(component: CustomComponent) {
 
   return {
     valid: false,
-    errorMessage: '',
+    errorMessage,
     value: valueFormatted,
     component,
-    isShown: !hasRelatedRef,
+    isShown: hasRelatedRef,
   };
 }
 
@@ -216,7 +214,7 @@ export function isValueValid(type, value): boolean {
   if (type === customComponentType.OgrnipInput) {
     return checkOgrnip(value);
   }
-  if (type === customComponentType.PersonInnInput || customComponentType.LegalInnInput) {
+  if ([customComponentType.PersonInnInput, customComponentType.LegalInnInput].includes(type)) {
     return checkINN(value);
   }
   return true;

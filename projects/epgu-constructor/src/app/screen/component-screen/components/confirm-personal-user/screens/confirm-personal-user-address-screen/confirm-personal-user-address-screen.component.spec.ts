@@ -1,10 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
+import { ComponentScreenComponentTypes } from '../../../../component-screen.types';
 import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-user-address-screen.component';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
-import { ComponentScreenComponent } from '../../../../component-screen.component';
-import { ComponentScreenComponentTypes } from '../../../../component-screen.types';
 
 
 describe('ConfirmPersonalUserAddressScreenComponent', () => {
@@ -25,7 +25,7 @@ describe('ConfirmPersonalUserAddressScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ ConfirmPersonalUserAddressScreenComponent ],
-      providers: [ ComponentStateService ]
+      providers: [ ComponentStateService, ToolsService ]
     })
     .compileComponents();
   }));

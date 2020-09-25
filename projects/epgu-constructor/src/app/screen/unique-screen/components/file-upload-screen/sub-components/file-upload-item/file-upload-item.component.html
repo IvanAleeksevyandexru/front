@@ -3,41 +3,52 @@
     <epgu-constructor-output-html
       class="info__text"
       [html]="data.label"
-      [clarifications]="clarification">
+      [clarifications]="clarification"
+    >
     </epgu-constructor-output-html>
 
-    <div class="fileupload__label" *ngIf="refData?.length"
-         [innerHTML]="refData"></div>
-     <div class="info">
-       <div class="info__item">
-         Объем загружаемых данных не должен превышать 5 МБ
-       </div>
-       <div class="info__item" *ngIf="data.maxFileCount">
-         Количество загружаемых файлов не более {{ data.maxFileCount }}
-       </div>
-     </div>
-   </div>
-  <input #fileUploadInput type="file" [attr.accept]="getAcceptTypes()" (change)="updateSelectedFilesInfoAndSend()"
-         multiple/>
+    <div class="fileupload__label" *ngIf="refData?.length" [innerHTML]="refData"></div>
+    <div class="info">
+      <div class="info__item">
+        Объем загружаемых данных не должен превышать 5 МБ
+      </div>
+      <div class="info__item" *ngIf="data.maxFileCount">
+        Количество загружаемых файлов не более {{ data.maxFileCount }}
+      </div>
+    </div>
+  </div>
+  <input
+    #fileUploadInput
+    type="file"
+    [attr.accept]="getAcceptTypes()"
+    (change)="updateSelectedFilesInfoAndSend()"
+    multiple
+  />
   <div class="errors" *ngIf="errors.length">
     <div class="error" *ngFor="let error of errors" [innerText]="error"></div>
   </div>
-  <div class="files" *ngIf="(files$$ | async) as files">
+  <div class="files" *ngIf="files$$ | async as files">
     <div class="file" *ngFor="let file of files">
-      <div class="file__icon"
-           [class.uploaded]="file.uploaded"
-           [class.has-error]="file.hasError"></div>
+      <div
+        class="file__icon"
+        [class.uploaded]="file.uploaded"
+        [class.has-error]="file.hasError"
+      ></div>
       <div class="file__title-wrapper">
-        <div class="file__title uploaded" *ngIf="file.uploaded"
-             [innerText]="file.fileName"
-             (click)="downloadFile(file)">
-        </div>
-        <div class="file__title" *ngIf="!file.uploaded"
-             [class.has-error]="file.hasError"
-             [innerText]="file.hasError ? 'Ошибка загрузки' : 'Файл загружается'">
-        </div>
+        <div
+          class="file__title uploaded"
+          *ngIf="file.uploaded"
+          [innerText]="file.fileName"
+          (click)="downloadFile(file)"
+        ></div>
+        <div
+          class="file__title"
+          *ngIf="!file.uploaded"
+          [class.has-error]="file.hasError"
+          [innerText]="file.hasError ? 'Ошибка загрузки' : 'Файл загружается'"
+        ></div>
         <div class="file__title-info" *ngIf="file.uploaded">
-          Файл загружен ({{file.getFileSize()}})
+          Файл загружен ({{ file.getFileSize() }})
         </div>
       </div>
       <button class="file__action" (click)="deleteFile(file)">
@@ -46,17 +57,27 @@
     </div>
   </div>
   <div class="fileupload__buttons" [class.nocamera]="cameraNotAllowed">
-    <button class="fileupload__button"
-            *ngIf="!cameraNotAllowed"
-            (click)="openCamera()"
-            [disabled]="(listIsUploadingNow || filesInUploading > 0)">
-      <img src="/assets/icons/svg/camera.svg" class="fileupload__button-icon"/>
+    <button
+      class="fileupload__button"
+      *ngIf="!cameraNotAllowed"
+      (click)="openCamera()"
+      [disabled]="listIsUploadingNow || filesInUploading > 0"
+    >
+      <img
+        src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"
+        class="fileupload__button-icon"
+      />
       Фото
     </button>
-    <button class="fileupload__button"
-            (click)="selectFilesEvent()"
-            [disabled]="(listIsUploadingNow || filesInUploading > 0)">
-      <img src="/assets/icons/svg/clip.svg" class="fileupload__button-icon"/>
+    <button
+      class="fileupload__button"
+      (click)="selectFilesEvent()"
+      [disabled]="listIsUploadingNow || filesInUploading > 0"
+    >
+      <img
+        src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"
+        class="fileupload__button-icon"
+      />
       Файл
     </button>
   </div>

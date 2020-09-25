@@ -1,4 +1,5 @@
 import { ComponentBase, Display } from '../../../../../screen.types';
+import { TextTransform } from '../../../../../../shared/types/textTransform';
 
 export interface TemporaryRegistrationDisplay extends Display {
   components: Array<TemporaryRegistrationComponent>;
@@ -11,7 +12,8 @@ export interface TemporaryRegistrationComponent extends ComponentBase {
 export interface TemporaryRegistrationComponentAttrs {
   hints: Array<TemporaryRegistrationHints>,
   fields: Array<TemporaryRegistrationFields>,
-  actions: Array<any>
+  actions: Array<any>,
+  fstuc?: TextTransform
 }
 
 
