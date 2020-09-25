@@ -8,9 +8,7 @@ import {
 
 const moment = moment_;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class EmployeeHistoryMonthsService {
   years = 10;
   maxDate: Date;

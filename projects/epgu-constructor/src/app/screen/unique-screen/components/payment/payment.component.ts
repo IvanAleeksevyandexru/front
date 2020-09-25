@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { ConfigService } from '../../../../config/config.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
-import { PaymentStatus } from './payment.constants';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { UtilsService } from '../../../../services/utils/utils.service';
+import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
 import { ScreenService } from '../../../screen.service';
-import { PaymentService } from './payment.service';
 import { ComponentBase } from '../../../screen.types';
 import {
   filterBillInfoResponse,
@@ -13,14 +14,14 @@ import {
   getDiscountPrice,
   getDocInfo,
 } from './payment.component.functions';
+import { PaymentStatus } from './payment.constants';
+import { PaymentService } from './payment.service';
 import {
   BillInfoResponse,
   BillsInfoResponse,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
 } from './payment.types';
-import { UtilsService } from '../../../../services/utils/utils.service';
-import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
 
 @Component({
   selector: 'epgu-constructor-payment',
@@ -66,6 +67,7 @@ export class PaymentComponent implements OnDestroy {
     private screenService: ScreenService,
     private componentStateService: ComponentStateService,
     private ngUnsubscribe$: UnsubscribeService,
+    public config: ConfigService,
   ) {}
 
   /**
@@ -73,13 +75,14 @@ export class PaymentComponent implements OnDestroy {
    * @private
    */
   private loadPaymentInfo() {
-    const { nsi, dictItemCode } = this.data.attrs;
+    const { nsi, dictItemCode, ref } = this.data.attrs;
+    const { fiasCode } = ref;
 
     const { orderId } = this.screenService.getStore();
     this.orderId = orderId;
 
     this.paymentService
-      .loadPaymentInfo(this.orderId, nsi, dictItemCode)
+      .loadPaymentInfo(this.orderId, nsi, dictItemCode, fiasCode)
       .pipe(
         switchMap((attributeValues: PaymentInfoInterface) =>
           this.getRequestForUinByOrder(attributeValues),
@@ -138,6 +141,7 @@ export class PaymentComponent implements OnDestroy {
 
     this.isPaid = bill.isPaid;
     if (this.isPaid) {
+      this.isShown = false;
       this.nextStep();
     }
 
@@ -177,6 +181,7 @@ export class PaymentComponent implements OnDestroy {
       this.isPaid = Boolean(response?.data[this.billPosition]?.paid);
     }
     if (this.isPaid) {
+      this.isShown = false;
       clearInterval(this.payStatusIntervalLink);
       this.nextStep();
     }

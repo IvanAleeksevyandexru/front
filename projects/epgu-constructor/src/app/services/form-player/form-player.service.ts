@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { FormPlayerNavigation, NavigationPayload, Service } from '../../form-player.types';
+import { FormPlayerNavigation, Navigation, NavigationPayload } from '../../form-player.types';
+import { ScreenComponent } from '../../screen/screen.const';
 import { ScreenService } from '../../screen/screen.service';
+import { ScreenTypes } from '../../screen/screen.types';
+import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
-  FormPlayerApiDraftResponse, FormPlayerApiDraftSuccessResponse,
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
 } from '../api/form-player-api/form-player-api.types';
-import { ScreenTypes } from '../../screen/screen.types';
-import { UtilsService } from '../utils/utils.service';
-import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
-import { ScreenComponent } from '../../screen/screen.const';
+import { ServiceDataService } from '../service-data/service-data.service';
+import { UtilsService } from '../utils/utils.service';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -37,16 +36,28 @@ export class FormPlayerService {
 
   constructor(
     public formPlayerApiService: FormPlayerApiService,
-    private screenResolverService: ScreenResolverService,
+    private serviceDataService: ServiceDataService,
     private screenService: ScreenService,
+    private screenResolverService: ScreenResolverService,
   ) {}
 
   /**
-   * Возвращает true, если в LocalStorage если данные для показа
-   * @private
+   * Возвращает компонент для показа экрана переданного типа
    */
-  private static isHaveOrderDataInLocalStorage(): boolean {
-    return !!localStorage.getItem(COMPONENT_DATA_KEY);
+  getScreenComponent(): ScreenComponent {
+    const screenType = this.screenService.screenType as string;
+    const screenComponent = this.screenResolverService.getScreenComponentByType(screenType);
+
+    if (!screenComponent) {
+      this.handleScreenComponentError(this.screenService.screenType);
+    }
+
+    return screenComponent;
+  }
+
+  private handleScreenComponentError(screenType: string) {
+    // TODO: need to find a better way for handling this error, maybe show it on UI
+    throw new Error(`We cant find screen component for this type: ${screenType}`);
   }
 
   /**
@@ -55,61 +66,53 @@ export class FormPlayerService {
    * @private
    */
   private isNeedToShowLastScreen(): boolean {
-    return location.href.includes('getLastScreen=') && FormPlayerService.isHaveOrderDataInLocalStorage();
+    return location.href.includes('getLastScreen=') && this.isHaveOrderDataInLocalStorage();
+  }
+
+  /**
+   * Возвращает true, если в LocalStorage если данные для показа
+   * @private
+   */
+  private isHaveOrderDataInLocalStorage(): boolean {
+    return !!localStorage.getItem(COMPONENT_DATA_KEY);
   }
 
   /**
    * Инициализирует данные для показа, смотрим откуда брать данные
-   * @param service - услуга
    * @param orderId - id заявления
    */
-  initData(service: Service, orderId?: string): void {
+  initData(orderId?: string): void {
     this.updateLoading(true);
 
     if (this.isNeedToShowLastScreen()) {
       this.getDataFromLocalStorage();
     } else {
-      if (orderId) {
-        this.getDraftOrderData(orderId);
+      if (this.serviceDataService.invited) {
+        this.getInviteOrderData(orderId);
       } else {
-        const { serviceId, targetId } = service;
-        this.getNewOrderData(serviceId, targetId);
+        this.getOrderData(orderId);
       }
     }
   }
 
-
   /**
-   * Получает и устанавливает данные из черновика по id заявления
-   * @param orderId - id заявления
+   * Получает и устанавливает данные для заявления для id услуги по приглашению
+   * @param orderId - идентификатор черновика
    */
-  getDraftOrderData(orderId: string) {
-    this.formPlayerApiService.getDraftData(orderId)
-      .pipe(
-        map(this.mapDraftDataToOrderData)
-      )
-      .subscribe(
-        (response) => this.processResponse(response),
-        (error) => this.sendDataError(error),
-        () => this.updateLoading(false)
-      );
-  }
-
-  mapDraftDataToOrderData(response: FormPlayerApiDraftResponse) {
-    if(this.hasRequestErrors(response as FormPlayerApiErrorResponse)) {
-      return response as FormPlayerApiResponse;
-    }
-    const successResponse = response as FormPlayerApiDraftSuccessResponse;
-    return { scenarioDto: successResponse.body } as FormPlayerApiResponse;
+  getInviteOrderData(orderId: string) {
+    this.formPlayerApiService.getInviteServiceData(orderId).subscribe(
+      (response) => this.processResponse(response),
+      (error) => this.sendDataError(error),
+      () => this.updateLoading(false)
+    );
   }
 
   /**
-   * Получает и устанавливает данные для нового черновика для id услуги
-   * @param serviceId - id сервиса
-   * @param targetId
+   * Получает и устанавливает данные для заявления для id услуги
+   * @param orderId - идентификатор черновика
    */
-  getNewOrderData(serviceId: string, targetId?: string) {
-    this.formPlayerApiService.getServiceData(serviceId, targetId).subscribe(
+  getOrderData(orderId?: string) {
+    this.formPlayerApiService.getServiceData(orderId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
       () => this.updateLoading(false)
@@ -118,36 +121,16 @@ export class FormPlayerService {
 
 
   getDataFromLocalStorage() {
-    // eslint-disable-next-line max-len
     const store = UtilsService.getLocalStorageJSON(COMPONENT_DATA_KEY);
     this.processResponse(store);
     this.updateLoading(false);
-    UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
-  }
-
-  /**
-   * Возвращает компонент для показа экрана переданного типа
-   */
-  getScreenComponent(): ScreenComponent {
-    const screenComponent = this.screenResolverService.getScreenComponentByType(this.screenType);
-
-    if (!screenComponent) {
-      this.handleScreenComponentError(this.screenType);
-    }
-
-    return screenComponent;
-  }
-
-  handleScreenComponentError(screenType: string) {
-    // TODO: need to find a better way for handling this error, maybe show it on UI
-    throw new Error(`We cant find screen component for this type: ${screenType}`);
   }
 
 
-  navigate(serviceId: string, formPlayerNavigation: FormPlayerNavigation, navigationPayload?: NavigationPayload) {
+  navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation) {
     this.updateLoading(true);
-    this.updateRequest(navigationPayload);
-    this.formPlayerApiService.navigate(serviceId, formPlayerNavigation, this.store).subscribe(
+    this.updateRequest(navigation.payload);
+    this.formPlayerApiService.navigate(this.store, navigation.options, formPlayerNavigation).subscribe(
       (response) => {
         this.processResponse(response);
       },
@@ -167,6 +150,8 @@ export class FormPlayerService {
       this.sendDataError(response);
     } else {
       this.sendDataSuccess(response);
+      // reset view by scrolling to top
+      window.scroll(0,0);
     }
   };
 
@@ -198,6 +183,8 @@ export class FormPlayerService {
   }
 
   updateRequest(navigationPayload?: NavigationPayload): void {
+    console.log('updateRequest');
+    console.log(navigationPayload);
     if (this.isEmptyNavigationPayload(navigationPayload)) {
       this.store.scenarioDto.currentValue = {};
       const componentId = this.store.scenarioDto.display.components[0].id;

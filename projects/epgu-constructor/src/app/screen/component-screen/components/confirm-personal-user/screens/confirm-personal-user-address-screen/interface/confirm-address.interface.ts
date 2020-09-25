@@ -1,4 +1,5 @@
 import { ComponentScreenComponentTypes } from '../../../../../component-screen.types';
+import { TextTransform } from '../../../../../../../shared/types/textTransform';
 
 
 /**
@@ -19,6 +20,7 @@ export interface ConfirmAddressInterface {
 interface ConfirmAddressInterfaceAttr {
   actions: Array<ConfirmAddressActionsInterface>;
   fields: Array<ConfirmAddressFieldsInterface>;
+  fstuc?: TextTransform;
 }
 
 /**

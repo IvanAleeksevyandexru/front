@@ -15,7 +15,7 @@
   </ng-container>
   <ng-container *ngIf="readyToRegistration">
     <div class="invitation-error__content">
-      <img src="http://localhost:4200/assets/img/screens/s11_x2.png" />
+      <img src="{{ config.staticDomainAssetsPath }}/assets/img/screens/s11_x2.png" />
       <div class="invitation-error__message">
         <epgu-constructor-label for="email">Введите адрес электронной почты</epgu-constructor-label>
         <lib-standard-input
