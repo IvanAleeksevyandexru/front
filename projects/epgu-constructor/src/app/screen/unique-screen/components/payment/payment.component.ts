@@ -108,11 +108,11 @@ export class PaymentComponent implements OnDestroy {
 
   /**
    * Устанавливает статус оплаты из успешного запроса
-   * @param res - объект ответа на запрос
+   * @param value - УИН
    */
-  private setPaymentStatusFromSuccessRequest(res: any) {
-    let { value } = res;
+  private setPaymentStatusFromSuccessRequest({ value }) {
     if (!value.includes('PRIOR')) {
+      // eslint-disable-next-line no-param-reassign
       value = `PRIOR${value}`;
     }
     this.uin = value;
