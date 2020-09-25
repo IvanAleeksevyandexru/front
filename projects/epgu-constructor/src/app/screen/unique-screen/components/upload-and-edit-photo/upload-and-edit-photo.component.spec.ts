@@ -6,6 +6,16 @@ import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/
 import { ConfigService } from '../../../../config/config.service';
 import { ComponentBase } from '../../../screen.types';
 import { ScreenService } from '../../../screen.service';
+import { Subject } from 'rxjs';
+
+class МockScreenService {
+  header = '';
+  display = {
+    components: [],
+  };
+  isLoading = new Subject().asObservable();
+  orderId = 1;
+}
 
 describe('UploadAndEditPhotoComponent', () => {
   let component: UploadAndEditPhotoComponent;
@@ -27,7 +37,11 @@ describe('UploadAndEditPhotoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ UploadAndEditPhotoModule ],
-      providers: [ TerraByteApiService, ConfigService, ScreenService ],
+      providers: [
+        TerraByteApiService,
+        ConfigService,
+        { provide: ScreenService, useClass: МockScreenService },
+      ],
     })
     .compileComponents();
   });

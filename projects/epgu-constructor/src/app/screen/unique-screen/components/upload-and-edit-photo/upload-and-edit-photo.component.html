@@ -50,7 +50,8 @@
     </div>
     <epgu-constructor-output-html
       class="photo__text"
-      [html]="data?.label">
+      [html]="data?.label"
+      [clarifications]="data?.attrs.clarifications">
     </epgu-constructor-output-html>
   </div>
   <div *ngIf="croppedImageUrl"
