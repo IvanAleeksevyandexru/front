@@ -46,12 +46,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit(): void {
     this.checkProps();
-    const orderId = null;
     this.configService.config = this.config;
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.screenComponent = this.formPlayerService.getScreenComponent();
     });
-    this.formPlayerService.initData(orderId);
 
     this.navigationService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -68,8 +66,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.serviceDataService.invited && this.serviceDataService.orderId) {
+    const { orderId } = this.serviceDataService;
+    if (!this.serviceDataService.invited && orderId) {
       this.showModal();
+    } else {
+      this.formPlayerService.initData(orderId);
     }
   }
 
@@ -89,11 +90,18 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
         {
           label: 'Продолжить',
           closeModal: true,
+          value: true,
         },
       ],
     });
     modalResult$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((result) => {
-      console.log(result);
+      let orderId;
+      if (result) {
+        orderId = this.serviceDataService.orderId;
+      } else {
+        orderId = null;
+      }
+      this.formPlayerService.initData(orderId);
     });
   }
 
