@@ -9,7 +9,7 @@ import {
  */
 export class TerraUploadedFile implements UploadedFile{
   fileName = '';
-  objectId = 0;
+  objectId = '';
   objectTypeId = 0;
   mnemonic = '';
   fileSize = 0;

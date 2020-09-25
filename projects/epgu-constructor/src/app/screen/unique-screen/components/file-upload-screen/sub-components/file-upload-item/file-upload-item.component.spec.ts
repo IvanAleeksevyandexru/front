@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfigService } from '../../../../../../config/config.service';
-import { ConfigServiceStub } from '../../../../../../config/config.service.stub';
+
 import { FileUploadItemComponent } from './file-upload-item.component';
 
 
@@ -11,10 +10,7 @@ xdescribe('FileUploadItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FileUploadItemComponent],
-      providers: [
-        { provide: ConfigService, useClass: ConfigServiceStub }
-      ]
+      declarations: [ FileUploadItemComponent ]
     })
     .compileComponents();
   }));
