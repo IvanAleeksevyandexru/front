@@ -29,12 +29,14 @@
           [id]="i + '_fromGenerated'"
           [disabled]="true"
           [(ngModel)]="generation.from"
+          align="left"
         ></lib-date-picker>
       </div>
 
       <div>
         <epgu-constructor-label [for]="i + '_toGenerated'">Укажите дату (месяц, год)</epgu-constructor-label>
         <lib-date-picker
+          align="right"
           [id]="i + '_toGenerated'"
           [disabled]="true"
           [(ngModel)]="generation.to"
@@ -95,6 +97,7 @@
         <lib-date-picker
           id="from"
           name="minDate"
+          align="left"
           [formControl]="employeeFormService.generateForm.get('from')"
           [minDate]="monthsService.minDateFrom"
           [maxDate]="monthsService.maxDate"
@@ -111,6 +114,7 @@
           <lib-date-picker
             id="to"
             name="maxDate"
+            align="right"
             [formControl]="employeeFormService.generateForm.get('to')"
             [minDate]="monthsService.minDateTo"
             [maxDate]="monthsService.maxDate"

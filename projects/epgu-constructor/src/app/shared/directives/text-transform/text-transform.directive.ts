@@ -23,6 +23,7 @@ export class TextTransformDirective {
   firstLetterOfEachWordToUpperCase(value: string): string {
     let transformedValue = this.splitAndTransformString(value, ' ');
     transformedValue = this.splitAndTransformString(transformedValue, '‐');
+    transformedValue = this.splitAndTransformString(transformedValue, '-');
     return transformedValue;
   }
 

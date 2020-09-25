@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ModalService } from 'projects/epgu-constructor/src/app/services/modal/modal.service';
 import { ModalContainerComponent } from './modal-container.component';
+
 
 describe('ModalContainerComponent', () => {
   let component: ModalContainerComponent;
@@ -8,7 +9,8 @@ describe('ModalContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModalContainerComponent ]
+      declarations: [ModalContainerComponent],
+      providers: [ ModalService ],
     })
     .compileComponents();
   }));
