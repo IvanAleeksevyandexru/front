@@ -89,7 +89,7 @@ export interface ScenarioDto {
   errors: ScenarioErrorsDto;
   gender: Gender;
   finishedAndCurrentScreens: string[];
-  orderId: string;
+  orderId: number;
   token: string;
   userId: string;
   isInternalScenario?: boolean;

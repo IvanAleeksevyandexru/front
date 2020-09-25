@@ -1,45 +1,46 @@
 <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 
 <epgu-constructor-screen-container class="screen-container">
-  <div *ngIf="header" class="head">
+  <div *ngIf="header"
+       class="head">
     <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
   </div>
-  <div class="photo-setting"
-       [ngClass]="{ 'photo-setting--flex-column': croppedImageUrl }">
+  <div class="photo"
+       [ngClass]="{ 'photo--flex-column': croppedImageUrl }">
     <input #hiddenFileInput
            style="display: none"
            [attr.accept]="getAcceptTypes()"
            type="file"
            (change)="onFileSelected($event.target.files, hiddenFileInput)">
-    <div class="photo-setting__uploading-container">
+    <div class="photo__uploading-container">
       <img *ngIf="croppedImageUrl"
-           class="photo-setting__cropped-image"
+           class="photo__cropped-image"
            [src]="croppedImageUrl | safe: 'resourceUrl'">
       <div *ngIf="!croppedImageUrl"
            dragAndDrop
            (fileDropped)="onFileSelected($event)"
-           class="photo-setting__uploading-area">
+           class="photo__uploading-area">
         <img *ngIf="isDesktop"
              src="{{ config.staticDomainAssetsPath }}/assets/img/photo-upload-area-desktop.svg"/>
         <img *ngIf="!isDesktop"
              src="{{ config.staticDomainAssetsPath }}/assets/img/photo-upload-area-mobile.svg"/>
 
-        <div class="photo-setting__uploading-inner-container">
+        <div class="photo__uploading-inner-container">
           <p *ngIf="isDesktop"
-             class="photo-setting__uploading-text photo-setting__uploading-text--margin-top-80">
+             class="photo__uploading-text photo__uploading-text_mt-80">
             Перетащите фото сюда или выберите на компьютере
           </p>
           <p *ngIf="!isDesktop"
-             class="photo-setting__uploading-text photo-setting__uploading-text--margin-top-68">
+             class="photo__uploading-text photo__uploading-text_mt-68">
             Выберите файл или сделайте фото
           </p>
           <button *ngIf="!isDesktop && isWebcamAvailable"
-                  class="photo-setting__uploading-button"
+                  class="photo__uploading-button"
                   (click)="takePhoto()">
             <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"/>
             Сделать фото
           </button>
-          <button class="photo-setting__uploading-button"
+          <button class="photo__uploading-button"
                   (click)="hiddenFileInput.click()">
             <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"/>
             Загрузить фото
@@ -48,19 +49,19 @@
       </div>
     </div>
     <epgu-constructor-output-html
-      class="photo-setting__text"
+      class="photo__text"
       [html]="data?.label">
     </epgu-constructor-output-html>
   </div>
   <div *ngIf="croppedImageUrl"
-       class="photo-setting__footer">
+       class="photo-footer">
     <lib-button
-      class="photo-setting__footer-button"
+      class="photo-footer__button"
       color="white"
       (click)="changeCroppedPhoto()">Изменить
     </lib-button>
     <lib-button
-      class="photo-setting__footer-button"
+      class="photo-footer__button"
       (click)="nextStep()">Продолжить
     </lib-button>
   </div>

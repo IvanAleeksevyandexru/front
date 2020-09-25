@@ -74,7 +74,7 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    * @param attributeValues - дополнительные параметры
    */
-  getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
+  getUinByOrderId(orderId: number, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
     // TODO: HARDCODE Специальная подмена на оплату 1,4 рубля гос пошлины, иначе будет как есть снятие
     if (location.hostname === 'local.test.gosuslugi.ru') {
       const uinMockUp = new BehaviorSubject({
@@ -96,7 +96,7 @@ export class PaymentService {
    * @param uin - уникальный идентификатор патежа
    * @param orderId - идентификатор заявления
    */
-  getBillsInfoByUIN(uin: string, orderId: string): Observable<any> {
+  getBillsInfoByUIN(uin: string, orderId: number): Observable<any> {
     // На случай если сервис лежит, только для теста
     // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
     // return billMockUp.asObservable();
@@ -115,7 +115,7 @@ export class PaymentService {
    * @param orderId - идентификатор заявления
    * @param code - идентификатор заявителя
    */
-  getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<any> {
+  getPaymentStatusByUIN(orderId: number, code: number = 1): Observable<any> {
     const path = `${this.config.uinApiUrl}/status/${code}?orderId=${orderId}`;
     return this.http.get(path, this.requestOptions).pipe(
       catchError((err: any) => {

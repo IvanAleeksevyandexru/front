@@ -19,11 +19,15 @@ import { CompressionService } from '../../../../services/utils/compression.servi
 
 
 @NgModule({
-  declarations: [
-    UploadAndEditPhotoComponent,
-    PhotoEditorModalComponent,
-    SliderComponent,
+  entryComponents: [
     PhotoErrorModalComponent,
+    PhotoEditorModalComponent,
+  ],
+  declarations: [
+    PhotoErrorModalComponent,
+    PhotoEditorModalComponent,
+    UploadAndEditPhotoComponent,
+    SliderComponent,
   ],
   imports: [
     CommonModule,

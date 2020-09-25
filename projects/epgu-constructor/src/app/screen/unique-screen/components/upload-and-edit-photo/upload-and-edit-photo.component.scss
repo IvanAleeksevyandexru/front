@@ -8,7 +8,7 @@
   }
 }
 
-.photo-setting {
+.photo {
   display: flex;
 
   @include phones-down {
@@ -90,11 +90,11 @@
       margin-bottom: 16px;
     }
 
-    &--margin-top-68 {
+    &_mt-68 {
       margin-top: 68px;
     }
 
-    &--margin-top-80 {
+    &_mt-80 {
       margin-top: 80px;
     }
   }
@@ -121,8 +121,10 @@
       outline: 0;
     }
   }
+}
 
-  &__footer::ng-deep {
+.photo-footer {
+  &::ng-deep {
     display: flex;
     justify-content: center;
     margin-top: 32px;
@@ -141,7 +143,7 @@
     }
   }
 
-  &__footer-button:first-child {
+  &__button:first-child {
     @include phones-up {
       margin-right: 32px;
     }

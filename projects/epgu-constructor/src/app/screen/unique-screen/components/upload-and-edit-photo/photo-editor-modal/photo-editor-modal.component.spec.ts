@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PhotoEditorModalComponent } from './photo-editor-modal.component';
 import { LyImageCropperModule } from '@alyle/ui/image-cropper';
@@ -12,8 +12,8 @@ describe('PhotoEditorModalComponent', () => {
   let component: PhotoEditorModalComponent;
   let fixture: ComponentFixture<PhotoEditorModalComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(waitForAsync( () => {
+    TestBed.configureTestingModule({
       imports: [ LyImageCropperModule, EpguLibModule ],
       providers: [
         ConfigService,
@@ -26,8 +26,8 @@ describe('PhotoEditorModalComponent', () => {
       ],
       declarations: [ PhotoEditorModalComponent, SliderComponent ],
     })
-    .compileComponents();
-  });
+      .compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PhotoEditorModalComponent);

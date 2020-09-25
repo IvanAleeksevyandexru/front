@@ -1,6 +1,5 @@
 import {
   Component,
-  Input,
   OnInit,
   EventEmitter,
   Output,
@@ -8,7 +7,7 @@ import {
   OnDestroy,
   ElementRef,
 } from '@angular/core';
-import { fromEvent, of, Subject, Subscription } from 'rxjs';
+import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -27,6 +26,7 @@ import {
 } from '../../../../shared/components/webcam-shoot/webcamevents';
 import { CompressionService } from '../../../../services/utils/compression.service';
 import { ConfigService } from '../../../../config/config.service';
+import { ScreenService } from '../../../screen.service';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',
@@ -36,12 +36,12 @@ import { ConfigService } from '../../../../config/config.service';
 export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   @ViewChild('hiddenFileInput') fileInput: ElementRef;
 
-  @Input() data: ComponentBase;
-  @Input() isLoading: boolean;
-  @Input() header: string;
-  @Input() orderId: number;
-
   @Output() nextStepEvent = new EventEmitter();
+
+  data: ComponentBase;
+  isLoading: Observable<boolean>;
+  header: string;
+  orderId: number;
 
   subs = new Subscription();
 
@@ -61,8 +61,6 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
 
   fileName: string;
   imageValidator = new Image(); // img container for img validation
-  imageUrls: string[] = []; // keeps created image urls for revoking (is used for performance reason)
-  urlObj = window.webkitURL || window.URL;
 
   constructor(
     private deviceService: DeviceDetectorService,
@@ -70,8 +68,14 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
     private compressionService: CompressionService,
+    private screenService: ScreenService,
     public config: ConfigService,
-  ) {}
+  ) {
+    this.header = screenService.header;
+    this.data = { ...screenService.display.components[0] };
+    this.isLoading = screenService.isLoading$;
+    this.orderId = screenService.orderId;
+  }
 
   ngOnInit(): void {
     this.addImgSubscriptions();
@@ -79,6 +83,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
 
     this.isDesktop = this.deviceService.isDesktop();
     this.allowedImgTypes = this.data?.attrs?.uploadedFile?.fileType || [];
+    this.fileName = this.data?.attrs?.uploadedFile?.name || '';
 
     if (!this.isDesktop) {
       this.webcamService.isWebcamAllowed().subscribe((isAvailable) => {
@@ -89,38 +94,39 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
-    this.imageUrls.forEach((imageObjectUrl) => {
-      this.urlObj.revokeObjectURL(imageObjectUrl);
+  }
+
+  imgSub(): Subscription {
+    return this.imgSubject.subscribe((imageObject) => {
+      this.previousImageObjectUrl = imageObject?.imageObjectUrl;
+      this.isModalOpened = true;
+      this.modalService
+        .openModal(PhotoEditorModalComponent, imageObject)
+        .subscribe((data: { changeImage?: boolean; imageObjectUrl?: string }) => {
+          if (data?.changeImage) {
+            this.fileInput.nativeElement.click();
+          } else if (data?.imageObjectUrl) {
+            this.croppedImageUrl = data.imageObjectUrl;
+          }
+          this.isModalOpened = false;
+        });
     });
+  }
+
+  imgAttachErrorSub(): Subscription {
+    return this.imgAttachErrorSubject.subscribe((imageErrors) =>
+      this.modalService
+        .openModal(PhotoErrorModalComponent, { imageErrors })
+        .subscribe((data: { changeImage?: boolean }) =>
+          data?.changeImage ? this.fileInput.nativeElement.click() : null,
+        ),
+    );
   }
 
   addImgSubscriptions(): void {
     this.subs
-      .add(
-        this.imgSubject.subscribe((imageObject) => {
-          this.previousImageObjectUrl = imageObject?.imageObjectUrl;
-          this.isModalOpened = true;
-          this.modalService
-            .openModal(PhotoEditorModalComponent, imageObject)
-            .subscribe((data: { changeImage?: boolean; imageObjectUrl?: string }) => {
-              if (data?.changeImage) {
-                this.fileInput.nativeElement.click();
-              } else if (data?.imageObjectUrl) {
-                this.croppedImageUrl = data.imageObjectUrl;
-              }
-              this.isModalOpened = false;
-            });
-        }),
-      )
-      .add(
-        this.imgAttachErrorSubject.subscribe((imageErrors) =>
-          this.modalService
-            .openModal(PhotoErrorModalComponent, { imageErrors })
-            .subscribe((data: { changeImage?: boolean }) =>
-              data?.changeImage ? this.fileInput.nativeElement.click() : null,
-            ),
-        ),
-      )
+      .add(this.imgSub())
+      .add(this.imgAttachErrorSub())
       .add(fromEvent(this.imageValidator, 'load').subscribe(() => this.validateImage()))
       .add(fromEvent(this.imageValidator, 'error').subscribe(() => this.validateImage()));
   }
@@ -134,11 +140,13 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     const requestData = this.getRequestData();
 
     if (requestData.mnemonic && requestData.name) {
-      this.terabyteService.downloadFile(requestData).subscribe((file: Blob) => {
-        const imageObjectUrl = this.urlObj.createObjectURL(file);
-        this.imageUrls.push(imageObjectUrl);
-        this.croppedImageUrl = imageObjectUrl;
-        this.previousImageObjectUrl = imageObjectUrl;
+      this.terabyteService.downloadFile(requestData).subscribe((file: Blob | File) => {
+        // @ts-ignore
+        const setImageUrl = (imageUrl: string) => {
+          this.croppedImageUrl = imageUrl;
+          this.previousImageObjectUrl = imageUrl;
+        };
+        this.blobToDataURL(file, setImageUrl);
       });
     }
   }
@@ -158,6 +166,22 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       this.imgSubject.next({ imageObjectUrl: src });
       return;
     }
+
+    const imageErrors = this.getImageError(isSizeValid, isTypeValid, width, height);
+
+    if (this.previousImageObjectUrl) {
+      this.imgSubject.next({ imageObjectUrl: this.previousImageObjectUrl, imageErrors });
+    } else {
+      this.imgAttachErrorSubject.next(imageErrors);
+    }
+  }
+
+  getImageError(
+    isSizeValid: boolean,
+    isTypeValid: boolean,
+    width: number,
+    height: number,
+  ): string[][] {
     const imageErrors = [];
     if (!isTypeValid) {
       imageErrors.push(['fileType', this.allowedImgTypes.join(', ')]);
@@ -168,11 +192,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     if (!imageErrors.length) {
       imageErrors.push(['common']);
     }
-    if (this.previousImageObjectUrl) {
-      this.imgSubject.next({ imageObjectUrl: this.previousImageObjectUrl, imageErrors });
-    } else {
-      this.imgAttachErrorSubject.next(imageErrors);
-    }
+    return imageErrors;
   }
 
   getAcceptTypes(): string {
@@ -192,11 +212,19 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     }
   }
 
+  blobToDataURL(file: Blob | File, callback: Function) {
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => callback(e.target.result.toString());
+    fileReader.readAsDataURL(file);
+  }
+
+  validateImageEvent(imageUrl: string): void {
+    this.imageValidator.src = imageUrl;
+  }
+
   setFile(file: File): void {
     this.fileName = file.name;
-    const imageObjectUrl = this.urlObj.createObjectURL(file);
-    this.imageUrls.push(imageObjectUrl);
-    this.imageValidator.src = imageObjectUrl;
+    this.blobToDataURL(file, (url: string) => this.validateImageEvent(url));
   }
 
   takePhoto(): void {
@@ -215,22 +243,23 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   nextStep() {
     let requestData = this.getRequestData();
 
+    const deletePrevImage = (fileName: string) =>
+      fileName ? this.terabyteService.deleteFile(requestData) : of(null);
+    const compressFile = () => {
+      const blobFile = TerraByteApiService.base64toBlob(this.croppedImageUrl, 'image');
+      return fromPromise(this.compressionService.imageCompression(blobFile, { maxSizeMB: 5 }));
+    };
+    const uploadFile = (file: Blob | File) => {
+      requestData = { ...requestData, name: this.fileName };
+      return this.terabyteService.uploadFile(requestData, file);
+    };
+
     of(requestData.name)
       .pipe(
-        switchMap((fileName) =>
-          fileName ? this.terabyteService.deleteFile(requestData) : of(null),
-        ),
-        switchMap(() => {
-          const blobFile = TerraByteApiService.base64toBlob(this.croppedImageUrl);
-          return fromPromise(this.compressionService.imageCompression(blobFile, { maxSizeMB: 5 }));
-        }),
-        switchMap((compressedFile) => {
-          requestData = { ...requestData, name: this.fileName };
-          return this.terabyteService.uploadFile(requestData, compressedFile);
-        }),
+        switchMap((fileName) => deletePrevImage(fileName)),
+        switchMap(() => compressFile()),
+        switchMap((compressedFile) => uploadFile(compressedFile)),
       )
-      .subscribe(() => {
-        this.nextStepEvent.emit(JSON.stringify(requestData));
-      });
+      .subscribe(() => this.nextStepEvent.emit(JSON.stringify(requestData)));
   }
 }

@@ -5,6 +5,7 @@ import { UploadAndEditPhotoModule } from './upload-and-edit-photo.module';
 import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
 import { ConfigService } from '../../../../config/config.service';
 import { ComponentBase } from '../../../screen.types';
+import { ScreenService } from '../../../screen.service';
 
 describe('UploadAndEditPhotoComponent', () => {
   let component: UploadAndEditPhotoComponent;
@@ -26,7 +27,7 @@ describe('UploadAndEditPhotoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ UploadAndEditPhotoModule ],
-      providers: [ TerraByteApiService, ConfigService ],
+      providers: [ TerraByteApiService, ConfigService, ScreenService ],
     })
     .compileComponents();
   });

@@ -1,5 +1,7 @@
 const aspectRatio = 1.144;
 
+const showErrorTime = 7000;
+
 const hintSetting = {
   title: 'Подсказка',
   text: 'Перетащите фото, чтобы изменить положение',
@@ -11,4 +13,4 @@ const photoMaskSrc = {
   phone: 'assets/img/photo-mask-mobile.svg',
 };
 
-export { aspectRatio, hintSetting, photoMaskSrc };
+export { aspectRatio, hintSetting, photoMaskSrc, showErrorTime };

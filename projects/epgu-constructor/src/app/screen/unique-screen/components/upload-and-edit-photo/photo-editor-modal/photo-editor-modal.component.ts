@@ -5,7 +5,12 @@ import { Subject } from 'rxjs';
 import { ModalBaseComponent } from '../../../../../shared/components/modal/modal-base/modal-base.component';
 import { ImageErrorText, NewSizeEvent } from '../upload-and-edit-photo.model';
 import { imageErrorText, minCropSize } from '../upload-and-edit-photo.constant';
-import { aspectRatio, hintSetting, photoMaskSrc } from './photo-editor-modal.constant';
+import {
+  aspectRatio,
+  hintSetting,
+  photoMaskSrc,
+  showErrorTime,
+} from './photo-editor-modal.constant';
 import { ConfigService } from '../../../../../config/config.service';
 
 @Component({
@@ -51,7 +56,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
     this.errorTextIsShown = true;
     setTimeout(() => {
       this.errorTextIsShown = false;
-    }, 7000);
+    }, showErrorTime);
   }
 
   getCroppedImageUrl(): string {

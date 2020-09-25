@@ -16,10 +16,11 @@ export class TerraByteApiService {
   /**
    * Переводит base64 картинку в Blob
    * @param base64Data - base64 закодированная строка
+   * @param fileType - custom file type
    */
-  static base64toBlob(base64Data: string): Blob {
+  static base64toBlob(base64Data: string, fileType?: string): Blob {
     const parts = base64Data.split(';base64,');
-    const imageType = parts[0].split(':')[1];
+    const imageType = fileType || parts[0].split(':')[1];
     const decodedData = window.atob(parts[1]);
     const uInt8Array = new Uint8Array(decodedData.length);
 
