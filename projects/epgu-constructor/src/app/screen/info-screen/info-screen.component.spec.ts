@@ -7,7 +7,6 @@ import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
-import { FormPlayerService } from '../../services/form-player/form-player.service';
 import { FormPlayerApiService } from '../../services/api/form-player-api/form-player-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../config/config.service';
@@ -50,7 +49,6 @@ describe('InfoScreenComponent', () => {
         ScreenService,
         ApplicantAnswersService,
         ComponentStateService,
-        FormPlayerService,
         FormPlayerApiService,
         ConfigService,
         ServiceDataService,

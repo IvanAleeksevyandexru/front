@@ -5,10 +5,8 @@ import { CounterDirective } from '../../../../../../shared/directives/counter/co
 import { ScreenService } from '../../../../../screen.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
-import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
 import { EpguLibModule } from 'epgu-lib';
 import { ScreenServiceStub } from '../../../../../screen.service.stub';
-import { FormPlayerServiceStub } from '../../../../../../services/form-player/form-player.service.stub';
 
 xdescribe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
@@ -22,7 +20,6 @@ xdescribe('ConfirmPhoneComponent', () => {
         UnsubscribeService,
         NavigationService,
         { provide: ScreenService,useClass: ScreenServiceStub },
-        { provide: FormPlayerService,useClass: FormPlayerServiceStub },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
     })
@@ -35,7 +32,6 @@ xdescribe('ConfirmPhoneComponent', () => {
     fixture.debugElement.injector.get(ScreenService);
     fixture.debugElement.injector.get(UnsubscribeService);
     fixture.debugElement.injector.get(NavigationService);
-    fixture.debugElement.injector.get(FormPlayerService);
 
     fixture.detectChanges();
   });

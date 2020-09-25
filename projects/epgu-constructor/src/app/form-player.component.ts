@@ -2,7 +2,7 @@ import { Component, HostBinding, Input, OnChanges, OnInit, ViewEncapsulation } f
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from './config/config.service';
 import { Config } from './config/config.types';
-import { FormPlayerNavigation, NavigationPayload, Service } from './form-player.types';
+import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
 import { ScreenComponent } from './screen/screen.const';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
@@ -10,6 +10,8 @@ import { NavigationService } from './shared/services/navigation/navigation.servi
 import { ServiceDataService } from './services/service-data/service-data.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { ScreenService } from './screen/screen.service';
+// eslint-disable-next-line import/named,
+import { libVersionFromPackageJson } from '../version';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -32,14 +34,16 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     private configService: ConfigService,
     private screenService: ScreenService,
     private screenResolverService: ScreenResolverService,
-  ) {}
+  ) {
+    console.log(libVersionFromPackageJson);
+  }
 
   ngOnInit(): void {
     this.checkProps();
     const orderId = this.getDraftOrderId();
     this.configService.config = this.config;
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.screenComponent = this.getScreenComponent();
+      this.screenComponent = this.formPlayerService.getScreenComponent();
     });
     this.formPlayerService.initData(orderId);
 
@@ -68,31 +72,12 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     return orderId;
   }
 
-  /**
-   * Возвращает компонент для показа экрана переданного типа
-   */
-  getScreenComponent(): ScreenComponent {
-    const screenType = this.screenService.screenType as string;
-    const screenComponent = this.screenResolverService.getScreenComponentByType(screenType);
-
-    if (!screenComponent) {
-      this.handleScreenComponentError(this.screenService.screenType);
-    }
-
-    return screenComponent;
+  nextStep(navigation?: Navigation) {
+    this.formPlayerService.navigate(navigation, FormPlayerNavigation.NEXT);
   }
 
-  nextStep(navigationPayload?: NavigationPayload) {
-    this.formPlayerService.navigate(navigationPayload, { direction: FormPlayerNavigation.NEXT });
-  }
-
-  prevStep(navigationPayload?: NavigationPayload) {
-    this.formPlayerService.navigate(navigationPayload, { direction: FormPlayerNavigation.PREV });
-  }
-
-  handleScreenComponentError(screenType: string) {
-    // TODO: need to find a better way for handling this error, maybe show it on UI
-    throw new Error(`We cant find screen component for this type: ${screenType}`);
+  prevStep(navigation?: Navigation) {
+    this.formPlayerService.navigate(navigation, FormPlayerNavigation.PREV);
   }
 
   checkProps() {
