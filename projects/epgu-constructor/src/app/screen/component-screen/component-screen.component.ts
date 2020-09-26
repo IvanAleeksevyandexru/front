@@ -7,7 +7,7 @@ import { ComponentStateService } from '../../services/component-state/component-
 import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { ComponentScreenComponentTypes } from './component-screen.types';
-import { NavigationPayload } from '../../form-player.types';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -40,6 +40,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     private fb: FormBuilder,
+    private cycledFieldsService: CycledFieldsService,
   ) {}
 
   ngOnInit(): void {
@@ -53,12 +54,8 @@ export class ComponentScreenComponent implements OnInit, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((screenData: ScreenStore) => {
         this.screenStore = screenData;
-        this.initCycledFields();
+        this.cycledFieldsService.initCycledFields(this.screenStore.currentCycledFields);
       });
-  }
-
-  initCycledFields() {
-    this.isCycledFields = !!Object.keys(this.screenStore?.currentCycledFields).length;
   }
 
   /**
@@ -72,8 +69,6 @@ export class ComponentScreenComponent implements OnInit, Screen {
    * Переход на следующую страницу и передача данных
    */
   nextStep() {
-    const componentId = this.screenStore.display.components[0].id;
-    let payload: NavigationPayload = {};
     let value: string;
     if (typeof this.componentStateService.state === 'object') {
       value = JSON.stringify(this.componentStateService.state);
@@ -81,16 +76,9 @@ export class ComponentScreenComponent implements OnInit, Screen {
       value = this.componentStateService.state;
     }
 
-    payload[componentId] = {
-      visited: true,
-      value: value || '',
-    };
-
-    if (this.isCycledFields) {
-      payload = this.componentStateService.state as NavigationPayload; // TODO: need clarify case
-    }
-
-    this.navigationService.nextStep.next({ payload });
+    this.navigationService.nextStep.next(
+      this.cycledFieldsService.dataTransform(this.screenStore, value),
+    );
   }
 
   /**
