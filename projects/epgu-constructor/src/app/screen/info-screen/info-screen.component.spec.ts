@@ -11,6 +11,7 @@ import { FormPlayerApiService } from '../../services/api/form-player-api/form-pl
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../config/config.service';
 import { ServiceDataService } from '../../services/service-data/service-data.service';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 
 describe('InfoScreenComponent', () => {
@@ -52,6 +53,7 @@ describe('InfoScreenComponent', () => {
         FormPlayerApiService,
         ConfigService,
         ServiceDataService,
+        CycledFieldsService,
       ]
     })
     .compileComponents();
