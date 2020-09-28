@@ -4,7 +4,9 @@
     <h4 class="conf-modal__title" [innerHTML]="title | safeHtml"></h4>
   </div>
   <div class="conf-modal__body">
-    <div class="conf-modal__text-wrapper">
+    <div #innerHtml
+         class="conf-modal__text-wrapper"
+         (click)="toggleHiddenBlock($event, innerHtml)">
       <span class="conf-modal__text" [innerHTML]="text | safeHtml"></span>
     </div>
     <div class="conf-modal__controls">
