@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "start:stage": "ng serve --configuration staging",
-    "start:backend": "java -jar fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api",
+    "start:backend": "java -jar fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api --draft-client.enabled=false",
     "build": "ng build",
     "lib:build": "npm run generate-lib-version-ts && ng build epgu-constructor --prod",
     "lib:watch": "npm run generate-lib-version-ts && ng build epgu-constructor --watch",
