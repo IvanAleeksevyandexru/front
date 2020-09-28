@@ -31,7 +31,11 @@ export class FormPlayerApiService {
     const { serviceId, targetId } = this.serviceDataService;
     const { userId, token } = this.getSessionFromCookie();
     const path = `${this.config.apiUrl}/service/${serviceId}/scenario/getService`;
-    const body = { targetId, userId, token, orderId };
+    const body = { targetId, userId, token };
+
+    if(orderId) {
+      body['orderId'] = orderId;
+    }
 
     return this.post<FormPlayerApiResponse>(path, body);
   }
