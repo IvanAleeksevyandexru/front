@@ -1,4 +1,6 @@
 @import 'core';
+// Implement styleguide for all library's components
+@import 'components/index.scss';
 
 // TODO: remove all normalize css styles, it may affect app's style
 // stylelint-disable
@@ -94,6 +96,4 @@
     background: $color-devider;
     height: 1px;
   }
-  // Implement styleguide for all library's components
-  @import 'components/index.scss';
 }
