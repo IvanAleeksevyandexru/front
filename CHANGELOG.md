@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://git.gosuslugi.local///compare/v0.1.1...v0.1.3) (2020-09-28)
+
+
+### Bug Fixes
+
+* Again right return url ([e55d746](https://git.gosuslugi.local///commit/e55d746161971b825fc00a432f400b99140b676d))
+* Again right return url ([f9f4056](https://git.gosuslugi.local///commit/f9f4056c384cf802e247d22ae7503b41251f6f0c))
+* fixed file uploading ([11bcd72](https://git.gosuslugi.local///commit/11bcd72e90bc9e015d3caf1a174810eaaff25e4d))
+* hotfix for right payment ([a03ce67](https://git.gosuslugi.local///commit/a03ce672ff01d4dabdd16a6e36fc769959ae583a))
+* move auth interceptor init on form-player level [ref EPGUCORE-36943] ([37aa131](https://git.gosuslugi.local///commit/37aa1315d25f36d3e1cdd926101589118411a415))
+* move auth interceptor to app level [ref EPGUCORE-36943] ([c898b0c](https://git.gosuslugi.local///commit/c898b0c063cf7caef3cdddc31aec57bee20529f8))
+* revert auth interceptor replace on app level [ref EPGUCORE-36943] ([ef6e55a](https://git.gosuslugi.local///commit/ef6e55ac906cfbd6c9adfcaafab6667527436111))
+* на мобильной верси, на экране вопрос/ответ прибил кнопки action к низу ([793848a](https://git.gosuslugi.local///commit/793848a1f93b0de2ca2bcc7a6589f6463554a5f0))
+
 ### [0.1.2](https://git.gosuslugi.local///compare/v0.1.1...v0.1.2) (2020-09-25)
 
 
