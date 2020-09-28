@@ -6,6 +6,7 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { ScreenService } from '../screen.service';
 import { InfoScreenComponentTypes } from './info-screen.types';
 import { NavigationOptions, NavigationPayload } from '../../form-player.types';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.
@@ -25,6 +26,7 @@ export class InfoScreenComponent implements Screen, OnInit {
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
+    private cycledFieldsService: CycledFieldsService,
   ) {}
 
   ngOnInit(): void {
@@ -36,6 +38,7 @@ export class InfoScreenComponent implements Screen, OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((screenData: ScreenStore) => {
         this.screenStore = screenData;
+        this.cycledFieldsService.initCycledFields(this.screenStore.currentCycledFields);
       });
   }
 
@@ -63,11 +66,6 @@ export class InfoScreenComponent implements Screen, OnInit {
   }
 
   getComponentState(): NavigationPayload {
-    return {
-      [this.screenService.component.id]: {
-        visited: true,
-        value: '',
-      },
-    };
+    return this.cycledFieldsService.dataTransform(this.screenStore);
   }
 }

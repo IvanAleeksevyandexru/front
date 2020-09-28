@@ -217,7 +217,7 @@ export function isValueValid(type, value): boolean {
   if ([customComponentType.PersonInnInput, customComponentType.LegalInnInput].includes(type)) {
     return checkINN(value);
   }
-  if (customComponentType.SnilsInput) {
+  if (type === customComponentType.SnilsInput) {
     return checkSnils(value);
   }
   return true;
