@@ -55,6 +55,7 @@
     "@ngx-translate/http-loader": "6.0.0",
     "@types/uuid": "8.3.0",
     "angular2-text-mask": "9.0.0",
+    "epgu-lib": "0.0.493",
     "ics": "^2.24.0",
     "moment": "2.24.0",
     "ngx-cookie-service": "10.0.1",
