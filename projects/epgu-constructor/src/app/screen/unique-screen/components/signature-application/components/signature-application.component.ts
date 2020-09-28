@@ -38,7 +38,7 @@ export class SignatureApplicationComponent implements OnInit {
   }
 
   private redirectToSignatureWindow(): void {
-    const { url } = JSON.parse(this.screenService.component.value) as { url: string };
+    const { url } = this.screenService.componentValue as { url: string };
     window.location.href = url;
   }
 }

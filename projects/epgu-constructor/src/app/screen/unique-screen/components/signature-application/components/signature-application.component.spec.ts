@@ -40,6 +40,7 @@ describe('SignatureApplicationComponent', () => {
   }));
 
   beforeEach(() => {
+    // Нужно для решения ошибки при переходе по ссылке
     delete window.location;
     // @ts-ignore
     window.location = {
