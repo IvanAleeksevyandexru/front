@@ -61,4 +61,8 @@
   <epgu-constructor-confirm-email
     *ngSwitchCase="uniqueComponentName.ConfirmNewEmail">
   </epgu-constructor-confirm-email>
+  <epgu-constructor-upload-and-edit-photo
+    *ngSwitchCase="uniqueComponentName.photoUploadComponent"
+    (nextStepEvent)="nextDataForStep($event)">
+  </epgu-constructor-upload-and-edit-photo>
 </ng-container>
