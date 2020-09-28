@@ -1,3 +1,5 @@
+import { MockApi } from '../../projects/epgu-constructor/src/app/config/config.types'
+
 export const environment = {
   production: false,
   serviceId: 'local',
@@ -5,8 +7,6 @@ export const environment = {
   orderId: '',
   apiUrl: 'http://develop.pgu2-dev.test.gosuslugi.ru/api',
   dictionaryUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
-  mvdUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
-  selectMapUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
   externalApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1',
   timeSlotApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/equeue/agg',
   uinApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/paygate/uin',
@@ -16,4 +16,6 @@ export const environment = {
   paymentUrl: 'https://payment-dev-l14.test.gosuslugi.ru',
   fileUploadApiUrl: 'https://gosuslugi.ru/api/storage/v1/files',
   staticDomainAssetsPath: '',
+  mocks: ['mvd', 'selectMap', 'timeSlot'] as MockApi[],
+  mockUrl: 'https://dev-l11.pgu2-pub.test.gosuslugi.ru/mock/'
 };
