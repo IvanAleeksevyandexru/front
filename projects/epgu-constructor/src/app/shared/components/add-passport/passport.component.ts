@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { ValidationShowOn } from 'epgu-lib';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
@@ -29,12 +29,25 @@ export class PassportComponent implements OnInit {
   initFormGroup(): void {
     const controls = {};
     this.attrs.fields.forEach((field) => {
-      controls[field.fieldName] = this.fb.control(null, [
-        Validators.required,
-        Validators.pattern(field.regexp),
-      ]);
+      controls[field.fieldName] = this.fb.control(null, this.getValidators(field));
     });
     this.passportForm = this.fb.group(controls);
+  }
+
+  getValidators(field): ValidatorFn[] {
+    const validators = [Validators.required];
+
+    if (field.maxlength) {
+      validators.push(Validators.maxLength(field.maxlength));
+    }
+    if (field.minlength) {
+      validators.push(Validators.minLength(field.minlength));
+    }
+    if (field.regexp) {
+      validators.push(Validators.pattern(field.regexp));
+    }
+
+    return validators;
   }
 
   subscribeToFormChanges(): void {
