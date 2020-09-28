@@ -10,6 +10,7 @@ import { ApplicantAnswersService } from './services/applicant-answers/applicant-
 import { NavigationService } from './services/navigation/navigation.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
 import { ModalService } from '../services/modal/modal.service';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 
 import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
@@ -71,7 +72,7 @@ const DIRECTIVES = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  providers: [NavigationService, ApplicantAnswersService, WebcamService, TerraByteApiService, ModalService],
+  providers: [NavigationService, ApplicantAnswersService, WebcamService, TerraByteApiService, ModalService, CycledFieldsService],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [
       CommonModule,

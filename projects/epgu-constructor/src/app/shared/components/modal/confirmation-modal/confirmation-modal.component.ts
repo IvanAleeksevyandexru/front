@@ -22,6 +22,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent implements Af
   elemEventHandlers: ConfirmationModal['elemEventHandlers'] = [];
   clarifications?: ConfirmationModal['buttons'];
   buttons: ConfirmationModal['buttons'] = [];
+  showCrossButton = false;
 
   constructor(private modalService: ModalService, private elemRef: ElementRef) {
     super();
@@ -59,13 +60,13 @@ export class ConfirmationModalComponent extends ModalBaseComponent implements Af
       });
     }
 
-    this.buttons.forEach(({ handler, closeModal }, index) => {
+    this.buttons.forEach(({ handler, closeModal, value }, index) => {
       this.buttons[index].handler = () => {
         if (handler) {
           handler();
         }
         if (closeModal) {
-          this.closeModal();
+          this.closeModal(value);
         }
       };
     });
