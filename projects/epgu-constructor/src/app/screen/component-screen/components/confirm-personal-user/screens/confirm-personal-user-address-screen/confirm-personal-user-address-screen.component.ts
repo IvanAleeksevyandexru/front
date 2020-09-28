@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ComponentStateService } from '../../../../../component-state.service';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
@@ -20,7 +20,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   cycledValues: any;
 
   constructor(
-    private componentStateService: ComponentStateService,
+    private componentStateService: CurrentAnswersService,
     private toolsService: ToolsService,
   ) {}
 

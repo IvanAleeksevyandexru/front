@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ComponentStateService } from '../../../component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { ComponentBase } from '../../../screen.types';
 
 export interface ChangeListComponentInterface extends ComponentBase {
@@ -34,7 +34,7 @@ export class ChangeListComponent implements OnInit, OnChanges {
   response: Array<any>;
   fields: FormGroup;
 
-  constructor(private componentStateService: ComponentStateService) {}
+  constructor(private componentStateService: CurrentAnswersService) {}
 
   ngOnInit(): void {
     // TODO eliskachev это для тебя нужно заполнить данные;

@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { ComponentStateService } from '../../../component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import { ComponentBase } from '../../../screen.types';
 import { TextTransform } from '../../../../shared/types/textTransform';
@@ -44,7 +44,7 @@ export class DocInputComponent implements OnInit {
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
-    private componentStateService: ComponentStateService,
+    private componentStateService: CurrentAnswersService,
   ) {}
 
   ngOnInit(): void {

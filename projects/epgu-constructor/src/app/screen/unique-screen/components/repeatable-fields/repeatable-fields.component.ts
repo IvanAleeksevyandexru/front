@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentStateService } from '../../../component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { ScreenService } from '../../../screen.service';
 import {
   prepareDataToSendForRepeatableFieldsComponent,
@@ -37,7 +37,7 @@ export class RepeatableFieldsComponent {
   trackByFunction = (index, item) => item;
 
   constructor(
-    private componentStateService: ComponentStateService,
+    private componentStateService: CurrentAnswersService,
     public screenService: ScreenService,
   ) {}
 

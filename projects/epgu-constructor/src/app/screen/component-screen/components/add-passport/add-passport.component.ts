@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { ComponentStateService } from '../../../component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ToolsService } from '../../../../shared/services/tools/tools.service';
 import { TextTransform } from '../../../../shared/types/textTransform';
@@ -25,7 +25,7 @@ export class AddPassportComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private componentStateService: ComponentStateService,
+    private componentStateService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     private toolsService: ToolsService,
   ) {}

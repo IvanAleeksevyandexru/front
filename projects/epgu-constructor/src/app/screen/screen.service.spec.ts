@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ScreenService } from './screen.service';
 import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
-import { ComponentStateService } from './component-state.service';
+import { CurrentAnswersService } from './current-answers.service';
 
 describe('ScreenService', () => {
   let service: ScreenService;
@@ -12,7 +12,7 @@ describe('ScreenService', () => {
       providers: [
         ScreenService,
         ApplicantAnswersService,
-        ComponentStateService
+        CurrentAnswersService
       ]
     });
     service = TestBed.inject(ScreenService);

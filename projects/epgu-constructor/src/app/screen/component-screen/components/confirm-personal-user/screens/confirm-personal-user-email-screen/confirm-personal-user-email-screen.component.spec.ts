@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmPersonalUserEmailScreenComponent } from './confirm-personal-user-email-screen.component';
-import { ComponentStateService } from '../../../../../component-state.service';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { ComponentBase } from '../../../../../screen.types';
 
 
@@ -21,7 +21,7 @@ describe('ConfirmPersonalUserEmailComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ ConfirmPersonalUserEmailScreenComponent ],
-      providers: [ComponentStateService]
+      providers: [CurrentAnswersService]
     })
     .compileComponents();
   }));

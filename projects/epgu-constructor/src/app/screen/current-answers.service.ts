@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 
-/**
- * Deprecated service for store components state
- * TODO: remove it when implement ScreenService currentValue logic
- */
 @Injectable()
-export class ComponentStateService {
+export class CurrentAnswersService {
 
   // <-- component
   private _state: any;

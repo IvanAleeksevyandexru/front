@@ -1,6 +1,6 @@
 import { AddChildrenScreenComponent } from './add-children-screen.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentStateService } from '../../../../../component-state.service';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { NavigationComponent } from '../../../../../../shared/components/navigation/navigation.component';
 import { MockComponent } from 'ng-mocks';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsub
 describe('AddChildrenScreenComponent', () => {
   let component: AddChildrenScreenComponent;
   let fixture: ComponentFixture<AddChildrenScreenComponent>;
-  let componentStateService: ComponentStateService;
+  let componentStateService: CurrentAnswersService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
   const mockData = {
     attrs: [],
@@ -39,7 +39,7 @@ describe('AddChildrenScreenComponent', () => {
         ReactiveFormsModule,
       ],
       providers: [
-        ComponentStateService,
+        CurrentAnswersService,
         UnsubscribeService,
       ]
     })
@@ -50,7 +50,7 @@ describe('AddChildrenScreenComponent', () => {
     fixture = TestBed.createComponent(AddChildrenScreenComponent);
     component = fixture.componentInstance;
     component.data = mockData;
-    componentStateService = fixture.debugElement.injector.get(ComponentStateService);
+    componentStateService = fixture.debugElement.injector.get(CurrentAnswersService);
     component.addMoreChild();
   });
 

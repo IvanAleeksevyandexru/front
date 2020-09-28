@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentStateService } from '../../../../../component-state.service';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmUserData } from '../../../../types/confirm-user-data.types';
 import { ConfirmPersonalUserDataScreenComponent } from './confirm-personal-user-data-screen.component';
@@ -25,7 +25,7 @@ describe('ConfirmPersonalUserDataScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ ConfirmPersonalUserDataScreenComponent ],
-      providers: [ComponentStateService, ToolsService]
+      providers: [CurrentAnswersService, ToolsService]
     })
     .compileComponents();
   }));

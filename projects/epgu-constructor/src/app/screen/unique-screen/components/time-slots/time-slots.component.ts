@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { ComponentStateService } from '../../../component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { TimeSlotsService } from './time-slots.service';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
@@ -85,7 +85,7 @@ export class TimeSlotsComponent implements OnInit {
     private gibddTimeSlotsService: GibddTimeSlotsService,
     private mvdTimeSlotsService: MvdTimeSlotsService,
     private modalService: ModalService,
-    private componentStateService: ComponentStateService,
+    private componentStateService: CurrentAnswersService,
     public constants: TimeSlotsConstants,
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;

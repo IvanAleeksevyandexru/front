@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ComponentStateService } from '../../../../../component-state.service';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmUserData } from '../../../../types/confirm-user-data.types';
 
@@ -10,7 +10,7 @@ import { ConfirmUserData } from '../../../../types/confirm-user-data.types';
 })
 export class ConfirmPersonalUserDataScreenComponent implements OnInit {
   constructor(
-    private componentStateService: ComponentStateService,
+    private componentStateService: CurrentAnswersService,
     private toolsService: ToolsService,
   ) {}
 

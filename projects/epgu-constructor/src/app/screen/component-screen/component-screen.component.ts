@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { ComponentStateService } from '../component-state.service';
+import { CurrentAnswersService } from '../current-answers.service';
 import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { ComponentScreenComponentTypes } from './component-screen.types';
@@ -35,7 +35,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
 
   constructor(
     private navigationService: NavigationService,
-    public componentStateService: ComponentStateService,
+    public componentStateService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     private fb: FormBuilder,

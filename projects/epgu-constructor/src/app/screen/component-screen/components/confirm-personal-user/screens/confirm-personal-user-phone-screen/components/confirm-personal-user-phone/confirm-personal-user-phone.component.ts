@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ComponentStateService } from '../../../../../../../component-state.service';
+import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { NavigationService } from '../../../../../../../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../../../../../../../screen.service';
 import { Navigation } from '../../../../../../../../form-player.types';
@@ -38,7 +38,7 @@ export class ConfirmPersonalUserPhoneComponent implements OnChanges {
   ];
 
   constructor(
-    private componentStateService: ComponentStateService,
+    private componentStateService: CurrentAnswersService,
     private screenService: ScreenService,
     private navigationService: NavigationService,
   ) {}

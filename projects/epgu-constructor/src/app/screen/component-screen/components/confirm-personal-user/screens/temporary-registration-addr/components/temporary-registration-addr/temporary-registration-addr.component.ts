@@ -10,7 +10,7 @@ import { NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../../../config/config.service';
-import { ComponentStateService } from '../../../../../../../component-state.service';
+import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
 import { DateValidator } from './date-validator';
@@ -31,7 +31,7 @@ export class TemporaryRegistrationAddrComponent implements OnChanges, AfterViewI
 
   constructor(
     public config: ConfigService,
-    private componentStateService: ComponentStateService,
+    private componentStateService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 

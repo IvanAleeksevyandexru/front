@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MvdGiacComponent } from './mvd-giac.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ComponentStateService } from '../../../component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../services/api/dictionary-api/dictionary-api.service.stub';
 import { ComponentScreenComponentTypes } from '../../component-screen.types';
@@ -16,7 +16,7 @@ describe('MvdGiacComponent', () => {
   let fixture: ComponentFixture<MvdGiacComponent>;
 
   let dictionaryApiService: DictionaryApiService;
-  let componentStateService: ComponentStateService;
+  let componentStateService: CurrentAnswersService;
 
   let getMvdDictionarySpy: jasmine.Spy;
 
@@ -72,7 +72,7 @@ describe('MvdGiacComponent', () => {
       imports: [ReactiveFormsModule],
       declarations: [ MvdGiacComponent ],
       providers: [
-        ComponentStateService,
+        CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub }
       ]
@@ -92,7 +92,7 @@ describe('MvdGiacComponent', () => {
     component.applicantAnswers = applicantAnswersMock;
 
     dictionaryApiService = TestBed.inject(DictionaryApiService);
-    componentStateService = TestBed.inject(ComponentStateService);
+    componentStateService = TestBed.inject(CurrentAnswersService);
 
     let regionList = [
       {
