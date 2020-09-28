@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@alyle/ui@^10.2.1":
+  version "10.2.1"
+  resolved "http://npm.gosuslugi.local/@alyle%2fui/-/ui-10.2.1.tgz#c5533b471807675c68aeefaa55600e4bee564729"
+  integrity sha512-lSrFzD87QJrjc53SC6HtBxtBAZKnJi+Say9tmnSo6SkgQqLsqjbhxEulyEEcxTg3noAzPzObgDcF8ZFlhKEvMA==
+  dependencies:
+    tslib "^1.9.0"
+
 "@angular-devkit/architect@0.1000.3":
   version "0.1000.3"
   resolved "http://npm.gosuslugi.local/@angular-devkit%2farchitect/-/architect-0.1000.3.tgz#f23ea9d370edac8b0dd979d2574b12aa9923c3d4"
@@ -2217,6 +2224,14 @@ alphanum-sort@^1.0.0:
   resolved "https://registry.yarnpkg.com/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
   integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
 
+angular-resize-event@^2.0.0:
+  version "2.0.0"
+  resolved "http://npm.gosuslugi.local/angular-resize-event/-/angular-resize-event-2.0.0.tgz#495141738799ac092ab41715189de6beadd2cb77"
+  integrity sha512-xN+xuPv3v0AjOlQ5MV82U2iNcHEAeEwQcwpXx/dVBEvK7W2QcoqxpKn8YAvBWWQcq1mA5rHXvljBNmlVd2lw8A==
+  dependencies:
+    css-element-queries "^1.2.3"
+    tslib "^2.0.0"
+
 angular2-text-mask@9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/angular2-text-mask/-/angular2-text-mask-9.0.0.tgz#70490170a8096241fc3ce9482ed6a758ddbce8ea"
@@ -4183,6 +4198,11 @@ css-declaration-sorter@^4.0.1:
   dependencies:
     postcss "^7.0.1"
     timsort "^0.3.0"
+
+css-element-queries@^1.2.3:
+  version "1.2.3"
+  resolved "http://npm.gosuslugi.local/css-element-queries/-/css-element-queries-1.2.3.tgz#e14940b1fcd4bf0da60ea4145d05742d7172e516"
+  integrity sha512-QK9uovYmKTsV2GXWQiMOByVNrLn2qz6m3P7vWpOR4IdD6I3iXoDw5qtgJEN3Xq7gIbdHVKvzHjdAtcl+4Arc4Q==
 
 css-loader@3.5.3:
   version "3.5.3"
@@ -8880,6 +8900,13 @@ ngx-cookie-service@10.0.1:
   version "10.0.1"
   resolved "http://npm.gosuslugi.local/ngx-cookie-service/-/ngx-cookie-service-10.0.1.tgz#b05556636a66874b43953b6ee3eea44652c134a3"
   integrity sha512-QRafo2KuAQxdIZhiu2S0DhpwrkPxVDP34NlfluS4NnAU+8TeOPiKwrqZo/y1FYgxKtQgL1gjjs8KQHDYeR/7gQ==
+  dependencies:
+    tslib "^2.0.0"
+
+ngx-device-detector@^2.0.0:
+  version "2.0.0"
+  resolved "http://npm.gosuslugi.local/ngx-device-detector/-/ngx-device-detector-2.0.0.tgz#1a239d0d65f3cb155221fcdde531b6df4c774863"
+  integrity sha512-0minaW2+Y6dJSKhQrcE3yi8lRa2oAhttgLY5K/K1KRcAPy5yhojY/hpuJko7ANYhttOSxrzxEWhf3novEiSXcg==
   dependencies:
     tslib "^2.0.0"
 

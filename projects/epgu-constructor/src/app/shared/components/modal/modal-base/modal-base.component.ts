@@ -15,7 +15,7 @@ export class ModalBaseComponent {
     }
   }
 
-  closeModal(): void {
-    this.detachView(this.modalResult.value);
+  closeModal(value?: any): void {
+    this.detachView(value || this.modalResult.value);
   }
 }
