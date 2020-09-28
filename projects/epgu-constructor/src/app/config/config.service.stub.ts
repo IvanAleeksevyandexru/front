@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Config } from './config.types';
+import { Config, MockApi } from './config.types';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
   _apiUrl = '/api';
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
-  _mvdUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
-  _selectMapUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
   _timeSlotApiUrl = '';
   _lkUrl = '';
@@ -16,6 +14,8 @@ export class ConfigServiceStub implements Config {
   _billsApiUrl = '';
   _yandexMapsApiKey = '';
   _staticDomainAssetsPath = '';
+  _mocks = [];
+  _mockUrl = '';
 
   get apiUrl(): string {
     return this._apiUrl;
@@ -27,14 +27,6 @@ export class ConfigServiceStub implements Config {
 
   get dictionaryUrl(): string {
     return this._dictionaryUrl;
-  }
-
-  get mvdUrl(): string {
-    return this._mvdUrl;
-  }
-
-  get selectMapUrl(): string {
-    return this._selectMapUrl;
   }
 
   get externalApiUrl(): string {
@@ -69,12 +61,18 @@ export class ConfigServiceStub implements Config {
     return this._staticDomainAssetsPath;
   }
 
+  get mocks(): MockApi[] {
+    return this._mocks;
+  }
+
+  get mockUrl(): string {
+    return this._mockUrl;
+  }
+
   set config(config: Config) {
     this._apiUrl = config.apiUrl;
     this._billsApiUrl = config.billsApiUrl;
     this._dictionaryUrl = config.dictionaryUrl;
-    this._mvdUrl = config.mvdUrl;
-    this._selectMapUrl = config.selectMapUrl;
     this._externalApiUrl = config.externalApiUrl;
     this._fileUploadApiUrl = config.fileUploadApiUrl;
     this._lkUrl = config.lkUrl;
@@ -83,5 +81,7 @@ export class ConfigServiceStub implements Config {
     this._uinApiUrl = config.uinApiUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
     this._staticDomainAssetsPath = config.staticDomainAssetsPath;
+    this._mocks = config.mocks;
+    this._mockUrl = config.mockUrl;
   }
 }

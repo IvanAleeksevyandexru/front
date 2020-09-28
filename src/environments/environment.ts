@@ -9,8 +9,6 @@ export const environment = {
   orderId: '',
   apiUrl: '/api',
   dictionaryUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
-  mvdUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
-  selectMapUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
   externalApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1',
   timeSlotApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/equeue/agg',
   uinApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/paygate/uin',
@@ -20,6 +18,8 @@ export const environment = {
   paymentUrl: 'https://payment-dev-l14.test.gosuslugi.ru',
   fileUploadApiUrl: 'https://gosuslugi.ru/api/storage/v1/files',
   staticDomainAssetsPath: '',
+  mocks: [],
+  mockUrl: ''
 };
 
 /*
