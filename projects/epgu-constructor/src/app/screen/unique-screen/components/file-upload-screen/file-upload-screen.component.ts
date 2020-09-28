@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { UniqueScreenComponentTypes } from '../../unique-screen.types';
+import { ComponentBase } from '../../../screen.types';
+import { ScreenService } from '../../../screen.service';
 import {
   FileUploadEmitValue,
   FileUploadEmitValueForComponent,
   FileUploadItem,
-} from './services/terra-byte-api/terra-byte-api.types';
-import { UniqueScreenComponentTypes } from '../../unique-screen.types';
-import { ComponentBase } from '../../../screen.types';
-import { ScreenService } from '../../../screen.service';
+} from '../../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',
