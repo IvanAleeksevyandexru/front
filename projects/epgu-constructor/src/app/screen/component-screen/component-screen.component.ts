@@ -35,7 +35,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
 
   constructor(
     private navigationService: NavigationService,
-    public componentStateService: CurrentAnswersService,
+    public currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     private fb: FormBuilder,
@@ -68,10 +68,10 @@ export class ComponentScreenComponent implements OnInit, Screen {
    */
   nextStep() {
     let value: string;
-    if (typeof this.componentStateService.state === 'object') {
-      value = JSON.stringify(this.componentStateService.state);
+    if (typeof this.currentAnswersService.state === 'object') {
+      value = JSON.stringify(this.currentAnswersService.state);
     } else {
-      value = this.componentStateService.state;
+      value = this.currentAnswersService.state;
     }
 
     this.navigationService.nextStep.next({

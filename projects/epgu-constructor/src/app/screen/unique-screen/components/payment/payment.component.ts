@@ -65,7 +65,7 @@ export class PaymentComponent implements OnDestroy {
   constructor(
     private paymentService: PaymentService,
     private screenService: ScreenService,
-    private componentStateService: CurrentAnswersService,
+    private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     public config: ConfigService,
   ) {}

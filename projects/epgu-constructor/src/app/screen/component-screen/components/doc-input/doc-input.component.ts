@@ -23,7 +23,7 @@ export class DocInputComponent implements OnInit {
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
-    private componentStateService: CurrentAnswersService,
+    private currentAnswersService: CurrentAnswersService,
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +55,7 @@ export class DocInputComponent implements OnInit {
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe((next: IForm) => {
-        this.componentStateService.state = next;
+        this.currentAnswersService.state = next;
       });
   }
 }

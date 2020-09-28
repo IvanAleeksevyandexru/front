@@ -13,10 +13,10 @@ export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
   @Output() nextStepEvent = new EventEmitter();
   isEditable: boolean;
 
-  constructor(private componentStateService: CurrentAnswersService) {}
+  constructor(private currentAnswersService: CurrentAnswersService) {}
 
   ngOnInit(): void {
-    this.componentStateService.state = this.data.value;
+    this.currentAnswersService.state = this.data.value;
   }
 
   clickToAction(action: NotificationAction) {

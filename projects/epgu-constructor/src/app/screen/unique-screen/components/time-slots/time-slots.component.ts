@@ -85,7 +85,7 @@ export class TimeSlotsComponent implements OnInit {
     private gibddTimeSlotsService: GibddTimeSlotsService,
     private mvdTimeSlotsService: MvdTimeSlotsService,
     private modalService: ModalService,
-    private componentStateService: CurrentAnswersService,
+    private currentAnswersService: CurrentAnswersService,
     public constants: TimeSlotsConstants,
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;
@@ -160,7 +160,7 @@ export class TimeSlotsComponent implements OnInit {
 
   public chooseTimeSlot(slot) {
     this.currentSlot = slot;
-    this.componentStateService.state = slot;
+    this.currentAnswersService.state = slot;
   }
 
   public isSlotSelected(slot) {
@@ -298,7 +298,7 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   buttonDisabled(): boolean {
-    return !this.componentStateService.isValid || this.inProgress || this.isBookSlotSelected();
+    return !this.currentAnswersService.isValid || this.inProgress || this.isBookSlotSelected();
   }
 
   isBookSlotSelected(): boolean {

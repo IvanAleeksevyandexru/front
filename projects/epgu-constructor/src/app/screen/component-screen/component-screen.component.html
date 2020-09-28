@@ -103,7 +103,7 @@
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
         class="footer__btn-submit"
-        [disabled]="!componentStateService.isValid || (screenService.isLoading$ | async)"
+        [disabled]="!currentAnswersService.isValid || (screenService.isLoading$ | async)"
       >
         <div class="secondary-font">
           {{ (screenService.submitLabel$ | async) || 'Продолжить' }}

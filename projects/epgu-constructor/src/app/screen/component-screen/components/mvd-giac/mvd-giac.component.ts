@@ -30,7 +30,7 @@ export class MvdGiacComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private componentStateService: CurrentAnswersService,
+    private currentAnswersService: CurrentAnswersService,
     private dictionaryApiService: DictionaryApiService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
@@ -56,7 +56,7 @@ export class MvdGiacComponent implements OnInit {
   }
 
   private formChangesHandler(value) {
-    this.componentStateService.state = value.region;
+    this.currentAnswersService.state = value.region;
   }
 
   private getRegionGroupForm() {

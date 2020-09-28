@@ -34,11 +34,11 @@ export class ChangeListComponent implements OnInit, OnChanges {
   response: Array<any>;
   fields: FormGroup;
 
-  constructor(private componentStateService: CurrentAnswersService) {}
+  constructor(private currentAnswersService: CurrentAnswersService) {}
 
   ngOnInit(): void {
     // TODO eliskachev это для тебя нужно заполнить данные;
-    this.componentStateService.state = '';
+    this.currentAnswersService.state = '';
     this.fields = this.generateFormControls();
   }
 
@@ -51,7 +51,7 @@ export class ChangeListComponent implements OnInit, OnChanges {
     if (this.fields.valid) {
       this.response.unshift(this.fields.getRawValue());
       this.fields.reset();
-      this.componentStateService.state = this.response;
+      this.currentAnswersService.state = this.response;
     }
   }
 

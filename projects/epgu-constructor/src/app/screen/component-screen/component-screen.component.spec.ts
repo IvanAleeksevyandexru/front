@@ -17,7 +17,7 @@ xdescribe('ScreenComponent', () => {
   let component: ComponentScreenComponent;
   let fixture: ComponentFixture<ComponentScreenComponent>;
   let navService: NavigationService;
-  let componentStateService: CurrentAnswersService;
+  let currentAnswersService: CurrentAnswersService;
   let screenService: ScreenService;
   const screenDataMock: ScreenStore = {
     display: {
@@ -54,7 +54,7 @@ xdescribe('ScreenComponent', () => {
     })
     .compileComponents();
     navService = TestBed.inject(NavigationService);
-    componentStateService = TestBed.inject(CurrentAnswersService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
     screenService = TestBed.inject(ScreenService);
   }));
 

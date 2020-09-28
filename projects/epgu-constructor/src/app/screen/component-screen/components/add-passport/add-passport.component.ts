@@ -17,7 +17,7 @@ export class AddPassportComponent implements OnInit {
   cycledValues: any;
 
   constructor(
-    private componentStateService: CurrentAnswersService,
+    private currentAnswersService: CurrentAnswersService,
     private toolsService: ToolsService,
   ) {}
 
@@ -56,6 +56,6 @@ export class AddPassportComponent implements OnInit {
       stateData = data;
     }
 
-    this.componentStateService.state = stateData;
+    this.currentAnswersService.state = stateData;
   }
 }

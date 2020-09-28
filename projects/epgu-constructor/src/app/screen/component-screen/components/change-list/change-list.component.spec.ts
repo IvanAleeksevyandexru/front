@@ -7,7 +7,7 @@ import { CurrentAnswersService } from '../../../current-answers.service';
 describe('ChangeListComponent', () => {
   let component: ChangeListComponent;
   let fixture: ComponentFixture<ChangeListComponent>;
-  let componentStateService: CurrentAnswersService;
+  let currentAnswersService: CurrentAnswersService;
   const mockData: ChangeListComponentInterface = {
     attrs: {
       fields: [{
@@ -29,7 +29,7 @@ describe('ChangeListComponent', () => {
       providers: [CurrentAnswersService]
     })
     .compileComponents();
-    componentStateService = TestBed.inject(CurrentAnswersService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
   }));
 
   beforeEach(() => {

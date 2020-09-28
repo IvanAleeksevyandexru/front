@@ -20,7 +20,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   cycledValues: any;
 
   constructor(
-    private componentStateService: CurrentAnswersService,
+    private currentAnswersService: CurrentAnswersService,
     private toolsService: ToolsService,
   ) {}
 
@@ -42,7 +42,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
       this.data.value = JSON.stringify(data);
     }
     this.dataToSend = this.data.value;
-    this.componentStateService.state = this.dataToSend;
+    this.currentAnswersService.state = this.dataToSend;
   }
 
   sameAddressAction() {
@@ -99,6 +99,6 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
 
   dataChange(changes: any) {
     const responseData = this.setState(changes);
-    this.componentStateService.state = responseData;
+    this.currentAnswersService.state = responseData;
   }
 }

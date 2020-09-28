@@ -37,7 +37,7 @@ export class RepeatableFieldsComponent {
   trackByFunction = (index, item) => item;
 
   constructor(
-    private componentStateService: CurrentAnswersService,
+    private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
   ) {}
 
@@ -58,7 +58,7 @@ export class RepeatableFieldsComponent {
   }
 
   nextScreen() {
-    this.nextStepEvent.emit(this.componentStateService.state);
+    this.nextStepEvent.emit(this.currentAnswersService.state);
   }
 
   removeItem(key: string, index: number) {
@@ -69,9 +69,9 @@ export class RepeatableFieldsComponent {
   }
 
   getState() {
-    return JSON.parse(this.componentStateService.state);
+    return JSON.parse(this.currentAnswersService.state);
   }
   saveState(state) {
-    this.componentStateService.state = JSON.stringify(state);
+    this.currentAnswersService.state = JSON.stringify(state);
   }
 }

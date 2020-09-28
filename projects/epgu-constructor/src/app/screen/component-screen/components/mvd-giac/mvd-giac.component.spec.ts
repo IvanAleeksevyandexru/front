@@ -16,7 +16,7 @@ describe('MvdGiacComponent', () => {
   let fixture: ComponentFixture<MvdGiacComponent>;
 
   let dictionaryApiService: DictionaryApiService;
-  let componentStateService: CurrentAnswersService;
+  let currentAnswersService: CurrentAnswersService;
 
   let getMvdDictionarySpy: jasmine.Spy;
 
@@ -92,7 +92,7 @@ describe('MvdGiacComponent', () => {
     component.applicantAnswers = applicantAnswersMock;
 
     dictionaryApiService = TestBed.inject(DictionaryApiService);
-    componentStateService = TestBed.inject(CurrentAnswersService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
 
     let regionList = [
       {
@@ -119,7 +119,7 @@ describe('MvdGiacComponent', () => {
 
     getMvdDictionarySpy = spyOn(dictionaryApiService, 'getMvdDictionary').and.returnValue(dictionarySubject);
 
-    componentStateService.state = null;
+    currentAnswersService.state = null;
   });
 
   describe('ngOnInit', () => {
@@ -142,7 +142,7 @@ describe('MvdGiacComponent', () => {
         component.regionForm.get('region').setErrors({ incorrect: true });
         component.regionForm.patchValue({});
 
-        expect(componentStateService.state).toBe(null);
+        expect(currentAnswersService.state).toBe(null);
       });
 
       it('should save data if form is valid', () => {
@@ -152,7 +152,7 @@ describe('MvdGiacComponent', () => {
           region: EXPECTED_VALUE
         });
 
-        expect(componentStateService.state).toBe(EXPECTED_VALUE);
+        expect(currentAnswersService.state).toBe(EXPECTED_VALUE);
       });
     });
 

@@ -21,7 +21,7 @@ export class ScreenService extends ScreenContent{
 
   constructor (
     private applicantAnswersService: ApplicantAnswersService,
-    private componentStateService: CurrentAnswersService,
+    private currentAnswersService: CurrentAnswersService,
   ) {
     super();
   }
@@ -62,8 +62,8 @@ export class ScreenService extends ScreenContent{
    * @private
    */
   private initComponentStateService() {
-    this.componentStateService.state = '';
-    this.componentStateService.isValid = true;
+    this.currentAnswersService.state = '';
+    this.currentAnswersService.isValid = true;
   }
 
   /**

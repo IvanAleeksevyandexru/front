@@ -13,7 +13,7 @@ import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsub
 describe('AddChildrenScreenComponent', () => {
   let component: AddChildrenScreenComponent;
   let fixture: ComponentFixture<AddChildrenScreenComponent>;
-  let componentStateService: CurrentAnswersService;
+  let currentAnswersService: CurrentAnswersService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
   const mockData = {
     attrs: [],
@@ -50,7 +50,7 @@ describe('AddChildrenScreenComponent', () => {
     fixture = TestBed.createComponent(AddChildrenScreenComponent);
     component = fixture.componentInstance;
     component.data = mockData;
-    componentStateService = fixture.debugElement.injector.get(CurrentAnswersService);
+    currentAnswersService = fixture.debugElement.injector.get(CurrentAnswersService);
     component.addMoreChild();
   });
 

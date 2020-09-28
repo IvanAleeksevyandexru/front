@@ -38,7 +38,7 @@ export class ConfirmPersonalUserPhoneComponent implements OnChanges {
   ];
 
   constructor(
-    private componentStateService: CurrentAnswersService,
+    private currentAnswersService: CurrentAnswersService,
     private screenService: ScreenService,
     private navigationService: NavigationService,
   ) {}
@@ -54,7 +54,7 @@ export class ConfirmPersonalUserPhoneComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data?.currentValue) {
-      this.componentStateService.state = this.data;
+      this.currentAnswersService.state = this.data;
     }
   }
 
@@ -62,7 +62,7 @@ export class ConfirmPersonalUserPhoneComponent implements OnChanges {
     return {
       [this.screenService.component.id]: {
         visited: true,
-        value: this.componentStateService.state,
+        value: this.currentAnswersService.state,
       },
     };
   }

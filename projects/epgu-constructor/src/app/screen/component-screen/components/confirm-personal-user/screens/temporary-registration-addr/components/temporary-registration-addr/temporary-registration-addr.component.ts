@@ -31,7 +31,7 @@ export class TemporaryRegistrationAddrComponent implements OnChanges, AfterViewI
 
   constructor(
     public config: ConfigService,
-    private componentStateService: CurrentAnswersService,
+    private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
@@ -57,7 +57,7 @@ export class TemporaryRegistrationAddrComponent implements OnChanges, AfterViewI
   }
 
   private formChanges(changesData) {
-    this.componentStateService.state = changesData;
+    this.currentAnswersService.state = changesData;
   }
 
   private setValidatorsToForm(): void {
@@ -86,9 +86,9 @@ export class TemporaryRegistrationAddrComponent implements OnChanges, AfterViewI
   private subscribeToFormChanges(): void {
     this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((changes) => {
       if (this.dataForm.invalid) {
-        this.componentStateService.isValid = false;
+        this.currentAnswersService.isValid = false;
       } else {
-        this.componentStateService.isValid = true;
+        this.currentAnswersService.isValid = true;
         this.formChanges(changes);
       }
     });

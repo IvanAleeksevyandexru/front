@@ -27,7 +27,7 @@ export class AddChildrenScreenComponent implements OnInit {
   addChildrenForm = new FormGroup({});
 
   constructor(
-    private componentStateService: CurrentAnswersService,
+    private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
@@ -85,7 +85,7 @@ export class AddChildrenScreenComponent implements OnInit {
 
   passDataToSend(selectedItems): void {
     this.valueParsed.items = selectedItems;
-    this.componentStateService.state = this.valueParsed;
+    this.currentAnswersService.state = this.valueParsed;
   }
 
   updateChild(childData, item): void {
