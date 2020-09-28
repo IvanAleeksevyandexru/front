@@ -1,3 +1,5 @@
+import { MockApi } from '../../projects/epgu-constructor/src/app/config/config.types'
+
 export const environment = {
   production: false,
   serviceId: 'local',
@@ -14,6 +16,6 @@ export const environment = {
   paymentUrl: 'https://payment-dev-l14.test.gosuslugi.ru',
   fileUploadApiUrl: 'https://gosuslugi.ru/api/storage/v1/files',
   staticDomainAssetsPath: '',
-  mocks: [],
+  mocks: [] as MockApi[],
   mockUrl: ''
 };
