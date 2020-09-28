@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { WebcamImage } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
-import { WebcamEvents } from '../../webcam/webcamevents';
+import { WebcamEvents } from './webcamevents';
 import { IMAGE_CAMERA_QUALITY } from './webcam-shoot.const';
 
 @Component({
