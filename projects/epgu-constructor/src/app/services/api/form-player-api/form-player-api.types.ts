@@ -56,6 +56,7 @@ export interface DisplayDto {
   name: string;
   submitLabel: string;
   type: ScreenTypes;
+  terminal: boolean;
 }
 
 export interface CurrentCycledFieldsDto {

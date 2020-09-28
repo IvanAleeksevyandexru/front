@@ -1,5 +1,5 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
-<epgu-constructor-screen-container>
+<epgu-constructor-navigation *ngIf="!screenStore.display?.terminal" class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container [ngClass]="screenStore.display?.terminal ? 'screen-container-mt' : ''">
   <epgu-constructor-screen-pad>
 
     <epgu-constructor-page-name class="info__head">{{screenStore.display?.header}}</epgu-constructor-page-name>
