@@ -59,6 +59,11 @@
     @include typ-plain-small;
   }
 
+  .helper-text {
+    @include typ-plain-small;
+    color: $color-text-helper;
+  }
+
   sub {
     font-size: $font-xs;
     line-height: 16px;

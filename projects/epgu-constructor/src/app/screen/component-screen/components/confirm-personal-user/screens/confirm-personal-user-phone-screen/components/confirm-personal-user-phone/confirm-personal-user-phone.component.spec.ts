@@ -3,7 +3,6 @@ import { ComponentStateService } from '../../../../../../../../services/componen
 import { ConfirmPersonalUserPhoneComponent } from './confirm-personal-user-phone.component';
 import { ScreenService } from '../../../../../../../screen.service';
 import { NavigationService } from '../../../../../../../../shared/services/navigation/navigation.service';
-import { FormPlayerService } from '../../../../../../../../services/form-player/form-player.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ApplicantAnswersService } from '../../../../../../../../shared/services/applicant-answers/applicant-answers.service';
 import { FormPlayerApiService } from '../../../../../../../../services/api/form-player-api/form-player-api.service';
@@ -27,7 +26,6 @@ describe('ConfirmPersonalUserPhoneComponent', () => {
         ComponentStateService,
         ScreenService,
         NavigationService,
-        FormPlayerService,
 
         // TODO Tur: почему нужно импортировать эти сервисы?
         FormPlayerApiService,
@@ -46,7 +44,6 @@ describe('ConfirmPersonalUserPhoneComponent', () => {
     fixture.debugElement.injector.get(ComponentStateService);
     fixture.debugElement.injector.get(ScreenService);
     fixture.debugElement.injector.get(NavigationService);
-    fixture.debugElement.injector.get(FormPlayerService);
 
     component.data = mockData;
     fixture.detectChanges();

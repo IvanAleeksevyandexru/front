@@ -7,11 +7,11 @@ import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
-import { FormPlayerService } from '../../services/form-player/form-player.service';
 import { FormPlayerApiService } from '../../services/api/form-player-api/form-player-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../config/config.service';
 import { ServiceDataService } from '../../services/service-data/service-data.service';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 
 describe('InfoScreenComponent', () => {
@@ -50,10 +50,10 @@ describe('InfoScreenComponent', () => {
         ScreenService,
         ApplicantAnswersService,
         ComponentStateService,
-        FormPlayerService,
         FormPlayerApiService,
         ConfigService,
         ServiceDataService,
+        CycledFieldsService,
       ]
     })
     .compileComponents();

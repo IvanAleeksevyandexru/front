@@ -1,19 +1,20 @@
-<ng-template ngFor let-upload [ngForOf]="attributes.uploads" let-i="index">
+<ng-template ngFor let-upload [ngForOf]="attributes.uploads">
   <epgu-constructor-file-upload-item
-    [refData]="refData"
+    *ngIf="!upload.type || upload.type === fileUploadItemTypes.single"
     [objectId]="objectId"
+    [refData]="refData"
     [data]="upload"
     [clarification]="attributes?.clarifications"
     [prefixForMnemonic]="prefixForMnemonic"
     (newValueSet)="handleNewValueForItem($event)"
   ></epgu-constructor-file-upload-item>
   <epgu-constructor-file-upload
-    *ngIf="upload?.relatedUploads"
+    *ngIf="upload.type == fileUploadItemTypes.cycle"
+    [objectId]="objectId"
     [isRelatedUploads]="true"
     [applicantAnswers]="applicantAnswers"
     [uploadId]="upload.uploadId"
     [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(upload.relatedUploads?.ref)"
-    [objectId]="objectId"
     [attributes]="upload.relatedUploads"
     (newRelatedValueSet)="handleNewRelatedValueForItem($event)"
   ></epgu-constructor-file-upload>

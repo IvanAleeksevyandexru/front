@@ -31,11 +31,12 @@ export interface NavigationPayload {
  * @property {FormPlayerNavigation}direction - направление движения навигации
  * @property {string}url - адресс на который нужно стучатся (иногда в actions приходит url)
  */
-export interface NavigationFullOptions extends NavigationShortOptions {
-  direction: FormPlayerNavigation;
+export interface NavigationOptions {
   isInternalScenarioFinish?: boolean
+  url?: string;
 }
 
-export interface NavigationShortOptions {
-  url?: string;
+export interface Navigation {
+  payload?: NavigationPayload,
+  options?: NavigationOptions
 }

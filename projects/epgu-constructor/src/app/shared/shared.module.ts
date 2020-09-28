@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
 import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
+import { ModalService } from '../services/modal/modal.service';
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';
 import { HelperTextComponent } from './components/base/helper-text/helper-text.component';
 import { LabelComponent } from './components/base/label/label.component';
@@ -25,6 +26,7 @@ import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
 import { NavigationService } from './services/navigation/navigation.service';
 import { PassportComponent } from './components/add-passport/passport.component';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 
 
 const COMPONENTS = [
@@ -59,7 +61,7 @@ const DIRECTIVES = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  providers: [NavigationService, ApplicantAnswersService],
+  providers: [NavigationService, ApplicantAnswersService, ModalService, CycledFieldsService],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [
       CommonModule,
@@ -67,7 +69,10 @@ const DIRECTIVES = [
       FormsModule,
   ],
   entryComponents: [
-    ConfirmationModalComponent
+    ModalBaseComponent,
+    ModalContainerComponent,
+    ConfirmationModalComponent,
+    CommonModalComponent,
   ]
 })
 export class SharedModule {}

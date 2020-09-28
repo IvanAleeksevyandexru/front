@@ -3,8 +3,7 @@ import { UnsubscribeService } from '../../../../../../../../services/unsubscribe
 import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
 import { ScreenService } from '../../../../../../../screen.service';
 import { NavigationService } from '../../../../../../../../shared/services/navigation/navigation.service';
-import { FormPlayerService } from '../../../../../../../../services/form-player/form-player.service';
-import { FormPlayerNavigation } from '../../../../../../../../form-player.types';
+import { Navigation } from '../../../../../../../../form-player.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-email',
@@ -22,14 +21,15 @@ export class ConfirmPersonalUserEmailComponent implements OnChanges {
     private componentStateService: ComponentStateService,
     private screenService: ScreenService,
     private navigationService: NavigationService,
-    private formPlayerService: FormPlayerService,
   ) {}
 
   handleClick() {
     const action = this.screenService.actions[0];
-    const data = this.getComponentStateForNavigate();
-    const options = { url: action.action, direction: FormPlayerNavigation.NEXT };
-    this.formPlayerService.navigate(data, options);
+    const navigation: Navigation = {
+      payload: this.getComponentStateForNavigate(),
+      options: { url: action.action },
+    };
+    this.navigationService.nextStep.next(navigation);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

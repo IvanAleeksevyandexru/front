@@ -5,6 +5,8 @@ export const environment = {
   orderId: '',
   apiUrl: 'http://develop.pgu2-dev.test.gosuslugi.ru/api',
   dictionaryUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
+  mvdUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
+  selectMapUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
   externalApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1',
   timeSlotApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/equeue/agg',
   uinApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/paygate/uin',

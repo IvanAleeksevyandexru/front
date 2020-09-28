@@ -1,14 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmEmailComponent } from './confirm-email.component';
 import { ScreenService } from '../../../../../screen.service';
-import { FormPlayerService } from '../../../../../../services/form-player/form-player.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
-import { FormPlayerServiceStub } from '../../../../../../services/form-player/form-player.service.stub';
-import { ConfigService } from '../../../../../../config/config.service';
-import { ConfigServiceStub } from '../../../../../../config/config.service.stub';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenServiceStub } from '../../../../../screen.service.stub';
+import { ConfigService } from '../../../../../../config/config.service';
+import { ConfigServiceStub } from '../../../../../../config/config.service.stub';
 
 xdescribe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;
@@ -22,7 +20,6 @@ xdescribe('ConfirmEmailComponent', () => {
         UnsubscribeService,
         NavigationService,
         { provide: ScreenService,useClass: ScreenServiceStub },
-        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     })
@@ -34,7 +31,6 @@ xdescribe('ConfirmEmailComponent', () => {
     component = fixture.componentInstance;
 
     fixture.debugElement.injector.get(ScreenService);
-    fixture.debugElement.injector.get(FormPlayerService);
     fixture.debugElement.injector.get(UnsubscribeService);
     fixture.debugElement.injector.get(NavigationService);
   });

@@ -20,7 +20,6 @@ import { TemporaryRegistrationAddrScreenModule } from './components/confirm-pers
 import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
 import { DocInputModule } from './components/doc-input/doc-input.module';
 import { MvdGiacModule } from './components/mvd-giac/mvd-giac.module';
-import { SnilsModule } from './components/snils/snils.module';
 
 
 const COMPONENTS = [
@@ -41,7 +40,6 @@ const COMPONENTS = [
     AddChildrenScreenModule,
     TemporaryRegistrationAddrScreenModule,
     AddPassportModule,
-    SnilsModule,
     MvdGiacModule,
     DocInputModule,
     SharedModule,
