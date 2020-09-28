@@ -34,6 +34,14 @@ export class AddPassportComponent implements OnInit {
     const controls = {};
 
     this.data.attrs.fields.forEach((field) => {
+      // Добавим валидацию полей
+      const validators = [Validators.required];
+      if (field.maxlength) {
+        validators.push(Validators.maxLength(field.maxlength));
+      }
+      if (field.minlength) {
+        validators.push(Validators.minLength(field.minlength));
+      }
       controls[field.fieldName] = this.fb.control(null, [Validators.required]);
     });
 
