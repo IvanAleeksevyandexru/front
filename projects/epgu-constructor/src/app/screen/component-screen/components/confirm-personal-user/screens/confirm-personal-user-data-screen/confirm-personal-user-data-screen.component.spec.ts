@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { ComponentStateService } from '../../../../../../components/component-state.service';
 import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmUserData } from '../../../../types/confirm-user-data.types';
 import { ConfirmPersonalUserDataScreenComponent } from './confirm-personal-user-data-screen.component';

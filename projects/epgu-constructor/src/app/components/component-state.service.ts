@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 
+/**
+ * Deprecated service for store components state
+ * TODO: remove it when implement ComponentService
+ */
 @Injectable()
 export class ComponentStateService {
 

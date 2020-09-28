@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
-import { ComponentStateService } from '../services/component-state/component-state.service';
+import { ComponentStateService } from '../components/component-state.service';
 import { ScreenContent } from './screen-content';
 
 

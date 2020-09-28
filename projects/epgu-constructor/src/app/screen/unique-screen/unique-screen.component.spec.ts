@@ -6,7 +6,7 @@ import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { ComponentStateService } from '../../components/component-state.service';
 import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 describe('UniqueScreenComponent', () => {

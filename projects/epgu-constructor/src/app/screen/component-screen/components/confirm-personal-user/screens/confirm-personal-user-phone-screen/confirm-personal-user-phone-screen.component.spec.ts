@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { ConfirmPersonalUserPhoneScreenComponent } from './confirm-personal-user-phone-screen.component';
-import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { ComponentStateService } from '../../../../../../components/component-state.service';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserScreenLayoutComponent } from '../../sub-components/confirm-personal-user-screen-layout/confirm-personal-user-screen-layout.component';
 import { ConfirmPersonalUserPhoneComponent } from './components/confirm-personal-user-phone/confirm-personal-user-phone.component';

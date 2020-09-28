@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { ComponentStateService } from '../../../../../../components/component-state.service';
 import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 

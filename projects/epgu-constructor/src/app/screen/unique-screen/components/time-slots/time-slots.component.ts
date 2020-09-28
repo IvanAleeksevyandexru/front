@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { ComponentStateService } from '../../../../components/component-state.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { TimeSlotsService } from './time-slots.service';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';

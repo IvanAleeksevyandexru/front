@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { ComponentStateService } from '../../components/component-state.service';
 import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { ComponentScreenComponentTypes } from './component-screen.types';

@@ -6,7 +6,7 @@ import { ScreenService } from '../screen.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { ComponentStateService } from '../../components/component-state.service';
 
 
 // TODO: Need to refactoring component

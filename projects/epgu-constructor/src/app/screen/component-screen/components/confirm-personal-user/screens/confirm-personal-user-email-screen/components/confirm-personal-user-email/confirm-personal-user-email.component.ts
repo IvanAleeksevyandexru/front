@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
+import { ComponentStateService } from '../../../../../../../../components/component-state.service';
 import { ScreenService } from '../../../../../../../screen.service';
 import { NavigationService } from '../../../../../../../../shared/services/navigation/navigation.service';
 import { Navigation } from '../../../../../../../../form-player.types';
