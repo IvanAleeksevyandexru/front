@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DocInputComponent, DocInputComponentInterface } from './doc-input.component';
+import { DocInputComponent } from './doc-input.component';
+import { DocInputComponentInterface } from './doc-input.types';
 import { CurrentAnswersService } from '../../../current-answers.service';
 
 

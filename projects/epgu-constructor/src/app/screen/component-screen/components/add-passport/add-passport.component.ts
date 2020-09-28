@@ -1,44 +1,27 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { Component, Input, OnInit } from '@angular/core';
 import { CurrentAnswersService } from '../../../current-answers.service';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ToolsService } from '../../../../shared/services/tools/tools.service';
 import { TextTransform } from '../../../../shared/types/textTransform';
+import { ComponentBase } from '../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-add-passport',
   templateUrl: './add-passport.component.html',
   styleUrls: ['./add-passport.component.scss'],
-  providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddPassportComponent implements OnInit {
-  @Input() data: any;
-  @Input() header: string;
+  @Input() data: ComponentBase;
   @Input() currentCycledFields: object = {};
-  @Input() submitLabel: string;
 
-  passportForm: FormGroup;
   isCycledFields: boolean;
   cycledValues: any;
 
   constructor(
-    private fb: FormBuilder,
     private componentStateService: CurrentAnswersService,
-    private ngUnsubscribe$: UnsubscribeService,
     private toolsService: ToolsService,
   ) {}
 
   ngOnInit(): void {
-    const controls = {};
-
-    this.data.attrs.fields.forEach((field) => {
-      controls[field.fieldName] = this.fb.control(null, [Validators.required]);
-    });
-
-    this.passportForm = this.fb.group(controls);
-
     this.isCycledFields = Boolean(Object.keys(this.currentCycledFields).length);
     if (this.isCycledFields) {
       [this.cycledValues] = [
@@ -55,30 +38,24 @@ export class AddPassportComponent implements OnInit {
       }, {});
       this.data.value = JSON.stringify(data);
     }
-
-    this.passportForm.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
-      .subscribe((changes) => {
-        if (!this.passportForm.valid) {
-          return;
-        }
-
-        let stateData: any;
-        if (this.isCycledFields) {
-          stateData = this.toolsService.getFormattedCycledValues(
-            changes,
-            this.currentCycledFields,
-            this.cycledValues,
-          );
-        } else {
-          stateData = changes;
-        }
-
-        this.componentStateService.state = stateData;
-      });
   }
 
   get textTransformType(): TextTransform {
     return this.data?.attrs?.fstuc;
+  }
+
+  onPassportDataChange(data) {
+    let stateData: any;
+    if (this.isCycledFields) {
+      stateData = this.toolsService.getFormattedCycledValues(
+        data,
+        this.currentCycledFields,
+        this.cycledValues,
+      );
+    } else {
+      stateData = data;
+    }
+
+    this.componentStateService.state = stateData;
   }
 }

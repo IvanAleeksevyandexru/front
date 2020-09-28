@@ -36,7 +36,7 @@ import { OutputHtmlComponent } from './components/output-html/output-html.compon
 import { ScreenContainerComponent } from './components/screen-container/screen-container.component';
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { WebcamShootComponent } from './components/webcam-shoot/webcam-shoot.component';
-
+import { PassportComponent } from './components/add-passport/passport.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -55,6 +55,7 @@ const COMPONENTS = [
   ComponentsListComponent,
   LongButtonComponent,
   WebcamShootComponent,
+  PassportComponent,
 ];
 
 const PIPES = [
@@ -87,5 +88,4 @@ const DIRECTIVES = [
     CommonModalComponent,
   ]
 })
-export class SharedModule { }
-
+export class SharedModule {}
