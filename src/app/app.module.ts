@@ -1,11 +1,10 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormPlayerModule } from 'dist/epgu-constructor';
 import { EpguLibCommonModule, EpguLibModule } from 'epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
 import { ConfigService } from '../../projects/epgu-constructor/src/app/config/config.service';
-import { AuthInterceptor } from '../../projects/epgu-constructor/src/app/interceptor/authorization-interceptor';
 import { UnsubscribeService } from '../../projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -34,11 +33,6 @@ import { LayoutModule } from './layout/layout.module';
     AppService,
     UnsubscribeService,
     ConfigService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
   ],
   bootstrap: [AppComponent]
 })
