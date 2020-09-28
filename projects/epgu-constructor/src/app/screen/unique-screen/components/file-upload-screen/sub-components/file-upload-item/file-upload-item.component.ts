@@ -8,24 +8,23 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { WebcamInitError } from 'ngx-webcam';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../config/config.service';
-import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
 import {
-  Clarifications,
   FileResponseToBackendUploadsItem,
   FileUploadItem,
+  Clarifications,
   TerabyteListItem,
-} from '../../services/terra-byte-api/terra-byte-api.types';
-import { WebcamService } from '../../services/webcam/webcam.service';
+} from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
+import { TerraByteApiService } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.service';
+import { WebcamService } from '../../../../../../shared/services/webcam/webcam.service';
 import {
   isCloseAndSaveWebcamEvent,
   isCloseWebcamEvent,
   WebcamEvent,
-} from '../../webcam/webcamevents';
+} from '../../../../../../shared/components/webcam-shoot/webcamevents';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
+import { ConfigService } from '../../../../../../config/config.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -34,6 +33,7 @@ import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 })
 export class FileUploadItemComponent implements OnDestroy, OnInit {
   private loadData: FileUploadItem;
+  @Input() objectId: string;
   @Input() clarification: Clarifications;
   @Input()
   set data(data: FileUploadItem) {
@@ -65,7 +65,6 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     return this.loadData;
   }
   @Input() prefixForMnemonic: string;
-  @Input() objectId: number;
   @Input() refData: any = null;
 
   @Output() newValueSet: EventEmitter<FileResponseToBackendUploadsItem> = new EventEmitter<
@@ -76,6 +75,9 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     static: true,
   })
   uploadInput: ElementRef;
+  get isButtonsDisabled() {
+    return this.listIsUploadingNow || this.filesInUploading > 0;
+  }
 
   private subs: Subscription[] = [];
   private maxFileNumber = -1;
@@ -351,7 +353,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
           if (isCloseAndSaveWebcamEvent(event)) {
             // Если данные нужно сохранить и отправить
             const { data } = event;
-            this.sendFile(TerraByteApiService.base64toBlob(data, ''));
+            this.sendFile(TerraByteApiService.base64toBlob(data));
           }
           this.webcamService.close();
         }
@@ -379,20 +381,13 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
       });
   }
 
-  /**
-   * Проверяем ошибки инициализации
-   */
-  handleCameraInitError(error: WebcamInitError) {
-    if (error.mediaStreamError && error.mediaStreamError.name === 'NotAllowedError') {
-      // eslint-disable-next-line no-console
-      console.info('Camera access was not allowed by user!');
-    }
-    this.cameraNotAllowed = true;
-  }
-
   ngOnDestroy(): void {
     this.subs.forEach((sub) => sub.unsubscribe());
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.webcamService.isWebcamAllowed().subscribe((isAvailable) => {
+      this.cameraNotAllowed = isAvailable;
+    });
+  }
 }

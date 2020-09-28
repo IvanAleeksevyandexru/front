@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Config } from './config.types';
+import { Config, MockApi } from './config.types';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
@@ -15,6 +15,8 @@ export class ConfigServiceStub implements Config {
   _billsApiUrl = '';
   _yandexMapsApiKey = '';
   _staticDomainAssetsPath = '';
+  _mocks = [];
+  _mockUrl = '';
 
   get apiUrl(): string {
     return this._apiUrl;
@@ -64,6 +66,14 @@ export class ConfigServiceStub implements Config {
     return this._staticDomainAssetsPath;
   }
 
+  get mocks(): MockApi[] {
+    return this._mocks;
+  }
+
+  get mockUrl(): string {
+    return this._mockUrl;
+  }
+
   set config(config: Config) {
     this._apiUrl = config.apiUrl;
     this._billsApiUrl = config.billsApiUrl;
@@ -77,5 +87,7 @@ export class ConfigServiceStub implements Config {
     this._uinApiUrl = config.uinApiUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
     this._staticDomainAssetsPath = config.staticDomainAssetsPath;
+    this._mocks = config.mocks;
+    this._mockUrl = config.mockUrl;
   }
 }

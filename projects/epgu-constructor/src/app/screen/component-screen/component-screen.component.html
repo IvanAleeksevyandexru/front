@@ -13,6 +13,7 @@
           [currentCycledFields]="screenStore.currentCycledFields"
           [applicantAnswers]="screenStore.applicantAnswers"
           [errors]="screenStore.errors"
+          (actionSelect)="nextStep()"
         ></epgu-constructor-confirm-personal-user-address-screen>
 
         <epgu-constructor-confirm-personal-user-data-screen
@@ -67,11 +68,6 @@
           *ngSwitchCase="screenComponentName.changeList"
           [data]="(screenStore.display?.components)[0]"
         ></epgu-constructor-change-list>
-
-        <epgu-constructor-snils
-          *ngSwitchCase="screenComponentName.snilsInput"
-          [data]="(screenStore.display?.components)[0]"
-        ></epgu-constructor-snils>
 
         <epgu-constructor-country-selection
           *ngSwitchCase="screenComponentName.countryApostil"

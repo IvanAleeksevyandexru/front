@@ -1,4 +1,6 @@
 @import 'core';
+// Implement styleguide for all library's components
+@import 'components/index.scss';
 
 // TODO: remove all normalize css styles, it may affect app's style
 // stylelint-disable
@@ -59,6 +61,11 @@
     @include typ-plain-small;
   }
 
+  .helper-text {
+    @include typ-plain-small;
+    color: $color-text-helper;
+  }
+
   sub {
     font-size: $font-xs;
     line-height: 16px;
@@ -89,6 +96,4 @@
     background: $color-devider;
     height: 1px;
   }
-  // Implement styleguide for all library's components
-  @import 'components/index.scss';
 }

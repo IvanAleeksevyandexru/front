@@ -13,6 +13,7 @@ import { ScreenService } from '../screen.service';
 import { ConfirmMarriageModule } from './components/confirm-marriage/confirm-marriage.module';
 import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
 import { PaymentModule } from './components/payment/payment.module';
+import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { ConfirmPhoneModule } from './components/confirm-phone/confirm-phone.module';
 import { ConfirmEmailModule } from './components/confirm-email/confirm-email.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
@@ -36,14 +37,15 @@ const COMPONENTS = [UniqueScreenComponent];
     EpguLibModule,
     SelectMapObjectModule,
     CarInfoModule,
-    ConfirmPhoneModule,
-    ConfirmEmailModule,
     EmployeeHistoryModule,
-    SignatureApplicationModule,
     TimeSlotsModule,
     ConfirmMarriageModule,
     PaymentModule,
     UnusedPaymentsModule,
+    ConfirmPhoneModule,
+    ConfirmEmailModule,
+    SignatureApplicationModule,
+    UploadAndEditPhotoModule,
   ],
   providers: [
     ScreenService

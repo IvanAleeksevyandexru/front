@@ -13,4 +13,5 @@ export enum UniqueScreenComponentTypes {
   phoneNumberConfirmCodeInput = 'PhoneNumberConfirmCodeInput',
   ConfirmNewEmail = 'ConfirmNewEmail',
   unusedPayments = 'UnusedPayments',
+  photoUploadComponent = 'PhotoUploadComponent',
 }

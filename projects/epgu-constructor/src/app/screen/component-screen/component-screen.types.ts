@@ -10,7 +10,6 @@ export enum ComponentScreenComponentTypes {
   changeList = 'ChangeList',
   childrenListUnder14 = 'ChildrenListUnder14',
   childrenListAbove14 = 'ChildrenListAbove14',
-  snilsInput = 'SnilsInput',
   docInput = 'DocInput',
   countryApostil = 'CountryApostil',
   mvdGiac = 'MvdGiac',

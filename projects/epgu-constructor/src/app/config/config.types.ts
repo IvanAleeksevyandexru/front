@@ -1,4 +1,9 @@
 /**
+ * Перечень поддерживаемых моков
+ */
+export type MockApi = 'mvd' | 'selectMap' | 'timeSlot';
+
+/**
  * @property {string}apiUrl - url до форм плеер сервиса, как правило apiHostName/api
  * @property {string}dictionaryUrl - url до сервиса словарей, как правило apiHostName/api/nsi/v1/dictionary
  * @property {string}externalApiUrl - url до сервиса dadata, как правило apiHostName/api/nsi/v1
@@ -9,6 +14,9 @@
  * @property {string}fileUploadApiUrl - url до хранилища файлов, как правило apiHostName/api/storage/v1/files
  * @property {string}lkUrl - url до личного кабинета, как правило hostName/info
  * @property {string}yandexMapsApiKey - токен для яндекс карт
+ * @property {string}yandexMapsApiKey - токен для яндекс карт
+ * @property {MockApi[]}mocks - массив апи для которых будет использваван mockUrl
+ * @property {string}mockUrl - url до mockApi
  */
 export interface Config {
   apiUrl: string;
@@ -23,4 +31,6 @@ export interface Config {
   lkUrl: string;
   yandexMapsApiKey: string;
   staticDomainAssetsPath: string;
+  mocks?: MockApi[];
+  mockUrl?: string;
 }

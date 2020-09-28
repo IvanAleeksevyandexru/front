@@ -24,6 +24,13 @@
     [header]="screenStore.display?.header"
     [gender]="screenStore.gender"
     [display]="screenStore.display"
+
+
+
+
+
+
+
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-employee-history>
   <epgu-constructor-repeatable-fields
@@ -67,4 +74,8 @@
   <epgu-constructor-confirm-email
     *ngSwitchCase="uniqueComponentName.ConfirmNewEmail">
   </epgu-constructor-confirm-email>
+  <epgu-constructor-upload-and-edit-photo
+    *ngSwitchCase="uniqueComponentName.photoUploadComponent"
+    (nextStepEvent)="nextDataForStep($event)">
+  </epgu-constructor-upload-and-edit-photo>
 </ng-container>
