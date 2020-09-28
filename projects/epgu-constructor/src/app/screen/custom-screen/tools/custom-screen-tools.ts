@@ -151,10 +151,12 @@ const getCalcRelation = (checkComponent: CustomComponent) => checkComponent.attr
  * Подсчитывает автовычисляемое значение из формулы, которую передали
  * @param item - объект с информацией о связи
  * @param state - хранилище данных о компонентов
+ * @example {val: '{add16} + {add17} / 100'} => 50 + 150 / 100
  */
 function calculateValueFromRelation(item: CustomComponentRef, state: CustomComponentState) {
   let str = item.val;
-  const componentKeys = [...str.match(/\{\w+\}/gm)];
+  const lettersAnNumberItemRegExp = /\{\w+\}/gm;
+  const componentKeys = [...str.match(lettersAnNumberItemRegExp)];
   let haveAllValues = true;
 
   componentKeys.forEach((key: string) => {
@@ -167,6 +169,7 @@ function calculateValueFromRelation(item: CustomComponentRef, state: CustomCompo
     }
   });
 
+  // Возвращает например Math.round({add16} + {add17} / 100) => Math.round(50 + 150 / 100)
   return haveAllValues ? Function(`'use strict'; return (Math.round(${str}))`)() : '';
 }
 
