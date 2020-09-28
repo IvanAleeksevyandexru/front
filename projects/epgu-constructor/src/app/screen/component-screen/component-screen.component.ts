@@ -76,9 +76,9 @@ export class ComponentScreenComponent implements OnInit, Screen {
       value = this.componentStateService.state;
     }
 
-    this.navigationService.nextStep.next(
-      this.cycledFieldsService.dataTransform(this.screenStore, value),
-    );
+    this.navigationService.nextStep.next({
+      payload: { ...this.cycledFieldsService.dataTransform(this.screenStore, value) },
+    });
   }
 
   /**
