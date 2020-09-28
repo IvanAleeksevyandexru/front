@@ -7,6 +7,7 @@ import {
 } from '../services/api/form-player-api/form-player-api.types';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { BehaviorSubject } from 'rxjs';
+import { Gender } from '../shared/types/gender';
 
 export class ScreenContent {
 
@@ -36,6 +37,15 @@ export class ScreenContent {
     this._submitLabel.next(val);
   }
   public submitLabel$ = this._submitLabel.asObservable();
+
+  private _gender = new BehaviorSubject<Gender>(null);
+  public get gender() {
+    return this._gender.getValue();
+  }
+  public set gender(val: Gender) {
+    this._gender.next(val);
+  }
+  public gender$ = this._gender.asObservable();
 
   private _screenType = new BehaviorSubject<ScreenTypes>(null);
   public get screenType() {

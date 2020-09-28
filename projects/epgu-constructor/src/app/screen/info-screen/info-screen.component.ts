@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { Screen, ScreenStore } from '../screen.types';
+import { Screen } from '../screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
@@ -20,7 +20,6 @@ import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.
 export class InfoScreenComponent implements Screen, OnInit {
   // <-- constant
   infoScreenComponent = InfoScreenComponentTypes;
-  screenStore: ScreenStore;
 
   constructor(
     private navigationService: NavigationService,
@@ -34,12 +33,9 @@ export class InfoScreenComponent implements Screen, OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
 
-    this.screenService.screenData$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenStore) => {
-        this.screenStore = screenData;
-        this.cycledFieldsService.initCycledFields(this.screenStore.currentCycledFields);
-      });
+    this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.cycledFieldsService.initCycledFields(this.screenService.currentCycledFields);
+    });
   }
 
   prevStep(): void {
