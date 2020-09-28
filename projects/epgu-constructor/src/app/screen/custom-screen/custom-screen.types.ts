@@ -21,6 +21,7 @@ export enum CustomScreenComponentTypes {
   OgrnipInput = 'OgrnipInput',
   LegalInnInput = 'LegalInnInput',
   PersonInnInput = 'PersonInnInput',
+  PassportLookup = 'PassportLookup',
   SnilsInput = 'SnilsInput',
 }
 
