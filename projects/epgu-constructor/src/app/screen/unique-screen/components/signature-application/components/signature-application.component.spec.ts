@@ -3,37 +3,19 @@ import { ButtonComponent, LoaderComponent, SafeHtmlPipe } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { SignatureApplicationComponent } from './signature-application.component';
-import { Display, ScreenTypes } from '../../../../screen.types';
 import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
 import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
 import { OutputHtmlComponent } from '../../../../../shared/components/output-html/output-html.component';
 import { ConfigService } from '../../../../../config/config.service';
+import { ScreenService } from '../../../../screen.service';
+import { ScreenServiceStub } from '../../../../screen.service.stub';
+import { ConfigServiceStub } from '../../../../../config/config.service.stub';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
   let fixture: ComponentFixture<SignatureApplicationComponent>;
-  const displayDataMock: Display = {
-    components: [
-      {
-        attrs: {
-          actions: [{ action: 'getNextScreen', label: 'Перейти  в личный кабинет', value: '' }],
-          image: { src: 'link_to_img_MP' },
-        },
-        id: 'sig1',
-        label: '',
-        required: true,
-        type: 'EsepSign',
-        value: JSON.stringify({ url: 'http://yandex.ru' }),
-      },
-    ],
-    header: 'Подписание заявления',
-    id: 's42',
-    name: 'Подписание заявления',
-    submitLabel: 'Подписать',
-    type: ScreenTypes.UNIQUE,
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -48,7 +30,12 @@ describe('SignatureApplicationComponent', () => {
         OutputHtmlComponent,
         SafeHtmlPipe,
       ],
-      providers: [NavigationService, ConfigService],
+      providers: [
+        NavigationService,
+        ConfigService,
+        { provide: ScreenService,useClass: ScreenServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub }
+      ],
     }).compileComponents();
   }));
 
@@ -60,7 +47,9 @@ describe('SignatureApplicationComponent', () => {
     };
     fixture = TestBed.createComponent(SignatureApplicationComponent);
     component = fixture.componentInstance;
-    component.data = displayDataMock;
+
+    fixture.debugElement.injector.get(ScreenService);
+
     fixture.detectChanges();
   });
 

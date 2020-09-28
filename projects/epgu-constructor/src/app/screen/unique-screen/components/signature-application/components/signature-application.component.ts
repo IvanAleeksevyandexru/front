@@ -1,9 +1,8 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { HelperService } from 'epgu-lib';
 
-import { ComponentBase, Display } from '../../../../screen.types';
 import { ConfigService } from '../../../../../config/config.service';
-import { SignatureApplicationAttr } from '../models/application.interface';
+import { ScreenService } from '../../../../screen.service';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
@@ -12,18 +11,9 @@ import { SignatureApplicationAttr } from '../models/application.interface';
 })
 export class SignatureApplicationComponent implements OnInit {
   @Input() isLoading: boolean;
-  @Input() data: Display;
   @Output() nextStepEvent = new EventEmitter<void>();
 
   isMobile = HelperService.isMobile();
-
-  get signatureApplication() {
-    return this.data.components[0] as ComponentBase;
-  }
-
-  get attrs() {
-    return this.signatureApplication.attrs as SignatureApplicationAttr;
-  }
 
   @HostListener('click', ['$event']) onClick($event: Event) {
     const { id } = $event.target as HTMLElement;
@@ -33,7 +23,7 @@ export class SignatureApplicationComponent implements OnInit {
     }
   }
 
-  constructor(public config: ConfigService) {}
+  constructor(public config: ConfigService, public screenService: ScreenService) {}
 
   ngOnInit(): void {
     if (!this.isMobile) {
@@ -48,7 +38,7 @@ export class SignatureApplicationComponent implements OnInit {
   }
 
   private redirectToSignatureWindow(): void {
-    const value = JSON.parse(this.data.components[0].value);
-    window.location.href = value.url;
+    const { url } = JSON.parse(this.screenService.component.value) as { url: string };
+    window.location.href = url;
   }
 }
