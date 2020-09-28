@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { HelperService } from 'epgu-lib';
 
-import { Display } from '../../../../screen.types';
-import { ApplicationInterface } from '../models/application.interface';
+import { ConfigService } from '../../../../../config/config.service';
+import { ScreenService } from '../../../../screen.service';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
@@ -12,40 +11,34 @@ import { ApplicationInterface } from '../models/application.interface';
 })
 export class SignatureApplicationComponent implements OnInit {
   @Input() isLoading: boolean;
-  @Input() data: Display;
+  @Output() nextStepEvent = new EventEmitter<void>();
 
   isMobile = HelperService.isMobile();
-  isVisibilityLinks = false;
 
-  form: FormGroup;
+  @HostListener('click', ['$event']) onClick($event: Event) {
+    const { id } = $event.target as HTMLElement;
+    if (id === 'linkToLK') {
+      $event.preventDefault();
+      this.nextStep();
+    }
+  }
 
-  // TODO: заменить на данные, когда будет готов бэк. Возможно этого не будет
-  applicationInfo: ApplicationInterface = {
-    name: '2020_06_22_2.PDF',
-    link: {
-      pdf: '',
-      xml: '',
-    },
-  };
-
-  constructor(private fb: FormBuilder) {}
+  constructor(public config: ConfigService, public screenService: ScreenService) {}
 
   ngOnInit(): void {
-    this.initForm();
+    if (!this.isMobile) {
+      this.redirectToSignatureWindow();
+    }
   }
 
-  initForm() {
-    this.form = this.fb.group({
-      condition: [null, Validators.requiredTrue],
-    });
+  nextStep(): void {
+    // TODO: изменить window.location.href на this.nextStepEvent.emit(), когда будет известно как делать переход в ЛК с стороны бэка
+    // this.nextStepEvent.emit();
+    window.location.href = this.config.lkUrl;
   }
 
-  changeVisibility(isVisibility: boolean) {
-    this.isVisibilityLinks = isVisibility;
-  }
-
-  redirectToSignatureWindow() {
-    const value = JSON.parse(this.data.components[0].value);
-    window.location.href = value.url;
+  private redirectToSignatureWindow(): void {
+    const { url } = this.screenService.componentValue as { url: string };
+    window.location.href = url;
   }
 }

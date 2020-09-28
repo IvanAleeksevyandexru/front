@@ -5,9 +5,8 @@ import { EpguLibModule } from 'epgu-lib';
 
 import { SharedModule } from '../../../../shared/shared.module';
 import { SignatureApplicationComponent } from './components/signature-application.component';
-import { LinkComponent } from './components/link/link.component';
 
-const COMPONENTS = [SignatureApplicationComponent, LinkComponent];
+const COMPONENTS = [SignatureApplicationComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
