@@ -1,6 +1,8 @@
 /**
  * Интерфейс для опций файла, при получении обновлении или удалении
  */
+import { TerraUploadedFile } from '../../sub-components/file-upload-item/data';
+
 export interface TerraFileOptions {
   objectId: string; //идентификатор объекта, к которому прикреплён файл
   objectType: number; //тип объекта, к которому прикреплён файл
@@ -130,4 +132,24 @@ export interface TerabyteListItem{
   relativePath: string;
   updated: string;
   userId: number;
+}
+
+/**
+ * Интерфейс для события значений файлов
+ */
+export interface FileUploadEmitValue{
+  uploadId: string
+  value: TerraUploadedFile[],
+  relatedUploads?: {
+    uploads: FileUploadEmitValue[]
+  }
+}
+
+/**
+ * Интерфейс для события значений файлов применительно к блоку для загрузки
+ */
+export interface FileUploadEmitValueForComponent{
+  id: string;
+  type: string;
+  uploads?: FileUploadEmitValue[]
 }

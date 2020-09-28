@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FileUploadItem } from './services/terra-byte-api/terra-byte-api.types';
+import {
+  FileUploadEmitValue,
+  FileUploadEmitValueForComponent,
+  FileUploadItem,
+} from './services/terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen.types';
 import { ComponentBase } from '../../../screen.types';
 import { ScreenService } from '../../../screen.service';
@@ -37,8 +41,9 @@ export class FileUploadScreenComponent {
   @Input() submitLabel: string;
   @Output() nextStepEvent = new EventEmitter();
 
+  disabled = true;
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
-  private value: any = {}; // Здесь будет храниться значение на передачу
+  private value: FileUploadEmitValueForComponent; // Здесь будет храниться значение на передачу
 
   constructor(public screenService: ScreenService) {}
 
@@ -66,7 +71,24 @@ export class FileUploadScreenComponent {
   }
 
   /**
-   * Принимает новое значение от компонентов
+   * Возвращает true если документы в массиве загружены
+   * @param uploads - массив сведений о файлов
+   * @private
+   */
+  private isHaveAllFilesUploaded(uploads: FileUploadEmitValue[]): boolean {
+    const allUploads = uploads.length;
+    const uploadsWithFiles = uploads.filter((fileUploadsInfo) => {
+      // Если это зависимые подэлементы для загрузки
+      return fileUploadsInfo.relatedUploads
+        ? this.isHaveAllFilesUploaded(fileUploadsInfo.relatedUploads.uploads)
+        : fileUploadsInfo?.value.filter((file) => file.uploaded).length > 0;
+    }).length;
+
+    return allUploads === uploadsWithFiles;
+  }
+
+  /**
+   * Принимает новое значение от компонентов и провеяет доступность кнопки далее
    * @param $eventData - данные из компонента
    */
   handleNewValueSet($eventData: any) {
@@ -81,6 +103,7 @@ export class FileUploadScreenComponent {
     } else {
       this.value.uploads = $eventData;
     }
+    this.disabled = !this.isHaveAllFilesUploaded(this.value.uploads);
   }
 
   /**
