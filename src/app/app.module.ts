@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormPlayerModule } from 'dist/epgu-constructor';
@@ -12,7 +13,6 @@ import { ConfigComponent } from './config/config.component';
 import { FpContainerComponent } from './fp-container/fp-container.component';
 import { LayoutModule } from './layout/layout.module';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,6 +22,7 @@ import { LayoutModule } from './layout/layout.module';
   imports: [
     EpguLibCommonModule,
     LayoutModule,
+    HttpClientModule,
     FormPlayerModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -31,7 +32,7 @@ import { LayoutModule } from './layout/layout.module';
     CookieService,
     AppService,
     UnsubscribeService,
-    ConfigService
+    ConfigService,
   ],
   bootstrap: [AppComponent]
 })
