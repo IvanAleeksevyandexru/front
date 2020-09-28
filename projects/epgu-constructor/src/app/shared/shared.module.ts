@@ -23,7 +23,7 @@ import { TextTransformDirective } from './directives/text-transform/text-transfo
 import { TrimDirective } from './directives/trim/trim.directive';
 import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
-import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from './services/applicant-answers/cached-answers.service';
 import { NavigationService } from './services/navigation/navigation.service';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 
@@ -59,7 +59,7 @@ const DIRECTIVES = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  providers: [NavigationService, ApplicantAnswersService, ModalService, CycledFieldsService],
+  providers: [NavigationService, CachedAnswersService, ModalService, CycledFieldsService],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [
       CommonModule,

@@ -82,6 +82,7 @@ export interface ScenarioErrorsDto {
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
+  cachedAnswers: ApplicantAnswersDto;
   currentCycledFields: CurrentCycledFieldsDto;
   currentScenarioId: string;
   currentValue: CurrentValueDto;
