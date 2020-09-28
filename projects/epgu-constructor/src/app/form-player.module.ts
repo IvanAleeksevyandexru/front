@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { EpguLibModule } from 'epgu-lib';
 import { ConfigService } from './config/config.service';
 import { FormPlayerComponent } from './form-player.component';
+import { AuthInterceptor } from './interceptor/authorization-interceptor';
 import { ComponentScreenComponent } from './screen/component-screen/component-screen.component';
 import { ComponentScreenModule } from './screen/component-screen/component-screen.module';
 import { CustomScreenComponent } from './screen/custom-screen/custom-screen.component';
@@ -60,6 +62,11 @@ export const epguLibModule = EpguLibModule.forRoot();
     ConfigService,
     ServiceDataService,
     ToolsService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
   exports: [
     FormPlayerComponent,
