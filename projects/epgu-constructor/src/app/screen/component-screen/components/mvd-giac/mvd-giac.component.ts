@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { filter, takeUntil } from 'rxjs/operators';
-import { ComponentStateService } from '../../../../components/component-state.service';
+import { ComponentStateService } from '../../../component-state.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import {
   getFilteredDictionaryForMvdGiac,

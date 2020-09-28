@@ -1,77 +1,77 @@
 <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <epgu-constructor-screen-container>
   <form class="inner" [formGroup]="form">
-    <div *ngIf="screenStore.display?.header" class="head">
-      <epgu-constructor-page-name>{{ screenStore.display.header }}</epgu-constructor-page-name>
+    <div *ngIf="screenService.header$ | async as header" class="head">
+      <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
     </div>
 
     <epgu-constructor-screen-pad class="body">
-      <ng-container [ngSwitch]="(screenStore.display?.components)[0].type">
+      <ng-container [ngSwitch]="(screenService.componentType$ | async)">
         <epgu-constructor-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
-          [data]="(screenStore.display?.components)[0]"
-          [currentCycledFields]="screenStore.currentCycledFields"
-          [applicantAnswers]="screenStore.applicantAnswers"
-          [errors]="screenStore.errors"
+          [data]="screenService.component"
+          [currentCycledFields]="screenService.currentCycledFields"
+          [applicantAnswers]="screenService.applicantAnswers"
+          [errors]="screenService.componentErrors"
         ></epgu-constructor-confirm-personal-user-address-screen>
 
         <epgu-constructor-confirm-personal-user-data-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserData"
-          [data]="(screenStore.display?.components)[0]"
-          [errors]="screenStore.errors"
+          [data]="screenService.component"
+          [errors]="screenService.componentErrors"
         >
         </epgu-constructor-confirm-personal-user-data-screen>
 
         <epgu-constructor-confirm-personal-user-data-screen
           *ngSwitchCase="screenComponentName.confirmAnotherUserData"
-          [data]="(screenStore.display?.components)[0]"
-          [currentCycledFields]="screenStore.currentCycledFields"
-          [errors]="screenStore.errors"
+          [data]="screenService.component"
+          [currentCycledFields]="screenService.currentCycledFields"
+          [errors]="screenService.componentErrors"
         >
         </epgu-constructor-confirm-personal-user-data-screen>
 
         <epgu-constructor-confirm-personal-user-email-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserEmail"
-          [data]="(screenStore.display?.components)[0]"
-          [errors]="screenStore.errors"
+          [data]="screenService.component"
+          [errors]="screenService.componentErrors"
         >
         </epgu-constructor-confirm-personal-user-email-screen>
 
         <epgu-constructor-confirm-personal-user-phone-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserPhone"
-          [data]="(screenStore.display?.components)[0]"
-          [errors]="screenStore.errors"
+          [data]="screenService.component"
+          [errors]="screenService.componentErrors"
         >
         </epgu-constructor-confirm-personal-user-phone-screen>
 
         <epgu-constructor-temporary-registration-addr-screen
           *ngSwitchCase="screenComponentName.registrationAddr"
-          [data]="(screenStore.display?.components)[0]"
-          [errors]="screenStore.errors"
+          [data]="screenService.component"
+          [errors]="screenService.componentErrors"
         >
         </epgu-constructor-temporary-registration-addr-screen>
 
         <epgu-constructor-add-passport
           *ngSwitchCase="screenComponentName.personLookup"
-          [currentCycledFields]="screenStore.currentCycledFields"
-          [data]="(screenStore.display?.components)[0]"
+          [currentCycledFields]="screenService.currentCycledFields"
+          [data]="screenService.component"
         ></epgu-constructor-add-passport>
 
         <epgu-constructor-mvd-giac
           *ngSwitchCase="screenComponentName.mvdGiac"
-          [applicantAnswers]="screenStore.applicantAnswers"
-          [data]="(screenStore.display?.components)[0]"
+          [applicantAnswers]="screenService.applicantAnswers"
+          [data]="screenService.component"
         ></epgu-constructor-mvd-giac>
 
         <epgu-constructor-change-list
           *ngSwitchCase="screenComponentName.changeList"
-          [data]="(screenStore.display?.components)[0]"
+          [data]="screenService.component"
         ></epgu-constructor-change-list>
 
         <epgu-constructor-country-selection
           *ngSwitchCase="screenComponentName.countryApostil"
           [form]="form"
-          [data]="(screenStore.display?.components)[0]"
+          [data]="screenService.component"
           (changeComponentSettings)="changeComponentSettings($event)"
           (changeComponentData)="changedComponentData($event)"
         >
@@ -79,18 +79,18 @@
 
         <epgu-constructor-doc-input
           *ngSwitchCase="screenComponentName.docInput"
-          [data]="(screenStore.display?.components)[0]"
+          [data]="screenService.component"
         ></epgu-constructor-doc-input>
 
         <epgu-constructor-add-children-screen
           *ngSwitchCase="screenComponentName.childrenListUnder14"
-          [data]="(screenStore.display?.components)[0]"
+          [data]="screenService.component"
           (nextStepEvent)="nextStep()"
         ></epgu-constructor-add-children-screen>
 
         <epgu-constructor-add-children-screen
           *ngSwitchCase="screenComponentName.childrenListAbove14"
-          [data]="(screenStore.display?.components)[0]"
+          [data]="screenService.component"
           (nextStepEvent)="nextStep()"
         ></epgu-constructor-add-children-screen>
       </ng-container>
@@ -105,7 +105,7 @@
         [disabled]="!componentStateService.isValid || (screenService.isLoading$ | async)"
       >
         <div class="secondary-font">
-          {{ screenStore.display?.submitLabel || 'Продолжить' }}
+          {{ screenService.submitLabel || 'Продолжить' }}
         </div>
       </lib-button>
       <div *ngIf="componentSetting.displayWarningAnswers" class="footer__warning-answers">

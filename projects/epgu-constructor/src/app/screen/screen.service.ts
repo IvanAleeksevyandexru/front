@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
-import { ComponentStateService } from '../components/component-state.service';
+import { ComponentStateService } from './component-state.service';
 import { ScreenContent } from './screen-content';
+import { ComponentService } from '../components/component.service';
 
 
 @Injectable()
@@ -23,6 +24,7 @@ export class ScreenService extends ScreenContent{
   constructor (
     private applicantAnswersService: ApplicantAnswersService,
     private componentStateService: ComponentStateService,
+    private componentService: ComponentService
   ) {
     super();
   }

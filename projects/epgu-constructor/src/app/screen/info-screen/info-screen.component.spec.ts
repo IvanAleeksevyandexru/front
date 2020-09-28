@@ -6,7 +6,7 @@ import { InfoScreenComponent } from './info-screen.component';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
-import { ComponentStateService } from '../../components/component-state.service';
+import { ComponentStateService } from '../component-state.service';
 import { FormPlayerApiService } from '../../services/api/form-player-api/form-player-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../config/config.service';

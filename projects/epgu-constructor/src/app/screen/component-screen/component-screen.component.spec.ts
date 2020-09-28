@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { ComponentStateService } from '../../components/component-state.service';
+import { ComponentStateService } from '../component-state.service';
 import { ComponentScreenComponent } from './component-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';

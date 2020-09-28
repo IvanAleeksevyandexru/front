@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ComponentStateService } from '../../../../../../components/component-state.service';
+import { ComponentStateService } from '../../../../../component-state.service';
 import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmUserData } from '../../../../types/confirm-user-data.types';
 

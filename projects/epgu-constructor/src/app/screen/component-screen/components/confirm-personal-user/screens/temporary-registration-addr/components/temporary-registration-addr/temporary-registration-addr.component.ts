@@ -10,7 +10,7 @@ import { NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../../../config/config.service';
-import { ComponentStateService } from '../../../../../../../../components/component-state.service';
+import { ComponentStateService } from '../../../../../../../component-state.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
 import { DateValidator } from './date-validator';

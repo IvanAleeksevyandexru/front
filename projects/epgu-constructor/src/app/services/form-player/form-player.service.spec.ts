@@ -6,7 +6,7 @@ import { FormPlayerApiService } from '../api/form-player-api/form-player-api.ser
 import { FormPlayerApiServiceStub } from '../api/form-player-api/form-player-api.service.stub';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
-import { ComponentStateService } from '../../components/component-state.service';
+import { ComponentStateService } from '../../screen/component-state.service';
 import { ServiceDataService } from '../service-data/service-data.service';
 
 describe('FormPlayerService', () => {

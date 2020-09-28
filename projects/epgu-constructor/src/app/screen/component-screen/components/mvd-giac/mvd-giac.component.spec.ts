@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MvdGiacComponent } from './mvd-giac.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ComponentStateService } from '../../../../components/component-state.service';
+import { ComponentStateService } from '../../../component-state.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../services/api/dictionary-api/dictionary-api.service.stub';
 import { ComponentScreenComponentTypes } from '../../component-screen.types';

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentStateService } from '../../../../components/component-state.service';
+import { ComponentStateService } from '../../../component-state.service';
 import { ScreenService } from '../../../screen.service';
 import {
   prepareDataToSendForRepeatableFieldsComponent,

@@ -1,6 +1,6 @@
 import { AddChildrenScreenComponent } from './add-children-screen.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentStateService } from '../../../../../../components/component-state.service';
+import { ComponentStateService } from '../../../../../component-state.service';
 import { NavigationComponent } from '../../../../../../shared/components/navigation/navigation.component';
 import { MockComponent } from 'ng-mocks';
 import { ReactiveFormsModule } from '@angular/forms';

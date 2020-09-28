@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { ComponentStateService } from '../../../../components/component-state.service';
+import { ComponentStateService } from '../../../component-state.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ToolsService } from '../../../../shared/services/tools/tools.service';
 import { TextTransform } from '../../../../shared/types/textTransform';

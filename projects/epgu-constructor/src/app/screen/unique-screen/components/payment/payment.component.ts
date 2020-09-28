@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../config/config.service';
-import { ComponentStateService } from '../../../../components/component-state.service';
+import { ComponentStateService } from '../../../component-state.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';

@@ -3,11 +3,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { ComponentStateService } from '../../components/component-state.service';
-import { Screen, ScreenStore } from '../screen.types';
+import { ComponentStateService } from '../component-state.service';
+import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { ComponentScreenComponentTypes } from './component-screen.types';
 import { NavigationPayload } from '../../form-player.types';
+import { CurrentCycledFieldsDto } from '../../services/api/form-player-api/form-player-api.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -32,7 +33,6 @@ export class ComponentScreenComponent implements OnInit, Screen {
   componentData = null;
   form: FormGroup;
   isCycledFields = false;
-  screenStore: ScreenStore;
 
   constructor(
     private navigationService: NavigationService,
@@ -49,16 +49,15 @@ export class ComponentScreenComponent implements OnInit, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
 
-    this.screenService.screenData$
+    this.screenService.currentCycledFields$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenStore) => {
-        this.screenStore = screenData;
-        this.initCycledFields();
+      .subscribe((currentCycledFields) => {
+        this.initCycledFields(currentCycledFields);
       });
   }
 
-  initCycledFields() {
-    this.isCycledFields = !!Object.keys(this.screenStore?.currentCycledFields).length;
+  initCycledFields(currentCycledFields: CurrentCycledFieldsDto): void {
+    this.isCycledFields = !!Object.keys(currentCycledFields).length;
   }
 
   /**
@@ -72,7 +71,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
    * Переход на следующую страницу и передача данных
    */
   nextStep() {
-    const componentId = this.screenStore.display.components[0].id;
+    const componentId = this.screenService.component.id;
     let payload: NavigationPayload = {};
     let value: string;
     if (typeof this.componentStateService.state === 'object') {
