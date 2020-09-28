@@ -6,6 +6,7 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { ScreenService } from '../screen.service';
 import { UniqueScreenComponentTypes } from './unique-screen.types';
 import { NavigationPayload } from '../../form-player.types';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',
@@ -22,6 +23,7 @@ export class UniqueScreenComponent implements OnInit, Screen {
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
+    private cycledFieldsService: CycledFieldsService,
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +35,7 @@ export class UniqueScreenComponent implements OnInit, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((screenData: ScreenStore) => {
         this.screenStore = screenData;
+        this.cycledFieldsService.initCycledFields(this.screenStore?.currentCycledFields);
       });
   }
 
@@ -41,14 +44,7 @@ export class UniqueScreenComponent implements OnInit, Screen {
    * @param value - данные для передачи
    */
   nextDataForStep(value?: string): void {
-    const data: NavigationPayload = {};
-    const componentId = this.screenStore.display.components[0].id;
-    data[componentId] = {
-      visited: true,
-      value: value || '',
-    };
-
-    this.nextStep(data);
+    this.nextStep(this.cycledFieldsService.dataTransform(this.screenStore, value));
   }
 
   /**

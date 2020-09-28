@@ -25,6 +25,7 @@ import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
 import { NavigationService } from './services/navigation/navigation.service';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 
 
 const COMPONENTS = [
@@ -58,7 +59,7 @@ const DIRECTIVES = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  providers: [NavigationService, ApplicantAnswersService, ModalService],
+  providers: [NavigationService, ApplicantAnswersService, ModalService, CycledFieldsService],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [
       CommonModule,

@@ -20,13 +20,13 @@ Install:
   before_script:
     - rm -rf dist
     ## Повышаем версию до npm install
-    - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
-    - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
-    - cd projects/epgu-constructor
-    - CURRENT_VERSION=$(npm view epgu-constructor version)
-    - npm version $CURRENT_VERSION
-    - npm version patch
-    - cd ../..
+    #- echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
+    #- echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
+    #- cd projects/epgu-constructor
+    #- CURRENT_VERSION=$(npm view epgu-constructor version)
+    #- npm version $CURRENT_VERSION
+    #- npm version patch
+    #- cd ../..
   script:
     - yarn install
   only:
@@ -72,10 +72,10 @@ Library-publish:
     - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
   script:
-    #- cd dist/epgu-constructor
-    #- CURRENT_VERSION=$(npm view epgu-constructor version)
-    #- npm version $CURRENT_VERSION
-    #- npm version patch
+    - cd dist/epgu-constructor
+    - CURRENT_VERSION=$(npm view epgu-constructor version)
+    - npm version $CURRENT_VERSION
+    - npm version patch
     - npm publish
   only:
     - master
