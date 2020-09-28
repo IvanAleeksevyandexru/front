@@ -18,7 +18,6 @@ export class ScreenService extends ScreenContent{
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public isShown$: Observable<boolean> = this.isShownSubject.asObservable();
-  public screenData$: Observable<ScreenStore> = this.screenStoreSubject.asObservable();
 
   constructor (
     private applicantAnswersService: ApplicantAnswersService,
