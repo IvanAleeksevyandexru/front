@@ -1,9 +1,11 @@
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormPlayerModule } from 'dist/epgu-constructor';
 import { EpguLibCommonModule, EpguLibModule } from 'epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
 import { ConfigService } from '../../projects/epgu-constructor/src/app/config/config.service';
+import { AuthInterceptor } from '../../projects/epgu-constructor/src/app/interceptor/authorization-interceptor';
 import { UnsubscribeService } from '../../projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -11,8 +13,6 @@ import { AppService } from './app.service';
 import { ConfigComponent } from './config/config.component';
 import { FpContainerComponent } from './fp-container/fp-container.component';
 import { LayoutModule } from './layout/layout.module';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import {AuthInterceptor} from './interceptor/authorization-interceptor';
 
 @NgModule({
   declarations: [
@@ -35,9 +35,9 @@ import {AuthInterceptor} from './interceptor/authorization-interceptor';
     UnsubscribeService,
     ConfigService,
     {
-      provide : HTTP_INTERCEPTORS,
+      provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi   : true,
+      multi: true,
     },
   ],
   bootstrap: [AppComponent]
