@@ -7,18 +7,12 @@
 .application {
   display: flex;
   align-items: center;
-  position: relative;
+  flex-direction: column;
 
-  &__icon-done {
-    width: 24px;
-    height: 24px;
-    margin-right: 12px;
-  }
-
-  &__open-link {
-    position: absolute;
-    right: 0;
-    cursor: pointer;
+  &__center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -34,5 +28,11 @@
       width: inherit;
       min-width: 100px;
     }
+  }
+}
+
+@include laptop-down() {
+  .screen-container {
+    margin-top: 32px;
   }
 }

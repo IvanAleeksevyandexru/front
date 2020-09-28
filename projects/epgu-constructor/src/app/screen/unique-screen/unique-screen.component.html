@@ -47,8 +47,7 @@
   </epgu-constructor-confirm-marriage>
   <epgu-constructor-signature-application
     *ngSwitchCase="uniqueComponentName.signatureApplication"
-    [data]="screenStore.display"
-    [isLoading]="screenService.isLoading$ | async">
+    (nextStepEvent)="nextDataForStep()">
   </epgu-constructor-signature-application>
   <epgu-constructor-payment
     *ngSwitchCase="uniqueComponentName.paymentScr"
