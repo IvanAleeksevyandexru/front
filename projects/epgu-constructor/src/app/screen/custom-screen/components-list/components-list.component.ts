@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-import * as moment_ from 'moment';
+import * as moment from 'moment';
 import { ConfigService } from '../../../config/config.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
@@ -16,7 +16,8 @@ import {
 } from '../custom-screen.types';
 import {
   adaptiveDropDown,
-  calcDependedComponent,
+  checkStatesOfDependedComponent,
+  checkDisabledAlwaysState,
   CheckInputValidationComponentList,
   getCustomScreenDictionaryFirstState,
   getInitStateItemComponentList,
@@ -24,8 +25,6 @@ import {
   isDropDown,
   likeDictionary,
 } from '../tools/custom-screen-tools';
-
-const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -131,6 +130,10 @@ export class ComponentsListComponent implements OnChanges {
     this.emmitChanges(component);
   }
 
+  onPassportDataChange(passportData: { [key: string]: number }, componentId: string) {
+    this.state[componentId].value = passportData;
+    this.emmitChanges();
+  }
   /**
    * Обработка изменений данных в компонентах ввода
    * @param $event - событие с элементом
@@ -150,6 +153,10 @@ export class ComponentsListComponent implements OnChanges {
     this.emmitChanges(component);
   }
 
+  /**
+   * Потеря фокуса у поля
+   * @param component - компонент в котором произошло
+   */
   inputBlur(component: CustomComponent) {
     const { value } = this.state[component.id];
     const inputValidationResult = CheckInputValidationComponentList(value, component);
@@ -262,7 +269,8 @@ export class ComponentsListComponent implements OnChanges {
    */
   emmitChanges(component?: CustomComponent) {
     if (component) {
-      calcDependedComponent(component, this.state, this.components);
+      checkStatesOfDependedComponent(component, this.state, this.components);
+      checkDisabledAlwaysState(component, this.state);
     }
     const prepareStateForSending = this.getPreparedStateForSending();
     this.changes.emit(prepareStateForSending);
@@ -294,9 +302,10 @@ export class ComponentsListComponent implements OnChanges {
    * @private
    */
   private checkDependenceOfTheComponent() {
-    this.components.forEach((component) =>
-      calcDependedComponent(component, this.state, this.components),
-    );
+    this.components.forEach((component) => {
+      checkStatesOfDependedComponent(component, this.state, this.components);
+      checkDisabledAlwaysState(component, this.state);
+    });
   }
 
   isInputString(componentType: CustomScreenComponentTypes): boolean | CustomScreenComponentTypes {
@@ -308,6 +317,7 @@ export class ComponentsListComponent implements OnChanges {
       CustomScreenComponentTypes.OgrnipInput,
       CustomScreenComponentTypes.PersonInnInput,
       CustomScreenComponentTypes.LegalInnInput,
+      CustomScreenComponentTypes.SnilsInput,
     ].includes(componentType);
     return isLikeMask ? componentType : !componentType;
   }

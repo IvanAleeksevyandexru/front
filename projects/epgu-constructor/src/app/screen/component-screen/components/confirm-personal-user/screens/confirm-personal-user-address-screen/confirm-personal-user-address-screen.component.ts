@@ -71,6 +71,11 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
       case 'noAddress':
         this.noAddressAction();
         break;
+      case 'noAddressAndSubmit':
+        this.noAddressAction();
+        this.dataChange({ regDate: '', regAddr: '' });
+        this.actionSelect.emit(action);
+        break;
       default:
         this.actionSelect.emit(action);
         break;

@@ -14,5 +14,7 @@ export const getConfigFromEnvs = (): Config => {
     fileUploadApiUrl: environment.fileUploadApiUrl,
     lkUrl: environment.lkUrl,
     staticDomainAssetsPath: environment.staticDomainAssetsPath,
+    mocks: environment.mocks,
+    mockUrl: environment.mockUrl,
   }
 }

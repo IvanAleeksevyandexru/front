@@ -111,6 +111,9 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
   }
 
   showModal() {
-    this.modalService.openModal(ConfirmationModalComponent, this.modalParameters);
+    this.modalService.openModal(ConfirmationModalComponent, {
+      ...this.modalParameters,
+      showCrossButton: !!this.modalParameters.title,
+    });
   }
 }

@@ -2,14 +2,14 @@ import {
   TerraFileOptions,
   TerraUploadFileOptions,
   UploadedFile
-} from '../../services/terra-byte-api/terra-byte-api.types';
+} from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 /**
  * Класс подгруженного файла
  */
 export class TerraUploadedFile implements UploadedFile{
   fileName = '';
-  objectId = 0;
+  objectId = '';
   objectTypeId = 0;
   mnemonic = '';
   fileSize = 0;

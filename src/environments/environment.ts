@@ -2,10 +2,12 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { MockApi } from '../../projects/epgu-constructor/src/app/config/config.types'
+
 export const environment = {
   production: false,
-  serviceId: '10000056555',
-  targetId: '',
+  serviceId: 'local',
+  targetId: '10000000100',
   orderId: '',
   apiUrl: '/api',
   dictionaryUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
@@ -18,6 +20,8 @@ export const environment = {
   paymentUrl: 'https://payment-dev-l14.test.gosuslugi.ru',
   fileUploadApiUrl: 'https://gosuslugi.ru/api/storage/v1/files',
   staticDomainAssetsPath: '',
+  mocks: [] as MockApi[],
+  mockUrl: 'https://dev-l11.pgu2-pub.test.gosuslugi.ru/mock/'
 };
 
 /*
