@@ -1,10 +1,11 @@
-import { ComponentRef, ApplicationRef, ComponentFactoryResolver, Inject, Injectable, Injector } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { ComponentRef, ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
 import { ComponentPortal, DomPortalOutlet } from '@angular/cdk/portal';
-import { WebcamEvents } from '../../webcam/webcamevents';
+import { WebcamEvents } from '../../components/webcam-shoot/webcamevents';
 import {
   WebcamShootComponent
-} from '../../sub-components/webcam-shoot/webcam-shoot.component';
+} from '../../components/webcam-shoot/webcam-shoot.component';
+import { catchError, map } from 'rxjs/operators';
+import { from, Observable, throwError } from 'rxjs';
 
 @Injectable()
 export class WebcamService {
@@ -46,5 +47,18 @@ export class WebcamService {
    */
   close() {
     this.containerRef.destroy();
+  }
+
+  isWebcamAllowed(): Observable<boolean> {
+    return from(navigator?.mediaDevices?.getUserMedia({ video: true }) || [false])
+      .pipe(
+        catchError(() => throwError(false)),
+        map((stream) => {
+          if (stream instanceof MediaStream) {
+            stream.getTracks().forEach((track) => track.stop());
+          }
+          return Boolean(stream);
+        })
+      );
   }
 }
