@@ -44,7 +44,7 @@ export class UniqueScreenComponent implements OnInit, Screen {
    * @param value - данные для передачи
    */
   nextDataForStep(value?: string): void {
-    this.nextStep(this.cycledFieldsService.dataTransform(this.screenStore, value));
+    this.nextStep(this.cycledFieldsService.dataTransform(this.screenService.component, value));
   }
 
   /**

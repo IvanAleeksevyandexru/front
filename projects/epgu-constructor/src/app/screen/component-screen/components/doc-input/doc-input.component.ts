@@ -20,7 +20,7 @@ export interface DocInputComponentInterface extends ComponentBase {
 interface IField {
   fieldName: string;
   label: string;
-  type: 'input';
+  type: string;
 }
 
 interface IForm {

@@ -13,6 +13,7 @@
           [currentCycledFields]="screenService.currentCycledFields"
           [applicantAnswers]="screenService.applicantAnswers"
           [errors]="screenService.componentErrors"
+          (actionSelect)="nextStep()"
         ></epgu-constructor-confirm-personal-user-address-screen>
 
         <epgu-constructor-confirm-personal-user-data-screen

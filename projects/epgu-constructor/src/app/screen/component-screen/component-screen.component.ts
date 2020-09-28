@@ -7,8 +7,7 @@ import { ComponentStateService } from '../component-state.service';
 import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { ComponentScreenComponentTypes } from './component-screen.types';
-import { NavigationPayload } from '../../form-player.types';
-import { CurrentCycledFieldsDto } from '../../services/api/form-player-api/form-player-api.types';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -40,6 +39,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     private fb: FormBuilder,
+    private cycledFieldsService: CycledFieldsService,
   ) {}
 
   ngOnInit(): void {
@@ -52,12 +52,8 @@ export class ComponentScreenComponent implements OnInit, Screen {
     this.screenService.currentCycledFields$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((currentCycledFields) => {
-        this.initCycledFields(currentCycledFields);
+        this.cycledFieldsService.initCycledFields(currentCycledFields);
       });
-  }
-
-  initCycledFields(currentCycledFields: CurrentCycledFieldsDto): void {
-    this.isCycledFields = !!Object.keys(currentCycledFields).length;
   }
 
   /**
@@ -71,8 +67,6 @@ export class ComponentScreenComponent implements OnInit, Screen {
    * Переход на следующую страницу и передача данных
    */
   nextStep() {
-    const componentId = this.screenService.component.id;
-    let payload: NavigationPayload = {};
     let value: string;
     if (typeof this.componentStateService.state === 'object') {
       value = JSON.stringify(this.componentStateService.state);
@@ -80,16 +74,9 @@ export class ComponentScreenComponent implements OnInit, Screen {
       value = this.componentStateService.state;
     }
 
-    payload[componentId] = {
-      visited: true,
-      value: value || '',
-    };
-
-    if (this.isCycledFields) {
-      payload = this.componentStateService.state as NavigationPayload; // TODO: need clarify case
-    }
-
-    this.navigationService.nextStep.next({ payload });
+    this.navigationService.nextStep.next({
+      payload: { ...this.cycledFieldsService.dataTransform(this.screenService.component, value) },
+    });
   }
 
   /**

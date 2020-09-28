@@ -66,6 +66,6 @@ export class InfoScreenComponent implements Screen, OnInit {
   }
 
   getComponentState(): NavigationPayload {
-    return this.cycledFieldsService.dataTransform(this.screenStore);
+    return this.cycledFieldsService.dataTransform(this.screenService.component);
   }
 }
