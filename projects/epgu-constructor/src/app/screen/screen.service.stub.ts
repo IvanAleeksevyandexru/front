@@ -18,6 +18,10 @@ export class ScreenServiceStub extends ScreenContent {
   public isShown$: Observable<boolean>;
   public screenData$: Observable<ScreenStore>;
 
+  public get componentValue(): { [p: string]: any } | string {
+    return '';
+  }
+
   public initScreenStore(store: ScreenStore): void {}
 
 

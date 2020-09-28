@@ -1,9 +1,10 @@
-export interface ApplicationInterface {
-  name: string;
-  link: ApplicationLinkInterface;
+export interface SignatureApplicationAttr {
+  actions: Actions[];
+  image: { src: string };
 }
 
-export interface ApplicationLinkInterface {
-  pdf: string;
-  xml: string;
+interface Actions {
+  label: string;
+  value: string;
+  action: string;
 }
