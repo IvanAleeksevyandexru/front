@@ -5,8 +5,6 @@ export const getConfigFromEnvs = (): Config => {
   return {
     apiUrl: environment.apiUrl,
     dictionaryUrl: environment.dictionaryUrl,
-    mvdUrl: environment.mvdUrl,
-    selectMapUrl: environment.selectMapUrl,
     externalApiUrl: environment.externalApiUrl,
     timeSlotApiUrl: environment.timeSlotApiUrl,
     billsApiUrl: environment.billsApiUrl,
@@ -16,5 +14,7 @@ export const getConfigFromEnvs = (): Config => {
     fileUploadApiUrl: environment.fileUploadApiUrl,
     lkUrl: environment.lkUrl,
     staticDomainAssetsPath: environment.staticDomainAssetsPath,
+    mocks: environment.mocks,
+    mockUrl: environment.mockUrl,
   }
 }
