@@ -106,7 +106,7 @@
         [disabled]="!componentStateService.isValid || (screenService.isLoading$ | async)"
       >
         <div class="secondary-font">
-          {{ screenService.submitLabel || 'Продолжить' }}
+          {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
         </div>
       </lib-button>
       <div *ngIf="componentSetting.displayWarningAnswers" class="footer__warning-answers">
