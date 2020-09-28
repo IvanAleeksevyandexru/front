@@ -43,6 +43,7 @@ export class OutputHtmlComponent implements OnInit {
     delete clarifications[targetElementId];
     this.modalService.openModal(ConfirmationModalComponent, {
       ...targetClarification,
+      showCrossButton: !!targetClarification.title,
       clarifications,
     });
   }
