@@ -11,7 +11,8 @@ import { AppService } from './app.service';
 import { ConfigComponent } from './config/config.component';
 import { FpContainerComponent } from './fp-container/fp-container.component';
 import { LayoutModule } from './layout/layout.module';
-
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {AuthInterceptor} from '../../projects/epgu-constructor/src/app/interceptor/authorization-interceptor';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { LayoutModule } from './layout/layout.module';
   imports: [
     EpguLibCommonModule,
     LayoutModule,
+    HttpClientModule,
     FormPlayerModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -31,7 +33,12 @@ import { LayoutModule } from './layout/layout.module';
     CookieService,
     AppService,
     UnsubscribeService,
-    ConfigService
+    ConfigService,
+    {
+      provide : HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi   : true,
+    },
   ],
   bootstrap: [AppComponent]
 })
