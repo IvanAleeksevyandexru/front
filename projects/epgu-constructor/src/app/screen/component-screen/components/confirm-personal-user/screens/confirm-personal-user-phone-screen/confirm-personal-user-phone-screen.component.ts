@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { ComponentStateService } from '../../../../../component-state.service';
 import { ComponentBase } from '../../../../../screen.types';
 
 @Component({
