@@ -3,7 +3,10 @@ import { ListItem, ValidationShowOn } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { ConfigService } from '../../../config/config.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
+import {
+  DictionaryOptions,
+  DictionaryResponse,
+} from '../../../services/api/dictionary-api/dictionary-api.types';
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ScreenService } from '../../screen.service';
 import {
@@ -118,6 +121,11 @@ export class ComponentsListComponent implements OnChanges {
     this.state[component.id].value = selectedItem.originalItem;
     this.state[component.id].valid = true;
     this.emmitChanges(component);
+
+    // Hardcode для фильтрации моделей ТС
+    if (dictionaryType === 'MARKI_TS') {
+      this.filterModels(selectedItem.id, component);
+    }
   }
 
   /**
@@ -184,10 +192,15 @@ export class ComponentsListComponent implements OnChanges {
    * Подгрузка данныъ из справочника
    * @param dictionaryType - тип справочника
    * @param component - данные компонента
+   * @param options - опции справочника
    */
-  loadDictionary(dictionaryType: string, component: CustomComponent) {
+  loadDictionary(
+    dictionaryType: string,
+    component: CustomComponent,
+    options: DictionaryOptions = { pageNum: 0 },
+  ) {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
-    this.dictionaryApiService.getDictionary(dictionaryType, { pageNum: 0 }).subscribe(
+    this.dictionaryApiService.getDictionary(dictionaryType, options).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryType, data, component),
       () => this.loadDictionaryError(dictionaryType, component.id),
       () => {
@@ -311,5 +324,24 @@ export class ComponentsListComponent implements OnChanges {
       CustomScreenComponentTypes.SnilsInput,
     ].includes(componentType);
     return isLikeMask ? componentType : !componentType;
+  }
+
+  /**
+   * Обновляет словарь с моделями ТС после выбора марки ТС
+   */
+  filterModels(markId: string | number, component: CustomComponent) {
+    const options: DictionaryOptions = {
+      filter: {
+        simple: {
+          attributeName: 'Id_Mark',
+          condition: 'EQUALS',
+          value: {
+            asString: `${markId}`,
+          },
+        },
+      },
+    };
+
+    this.loadDictionary('MODEL_TS', component, options);
   }
 }
