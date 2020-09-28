@@ -37,7 +37,7 @@ import { ScreenContainerComponent } from './components/screen-container/screen-c
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { WebcamShootComponent } from './components/webcam-shoot/webcam-shoot.component';
 import { UsePaymentsModalComponent } from './components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
-
+import { PassportComponent } from './components/add-passport/passport.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -57,6 +57,7 @@ const COMPONENTS = [
   ComponentsListComponent,
   LongButtonComponent,
   WebcamShootComponent,
+  PassportComponent,
 ];
 
 const PIPES = [
@@ -90,5 +91,4 @@ const DIRECTIVES = [
     UsePaymentsModalComponent,
   ]
 })
-export class SharedModule { }
-
+export class SharedModule {}

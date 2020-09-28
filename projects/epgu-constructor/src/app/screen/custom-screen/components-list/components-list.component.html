@@ -71,10 +71,11 @@
           [disabled]="state[componentData.id].disabled"
           [showMaskAsPlaceholder]="false"
           [showConstantMaskSymbols]="true"
+          [maxlength]="componentData.attrs?.maxlength"
+          [validation]="state[componentData.id].valid"
           [(ngModel)]="state[componentData.id].value"
           (change)="inputChange($event, componentData)"
           (blur)="inputBlur(componentData)"
-          [validation]="state[componentData.id].valid"
         ></lib-standard-masked-input>
 
         <ng-template #plainInput>
@@ -84,11 +85,12 @@
             [textTransformType]="componentData.attrs?.fstuc"
             [invalid]="!state[componentData.id].valid"
             [name]="componentData.id"
+            [maxlength]="componentData.attrs?.maxlength"
             [disabled]="state[componentData.id].disabled"
-            [(ngModel)]="state[componentData.id].value"
-            (change)="inputChange($event, componentData)"
-            (blur)="inputBlur(componentData)"
             [validationShowOn]="validationShowOn"
+            [(ngModel)]="state[componentData.id].value"
+            (input)="inputChange($event, componentData)"
+            (blur)="inputBlur(componentData)"
           ></lib-plain-input>
         </ng-template>
       </ng-container>
@@ -154,16 +156,24 @@
           [disabled]="state[componentData.id].disabled"
           [externalApiUrl]="config.externalApiUrl + '/'"
           [initValue]="state[componentData.id].value"
+          [maxlength]="componentData.attrs?.maxlength"
           [(ngModel)]="state[componentData.id].value"
           (change)="inputChange($event, componentData)"
         >
         </lib-dadata-widget>
       </ng-container>
 
+      <ng-container *ngSwitchCase="componentType.PassportLookup">
+        <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
+        <epgu-constructor-passport (valueChangedEvent)="onPassportDataChange($event, componentData?.id)"
+                                   [attrs]="componentData?.attrs">
+        </epgu-constructor-passport>
+      </ng-container>
+
       <div class="form__error">
-        <small *ngIf="!state[componentData.id].valid">{{
-          state[componentData.id]?.errorMessage
-        }}</small>
+        <small *ngIf="!state[componentData.id].valid">
+          {{ state[componentData.id]?.errorMessage }}
+        </small>
       </div>
     </ng-container>
 

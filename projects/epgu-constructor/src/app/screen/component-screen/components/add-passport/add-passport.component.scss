@@ -21,23 +21,9 @@
       @include typ-h5();
     }
   }
-  &__form {
+  &__body {
     flex: 1 1 auto;
     width: 100%;
-    .form__name {
-      margin-bottom: 20px;
-      font-size: 14px;
-      line-height: 20px;
-      font-weight: bold;
-    }
-
-    .form__inputs {
-      display: flex;
-      justify-content: space-between;
-      .inputs__field {
-        flex-basis: calc(50% - 10px);
-      }
-    }
   }
 
   &__footer {
