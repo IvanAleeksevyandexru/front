@@ -3,7 +3,7 @@
     <epgu-constructor-confirm-personal-user-address
       [data]="data"
       [error]="errors && errors[data?.id]"
-      (dataEditedEvent)="dataChange($event)"
+      (dataEditedEvent)="handleDataChange($event)"
       [isEditable]="isEditable"
     ></epgu-constructor-confirm-personal-user-address>
   </div>
