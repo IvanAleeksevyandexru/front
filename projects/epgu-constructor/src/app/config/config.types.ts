@@ -19,6 +19,7 @@ export type MockApi = 'mvd' | 'selectMap' | 'timeSlot';
  * @property {string}mockUrl - url до mockApi
  */
 export interface Config {
+  production: boolean;
   apiUrl: string;
   dictionaryUrl: string;
   externalApiUrl: string;
