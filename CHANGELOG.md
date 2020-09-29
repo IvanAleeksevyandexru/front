@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://git.gosuslugi.local///compare/v0.1.6...v0.1.7) (2020-09-29)
+
+
+### Bug Fixes
+
+* update cycled fields dataTransform to support several fieldNames refs in component [ref EPGUCORE-36456] ([2f3ff97](https://git.gosuslugi.local///commit/2f3ff977bbf0d9ad29a49eb323d7fdb4c7eaeebd))
+
 ### [0.1.6](https://git.gosuslugi.local///compare/v0.1.4...v0.1.6) (2020-09-29)
 
 
