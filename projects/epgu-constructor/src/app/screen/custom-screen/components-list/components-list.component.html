@@ -63,6 +63,8 @@
       <ng-container *ngSwitchCase="isInputString(componentData.type)">
         <ng-container *ngTemplateOutlet="formLabel; context: componentData"></ng-container>
         <lib-standard-masked-input
+          epgu-constructor-text-transform
+          [textTransformType]="componentData.attrs?.fstuc"
           *ngIf="componentData.attrs?.mask; else plainInput"
           [clearable]="true"
           [mask]="componentData.attrs?.mask | maskHandle"

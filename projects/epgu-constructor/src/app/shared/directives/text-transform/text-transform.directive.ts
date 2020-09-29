@@ -8,11 +8,18 @@ export class TextTransformDirective {
   @Input() textTransformType: TextTransform;
 
   @HostListener('keyup', ['$event.target'])
-  onChange(target) {
+  onKeyUp(target) {
     if(this.textTransformType === TextTransform.ALL) {
       target.value = this.firstLetterOfEachWordToUpperCase(target.value);
     } else if (this.textTransformType === TextTransform.FIRST) {
       target.value = this.firstLetterToUpperCase(target.value);
+    }
+  }
+
+  @HostListener('change', ['$event.target'])
+  onChange(target) {
+    if (this.textTransformType === TextTransform.UPPERCASE) {
+      target.value = this.allToUpperCase(target.value);
     }
   }
 
@@ -42,5 +49,13 @@ export class TextTransformDirective {
    */
   firstLetterToUpperCase(value: string = ''): string {
     return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+
+  /**
+   * Трансформирует все буквы в строке
+   * @param value - строка на трансформацию
+   */
+  allToUpperCase(value: string = ''): string {
+    return value.toUpperCase();
   }
 }

@@ -1,4 +1,5 @@
 export enum TextTransform {
   FIRST = 'first',
-  ALL = 'all'
+  ALL = 'all',
+  UPPERCASE = 'uppercase'
 }
