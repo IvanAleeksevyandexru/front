@@ -3,6 +3,7 @@ import { environment } from '../environments/environment'
 
 export const getConfigFromEnvs = (): Config => {
   return {
+    production: false,
     apiUrl: environment.apiUrl,
     dictionaryUrl: environment.dictionaryUrl,
     externalApiUrl: environment.externalApiUrl,

@@ -3,6 +3,7 @@ import { Config, MockApi } from './config.types';
 
 @Injectable()
 export class ConfigService implements Config {
+  private _production: boolean;
   private _apiUrl: string;
   private _billsApiUrl: string;
   private _dictionaryUrl: string;
@@ -21,6 +22,10 @@ export class ConfigService implements Config {
     if (!config) {
       throw Error('Please set config at FormPlayerModule.forRoot()');
     }
+  }
+
+  get production(): boolean {
+    return this._production;
   }
 
   get apiUrl(): string {

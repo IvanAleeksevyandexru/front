@@ -13,7 +13,10 @@
       "uuid": "uuid",
       "ngx-webcam": "ngx-webcam",
       "ics": "ics",
-      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar"
+      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
+      "ngx-device-detector": "ngx-device-detector",
+      "@alyle/ui": "@alyle/ui",
+      "angular-resize-event": "angular-resize-event"
     },
     "styleIncludePaths": ["."]
   }
