@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
@@ -8,6 +8,7 @@ import { NavigationComponent } from '../../shared/components/navigation/navigati
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { ScreenServiceStub } from '../screen.service.stub';
 
 describe('InvitationScreenComponent', () => {
   let component: InvitationErrorScreenComponent;
@@ -36,13 +37,13 @@ describe('InvitationScreenComponent', () => {
     }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ InvitationErrorScreenComponent, NavigationComponentMock, InvitationErrorComponentMock ],
       providers: [
         NavigationService,
-        ScreenService,
         UnsubscribeService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     })
     .compileComponents();
