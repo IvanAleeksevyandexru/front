@@ -1,21 +1,10 @@
-<div class="conf-modal">
-  <div class="conf-modal__cross-button" *ngIf="showCrossButton" (click)="closeModal()"></div>
-  <div class="conf-modal__header" *ngIf="title">
-    <h4 class="conf-modal__title" [innerHTML]="title | safeHtml"></h4>
-  </div>
-  <div class="conf-modal__body">
-    <div #innerHtml
-         class="conf-modal__text-wrapper"
-         (click)="toggleHiddenBlock($event, innerHtml)">
-      <span class="conf-modal__text" [innerHTML]="text | safeHtml"></span>
-    </div>
-    <div class="conf-modal__controls">
-      <lib-button
-        *ngFor="let button of buttons"
-        [showLoader]="button.loader"
-        class="conf-modal__button"
-        [color]="button.color || ''"
-        (click)="button.handler()">{{ button.label }}</lib-button>
-    </div>
-  </div>
-</div>
+<epgu-constructor-confirmation-modal-base [buttons]="buttons"
+                                          [text]="text"
+                                          [title]="title"
+                                          [showCrossButton]="showCrossButton"
+                                          (closeModalChange)="closeModal()">
+  <span #innerHtml
+        class="conf-modal__text"
+        (click)="toggleHiddenBlock($event, innerHtml)"
+        [innerHTML]="text | safeHtml"></span>
+</epgu-constructor-confirmation-modal-base>

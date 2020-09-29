@@ -16,7 +16,7 @@ import { ComponentBase } from '../../../screen.types';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
-import { minCropSize } from './upload-and-edit-photo.constant';
+import { minCropSize, uploadPhotoElemId } from './upload-and-edit-photo.constant';
 import { ImgSubject } from './upload-and-edit-photo.model';
 import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../../../shared/services/webcam/webcam.service';
@@ -27,6 +27,9 @@ import {
 import { CompressionService } from '../../../../services/utils/compression.service';
 import { ConfigService } from '../../../../config/config.service';
 import { ScreenService } from '../../../screen.service';
+import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';
+import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',
@@ -62,6 +65,8 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   fileName: string;
   imageValidator = new Image(); // img container for img validation
 
+  howPhotoModalParameters: ConfirmationModal;
+
   constructor(
     private deviceService: DeviceDetectorService,
     private modalService: ModalService,
@@ -80,6 +85,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.addImgSubscriptions();
     this.checkImagePresence();
+    this.setHowPhotoModalParams();
 
     this.isDesktop = this.deviceService.isDesktop();
     this.allowedImgTypes = this.data?.attrs?.uploadedFile?.fileType || [];
@@ -94,6 +100,23 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
+  }
+
+  setHowPhotoModalParams() {
+    this.howPhotoModalParameters = {
+      text: this.data?.attrs?.clarifications[uploadPhotoElemId.howToTakePhoto]?.text || '',
+      elemEventHandlers: [
+        {
+          elemId: uploadPhotoElemId.requirements,
+          event: 'click',
+          handler() {
+            this.modalResult.next(uploadPhotoElemId.requirements);
+            this.closeModal();
+          },
+        },
+      ],
+      title: 'Как сделать фото',
+    };
   }
 
   imgSub(): Subscription {
@@ -240,7 +263,36 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.imgSubject.next({ imageObjectUrl: this.previousImageObjectUrl });
   }
 
-  nextStep() {
+  handleClickOnElemById($event: Event): void {
+    const targetElementId = ($event.target as HTMLElement).id;
+    if (targetElementId === uploadPhotoElemId.howToTakePhoto) {
+      this.openRequirementsModal();
+    }
+    if (targetElementId === uploadPhotoElemId.requirements) {
+      this.openHowPhotoModal();
+    }
+  }
+
+  openRequirementsModal(): void {
+    const { setting = {} } = this.data?.attrs?.clarifications[uploadPhotoElemId.requirements];
+    this.modalService.openModal(PhotoRequirementsModalComponent, { setting }).subscribe((value) => {
+      if (value === uploadPhotoElemId.howToTakePhoto) {
+        this.openHowPhotoModal();
+      }
+    });
+  }
+
+  openHowPhotoModal(): void {
+    this.modalService
+      .openModal(ConfirmationModalComponent, this.howPhotoModalParameters)
+      .subscribe((value) => {
+        if (value === uploadPhotoElemId.requirements) {
+          this.openRequirementsModal();
+        }
+      });
+  }
+
+  nextStep(): void {
     let requestData = this.getRequestData();
 
     const deletePrevImage = (fileName: string) =>

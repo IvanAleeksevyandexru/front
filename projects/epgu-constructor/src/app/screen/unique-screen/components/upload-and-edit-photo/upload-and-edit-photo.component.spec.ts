@@ -27,6 +27,16 @@ describe('UploadAndEditPhotoComponent', () => {
         name: '',
         objectType: 2,
       },
+      clarifications: {
+        howtotakephoto:'',
+        requirements: {
+          setting: {
+            warning: '',
+            body: [],
+            footer: '',
+          }
+        },
+      }
     },
     id: '',
     label: '',
