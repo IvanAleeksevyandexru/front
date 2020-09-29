@@ -10,7 +10,7 @@ import {
 } from './mvd-giac.functions';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { DictionaryResponse } from '../../../../services/api/dictionary-api/dictionary-api.types';
-import { ApplicantAnswers } from '../../../screen.types';
+import { CachedAnswers } from '../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-mvd-giac',
@@ -20,7 +20,7 @@ import { ApplicantAnswers } from '../../../screen.types';
 })
 export class MvdGiacComponent implements OnInit {
   @Input() data: any;
-  @Input() applicantAnswers: ApplicantAnswers;
+  @Input() applicantAnswers: CachedAnswers;
   @Output() valueChangedEvent = new EventEmitter();
 
   regionForm: FormGroup;

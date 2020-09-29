@@ -26,7 +26,7 @@ export interface Display {
   type: ScreenTypes
 }
 
-export interface ApplicantAnswers {
+export interface CachedAnswers {
   [key: string]: Answer
 }
 

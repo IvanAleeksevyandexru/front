@@ -5,7 +5,7 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { InfoScreenComponent } from './info-screen.component';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
-import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
 
 
@@ -40,7 +40,7 @@ describe('InfoScreenComponent', () => {
         NavigationService,
         UnsubscribeService,
         ScreenService,
-        ApplicantAnswersService,
+        CachedAnswersService,
         ComponentStateService
       ]
     })

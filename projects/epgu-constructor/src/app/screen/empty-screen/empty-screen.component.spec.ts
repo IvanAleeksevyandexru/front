@@ -5,7 +5,7 @@ import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
 
 
@@ -41,7 +41,7 @@ describe.skip('EmptyScreenComponent', () => {
         NavigationService,
         ScreenService,
         UnsubscribeService,
-        ApplicantAnswersService,
+        CachedAnswersService,
         ComponentStateService
       ]
 		})

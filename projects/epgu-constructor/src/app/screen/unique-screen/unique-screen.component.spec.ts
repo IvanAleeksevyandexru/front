@@ -5,7 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
 
 describe('UniqueScreenComponent', () => {
@@ -40,7 +40,7 @@ describe('UniqueScreenComponent', () => {
         NavigationService,
         ScreenService,
         UnsubscribeService,
-        ApplicantAnswersService,
+        CachedAnswersService,
         ComponentStateService
       ]
     })

@@ -4,7 +4,7 @@ import { FormPlayerService } from './form-player.service';
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../api/form-player-api/form-player-api.service.stub';
-import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ComponentStateService } from '../component-state/component-state.service';
 
@@ -17,7 +17,7 @@ describe('FormPlayerService', () => {
       providers: [
         FormPlayerService,
         ScreenService,
-        ApplicantAnswersService,
+        CachedAnswersService,
         ComponentStateService,
         ScreenResolverService,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },

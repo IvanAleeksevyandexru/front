@@ -11,7 +11,7 @@ import { NavigationComponent } from '../../shared/components/navigation/navigati
 import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
-import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
@@ -63,7 +63,7 @@ describe('QuestionsScreenComponent', () => {
         NavigationService,
         ScreenService,
         UnsubscribeService,
-        ApplicantAnswersService,
+        CachedAnswersService,
         ComponentStateService
       ]
     })

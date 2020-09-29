@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ComponentBase, ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { ComponentStateService } from '../services/component-state/component-state.service';
 
 
@@ -20,7 +20,7 @@ export class ScreenService {
   public screenData$: Observable<ScreenStore> = this.screenStoreSubject.asObservable();
 
   constructor (
-    private applicantAnswersService: ApplicantAnswersService,
+    private cachedAnswersService: CachedAnswersService,
     private componentStateService: ComponentStateService,
   ) {}
 
@@ -30,7 +30,7 @@ export class ScreenService {
    */
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;
-    this.loadValueFromApplicationAnswer();
+    this.loadValueFromCachedAnswer();
     this.initComponentStateService();
     this.screenStoreSubject.next(this.screenStore);
   }
@@ -62,33 +62,33 @@ export class ScreenService {
     this.componentStateService.isValid = true;
   }
 
-  private loadValueFromApplicationAnswer(): void {
+  private loadValueFromCachedAnswer(): void {
     const components: Array<ComponentBase> = [];
 
-    if (Object.keys(this.screenStore.errors).length) {
-      console.log('ScreenStore patched from a CurrentValue');
+    // if (Object.keys(this.screenStore.errors).length) {
+    //   console.log('ScreenStore patched from a CurrentValue');
+    //   this.screenStore.display.components.forEach((item: ComponentBase) => {
+    //     components.push(
+    //       this.getUpdatedComponentByValue(
+    //         this.screenStore.currentValue[item.id]?.value,
+    //         item,
+    //       )
+    //     );
+    //   });
+    // } else {
+      console.log('ScreenStore patched from an CachedAnswers');
       this.screenStore.display.components.forEach((item: ComponentBase) => {
         components.push(
           this.getUpdatedComponentByValue(
-            this.screenStore.currentValue[item.id]?.value,
-            item,
-          )
-        );
-      });
-    } else {
-      console.log('ScreenStore patched from an ApplicantAnswers');
-      this.screenStore.display.components.forEach((item: ComponentBase) => {
-        components.push(
-          this.getUpdatedComponentByValue(
-            this.applicantAnswersService.getAnsweredValueById(
-              this.screenStore.applicantAnswers,
+            this.cachedAnswersService.getCachedValueById(
+              this.screenStore.cachedAnswers,
               item.id,
             ),
             item,
           )
         );
       });
-    }
+    // }
 
     this.screenStore.display = { ...this.screenStore.display, components };
   }

@@ -15,7 +15,7 @@ import { ScreenPadComponent } from './components/screen-pad/screen-pad.component
 import { HelperTextComponent } from './components/base/helper-text/helper-text.component';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { NavigationService } from './services/navigation/navigation.service';
-import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from './services/applicant-answers/cached-answers.service';
 import { CommonModalComponent } from './components/modal/common-modal/common-modal.component';
 import { OutputHtmlComponent } from './components/output-html/output-html.component';
 import { GenderRadioButtonComponent } from './components/gender-radio-button/gender-radio-button.component';
@@ -48,7 +48,7 @@ const PIPES = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES],
-  providers: [NavigationService, ApplicantAnswersService],
+  providers: [NavigationService, CachedAnswersService],
   exports: [...COMPONENTS, ...PIPES],
   imports: [
       CommonModule,
