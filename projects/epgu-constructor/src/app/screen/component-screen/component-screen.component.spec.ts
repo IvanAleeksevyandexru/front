@@ -9,10 +9,11 @@ import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 
 // TODO: Need to refactoring component
-describe.skip('ScreenComponent', () => {
+xdescribe('ScreenComponent', () => {
   let component: ComponentScreenComponent;
   let fixture: ComponentFixture<ComponentScreenComponent>;
   let navService: NavigationService;
@@ -48,6 +49,7 @@ describe.skip('ScreenComponent', () => {
         ScreenService,
         UnsubscribeService,
         CachedAnswersService,
+        CycledFieldsService,
       ]
     })
     .compileComponents();

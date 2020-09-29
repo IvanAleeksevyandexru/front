@@ -7,6 +7,7 @@ import { FormPlayerApiServiceStub } from '../api/form-player-api/form-player-api
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ComponentStateService } from '../component-state/component-state.service';
+import { ServiceDataService } from '../service-data/service-data.service';
 
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
@@ -17,6 +18,7 @@ describe('FormPlayerService', () => {
       providers: [
         FormPlayerService,
         ScreenService,
+        ServiceDataService,
         CachedAnswersService,
         ComponentStateService,
         ScreenResolverService,

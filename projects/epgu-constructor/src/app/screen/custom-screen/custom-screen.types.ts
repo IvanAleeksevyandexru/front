@@ -1,6 +1,7 @@
 import { ListItem } from 'epgu-lib';
 import { DictionaryItem, DictionaryResponse } from '../../services/api/dictionary-api/dictionary-api.types';
 import { ComponentBase, Display } from '../screen.types';
+import { TextTransform } from '../../shared/types/textTransform';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -19,6 +20,7 @@ export enum CustomScreenComponentTypes {
   OgrnipInput = 'OgrnipInput',
   LegalInnInput = 'LegalInnInput',
   PersonInnInput = 'PersonInnInput',
+  SnilsInput = 'SnilsInput',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
@@ -124,6 +126,7 @@ export interface CustomComponent extends ComponentBase {
   type: CustomScreenComponentTypes;
   id: string;
   hint?: string;
+  fstuc?: TextTransform;
   isShown?: boolean;
 }
 

@@ -13,6 +13,9 @@ import { ScreenService } from '../screen.service';
 import { ConfirmMarriageModule } from './components/confirm-marriage/confirm-marriage.module';
 import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
 import { PaymentModule } from './components/payment/payment.module';
+import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
+import { ConfirmPhoneModule } from './components/confirm-phone/confirm-phone.module';
+import { ConfirmEmailModule } from './components/confirm-email/confirm-email.module';
 
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
@@ -36,8 +39,11 @@ const COMPONENTS = [UniqueScreenComponent];
     EmployeeHistoryModule,
     TimeSlotsModule,
     ConfirmMarriageModule,
-    SignatureApplicationModule,
     PaymentModule,
+    ConfirmPhoneModule,
+    ConfirmEmailModule,
+    SignatureApplicationModule,
+    UploadAndEditPhotoModule,
   ],
   providers: [
     ScreenService

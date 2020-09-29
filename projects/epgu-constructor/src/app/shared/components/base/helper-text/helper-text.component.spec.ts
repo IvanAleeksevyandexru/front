@@ -15,17 +15,16 @@ describe('HelperTextComponent', () => {
   let component: WrapperTestComponent;
   let fixture: ComponentFixture<WrapperTestComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ WrapperTestComponent, HelperTextComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WrapperTestComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should match snapshot', () => {
@@ -38,4 +37,7 @@ describe('HelperTextComponent', () => {
     expect(helperText).toEqual(helperTextMock);
   });
 
+  it('should created', () => {
+    expect(component).toBeTruthy;
+  });
 });

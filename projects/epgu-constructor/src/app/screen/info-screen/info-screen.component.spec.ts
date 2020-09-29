@@ -7,6 +7,11 @@ import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { FormPlayerApiService } from '../../services/api/form-player-api/form-player-api.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ConfigService } from '../../config/config.service';
+import { ServiceDataService } from '../../services/service-data/service-data.service';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 
 describe('InfoScreenComponent', () => {
@@ -34,6 +39,9 @@ describe('InfoScreenComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule
+      ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ InfoScreenComponent ],
       providers: [
@@ -41,16 +49,20 @@ describe('InfoScreenComponent', () => {
         UnsubscribeService,
         ScreenService,
         CachedAnswersService,
-        ComponentStateService
+        ComponentStateService,
+        FormPlayerApiService,
+        ConfigService,
+        ServiceDataService,
+        CycledFieldsService,
       ]
     })
     .compileComponents();
-    screenService = TestBed.inject(ScreenService);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoScreenComponent);
     component = fixture.componentInstance;
+    screenService = fixture.debugElement.injector.get(ScreenService);
     screenService.updateScreenStore(screenDataMock);
     fixture.detectChanges();
   });

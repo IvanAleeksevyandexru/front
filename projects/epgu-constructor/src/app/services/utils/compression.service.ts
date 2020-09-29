@@ -120,7 +120,7 @@ export class CompressionService {
         throw new Error('createImageBitmap does not handle the provided image source type');
       }
       const img = document.createElement('img');
-      img.addEventListener('load', () => {
+      img.addEventListener('load', function () {
         resolve(this);
       });
       img.src = dataURL;
@@ -139,6 +139,7 @@ export class CompressionService {
       const dataUrl = await this.getDataUrlFromFile(file);
       img = await this.loadImage(dataUrl as string);
     }
+
     const canvas = this.drawImageInCanvas(img);
     return [img, canvas];
   }
@@ -325,7 +326,7 @@ export class CompressionService {
   * @param {string} [options.fileType]
   * @returns {Promise<File | Blob>}
   */
-  private async compress(file: File, options: Options): Promise<File | Blob> {
+  private async compress(file: File | Blob, options: Options): Promise<File | Blob> {
     let remainingTrials = options['maxIteration'] || 10;
     const maxSizeByte = options['maxSizeMB'] * 1024 * 1024;
 
@@ -407,7 +408,7 @@ export class CompressionService {
   * @param {string} [options.fileType]
   * @returns {Promise<File | Blob>}
   */
-  public async imageCompression(file: File, options: Options): Promise<File | Blob> {
+  public async imageCompression(file: File | Blob, options: Options): Promise<File | Blob> {
     let compressedFile;
 
     if (!(file instanceof Blob)) {

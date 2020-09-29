@@ -1,4 +1,4 @@
-<div class="fileupload__wrapper">
+ <div class="fileupload__wrapper">
   <div class="file__bottom">
     <epgu-constructor-output-html
       class="info__text"
@@ -28,14 +28,16 @@
            [class.uploaded]="file.uploaded"
            [class.has-error]="file.hasError"></div>
       <div class="file__title-wrapper">
-        <div class="file__title uploaded" *ngIf="file.uploaded"
+        <div class="file__title uploaded" *ngIf="file.uploaded; else fileNotUploaded"
              [innerText]="file.fileName"
              (click)="downloadFile(file)">
         </div>
-        <div class="file__title" *ngIf="!file.uploaded"
-             [class.has-error]="file.hasError"
-             [innerText]="file.hasError ? 'Ошибка загрузки' : 'Файл загружается'">
-        </div>
+        <ng-template #fileNotUploaded>
+          <div class="file__title"
+               [class.has-error]="file.hasError"
+               [innerText]="file.hasError ? 'Ошибка загрузки' : 'Файл загружается'">
+          </div>
+        </ng-template>
         <div class="file__title-info" *ngIf="file.uploaded">
           Файл загружен ({{file.getFileSize()}})
         </div>
@@ -47,18 +49,17 @@
   </div>
   <div class="fileupload__buttons" [class.nocamera]="cameraNotAllowed">
     <button class="fileupload__button"
-            *ngIf="!cameraNotAllowed"
+            *ngIf="!cameraNotAllowed && isMobile"
             (click)="openCamera()"
-            [disabled]="(listIsUploadingNow || filesInUploading > 0)">
-      <img src="/assets/icons/svg/camera.svg" class="fileupload__button-icon"/>
+            [disabled]="isButtonsDisabled">
+      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg" class="fileupload__button-icon" alt="Фото"/>
       Фото
     </button>
     <button class="fileupload__button"
             (click)="selectFilesEvent()"
-            [disabled]="(listIsUploadingNow || filesInUploading > 0)">
-      <img src="/assets/icons/svg/clip.svg" class="fileupload__button-icon"/>
+            [disabled]="isButtonsDisabled">
+      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg" class="fileupload__button-icon"  alt="Файл"/>
       Файл
     </button>
   </div>
-  <webcam class="webcam__video" (initError)="handleCameraInitError($event)"></webcam>
 </div>

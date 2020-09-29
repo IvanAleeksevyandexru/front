@@ -69,7 +69,7 @@ export class MvdGiacComponent implements OnInit {
 
   private loadDictionary(dictionaryName: string) {
     this.dictionaryApiService
-      .getDictionary(dictionaryName, { pageNum: 0 })
+      .getMvdDictionary(dictionaryName, { pageNum: 0 })
       .subscribe((data) => this.loadDictionarySuccess(data));
   }
 

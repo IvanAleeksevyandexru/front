@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Config } from './config.types';
+import { Config, MockApi } from './config.types';
 
 @Injectable()
 export class ConfigService implements Config {
+  private _production: boolean;
   private _apiUrl: string;
   private _billsApiUrl: string;
   private _dictionaryUrl: string;
@@ -13,11 +14,18 @@ export class ConfigService implements Config {
   private _timeSlotApiUrl: string;
   private _uinApiUrl: string;
   private _yandexMapsApiKey: string;
+  private _staticDomainAssetsPath: string;
+  private _mocks: MockApi[];
+  private _mockUrl: string;
 
   checkConfig(config: Config) {
     if (!config) {
       throw Error('Please set config at FormPlayerModule.forRoot()');
     }
+  }
+
+  get production(): boolean {
+    return this._production;
   }
 
   get apiUrl(): string {
@@ -60,6 +68,18 @@ export class ConfigService implements Config {
     return this._yandexMapsApiKey;
   }
 
+  get staticDomainAssetsPath(): string {
+    return this._staticDomainAssetsPath;
+  }
+
+  get mocks(): MockApi[] {
+    return this._mocks;
+  }
+
+  get mockUrl(): string {
+    return this._mockUrl;
+  }
+
   // Do not use this method, only for testing stand
   set config(config: Config) {
     this.checkConfig(config);
@@ -73,5 +93,8 @@ export class ConfigService implements Config {
     this._timeSlotApiUrl = config.timeSlotApiUrl;
     this._uinApiUrl = config.uinApiUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
+    this._staticDomainAssetsPath = config.staticDomainAssetsPath;
+    this._mocks = config.mocks;
+    this._mockUrl = config.mockUrl;
   }
 }

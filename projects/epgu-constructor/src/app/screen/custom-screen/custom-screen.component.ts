@@ -1,5 +1,5 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { NavigationPayload } from '../../form-player.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
@@ -7,6 +7,8 @@ import { DATE_STRING_DOT_FORMAT } from '../../shared/constants/dates';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { Screen, ScreenStore } from '../screen.types';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-custom-screen',
@@ -73,8 +75,8 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     this.navigationService.prevStep.next();
   }
 
-  nextStep(data?: NavigationPayload): void {
-    this.navigationService.nextStep.next(data);
+  nextStep(payload?: NavigationPayload): void {
+    this.navigationService.nextStep.next({ payload });
   }
 
   nextScreen(): void {

@@ -10,7 +10,7 @@ import { ComponentStateService } from '../../services/component-state/component-
 
 
 // TODO: Need to refactoring component
-describe.skip('EmptyScreenComponent', () => {
+xdescribe('EmptyScreenComponent', () => {
 	let component: EmptyScreenComponent;
 	let fixture: ComponentFixture<EmptyScreenComponent>;
   let screenService: ScreenService;

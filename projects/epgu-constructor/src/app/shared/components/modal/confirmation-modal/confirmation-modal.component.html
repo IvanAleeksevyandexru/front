@@ -1,10 +1,12 @@
 <div class="conf-modal">
+  <div class="conf-modal__cross-button" *ngIf="showCrossButton" (click)="closeModal()"></div>
   <div class="conf-modal__header" *ngIf="title">
-    <a class="conf-modal__close cursor-pointer" (click)="closeModal()"></a>
     <h4 class="conf-modal__title" [innerHTML]="title | safeHtml"></h4>
   </div>
   <div class="conf-modal__body">
-    <div class="conf-modal__text-wrapper">
+    <div #innerHtml
+         class="conf-modal__text-wrapper"
+         (click)="toggleHiddenBlock($event, innerHtml)">
       <span class="conf-modal__text" [innerHTML]="text | safeHtml"></span>
     </div>
     <div class="conf-modal__controls">

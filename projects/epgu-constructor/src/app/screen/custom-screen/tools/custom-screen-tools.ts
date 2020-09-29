@@ -1,11 +1,12 @@
 import { ListItem } from 'epgu-lib';
+import * as moment_ from 'moment';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   CustomComponent,
   CustomComponentDictionaryState,
   CustomScreenComponentTypes
 } from '../custom-screen.types';
-
+const moment = moment_;
 
 function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
   return {
@@ -66,9 +67,9 @@ export function getNormalizeDataCustomScreenDictionary(
   const ussrCode = 'SUN'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON
   let arr = items;
   if (isRemoveRussiaFromList) {
-    arr = arr.filter(item => ![ussrCode, russiaCode].includes(item.value));
+    arr = arr.filter((item) => ![ussrCode, russiaCode].includes(item.value));
   } else if (isRemoveUssrFromList) {
-    arr = arr.filter(item => ![ussrCode].includes(item.value));
+    arr = arr.filter((item) => ![ussrCode].includes(item.value));
   }
   return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
 }

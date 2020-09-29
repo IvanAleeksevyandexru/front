@@ -2,23 +2,41 @@
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input">
       <epgu-constructor-label for="series">Серия</epgu-constructor-label>
-      <lib-plain-input id="series" [formControl]="form.get('series')"></lib-plain-input>
+      <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
+        id="series"
+        [formControl]="form.get('series') || form.get('rfDocumentSeries')"
+      ></lib-plain-input>
     </div>
     <div class="doc-input-screen__input">
       <epgu-constructor-label for="number">Номер</epgu-constructor-label>
-      <lib-plain-input id="number" [formControl]="form.get('number')"></lib-plain-input>
+      <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
+        id="number"
+        [formControl]="form.get('number') || form.get('rfDocumentNumber')"
+      ></lib-plain-input>
     </div>
   </div>
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input doc-input-screen__input--data">
       <epgu-constructor-label for="date">Дата выдачи</epgu-constructor-label>
-      <lib-date-picker id="date" name="date" [formControl]="form.get('date')" [maxDate]="maxDate"></lib-date-picker>
+      <lib-date-picker id="date" name="date" align="left" [formControl]="form.get('date')" [maxDate]="maxDate"></lib-date-picker>
     </div>
   </div>
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input">
       <epgu-constructor-label for="emitter">Кем выдано</epgu-constructor-label>
-      <lib-plain-input id="emitter" [formControl]="form.get('emiter')"></lib-plain-input>
+      <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="textTransformType"
+        id="emitter"
+        [formControl]="form.get('emiter')"
+      ></lib-plain-input>
     </div>
   </div>
 </section>

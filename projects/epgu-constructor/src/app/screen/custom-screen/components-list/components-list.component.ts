@@ -169,7 +169,7 @@ export class ComponentsListComponent implements OnInit {
 
   private loadDictionaries(dictionaryType: string, component: CustomComponent): void {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
-    this.dictionaryApiService.getDictionary(dictionaryType, { pageNum: 0 }).subscribe(
+    this.dictionaryApiService.getDictionary(dictionaryType, options).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryType, data, component),
       () => this.loadDictionaryError(dictionaryType, component.id),
       () => {},

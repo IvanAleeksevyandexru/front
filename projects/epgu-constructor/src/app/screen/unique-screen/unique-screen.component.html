@@ -56,4 +56,14 @@
     [data]="screenStore.display.components[0]"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-payment>
-  </ng-container>
+  <epgu-constructor-confirm-phone
+    *ngSwitchCase="uniqueComponentName.phoneNumberConfirmCodeInput">
+  </epgu-constructor-confirm-phone>
+  <epgu-constructor-confirm-email
+    *ngSwitchCase="uniqueComponentName.ConfirmNewEmail">
+  </epgu-constructor-confirm-email>
+  <epgu-constructor-upload-and-edit-photo
+    *ngSwitchCase="uniqueComponentName.photoUploadComponent"
+    (nextStepEvent)="nextDataForStep($event)">
+  </epgu-constructor-upload-and-edit-photo>
+</ng-container>

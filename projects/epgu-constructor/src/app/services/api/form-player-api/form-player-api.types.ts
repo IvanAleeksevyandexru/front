@@ -26,13 +26,22 @@ export interface CurrentValueDto {
  * @property {boolean}visited? - булевый флаг пройдена ли пользователем бизнес-логика данного компонента
  */
 export interface ComponentDto {
-  attrs: {[key: string]: any};
+  attrs: {
+    [key: string]: any,
+    actions?: Array<ComponentDtoAction>
+  };
   id: string;
   label: string;
   type: string;
   value: string;
   required?: boolean
   visited?: boolean
+}
+
+export interface ComponentDtoAction {
+  label: string;
+  value: string;
+  action: string;
 }
 
 /**
@@ -51,6 +60,7 @@ export interface DisplayDto {
   name: string;
   submitLabel: string;
   type: ScreenTypes;
+  terminal: boolean;
 }
 
 export interface CurrentCycledFieldsDto {
@@ -71,9 +81,12 @@ export interface ScenarioErrorsDto {
  * (человек 1, человек 2) => эти людям прилетает уведомление о подтверждении ...
  * @property {string}token - в целях разработки, на проде через cookie;
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
+ * @property {boolean}[isInternalScenarioFinish] - появляется при internal сценарии;
+ * @property {string}[serviceId] - добавляется при internal сценариев(подсценариев);
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
+  cachedAnswers: ApplicantAnswersDto;
   currentCycledFields: CurrentCycledFieldsDto;
   currentScenarioId: string;
   cachedAnswers: CachedAnswersDto;
@@ -86,10 +99,18 @@ export interface ScenarioDto {
   orderId: string;
   token: string;
   userId: string;
+  isInternalScenario?: boolean;
+  serviceId?: string;
 }
 
+/**
+ * @property {boolean}[isInternalScenario] - есть шаги когда мы выходим из основного сценария в подсценарий,
+ * тогда DTO обагатится этим самым полем, который в значении true говорит что мы находимся в подсценарии,
+ * а значение false, сообщит backend(-у) что нужно удалить это свойство из DTO и выйти из подсценария
+ */
 export interface FormPlayerApiSuccessResponse {
   scenarioDto: ScenarioDto;
+  isInternalScenario?: boolean
 }
 
 export enum FormPlayerApiErrorStatuses {

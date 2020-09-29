@@ -3,10 +3,11 @@ import { ComponentBase, ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { ComponentStateService } from '../services/component-state/component-state.service';
+import { ScreenContent } from './screen-content';
 
 
 @Injectable()
-export class ScreenService {
+export class ScreenService extends ScreenContent{
   private screenStore: ScreenStore;
   private isLoading = false;
   private isShown = true; // Показываем или нет кнопку
@@ -22,7 +23,9 @@ export class ScreenService {
   constructor (
     private cachedAnswersService: CachedAnswersService,
     private componentStateService: ComponentStateService,
-  ) {}
+  ) {
+    super();
+  }
 
   /**
    * Инициализирует работу хранилища
@@ -33,6 +36,7 @@ export class ScreenService {
     this.loadValueFromCachedAnswer();
     this.initComponentStateService();
     this.screenStoreSubject.next(this.screenStore);
+    this.updateScreenContent(store);
   }
 
   /**
@@ -42,6 +46,7 @@ export class ScreenService {
   public updateScreenStore(newState: ScreenStore): void {
     this.screenStore = { ...this.screenStore, ...newState };
     this.screenStoreSubject.next(this.screenStore);
+    this.updateScreenContent(newState);
   }
 
   /**
@@ -65,36 +70,15 @@ export class ScreenService {
   private loadValueFromCachedAnswer(): void {
     const components: Array<ComponentBase> = [];
 
-    // if (Object.keys(this.screenStore.errors).length) {
-    //   console.log('ScreenStore patched from a CurrentValue');
-    //   this.screenStore.display.components.forEach((item: ComponentBase) => {
-    //     components.push(
-    //       this.getUpdatedComponentByValue(
-    //         this.screenStore.currentValue[item.id]?.value,
-    //         item,
-    //       )
-    //     );
-    //   });
-    // } else {
-      console.log('ScreenStore patched from an CachedAnswers');
-      this.screenStore.display.components.forEach((item: ComponentBase) => {
-        components.push(
-          this.getUpdatedComponentByValue(
-            this.cachedAnswersService.getCachedValueById(
-              this.screenStore.cachedAnswers,
-              item.id,
-            ),
-            item,
-          )
-        );
-      });
-    // }
+    this.screenStore.display.components.forEach(item => {
+      const cachedValue = this.cachedAnswersService
+        .getCachedValueById(this.screenStore.cachedAnswers, item.id);
+
+      const component = cachedValue ? { ...item, value: cachedValue } : item;
+      components.push(component);
+    });
 
     this.screenStore.display = { ...this.screenStore.display, components };
-  }
-
-  private getUpdatedComponentByValue(value: string, component: ComponentBase): ComponentBase {
-    return value ? { ... component, value } : component;
   }
 
   /**
