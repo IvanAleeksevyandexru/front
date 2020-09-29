@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { Screen, ScreenStore } from '../screen.types';
+import { NavigationOptions, NavigationPayload } from '../../form-player.types';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
+import { Screen, ScreenStore } from '../screen.types';
 import { InfoScreenComponentTypes } from './info-screen.types';
-import { NavigationOptions, NavigationPayload } from '../../form-player.types';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.
@@ -66,6 +66,6 @@ export class InfoScreenComponent implements Screen, OnInit {
   }
 
   getComponentState(): NavigationPayload {
-    return this.cycledFieldsService.dataTransform(this.screenStore);
+    return this.cycledFieldsService.dataTransform();
   }
 }

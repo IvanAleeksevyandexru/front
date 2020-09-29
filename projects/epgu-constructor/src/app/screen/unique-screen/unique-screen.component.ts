@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { Screen, ScreenStore } from '../screen.types';
+import { NavigationPayload } from '../../form-player.types';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
+import { Screen, ScreenStore } from '../screen.types';
 import { UniqueScreenComponentTypes } from './unique-screen.types';
-import { NavigationPayload } from '../../form-player.types';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',
@@ -44,7 +44,7 @@ export class UniqueScreenComponent implements OnInit, Screen {
    * @param value - данные для передачи
    */
   nextDataForStep(value?: string): void {
-    this.nextStep(this.cycledFieldsService.dataTransform(this.screenStore, value));
+    this.nextStep(this.cycledFieldsService.dataTransform(value));
   }
 
   /**

@@ -26,11 +26,11 @@ export class CycledFieldsService {
     }
   }
 
-  dataTransform(screenStore: ScreenStore, value: string = ''): NavigationPayload {
+  dataTransform(value: string = ''): NavigationPayload {
     const data: NavigationPayload = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
-      const fieldNameRefs = screenStore.display.components[0]?.attrs?.fields?.map(field => field.fieldName);
+      const fieldNameRefs = this.screenService.component?.attrs?.fields?.map(field => field.fieldName);
       let valuePrepared: object = {};
       if (typeof value === 'string') {
         fieldNameRefs.forEach(fieldName => valuePrepared[fieldName] = JSON.parse(value)[fieldName]);
