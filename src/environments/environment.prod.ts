@@ -1,7 +1,7 @@
 import { MockApi } from '../../projects/epgu-constructor/src/app/config/config.types'
 
 export const environment = {
-  production: false,
+  production: true,
   serviceId: 'local',
   targetId: '',
   orderId: '',
