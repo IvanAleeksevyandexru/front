@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://git.gosuslugi.local///compare/v0.1.1...v0.1.4) (2020-09-29)
+
+
+### Features
+
+* added image compressor to photo upload component [ref EPGUCORE-36117] ([8c712cb](https://git.gosuslugi.local///commit/8c712cbc3705613bc89b58252376965c9a8c0e00))
+* added photo editor [ref EPGUCORE-36117] ([24d3df4](https://git.gosuslugi.local///commit/24d3df45f660b351fe2697c5141f8eb97a73433e))
+* added photo uploading [ref EPGUCORE-36117] ([294d508](https://git.gosuslugi.local///commit/294d508293cecf05b08fd41f6acf3868c5e47ef6))
+* added supporting for hidden block in confirmation modal + refactoring [ref EPGUCORE-37332] ([de7d43b](https://git.gosuslugi.local///commit/de7d43baa66bd2abe0d1a7f7b2e18d59e239ab4d))
+
+
+### Bug Fixes
+
+* Again right return url ([e55d746](https://git.gosuslugi.local///commit/e55d746161971b825fc00a432f400b99140b676d))
+* Again right return url ([f9f4056](https://git.gosuslugi.local///commit/f9f4056c384cf802e247d22ae7503b41251f6f0c))
+* changed font and line-height on typ mixings [ref EPGUCORE-36117] ([33306d7](https://git.gosuslugi.local///commit/33306d79a720d79a93b32ad04963288e6634e783))
+* changed orderId [ref EPGUCORE-36117] ([7df0a12](https://git.gosuslugi.local///commit/7df0a1208d17a807154c0132a9e3cf08e1a3469e))
+* fixed file uploading ([11bcd72](https://git.gosuslugi.local///commit/11bcd72e90bc9e015d3caf1a174810eaaff25e4d))
+* fixed proxy [ref EPGUCORE-36117] ([ac3bb27](https://git.gosuslugi.local///commit/ac3bb276c1539a3abfcc5f637b532550516d390b))
+* fixed remarks + file uploading [ref EPGUCORE-36117] ([d161ef5](https://git.gosuslugi.local///commit/d161ef576673f96612f10297adfe901b268c4f9a))
+* fixed test [ref EPGUCORE-36117] ([3efa797](https://git.gosuslugi.local///commit/3efa79793885eebcce09abae36ef6b46955ca74c))
+* hotfix for right payment ([a03ce67](https://git.gosuslugi.local///commit/a03ce672ff01d4dabdd16a6e36fc769959ae583a))
+* move auth interceptor to app level [ref EPGUCORE-36943] ([c898b0c](https://git.gosuslugi.local///commit/c898b0c063cf7caef3cdddc31aec57bee20529f8))
+* removed debugger [ref EPGUCORE-36117] ([6a365e3](https://git.gosuslugi.local///commit/6a365e3e1ffb579522b4bb8398fbbeae2ab1633a))
+* update lib-map externalMode flag for proper map assets loading on prod [ref EPGUCORE-36456] ([63d61e4](https://git.gosuslugi.local///commit/63d61e459f191e4a7f298e14147e1985cedc41d5))
+* на мобильной верси, на экране вопрос/ответ прибил кнопки action к низу ([793848a](https://git.gosuslugi.local///commit/793848a1f93b0de2ca2bcc7a6589f6463554a5f0))
+
 ### [0.1.3](https://git.gosuslugi.local///compare/v0.1.1...v0.1.3) (2020-09-28)
 
 ### Bug Fixes
