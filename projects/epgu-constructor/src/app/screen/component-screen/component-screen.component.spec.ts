@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../current-answers.service';
 import { ComponentScreenComponent } from './component-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
@@ -17,7 +17,7 @@ xdescribe('ScreenComponent', () => {
   let component: ComponentScreenComponent;
   let fixture: ComponentFixture<ComponentScreenComponent>;
   let navService: NavigationService;
-  let componentStateService: ComponentStateService;
+  let currentAnswersService: CurrentAnswersService;
   let screenService: ScreenService;
   const screenDataMock: ScreenStore = {
     display: {
@@ -45,7 +45,7 @@ xdescribe('ScreenComponent', () => {
       declarations: [ ComponentScreenComponent, ScreenContainerComponent ],
       providers: [
         NavigationService,
-        ComponentStateService,
+        CurrentAnswersService,
         ScreenService,
         UnsubscribeService,
         ApplicantAnswersService,
@@ -54,7 +54,7 @@ xdescribe('ScreenComponent', () => {
     })
     .compileComponents();
     navService = TestBed.inject(NavigationService);
-    componentStateService = TestBed.inject(ComponentStateService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
     screenService = TestBed.inject(ScreenService);
   }));
 

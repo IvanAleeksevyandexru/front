@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { TimeSlotsService } from './time-slots.service';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
@@ -86,7 +86,7 @@ export class TimeSlotsComponent implements OnInit {
     private gibddTimeSlotsService: GibddTimeSlotsService,
     private mvdTimeSlotsService: MvdTimeSlotsService,
     private modalService: ModalService,
-    private componentStateService: ComponentStateService,
+    private currentAnswersService: CurrentAnswersService,
     public constants: TimeSlotsConstants,
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;
@@ -161,7 +161,7 @@ export class TimeSlotsComponent implements OnInit {
 
   public chooseTimeSlot(slot) {
     this.currentSlot = slot;
-    this.componentStateService.state = slot;
+    this.currentAnswersService.state = slot;
   }
 
   public isSlotSelected(slot) {
@@ -299,7 +299,7 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   buttonDisabled(): boolean {
-    return !this.componentStateService.isValid || this.inProgress || this.isBookSlotSelected();
+    return !this.currentAnswersService.isValid || this.inProgress || this.isBookSlotSelected();
   }
 
   isBookSlotSelected(): boolean {

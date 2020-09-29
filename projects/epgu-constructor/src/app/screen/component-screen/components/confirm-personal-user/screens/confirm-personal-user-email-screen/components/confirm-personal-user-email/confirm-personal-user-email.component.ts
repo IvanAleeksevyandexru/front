@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { ScreenService } from '../../../../../../../screen.service';
 import { NavigationService } from '../../../../../../../../shared/services/navigation/navigation.service';
 import { Navigation } from '../../../../../../../../form-player.types';
@@ -18,7 +18,7 @@ export class ConfirmPersonalUserEmailComponent implements OnChanges {
   @Input() isEditButtonShown: boolean;
 
   constructor(
-    private componentStateService: ComponentStateService,
+    private currentAnswersService: CurrentAnswersService,
     private screenService: ScreenService,
     private navigationService: NavigationService,
   ) {}
@@ -34,7 +34,7 @@ export class ConfirmPersonalUserEmailComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data?.currentValue) {
-      this.componentStateService.state = this.data;
+      this.currentAnswersService.state = this.data;
     }
   }
 
@@ -42,7 +42,7 @@ export class ConfirmPersonalUserEmailComponent implements OnChanges {
     return {
       [this.screenService.component.id]: {
         visited: true,
-        value: this.componentStateService.state,
+        value: this.currentAnswersService.state,
       },
     };
   }

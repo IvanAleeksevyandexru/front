@@ -6,7 +6,7 @@ import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../current-answers.service';
 import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 describe('UniqueScreenComponent', () => {
@@ -42,7 +42,7 @@ describe('UniqueScreenComponent', () => {
         ScreenService,
         UnsubscribeService,
         ApplicantAnswersService,
-        ComponentStateService,
+        CurrentAnswersService,
         CycledFieldsService,
       ]
     })

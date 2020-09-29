@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
-import { ComponentStateService } from '../services/component-state/component-state.service';
+import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 
 
@@ -18,11 +18,10 @@ export class ScreenService extends ScreenContent{
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public isShown$: Observable<boolean> = this.isShownSubject.asObservable();
-  public screenData$: Observable<ScreenStore> = this.screenStoreSubject.asObservable();
 
   constructor (
     private applicantAnswersService: ApplicantAnswersService,
-    private componentStateService: ComponentStateService,
+    private currentAnswersService: CurrentAnswersService,
   ) {
     super();
   }
@@ -63,8 +62,8 @@ export class ScreenService extends ScreenContent{
    * @private
    */
   private initComponentStateService() {
-    this.componentStateService.state = '';
-    this.componentStateService.isValid = true;
+    this.currentAnswersService.state = '';
+    this.currentAnswersService.isValid = true;
   }
 
   /**

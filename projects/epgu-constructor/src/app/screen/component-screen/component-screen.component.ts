@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
-import { Screen, ScreenStore } from '../screen.types';
+import { CurrentAnswersService } from '../current-answers.service';
+import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { ComponentScreenComponentTypes } from './component-screen.types';
 import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
@@ -32,11 +32,10 @@ export class ComponentScreenComponent implements OnInit, Screen {
   componentData = null;
   form: FormGroup;
   isCycledFields = false;
-  screenStore: ScreenStore;
 
   constructor(
     private navigationService: NavigationService,
-    public componentStateService: ComponentStateService,
+    public currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     private fb: FormBuilder,
@@ -50,11 +49,10 @@ export class ComponentScreenComponent implements OnInit, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
 
-    this.screenService.screenData$
+    this.screenService.currentCycledFields$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenStore) => {
-        this.screenStore = screenData;
-        this.cycledFieldsService.initCycledFields(this.screenStore.currentCycledFields);
+      .subscribe((currentCycledFields) => {
+        this.cycledFieldsService.initCycledFields(currentCycledFields);
       });
   }
 
@@ -70,14 +68,14 @@ export class ComponentScreenComponent implements OnInit, Screen {
    */
   nextStep() {
     let value: string;
-    if (typeof this.componentStateService.state === 'object') {
-      value = JSON.stringify(this.componentStateService.state);
+    if (typeof this.currentAnswersService.state === 'object') {
+      value = JSON.stringify(this.currentAnswersService.state);
     } else {
-      value = this.componentStateService.state;
+      value = this.currentAnswersService.state;
     }
 
     this.navigationService.nextStep.next({
-      payload: { ...this.cycledFieldsService.dataTransform(this.screenStore, value) },
+      payload: { ...this.cycledFieldsService.dataTransform(this.screenService.component, value) },
     });
   }
 
