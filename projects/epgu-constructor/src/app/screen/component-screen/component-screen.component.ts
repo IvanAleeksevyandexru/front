@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
+import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
-import { Screen, ScreenStore } from '../screen.types';
 import { ScreenService } from '../screen.service';
+import { Screen, ScreenStore } from '../screen.types';
 import { ComponentScreenComponentTypes } from './component-screen.types';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -77,7 +77,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
     }
 
     this.navigationService.nextStep.next({
-      payload: { ...this.cycledFieldsService.dataTransform(this.screenStore, value) },
+      payload: { ...this.cycledFieldsService.dataTransform(value) },
     });
   }
 
