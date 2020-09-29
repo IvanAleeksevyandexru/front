@@ -1,6 +1,6 @@
 {
   "name": "epgu-constructor",
-  "version": "0.0.1",
+  "version": "0.1.5",
   "peerDependencies": {
     "@angular/common": "10.1.1",
     "@angular/cdk": "10.2.0",
@@ -15,7 +15,10 @@
     "ngx-perfect-scrollbar": "8.0.0",
     "text-mask-core": "5.1.2",
     "epgu-lib": "0.0.493",
-    "ics": "^2.24.0"
+    "ics": "^2.24.0",
+    "@alyle/ui": "^10.2.1",
+    "ngx-device-detector": "^2.0.0",
+    "angular-resize-event": "^2.0.0"
   },
   "dependencies": {
     "tslib": "2.0.0"

@@ -14,9 +14,9 @@
     flex-direction: column;
     min-height: inherit;
     @include phones-down {
-      $header-h: 40px;
-      $navigation-h: 46px;
-      min-height: calc(100vh - #{$header-h + $navigation-h + 48px});
+      $header-production-h: 88px;
+      $navigation-h: 44px;
+      min-height: calc(100vh - #{$header-production-h + $navigation-h + $navigation-mb});
     }
 
     &__label {

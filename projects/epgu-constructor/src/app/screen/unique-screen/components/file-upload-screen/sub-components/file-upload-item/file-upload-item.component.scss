@@ -1,6 +1,6 @@
-@import "src/styles/core/typography";
-@import "src/styles/core/palettes";
-@import "src/styles/core/breakpoint";
+@import 'src/styles/core/typography';
+@import 'src/styles/core/palettes';
+@import 'src/styles/core/breakpoint';
 
 .info {
   font-size: 14px;
@@ -44,14 +44,14 @@ input[type="file"] {
   height: 24px;
   flex-shrink: 0;
   margin-right: 12px;
-  background: no-repeat center center url("/assets/icons/svg/file_inprogress.svg");
+  background: no-repeat center center url('../../../../../../../assets/icons/svg/file_inprogress.svg');
 
   &.uploaded {
-    background-image: url("/assets/icons/svg/file_accept.svg");
+    background-image: url('../../../../../../../assets/icons/svg/file_accept.svg');
   }
 
   &.has-error {
-    background-image: url("/assets/icons/svg/file_red.svg");
+    background-image: url('../../../../../../../assets/icons/svg/file_red.svg');
   }
 }
 

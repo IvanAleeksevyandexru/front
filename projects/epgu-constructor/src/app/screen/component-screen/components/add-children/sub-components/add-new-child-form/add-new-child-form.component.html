@@ -4,6 +4,7 @@
       <div class="component__field component__field--date">
         <epgu-constructor-label for="birthDate"> Дата рождения </epgu-constructor-label>
         <lib-date-picker
+          align="left"
           id="birthDate"
           name="birthDate"
           minDate="-18y"
@@ -13,14 +14,16 @@
       <div class="component__field">
         <epgu-constructor-label> Пол </epgu-constructor-label>
         <div class="component__radio-group radio-group">
-          <epgu-constructor-gender-radio-button
-            [(ngModel)]="item.gender">
+          <epgu-constructor-gender-radio-button name="gender" [(ngModel)]="item.gender">
           </epgu-constructor-gender-radio-button>
         </div>
       </div>
       <div class="component__field">
         <epgu-constructor-label for="lastName"> Фамилия </epgu-constructor-label>
         <lib-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
           id="lastName"
           name="lastName"
           [(ngModel)]="item.lastName"
@@ -29,6 +32,9 @@
       <div class="component__field">
         <epgu-constructor-label for="firstName"> Имя </epgu-constructor-label>
         <lib-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
           id="firstName"
           name="firstName"
           [(ngModel)]="item.firstName"
@@ -37,6 +43,9 @@
       <div class="component__field">
         <epgu-constructor-label for="middleName"> Отчество </epgu-constructor-label>
         <lib-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
           id="middleName"
           name="middleName"
           [(ngModel)]="item.middleName"

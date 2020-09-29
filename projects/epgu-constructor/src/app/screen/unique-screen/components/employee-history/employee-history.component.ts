@@ -3,7 +3,7 @@ import { ValidationShowOn } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { Gender } from '../../../../shared/types/gender';
-import { Display } from '../../../screen.types';
+import { ComponentBase, Display } from '../../../screen.types';
 import {
   Employee,
   EmployeeHistoryAvailableDates,
@@ -13,8 +13,15 @@ import {
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
+import { TextTransform } from '../../../../shared/types/textTransform';
 
 const moment = moment_;
+
+export interface EmployeeHistoryComponentInterface extends ComponentBase {
+  attrs: {
+    fstuc?: TextTransform;
+  };
+}
 
 @Component({
   selector: 'epgu-constructor-employee-history',
@@ -96,6 +103,11 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
       (e) =>
         String(e.type) === String(type || this.employeeFormService.generateForm.get('type').value),
     );
+  }
+
+  get textTransformType(): TextTransform {
+    const component = this.display?.components[0] as EmployeeHistoryComponentInterface;
+    return component?.attrs?.fstuc;
   }
 
   private convertEmployeeHistory(): EmployeeHistoryModel[] {

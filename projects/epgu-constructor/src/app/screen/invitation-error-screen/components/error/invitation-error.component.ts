@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormControl } from '@angular/forms';
+import { ConfigService } from '../../../../config/config.service';
 
 @Component({
   selector: 'epgu-constructor-invitation-error',
@@ -13,6 +14,8 @@ export class InvitationErrorComponent implements OnInit {
 
   @Input() data: any;
   @Output() getEmail: EventEmitter<string> = new EventEmitter<string>();
+
+  constructor(public config: ConfigService) {}
 
   sendEmail(): void {
     this.getEmail.emit(this.email.value);

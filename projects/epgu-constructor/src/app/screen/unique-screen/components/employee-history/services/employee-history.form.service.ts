@@ -14,9 +14,7 @@ import { MonthYear } from 'epgu-lib';
 
 const moment = moment_;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class EmployeeHistoryFormService {
   employeeHistory: Array<EmployeeHistoryModel> = [];
   generateForm: FormGroup;

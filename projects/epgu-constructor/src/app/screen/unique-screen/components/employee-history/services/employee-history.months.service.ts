@@ -9,9 +9,7 @@ import { MonthYear } from 'epgu-lib';
 
 const moment = moment_;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class EmployeeHistoryMonthsService {
   years = 10;
   maxDate: MonthYear;

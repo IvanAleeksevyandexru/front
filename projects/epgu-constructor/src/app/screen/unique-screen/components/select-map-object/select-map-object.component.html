@@ -16,7 +16,7 @@
     </div>
   </div>
   <lib-map
-    [externalMode]="true"
+    [externalMode]="!config.production"
     [enterpriseYandexMapsEnabled]="true"
     [yandexMapsApiKey]="config.yandexMapsApiKey"
     [center]="mapCenter"
@@ -24,9 +24,7 @@
   >
   </lib-map>
   <div *ngIf="selectedValue" class="map-objects-list">
-    <perfect-scrollbar
-      [config]="scrollConfig"
-    >
+    <perfect-scrollbar [config]="scrollConfig">
       <div class="cross-btn" (click)="selectMapObjectService.closeBalloon()"></div>
       <div
         *ngFor="let mapObject of selectedValue.children"
@@ -34,28 +32,30 @@
         (click)="expandObject(mapObject)"
         class="map-object"
       >
-        <h6 class="map-object__header">{{mapObject.title}}</h6>
+        <h6 class="map-object__header">{{ mapObject.title }}</h6>
         <ng-container *ngIf="mapObject.expanded">
           <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
-            <span class="map-object__label">{{itemContent.label}}: </span>
-            <span class="PGU-AttrsValue">{{itemContent.value}}</span>
+            <span class="map-object__label">{{ itemContent.label }}: </span>
+            <span class="PGU-AttrsValue">{{ itemContent.value }}</span>
           </div>
           <a
             *ngIf="data.attrs.showExtraInfoLink"
             (click)="showModalFromTemplate('detailsTemplate', mapObject)"
             href="#!"
             class="details-link"
-          >Узнать подробнее
+            >Узнать подробнее
           </a>
-          <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">На данной площадке действуют дополнительные 
-  условия оказания услуг нажмите чтобы 
-            <a href="#!" (click)="showModalFromTemplate('informationTemplate', mapObject)" class="information-link">ознакомиться</a>
+          <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">
+            На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы
+            <a
+              href="#!"
+              (click)="showModalFromTemplate('informationTemplate', mapObject)"
+              class="information-link"
+              >ознакомиться</a
+            >
           </div>
-          <lib-button
-            [disabled]="!mapObject.agreement"
-            width="wide"
-            (click)="selectObject()"
-          >Выбрать
+          <lib-button [disabled]="!mapObject.agreement" width="wide" (click)="selectObject()"
+            >Выбрать
           </lib-button>
         </ng-container>
       </div>
@@ -71,8 +71,8 @@
     <div class="map-modal__normal">Хамовнический отдел ЗАГС Управления ЗАГС Москвы</div>
     <div class="map-modal__bold">Место регистрации брака:</div>
     <div class="map-modal__normal">Башня "Око" - ресторан "Birds"</div>
-    <img class="modal-img" src="./assets/img/brak001.png" />
-    <img class="modal-img" src="./assets/img/brak002.png" />
+    <img class="modal-img" src="{{ config.staticDomainAssetsPath }}/assets/img/brak001.png" />
+    <img class="modal-img" src="{{ config.staticDomainAssetsPath }}/assets/img/brak002.png" />
     <div class="map-modal__normal">
       Одна из новейших площадок для регистрации брака находится на 84 этаже башни «Око» делового
       центра «Москва-Сити» в ресторане «Birds».
@@ -106,7 +106,7 @@
   <h3>Дополнительные условия оказания услуги</h3>
   <hr />
   <div class="map-modal">
-    <div class="map-modal__normal">{{item.attributeValues.AREA_DESCR}}</div>
+    <div class="map-modal__normal">{{ item.attributeValues.AREA_DESCR }}</div>
     <div *ngIf="item.attributeValues.GET_CONSENT === 'true'" class="map-modal__bottom-confirm">
       <lib-checkbox
         [(ngModel)]="item.agreement"

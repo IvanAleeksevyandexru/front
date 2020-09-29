@@ -49,9 +49,10 @@ export class PaymentService {
    * @param orderId - идентификатор заявления
    * @param nsi - наименование справочника с информацией
    * @param dictItemCode - код нужного справочника
+   * @param fiasCode - код справочника
    */
-  loadPaymentInfo(orderId, nsi, dictItemCode): Observable<any> {
-    const dictionaryOptions = this.createPaymentRequestOptions(dictItemCode);
+  loadPaymentInfo(orderId, nsi, dictItemCode, fiasCode): Observable<any> {
+    const dictionaryOptions = this.createPaymentRequestOptions(dictItemCode, fiasCode);
 
     return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
       map((res: any) => {
@@ -75,11 +76,16 @@ export class PaymentService {
    */
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
     // TODO: HARDCODE Специальная подмена на оплату 1,4 рубля гос пошлины, иначе будет как есть снятие
+    // if (location.hostname === 'local.test.gosuslugi.ru') {
+    //   const uinMockUp = new BehaviorSubject({
+    //     value: mockUpUIN
+    //   });
+    //   return uinMockUp.asObservable();
+    // }
+
+    // TODO: Хардкод для локальной отладки
     if (location.hostname === 'local.test.gosuslugi.ru') {
-      const uinMockUp = new BehaviorSubject({
-        value: mockUpUIN
-      });
-      return uinMockUp.asObservable();
+      attributeValues.sum = '200';
     }
 
     const path = `${this.config.uinApiUrl}/${code}?orderId=${orderId}`;
@@ -101,7 +107,7 @@ export class PaymentService {
     // return billMockUp.asObservable();
 
     // eslint-disable-next-line max-len
-    const path = `${this.config.billsApiUrl}?billNumber=${uin}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    const path = `${this.config.billsApiUrl}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
     return this.http.post(path, {}, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -124,27 +130,50 @@ export class PaymentService {
   }
 
   /**
+   * Возвращает адрес куда нужно сделать возврат
+   */
+  getReturnUrl(): string {
+    const slashInEndRex = /\/$/;
+    const host = location.href.replace(slashInEndRex,'');
+    return encodeURIComponent(`${host}?getLastScreen=1`);
+  }
+
+  /**
    * Возвращает ссылку на оплату для перехода пользователя
    *
    * @param billId - уникальный идентификатор патежа
    */
   getPaymentLink(billId: number): string {
-    // TODO хардкод. доделать.
-    const slashInEndRex = /\/$/;
-    const host = location.href.replace(slashInEndRex,'');
-    const returnUrl = encodeURIComponent(`${host}${this.config.apiUrl}?getLastScreen=1`);
-    return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${returnUrl}&subscribe=true`;
+    return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${this.getReturnUrl()}&subscribe=true`;
+  }
+
+  /**
+   * Возращает значение из объекта по массиву переданных ключей
+   * @param obj_or_result - объект или значение объекта
+   * @param path - массив с путём ключей
+   * @private
+   */
+  private getValueFromObjectAsArray(obj_or_result: any, path: string[]): string | null {
+    if (path.length){
+      const key = path.shift();
+      if (obj_or_result.hasOwnProperty(key)){
+        return this.getValueFromObjectAsArray(obj_or_result[key], path);
+      }
+      return null;
+    }
+    return obj_or_result;
   }
 
   /**
    * Возвращает опции для запроса на оплату
    * @param dictItemCode - код элемента справочника на оплату
+   * @param fiasCode - код справочника
    */
-  createPaymentRequestOptions(dictItemCode: string): PaymentDictionaryOptionsInterface {
+  createPaymentRequestOptions(dictItemCode: string, fiasCode: string): PaymentDictionaryOptionsInterface {
     const { applicantAnswers } = this.screenStore;
-    const filterReg = JSON.parse(applicantAnswers.ms1.value);
+    const path = fiasCode.split('.'); // Путь к ответу
+    const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, path));
 
-    // TODO хардкод. доделать.
     return getPaymentRequestOptions(filterReg, dictItemCode);
   }
 }

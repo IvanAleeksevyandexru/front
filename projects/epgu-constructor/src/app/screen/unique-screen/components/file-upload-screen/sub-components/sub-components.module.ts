@@ -1,18 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { EpguLibModule } from 'epgu-lib';
-import { WebcamModule } from 'ngx-webcam';
 
 import { SharedModule } from '../../../../../shared/shared.module';
-
-import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileUploadItemComponent } from './file-upload-item/file-upload-item.component';
-import { WebcamShootComponent } from './webcam-shoot/webcam-shoot.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 const COMPONENTS = [
   FileUploadComponent,
   FileUploadItemComponent,
-  WebcamShootComponent,
 ];
 
 @NgModule({
@@ -21,8 +17,8 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     SharedModule,
-    WebcamModule,
     EpguLibModule,
   ],
+  entryComponents: [...COMPONENTS]
 })
 export class SubComponentsModule {}

@@ -1,11 +1,8 @@
-@import 'src/styles/core';
-
-.add-new-child-form {
-  background-color: $color-light-gray;
-}
+@import 'src/styles/core/palettes';
+@import 'src/styles/core/typography';
+@import 'src/styles/core/breakpoint';
 
 .component {
-  padding: 24px 16px;
   &__header {
     display: flex;
     justify-content: flex-start;
@@ -28,6 +25,10 @@
 
       @include phones-down {
         width: 100%;
+      }
+
+      @include phones-up {
+        padding-right: 8px;
       }
     }
   }

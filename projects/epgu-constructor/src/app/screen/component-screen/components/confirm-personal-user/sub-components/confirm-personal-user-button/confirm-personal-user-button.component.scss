@@ -1,16 +1,9 @@
-@import "src/styles/core";
-
+@import 'src/styles/core';
 
 :host {
   width: 100%;
   margin-top: 4px;
   margin-bottom: 4px;
-  @include tablets-up {
-    margin-top: 0;
-    margin-bottom: 0;
-    min-width: 176px;
-    width: auto;
-  }
 }
 
 .confirm-btn {
@@ -20,23 +13,9 @@
   text-align: left;
   width: 100%;
   padding: 20px;
-  @include tablets-up {
-    display: inline-block;
-    padding: 12px;
-    text-align: center;
-  }
-  @include tablets-down {
-    @include shadow-main();
-  }
-}
 
-.btn--light {
-  @include tablets-up {
-    border: 1px solid $color-button-hit;
-  }
-  @include tablets-down {
-    @include shadow-main();
-  }
+  @include shadow-main();
+
 }
 
 .confirm-btn__icon {
@@ -45,11 +24,8 @@
   height: 20px;
   flex-shrink: 0;
   margin-left: 10px;
-  @include tablets-up {
-    display: none;
-  }
 }
 
 .btn--light:hover .icon-arrow {
-  background-image: url("/assets/icons/svg/arrow-forward.svg");
+  background-image: url('../../../../../../../assets/icons/svg/arrow-forward.svg');
 }

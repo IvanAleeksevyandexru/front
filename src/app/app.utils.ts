@@ -3,6 +3,7 @@ import { environment } from '../environments/environment'
 
 export const getConfigFromEnvs = (): Config => {
   return {
+    production: false,
     apiUrl: environment.apiUrl,
     dictionaryUrl: environment.dictionaryUrl,
     externalApiUrl: environment.externalApiUrl,
@@ -13,5 +14,8 @@ export const getConfigFromEnvs = (): Config => {
     yandexMapsApiKey: environment.yandexMapsApiKey,
     fileUploadApiUrl: environment.fileUploadApiUrl,
     lkUrl: environment.lkUrl,
+    staticDomainAssetsPath: environment.staticDomainAssetsPath,
+    mocks: environment.mocks,
+    mockUrl: environment.mockUrl,
   }
 }

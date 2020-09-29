@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { ComponentStateService } from '../services/component-state/component-state.service';
+import { ScreenContent } from './screen-content';
 
 
 @Injectable()
-export class ScreenService {
+export class ScreenService extends ScreenContent{
   private screenStore: ScreenStore;
   private isLoading = false;
   private isShown = true; // Показываем или нет кнопку
@@ -20,9 +21,11 @@ export class ScreenService {
   public screenData$: Observable<ScreenStore> = this.screenStoreSubject.asObservable();
 
   constructor (
-    private applicantAnswersService: ApplicantAnswersService,
+    private cachedAnswersService: CachedAnswersService,
     private componentStateService: ComponentStateService,
-  ) {}
+  ) {
+    super();
+  }
 
   /**
    * Инициализирует работу хранилища
@@ -30,9 +33,10 @@ export class ScreenService {
    */
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;
-    this.loadAnsweredValues();
+    this.loadCachedValues();
     this.initComponentStateService();
     this.screenStoreSubject.next(this.screenStore);
+    this.updateScreenContent(store);
   }
 
   /**
@@ -42,6 +46,7 @@ export class ScreenService {
   public updateScreenStore(newState: ScreenStore): void {
     this.screenStore = { ...this.screenStore, ...newState };
     this.screenStoreSubject.next(this.screenStore);
+    this.updateScreenContent(newState);
   }
 
   /**
@@ -65,14 +70,14 @@ export class ScreenService {
   /**
    * Подгружает ответы пользователя
    */
-  private loadAnsweredValues(): void {
+  private loadCachedValues(): void {
     const components = [];
 
     this.screenStore.display.components.forEach(item => {
-      const answeredValue = this.applicantAnswersService
-        .getAnsweredValueById(this.screenStore.applicantAnswers, item.id);
+      const cachedValue = this.cachedAnswersService
+        .getCachedValueById(this.screenStore.cachedAnswers, item.id);
 
-      const component = answeredValue ? { ...item, value: answeredValue } : item;
+      const component = cachedValue ? { ...item, value: cachedValue } : item;
       components.push(component);
     });
 

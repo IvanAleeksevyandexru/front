@@ -18,10 +18,12 @@
       border-radius: 0;
     }
 
-    &__close {
-      float: right;
+    &__cross-button {
+      position: absolute;
+      right: 28px;
       width: 16px;
       height: 16px;
+      cursor: pointer;
 
       &:before,
       &:after {
@@ -43,9 +45,8 @@
     }
 
     &__title {
+      @include typ-h3;
       padding-right: 50px;
-      font-size: 24px;
-      line-height: 32px;
       color: $color-summer-night;
     }
 
@@ -62,8 +63,7 @@
 
     &__text {
       white-space: pre-line;
-      font-size: 16px;
-      line-height: 24px;
+      @include typ-plain-text;
 
       div.photoSimple {
         p {

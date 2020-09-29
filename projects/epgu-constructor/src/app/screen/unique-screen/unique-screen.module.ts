@@ -11,7 +11,11 @@ import { UniqueScreenComponent } from './unique-screen.component';
 import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { ScreenService } from '../screen.service';
 import { ConfirmMarriageModule } from './components/confirm-marriage/confirm-marriage.module';
+import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
 import { PaymentModule } from './components/payment/payment.module';
+import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
+import { ConfirmPhoneModule } from './components/confirm-phone/confirm-phone.module';
+import { ConfirmEmailModule } from './components/confirm-email/confirm-email.module';
 
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
@@ -25,18 +29,22 @@ const COMPONENTS = [UniqueScreenComponent];
   exports: [
     ...COMPONENTS,
   ],
-    imports: [
-        CommonModule,
-        SharedModule,
-        FileUploadModule,
-        EpguLibModule,
-        SelectMapObjectModule,
-        CarInfoModule,
-        EmployeeHistoryModule,
-        TimeSlotsModule,
-        ConfirmMarriageModule,
-        PaymentModule,
-    ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FileUploadModule,
+    EpguLibModule,
+    SelectMapObjectModule,
+    CarInfoModule,
+    EmployeeHistoryModule,
+    TimeSlotsModule,
+    ConfirmMarriageModule,
+    PaymentModule,
+    ConfirmPhoneModule,
+    ConfirmEmailModule,
+    SignatureApplicationModule,
+    UploadAndEditPhotoModule,
+  ],
   providers: [
     ScreenService
   ]

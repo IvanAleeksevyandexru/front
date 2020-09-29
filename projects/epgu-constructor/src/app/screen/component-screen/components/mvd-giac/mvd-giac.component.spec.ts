@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MvdGiacComponent } from './mvd-giac.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -7,7 +7,9 @@ import { ComponentStateService } from '../../../../services/component-state/comp
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../services/api/dictionary-api/dictionary-api.service.stub';
 import { ComponentScreenComponentTypes } from '../../component-screen.types';
-import { ApplicantAnswers, Display, ScreenTypes } from '../../../screen.types';
+import { CachedAnswers, Display, ScreenTypes } from '../../../screen.types';
+import { ConfigService } from '../../../../config/config.service';
+import { ConfigServiceStub } from '../../../../config/config.service.stub';
 
 describe('MvdGiacComponent', () => {
   let component: MvdGiacComponent;
@@ -16,7 +18,7 @@ describe('MvdGiacComponent', () => {
   let dictionaryApiService: DictionaryApiService;
   let componentStateService: ComponentStateService;
 
-  let getDictionarySpy: jasmine.Spy;
+  let getMvdDictionarySpy: jasmine.Spy;
 
   let checkRegionList;
   let testRegionList;
@@ -45,7 +47,7 @@ describe('MvdGiacComponent', () => {
     type: ScreenTypes.COMPONENT
   };
 
-  const applicantAnswersMock: ApplicantAnswers = {
+  const applicantAnswersMock: CachedAnswers = {
     q1: {
       value: '',
       visited: true
@@ -64,13 +66,14 @@ describe('MvdGiacComponent', () => {
     }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       imports: [ReactiveFormsModule],
       declarations: [ MvdGiacComponent ],
       providers: [
         ComponentStateService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub }
       ]
     })
@@ -114,7 +117,7 @@ describe('MvdGiacComponent', () => {
     });
     testRegionList = regionList.map(item => Object.assign({}, item));
 
-    getDictionarySpy = spyOn(dictionaryApiService, 'getDictionary').and.returnValue(dictionarySubject);
+    getMvdDictionarySpy = spyOn(dictionaryApiService, 'getMvdDictionary').and.returnValue(dictionarySubject);
 
     componentStateService.state = null;
   });

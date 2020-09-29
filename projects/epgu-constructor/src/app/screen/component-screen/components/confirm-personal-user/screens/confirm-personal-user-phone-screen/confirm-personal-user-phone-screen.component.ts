@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { Component, Input } from '@angular/core';
 import { ComponentBase } from '../../../../../screen.types';
 
 @Component({
@@ -7,17 +6,9 @@ import { ComponentBase } from '../../../../../screen.types';
   templateUrl: './confirm-personal-user-phone-screen.component.html',
   styleUrls: ['./confirm-personal-user-phone-screen.component.scss'],
 })
-export class ConfirmPersonalUserPhoneScreenComponent implements OnInit {
+export class ConfirmPersonalUserPhoneScreenComponent {
   @Input() data: ComponentBase;
   @Input() errors: object;
-  @Output() nextStepEvent = new EventEmitter();
-
-  constructor(private componentStateService: ComponentStateService) {}
-
-  ngOnInit(): void {
-    // TODO возможно стоит переместить во внутриь компонента
-    this.componentStateService.state = this.data.value;
-  }
 
   clickToAction(action: NotificationAction) {
     console.log(action);

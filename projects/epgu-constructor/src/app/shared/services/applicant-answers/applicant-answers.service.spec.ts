@@ -1,17 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ApplicantAnswersService } from './applicant-answers.service';
+import { CachedAnswersService } from './cached-answers.service';
 
 describe('ApplicantAnswersService', () => {
-  let service: ApplicantAnswersService;
+  let service: CachedAnswersService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ApplicantAnswersService,
+        CachedAnswersService,
       ]
     });
-    service = TestBed.inject(ApplicantAnswersService);
+    service = TestBed.inject(CachedAnswersService);
   });
 
   it('should be created', () => {
