@@ -32,11 +32,9 @@ export class CycledFieldsService {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
       const fieldNameRefs = this.screenService.component?.attrs?.fields?.map(field => field.fieldName);
       let valuePrepared: object = {};
-      if (typeof value === 'string') {
-        fieldNameRefs.forEach(fieldName => valuePrepared[fieldName] = JSON.parse(value)[fieldName]);
-      } else {
-        fieldNameRefs.forEach(fieldName => valuePrepared[fieldName] = value[fieldName]);
-      }
+      fieldNameRefs.forEach(fieldName => {
+        valuePrepared[fieldName] = typeof value === 'string' ? JSON.parse(value)[fieldName] : value[fieldName];
+      });
       const cycledValuesPrepared = { ...this.cycledValues, ...valuePrepared };
 
       data[currentCycledFieldsKey] = {
