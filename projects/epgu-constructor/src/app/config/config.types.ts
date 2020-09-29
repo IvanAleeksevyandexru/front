@@ -23,6 +23,7 @@ export interface Config {
   dictionaryUrl: string;
   externalApiUrl: string;
   timeSlotApiUrl: string;
+  listPaymentsApiUrl: string;
   uinApiUrl: string;
   billsApiUrl: string;
   paymentUrl: string;
