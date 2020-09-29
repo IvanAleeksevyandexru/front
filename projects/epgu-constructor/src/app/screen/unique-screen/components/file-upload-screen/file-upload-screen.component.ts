@@ -75,12 +75,12 @@ export class FileUploadScreenComponent {
    * @param uploads - массив сведений о файлов
    * @private
    */
-  private isHaveAllFilesUploaded(uploads: FileUploadEmitValue[]): boolean {
+  private isAllFilesUploaded(uploads: FileUploadEmitValue[]): boolean {
     const allUploads = uploads.length;
     const uploadsWithFiles = uploads.filter((fileUploadsInfo) => {
       // Если это зависимые подэлементы для загрузки
       return fileUploadsInfo.relatedUploads
-        ? this.isHaveAllFilesUploaded(fileUploadsInfo.relatedUploads.uploads)
+        ? this.isAllFilesUploaded(fileUploadsInfo.relatedUploads.uploads)
         : fileUploadsInfo?.value.filter((file) => file.uploaded).length > 0;
     }).length;
 
@@ -103,7 +103,7 @@ export class FileUploadScreenComponent {
     } else {
       this.value.uploads = $eventData;
     }
-    this.disabled = !this.isHaveAllFilesUploaded(this.value.uploads);
+    this.disabled = !this.isAllFilesUploaded(this.value.uploads);
   }
 
   /**
