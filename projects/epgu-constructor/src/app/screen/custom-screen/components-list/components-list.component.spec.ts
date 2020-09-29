@@ -7,7 +7,9 @@ import { ConfigService } from '../../../config/config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ScreenServiceStub } from '../../screen.service.stub';
 import { MaskHandlePipe } from '../../../shared/pipes/mask-handle/mask-handle.pipe';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
+import { ValidationService } from '../services/validation.service';
 
 
 describe('ComponentsListComponent', () => {
@@ -21,11 +23,15 @@ describe('ComponentsListComponent', () => {
       providers: [
         DictionaryApiService,
         ConfigService,
+        FormBuilder,
+        UnsubscribeService,
+        ValidationService,
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
       imports: [
         HttpClientTestingModule,
         FormsModule,
+        ReactiveFormsModule,
       ]
     })
     .compileComponents();
@@ -38,6 +44,9 @@ describe('ComponentsListComponent', () => {
     fixture.debugElement.injector.get(DictionaryApiService);
     fixture.debugElement.injector.get(ScreenService);
     fixture.debugElement.injector.get(ConfigService);
+    fixture.debugElement.injector.get(FormBuilder);
+    fixture.debugElement.injector.get(UnsubscribeService);
+    fixture.debugElement.injector.get(ValidationService);
     fixture.detectChanges();
   });
 
