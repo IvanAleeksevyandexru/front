@@ -13,7 +13,7 @@ export class EmployeeHistoryDatasourceService {
       {
         label: `Я учил${gender === Gender.male ? 'ся' : 'ась'}`,
         type: 'student',
-        position: 'Учащийся или студент',
+        position: '',
         place: 'Место учебы без сокращений и аббревиатур',
         address: 'Адрес полностью, включая регион и город',
       },
@@ -29,7 +29,7 @@ export class EmployeeHistoryDatasourceService {
         type: 'military',
         position: 'Воинская должность и звание',
         place: 'Номер части и род (вид) войск',
-        address: 'Адрес расположения воинской части полностью, включая регион и город',
+        address: 'Адрес полностью, включая регион и город',
       },
       {
         label: `Я не работал${gender === Gender.male ? '' : 'а'}`,
