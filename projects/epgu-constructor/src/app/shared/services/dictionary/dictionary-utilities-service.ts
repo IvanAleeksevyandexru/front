@@ -1,5 +1,5 @@
 import { IdictionaryFilter } from '../../../screen/unique-screen/components/select-map-object/select-map-object.interface';
-import { ApplicantAnswers, ScreenStore } from '../../../screen/screen.types';
+import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
 import { DictionaryFilters } from '../../../services/api/dictionary-api/dictionary-api.types';
 
 export class DictionaryUtilities {
@@ -39,7 +39,7 @@ export class DictionaryUtilities {
    * @param applicantAnswers ответы с экранов в scenarioDto
    * @param path путь до значения в applicantAnswers (примеp: pd1.value.firstName)
    */
-  private static getValueViaRef(applicantAnswers: ApplicantAnswers, path: string): any {
+  private static getValueViaRef(applicantAnswers: CachedAnswers, path: string): any {
     return path.split('.').reduce((ret: any, current, index) => {
       // Eсли путь ссылается на поле в value, то его (value) необходимо предварительно распарсить, всегда index === 2
       if (index === 2) {

@@ -7,7 +7,7 @@ import { ComponentStateService } from '../../../../services/component-state/comp
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../services/api/dictionary-api/dictionary-api.service.stub';
 import { ComponentScreenComponentTypes } from '../../component-screen.types';
-import { ApplicantAnswers, Display, ScreenTypes } from '../../../screen.types';
+import { CachedAnswers, Display, ScreenTypes } from '../../../screen.types';
 import { ConfigService } from '../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../config/config.service.stub';
 
@@ -47,7 +47,7 @@ describe('MvdGiacComponent', () => {
     type: ScreenTypes.COMPONENT
   };
 
-  const applicantAnswersMock: ApplicantAnswers = {
+  const applicantAnswersMock: CachedAnswers = {
     q1: {
       value: '',
       visited: true

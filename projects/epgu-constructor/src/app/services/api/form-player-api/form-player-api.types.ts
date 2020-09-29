@@ -56,6 +56,7 @@ export interface DisplayDto {
   name: string;
   submitLabel: string;
   type: ScreenTypes;
+  terminal: boolean;
 }
 
 export interface CurrentCycledFieldsDto {
@@ -81,6 +82,7 @@ export interface ScenarioErrorsDto {
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
+  cachedAnswers: ApplicantAnswersDto;
   currentCycledFields: CurrentCycledFieldsDto;
   currentScenarioId: string;
   currentValue: CurrentValueDto;
