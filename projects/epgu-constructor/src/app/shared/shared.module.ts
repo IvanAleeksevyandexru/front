@@ -36,6 +36,7 @@ import { OutputHtmlComponent } from './components/output-html/output-html.compon
 import { ScreenContainerComponent } from './components/screen-container/screen-container.component';
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { WebcamShootComponent } from './components/webcam-shoot/webcam-shoot.component';
+import { UsePaymentsModalComponent } from './components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
 import { PassportComponent } from './components/add-passport/passport.component';
 
 const COMPONENTS = [
@@ -49,6 +50,7 @@ const COMPONENTS = [
   CommonModalComponent,
   ModalContainerComponent,
   ModalBaseComponent,
+  UsePaymentsModalComponent,
   HelperTextComponent,
   GenderRadioButtonComponent,
   OutputHtmlComponent,
@@ -86,6 +88,7 @@ const DIRECTIVES = [
     ModalContainerComponent,
     ConfirmationModalComponent,
     CommonModalComponent,
+    UsePaymentsModalComponent,
   ]
 })
 export class SharedModule {}

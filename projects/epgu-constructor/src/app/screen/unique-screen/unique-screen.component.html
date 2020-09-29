@@ -1,4 +1,10 @@
 <ng-container [ngSwitch]="screenService.componentType$ | async">
+  <epgu-constructor-unused-payments
+    *ngSwitchCase="uniqueComponentName.unusedPayments"
+    [data]="screenService.display"
+    (nextStepEvent)="nextDataForStep($event)"
+  ></epgu-constructor-unused-payments>
+<ng-container [ngSwitch]="screenService.componentType$ | async">
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
     [data]="screenService.component"
