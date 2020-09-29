@@ -22,6 +22,7 @@ xdescribe('EmployeeHistoryComponent', () => {
     id: '',
     name: '',
     submitLabel: '',
+    terminal: false,
     type: ScreenTypes.UNIQUE
   };
   beforeEach(() => {

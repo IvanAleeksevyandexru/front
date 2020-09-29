@@ -22,10 +22,11 @@ export interface Display {
   id: string;
   name: string;
   submitLabel: string;
+  terminal: boolean;
   type: ScreenTypes
 }
 
-export interface ApplicantAnswers {
+export interface CachedAnswers {
   [key: string]: Answer
 }
 

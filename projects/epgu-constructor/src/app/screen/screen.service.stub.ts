@@ -30,7 +30,7 @@ export class ScreenServiceStub extends ScreenContent {
 
   private initComponentStateService() {}
 
-  private loadAnsweredValues(): void {}
+  private loadCachedValues(): void {}
 
   public updateIsShown(val: boolean): void {}
 

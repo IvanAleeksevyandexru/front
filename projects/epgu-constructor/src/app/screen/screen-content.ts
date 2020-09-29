@@ -47,6 +47,15 @@ export class ScreenContent {
   }
   public gender$ = this._gender.asObservable();
 
+  private _terminal = new BehaviorSubject<boolean>(null);
+  public get terminal() {
+    return this._terminal.getValue();
+  }
+  public set terminal(val: boolean) {
+    this._terminal.next(val);
+  }
+  public terminal$ = this._terminal.asObservable();
+
   private _screenType = new BehaviorSubject<ScreenTypes>(null);
   public get screenType() {
     return this._screenType.getValue();
@@ -147,12 +156,14 @@ export class ScreenContent {
   public applicantAnswers$ = this._applicantAnswers.asObservable();
 
   updateScreenContent(screenStore: ScreenStore) {
-    const { display = {} as any, orderId, errors = {} as any, currentCycledFields, applicantAnswers } = screenStore;
-    const { header, submitLabel, type, components = [] } = display;
+    const { display = {} as any, orderId, gender, errors = {} as any, currentCycledFields, applicantAnswers } = screenStore;
+    const { header, submitLabel, type, components = [], terminal } = display;
     this.display = display;
     this.header = header;
     this.submitLabel = submitLabel;
     this.screenType = type;
+    this.gender = gender;
+    this.terminal = terminal;
     this.orderId = orderId;
     this.componentErrors = errors;
     this.componentError = errors[components[0]?.id];

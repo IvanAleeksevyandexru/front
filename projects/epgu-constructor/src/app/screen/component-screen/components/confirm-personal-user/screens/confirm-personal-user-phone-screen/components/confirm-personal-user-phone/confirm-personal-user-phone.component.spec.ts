@@ -4,7 +4,7 @@ import { ConfirmPersonalUserPhoneComponent } from './confirm-personal-user-phone
 import { ScreenService } from '../../../../../../../screen.service';
 import { NavigationService } from '../../../../../../../../shared/services/navigation/navigation.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ApplicantAnswersService } from '../../../../../../../../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../../../../../../../../shared/services/applicant-answers/cached-answers.service';
 import { FormPlayerApiService } from '../../../../../../../../services/api/form-player-api/form-player-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../../../../../../../config/config.service';
@@ -23,15 +23,14 @@ describe('ConfirmPersonalUserPhoneComponent', () => {
       declarations: [ ConfirmPersonalUserPhoneComponent ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       providers: [
-        CurrentAnswersService,
         ScreenService,
         NavigationService,
 
         // TODO Tur: почему нужно импортировать эти сервисы?
         FormPlayerApiService,
         ServiceDataService,
-        ApplicantAnswersService,
         CurrentAnswersService,
+        CachedAnswersService,
         ConfigService,
       ]
     })

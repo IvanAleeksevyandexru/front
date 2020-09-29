@@ -7,8 +7,8 @@ import { DictionaryApiService } from '../../../../services/api/dictionary-api/di
 import { ScreenService } from '../../../screen.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { FormPlayerApiService } from '../../../../services/api/form-player-api/form-player-api.service';
-import { ApplicantAnswersService } from '../../../../shared/services/applicant-answers/applicant-answers.service';
 import { CurrentAnswersService } from '../../../current-answers.service';
+import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -21,7 +21,7 @@ describe('PaymentService', () => {
       providers: [
         DictionaryApiService,
         PaymentService,
-        ApplicantAnswersService,
+        CachedAnswersService,
         CurrentAnswersService,
         FormPlayerApiService,
         ScreenService,

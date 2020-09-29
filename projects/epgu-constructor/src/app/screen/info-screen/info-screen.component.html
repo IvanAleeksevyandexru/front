@@ -1,5 +1,5 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
-<epgu-constructor-screen-container>
+<epgu-constructor-navigation *ngIf="(screenService.terminal$ | async) === false" class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container [ngClass]="(screenService.terminal$ | async) ? 'screen-container-mt' : ''">
   <epgu-constructor-screen-pad>
 
     <epgu-constructor-page-name class="info__head">{{screenService.header$ | async}}</epgu-constructor-page-name>

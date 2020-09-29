@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ScreenService } from './screen.service';
-import { ApplicantAnswersService } from '../shared/services/applicant-answers/applicant-answers.service';
 import { CurrentAnswersService } from './current-answers.service';
+import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 
 describe('ScreenService', () => {
   let service: ScreenService;
@@ -11,7 +11,7 @@ describe('ScreenService', () => {
     TestBed.configureTestingModule({
       providers: [
         ScreenService,
-        ApplicantAnswersService,
+        CachedAnswersService,
         CurrentAnswersService
       ]
     });

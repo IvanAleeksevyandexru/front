@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { HelperService } from 'epgu-lib';
 import {
   FileResponseToBackendUploadsItem,
   FileUploadItem,
@@ -33,6 +34,7 @@ import { ConfigService } from '../../../../../../config/config.service';
 })
 export class FileUploadItemComponent implements OnDestroy, OnInit {
   private loadData: FileUploadItem;
+  isMobile: boolean;
   @Input() objectId: string;
   @Input() clarification: Clarifications;
   @Input()
@@ -105,7 +107,9 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
     public config: ConfigService,
-  ) {}
+  ) {
+    this.isMobile = HelperService.isMobile();
+  }
 
   /**
    * Переводит список файлов с сервера в файлы для отображения

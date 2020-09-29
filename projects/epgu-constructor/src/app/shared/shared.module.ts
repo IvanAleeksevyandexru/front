@@ -6,7 +6,6 @@ import { ComponentsListComponent } from '../screen/custom-screen/components-list
 import { WebcamModule } from 'ngx-webcam';
 
 import { WebcamService } from './services/webcam/webcam.service';
-import { ApplicantAnswersService } from './services/applicant-answers/applicant-answers.service';
 import { NavigationService } from './services/navigation/navigation.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
 import { ModalService } from '../services/modal/modal.service';
@@ -36,6 +35,7 @@ import { OutputHtmlComponent } from './components/output-html/output-html.compon
 import { ScreenContainerComponent } from './components/screen-container/screen-container.component';
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { WebcamShootComponent } from './components/webcam-shoot/webcam-shoot.component';
+import { CachedAnswersService } from './services/applicant-answers/cached-answers.service';
 import { UsePaymentsModalComponent } from './components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
 import { PassportComponent } from './components/add-passport/passport.component';
 
@@ -75,7 +75,7 @@ const DIRECTIVES = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  providers: [NavigationService, ApplicantAnswersService, WebcamService, TerraByteApiService, ModalService, CycledFieldsService],
+  providers: [NavigationService, CachedAnswersService, ModalService, CycledFieldsService, WebcamService, TerraByteApiService ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [
       CommonModule,

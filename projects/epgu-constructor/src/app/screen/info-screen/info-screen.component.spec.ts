@@ -5,7 +5,7 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { InfoScreenComponent } from './info-screen.component';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
-import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from '../current-answers.service';
 import { FormPlayerApiService } from '../../services/api/form-player-api/form-player-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -33,6 +33,7 @@ describe('InfoScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
+      terminal: false,
       type: ScreenTypes.COMPONENT
     }
   };
@@ -48,7 +49,7 @@ describe('InfoScreenComponent', () => {
         NavigationService,
         UnsubscribeService,
         ScreenService,
-        ApplicantAnswersService,
+        CachedAnswersService,
         CurrentAnswersService,
         FormPlayerApiService,
         ConfigService,

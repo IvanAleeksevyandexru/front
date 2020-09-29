@@ -41,6 +41,7 @@ describe('TimerComponent', () => {
     id: '',
     name: '',
     submitLabel: '',
+    terminal: false,
     type: ScreenTypes.UNIQUE,
   };
 
