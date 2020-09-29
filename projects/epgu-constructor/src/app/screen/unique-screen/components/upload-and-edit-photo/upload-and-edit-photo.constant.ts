@@ -21,6 +21,11 @@ const imageErrorText = {
   }
 };
 
-export { imageErrorText, minCropSize };
+enum uploadPhotoElemId {
+  requirements = 'requirements',
+  howToTakePhoto = 'howtotakephoto',
+}
+
+export { imageErrorText, minCropSize, uploadPhotoElemId };
 
 

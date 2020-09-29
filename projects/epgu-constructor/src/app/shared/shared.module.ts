@@ -36,6 +36,9 @@ import { ScreenContainerComponent } from './components/screen-container/screen-c
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { WebcamShootComponent } from './components/webcam-shoot/webcam-shoot.component';
 import { CachedAnswersService } from './services/applicant-answers/cached-answers.service';
+import {
+  ConfirmationModalBaseComponent
+} from './components/modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
 
 
 const COMPONENTS = [
@@ -46,6 +49,7 @@ const COMPONENTS = [
   NavigationComponent,
   AnswerButtonComponent,
   ConfirmationModalComponent,
+  ConfirmationModalBaseComponent,
   CommonModalComponent,
   ModalContainerComponent,
   ModalBaseComponent,
