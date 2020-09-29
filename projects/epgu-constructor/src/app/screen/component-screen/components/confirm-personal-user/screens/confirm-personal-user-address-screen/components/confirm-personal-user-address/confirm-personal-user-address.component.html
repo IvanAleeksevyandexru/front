@@ -1,7 +1,4 @@
 <form #dataForm="ngForm">
-  <div class="flex-row" *ngIf="data?.attrs?.actions?.length === 1">
-    <a href="javascript:void(0);" (click)="handleClick()" class="button-change"> Редактировать </a>
-  </div>
   <ng-container
     *ngFor="let field of data?.attrs?.fields; let i = index"
     [ngSwitch]="field?.fieldName"
@@ -9,7 +6,6 @@
     <epgu-constructor-address-item *ngSwitchCase="'regAddr'" class="item" [label]="field.label">
       <lib-dadata-widget
         [simpleMode]="true"
-        [disabled]="!isEditable"
         [name]="field.fieldName"
         [externalApiUrl]="config.externalApiUrl + '/'"
         [initValue]="valueParsed[field.fieldName]"
@@ -29,7 +25,6 @@
     >
       <lib-date-picker
         align="left"
-        [disabled]="!isEditable"
         [name]="field.fieldName"
         minDate="-50y"
         [(ngModel)]="valueParsed[field.fieldName]"
@@ -42,7 +37,6 @@
         epgu-constructor-trim
         epgu-constructor-text-transform
         [textTransformType]="textTransformType"
-        [disabled]="!isEditable"
         [(ngModel)]="valueParsed[field.fieldName]"
         [name]="field.fieldName"
         class="content content__input"
@@ -51,6 +45,6 @@
     </epgu-constructor-address-item>
   </ng-container>
   <div class="error">
-    <small>{{ error }}</small>
+    <small>{{ screenService.componentError$ | async }}</small>
   </div>
 </form>

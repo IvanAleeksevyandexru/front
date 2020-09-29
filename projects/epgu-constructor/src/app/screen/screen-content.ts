@@ -158,6 +158,7 @@ export class ScreenContent {
   updateScreenContent(screenStore: ScreenStore) {
     const { display = {} as any, orderId, gender, errors = {} as any, currentCycledFields, applicantAnswers } = screenStore;
     const { header, submitLabel, type, components = [], terminal } = display;
+    const firstComponent = components[0];
     this.display = display;
     this.header = header;
     this.submitLabel = submitLabel;
@@ -166,12 +167,12 @@ export class ScreenContent {
     this.terminal = terminal;
     this.orderId = orderId;
     this.componentErrors = errors;
-    this.componentError = errors[components[0]?.id];
-    this.component = components[0];
-    this.componentType = components[0]?.type;
-    this.componentLabel = components[0]?.label;
-    this.componentValue = this.getComponentData(components[0]?.value);
-    this.actions = components[0]?.attrs?.actions || [];
+    this.componentError = errors[firstComponent?.id];
+    this.component = firstComponent;
+    this.componentType = firstComponent?.type;
+    this.componentLabel = firstComponent?.label;
+    this.componentValue = this.getComponentData(firstComponent?.value);
+    this.actions = firstComponent?.attrs?.actions || [];
     this.currentCycledFields = currentCycledFields;
     this.applicantAnswers = applicantAnswers;
   }

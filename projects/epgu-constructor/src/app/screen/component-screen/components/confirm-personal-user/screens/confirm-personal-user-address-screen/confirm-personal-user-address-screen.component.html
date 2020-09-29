@@ -2,14 +2,12 @@
   <div class="body">
     <epgu-constructor-confirm-personal-user-address
       [data]="data"
-      [error]="errors && errors[data?.id]"
       (dataEditedEvent)="dataChange($event)"
-      [isEditable]="isEditable"
     ></epgu-constructor-confirm-personal-user-address>
   </div>
 
   <div class="footer">
-    <ng-container #actions *ngIf="data?.attrs?.actions?.length > 1">
+    <ng-container *ngIf="data?.attrs?.actions?.length > 1">
       <epgu-constructor-confirm-personal-user-button
         class="confirm-personal-user-button"
         *ngFor="let action of data?.attrs?.actions"

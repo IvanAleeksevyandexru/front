@@ -9,13 +9,10 @@ import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 })
 export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   @Input() data: ConfirmAddressInterface;
-  @Input() errors: object;
   @Input() currentCycledFields: object;
   @Input() applicantAnswers: object;
   @Output() actionSelect = new EventEmitter();
 
-  isEditable: boolean;
-  dataToSend: any;
   isCycledFields: boolean;
   cycledValues: any;
 
@@ -41,8 +38,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
       }, {});
       this.data.value = JSON.stringify(data);
     }
-    this.dataToSend = this.data.value;
-    this.currentAnswersService.state = this.dataToSend;
+    this.currentAnswersService.state = this.data.value;
   }
 
   sameAddressAction() {
@@ -62,9 +58,6 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   clickToAction(event): void {
     const { action } = event;
     switch (action) {
-      case 'editUserRegAddr':
-        this.isEditable = true;
-        break;
       case 'sameAddress':
         this.sameAddressAction();
         break;
