@@ -8,22 +8,22 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { WebcamInitError } from 'ngx-webcam';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { HelperService } from 'epgu-lib';
 import {
   FileResponseToBackendUploadsItem,
   FileUploadItem,
   Clarifications,
   TerabyteListItem,
-} from '../../services/terra-byte-api/terra-byte-api.types';
-import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
-import { WebcamService } from '../../services/webcam/webcam.service';
+} from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
+import { TerraByteApiService } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.service';
+import { WebcamService } from '../../../../../../shared/services/webcam/webcam.service';
 import {
   isCloseAndSaveWebcamEvent,
   isCloseWebcamEvent,
   WebcamEvent,
-} from '../../webcam/webcamevents';
+} from '../../../../../../shared/components/webcam-shoot/webcamevents';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 import { ConfigService } from '../../../../../../config/config.service';
 
@@ -34,6 +34,7 @@ import { ConfigService } from '../../../../../../config/config.service';
 })
 export class FileUploadItemComponent implements OnDestroy, OnInit {
   private loadData: FileUploadItem;
+  isMobile: boolean;
   @Input() objectId: string;
   @Input() clarification: Clarifications;
   @Input()
@@ -106,7 +107,9 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
     public config: ConfigService,
-  ) {}
+  ) {
+    this.isMobile = HelperService.isMobile();
+  }
 
   /**
    * Переводит список файлов с сервера в файлы для отображения
@@ -354,7 +357,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
           if (isCloseAndSaveWebcamEvent(event)) {
             // Если данные нужно сохранить и отправить
             const { data } = event;
-            this.sendFile(TerraByteApiService.base64toBlob(data, ''));
+            this.sendFile(TerraByteApiService.base64toBlob(data));
           }
           this.webcamService.close();
         }
@@ -382,20 +385,13 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
       });
   }
 
-  /**
-   * Проверяем ошибки инициализации
-   */
-  handleCameraInitError(error: WebcamInitError) {
-    if (error.mediaStreamError && error.mediaStreamError.name === 'NotAllowedError') {
-      // eslint-disable-next-line no-console
-      console.info('Camera access was not allowed by user!');
-    }
-    this.cameraNotAllowed = true;
-  }
-
   ngOnDestroy(): void {
     this.subs.forEach((sub) => sub.unsubscribe());
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.webcamService.isWebcamAllowed().subscribe((isAvailable) => {
+      this.cameraNotAllowed = isAvailable;
+    });
+  }
 }

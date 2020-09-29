@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { CycledFieldsService } from './cycled-fields.service';
 import { ScreenService } from '../../screen/screen.service';
-import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { ComponentStateService } from '../component-state/component-state.service';
 
 describe('CycledFieldsService', () => {
@@ -10,7 +10,7 @@ describe('CycledFieldsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CycledFieldsService, ScreenService, ApplicantAnswersService, ComponentStateService]
+      providers: [CycledFieldsService, ScreenService, CachedAnswersService, ComponentStateService]
     });
     service = TestBed.inject(CycledFieldsService);
   });

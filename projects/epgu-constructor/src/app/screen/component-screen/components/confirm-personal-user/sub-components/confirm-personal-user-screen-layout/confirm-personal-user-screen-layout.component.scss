@@ -17,19 +17,9 @@ $button-mt: 5px;
     flex-direction: column;
     flex-wrap: wrap;
     margin: auto $actions-mx 0;
-    @include tablets-up {
-      flex-direction: row;
-      margin-top: 16px;
-    }
 
     &:empty {
       display: none;
-    }
-
-    .confirm-personal-user-button {
-      @include tablets-up {
-        margin: 5px $actions-mx;
-      }
     }
   }
 }

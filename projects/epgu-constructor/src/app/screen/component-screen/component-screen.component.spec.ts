@@ -8,7 +8,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
-import { ApplicantAnswersService } from '../../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 
 
 // TODO: Need to refactoring component
@@ -47,7 +48,8 @@ xdescribe('ScreenComponent', () => {
         ComponentStateService,
         ScreenService,
         UnsubscribeService,
-        ApplicantAnswersService,
+        CachedAnswersService,
+        CycledFieldsService,
       ]
     })
     .compileComponents();
