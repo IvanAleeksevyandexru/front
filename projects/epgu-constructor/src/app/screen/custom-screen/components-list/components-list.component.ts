@@ -10,7 +10,10 @@ import {
   CustomComponentOutputData,
   CustomScreenComponentTypes,
 } from '../custom-screen.types';
-import { DictionaryResponse } from '../../../services/api/dictionary-api/dictionary-api.types';
+import {
+  DictionaryOptions,
+  DictionaryResponse,
+} from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
@@ -167,7 +170,11 @@ export class ComponentsListComponent implements OnInit {
     this.dictionaries[dictionaryType + componentId] = getCustomScreenDictionaryFirstState();
   }
 
-  private loadDictionaries(dictionaryType: string, component: CustomComponent): void {
+  private loadDictionaries(
+    dictionaryType: string,
+    component: CustomComponent,
+    options: DictionaryOptions = { pageNum: 0 },
+  ): void {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
     this.dictionaryApiService.getDictionary(dictionaryType, options).subscribe(
       (data) => this.loadDictionarySuccess(dictionaryType, data, component),
