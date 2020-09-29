@@ -120,6 +120,8 @@
         </ng-template>
           <lib-dadata-widget
             [simpleMode]="true"
+            [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+            [validationShowOn]="validationShowOn"
             [externalApiUrl]="configService.externalApiUrl + '/'"
             [formControl]="componentData.get('value')">
           </lib-dadata-widget>
