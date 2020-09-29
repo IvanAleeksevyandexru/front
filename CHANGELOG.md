@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://git.gosuslugi.local///compare/v0.1.7...v0.1.8) (2020-09-29)
+
+
+### Bug Fixes
+
+* resolve cycledFieldsValue formating issue if any date component presented on custom screen [ref EPGUCORE-36456] ([d772918](https://git.gosuslugi.local///commit/d772918dd945679c35a68ae7c3b17ac28ceb1e62))
+
 ### [0.1.7](https://git.gosuslugi.local///compare/v0.1.6...v0.1.7) (2020-09-29)
 
 
