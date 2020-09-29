@@ -1,3 +1,5 @@
+import { MonthYear } from 'epgu-lib/lib/models/date-time.model';
+
 export interface EmployeeHistoryDataSource {
   label: string;
   type: Employee;
@@ -8,8 +10,8 @@ export interface EmployeeHistoryDataSource {
 
 export interface EmployeeHistoryModel {
   type: Employee,
-  from: string,
-  to: string,
+  from: MonthYear,
+  to: MonthYear,
   position: string,
   place: string,
   address: string,

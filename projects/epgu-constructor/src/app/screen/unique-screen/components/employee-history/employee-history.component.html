@@ -25,22 +25,24 @@
     <div class="employee-history__date">
       <div>
         <epgu-constructor-label [for]="i + '_fromGenerated'">Укажите дату (месяц, год)</epgu-constructor-label>
-        <lib-date-picker
+        <lib-month-picker
           [id]="i + '_fromGenerated'"
           [disabled]="true"
+          [name]="i + '_fromGenerated'"
           [(ngModel)]="generation.from"
           align="left"
-        ></lib-date-picker>
+        ></lib-month-picker>
       </div>
 
       <div>
         <epgu-constructor-label [for]="i + '_toGenerated'">Укажите дату (месяц, год)</epgu-constructor-label>
-        <lib-date-picker
+        <lib-month-picker
           align="right"
           [id]="i + '_toGenerated'"
           [disabled]="true"
+          [name]="i + '_toGenerated'"
           [(ngModel)]="generation.to"
-        ></lib-date-picker>
+        ></lib-month-picker>
       </div>
     </div>
     <div class="employee-history__input" *ngIf="findData(generation.type)?.position as position">
@@ -101,6 +103,7 @@
           [maxMonth]="monthsService.maxDate"
           [invalid]="employeeFormService.generateForm.get('from').invalid"
           [validationShowOn]="validationShowOn"
+          [hideTillNowAvailable]="true"
         ></lib-month-picker>
         <div class="employee-history__date__hint">Заполняется при наличии</div>
       </div>
@@ -117,6 +120,7 @@
             [maxMonth]="monthsService.maxDate"
             [invalid]="employeeFormService.generateForm.get('to').invalid"
             [validationShowOn]="validationShowOn"
+            [hideTillNowAvailable]="true"
           ></lib-month-picker>
           <div class="employee-history__date__hint">Заполняется при наличии</div>
         </ng-container>

@@ -51,7 +51,10 @@ export class EmployeeHistoryMonthsService {
     if (!checked) {
       const repeatedMonths = [];
       employeeHistory.forEach((el: EmployeeHistoryModel) =>
-        this.getAvailableMonths(moment(el.from), moment(el.to)).forEach(
+        this.getAvailableMonths(
+          moment().month(el.from.monthCode).year(el.from.year),
+          moment().month(el.to.monthCode).year(el.to.year)
+        ).forEach(
           (e: EmployeeHistoryAvailableDates) => {
             repeatedMonths.push(e.date);
           },
