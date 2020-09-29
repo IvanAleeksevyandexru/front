@@ -1,1 +1,1 @@
-export const libVersionFromPackageJson = '0.1.5';
+export const libVersionFromPackageJson = '0.1.6';
