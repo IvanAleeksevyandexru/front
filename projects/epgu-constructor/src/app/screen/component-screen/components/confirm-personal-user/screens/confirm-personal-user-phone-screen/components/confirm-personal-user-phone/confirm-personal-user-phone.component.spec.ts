@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { ConfirmPersonalUserPhoneComponent } from './confirm-personal-user-phone.component';
 import { ScreenService } from '../../../../../../../screen.service';
 import { NavigationService } from '../../../../../../../../shared/services/navigation/navigation.service';
@@ -23,15 +23,14 @@ describe('ConfirmPersonalUserPhoneComponent', () => {
       declarations: [ ConfirmPersonalUserPhoneComponent ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       providers: [
-        ComponentStateService,
         ScreenService,
         NavigationService,
 
         // TODO Tur: почему нужно импортировать эти сервисы?
         FormPlayerApiService,
         ServiceDataService,
+        CurrentAnswersService,
         CachedAnswersService,
-        ComponentStateService,
         ConfigService,
       ]
     })
@@ -41,7 +40,7 @@ describe('ConfirmPersonalUserPhoneComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmPersonalUserPhoneComponent);
     component = fixture.componentInstance;
-    fixture.debugElement.injector.get(ComponentStateService);
+    fixture.debugElement.injector.get(CurrentAnswersService);
     fixture.debugElement.injector.get(ScreenService);
     fixture.debugElement.injector.get(NavigationService);
 

@@ -21,7 +21,7 @@ export const environment = {
   paymentUrl: 'https://payment-dev-l14.test.gosuslugi.ru',
   fileUploadApiUrl: 'https://gosuslugi.ru/api/storage/v1/files',
   staticDomainAssetsPath: '',
-  mocks: [] as MockApi[],
+  mocks: ['mvd', 'selectMap', 'timeSlot'] as MockApi[],
   mockUrl: 'https://dev-l11.pgu2-pub.test.gosuslugi.ru/mock/'
 };
 

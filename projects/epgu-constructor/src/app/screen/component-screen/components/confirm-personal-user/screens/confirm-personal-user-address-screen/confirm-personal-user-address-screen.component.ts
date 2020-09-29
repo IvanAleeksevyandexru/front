@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
@@ -20,7 +20,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   cycledValues: any;
 
   constructor(
-    private componentStateService: ComponentStateService,
+    private currentAnswersService: CurrentAnswersService,
     private toolsService: ToolsService,
   ) {}
 
@@ -42,7 +42,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
       this.data.value = JSON.stringify(data);
     }
     this.dataToSend = this.data.value;
-    this.componentStateService.state = this.dataToSend;
+    this.currentAnswersService.state = this.dataToSend;
   }
 
   sameAddressAction() {
@@ -99,6 +99,6 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
 
   dataChange(changes: any) {
     const responseData = this.setState(changes);
-    this.componentStateService.state = responseData;
+    this.currentAnswersService.state = responseData;
   }
 }

@@ -1,16 +1,16 @@
-<epgu-constructor-navigation *ngIf="!screenStore.display?.terminal" class="nav"></epgu-constructor-navigation>
-<epgu-constructor-screen-container [ngClass]="screenStore.display?.terminal ? 'screen-container-mt' : ''">
+<epgu-constructor-navigation *ngIf="(screenService.terminal$ | async) === false" class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container [ngClass]="(screenService.terminal$ | async) ? 'screen-container-mt' : ''">
   <epgu-constructor-screen-pad>
 
-    <epgu-constructor-page-name class="info__head">{{screenStore.display?.header}}</epgu-constructor-page-name>
+    <epgu-constructor-page-name class="info__head">{{screenService.header$ | async}}</epgu-constructor-page-name>
 
     <hr class="divider" />
 
     <div class="info__body">
-      <ng-container [ngSwitch]="screenStore.display?.components[0].type">
+      <ng-container [ngSwitch]="screenService.componentType$ | async">
         <epgu-constructor-info-screen-body
           *ngSwitchCase="infoScreenComponent.info"
-          [data]="screenStore.display?.components[0]">
+          [data]="screenService.component">
         </epgu-constructor-info-screen-body>
       </ng-container>
     </div>
@@ -22,7 +22,7 @@
         class="info-footer__submit"
         [disabled]="screenService.isLoading$ | async"
       >
-        {{screenStore.display?.submitLabel || 'Продолжить'}}
+        {{(screenService.submitLabel$ | async) || 'Продолжить'}}
       </lib-button>
     </div>
 

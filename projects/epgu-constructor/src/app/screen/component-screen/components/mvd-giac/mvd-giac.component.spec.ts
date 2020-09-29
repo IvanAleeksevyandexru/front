@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MvdGiacComponent } from './mvd-giac.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../services/api/dictionary-api/dictionary-api.service.stub';
 import { ComponentScreenComponentTypes } from '../../component-screen.types';
@@ -16,7 +16,7 @@ describe('MvdGiacComponent', () => {
   let fixture: ComponentFixture<MvdGiacComponent>;
 
   let dictionaryApiService: DictionaryApiService;
-  let componentStateService: ComponentStateService;
+  let currentAnswersService: CurrentAnswersService;
 
   let getMvdDictionarySpy: jasmine.Spy;
 
@@ -72,7 +72,7 @@ describe('MvdGiacComponent', () => {
       imports: [ReactiveFormsModule],
       declarations: [ MvdGiacComponent ],
       providers: [
-        ComponentStateService,
+        CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub }
       ]
@@ -92,7 +92,7 @@ describe('MvdGiacComponent', () => {
     component.applicantAnswers = applicantAnswersMock;
 
     dictionaryApiService = TestBed.inject(DictionaryApiService);
-    componentStateService = TestBed.inject(ComponentStateService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
 
     let regionList = [
       {
@@ -119,7 +119,7 @@ describe('MvdGiacComponent', () => {
 
     getMvdDictionarySpy = spyOn(dictionaryApiService, 'getMvdDictionary').and.returnValue(dictionarySubject);
 
-    componentStateService.state = null;
+    currentAnswersService.state = null;
   });
 
   describe('ngOnInit', () => {
@@ -142,7 +142,7 @@ describe('MvdGiacComponent', () => {
         component.regionForm.get('region').setErrors({ incorrect: true });
         component.regionForm.patchValue({});
 
-        expect(componentStateService.state).toBe(null);
+        expect(currentAnswersService.state).toBe(null);
       });
 
       it('should save data if form is valid', () => {
@@ -152,7 +152,7 @@ describe('MvdGiacComponent', () => {
           region: EXPECTED_VALUE
         });
 
-        expect(componentStateService.state).toBe(EXPECTED_VALUE);
+        expect(currentAnswersService.state).toBe(EXPECTED_VALUE);
       });
     });
 

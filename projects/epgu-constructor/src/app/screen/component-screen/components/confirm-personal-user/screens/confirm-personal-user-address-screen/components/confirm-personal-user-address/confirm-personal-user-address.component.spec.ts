@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { ComponentScreenComponentTypes } from '../../../../../../component-screen.types';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
@@ -32,7 +32,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
       declarations: [ ConfirmPersonalUserAddressComponent ],
       providers: [
         UnsubscribeService,
-        ComponentStateService,
+        CurrentAnswersService,
         UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { ComponentBase } from '../../../../../screen.types';
 
 @Component({
@@ -13,10 +13,10 @@ export class ConfirmPersonalUserEmailScreenComponent implements OnInit {
   @Output() nextStepEvent = new EventEmitter();
   isEditable: boolean;
 
-  constructor(private componentStateService: ComponentStateService) {}
+  constructor(private currentAnswersService: CurrentAnswersService) {}
 
   ngOnInit(): void {
-    this.componentStateService.state = this.data.value;
+    this.currentAnswersService.state = this.data.value;
   }
 
   clickToAction(action: NotificationAction) {

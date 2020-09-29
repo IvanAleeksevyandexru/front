@@ -22,7 +22,7 @@ import { UniqueScreenComponent } from './screen/unique-screen/unique-screen.comp
 import { UniqueScreenModule } from './screen/unique-screen/unique-screen.module';
 import { DictionaryApiService } from './services/api/dictionary-api/dictionary-api.service';
 import { FormPlayerApiService } from './services/api/form-player-api/form-player-api.service';
-import { ComponentStateService } from './services/component-state/component-state.service';
+import { CurrentAnswersService } from './screen/current-answers.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ScreenResolverService } from './services/screen-resolver/screen-resolver.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
@@ -55,7 +55,7 @@ export const epguLibModule = EpguLibModule.forRoot();
     FormPlayerService,
     FormPlayerApiService,
     ScreenService,
-    ComponentStateService,
+    CurrentAnswersService,
     UnsubscribeService,
     ScreenResolverService,
     UtilsService,

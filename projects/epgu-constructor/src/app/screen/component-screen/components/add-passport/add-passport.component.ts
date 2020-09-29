@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { ToolsService } from '../../../../shared/services/tools/tools.service';
 import { TextTransform } from '../../../../shared/types/textTransform';
 import { ComponentBase } from '../../../screen.types';
@@ -17,7 +17,7 @@ export class AddPassportComponent implements OnInit {
   cycledValues: any;
 
   constructor(
-    private componentStateService: ComponentStateService,
+    private currentAnswersService: CurrentAnswersService,
     private toolsService: ToolsService,
   ) {}
 
@@ -56,6 +56,6 @@ export class AddPassportComponent implements OnInit {
       stateData = data;
     }
 
-    this.componentStateService.state = stateData;
+    this.currentAnswersService.state = stateData;
   }
 }

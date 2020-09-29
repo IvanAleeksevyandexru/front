@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DocInputComponent } from './doc-input.component';
-import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 import { DocInputComponentInterface } from './doc-input.types';
+import { CurrentAnswersService } from '../../../current-answers.service';
 
 
 describe('DocInputComponent', () => {
@@ -24,7 +24,7 @@ describe('DocInputComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ DocInputComponent ],
-      providers: [ComponentStateService]
+      providers: [CurrentAnswersService]
     })
     .compileComponents();
   }));

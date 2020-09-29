@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { ToJsonPipe } from '../../../../../../../../shared/pipes/toJson/to-json.pipe';
 import { ConfirmUserData } from '../../../../../../types/confirm-user-data.types';
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
@@ -35,7 +35,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ConfirmPersonalUserDataComponent, ToJsonPipe ],
-      providers: [ ComponentStateService, { provide: ConfigService, useClass: ConfigServiceStub } ]
+      providers: [ CurrentAnswersService, { provide: ConfigService, useClass: ConfigServiceStub } ]
     })
     .compileComponents();
   }));
