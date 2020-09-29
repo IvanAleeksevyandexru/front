@@ -22,6 +22,7 @@ export interface Display {
   id: string;
   name: string;
   submitLabel: string;
+  terminal: boolean;
   type: ScreenTypes
 }
 

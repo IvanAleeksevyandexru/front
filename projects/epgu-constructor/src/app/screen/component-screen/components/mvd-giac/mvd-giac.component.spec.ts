@@ -44,6 +44,7 @@ describe('MvdGiacComponent', () => {
     id: '',
     name: '',
     submitLabel: '',
+    terminal: false,
     type: ScreenTypes.COMPONENT
   };
 
