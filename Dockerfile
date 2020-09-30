@@ -13,6 +13,7 @@ COPY ./dist/epgu-form-frontend/ /usr/share/nginx/html
 COPY /nginx-custom.conf /etc/nginx/conf.d/default.conf
 COPY checkUrl.sh /docker-entrypoint.d/30-checkUrl.sh
 RUN chmod +x /docker-entrypoint.d/30-checkUrl.sh
+RUN apk add --no-cache jq
 
 
 EXPOSE 80/tcp
