@@ -1,5 +1,5 @@
 import {
-  ChangeDetectorRef,
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -15,6 +15,7 @@ import { UnsubscribeService } from '../../../../../../../../services/unsubscribe
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constants/dates';
 import { TextTransform } from '../../../../../../../../shared/types/textTransform';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
+import { ScreenService } from '../../../../../../../screen.service';
 
 const moment = moment_;
 
@@ -24,31 +25,28 @@ const moment = moment_;
   styleUrls: ['./confirm-personal-user-address.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ConfirmPersonalUserAddressComponent implements OnChanges {
+export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterViewInit {
   @ViewChild('dataForm', { static: false }) dataForm;
 
   @Input() data: ConfirmAddressInterface;
-  @Input() error: string;
-  @Input() isEditable: boolean;
   @Output() dataEditedEvent = new EventEmitter();
   valueParsed: any;
 
   constructor(
     public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
-    private changeDetection: ChangeDetectorRef,
+    public screenService: ScreenService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.isEditable?.currentValue) {
-      this.subscribeFormChanges();
-      this.changeDetection.detectChanges();
-    }
-
     if (changes.data?.currentValue) {
       this.setState();
       this.emmitData();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.subscribeFormChanges();
   }
 
   setState(): void {
@@ -82,10 +80,6 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
     }
     dataToSend.regDate = moment(regDate).format(DATE_STRING_DOT_FORMAT);
     return JSON.stringify(dataToSend);
-  }
-
-  handleClick(): void {
-    this.isEditable = true;
   }
 
   get textTransformType(): TextTransform {
