@@ -14,7 +14,7 @@ stages:
   - build
   - image
   - deploy
-  
+
 Install:
   stage: install
   before_script:
@@ -73,11 +73,12 @@ Library-publish:
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
   script:
     - cd dist/epgu-constructor
-    - PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]'
+    - PACKAGE_VERSION=$(jq -r ".name" package.json)
     - npm version $PACKAGE_VERSION
     - npm publish
   only:
     - master
+    - EPGUCORE-36456
 
 Build:
   stage: build
@@ -122,7 +123,7 @@ Deploy to review env:
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: http://review-$CI_COMMIT_REF_SLUG.pgu2-dev.test.gosuslugi.ru
-    on_stop: "Drop review env"
+    on_stop: 'Drop review env'
   only:
     - merge_requests
     - master
@@ -133,7 +134,7 @@ Drop review env:
   variables:
     GIT_STRATEGY: none
   before_script:
-    - export PATH=$PATH:/devops/k8s/bin    
+    - export PATH=$PATH:/devops/k8s/bin
   script:
     - echo "Delete environment $CI_COMMIT_REF_SLUG"
     - stop
