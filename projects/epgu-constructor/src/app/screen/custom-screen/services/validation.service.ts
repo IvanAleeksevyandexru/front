@@ -28,7 +28,7 @@ export class ValidationService {
           validator.type === 'RegExp' && !new RegExp(validator.value).test(control.value),
       );
 
-      return err ? this.validationErrorMsg(err.errorMsg) : null;
+      return err && control.value ? this.validationErrorMsg(err.errorMsg) : null;
     };
   }
 
