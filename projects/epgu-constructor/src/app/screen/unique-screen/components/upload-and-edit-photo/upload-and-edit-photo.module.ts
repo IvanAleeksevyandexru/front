@@ -23,6 +23,7 @@ import { PhotoRequirementsModalComponent } from './photo-requirements-modal/phot
   entryComponents: [
     PhotoErrorModalComponent,
     PhotoEditorModalComponent,
+    PhotoRequirementsModalComponent,
   ],
   declarations: [
     PhotoErrorModalComponent,
