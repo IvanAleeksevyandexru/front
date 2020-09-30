@@ -7,20 +7,23 @@ import { TextTransform } from '../../types/textTransform';
 export class TextTransformDirective {
   @Input() textTransformType: TextTransform;
 
-  @HostListener('keyup', ['$event.target'])
-  onKeyUp(target) {
-    if(this.textTransformType === TextTransform.ALL) {
-      target.value = this.firstLetterOfEachWordToUpperCase(target.value);
-    } else if (this.textTransformType === TextTransform.FIRST) {
-      target.value = this.firstLetterToUpperCase(target.value);
+  @HostListener('input', ['$event.target'])
+  onInput(target) {
+    const selection = [target.selectionStart, target.selectionEnd];
+    switch (this.textTransformType) {
+      case TextTransform.ALL:
+        target.value = this.firstLetterOfEachWordToUpperCase(target.value);
+        break;
+      case TextTransform.FIRST:
+        target.value = this.firstLetterToUpperCase(target.value);
+        break;
+      case TextTransform.UPPERCASE:
+        target.value = this.allToUpperCase(target.value);
+        break;
+      default:
+        console.error('Unexpected TextTransform type');
     }
-  }
-
-  @HostListener('change', ['$event.target'])
-  onChange(target) {
-    if (this.textTransformType === TextTransform.UPPERCASE) {
-      target.value = this.allToUpperCase(target.value);
-    }
+    target.setSelectionRange(...selection);
   }
 
   /**

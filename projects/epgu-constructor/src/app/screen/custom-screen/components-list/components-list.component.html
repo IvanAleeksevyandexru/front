@@ -77,7 +77,6 @@
           (change)="inputChange($event, componentData)"
           (blur)="inputBlur(componentData)"
           [validation]="state[componentData.id].valid"
-          [uppercase]="componentData.attrs?.uppercase"
         ></lib-standard-masked-input>
 
         <ng-template #plainInput>
@@ -92,7 +91,6 @@
             (change)="inputChange($event, componentData)"
             (blur)="inputBlur(componentData)"
             [validationShowOn]="validationShowOn"
-            [uppercase]="componentData.attrs?.uppercase"
           ></lib-plain-input>
         </ng-template>
       </ng-container>
