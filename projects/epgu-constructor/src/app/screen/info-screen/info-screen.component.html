@@ -18,6 +18,7 @@
     <epgu-constructor-info-screen-button
       *ngFor="let action of (screenService.display?.components)[0]?.attrs.actions"
       epgu-constructor-action
+      [action]="action"
     >{{ action.label }}
     </epgu-constructor-info-screen-button>
 
