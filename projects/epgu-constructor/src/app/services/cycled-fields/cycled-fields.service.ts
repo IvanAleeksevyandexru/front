@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CurrentCycledFieldsDto } from '../api/form-player-api/form-player-api.types';
-import { ScreenStore } from '../../screen/screen.types';
 import { NavigationPayload } from '../../form-player.types';
 import { ScreenService } from '../../screen/screen.service';
+import { ScreenStore } from '../../screen/screen.types';
+import { CurrentCycledFieldsDto } from '../api/form-player-api/form-player-api.types';
 
 @Injectable()
 export class CycledFieldsService {
@@ -26,14 +26,16 @@ export class CycledFieldsService {
     }
   }
 
-  dataTransform(component, value: string = ''): NavigationPayload {
+  dataTransform(value: string = ''): NavigationPayload {
     const data: NavigationPayload = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
-      const fieldNameRef = component?.attrs?.fields[0]?.fieldName;
-
-      const cycledValuesPrepared =
-        !!value ? { ...this.cycledValues, [fieldNameRef]: JSON.parse(value) } : { ...this.cycledValues };
+      const fieldNameRefs = this.screenService.component?.attrs?.fields?.map(field => field.fieldName);
+      let valuePrepared: object = {};
+      fieldNameRefs.forEach(fieldName => {
+        valuePrepared[fieldName] = typeof value === 'string' ? (!!value ? JSON.parse(value)[fieldName] : '') : value[fieldName];
+      });
+      const cycledValuesPrepared = { ...this.cycledValues, ...valuePrepared };
 
       data[currentCycledFieldsKey] = {
         visited: true,

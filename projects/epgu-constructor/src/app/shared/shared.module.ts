@@ -38,6 +38,10 @@ import { WebcamShootComponent } from './components/webcam-shoot/webcam-shoot.com
 import { CachedAnswersService } from './services/applicant-answers/cached-answers.service';
 import { UsePaymentsModalComponent } from './components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
 import { PassportComponent } from './components/add-passport/passport.component';
+import {
+  ConfirmationModalBaseComponent
+} from './components/modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
+
 
 const COMPONENTS = [
   PageNameComponent,
@@ -47,6 +51,7 @@ const COMPONENTS = [
   NavigationComponent,
   AnswerButtonComponent,
   ConfirmationModalComponent,
+  ConfirmationModalBaseComponent,
   CommonModalComponent,
   ModalContainerComponent,
   ModalBaseComponent,

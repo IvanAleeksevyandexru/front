@@ -15,7 +15,7 @@ export class PassportComponent implements OnInit {
   @Input() attrs: { [key: string]: any };
   @Output() valueChangedEvent = new EventEmitter();
 
-  passportForm: FormGroup;
+  public passportForm: FormGroup;
 
   touchedUnfocused = ValidationShowOn.TOUCHED_UNFOCUSED;
 

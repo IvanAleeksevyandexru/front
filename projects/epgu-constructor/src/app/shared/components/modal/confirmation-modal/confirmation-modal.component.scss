@@ -2,101 +2,21 @@
 
 // TODO Избавиться от ng-deep
 :host::ng-deep {
-  .conf-modal {
-    display: flex;
-    flex-direction: column;
-    @include modal-body();
-    width: 634px;
-    max-height: 485px;
-    padding: 32px;
-    border-radius: 12px;
+  .conf-modal__text {
+    white-space: pre-line;
+    font-size: 16px;
+    line-height: 24px;
 
-    @include tablets-down {
-      max-height: none;
-      width: 100%;
-      height: 100%;
-      border-radius: 0;
-    }
-
-    &__cross-button {
-      position: absolute;
-      right: 28px;
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-
-      &:before,
-      &:after {
-        content: '';
-        position: absolute;
-        width: 2px;
-        height: 20px;
-        background: $color-button-hit;
-        transform: rotate(45deg);
+    div.photoSimple {
+      p {
+        @include typ-plain-small();
+        margin-top: 10px;
+        margin-bottom: 10px;
+        text-align: center;
       }
 
-      &:before {
-        transform: rotate(45deg);
-      }
-
-      &:after {
-        transform: rotate(-45deg);
-      }
-    }
-
-    &__title {
-      @include typ-h3;
-      padding-right: 50px;
-      color: $color-summer-night;
-    }
-
-    &__header {
-      border-bottom: 1px solid $color-devider;
-      padding-bottom: 24px;
-    }
-
-    &__body {
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    &__text {
-      white-space: pre-line;
-      @include typ-plain-text;
-
-      div.photoSimple {
-        p {
-          @include typ-plain-small();
-          margin-top: 10px;
-          margin-bottom: 10px;
-          text-align: center;
-        }
-
-        p.large-m {
-          margin-bottom: $screen-pad-p;
-        }
-      }
-    }
-
-    &__text-wrapper {
-      overflow-y: auto;
-    }
-
-    &__controls {
-      display: flex;
-      margin-top: 26px;
-      justify-content: center;
-      flex: 1;
-
-      & > * {
-        margin-right: 20px;
-      }
-    }
-
-    &__button {
-      @include tablets-down {
-        width: 100%
+      p.large-m {
+        margin-bottom: $screen-pad-p;
       }
     }
   }
