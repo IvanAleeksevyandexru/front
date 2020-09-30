@@ -27,6 +27,7 @@ import { ConfigService } from '../../../config/config.service';
 import { ComponentBase, ScreenStore } from '../../screen.types';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 import { ValidationService } from '../services/validation.service';
+import { UniqueScreenComponentTypes } from '../../unique-screen/unique-screen.types';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -75,7 +76,14 @@ export class ComponentsListComponent implements OnInit {
         distinctUntilChanged(
           (prev: ScreenStore, next: ScreenStore) => JSON.stringify(prev) === JSON.stringify(next),
         ),
-        map((screen: ScreenStore): Array<ComponentBase> => screen.display.components),
+        map(
+          (screen: ScreenStore): Array<ComponentBase> => {
+            return screen.display.components[0]?.type ===
+              UniqueScreenComponentTypes.repeatableFields
+              ? screen.display.components[0].attrs.components
+              : screen.display.components;
+          },
+        ),
         tap((components: Array<CustomComponent>) => this.rebuildFormAfterDataUpdate(components)),
         switchMap(() =>
           this.form.valueChanges.pipe(
