@@ -39,6 +39,7 @@ import { CachedAnswersService } from './services/applicant-answers/cached-answer
 import {
   ConfirmationModalBaseComponent
 } from './components/modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
+import { UsePaymentsModalComponent } from './components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
 
 
 const COMPONENTS = [
@@ -53,6 +54,7 @@ const COMPONENTS = [
   CommonModalComponent,
   ModalContainerComponent,
   ModalBaseComponent,
+  UsePaymentsModalComponent,
   HelperTextComponent,
   GenderRadioButtonComponent,
   OutputHtmlComponent,
@@ -89,6 +91,7 @@ const DIRECTIVES = [
     ModalContainerComponent,
     ConfirmationModalComponent,
     CommonModalComponent,
+    UsePaymentsModalComponent,
   ]
 })
 export class SharedModule { }

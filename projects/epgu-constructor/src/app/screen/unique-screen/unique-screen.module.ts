@@ -16,6 +16,7 @@ import { PaymentModule } from './components/payment/payment.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { ConfirmPhoneModule } from './components/confirm-phone/confirm-phone.module';
 import { ConfirmEmailModule } from './components/confirm-email/confirm-email.module';
+import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
 
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
@@ -40,6 +41,7 @@ const COMPONENTS = [UniqueScreenComponent];
     TimeSlotsModule,
     ConfirmMarriageModule,
     PaymentModule,
+    UnusedPaymentsModule,
     ConfirmPhoneModule,
     ConfirmEmailModule,
     SignatureApplicationModule,
