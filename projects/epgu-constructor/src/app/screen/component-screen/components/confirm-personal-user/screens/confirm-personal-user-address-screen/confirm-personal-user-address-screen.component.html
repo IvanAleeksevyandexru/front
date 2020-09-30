@@ -7,14 +7,12 @@
   </div>
 
   <div class="footer">
-    <ng-container *ngIf="data?.attrs?.actions?.length > 1">
-      <epgu-constructor-confirm-personal-user-button
-        class="confirm-personal-user-button"
-        *ngFor="let action of data?.attrs?.actions"
-        (tap)="clickToAction(action)"
-      >
-        {{ action.label }}
-      </epgu-constructor-confirm-personal-user-button>
-    </ng-container>
+    <epgu-constructor-confirm-personal-user-button
+      class="confirm-personal-user-button"
+      *ngFor="let action of data?.attrs?.actions"
+      (tap)="clickToAction(action)"
+    >
+      {{ action.label }}
+    </epgu-constructor-confirm-personal-user-button>
   </div>
 </epgu-constructor-confirm-personal-user-screen-layout>
