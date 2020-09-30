@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](https://git.gosuslugi.local///compare/v0.1.10...v0.1.11) (2020-09-30)
+
+
+### Bug Fixes
+
+* add jq dep for docker building instance [ref EPGUCORE-36456] ([44c058c](https://git.gosuslugi.local///commit/44c058ce0d1370af8e01aeff7e2fddab840bf38a))
+* hotfix in environment.ts [ref EPGUCORE-36456] ([7535fc7](https://git.gosuslugi.local///commit/7535fc7b560926ca51b3b921ab48c014cfeaa28b))
+* remove unneccessary script in package.json [ref EPGUCORE-36456] ([ecd0fc3](https://git.gosuslugi.local///commit/ecd0fc36962e2c2aea9db897a5687bd6edfea8ce))
+* revert gitlab-ci library-publish process [ref EPGUCORE-36456] ([96bcfb8](https://git.gosuslugi.local///commit/96bcfb8bb8b8943eca9dc15442397d7b65f1a647))
+* test gitlab-ci new library-publish process [ref EPGUCORE-36456] ([3273bdb](https://git.gosuslugi.local///commit/3273bdb766c4ef4d3124b7fb699094aa35eb1a99))
+* update Epgulib load service init proccess [ref EPGUCORE-36456] ([cd2fd8c](https://git.gosuslugi.local///commit/cd2fd8c1a23526a51b329aa19ac6f5f8e7a31307))
+
 ### [0.1.10](https://git.gosuslugi.local///compare/v0.1.9...v0.1.10) (2020-09-29)
 
 
