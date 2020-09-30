@@ -6,19 +6,19 @@ import { TextTransform } from '../../types/textTransform';
 })
 export class TextTransformDirective {
   @Input() textTransformType: TextTransform;
+  private transforms = {
+    [TextTransform.ALL]: this.firstLetterOfEachWordToUpperCase,
+    [TextTransform.FIRST]: this.firstLetterToUpperCase,
+    [TextTransform.UPPERCASE]: this.allToUpperCase,
+  };
 
   @HostListener('input', ['$event.target'])
   onInput(target) {
-    if (!this.textTransformType) {
+    if (!this.transforms[this.textTransformType]) {
       return;
     }
     const selection = [target.selectionStart, target.selectionEnd];
-    const transforms = {
-      [TextTransform.ALL]() { target.value = this.firstLetterOfEachWordToUpperCase(target.value); },
-      [TextTransform.FIRST]() { target.value = this.firstLetterToUpperCase(target.value); },
-      [TextTransform.UPPERCASE]() { target.value = this.allToUpperCase(target.value); },
-    };
-    transforms[this.textTransformType]?.call(this);
+    target.value = this.transforms[this.textTransformType].call(this, target.value);
     target.setSelectionRange(...selection);
   }
 
