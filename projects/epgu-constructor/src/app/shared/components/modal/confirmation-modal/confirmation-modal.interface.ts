@@ -5,7 +5,7 @@ export interface ConfirmationModal {
   elemEventHandlers?: {
     elemId: string;
     event: string;
-    handler: (d?) => {};
+    handler: Function;
   }[];
   buttons?: {
     label: string;
@@ -13,7 +13,7 @@ export interface ConfirmationModal {
     loader?: boolean;
     handler?: Function;
     closeModal: boolean;
-    value?: any
+    value?: any;
   }[];
   clarifications?: object;
 }

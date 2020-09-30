@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://git.gosuslugi.local///compare/v0.1.9...v0.1.10) (2020-09-29)
+
+
+### Bug Fixes
+
+* resolve code reviews 2 [ref EPGUCORE-36456] ([89d4939](https://git.gosuslugi.local///commit/89d49393f704fbe019cb3792fefa070e09b80625))
+
+### [0.1.9](https://git.gosuslugi.local///compare/v0.1.8...v0.1.9) (2020-09-29)
+
+
+### Bug Fixes
+
+* resolve code-review comments [ref EPGUCORE-36456] ([b5b9b35](https://git.gosuslugi.local///commit/b5b9b358a28d3ef15de8de4a0d2562bcc7b07f09))
+
+### [0.1.8](https://git.gosuslugi.local///compare/v0.1.7...v0.1.8) (2020-09-29)
+
+
+### Bug Fixes
+
+* resolve cycledFieldsValue formating issue if any date component presented on custom screen [ref EPGUCORE-36456] ([d772918](https://git.gosuslugi.local///commit/d772918dd945679c35a68ae7c3b17ac28ceb1e62))
+
+### [0.1.7](https://git.gosuslugi.local///compare/v0.1.6...v0.1.7) (2020-09-29)
+
+
+### Bug Fixes
+
+* update cycled fields dataTransform to support several fieldNames refs in component [ref EPGUCORE-36456] ([2f3ff97](https://git.gosuslugi.local///commit/2f3ff977bbf0d9ad29a49eb323d7fdb4c7eaeebd))
+
 ### [0.1.6](https://git.gosuslugi.local///compare/v0.1.4...v0.1.6) (2020-09-29)
 
 
