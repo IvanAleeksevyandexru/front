@@ -73,9 +73,8 @@ Library-publish:
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
   script:
     - cd dist/epgu-constructor
-    - CURRENT_VERSION=$(npm view epgu-constructor version)
-    - npm version $CURRENT_VERSION
-    - npm version patch
+    - PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]'
+    - npm version $PACKAGE_VERSION
     - npm publish
   only:
     - master
