@@ -2,7 +2,7 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { MockApi } from '../../projects/epgu-constructor/src/app/config/config.types'
+import { MockApi } from '../../projects/epgu-constructor/src/app/config/config.types';
 
 export const environment = {
   production: false,

@@ -22,6 +22,7 @@
     >
         Встраиваем в модуль
         FormPlayerModule.forRoot({
+            production: true,
             apiUrl: ‘http://188.93.23.27:18080/api’,
             dictionaryUrl: ‘https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary’,
             externalApiUrl: ‘https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1’,
@@ -38,12 +39,12 @@
         [serviceId]=“serviceId”
         [targetId]=“targetId”
         ></epgu-constructor-form-player>
-        
+
         Добавляем в html
         serviceId = ‘10000056555’;
         targetId = ‘10000006704’;
-        
-6. Добавляем 
+
+6. Добавляем
     >
         {
             "glob": "**/*",
