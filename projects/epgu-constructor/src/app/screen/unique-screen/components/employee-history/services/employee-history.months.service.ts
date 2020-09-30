@@ -19,7 +19,7 @@ export class EmployeeHistoryMonthsService {
 
   initSettings(): void {
     this.maxDate = MonthYear.fromDate(moment().endOf('month').toDate());
-    this.minDateFrom = MonthYear.fromDate(moment().subtract(this.years, 'years').toDate());
+    this.minDateFrom = MonthYear.fromDate(moment().subtract(this.years + 60, 'years').toDate());
     this.minDateTo = this.minDateFrom;
     this.availableMonths = this.getAvailableMonths();
   }
