@@ -22,7 +22,6 @@
     "ci": "yarn lint && yarn stylelint && yarn test && yarn lib:build && yarn build",
     "release": "standard-version",
     "generate-lib-version-ts": "node scripts/version.js",
-    "vars": "env | grep npm_package_",
     "e2e": "ng e2e"
   },
   "private": true,
