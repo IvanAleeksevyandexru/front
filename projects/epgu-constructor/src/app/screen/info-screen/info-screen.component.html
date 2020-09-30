@@ -15,6 +15,12 @@
       </ng-container>
     </div>
 
+    <epgu-constructor-info-screen-button
+      *ngFor="let action of (screenService.display?.components)[0]?.attrs.actions"
+      epgu-constructor-action
+    >{{ action.label }}
+    </epgu-constructor-info-screen-button>
+
     <div class="info__footer info-footer">
       <lib-button *ngIf="screenService.isShown$ | async"
         [showLoader]="screenService.isLoading$ | async"

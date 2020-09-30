@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Moment } from 'moment';
-import { createEvent, EventAttributes } from 'ics';
 
 @Injectable()
 export class UtilsService {
-
   // TODO: add shared utils
 
   /**
@@ -43,11 +41,11 @@ export class UtilsService {
     let expires = '';
     if (days) {
       const date = new Date();
-      date.setTime(date.getTime() + (days*24*60*60*1000));
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
       expires = '; expires=' + date.toUTCString();
     }
-    let cookie = name + '=' + (value || '')  + expires + '; path=/';
-    if (domain.length){
+    let cookie = name + '=' + (value || '') + expires + '; path=/';
+    if (domain.length) {
       cookie += '; domain=' + domain + ';';
     }
     document.cookie = cookie;
@@ -60,10 +58,10 @@ export class UtilsService {
   static getCookie(name) {
     const nameEQ = name + '=';
     const ca = document.cookie.split(';');
-    for(let i=0; i < ca.length; i++) {
+    for (let i = 0; i < ca.length; i++) {
       let c = ca[i];
-      while (c.charAt(0)==' ') c = c.substring(1,c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
   }
@@ -73,7 +71,7 @@ export class UtilsService {
    * @param name - имя куки
    */
   static removeCookie(name) {
-    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
 
   /**
@@ -84,14 +82,14 @@ export class UtilsService {
    * @example getObjectProperty({a: {b: {c: 3}}}), 'a.b.c');
    */
   static getObjectProperty(obj: any, path: string, defaultValue: any = undefined): any {
-    const travel = regexp =>
+    const travel = (regexp) =>
       String.prototype.split
         .call(path, regexp)
         .filter(Boolean)
         .reduce((res, key) => (res !== null && res !== undefined ? res[key] : res), obj);
     const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
     return result === undefined || result === obj ? defaultValue : result;
-  };
+  }
 
   /**
    * Форматирует объект moment даты в нужны формат и возвращает его
@@ -115,26 +113,26 @@ export class UtilsService {
     }
 
     if (n1 === 1) {
-       return forms[0];
+      return forms[0];
     }
 
     return forms[2];
   }
 
-  // При передачи аргумента event необходимо указывать тип EventAttributes
-  public downloadCalendar(event: EventAttributes) {
-    const ics = createEvent(event);
-    const blob = new Blob([ics.value], { type: 'text/calendar; charset=utf-8' });
+  /**
+   * Скачивание файла
+   */
+  public downloadFile(blob: Blob) {
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement('a');
     link.style.display = 'none';
     link.href = url;
-    link.setAttribute('download', event.description || 'calendar');
+    link.setAttribute('download', 'file');
     document.body.appendChild(link);
     link.click();
 
-    setTimeout( () => {
+    setTimeout(() => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     }, 200);

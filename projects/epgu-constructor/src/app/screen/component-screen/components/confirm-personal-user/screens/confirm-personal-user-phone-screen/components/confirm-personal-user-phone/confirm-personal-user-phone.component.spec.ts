@@ -9,6 +9,7 @@ import { FormPlayerApiService } from '../../../../../../../../services/api/form-
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ServiceDataService } from '../../../../../../../../services/service-data/service-data.service';
+import { ActionDirective } from '../../../../../../../../shared/directives/action/action.directive';
 
 describe('ConfirmPersonalUserPhoneComponent', () => {
   let component: ConfirmPersonalUserPhoneComponent;
@@ -18,9 +19,9 @@ describe('ConfirmPersonalUserPhoneComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule
+        HttpClientTestingModule,
       ],
-      declarations: [ ConfirmPersonalUserPhoneComponent ],
+      declarations: [ ConfirmPersonalUserPhoneComponent, ActionDirective ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       providers: [
         ScreenService,

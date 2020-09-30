@@ -5,6 +5,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { InfoScreenBodyModule } from './component/info-screen-body/info-screen-body.module';
 import { InfoScreenComponent } from './info-screen.component';
 import { ScreenService } from '../screen.service';
+import { InfoScreenButtonModule } from './component/info-screen-button/info-screen-button.module';
 
 const COMPONENT = [
   InfoScreenComponent
@@ -18,6 +19,7 @@ const COMPONENT = [
     SharedModule,
     InfoScreenBodyModule,
     EpguLibModule,
+    InfoScreenButtonModule,
   ],
   providers: [
     ScreenService

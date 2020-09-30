@@ -1,0 +1,23 @@
+@import 'src/styles/core';
+
+//::ng-deep {
+//  button:focus {
+//    border-style: solid !important;
+//  }
+//}
+
+.action-btn {
+  margin-bottom: 16px;
+
+  button:focus {
+    border-style: solid;
+  }
+
+  &__icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-left: 10px;
+  }
+}

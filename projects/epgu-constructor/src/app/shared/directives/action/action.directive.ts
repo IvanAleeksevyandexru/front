@@ -1,4 +1,5 @@
 import { Directive, HostListener, Input } from '@angular/core';
+
 import {
   ActionType,
   ComponentDtoAction,
@@ -39,8 +40,12 @@ export class ActionDirective {
     }
   }
 
-  private sendAction<T>() {
-    return this.actionApiService.send<T>(this.action.action, this.screenService.getStore());
+  private sendAction<T>(responseType?: 'blob') {
+    return this.actionApiService.send<T>(
+      this.action.action,
+      this.screenService.getStore(),
+      responseType,
+    );
   }
 
   private nextStep() {
@@ -62,8 +67,13 @@ export class ActionDirective {
   }
 
   private downloadAction() {
-    this.sendAction<{ value: string }>().subscribe((value) =>
-      this.utilsService.downloadCalendar(value.value as any),
+    this.sendAction<Blob>('blob').subscribe(
+      (value) => {
+        this.utilsService.downloadFile(value);
+      },
+      (error) => {
+        console.log(error);
+      },
     );
   }
 }
