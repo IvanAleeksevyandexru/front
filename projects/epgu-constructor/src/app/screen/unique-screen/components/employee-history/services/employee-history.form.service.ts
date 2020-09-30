@@ -10,6 +10,7 @@ import {
   EmployeeHistoryModel
 } from '../employee-history.types';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
+import { MonthYear } from 'epgu-lib';
 
 const moment = moment_;
 
@@ -46,13 +47,13 @@ export class EmployeeHistoryFormService {
   resetForm(currentType: Employee): void {
     this.generateForm.reset();
     this.generateForm.get('type').patchValue(currentType);
+    this.monthsService.minDateTo = this.monthsService.minDateFrom;
   }
 
   pushFormGroup(): void {
     const formValues: EmployeeHistoryModel = this.generateForm.getRawValue();
-    const fromDate: Moment = moment(formValues.from);
-    const toDate: Moment = moment(formValues.to);
-
+    const fromDate: Moment = moment().month(formValues.from.monthCode).year(formValues.from.year);
+    const toDate: Moment = moment().month(formValues.to.monthCode).year(formValues.to.year);
     this.monthsService.updateAvailableMonths(fromDate, toDate, true);
     this.employeeHistory.push(formValues);
     this.resetForm(this.defaultType);
@@ -69,13 +70,14 @@ export class EmployeeHistoryFormService {
   }
 
   generateFormWatcher(): void {
+    this.generateForm.valueChanges.subscribe((f) => console.log(this.generateForm, f));
     this.generateForm
       .get('checkboxToDate')
       .valueChanges.pipe(
       filter((checked: boolean) => checked),
       takeUntil(this.unsubscribeService),
     )
-      .subscribe(() => this.generateForm.get('to').patchValue(new Date()));
+      .subscribe(() => this.generateForm.get('to').patchValue(MonthYear.fromDate(new Date())));
 
     this.generateForm
       .get('from')
@@ -84,7 +86,7 @@ export class EmployeeHistoryFormService {
         if (!this.generateForm.getRawValue().checkboxToDate) {
           this.generateForm.get('to').reset();
         }
-        this.monthsService.minDateTo = date;
+        this.monthsService.minDateTo = MonthYear.fromDate(date);
       });
   }
 

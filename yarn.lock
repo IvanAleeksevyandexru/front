@@ -4971,10 +4971,10 @@ env-variable@0.0.x:
   resolved "http://npm.gosuslugi.local/env-variable/-/env-variable-0.0.6.tgz#74ab20b3786c545b62b4a4813ab8cf22726c9808"
   integrity sha512-bHz59NlBbtS0NhftmR8+ExBEekE7br0e01jw+kk0NDro7TtZzBYZ5ScGPs3OmwnpyfHTHOtr1Y6uedCdrIldtg==
 
-epgu-lib@0.0.493:
-  version "0.0.493"
-  resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.493.tgz#f4384f20ea120969c45fe4bfcd62b063ab86896a"
-  integrity sha512-CTFdCVfIdbyMEvojIgkXOeeqe6G6T6WHYU6ErN5fwEdFSqzjgo9YrVdOwN2FUs4j9NzzjrKslcK9TMZEtc3Ltg==
+epgu-lib@0.0.537:
+  version "0.0.537"
+  resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.537.tgz#310506d9a019f48f4f75b8f2a41f2e2e1afffd28"
+  integrity sha512-doObKqv003NsybHRHG/FT/LbheK0SkLTcCP+JcMPtukPW085Y/67WvDqMe/w6hl6lvt16aV+wzkY2v1uBojvTQ==
   dependencies:
     "@angular/animations" "10.1.1"
     "@angular/common" "10.1.1"

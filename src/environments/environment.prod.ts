@@ -1,7 +1,7 @@
 import { MockApi } from '../../projects/epgu-constructor/src/app/config/config.types'
 
 export const environment = {
-  production: false,
+  production: true,
   serviceId: 'local',
   targetId: '',
   orderId: '',
@@ -18,5 +18,5 @@ export const environment = {
   fileUploadApiUrl: 'https://gosuslugi.ru/api/storage/v1/files',
   staticDomainAssetsPath: '',
   mocks: ['mvd', 'selectMap', 'timeSlot'] as MockApi[],
-  mockUrl: 'https://dev-l11.pgu2-pub.test.gosuslugi.ru/mock/'
+  mockUrl: 'https://dev-l11.pgu2-pub.test.gosuslugi.ru/mock/api'
 };

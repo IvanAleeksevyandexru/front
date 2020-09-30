@@ -7,7 +7,7 @@ import { DictionaryApiService } from '../../../../services/api/dictionary-api/di
 import { ScreenService } from '../../../screen.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { FormPlayerApiService } from '../../../../services/api/form-player-api/form-player-api.service';
-import { ApplicantAnswersService } from '../../../../shared/services/applicant-answers/applicant-answers.service';
+import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
 import { ComponentStateService } from '../../../../services/component-state/component-state.service';
 
 describe('PaymentService', () => {
@@ -21,7 +21,7 @@ describe('PaymentService', () => {
       providers: [
         DictionaryApiService,
         PaymentService,
-        ApplicantAnswersService,
+        CachedAnswersService,
         ComponentStateService,
         FormPlayerApiService,
         ScreenService,
