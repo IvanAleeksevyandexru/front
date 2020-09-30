@@ -33,7 +33,7 @@ export class CycledFieldsService {
       const fieldNameRefs = this.screenService.component?.attrs?.fields?.map(field => field.fieldName);
       let valuePrepared: object = {};
       fieldNameRefs.forEach(fieldName => {
-        valuePrepared[fieldName] = typeof value === 'string' ? JSON.parse(value)[fieldName] : value[fieldName];
+        valuePrepared[fieldName] = typeof value === 'string' ? (!!value ? JSON.parse(value)[fieldName] : '') : value[fieldName];
       });
       const cycledValuesPrepared = { ...this.cycledValues, ...valuePrepared };
 
