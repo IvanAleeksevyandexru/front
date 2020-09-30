@@ -79,6 +79,7 @@ export interface ScenarioErrorsDto {
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
  * @property {boolean}[isInternalScenarioFinish] - появляется при internal сценарии;
  * @property {string}[serviceId] - добавляется при internal сценариев(подсценариев);
+ * @property {string}[currentUrl] - текущий url, нужен бэкенду для возврата на страницу, если был переход на стороннюю страницу ;
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
@@ -96,6 +97,7 @@ export interface ScenarioDto {
   userId: string;
   isInternalScenario?: boolean;
   serviceId?: string;
+  currentUrl?: string;
 }
 
 /**
