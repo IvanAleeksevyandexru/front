@@ -159,7 +159,7 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
       const fieldName = targetComponent.attrs.fields && targetComponent.attrs.fields[0].fieldName;
       if (!fieldName) return result;
 
-      if (typeof targetItemValue === 'object' && moment(targetItemValue).isValid()) {
+      if (targetComponent.type === 'date') {
         result[fieldName] = moment(targetItemValue).format(DATE_STRING_DOT_FORMAT);
       } else {
         result[fieldName] = targetItemValue;

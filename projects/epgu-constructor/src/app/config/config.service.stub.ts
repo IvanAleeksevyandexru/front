@@ -3,6 +3,7 @@ import { Config, MockApi } from './config.types';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
+  _production: false;
   _apiUrl = '/api';
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
@@ -17,6 +18,10 @@ export class ConfigServiceStub implements Config {
   _staticDomainAssetsPath = '';
   _mocks = [];
   _mockUrl = '';
+
+  get production(): boolean {
+    return this._production;
+  }
 
   get apiUrl(): string {
     return this._apiUrl;

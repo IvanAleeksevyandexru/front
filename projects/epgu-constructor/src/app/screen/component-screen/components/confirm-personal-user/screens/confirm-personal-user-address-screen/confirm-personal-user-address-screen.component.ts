@@ -66,7 +66,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
         break;
       case 'noAddressAndSubmit':
         this.noAddressAction();
-        this.dataChange({ regDate: '', regAddr: '' });
+        this.handleDataChange({ regDate: '', regAddr: '' });
         this.actionSelect.emit(action);
         break;
       default:
@@ -75,23 +75,8 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     }
   }
 
-  setState(changes) {
-    let stateData: any;
-    if (this.isCycledFields) {
-      stateData = this.toolsService.getFormattedCycledValues(
-        changes,
-        this.currentCycledFields,
-        this.cycledValues,
-      );
-    } else {
-      stateData = changes;
-    }
+  handleDataChange(changes: any) {
     this.data.value = changes;
-    return stateData;
-  }
-
-  dataChange(changes: any) {
-    const responseData = this.setState(changes);
-    this.currentAnswersService.state = responseData;
+    this.currentAnswersService.state = changes;
   }
 }
