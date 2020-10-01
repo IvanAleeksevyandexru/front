@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { EpguLibModule, LoadService } from 'epgu-lib';
 import { ConfigService } from './config/config.service';
 import { FormPlayerComponent } from './form-player.component';
@@ -34,7 +36,22 @@ import { SharedModule } from './shared/shared.module';
 export const initializeEpguLibConfig = (loadService: LoadService, configService: ConfigService) => {
   return () => configService.production ? loadService.load('portal') : null;
 };
-export const epguLibModule = EpguLibModule.forRoot();
+
+export const HttpLoaderFactory = (httpClient: HttpClient, loadService: LoadService, configService: ConfigService) => {
+  return configService.production
+    ? new TranslateHttpLoader(httpClient, `${loadService.config.staticDomain}assets/i18n/`, '.json')
+    : null;
+};
+
+export const TranslateModuleInited = TranslateModule.forRoot({
+  loader: {
+    provide: TranslateLoader,
+    useFactory: HttpLoaderFactory,
+    deps: [HttpClient, LoadService, ConfigService]
+  }
+});
+
+export const EpguLibModuleInited = EpguLibModule.forRoot();
 
 @NgModule({
   declarations: [
@@ -49,7 +66,8 @@ export const epguLibModule = EpguLibModule.forRoot();
     UniqueScreenModule,
     InvitationErrorScreenModule,
     SharedModule,
-    epguLibModule,
+    EpguLibModuleInited,
+    TranslateModuleInited,
     InfoScreenModule,
   ],
   providers: [
