@@ -2,7 +2,6 @@ import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
-import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import {
   CustomComponent,
   CustomComponentDictionaryState,
@@ -51,9 +50,9 @@ export function likeDictionary(type: CustomScreenComponentTypes): boolean {
 
 /**
  * Адаптирует массив в вид необходимый для компонентов из библлиотеки и если нужно то удаляет РОССИЮ из списка
- * @param {Array<DictionaryItem>}items
- * @param {string}dictionaryName
- * @param {CustomComponent}component - тут хранится флаг, для удаление россии из словаря.
+ * @param items - массив значений из словаря
+ * @param dictionaryName - наименование словаря
+ * @param component - тут хранится флаг, для удаление россии из словаря.
  */
 export function getNormalizeDataCustomScreenDictionary(
   items: Array<DictionaryItem>,
@@ -192,10 +191,10 @@ export function getInitStateItemComponentList(component: CustomComponent, errorM
   let valueFormatted: string | Date;
   switch (component.type) {
     case CustomScreenComponentTypes.DateInput:
-      valueFormatted = moment(value, DATE_STRING_DOT_FORMAT).toDate();
+      valueFormatted = moment(value).toDate();
       break;
     case CustomScreenComponentTypes.CheckBox:
-      valueFormatted = component.attrs?.checked;
+      valueFormatted = value ? value === 'true' : component.attrs?.checked;
       break;
     default:
       valueFormatted = value;
