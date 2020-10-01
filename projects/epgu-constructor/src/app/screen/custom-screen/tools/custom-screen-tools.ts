@@ -105,6 +105,11 @@ export const isDropDown = (component: CustomComponent): boolean => component.typ
  * @param component - компонент
  */
 export const isCheckBox = (component: CustomComponent): boolean => component.type === CustomScreenComponentTypes.CheckBox;
+/**
+ * Возвращает true, если это компонент с типом Dictionary
+ * @param component - компонент
+ */
+export const isDictionary = (component: CustomComponent): boolean => component.type === CustomScreenComponentTypes.Dictionary;
 
 /**
  * Возвращает true, если текущее состояние зависимости соответствует значению проверяемого компонента
@@ -122,7 +127,7 @@ export const isHaveNeededValue = (
   if (item.relation == relation) {
     let stateRelatedRelValue: any;
 
-    if (isLookup(component)) {
+    if (isLookup(component) || isDictionary(component)) {
       stateRelatedRelValue = state[item.relatedRel]?.value?.value;
     } else if (isDropDown(component)) {
       stateRelatedRelValue = state[item.relatedRel]?.value?.code;
