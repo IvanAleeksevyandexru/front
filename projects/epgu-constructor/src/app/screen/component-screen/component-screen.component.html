@@ -49,6 +49,7 @@
           *ngSwitchCase="screenComponentName.registrationAddr"
           [data]="(screenStore.display?.components)[0]"
           [errors]="screenStore.errors"
+          (actionSelect)="nextStep()"
         >
         </epgu-constructor-temporary-registration-addr-screen>
 

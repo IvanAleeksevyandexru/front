@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { TemporaryRegistrationComponent } from './temporary-registration-addr-screen.types';
 
 @Component({
@@ -11,7 +12,29 @@ export class TemporaryRegistrationAddrScreenComponent {
   @Input() errors: object;
   @Output() actionSelect = new EventEmitter();
 
-  clickToAction(action): void {
-    this.actionSelect.emit(action);
+  constructor(private componentStateService: ComponentStateService) {}
+
+  // TODO: Temporary solution, waiting for joining address components
+  clickToAction(event): void {
+    const { action } = event;
+    switch (action) {
+      case 'noAddressAndSubmit':
+        this.noAddressAction();
+        this.handleDataChange({ regDate: '', regAddr: '' });
+        this.actionSelect.emit(action);
+        break;
+      default:
+        this.actionSelect.emit(action);
+        break;
+    }
+  }
+
+  noAddressAction() {
+    this.data.value = JSON.stringify({ regDate: '', regAddr: '' });
+    this.data = { ...this.data };
+  }
+  handleDataChange(changes: any) {
+    this.data.value = changes;
+    this.componentStateService.state = changes;
   }
 }
