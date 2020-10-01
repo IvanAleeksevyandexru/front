@@ -5,24 +5,20 @@ import { TextTransform } from '../../types/textTransform';
   selector: '[epgu-constructor-text-transform]'
 })
 export class TextTransformDirective {
+  private transforms = {
+    [TextTransform.ALL]: this.firstLetterOfEachWordToUpperCase,
+    [TextTransform.FIRST]: this.firstLetterToUpperCase,
+    [TextTransform.UPPERCASE]: this.allToUpperCase,
+  };
   @Input() textTransformType: TextTransform;
 
   @HostListener('input', ['$event.target'])
   onInput(target) {
-    const selection = [target.selectionStart, target.selectionEnd];
-    switch (this.textTransformType) {
-      case TextTransform.ALL:
-        target.value = this.firstLetterOfEachWordToUpperCase(target.value);
-        break;
-      case TextTransform.FIRST:
-        target.value = this.firstLetterToUpperCase(target.value);
-        break;
-      case TextTransform.UPPERCASE:
-        target.value = this.allToUpperCase(target.value);
-        break;
-      default:
-        console.error('Unexpected TextTransform type');
+    if (!this.transforms[this.textTransformType]) {
+      return;
     }
+    const selection = [target.selectionStart, target.selectionEnd];
+    target.value = this.transforms[this.textTransformType].call(this, target.value);
     target.setSelectionRange(...selection);
   }
 
