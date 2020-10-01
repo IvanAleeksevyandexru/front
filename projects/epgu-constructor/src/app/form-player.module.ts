@@ -30,6 +30,7 @@ import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { UtilsService } from './services/utils/utils.service';
 import { ToolsService } from './shared/services/tools/tools.service';
 import { SharedModule } from './shared/shared.module';
+import { ActionApiService } from './services/api/action-api/action-api.service';
 
 export const initializeEpguLibConfig = (loadService: LoadService, configService: ConfigService) => {
   return () => configService.production ? loadService.load('portal') : null;
@@ -76,6 +77,7 @@ export const epguLibModule = EpguLibModule.forRoot();
       useClass: AuthInterceptor,
       multi: true,
     },
+    ActionApiService,
   ],
   exports: [
     FormPlayerComponent,
