@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.12](https://git.gosuslugi.local///compare/v0.1.11...v0.1.12) (2020-09-30)
+
+
+### Bug Fixes
+
+* fixed modal displaying [ref EPGUCORE-36117] ([bde8af0](https://git.gosuslugi.local///commit/bde8af0ab967a915e7433a51253aa8b7b242de6a))
+* updade font-weight for .bold/b/strong elements [ref EPGUCORE-36456] ([3c66f88](https://git.gosuslugi.local///commit/3c66f88a31e0be23d9769da899d45d9ddbfa1129))
+
 ### [0.1.11](https://git.gosuslugi.local///compare/v0.1.10...v0.1.11) (2020-09-30)
 
 
