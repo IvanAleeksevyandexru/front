@@ -1,4 +1,9 @@
 <ng-container [ngSwitch]="screenStore.display?.components[0].type">
+  <epgu-constructor-unused-payments
+    *ngSwitchCase="uniqueComponentName.unusedPayments"
+    [data]="screenStore.display"
+    (nextStepEvent)="nextDataForStep($event)"
+  ></epgu-constructor-unused-payments>
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
     [data]="screenStore.display?.components[0]"
@@ -19,6 +24,13 @@
     [header]="screenStore.display?.header"
     [gender]="screenStore.gender"
     [display]="screenStore.display"
+
+
+
+
+
+
+
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-employee-history>
   <epgu-constructor-repeatable-fields

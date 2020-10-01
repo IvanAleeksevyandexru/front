@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.12](https://git.gosuslugi.local///compare/v0.1.11...v0.1.12) (2020-09-30)
+
+
+### Bug Fixes
+
+* fixed modal displaying [ref EPGUCORE-36117] ([bde8af0](https://git.gosuslugi.local///commit/bde8af0ab967a915e7433a51253aa8b7b242de6a))
+* updade font-weight for .bold/b/strong elements [ref EPGUCORE-36456] ([3c66f88](https://git.gosuslugi.local///commit/3c66f88a31e0be23d9769da899d45d9ddbfa1129))
+
+### [0.1.11](https://git.gosuslugi.local///compare/v0.1.10...v0.1.11) (2020-09-30)
+
+
+### Bug Fixes
+
+* add jq dep for docker building instance [ref EPGUCORE-36456] ([44c058c](https://git.gosuslugi.local///commit/44c058ce0d1370af8e01aeff7e2fddab840bf38a))
+* hotfix in environment.ts [ref EPGUCORE-36456] ([7535fc7](https://git.gosuslugi.local///commit/7535fc7b560926ca51b3b921ab48c014cfeaa28b))
+* remove unneccessary script in package.json [ref EPGUCORE-36456] ([ecd0fc3](https://git.gosuslugi.local///commit/ecd0fc36962e2c2aea9db897a5687bd6edfea8ce))
+* revert gitlab-ci library-publish process [ref EPGUCORE-36456] ([96bcfb8](https://git.gosuslugi.local///commit/96bcfb8bb8b8943eca9dc15442397d7b65f1a647))
+* test gitlab-ci new library-publish process [ref EPGUCORE-36456] ([3273bdb](https://git.gosuslugi.local///commit/3273bdb766c4ef4d3124b7fb699094aa35eb1a99))
+* update Epgulib load service init proccess [ref EPGUCORE-36456] ([cd2fd8c](https://git.gosuslugi.local///commit/cd2fd8c1a23526a51b329aa19ac6f5f8e7a31307))
+
+### [0.1.10](https://git.gosuslugi.local///compare/v0.1.9...v0.1.10) (2020-09-29)
+
+
+### Bug Fixes
+
+* resolve code reviews 2 [ref EPGUCORE-36456] ([89d4939](https://git.gosuslugi.local///commit/89d49393f704fbe019cb3792fefa070e09b80625))
+
+### [0.1.9](https://git.gosuslugi.local///compare/v0.1.8...v0.1.9) (2020-09-29)
+
+
+### Bug Fixes
+
+* resolve code-review comments [ref EPGUCORE-36456] ([b5b9b35](https://git.gosuslugi.local///commit/b5b9b358a28d3ef15de8de4a0d2562bcc7b07f09))
+
+### [0.1.8](https://git.gosuslugi.local///compare/v0.1.7...v0.1.8) (2020-09-29)
+
+
+### Bug Fixes
+
+* resolve cycledFieldsValue formating issue if any date component presented on custom screen [ref EPGUCORE-36456] ([d772918](https://git.gosuslugi.local///commit/d772918dd945679c35a68ae7c3b17ac28ceb1e62))
+
+### [0.1.7](https://git.gosuslugi.local///compare/v0.1.6...v0.1.7) (2020-09-29)
+
+
+### Bug Fixes
+
+* update cycled fields dataTransform to support several fieldNames refs in component [ref EPGUCORE-36456] ([2f3ff97](https://git.gosuslugi.local///commit/2f3ff977bbf0d9ad29a49eb323d7fdb4c7eaeebd))
+
 ### [0.1.6](https://git.gosuslugi.local///compare/v0.1.4...v0.1.6) (2020-09-29)
 
 

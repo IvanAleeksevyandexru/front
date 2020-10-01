@@ -16,13 +16,13 @@ export class Smev3TimeSlotsRestService {
   ) {}
 
   public getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
-    const urlPrefix = this.config.mocks.includes('timeSlot') ? `${this.config.mockUrl}/lk/v1/equeue/agg/slots` : this.config.timeSlotApiUrl;
+    const urlPrefix = this.config.mocks.includes('timeSlot') ? `${this.config.mockUrl}/lk/v1/equeue/agg` : this.config.timeSlotApiUrl;
     const path = `${urlPrefix}/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody, { withCredentials: true });
   }
 
   public bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
-    const urlPrefix = this.config.mocks.includes('timeSlot') ? `${this.config.mockUrl}/lk/v1/equeue/agg/slots` : this.config.timeSlotApiUrl;
+    const urlPrefix = this.config.mocks.includes('timeSlot') ? `${this.config.mockUrl}/lk/v1/equeue/agg` : this.config.timeSlotApiUrl;
     const path = `${urlPrefix}/book?srcSystem=BETA`;
     return this.http.post<SmevBookResponseInterface>(path, requestBody, { withCredentials: true });
   }

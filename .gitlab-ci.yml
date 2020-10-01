@@ -14,7 +14,7 @@ stages:
   - build
   - image
   - deploy
-  
+
 Install:
   stage: install
   before_script:
@@ -123,7 +123,7 @@ Deploy to review env:
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: http://review-$CI_COMMIT_REF_SLUG.pgu2-dev.test.gosuslugi.ru
-    on_stop: "Drop review env"
+    on_stop: 'Drop review env'
   only:
     - merge_requests
     - master
@@ -134,7 +134,7 @@ Drop review env:
   variables:
     GIT_STRATEGY: none
   before_script:
-    - export PATH=$PATH:/devops/k8s/bin    
+    - export PATH=$PATH:/devops/k8s/bin
   script:
     - echo "Delete environment $CI_COMMIT_REF_SLUG"
     - stop

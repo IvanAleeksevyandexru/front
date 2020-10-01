@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { EpguLibModule } from 'epgu-lib';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { EpguLibModule, LoadService } from 'epgu-lib';
 import { ConfigService } from './config/config.service';
 import { FormPlayerComponent } from './form-player.component';
 import { AuthInterceptor } from './interceptor/authorization-interceptor';
@@ -31,7 +31,9 @@ import { UtilsService } from './services/utils/utils.service';
 import { ToolsService } from './shared/services/tools/tools.service';
 import { SharedModule } from './shared/shared.module';
 
-
+export const initializeEpguLibConfig = (loadService: LoadService, configService: ConfigService) => {
+  return () => configService.production ? loadService.load('portal') : null;
+};
 export const epguLibModule = EpguLibModule.forRoot();
 
 @NgModule({
@@ -62,6 +64,13 @@ export const epguLibModule = EpguLibModule.forRoot();
     ConfigService,
     ServiceDataService,
     ToolsService,
+    LoadService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeEpguLibConfig,
+      multi: true,
+      deps: [LoadService, ConfigService]
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

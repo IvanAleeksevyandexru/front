@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -24,7 +25,7 @@ const moment = moment_;
   styleUrls: ['./confirm-personal-user-address.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ConfirmPersonalUserAddressComponent implements OnChanges {
+export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterViewInit {
   @ViewChild('dataForm', { static: false }) dataForm;
 
   @Input() data: ConfirmAddressInterface;
@@ -39,12 +40,12 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges {
     private changeDetection: ChangeDetectorRef,
   ) {}
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.isEditable?.currentValue) {
-      this.subscribeFormChanges();
-      this.changeDetection.detectChanges();
-    }
+  ngAfterViewInit(): void {
+    this.subscribeFormChanges();
+    this.changeDetection.detectChanges();
+  }
 
+  ngOnChanges(changes: SimpleChanges) {
     if (changes.data?.currentValue) {
       this.setState();
       this.emmitData();
