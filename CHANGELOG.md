@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.13](https://git.gosuslugi.local///compare/v0.1.12...v0.1.13) (2020-10-01)
+
+
+### Bug Fixes
+
+* добавил фильтр для установки заголовковж; ([e2300cc](https://git.gosuslugi.local///commit/e2300ccb77cbacc6a78d2f24ece718ef78b0ab03))
+
 ### [0.1.12](https://git.gosuslugi.local///compare/v0.1.11...v0.1.12) (2020-09-30)
 
 
