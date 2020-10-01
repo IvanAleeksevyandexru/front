@@ -168,18 +168,25 @@
       </ng-container>
 
       <ng-template
-        [ngTemplateOutlet]="formHintAndRequired"
-        [ngTemplateOutletContext]="{
-                attrs : componentData.value?.attrs,
-                required: componentData.value?.required,
-                optionalField: optionalField
-              }"
-      ></ng-template>
-
-      <ng-template
         [ngTemplateOutlet]="formErrors"
         [ngTemplateOutletContext]="{ $implicit: componentData.get('value') }">
       </ng-template>
+
+      <ng-template
+        [ngTemplateOutlet]="formHintAndRequired">
+      </ng-template>
+
+      <ng-template #formHintAndRequired>
+        <div class="form__info">
+          <span *ngIf="componentData.value?.attrs?.hint as hint" class="form__item__hint">
+            {{ hint }}
+          </span>
+          <epgu-constructor-helper-text *ngIf="!componentData.value?.required">
+            {{ optionalField }}
+          </epgu-constructor-helper-text>
+        </div>
+      </ng-template>
+
 
       <ng-template #plainInput>
         <lib-plain-input
@@ -214,11 +221,6 @@
 
 <ng-template #formLabel let-label>
   <epgu-constructor-label>{{ label }}</epgu-constructor-label>
-</ng-template>
-
-<ng-template #formHintAndRequired let-attrs let-required let-optionalField>
-  <span *ngIf="attrs?.hint" class="form__item__hint">{{ attrs.hint}}</span>
-  <epgu-constructor-helper-text *ngIf="!required">{{ optionalField }}</epgu-constructor-helper-text>
 </ng-template>
 
 <ng-template #formErrors let-control>

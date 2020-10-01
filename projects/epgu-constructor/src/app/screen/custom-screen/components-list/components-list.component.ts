@@ -28,6 +28,7 @@ import { ComponentBase, ScreenStore } from '../../screen.types';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 import { ValidationService } from '../services/validation.service';
 import { UniqueScreenComponentTypes } from '../../unique-screen/unique-screen.types';
+import { ComponentDto } from '../../../services/api/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -68,43 +69,68 @@ export class ComponentsListComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.array([]);
     this.formWatcher();
+
+    // ToDo: убрать этот костыль (рефакторинг)
+
+    const indexMarkTS = this.form
+      .getRawValue()
+      .findIndex((e) => e.attrs?.dictionaryType === 'MARKI_TS');
+
+    this.form
+      .get(String(indexMarkTS))
+      .valueChanges.pipe(takeUntil(this.unsubscribe$))
+      .subscribe((component: CustomComponent) => {
+        this.loadModelsTS(component.id);
+
+        if (this.availableTypesForCheckDependence.includes(component.type)) {
+          this.emmitChanges(component);
+        } else {
+          this.emmitChanges();
+        }
+      });
   }
 
   private formWatcher(): void {
     this.screenService.screenData$
       .pipe(
-        distinctUntilChanged(
-          (prev: ScreenStore, next: ScreenStore) => JSON.stringify(prev) === JSON.stringify(next),
-        ),
-        map(
-          (screen: ScreenStore): Array<ComponentBase> => {
-            return screen.display.components[0]?.type ===
-              UniqueScreenComponentTypes.repeatableFields
-              ? screen.display.components[0].attrs.components
-              : screen.display.components;
-          },
-        ),
+        distinctUntilChanged((prev: ScreenStore, next: ScreenStore) => this.isEqual(prev, next)),
+        map((screen: ScreenStore): Array<ComponentBase> => this.getComponents(screen)),
         tap((components: Array<CustomComponent>) => this.rebuildFormAfterDataUpdate(components)),
-        switchMap(() =>
-          this.form.valueChanges.pipe(
-            startWith(this.form.getRawValue()),
-            takeUntil(this.unsubscribe$),
-          ),
-        ),
+        switchMap(() => this.formChangesDetector$()),
       )
-      .subscribe((components: Array<CustomComponent>) => {
-        components.forEach((component: CustomComponent) => {
-          if (component.attrs?.dictionaryType === 'MARKI_TS') {
-            this.loadModelsTS(component.id);
-          }
+      .subscribe((components: Array<CustomComponent>) => this.screenDataChanged(components));
+  }
 
-          if (this.availableTypesForCheckDependence.includes(component.type)) {
-            this.emmitChanges(component);
-          } else {
-            this.emmitChanges();
-          }
-        });
-      });
+  private screenDataChanged(components: Array<CustomComponent>) {
+    components.forEach((component: CustomComponent) => {
+      if (component.attrs?.dictionaryType === 'MARKI_TS') {
+        // this.loadModelsTS(component.id);
+      }
+
+      if (this.availableTypesForCheckDependence.includes(component.type)) {
+        this.emmitChanges(component);
+      } else {
+        this.emmitChanges();
+      }
+    });
+  }
+
+  private isEqual(prev: ScreenStore, next: ScreenStore) {
+    return JSON.stringify(prev) === JSON.stringify(next);
+  }
+
+  private formChangesDetector$() {
+    return this.form.valueChanges.pipe(
+      tap((obj) => console.log(obj)),
+      startWith(this.form.getRawValue()),
+      takeUntil(this.unsubscribe$),
+    );
+  }
+
+  private getComponents(screen: ScreenStore): Array<ComponentDto> {
+    return screen.display.components[0]?.type === UniqueScreenComponentTypes.repeatableFields
+      ? screen.display.components[0].attrs.components
+      : screen.display.components;
   }
 
   private rebuildFormAfterDataUpdate(components: Array<CustomComponent>): void {
@@ -162,7 +188,10 @@ export class ComponentsListComponent implements OnInit {
         const stateRelatedRel = isLookup
           ? components.find((f) => f.id === item.relatedRel)?.value
           : components.find((f) => f.id === item.relatedRel);
-        return stateRelatedRel?.value === item.val;
+        if (item.relation === 'displayOn') {
+          return stateRelatedRel?.value === item.val;
+        }
+        return true;
       });
 
       if (!isShown) {
