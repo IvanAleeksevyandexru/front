@@ -13,12 +13,11 @@ import { Config } from './config/config.types';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
 import { ScreenComponent } from './screen/screen.const';
 import { FormPlayerService } from './services/form-player/form-player.service';
-import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
-import { NavigationService } from './shared/services/navigation/navigation.service';
-import { ServiceDataService } from './services/service-data/service-data.service';
 import { ModalService } from './services/modal/modal.service';
+import { ServiceDataService } from './services/service-data/service-data.service';
+import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from './shared/components/modal/confirmation-modal/confirmation-modal.component';
-import { libVersionFromPackageJson } from '../version';
+import { NavigationService } from './shared/services/navigation/navigation.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -40,9 +39,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     private ngUnsubscribe$: UnsubscribeService,
     private configService: ConfigService,
     private modalService: ModalService,
-  ) {
-    console.log(libVersionFromPackageJson);
-  }
+  ) {}
 
   ngOnInit(): void {
     this.checkProps();
