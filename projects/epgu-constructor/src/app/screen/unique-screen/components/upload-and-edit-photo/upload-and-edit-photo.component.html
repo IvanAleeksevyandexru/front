@@ -61,6 +61,7 @@
     </lib-button>
     <lib-button
       class="photo-footer__button"
+      [showLoader]="isLoading$ | async"
       (click)="nextStep()">Продолжить
     </lib-button>
   </div>
