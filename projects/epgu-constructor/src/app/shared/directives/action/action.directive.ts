@@ -1,4 +1,5 @@
 import { Directive, HostListener, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import {
   ActionType,
@@ -10,6 +11,7 @@ import { Navigation } from '../../../form-player.types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { UtilsService } from '../../../services/utils/utils.service';
+import { Answer } from '../../types/answer';
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -29,7 +31,7 @@ export class ActionDirective {
     private utilsService: UtilsService,
   ) {}
 
-  private switchAction() {
+  private switchAction(): void {
     switch (this.action.type) {
       case ActionType.download:
         this.downloadAction();
@@ -40,7 +42,7 @@ export class ActionDirective {
     }
   }
 
-  private sendAction<T>(responseType?: 'blob') {
+  private sendAction<T>(responseType?: 'blob'): Observable<T | Blob> {
     return this.actionApiService.send<T>(
       this.action.action,
       this.screenService.getStore(),
@@ -48,7 +50,7 @@ export class ActionDirective {
     );
   }
 
-  private nextStep() {
+  private nextStep(): void {
     const navigation: Navigation = {
       payload: this.getComponentStateForNavigate(),
       options: { url: this.action.action },
@@ -57,7 +59,9 @@ export class ActionDirective {
     this.navigationService.nextStep.next(navigation);
   }
 
-  private getComponentStateForNavigate() {
+  private getComponentStateForNavigate(): {
+    [key: string]: Answer;
+  } {
     return {
       [this.screenService.component.id]: {
         visited: true,
@@ -66,7 +70,7 @@ export class ActionDirective {
     };
   }
 
-  private downloadAction() {
+  private downloadAction(): void {
     this.sendAction<Blob>('blob').subscribe(
       (value) => {
         this.utilsService.downloadFile(value);

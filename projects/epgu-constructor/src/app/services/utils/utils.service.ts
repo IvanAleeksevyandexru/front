@@ -44,9 +44,9 @@ export class UtilsService {
       date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
       expires = '; expires=' + date.toUTCString();
     }
-    let cookie = name + '=' + (value || '') + expires + '; path=/';
+    let cookie = `${name}=${value || ''}${expires}; path=/`;
     if (domain.length) {
-      cookie += '; domain=' + domain + ';';
+      cookie += `; domain=${domain};`;
     }
     document.cookie = cookie;
   }
