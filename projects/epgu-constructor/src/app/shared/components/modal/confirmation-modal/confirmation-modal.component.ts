@@ -55,7 +55,6 @@ export class ConfirmationModalComponent extends ModalBaseComponent
             this.modalService.openModal(ConfirmationModalComponent, {
               ...data,
               clarifications,
-              showCrossButton: this.showCrossButton,
             }),
         };
       });

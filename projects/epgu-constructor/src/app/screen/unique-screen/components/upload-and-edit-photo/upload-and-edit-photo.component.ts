@@ -284,7 +284,6 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.modalService
       .openModal(ConfirmationModalComponent, {
         ...this.howPhotoModalParameters,
-        showCrossButton: true,
       })
       .subscribe((value) => {
         if (value === uploadPhotoElemId.requirements) {
