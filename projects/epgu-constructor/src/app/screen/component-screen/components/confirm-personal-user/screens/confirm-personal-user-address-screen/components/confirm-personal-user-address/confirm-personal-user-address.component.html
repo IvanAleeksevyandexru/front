@@ -10,6 +10,7 @@
       <lib-dadata-widget
         [simpleMode]="true"
         [disabled]="!isEditable"
+        [hideHouseCheckbox]="true"
         [name]="field.fieldName"
         [externalApiUrl]="config.externalApiUrl + '/'"
         [initValue]="valueParsed[field.fieldName]"
