@@ -7,7 +7,7 @@ import {
   OnDestroy,
   ElementRef,
 } from '@angular/core';
-import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
+import { fromEvent, of, Subject, Subscription } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -42,7 +42,6 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   @Output() nextStepEvent = new EventEmitter();
 
   data: ComponentBase;
-  isLoading$: Observable<boolean>;
   header: string;
   orderId: string;
 
@@ -73,12 +72,11 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
     private compressionService: CompressionService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
     public config: ConfigService,
   ) {
     this.header = screenService.header;
     this.data = { ...screenService.display.components[0] };
-    this.isLoading$ = screenService.isLoading$;
     this.orderId = screenService.orderId;
   }
 
