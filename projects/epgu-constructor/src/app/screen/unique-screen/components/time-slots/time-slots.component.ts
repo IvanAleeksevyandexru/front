@@ -225,6 +225,7 @@ export class TimeSlotsComponent implements OnInit {
   showModal(params) {
     this.modalService.openModal(ConfirmationModalComponent, {
       ...params,
+      showCrossButton: true,
     });
   }
 
