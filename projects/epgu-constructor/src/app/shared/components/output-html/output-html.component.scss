@@ -40,4 +40,24 @@
       font-size: 17px;
     }
   }
+
+  .label {
+    @include first-letter-uppercase();
+    margin-top: 16px !important;
+    margin-bottom: 0 !important;
+    color: $color-blue-bayoux;
+    @include typ-plain-small();
+    font-size: 16px;
+  }
+
+  .value {
+    margin-top: 8px !important;
+  }
+
+  .title {
+    margin-top: 24px !important;
+    margin-bottom: 0 !important;
+  }
 }
+
+
