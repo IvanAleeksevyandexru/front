@@ -5,12 +5,12 @@ import { TextTransform } from '../../types/textTransform';
   selector: '[epgu-constructor-text-transform]'
 })
 export class TextTransformDirective {
-  @Input() textTransformType: TextTransform;
   private transforms = {
     [TextTransform.ALL]: this.firstLetterOfEachWordToUpperCase,
     [TextTransform.FIRST]: this.firstLetterToUpperCase,
     [TextTransform.UPPERCASE]: this.allToUpperCase,
   };
+  @Input() textTransformType: TextTransform;
 
   @HostListener('input', ['$event.target'])
   onInput(target) {
