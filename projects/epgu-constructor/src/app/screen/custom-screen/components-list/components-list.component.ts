@@ -153,6 +153,10 @@ export class ComponentsListComponent implements OnChanges {
       const maskSymbolRegExp = /\s|-/g;
       value = value.replace(maskSymbolRegExp, ''); // удаляет скобки, проблемы, тире
     }
+    if (component.attrs?.mask) {
+      const maskSymbolRegExp = new RegExp(component.attrs?.placeholderSymbol || '_', 'g');
+      value = value.replace(maskSymbolRegExp, ''); // удаляет плейсхолдер символы
+    }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
