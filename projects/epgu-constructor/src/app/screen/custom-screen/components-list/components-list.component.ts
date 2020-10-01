@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
 import {
   CustomComponent,
   CustomComponentDictionaryState,
@@ -94,6 +94,10 @@ export class ComponentsListComponent implements OnInit {
       )
       .subscribe((components: Array<CustomComponent>) => {
         components.forEach((component: CustomComponent) => {
+          if (component.attrs?.dictionaryType === 'MARKI_TS') {
+            this.loadModelsTS(component.id);
+          }
+
           if (this.availableTypesForCheckDependence.includes(component.type)) {
             this.emmitChanges(component);
           } else {
@@ -228,5 +232,29 @@ export class ComponentsListComponent implements OnInit {
       }
       return acc;
     }, {});
+  }
+
+  private loadModelsTS(componentId: string): void {
+    const indexVehicle: number = this.form.controls.findIndex(
+      (control: AbstractControl) => control.value?.id === componentId,
+    );
+
+    const options: DictionaryOptions = {
+      filter: {
+        simple: {
+          attributeName: 'Id_Mark',
+          condition: 'EQUALS',
+          value: {
+            asString: `${this.form.get(String(indexVehicle)).value?.value?.id}`,
+          },
+        },
+      },
+    };
+
+    const model: AbstractControl = this.form.controls.find(
+      (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS',
+    );
+
+    this.loadDictionaries('MODEL_TS', model?.value, options);
   }
 }
