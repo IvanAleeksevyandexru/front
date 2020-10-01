@@ -159,6 +159,14 @@
         <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
       </ng-container>
 
+      <ng-container *ngSwitchCase="componentType.SnilsInput">
+      <ng-template
+        [ngTemplateOutlet]="formLabel"
+        [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+      </ng-template>
+      <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+    </ng-container>
+
       <ng-container *ngSwitchCase="componentType.PersonInnInput">
         <ng-template
           [ngTemplateOutlet]="formLabel"

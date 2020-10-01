@@ -52,6 +52,7 @@ export class ComponentsListComponent implements OnInit {
     CustomScreenComponentTypes.StringInput,
     CustomScreenComponentTypes.DateInput,
     CustomScreenComponentTypes.AddressInput,
+    CustomScreenComponentTypes.CheckBox,
   ];
 
   @Input() components: Array<CustomComponent>;
@@ -103,10 +104,6 @@ export class ComponentsListComponent implements OnInit {
 
   private screenDataChanged(components: Array<CustomComponent>) {
     components.forEach((component: CustomComponent) => {
-      if (component.attrs?.dictionaryType === 'MARKI_TS') {
-        // this.loadModelsTS(component.id);
-      }
-
       if (this.availableTypesForCheckDependence.includes(component.type)) {
         this.emmitChanges(component);
       } else {
@@ -121,7 +118,6 @@ export class ComponentsListComponent implements OnInit {
 
   private formChangesDetector$() {
     return this.form.valueChanges.pipe(
-      tap((obj) => console.log(obj)),
       startWith(this.form.getRawValue()),
       takeUntil(this.unsubscribe$),
     );
@@ -148,7 +144,10 @@ export class ComponentsListComponent implements OnInit {
 
       const group: FormGroup = this.fb.group({
         ...component,
-        value: [component.attrs?.defaultValue || component.value, this.validationFn(component)],
+        value: [
+          String(component.attrs?.defaultValue) ? component.attrs?.defaultValue : component.value,
+          this.validationFn(component),
+        ],
       });
 
       this.shownElements[component.id] = !component.attrs?.ref?.length;
