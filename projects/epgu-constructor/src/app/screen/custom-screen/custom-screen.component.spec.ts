@@ -13,6 +13,7 @@ import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ComponentsListComponent } from './components-list/components-list.component';
 import { CustomScreenComponent } from './custom-screen.component';
 import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { ValidationService } from './services/validation.service';
 
 xdescribe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -25,6 +26,7 @@ xdescribe('CustomScreenComponent', () => {
   const screenDataMock: ScreenStore = {
     display: {
       components: [],
+      terminal: false,
       header: '',
       id: '',
       name: '',
@@ -52,7 +54,8 @@ xdescribe('CustomScreenComponent', () => {
         ScreenService,
         UnsubscribeService,
         CachedAnswersService,
-        ComponentStateService
+        ComponentStateService,
+        ValidationService,
       ]
     })
     .compileComponents();

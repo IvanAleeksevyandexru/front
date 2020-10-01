@@ -1,5 +1,5 @@
 import { ComponentsListComponent } from './components-list.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../screen.service';
@@ -10,20 +10,22 @@ import { MaskHandlePipe } from '../../../shared/pipes/mask-handle/mask-handle.pi
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 import { ValidationService } from '../services/validation.service';
+import { DictionaryApiServiceStub } from '../../../services/api/dictionary-api/dictionary-api.service.stub';
+import { ConfigServiceStub } from '../../../config/config.service.stub';
 
 
 describe('ComponentsListComponent', () => {
   let component: ComponentsListComponent;
   let fixture: ComponentFixture<ComponentsListComponent>;
 
-  beforeEach(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ ComponentsListComponent, MaskHandlePipe ],
       providers: [
-        DictionaryApiService,
-        ConfigService,
         FormBuilder,
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide:  ConfigService, useClass: ConfigServiceStub },
         UnsubscribeService,
         ValidationService,
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -35,20 +37,20 @@ describe('ComponentsListComponent', () => {
       ]
     })
     .compileComponents();
-  });
+  }));
 
-  beforeEach(() => {
+  beforeEach(waitForAsync(() => {
     fixture = TestBed.createComponent(ComponentsListComponent);
     component = fixture.componentInstance;
 
-    fixture.debugElement.injector.get(DictionaryApiService);
-    fixture.debugElement.injector.get(ScreenService);
-    fixture.debugElement.injector.get(ConfigService);
-    fixture.debugElement.injector.get(FormBuilder);
-    fixture.debugElement.injector.get(UnsubscribeService);
-    fixture.debugElement.injector.get(ValidationService);
+    // fixture.debugElement.injector.get(DictionaryApiService);
+    // fixture.debugElement.injector.get(ScreenService);
+    // fixture.debugElement.injector.get(ConfigService);
+    // fixture.debugElement.injector.get(FormBuilder);
+    // fixture.debugElement.injector.get(UnsubscribeService);
+    // fixture.debugElement.injector.get(ValidationService);
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
