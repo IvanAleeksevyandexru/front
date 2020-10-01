@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.16](https://git.gosuslugi.local///compare/v0.1.15...v0.1.16) (2020-10-01)
+
+
+### Bug Fixes
+
+* added delete file error ignoring [ref EPGUCORE-36117] ([a6a6926](https://git.gosuslugi.local///commit/a6a69265c94347653c2f13ad16ce406658ae242b))
+* revert epgu-lib dynamic config loading [ref EPGUCORE-36456] ([e0fd58b](https://git.gosuslugi.local///commit/e0fd58b8fa5908fc4524625ab183785ed9189777))
+
 ### [0.1.15](https://git.gosuslugi.local///compare/v0.1.14...v0.1.15) (2020-10-01)
 
 
