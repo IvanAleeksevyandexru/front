@@ -48,11 +48,9 @@
         </div>
       </div>
     </div>
-    <epgu-constructor-output-html
-      class="photo__text"
-      [html]="data?.label"
-      [clarifications]="data?.attrs.clarifications">
-    </epgu-constructor-output-html>
+    <span class="photo__text"
+          (click)="handleClickOnElemById($event)"
+          [innerHTML]="data?.label | safeHtml"></span>
   </div>
   <div *ngIf="croppedImageUrl"
        class="photo-footer">

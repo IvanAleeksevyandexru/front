@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -36,6 +37,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
+    private changeDetection: ChangeDetectorRef,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -47,6 +49,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   ngAfterViewInit(): void {
     this.subscribeFormChanges();
+    this.changeDetection.detectChanges();
   }
 
   setState(): void {

@@ -61,6 +61,12 @@
     @include typ-plain-small;
   }
 
+  .bold,
+  b,
+  strong {
+    font-weight: $fw-bold;
+  }
+
   .helper-text {
     @include typ-plain-small;
     color: $color-text-helper;

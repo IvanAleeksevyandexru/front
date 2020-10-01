@@ -13,6 +13,7 @@ export class MaskHandlePipe implements PipeTransform {
   }
 
   private strToRegExp(str: string): RegExp {
-    return new RegExp(str.slice(1, -1));
+    const index = str.lastIndexOf('/');
+    return new RegExp(str.slice(1, index), str.slice(index + 1));
   }
 }

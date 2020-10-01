@@ -1,0 +1,83 @@
+import { Directive, HostListener, Input } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import {
+  ActionType,
+  ComponentDtoAction,
+} from '../../../services/api/form-player-api/form-player-api.types';
+import { ActionApiService } from '../../../services/api/action-api/action-api.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { Navigation } from '../../../form-player.types';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { NavigationService } from '../../services/navigation/navigation.service';
+import { UtilsService } from '../../../services/utils/utils.service';
+import { Answer } from '../../types/answer';
+
+@Directive({
+  selector: '[epgu-constructor-action]',
+})
+export class ActionDirective {
+  @Input() action: ComponentDtoAction;
+
+  @HostListener('click') onClick() {
+    this.switchAction();
+  }
+
+  constructor(
+    private actionApiService: ActionApiService,
+    private screenService: ScreenService,
+    private currentAnswersService: CurrentAnswersService,
+    private navigationService: NavigationService,
+    private utilsService: UtilsService,
+  ) {}
+
+  private switchAction(): void {
+    switch (this.action.type) {
+      case ActionType.download:
+        this.downloadAction();
+        break;
+      case ActionType.nextStep:
+        this.nextStep();
+        break;
+    }
+  }
+
+  private sendAction<T>(responseType?: 'blob'): Observable<T | Blob> {
+    return this.actionApiService.send<T>(
+      this.action.action,
+      this.screenService.getStore(),
+      responseType,
+    );
+  }
+
+  private nextStep(): void {
+    const navigation: Navigation = {
+      payload: this.getComponentStateForNavigate(),
+      options: { url: this.action.action },
+    };
+
+    this.navigationService.nextStep.next(navigation);
+  }
+
+  private getComponentStateForNavigate(): {
+    [key: string]: Answer;
+  } {
+    return {
+      [this.screenService.component.id]: {
+        visited: true,
+        value: this.currentAnswersService.state,
+      },
+    };
+  }
+
+  private downloadAction(): void {
+    this.sendAction<Blob>('blob').subscribe(
+      (value) => {
+        this.utilsService.downloadFile(value);
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  }
+}

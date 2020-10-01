@@ -38,6 +38,7 @@ export interface ComponentDtoAction {
   label: string;
   value: string;
   action: string;
+  type: ActionType;
 }
 
 /**
@@ -121,3 +122,8 @@ export interface FormPlayerApiErrorResponse {
 }
 
 export type FormPlayerApiResponse = FormPlayerApiSuccessResponse | FormPlayerApiErrorResponse;
+
+export enum ActionType {
+  download = 'download',
+  nextStep = 'nextStep',
+}
