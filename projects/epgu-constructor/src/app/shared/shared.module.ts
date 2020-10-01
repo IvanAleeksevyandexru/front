@@ -39,6 +39,10 @@ import { CachedAnswersService } from './services/applicant-answers/cached-answer
 import { UsePaymentsModalComponent } from './components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
 import { PassportComponent } from './components/add-passport/passport.component';
 import { ActionDirective } from './directives/action/action.directive';
+import {
+  ConfirmationModalBaseComponent
+} from './components/modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
+
 
 const COMPONENTS = [
   PageNameComponent,
@@ -48,6 +52,7 @@ const COMPONENTS = [
   NavigationComponent,
   AnswerButtonComponent,
   ConfirmationModalComponent,
+  ConfirmationModalBaseComponent,
   CommonModalComponent,
   ModalContainerComponent,
   ModalBaseComponent,

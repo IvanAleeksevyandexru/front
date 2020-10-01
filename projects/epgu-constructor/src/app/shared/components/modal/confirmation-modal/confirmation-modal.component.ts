@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { ModalBaseComponent } from '../modal-base/modal-base.component';
 import { ConfirmationModal } from './confirmation-modal.interface';
 import { ModalService } from '../../../../services/modal/modal.service';
@@ -9,7 +9,8 @@ import { getHiddenBlock } from '../../../constants/uttils';
   templateUrl: './confirmation-modal.component.html',
   styleUrls: ['./confirmation-modal.component.scss'],
 })
-export class ConfirmationModalComponent extends ModalBaseComponent implements AfterViewInit {
+export class ConfirmationModalComponent extends ModalBaseComponent
+  implements OnInit, AfterViewInit {
   title?: ConfirmationModal['title'];
   text: ConfirmationModal['text'];
   showCloseButton: ConfirmationModal['showCloseButton'] = true;
@@ -23,10 +24,17 @@ export class ConfirmationModalComponent extends ModalBaseComponent implements Af
   elemEventHandlers: ConfirmationModal['elemEventHandlers'] = [];
   clarifications?: ConfirmationModal['buttons'];
   buttons: ConfirmationModal['buttons'] = [];
-  showCrossButton = false;
+  showCrossButton: boolean;
 
   constructor(private modalService: ModalService, private elemRef: ElementRef) {
     super();
+  }
+
+  ngOnInit() {
+    // By default show cross button if title has been passed
+    if (this.showCrossButton === undefined) {
+      this.showCrossButton = Boolean(this.title);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -55,7 +63,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent implements Af
     this.elemEventHandlers.forEach(({ elemId, event, handler }) => {
       const elem = this.elemRef.nativeElement.querySelector(`#${elemId}`);
       if (elem) {
-        elem.addEventListener(event, handler);
+        elem.addEventListener(event, handler.bind(this));
       }
     });
   }

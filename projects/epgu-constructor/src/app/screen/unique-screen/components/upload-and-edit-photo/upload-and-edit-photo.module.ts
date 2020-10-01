@@ -16,18 +16,21 @@ import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-mod
 import { SharedModule } from '../../../../shared/shared.module';
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
 import { CompressionService } from '../../../../services/utils/compression.service';
+import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';
 
 
 @NgModule({
   entryComponents: [
     PhotoErrorModalComponent,
     PhotoEditorModalComponent,
+    PhotoRequirementsModalComponent,
   ],
   declarations: [
     PhotoErrorModalComponent,
     PhotoEditorModalComponent,
     UploadAndEditPhotoComponent,
     SliderComponent,
+    PhotoRequirementsModalComponent,
   ],
   imports: [
     CommonModule,

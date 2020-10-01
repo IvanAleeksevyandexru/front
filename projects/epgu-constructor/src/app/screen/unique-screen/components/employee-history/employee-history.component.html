@@ -25,22 +25,24 @@
     <div class="employee-history__date">
       <div>
         <epgu-constructor-label [for]="i + '_fromGenerated'">Укажите дату (месяц, год)</epgu-constructor-label>
-        <lib-date-picker
+        <lib-month-picker
           [id]="i + '_fromGenerated'"
           [disabled]="true"
+          [name]="i + '_fromGenerated'"
           [(ngModel)]="generation.from"
           align="left"
-        ></lib-date-picker>
+        ></lib-month-picker>
       </div>
 
       <div>
         <epgu-constructor-label [for]="i + '_toGenerated'">Укажите дату (месяц, год)</epgu-constructor-label>
-        <lib-date-picker
+        <lib-month-picker
           align="right"
           [id]="i + '_toGenerated'"
           [disabled]="true"
+          [name]="i + '_toGenerated'"
           [(ngModel)]="generation.to"
-        ></lib-date-picker>
+        ></lib-month-picker>
       </div>
     </div>
     <div class="employee-history__input" *ngIf="findData(generation.type)?.position as position">
@@ -92,33 +94,34 @@
     <div class="employee-history__date">
       <div>
         <epgu-constructor-label for="from">Укажите дату с (месяц, год)</epgu-constructor-label>
-        <lib-date-picker
+         <lib-month-picker
           id="from"
           name="minDate"
           align="left"
           [formControl]="employeeFormService.generateForm.get('from')"
-          [minDate]="monthsService.minDateFrom"
-          [maxDate]="monthsService.maxDate"
+          [minMonth]="monthsService.minDateFrom"
+          [maxMonth]="monthsService.maxDate"
           [invalid]="employeeFormService.generateForm.get('from').invalid"
           [validationShowOn]="validationShowOn"
-
-        ></lib-date-picker>
+          [hideTillNowAvailable]="true"
+        ></lib-month-picker>
         <div class="employee-history__date__hint">Заполняется при наличии</div>
       </div>
 
       <div>
         <ng-container *ngIf="!employeeFormService.generateForm.get('checkboxToDate').value">
           <epgu-constructor-label for="to">Укажите дату по (месяц, год)</epgu-constructor-label>
-          <lib-date-picker
+          <lib-month-picker
             id="to"
             name="maxDate"
             align="right"
             [formControl]="employeeFormService.generateForm.get('to')"
-            [minDate]="monthsService.minDateTo"
-            [maxDate]="monthsService.maxDate"
+            [minMonth]="monthsService.minDateTo"
+            [maxMonth]="monthsService.maxDate"
             [invalid]="employeeFormService.generateForm.get('to').invalid"
             [validationShowOn]="validationShowOn"
-          ></lib-date-picker>
+            [hideTillNowAvailable]="true"
+          ></lib-month-picker>
           <div class="employee-history__date__hint">Заполняется при наличии</div>
         </ng-container>
       </div>

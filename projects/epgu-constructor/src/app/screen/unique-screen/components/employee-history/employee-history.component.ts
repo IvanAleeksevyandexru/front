@@ -115,8 +115,6 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
       delete e.checkboxToDate;
       return {
         ...e,
-        from: moment(e.from).format('MM/YYYY'),
-        to: moment(e.to).format('MM/YYYY'),
       };
     });
   }
