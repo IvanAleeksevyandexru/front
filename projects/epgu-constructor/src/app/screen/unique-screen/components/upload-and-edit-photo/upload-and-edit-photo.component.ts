@@ -282,9 +282,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
 
   openHowPhotoModal(): void {
     this.modalService
-      .openModal(ConfirmationModalComponent, {
-        ...this.howPhotoModalParameters,
-      })
+      .openModal(ConfirmationModalComponent, this.howPhotoModalParameters)
       .subscribe((value) => {
         if (value === uploadPhotoElemId.requirements) {
           this.openRequirementsModal();
