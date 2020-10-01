@@ -124,7 +124,7 @@ export class ComponentsListComponent implements OnChanges {
 
     // Hardcode для фильтрации моделей ТС
     if (dictionaryType === 'MARKI_TS') {
-      this.filterModels(selectedItem.id, component);
+      this.filterModels(selectedItem.id);
     }
   }
 
@@ -152,6 +152,10 @@ export class ComponentsListComponent implements OnChanges {
     if (component.type === this.componentType.PhoneNumberChangeInput) {
       const maskSymbolRegExp = /\s|-/g;
       value = value.replace(maskSymbolRegExp, ''); // удаляет скобки, проблемы, тире
+    }
+    if (component.attrs?.mask) {
+      const maskSymbolRegExp = new RegExp(component.attrs?.placeholderSymbol || '_', 'g');
+      value = value.replace(maskSymbolRegExp, ''); // удаляет плейсхолдер символы
     }
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
@@ -329,7 +333,7 @@ export class ComponentsListComponent implements OnChanges {
   /**
    * Обновляет словарь с моделями ТС после выбора марки ТС
    */
-  filterModels(markId: string | number, component: CustomComponent) {
+  filterModels(markId: string | number) {
     const options: DictionaryOptions = {
       filter: {
         simple: {
@@ -342,6 +346,10 @@ export class ComponentsListComponent implements OnChanges {
       },
     };
 
-    this.loadDictionary('MODEL_TS', component, options);
+    const modelTSComponent = this.components.filter(
+      (component) => component.attrs.dictionaryType === 'MODEL_TS',
+    )[0];
+
+    this.loadDictionary('MODEL_TS', modelTSComponent, options);
   }
 }
