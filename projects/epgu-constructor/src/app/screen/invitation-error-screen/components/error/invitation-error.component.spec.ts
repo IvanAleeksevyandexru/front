@@ -2,6 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfigService } from '../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../config/config.service.stub';
+import { ImgPrefixerPipe } from '../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 import { InvitationErrorComponent } from './invitation-error.component';
 
 
@@ -13,7 +14,7 @@ describe('InvitationErrorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [InvitationErrorComponent],
+      declarations: [InvitationErrorComponent, ImgPrefixerPipe],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]

@@ -60,7 +60,7 @@
         <epgu-constructor-output-html
           class="info__text"
           *ngIf="!state[componentData.id].disabled"
-          [html]="componentData?.label"
+          [html]="componentData?.label | imgPrefixer"
           [clarifications]="componentData?.attrs?.clarifications"
         >
         </epgu-constructor-output-html>

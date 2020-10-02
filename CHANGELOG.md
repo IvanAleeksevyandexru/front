@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.19](https://git.gosuslugi.local///compare/v0.1.18...v0.1.19) (2020-10-02)
+
+
+### Bug Fixes
+
+* resolve test errors [ref EPGUCORE-38123] ([e943bcf](https://git.gosuslugi.local///commit/e943bcfbe3ff07228248a7895897bc0d7ae79762))
+
+### [0.1.18](https://git.gosuslugi.local///compare/v0.1.17...v0.1.18) (2020-10-02)
+
+
+### Bug Fixes
+
+* add img-prefixer pipe for imgs provided within dynamic html-content [ref EPGUCORE-36456] ([20df748](https://git.gosuslugi.local///commit/20df748b43f8792be0a4f7e1fc1847e310f87fa0))
+
 ### [0.1.17](https://git.gosuslugi.local///compare/v0.1.16...v0.1.17) (2020-10-02)
 
 
