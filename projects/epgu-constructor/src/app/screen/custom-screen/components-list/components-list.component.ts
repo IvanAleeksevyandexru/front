@@ -16,6 +16,7 @@ import {
   CustomComponentOutputData,
   CustomComponentState,
   CustomScreenComponentTypes,
+  SupportedValue,
 } from '../custom-screen.types';
 import {
   adaptiveDropDown,
@@ -376,5 +377,12 @@ export class ComponentsListComponent implements OnChanges {
     )[0];
 
     this.loadDictionary('MODEL_TS', modelTSComponent, options);
+  }
+
+  isChecked(componentData: CustomComponent, item: SupportedValue): boolean {
+    return (
+      this.state[componentData.id].value === item.value.toString() ||
+      componentData?.attrs?.defaultValue === item.value.toString()
+    );
   }
 }

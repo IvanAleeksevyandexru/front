@@ -131,7 +131,7 @@ export interface CustomComponent extends ComponentBase {
   fstuc?: TextTransform;
 }
 
-interface SupportedValue {
+export interface SupportedValue {
   label: string;
   value: string;
   isDefault?: boolean;
