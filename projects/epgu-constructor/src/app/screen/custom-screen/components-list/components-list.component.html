@@ -131,7 +131,7 @@
             [labelText]="item.label"
             [disabled]="state[componentData.id].disabled"
             [value]="item.value"
-            [checked]="state[componentData.id].value === item.value.toString()"
+            [checked]="state[componentData.id].value === item.value.toString() || componentData?.attrs?.defaultValue === item.value.toString()"
             (change)="inputChange($event, componentData)"
           >
           </lib-radio>
