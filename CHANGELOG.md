@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.17](https://git.gosuslugi.local///compare/v0.1.16...v0.1.17) (2020-10-02)
+
+
+### Bug Fixes
+
+* EPGUCORE-38011 [DEV][F] Замечание по карте ([82ec50c](https://git.gosuslugi.local///commit/82ec50c16f38224a3c052a15b63465f996ddcd64))
+* next and prev page values save on CUSTOM page ([8394071](https://git.gosuslugi.local///commit/839407109ef2d7aef4ae581bd36f7dddf540961a))
+* remove disable state for regAddr field in confirm-personal-user-address due to business requirement [ref EPGUCORE-36456] ([8df23c7](https://git.gosuslugi.local///commit/8df23c73d012cc5ec36e9cb9f2dc392c74a07960))
+* добавил скрытие дома в адресе регистрации ([d0047bb](https://git.gosuslugi.local///commit/d0047bb63d97669e0f8c8d7d1fd3d382142891db))
+
 ### [0.1.16](https://git.gosuslugi.local///compare/v0.1.15...v0.1.16) (2020-10-01)
 
 
