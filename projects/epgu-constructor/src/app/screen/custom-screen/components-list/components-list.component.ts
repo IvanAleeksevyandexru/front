@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 
-import { distinctUntilChanged, map, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
 import {
   CustomComponent,
@@ -69,41 +69,40 @@ export class ComponentsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.array([]);
+    this.updateScreenData();
     this.formWatcher();
+  }
 
-    // ToDo: убрать этот костыль (рефакторинг)
-
-    const indexMarkTS = this.form
-      .getRawValue()
-      .findIndex((e) => e.attrs?.dictionaryType === 'MARKI_TS');
-
-    this.form
-      .get(String(indexMarkTS))
-      .valueChanges.pipe(takeUntil(this.unsubscribe$))
-      .subscribe((component: CustomComponent) => {
-        this.loadModelsTS(component.id);
-
-        if (this.availableTypesForCheckDependence.includes(component.type)) {
-          this.emmitChanges(component);
-        } else {
-          this.emmitChanges();
-        }
-      });
+  private updateScreenData(): void {
+    this.screenService.screenData$
+      .pipe(
+        distinctUntilChanged((prev: ScreenStore, next: ScreenStore) =>
+          this.isEqual<ScreenStore>(prev, next),
+        ),
+        map((screen: ScreenStore): Array<ComponentBase> => this.getComponents(screen)),
+        tap((components: Array<CustomComponent>) => this.rebuildFormAfterDataUpdate(components)),
+      )
+      .subscribe((next) => this.screenDataEmitter(next));
   }
 
   private formWatcher(): void {
-    this.screenService.screenData$
-      .pipe(
-        distinctUntilChanged((prev: ScreenStore, next: ScreenStore) => this.isEqual(prev, next)),
-        map((screen: ScreenStore): Array<ComponentBase> => this.getComponents(screen)),
-        tap((components: Array<CustomComponent>) => this.rebuildFormAfterDataUpdate(components)),
-        switchMap(() => this.formChangesDetector$()),
-      )
-      .subscribe((components: Array<CustomComponent>) => this.screenDataChanged(components));
+    this.form.valueChanges
+      .pipe(startWith(this.form.getRawValue()), pairwise(), takeUntil(this.unsubscribe$))
+      .subscribe(([prev, next]) => this.screenDataEmitter(next, prev));
   }
 
-  private screenDataChanged(components: Array<CustomComponent>) {
-    components.forEach((component: CustomComponent) => {
+  private screenDataEmitter(next: Array<CustomComponent>, prev?: Array<CustomComponent>): void {
+    console.group('emitter');
+    console.log(prev, next);
+    console.groupEnd();
+    next.forEach((component: CustomComponent, index: number) => {
+      if (
+        prev &&
+        component.attrs.dictionaryType === 'MARKI_TS' &&
+        !this.isEqual<string>(prev[index]?.value, component.value)
+      ) {
+        this.loadModelsTS(component.id);
+      }
       if (this.availableTypesForCheckDependence.includes(component.type)) {
         this.emmitChanges(component);
       } else {
@@ -112,15 +111,8 @@ export class ComponentsListComponent implements OnInit {
     });
   }
 
-  private isEqual(prev: ScreenStore, next: ScreenStore) {
+  private isEqual<T>(prev: T, next: T): boolean {
     return JSON.stringify(prev) === JSON.stringify(next);
-  }
-
-  private formChangesDetector$() {
-    return this.form.valueChanges.pipe(
-      startWith(this.form.getRawValue()),
-      takeUntil(this.unsubscribe$),
-    );
   }
 
   private getComponents(screen: ScreenStore): Array<ComponentDto> {
