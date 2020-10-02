@@ -15,6 +15,8 @@ export class ConfirmationModalBaseComponent {
 
   @Output() closeModalChange = new EventEmitter();
 
+  public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
+
   closeModal() {
     this.closeModalChange.emit();
   }
