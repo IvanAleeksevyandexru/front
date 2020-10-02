@@ -20,33 +20,24 @@ describe('ActionDirective', () => {
         { provide: ActionApiService, useClass: ActionApiServiceStub },
         NavigationService,
         UtilsService,
-        CurrentAnswersService,
         ScreenService,
         CachedAnswersService,
+        CurrentAnswersService,
       ],
     });
   });
 
   it('should create an instance', inject(
-    [
-      ActionApiService,
-      ConfigService,
-      UtilsService,
-      ScreenService,
-      NavigationService,
-      CurrentAnswersService,
-    ],
+    [ActionApiService, ConfigService, UtilsService, ScreenService, NavigationService],
     (
       actionApiService: ActionApiService,
       utilsService: UtilsService,
       screenService: ScreenService,
       navigationService: NavigationService,
-      currentAnswersService: CurrentAnswersService,
     ) => {
       const directive = new ActionDirective(
         actionApiService,
         screenService,
-        currentAnswersService,
         navigationService,
         utilsService,
       );

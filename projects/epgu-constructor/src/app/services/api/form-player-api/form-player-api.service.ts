@@ -56,7 +56,7 @@ export class FormPlayerApiService {
     if (options.isInternalScenarioFinish) {
       data.isInternalScenario = false;
     }
-    console.log('test');
+
     const body = {
       ...data,
     };

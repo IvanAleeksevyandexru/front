@@ -42,6 +42,7 @@ import { ActionDirective } from './directives/action/action.directive';
 import {
   ConfirmationModalBaseComponent
 } from './components/modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
+import { ActionButtonComponent } from './components/action-button/custom-screen-action-button.component';
 
 
 const COMPONENTS = [
@@ -64,6 +65,7 @@ const COMPONENTS = [
   LongButtonComponent,
   WebcamShootComponent,
   PassportComponent,
+  ActionButtonComponent,
 ];
 
 const PIPES = [
