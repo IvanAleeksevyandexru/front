@@ -8,7 +8,7 @@
     @include modal-body();
     width: 634px;
     max-height: 485px;
-    padding: 32px;
+    padding: 32px 14px 32px 32px;
     border-radius: 12px;
 
     @include tablets-down {
@@ -24,6 +24,7 @@
       width: 16px;
       height: 16px;
       cursor: pointer;
+      z-index: 100;
 
       &:before,
       &:after {
@@ -63,8 +64,6 @@
 
     &__content {
       overflow-y: auto;
-      display: block;
-      height: auto;
     }
 
     &__controls {
