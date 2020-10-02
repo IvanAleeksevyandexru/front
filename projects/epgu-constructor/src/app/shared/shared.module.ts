@@ -41,6 +41,8 @@ import {
 } from './components/modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
 import { UsePaymentsModalComponent } from './components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { ImgPrefixerPipe } from './pipes/img-prefixer/img-prefixer.pipe';
+
 
 const COMPONENTS = [
   PageNameComponent,
@@ -66,6 +68,7 @@ const COMPONENTS = [
 const PIPES = [
   ToJsonPipe,
   MaskHandlePipe,
+  ImgPrefixerPipe,
   SafePipe,
 ];
 

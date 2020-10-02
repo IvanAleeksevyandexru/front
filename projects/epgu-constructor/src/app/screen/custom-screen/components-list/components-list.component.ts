@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
 import { ConfigService } from '../../../config/config.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import {
@@ -27,6 +27,8 @@ import {
   isDropDown,
   likeDictionary,
 } from '../tools/custom-screen-tools';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-components-list',

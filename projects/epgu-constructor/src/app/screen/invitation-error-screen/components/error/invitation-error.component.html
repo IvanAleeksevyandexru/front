@@ -1,8 +1,8 @@
 <epgu-constructor-screen-container>
   <ng-container *ngIf="!readyToRegistration">
     <div class="invitation-error__content">
-      <img class="invitation-error__image" [src]="data.attrs.url" />
-      <div class="invitation-error__message" [innerHTML]="data.label"></div>
+      <img class="invitation-error__image" [src]="config.staticDomainAssetsPath + data.attrs.url" />
+      <div class="invitation-error__message" [innerHTML]="data.label | imgPrefixer |safeHtml"></div>
       <div class="invitation-error__actions">
         <lib-button class="invitation-error__button" (click)="readyToRegistration = true">
           Направить приглашение на регистрацию
