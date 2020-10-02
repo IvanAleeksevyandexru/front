@@ -40,9 +40,9 @@ describe('ComponentsListComponent', () => {
   });
 
   beforeEach(() => {
-    // fixture = TestBed.createComponent(ComponentsListComponent);
-    // component = fixture.componentInstance;
-    // component.ngOnInit();
+    fixture = TestBed.createComponent(ComponentsListComponent);
+    component = fixture.componentInstance;
+    component.ngOnInit();
     // fixture.debugElement.injector.get(DictionaryApiService);
     // fixture.debugElement.injector.get(ScreenService);
     // fixture.debugElement.injector.get(ConfigService);
@@ -52,6 +52,6 @@ describe('ComponentsListComponent', () => {
   });
 
   it('should create', () => {
-    // expect(component).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 });
