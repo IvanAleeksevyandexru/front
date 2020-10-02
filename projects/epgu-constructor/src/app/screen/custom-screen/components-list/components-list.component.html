@@ -160,6 +160,7 @@
           [name]="componentData.id"
           [hideLevels]="componentData?.attrs?.hideLevels || []"
           [disabled]="state[componentData.id].disabled"
+          [hideHouseCheckbox]="true"
           [externalApiUrl]="config.externalApiUrl + '/'"
           [initValue]="state[componentData.id].value"
           [(ngModel)]="state[componentData.id].value"
