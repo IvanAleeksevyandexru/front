@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActionButtonComponent } from './custom-screen-action-button.component';
+import { ActionButtonComponent } from './action-button.component';
 import { LongButtonComponent } from '../long-button/long-button.component';
 
-describe('CustomScreenActionButtonComponent', () => {
+describe('ActionButtonComponent', () => {
   let component: ActionButtonComponent;
   let fixture: ComponentFixture<ActionButtonComponent>;
 
