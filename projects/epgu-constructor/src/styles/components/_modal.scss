@@ -32,3 +32,8 @@
     @include typ-h3;
   }
 }
+
+.conf-modal .ps-content {
+  max-height: 420px;
+  padding-bottom: 2px; // hack for overlap buttons
+}

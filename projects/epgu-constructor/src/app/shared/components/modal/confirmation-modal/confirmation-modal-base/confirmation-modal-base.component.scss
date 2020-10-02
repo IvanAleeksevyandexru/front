@@ -63,6 +63,8 @@
 
     &__content {
       overflow-y: auto;
+      display: block;
+      height: auto;
     }
 
     &__controls {

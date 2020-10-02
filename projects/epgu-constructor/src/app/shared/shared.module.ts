@@ -40,7 +40,7 @@ import {
   ConfirmationModalBaseComponent
 } from './components/modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
 import { UsePaymentsModalComponent } from './components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
-
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -85,6 +85,7 @@ const DIRECTIVES = [
       EpguLibModule,
       FormsModule,
       WebcamModule,
+      PerfectScrollbarModule
   ],
   entryComponents: [
     ModalBaseComponent,
