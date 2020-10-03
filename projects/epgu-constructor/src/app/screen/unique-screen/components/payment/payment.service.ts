@@ -153,10 +153,7 @@ export class PaymentService {
    * @param billId - уникальный идентификатор патежа
    */
   getPaymentLink(billId: number): string {
-    const urlPrefix = this.config.mocks.includes('payment')
-      ? `${this.config.mockUrl}`
-      : this.config.paymentUrl;
-    return `${urlPrefix}/?billIds=${billId}&returnUrl=${this.getReturnUrl()}&subscribe=true`;
+    return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${this.getReturnUrl()}&subscribe=true`;
   }
 
   /**
