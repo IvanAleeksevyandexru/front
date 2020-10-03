@@ -9,8 +9,8 @@ import {
   ChangeDetectorRef,
   NgZone,
 } from '@angular/core';
-import { switchMap, filter, takeWhile, takeUntil, tap, reduce } from 'rxjs/operators';
-import { interval, of, merge } from 'rxjs';
+import { switchMap, filter, takeUntil, reduce } from 'rxjs/operators';
+import { of, merge } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../config/config.service';
@@ -45,7 +45,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
 
   public mappedDictionaryForLookup;
   public mapCenter: Array<number>;
-  public mapControls = ['zoomControl'];
+  public mapControls = [];
   public provider = { search: this.providerSearch() };
   public selectedValue: any;
   public mapIsLoaded = false;
@@ -114,28 +114,42 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   }
 
   private controlsLogicInit() {
-    interval(200)
+    this.yaMapService.mapSubject
       .pipe(
-        filter(() => this.yaMapService.map),
-        tap(() => this.initMap()),
-        takeWhile(() => !this.yaMapService.map),
+        filter((yMap) => yMap),
+        takeUntil(this.ngUnsubscribe$),
       )
-      .subscribe();
+      .subscribe(() => {
+        this.initMap();
+      });
+    this.tryInitMapCenter();
   }
 
   /**
    * Инициализация карты - попытка определения центра, получение и расстановка точек на карте
    */
   private initMap() {
-    this.tryInitMapCenter();
-    this.selectMapObjectService.ymaps = (window as any).ymaps;
-    this.yaMapService.map.copyrights.togglePromo();
+    this.setMapOpstions();
     this.fillCoords(this.selectMapObjectService.componentAttrs.dictionaryFilter).subscribe(
       (coords: IGeoCoordsResponse) => {
         this.handleFilledCoordinate(coords);
         this.mapIsLoaded = true;
+        this.cdr.detectChanges();
       },
     );
+  }
+
+  private setMapOpstions() {
+    this.selectMapObjectService.ymaps = (window as any).ymaps;
+    this.yaMapService.map.controls.add('zoomControl', {
+      position: {
+        top: 108,
+        right: 10,
+        bottom: 'auto',
+        left: 'auto',
+      },
+    });
+    this.yaMapService.map.copyrights.togglePromo();
   }
 
   /**
@@ -166,6 +180,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
     const { geo_lon, geo_lat } = this.componentValue;
     if (geo_lon && geo_lat) {
       this.mapCenter = [geo_lon, geo_lat];
+    } else {
+      this.mapCenter = [37.64, 55.76]; // Москва
     }
   }
 

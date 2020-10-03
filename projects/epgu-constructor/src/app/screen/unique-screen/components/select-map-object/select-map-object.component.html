@@ -1,5 +1,5 @@
 <div class="widget">
-  <div *ngIf="mapIsLoaded" class="widget__form widget-form">
+  <div class="widget__form widget-form">
     <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
     <span class="widget-form__title" [innerHTML]="data.label | safeHtml"></span>
     <div class="widget-form__input">
@@ -7,6 +7,7 @@
         [searchCaseSensitive]="false"
         [itemsProvider]="provider"
         [showSuggestion]="true"
+        [disabled]="!mapIsLoaded"
         (changed)="lookupChanged($event?.originalItem, libLookup)"
         [showExpandCollapse]="false"
         [queryMinSymbolsCount]="0"
@@ -20,6 +21,7 @@
     [enterpriseYandexMapsEnabled]="true"
     [yandexMapsApiKey]="config.yandexMapsApiKey"
     [center]="mapCenter"
+    [redraw]="true"
     [controls]="mapControls"
   >
   </lib-map>
@@ -41,14 +43,14 @@
           <a
             *ngIf="data.attrs.showExtraInfoLink"
             (click)="showModalFromTemplate('detailsTemplate', mapObject)"
-            href="#!"
+            href="javascript:void(0)"
             class="details-link"
             >Узнать подробнее
           </a>
           <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">
             На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы
             <a
-              href="#!"
+              href="javascript:void(0)"
               (click)="showModalFromTemplate('informationTemplate', mapObject)"
               class="information-link"
               >ознакомиться</a

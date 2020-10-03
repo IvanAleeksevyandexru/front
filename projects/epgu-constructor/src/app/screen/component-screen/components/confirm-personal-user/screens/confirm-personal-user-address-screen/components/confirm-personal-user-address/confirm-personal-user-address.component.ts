@@ -53,7 +53,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   setState(): void {
-    this.valueParsed = JSON.parse(this.data.value);
+    this.valueParsed = JSON.parse(this.data.value || '{}');
     if (this.valueParsed?.regDate) {
       this.valueParsed.regDate = this.getDate(this.valueParsed.regDate);
     }
@@ -66,7 +66,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   private formChangesHandler(change): void {
-    this.valueParsed = change;
+    this.valueParsed = { ...this.valueParsed, ...change };
     this.emmitData();
   }
 

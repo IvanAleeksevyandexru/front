@@ -52,4 +52,4 @@ testem.log
 Thumbs.db
 
 # Generated file
-/projects/epgu-constructor/src/version.ts
+/projects/epgu-constructor/src/assets/version.json

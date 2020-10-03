@@ -1,6 +1,6 @@
 {
   "name": "epgu-form-frontend",
-  "version": "0.1.12",
+  "version": "0.1.19",
   "scripts": {
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points && node scripts/version.js",
     "ng": "ng",
@@ -9,7 +9,7 @@
     "start:backend": "java -jar fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api --draft-client.enabled=false",
     "build": "ng build",
     "lib:build": "npm run generate-lib-version-ts && ng build epgu-constructor --prod",
-    "lib:watch": "npm run generate-lib-version-ts && ng build epgu-constructor --watch",
+    "lib:watch": "ng build epgu-constructor --watch",
     "lib:test": "ng test epgu-constructor",
     "lib:lint": "ng lint epgu-constructor",
     "lint": "ng lint",
@@ -57,7 +57,7 @@
     "@types/uuid": "8.3.0",
     "angular-resize-event": "^2.0.0",
     "angular2-text-mask": "9.0.0",
-    "epgu-lib": "0.0.537",
+    "epgu-lib": "^0.0.571",
     "ics": "^2.24.0",
     "moment": "2.24.0",
     "ngx-cookie-service": "10.0.1",
@@ -85,6 +85,7 @@
     "@typescript-eslint/eslint-plugin": "2.31.0",
     "@typescript-eslint/parser": "2.31.0",
     "codelyzer": "6.0.0",
+    "cpx": "^1.5.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb-typescript": "9.0.0",
     "eslint-config-prettier": "6.11.0",

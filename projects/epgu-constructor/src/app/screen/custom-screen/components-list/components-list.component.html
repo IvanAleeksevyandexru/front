@@ -16,6 +16,8 @@
           class="cs__select cs-select"
           [disabled]="state[componentData.id].disabled"
           [items]="dictionary[componentData?.attrs?.dictionaryType + componentData?.id]?.list"
+          [name]="componentData?.attrs?.dictionaryType + componentData?.id"
+          [(ngModel)]="state[componentData.id].selectedItem"
           (changed)="selectDictionary($event, componentData)"
         ></lib-dropdown>
       </ng-container>
@@ -35,6 +37,8 @@
           class="cs__select cs-select"
           [disabled]="state[componentData.id].disabled"
           [items]="dropDown[componentData?.id]?.list"
+          [name]="componentData.id"
+          [(ngModel)]="state[componentData.id].selectedItem"
           (changed)="selectDropDown($event, componentData)"
         ></lib-dropdown>
       </ng-container>
@@ -46,6 +50,8 @@
           [searchCaseSensitive]="false"
           [disabled]="state[componentData.id].disabled"
           [fixedItems]="dictionary[componentData?.attrs?.dictionaryType + componentData?.id]?.list"
+          [name]="componentData?.attrs?.dictionaryType + componentData?.id"
+          [(ngModel)]="state[componentData.id].selectedItem"
           (changed)="selectDictionary($event, componentData)"
         ></lib-lookup>
       </ng-container>
@@ -54,7 +60,7 @@
         <epgu-constructor-output-html
           class="info__text"
           *ngIf="!state[componentData.id].disabled"
-          [html]="componentData?.label"
+          [html]="componentData?.label | imgPrefixer"
           [clarifications]="componentData?.attrs?.clarifications"
         >
         </epgu-constructor-output-html>
@@ -127,7 +133,7 @@
             [labelText]="item.label"
             [disabled]="state[componentData.id].disabled"
             [value]="item.value"
-            [checked]="item.isDefault"
+            [checked]="isChecked(componentData, item)"
             (change)="inputChange($event, componentData)"
           >
           </lib-radio>
@@ -156,6 +162,7 @@
           [name]="componentData.id"
           [hideLevels]="componentData?.attrs?.hideLevels || []"
           [disabled]="state[componentData.id].disabled"
+          [hideHouseCheckbox]="true"
           [externalApiUrl]="config.externalApiUrl + '/'"
           [initValue]="state[componentData.id].value"
           [maxlength]="componentData.attrs?.maxlength"
