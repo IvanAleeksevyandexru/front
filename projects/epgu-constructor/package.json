@@ -1,6 +1,6 @@
 {
   "name": "epgu-constructor",
-  "version": "0.1.15",
+  "version": "0.1.19",
   "peerDependencies": {
     "@angular/common": "10.1.1",
     "@angular/cdk": "10.2.0",
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "tslib": "2.0.0",
-    "epgu-lib": "0.0.564",
+    "epgu-lib": "0.0.571",
     "ics": "^2.24.0",
     "@alyle/ui": "^10.2.1",
     "ngx-device-detector": "^2.0.0",

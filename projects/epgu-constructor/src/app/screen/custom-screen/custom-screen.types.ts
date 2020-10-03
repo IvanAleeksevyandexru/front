@@ -79,9 +79,9 @@ export interface CustomComponentAttrValidation {
 }
 
 /**
- * @property {boolean}valid - валидность
- * @property {string}errorMessage - сообщение для ощибки
- * @property {any}value - текущее значение
+ * @property valid - валидность
+ * @property errorMessage - сообщение для ощибки
+ * @property value - текущее значение
  */
 export interface CustomComponentStateItem {
   valid: boolean;
@@ -89,6 +89,7 @@ export interface CustomComponentStateItem {
   disabled?: boolean;
   errorMessage: string;
   value: any;
+  selectedItem?: any;
   component: CustomComponent
 }
 
@@ -130,7 +131,7 @@ export interface CustomComponent extends ComponentBase {
   fstuc?: TextTransform;
 }
 
-interface SupportedValue {
+export interface SupportedValue {
   label: string;
   value: string;
   isDefault?: boolean;
