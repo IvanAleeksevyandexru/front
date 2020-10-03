@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ButtonComponent, LoaderComponent, SafeHtmlPipe } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -12,12 +12,13 @@ import { ConfigService } from '../../../../../config/config.service';
 import { ScreenService } from '../../../../screen.service';
 import { ScreenServiceStub } from '../../../../screen.service.stub';
 import { ConfigServiceStub } from '../../../../../config/config.service.stub';
+import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/shared/pipes/img-prefixer/img-prefixer.pipe';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
   let fixture: ComponentFixture<SignatureApplicationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [
@@ -29,6 +30,7 @@ describe('SignatureApplicationComponent', () => {
         LoaderComponent,
         OutputHtmlComponent,
         SafeHtmlPipe,
+        ImgPrefixerPipe
       ],
       providers: [
         NavigationService,
