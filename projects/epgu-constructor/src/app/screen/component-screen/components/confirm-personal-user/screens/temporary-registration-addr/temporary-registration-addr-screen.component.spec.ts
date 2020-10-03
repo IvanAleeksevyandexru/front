@@ -2,6 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TemporaryRegistrationComponent } from './temporary-registration-addr-screen.types';
 import { TemporaryRegistrationAddrScreenComponent } from './temporary-registration-addr-screen.component';
+import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 
 describe('TemporaryRegistrationAddrScreenComponent', () => {
   let component: TemporaryRegistrationAddrScreenComponent;
@@ -21,7 +22,8 @@ describe('TemporaryRegistrationAddrScreenComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [ TemporaryRegistrationAddrScreenComponent ]
+      declarations: [TemporaryRegistrationAddrScreenComponent],
+      providers: [ComponentStateService]
     })
     .compileComponents();
   }));

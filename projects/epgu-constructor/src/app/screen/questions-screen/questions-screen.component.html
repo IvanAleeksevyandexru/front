@@ -6,7 +6,7 @@
     <epgu-constructor-output-html
       class="question__wrapper__label"
       *ngIf="screenService.component?.label"
-      [html]="screenService.component?.label"
+      [html]="screenService.component?.label | imgPrefixer"
       [clarifications]="screenService.component?.attrs?.clarifications"
     >
     </epgu-constructor-output-html>

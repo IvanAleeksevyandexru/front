@@ -24,6 +24,7 @@
       width: 16px;
       height: 16px;
       cursor: pointer;
+      z-index: 2;
 
       &:before,
       &:after {
@@ -63,6 +64,8 @@
 
     &__content {
       overflow-y: auto;
+      display: block;
+      height: auto;
     }
 
     &__controls {

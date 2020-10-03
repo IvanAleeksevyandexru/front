@@ -1,9 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 const libVersion = require('../projects/epgu-constructor/package.json').version;
-const versionFilePath = path.join(__dirname, '..', 'projects', 'epgu-constructor', 'src', 'version.ts');
+const versionFilePath = path.join(__dirname, '..', 'projects', 'epgu-constructor', 'src', 'assets', 'version.json');
 
-const src = `export const libVersionFromPackageJson = '${libVersion}';`;
+const src = `{ "formPlayerVersion": "${libVersion}" }`;
 
 fileWrite();
 

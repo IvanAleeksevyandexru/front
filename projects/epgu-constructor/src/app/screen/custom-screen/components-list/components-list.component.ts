@@ -16,6 +16,7 @@ import {
   CustomComponentOutputData,
   CustomComponentState,
   CustomScreenComponentTypes,
+  SupportedValue,
 } from '../custom-screen.types';
 import {
   adaptiveDropDown,
@@ -103,10 +104,24 @@ export class ComponentsListComponent implements OnChanges {
   initDropDown(component: CustomComponent) {
     const key = component.id;
     const data = component.attrs.dictionaryList;
+    const list = adaptiveDropDown(data);
     this.dropDown[key] = {
       origin: data,
-      list: adaptiveDropDown(data),
+      list,
     };
+
+    // Получим ранее установленное значение
+    if (this.state[component.id].value) {
+      const parsedValue = JSON.parse(this.state[component.id].value);
+      const foundSelectedItem = list.find((item) => {
+        return item.originalItem.label === parsedValue.label;
+      });
+      if (foundSelectedItem) {
+        this.state[component.id].selectedItem = foundSelectedItem;
+        this.state[component.id].value = foundSelectedItem.originalItem;
+        this.state[component.id].valid = true;
+      }
+    }
   }
 
   /**
@@ -118,6 +133,7 @@ export class ComponentsListComponent implements OnChanges {
     const dictionaryType = component.attrs?.dictionaryType;
     this.dictionary[dictionaryType + component.id].selectedItem = selectedItem.originalItem;
     this.state[component.id].value = selectedItem.originalItem;
+    this.state[component.id].selectedItem = selectedItem;
     this.state[component.id].valid = true;
     this.emmitChanges(component);
 
@@ -129,11 +145,12 @@ export class ComponentsListComponent implements OnChanges {
 
   /**
    * Выбор элемента из выпадающего списка
-   * @param $event - событие с данными
+   * @param selectedItem - событие с данными
    * @param component - данные компонента
    */
-  selectDropDown($event: any, component: CustomComponent) {
-    this.state[component.id].value = $event.originalItem;
+  selectDropDown(selectedItem: ListItem, component: CustomComponent) {
+    this.state[component.id].value = selectedItem.originalItem;
+    this.state[component.id].selectedItem = selectedItem;
     this.state[component.id].valid = true;
     this.emmitChanges(component);
   }
@@ -156,6 +173,11 @@ export class ComponentsListComponent implements OnChanges {
       const maskSymbolRegExp = /\s|-/g;
       value = value.replace(maskSymbolRegExp, ''); // удаляет скобки, проблемы, тире
     }
+    if (component.attrs?.mask) {
+      const maskSymbolRegExp = new RegExp(component.attrs?.placeholderSymbol || '_', 'g');
+      value = value.replace(maskSymbolRegExp, ''); // удаляет плейсхолдер символы
+    }
+
     const inputValidationResult = CheckInputValidationComponentList(value, component);
     this.setValidationAndValueState(inputValidationResult, component.id, value);
     this.emmitChanges(component);
@@ -232,11 +254,21 @@ export class ComponentsListComponent implements OnChanges {
     this.dictionary[id].paginationLoading = false;
     this.dictionary[id].data = data;
     this.dictionary[id].origin = component;
-    this.dictionary[id].list = getNormalizeDataCustomScreenDictionary(
-      data.items,
-      dictionaryType,
-      component,
-    );
+    const list = getNormalizeDataCustomScreenDictionary(data.items, dictionaryType, component);
+    this.dictionary[id].list = list;
+
+    // Получим ранее установленное значение
+    if (this.state[component.id].value) {
+      const parsedValue = JSON.parse(this.state[component.id].value);
+      const foundItem = list.find((item) => {
+        return item.id === parsedValue.value;
+      });
+      if (foundItem) {
+        this.state[component.id].selectedItem = foundItem;
+        this.state[component.id].value = foundItem;
+        this.state[component.id].valid = true;
+      }
+    }
   }
 
   /**
@@ -356,5 +388,12 @@ export class ComponentsListComponent implements OnChanges {
     )[0];
 
     this.loadDictionary('MODEL_TS', modelTSComponent, options);
+  }
+
+  isChecked(componentData: CustomComponent, item: SupportedValue): boolean {
+    return (
+      this.state[componentData.id].value === item.value.toString() ||
+      componentData?.attrs?.defaultValue === item.value.toString()
+    );
   }
 }

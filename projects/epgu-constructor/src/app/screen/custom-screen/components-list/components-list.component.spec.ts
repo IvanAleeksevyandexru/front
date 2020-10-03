@@ -1,13 +1,14 @@
-import { ComponentsListComponent } from './components-list.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { ScreenService } from '../../screen.service';
-import { ConfigService } from '../../../config/config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ScreenServiceStub } from '../../screen.service.stub';
-import { MaskHandlePipe } from '../../../shared/pipes/mask-handle/mask-handle.pipe';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { ConfigService } from '../../../config/config.service';
+import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
+import { ImgPrefixerPipe } from '../../../shared/pipes/img-prefixer/img-prefixer.pipe';
+import { MaskHandlePipe } from '../../../shared/pipes/mask-handle/mask-handle.pipe';
+import { ScreenService } from '../../screen.service';
+import { ScreenServiceStub } from '../../screen.service.stub';
+import { ComponentsListComponent } from './components-list.component';
 
 
 describe('ComponentsListComponent', () => {
@@ -17,7 +18,7 @@ describe('ComponentsListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [ ComponentsListComponent, MaskHandlePipe ],
+      declarations: [ ComponentsListComponent, MaskHandlePipe, ImgPrefixerPipe ],
       providers: [
         DictionaryApiService,
         ConfigService,

@@ -7,8 +7,8 @@ import {
   OnDestroy,
   ElementRef,
 } from '@angular/core';
-import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { fromEvent, of, Subject, Subscription } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -42,7 +42,6 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   @Output() nextStepEvent = new EventEmitter();
 
   data: ComponentBase;
-  isLoading: Observable<boolean>;
   header: string;
   orderId: string;
 
@@ -73,12 +72,11 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
     private compressionService: CompressionService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
     public config: ConfigService,
   ) {
     this.header = screenService.header;
     this.data = { ...screenService.display.components[0] };
-    this.isLoading = screenService.isLoading$;
     this.orderId = screenService.orderId;
   }
 
@@ -296,7 +294,9 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     let requestData = this.getRequestData();
 
     const deletePrevImage = (fileName: string) =>
-      fileName ? this.terabyteService.deleteFile(requestData) : of(null);
+      fileName
+        ? this.terabyteService.deleteFile(requestData).pipe(catchError(() => of(null)))
+        : of(null);
     const compressFile = () => {
       const blobFile = TerraByteApiService.base64toBlob(this.croppedImageUrl, 'image');
       return fromPromise(this.compressionService.imageCompression(blobFile, { maxSizeMB: 5 }));
