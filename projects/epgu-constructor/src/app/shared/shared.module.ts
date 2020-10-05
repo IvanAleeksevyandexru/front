@@ -41,6 +41,8 @@ import { NavigationService } from './services/navigation/navigation.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from './services/webcam/webcam.service';
 import { ActionDirective } from './directives/action/action.directive';
+import { ActionButtonComponent } from './components/action-button/action-button.component';
+
 
 const COMPONENTS = [
   PageNameComponent,
@@ -62,6 +64,7 @@ const COMPONENTS = [
   LongButtonComponent,
   WebcamShootComponent,
   PassportComponent,
+  ActionButtonComponent,
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe, ImgPrefixerPipe, SafePipe];

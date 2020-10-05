@@ -16,7 +16,7 @@
         ></epgu-constructor-confirm-personal-user-address-screen>
 
         <epgu-constructor-confirm-personal-user-data-screen
-          *ngSwitchCase="screenComponentName.confirmPersonalUserData"
+          *ngSwitchCase="isUserData()"
           [data]="screenService.component"
           [errors]="screenService.componentErrors"
         >
@@ -98,6 +98,18 @@
     </epgu-constructor-screen-pad>
 
     <div class="footer">
+        <lib-button
+          *ngFor="let action of screenService.actions$ | async"
+          epgu-constructor-action
+          [action]="action"
+          class="footer__btn-action"
+          color="white"
+        >
+          <div class="secondary-font">
+            {{ action.label }}
+          </div>
+        </lib-button>
+
       <lib-button
         *ngIf="componentSetting.displayContinueBtn && (screenService.isShown$ | async)"
         [showLoader]="screenService.isLoading$ | async"
@@ -125,3 +137,4 @@
     </div>
   </form>
 </epgu-constructor-screen-container>
+

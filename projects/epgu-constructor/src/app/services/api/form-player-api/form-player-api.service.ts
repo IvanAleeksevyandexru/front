@@ -51,6 +51,8 @@ export class FormPlayerApiService {
 
     data.scenarioDto.userId = userId;
     data.scenarioDto.token = token;
+    data.scenarioDto.currentUrl = location.href;
+
     if (options.isInternalScenarioFinish) {
       data.isInternalScenario = false;
     }

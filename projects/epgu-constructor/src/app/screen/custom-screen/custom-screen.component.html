@@ -1,11 +1,7 @@
 <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <epgu-constructor-screen-container class="screen-container">
   <div class="inner">
-    <div *ngIf="screenService.header$ | async as header" class="head">
-      <epgu-constructor-page-name>{{
-        header
-      }}</epgu-constructor-page-name>
-    </div>
+    <epgu-constructor-page-name>{{ screenService.header$ | async }}</epgu-constructor-page-name>
 
     <epgu-constructor-screen-pad class="body">
       <epgu-constructor-components-list
@@ -15,7 +11,8 @@
     </epgu-constructor-screen-pad>
 
     <div class="footer">
-      <lib-button *ngIf="screenService.isShown$ | async"
+      <lib-button
+        *ngIf="screenService.isShown$ | async"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextScreen()"
         class="footer__btn-submit"

@@ -18,37 +18,31 @@ describe('ActionDirective', () => {
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ActionApiService, useClass: ActionApiServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         NavigationService,
         UtilsService,
-        CurrentAnswersService,
         ScreenService,
         CachedAnswersService,
+        CurrentAnswersService,
       ],
     });
   });
 
   it('should create an instance', inject(
-    [
-      ActionApiService,
-      ConfigService,
-      UtilsService,
-      ScreenService,
-      NavigationService,
-      CurrentAnswersService,
-    ],
+    [ActionApiService, ConfigService, UtilsService, ScreenService, NavigationService],
     (
       actionApiService: ActionApiService,
       utilsService: UtilsService,
       screenService: ScreenService,
       navigationService: NavigationService,
-      currentAnswersService: CurrentAnswersService,
+      configService: ConfigService,
     ) => {
       const directive = new ActionDirective(
         actionApiService,
         screenService,
-        currentAnswersService,
         navigationService,
         utilsService,
+        configService,
       );
 
       expect(directive).toBeTruthy();

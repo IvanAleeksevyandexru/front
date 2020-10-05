@@ -7,11 +7,11 @@ import {
 } from '../../../services/api/form-player-api/form-player-api.types';
 import { ActionApiService } from '../../../services/api/action-api/action-api.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { Navigation } from '../../../form-player.types';
-import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { Navigation, NavigationOptions } from '../../../form-player.types';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { Answer } from '../../types/answer';
+import { ConfigService } from '../../../config/config.service';
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -26,9 +26,9 @@ export class ActionDirective {
   constructor(
     private actionApiService: ActionApiService,
     private screenService: ScreenService,
-    private currentAnswersService: CurrentAnswersService,
     private navigationService: NavigationService,
     private utilsService: UtilsService,
+    private configService: ConfigService,
   ) {}
 
   private switchAction(): void {
@@ -38,6 +38,9 @@ export class ActionDirective {
         break;
       case ActionType.nextStep:
         this.nextStep();
+        break;
+      case ActionType.redirectToLK:
+        this.redirectToLK();
         break;
     }
   }
@@ -51,12 +54,18 @@ export class ActionDirective {
   }
 
   private nextStep(): void {
+    const options = this.getOptions();
+
     const navigation: Navigation = {
       payload: this.getComponentStateForNavigate(),
-      options: { url: this.action.action },
+      options,
     };
 
     this.navigationService.nextStep.next(navigation);
+  }
+
+  private getOptions(): NavigationOptions {
+    return this.action.action.includes('service') ? { url: this.action.action } : {};
   }
 
   private getComponentStateForNavigate(): {
@@ -65,7 +74,7 @@ export class ActionDirective {
     return {
       [this.screenService.component.id]: {
         visited: true,
-        value: this.currentAnswersService.state,
+        value: this.action.value,
       },
     };
   }
@@ -79,5 +88,9 @@ export class ActionDirective {
         console.log(error);
       },
     );
+  }
+
+  private redirectToLK(): void {
+    window.location.href = `${this.configService.lkUrl}/profile/personal`;
   }
 }
