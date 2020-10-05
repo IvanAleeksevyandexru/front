@@ -3,7 +3,6 @@ import { ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenContent } from './screen-content';
 
-
 @Injectable()
 export class ScreenServiceStub extends ScreenContent {
   private screenStore: ScreenStore;
@@ -18,8 +17,11 @@ export class ScreenServiceStub extends ScreenContent {
   public isShown$: Observable<boolean>;
   public screenData$: Observable<ScreenStore>;
 
-  public initScreenStore(store: ScreenStore): void {}
+  public get componentValue(): { [p: string]: any } | string {
+    return { timer: { key2: '' }, };
+  }
 
+  public initScreenStore(store: ScreenStore): void {}
 
   public updateScreenStore(newState: ScreenStore): void {}
 

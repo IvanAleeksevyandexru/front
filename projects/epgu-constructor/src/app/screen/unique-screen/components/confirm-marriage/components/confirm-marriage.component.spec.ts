@@ -12,25 +12,12 @@ import { TimerPipe } from '../pipes/timer.pipe';
 import { ConfirmMarriageComponent } from './confirm-marriage.component';
 import { TimerComponent } from './timer/timer.component';
 import { ScreenService } from '../../../../screen.service';
+import { ScreenServiceStub } from '../../../../screen.service.stub';
 
-describe('TimerComponent', () => {
+describe('ConfirmMarriageComponent', () => {
   let component: ConfirmMarriageComponent;
   let fixture: ComponentFixture<ConfirmMarriageComponent>;
   let navigationService: NavigationService;
-
-  const timer = {
-    time: 123456,
-    completion: 200000,
-    center: 50,
-    circumference: 4564,
-    finish: 200000,
-    offset: 123,
-    progress: 45,
-    radius: 100,
-    size: 100,
-    start: 123,
-    strokeWidth: 3,
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -45,9 +32,12 @@ describe('TimerComponent', () => {
         ScreenPadComponent,
         NavigationComponent,
         LoaderComponent,
-        ScreenService,
       ],
-      providers: [UnsubscribeService, NavigationService],
+      providers: [
+        UnsubscribeService,
+        NavigationService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+      ],
     }).compileComponents();
 
     navigationService = TestBed.inject(NavigationService);
@@ -56,7 +46,6 @@ describe('TimerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmMarriageComponent);
     component = fixture.componentInstance;
-    component.timer = timer;
     fixture.detectChanges();
   });
 
