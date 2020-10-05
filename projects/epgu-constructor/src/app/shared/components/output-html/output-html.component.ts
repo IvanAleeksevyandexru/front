@@ -45,6 +45,7 @@ export class OutputHtmlComponent implements OnInit {
     this.modalService.openModal(ConfirmationModalComponent, {
       ...targetClarification,
       clarifications,
+      showCrossButton: true,
     });
   }
 }

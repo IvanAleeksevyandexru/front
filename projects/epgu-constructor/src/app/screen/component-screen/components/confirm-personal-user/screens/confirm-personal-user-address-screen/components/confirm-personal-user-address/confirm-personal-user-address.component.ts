@@ -66,7 +66,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   private formChangesHandler(change): void {
-    this.valueParsed = change;
+    this.valueParsed = { ...this.valueParsed, ...change };
     this.emmitData();
   }
 

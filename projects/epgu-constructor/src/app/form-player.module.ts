@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { EpguLibModule, LoadService } from 'epgu-lib';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { EpguLibModule } from 'epgu-lib';
 import { ConfigService } from './config/config.service';
 import { FormPlayerComponent } from './form-player.component';
 import { AuthInterceptor } from './interceptor/authorization-interceptor';
@@ -33,24 +31,6 @@ import { UtilsService } from './services/utils/utils.service';
 import { ToolsService } from './shared/services/tools/tools.service';
 import { SharedModule } from './shared/shared.module';
 
-export const initializeEpguLibConfig = (loadService: LoadService, configService: ConfigService) => {
-  return () => configService.production ? loadService.load('portal') : null;
-};
-
-export const HttpLoaderFactory = (httpClient: HttpClient, loadService: LoadService, configService: ConfigService) => {
-  return configService.production
-    ? new TranslateHttpLoader(httpClient, `${loadService.config.staticDomain}assets/i18n/`, '.json')
-    : null;
-};
-
-export const TranslateModuleInited = TranslateModule.forRoot({
-  loader: {
-    provide: TranslateLoader,
-    useFactory: HttpLoaderFactory,
-    deps: [HttpClient, LoadService, ConfigService]
-  }
-});
-
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
 @NgModule({
@@ -67,7 +47,6 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     InvitationErrorScreenModule,
     SharedModule,
     EpguLibModuleInited,
-    TranslateModuleInited,
     InfoScreenModule,
   ],
   providers: [
@@ -82,13 +61,6 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     ConfigService,
     ServiceDataService,
     ToolsService,
-    LoadService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeEpguLibConfig,
-      multi: true,
-      deps: [LoadService, ConfigService]
-    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -1,5 +1,6 @@
 <form #dataForm="ngForm">
-  <div class="flex-row" *ngIf="data?.attrs?.actions?.length === 1">
+  <!--  HARDCODE который удалён в developer ветку и так необходим для демо-->
+  <div class="flex-row edit-item" *ngIf="data?.attrs?.actions?.length === 1">
     <a href="javascript:void(0);" (click)="handleClick()" class="button-change"> Редактировать </a>
   </div>
   <ng-container
@@ -10,6 +11,7 @@
       <lib-dadata-widget
         [simpleMode]="true"
         [disabled]="!isEditable"
+        [hideHouseCheckbox]="true"
         [name]="field.fieldName"
         [externalApiUrl]="config.externalApiUrl + '/'"
         [initValue]="valueParsed[field.fieldName]"
@@ -28,8 +30,6 @@
       [label]="field.label"
     >
       <lib-date-picker
-        align="left"
-        [disabled]="!isEditable"
         [name]="field.fieldName"
         align="left"
         minDate="-50y"

@@ -8,16 +8,18 @@
         [innerHTML]="title | safeHtml"></h4>
   </div>
   <div class="conf-modal__body">
-    <div class="conf-modal__content">
-      <ng-content></ng-content>
-      <div class="conf-modal__controls">
-        <lib-button
-          *ngFor="let button of buttons"
-          [showLoader]="button.loader"
-          class="conf-modal__button"
-          [color]="button.color || ''"
-          (click)="button.handler()">{{ button.label }}</lib-button>
-      </div>
-    </div>
+      <perfect-scrollbar [config]="scrollConfig">
+        <div class="conf-modal__content">
+          <ng-content></ng-content>
+          <div class="conf-modal__controls">
+            <lib-button
+              *ngFor="let button of buttons"
+              [showLoader]="button.loader"
+              class="conf-modal__button"
+              [color]="button.color || ''"
+              (click)="button.handler()">{{ button.label }}</lib-button>
+          </div>
+        </div>
+      </perfect-scrollbar>
   </div>
 </div>
