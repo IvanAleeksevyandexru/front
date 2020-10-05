@@ -33,8 +33,8 @@ export class EmployeeHistoryFormService {
     this.generateForm = this.createEmployeeForm();
   }
 
-  pushToEmployeeHistoryForm(form: FormGroup): void {
-    this.employeeHistoryForm.push(this.createEmployeeForm());
+  pushToEmployeeHistoryForm(form?: FormGroup): void {
+    this.employeeHistoryForm.push(form || this.createEmployeeForm());
     console.log(this.employeeHistoryForm);
   }
 
