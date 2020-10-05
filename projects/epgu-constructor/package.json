@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "tslib": "2.0.0",
-    "epgu-lib": "0.0.571",
+    "epgu-lib": "0.0.574",
     "ics": "^2.24.0",
     "@alyle/ui": "^10.2.1",
     "ngx-device-detector": "^2.0.0",
