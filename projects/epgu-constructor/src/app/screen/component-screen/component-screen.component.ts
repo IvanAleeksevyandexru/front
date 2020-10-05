@@ -101,4 +101,14 @@ export class ComponentScreenComponent implements OnInit, Screen {
   goToHomePage(): void {
     // TODO: navigate to Home Page
   }
+
+  isUserData(): boolean | ComponentScreenComponentTypes {
+    const type = this.screenService.componentType as ComponentScreenComponentTypes;
+    const hasType = [
+      ComponentScreenComponentTypes.divorceConsent,
+      ComponentScreenComponentTypes.confirmPersonalUserData,
+    ].includes(type);
+
+    return hasType ? type : false;
+  }
 }

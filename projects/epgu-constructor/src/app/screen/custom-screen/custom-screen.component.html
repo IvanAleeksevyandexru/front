@@ -12,16 +12,6 @@
       ></epgu-constructor-components-list>
     </epgu-constructor-screen-pad>
 
-    <ng-container *ngFor="let components of screenService.display?.components">
-      <epgu-constructor-action-button
-        *ngFor="let action of components?.attrs?.actions"
-        epgu-constructor-action
-        [action]="action"
-      >
-        {{ action.label }}
-      </epgu-constructor-action-button>
-    </ng-container>
-
     <div class="footer">
       <lib-button
         *ngIf="screenService.isShown$ | async"
