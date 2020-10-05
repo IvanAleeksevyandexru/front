@@ -63,12 +63,13 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
   }
 
   pushFormGroup(): void {
-    this.updateValidators();
-    this.validationShowOn = ValidationShowOn.IMMEDIATE;
-    if (this.employeeFormService.generateForm.valid) {
-      this.employeeFormService.pushFormGroup();
-      this.validationShowOn = ValidationShowOn.NEVER;
-    }
+    // this.updateValidators();
+    // this.validationShowOn = ValidationShowOn.IMMEDIATE;
+    // if (this.employeeFormService.generateForm.valid) {
+    //   this.employeeFormService.pushFormGroup();
+    //   this.validationShowOn = ValidationShowOn.NEVER;
+    // }
+    this.employeeFormService.pushToEmployeeHistoryForm(null);
   }
 
   removeFormGroup(index: number): void {

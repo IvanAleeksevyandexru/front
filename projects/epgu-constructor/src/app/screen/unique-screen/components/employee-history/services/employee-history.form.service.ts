@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment_ from 'moment';
 import { Moment } from 'moment';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -16,6 +16,7 @@ const moment = moment_;
 
 @Injectable()
 export class EmployeeHistoryFormService {
+  employeeHistoryForm: FormArray = this.fb.array([]);
   employeeHistory: Array<EmployeeHistoryModel> = [];
   generateForm: FormGroup;
 
@@ -30,6 +31,11 @@ export class EmployeeHistoryFormService {
     this.defaultType = 'student';
     this.unrequiredCheckedKeys = ['position', 'place'];
     this.generateForm = this.createEmployeeForm();
+  }
+
+  pushToEmployeeHistoryForm(form: FormGroup): void {
+    this.employeeHistoryForm.push(this.createEmployeeForm());
+    console.log(this.employeeHistoryForm);
   }
 
   createEmployeeForm(): FormGroup {
