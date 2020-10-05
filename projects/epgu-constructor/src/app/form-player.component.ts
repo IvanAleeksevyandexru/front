@@ -7,6 +7,7 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
+import { LoadService } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from './config/config.service';
 import { Config } from './config/config.types';
@@ -38,11 +39,13 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private configService: ConfigService,
+    private loadService: LoadService,
     private modalService: ModalService,
   ) {}
 
   ngOnInit(): void {
     this.checkProps();
+    this.initializeEpguLibConfig();
     this.configService.config = this.config;
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.screenComponent = this.formPlayerService.getScreenComponent();
@@ -69,6 +72,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     } else {
       this.formPlayerService.initData(orderId);
     }
+  }
+
+  initializeEpguLibConfig(): Promise<any> {
+    return this.config.production ? this.loadService.load('portal') : null;
   }
 
   showModal() {
