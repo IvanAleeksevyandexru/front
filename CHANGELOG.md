@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.20](https://git.gosuslugi.local///compare/v0.1.19...v0.1.20) (2020-10-05)
+
+
+### Bug Fixes
+
+* add epgu-lib config load on form-player init [ref EPGUCORE-36456] ([19c3c3c](https://git.gosuslugi.local///commit/19c3c3c531191d2bae98bc477a7cea9bfe5671f5))
+* resolve test errors 2 [ref EPGUCORE-38123] ([562c014](https://git.gosuslugi.local///commit/562c0145064dd87f76a237e156011a4728e9c34b))
+* исправлено обновление данные в компоненте адрес регистрации ([d2c6e67](https://git.gosuslugi.local///commit/d2c6e67a7f99a50a8286d55ed21f6e9c51406b6c))
+* исправлено позиционирование кнопки в модальном окне ([9cbf452](https://git.gosuslugi.local///commit/9cbf452b46f3ef364f57952ab66429e010c678fe))
+* опустил кнопку редактирования на уровень lable; ([26d9ecd](https://git.gosuslugi.local///commit/26d9ecd7fca8c45e2d9c4dd7e51a76686ff0fb3b))
+
+### [0.1.19](https://git.gosuslugi.local///compare/v0.1.18...v0.1.19) (2020-10-02)
+
+
+### Bug Fixes
+
+* resolve test errors [ref EPGUCORE-38123] ([e943bcf](https://git.gosuslugi.local///commit/e943bcfbe3ff07228248a7895897bc0d7ae79762))
+
+### [0.1.18](https://git.gosuslugi.local///compare/v0.1.17...v0.1.18) (2020-10-02)
+
+
+### Bug Fixes
+
+* add img-prefixer pipe for imgs provided within dynamic html-content [ref EPGUCORE-36456] ([20df748](https://git.gosuslugi.local///commit/20df748b43f8792be0a4f7e1fc1847e310f87fa0))
+
 ### [0.1.17](https://git.gosuslugi.local///compare/v0.1.16...v0.1.17) (2020-10-02)
 
 
