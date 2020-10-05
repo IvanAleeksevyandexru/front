@@ -1,4 +1,8 @@
 <form #dataForm="ngForm">
+  <!--  HARDCODE который удалён в developer ветку и так необходим для демо-->
+  <div class="flex-row edit-item" *ngIf="data?.attrs?.actions?.length === 1">
+    <a href="javascript:void(0);" (click)="handleClick()" class="button-change"> Редактировать </a>
+  </div>
   <ng-container
     *ngFor="let field of data?.attrs?.fields; let i = index"
     [ngSwitch]="field?.fieldName"
@@ -6,6 +10,7 @@
     <epgu-constructor-address-item *ngSwitchCase="'regAddr'" class="item" [label]="field.label">
       <lib-dadata-widget
         [simpleMode]="true"
+        [hideHouseCheckbox]="true"
         [name]="field.fieldName"
         [externalApiUrl]="config.externalApiUrl + '/'"
         [initValue]="valueParsed[field.fieldName]"
@@ -24,7 +29,6 @@
       [label]="field.label"
     >
       <lib-date-picker
-        align="left"
         [name]="field.fieldName"
         align="left"
         minDate="-50y"

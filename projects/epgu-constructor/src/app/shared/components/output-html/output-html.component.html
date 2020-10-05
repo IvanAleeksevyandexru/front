@@ -1,3 +1,6 @@
-<div class="text" #innerHtml
-     [innerHTML]="html | safeHtml"
-     (click)="clickToInnerHTML($event, innerHtml)"></div>
+<div
+  class="text"
+  #innerHtml
+  [innerHTML]="html | imgPrefixer | safeHtml"
+  (click)="clickToInnerHTML($event, innerHtml)"
+></div>

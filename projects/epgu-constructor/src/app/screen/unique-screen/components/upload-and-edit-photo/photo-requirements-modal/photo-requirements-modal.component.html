@@ -17,7 +17,7 @@
          *ngFor="let requirement of setting.body">
       <div class="req-item__title"
            [innerHTML]="requirement.title | safeHtml"></div>
-      <div [innerHTML]="requirement.text | safeHtml"></div>
+      <div [innerHTML]="requirement.text | imgPrefixer |safeHtml"></div>
       <div class="req-item__photo-container">
         <div class="req-item__photo-item"
              *ngFor="let photo of requirement.examplePhotos">
