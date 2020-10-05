@@ -7,7 +7,7 @@ import {
 } from '../../../services/api/form-player-api/form-player-api.types';
 import { ActionApiService } from '../../../services/api/action-api/action-api.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { Navigation } from '../../../form-player.types';
+import { Navigation, NavigationOptions } from '../../../form-player.types';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { Answer } from '../../types/answer';
@@ -49,7 +49,7 @@ export class ActionDirective {
   }
 
   private nextStep(): void {
-    const options = this.action.action.includes('service') ? { url: this.action.action } : {};
+    const options = this.getOptions();
 
     const navigation: Navigation = {
       payload: this.getComponentStateForNavigate(),
@@ -57,6 +57,10 @@ export class ActionDirective {
     };
 
     this.navigationService.nextStep.next(navigation);
+  }
+
+  private getOptions(): NavigationOptions {
+    return this.action.action.includes('service') ? { url: this.action.action } : {};
   }
 
   private getComponentStateForNavigate(): {
