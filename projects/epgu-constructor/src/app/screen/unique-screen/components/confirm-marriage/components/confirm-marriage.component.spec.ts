@@ -13,11 +13,24 @@ import { ConfirmMarriageComponent } from './confirm-marriage.component';
 import { TimerComponent } from './timer/timer.component';
 import { ScreenService } from '../../../../screen.service';
 import { ScreenServiceStub } from '../../../../screen.service.stub';
+import { ConfirmMarriageInfoInterface } from '../models/confirm-marriage-info.interface';
 
 describe('ConfirmMarriageComponent', () => {
   let component: ConfirmMarriageComponent;
   let fixture: ComponentFixture<ConfirmMarriageComponent>;
   let navigationService: NavigationService;
+  let screenService: ScreenService;
+
+  const mockComponentValue: ConfirmMarriageInfoInterface = {
+    place: '',
+    time: '',
+    ceremonyType: '',
+    address: '',
+    timer: {
+      start: '',
+      finish: '',
+    },
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -41,11 +54,14 @@ describe('ConfirmMarriageComponent', () => {
     }).compileComponents();
 
     navigationService = TestBed.inject(NavigationService);
+    screenService = TestBed.inject(ScreenService);
+    jest.spyOn(screenService, 'componentValue', 'get').mockReturnValue(mockComponentValue);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmMarriageComponent);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
