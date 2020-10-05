@@ -18,7 +18,7 @@
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextScreen()"
         class="footer__btn-submit"
-        [disabled]="(screenService.isLoading$ | async) || !valid"
+        [disabled]="(screenService.isLoading$ | async) || !isValid"
       >
         {{ screenStore.display?.submitLabel }}
       </lib-button>

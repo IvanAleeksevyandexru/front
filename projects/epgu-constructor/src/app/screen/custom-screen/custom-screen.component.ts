@@ -21,7 +21,7 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
   isCycledFields: boolean;
   cycledValues: any;
   screenStore: ScreenStore;
-  valid: boolean;
+  isValid: boolean;
 
   private currentCycledFields = this.screenStore?.currentCycledFields || {};
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
@@ -108,12 +108,8 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
   }
 
   changeComponentsList(changes: { [key: string]: any }): void {
-    if (Object.values(changes).every((item) => item.valid)) {
-      this.dataToSend = this.getFormattedData(changes);
-      this.valid = true;
-    } else {
-      this.valid = false;
-    }
+    this.isValid = Object.values(changes).every((item) => item.valid);
+    this.dataToSend = this.getFormattedData(changes);
   }
 
   /**
