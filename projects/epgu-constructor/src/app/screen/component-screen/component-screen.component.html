@@ -98,7 +98,6 @@
     </epgu-constructor-screen-pad>
 
     <div class="footer">
-      <ng-container *ngIf="(screenService.componentType$ | async) === screenComponentName.divorceConsent">
         <lib-button
           *ngFor="let action of screenService.actions$ | async"
           epgu-constructor-action
@@ -110,7 +109,6 @@
             {{ action.label }}
           </div>
         </lib-button>
-      </ng-container>
 
       <lib-button
         *ngIf="componentSetting.displayContinueBtn && (screenService.isShown$ | async)"

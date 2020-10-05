@@ -18,6 +18,7 @@ describe('ActionDirective', () => {
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ActionApiService, useClass: ActionApiServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         NavigationService,
         UtilsService,
         ScreenService,
@@ -34,12 +35,14 @@ describe('ActionDirective', () => {
       utilsService: UtilsService,
       screenService: ScreenService,
       navigationService: NavigationService,
+      configService: ConfigService,
     ) => {
       const directive = new ActionDirective(
         actionApiService,
         screenService,
         navigationService,
         utilsService,
+        configService,
       );
 
       expect(directive).toBeTruthy();

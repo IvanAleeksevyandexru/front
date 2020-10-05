@@ -5,7 +5,6 @@ import {
   ConfirmUserData,
 } from '../../../../../../types/confirm-user-data.types';
 import { ConfigService } from '../../../../../../../../config/config.service';
-import { ComponentScreenComponentTypes } from '../../../../../../component-screen.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-data',
@@ -24,12 +23,5 @@ export class ConfirmPersonalUserDataComponent implements OnChanges {
       const { states } = JSON.parse(this.data.value);
       this.preparedData = states;
     }
-  }
-
-  public hasAction(): boolean {
-    return (
-      this.data?.attrs?.actions?.length === 1 &&
-      this.data.type === ComponentScreenComponentTypes.confirmPersonalUserData
-    );
   }
 }
