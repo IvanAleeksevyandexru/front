@@ -7,7 +7,6 @@ export enum ComponentScreenComponentTypes {
   registrationAddr = 'RegistrationAddr',
   personLookup = 'PersonLookup',
   addPassport = 'AddPassport',
-  changeList = 'ChangeList',
   childrenListUnder14 = 'ChildrenListUnder14',
   childrenListAbove14 = 'ChildrenListAbove14',
   docInput = 'DocInput',
