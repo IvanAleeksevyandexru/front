@@ -49,22 +49,18 @@ export class EmployeeHistoryFormService {
       form.get('to').patchValue(MonthYear.fromDate(new Date()));
     });
 
-    combineLatest(
-      form.get('from').valueChanges,
-      form.get('to').valueChanges,
-    ).pipe(
-      map(([from, to]: Array<MonthYear>): Array<Moment> => (
-        [moment().year(from.year).month(from.month), moment().year(to.year).month(to.month)]
-      )),
-      takeUntil(this.unsubscribeService),
-    ).subscribe(([from, to]: Array<Moment>) => {
-      this.monthsService.setAvailableMonths(from, to, true);
-      console.log(this.monthsService.availableMonths);
-    });
+    combineLatest(form.get('from').valueChanges, form.get('to').valueChanges)
+      .pipe(takeUntil(this.unsubscribeService))
+      .subscribe(() => {
+        this.monthsService.updateAvailableMonths(this.employeeHistoryForm.getRawValue());
+        console.log(this.monthsService.availableMonths);
+      });
   }
 
   removeGeneration(index: number): void {
     this.employeeHistoryForm.removeAt(index);
+    this.monthsService.updateAvailableMonths(this.employeeHistoryForm.getRawValue());
+    console.log(this.monthsService.availableMonths);
   }
 
   createEmployeeForm(): FormGroup {
@@ -83,16 +79,6 @@ export class EmployeeHistoryFormService {
     this.generateForm.reset();
     this.generateForm.get('type').patchValue(currentType);
     this.monthsService.minDateTo = this.monthsService.minDateFrom;
-  }
-
-  removeFormGroup(index: number): void {
-    this.monthsService.setAvailableMonths(
-      moment(this.employeeHistory[index].from),
-      moment(this.employeeHistory[index].to),
-      false,
-      this.employeeHistory,
-    );
-    this.employeeHistory.splice(index, 1);
   }
 
   generateFormWatcher(): void {
