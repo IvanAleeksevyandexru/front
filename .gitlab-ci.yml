@@ -1,6 +1,6 @@
 variables:
-  CI_NAME: 'dvysotskiy'
-  CI_EMAIL: 'dvysotskiy@luxoft.com'
+  CI_NAME: 'gitlab-ci'
+  CI_EMAIL: 'gitlab-ci@luxoft.com'
 
 image: node:latest
 
