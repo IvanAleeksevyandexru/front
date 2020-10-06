@@ -4,7 +4,7 @@ import { ConfigService } from '../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../config/config.service.stub';
 import { InfoScreenBodyComponent } from './info-screen-body.component';
 
-describe('RequirementsListComponent', () => {
+describe('InfoScreenBodyComponent', () => {
   let component: InfoScreenBodyComponent;
   let fixture: ComponentFixture<InfoScreenBodyComponent>;
   const mockData = {
