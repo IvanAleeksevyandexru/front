@@ -88,9 +88,6 @@ export class ComponentsListComponent implements OnInit {
   }
 
   private screenDataEmitter(next: Array<CustomComponent>, prev?: Array<CustomComponent>): void {
-    console.group('emitter');
-    console.log(prev, next);
-    console.groupEnd();
     next.forEach((component: CustomComponent, index: number) => {
       if (
         prev &&
@@ -131,14 +128,19 @@ export class ComponentsListComponent implements OnInit {
         this.loadDictionaries(dictionaryType, component);
       }
 
+      console.log('component::', component, this.dictionaries);
+
+      let value =
+        typeof component.attrs?.defaultValue !== 'undefined'
+          ? component.attrs?.defaultValue
+          : component.value;
+
+      if (component.type === CustomScreenComponentTypes.DateInput) {
+        value = new Date(component.value);
+      }
       const group: FormGroup = this.fb.group({
         ...component,
-        value: [
-          typeof component.attrs?.defaultValue !== 'undefined'
-            ? component.attrs?.defaultValue
-            : component.value,
-          this.validationFn(component),
-        ],
+        value: [value, this.validationFn(component)],
       });
 
       this.shownElements[component.id] = !component.attrs?.ref?.length;
@@ -245,11 +247,7 @@ export class ComponentsListComponent implements OnInit {
 
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
-      const isDictionaryOrLookup: boolean =
-        val.type === CustomScreenComponentTypes.Dictionary ||
-        val.type === CustomScreenComponentTypes.Lookup;
-
-      const value = isDictionaryOrLookup ? val.value.originalItem : val.value;
+      const value = likeDictionary(val.type) ? val.value.originalItem : val.value;
       const { valid } = this.form.get([key, 'value']);
 
       if (this.shownElements[val.id]) {
