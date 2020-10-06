@@ -89,7 +89,7 @@ Library-publish:
     - git config receive.advertisePushOptions true
     - git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
     - npm run release -- --release-as patch
-    - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@REPO_URL --follow-tags master:master
+    - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@git.gosuslugi.local:luxoft/epgu2-form-frontend.git --follow-tags master:master
     - cd dist/epgu-constructor
     - npm publish
   only:
