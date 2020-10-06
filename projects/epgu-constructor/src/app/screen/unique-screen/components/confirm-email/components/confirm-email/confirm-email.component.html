@@ -4,7 +4,7 @@
   <epgu-constructor-page-name>{{ screenService.header$ | async }}</epgu-constructor-page-name>
 
   <epgu-constructor-screen-pad>
-    <div class="head" [innerHTML]="screenService.componentLabel$ | async | safeHtml"></div>
+    <div class="head" [innerHTML]="screenService.componentLabel$ | async | safe: 'html'"></div>
 
     <img class="icon" src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/warn_80.svg" />
 

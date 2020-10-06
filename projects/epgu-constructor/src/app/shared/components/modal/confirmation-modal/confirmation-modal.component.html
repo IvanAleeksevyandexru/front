@@ -9,6 +9,6 @@
     #innerHtml
     class="conf-modal__text"
     (click)="toggleHiddenBlock($event, innerHtml)"
-    [innerHTML]="text | imgPrefixer | safeHtml"
+    [innerHTML]="text | imgPrefixer | safe: 'html'"
   ></span>
 </epgu-constructor-confirmation-modal-base>
