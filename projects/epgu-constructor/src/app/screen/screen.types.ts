@@ -13,6 +13,7 @@ export interface ComponentBase {
   value: string;
   required?: boolean
   visited?: boolean
+  hint?: string;
 }
 
 export interface Display {
