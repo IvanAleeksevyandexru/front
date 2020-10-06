@@ -1,3 +1,7 @@
+variables:
+  CI_NAME: 'dvysotskiy'
+  CI_EMAIL: 'dvysotskiy@luxoft.com'
+
 image: node:latest
 
 cache: &global_cache
@@ -10,23 +14,18 @@ stages:
   - install
   - code-quality
   - library-build
-  - publish
+  - library-publish
   - build
   - image
   - deploy
 
 Install:
   stage: install
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_NAME
   before_script:
     - rm -rf dist
-    ## Повышаем версию до npm install
-    #- echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
-    #- echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
-    #- cd projects/epgu-constructor
-    #- CURRENT_VERSION=$(npm view epgu-constructor version)
-    #- npm version $CURRENT_VERSION
-    #- npm version patch
-    #- cd ../..
   script:
     - yarn install
   only:
@@ -35,6 +34,9 @@ Install:
 
 Lint:
   stage: code-quality
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_NAME
   cache:
     <<: *global_cache
     policy: pull
@@ -44,8 +46,11 @@ Lint:
     - merge_requests
     - master
 
-Test:
+Code-quality:
   stage: code-quality
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_NAME
   cache:
     <<: *global_cache
     policy: pull
@@ -57,31 +62,47 @@ Test:
 
 Library-build:
   stage: library-build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_NAME
   script:
+    - npm run generate-lib-version-ts
     - yarn lib:build
   only:
     - merge_requests
     - master
 
 Library-publish:
-  stage: publish
+  stage: library-publish
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_NAME
   cache:
     <<: *global_cache
     policy: pull
+  tags:
+    - npm
   before_script:
     - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
   script:
+    - git config --global user.email $CI_EMAIL
+    - git config --global user.name $CI_NAME
+    - git config receive.advertisePushOptions true
+    - git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
+    - npm run release
+    - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@REPO_URL --follow-tags master:master
     - cd dist/epgu-constructor
-    - CURRENT_VERSION=$(npm view epgu-constructor version)
-    - npm version $CURRENT_VERSION
-    - npm version patch
     - npm publish
   only:
     - master
+    - EPGUCORE-38123
 
 Build:
   stage: build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_NAME
   script:
     - yarn build --prod
     - /devops/notify/notify.sh fronted_new_master_available
@@ -91,6 +112,9 @@ Build:
 
 Build-image:
   stage: image
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_NAME
   cache:
     <<: *global_cache
     policy: pull
@@ -112,6 +136,9 @@ Build-image:
 
 Deploy to review env:
   stage: deploy
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_NAME
   cache: {}
   variables:
     GIT_STRATEGY: none
@@ -130,6 +157,9 @@ Deploy to review env:
 
 Drop review env:
   stage: deploy
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_NAME
   cache: {}
   variables:
     GIT_STRATEGY: none
