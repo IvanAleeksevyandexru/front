@@ -5,7 +5,6 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
 import { Gender } from '../../../../shared/types/gender';
 import { ComponentBase, Display } from '../../../screen.types';
 import {
-  Employee,
   EmployeeHistoryAvailableDates,
   EmployeeHistoryDataSource,
   EmployeeHistoryModel,
@@ -37,7 +36,7 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
   ds: Array<EmployeeHistoryDataSource>;
-  validationShowOn = ValidationShowOn.NEVER;
+  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
   constructor(
     public employeeFormService: EmployeeHistoryFormService,
@@ -50,30 +49,11 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
     this.monthsService.years = this.display?.components[0]?.attrs?.years;
     this.monthsService.initSettings();
     this.ds = this.datasourceService.getDataSourceByGender(this.gender);
-    this.employeeFormService.generateFormWatcher();
+    this.employeeFormService.newGeneration();
   }
 
   ngOnChanges() {
     this.employeeFormService.employeeHistory = [];
-  }
-
-  resetForm(currentType: Employee): void {
-    this.validationShowOn = ValidationShowOn.NEVER;
-    this.employeeFormService.resetForm(currentType);
-  }
-
-  pushFormGroup(): void {
-    // this.updateValidators();
-    // this.validationShowOn = ValidationShowOn.IMMEDIATE;
-    // if (this.employeeFormService.generateForm.valid) {
-    //   this.employeeFormService.pushFormGroup();
-    //   this.validationShowOn = ValidationShowOn.NEVER;
-    // }
-    this.employeeFormService.pushToEmployeeHistoryForm(null);
-  }
-
-  removeFormGroup(index: number): void {
-    this.employeeFormService.removeFormGroup(index);
   }
 
   isCompleteForm(): boolean {
@@ -99,11 +79,8 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
     this.nextStepEvent.emit(JSON.stringify(this.convertEmployeeHistory()));
   }
 
-  findData(type?: Employee): EmployeeHistoryDataSource {
-    return this.ds.find(
-      (e) =>
-        String(e.type) === String(type || this.employeeFormService.generateForm.get('type').value),
-    );
+  availableControlsOfType(type: string): EmployeeHistoryDataSource {
+    return this.ds.find((e: EmployeeHistoryDataSource) => String(e.type) === String(type));
   }
 
   get textTransformType(): TextTransform {
@@ -118,15 +95,5 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
         ...e,
       };
     });
-  }
-
-  private updateValidators(): void {
-    const selectedEmployee = this.datasourceService
-      .getDataSourceByGender(this.gender)
-      .find(
-        (v: EmployeeHistoryDataSource) =>
-          v.type === this.employeeFormService.generateForm.getRawValue().type,
-      );
-    this.employeeFormService.updateValidators(selectedEmployee);
   }
 }

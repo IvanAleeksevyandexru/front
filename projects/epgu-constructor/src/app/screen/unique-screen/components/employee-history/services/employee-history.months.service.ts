@@ -41,7 +41,7 @@ export class EmployeeHistoryMonthsService {
     return availableDates;
   }
 
-  updateAvailableMonths(
+  setAvailableMonths(
     fromDate: Moment,
     toDate: Moment,
     checked: boolean,

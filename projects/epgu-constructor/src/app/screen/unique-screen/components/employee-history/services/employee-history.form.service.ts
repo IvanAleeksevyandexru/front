@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment_ from 'moment';
 import { Moment } from 'moment';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import {
   Employee,
@@ -11,6 +11,7 @@ import {
 } from '../employee-history.types';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { MonthYear } from 'epgu-lib';
+import { combineLatest, forkJoin } from 'rxjs';
 
 const moment = moment_;
 
@@ -33,9 +34,37 @@ export class EmployeeHistoryFormService {
     this.generateForm = this.createEmployeeForm();
   }
 
-  pushToEmployeeHistoryForm(form?: FormGroup): void {
-    this.employeeHistoryForm.push(form || this.createEmployeeForm());
-    console.log(this.employeeHistoryForm);
+  newGeneration(): void {
+    const form: FormGroup = this.createEmployeeForm();
+    this.newGenerationWatcher(form);
+    this.employeeHistoryForm.push(form);
+  }
+
+  private newGenerationWatcher(form: FormGroup): void {
+    form.get('checkboxToDate').valueChanges
+      .pipe(
+        filter((checked: boolean) => checked),
+        takeUntil(this.unsubscribeService),
+      ).subscribe(() => {
+      form.get('to').patchValue(MonthYear.fromDate(new Date()));
+    });
+
+    combineLatest(
+      form.get('from').valueChanges,
+      form.get('to').valueChanges,
+    ).pipe(
+      map(([from, to]: Array<MonthYear>): Array<Moment> => (
+        [moment().year(from.year).month(from.month), moment().year(to.year).month(to.month)]
+      )),
+      takeUntil(this.unsubscribeService),
+    ).subscribe(([from, to]: Array<Moment>) => {
+      this.monthsService.setAvailableMonths(from, to, true);
+      console.log(this.monthsService.availableMonths);
+    });
+  }
+
+  removeGeneration(index: number): void {
+    this.employeeHistoryForm.removeAt(index);
   }
 
   createEmployeeForm(): FormGroup {
@@ -56,17 +85,8 @@ export class EmployeeHistoryFormService {
     this.monthsService.minDateTo = this.monthsService.minDateFrom;
   }
 
-  pushFormGroup(): void {
-    const formValues: EmployeeHistoryModel = this.generateForm.getRawValue();
-    const fromDate: Moment = moment().month(formValues.from.monthCode).year(formValues.from.year);
-    const toDate: Moment = moment().month(formValues.to.monthCode).year(formValues.to.year);
-    this.monthsService.updateAvailableMonths(fromDate, toDate, true);
-    this.employeeHistory.push(formValues);
-    this.resetForm(this.defaultType);
-  }
-
   removeFormGroup(index: number): void {
-    this.monthsService.updateAvailableMonths(
+    this.monthsService.setAvailableMonths(
       moment(this.employeeHistory[index].from),
       moment(this.employeeHistory[index].to),
       false,
@@ -94,21 +114,5 @@ export class EmployeeHistoryFormService {
         }
         this.monthsService.minDateTo = MonthYear.fromDate(date);
       });
-  }
-
-  updateValidators(selectedEmployee: EmployeeHistoryDataSource): void {
-    Object.keys(this.generateForm.controls).forEach((controlName: string) => {
-      if (controlName !== 'checkboxToDate') {
-        this.generateForm.get(controlName).setValidators([Validators.required]);
-        this.generateForm.get(controlName).updateValueAndValidity({ emitEvent: false });
-      }
-    });
-
-    this.unrequiredCheckedKeys.forEach((key: string) => {
-      if (!selectedEmployee[key]) {
-        this.generateForm.get(key).clearValidators();
-        this.generateForm.get(key).updateValueAndValidity({ emitEvent: false });
-      }
-    });
   }
 }
