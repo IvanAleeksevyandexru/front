@@ -87,6 +87,7 @@
 
         <ng-template #plainInput>
           <lib-plain-input
+            [epgu-constructor-currency-transform]="componentData.attrs?.price"
             epgu-constructor-trim
             epgu-constructor-text-transform
             [textTransformType]="componentData.attrs?.fstuc"

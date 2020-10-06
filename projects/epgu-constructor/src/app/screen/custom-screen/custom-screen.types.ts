@@ -129,6 +129,7 @@ export interface CustomComponent extends ComponentBase {
   id: string;
   hint?: string;
   fstuc?: TextTransform;
+  price?: boolean;
 }
 
 export interface SupportedValue {
