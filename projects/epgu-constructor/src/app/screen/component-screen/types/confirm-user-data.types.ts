@@ -22,9 +22,16 @@ export interface ConfirmUserDataField {
 export interface ConfirmUserDataAdaptiveField {
   label: string;
   value: string;
+  name: string;
+  isVisible: boolean;
+  isTransient: boolean;
 }
 
 export interface ConfirmUserDataFieldsState {
   groupName: string;
   fields: Array<ConfirmUserDataAdaptiveField>;
+}
+
+export interface ConfirmUserDataState {
+  states: ConfirmUserDataFieldsState[];
 }

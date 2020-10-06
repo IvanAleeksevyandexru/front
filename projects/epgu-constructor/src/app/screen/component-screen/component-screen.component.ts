@@ -8,6 +8,7 @@ import { CurrentAnswersService } from '../current-answers.service';
 import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { ComponentScreenComponentTypes } from './component-screen.types';
+import { ConfirmUserDataState } from './types/confirm-user-data.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -66,10 +67,12 @@ export class ComponentScreenComponent implements OnInit, Screen {
   /**
    * Переход на следующую страницу и передача данных
    */
-  nextStep() {
+  nextStep(): void {
     let value: string;
     if (typeof this.currentAnswersService.state === 'object') {
       value = JSON.stringify(this.currentAnswersService.state);
+    } else if (this.isUserData()) {
+      value = JSON.stringify(this.getUserDataForNavigate());
     } else {
       value = this.currentAnswersService.state;
     }
@@ -77,6 +80,29 @@ export class ComponentScreenComponent implements OnInit, Screen {
     this.navigationService.nextStep.next({
       payload: { ...this.cycledFieldsService.dataTransform(value) },
     });
+  }
+
+  /**
+   * Подготовка данных к отправки для компонетов divorceConsent и confirmPersonalUserData
+   */
+  private getUserDataForNavigate(): { [key: string]: any } {
+    const { states } = JSON.parse(this.currentAnswersService.state) as ConfirmUserDataState;
+
+    return states.reduce((groupAcc, group) => {
+      const fields = group.fields.reduce<{ [key: string]: any }>((fieldAcc, field) => {
+        return field.isTransient
+          ? fieldAcc
+          : {
+              ...fieldAcc,
+              [field.name]: field.value,
+            };
+      }, {});
+
+      return {
+        ...groupAcc,
+        ...fields,
+      };
+    }, {});
   }
 
   /**
