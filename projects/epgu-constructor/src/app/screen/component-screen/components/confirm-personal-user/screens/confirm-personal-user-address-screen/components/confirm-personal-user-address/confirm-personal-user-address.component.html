@@ -13,7 +13,7 @@
         [hideHouseCheckbox]="true"
         [name]="field.fieldName"
         [externalApiUrl]="config.externalApiUrl + '/'"
-        [initValue]="valueParsed[field.fieldName]"
+        [initValue]="valueParsed[field.fieldName]?.fullAddress"
         [(ngModel)]="valueParsed[field.fieldName]"
       >
       </lib-dadata-widget>
