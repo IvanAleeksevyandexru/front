@@ -76,11 +76,8 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   getPreparedDataToSend(): string {
-    const { regAddr, regDate } = this.valueParsed;
+    const { regDate } = this.valueParsed;
     const dataToSend = { ...this.valueParsed };
-    if (typeof regAddr === 'string') {
-      dataToSend.regAddr = { fullAddress: regAddr };
-    }
     dataToSend.regDate = moment(regDate).format(DATE_STRING_DOT_FORMAT);
     return JSON.stringify(dataToSend);
   }
