@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ScreenStore } from './screen.types';
+import { ComponentBase, ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from './current-answers.service';
@@ -32,7 +32,7 @@ export class ScreenService extends ScreenContent{
    */
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;
-    this.loadCachedValues();
+    this.loadValueFromCachedAnswer();
     this.initComponentStateService();
     this.screenStoreSubject.next(this.screenStore);
     this.updateScreenContent(store);
@@ -66,11 +66,8 @@ export class ScreenService extends ScreenContent{
     this.currentAnswersService.isValid = true;
   }
 
-  /**
-   * Подгружает ответы пользователя
-   */
-  private loadCachedValues(): void {
-    const components = [];
+  private loadValueFromCachedAnswer(): void {
+    const components: Array<ComponentBase> = [];
 
     this.screenStore.display.components.forEach(item => {
       const cachedValue = this.cachedAnswersService

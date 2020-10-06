@@ -6,7 +6,6 @@
     <epgu-constructor-screen-pad class="body">
       <epgu-constructor-components-list
         (changes)="changeComponentsList($event)"
-        [components]="screenService.display?.components"
       ></epgu-constructor-components-list>
     </epgu-constructor-screen-pad>
 
@@ -16,7 +15,7 @@
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextScreen()"
         class="footer__btn-submit"
-        [disabled]="screenService.isLoading$ | async"
+        [disabled]="(screenService.isLoading$ | async) || !isValid"
       >
         {{ screenService.submitLabel$ | async }}
       </lib-button>

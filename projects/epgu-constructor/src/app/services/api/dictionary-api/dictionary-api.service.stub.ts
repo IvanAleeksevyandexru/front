@@ -3,16 +3,7 @@ import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class DictionaryApiServiceStub {
-
-  public getData(): Observable<any> {
-    return of({});
-  }
-
-  public getNextStep(): Observable<any> {
-    return of({});
-  }
-
-  public getPrevStep(): Observable<any> {
+  post(): Observable<any> {
     return of({});
   }
 

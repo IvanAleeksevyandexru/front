@@ -12,8 +12,7 @@ export enum CustomScreenComponentTypes {
   RadioInput = 'RadioInput',
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
-  htmlString = 'HtmlString',
-  GenderSelection = 'GenderSelection',
+  HtmlString = 'HtmlString',
   CheckBox = 'CheckBox',
   PhoneNumberChangeInput = 'PhoneNumberChangeInput',
   NewEmailInput = 'NewEmailInput',
@@ -131,6 +130,7 @@ export interface CustomComponent extends ComponentBase {
   id: string;
   hint?: string;
   fstuc?: TextTransform;
+  isShown?: boolean;
 }
 
 export interface SupportedValue {
