@@ -1,7 +1,7 @@
 /**
  * Перечень поддерживаемых моков
  */
-export type MockApi = 'mvd' | 'selectMap' | 'timeSlot';
+export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
 
 /**
  * @property {string}apiUrl - url до форм плеер сервиса, как правило apiHostName/api

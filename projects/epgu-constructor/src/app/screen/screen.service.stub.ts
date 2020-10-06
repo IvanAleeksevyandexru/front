@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ScreenStore } from './screen.types';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ScreenContent } from './screen-content';
 
 
@@ -30,7 +30,7 @@ export class ScreenServiceStub extends ScreenContent {
 
   private initComponentStateService() {}
 
-  private loadCachedValues(): void {}
+  private loadValueFromCachedAnswer(): void {}
 
   public updateIsShown(val: boolean): void {}
 

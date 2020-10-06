@@ -20,6 +20,7 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
   dataToSend: NavigationPayload;
   isCycledFields: boolean;
   cycledValues: any;
+  isValid: boolean;
 
   private currentCycledFields = this.screenService?.currentCycledFields || {};
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
@@ -102,7 +103,8 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     return stateData;
   }
 
-  changeComponentsList(changes): void {
+  changeComponentsList(changes: { [key: string]: any }): void {
+    this.isValid = Object.values(changes).every((item) => item.valid);
     this.dataToSend = this.getFormattedData(changes);
   }
 

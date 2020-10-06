@@ -6,6 +6,10 @@ export interface ApplicantAnswersDto {
   [key: string]: Answer
 }
 
+export interface CachedAnswersDto {
+  [key: string]: Answer
+}
+
 export interface CurrentValueDto {
   [key: string]: Answer
 }
@@ -84,9 +88,9 @@ export interface ScenarioErrorsDto {
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
-  cachedAnswers: ApplicantAnswersDto;
   currentCycledFields: CurrentCycledFieldsDto;
   currentScenarioId: string;
+  cachedAnswers: CachedAnswersDto;
   currentValue: CurrentValueDto;
   cycledFields: Array<object>; // looks lice it unused property
   display: DisplayDto;
