@@ -96,7 +96,7 @@ Library-publish:
     - npm publish
   only:
     - master
-    - EPGUCORE-38123
+    - EPGUCORE-36456
 
 Build:
   stage: build
