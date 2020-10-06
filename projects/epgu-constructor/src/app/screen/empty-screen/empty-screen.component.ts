@@ -20,11 +20,10 @@ export class EmptyScreenComponent implements Screen {
   get redirectLink(): string {
     const { applicantAnswers } = this.screenService;
     const ref = this.screenService.component?.attrs?.ref;
-    if (ref) {
-      return applicantAnswers[ref]?.value;
-    }
+    const linkFromRef = () => applicantAnswers[ref]?.value;
+    const linkFromComponent = () => this.screenService.component?.attrs?.link;
 
-    return this.screenService.component?.attrs?.link;
+    return ref ? linkFromRef() : linkFromComponent();
   }
 
   nextStep(): void {}
