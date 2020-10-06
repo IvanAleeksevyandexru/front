@@ -37,7 +37,6 @@
 .conf-modal .ps-content {
   max-height: 420px;
   padding-bottom: 2px; // hack for avoid overlapping of buttons
-  padding-right: 18px;
 
   @include tablets-down {
     max-height: inherit;
