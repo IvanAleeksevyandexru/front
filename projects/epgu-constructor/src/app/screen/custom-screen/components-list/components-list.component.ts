@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 
-import { distinctUntilChanged, map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
+import { map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
 import {
   CustomComponent,
@@ -76,9 +76,6 @@ export class ComponentsListComponent implements OnInit {
   private updateScreenData(): void {
     this.screenService.screenData$
       .pipe(
-        distinctUntilChanged((prev: ScreenStore, next: ScreenStore) =>
-          this.isEqual<ScreenStore>(prev, next),
-        ),
         map((screen: ScreenStore): Array<ComponentBase> => this.getComponents(screen)),
         tap((components: Array<CustomComponent>) => this.rebuildFormAfterDataUpdate(components)),
       )
@@ -94,6 +91,9 @@ export class ComponentsListComponent implements OnInit {
   private screenDataEmitter(next: Array<CustomComponent>, prev?: Array<CustomComponent>): void {
     console.group('emitter');
     console.log(prev, next);
+    console.groupEnd();
+    console.group('form');
+    console.log(this.form);
     console.groupEnd();
     next.forEach((component: CustomComponent, index: number) => {
       if (
@@ -137,7 +137,9 @@ export class ComponentsListComponent implements OnInit {
       const group: FormGroup = this.fb.group({
         ...component,
         value: [
-          String(component.attrs?.defaultValue) ? component.attrs?.defaultValue : component.value,
+          typeof component.attrs?.defaultValue !== 'undefined'
+            ? component.attrs?.defaultValue
+            : component.value,
           this.validationFn(component),
         ],
       });
