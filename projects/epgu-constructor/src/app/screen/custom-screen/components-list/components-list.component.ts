@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 
 import { map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
@@ -55,7 +55,6 @@ export class ComponentsListComponent implements OnInit {
     CustomScreenComponentTypes.CheckBox,
   ];
 
-  @Input() components: Array<CustomComponent>;
   @Output() changes = new EventEmitter<CustomComponentOutputData>();
 
   constructor(
@@ -70,7 +69,6 @@ export class ComponentsListComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.array([]);
     this.updateScreenData();
-    this.formWatcher();
   }
 
   private updateScreenData(): void {
@@ -78,6 +76,7 @@ export class ComponentsListComponent implements OnInit {
       .pipe(
         map((screen: ScreenStore): Array<ComponentBase> => this.getComponents(screen)),
         tap((components: Array<CustomComponent>) => this.rebuildFormAfterDataUpdate(components)),
+        takeUntil(this.unsubscribe$),
       )
       .subscribe((next) => this.screenDataEmitter(next));
   }
@@ -91,9 +90,6 @@ export class ComponentsListComponent implements OnInit {
   private screenDataEmitter(next: Array<CustomComponent>, prev?: Array<CustomComponent>): void {
     console.group('emitter');
     console.log(prev, next);
-    console.groupEnd();
-    console.group('form');
-    console.log(this.form);
     console.groupEnd();
     next.forEach((component: CustomComponent, index: number) => {
       if (
@@ -123,6 +119,7 @@ export class ComponentsListComponent implements OnInit {
 
   private rebuildFormAfterDataUpdate(components: Array<CustomComponent>): void {
     this.form = this.fb.array([]);
+    this.formWatcher();
     components.forEach((component: CustomComponent) => {
       if (isDropDown(component.type)) {
         this.initDropDowns(component);
@@ -248,7 +245,13 @@ export class ComponentsListComponent implements OnInit {
 
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
-      const { value, valid = this.form.get([key, 'value']).valid } = val;
+      const isDictionaryOrLookup: boolean =
+        val.type === CustomScreenComponentTypes.Dictionary ||
+        val.type === CustomScreenComponentTypes.Lookup;
+
+      const value = isDictionaryOrLookup ? val.value.originalItem : val.value;
+      const { valid } = this.form.get([key, 'value']);
+
       if (this.shownElements[val.id]) {
         acc[val.id] = { value, valid };
       }
