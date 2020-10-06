@@ -80,8 +80,6 @@ Library-publish:
   cache:
     <<: *global_cache
     policy: pull
-  tags:
-    - npm
   before_script:
     - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
