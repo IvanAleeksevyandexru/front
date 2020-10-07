@@ -10,23 +10,18 @@ stages:
   - install
   - code-quality
   - library-build
-  - publish
+  - library-publish
   - build
   - image
   - deploy
 
 Install:
   stage: install
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
   before_script:
     - rm -rf dist
-    ## Повышаем версию до npm install
-    #- echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
-    #- echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
-    #- cd projects/epgu-constructor
-    #- CURRENT_VERSION=$(npm view epgu-constructor version)
-    #- npm version $CURRENT_VERSION
-    #- npm version patch
-    #- cd ../..
   script:
     - yarn install
   only:
@@ -35,6 +30,9 @@ Install:
 
 Lint:
   stage: code-quality
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     <<: *global_cache
     policy: pull
@@ -44,8 +42,11 @@ Lint:
     - merge_requests
     - master
 
-Test:
+Code-quality:
   stage: code-quality
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     <<: *global_cache
     policy: pull
@@ -57,14 +58,21 @@ Test:
 
 Library-build:
   stage: library-build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
   script:
+    - npm run generate-lib-version-ts
     - yarn lib:build
   only:
     - merge_requests
     - master
 
 Library-publish:
-  stage: publish
+  stage: library-publish
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     <<: *global_cache
     policy: pull
@@ -72,16 +80,31 @@ Library-publish:
     - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
   script:
+    - echo $GITLAB_USER_LOGIN
+    - echo $CI_USER
+    - echo $CI_USER_EMAIL
+    - git config --global user.email $CI_USER_EMAIL
+    - git config --global user.name $CI_USER
+    - git config receive.advertisePushOptions true
+    - git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
+    - npm run release -- --release-as patch
+    - CURRENT_TAG=$(git describe --abbrev=0)
+    - echo $CURRENT_TAG
+    - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@git.gosuslugi.local/luxoft/epgu2-form-frontend.git --follow-tags ${CI_COMMIT_REF_NAME}:master
     - cd dist/epgu-constructor
-    - CURRENT_VERSION=$(npm view epgu-constructor version)
-    - npm version $CURRENT_VERSION
-    - npm version patch
+    - npm version ${CURRENT_TAG:1}
     - npm publish
+  after_script:
+    - git tag -d $CURRENT_TAG
+    - git reset --hard HEAD~1
   only:
     - master
 
 Build:
   stage: build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
   script:
     - yarn build --prod
     - /devops/notify/notify.sh fronted_new_master_available
@@ -91,6 +114,9 @@ Build:
 
 Build-image:
   stage: image
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     <<: *global_cache
     policy: pull
@@ -112,6 +138,9 @@ Build-image:
 
 Deploy to review env:
   stage: deploy
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
   cache: {}
   variables:
     GIT_STRATEGY: none
@@ -130,6 +159,9 @@ Deploy to review env:
 
 Drop review env:
   stage: deploy
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
   cache: {}
   variables:
     GIT_STRATEGY: none
