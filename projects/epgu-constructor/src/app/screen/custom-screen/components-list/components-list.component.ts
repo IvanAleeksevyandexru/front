@@ -169,11 +169,13 @@ export class ComponentsListComponent implements OnInit {
   }
 
   private calcDependedFormGroup(component: CustomComponent): void {
+    const isComponentDependent = (arr = []): boolean =>
+      arr?.some((el) => el.relatedRel === component.id);
+    const getDependentComponents = (components): Array<CustomComponent> =>
+      components.filter((c: CustomComponent) => isComponentDependent(c.attrs?.ref));
+
     const components: Array<any> = this.form.getRawValue();
-    const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
-    const dependentComponents: Array<CustomComponent> = components.filter((c: CustomComponent) =>
-      isComponentDependOn(c.attrs?.ref),
-    );
+    const dependentComponents: Array<CustomComponent> = getDependentComponents(components);
 
     dependentComponents.forEach((dependentComponent) => {
       const dependentControl: AbstractControl = this.form.get(
