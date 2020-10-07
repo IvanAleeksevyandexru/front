@@ -1,8 +1,12 @@
 import { ScreenTypes } from '../../../screen/screen.types';
-import { Gender } from '../../../shared/types/gender';
 import { Answer } from '../../../shared/types/answer';
+import { Gender } from '../../../shared/types/gender';
 
 export interface ApplicantAnswersDto {
+  [key: string]: Answer
+}
+
+export interface CachedAnswersDto {
   [key: string]: Answer
 }
 
@@ -57,6 +61,7 @@ export interface DisplayDto {
   submitLabel: string;
   type: ScreenTypes;
   terminal: boolean;
+  isSocialButtonsHidden?: boolean
 }
 
 export interface CurrentCycledFieldsDto {
@@ -82,9 +87,9 @@ export interface ScenarioErrorsDto {
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
-  cachedAnswers: ApplicantAnswersDto;
   currentCycledFields: CurrentCycledFieldsDto;
   currentScenarioId: string;
+  cachedAnswers: CachedAnswersDto;
   currentValue: CurrentValueDto;
   cycledFields: Array<object>; // looks lice it unused property
   display: DisplayDto;

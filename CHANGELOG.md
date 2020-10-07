@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.21](https://git.gosuslugi.local///compare/v0.1.20...v0.1.21) (2020-10-06)
+
+
+### Bug Fixes
+
+* change Clarification import ([f4e596b](https://git.gosuslugi.local///commit/f4e596b39df23ba88ece9530e4ccc396d0fd1f24))
+* change spec and remove @Input components prop ([0d71b1b](https://git.gosuslugi.local///commit/0d71b1be4b935d4ecc7820180e8ee91f1b3f7309))
+* display button in time slots ([0ff178a](https://git.gosuslugi.local///commit/0ff178a3a102763c6b8cdd09d11ac4b73ed98112))
+* formplayer api cachedAnswers ([5aba834](https://git.gosuslugi.local///commit/5aba834132a9a6d67b94f63521defd8ff1cb0264))
+* resolve imgPrefixer triggers twice issue, add new assets imgs, ([21fe526](https://git.gosuslugi.local///commit/21fe526a43e0a08b8687035861d45e335d4fbfac))
+* upd componentList for repeatable fields ([656f6d5](https://git.gosuslugi.local///commit/656f6d5976ed913fc199c0089e90e83753bfe7f3))
+* update epgu-lib in project/epgu-constructor [ref EPGUCORE-36456] ([18a9438](https://git.gosuslugi.local///commit/18a943856307af1059d0ed433210855900ee51fc))
+
 ### [0.1.20](https://git.gosuslugi.local///compare/v0.1.19...v0.1.20) (2020-10-05)
 
 

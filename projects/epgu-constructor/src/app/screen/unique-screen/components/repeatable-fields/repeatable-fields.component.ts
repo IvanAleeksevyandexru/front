@@ -26,6 +26,9 @@ export class RepeatableFieldsComponent {
     this.initVariable();
     this.propData = data;
     this.screens[this.getId()] = data.components[0].attrs.components;
+    console.group('debug');
+    console.log(this.screens, this.screenService.screenData$);
+    console.groupEnd();
   }
   @Output() nextStepEvent = new EventEmitter();
 
