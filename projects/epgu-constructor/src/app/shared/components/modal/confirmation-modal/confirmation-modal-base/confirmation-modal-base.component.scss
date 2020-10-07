@@ -83,5 +83,19 @@
       }
     }
   }
+
+  .ps-content {
+    max-height: 364px;
+    padding-right: 5px; // fix overlapping content by scroll
+    padding-bottom: 2px; // hack for avoid overlapping of buttons
+
+    @include tablets-down {
+      max-height: inherit;
+    }
+  }
+
+  .conf-modal__body--without-header .ps-content {
+    max-height: 420px;
+  }
 }
 
