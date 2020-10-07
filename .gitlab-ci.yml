@@ -99,7 +99,6 @@ Library-publish:
     - git reset --hard HEAD~1
   only:
     - master
-    - EPGUCORE-36456
 
 Build:
   stage: build
