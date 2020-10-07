@@ -133,3 +133,7 @@ export enum ActionType {
   nextStep = 'nextStep',
   redirectToLK = 'redirectToLK',
 }
+
+export interface OrderIdApiResponse {
+  orderId: string
+}
