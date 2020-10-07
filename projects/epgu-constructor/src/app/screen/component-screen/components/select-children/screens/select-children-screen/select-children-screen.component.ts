@@ -4,6 +4,7 @@ import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
+import { ScreenService } from '../../../../../screen.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { ComponentBase } from '../../../../../screen.types';
@@ -29,16 +30,18 @@ export class SelectChildrenScreenComponent implements OnInit {
   constructor(
     private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
+    private screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {
     this.valueParsed = JSON.parse(this.data.value);
     this.itemsList = this.valueParsed?.items || [];
+    const idToFirstNameRef = this.getIdToFirstNameRef();
     this.itemsToSelect = [
-      ...this.itemsList.map((child) => {
+      ...this.itemsList.map((child, idx) => {
         return {
-          id: child.id,
-          text: child.firstName,
+          id: idx,
+          text: child[idToFirstNameRef],
         };
       }),
       { id: 'new', text: 'Добавить нового ребенка' },
@@ -49,6 +52,12 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.selectChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.items = Object.keys(this.selectChildrenForm.controls);
     });
+  }
+
+  getIdToFirstNameRef(): string {
+    return (this.screenService.display?.components[0]?.attrs?.components || []).find((item) =>
+      item?.attrs?.fields?.find((field) => field?.fieldName === 'firstName'),
+    )?.id;
   }
 
   addNewChild(item): void {
