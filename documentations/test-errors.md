@@ -9,16 +9,15 @@
 
 
 Ошибка: The pipe 'safeHtml' could not be found!
-Решение: 
+Решение: Заменить нашим кастомным пайпом 'safe' с соответствующим типом.
 
-Ошибка: If ngModel is used within a form tag, either the name attribute must be set or the form
-          control must be defined as 'standalone' in ngModelOptions.
+Ошибка: If ngModel is used within a form tag, either the name attribute must be set or the form control must be defined as 'standalone' in ngModelOptions.
 Решение: каждый элемент использующий ngModel должен иметь 'name'
 
 
-Действие: для description заменяем на description.skip или xdescription, пробы пропустить тест.   
+Действие: для description заменяем на description.skip или xdescription, пробы пропустить тест.
 Ошибка: Test suite failed to run. Your test suite must contain at least one test.
 Решение: нужно добавить хотя бы один тест. Например
-it('nothing', () => {
+  it('nothing', () => {
     expect(true).toBeTruthy();
   });

@@ -3,7 +3,6 @@ import { ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ScreenContent } from './screen-content';
 
-
 @Injectable()
 export class ScreenServiceStub extends ScreenContent {
   private screenStore: ScreenStore;
@@ -22,7 +21,6 @@ export class ScreenServiceStub extends ScreenContent {
   }
 
   public initScreenStore(store: ScreenStore): void {}
-
 
   public updateScreenStore(newState: ScreenStore): void {}
 

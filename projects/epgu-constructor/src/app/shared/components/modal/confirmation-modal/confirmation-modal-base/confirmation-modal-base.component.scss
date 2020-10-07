@@ -8,7 +8,7 @@
     @include modal-body();
     width: 634px;
     max-height: 485px;
-    padding: 32px 14px 32px 32px;
+    padding: 32px;
     border-radius: 12px;
 
     @include tablets-down {
@@ -20,7 +20,7 @@
 
     &__cross-button {
       position: absolute;
-      right: 28px;
+      right: 26px;
       width: 16px;
       height: 16px;
       cursor: pointer;
