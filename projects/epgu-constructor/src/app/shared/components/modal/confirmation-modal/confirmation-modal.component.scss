@@ -41,7 +41,8 @@
   }
 
   ol li {
-    padding-left: 0;
+    padding-left: 16px;
+    position: relative;
 
     &::before {
       counter-increment: number;
@@ -49,6 +50,8 @@
       color: $color-gosblue;
       padding-right: 6px;
       font-weight: $fw-semi-bold;
+      position: absolute;
+      left: 0;
     }
   }
 

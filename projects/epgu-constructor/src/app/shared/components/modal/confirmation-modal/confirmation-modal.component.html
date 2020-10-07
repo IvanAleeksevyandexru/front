@@ -5,10 +5,10 @@
   [showCrossButton]="showCrossButton"
   (closeModalChange)="closeModal()"
 >
-  <span
+  <div
     #innerHtml
     class="conf-modal__text"
     (click)="toggleHiddenBlock($event, innerHtml)"
     [innerHTML]="text | imgPrefixer | safe: 'html'"
-  ></span>
+  ></div>
 </epgu-constructor-confirmation-modal-base>
