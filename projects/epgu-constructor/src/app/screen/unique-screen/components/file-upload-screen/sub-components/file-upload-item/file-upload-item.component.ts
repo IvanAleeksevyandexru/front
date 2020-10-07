@@ -314,6 +314,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
       files = files.filter((f) => f.mnemonic !== file.mnemonic);
       this.files$$.next(files);
     }
+    this.uploadInput.nativeElement.value = '';
   }
 
   /**
