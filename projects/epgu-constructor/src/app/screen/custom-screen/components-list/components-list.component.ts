@@ -251,7 +251,7 @@ export class ComponentsListComponent implements OnInit {
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
       const { disabled } = this.form.get([key, 'value']);
-      const value = likeDictionary(val.type) ? val.value.originalItem : val.value;
+      const { value } = val;
       const valid = disabled ? true : this.form.get([key, 'value']).valid;
       if (this.shownElements[val.id]) {
         acc[val.id] = { value, valid, disabled };
