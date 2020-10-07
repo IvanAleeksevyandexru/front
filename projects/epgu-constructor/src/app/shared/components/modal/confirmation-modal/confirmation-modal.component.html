@@ -1,14 +1,9 @@
 <epgu-constructor-confirmation-modal-base
   [buttons]="buttons"
-  [text]="text"
   [title]="title"
   [showCrossButton]="showCrossButton"
   (closeModalChange)="closeModal()"
 >
-  <div
-    #innerHtml
-    class="conf-modal__text"
-    (click)="toggleHiddenBlock($event, innerHtml)"
-    [innerHTML]="text | imgPrefixer | safe: 'html'"
-  ></div>
+  <epgu-constructor-output-html [html]="text">
+  </epgu-constructor-output-html>
 </epgu-constructor-confirmation-modal-base>
