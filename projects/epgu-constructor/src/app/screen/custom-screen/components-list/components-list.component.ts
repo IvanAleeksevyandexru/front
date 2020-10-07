@@ -131,9 +131,9 @@ export class ComponentsListComponent implements OnInit {
       }
 
       let value =
-        typeof component.attrs?.defaultValue !== 'undefined'
-          ? component.attrs?.defaultValue
-          : component.value;
+        typeof component.attrs?.defaultValue === 'undefined'
+          ? component.value
+          : component.attrs?.defaultValue;
 
       if (component.type === CustomScreenComponentTypes.DateInput && component.value) {
         value = new Date(component.value);
