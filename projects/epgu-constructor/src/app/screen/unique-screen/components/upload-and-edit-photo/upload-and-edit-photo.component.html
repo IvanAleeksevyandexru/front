@@ -50,7 +50,7 @@
     </div>
     <span class="photo__text"
           (click)="handleClickOnElemById($event)"
-          [innerHTML]="data?.label | safeHtml"></span>
+          [innerHTML]="data?.label | safe: 'html'"></span>
   </div>
   <div *ngIf="croppedImageUrl"
        class="photo-footer">

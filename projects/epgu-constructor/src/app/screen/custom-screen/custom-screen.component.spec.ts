@@ -13,6 +13,7 @@ import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ComponentsListComponent } from './components-list/components-list.component';
 import { CustomScreenComponent } from './custom-screen.component';
 import { ValidationService } from './services/validation.service';
+import { CurrentAnswersService } from '../current-answers.service';
 
 xdescribe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -53,6 +54,7 @@ xdescribe('CustomScreenComponent', () => {
         ScreenService,
         UnsubscribeService,
         CachedAnswersService,
+        CurrentAnswersService,
         ValidationService,
       ]
     })
