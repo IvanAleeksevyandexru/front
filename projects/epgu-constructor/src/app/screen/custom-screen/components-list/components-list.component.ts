@@ -8,6 +8,7 @@ import {
   CustomComponentDictionaryState,
   CustomComponentDropDownItemList,
   CustomComponentOutputData,
+  CustomComponentRef,
   CustomComponentRefRelation,
   CustomScreenComponentTypes,
 } from '../custom-screen.types';
@@ -16,9 +17,11 @@ import {
   DictionaryResponse,
 } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
+  getCalcRelation,
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
+  isEqualObject,
   isHaveNeededValue,
   likeDictionary,
 } from '../tools/custom-screen-tools';
@@ -94,7 +97,7 @@ export class ComponentsListComponent implements OnInit {
       if (
         prev &&
         component.attrs.dictionaryType === 'MARKI_TS' &&
-        !this.isEqual<string>(prev[index]?.value, component.value)
+        !isEqualObject<string>(prev[index]?.value, component.value)
       ) {
         this.loadModelsTS(component.id);
       }
@@ -106,16 +109,22 @@ export class ComponentsListComponent implements OnInit {
     });
   }
 
-  private isEqual<T>(prev: T, next: T): boolean {
-    return JSON.stringify(prev) === JSON.stringify(next);
-  }
-
+  /**
+   * Возвращает массив компонентов для отображения
+   * @param screen - данные для экрана
+   * @private
+   */
   private getComponents(screen: ScreenStore): Array<ComponentDto> {
     return screen.display.components[0]?.type === UniqueScreenComponentTypes.repeatableFields
       ? screen.display.components[0].attrs.components
       : screen.display.components;
   }
 
+  /**
+   * Пересчитывает форму со свойствами после одновления данных
+   * @param components - массив компонентов
+   * @private
+   */
   private rebuildFormAfterDataUpdate(components: Array<CustomComponent>): void {
     this.form = this.fb.array([]);
     this.formWatcher();
@@ -168,6 +177,11 @@ export class ComponentsListComponent implements OnInit {
     }));
   }
 
+  /**
+   * Расчет зависимых полей
+   * @param component - массив компонентов
+   * @private
+   */
   private calcDependedFormGroup(component: CustomComponent): void {
     const components: Array<any> = this.form.getRawValue();
     const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
@@ -192,12 +206,49 @@ export class ComponentsListComponent implements OnInit {
         dependentControl.markAsUntouched();
       }
 
+      const calcRelation = getCalcRelation(dependentComponent);
+      if (calcRelation) {
+        dependentControl.setValue(this.calculateValueFromRelation(calcRelation, components));
+      }
+      console.log('calcRelation', calcRelation);
+      console.log('isDisabled', isDisabled);
       if (isDisabled) {
         dependentControl.disable({ emitEvent: false });
       } else {
         dependentControl.enable({ emitEvent: false });
       }
     });
+  }
+
+  /**
+   * Подсчитывает автовычисляемое значение из формулы, которую передали
+   * @param itemRef - объект с информацией о связи
+   * @param components - компоненты с информацией
+   * @example {val: '{add16} + {add17} / 100'} => 50 + 150 / 100
+   */
+  calculateValueFromRelation(itemRef: CustomComponentRef, components: CustomComponent[]) {
+    let str = itemRef.val;
+    const lettersAnNumberItemRegExp = /\{\w+\}/gm;
+    const componentKeys = [...str.match(lettersAnNumberItemRegExp)];
+    let haveAllValues = true;
+
+    componentKeys.forEach((key: string) => {
+      const k = key.replace('{', '').replace('}', '');
+      const control = this.form.get(`${components.findIndex((c) => c.id === k)}.value`);
+      console.log('control', control);
+      console.log('control?.value', control?.value);
+      const val = Number(control?.value);
+      // eslint-disable-next-line no-restricted-globals
+      if (isNaN(val)) {
+        haveAllValues = false;
+      } else {
+        str = str.replace(key, val.toString());
+      }
+    });
+
+    // Возвращает например Math.round({add16} + {add17} / 100) => Math.round(50 + 150 / 100)
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
+    return haveAllValues ? Function(`'use strict'; return (Math.round(${str}))`)() : '';
   }
 
   private initDropDowns(component: CustomComponent): void {
@@ -242,6 +293,11 @@ export class ComponentsListComponent implements OnInit {
     this.dictionaries[id].loadEnd = false;
   }
 
+  /**
+   * Событие изменения значений в полях
+   * @param component - компонент
+   * @private
+   */
   private emmitChanges(component?: CustomComponent): void {
     if (component) {
       this.calcDependedFormGroup(component);

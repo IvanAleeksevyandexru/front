@@ -6,7 +6,6 @@ import {
   CustomComponentDictionaryState, CustomComponentRef, CustomComponentRefRelation,
   CustomScreenComponentTypes
 } from '../custom-screen.types';
-const moment = moment_;
 
 function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
   return {
@@ -53,7 +52,7 @@ export function isDropDown(type: CustomScreenComponentTypes): boolean {
 
 /**
  * Возвращает true, если текущее состояние зависимости соответствует значению проверяемого компонента
- * @param state - Хранилище данных
+ * @param components - массив компонентов
  * @param component - компонент
  * @param item - сведения о зависимости
  * @param relation - тип зависимости
@@ -96,6 +95,24 @@ export function getNormalizeDataCustomScreenDictionary(
   return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
 }
 
+/**
+ * Проверяет есть ли связь с типом калькуляция и если есть возвращает её
+ * @param item - объект с информацией о связи
+ */
+export const findCalcRelation = (item: CustomComponentRef) => item.relation === CustomComponentRefRelation.calc;
 
+/**
+ * Возвращает найденую связь компонента с типом калькуляция
+ * @param checkComponent - компонент для проверки
+ */
+export const getCalcRelation = (checkComponent: CustomComponent) => checkComponent.attrs.ref.find(findCalcRelation);
 
+/**
+ * Возвращает true, если объекты равны при сравнии
+ * @param prev - объект 1
+ * @param next - объект 2
+ */
+export function isEqualObject<T>(prev: T, next: T): boolean {
+  return JSON.stringify(prev) === JSON.stringify(next);
+}
 
