@@ -64,7 +64,7 @@ export const isHaveNeededValue = (
   item: CustomComponentRef,
   relation: CustomComponentRefRelation,
 ): boolean => {
-  if (item.relation == relation) {
+  if (item.relation === relation) {
     const stateRelatedRelValue = components.find((c: CustomComponent) => c.id === item.relatedRel)?.value;
 
     return stateRelatedRelValue === item.val;
