@@ -8,6 +8,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   NgZone,
+  OnDestroy,
 } from '@angular/core';
 import { switchMap, filter, takeUntil, reduce } from 'rxjs/operators';
 import { of, merge } from 'rxjs';
@@ -35,7 +36,7 @@ import { CommonModalComponent } from '../../../../shared/components/modal/common
   styleUrls: ['./select-map-object.component.scss'],
   providers: [UnsubscribeService],
 })
-export class SelectMapObjectComponent implements OnInit, AfterViewInit {
+export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() data: ComponentBase;
   @Input() applicantAnswers: { [key: string]: any };
   @Output() nextStepEvent = new EventEmitter<any>();
@@ -75,6 +76,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.selectMapObjectService.templates.detailsTemplate = this.detailsTemplate;
     this.selectMapObjectService.templates.informationTemplate = this.informationTemplate;
+  }
+
+  ngOnDestroy(): void {
+    this.yaMapService.mapSubject.next(null);
   }
 
   private initVariable() {

@@ -2,31 +2,31 @@
 
 <epgu-constructor-screen-container class="screen-container">
   <epgu-constructor-screen-pad>
-    <epgu-constructor-page-name>{{ data?.header }}</epgu-constructor-page-name>
+    <epgu-constructor-page-name>{{ screenService?.header }}</epgu-constructor-page-name>
 
     <div class="data-group">
       <div class="data-item">
-        <div class="data-item__label">{{ marriageInfo?.place.label }}</div>
-        <div class="data-item__value">{{ marriageInfo?.place.value }}</div>
+        <div class="data-item__label">{{ screenService.component?.attrs?.place?.label }}</div>
+        <div class="data-item__value">{{ value?.place }}</div>
       </div>
 
       <div class="data-item">
-        <div class="data-item__label">{{ marriageInfo?.address.label }}</div>
-        <div class="data-item__value">{{ marriageInfo?.address.value }}</div>
+        <div class="data-item__label">{{ screenService.component?.attrs?.address?.label }}</div>
+        <div class="data-item__value">{{ value?.address }}</div>
       </div>
 
       <div class="data-item">
-        <div class="data-item__label">{{ marriageInfo?.ceremonyType.label }}</div>
-        <div class="data-item__value">{{ marriageInfo?.ceremonyType.value }}</div>
+        <div class="data-item__label">{{ screenService.component?.attrs?.ceremonyType?.label }}</div>
+        <div class="data-item__value">{{ value?.ceremonyType }}</div>
       </div>
 
       <div class="data-item">
-        <div class="data-item__label">{{ marriageInfo?.time.label }}</div>
-        <div class="data-item__value">{{ marriageInfo?.time.value }}</div>
+        <div class="data-item__label">{{ screenService.component?.attrs?.time?.label }}</div>
+        <div class="data-item__value">{{ value?.time }}</div>
       </div>
 
       <div class="data-item">
-        <div class="data-item__info">{{ data.components[0].label }}</div>
+        <div class="data-item__info">{{ this.screenService.componentLabel }}</div>
       </div>
 
       <epgu-constructor-timer [timer]="timer"></epgu-constructor-timer>
@@ -35,12 +35,12 @@
 
   <div class="footer">
     <lib-button
-      [showLoader]="isLoading"
+      [showLoader]="screenService.isLoading$ | async"
       [disabled]="isTimeCorrect()"
       (click)="nextStep()"
       class="footer__btn-submit"
     >
-      {{ data?.submitLabel || 'Продолжить' }}
+      {{ screenService?.submitLabel || 'Продолжить' }}
     </lib-button>
   </div>
 </epgu-constructor-screen-container>
