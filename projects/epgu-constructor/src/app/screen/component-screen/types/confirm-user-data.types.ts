@@ -22,9 +22,6 @@ export interface ConfirmUserDataField {
 export interface ConfirmUserDataAdaptiveField {
   label: string;
   value: string;
-  name: string;
-  isVisible: boolean;
-  isTransient: boolean;
 }
 
 export interface ConfirmUserDataFieldsState {
@@ -34,4 +31,5 @@ export interface ConfirmUserDataFieldsState {
 
 export interface ConfirmUserDataState {
   states: ConfirmUserDataFieldsState[];
+  storedValues: { [key: string]: any };
 }

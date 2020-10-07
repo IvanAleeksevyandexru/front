@@ -72,7 +72,8 @@ export class ComponentScreenComponent implements OnInit, Screen {
     if (typeof this.currentAnswersService.state === 'object') {
       value = JSON.stringify(this.currentAnswersService.state);
     } else if (this.isUserData()) {
-      value = JSON.stringify(this.getUserDataForNavigate());
+      const { storedValues } = JSON.parse(this.currentAnswersService.state) as ConfirmUserDataState;
+      value = JSON.stringify(storedValues);
     } else {
       value = this.currentAnswersService.state;
     }
@@ -80,29 +81,6 @@ export class ComponentScreenComponent implements OnInit, Screen {
     this.navigationService.nextStep.next({
       payload: { ...this.cycledFieldsService.dataTransform(value) },
     });
-  }
-
-  /**
-   * Подготовка данных к отправки для компонетов divorceConsent и confirmPersonalUserData
-   */
-  private getUserDataForNavigate(): { [key: string]: any } {
-    const { states } = JSON.parse(this.currentAnswersService.state) as ConfirmUserDataState;
-
-    return states.reduce((groupAcc, group) => {
-      const fields = group.fields.reduce<{ [key: string]: any }>((fieldAcc, field) => {
-        return field.isTransient
-          ? fieldAcc
-          : {
-              ...fieldAcc,
-              [field.name]: field.value,
-            };
-      }, {});
-
-      return {
-        ...groupAcc,
-        ...fields,
-      };
-    }, {});
   }
 
   /**
