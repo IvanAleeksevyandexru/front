@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AddChildrenScreenComponent } from './add-children-screen.component';
-import { EpguLibModule } from 'epgu-lib';
-import { SubComponentsModule } from '../../sub-components/sub-components.module';
-import { SharedModule } from '../../../../../../shared/shared.module';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EpguLibModule } from 'epgu-lib';
+import { SharedModule } from '../../../../../../shared/shared.module';
+import { SubComponentsModule } from '../../sub-components/sub-components.module';
+import { SelectChildrenScreenComponent } from './select-children-screen.component';
 
-const COMPONENTS = [ AddChildrenScreenComponent ];
+const COMPONENTS = [ SelectChildrenScreenComponent ];
 
 @NgModule({
   declarations: [ ...COMPONENTS ],
@@ -19,4 +19,4 @@ const COMPONENTS = [ AddChildrenScreenComponent ];
   ],
   exports: [ ...COMPONENTS ]
 })
-export class AddChildrenScreenModule { }
+export class SelectChildrenScreenModule { }

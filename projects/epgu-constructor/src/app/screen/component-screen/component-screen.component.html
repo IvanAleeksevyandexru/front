@@ -78,17 +78,17 @@
           [data]="screenService.component"
         ></epgu-constructor-doc-input>
 
-        <epgu-constructor-add-children-screen
+        <epgu-constructor-select-children-screen
           *ngSwitchCase="screenComponentName.childrenListUnder14"
           [data]="screenService.component"
           (nextStepEvent)="nextStep()"
-        ></epgu-constructor-add-children-screen>
+        ></epgu-constructor-select-children-screen>
 
-        <epgu-constructor-add-children-screen
+        <epgu-constructor-select-children-screen
           *ngSwitchCase="screenComponentName.childrenListAbove14"
           [data]="screenService.component"
           (nextStepEvent)="nextStep()"
-        ></epgu-constructor-add-children-screen>
+        ></epgu-constructor-select-children-screen>
       </ng-container>
     </epgu-constructor-screen-pad>
 

@@ -1,6 +1,6 @@
-<section class="add-children-screen">
-  <form [formGroup]="addChildrenForm">
-    <div class="add-children-screen__card" *ngFor="let item of items; let idx = index">
+<section class="select-children-screen">
+  <form [formGroup]="selectChildrenForm">
+    <div class="select-children-screen__card" *ngFor="let item of items; let idx = index">
       <div class="card">
         <div class="card__wrapper">
           <div class="card__header">
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="add-children-screen__action">
+    <div class="select-children-screen__action">
       <lib-button width="wide" color="white" (click)="addMoreChild()">
         <label>Добавить ребенка</label>
       </lib-button>

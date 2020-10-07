@@ -4,7 +4,6 @@ import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../shared/shared.module';
 import { ScreenService } from '../screen.service';
 import { ComponentScreenComponent } from './component-screen.component';
-import { AddChildrenScreenModule } from './components/add-children/screens/add-children-screen/add-children-screen.module';
 import { AddPassportModule } from './components/add-passport/add-passport.module';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressScreenModule } from './components/confirm-personal-user/screens/confirm-personal-user-address-screen/confirm-personal-user-address-screen.module';
@@ -19,6 +18,7 @@ import { TemporaryRegistrationAddrScreenModule } from './components/confirm-pers
 import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
 import { DocInputModule } from './components/doc-input/doc-input.module';
 import { MvdGiacModule } from './components/mvd-giac/mvd-giac.module';
+import { SelectChildrenScreenModule } from './components/select-children/screens/select-children-screen/select-children-screen.module';
 
 
 const COMPONENTS = [
@@ -35,7 +35,7 @@ const COMPONENTS = [
     ConfirmPersonalUserEmailScreenModule,
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserDataScreenModule,
-    AddChildrenScreenModule,
+    SelectChildrenScreenModule,
     TemporaryRegistrationAddrScreenModule,
     AddPassportModule,
     MvdGiacModule,

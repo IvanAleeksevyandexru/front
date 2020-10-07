@@ -4,18 +4,18 @@ import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
-import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { ComponentBase } from '../../../../../screen.types';
-import { ChildUnder14 } from './add-children-screen.type';
+import { ChildItem } from './select-children-screen.type';
 
 @Component({
-  selector: 'epgu-constructor-add-children-screen',
-  templateUrl: './add-children-screen.component.html',
-  styleUrls: ['./add-children-screen.component.scss'],
+  selector: 'epgu-constructor-select-children-screen',
+  templateUrl: './select-children-screen.component.html',
+  styleUrls: ['./select-children-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class AddChildrenScreenComponent implements OnInit {
+export class SelectChildrenScreenComponent implements OnInit {
   @Input() data: ComponentBase;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
@@ -24,7 +24,7 @@ export class AddChildrenScreenComponent implements OnInit {
   itemsToSelect: Array<ListItem>;
   selectedItems: any = {};
   items: Array<string> = [];
-  addChildrenForm = new FormGroup({});
+  selectChildrenForm = new FormGroup({});
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -46,14 +46,14 @@ export class AddChildrenScreenComponent implements OnInit {
     this.selectedItems = {};
     this.passDataToSend(Object.values(this.selectedItems));
     this.generateFormGroup();
-    this.addChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.items = Object.keys(this.addChildrenForm.controls);
+    this.selectChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.items = Object.keys(this.selectChildrenForm.controls);
     });
   }
 
   addNewChild(item): void {
     const id = item;
-    const newChild: ChildUnder14 = {
+    const newChild: ChildItem = {
       isNew: true,
       id,
       birthDate: '',
@@ -71,13 +71,13 @@ export class AddChildrenScreenComponent implements OnInit {
       registrationAddressDate: '',
     };
 
-    this.addChildrenForm.controls[item].disable();
+    this.selectChildrenForm.controls[item].disable();
     this.itemsList.push(newChild);
     this.handleSelect({ id }, item);
   }
 
   removeChild(item: string): void {
-    this.addChildrenForm.removeControl(item);
+    this.selectChildrenForm.removeControl(item);
     delete this.selectedItems[item];
     this.passDataToSend(Object.values(this.selectedItems));
     this.setHideStateToSelectedItems();
@@ -90,7 +90,7 @@ export class AddChildrenScreenComponent implements OnInit {
 
   updateChild(childData, item): void {
     // augment new child data with data passed from add-new-child-form component
-    this.addChildrenForm.controls[item].setValue(childData);
+    this.selectChildrenForm.controls[item].setValue(childData);
     this.selectedItems[item] = childData;
     this.passDataToSend(Object.values(this.selectedItems));
     this.setHideStateToSelectedItems();
@@ -128,11 +128,11 @@ export class AddChildrenScreenComponent implements OnInit {
 
   private generateFormGroup(): void {
     const id = uuid.v4();
-    this.addChildrenForm.addControl(id, new FormControl());
+    this.selectChildrenForm.addControl(id, new FormControl());
     this.items.push(id);
   }
 
   private addFormControl(id): void {
-    this.addChildrenForm.addControl(id, new FormControl());
+    this.selectChildrenForm.addControl(id, new FormControl());
   }
 }

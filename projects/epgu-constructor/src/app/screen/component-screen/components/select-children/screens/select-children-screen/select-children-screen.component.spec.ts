@@ -1,18 +1,18 @@
-import { AddChildrenScreenComponent } from './add-children-screen.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CurrentAnswersService } from '../../../../../current-answers.service';
-import { NavigationComponent } from '../../../../../../shared/components/navigation/navigation.component';
-import { MockComponent } from 'ng-mocks';
-import { ReactiveFormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { PageNameComponent } from '../../../../../../shared/components/base/page-name/page-name.component';
-import { ScreenPadComponent } from '../../../../../../shared/components/screen-pad/screen-pad.component';
-import { ScreenContainerComponent } from '../../../../../../shared/components/screen-container/screen-container.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MockComponent } from 'ng-mocks';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { PageNameComponent } from '../../../../../../shared/components/base/page-name/page-name.component';
+import { NavigationComponent } from '../../../../../../shared/components/navigation/navigation.component';
+import { ScreenContainerComponent } from '../../../../../../shared/components/screen-container/screen-container.component';
+import { ScreenPadComponent } from '../../../../../../shared/components/screen-pad/screen-pad.component';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
+import { SelectChildrenScreenComponent } from './select-children-screen.component';
 
-describe('AddChildrenScreenComponent', () => {
-  let component: AddChildrenScreenComponent;
-  let fixture: ComponentFixture<AddChildrenScreenComponent>;
+describe('SelectChildrenScreenComponent', () => {
+  let component: SelectChildrenScreenComponent;
+  let fixture: ComponentFixture<SelectChildrenScreenComponent>;
   let currentAnswersService: CurrentAnswersService;
   let NavigationComponentMock = MockComponent(NavigationComponent);
   const mockData = {
@@ -27,7 +27,7 @@ describe('AddChildrenScreenComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AddChildrenScreenComponent,
+        SelectChildrenScreenComponent,
         NavigationComponentMock,
         PageNameComponent,
         ScreenPadComponent,
@@ -47,7 +47,7 @@ describe('AddChildrenScreenComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddChildrenScreenComponent);
+    fixture = TestBed.createComponent(SelectChildrenScreenComponent);
     component = fixture.componentInstance;
     component.data = mockData;
     currentAnswersService = fixture.debugElement.injector.get(CurrentAnswersService);
