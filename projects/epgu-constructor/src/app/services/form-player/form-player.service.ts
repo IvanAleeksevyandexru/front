@@ -60,6 +60,10 @@ export class FormPlayerService {
     throw new Error(`We cant find screen component for this type: ${screenType}`);
   }
 
+  public getOrderId(): Observable<string> {
+    return this.formPlayerApiService.getOrderId();
+  }
+
   /**
    * Проверяет нужно ли нам достать ранее сохранённые данные
    * для подмены экрана на тот на котором остановились
