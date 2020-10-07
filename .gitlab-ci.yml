@@ -88,12 +88,13 @@ Library-publish:
     - git config receive.advertisePushOptions true
     - git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
     - npm run release -- --release-as patch
-    - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@git.gosuslugi.local/luxoft/epgu2-form-frontend.git --follow-tags ${CI_COMMIT_REF_NAME}:master
-    - cd dist/epgu-constructor
-    - npm publish
-  after_script:
     - CURRENT_TAG=$(git describe --abbrev=0)
     - echo $CURRENT_TAG
+    - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@git.gosuslugi.local/luxoft/epgu2-form-frontend.git --follow-tags ${CI_COMMIT_REF_NAME}:master
+    - cd dist/epgu-constructor
+    - npm version ${CURRENT_TAG:1}
+    - npm publish
+  after_script:
     - git tag -d $CURRENT_TAG
     - git reset --hard HEAD~1
   only:
