@@ -135,7 +135,7 @@ export class ComponentsListComponent implements OnInit {
           ? component.attrs?.defaultValue
           : component.value;
 
-      if (component.type === CustomScreenComponentTypes.DateInput && component.value !== '') {
+      if (component.type === CustomScreenComponentTypes.DateInput && component.value) {
         value = new Date(component.value);
       }
       const group: FormGroup = this.fb.group({
