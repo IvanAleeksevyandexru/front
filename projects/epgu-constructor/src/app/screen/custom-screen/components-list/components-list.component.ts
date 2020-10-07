@@ -31,6 +31,8 @@ import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.se
 import { ValidationService } from '../services/validation.service';
 import { UniqueScreenComponentTypes } from '../../unique-screen/unique-screen.types';
 import { ComponentDto } from '../../../services/api/form-player-api/form-player-api.types';
+import { isEqual } from '../../../shared/constants/uttils';
+import { DictionaryForList } from '../../../shared/constants/dictionary';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -91,11 +93,9 @@ export class ComponentsListComponent implements OnInit {
 
   private screenDataEmitter(next: Array<CustomComponent>, prev?: Array<CustomComponent>): void {
     next.forEach((component: CustomComponent, index: number) => {
-      if (
-        prev &&
-        component.attrs.dictionaryType === 'MARKI_TS' &&
-        !this.isEqual<string>(prev[index]?.value, component.value)
-      ) {
+      const isCarMarkDic: boolean = component.attrs.dictionaryType === DictionaryForList.markTs;
+
+      if (prev && isCarMarkDic && !isEqual<string>(prev[index]?.value, component.value)) {
         this.loadModelsTS(component.id);
       }
       if (this.availableTypesForCheckDependence.includes(component.type)) {
@@ -104,10 +104,6 @@ export class ComponentsListComponent implements OnInit {
         this.emmitChanges();
       }
     });
-  }
-
-  private isEqual<T>(prev: T, next: T): boolean {
-    return JSON.stringify(prev) === JSON.stringify(next);
   }
 
   private getComponents(screen: ScreenStore): Array<ComponentDto> {

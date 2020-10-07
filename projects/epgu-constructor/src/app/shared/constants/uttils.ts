@@ -7,3 +7,7 @@ export function getHiddenBlock(el: HTMLElement, id): HTMLElement {
   const selector = `[data-hidden-id=${id}]`;
   return el.querySelector(selector);
 }
+
+export function isEqual<T>(prev: T, next: T): boolean {
+  return JSON.stringify(prev) === JSON.stringify(next);
+}
