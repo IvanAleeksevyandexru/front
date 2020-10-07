@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.26](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.25...v0.1.26) (2020-10-07)
+
+
+### Bug Fixes
+
+* add auto version bump, changelog generation on master marge via gitlab pipelines [ref EPGUCORE-36456] ([10e67b8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/10e67b8d66c318a19be9a9e9b610cf6a41c7668a))
+
 ### [0.1.25](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.21...v0.1.25) (2020-10-07)
 
 
