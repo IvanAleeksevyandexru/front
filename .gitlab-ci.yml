@@ -84,6 +84,10 @@ Library-publish:
     - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
   script:
+    - echo $GITLAB_USER_LOGIN
+    - echo $CI_USER
+    - echo $CI_NAME
+    - echo $$CI_EMAIL
     - git config --global user.email $CI_EMAIL
     - git config --global user.name $CI_NAME
     - git config receive.advertisePushOptions true
