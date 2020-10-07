@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { QuestionsComponentActions } from './questions-screen.types';
+import { NavigationPayload } from '../../form-player.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { NavigationPayload } from '../../form-player.types';
+import { Screen } from '../screen.types';
+import { QuestionsComponentActions } from './questions-screen.types';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -17,7 +17,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   isCycledFields = false;
   cycledValues: Array<any>;
 
-  private currentCycledFields = this.screenService?.currentCycledFields || {};
+  private currentCycledFields = {};
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
@@ -46,7 +46,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     this.isCycledFields = !!Object.keys(currentCycledFields).length;
     if (this.isCycledFields && typeof currentCycledFields === 'object') {
       [this.cycledValues] = [
-        ...Object.values(currentCycledFields).map((value) => JSON.parse(value)),
+        ...Object.values(currentCycledFields).map((value: string) => JSON.parse(value)),
       ];
     }
   }

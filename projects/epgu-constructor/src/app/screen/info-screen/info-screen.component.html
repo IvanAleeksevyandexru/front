@@ -34,5 +34,9 @@
     </div>
 
   </epgu-constructor-screen-pad>
+
+  <div *ngIf="!screenService.display?.isSocialButtonsHidden">
+    <lib-social-share></lib-social-share>
+  </div>
 </epgu-constructor-screen-container>
 

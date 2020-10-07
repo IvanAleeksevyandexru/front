@@ -20,12 +20,7 @@
           [ngTemplateOutlet]="formLabel"
           [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
         </ng-template>
-        <lib-plain-input
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [name]="componentData.value?.id"
-          [validationShowOn]="validationShowOn"
-          [formControl]="componentData.get('value')">
-        </lib-plain-input>
+        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.DropDown">
