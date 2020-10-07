@@ -1,6 +1,6 @@
 variables:
-  CI_NAME: 'gitlab-ci'
-  CI_EMAIL: 'gitlab-ci@luxoft.com'
+  CI_NAME: "adudin"
+  CI_EMAIL: "adudin@luxoft.com"
 
 image: node:latest
 
@@ -118,7 +118,7 @@ Build-image:
     policy: pull
   services:
     - name: docker:dind
-      command: ['--insecure-registry', 'registry.gosuslugi.local']
+      command: ["--insecure-registry", "registry.gosuslugi.local"]
   image: docker:latest
   variables:
     GIT_STRATEGY: none
@@ -148,7 +148,7 @@ Deploy to review env:
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: http://review-$CI_COMMIT_REF_SLUG.pgu2-dev.test.gosuslugi.ru
-    on_stop: 'Drop review env'
+    on_stop: "Drop review env"
   only:
     - merge_requests
     - master
