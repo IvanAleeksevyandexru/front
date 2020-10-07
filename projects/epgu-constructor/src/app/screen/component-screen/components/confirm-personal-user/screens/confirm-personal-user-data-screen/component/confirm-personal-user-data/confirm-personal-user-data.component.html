@@ -4,10 +4,10 @@
       <div class="data-group__title">{{ groupItem?.groupName }}</div>
     </div>
     <div class="data-group__items">
-      <div [ngClass]="{dataItem: field.isVisible}" *ngFor="let field of groupItem.fields">
+      <div [class.data-item]="field.isVisible" *ngFor="let field of groupItem.fields">
         <ng-container *ngIf="field.isVisible">
-          <div class="dataItem__label">{{ field.label }}</div>
-          <div class="dataItem__value">{{ field.value }}</div>
+          <div class="data-item__label">{{ field.label }}</div>
+          <div class="data-item__value">{{ field.value }}</div>
         </ng-container>
       </div>
     </div>
