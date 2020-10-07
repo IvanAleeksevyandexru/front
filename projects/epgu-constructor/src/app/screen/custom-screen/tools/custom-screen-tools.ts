@@ -3,7 +3,7 @@ import * as moment_ from 'moment';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   CustomComponent,
-  CustomComponentDictionaryState,
+  CustomComponentDictionaryState, CustomComponentRef, CustomComponentRefRelation,
   CustomScreenComponentTypes
 } from '../custom-screen.types';
 const moment = moment_;
@@ -50,6 +50,28 @@ export function likeDictionary(type: CustomScreenComponentTypes): boolean {
 export function isDropDown(type: CustomScreenComponentTypes): boolean {
   return CustomScreenComponentTypes.DropDown === type;
 }
+
+/**
+ * Возвращает true, если текущее состояние зависимости соответствует значению проверяемого компонента
+ * @param state - Хранилище данных
+ * @param component - компонент
+ * @param item - сведения о зависимости
+ * @param relation - тип зависимости
+ */
+export const isHaveNeededValue = (
+  components: Array<CustomComponent>,
+  component: CustomComponent,
+  item: CustomComponentRef,
+  relation: CustomComponentRefRelation,
+): boolean => {
+  if (item.relation === relation) {
+    const stateRelatedRelValue = components.find((c: CustomComponent) => c.id === item.relatedRel)?.value;
+
+    return stateRelatedRelValue === item.val;
+  }
+  return relation === CustomComponentRefRelation.displayOn;
+};
+
 
 /**
  * Адаптирует массив в вид необходимый для компонентов из библлиотеки и если нужно то удаляет РОССИЮ из списка

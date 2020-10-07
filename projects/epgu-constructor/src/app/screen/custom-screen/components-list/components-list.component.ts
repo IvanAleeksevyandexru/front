@@ -8,6 +8,7 @@ import {
   CustomComponentDictionaryState,
   CustomComponentDropDownItemList,
   CustomComponentOutputData,
+  CustomComponentRefRelation,
   CustomScreenComponentTypes,
 } from '../custom-screen.types';
 import {
@@ -18,6 +19,7 @@ import {
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
+  isHaveNeededValue,
   likeDictionary,
 } from '../tools/custom-screen-tools';
 import { ScreenService } from '../../screen.service';
@@ -128,14 +130,12 @@ export class ComponentsListComponent implements OnInit {
         this.loadDictionaries(dictionaryType, component);
       }
 
-      console.log('component::', component, this.dictionaries);
-
       let value =
-        typeof component.attrs?.defaultValue !== 'undefined'
-          ? component.attrs?.defaultValue
-          : component.value;
+        typeof component.attrs?.defaultValue === 'undefined'
+          ? component.value
+          : component.attrs?.defaultValue;
 
-      if (component.type === CustomScreenComponentTypes.DateInput) {
+      if (component.type === CustomScreenComponentTypes.DateInput && component.value) {
         value = new Date(component.value);
       }
       const group: FormGroup = this.fb.group({
@@ -169,29 +169,34 @@ export class ComponentsListComponent implements OnInit {
   }
 
   private calcDependedFormGroup(component: CustomComponent): void {
-    const isLookup: boolean = component.type === CustomScreenComponentTypes.Lookup;
     const components: Array<any> = this.form.getRawValue();
+    const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
     const dependentComponents: Array<CustomComponent> = components.filter((c: CustomComponent) =>
-      c.attrs?.ref?.some((el) => el.relatedRel === component.id),
+      isComponentDependOn(c.attrs?.ref),
     );
 
-    dependentComponents.forEach((dependentComponent: CustomComponent) => {
-      const isShown = dependentComponent.attrs.ref.some((item) => {
-        const stateRelatedRel = isLookup
-          ? components.find((f) => f.id === item.relatedRel)?.value
-          : components.find((f) => f.id === item.relatedRel);
-        if (item.relation === 'displayOn') {
-          return stateRelatedRel?.value === item.val;
-        }
-        return true;
-      });
+    dependentComponents.forEach((dependentComponent) => {
+      const dependentControl: AbstractControl = this.form.get(
+        `${components.findIndex((c) => c.id === dependentComponent.id)}.value`,
+      );
+      // Проверяем статусы показа и отключённости
+      this.shownElements[dependentComponent.id] = dependentComponent.attrs.ref.some((item) =>
+        isHaveNeededValue(components, component, item, CustomComponentRefRelation.displayOn),
+      );
 
-      if (!isShown) {
-        this.form
-          .get(`${components.findIndex((c) => c.id === dependentComponent.id)}.value`)
-          .markAsUntouched();
+      const isDisabled = dependentComponent.attrs.ref.some((item) =>
+        isHaveNeededValue(components, component, item, CustomComponentRefRelation.disabled),
+      );
+
+      if (!this.shownElements[dependentComponent.id]) {
+        dependentControl.markAsUntouched();
       }
-      this.shownElements[dependentComponent.id] = isShown;
+
+      if (isDisabled) {
+        dependentControl.disable({ emitEvent: false });
+      } else {
+        dependentControl.enable({ emitEvent: false });
+      }
     });
   }
 
@@ -247,12 +252,13 @@ export class ComponentsListComponent implements OnInit {
 
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
+      const { disabled } = this.form.get([key, 'value']);
       const value = likeDictionary(val.type) ? val.value.originalItem : val.value;
-      const { valid } = this.form.get([key, 'value']);
-
+      const valid = disabled ? true : this.form.get([key, 'value']).valid;
       if (this.shownElements[val.id]) {
-        acc[val.id] = { value, valid };
+        acc[val.id] = { value, valid, disabled };
       }
+
       return acc;
     }, {});
   }
