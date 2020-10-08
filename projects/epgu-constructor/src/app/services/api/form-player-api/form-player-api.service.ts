@@ -4,9 +4,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { ConfigService } from '../../../config/config.service';
 import { FormPlayerNavigation, NavigationOptions } from '../../../form-player.types';
-import { FormPlayerApiResponse, FormPlayerApiSuccessResponse, OrderIdApiResponse } from './form-player-api.types';
+import { FormPlayerApiResponse, FormPlayerApiSuccessResponse, CheckOrderApiResponse } from './form-player-api.types';
 import { ServiceDataService } from '../../service-data/service-data.service';
-import { map } from 'rxjs/operators';
 
 type CookieSession = { userId: string, token: string };
 
@@ -19,13 +18,13 @@ export class FormPlayerApiService {
     private cookieService: CookieService,
   ) {}
 
-  public getOrderId(): Observable<string> {
+  public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
     const { serviceId, targetId } = this.serviceDataService;
     const { userId, token } = this.getSessionFromCookie();
     const body = { targetId, userId, token };
     const path = `${this.config.apiUrl}/service/${serviceId}/scenario/checkIfOrderIdExists`;
 
-    return this.post<OrderIdApiResponse>(path, body).pipe(map(result => result.orderId));
+    return this.post<CheckOrderApiResponse>(path, body);
   }
 
   public getInviteServiceData(orderId: string): Observable<FormPlayerApiResponse> {

@@ -7,6 +7,7 @@ import { ScreenTypes } from '../../screen/screen.types';
 import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
+  CheckOrderApiResponse,
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
@@ -60,8 +61,8 @@ export class FormPlayerService {
     throw new Error(`We cant find screen component for this type: ${screenType}`);
   }
 
-  public getOrderId(): Observable<string> {
-    return this.formPlayerApiService.getOrderId();
+  public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
+    return this.formPlayerApiService.checkIfOrderExist();
   }
 
   /**
@@ -84,14 +85,15 @@ export class FormPlayerService {
   /**
    * Инициализирует данные для показа, смотрим откуда брать данные
    * @param orderId - id заявления
+   * @param invited - являеться ли сценарий приглашённым
    */
-  initData(orderId?: string): void {
+  initData(orderId?: string, invited?: boolean): void {
     this.updateLoading(true);
 
     if (this.isNeedToShowLastScreen()) {
       this.getDataFromLocalStorage();
     } else {
-      if (this.serviceDataService.invited) {
+      if (invited) {
         this.getInviteOrderData(orderId);
       } else {
         this.getOrderData(orderId);

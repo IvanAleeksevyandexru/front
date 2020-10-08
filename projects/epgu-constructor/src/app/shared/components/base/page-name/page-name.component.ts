@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ScreenService } from '../../../../screen/screen.service';
 
 @Component({
   selector: 'epgu-constructor-page-name',
@@ -6,5 +7,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./page-name.component.scss'],
 })
 export class PageNameComponent implements OnInit {
+  constructor(public screenService: ScreenService) {}
   ngOnInit(): void {}
 }

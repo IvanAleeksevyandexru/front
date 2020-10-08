@@ -27,6 +27,7 @@ Install:
   only:
     - merge_requests
     - master
+    - develop
 
 Lint:
   stage: code-quality
@@ -41,7 +42,8 @@ Lint:
   only:
     - merge_requests
     - master
-
+    - develop
+    
 Code-quality:
   stage: code-quality
   except:
@@ -55,7 +57,8 @@ Code-quality:
   only:
     - merge_requests
     - master
-
+    - develop
+    
 Library-build:
   stage: library-build
   except:
@@ -67,7 +70,8 @@ Library-build:
   only:
     - merge_requests
     - master
-
+    - develop
+    
 Library-publish:
   stage: library-publish
   except:
@@ -111,7 +115,8 @@ Build:
   only:
     - merge_requests
     - master
-
+    - develop
+    
 Build-image:
   stage: image
   except:
@@ -135,7 +140,8 @@ Build-image:
   only:
     - merge_requests
     - master
-
+    - develop
+    
 Deploy to review env:
   stage: deploy
   except:
@@ -156,7 +162,8 @@ Deploy to review env:
   only:
     - merge_requests
     - master
-
+    - develop
+    
 Drop review env:
   stage: deploy
   except:
@@ -177,3 +184,4 @@ Drop review env:
   only:
     - merge_requests
     - master
+    - develop

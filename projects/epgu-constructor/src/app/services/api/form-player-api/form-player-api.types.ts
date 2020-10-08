@@ -56,6 +56,7 @@ export interface ComponentDtoAction {
 export interface DisplayDto {
   components: Array<ComponentDto>;
   header: string;
+  subHeader: string;
   label?: string;
   id: string;
   name: string;
@@ -134,6 +135,7 @@ export enum ActionType {
   redirectToLK = 'redirectToLK',
 }
 
-export interface OrderIdApiResponse {
-  orderId: string
+export interface CheckOrderApiResponse {
+  scenarioDto: ScenarioDto;
+  isInviteScenario: boolean;
 }
