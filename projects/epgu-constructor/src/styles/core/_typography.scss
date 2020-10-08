@@ -21,7 +21,7 @@ $font-main: $font-lato, 'Arial', sans-serif;
 @mixin typ-h3 {
   font-family: $font-main;
   font-style: normal;
-  font-weight: $fw-semi-bold;
+  font-weight: $fw-bold;
   font-size: $font-xl;
   line-height: 32px;
 }
