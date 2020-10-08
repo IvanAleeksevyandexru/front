@@ -3,9 +3,9 @@
   <a href="javascript:void(0);"
      class="button-change"
      epgu-constructor-action
-     [action]="screenService.actions[0]"
+     [action]="screenService.action"
      *ngIf="isEditButtonShown">
-    Редактировать
+    {{screenService.action.label}}
   </a>
 </div>
 
