@@ -126,7 +126,7 @@ export const getCalcRelation = (checkComponent: CustomComponent) => checkCompone
  * @param prev - объект 1
  * @param next - объект 2
  */
-export function isEqualObject<T>(prev: T, next: T): boolean {
+export function isEqual<T>(prev: T, next: T): boolean {
   return JSON.stringify(prev) === JSON.stringify(next);
 }
 
