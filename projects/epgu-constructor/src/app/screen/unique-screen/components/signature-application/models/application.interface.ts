@@ -1,10 +1,6 @@
-export interface SignatureApplicationAttr {
-  actions: Actions[];
-  image: { src: string };
-}
-
-interface Actions {
-  label: string;
-  value: string;
-  action: string;
+export interface SignatureApplicationData {
+  url: string;
+  userId: number;
+  operationID: string;
+  fileAccessCodes: string[];
 }

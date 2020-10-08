@@ -5,6 +5,7 @@ import { ConfigService } from '../../../../../config/config.service';
 import { ScreenService } from '../../../../screen.service';
 import { UtilsService } from '../../../../../services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../../shared/constants/form-player';
+import { SignatureApplicationData } from '../models/application.interface';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
@@ -17,6 +18,10 @@ export class SignatureApplicationComponent implements OnInit {
 
   isMobile = HelperService.isMobile();
 
+  get data() {
+    return this.screenService.componentValue as SignatureApplicationData;
+  }
+
   @HostListener('click', ['$event']) onClick($event: Event) {
     const { id } = $event.target as HTMLElement;
     if (id === 'linkToLK') {
@@ -28,7 +33,6 @@ export class SignatureApplicationComponent implements OnInit {
   constructor(public config: ConfigService, public screenService: ScreenService) {}
 
   ngOnInit(): void {
-    console.log('log');
     if (this.isSigned()) {
       UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
       this.nextStep();
@@ -37,26 +41,26 @@ export class SignatureApplicationComponent implements OnInit {
     }
   }
 
-  nextStep(): void {
-    this.nextStepEvent.emit(JSON.stringify({ user: 'Подписано' }));
+  public redirectToLK(): void {
+    window.location.href = this.config.lkUrl;
   }
 
-  private redirectToLK(): void {
-    window.location.href = this.config.lkUrl;
+  private nextStep(): void {
+    this.nextStepEvent.emit(JSON.stringify({ ...this.data, success: true }));
   }
 
   private isSigned(): boolean {
     return (
       !!this.screenService.applicantAnswers[this.screenService.component.id]?.value ||
-      window.location.href.includes('signSuccess')
+      window.location.href.includes('signatureSuccess')
     );
   }
 
   private redirectToSignatureWindow(): void {
     this.setDataToLocalStorage();
 
-    const { url } = this.screenService.componentValue as { url: string };
-    window.location.href = `${url}?getLastScreen=signSuccess`;
+    const { url } = this.data;
+    window.location.href = `${url}?getLastScreen=signatureSuccess`;
   }
 
   private setDataToLocalStorage(): void {
