@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  HostBinding,
-  Input,
-  OnChanges,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, HostBinding, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 import { LoadService } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from './config/config.service';
@@ -27,7 +19,7 @@ import { NavigationService } from './shared/services/navigation/navigation.servi
   providers: [UnsubscribeService],
   encapsulation: ViewEncapsulation.None,
 })
-export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
+export class FormPlayerComponent implements OnInit, OnChanges {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() service: Service;
   @Input() config: Config;
@@ -58,14 +50,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.navigationService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.prevStep(data));
-  }
 
-  ngOnChanges(): void {
-    this.serviceDataService.init(this.service);
-    this.checkProps();
-  }
-
-  ngAfterViewInit(): void {
     const { orderId } = this.serviceDataService;
     if (!this.serviceDataService.invited && orderId) {
       this.showModal();
@@ -74,13 +59,18 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
+  ngOnChanges(): void {
+    this.serviceDataService.init(this.service);
+    this.checkProps();
+  }
+
   initializeEpguLibConfig(): Promise<any> {
     return this.config.production ? this.loadService.load('portal') : null;
   }
 
   showModal() {
     const modalResult$ = this.modalService.openModal(ConfirmationModalComponent, {
-      text: `<div><img style="display:block; margin: 56px auto 24px" src="${this.config.staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
+      text: `<div><img style="display:block; margin: 56px auto 24px" src="${this.config.staticDomainAssetsPath}/assets/icons/svg/order_80.svg" alt=""/>
         <h4 style="text-align: center">У вас есть черновик заявления</h4>
         <p class="helper-text" style="text-align: center; margin: -20px 0 0">Продолжить его заполнение?</p></div>`,
       showCloseButton: false,
