@@ -47,6 +47,7 @@ export interface CustomComponentDropDownStateInterface {
 export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
 export type CustomComponentDropDownItem = {
   label: string;
+  code: string;
   disable: boolean;
 };
 
