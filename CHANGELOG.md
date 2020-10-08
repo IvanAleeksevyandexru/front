@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.31](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.30...v0.1.31) (2020-10-08)
+
+
+### Bug Fixes
+
+* text-transform-directive: fixed cursor behaviour in masked input [ref EPGUCORE-38086] ([c6aab82](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c6aab82b4007dd73462f0e3fd06bf60769b95e41))
+
 ### [0.1.30](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.29...v0.1.30) (2020-10-08)
 
 
