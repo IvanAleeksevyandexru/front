@@ -50,6 +50,21 @@ export function isDropDown(type: CustomScreenComponentTypes): boolean {
 }
 
 /**
+ * Возвращает true, если в зависимостях есть значения для проверки
+ *
+ * @param dependentComponent - зависимый компонент компонент
+ * @param component - компонент
+ * @param components - массив компонентов
+ * @param relation - тип зависимости
+ */
+export const isHaveNeededValueForRelation = (
+  dependentComponent: CustomComponent,
+  component: CustomComponent,
+  components: Array<CustomComponent>,
+  relation: CustomComponentRefRelation,
+): boolean => dependentComponent.attrs.ref.some((item) => isHaveNeededValue(components, component, item, relation));
+
+/**
  * Возвращает true, если текущее состояние зависимости соответствует значению проверяемого компонента
  * @param components - массив компонентов
  * @param component - компонент

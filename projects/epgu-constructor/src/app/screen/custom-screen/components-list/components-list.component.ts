@@ -21,7 +21,7 @@ import {
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
   isEqualObject,
-  isHaveNeededValue,
+  isHaveNeededValueForRelation,
   likeDictionary,
 } from '../tools/custom-screen-tools';
 import { ScreenService } from '../../screen.service';
@@ -193,17 +193,21 @@ export class ComponentsListComponent implements OnInit {
         `${components.findIndex((c) => c.id === dependentComponent.id)}.value`,
       );
       // Проверяем статусы показа и отключённости
-      this.shownElements[dependentComponent.id] = dependentComponent.attrs.ref.some((item) =>
-        isHaveNeededValue(components, component, item, CustomComponentRefRelation.displayOn),
+      this.shownElements[dependentComponent.id] = isHaveNeededValueForRelation(
+        dependentComponent,
+        component,
+        components,
+        CustomComponentRefRelation.displayOn,
       );
 
-      let isDisabled = dependentComponent.attrs.ref.some((item) =>
-        isHaveNeededValue(components, component, item, CustomComponentRefRelation.disabled),
-      );
-      // Проверяем нет ли всё время disabled статуса
-      if (!isDisabled && dependentComponent?.attrs?.disabled) {
-        isDisabled = true;
-      }
+      const isDisabled =
+        dependentComponent?.attrs?.disabled ||
+        isHaveNeededValueForRelation(
+          dependentComponent,
+          component,
+          components,
+          CustomComponentRefRelation.disabled,
+        );
 
       if (!this.shownElements[dependentComponent.id]) {
         dependentControl.markAsUntouched();
