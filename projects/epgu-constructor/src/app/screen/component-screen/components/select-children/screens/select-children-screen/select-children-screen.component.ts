@@ -4,9 +4,9 @@ import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
-import { ScreenService } from '../../../../../screen.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../current-answers.service';
+import { ScreenService } from '../../../../../screen.service';
 import { ComponentBase } from '../../../../../screen.types';
 import { ChildItem } from './select-children-screen.type';
 
@@ -26,6 +26,8 @@ export class SelectChildrenScreenComponent implements OnInit {
   selectedItems: any = {};
   items: Array<string> = [];
   selectChildrenForm = new FormGroup({});
+  firstNameRef: string;
+  idRef: string;
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -36,12 +38,13 @@ export class SelectChildrenScreenComponent implements OnInit {
   ngOnInit(): void {
     this.valueParsed = JSON.parse(this.data.value);
     this.itemsList = this.valueParsed?.items || [];
-    const idToFirstNameRef = this.getIdToFirstNameRef();
+    this.firstNameRef = this.getRefFromComponent('firstName');
+    this.idRef = this.getRefFromComponent('id');
     this.itemsToSelect = [
-      ...this.itemsList.map((child, idx) => {
+      ...this.itemsList.map((child) => {
         return {
-          id: idx,
-          text: child[idToFirstNameRef],
+          id: child[this.idRef],
+          text: child[this.firstNameRef],
         };
       }),
       { id: 'new', text: 'Добавить нового ребенка' },
@@ -54,9 +57,9 @@ export class SelectChildrenScreenComponent implements OnInit {
     });
   }
 
-  getIdToFirstNameRef(): string {
+  getRefFromComponent(refName: string): string {
     return (this.screenService.display?.components[0]?.attrs?.components || []).find((item) =>
-      item?.attrs?.fields?.find((field) => field?.fieldName === 'firstName'),
+      item?.attrs?.fields?.find((field) => field.fieldName === refName),
     )?.id;
   }
 
@@ -114,7 +117,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     if (id === 'new') {
       this.addNewChild(item);
     } else {
-      const selectedChild = this.itemsList.find((child) => child.id === id);
+      const selectedChild = this.itemsList.find((child) => child[this.idRef] === id);
       this.selectedItems[item] = selectedChild;
       this.passDataToSend(Object.values(this.selectedItems));
       this.setHideStateToSelectedItems();
@@ -123,12 +126,12 @@ export class SelectChildrenScreenComponent implements OnInit {
 
   private setHideStateToSelectedItems(): void {
     const selectedItemsKeys: Array<string | number> = Object.values(this.selectedItems).map(
-      (selectedItem: any) => selectedItem.id,
+      (selectedItem: any) => selectedItem[this.idRef],
     );
     this.itemsToSelect = this.itemsToSelect.map((item) => {
       const newItem = item;
       newItem.unselectable = false;
-      if (selectedItemsKeys.includes(newItem.id)) {
+      if (selectedItemsKeys.includes(newItem[this.idRef])) {
         newItem.unselectable = true;
       }
       return newItem;

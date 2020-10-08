@@ -1,3 +1,5 @@
+import { ComponentBase } from '../../../../../../screen/screen.types';
+
 export interface ChildItem {
   isNew?: boolean,
   id: number,
@@ -14,4 +16,13 @@ export interface ChildItem {
   relationshipToChild: string,
   registrationAddress: string,
   registrationAddressDate: string
+}
+
+export interface SelectChildrenInterface extends ComponentBase {
+  attrs: Array<any>,
+  id: string,
+  label: string,
+  type: string,
+  value: string,
+  visited: boolean,
 }
