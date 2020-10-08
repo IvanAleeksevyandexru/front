@@ -3,6 +3,6 @@
 </h1>
 
 <epgu-constructor-output-html
-  *ngIf="screenService.subHeader$ | async"
-  [html]="screenService.subHeader$ | async">
+  *ngIf="screenService.subHeader$ | async as subheader"
+  [html]="subheader">
 </epgu-constructor-output-html>
