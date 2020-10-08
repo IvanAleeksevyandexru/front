@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-
 import { map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
 import {
@@ -198,9 +197,13 @@ export class ComponentsListComponent implements OnInit {
         isHaveNeededValue(components, component, item, CustomComponentRefRelation.displayOn),
       );
 
-      const isDisabled = dependentComponent.attrs.ref.some((item) =>
+      let isDisabled = dependentComponent.attrs.ref.some((item) =>
         isHaveNeededValue(components, component, item, CustomComponentRefRelation.disabled),
       );
+      // Проверяем нет ли всё время disabled статуса
+      if (!isDisabled && dependentComponent?.attrs?.disabled) {
+        isDisabled = true;
+      }
 
       if (!this.shownElements[dependentComponent.id]) {
         dependentControl.markAsUntouched();
@@ -208,10 +211,11 @@ export class ComponentsListComponent implements OnInit {
 
       const calcRelation = getCalcRelation(dependentComponent);
       if (calcRelation) {
-        dependentControl.setValue(this.calculateValueFromRelation(calcRelation, components));
+        dependentControl.patchValue(this.calculateValueFromRelation(calcRelation, components), {
+          emitEvent: false,
+        });
       }
-      console.log('calcRelation', calcRelation);
-      console.log('isDisabled', isDisabled);
+
       if (isDisabled) {
         dependentControl.disable({ emitEvent: false });
       } else {
@@ -235,8 +239,6 @@ export class ComponentsListComponent implements OnInit {
     componentKeys.forEach((key: string) => {
       const k = key.replace('{', '').replace('}', '');
       const control = this.form.get(`${components.findIndex((c) => c.id === k)}.value`);
-      console.log('control', control);
-      console.log('control?.value', control?.value);
       const val = Number(control?.value);
       // eslint-disable-next-line no-restricted-globals
       if (isNaN(val)) {

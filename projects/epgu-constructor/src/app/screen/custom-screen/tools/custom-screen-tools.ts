@@ -1,5 +1,4 @@
 import { ListItem } from 'epgu-lib';
-import * as moment_ from 'moment';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   CustomComponent,
