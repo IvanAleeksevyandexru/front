@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
 import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { CurrentAnswersService } from '../current-answers.service';
+import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { Screen, ScreenStore } from '../screen.types';
 import { ComponentScreenComponentTypes } from './component-screen.types';
+import { ConfirmUserDataState } from './types/confirm-user-data.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -32,11 +33,10 @@ export class ComponentScreenComponent implements OnInit, Screen {
   componentData = null;
   form: FormGroup;
   isCycledFields = false;
-  screenStore: ScreenStore;
 
   constructor(
     private navigationService: NavigationService,
-    public componentStateService: ComponentStateService,
+    public currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     private fb: FormBuilder,
@@ -50,11 +50,10 @@ export class ComponentScreenComponent implements OnInit, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
 
-    this.screenService.screenData$
+    this.screenService.currentCycledFields$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenStore) => {
-        this.screenStore = screenData;
-        this.cycledFieldsService.initCycledFields(this.screenStore.currentCycledFields);
+      .subscribe((currentCycledFields) => {
+        this.cycledFieldsService.initCycledFields(currentCycledFields);
       });
   }
 
@@ -68,12 +67,15 @@ export class ComponentScreenComponent implements OnInit, Screen {
   /**
    * Переход на следующую страницу и передача данных
    */
-  nextStep() {
+  nextStep(): void {
     let value: string;
-    if (typeof this.componentStateService.state === 'object') {
-      value = JSON.stringify(this.componentStateService.state);
+    if (typeof this.currentAnswersService.state === 'object') {
+      value = JSON.stringify(this.currentAnswersService.state);
+    } else if (this.isUserData()) {
+      const { storedValues } = JSON.parse(this.currentAnswersService.state) as ConfirmUserDataState;
+      value = JSON.stringify(storedValues);
     } else {
-      value = this.componentStateService.state;
+      value = this.currentAnswersService.state;
     }
 
     this.navigationService.nextStep.next({
@@ -102,5 +104,15 @@ export class ComponentScreenComponent implements OnInit, Screen {
    */
   goToHomePage(): void {
     // TODO: navigate to Home Page
+  }
+
+  isUserData(): boolean | ComponentScreenComponentTypes {
+    const type = this.screenService.componentType as ComponentScreenComponentTypes;
+    const hasType = [
+      ComponentScreenComponentTypes.divorceConsent,
+      ComponentScreenComponentTypes.confirmPersonalUserData,
+    ].includes(type);
+
+    return hasType ? type : false;
   }
 }

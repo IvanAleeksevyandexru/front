@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { ScreenService } from '../../../screen.service';
 import {
   prepareDataToSendForRepeatableFieldsComponent,
@@ -26,6 +26,9 @@ export class RepeatableFieldsComponent {
     this.initVariable();
     this.propData = data;
     this.screens[this.getId()] = data.components[0].attrs.components;
+    console.group('debug');
+    console.log(this.screens, this.screenService.getStore());
+    console.groupEnd();
   }
   @Output() nextStepEvent = new EventEmitter();
 
@@ -37,7 +40,7 @@ export class RepeatableFieldsComponent {
   trackByFunction = (index, item) => item;
 
   constructor(
-    private componentStateService: ComponentStateService,
+    private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
   ) {}
 
@@ -58,7 +61,7 @@ export class RepeatableFieldsComponent {
   }
 
   nextScreen() {
-    this.nextStepEvent.emit(this.componentStateService.state);
+    this.nextStepEvent.emit(this.currentAnswersService.state);
   }
 
   removeItem(key: string, index: number) {
@@ -69,9 +72,9 @@ export class RepeatableFieldsComponent {
   }
 
   getState() {
-    return JSON.parse(this.componentStateService.state);
+    return JSON.parse(this.currentAnswersService.state);
   }
   saveState(state) {
-    this.componentStateService.state = JSON.stringify(state);
+    this.currentAnswersService.state = JSON.stringify(state);
   }
 }

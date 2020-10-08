@@ -1,8 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
-import { NavigationService } from '../../../../../../../../shared/services/navigation/navigation.service';
+import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { ScreenService } from '../../../../../../../screen.service';
-import { Navigation } from '../../../../../../../../form-player.types';
 
 // TODO удалить этот компонент в пользу CUSTOM SCREEN c поддержкой actions;
 @Component({
@@ -13,7 +11,6 @@ import { Navigation } from '../../../../../../../../form-player.types';
 export class ConfirmPersonalUserPhoneComponent implements OnChanges {
   @Input() label: string;
   @Input() data: string;
-  @Input() actions: Array<{ label: string; value: string; action: string }>; // TODO HARDCODE
   @Input() isEditButtonShown: boolean;
 
   phoneMask = [
@@ -38,32 +35,13 @@ export class ConfirmPersonalUserPhoneComponent implements OnChanges {
   ];
 
   constructor(
-    private componentStateService: ComponentStateService,
+    private currentAnswersService: CurrentAnswersService,
     private screenService: ScreenService,
-    private navigationService: NavigationService,
   ) {}
-
-  handleClick() {
-    const action = this.actions[0];
-    const navigation: Navigation = {
-      payload: this.getComponentStateForNavigate(),
-      options: { url: action.action },
-    };
-    this.navigationService.nextStep.next(navigation);
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data?.currentValue) {
-      this.componentStateService.state = this.data;
+      this.currentAnswersService.state = this.data;
     }
-  }
-
-  getComponentStateForNavigate() {
-    return {
-      [this.screenService.component.id]: {
-        visited: true,
-        value: this.componentStateService.state,
-      },
-    };
   }
 }

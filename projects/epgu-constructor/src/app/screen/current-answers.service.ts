@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class ComponentStateService {
+export class CurrentAnswersService {
 
   // <-- component
   private _state: any;

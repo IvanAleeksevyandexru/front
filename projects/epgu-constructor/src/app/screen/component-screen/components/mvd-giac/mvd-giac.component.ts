@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { filter, takeUntil } from 'rxjs/operators';
-import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import {
   getFilteredDictionaryForMvdGiac,
@@ -30,7 +30,7 @@ export class MvdGiacComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private componentStateService: ComponentStateService,
+    private currentAnswersService: CurrentAnswersService,
     private dictionaryApiService: DictionaryApiService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
@@ -56,7 +56,7 @@ export class MvdGiacComponent implements OnInit {
   }
 
   private formChangesHandler(value) {
-    this.componentStateService.state = value.region;
+    this.currentAnswersService.state = value.region;
   }
 
   private getRegionGroupForm() {

@@ -1,13 +1,15 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { ComponentScreenComponentTypes } from '../../../../../../component-screen.types';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
+import { ScreenService } from '../../../../../../../screen.service';
+import { ScreenServiceStub } from '../../../../../../../screen.service.stub';
 
 
 
@@ -25,15 +27,16 @@ describe('ConfirmPersonalUserAddressComponent', () => {
     type: ComponentScreenComponentTypes.confirmPersonalUserRegAddr
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       imports: [FormsModule],
       declarations: [ ConfirmPersonalUserAddressComponent ],
       providers: [
         UnsubscribeService,
-        ComponentStateService,
+        CurrentAnswersService,
         UnsubscribeService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     })
@@ -44,7 +47,6 @@ describe('ConfirmPersonalUserAddressComponent', () => {
     fixture = TestBed.createComponent(ConfirmPersonalUserAddressComponent);
     component = fixture.componentInstance;
     component.data = mockData;
-    component.isEditable = false;
     fixture.detectChanges();
   });
 

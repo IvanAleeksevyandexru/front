@@ -2,19 +2,19 @@
 <epgu-constructor-screen-container>
 
   <div class="question__wrapper">
-    <epgu-constructor-page-name>{{screenStore.display?.header}}</epgu-constructor-page-name>
+    <epgu-constructor-page-name>{{screenService.header$ | async}}</epgu-constructor-page-name>
     <epgu-constructor-output-html
       class="question__wrapper__label"
-      *ngIf="screenStore.display?.components[0]?.label"
-      [html]="screenStore.display?.components[0]?.label | imgPrefixer"
-      [clarifications]="screenStore.display?.components[0]?.attrs.clarifications"
+      *ngIf="screenService.component?.label"
+      [html]="screenService.component?.label | imgPrefixer"
+      [clarifications]="screenService.component?.attrs?.clarifications"
     >
     </epgu-constructor-output-html>
 
     <div class="answer">
       <epgu-constructor-answer-button
         class="answer__item"
-        *ngFor="let answer of screenStore.display?.components[0]?.attrs.actions"
+        *ngFor="let answer of screenService.component?.attrs?.actions"
         (click)="answerChoose(answer)"
         [data]="answer">
       </epgu-constructor-answer-button>

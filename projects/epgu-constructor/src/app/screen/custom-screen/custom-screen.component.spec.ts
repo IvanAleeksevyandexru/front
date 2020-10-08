@@ -6,11 +6,14 @@ import { PageNameComponent } from '../../shared/components/base/page-name/page-n
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
+import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ComponentsListComponent } from './components-list/components-list.component';
 import { CustomScreenComponent } from './custom-screen.component';
+import { ValidationService } from './services/validation.service';
+import { CurrentAnswersService } from '../current-answers.service';
 
 xdescribe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -23,6 +26,7 @@ xdescribe('CustomScreenComponent', () => {
   const screenDataMock: ScreenStore = {
     display: {
       components: [],
+      terminal: false,
       header: '',
       id: '',
       name: '',
@@ -48,6 +52,10 @@ xdescribe('CustomScreenComponent', () => {
         NavigationService,
         UnsubscribeService,
         ScreenService,
+        UnsubscribeService,
+        CachedAnswersService,
+        CurrentAnswersService,
+        ValidationService,
       ]
     })
     .compileComponents();

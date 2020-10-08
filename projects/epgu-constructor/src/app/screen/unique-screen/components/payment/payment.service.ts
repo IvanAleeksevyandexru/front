@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, takeUntil } from 'rxjs/operators';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { getPaymentRequestOptions, mockUpUIN } from './payment.constants';
+import { Observable, throwError } from 'rxjs';
+import { getPaymentRequestOptions } from './payment.constants';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
-import { ScreenStore } from '../../../screen.types';
 import { ScreenService } from '../../../screen.service';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ConfigService } from '../../../../config/config.service';
 import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payment.types';
 
@@ -16,21 +14,13 @@ import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payme
 @Injectable()
 export class PaymentService {
   private requestOptions = { withCredentials: true };
-  screenStore: ScreenStore;
 
   constructor(
     private http: HttpClient,
     private dictionaryApiService: DictionaryApiService,
     private config: ConfigService,
     private screenService: ScreenService,
-    private ngUnsubscribe$: UnsubscribeService
-  ) {
-    this.screenService.screenData$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenStore) => {
-        this.screenStore = screenData;
-      });
-  }
+  ) {}
 
   /**
    * Преобразует сумму строкой без запятой в строку суммы с копейками
@@ -88,7 +78,10 @@ export class PaymentService {
       attributeValues.sum = '200';
     }
 
-    const path = `${this.config.uinApiUrl}/${code}?orderId=${orderId}`;
+    const urlPrefix = this.config.mocks.includes('payment')
+      ? `${this.config.mockUrl}/lk/v1/paygate/uin`
+      : this.config.uinApiUrl;
+    const path = `${urlPrefix}/${code}?orderId=${orderId}`;
     return this.http.post(path, attributeValues, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -106,8 +99,11 @@ export class PaymentService {
     // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
     // return billMockUp.asObservable();
 
+    const urlPrefix = this.config.mocks.includes('payment')
+      ? `${this.config.mockUrl}/pay/v1/bills`
+      : this.config.billsApiUrl;
     // eslint-disable-next-line max-len
-    const path = `${this.config.billsApiUrl}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    const path = `${urlPrefix}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
     return this.http.post(path, {}, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -121,7 +117,10 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    */
   getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<any> {
-    const path = `${this.config.uinApiUrl}/status/${code}?orderId=${orderId}`;
+    const urlPrefix = this.config.mocks.includes('payment')
+      ? `${this.config.mockUrl}/lk/v1/paygate/uin`
+      : this.config.uinApiUrl;
+    const path = `${urlPrefix}/status/${code}?orderId=${orderId}`;
     return this.http.get(path, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -170,7 +169,7 @@ export class PaymentService {
    * @param fiasCode - код справочника
    */
   createPaymentRequestOptions(dictItemCode: string, fiasCode: string): PaymentDictionaryOptionsInterface {
-    const { applicantAnswers } = this.screenStore;
+    const { applicantAnswers } = this.screenService;
     const path = fiasCode.split('.'); // Путь к ответу
     const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, path));
 

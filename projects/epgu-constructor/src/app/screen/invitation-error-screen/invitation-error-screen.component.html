@@ -1,6 +1,6 @@
 <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <epgu-constructor-invitation-error
-  *ngIf="screenStore.display?.components[0].type === typeComponent.invitationError"
+  *ngIf="(screenService.componentType$ | async) === typeComponent.invitationError"
   (getEmail)="sendEmail($event)"
-  [data]="screenStore.display?.components[0]"
+  [data]="screenService.component"
 ></epgu-constructor-invitation-error>

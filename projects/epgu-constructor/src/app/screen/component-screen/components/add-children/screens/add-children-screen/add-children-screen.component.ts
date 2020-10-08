@@ -4,7 +4,7 @@ import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
-import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 import { ComponentBase } from '../../../../../screen.types';
 import { ChildUnder14 } from './add-children-screen.type';
@@ -27,7 +27,7 @@ export class AddChildrenScreenComponent implements OnInit {
   addChildrenForm = new FormGroup({});
 
   constructor(
-    private componentStateService: ComponentStateService,
+    private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
@@ -85,7 +85,7 @@ export class AddChildrenScreenComponent implements OnInit {
 
   passDataToSend(selectedItems): void {
     this.valueParsed.items = selectedItems;
-    this.componentStateService.state = this.valueParsed;
+    this.currentAnswersService.state = this.valueParsed;
   }
 
   updateChild(childData, item): void {

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { Screen, ScreenStore } from '../screen.types';
+import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { EmptyScreenComponentTypes } from './empty-screen.types';
 
@@ -12,20 +11,19 @@ import { EmptyScreenComponentTypes } from './empty-screen.types';
 })
 export class EmptyScreenComponent implements Screen {
   emptyComponentName = EmptyScreenComponentTypes;
-  screenStore: ScreenStore;
 
-  constructor(private screenService: ScreenService, private ngUnsubscribe$: UnsubscribeService) {
-    this.screenService.screenData$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenStore) => {
-        this.screenStore = screenData;
-      });
-  }
+  constructor(public screenService: ScreenService) {}
 
-  get redirectLink() {
-    const { applicantAnswers } = this.screenStore;
-    const ref = this.screenStore.display?.components[0]?.attrs.ref;
-    return applicantAnswers[ref]?.value;
+  /**
+   * Возврат ссылки для редиректа
+   */
+  get redirectLink(): string {
+    const { applicantAnswers } = this.screenService;
+    const ref = this.screenService.component?.attrs?.ref;
+    const linkFromRef = () => applicantAnswers[ref]?.value;
+    const linkFromComponent = () => this.screenService.component?.attrs?.link;
+
+    return ref ? linkFromRef() : linkFromComponent();
   }
 
   nextStep(): void {}

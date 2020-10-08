@@ -1,8 +1,12 @@
 import { ScreenTypes } from '../../../screen/screen.types';
-import { Gender } from '../../../shared/types/gender';
 import { Answer } from '../../../shared/types/answer';
+import { Gender } from '../../../shared/types/gender';
 
 export interface ApplicantAnswersDto {
+  [key: string]: Answer
+}
+
+export interface CachedAnswersDto {
   [key: string]: Answer
 }
 
@@ -38,6 +42,7 @@ export interface ComponentDtoAction {
   label: string;
   value: string;
   action: string;
+  type: ActionType;
 }
 
 /**
@@ -57,6 +62,7 @@ export interface DisplayDto {
   submitLabel: string;
   type: ScreenTypes;
   terminal: boolean;
+  isSocialButtonsHidden?: boolean
 }
 
 export interface CurrentCycledFieldsDto {
@@ -79,12 +85,13 @@ export interface ScenarioErrorsDto {
  * @property {string}userId - в целях разработки, скорее всего переедет в cookie;
  * @property {boolean}[isInternalScenarioFinish] - появляется при internal сценарии;
  * @property {string}[serviceId] - добавляется при internal сценариев(подсценариев);
+ * @property {string}[currentUrl] - текущий url, нужен бэкенду для возврата на страницу, если был переход на стороннюю страницу ;
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
-  cachedAnswers: ApplicantAnswersDto;
   currentCycledFields: CurrentCycledFieldsDto;
   currentScenarioId: string;
+  cachedAnswers: CachedAnswersDto;
   currentValue: CurrentValueDto;
   cycledFields: Array<object>; // looks lice it unused property
   display: DisplayDto;
@@ -96,6 +103,7 @@ export interface ScenarioDto {
   userId: string;
   isInternalScenario?: boolean;
   serviceId?: string;
+  currentUrl?: string;
 }
 
 /**
@@ -119,3 +127,14 @@ export interface FormPlayerApiErrorResponse {
 }
 
 export type FormPlayerApiResponse = FormPlayerApiSuccessResponse | FormPlayerApiErrorResponse;
+
+export enum ActionType {
+  download = 'download',
+  nextStep = 'nextStep',
+  redirectToLK = 'redirectToLK',
+}
+
+export interface CheckOrderApiResponse {
+  orderId: string;
+  isInviteScenario: boolean;
+}

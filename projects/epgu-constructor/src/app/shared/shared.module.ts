@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
@@ -28,6 +28,7 @@ import { ScreenContainerComponent } from './components/screen-container/screen-c
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { WebcamShootComponent } from './components/webcam-shoot/webcam-shoot.component';
 import { CounterDirective } from './directives/counter/counter.directive';
+import { CurrencyTransformDirective } from './directives/currency/currency-transform.directive';
 import { DragAndDropDirective } from './directives/drag-and-drop/drag-and-drop.directive';
 import { TextTransformDirective } from './directives/text-transform/text-transform.directive';
 import { TrimDirective } from './directives/trim/trim.directive';
@@ -36,12 +37,12 @@ import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 import { SafePipe } from './pipes/safe/safe.pipe';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { CachedAnswersService } from './services/applicant-answers/cached-answers.service';
+import { PassportComponent } from './components/add-passport/passport.component';
 import { NavigationService } from './services/navigation/navigation.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from './services/webcam/webcam.service';
-
-
-
+import { ActionDirective } from './directives/action/action.directive';
+import { ActionButtonComponent } from './components/action-button/action-button.component';
 
 
 const COMPONENTS = [
@@ -63,11 +64,20 @@ const COMPONENTS = [
   ComponentsListComponent,
   LongButtonComponent,
   WebcamShootComponent,
+  PassportComponent,
+  ActionButtonComponent,
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe, ImgPrefixerPipe, SafePipe];
 
-const DIRECTIVES = [CounterDirective, TrimDirective, TextTransformDirective, DragAndDropDirective];
+const DIRECTIVES = [
+  CounterDirective,
+  TrimDirective,
+  TextTransformDirective,
+  DragAndDropDirective,
+  CurrencyTransformDirective,
+  ActionDirective
+];
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
@@ -79,6 +89,7 @@ const DIRECTIVES = [CounterDirective, TrimDirective, TextTransformDirective, Dra
     WebcamService,
     TerraByteApiService,
     ConfigService,
+    CurrencyPipe,
   ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [CommonModule, EpguLibModule, FormsModule, WebcamModule, PerfectScrollbarModule],

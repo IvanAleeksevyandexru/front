@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../config/config.service';
-import { ComponentStateService } from '../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
@@ -65,7 +65,7 @@ export class PaymentComponent implements OnDestroy {
   constructor(
     private paymentService: PaymentService,
     private screenService: ScreenService,
-    private componentStateService: ComponentStateService,
+    private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     public config: ConfigService,
   ) {}

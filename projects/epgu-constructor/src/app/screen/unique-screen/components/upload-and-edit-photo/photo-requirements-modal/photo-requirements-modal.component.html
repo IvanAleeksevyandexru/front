@@ -16,8 +16,8 @@
     <div class="req-item"
          *ngFor="let requirement of setting.body">
       <div class="req-item__title"
-           [innerHTML]="requirement.title | safeHtml"></div>
-      <div [innerHTML]="requirement.text | imgPrefixer |safeHtml"></div>
+           [innerHTML]="requirement.title | safe: 'html'"></div>
+      <div [innerHTML]="requirement.text | imgPrefixer | safe: 'html'"></div>
       <div class="req-item__photo-container">
         <div class="req-item__photo-item"
              *ngFor="let photo of requirement.examplePhotos">
@@ -28,7 +28,7 @@
                  src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/icon-valid.svg">
             <img *ngIf="!photo.valid"
                  src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/icon-invalid.svg">
-            <span [innerHTML]="photo.description | safeHtml"></span>
+            <span [innerHTML]="photo.description | safe: 'html'"></span>
           </div>
         </div>
       </div>
@@ -37,5 +37,5 @@
   <div *ngIf="setting.footer"
        (click)="handleClickOnElemById($event)"
        class="req-modal__footer"
-       [innerHTML]="setting.footer | safeHtml"></div>
+       [innerHTML]="setting.footer | safe: 'html'"></div>
 </epgu-constructor-confirmation-modal-base>

@@ -9,9 +9,12 @@ export class ImgPrefixerPipe implements PipeTransform {
   constructor(private config: ConfigService) { }
 
   transform(value: string = ''): string {
-    return typeof value === 'string'
-      ? value.replace('src=\'', `src='${this.config.staticDomainAssetsPath}`)
-      : value;
+    const replacer = (match, quoteSymbol) => {
+      return `src=${quoteSymbol}${this.config.staticDomainAssetsPath}`;
+    };
+    const regExp = /src=(\'|\")/g;
+
+    return value.replace(regExp, replacer);
   }
 
 }

@@ -13,4 +13,5 @@ export enum ComponentScreenComponentTypes {
   docInput = 'DocInput',
   countryApostil = 'CountryApostil',
   mvdGiac = 'MvdGiac',
+  divorceConsent = 'DivorceConsent',
 }
