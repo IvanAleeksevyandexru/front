@@ -121,12 +121,5 @@ export const findCalcRelation = (item: CustomComponentRef) => item.relation === 
  */
 export const getCalcRelation = (checkComponent: CustomComponent) => checkComponent.attrs.ref.find(findCalcRelation);
 
-/**
- * Возвращает true, если объекты равны при сравнии
- * @param prev - объект 1
- * @param next - объект 2
- */
-export function isEqual<T>(prev: T, next: T): boolean {
-  return JSON.stringify(prev) === JSON.stringify(next);
-}
+
 

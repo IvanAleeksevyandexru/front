@@ -20,7 +20,6 @@ import {
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
-  isEqualObject,
   isHaveNeededValueForRelation,
   likeDictionary,
 } from '../tools/custom-screen-tools';
@@ -33,6 +32,8 @@ import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.se
 import { ValidationService } from '../services/validation.service';
 import { UniqueScreenComponentTypes } from '../../unique-screen/unique-screen.types';
 import { ComponentDto } from '../../../services/api/form-player-api/form-player-api.types';
+import { isEqual } from '../../../shared/constants/uttils';
+import { DictionaryForList } from '../../../shared/constants/dictionary';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -93,11 +94,9 @@ export class ComponentsListComponent implements OnInit {
 
   private screenDataEmitter(next: Array<CustomComponent>, prev?: Array<CustomComponent>): void {
     next.forEach((component: CustomComponent, index: number) => {
-      if (
-        prev &&
-        component.attrs.dictionaryType === 'MARKI_TS' &&
-        !isEqualObject<string>(prev[index]?.value, component.value)
-      ) {
+      const isCarMarkDic: boolean = component.attrs.dictionaryType === DictionaryForList.markTs;
+
+      if (prev && isCarMarkDic && !isEqual<string>(prev[index]?.value, component.value)) {
         this.loadModelsTS(component.id);
       }
       if (this.availableTypesForCheckDependence.includes(component.type)) {
@@ -128,6 +127,11 @@ export class ComponentsListComponent implements OnInit {
     this.form = this.fb.array([]);
     this.formWatcher();
     components.forEach((component: CustomComponent) => {
+      let value =
+        typeof component.attrs?.defaultValue === 'undefined'
+          ? component.value
+          : component.attrs?.defaultValue;
+
       if (isDropDown(component.type)) {
         this.initDropDowns(component);
       }
@@ -135,17 +139,13 @@ export class ComponentsListComponent implements OnInit {
       if (likeDictionary(component.type)) {
         const { dictionaryType } = component.attrs;
         this.initDictionaries(dictionaryType, component.id);
-        this.loadDictionaries(dictionaryType, component);
+        this.loadDictionaries(dictionaryType, component, { pageNum: 0 }, value);
       }
-
-      let value =
-        typeof component.attrs?.defaultValue === 'undefined'
-          ? component.value
-          : component.attrs?.defaultValue;
 
       if (component.type === CustomScreenComponentTypes.DateInput && component.value) {
         value = new Date(component.value);
       }
+
       const group: FormGroup = this.fb.group({
         ...component,
         value: [value, this.validationFn(component)],
@@ -182,11 +182,13 @@ export class ComponentsListComponent implements OnInit {
    * @private
    */
   private calcDependedFormGroup(component: CustomComponent): void {
+    const isComponentDependent = (arr = []): boolean =>
+      arr?.some((el) => el.relatedRel === component.id);
+    const getDependentComponents = (components): Array<CustomComponent> =>
+      components.filter((c: CustomComponent) => isComponentDependent(c.attrs?.ref));
+
     const components: Array<any> = this.form.getRawValue();
-    const isComponentDependOn = (arr = []) => arr?.some((el) => el.relatedRel === component.id);
-    const dependentComponents: Array<CustomComponent> = components.filter((c: CustomComponent) =>
-      isComponentDependOn(c.attrs?.ref),
-    );
+    const dependentComponents: Array<CustomComponent> = getDependentComponents(components);
 
     dependentComponents.forEach((dependentComponent) => {
       const dependentControl: AbstractControl = this.form.get(
@@ -269,10 +271,11 @@ export class ComponentsListComponent implements OnInit {
     dictionaryType: string,
     component: CustomComponent,
     options: DictionaryOptions = { pageNum: 0 },
+    value: any = {},
   ): void {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
     this.dictionaryApiService.getDictionary(dictionaryType, options).subscribe(
-      (data) => this.loadDictionarySuccess(dictionaryType, data, component),
+      (data) => this.loadDictionarySuccess(dictionaryType, data, component, value),
       () => this.loadDictionaryError(dictionaryType, component.id),
       () => {},
     );
@@ -282,6 +285,7 @@ export class ComponentsListComponent implements OnInit {
     key: string,
     data: DictionaryResponse,
     component: CustomComponent,
+    value: any,
   ): void {
     const id = key + component.id;
     this.dictionaries[id].loading = false;
@@ -289,6 +293,16 @@ export class ComponentsListComponent implements OnInit {
     this.dictionaries[id].data = data;
     this.dictionaries[id].origin = component;
     this.dictionaries[id].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
+
+    if (Object.keys(value).length) {
+      const index = this.form
+        .getRawValue()
+        .findIndex((c: CustomComponent) => c.id === component.id);
+
+      setTimeout(() => {
+        this.form.get(`${index}.value`).patchValue(JSON.parse(value));
+      }, 0);
+    }
   }
 
   private loadDictionaryError(key: string, componentId: string): void {

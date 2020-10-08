@@ -55,6 +55,7 @@ export interface ComponentDtoAction {
 export interface DisplayDto {
   components: Array<ComponentDto>;
   header: string;
+  subHeader: string;
   label?: string;
   id: string;
   name: string;

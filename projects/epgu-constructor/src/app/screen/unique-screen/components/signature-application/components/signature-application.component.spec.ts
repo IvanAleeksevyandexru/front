@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent, CheckboxComponent, FeedIconComponent, LoaderComponent } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -12,6 +12,9 @@ import { PageNameComponent } from '../../../../../shared/components/base/page-na
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
+import { ScreenService } from '../../../../screen.service';
+import { ScreenServiceStub } from '../../../../screen.service.stub';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -41,8 +44,9 @@ describe('SignatureApplicationComponent', () => {
     },
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       imports: [ReactiveFormsModule, RouterTestingModule],
       declarations: [
         SignatureApplicationComponent,
@@ -56,7 +60,11 @@ describe('SignatureApplicationComponent', () => {
         FeedIconComponent,
         LoaderComponent,
       ],
-      providers: [FormBuilder, NavigationService],
+      providers: [
+        FormBuilder,
+        NavigationService,
+        { provide: ScreenService,useClass: ScreenServiceStub },
+      ],
     }).compileComponents();
   }));
 

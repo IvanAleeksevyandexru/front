@@ -2,6 +2,107 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.30](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.29...v0.1.30) (2020-10-08)
+
+
+### Bug Fixes
+
+* Добавил патчинг справочников ([65605e9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/65605e93b5387cf6a567c3c9f66dc7b2cb871c4b))
+* Загрузка справочников ([cf37c53](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/cf37c53a855919be1f91996403aa4c1ebafae936))
+
+### [0.1.29](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.28...v0.1.29) (2020-10-08)
+
+
+### Bug Fixes
+
+* hidden home in custom screen address; ([62de3cb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/62de3cb585e6672c7ef30b71d24431630d1e6c1a))
+
+### [0.1.28](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.27...v0.1.28) (2020-10-07)
+
+### [0.1.27](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.26...v0.1.27) (2020-10-07)
+
+### [0.1.26](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.25...v0.1.26) (2020-10-07)
+
+
+### Bug Fixes
+
+* add auto version bump, changelog generation on master marge via gitlab pipelines [ref EPGUCORE-36456] ([10e67b8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/10e67b8d66c318a19be9a9e9b610cf6a41c7668a))
+
+### [0.1.25](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.21...v0.1.25) (2020-10-07)
+
+
+### Bug Fixes
+
+* add hidden condition for social buttons configurable show/hide state [ref EPGUCORE-37307] ([c5c4920](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c5c4920e59d1cbf87b6fe75d8e0c1150658a6d62))
+* add obligatory social share buttons on InfoScreen component [ref EPGUCORE-37307] ([402fa53](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/402fa53e3f4daccba7549c319d2564430db9bd01))
+* auto test [ref EPGUCORE-36456] ([a345ded](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a345dedd1068624228d326d395d8bb6fd0918e1f))
+* auto test 2 [ref EPGUCORE-36456] ([02b367c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/02b367cf510a3120c784177570e56cd09e86ad0e))
+* auto test 3 [ref EPGUCORE-36456] ([361d8d6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/361d8d621fbbaa9b232d122fcd4417a9b0d13619))
+* auto test 4 [ref EPGUCORE-36456] ([d860032](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d860032a48a75ebaa7648c98324a90332a4ad38f))
+* auto test 5 [ref EPGUCORE-36456] ([c46b08c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c46b08c2d03451710651d3956c28d8f4dfa59645))
+* EPGUCORE-38088 [Загранпаспорт] Дублирование данных подразделения на странице "Выберите подразделение для подачи документов" [ref EPGUCORE-38088] ([b78ebac](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b78ebacb8e634055990c8cf52a80e5aff60f2413))
+* EPGUCORE-38196 fix cross right position ([10ba361](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/10ba361673f026c9a0cf14f6f2ba8aaa106c9d27))
+* EPGUCORE-38196 fix modal lists ([4edaa51](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4edaa512cd9bd822552e40de58d937dc26325688))
+* EPGUCORE-38196 fix ol list style ([73b7c54](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/73b7c54b26d34b1ffbcc4d3dab8578070f24046b))
+* EPGUCORE-38196 use OutputHtmlComponent at modal content ([1a3f6ca](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1a3f6ca1e0cf80640ba7fc6b7c96e1204c01d32c))
+* EPGUCORE-38258 fix hidden close button on modal ([185790f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/185790ff2c8d83dcac395ac5922cf238b40e53a2))
+* final test gitlag-ci config [ref EPGUCORE-36456] ([0d1eabe](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0d1eabed49e998ae4d0721281fab3b187c4176f5))
+* hotfix npm run release script [ref EPGUCORE-36456] ([31a385c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/31a385ccf54235ac1737f49081805b459be55205))
+* hotfix replace social shares buttons [ref EPGUCORE-37307] ([e56a0bf](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e56a0bf5c95aac534c03838972d6d51240e07a0f))
+* New background color and fix for upload file again ([5a19fdf](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5a19fdfaf7819b3fee70319dfbb28e2cf75d741a))
+* remove tag [ref EPGUCORE-36456] ([6cb7f50](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6cb7f50485869dbdc287bf15477940d8d8524bcc))
+* resolve code review issues [ref EPGUCORE-38123] ([692e0ed](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/692e0edb69428431ae4555ca31fb4a5a9a1c4cb1))
+* update CI_USER [ref EPGUCORE-36456] ([070c01f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/070c01fd03b3791b008523b42bece081a6e9e56d))
+* update CI_USER 2 [ref EPGUCORE-36456] ([e6ff7ba](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e6ff7ba563051020fec823836b098cd06e60c2d9))
+* update REPO_URL [ref EPGUCORE-36456] ([7948ef2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/7948ef21dd6cb8af5195dbfeaeef7b931861a9ea))
+* update REPO_URL 2 [ref EPGUCORE-36456] ([4bca0e8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4bca0e80d72c9a04e2e0343196f5822461afd197))
+* Вернул функции валидации для ОГРН ИНН и СНИЛС ([2c2c28b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2c2c28b5735fa1e3ca67b33fdc1a164968a85c06))
+* Добавил disabled контролов ([712029f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/712029f2db8f27b77cfd7a3e84222efb7d948092))
+* Добавил поддержку масок для компонентов типа StringInput, исправил прелодер данных, восстановил работоспособность компонентов Dictionary и Lookup [EPGUCORE-38328] ([42468f8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/42468f800e1f9a3df600631cd756421dd8d6d86e))
+* Добавил строгое сравнение ([fed5626](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/fed56264d8e28d55e253738a2b887f779d4f358c))
+* Испарвил загрузку сохранненых данных для DateInput [EPGUCORE-38328] ([e7e0c58](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e7e0c58647e7cb6a95b3a20df3faf057667e1844))
+* Испрпвлен патчинг формы дефолтным значением [EPGUCORE-38328] ([c669478](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c6694789540e44504d1291221adcbb39ea7a9c68))
+* Поправил справочники ([2bf681d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2bf681dfda76f114a102c8ae33ccbf2a5284c376))
+* Рефакторинг ([2d0a5a8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2d0a5a8e5331ba7e8760b80693633705381a3121))
+* Рефакторинг ([4fc49c1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4fc49c1e8b4654381802c4abcdfcf188b4a8e42d))
+
+### [0.1.24](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.21...v0.1.24) (2020-10-07)
+
+
+### Bug Fixes
+
+* add hidden condition for social buttons configurable show/hide state [ref EPGUCORE-37307] ([c5c4920](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c5c4920e59d1cbf87b6fe75d8e0c1150658a6d62))
+* add obligatory social share buttons on InfoScreen component [ref EPGUCORE-37307] ([402fa53](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/402fa53e3f4daccba7549c319d2564430db9bd01))
+* auto test [ref EPGUCORE-36456] ([a345ded](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a345dedd1068624228d326d395d8bb6fd0918e1f))
+* auto test 2 [ref EPGUCORE-36456] ([02b367c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/02b367cf510a3120c784177570e56cd09e86ad0e))
+* auto test 3 [ref EPGUCORE-36456] ([361d8d6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/361d8d621fbbaa9b232d122fcd4417a9b0d13619))
+* auto test 4 [ref EPGUCORE-36456] ([d860032](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d860032a48a75ebaa7648c98324a90332a4ad38f))
+* auto test 5 [ref EPGUCORE-36456] ([c46b08c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c46b08c2d03451710651d3956c28d8f4dfa59645))
+* EPGUCORE-38088 [Загранпаспорт] Дублирование данных подразделения на странице "Выберите подразделение для подачи документов" [ref EPGUCORE-38088] ([b78ebac](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b78ebacb8e634055990c8cf52a80e5aff60f2413))
+* EPGUCORE-38196 fix cross right position ([10ba361](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/10ba361673f026c9a0cf14f6f2ba8aaa106c9d27))
+* EPGUCORE-38196 fix modal lists ([4edaa51](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4edaa512cd9bd822552e40de58d937dc26325688))
+* EPGUCORE-38196 fix ol list style ([73b7c54](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/73b7c54b26d34b1ffbcc4d3dab8578070f24046b))
+* EPGUCORE-38196 use OutputHtmlComponent at modal content ([1a3f6ca](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1a3f6ca1e0cf80640ba7fc6b7c96e1204c01d32c))
+* EPGUCORE-38258 fix hidden close button on modal ([185790f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/185790ff2c8d83dcac395ac5922cf238b40e53a2))
+* hotfix npm run release script [ref EPGUCORE-36456] ([31a385c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/31a385ccf54235ac1737f49081805b459be55205))
+* hotfix replace social shares buttons [ref EPGUCORE-37307] ([e56a0bf](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e56a0bf5c95aac534c03838972d6d51240e07a0f))
+* New background color and fix for upload file again ([5a19fdf](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5a19fdfaf7819b3fee70319dfbb28e2cf75d741a))
+* remove tag [ref EPGUCORE-36456] ([6cb7f50](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6cb7f50485869dbdc287bf15477940d8d8524bcc))
+* resolve code review issues [ref EPGUCORE-38123] ([692e0ed](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/692e0edb69428431ae4555ca31fb4a5a9a1c4cb1))
+* update CI_USER [ref EPGUCORE-36456] ([070c01f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/070c01fd03b3791b008523b42bece081a6e9e56d))
+* update CI_USER 2 [ref EPGUCORE-36456] ([e6ff7ba](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e6ff7ba563051020fec823836b098cd06e60c2d9))
+* update REPO_URL [ref EPGUCORE-36456] ([7948ef2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/7948ef21dd6cb8af5195dbfeaeef7b931861a9ea))
+* update REPO_URL 2 [ref EPGUCORE-36456] ([4bca0e8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4bca0e80d72c9a04e2e0343196f5822461afd197))
+* Вернул функции валидации для ОГРН ИНН и СНИЛС ([2c2c28b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2c2c28b5735fa1e3ca67b33fdc1a164968a85c06))
+* Добавил disabled контролов ([712029f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/712029f2db8f27b77cfd7a3e84222efb7d948092))
+* Добавил поддержку масок для компонентов типа StringInput, исправил прелодер данных, восстановил работоспособность компонентов Dictionary и Lookup [EPGUCORE-38328] ([42468f8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/42468f800e1f9a3df600631cd756421dd8d6d86e))
+* Добавил строгое сравнение ([fed5626](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/fed56264d8e28d55e253738a2b887f779d4f358c))
+* Испарвил загрузку сохранненых данных для DateInput [EPGUCORE-38328] ([e7e0c58](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e7e0c58647e7cb6a95b3a20df3faf057667e1844))
+* Испрпвлен патчинг формы дефолтным значением [EPGUCORE-38328] ([c669478](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c6694789540e44504d1291221adcbb39ea7a9c68))
+* Поправил справочники ([2bf681d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2bf681dfda76f114a102c8ae33ccbf2a5284c376))
+* Рефакторинг ([2d0a5a8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2d0a5a8e5331ba7e8760b80693633705381a3121))
+* Рефакторинг ([4fc49c1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4fc49c1e8b4654381802c4abcdfcf188b4a8e42d))
+
 ### [0.1.21](https://git.gosuslugi.local///compare/v0.1.20...v0.1.21) (2020-10-06)
 
 

@@ -27,6 +27,15 @@ export class ScreenContent {
   }
   public header$ = this._header.asObservable();
 
+  private _subHeader = new BehaviorSubject<string>(null);
+  public get subHeader() {
+    return this._subHeader.getValue();
+  }
+  public set subHeader(val: string) {
+    this._subHeader.next(val);
+  }
+  public subHeader$ = this._subHeader.asObservable();
+
   private _submitLabel = new BehaviorSubject<string>(null);
   public get submitLabel() {
     return this._submitLabel.getValue();
@@ -121,9 +130,10 @@ export class ScreenContent {
 
   updateScreenContent(screenStore: ScreenStore) {
     const { display = {} as any, orderId, errors = {} as any } = screenStore;
-    const { header, submitLabel, type, components = [] } = display;
+    const { header, subHeader, submitLabel, type, components = [] } = display;
     this.display = display;
     this.header = header;
+    this.subHeader = subHeader;
     this.submitLabel = submitLabel;
     this.screenType = type;
     this.orderId = orderId;
