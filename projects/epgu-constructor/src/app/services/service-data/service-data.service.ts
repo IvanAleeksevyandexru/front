@@ -24,6 +24,14 @@ export class ServiceDataService {
     return this._invited;
   }
 
+  set invited(invited: boolean) {
+    this._invited = invited;
+  }
+
+  set orderId(orderId: string) {
+    this._orderId = orderId;
+  }
+
   init(service: Service) {
     this._serviceId = service.serviceId;
     this._orderId = service.orderId;
