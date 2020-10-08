@@ -135,6 +135,6 @@ export enum ActionType {
 }
 
 export interface CheckOrderApiResponse {
-  orderId: string;
+  scenarioDto: ScenarioDto;
   isInviteScenario: boolean;
 }
