@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.29](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.28...v0.1.29) (2020-10-08)
+
+
+### Bug Fixes
+
+* hidden home in custom screen address; ([62de3cb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/62de3cb585e6672c7ef30b71d24431630d1e6c1a))
+
 ### [0.1.28](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.27...v0.1.28) (2020-10-07)
 
 ### [0.1.27](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.26...v0.1.27) (2020-10-07)
