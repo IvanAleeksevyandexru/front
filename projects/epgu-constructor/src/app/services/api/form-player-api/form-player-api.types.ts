@@ -134,6 +134,7 @@ export enum ActionType {
   redirectToLK = 'redirectToLK',
 }
 
-export interface OrderIdApiResponse {
-  orderId: string
+export interface CheckOrderApiResponse {
+  orderId: string;
+  isInviteScenario: boolean;
 }
