@@ -231,6 +231,15 @@ export class ComponentsListComponent implements OnInit {
   }
 
   /**
+   * Возвращает откалькулируемую функцию по формуле
+   * @param formula - формула для расчета
+   */
+  getCalcFieldValue(formula) {
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
+    return Function(`'use strict'; return (Math.round(${formula}))`)();
+  }
+
+  /**
    * Подсчитывает автовычисляемое значение из формулы, которую передали
    * @param itemRef - объект с информацией о связи
    * @param components - компоненты с информацией
@@ -239,12 +248,14 @@ export class ComponentsListComponent implements OnInit {
   calculateValueFromRelation(itemRef: CustomComponentRef, components: CustomComponent[]) {
     let str = itemRef.val;
     const lettersAnNumberItemRegExp = /\{\w+\}/gm;
-    const componentKeys = [...str.match(lettersAnNumberItemRegExp)];
-    let haveAllValues = true;
+    const matches = str.match(lettersAnNumberItemRegExp);
+    const componentKeys = Array.isArray(matches) ? [...matches] : [];
 
+    let haveAllValues = true;
     componentKeys.forEach((key: string) => {
       const k = key.replace('{', '').replace('}', '');
-      const control = this.form.get(`${components.findIndex((c) => c.id === k)}.value`);
+      const targetFormKey = `${components.findIndex((c) => c.id === k)}.value`;
+      const control = this.form.get(targetFormKey);
       const val = Number(control?.value);
       // eslint-disable-next-line no-restricted-globals
       if (isNaN(val)) {
@@ -255,8 +266,7 @@ export class ComponentsListComponent implements OnInit {
     });
 
     // Возвращает например Math.round({add16} + {add17} / 100) => Math.round(50 + 150 / 100)
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
-    return haveAllValues ? Function(`'use strict'; return (Math.round(${str}))`)() : '';
+    return haveAllValues ? this.getCalcFieldValue(str) : '';
   }
 
   private initDropDowns(component: CustomComponent): void {
