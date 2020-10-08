@@ -120,6 +120,11 @@ export class ComponentsListComponent implements OnInit {
     this.form = this.fb.array([]);
     this.formWatcher();
     components.forEach((component: CustomComponent) => {
+      let value =
+        typeof component.attrs?.defaultValue === 'undefined'
+          ? component.value
+          : component.attrs?.defaultValue;
+
       if (isDropDown(component.type)) {
         this.initDropDowns(component);
       }
@@ -127,17 +132,13 @@ export class ComponentsListComponent implements OnInit {
       if (likeDictionary(component.type)) {
         const { dictionaryType } = component.attrs;
         this.initDictionaries(dictionaryType, component.id);
-        this.loadDictionaries(dictionaryType, component);
+        this.loadDictionaries(dictionaryType, component, { pageNum: 0 }, value);
       }
-
-      let value =
-        typeof component.attrs?.defaultValue === 'undefined'
-          ? component.value
-          : component.attrs?.defaultValue;
 
       if (component.type === CustomScreenComponentTypes.DateInput && component.value) {
         value = new Date(component.value);
       }
+
       const group: FormGroup = this.fb.group({
         ...component,
         value: [value, this.validationFn(component)],
@@ -212,10 +213,11 @@ export class ComponentsListComponent implements OnInit {
     dictionaryType: string,
     component: CustomComponent,
     options: DictionaryOptions = { pageNum: 0 },
+    value: any = {},
   ): void {
     // TODO добавить обработку loader(-а) для словарей и ошибок;
     this.dictionaryApiService.getDictionary(dictionaryType, options).subscribe(
-      (data) => this.loadDictionarySuccess(dictionaryType, data, component),
+      (data) => this.loadDictionarySuccess(dictionaryType, data, component, value),
       () => this.loadDictionaryError(dictionaryType, component.id),
       () => {},
     );
@@ -225,6 +227,7 @@ export class ComponentsListComponent implements OnInit {
     key: string,
     data: DictionaryResponse,
     component: CustomComponent,
+    value: any,
   ): void {
     const id = key + component.id;
     this.dictionaries[id].loading = false;
@@ -232,6 +235,14 @@ export class ComponentsListComponent implements OnInit {
     this.dictionaries[id].data = data;
     this.dictionaries[id].origin = component;
     this.dictionaries[id].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
+
+    if (Object.keys(value).length) {
+      const index = this.form
+        .getRawValue()
+        .findIndex((c: CustomComponent) => c.id === component.id);
+
+      this.form.get(`${index}.value`).patchValue(value);
+    }
   }
 
   private loadDictionaryError(key: string, componentId: string): void {
