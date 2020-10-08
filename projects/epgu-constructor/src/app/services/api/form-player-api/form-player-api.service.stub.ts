@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { OrderIdApiResponse } from './form-player-api.types';
+import { CheckOrderApiResponse } from './form-player-api.types';
 import { map } from 'rxjs/operators';
 
 @Injectable()
