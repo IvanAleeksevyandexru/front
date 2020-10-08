@@ -39,6 +39,8 @@
   display: flex;
   align-items: center;
   font-size: $font-sm;
+  background: none;
+  padding: 0;
   &__icon {
     margin-right: 8px;
   }

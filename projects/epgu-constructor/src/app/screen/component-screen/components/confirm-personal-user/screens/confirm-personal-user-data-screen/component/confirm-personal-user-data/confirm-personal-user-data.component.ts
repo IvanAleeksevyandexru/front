@@ -6,6 +6,8 @@ import {
   ConfirmUserDataState,
 } from '../../../../../../types/confirm-user-data.types';
 import { ConfigService } from '../../../../../../../../config/config.service';
+import { ScreenService } from '../../../../../../../screen.service';
+import { ActionType } from '../../../../../../../../services/api/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-data',
@@ -15,9 +17,10 @@ import { ConfigService } from '../../../../../../../../config/config.service';
 export class ConfirmPersonalUserDataComponent implements OnChanges {
   // <-- variable
   preparedData: Array<ConfirmUserDataFieldsState> = [];
+  actionType = ActionType;
 
   @Input() data: ConfirmUserData;
-  constructor(public config: ConfigService) {}
+  constructor(public config: ConfigService, public screenService: ScreenService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
