@@ -76,10 +76,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   getOrderIdFromApi() {
     this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
-      this.handleOrder(
-        checkOrderApiResponse.scenarioDto?.orderId,
-        checkOrderApiResponse.isInviteScenario,
-      );
+      const invited = checkOrderApiResponse.isInviteScenario;
+      const orderId = checkOrderApiResponse.scenarioDto?.orderId;
+      this.serviceDataService.invited = invited;
+      this.serviceDataService.orderId = orderId;
+      this.handleOrder(orderId, invited);
     });
   }
 
