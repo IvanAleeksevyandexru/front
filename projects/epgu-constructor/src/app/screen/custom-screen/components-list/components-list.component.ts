@@ -53,6 +53,7 @@ export class ComponentsListComponent implements OnInit {
     CustomScreenComponentTypes.RadioInput,
     CustomScreenComponentTypes.Dictionary,
     CustomScreenComponentTypes.Lookup,
+    CustomScreenComponentTypes.DropDown,
     CustomScreenComponentTypes.StringInput,
     CustomScreenComponentTypes.DateInput,
     CustomScreenComponentTypes.AddressInput,
@@ -156,7 +157,7 @@ export class ComponentsListComponent implements OnInit {
 
   private adaptiveDropDown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
     return items.map((item, index) => ({
-      id: `${item.label}-${index}`,
+      id: `${item.code}` || `${item.label}-${index}`,
       text: item.label,
       formatted: '',
       unselectable: !!item.disable,
