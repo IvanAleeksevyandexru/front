@@ -2,7 +2,6 @@ import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { ModalBaseComponent } from '../modal-base/modal-base.component';
 import { ConfirmationModal } from './confirmation-modal.interface';
 import { ModalService } from '../../../../services/modal/modal.service';
-import { getHiddenBlock } from '../../../constants/uttils';
 
 @Component({
   selector: 'epgu-constructor-confirmation-modal',
@@ -88,17 +87,5 @@ export class ConfirmationModalComponent extends ModalBaseComponent
         }
       };
     });
-  }
-
-  toggleHiddenBlock($event: MouseEvent, el: HTMLElement): void {
-    const targetElementId = ($event.target as HTMLElement).id;
-    let hiddenBlock = null;
-
-    if (targetElementId) {
-      hiddenBlock = getHiddenBlock(el, targetElementId);
-    }
-    if (hiddenBlock) {
-      hiddenBlock.hidden = !hiddenBlock.hidden;
-    }
   }
 }

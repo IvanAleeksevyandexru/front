@@ -8,6 +8,7 @@ import { CurrentAnswersService } from '../current-answers.service';
 import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { ComponentScreenComponentTypes } from './component-screen.types';
+import { ConfirmUserDataState } from './types/confirm-user-data.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -66,10 +67,13 @@ export class ComponentScreenComponent implements OnInit, Screen {
   /**
    * Переход на следующую страницу и передача данных
    */
-  nextStep() {
+  nextStep(): void {
     let value: string;
     if (typeof this.currentAnswersService.state === 'object') {
       value = JSON.stringify(this.currentAnswersService.state);
+    } else if (this.isUserData()) {
+      const { storedValues } = JSON.parse(this.currentAnswersService.state) as ConfirmUserDataState;
+      value = JSON.stringify(storedValues);
     } else {
       value = this.currentAnswersService.state;
     }

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ButtonComponent, LoaderComponent, SafeHtmlPipe } from 'epgu-lib';
+import { ButtonComponent, LoaderComponent } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { SignatureApplicationComponent } from './signature-application.component';
@@ -13,6 +13,7 @@ import { ScreenService } from '../../../../screen.service';
 import { ScreenServiceStub } from '../../../../screen.service.stub';
 import { ConfigServiceStub } from '../../../../../config/config.service.stub';
 import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/shared/pipes/img-prefixer/img-prefixer.pipe';
+import { SafePipe } from '../../../../../shared/pipes/safe/safe.pipe';
 import { SignatureApplicationData } from '../models/application.interface';
 import { UtilsService } from '../../../../../services/utils/utils.service';
 import {
@@ -58,7 +59,7 @@ describe('SignatureApplicationComponent', () => {
           ButtonComponent,
           LoaderComponent,
           OutputHtmlComponent,
-          SafeHtmlPipe,
+          SafePipe,
           ImgPrefixerPipe,
         ],
         providers: [

@@ -66,11 +66,25 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const { orderId } = this.serviceDataService;
-    if (!this.serviceDataService.invited && orderId) {
+    const { orderId, invited } = this.serviceDataService;
+    if (orderId) {
+      this.handleOrder(orderId, invited);
+    } else {
+      this.getOrderIdFromApi();
+    }
+  }
+
+  getOrderIdFromApi() {
+    this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
+      this.handleOrder(checkOrderApiResponse.orderId, checkOrderApiResponse.isInviteScenario);
+    });
+  }
+
+  handleOrder(orderId?: string, invited?: boolean) {
+    if (!invited && orderId) {
       this.showModal();
     } else {
-      this.formPlayerService.initData(orderId);
+      this.formPlayerService.initData(orderId, invited);
     }
   }
 
@@ -82,7 +96,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     const modalResult$ = this.modalService.openModal(ConfirmationModalComponent, {
       text: `<div><img style="display:block; margin: 56px auto 24px" src="${this.config.staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
         <h4 style="text-align: center">У вас есть черновик заявления</h4>
-        <p class="helper-text" style="text-align: center; margin: -20px 0 0">Продолжить его заполнение?</p></div>`,
+        <p class="helper-text" style="text-align: center; margin: 0">Продолжить его заполнение?</p></div>`,
       showCloseButton: false,
       showCrossButton: true,
       buttons: [
@@ -105,7 +119,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       } else {
         orderId = null;
       }
-      this.formPlayerService.initData(orderId);
+      this.formPlayerService.initData(orderId, false);
     });
   }
 

@@ -28,3 +28,8 @@ export interface ConfirmUserDataFieldsState {
   groupName: string;
   fields: Array<ConfirmUserDataAdaptiveField>;
 }
+
+export interface ConfirmUserDataState {
+  states: ConfirmUserDataFieldsState[];
+  storedValues: { [key: string]: any };
+}
