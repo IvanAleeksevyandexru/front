@@ -241,7 +241,9 @@ export class ComponentsListComponent implements OnInit {
         .getRawValue()
         .findIndex((c: CustomComponent) => c.id === component.id);
 
-      this.form.get(`${index}.value`).patchValue(value);
+      setTimeout(() => {
+        this.form.get(`${index}.value`).patchValue(JSON.parse(value));
+      }, 0);
     }
   }
 
