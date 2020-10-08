@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.30](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.29...v0.1.30) (2020-10-08)
+
+
+### Bug Fixes
+
+* Добавил патчинг справочников ([65605e9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/65605e93b5387cf6a567c3c9f66dc7b2cb871c4b))
+* Загрузка справочников ([cf37c53](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/cf37c53a855919be1f91996403aa4c1ebafae936))
+
 ### [0.1.29](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.28...v0.1.29) (2020-10-08)
 
 
