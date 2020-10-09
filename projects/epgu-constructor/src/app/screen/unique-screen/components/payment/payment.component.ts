@@ -13,7 +13,6 @@ import { PaymentStatus } from './payment.constants';
 import { PaymentService } from './payment.service';
 import {
   BillInfoResponse,
-  BillsInfoResponse,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
 } from './payment.types';
@@ -139,7 +138,8 @@ export class PaymentComponent implements OnDestroy {
 
   /**
    * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
-   * @param info - информация об оплатах гос. пошлины
+   * @param response - информация об оплатах гос. пошлины
+   * @param error - сведения об ошибке
    * @private
    */
   private getBillsInfoByUINSuccess(info: BillsInfoResponse) {

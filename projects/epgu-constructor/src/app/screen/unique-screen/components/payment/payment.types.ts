@@ -157,3 +157,8 @@ export interface BillsInfoResponse{
     hasUnidentifiedBills: boolean
   }
 }
+
+export interface HttpPaymentError{
+  code: number,
+  message: string
+}

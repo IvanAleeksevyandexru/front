@@ -88,7 +88,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     if (!invited && orderId) {
       this.showModal();
     } else {
-      this.formPlayerService.initData(orderId, invited);
+      this.formPlayerService.initData(orderId);
     }
   }
 
