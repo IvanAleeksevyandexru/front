@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.32](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.31...v0.1.32) (2020-10-08)
+
+
+### Bug Fixes
+
+* fixes for payment ([93f3167](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/93f3167c1b10bff0d3cc1e056430a8ce94c00e2d))
+* fixes for payment ([f974e43](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f974e43a2f83759a7afdd02fe50cc0ea7bcea9ed))
+
+### [0.1.31](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.30...v0.1.31) (2020-10-08)
+
+
+### Bug Fixes
+
+* text-transform-directive: fixed cursor behaviour in masked input [ref EPGUCORE-38086] ([c6aab82](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c6aab82b4007dd73462f0e3fd06bf60769b95e41))
+
 ### [0.1.30](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.29...v0.1.30) (2020-10-08)
 
 
