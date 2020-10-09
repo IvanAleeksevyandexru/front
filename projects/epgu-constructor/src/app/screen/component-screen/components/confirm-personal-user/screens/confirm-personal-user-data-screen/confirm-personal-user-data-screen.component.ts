@@ -53,8 +53,4 @@ export class ConfirmPersonalUserDataScreenComponent implements OnInit {
       this.currentAnswersService.state = value;
     }
   }
-
-  clickToAction(action): void {
-    console.log('click to action: ', action);
-  }
 }

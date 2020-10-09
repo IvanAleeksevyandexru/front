@@ -146,6 +146,15 @@ export class ScreenContent {
   }
   public actions$ = this._actions.asObservable();
 
+  private _action = new BehaviorSubject<ComponentDtoAction>(null);
+  public get action() {
+    return this._action.getValue();
+  }
+  public set action(val: ComponentDtoAction) {
+    this._action.next(val);
+  }
+  public action$ = this._action.asObservable();
+
   private _currentCycledFields = new BehaviorSubject<CurrentCycledFieldsDto>(null);
   public get currentCycledFields(): CurrentCycledFieldsDto {
     return this._currentCycledFields.getValue();
@@ -183,6 +192,7 @@ export class ScreenContent {
     this.componentLabel = firstComponent?.label;
     this.componentValue = this.getComponentData(firstComponent?.value);
     this.actions = firstComponent?.attrs?.actions || [];
+    this.action = this.actions[0];
     this.currentCycledFields = currentCycledFields;
     this.applicantAnswers = applicantAnswers;
   }
