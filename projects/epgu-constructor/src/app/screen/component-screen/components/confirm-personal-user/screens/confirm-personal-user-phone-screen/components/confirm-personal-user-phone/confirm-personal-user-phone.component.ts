@@ -11,7 +11,6 @@ import { ScreenService } from '../../../../../../../screen.service';
 export class ConfirmPersonalUserPhoneComponent implements OnChanges {
   @Input() label: string;
   @Input() data: string;
-  @Input() isEditButtonShown: boolean;
 
   phoneMask = [
     '+',
@@ -36,7 +35,7 @@ export class ConfirmPersonalUserPhoneComponent implements OnChanges {
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
