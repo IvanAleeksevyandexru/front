@@ -11,7 +11,7 @@ import { ConfigService } from '../../../../../../../../config/config.service';
 import { ServiceDataService } from '../../../../../../../../services/service-data/service-data.service';
 import { ActionDirective } from '../../../../../../../../shared/directives/action/action.directive';
 
-describe('ConfirmPersonalUserPhoneComponent', () => {
+xdescribe('ConfirmPersonalUserPhoneComponent', () => {
   let component: ConfirmPersonalUserPhoneComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserPhoneComponent>;
   const mockData = '';
