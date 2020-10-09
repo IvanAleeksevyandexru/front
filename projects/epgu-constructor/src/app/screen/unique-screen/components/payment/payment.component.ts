@@ -13,6 +13,7 @@ import { PaymentStatus } from './payment.constants';
 import { PaymentService } from './payment.service';
 import {
   BillInfoResponse,
+  BillsInfoResponse,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
 } from './payment.types';
@@ -114,7 +115,7 @@ export class PaymentComponent implements OnDestroy {
       .getBillsInfoByUIN(this.uin, this.orderId)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
-        (info) => this.getBillsInfo(info),
+        (info: BillsInfoResponse) => this.getBillsInfoByUINSuccess(info),
         (error) => this.setPaymentStatusFromErrorRequest(error),
       );
 
@@ -138,14 +139,12 @@ export class PaymentComponent implements OnDestroy {
 
   /**
    * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
-   * @param response - информация об оплатах гос. пошлины
-   * @param error - сведения об ошибке
-   * @private
+   * @param {BillsInfoResponse}info
    */
-  private getBillsInfo({ response, error }) {
-    if (error?.code) {
+  private getBillsInfoByUINSuccess(info: BillsInfoResponse) {
+    if (info.error?.code) {
       // Если ошибка, что уже оплачено
-      if (error.code === 23) {
+      if (info.error.code === 23) {
         this.setInfoLoadedState();
         this.nextStep();
       } else {
@@ -153,7 +152,7 @@ export class PaymentComponent implements OnDestroy {
         this.status = PaymentStatus.ERROR;
       }
     }
-    const bill: BillInfoResponse = response.bills[this.billPosition];
+    const bill: BillInfoResponse = info.response.bills[this.billPosition];
 
     this.isPaid = bill.isPaid;
     if (this.isPaid) {
