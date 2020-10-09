@@ -74,7 +74,7 @@ export class PaymentService {
     // }
 
     // TODO: Хардкод для локальной отладки
-    if (location.hostname === 'local.test.gosuslugi.ru') {
+    if (location.hostname.search('test.gosuslugi.ru')) {
       attributeValues.sum = '200';
     }
 
