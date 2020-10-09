@@ -1,14 +1,13 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+
 import {
   ConfirmUserDataFieldsState,
   ConfirmUserData,
+  ConfirmUserDataState,
 } from '../../../../../../types/confirm-user-data.types';
 import { ConfigService } from '../../../../../../../../config/config.service';
-import {
-  getBirthDayConfirmPersonalUserData,
-  getFullNameConfirmPersonalUserData,
-  getOtherFieldsConfirmPersonalUserData,
-} from './confirm-personal-user-data.constant';
+import { ScreenService } from '../../../../../../../screen.service';
+import { ActionType } from '../../../../../../../../services/api/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-data',
@@ -18,24 +17,15 @@ import {
 export class ConfirmPersonalUserDataComponent implements OnChanges {
   // <-- variable
   preparedData: Array<ConfirmUserDataFieldsState> = [];
+  actionType = ActionType;
 
   @Input() data: ConfirmUserData;
-  constructor(public config: ConfigService) {}
+  constructor(public config: ConfigService, public screenService: ScreenService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
-      this.preparedData = this.adaptiveData(this.data);
+      const { states } = JSON.parse(this.data.value) as ConfirmUserDataState;
+      this.preparedData = states;
     }
-  }
-
-  private adaptiveData(data: ConfirmUserData) {
-    const fullName = getFullNameConfirmPersonalUserData(data);
-    const birthDay = getBirthDayConfirmPersonalUserData(data);
-    const otherFields = getOtherFieldsConfirmPersonalUserData(data);
-
-    return [
-      { groupName: fullName, list: [birthDay] },
-      { groupName: 'Паспорт гражданина РФ', list: otherFields },
-    ];
   }
 }

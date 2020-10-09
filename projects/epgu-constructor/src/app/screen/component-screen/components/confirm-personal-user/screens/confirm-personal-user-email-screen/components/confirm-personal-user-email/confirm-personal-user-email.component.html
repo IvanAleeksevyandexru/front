@@ -2,9 +2,10 @@
   <epgu-constructor-label for="email">{{ label }}</epgu-constructor-label>
   <a href="javascript:void(0);"
      class="button-change"
-     (click)="handleClick()"
+     epgu-constructor-action
+     [action]="screenService.action"
      *ngIf="isEditButtonShown">
-    Редактировать
+    {{screenService.action.label}}
   </a>
 </div>
 

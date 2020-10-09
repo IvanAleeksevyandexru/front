@@ -26,5 +26,10 @@ export interface ConfirmUserDataAdaptiveField {
 
 export interface ConfirmUserDataFieldsState {
   groupName: string;
-  list: Array<ConfirmUserDataAdaptiveField>;
+  fields: Array<ConfirmUserDataAdaptiveField>;
+}
+
+export interface ConfirmUserDataState {
+  states: ConfirmUserDataFieldsState[];
+  storedValues: { [key: string]: any };
 }

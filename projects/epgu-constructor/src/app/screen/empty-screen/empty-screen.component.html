@@ -1,4 +1,4 @@
-<ng-container [ngSwitch]="screenStore.display?.components[0].type">
+<ng-container [ngSwitch]="screenService.componentType$ | async">
 
 	<epgu-constructor-redirect
 		*ngSwitchCase="emptyComponentName.redirect"

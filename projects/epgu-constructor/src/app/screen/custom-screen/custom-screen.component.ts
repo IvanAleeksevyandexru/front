@@ -6,7 +6,7 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { DATE_STRING_DOT_FORMAT } from '../../shared/constants/dates';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
-import { Screen, ScreenStore } from '../screen.types';
+import { Screen } from '../screen.types';
 
 const moment = moment_;
 
@@ -20,10 +20,9 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
   dataToSend: NavigationPayload;
   isCycledFields: boolean;
   cycledValues: any;
-  screenStore: ScreenStore;
   isValid: boolean;
 
-  private currentCycledFields = this.screenStore?.currentCycledFields || {};
+  private currentCycledFields = this.screenService?.currentCycledFields || {};
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
@@ -37,12 +36,9 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
 
-    this.screenService.screenData$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenStore) => {
-        this.screenStore = screenData;
-        this.initCycledFields();
-      });
+    this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.initCycledFields();
+    });
   }
 
   ngOnChanges(changes) {
@@ -53,7 +49,7 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
   }
 
   initCycledFields() {
-    this.currentCycledFields = this.screenStore?.currentCycledFields || {};
+    this.currentCycledFields = this.screenService?.currentCycledFields || {};
     this.cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
     const { currentCycledFields } = this;
@@ -61,7 +57,7 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
     if (this.isCycledFields) {
       const [firstCurrentCycledValues] = Object.values(currentCycledFields);
       this.cycledValues = JSON.parse(firstCurrentCycledValues);
-      this.screenStore.display.components = this.screenStore.display.components.map((item) => {
+      this.screenService.display.components = this.screenService.display.components.map((item) => {
         const newItem = item;
         const fieldName = item.attrs?.fields && item.attrs?.fields[0].fieldName;
         const cycledFieldKey = Object.keys(this.cycledValues).find((key) => key === fieldName);
@@ -161,7 +157,7 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
       const result = accum;
       const targetItem = changes[key];
       const targetItemValue = targetItem.value;
-      const targetComponent = this.screenStore.display.components.find((item) => item.id === key);
+      const targetComponent = this.screenService.display.components.find((item) => item.id === key);
       const fieldName = targetComponent.attrs.fields && targetComponent.attrs.fields[0].fieldName;
       if (!fieldName) return result;
 

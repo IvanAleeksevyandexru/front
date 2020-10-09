@@ -4,20 +4,21 @@
       <div class="data-group__title">{{ groupItem?.groupName }}</div>
     </div>
     <div class="data-group__items">
-      <div class="data__item data-item" *ngFor="let field of groupItem.list">
+      <div class="data__item data-item" *ngFor="let field of groupItem.fields">
         <div class="data-item__label">{{ field.label }}</div>
         <div class="data-item__value">{{ field.value }}</div>
       </div>
     </div>
   </div>
 </div>
-<div class="data-footer" *ngIf="data?.attrs?.actions?.length === 1">
+<div class="data-footer"
+     *ngIf="screenService.action.type === actionType.redirectToLK">
   <div class="divider"></div>
-  <a class="btn-edit" [href]="config.lkUrl + 'profile/personal'">
-    <img
-      src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"
-      class="btn-edit__icon"
-    />
-    <span class="btn-edit__text">Редактировать</span>
-  </a>
+  <button class="btn-edit"
+          epgu-constructor-action
+          [action]="screenService.action$ | async">
+    <img class="btn-edit__icon"
+      src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"/>
+    <span class="btn-edit__text">{{(screenService.action$ | async).label}}</span>
+  </button>
 </div>

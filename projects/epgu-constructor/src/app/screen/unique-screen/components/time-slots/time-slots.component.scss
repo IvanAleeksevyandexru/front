@@ -190,3 +190,10 @@
     color: $color-button-hit;
   }
 }
+
+.inner {
+  height: 100%;
+  @include phones-down {
+    overflow-y: auto;
+  }
+}

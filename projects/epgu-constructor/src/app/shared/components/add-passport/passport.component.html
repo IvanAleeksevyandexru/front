@@ -1,0 +1,15 @@
+<div class="form__name">Паспорт РФ</div>
+<form [formGroup]="passportForm" class="form__inputs">
+  <div class="inputs__field" *ngFor="let field of attrs.fields">
+    <epgu-constructor-label [attr.for]="field.fieldName">{{field.label}}</epgu-constructor-label>
+    <lib-plain-input
+      epgu-constructor-trim
+      epgu-constructor-text-transform
+      [id]="field.fieldName"
+      [textTransformType]="attrs.fstuc"
+      [validationShowOn]="touchedUnfocused"
+      [invalid]="passportForm.controls[field.fieldName].invalid"
+      [formControlName]="field.fieldName"
+    ></lib-plain-input>
+  </div>
+</form>

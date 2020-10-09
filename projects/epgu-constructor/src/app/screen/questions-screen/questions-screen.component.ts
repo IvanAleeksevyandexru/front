@@ -4,7 +4,7 @@ import { NavigationPayload } from '../../form-player.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
-import { Screen, ScreenStore } from '../screen.types';
+import { Screen } from '../screen.types';
 import { QuestionsComponentActions } from './questions-screen.types';
 
 @Component({
@@ -16,7 +16,6 @@ import { QuestionsComponentActions } from './questions-screen.types';
 export class QuestionsScreenComponent implements OnInit, Screen {
   isCycledFields = false;
   cycledValues: Array<any>;
-  screenStore: ScreenStore;
 
   private currentCycledFields = {};
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
@@ -34,16 +33,13 @@ export class QuestionsScreenComponent implements OnInit, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
 
-    this.screenService.screenData$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenStore) => {
-        this.screenStore = screenData;
-        this.initCycledFields();
-      });
+    this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.initCycledFields();
+    });
   }
 
   initCycledFields() {
-    this.currentCycledFields = this.screenStore?.currentCycledFields || {};
+    this.currentCycledFields = this.screenService?.currentCycledFields || {};
     this.cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
     const { currentCycledFields } = this;
@@ -67,7 +63,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     const data: NavigationPayload = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
-      const fieldNameRef = this.screenStore.display.components[0]?.attrs?.fields[0]?.fieldName;
+      const fieldNameRef = this.screenService.component?.attrs?.fields[0]?.fieldName;
       const cycledValuesPrepared = { ...this.cycledValues };
       const mergedCycledAndAnswerValues = { ...cycledValuesPrepared, [fieldNameRef]: answer.value };
       data[currentCycledFieldsKey] = {
@@ -75,7 +71,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
         value: JSON.stringify(mergedCycledAndAnswerValues),
       };
     } else {
-      const componentId = this.screenStore.display.components[0].id;
+      const componentId = this.screenService.component.id;
       data[componentId] = {
         visited: true,
         value: answer.value || '',

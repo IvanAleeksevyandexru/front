@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmUserData } from '../../../../types/confirm-user-data.types';
 
@@ -10,7 +10,7 @@ import { ConfirmUserData } from '../../../../types/confirm-user-data.types';
 })
 export class ConfirmPersonalUserDataScreenComponent implements OnInit {
   constructor(
-    private componentStateService: ComponentStateService,
+    private currentAnswersService: CurrentAnswersService,
     private toolsService: ToolsService,
   ) {}
 
@@ -18,7 +18,7 @@ export class ConfirmPersonalUserDataScreenComponent implements OnInit {
   @Input() set data(val: ConfirmUserData) {
     this.propData = val;
     const { value } = val;
-    this.componentStateService.state = value;
+    this.currentAnswersService.state = value;
   }
   @Input() errors: object;
   @Input() currentCycledFields: object = {};
@@ -50,11 +50,7 @@ export class ConfirmPersonalUserDataScreenComponent implements OnInit {
       );
 
       this.propData.value = JSON.stringify(data);
-      this.componentStateService.state = value;
+      this.currentAnswersService.state = value;
     }
-  }
-
-  clickToAction(action): void {
-    console.log('click to action: ', action);
   }
 }

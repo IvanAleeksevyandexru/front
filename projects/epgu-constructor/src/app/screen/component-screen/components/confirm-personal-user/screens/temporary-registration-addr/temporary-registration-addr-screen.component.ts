@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentStateService } from '../../../../../../services/component-state/component-state.service';
 import { TemporaryRegistrationComponent } from './temporary-registration-addr-screen.types';
+import { CurrentAnswersService } from '../../../../../current-answers.service';
 
 @Component({
   selector: 'epgu-constructor-temporary-registration-addr-screen',
@@ -12,7 +12,7 @@ export class TemporaryRegistrationAddrScreenComponent {
   @Input() errors: object;
   @Output() actionSelect = new EventEmitter();
 
-  constructor(private componentStateService: ComponentStateService) {}
+  constructor(private currentAnswersService: CurrentAnswersService) {}
 
   // TODO: Temporary solution, waiting for joining address components
   clickToAction(event): void {
@@ -35,6 +35,6 @@ export class TemporaryRegistrationAddrScreenComponent {
   }
   handleDataChange(changes: any) {
     this.data.value = changes;
-    this.componentStateService.state = changes;
+    this.currentAnswersService.state = changes;
   }
 }

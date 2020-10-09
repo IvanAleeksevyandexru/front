@@ -1,4 +1,12 @@
-import { Component, HostBinding, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { LoadService } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from './config/config.service';
@@ -19,7 +27,7 @@ import { NavigationService } from './shared/services/navigation/navigation.servi
   providers: [UnsubscribeService],
   encapsulation: ViewEncapsulation.None,
 })
-export class FormPlayerComponent implements OnInit, OnChanges {
+export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() service: Service;
   @Input() config: Config;
@@ -50,18 +58,38 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     this.navigationService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.prevStep(data));
-
-    const { orderId } = this.serviceDataService;
-    if (!this.serviceDataService.invited && orderId) {
-      this.showModal();
-    } else {
-      this.formPlayerService.initData(orderId);
-    }
   }
 
   ngOnChanges(): void {
     this.serviceDataService.init(this.service);
     this.checkProps();
+  }
+
+  ngAfterViewInit(): void {
+    const { orderId, invited } = this.serviceDataService;
+    if (orderId) {
+      this.handleOrder(orderId, invited);
+    } else {
+      this.getOrderIdFromApi();
+    }
+  }
+
+  getOrderIdFromApi() {
+    this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
+      const invited = checkOrderApiResponse.isInviteScenario;
+      const orderId = checkOrderApiResponse.scenarioDto?.orderId;
+      this.serviceDataService.invited = invited;
+      this.serviceDataService.orderId = orderId;
+      this.handleOrder(orderId, invited);
+    });
+  }
+
+  handleOrder(orderId?: string, invited?: boolean) {
+    if (!invited && orderId) {
+      this.showModal();
+    } else {
+      this.formPlayerService.initData(orderId);
+    }
   }
 
   initializeEpguLibConfig(): Promise<any> {
@@ -70,7 +98,7 @@ export class FormPlayerComponent implements OnInit, OnChanges {
 
   showModal() {
     const modalResult$ = this.modalService.openModal(ConfirmationModalComponent, {
-      text: `<div><img style="display:block; margin: 56px auto 24px" src="${this.config.staticDomainAssetsPath}/assets/icons/svg/order_80.svg" alt=""/>
+      text: `<div><img style="display:block; margin: 56px auto 24px" src="${this.config.staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
         <h4 style="text-align: center">У вас есть черновик заявления</h4>
         <p class="helper-text" style="text-align: center; margin: 0">Продолжить его заполнение?</p></div>`,
       showCloseButton: false,
@@ -95,7 +123,7 @@ export class FormPlayerComponent implements OnInit, OnChanges {
       } else {
         orderId = null;
       }
-      this.formPlayerService.initData(orderId);
+      this.formPlayerService.initData(orderId, false);
     });
   }
 

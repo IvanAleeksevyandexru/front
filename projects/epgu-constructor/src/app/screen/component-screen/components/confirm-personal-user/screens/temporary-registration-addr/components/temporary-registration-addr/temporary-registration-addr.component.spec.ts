@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentStateService } from '../../../../../../../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
 import { FormsModule } from '@angular/forms';
 import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
@@ -25,14 +25,14 @@ describe('TemporaryRegistrationAddrComponent', () => {
     value: ''
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       imports: [FormsModule],
       declarations: [ TemporaryRegistrationAddrComponent ],
       providers: [
         UnsubscribeService,
-        ComponentStateService,
+        CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     })
