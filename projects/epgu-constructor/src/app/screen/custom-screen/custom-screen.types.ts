@@ -22,6 +22,7 @@ export enum CustomScreenComponentTypes {
   PersonInnInput = 'PersonInnInput',
   PassportLookup = 'PassportLookup',
   SnilsInput = 'SnilsInput',
+  CityInput = 'CityInput',
 }
 
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
@@ -133,6 +134,7 @@ export interface CustomComponent extends ComponentBase {
   fstuc?: TextTransform;
   isShown?: boolean;
   price?: boolean;
+  searchProvider?: { search: Function };
 }
 
 export interface SupportedValue {
