@@ -60,11 +60,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       .subscribe((data: NavigationPayload) => this.prevStep(data));
   }
 
-  ngOnChanges(): void {
-    this.serviceDataService.init(this.service);
-    this.checkProps();
-  }
-
+  ngAfterViewInit() {
     const { orderId, invited } = this.serviceDataService;
     if (orderId) {
       this.handleOrder(orderId, invited);
@@ -77,6 +73,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.serviceDataService.init(this.service);
     this.checkProps();
   }
+
   getOrderIdFromApi() {
     this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
       const invited = checkOrderApiResponse.isInviteScenario;
