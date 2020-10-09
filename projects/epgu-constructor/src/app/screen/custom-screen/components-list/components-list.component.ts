@@ -34,6 +34,7 @@ import { UniqueScreenComponentTypes } from '../../unique-screen/unique-screen.ty
 import { ComponentDto } from '../../../services/api/form-player-api/form-player-api.types';
 import { isEqual } from '../../../shared/constants/uttils';
 import { DictionaryForList } from '../../../shared/constants/dictionary';
+import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -59,6 +60,7 @@ export class ComponentsListComponent implements OnInit {
     CustomScreenComponentTypes.DateInput,
     CustomScreenComponentTypes.AddressInput,
     CustomScreenComponentTypes.CheckBox,
+    CustomScreenComponentTypes.CityInput,
   ];
 
   @Output() changes = new EventEmitter<CustomComponentOutputData>();
@@ -67,6 +69,7 @@ export class ComponentsListComponent implements OnInit {
     private dictionaryApiService: DictionaryApiService,
     public screenService: ScreenService,
     public configService: ConfigService,
+    public addressHelperService: AddressHelperService,
     private fb: FormBuilder,
     private unsubscribe$: UnsubscribeService,
     private validationService: ValidationService,
@@ -101,7 +104,9 @@ export class ComponentsListComponent implements OnInit {
         this.loadModelsTS(component.id);
       }
       if (this.availableTypesForCheckDependence.includes(component.type)) {
-        this.emmitChanges(component);
+        if (prev && !isEqual<string>(prev[index]?.value, component.value)) {
+          this.emmitChanges(component);
+        }
       } else {
         this.emmitChanges();
       }
@@ -329,7 +334,12 @@ export class ComponentsListComponent implements OnInit {
    * @param component - компонент
    * @private
    */
-  private emmitChanges(component?: CustomComponent): void {
+  private async emmitChanges(component?: CustomComponent) {
+    if (component?.value && component.type === this.componentType.CityInput) {
+      await this.addressHelperService.normalizeAddress(
+        (component.value as unknown) as DadataSuggestionsAddressForLookup,
+      );
+    }
     if (component) {
       this.calcDependedFormGroup(component);
     }

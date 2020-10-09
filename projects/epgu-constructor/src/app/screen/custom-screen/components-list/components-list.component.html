@@ -133,6 +133,20 @@
           </lib-dadata-widget>
       </ng-container>
 
+      <ng-container *ngSwitchCase="componentType.CityInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+          <lib-lookup
+            [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+            [validationShowOn]="validationShowOn"
+            [formControl]="componentData.get('value')"
+            [itemsProvider]="addressHelperService.provider"
+          >
+          </lib-lookup>
+      </ng-container>
+
       <ng-container *ngSwitchCase="componentType.PhoneNumberChangeInput">
         <ng-template
           [ngTemplateOutlet]="formLabel"
