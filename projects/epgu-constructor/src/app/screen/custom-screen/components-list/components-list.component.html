@@ -15,17 +15,20 @@
         </ng-template>
       </ng-container>
 
+      <ng-container *ngSwitchCase="componentType.NewEmailInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+      </ng-container>
+
       <ng-container *ngSwitchCase="componentType.StringInput">
         <ng-template
           [ngTemplateOutlet]="formLabel"
           [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
         </ng-template>
-        <lib-plain-input
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [name]="componentData.value?.id"
-          [validationShowOn]="validationShowOn"
-          [formControl]="componentData.get('value')">
-        </lib-plain-input>
+        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.DropDown">
@@ -122,8 +125,11 @@
             [simpleMode]="true"
             [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
             [validationShowOn]="validationShowOn"
+            [hideHouseCheckbox]="true"
             [externalApiUrl]="configService.externalApiUrl + '/'"
-            [formControl]="componentData.get('value')">
+            [formControl]="componentData.get('value')"
+            [hideLevels]="componentData.value?.attrs?.hideLevels"
+          >
           </lib-dadata-widget>
       </ng-container>
 
@@ -198,6 +204,7 @@
 
       <ng-template #plainInput>
         <lib-plain-input
+          [epgu-constructor-currency-transform]="componentData.value?.attrs?.price"
           epgu-constructor-trim
           epgu-constructor-text-transform
           [textTransformType]="componentData.value?.attrs?.fstuc"
@@ -211,9 +218,10 @@
       <ng-template #maskedInput>
         <lib-standard-masked-input
           *ngIf="componentData.value?.attrs?.mask; else plainInput"
+          epgu-constructor-text-transform
+          [textTransformType]="componentData.value?.attrs?.fstuc"
           [clearable]="true"
           [mask]="componentData.value?.attrs?.mask | maskHandle"
-          [placeholder]="componentData.value?.attrs?.placeholder"
           [name]="componentData.value?.id"
           [showMaskAsPlaceholder]="true"
           [showConstantMaskSymbols]="true"

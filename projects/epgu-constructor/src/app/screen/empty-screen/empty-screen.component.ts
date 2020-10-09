@@ -14,10 +14,16 @@ export class EmptyScreenComponent implements Screen {
 
   constructor(public screenService: ScreenService) {}
 
-  get redirectLink() {
+  /**
+   * Возврат ссылки для редиректа
+   */
+  get redirectLink(): string {
     const { applicantAnswers } = this.screenService;
-    const ref = this.screenService.component?.attrs.ref;
-    return applicantAnswers[ref]?.value;
+    const ref = this.screenService.component?.attrs?.ref;
+    const linkFromRef = () => applicantAnswers[ref]?.value;
+    const linkFromComponent = () => this.screenService.component?.attrs?.link;
+
+    return ref ? linkFromRef() : linkFromComponent();
   }
 
   nextStep(): void {}

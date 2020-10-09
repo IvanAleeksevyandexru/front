@@ -15,6 +15,13 @@ export class ModalBaseComponent {
     }
   }
 
+  @HostListener('document:click', ['$event']) onClickComponent(event: MouseEvent): void {
+    const target = event.target as Element;
+    if (target.className === 'modal-overlay') {
+      this.closeModal();
+    }
+  }
+
   closeModal(value?: any): void {
     this.detachView(value || this.modalResult.value);
   }

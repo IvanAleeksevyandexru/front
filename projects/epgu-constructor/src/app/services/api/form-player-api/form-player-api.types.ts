@@ -1,6 +1,6 @@
 import { ScreenTypes } from '../../../screen/screen.types';
-import { Gender } from '../../../shared/types/gender';
 import { Answer } from '../../../shared/types/answer';
+import { Gender } from '../../../shared/types/gender';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer
@@ -56,12 +56,14 @@ export interface ComponentDtoAction {
 export interface DisplayDto {
   components: Array<ComponentDto>;
   header: string;
+  subHeader: string;
   label?: string;
   id: string;
   name: string;
   submitLabel: string;
   type: ScreenTypes;
   terminal: boolean;
+  isSocialButtonsHidden?: boolean
 }
 
 export interface CurrentCycledFieldsDto {
@@ -131,4 +133,9 @@ export enum ActionType {
   download = 'download',
   nextStep = 'nextStep',
   redirectToLK = 'redirectToLK',
+}
+
+export interface CheckOrderApiResponse {
+  scenarioDto: ScenarioDto;
+  isInviteScenario: boolean;
 }

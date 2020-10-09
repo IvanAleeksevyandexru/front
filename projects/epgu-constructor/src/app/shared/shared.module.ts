@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
@@ -28,6 +28,7 @@ import { ScreenContainerComponent } from './components/screen-container/screen-c
 import { ScreenPadComponent } from './components/screen-pad/screen-pad.component';
 import { WebcamShootComponent } from './components/webcam-shoot/webcam-shoot.component';
 import { CounterDirective } from './directives/counter/counter.directive';
+import { CurrencyTransformDirective } from './directives/currency/currency-transform.directive';
 import { DragAndDropDirective } from './directives/drag-and-drop/drag-and-drop.directive';
 import { TextTransformDirective } from './directives/text-transform/text-transform.directive';
 import { TrimDirective } from './directives/trim/trim.directive';
@@ -74,7 +75,8 @@ const DIRECTIVES = [
   TrimDirective,
   TextTransformDirective,
   DragAndDropDirective,
-  ActionDirective,
+  CurrencyTransformDirective,
+  ActionDirective
 ];
 
 @NgModule({
@@ -87,6 +89,7 @@ const DIRECTIVES = [
     WebcamService,
     TerraByteApiService,
     ConfigService,
+    CurrencyPipe,
   ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [CommonModule, EpguLibModule, FormsModule, WebcamModule, PerfectScrollbarModule],

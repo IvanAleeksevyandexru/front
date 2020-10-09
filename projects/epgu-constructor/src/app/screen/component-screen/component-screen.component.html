@@ -6,7 +6,7 @@
     </div>
 
     <epgu-constructor-screen-pad class="body">
-      <ng-container [ngSwitch]="(screenService.componentType$ | async)">
+      <ng-container [ngSwitch]="screenService.componentType$ | async">
         <epgu-constructor-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
           [data]="screenService.component"
@@ -53,7 +53,7 @@
         </epgu-constructor-temporary-registration-addr-screen>
 
         <epgu-constructor-add-passport
-          *ngSwitchCase="screenComponentName.personLookup"
+          *ngSwitchCase="screenComponentName.passportLookup"
           [currentCycledFields]="screenService.currentCycledFields"
           [data]="screenService.component"
         ></epgu-constructor-add-passport>
@@ -93,6 +93,9 @@
     </epgu-constructor-screen-pad>
 
     <div class="footer">
+      <ng-container
+        *ngIf="(screenService.componentType$ | async) === screenComponentName.divorceConsent"
+      >
         <lib-button
           *ngFor="let action of screenService.actions$ | async"
           epgu-constructor-action
@@ -104,6 +107,7 @@
             {{ action.label }}
           </div>
         </lib-button>
+      </ng-container>
 
       <lib-button
         *ngIf="componentSetting.displayContinueBtn && (screenService.isShown$ | async)"
@@ -132,4 +136,3 @@
     </div>
   </form>
 </epgu-constructor-screen-container>
-

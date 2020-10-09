@@ -151,3 +151,8 @@ export interface BillsInfoResponse{
   fkSmevVersion: number,
   hasUnidentifiedBills: boolean
 }
+
+export interface HttpPaymentError{
+  code: number,
+  message: string
+}

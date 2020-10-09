@@ -16,7 +16,7 @@
     </div>
 
     <epgu-constructor-info-screen-button
-      *ngFor="let action of (screenService.display?.components)[0]?.attrs.actions"
+      *ngFor="let action of (screenService.component$ | async)?.attrs?.actions"
       epgu-constructor-action
       [action]="action"
     >{{ action.label }}
@@ -34,5 +34,9 @@
     </div>
 
   </epgu-constructor-screen-pad>
+
+<!--  <div *ngIf="!screenService.display?.isSocialButtonsHidden">-->
+<!--    <lib-social-share></lib-social-share>-->
+<!--  </div>-->
 </epgu-constructor-screen-container>
 

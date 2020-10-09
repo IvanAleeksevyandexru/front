@@ -10,6 +10,8 @@ export class TextTransformDirective {
     [TextTransform.FIRST]: this.firstLetterToUpperCase,
     [TextTransform.UPPERCASE]: this.allToUpperCase,
   };
+  private prevValue: string;
+  private prevSelection: Array<number>;
   @Input() textTransformType: TextTransform;
 
   @HostListener('input', ['$event.target'])
@@ -17,9 +19,18 @@ export class TextTransformDirective {
     if (!this.transforms[this.textTransformType]) {
       return;
     }
+    // Проверяет, изменилось ли значение, возвращает курсор
+    if (this.prevValue === target.value) {
+      target.setSelectionRange(...this.prevSelection);
+      return;
+    }
     const selection = [target.selectionStart, target.selectionEnd];
     target.value = this.transforms[this.textTransformType].call(this, target.value);
     target.setSelectionRange(...selection);
+
+    // Сохраняет предыдущее значение и позицию курсора
+    this.prevValue = target.value;
+    this.prevSelection = selection;
   }
 
   /**

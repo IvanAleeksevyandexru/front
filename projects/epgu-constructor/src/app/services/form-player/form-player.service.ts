@@ -7,6 +7,7 @@ import { ScreenTypes } from '../../screen/screen.types';
 import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import {
+  CheckOrderApiResponse,
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
@@ -60,6 +61,10 @@ export class FormPlayerService {
     throw new Error(`We cant find screen component for this type: ${screenType}`);
   }
 
+  public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
+    return this.formPlayerApiService.checkIfOrderExist();
+  }
+
   /**
    * Проверяет нужно ли нам достать ранее сохранённые данные
    * для подмены экрана на тот на котором остановились
@@ -80,14 +85,15 @@ export class FormPlayerService {
   /**
    * Инициализирует данные для показа, смотрим откуда брать данные
    * @param orderId - id заявления
+   * @param invited - являеться ли сценарий приглашённым
    */
-  initData(orderId?: string): void {
+  initData(orderId?: string, invited?: boolean): void {
     this.updateLoading(true);
 
     if (this.isNeedToShowLastScreen()) {
       this.getDataFromLocalStorage();
     } else {
-      if (this.serviceDataService.invited) {
+      if (invited) {
         this.getInviteOrderData(orderId);
       } else {
         this.getOrderData(orderId);
@@ -120,10 +126,14 @@ export class FormPlayerService {
   }
 
 
+  /**
+   * Достаёт данные из localStorage для текущего экрана
+   */
   getDataFromLocalStorage() {
     const store = UtilsService.getLocalStorageJSON(COMPONENT_DATA_KEY);
     this.processResponse(store);
     this.updateLoading(false);
+    UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
   }
 
 
@@ -248,6 +258,11 @@ export class FormPlayerService {
     console.error('Invalid Response');
   }
 
+  /**
+   * Обновляем тип экрана
+   * @param scenarioDto - сведения о сценарии
+   * @private
+   */
   private updateScreenType(scenarioDto: ScenarioDto): void {
     const { display } = scenarioDto;
     this.screenType = display.type;

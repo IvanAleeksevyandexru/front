@@ -47,13 +47,11 @@
   ></epgu-constructor-car-info>
   <epgu-constructor-confirm-marriage
     *ngSwitchCase="uniqueComponentName.confirmMarriage"
-    [data]="screenService.display"
-    [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextDataForStep($event)">
   </epgu-constructor-confirm-marriage>
   <epgu-constructor-signature-application
     *ngSwitchCase="uniqueComponentName.signatureApplication"
-    (nextStepEvent)="nextDataForStep()">
+    (nextStepEvent)="nextDataForStep($event)">
   </epgu-constructor-signature-application>
   <epgu-constructor-payment
     *ngSwitchCase="uniqueComponentName.paymentScr"

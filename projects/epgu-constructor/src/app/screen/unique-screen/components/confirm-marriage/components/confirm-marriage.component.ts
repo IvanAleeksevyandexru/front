@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { timer } from 'rxjs';
 
@@ -6,7 +6,7 @@ import { ConfirmMarriageInfoInterface } from '../models/confirm-marriage-info.in
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { TimerInterface } from '../models/timer.interface';
 import { createTimerForConfirmMarriage } from './confirm-marriage.helper';
-import { Display } from '../../../../screen.types';
+import { ScreenService } from '../../../../screen.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-marriage',
@@ -15,17 +15,15 @@ import { Display } from '../../../../screen.types';
   providers: [UnsubscribeService],
 })
 export class ConfirmMarriageComponent implements OnInit {
-  @Input() isLoading: boolean;
-  @Input() data: Display;
   @Output() nextStepEvent = new EventEmitter<string>();
-
-  get marriageInfo() {
-    return this.data.components[0].attrs as ConfirmMarriageInfoInterface;
-  }
 
   timer: TimerInterface;
 
-  constructor(private ngUnsubscribe$: UnsubscribeService) {}
+  get value() {
+    return this.screenService.componentValue as ConfirmMarriageInfoInterface;
+  }
+
+  constructor(private ngUnsubscribe$: UnsubscribeService, public screenService: ScreenService) {}
 
   ngOnInit(): void {
     this.timer = createTimerForConfirmMarriage(
@@ -62,10 +60,10 @@ export class ConfirmMarriageComponent implements OnInit {
   }
 
   private getMarriageStartDate() {
-    return new Date(this.marriageInfo.timer.start.value).getTime();
+    return new Date(this.value.timer.start).getTime();
   }
 
   private getMarriageFinishDate() {
-    return new Date(this.marriageInfo.timer.finish.value).getTime();
+    return new Date(this.value.timer.finish).getTime();
   }
 }

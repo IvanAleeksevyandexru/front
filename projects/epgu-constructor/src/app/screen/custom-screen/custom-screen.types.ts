@@ -47,6 +47,7 @@ export interface CustomComponentDropDownStateInterface {
 export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
 export type CustomComponentDropDownItem = {
   label: string;
+  code: string;
   disable: boolean;
 };
 
@@ -131,6 +132,7 @@ export interface CustomComponent extends ComponentBase {
   hint?: string;
   fstuc?: TextTransform;
   isShown?: boolean;
+  price?: boolean;
 }
 
 export interface SupportedValue {

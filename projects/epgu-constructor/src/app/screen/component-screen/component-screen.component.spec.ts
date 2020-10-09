@@ -33,6 +33,7 @@ xdescribe('ScreenComponent', () => {
       header: '',
       id: '',
       name: '',
+      terminal: false,
       submitLabel: '',
       type: ScreenTypes.COMPONENT
     }

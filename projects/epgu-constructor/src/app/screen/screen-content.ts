@@ -29,6 +29,15 @@ export class ScreenContent {
   }
   public header$ = this._header.asObservable();
 
+  private _subHeader = new BehaviorSubject<string>(null);
+  public get subHeader() {
+    return this._subHeader.getValue();
+  }
+  public set subHeader(val: string) {
+    this._subHeader.next(val);
+  }
+  public subHeader$ = this._subHeader.asObservable();
+
   private _submitLabel = new BehaviorSubject<string>(null);
   public get submitLabel() {
     return this._submitLabel.getValue();
@@ -137,6 +146,15 @@ export class ScreenContent {
   }
   public actions$ = this._actions.asObservable();
 
+  private _action = new BehaviorSubject<ComponentDtoAction>(null);
+  public get action() {
+    return this._action.getValue();
+  }
+  public set action(val: ComponentDtoAction) {
+    this._action.next(val);
+  }
+  public action$ = this._action.asObservable();
+
   private _currentCycledFields = new BehaviorSubject<CurrentCycledFieldsDto>(null);
   public get currentCycledFields(): CurrentCycledFieldsDto {
     return this._currentCycledFields.getValue();
@@ -157,10 +175,11 @@ export class ScreenContent {
 
   updateScreenContent(screenStore: ScreenStore) {
     const { display = {} as any, orderId, gender, errors = {} as any, currentCycledFields, applicantAnswers } = screenStore;
-    const { header, submitLabel, type, components = [], terminal } = display;
+    const { header, subHeader, submitLabel, type, components = [], terminal } = display;
     const firstComponent = components[0];
     this.display = display;
     this.header = header;
+    this.subHeader = subHeader;
     this.submitLabel = submitLabel;
     this.screenType = type;
     this.gender = gender;
@@ -173,6 +192,7 @@ export class ScreenContent {
     this.componentLabel = firstComponent?.label;
     this.componentValue = this.getComponentData(firstComponent?.value);
     this.actions = firstComponent?.attrs?.actions || [];
+    this.action = this.actions[0];
     this.currentCycledFields = currentCycledFields;
     this.applicantAnswers = applicantAnswers;
   }
