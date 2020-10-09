@@ -57,18 +57,18 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       .subscribe((data: NavigationPayload) => this.prevStep(data));
   }
 
-  ngOnChanges(): void {
-    this.serviceDataService.init(this.service);
-    this.checkProps();
-  }
-
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
     const { orderId, invited } = this.serviceDataService;
     if (orderId) {
       this.handleOrder(orderId, invited);
     } else {
       this.getOrderIdFromApi();
     }
+  }
+
+  ngOnChanges(): void {
+    this.serviceDataService.init(this.service);
+    this.checkProps();
   }
 
   getOrderIdFromApi() {

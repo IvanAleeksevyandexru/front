@@ -1,5 +1,4 @@
 import { ListItem } from 'epgu-lib';
-import * as moment_ from 'moment';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   CustomComponent,
@@ -8,7 +7,6 @@ import {
   CustomComponentRefRelation,
   CustomScreenComponentTypes
 } from '../custom-screen.types';
-const moment = moment_;
 
 function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
   return {
@@ -54,8 +52,23 @@ export function isDropDown(type: CustomScreenComponentTypes): boolean {
 }
 
 /**
+ * Возвращает true, если в зависимостях есть значения для проверки
+ *
+ * @param dependentComponent - зависимый компонент компонент
+ * @param component - компонент
+ * @param components - массив компонентов
+ * @param relation - тип зависимости
+ */
+export const isHaveNeededValueForRelation = (
+  dependentComponent: CustomComponent,
+  component: CustomComponent,
+  components: Array<CustomComponent>,
+  relation: CustomComponentRefRelation,
+): boolean => dependentComponent.attrs.ref.some((item) => isHaveNeededValue(components, component, item, relation));
+
+/**
  * Возвращает true, если текущее состояние зависимости соответствует значению проверяемого компонента
- * @param state - Хранилище данных
+ * @param components - массив компонентов
  * @param component - компонент
  * @param item - сведения о зависимости
  * @param relation - тип зависимости
@@ -103,3 +116,18 @@ export function getNormalizeDataCustomScreenDictionary(
   }
   return arr.map((item) => adaptiveDictionaryItemToListItem(item) as ListItem);
 }
+
+/**
+ * Проверяет есть ли связь с типом калькуляция и если есть возвращает её
+ * @param item - объект с информацией о связи
+ */
+export const findCalcRelation = (item: CustomComponentRef) => item.relation === CustomComponentRefRelation.calc;
+
+/**
+ * Возвращает найденую связь компонента с типом калькуляция
+ * @param checkComponent - компонент для проверки
+ */
+export const getCalcRelation = (checkComponent: CustomComponent) => checkComponent.attrs.ref.find(findCalcRelation);
+
+
+
