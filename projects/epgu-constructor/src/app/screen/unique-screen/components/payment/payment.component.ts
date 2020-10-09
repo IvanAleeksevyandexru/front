@@ -12,7 +12,8 @@ import { getDiscountDate, getDiscountPrice, getDocInfo } from './payment.compone
 import { PaymentStatus } from './payment.constants';
 import { PaymentService } from './payment.service';
 import {
-  BillInfoResponse, BillsInfoResponse,
+  BillInfoResponse,
+  BillsInfoResponse,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
 } from './payment.types';
