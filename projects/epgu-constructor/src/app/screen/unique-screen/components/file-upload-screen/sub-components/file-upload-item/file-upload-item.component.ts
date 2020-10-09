@@ -391,8 +391,14 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.webcamService.isWebcamAllowed().subscribe((isAvailable) => {
-      this.cameraNotAllowed = isAvailable;
-    });
+    this.webcamService.isWebcamAllowed().subscribe(
+      (isAvailable) => {
+        this.cameraNotAllowed = !isAvailable;
+      },
+      () => {
+        // eslint-disable-next-line no-console
+        this.cameraNotAllowed = true;
+      },
+    );
   }
 }
