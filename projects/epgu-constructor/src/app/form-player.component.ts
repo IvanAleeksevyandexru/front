@@ -92,11 +92,6 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  ngOnChanges(): void {
-    this.serviceDataService.init(this.service);
-    this.checkProps();
-  }
-
   initializeEpguLibConfig(): Promise<any> {
     return this.config.production ? this.loadService.load('portal') : null;
   }
