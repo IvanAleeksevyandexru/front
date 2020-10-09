@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { NavigationPayload } from '../../form-player.types';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
-import { Screen, ScreenStore } from '../screen.types';
+import { Screen } from '../screen.types';
 import { UniqueScreenComponentTypes } from './unique-screen.types';
+import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
+import { NavigationPayload } from '../../form-player.types';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',
@@ -17,7 +17,6 @@ import { UniqueScreenComponentTypes } from './unique-screen.types';
 export class UniqueScreenComponent implements OnInit, Screen {
   // <-- constant
   uniqueComponentName = UniqueScreenComponentTypes;
-  screenStore: ScreenStore;
 
   constructor(
     private navigationService: NavigationService,
@@ -31,12 +30,9 @@ export class UniqueScreenComponent implements OnInit, Screen {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
 
-    this.screenService.screenData$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenStore) => {
-        this.screenStore = screenData;
-        this.cycledFieldsService.initCycledFields(this.screenStore?.currentCycledFields);
-      });
+    this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.cycledFieldsService.initCycledFields(this.screenService.currentCycledFields);
+    });
   }
 
   /**

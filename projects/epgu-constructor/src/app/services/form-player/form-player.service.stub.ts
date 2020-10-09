@@ -7,6 +7,7 @@ import { Gender } from '../../shared/types/gender';
 export class FormPlayerServiceStub {
   response: FormPlayerApiSuccessResponse = { scenarioDto: {
       applicantAnswers: {},
+      cachedAnswers: {},
       currentScenarioId: '1',
       currentValue: {},
       currentCycledFields: {},
@@ -19,6 +20,7 @@ export class FormPlayerServiceStub {
         id: '123',
         name: 'some name',
         submitLabel: 'some submit label',
+        terminal: false,
         type: ScreenTypes.COMPONENT
       },
       errors: {},

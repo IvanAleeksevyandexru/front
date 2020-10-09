@@ -37,12 +37,12 @@ import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 import { SafePipe } from './pipes/safe/safe.pipe';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { CachedAnswersService } from './services/applicant-answers/cached-answers.service';
+import { PassportComponent } from './components/add-passport/passport.component';
 import { NavigationService } from './services/navigation/navigation.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from './services/webcam/webcam.service';
-
-
-
+import { ActionDirective } from './directives/action/action.directive';
+import { ActionButtonComponent } from './components/action-button/action-button.component';
 
 
 const COMPONENTS = [
@@ -64,6 +64,8 @@ const COMPONENTS = [
   ComponentsListComponent,
   LongButtonComponent,
   WebcamShootComponent,
+  PassportComponent,
+  ActionButtonComponent,
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe, ImgPrefixerPipe, SafePipe];
@@ -73,7 +75,8 @@ const DIRECTIVES = [
   TrimDirective,
   TextTransformDirective,
   DragAndDropDirective,
-  CurrencyTransformDirective
+  CurrencyTransformDirective,
+  ActionDirective
 ];
 
 @NgModule({

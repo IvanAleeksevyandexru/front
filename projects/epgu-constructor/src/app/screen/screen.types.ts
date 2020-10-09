@@ -23,6 +23,7 @@ export interface Display {
   id: string;
   name: string;
   submitLabel: string;
+  terminal: boolean;
   type: ScreenTypes
 }
 
@@ -41,7 +42,6 @@ export interface CurrentCycledFields {
 export interface ScreenStore extends Partial<ScenarioDto>{ }
 
 export interface Screen {
-  screenStore: ScreenStore,
   prevStep: (data?: NavigationPayload) => void,
   nextStep: (data?: NavigationPayload) => void,
 }

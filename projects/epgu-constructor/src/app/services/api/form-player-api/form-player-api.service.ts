@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { ConfigService } from '../../../config/config.service';
 import { FormPlayerNavigation, NavigationOptions } from '../../../form-player.types';
-import { FormPlayerApiResponse, FormPlayerApiSuccessResponse } from './form-player-api.types';
+import { FormPlayerApiResponse, FormPlayerApiSuccessResponse, CheckOrderApiResponse } from './form-player-api.types';
 import { ServiceDataService } from '../../service-data/service-data.service';
 
 type CookieSession = { userId: string, token: string };
@@ -17,6 +17,15 @@ export class FormPlayerApiService {
     private serviceDataService: ServiceDataService,
     private cookieService: CookieService,
   ) {}
+
+  public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
+    const { serviceId, targetId } = this.serviceDataService;
+    const { userId, token } = this.getSessionFromCookie();
+    const body = { targetId, userId, token };
+    const path = `${this.config.apiUrl}/service/${serviceId}/scenario/checkIfOrderIdExists`;
+
+    return this.post<CheckOrderApiResponse>(path, body);
+  }
 
   public getInviteServiceData(orderId: string): Observable<FormPlayerApiResponse> {
     const { targetId, serviceId } = this.serviceDataService;
@@ -51,6 +60,8 @@ export class FormPlayerApiService {
 
     data.scenarioDto.userId = userId;
     data.scenarioDto.token = token;
+    data.scenarioDto.currentUrl = location.href;
+
     if (options.isInternalScenarioFinish) {
       data.isInternalScenario = false;
     }

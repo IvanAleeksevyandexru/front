@@ -1,11 +1,13 @@
 import {
+  ApplicantAnswersDto,
   ComponentDto,
-  ComponentDtoAction,
+  ComponentDtoAction, CurrentCycledFieldsDto,
   DisplayDto,
   ScenarioErrorsDto
 } from '../services/api/form-player-api/form-player-api.types';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { BehaviorSubject } from 'rxjs';
+import { Gender } from '../shared/types/gender';
 
 export class ScreenContent {
 
@@ -44,6 +46,24 @@ export class ScreenContent {
     this._submitLabel.next(val);
   }
   public submitLabel$ = this._submitLabel.asObservable();
+
+  private _gender = new BehaviorSubject<Gender>(null);
+  public get gender() {
+    return this._gender.getValue();
+  }
+  public set gender(val: Gender) {
+    this._gender.next(val);
+  }
+  public gender$ = this._gender.asObservable();
+
+  private _terminal = new BehaviorSubject<boolean>(null);
+  public get terminal() {
+    return this._terminal.getValue();
+  }
+  public set terminal(val: boolean) {
+    this._terminal.next(val);
+  }
+  public terminal$ = this._terminal.asObservable();
 
   private _screenType = new BehaviorSubject<ScreenTypes>(null);
   public get screenType() {
@@ -126,24 +146,55 @@ export class ScreenContent {
   }
   public actions$ = this._actions.asObservable();
 
-  constructor() {}
+  private _action = new BehaviorSubject<ComponentDtoAction>(null);
+  public get action() {
+    return this._action.getValue();
+  }
+  public set action(val: ComponentDtoAction) {
+    this._action.next(val);
+  }
+  public action$ = this._action.asObservable();
+
+  private _currentCycledFields = new BehaviorSubject<CurrentCycledFieldsDto>(null);
+  public get currentCycledFields(): CurrentCycledFieldsDto {
+    return this._currentCycledFields.getValue();
+  }
+  public set currentCycledFields(val: CurrentCycledFieldsDto) {
+    this._currentCycledFields.next(val);
+  }
+  public currentCycledFields$ = this._currentCycledFields.asObservable();
+
+  private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
+  public get applicantAnswers(): ApplicantAnswersDto {
+    return this._applicantAnswers.getValue();
+  }
+  public set applicantAnswers(val: ApplicantAnswersDto) {
+    this._applicantAnswers.next(val);
+  }
+  public applicantAnswers$ = this._applicantAnswers.asObservable();
 
   updateScreenContent(screenStore: ScreenStore) {
-    const { display = {} as any, orderId, errors = {} as any } = screenStore;
-    const { header, subHeader, submitLabel, type, components = [] } = display;
+    const { display = {} as any, orderId, gender, errors = {} as any, currentCycledFields, applicantAnswers } = screenStore;
+    const { header, subHeader, submitLabel, type, components = [], terminal } = display;
+    const firstComponent = components[0];
     this.display = display;
     this.header = header;
     this.subHeader = subHeader;
     this.submitLabel = submitLabel;
     this.screenType = type;
+    this.gender = gender;
+    this.terminal = terminal;
     this.orderId = orderId;
     this.componentErrors = errors;
-    this.componentError = errors[components[0]?.id];
-    this.component = components[0];
-    this.componentType = components[0]?.type;
-    this.componentLabel = components[0]?.label;
-    this.actions = components[0]?.attrs?.actions || [];
-    this.componentValue = this.getComponentData(components[0]?.value);
+    this.componentError = errors[firstComponent?.id];
+    this.component = firstComponent;
+    this.componentType = firstComponent?.type;
+    this.componentLabel = firstComponent?.label;
+    this.componentValue = this.getComponentData(firstComponent?.value);
+    this.actions = firstComponent?.attrs?.actions || [];
+    this.action = this.actions[0];
+    this.currentCycledFields = currentCycledFields;
+    this.applicantAnswers = applicantAnswers;
   }
 
   getComponentData(str: string) {

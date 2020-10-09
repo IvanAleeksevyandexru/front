@@ -2,7 +2,9 @@ import { ListItem } from 'epgu-lib';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   CustomComponent,
-  CustomComponentDictionaryState, CustomComponentRef, CustomComponentRefRelation,
+  CustomComponentDictionaryState,
+  CustomComponentRef,
+  CustomComponentRefRelation,
   CustomScreenComponentTypes
 } from '../custom-screen.types';
 
@@ -78,13 +80,18 @@ export const isHaveNeededValue = (
   relation: CustomComponentRefRelation,
 ): boolean => {
   if (item.relation === relation) {
-    const stateRelatedRelValue = components.find((c: CustomComponent) => c.id === item.relatedRel)?.value;
+    const stateRelatedRelValue: any = components.find(
+      (c: CustomComponent) => c.id === item.relatedRel,
+    )?.value;
 
-    return stateRelatedRelValue === item.val;
+    if (likeDictionary(component.type) || isDropDown(component.type)) {
+      return stateRelatedRelValue.id === item.val;
+    } else {
+      return stateRelatedRelValue === item.val;
+    }
   }
   return relation === CustomComponentRefRelation.displayOn;
 };
-
 
 /**
  * Адаптирует массив в вид необходимый для компонентов из библлиотеки и если нужно то удаляет РОССИЮ из списка
@@ -95,7 +102,8 @@ export const isHaveNeededValue = (
 export function getNormalizeDataCustomScreenDictionary(
   items: Array<DictionaryItem>,
   dictionaryName: string,
-  component: CustomComponent): Array<ListItem> {
+  component: CustomComponent,
+): Array<ListItem> {
   const isRemoveRussiaFromList = component?.attrs.russia === false;
   const isRemoveUssrFromList = component?.attrs.ussr === false;
   const russiaCode = 'RUS'; // TODO HARDCODE возможно стоит вынести поля необходимые для удаления в JSON

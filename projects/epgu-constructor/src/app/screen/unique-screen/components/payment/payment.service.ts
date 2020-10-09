@@ -4,9 +4,7 @@ import { catchError, map, takeUntil } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { getPaymentRequestOptions } from './payment.constants';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
-import { ScreenStore } from '../../../screen.types';
 import { ScreenService } from '../../../screen.service';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { ConfigService } from '../../../../config/config.service';
 import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payment.types';
 
@@ -16,21 +14,13 @@ import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payme
 @Injectable()
 export class PaymentService {
   private requestOptions = { withCredentials: true };
-  screenStore: ScreenStore;
 
   constructor(
     private http: HttpClient,
     private dictionaryApiService: DictionaryApiService,
     private config: ConfigService,
     private screenService: ScreenService,
-    private ngUnsubscribe$: UnsubscribeService
-  ) {
-    this.screenService.screenData$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((screenData: ScreenStore) => {
-        this.screenStore = screenData;
-      });
-  }
+  ) {}
 
   /**
    * Преобразует сумму строкой без запятой в строку суммы с копейками
@@ -84,7 +74,7 @@ export class PaymentService {
     // }
 
     // TODO: Хардкод для локальной отладки
-    if (location.hostname === 'local.test.gosuslugi.ru') {
+    if (location.hostname.includes('test.gosuslugi.ru')) {
       attributeValues.sum = '200';
     }
 
@@ -179,7 +169,7 @@ export class PaymentService {
    * @param fiasCode - код справочника
    */
   createPaymentRequestOptions(dictItemCode: string, fiasCode: string): PaymentDictionaryOptionsInterface {
-    const { applicantAnswers } = this.screenStore;
+    const { applicantAnswers } = this.screenService;
     const path = fiasCode.split('.'); // Путь к ответу
     const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, path));
 

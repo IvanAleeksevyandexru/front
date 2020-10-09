@@ -10,7 +10,6 @@
     <epgu-constructor-address-item *ngSwitchCase="'regAddr'" class="item" [label]="field.label">
       <lib-dadata-widget
         [simpleMode]="true"
-        [disabled]="!isEditable"
         [hideHouseCheckbox]="true"
         [name]="field.fieldName"
         [externalApiUrl]="config.externalApiUrl + '/'"
@@ -43,7 +42,6 @@
         epgu-constructor-trim
         epgu-constructor-text-transform
         [textTransformType]="textTransformType"
-        [disabled]="!isEditable"
         [(ngModel)]="valueParsed[field.fieldName]"
         [name]="field.fieldName"
         class="content content__input"
@@ -52,6 +50,6 @@
     </epgu-constructor-address-item>
   </ng-container>
   <div class="error">
-    <small>{{ error }}</small>
+    <small>{{ screenService.componentError$ | async }}</small>
   </div>
 </form>

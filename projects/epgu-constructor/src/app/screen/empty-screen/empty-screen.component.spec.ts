@@ -6,7 +6,7 @@ import { ScreenService } from '../screen.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
-import { ComponentStateService } from '../../services/component-state/component-state.service';
+import { CurrentAnswersService } from '../current-answers.service';
 
 
 // TODO: Need to refactoring component
@@ -29,6 +29,7 @@ xdescribe('EmptyScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
+      terminal: false,
       type: ScreenTypes.COMPONENT
     }
   };
@@ -42,7 +43,7 @@ xdescribe('EmptyScreenComponent', () => {
         ScreenService,
         UnsubscribeService,
         CachedAnswersService,
-        ComponentStateService
+        CurrentAnswersService
       ]
 		})
 			.compileComponents();

@@ -17,6 +17,7 @@
   <div class="footer">
     <lib-button
       [showLoader]="isLoading"
+      [disabled]="disabled"
       (click)="nextScreen()"
       class="footer__btn-submit">
       {{ submitLabel || "Продолжить" }}

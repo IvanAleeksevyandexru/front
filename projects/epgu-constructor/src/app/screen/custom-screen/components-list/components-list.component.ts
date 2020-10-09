@@ -54,6 +54,7 @@ export class ComponentsListComponent implements OnInit {
     CustomScreenComponentTypes.RadioInput,
     CustomScreenComponentTypes.Dictionary,
     CustomScreenComponentTypes.Lookup,
+    CustomScreenComponentTypes.DropDown,
     CustomScreenComponentTypes.StringInput,
     CustomScreenComponentTypes.DateInput,
     CustomScreenComponentTypes.AddressInput,
@@ -77,9 +78,9 @@ export class ComponentsListComponent implements OnInit {
   }
 
   private updateScreenData(): void {
-    this.screenService.screenData$
+    this.screenService.display$
       .pipe(
-        map((screen: ScreenStore): Array<ComponentBase> => this.getComponents(screen)),
+        map((): Array<ComponentBase> => this.getComponents(this.screenService.getStore())),
         tap((components: Array<CustomComponent>) => this.rebuildFormAfterDataUpdate(components)),
         takeUntil(this.unsubscribe$),
       )
@@ -167,7 +168,7 @@ export class ComponentsListComponent implements OnInit {
 
   private adaptiveDropDown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
     return items.map((item, index) => ({
-      id: `${item.label}-${index}`,
+      id: `${item.code}` || `${item.label}-${index}`,
       text: item.label,
       formatted: '',
       unselectable: !!item.disable,
