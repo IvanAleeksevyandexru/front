@@ -128,6 +128,7 @@
             [hideHouseCheckbox]="true"
             [externalApiUrl]="configService.externalApiUrl + '/'"
             [formControl]="componentData.get('value')">
+            [hideLevels]="componentData.value?.attrs?.hideLevels"
           </lib-dadata-widget>
       </ng-container>
 
@@ -220,9 +221,8 @@
           [textTransformType]="componentData.value?.attrs?.fstuc"
           [clearable]="true"
           [mask]="componentData.value?.attrs?.mask | maskHandle"
-          [placeholder]="componentData.value?.attrs?.placeholder"
           [name]="componentData.value?.id"
-          [showMaskAsPlaceholder]="false"
+          [showMaskAsPlaceholder]="true"
           [showConstantMaskSymbols]="true"
           [formControl]="componentData.get('value')"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"

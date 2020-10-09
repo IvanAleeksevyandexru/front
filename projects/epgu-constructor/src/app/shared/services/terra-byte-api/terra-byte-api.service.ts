@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { TerraFileOptions, TerraUploadFileOptions } from './terra-byte-api.types';
 import { Observable } from 'rxjs';
 import { TerraUploadedFile } from '../../../screen/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
@@ -55,7 +55,7 @@ export class TerraByteApiService {
    * @param objectId - идентификатор объекта
    */
   getListByObjectId(objectId: string): Observable<any>  {
-    return this.http.get(this.getTerabyteApiUrl(`/${objectId}`));
+    return this.http.get(this.getTerabyteApiUrl(`/${objectId}`), this.getServerRequestOptions());
   }
 
   /**
