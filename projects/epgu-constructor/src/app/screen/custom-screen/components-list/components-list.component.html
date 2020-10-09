@@ -120,6 +120,7 @@
             [hideHouseCheckbox]="true"
             [externalApiUrl]="configService.externalApiUrl + '/'"
             [formControl]="componentData.get('value')">
+            [hideLevels]="componentData.value?.attrs?.hideLevels"
           </lib-dadata-widget>
       </ng-container>
 

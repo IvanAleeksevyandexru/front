@@ -186,7 +186,7 @@ export class SelectMapObjectService {
    */
   public centeredPlaceMark(coords, objectId) {
     let serviceContext = this as any;
-    let offset = 0.0000;
+    let offset = -0.00015;
 
     this.objectManager && this.objectManager.objects.setObjectOptions(objectId, {
       iconImageHref: this.icons.red.iconImageHref

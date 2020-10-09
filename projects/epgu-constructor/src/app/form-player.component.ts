@@ -1,4 +1,12 @@
-import { Component, HostBinding, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { LoadService } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from './config/config.service';
@@ -19,7 +27,7 @@ import { NavigationService } from './shared/services/navigation/navigation.servi
   providers: [UnsubscribeService],
   encapsulation: ViewEncapsulation.None,
 })
-export class FormPlayerComponent implements OnInit, OnChanges {
+export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() service: Service;
   @Input() config: Config;
@@ -50,6 +58,12 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     this.navigationService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.prevStep(data));
+  }
+
+  ngOnChanges(): void {
+    this.serviceDataService.init(this.service);
+    this.checkProps();
+  }
 
     const { orderId, invited } = this.serviceDataService;
     if (orderId) {
@@ -77,7 +91,7 @@ export class FormPlayerComponent implements OnInit, OnChanges {
     if (!invited && orderId) {
       this.showModal();
     } else {
-      this.formPlayerService.initData(orderId, invited);
+      this.formPlayerService.initData(orderId);
     }
   }
 
