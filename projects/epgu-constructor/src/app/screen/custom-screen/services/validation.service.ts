@@ -20,6 +20,10 @@ export class ValidationService {
         return null;
       }
 
+      if (component.required && component.type === CustomScreenComponentTypes.RadioInput && control.value !== '') {
+        return null;
+      }
+
       if (component.required && !control.value) {
         return this.validationErrorMsg(REQUIRED_FIELD);
       }
