@@ -7,13 +7,18 @@
 }
 
 .employee-history {
-  &__generation,
-  &__addedGenerations {
+  &__generation {
     @include shadow-second();
     border-radius: $border-xl;
     padding: $screen-pad-p;
     margin-bottom: $screen-pad-p;
     background: $color-white;
+
+    .icon-close {
+      display: flex;
+      margin-left: auto;
+      cursor: pointer;
+    }
   }
 
   &__completed {
@@ -107,7 +112,7 @@
     margin-bottom: $screen-pad-p;
   }
 
-  &__pushGeneration {
+  &__newGeneration {
     text-align: center;
 
     &__button {
