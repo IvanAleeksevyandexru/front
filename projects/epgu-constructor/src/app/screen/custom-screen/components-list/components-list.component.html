@@ -15,6 +15,14 @@
         </ng-template>
       </ng-container>
 
+      <ng-container *ngSwitchCase="componentType.NewEmailInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+      </ng-container>
+
       <ng-container *ngSwitchCase="componentType.StringInput">
         <ng-template
           [ngTemplateOutlet]="formLabel"
