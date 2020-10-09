@@ -88,8 +88,13 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     if (!invited && orderId) {
       this.showModal();
     } else {
-      this.formPlayerService.initData(orderId, invited);
+      this.formPlayerService.initData(orderId);
     }
+  }
+
+  ngOnChanges(): void {
+    this.serviceDataService.init(this.service);
+    this.checkProps();
   }
 
   initializeEpguLibConfig(): Promise<any> {

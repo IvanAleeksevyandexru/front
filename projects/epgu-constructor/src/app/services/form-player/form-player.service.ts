@@ -126,10 +126,14 @@ export class FormPlayerService {
   }
 
 
+  /**
+   * Достаёт данные из localStorage для текущего экрана
+   */
   getDataFromLocalStorage() {
     const store = UtilsService.getLocalStorageJSON(COMPONENT_DATA_KEY);
     this.processResponse(store);
     this.updateLoading(false);
+    UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
   }
 
 
@@ -254,6 +258,11 @@ export class FormPlayerService {
     console.error('Invalid Response');
   }
 
+  /**
+   * Обновляем тип экрана
+   * @param scenarioDto - сведения о сценарии
+   * @private
+   */
   private updateScreenType(scenarioDto: ScenarioDto): void {
     const { display } = scenarioDto;
     this.screenType = display.type;

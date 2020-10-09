@@ -74,6 +74,7 @@ export class UnusedPaymentsComponent implements OnInit {
   };
 
   getListPaymentsInfoError = (error) => {
+    // eslint-disable-next-line no-console
     console.log('Error', error);
     this.usePaymentsListData();
   };

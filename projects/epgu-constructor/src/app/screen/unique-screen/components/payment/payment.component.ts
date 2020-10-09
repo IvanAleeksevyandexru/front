@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { map, switchMap, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../config/config.service';
 import { CurrentAnswersService } from '../../../current-answers.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
@@ -8,17 +8,11 @@ import { UtilsService } from '../../../../services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
 import { ScreenService } from '../../../screen.service';
 import { ComponentBase } from '../../../screen.types';
-import {
-  filterBillInfoResponse,
-  getDiscountDate,
-  getDiscountPrice,
-  getDocInfo,
-} from './payment.component.functions';
+import { getDiscountDate, getDiscountPrice, getDocInfo } from './payment.component.functions';
 import { PaymentStatus } from './payment.constants';
 import { PaymentService } from './payment.service';
 import {
   BillInfoResponse,
-  BillsInfoResponse,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
 } from './payment.types';
@@ -118,7 +112,6 @@ export class PaymentComponent implements OnDestroy {
     this.uin = value;
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
-      .pipe(map((answer: any) => filterBillInfoResponse(answer)))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
         (info) => this.getBillsInfo(info),
@@ -135,12 +128,32 @@ export class PaymentComponent implements OnDestroy {
   }
 
   /**
-   * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
-   * @param info - информация об оплатах гос. пошлины
+   * Устанавливает статус, что уже информация подгружена
    * @private
    */
-  private getBillsInfo(info: BillsInfoResponse) {
-    const bill: BillInfoResponse = info.bills[this.billPosition];
+  private setInfoLoadedState() {
+    this.inLoading = false;
+    this.isShown = false;
+  }
+
+  /**
+   * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
+   * @param response - информация об оплатах гос. пошлины
+   * @param error - сведения об ошибке
+   * @private
+   */
+  private getBillsInfo({ response, error }) {
+    if (error?.code) {
+      // Если ошибка, что уже оплачено
+      if (error.code === 23) {
+        this.setInfoLoadedState();
+        this.nextStep();
+      } else {
+        this.setInfoLoadedState();
+        this.status = PaymentStatus.ERROR;
+      }
+    }
+    const bill: BillInfoResponse = response.bills[this.billPosition];
 
     this.isPaid = bill.isPaid;
     if (this.isPaid) {
@@ -195,8 +208,7 @@ export class PaymentComponent implements OnDestroy {
    * @param error - сведения об ошибке на запрос
    */
   private setPaymentStatusFromErrorRequest(error: HttpErrorResponse) {
-    this.inLoading = false;
-    this.isShown = false;
+    this.setInfoLoadedState();
     if (error.status === 500) {
       this.status = PaymentStatus.ERROR;
     } else {
