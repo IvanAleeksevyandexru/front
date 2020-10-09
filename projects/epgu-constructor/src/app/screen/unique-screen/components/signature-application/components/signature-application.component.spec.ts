@@ -14,41 +14,74 @@ import { ScreenServiceStub } from '../../../../screen.service.stub';
 import { ConfigServiceStub } from '../../../../../config/config.service.stub';
 import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/shared/pipes/img-prefixer/img-prefixer.pipe';
 import { SafePipe } from '../../../../../shared/pipes/safe/safe.pipe';
+import { SignatureApplicationData } from '../models/application.interface';
+import { UtilsService } from '../../../../../services/utils/utils.service';
+import {
+  ApplicantAnswersDto,
+  ComponentDto,
+} from '../../../../../services/api/form-player-api/form-player-api.types';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
   let fixture: ComponentFixture<SignatureApplicationComponent>;
+  let navigationService: NavigationService;
+  let screenService: ScreenService;
+  let utilsService: UtilsService;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [
-        SignatureApplicationComponent,
-        ScreenContainerComponent,
-        PageNameComponent,
-        NavigationComponent,
-        ButtonComponent,
-        LoaderComponent,
-        OutputHtmlComponent,
-        SafePipe,
-        ImgPrefixerPipe
-      ],
-      providers: [
-        NavigationService,
-        ConfigService,
-        { provide: ScreenService,useClass: ScreenServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub }
-      ],
-    }).compileComponents();
-  }));
+  const mockComponentValue: SignatureApplicationData = {
+    fileAccessCodes: [],
+    operationID: '',
+    url: '',
+    userId: 0,
+  };
+
+  const mockComponent: ComponentDto = {
+    attrs: {},
+    label: '',
+    type: '',
+    id: '',
+    value: '',
+  };
+
+  const applicantAnswersDto: ApplicantAnswersDto = {
+    id: { value: '', visited: false },
+  };
+
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [RouterTestingModule],
+        declarations: [
+          SignatureApplicationComponent,
+          ScreenContainerComponent,
+          PageNameComponent,
+          NavigationComponent,
+          ButtonComponent,
+          LoaderComponent,
+          OutputHtmlComponent,
+          SafePipe,
+          ImgPrefixerPipe,
+        ],
+        providers: [
+          NavigationService,
+          UtilsService,
+          { provide: ConfigService, useClass: ConfigServiceStub },
+          { provide: ScreenService, useClass: ScreenServiceStub },
+          { provide: ConfigService, useClass: ConfigServiceStub },
+        ],
+      }).compileComponents();
+
+      navigationService = TestBed.inject(NavigationService);
+      screenService = TestBed.inject(ScreenService);
+      utilsService = TestBed.inject(UtilsService);
+
+      jest.spyOn(screenService, 'componentValue', 'get').mockReturnValue(mockComponentValue);
+      jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
+      jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
+    }),
+  );
 
   beforeEach(() => {
-    // Нужно для решения ошибки при переходе по ссылке
-    delete window.location;
-    // @ts-ignore
-    window.location = {
-      href: '',
-    };
     fixture = TestBed.createComponent(SignatureApplicationComponent);
     component = fixture.componentInstance;
 
