@@ -191,7 +191,7 @@ hr {
   }
 }
 
- @include laptop-down {
+ @include desktops-down {
    .widget {
      height: calc(100vh - 104px);
      overflow: hidden;
