@@ -17,7 +17,7 @@
     <div class="footer">
       <lib-button
         [showLoader]="screenService.isLoading$ | async"
-        (click)="nextStep()"
+        (click)="redirectToLK()"
         class="footer__btn-submit"
       >
         {{ screenService.actions[0].label || 'Продолжить' }}
