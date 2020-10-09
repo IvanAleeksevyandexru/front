@@ -12,7 +12,7 @@ import { getDiscountDate, getDiscountPrice, getDocInfo } from './payment.compone
 import { PaymentStatus } from './payment.constants';
 import { PaymentService } from './payment.service';
 import {
-  BillInfoResponse,
+  BillInfoResponse, BillsInfoResponse,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
 } from './payment.types';
@@ -138,9 +138,7 @@ export class PaymentComponent implements OnDestroy {
 
   /**
    * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
-   * @param response - информация об оплатах гос. пошлины
-   * @param error - сведения об ошибке
-   * @private
+   * @param {BillsInfoResponse}info
    */
   private getBillsInfoByUINSuccess(info: BillsInfoResponse) {
     if (info.error?.code) {
