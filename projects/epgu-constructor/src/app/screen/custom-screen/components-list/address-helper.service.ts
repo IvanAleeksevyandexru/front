@@ -9,22 +9,18 @@ export interface DadataSuggestionsAddressForLookup extends DadataSuggestionsAddr
   text: string,
 }
 
+interface objectWithSuggestions {
+  suggestions: DadataSuggestions
+}
+
 @Injectable()
 export class AddressHelperService {
 
   constructor(private dictionaryApiService: DictionaryApiService) { }
 
   // Провайдер поиска для передачи в lib-lookup
-  public provider = { search: this.providerSearch() };
-
-  /**
-   * Функция поиска для lib-lookup. Сам поиск осуществляется за счет suggestions дадаты
-   */
-  private providerSearch(): Function {
-    return (searchString) => {
-      return searchString ? this.getCitySuggestions(searchString) : of([]);
-    };
-  }
+  // с функцией поиска для lib-lookup. Сам поиск осуществляется за счет suggestions дадаты
+  public provider = { search: (searchString) => searchString ? this.getCitySuggestions(searchString) : of([]) };
 
   /**
    * Получение городов из suggestions дадаты для lib-lookup. Добавляет к suggestions атрибуты id и text
@@ -33,7 +29,7 @@ export class AddressHelperService {
   public getCitySuggestions(qString: string): Observable<Array<DadataSuggestionsAddressForLookup>> {
     return this.dictionaryApiService.getDadataSuggestions(qString, { isCity: 'true' })
       .pipe(
-        map(({ suggestions }: { suggestions: DadataSuggestions }) => {
+        map(({ suggestions }: objectWithSuggestions) => {
           return suggestions.addresses
             .map((address) => {
               return {
