@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
-
 import { map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
 import {
@@ -8,6 +7,7 @@ import {
   CustomComponentDictionaryState,
   CustomComponentDropDownItemList,
   CustomComponentOutputData,
+  CustomComponentRef,
   CustomComponentRefRelation,
   CustomScreenComponentTypes,
 } from '../custom-screen.types';
@@ -16,10 +16,11 @@ import {
   DictionaryResponse,
 } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
+  getCalcRelation,
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
-  isHaveNeededValue,
+  isHaveNeededValueForRelation,
   likeDictionary,
 } from '../tools/custom-screen-tools';
 import { ScreenService } from '../../screen.service';
@@ -107,12 +108,22 @@ export class ComponentsListComponent implements OnInit {
     });
   }
 
+  /**
+   * Возвращает массив компонентов для отображения
+   * @param screen - данные для экрана
+   * @private
+   */
   private getComponents(screen: ScreenStore): Array<ComponentDto> {
     return screen.display.components[0]?.type === UniqueScreenComponentTypes.repeatableFields
       ? screen.display.components[0].attrs.components
       : screen.display.components;
   }
 
+  /**
+   * Пересчитывает форму со свойствами после одновления данных
+   * @param components - массив компонентов
+   * @private
+   */
   private rebuildFormAfterDataUpdate(components: Array<CustomComponent>): void {
     this.form = this.fb.array([]);
     this.formWatcher();
@@ -166,6 +177,11 @@ export class ComponentsListComponent implements OnInit {
     }));
   }
 
+  /**
+   * Расчет зависимых полей
+   * @param component - массив компонентов
+   * @private
+   */
   private calcDependedFormGroup(component: CustomComponent): void {
     const isComponentDependent = (arr = []): boolean =>
       arr?.some((el) => el.relatedRel === component.id);
@@ -180,16 +196,31 @@ export class ComponentsListComponent implements OnInit {
         `${components.findIndex((c) => c.id === dependentComponent.id)}.value`,
       );
       // Проверяем статусы показа и отключённости
-      this.shownElements[dependentComponent.id] = dependentComponent.attrs.ref.some((item) =>
-        isHaveNeededValue(components, component, item, CustomComponentRefRelation.displayOn),
+      this.shownElements[dependentComponent.id] = isHaveNeededValueForRelation(
+        dependentComponent,
+        component,
+        components,
+        CustomComponentRefRelation.displayOn,
       );
 
-      const isDisabled = dependentComponent.attrs.ref.some((item) =>
-        isHaveNeededValue(components, component, item, CustomComponentRefRelation.disabled),
-      );
+      const isDisabled =
+        dependentComponent?.attrs?.disabled ||
+        isHaveNeededValueForRelation(
+          dependentComponent,
+          component,
+          components,
+          CustomComponentRefRelation.disabled,
+        );
 
       if (!this.shownElements[dependentComponent.id]) {
         dependentControl.markAsUntouched();
+      }
+
+      const calcRelation = getCalcRelation(dependentComponent);
+      if (calcRelation) {
+        dependentControl.patchValue(this.calculateValueFromRelation(calcRelation, components), {
+          emitEvent: false,
+        });
       }
 
       if (isDisabled) {
@@ -198,6 +229,45 @@ export class ComponentsListComponent implements OnInit {
         dependentControl.enable({ emitEvent: false });
       }
     });
+  }
+
+  /**
+   * Возвращает откалькулируемую функцию по формуле
+   * @param formula - формула для расчета
+   */
+  getCalcFieldValue(formula) {
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
+    return Function(`'use strict'; return (Math.round(${formula}))`)();
+  }
+
+  /**
+   * Подсчитывает автовычисляемое значение из формулы, которую передали
+   * @param itemRef - объект с информацией о связи
+   * @param components - компоненты с информацией
+   * @example {val: '{add16} + {add17} / 100'} => 50 + 150 / 100
+   */
+  calculateValueFromRelation(itemRef: CustomComponentRef, components: CustomComponent[]) {
+    let str = itemRef.val;
+    const lettersAnNumberItemRegExp = /\{\w+\}/gm;
+    const matches = str.match(lettersAnNumberItemRegExp);
+    const componentKeys = Array.isArray(matches) ? [...matches] : [];
+
+    let haveAllValues = true;
+    componentKeys.forEach((key: string) => {
+      const k = key.replace('{', '').replace('}', '');
+      const targetFormKey = `${components.findIndex((c) => c.id === k)}.value`;
+      const control = this.form.get(targetFormKey);
+      const val = Number(control?.value);
+      // eslint-disable-next-line no-restricted-globals
+      if (isNaN(val)) {
+        haveAllValues = false;
+      } else {
+        str = str.replace(key, val.toString());
+      }
+    });
+
+    // Возвращает например Math.round({add16} + {add17} / 100) => Math.round(50 + 150 / 100)
+    return haveAllValues ? this.getCalcFieldValue(str) : '';
   }
 
   private initDropDowns(component: CustomComponent): void {
@@ -254,6 +324,11 @@ export class ComponentsListComponent implements OnInit {
     this.dictionaries[id].loadEnd = false;
   }
 
+  /**
+   * Событие изменения значений в полях
+   * @param component - компонент
+   * @private
+   */
   private emmitChanges(component?: CustomComponent): void {
     if (component) {
       this.calcDependedFormGroup(component);
