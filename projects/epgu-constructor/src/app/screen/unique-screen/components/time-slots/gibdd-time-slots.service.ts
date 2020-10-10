@@ -5,7 +5,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { TimeSlotsService } from './time-slots.service';
+import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
   GibddDepartmentInterface, SlotInterface,
   SmevSlotsMapInterface,
@@ -16,7 +16,7 @@ import {
 const moment = moment_;
 
 @Injectable()
-export class GibddTimeSlotsService implements TimeSlotsService {
+export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
 
   private department: GibddDepartmentInterface;
   private orderId;
@@ -33,8 +33,7 @@ export class GibddTimeSlotsService implements TimeSlotsService {
   private errorMessage;
 
   constructor(
-    private http: HttpClient,
-    private smev3TimeSlotsRestService: Smev3TimeSlotsRestService
+    private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
   ) {}
 
   book(selectedSlot: SlotInterface) {
@@ -46,7 +45,7 @@ export class GibddTimeSlotsService implements TimeSlotsService {
           this.bookId = response.bookId;
           this.activeMonthNumber = selectedSlot.slotTime.getMonth();
           this.activeYearNumber = selectedSlot.slotTime.getFullYear();
-          response.timeStart = new Date();
+          response.timeStart = new Date(response.timeSlot.visitTimeISO);
           response.timeFinish = moment(response.timeStart).add(240, 'm').toDate();
         } else {
           this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
@@ -194,7 +193,7 @@ export class GibddTimeSlotsService implements TimeSlotsService {
 
   private initSlotsMap(slots: any[]): void {
     slots.forEach((slot) => {
-      const slotDate = new Date(slot.visitTime);
+      const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
       }
