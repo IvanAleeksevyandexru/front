@@ -141,15 +141,21 @@ export interface BillInfoResponse{
  * Интерфейс массива информации о счетах на оплату
  */
 export interface BillsInfoResponse{
-  bills: BillInfoResponse[],
-  hasEditableSumm: boolean,
-  userHasAddress: boolean,
-  addressValid: boolean,
-  paiedBillIds: number[],
-  warning: boolean,
-  unidentifiedBillIds: number[],
-  fkSmevVersion: number,
-  hasUnidentifiedBills: boolean
+  error?: {
+    code: number,
+    message: string
+  },
+  response: {
+    bills: BillInfoResponse[],
+    hasEditableSumm: boolean,
+    userHasAddress: boolean,
+    addressValid: boolean,
+    paiedBillIds: number[],
+    warning: boolean,
+    unidentifiedBillIds: number[],
+    fkSmevVersion: number,
+    hasUnidentifiedBills: boolean
+  }
 }
 
 export interface HttpPaymentError{

@@ -12,6 +12,7 @@ import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.se
 import { ValidationService } from '../services/validation.service';
 import { DictionaryApiServiceStub } from '../../../services/api/dictionary-api/dictionary-api.service.stub';
 import { ConfigServiceStub } from '../../../config/config.service.stub';
+import { AddressHelperService } from './address-helper.service';
 
 
 describe('ComponentsListComponent', () => {
@@ -28,6 +29,7 @@ describe('ComponentsListComponent', () => {
         UnsubscribeService,
         ValidationService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        AddressHelperService,
       ],
       imports: [
         HttpClientTestingModule,
