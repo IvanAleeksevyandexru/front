@@ -29,7 +29,8 @@ export class ActionDirective {
     private navigationService: NavigationService,
     private utilsService: UtilsService,
     private configService: ConfigService,
-  ) {}
+  ) {
+  }
 
   private switchAction(): void {
     switch (this.action.type) {
@@ -65,7 +66,16 @@ export class ActionDirective {
   }
 
   private getOptions(): NavigationOptions {
-    return this.action.action.includes('service') ? { url: this.action.action } : {};
+    const isService = () => this.action.action.includes('service');
+    const isLastPageInInternalScenario = () => this.action.action.includes('goBackToMainScenario');
+
+    if (isService()) {
+      return { url: this.action.action };
+    } else if (isLastPageInInternalScenario()) {
+      return { isInternalScenarioFinish: true };
+    } else {
+      return {};
+    }
   }
 
   private getComponentStateForNavigate(): {
