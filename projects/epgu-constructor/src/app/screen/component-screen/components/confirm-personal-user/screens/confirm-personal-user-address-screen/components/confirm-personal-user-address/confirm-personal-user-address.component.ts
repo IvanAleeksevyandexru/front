@@ -98,7 +98,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     return date.isValid() ? date.toDate() : moment().toDate();
   }
 
-  private getAddress(regAddr: any): string {
+  private getAddress(regAddr: string | { fullAddress: string }): string {
     return typeof regAddr === 'string' ? regAddr : regAddr.fullAddress;
   }
 }
