@@ -57,6 +57,10 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     if (this.valueParsed?.regDate) {
       this.valueParsed.regDate = this.getDate(this.valueParsed.regDate);
     }
+
+    if (this.valueParsed?.regAddr) {
+      this.valueParsed.regAddr = this.getAddress(this.valueParsed.regAddr);
+    }
   }
 
   private subscribeFormChanges(): void {
@@ -92,5 +96,9 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   private getDate(regDate: string): Date {
     const date = moment(regDate);
     return date.isValid() ? date.toDate() : moment().toDate();
+  }
+
+  private getAddress(regAddr: any): string {
+    return typeof regAddr === 'string' ? regAddr : regAddr.fullAddress;
   }
 }
