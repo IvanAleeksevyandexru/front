@@ -64,11 +64,6 @@
           [data]="screenService.component"
         ></epgu-constructor-mvd-giac>
 
-        <epgu-constructor-change-list
-          *ngSwitchCase="screenComponentName.changeList"
-          [data]="screenService.component"
-        ></epgu-constructor-change-list>
-
         <epgu-constructor-country-selection
           *ngSwitchCase="screenComponentName.countryApostil"
           [form]="form"
