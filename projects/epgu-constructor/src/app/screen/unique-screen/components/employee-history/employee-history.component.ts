@@ -1,20 +1,14 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
-import * as moment_ from 'moment';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { Gender } from '../../../../shared/types/gender';
 import { ComponentBase, Display } from '../../../screen.types';
-import {
-  EmployeeHistoryAvailableDates,
-  EmployeeHistoryDataSource,
-  EmployeeHistoryModel,
-} from './employee-history.types';
+import { EmployeeHistoryDataSource, EmployeeHistoryModel } from './employee-history.types';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 import { TextTransform } from '../../../../shared/types/textTransform';
-
-const moment = moment_;
+import { ScreenService } from '../../../screen.service';
 
 export interface EmployeeHistoryComponentInterface extends ComponentBase {
   attrs: {
@@ -28,7 +22,7 @@ export interface EmployeeHistoryComponentInterface extends ComponentBase {
   styleUrls: ['./employee-history.component.scss'],
   providers: [UnsubscribeService],
 })
-export class EmployeeHistoryComponent implements OnInit, OnChanges {
+export class EmployeeHistoryComponent implements OnInit {
   @Input() display: Display;
   @Input() header: string;
   @Input() gender: Gender;
@@ -43,40 +37,22 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
     private unsubscribeService: UnsubscribeService,
     private datasourceService: EmployeeHistoryDatasourceService,
     public monthsService: EmployeeHistoryMonthsService,
+    private screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {
-    this.monthsService.years = this.display?.components[0]?.attrs?.years;
+    const displayAttrs: { [key: string]: any } = this.display?.components[0]?.attrs;
+    this.monthsService.years = displayAttrs?.years;
+    this.monthsService.isNonStop = displayAttrs?.nonStop;
     this.monthsService.initSettings();
     this.ds = this.datasourceService.getDataSourceByGender(this.gender);
-    this.employeeFormService.newGeneration();
-  }
-
-  ngOnChanges() {
-    this.employeeFormService.employeeHistory = [];
-  }
-
-  isCompleteForm(): boolean {
-    if (this.display?.components[0]?.attrs?.nonStop) {
-      return this.monthsService.availableMonths.every(
-        (e: EmployeeHistoryAvailableDates) => e.checked,
-      );
-    }
-    const convertedDate = this.monthsService.availableMonths
-      .filter((stringDate: EmployeeHistoryAvailableDates) => stringDate.checked)
-      .map((stringDate: EmployeeHistoryAvailableDates) => {
-        const c = stringDate.date.split('/');
-        return moment(`${c[0]}/01/${c[1]}`);
-      });
-    const diff = moment.max(convertedDate).diff(moment.min(convertedDate), 'years');
-    if (diff === this.monthsService.years) {
-      return true;
-    }
-    return false;
+    this.initData();
   }
 
   getNextScreen() {
-    this.nextStepEvent.emit(JSON.stringify(this.convertDataBeforeSending()));
+    this.nextStepEvent.emit(
+      JSON.stringify(this.employeeFormService.employeeHistoryForm.getRawValue()),
+    );
   }
 
   availableControlsOfType(type: string): EmployeeHistoryDataSource {
@@ -88,14 +64,21 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
     return component?.attrs?.fstuc;
   }
 
-  private convertDataBeforeSending(): EmployeeHistoryModel[] {
-    return this.employeeFormService.employeeHistoryForm
-      .getRawValue()
-      .map((e: EmployeeHistoryModel) => {
-        delete e.checkboxToDate;
-        return {
-          ...e,
-        };
+  private initData(): void {
+    const componentValue: any = this.screenService.getComponentData(
+      this.screenService.component?.value,
+    );
+
+    this.employeeFormService.clearHistoryForm();
+
+    if (componentValue) {
+      const generations: Array<EmployeeHistoryModel> = componentValue;
+
+      generations.forEach((generation: EmployeeHistoryModel) => {
+        this.employeeFormService.newGeneration(generation);
       });
+    } else {
+      this.employeeFormService.newGeneration();
+    }
   }
 }
