@@ -2,6 +2,78 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.32...v0.2.1) (2020-10-09)
+
+
+### Features
+
+* Added control of next button from uploaded files in blocks ([900c9fc](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/900c9fca3a52fa7541914086d0342886e32a51ca))
+* Added control of next button from uploaded files in blocks (MergeWithMaster) ([94a1b6e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/94a1b6e8bc1c9adbf62c4bae833302cae0e47969))
+* New url from attrs link attribute ([8572240](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/85722407215e1b4a11c276e3a8089c6269364fea))
+* Добавил новые методы для расчета деятельность ([22c0436](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/22c04368335fb976a70fb632f122d05dc5a794d8))
+
+
+### Bug Fixes
+
+* 2 rubles for any test.gosuslugi.ru domain ([e5a05a6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e5a05a603c8b4727210cebe1130dd300bf86064c))
+* 2 rubles for any test.gosuslugi.ru domain ([981bcfb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/981bcfb9468bfc7e7756bc20c40b37f206e156bf))
+* bump epgu-lib@0.0.589, remove social-share till 25.10 [ref EPGUCORE-36456] ([4b291d0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4b291d0c138a1e6cd9ab717712604fe39a658e1a))
+* More elegant function ([db2c61e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/db2c61e666b7ac1db7bf26711d4b26cefe3548f7))
+* repair displayOn ref functionality for Lookup/Dictionary/DropDown lists [ref EPGUCORE-36456] ([027e789](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/027e7890d90fda5e75418419ea22eec445353650))
+* resolve possibly empty attrs prop in component on InfoScr issue ([ef0fd65](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ef0fd65693682a7366e63c12f0d2ea679bf7ad7f))
+* адрес регистрации всегда редактируемый[EPGUCORE-37832] ([5c4d78f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5c4d78f60823b7b98aa1180e599af9860918bef4))
+* добавил айдишники для календарей ([a6d3dba](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a6d3dbaf28629222b719bdb8a1bffda7754191da))
+* добавил отправку данных на бэк ([77c33cd](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/77c33cd18ffbd48e583085f457884e3cf95e77e1))
+* удалил коммент ([a382dc5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a382dc521d90faf6faa0f8fb345f4282d1e642da))
+
+### [0.1.3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.1...v0.1.3) (2020-09-28)
+
+
+### Bug Fixes
+
+* added example comments ([b0ff3db](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b0ff3db2305501082035c1e53924161b9b286af9))
+* fixed id reference [ref EPGUCORE-37058] ([5342ecd](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5342ecdbc2a5f3011f0f1411763d7831c92fe3d1))
+* fixed remarks [ref EPGUCORE-37058] ([0a38f31](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0a38f312115ebc077cad39de7a2b3adf7a354942))
+* move auth interceptor init on form-player level [ref EPGUCORE-36943] ([37aa131](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/37aa1315d25f36d3e1cdd926101589118411a415))
+* revert auth interceptor replace on app level [ref EPGUCORE-36943] ([ef6e55a](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ef6e55ac906cfbd6c9adfcaafab6667527436111))
+* update for file uploading ([cd82bee](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/cd82beeaef9236b1bb53a1e9b40f46a65e7ec819))
+
+## [0.2.0](https://git.gosuslugi.local///compare/v0.1.32...v0.2.0) (2020-10-09)
+
+
+### Features
+
+* Added control of next button from uploaded files in blocks ([900c9fc](https://git.gosuslugi.local///commit/900c9fca3a52fa7541914086d0342886e32a51ca))
+* Added control of next button from uploaded files in blocks (MergeWithMaster) ([94a1b6e](https://git.gosuslugi.local///commit/94a1b6e8bc1c9adbf62c4bae833302cae0e47969))
+* New url from attrs link attribute ([8572240](https://git.gosuslugi.local///commit/85722407215e1b4a11c276e3a8089c6269364fea))
+* Добавил новые методы для расчета деятельность ([22c0436](https://git.gosuslugi.local///commit/22c04368335fb976a70fb632f122d05dc5a794d8))
+
+
+### Bug Fixes
+
+* 2 rubles for any test.gosuslugi.ru domain ([e5a05a6](https://git.gosuslugi.local///commit/e5a05a603c8b4727210cebe1130dd300bf86064c))
+* 2 rubles for any test.gosuslugi.ru domain ([981bcfb](https://git.gosuslugi.local///commit/981bcfb9468bfc7e7756bc20c40b37f206e156bf))
+* bump epgu-lib@0.0.589, remove social-share till 25.10 [ref EPGUCORE-36456] ([4b291d0](https://git.gosuslugi.local///commit/4b291d0c138a1e6cd9ab717712604fe39a658e1a))
+* More elegant function ([db2c61e](https://git.gosuslugi.local///commit/db2c61e666b7ac1db7bf26711d4b26cefe3548f7))
+* repair displayOn ref functionality for Lookup/Dictionary/DropDown lists [ref EPGUCORE-36456] ([027e789](https://git.gosuslugi.local///commit/027e7890d90fda5e75418419ea22eec445353650))
+* resolve possibly empty attrs prop in component on InfoScr issue ([ef0fd65](https://git.gosuslugi.local///commit/ef0fd65693682a7366e63c12f0d2ea679bf7ad7f))
+* адрес регистрации всегда редактируемый[EPGUCORE-37832] ([5c4d78f](https://git.gosuslugi.local///commit/5c4d78f60823b7b98aa1180e599af9860918bef4))
+* добавил айдишники для календарей ([a6d3dba](https://git.gosuslugi.local///commit/a6d3dbaf28629222b719bdb8a1bffda7754191da))
+* добавил отправку данных на бэк ([77c33cd](https://git.gosuslugi.local///commit/77c33cd18ffbd48e583085f457884e3cf95e77e1))
+* удалил коммент ([a382dc5](https://git.gosuslugi.local///commit/a382dc521d90faf6faa0f8fb345f4282d1e642da))
+
+### [0.1.3](https://git.gosuslugi.local///compare/v0.1.1...v0.1.3) (2020-09-28)
+
+
+### Bug Fixes
+
+* added example comments ([b0ff3db](https://git.gosuslugi.local///commit/b0ff3db2305501082035c1e53924161b9b286af9))
+* fixed id reference [ref EPGUCORE-37058] ([5342ecd](https://git.gosuslugi.local///commit/5342ecdbc2a5f3011f0f1411763d7831c92fe3d1))
+* fixed remarks [ref EPGUCORE-37058] ([0a38f31](https://git.gosuslugi.local///commit/0a38f312115ebc077cad39de7a2b3adf7a354942))
+* move auth interceptor init on form-player level [ref EPGUCORE-36943] ([37aa131](https://git.gosuslugi.local///commit/37aa1315d25f36d3e1cdd926101589118411a415))
+* revert auth interceptor replace on app level [ref EPGUCORE-36943] ([ef6e55a](https://git.gosuslugi.local///commit/ef6e55ac906cfbd6c9adfcaafab6667527436111))
+* update for file uploading ([cd82bee](https://git.gosuslugi.local///commit/cd82beeaef9236b1bb53a1e9b40f46a65e7ec819))
+
 ### [0.1.32](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.1.31...v0.1.32) (2020-10-08)
 
 
