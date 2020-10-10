@@ -8,7 +8,7 @@ export class EmployeeHistoryDatasourceService {
 
   constructor() { }
 
-  public getDataSourceByGender(gender: Gender): Array<EmployeeHistoryDataSource> {
+  public getDataSourceByGender(gender: Gender = Gender.male): Array<EmployeeHistoryDataSource> {
     return [
       {
         label: `Я учил${gender === Gender.male ? 'ся' : 'ась'}`,

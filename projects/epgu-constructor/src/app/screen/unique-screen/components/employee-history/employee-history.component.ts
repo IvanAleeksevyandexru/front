@@ -76,7 +76,7 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
   }
 
   getNextScreen() {
-    this.nextStepEvent.emit(JSON.stringify(this.convertEmployeeHistory()));
+    this.nextStepEvent.emit(JSON.stringify(this.convertDataBeforeSending()));
   }
 
   availableControlsOfType(type: string): EmployeeHistoryDataSource {
@@ -88,12 +88,14 @@ export class EmployeeHistoryComponent implements OnInit, OnChanges {
     return component?.attrs?.fstuc;
   }
 
-  private convertEmployeeHistory(): EmployeeHistoryModel[] {
-    return this.employeeFormService.employeeHistory.map((e: EmployeeHistoryModel) => {
-      delete e.checkboxToDate;
-      return {
-        ...e,
-      };
-    });
+  private convertDataBeforeSending(): EmployeeHistoryModel[] {
+    return this.employeeFormService.employeeHistoryForm
+      .getRawValue()
+      .map((e: EmployeeHistoryModel) => {
+        delete e.checkboxToDate;
+        return {
+          ...e,
+        };
+      });
   }
 }
