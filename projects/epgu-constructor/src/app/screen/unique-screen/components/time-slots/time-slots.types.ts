@@ -67,6 +67,7 @@ export interface SmevBookResponseInterface {
     areaId: string;
     visitTime: number;
     visitTimeStr: string;
+    visitTimeISO: string;
     queueNumber;
     duration;
     attributes: [];
@@ -104,4 +105,11 @@ export interface SmevSlotsResponseInterface {
     };
     fieldErrors: [];
   };
+}
+
+export enum TimeSlotsServiceTypes {
+  'BRAK' = 'BRAK',
+  'DIVORCE' = 'DIVORCE',
+  'GIBDD' = 'GIBDD',
+  'MVD' = 'MVD',
 }

@@ -5,7 +5,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { TimeSlotsService } from './time-slots.service';
+import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
   SmevSlotInterface,
   SmevSlotsMapInterface,
@@ -16,7 +16,7 @@ import {
 const moment = moment_;
 
 @Injectable()
-export class BrakTimeSlotsService implements TimeSlotsService {
+export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
 
   private department: ZagsDepartmentInterface;
   private solemn: boolean;
@@ -45,7 +45,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
         } else {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;
-          response.timeStart = new Date();
+          response.timeStart = new Date(response.timeSlot.visitTimeISO);
           response.timeFinish = moment(response.timeStart).add(1440, 'm').toDate();
         }
       }),
@@ -208,7 +208,7 @@ export class BrakTimeSlotsService implements TimeSlotsService {
 
   private initSlotsMap(slots: any[]): void {
     slots.forEach((slot) => {
-      const slotDate = new Date(slot.visitTime);
+      const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
       }

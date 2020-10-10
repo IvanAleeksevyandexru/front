@@ -24,7 +24,8 @@ const COMPONENTS = [
     DivorceTimeSlotsService,
     GibddTimeSlotsService,
     MvdTimeSlotsService,
-    Smev3TimeSlotsRestService],
+    Smev3TimeSlotsRestService,
+  ],
   imports: [
     CommonModule,
     SharedModule,
