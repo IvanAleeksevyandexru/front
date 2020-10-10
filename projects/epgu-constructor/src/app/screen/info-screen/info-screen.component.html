@@ -1,8 +1,14 @@
-<epgu-constructor-navigation *ngIf="(screenService.terminal$ | async) === false" class="nav"></epgu-constructor-navigation>
-<epgu-constructor-screen-container [ngClass]="(screenService.terminal$ | async) ? 'screen-container-mt' : ''">
+<epgu-constructor-navigation
+  *ngIf="(screenService.terminal$ | async) === false"
+  class="nav"
+></epgu-constructor-navigation>
+<epgu-constructor-screen-container
+  [ngClass]="(screenService.terminal$ | async) ? 'screen-container-mt' : ''"
+>
   <epgu-constructor-screen-pad>
-
-    <epgu-constructor-page-name class="info__head">{{screenService.header$ | async}}</epgu-constructor-page-name>
+    <epgu-constructor-page-name class="info__head">{{
+      screenService.header$ | async
+    }}</epgu-constructor-page-name>
 
     <hr class="divider" />
 
@@ -10,7 +16,8 @@
       <ng-container [ngSwitch]="screenService.componentType$ | async">
         <epgu-constructor-info-screen-body
           *ngSwitchCase="infoScreenComponent.info"
-          [data]="screenService.component">
+          [data]="screenService.component"
+        >
         </epgu-constructor-info-screen-body>
       </ng-container>
     </div>
@@ -19,11 +26,12 @@
       *ngFor="let action of (screenService.component$ | async)?.attrs?.actions"
       epgu-constructor-action
       [action]="action"
-    >{{ action.label }}
+      >{{ action.label }}
     </epgu-constructor-info-screen-button>
 
     <div class="info__footer info-footer">
-      <lib-button *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
+      <lib-button
+        *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
         class="info-footer__submit"
@@ -32,11 +40,10 @@
         {{screenService.submitLabel$ | async}}
       </lib-button>
     </div>
-
   </epgu-constructor-screen-pad>
 
-<!--  <div *ngIf="!screenService.display?.isSocialButtonsHidden">-->
-<!--    <lib-social-share></lib-social-share>-->
-<!--  </div>-->
+  <!-- NOTICE: убрано по требованию до 25.10.20 -->
+  <!-- <div *ngIf="!screenService.display?.isSocialButtonsHidden">
+    <lib-social-share></lib-social-share>
+  </div> -->
 </epgu-constructor-screen-container>
-
