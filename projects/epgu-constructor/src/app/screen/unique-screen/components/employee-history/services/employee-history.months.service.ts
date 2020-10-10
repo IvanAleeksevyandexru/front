@@ -64,45 +64,4 @@ export class EmployeeHistoryMonthsService {
       }
     });
   }
-  
-  setAvailableMonths(
-    fromDate: Moment,
-    toDate: Moment,
-    checked: boolean,
-    employeeHistory: EmployeeHistoryModel[] = [],
-  ): void {
-    let uniqueMonthsForRemove = [];
-    if (!checked) {
-      const repeatedMonths = [];
-      employeeHistory.forEach((el: EmployeeHistoryModel) =>
-        this.getAvailableMonths(
-          moment().month(el.from.monthCode).year(el.from.year),
-          moment().month(el.to.monthCode).year(el.to.year)
-        ).forEach(
-          (e: EmployeeHistoryAvailableDates) => {
-            repeatedMonths.push(e.date);
-          },
-        ),
-      );
-
-      uniqueMonthsForRemove = repeatedMonths.filter(
-        (a: string) => repeatedMonths.filter((b: string) => a === b).length === 1,
-      );
-    }
-    const selectedMonths: EmployeeHistoryAvailableDates[] = this.getAvailableMonths(
-      fromDate,
-      toDate,
-    ).map((item: EmployeeHistoryAvailableDates) => ({
-      ...item,
-      checked: uniqueMonthsForRemove.includes(item.date) ? checked : true,
-    }));
-
-    this.availableMonths = this.availableMonths.map(
-      (availableMonth: EmployeeHistoryAvailableDates) =>
-        selectedMonths.find(
-          (selectedMonth: EmployeeHistoryAvailableDates) =>
-            selectedMonth.date === availableMonth.date,
-        ) || availableMonth,
-    );
-  }
 }

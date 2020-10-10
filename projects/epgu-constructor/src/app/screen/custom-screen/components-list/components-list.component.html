@@ -245,6 +245,18 @@
         </lib-standard-masked-input>
       </ng-template>
 
+      <ng-container *ngSwitchCase="componentType.PassportLookup">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <epgu-constructor-passport
+          [formControl]="componentData.get('value')"
+          [attrs]="componentData.value?.attrs"
+        >
+        </epgu-constructor-passport>
+      </ng-container>
+
     </ng-container>
   </div>
 </form>
