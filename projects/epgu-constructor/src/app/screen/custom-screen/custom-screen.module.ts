@@ -5,6 +5,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { CustomScreenComponent } from './custom-screen.component';
 import { ScreenService } from '../screen.service';
 import { ValidationService } from './services/validation.service';
+import { AddressHelperService } from './components-list/address-helper.service';
 
 const COMPONENTS = [
   CustomScreenComponent,
@@ -25,6 +26,7 @@ const COMPONENTS = [
   providers: [
     ScreenService,
     ValidationService,
+    AddressHelperService,
   ]
 })
 export class CustomScreenModule { }

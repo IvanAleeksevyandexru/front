@@ -5,7 +5,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { TimeSlotsService } from './time-slots.service';
+import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
   SmevSlotInterface,
   SmevSlotsMapInterface,
@@ -16,7 +16,7 @@ import {
 const moment = moment_;
 
 @Injectable()
-export class DivorceTimeSlotsService implements TimeSlotsService {
+export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
 
   private department: ZagsDepartmentInterface;
   private orderId;
@@ -44,7 +44,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
           this.bookId = response.bookId;
           this.activeMonthNumber = selectedSlot.slotTime.getMonth();
           this.activeYearNumber = selectedSlot.slotTime.getFullYear();
-          response.timeStart = new Date();
+          response.timeStart = new Date(response.timeSlot.visitTimeISO);
           response.timeFinish = moment(response.timeStart).add(1440, 'm').toDate();
         } else {
           this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
@@ -200,7 +200,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
 
   private initSlotsMap(slots: any[]): void {
     slots.forEach((slot) => {
-      const slotDate = new Date(slot.visitTime);
+      const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
       }

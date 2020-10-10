@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Screen } from '../screen.types';
-import { NavigationOptions, NavigationPayload } from '../../form-player.types';
+import { NavigationPayload } from '../../form-player.types';
 import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
@@ -43,22 +43,8 @@ export class InfoScreenComponent implements Screen, OnInit {
   }
 
   nextStep(): void {
-    const navigation = {
-      payload: this.getComponentState(),
-      options: this.getNavigationOptions(),
-    };
+    const navigation = { payload: this.getComponentState() };
     this.navigationService.nextStep.next(navigation);
-  }
-
-  private getNavigationOptions(): NavigationOptions {
-    const options: NavigationOptions = {};
-    const isFinishInternalScenario =
-      this.screenService.actions[0]?.action === 'goBackToMainScenario';
-    if (isFinishInternalScenario) {
-      options.isInternalScenarioFinish = true;
-    }
-
-    return options;
   }
 
   getComponentState(): NavigationPayload {

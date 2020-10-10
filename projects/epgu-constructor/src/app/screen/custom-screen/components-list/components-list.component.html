@@ -15,6 +15,14 @@
         </ng-template>
       </ng-container>
 
+      <ng-container *ngSwitchCase="componentType.NewEmailInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+      </ng-container>
+
       <ng-container *ngSwitchCase="componentType.StringInput">
         <ng-template
           [ngTemplateOutlet]="formLabel"
@@ -119,8 +127,24 @@
             [validationShowOn]="validationShowOn"
             [hideHouseCheckbox]="true"
             [externalApiUrl]="configService.externalApiUrl + '/'"
-            [formControl]="componentData.get('value')">
+            [formControl]="componentData.get('value')"
+            [hideLevels]="componentData.value?.attrs?.hideLevels"
+          >
           </lib-dadata-widget>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.CityInput">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+          <lib-lookup
+            [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+            [validationShowOn]="validationShowOn"
+            [formControl]="componentData.get('value')"
+            [itemsProvider]="addressHelperService.provider"
+          >
+          </lib-lookup>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.PhoneNumberChangeInput">
@@ -212,15 +236,26 @@
           [textTransformType]="componentData.value?.attrs?.fstuc"
           [clearable]="true"
           [mask]="componentData.value?.attrs?.mask | maskHandle"
-          [placeholder]="componentData.value?.attrs?.placeholder"
           [name]="componentData.value?.id"
-          [showMaskAsPlaceholder]="false"
+          [showMaskAsPlaceholder]="true"
           [showConstantMaskSymbols]="true"
           [formControl]="componentData.get('value')"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn">
         </lib-standard-masked-input>
       </ng-template>
+
+      <ng-container *ngSwitchCase="componentType.PassportLookup">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <epgu-constructor-passport
+          [formControl]="componentData.get('value')"
+          [attrs]="componentData.value?.attrs"
+        >
+        </epgu-constructor-passport>
+      </ng-container>
 
     </ng-container>
   </div>

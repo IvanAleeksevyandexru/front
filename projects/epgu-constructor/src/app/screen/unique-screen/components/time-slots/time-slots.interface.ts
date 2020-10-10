@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-export interface TimeSlotsService {
+export interface TimeSlotsServiceInterface {
   init(data: any): Observable<any>;
   getCurrentYear(): number;
   getCurrentMonth(): number;
@@ -12,3 +12,4 @@ export interface TimeSlotsService {
   hasError(): boolean;
   getErrorMessage(): string;
 }
+

@@ -13,11 +13,10 @@ export class ConfirmPersonalUserEmailComponent implements OnChanges {
   @Input() label: string;
   @Input() data: string;
   @Input() error: string;
-  @Input() isEditButtonShown: boolean;
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {

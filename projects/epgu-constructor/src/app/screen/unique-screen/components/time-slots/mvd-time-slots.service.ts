@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TimeSlotsService } from './time-slots.service';
+import { TimeSlotsServiceInterface } from './time-slots.interface';
 import * as uuid from 'uuid';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import {
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 
 @Injectable()
-export class MvdTimeSlotsService implements TimeSlotsService {
+export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
 
   private department: MvdDepartmentInterface;
   private orderId;
@@ -169,7 +169,7 @@ export class MvdTimeSlotsService implements TimeSlotsService {
 
   private initSlotsMap(slots: any[]): void {
     slots.forEach((slot) => {
-      const slotDate = new Date(slot.visitTime);
+      const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
       }

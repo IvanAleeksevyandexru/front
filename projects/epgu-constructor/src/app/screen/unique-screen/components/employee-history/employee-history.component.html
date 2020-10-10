@@ -107,14 +107,16 @@
             (click)="employeeFormService.newGeneration()"
     >Добавить еще</button>
   </section>
-  <section class="employee-history__completed" *ngIf="isCompleteForm()">
+  <section
+    *ngIf="(monthsService.isMonthComplete$ | async) && employeeFormService.employeeHistoryForm.valid"
+    class="employee-history__completed">
     <div class="employee-history__completed__icon"></div>
     <div class="employee-history__completed__msg">Вы заполнили {{ monthsService.years }} лет</div>
   </section>
   <section class="employee-history__footer">
     <lib-button
       (click)="getNextScreen()"
-      [disabled]="!isCompleteForm()"
+      [disabled]="(monthsService.isMonthComplete$ | async) === false || employeeFormService.employeeHistoryForm.invalid"
       class="employee-history__footer__btn-submit"
     >
         {{ display?.submitLabel || 'Продолжить' }}

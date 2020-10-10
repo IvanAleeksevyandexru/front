@@ -31,13 +31,13 @@
 
     <div class="info__footer info-footer">
       <lib-button
-        *ngIf="screenService.isShown$ | async"
+        *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
         class="info-footer__submit"
         [disabled]="screenService.isLoading$ | async"
       >
-        {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
+        {{screenService.submitLabel$ | async}}
       </lib-button>
     </div>
   </epgu-constructor-screen-pad>

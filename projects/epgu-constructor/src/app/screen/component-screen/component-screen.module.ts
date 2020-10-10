@@ -6,7 +6,6 @@ import { ScreenService } from '../screen.service';
 import { ComponentScreenComponent } from './component-screen.component';
 import { AddChildrenScreenModule } from './components/add-children/screens/add-children-screen/add-children-screen.module';
 import { AddPassportModule } from './components/add-passport/add-passport.module';
-import { ChangeListComponent } from './components/change-list/change-list.component';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressScreenModule } from './components/confirm-personal-user/screens/confirm-personal-user-address-screen/confirm-personal-user-address-screen.module';
 // eslint-disable-next-line max-len
@@ -24,7 +23,6 @@ import { MvdGiacModule } from './components/mvd-giac/mvd-giac.module';
 
 const COMPONENTS = [
   ComponentScreenComponent,
-  ChangeListComponent,
   CountrySelectionComponent,
 ];
 

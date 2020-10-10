@@ -3,7 +3,7 @@ import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { CurrentAnswersService } from '../../../current-answers.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
-import { TimeSlotsService } from './time-slots.service';
+import { TimeSlotsServiceInterface } from './time-slots.interface';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 import { GibddTimeSlotsService } from './gibdd-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
@@ -76,8 +76,8 @@ export class TimeSlotsComponent implements OnInit {
   bookedSlot: SlotInterface;
   errorMessage;
 
-  private timeSlotServices: { [key: string]: TimeSlotsService } = {};
-  private currentService: TimeSlotsService;
+  private timeSlotServices: { [key: string]: TimeSlotsServiceInterface } = {};
+  private currentService: TimeSlotsServiceInterface;
 
   constructor(
     private changeDetection: ChangeDetectorRef,
