@@ -29,7 +29,7 @@ export class EmployeeHistoryDatasourceService {
         type: 'military',
         position: 'Воинская должность и звание',
         place: 'Номер части и род (вид) войск',
-        address: 'Адрес полностью, включая регион и город',
+        address: 'Адрес расположения воинской части полностью, включая регион и город',
       },
       {
         label: `Я не работал${gender === Gender.male ? '' : 'а'}`,
