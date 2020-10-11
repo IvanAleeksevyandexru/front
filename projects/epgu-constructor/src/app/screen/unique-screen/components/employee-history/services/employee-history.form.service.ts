@@ -49,16 +49,16 @@ export class EmployeeHistoryFormService {
     this.employeeHistoryForm.push(form);
     this.newGenerationWatch(form);
 
-    if (!generationData) {
-      form.get('type').patchValue(this.defaultType);
-    } else {
-      for(const [key, value] of Object.entries(generationData)) {
+    if (generationData) {
+      for(const [key , value]: [string, any] of Object.entries(generationData)) {
         let convertedValue: any = value;
-        if (key === 'from' || key === 'to') {
+        if (['from', 'to'].includes(key)) {
           convertedValue = new MonthYear(value?.month, value?.year);
         }
-        form.get(String(key)).patchValue(convertedValue);
+        form.get(key).patchValue(convertedValue);
       }
+    } else {
+      form.get('type').patchValue(this.defaultType);
     }
   }
 
