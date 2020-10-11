@@ -80,19 +80,19 @@ export class MvdGiacComponent implements OnInit {
   }
 
   private filterRegion() {
-    const { q1, q5, pd4, pd5 } = this.applicantAnswers;
+    const { q5, pd4, pd5 } = this.applicantAnswers;
     // <--- значение предыдущих экранов
     const getCurrentRegion = () => JSON.parse(pd4.value).regAddr.region;
     const getRegistrationRegion = () => JSON.parse(pd5.value).regAddr.region;
-    const getDocumentType = () => q1.value;
+    // const getDocumentType = () => q1.value;
     const isSameAddress = () => q5.value === 'Да';
     // <--- проверки
     const isSameRegion = () => getRegistrationRegion() !== getCurrentRegion();
     const isBaykanur = () => getCurrentRegion() === 'Байконур';
     const isRegionDifferent = () => !isSameAddress() && isSameRegion();
-    const isWebDoc = getDocumentType() === 'Электронная справка';
+    // const isWebDoc = getDocumentType() === 'Электронная справка';
 
-    if (!isWebDoc || isRegionDifferent() || isBaykanur()) {
+    if (isRegionDifferent() || isBaykanur()) {
       return;
     }
 
