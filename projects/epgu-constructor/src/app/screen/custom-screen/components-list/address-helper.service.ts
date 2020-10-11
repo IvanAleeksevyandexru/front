@@ -47,6 +47,11 @@ export class AddressHelperService {
    * @param address - объект с адресом из suggestions
    */
   public async normalizeAddress(address: DadataSuggestionsAddressForLookup) {
+    // Если в address объект, значит уже нормализовано
+    const isNormalized = typeof address.address === 'object';
+    if (isNormalized) {
+      return;
+    }
     const normalAddress = await this.dictionaryApiService.getDadataNormalize(address.address).toPromise();
     Object.assign(address, normalAddress);
   }
