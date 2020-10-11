@@ -78,8 +78,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnDestroy(): void {
-    this.yaMapService.mapSubject.next(null);
-    this.selectMapObjectService.mapOpenedBalloonId = null;
+    this.clearMapVariables();
   }
 
   private initVariable() {
@@ -126,7 +125,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       .subscribe(() => {
         this.initMap();
       });
-    this.tryInitMapCenter();
+    this.initMapCenter();
   }
 
   /**
@@ -178,16 +177,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   /**
-   * Функция пытается инициализировать центр карты
+   * Функция инициализирует центр карты
    */
-  private tryInitMapCenter() {
+  private initMapCenter() {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { geo_lon, geo_lat } = this.componentValue;
-    if (geo_lon && geo_lat) {
-      this.mapCenter = [geo_lon, geo_lat];
-    } else {
-      this.mapCenter = this.componentValue.center || [37.64, 55.76]; // Москва
-    }
+    const { geo_lon, geo_lat, center } = this.componentValue;
+    const moscowCenter = [37.64, 55.76]; // Москва
+    const geoCode = geo_lon && geo_lat ? [geo_lon, geo_lat] : null;
+    this.mapCenter = geoCode || center || moscowCenter;
   }
 
   /**
@@ -290,5 +287,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectedValue.children = this.selectedValue.children.map((child: DictionaryYMapItem) => {
       return { ...child, expanded: child.id === mapObject.id };
     });
+  }
+
+  private clearMapVariables() {
+    // Необходимо очистить behaviorSubject чтобы при следующей подписке он не стрельнул 2 раза (текущее значение и новое при создание карты)
+    this.yaMapService.mapSubject.next(null);
+    // Очищаем id выбранной ранее точки чтобы при возврате на карту он был пуст.
+    this.selectMapObjectService.mapOpenedBalloonId = null;
   }
 }
