@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.4...v0.2.5) (2020-10-11)
+
+
+### Features
+
+* новый тип компонента CityInput [ref EPGUCORE-38643] ([0544f7d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0544f7d23a814b1c0eb355a7c92281299e97fd6a))
+
+
+### Bug Fixes
+
+* refactoring ([132b870](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/132b8706f44d2b7802125a3ae5757771bbbadc38))
+* refactoring ([55b90b3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/55b90b32ad736cbe6040296355fb62c3ee05a928))
+* исправил "назад" для MapService [ref EPGUCORE-38644] ([eb22099](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/eb22099c3601b3788192c9a8b678661fdeddccad))
+* Исправил патчинг формы за 10 лет ([496e886](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/496e886abed6d26a037491f3d6bf81ae69bc5f52))
+* исправл возвращение обратна на страницу персональных данных. ([695bc21](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/695bc214cab870051182162e0f642781ac381d4b))
+
 ### [0.2.4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.1...v0.2.4) (2020-10-11)
 
 
