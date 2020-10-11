@@ -142,6 +142,10 @@ export class ComponentsListComponent implements OnInit {
         this.initDropDowns(component);
       }
 
+      if (component.value && component.type === CustomScreenComponentTypes.CityInput) {
+        value = JSON.parse(component.value);
+      }
+
       if (likeDictionary(component.type)) {
         const { dictionaryType } = component.attrs;
         this.initDictionaries(dictionaryType, component.id);
