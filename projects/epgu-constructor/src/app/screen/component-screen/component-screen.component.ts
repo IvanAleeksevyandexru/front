@@ -71,9 +71,6 @@ export class ComponentScreenComponent implements OnInit, Screen {
     let value: string;
     if (typeof this.currentAnswersService.state === 'object') {
       value = JSON.stringify(this.currentAnswersService.state);
-    } else if (this.isUserData()) {
-      const { storedValues } = JSON.parse(this.currentAnswersService.state) as ConfirmUserDataState;
-      value = JSON.stringify(storedValues);
     } else {
       value = this.currentAnswersService.state;
     }
