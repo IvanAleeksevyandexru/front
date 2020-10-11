@@ -53,7 +53,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public scrollConfig = { ressScrollX: true, wheelPropagation: false };
 
   private componentValue: any;
-  private selectedValueField: any;
   private screenStore: ScreenStore;
 
   constructor(
@@ -80,11 +79,11 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnDestroy(): void {
     this.yaMapService.mapSubject.next(null);
+    this.selectMapObjectService.mapOpenedBalloonId = null;
   }
 
   private initVariable() {
     this.initComponentAttrs();
-    this.initSelectedValue();
     this.controlsLogicInit();
   }
 
@@ -95,9 +94,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private initSelectedValue() {
-    if (this.data?.value && this.data?.value !== '{}' && this.data?.attrs?.selectedValue) {
-      this.selectedValue = this.getSelectedValue();
-      this.selectedValueField = this.data.attrs.selectedValueMapping?.value;
+    if (this.data?.value && this.data?.value !== '{}') {
+      const mapObject = JSON.parse(this.data?.value);
+      this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.id);
     }
   }
 
@@ -139,6 +138,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       (coords: IGeoCoordsResponse) => {
         this.handleFilledCoordinate(coords);
         this.mapIsLoaded = true;
+        this.initSelectedValue();
         this.cdr.detectChanges();
       },
     );
@@ -186,7 +186,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     if (geo_lon && geo_lat) {
       this.mapCenter = [geo_lon, geo_lat];
     } else {
-      this.mapCenter = [37.64, 55.76]; // Москва
+      this.mapCenter = this.componentValue.center || [37.64, 55.76]; // Москва
     }
   }
 
