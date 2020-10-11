@@ -8,7 +8,6 @@ import { CurrentAnswersService } from '../current-answers.service';
 import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { ComponentScreenComponentTypes } from './component-screen.types';
-import { ConfirmUserDataState } from './types/confirm-user-data.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
