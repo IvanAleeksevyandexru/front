@@ -1,6 +1,8 @@
 <form class="form">
-  <div class="form__item" *ngFor="let componentData of form.controls; let idx = index;">
-    <ng-container [ngSwitch]="componentData.value?.type" *ngIf="shownElements[componentData.value?.id]">
+  <div class="form__item" *ngFor="let componentData of formService.form.controls; let idx = index;">
+    <ng-container
+      [ngSwitch]="componentData.value?.type"
+      *ngIf="formService.shownElements[componentData.value?.id]">
       <ng-container *ngSwitchCase="componentType.LabelSection">
         <ng-template
           [ngTemplateOutlet]="formOutputHtml"
@@ -221,6 +223,7 @@
           [epgu-constructor-currency-transform]="componentData.value?.attrs?.price"
           epgu-constructor-trim
           epgu-constructor-text-transform
+          [disabled]="formService.disabledElements[componentData.value?.id]"
           [textTransformType]="componentData.value?.attrs?.fstuc"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [name]="componentData.value?.id"

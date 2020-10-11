@@ -1,4 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnChanges,
+  OnInit,
+  Output,
+  Input,
+  SimpleChanges,
+} from '@angular/core';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 import { map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
@@ -35,14 +43,15 @@ import { ComponentDto } from '../../../services/api/form-player-api/form-player-
 import { isEqual } from '../../../shared/constants/uttils';
 import { DictionaryForList } from '../../../shared/constants/dictionary';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
+import { ComponentListFormService } from './services/component-list-form.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
-  providers: [UnsubscribeService],
+  providers: [UnsubscribeService, ComponentListFormService],
 })
-export class ComponentsListComponent implements OnInit {
+export class ComponentsListComponent implements OnInit, OnChanges {
   form: FormArray;
   shownElements: { [key: string]: boolean } = {};
   dropDowns: { [key: string]: Array<Partial<ListItem>> } = {};
@@ -63,6 +72,7 @@ export class ComponentsListComponent implements OnInit {
     CustomScreenComponentTypes.CityInput,
   ];
 
+  @Input() store: ScreenStore;
   @Output() changes = new EventEmitter<CustomComponentOutputData>();
 
   constructor(
@@ -73,11 +83,25 @@ export class ComponentsListComponent implements OnInit {
     private fb: FormBuilder,
     private unsubscribe$: UnsubscribeService,
     private validationService: ValidationService,
+    public formService: ComponentListFormService,
   ) {}
 
+  ngOnChanges(changes: SimpleChanges) {
+    const components: Array<CustomComponent> = changes.store?.currentValue.display.components;
+    if (components) {
+      console.error('onChanges');
+      this.formService.create(components);
+
+      this.formService.form.valueChanges.subscribe(() => {
+        console.error('subscribe');
+        this.emmitChanges();
+      });
+    }
+  }
+
   ngOnInit(): void {
-    this.form = this.fb.array([]);
-    this.updateScreenData();
+    // this.form = this.fb.array([]);
+    // this.updateScreenData();
   }
 
   private updateScreenData(): void {
@@ -344,15 +368,16 @@ export class ComponentsListComponent implements OnInit {
       this.calcDependedFormGroup(component);
     }
     const prepareStateForSending = this.getPreparedStateForSending();
+    console.log('emitChanges', prepareStateForSending);
     this.changes.emit(prepareStateForSending);
   }
 
   private getPreparedStateForSending(): any {
-    return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
-      const { disabled } = this.form.get([key, 'value']);
+    return Object.entries(this.formService.form.getRawValue()).reduce((acc, [key, val]) => {
+      const { disabled } = this.formService.form.get([key, 'value']);
       const { value } = val;
-      const valid = disabled ? true : this.form.get([key, 'value']).valid;
-      if (this.shownElements[val.id]) {
+      const valid = disabled ? true : this.formService.form.get([key, 'value']).valid;
+      if (this.formService.shownElements[val.id]) {
         acc[val.id] = { value, valid, disabled };
       }
 

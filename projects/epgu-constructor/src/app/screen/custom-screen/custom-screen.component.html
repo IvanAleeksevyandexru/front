@@ -4,7 +4,7 @@
     <epgu-constructor-page-name>{{screenService.header$ | async}}</epgu-constructor-page-name>
 
     <epgu-constructor-screen-pad class="body">
-      <epgu-constructor-components-list (changes)="changeComponentsList($event)">
+      <epgu-constructor-components-list [store]="screenService.getStore()" (changes)="changeComponentsList($event)">
 
       </epgu-constructor-components-list>
     </epgu-constructor-screen-pad>
