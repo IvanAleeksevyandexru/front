@@ -50,7 +50,7 @@ export class EmployeeHistoryFormService {
     this.newGenerationWatch(form);
 
     if (generationData) {
-      for(const [key , value]: [string, any] of Object.entries(generationData)) {
+      for(const [key , value] of Object.entries(generationData)) {
         let convertedValue: any = value;
         if (['from', 'to'].includes(key)) {
           convertedValue = new MonthYear(value?.month, value?.year);
