@@ -65,7 +65,6 @@ Library-build:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
   script:
-    - npm run generate-lib-version-ts
     - yarn lib:build
   only:
     - merge_requests
@@ -92,6 +91,7 @@ Library-publish:
     - git config receive.advertisePushOptions true
     - git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
     - npm run release -- --release-as patch
+    - npm run generate-lib-version-ts
     - CURRENT_TAG=$(git describe --abbrev=0)
     - echo $CURRENT_TAG
     - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@git.gosuslugi.local/luxoft/epgu2-form-frontend.git --follow-tags ${CI_COMMIT_REF_NAME}:master
