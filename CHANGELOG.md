@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.6...v0.2.7) (2020-10-12)
+
+
+### Features
+
+* added payCode get from JSON ([1ebffeb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1ebffeb3edfe96cee6862c1f7eb5a8213b587e76))
+
+
+### Bug Fixes
+
+* исправил затирание preset value из cachedAnswers [ref EPGUCORE-38623] ([faee444](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/faee4446a0b72e1be068cec302646765a0a8947c))
+
 ### [0.2.6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.5...v0.2.6) (2020-10-12)
 
 
