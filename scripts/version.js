@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const libVersion = require('../projects/epgu-constructor/package.json').version;
-const versionFilePath = path.join(__dirname, '..', 'projects', 'epgu-constructor', 'src', 'assets', 'version.json');
+const versionFileLibPath = path.join(__dirname, '..', 'dist', 'epgu-constructor', 'src', 'assets', 'version.json');
 const src = `{ "formPlayerVersion": "${libVersion}" }`;
 
 fileWrite();
@@ -11,7 +11,7 @@ fileWrite();
 
 function fileWrite() {
   // ensure version module pulls value from package.json
-  fs.writeFile(versionFilePath, src, { flat: 'w' }, fileWriteCallBack);
+  fs.writeFile(versionFileLibPath, src, { flat: 'w' }, fileWriteCallBack);
 }
 
 function fileWriteCallBack(err) {
