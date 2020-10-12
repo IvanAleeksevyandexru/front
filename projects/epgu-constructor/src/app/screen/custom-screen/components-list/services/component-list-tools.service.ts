@@ -2,16 +2,21 @@ import { Injectable } from '@angular/core';
 import {
   CustomComponent,
   CustomComponentRef,
-  CustomComponentRefRelation, CustomListFormGroup,
-  CustomListStatusElements, CustomScreenComponentTypes
+  CustomComponentRefRelation,
+  CustomListFormGroup,
+  CustomListStatusElements,
+  CustomScreenComponentTypes
 } from '../../custom-screen.types';
 import { AbstractControl, FormArray } from '@angular/forms';
-import { isEqual, isUndefined } from '../../../../shared/constants/uttils';
+import { isEqual, isUndefined, stringToBoolean } from '../../../../shared/constants/uttils';
 
 @Injectable()
 export class ComponentListToolsService {
-
-  constructor() { }
+  private readonly availableComponentTypesForParsing = [
+    CustomScreenComponentTypes.DropDown,
+    CustomScreenComponentTypes.Lookup,
+    CustomScreenComponentTypes.Dictionary,
+  ];
 
   updateStatusElements(
     dependentComponent: CustomComponent,
@@ -109,9 +114,19 @@ export class ComponentListToolsService {
   }
 
   convertedValue(component: CustomComponent) {
+    const isDateAndValue = !!(component.type === CustomScreenComponentTypes.DateInput && component.value);
+
     if (String(component.value)) {
-      if (component.type === CustomScreenComponentTypes.DateInput && component.value) {
+      if (isDateAndValue) {
         return new Date(component.value);
+      } else if (this.availableComponentTypesForParsing.includes(component.type)) {
+        try {
+          return JSON.parse(component.value);
+        } catch (e) {
+          return component.value;
+        }
+      } else if (component.type === CustomScreenComponentTypes.CheckBox) {
+        return stringToBoolean(component.value);
       } else {
         return component.value;
       }

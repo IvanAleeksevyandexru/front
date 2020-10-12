@@ -85,15 +85,17 @@ export class ComponentsListComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges) {
     const components: Array<CustomComponent> = changes.store?.currentValue.display.components;
     if (components) {
-      this.loadReferenceData$(components).subscribe((next: Array<CustomListReferenceData>) =>
-        this.initDataAfterLoading(next),
-      );
       this.formService.create(components);
-      this.formService.form.valueChanges.subscribe(() => {
+
+      this.loadReferenceData$(components).subscribe((next: Array<CustomListReferenceData>) => {
+        this.initDataAfterLoading(next);
         this.emmitChanges();
       });
 
-      this.emmitChanges();
+      this.formService.form.valueChanges.subscribe(() => {
+        console.log('form::', this.formService.form);
+        this.emmitChanges();
+      });
     }
   }
 
@@ -107,7 +109,7 @@ export class ComponentsListComponent implements OnChanges, OnInit {
         this.initDictionary(reference as CustomListGenericData<DictionaryResponse>);
       }
 
-      console.log(reference);
+      console.log(reference, reference.component);
     });
   }
 

@@ -24,3 +24,7 @@ export function isBoolean(value: any): boolean {
 export function isUndefined(value: any): boolean {
   return typeof value === 'undefined';
 }
+
+export function stringToBoolean(value: string): boolean {
+  return value === 'true';
+}
