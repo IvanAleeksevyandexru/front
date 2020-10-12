@@ -143,6 +143,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
    * @param screen - данные для экрана
    * @private
    */
+  // ToDo: depricated
   private getComponents(screen: ScreenStore): Array<ComponentDto> {
     return screen.display.components[0]?.type === UniqueScreenComponentTypes.repeatableFields
       ? screen.display.components[0].attrs.components
@@ -192,6 +193,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
    * @param component
    * @private
    */
+  // ToDo: moved
   private validationFn(component: CustomComponent): ValidatorFn {
     return this.validationService.customValidator(component);
   }
@@ -212,6 +214,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
    * @param component - массив компонентов
    * @private
    */
+  // ToDo: moved
   private calcDependedFormGroup(component: CustomComponent): void {
     const isComponentDependent = (arr = []): boolean =>
       arr?.some((el) => el.relatedRel === component.id);
@@ -265,6 +268,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
    * Возвращает откалькулируемую функцию по формуле
    * @param formula - формула для расчета
    */
+  // ToDo: moved
   getCalcFieldValue(formula) {
     // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
     return Function(`'use strict'; return (Math.round(${formula}))`)();
@@ -276,6 +280,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
    * @param components - компоненты с информацией
    * @example {val: '{add16} + {add17} / 100'} => 50 + 150 / 100
    */
+  // ToDo: moved
   calculateValueFromRelation(itemRef: CustomComponentRef, components: CustomComponent[]) {
     let str = itemRef.val;
     const lettersAnNumberItemRegExp = /\{\w+\}/gm;

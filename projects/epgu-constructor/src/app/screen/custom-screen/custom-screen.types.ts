@@ -122,6 +122,19 @@ export interface CustomComponentRef {
   relation: CustomComponentRefRelation
 }
 
+export interface CustomListStatusElements {
+  [key: string]: boolean;
+}
+
+export interface CustomListFormGroup {
+  attrs: CustomComponentAttr;
+  id: string;
+  label: string;
+  required: boolean;
+  type: CustomScreenComponentTypes;
+  value: any;
+}
+
 export interface CustomDisplay extends Display {
   components: Array<CustomComponent>;
 }
