@@ -17,6 +17,7 @@ export class SelectMapObjectService {
   public templates: { [key: string]: TemplateRef<any> } = {}; // Шаблоны для модалки
   public componentAttrs: any; // Атрибуты компонента из getNextStep
   public mapEvents; // events от карт, устанавливаются при создание балуна
+  public mapOpenedBalloonId: number;
 
   private objectManager;
   private activePlacemarkId;
@@ -186,11 +187,8 @@ export class SelectMapObjectService {
    */
   public centeredPlaceMark(coords, objectId) {
     let serviceContext = this as any;
-    let offset = -0.00015;
+    let offset = -0.00008;
 
-    this.objectManager && this.objectManager.objects.setObjectOptions(objectId, {
-      iconImageHref: this.icons.red.iconImageHref
-    });
     this.activePlacemarkId = objectId;
 
     if (coords && coords[0] && coords[1]) {
@@ -203,19 +201,22 @@ export class SelectMapObjectService {
         equal = false;
       }
 
-      if (!equal || (equal && serviceContext.__mapOpenedBalloonId !== objectId)) {
+      if (!equal || (equal && serviceContext.mapOpenedBalloonId !== objectId)) {
         this.yaMapService.map.zoomRange.get([coords[0], coords[1]]).then(function (range) {
           serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset], range[1] - 2);
           // Таймаут нужен что бы балун всегда нормально открывался
           // по непонятным причинам без таймаута балун иногда не открывается
           setTimeout(() => {
+            serviceContext.objectManager && serviceContext.objectManager.objects.setObjectOptions(objectId, {
+              iconImageHref: serviceContext.icons.red.iconImageHref
+            });
             serviceContext.objectManager.objects.balloon.open(objectId);
             serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset]);
             serviceContext.__mapStateCenter = serviceContext.yaMapService.map.getCenter();
-            serviceContext.__mapOpenedBalloonId = objectId;
+            serviceContext.mapOpenedBalloonId = objectId;
             serviceContext.preventBoundsChangeBalloon = false;
             serviceContext.selectedValue.next(serviceContext.objectManager.objects.getById(objectId).properties.res);
-          }, 600);
+          }, 200);
         });
       }
     }

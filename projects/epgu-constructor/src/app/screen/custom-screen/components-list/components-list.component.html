@@ -111,7 +111,6 @@
           [validationShowOn]="validationShowOn"
           [name]="componentData.value?.id"
           [formControl]="componentData.get('value')"
-          minDate="-18y"
           align="left"
         ></lib-date-picker>
       </ng-container>
@@ -143,6 +142,7 @@
             [validationShowOn]="validationShowOn"
             [formControl]="componentData.get('value')"
             [itemsProvider]="addressHelperService.provider"
+            [clearable]="true"
           >
           </lib-lookup>
       </ng-container>

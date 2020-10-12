@@ -70,8 +70,11 @@ export class PaymentComponent implements OnDestroy {
    * @private
    */
   private loadPaymentInfo() {
-    const { nsi, dictItemCode, ref } = this.data.attrs;
+    const { nsi, dictItemCode, ref, payCode } = this.data.attrs;
     const { fiasCode } = ref;
+    if (payCode) {
+      this.payCode = payCode;
+    }
 
     this.orderId = this.screenService.orderId;
 
