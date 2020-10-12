@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { CustomComponent, CustomComponentAttr, CustomScreenComponentTypes } from '../../custom-screen.types';
 import { ValidationService } from '../../services/validation.service';
-import { isBoolean, isEqual, isUndefined } from '../../../../shared/constants/uttils';
+import { isEqual, isUndefined } from '../../../../shared/constants/uttils';
 import { pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { Observable } from 'rxjs';
@@ -30,7 +30,6 @@ export class ComponentListFormService {
   private _form = new FormArray([]);
 
   shownElements: StatusElements = {};
-  disabledElements: StatusElements = {};
 
   get form() {
     return this._form;
@@ -47,12 +46,30 @@ export class ComponentListFormService {
     this._form = new FormArray(
       components.map((component: CustomComponent) => this.createGroup(component, components))
     );
+    components.forEach((component: CustomComponent) => {
+      this.updateDependents(components, {
+        ...component,
+        value: ComponentListFormService.convertedValue(component)
+      });
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  private static convertedValue(component: CustomComponent) {
+    if (String(component.value)) {
+      if (component.type === CustomScreenComponentTypes.DateInput && component.value) {
+        return new Date(component.value);
+      } else {
+        return component.value;
+      }
+    } else if (!isUndefined(component.attrs?.defaultValue)) {
+      return component.attrs?.defaultValue;
+    }
   }
 
   private createStatusElements(components: Array<CustomComponent>): void {
     components.forEach((component: CustomComponent) => {
       this.shownElements[component.id] = !this.hasRelation(component, Relation.displayOn);
-      this.disabledElements[component.id] = this.hasRelation(component, Relation.disabled);
     });
   }
 
@@ -62,17 +79,23 @@ export class ComponentListFormService {
     referenceVal: any,
     componentVal: any): void {
 
-    const isEqualValue = isEqual<any>(referenceVal, componentVal);
+    const valueEquals = isEqual<any>(referenceVal, componentVal);
+    const control: AbstractControl = this._form.controls.find(
+      (control: AbstractControl) => control.value.id === elementId
+    );
 
     if (relation === Relation.displayOn) {
-      this.shownElements[elementId] = isEqualValue;
+      this.shownElements[elementId] = valueEquals;
+      control.markAsUntouched();
     }
 
     if (relation === Relation.disabled) {
-      this.disabledElements[elementId] = isEqualValue;
+      if (valueEquals) {
+        control.disable();
+      } else {
+        control.enable();
+      }
     }
-
-    console.log(elementId, relation, referenceVal, componentVal);
   }
 
   private hasRelation(component: CustomComponent,relation: Relation): boolean {
@@ -102,12 +125,9 @@ export class ComponentListFormService {
     const form: FormGroup =  this.fb.group({
       ...component,
       value: [
-        this.convertedValue(component),
-        this.validationService.customValidator(component)
-      ],
+        ComponentListFormService.convertedValue(component),
+        this.validationService.customValidator(component)],
     });
-
-    this.updateDependents(components, { ...component, value: this.convertedValue(component) });
 
     this.watch$(form).subscribe(([prev, next]) => {
       this.updateDependents(components, next);
@@ -122,17 +142,5 @@ export class ComponentListFormService {
       pairwise(),
       takeUntil(this.unsubscribeService),
     );
-  }
-
-  private convertedValue(component: CustomComponent) {
-    if (String(component.value)) {
-      if (component.type === CustomScreenComponentTypes.DateInput && component.value) {
-        return new Date(component.value);
-      } else {
-        return component.value;
-      }
-    } else if (!isUndefined(component.attrs?.defaultValue)) {
-      return component.attrs?.defaultValue;
-    }
   }
 }

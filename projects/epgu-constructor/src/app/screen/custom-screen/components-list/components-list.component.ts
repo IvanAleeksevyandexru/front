@@ -91,6 +91,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     if (components) {
       console.error('onChanges');
       this.formService.create(components);
+      this.emmitChanges();
 
       this.formService.form.valueChanges.subscribe(() => {
         console.error('subscribe');
@@ -373,12 +374,13 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   private getPreparedStateForSending(): any {
-    return Object.entries(this.formService.form.getRawValue()).reduce((acc, [key, val]) => {
-      const { disabled } = this.formService.form.get([key, 'value']);
+    const { form } = this.formService;
+    return Object.entries(form.getRawValue()).reduce((acc, [key, val]) => {
+      const { disabled, valid } = this.formService.form.get([key, 'value']);
       const { value } = val;
-      const valid = disabled ? true : this.formService.form.get([key, 'value']).valid;
+      const isValid = disabled || valid;
       if (this.formService.shownElements[val.id]) {
-        acc[val.id] = { value, valid, disabled };
+        acc[val.id] = { value, isValid, disabled };
       }
 
       return acc;

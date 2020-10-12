@@ -104,7 +104,7 @@ export class CustomScreenComponent implements OnInit, OnChanges, Screen {
   }
 
   changeComponentsList(changes: { [key: string]: any }): void {
-    this.isValid = Object.values(changes).every((item) => item.valid);
+    this.isValid = Object.values(changes).every((item) => item.isValid);
     this.dataToSend = this.getFormattedData(changes);
   }
 

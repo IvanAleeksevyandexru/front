@@ -223,7 +223,6 @@
           [epgu-constructor-currency-transform]="componentData.value?.attrs?.price"
           epgu-constructor-trim
           epgu-constructor-text-transform
-          [disabled]="formService.disabledElements[componentData.value?.id]"
           [textTransformType]="componentData.value?.attrs?.fstuc"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [name]="componentData.value?.id"
