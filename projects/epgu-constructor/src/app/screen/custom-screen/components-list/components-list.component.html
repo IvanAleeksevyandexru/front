@@ -40,7 +40,7 @@
         </ng-template>
         <lib-dropdown
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="dropDowns[componentData.value?.id]"
+          [items]="(dropDowns$ | async)[componentData.value?.id]"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
           class="cs__select cs-select">
@@ -54,7 +54,7 @@
         </ng-template>
         <lib-dropdown
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="dictionaries[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
+          [items]="(dictionaries$ | async)[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
           class="cs__select cs-select">
@@ -72,7 +72,7 @@
           [formControl]="componentData.get('value')"
           [queryMinSymbolsCount]="0"
           [searchCaseSensitive]="false"
-          [fixedItems]="dictionaries[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list">
+          [fixedItems]="(dictionaries$ | async)[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list">
         </lib-lookup>
       </ng-container>
 

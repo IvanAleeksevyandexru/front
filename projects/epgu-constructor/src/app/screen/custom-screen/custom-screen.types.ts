@@ -25,9 +25,12 @@ export enum CustomScreenComponentTypes {
   CityInput = 'CityInput',
 }
 
+export type CustomListDropDowns = Array<Partial<ListItem>>;
+export type CustomListDictionaries = Array<CustomListDictionary>;
+export type CustomListReferenceData = CustomListGenericData<CustomListDropDowns | DictionaryResponse>;
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
-export interface CustomComponentDictionaryState {
+export interface CustomListDictionary {
   loading: boolean,
   loadError: boolean,
   loadEnd: boolean,
@@ -37,6 +40,11 @@ export interface CustomComponentDictionaryState {
   list: Array<ListItem>;
   page: number;
   selectedItem: DictionaryItem;
+}
+
+export interface CustomListGenericData<T> {
+  component: CustomComponent,
+  data: T;
 }
 
 export interface CustomComponentDropDownStateInterface {

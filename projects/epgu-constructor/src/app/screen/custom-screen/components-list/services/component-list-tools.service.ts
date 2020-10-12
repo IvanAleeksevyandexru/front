@@ -26,6 +26,7 @@ export class ComponentListToolsService {
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id
     );
+    const isDependentDisabled: boolean = dependentComponent.attrs?.disabled;
 
     if (reference.relation === CustomComponentRefRelation.displayOn) {
       shownElements[dependentComponent.id] = valueEquals;
@@ -44,9 +45,14 @@ export class ComponentListToolsService {
       const calcRelation: CustomComponentRef = dependentComponent.attrs?.ref?.find(
         item => item.relation === reference.relation
       );
-      dependentControl.patchValue(
+
+      dependentControl.get('value').patchValue(
         this.calculateValueFromRelation(calcRelation, components, form)
       );
+    }
+
+    if (isDependentDisabled) {
+      dependentControl.disable();
     }
 
     return shownElements;
@@ -112,6 +118,10 @@ export class ComponentListToolsService {
     } else if (!isUndefined(component.attrs?.defaultValue)) {
       return component.attrs?.defaultValue;
     }
+  }
+
+  isDropDown(type: CustomScreenComponentTypes): boolean {
+    return CustomScreenComponentTypes.DropDown === type;
   }
 
   /**

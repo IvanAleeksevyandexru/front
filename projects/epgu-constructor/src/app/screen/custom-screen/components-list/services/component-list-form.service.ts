@@ -38,6 +38,10 @@ export class ComponentListFormService {
     );
 
     components.forEach((component: CustomComponent) => {
+      if (this.toolsService.isDropDown(component.type)) {
+
+      }
+
       this._shownElements = this.toolsService.updateDependents(
         components,
         {
@@ -58,7 +62,7 @@ export class ComponentListFormService {
         this.validationService.customValidator(component)],
     });
 
-    this.watch$(form).subscribe(([prev, next]) => {
+    this.watch$(form).subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
       this._shownElements = this.toolsService.updateDependents(components, next, this.shownElements, this.form);
     });
 
