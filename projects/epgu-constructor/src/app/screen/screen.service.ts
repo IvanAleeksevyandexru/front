@@ -4,8 +4,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
-import { shouldBeTakenFromTheCache } from './screen.const';
-
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -71,7 +69,7 @@ export class ScreenService extends ScreenContent {
     const components: Array<ComponentBase> = [];
 
     this.screenStore.display.components
-      .filter(shouldBeTakenFromTheCache) // TODO HARDCODE from backend;
+      .filter(this.cachedAnswersService.shouldBeTakenFromTheCache) // TODO HARDCODE from backend;
       .forEach(item => {
         const cachedValue = this.cachedAnswersService
           .getCachedValueById(this.screenStore.cachedAnswers, item.id);
