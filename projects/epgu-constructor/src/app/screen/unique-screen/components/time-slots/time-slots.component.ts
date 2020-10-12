@@ -240,7 +240,7 @@ export class TimeSlotsComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((result) => {
         if (result) {
-          console.log(result);
+          this.loadTimeSlots();
         }
       });
   }
