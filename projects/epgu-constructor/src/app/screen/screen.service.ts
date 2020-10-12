@@ -76,13 +76,28 @@ export class ScreenService extends ScreenContent {
         const cachedValue = this.cachedAnswersService
           .getCachedValueById(this.screenStore.cachedAnswers, item.id);
 
-        const component = cachedValue ? { ...item, value: cachedValue } : item;
-        components.push(component);
-      });
+      const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value) } : item;
+      components.push(component);
+    });
 
     if (components.length) {
       this.screenStore.display = { ...this.screenStore.display, components };
     }
+  }
+
+  /**
+   * Метод объединяет preset значение и ответ из кэша
+   * @param cachedValue - кэш ответов из cachedAnswersService
+   * @param preset - preset значения из display.components[].value
+   */
+  private mergePresetCacheValue(cachedValue: string, preset: string) {
+    if (!preset) {
+      return cachedValue;
+    }
+    return JSON.stringify({
+      ...JSON.parse(preset),
+      ...JSON.parse(cachedValue),
+    });
   }
 
   /**
