@@ -1,16 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { CurrentAnswersService } from '../../../current-answers.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
-import {
-  getFilteredDictionaryForMvdGiac,
-  getTransformedDictionaryForMvgGiac,
-} from './mvd-giac.functions';
+import { getMvdGiasForUserAddress, getSortUserMvdGias } from './mvd-giac.functions';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { DictionaryResponse } from '../../../../services/api/dictionary-api/dictionary-api.types';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../../../services/api/dictionary-api/dictionary-api.types';
 import { CachedAnswers } from '../../../screen.types';
+import { DictionaryUtilities } from '../../../../shared/services/dictionary/dictionary-utilities-service';
 
 @Component({
   selector: 'epgu-constructor-mvd-giac',
@@ -26,7 +27,7 @@ export class MvdGiacComponent implements OnInit {
   regionForm: FormGroup;
   isLoading;
 
-  dictionary = [];
+  dictionary: Array<Partial<ListItem>> = [];
 
   constructor(
     private fb: FormBuilder,
@@ -48,10 +49,7 @@ export class MvdGiacComponent implements OnInit {
 
   private subscribeFormChanges() {
     this.regionForm.valueChanges
-      .pipe(
-        takeUntil(this.ngUnsubscribe$),
-        filter(() => this.regionForm.valid),
-      )
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value) => this.formChangesHandler(value));
   }
 
@@ -74,40 +72,21 @@ export class MvdGiacComponent implements OnInit {
   }
 
   private loadDictionarySuccess(data: DictionaryResponse) {
-    this.dictionary = getTransformedDictionaryForMvgGiac(data);
-    this.filterRegion();
+    this.initDictionary(data.items);
     this.isLoading = false;
   }
 
-  private filterRegion() {
-    const { q5, pd4, pd5 } = this.applicantAnswers;
-    // <--- значение предыдущих экранов
-    const getCurrentRegion = () => JSON.parse(pd4.value).regAddr.region;
-    const getRegistrationRegion = () => JSON.parse(pd5.value).regAddr.region;
-    // const getDocumentType = () => q1.value;
-    const isSameAddress = () => q5.value === 'Да';
-    // <--- проверки
-    const isSameRegion = () => getRegistrationRegion() !== getCurrentRegion();
-    const isBaykanur = () => getCurrentRegion() === 'Байконур';
-    const isRegionDifferent = () => !isSameAddress() && isSameRegion();
-    // const isWebDoc = getDocumentType() === 'Электронная справка';
-
-    if (isRegionDifferent() || isBaykanur()) {
-      return;
-    }
-
-    const filteredDictionary = getFilteredDictionaryForMvdGiac(this.dictionary, getCurrentRegion());
-
-    if (filteredDictionary) {
-      this.dictionary = filteredDictionary;
-    }
-
+  initDictionary(items: Array<DictionaryItem>) {
+    const dictionary = DictionaryUtilities.adaptDictionaryToListItem(items);
+    this.dictionary = getMvdGiasForUserAddress(dictionary, this.applicantAnswers as any);
     if (this.dictionary.length === 1) {
       this.setOneRegion(this.dictionary[0]);
+    } else {
+      this.dictionary = getSortUserMvdGias(this.dictionary, this.applicantAnswers as any);
     }
   }
 
-  private setOneRegion(region: ListItem) {
+  private setOneRegion(region: Partial<ListItem>) {
     const regionControl = this.regionForm.get('region');
     regionControl.patchValue(region);
     regionControl.disable();

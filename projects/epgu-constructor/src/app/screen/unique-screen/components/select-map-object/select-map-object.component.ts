@@ -255,7 +255,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return (searchString) => {
       this.selectMapObjectService.searchMapObject(searchString);
       return of(
-        DictionaryUtilities.adaptDictionaryForLookupForSelectMap(
+        DictionaryUtilities.adaptDictionaryToListItem(
           this.selectMapObjectService.filteredDictionaryItems,
         ),
       );
