@@ -36,7 +36,6 @@ import { DictionaryApiService } from '../../../services/api/dictionary-api/dicti
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ConfigService } from '../../../config/config.service';
 import { ScreenStore } from '../../screen.types';
-import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 import { isEqual } from '../../../shared/constants/uttils';
 import { DictionaryForList } from '../../../shared/constants/dictionary';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
@@ -46,7 +45,6 @@ import { ComponentListFormService } from './services/component-list-form.service
   selector: 'epgu-constructor-components-list',
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
-  providers: [UnsubscribeService, ComponentListFormService],
 })
 export class ComponentsListComponent implements OnChanges, OnInit {
   form: FormArray;
