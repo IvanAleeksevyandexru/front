@@ -8,7 +8,6 @@ import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsub
 import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { ScreenService } from '../../../../../screen.service';
 import { ComponentBase } from '../../../../../screen.types';
-import { ChildItem } from './select-children-screen.type';
 
 @Component({
   selector: 'epgu-constructor-select-children-screen',
@@ -28,6 +27,7 @@ export class SelectChildrenScreenComponent implements OnInit {
   selectChildrenForm = new FormGroup({});
   firstNameRef: string;
   idRef: string;
+  isNewRef: string;
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -39,6 +39,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.valueParsed = JSON.parse(this.data.value);
     this.itemsList = this.valueParsed?.items || [];
     this.firstNameRef = this.getRefFromComponent('firstName');
+    this.isNewRef = this.getRefFromComponent('isNew');
     this.idRef = this.getRefFromComponent('id');
     this.itemsToSelect = [
       ...this.itemsList.map((child) => {
@@ -58,29 +59,21 @@ export class SelectChildrenScreenComponent implements OnInit {
   }
 
   getRefFromComponent(refName: string): string {
-    return (this.screenService.display?.components[0]?.attrs?.components || []).find((item) =>
+    return (this.screenService.component?.attrs?.components || []).find((item) =>
       item?.attrs?.fields?.find((field) => field.fieldName === refName),
     )?.id;
   }
 
   addNewChild(item): void {
     const id = item;
-    const newChild: ChildItem = {
-      isNew: true,
-      id,
-      birthDate: '',
-      gender: '',
-      firstName: '',
-      lastName: '',
-      middleName: '',
-      rfBirthCertificateSeries: '',
-      rfBirthCertificateNumber: '',
-      rfBirthCertificateActNumber: '',
-      rfBirthCertificateIssueDate: '',
-      rfBirthCertificateIssuedBy: '',
-      relationshipToChild: '',
-      registrationAddress: '',
-      registrationAddressDate: '',
+    const newChild: any = {
+      ...this.screenService.component?.attrs?.components?.reduce((accum, value: any) => {
+        // eslint-disable-next-line no-param-reassign
+        accum[value.id] = '';
+        return accum;
+      }, {}),
+      [this.isNewRef]: true,
+      [this.idRef]: id,
     };
 
     this.selectChildrenForm.controls[item].disable();

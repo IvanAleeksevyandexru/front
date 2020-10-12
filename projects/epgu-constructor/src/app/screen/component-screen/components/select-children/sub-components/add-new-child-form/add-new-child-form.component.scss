@@ -3,6 +3,7 @@
 @import 'src/styles/core/breakpoint';
 
 .component {
+  margin-top: 24px;
   &__header {
     display: flex;
     justify-content: flex-start;

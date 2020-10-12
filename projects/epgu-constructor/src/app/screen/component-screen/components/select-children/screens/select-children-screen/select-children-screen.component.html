@@ -26,7 +26,7 @@
               ></lib-dropdown>
             </div>
             <epgu-constructor-add-new-child-form
-              *ngIf="selectedItems[item] && selectedItems[item].isNew === true"
+              *ngIf="selectedItems[item] && selectedItems[item][isNewRef] === true"
               [item]="selectedItems[item]"
               [data]="data"
               (childUpdateEvent)="updateChild($event, item)"

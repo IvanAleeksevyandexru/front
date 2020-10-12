@@ -11,8 +11,6 @@ import { DocInputComponentInterface, IField, IForm } from './doc-input.types';
 
 const moment = moment_;
 
-const moment = moment_;
-
 @Component({
   selector: 'epgu-constructor-doc-input',
   templateUrl: './doc-input.component.html',
