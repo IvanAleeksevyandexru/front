@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { CachedAnswers } from '../../../screen/screen.types';
 import { ComponentDto } from '../../../services/api/form-player-api/form-player-api.types';
 import { UniqueScreenComponentTypes } from '../../../screen/unique-screen/unique-screen.types';
+import { CustomScreenComponentTypes } from '../../../screen/custom-screen/custom-screen.types';
 
 
 // TODO нужно утащить на backend (HARDCODE from backend)
-export const componentsNoCache = [
+export const componentsNoCache: Array<string> = [
   UniqueScreenComponentTypes.carInfo,
+  CustomScreenComponentTypes.PhoneNumberChangeInput
 ];
 
 @Injectable()
@@ -17,6 +19,6 @@ export class CachedAnswersService {
 
   // TODO нужно утащить на backend (HARDCODE from backend)
   shouldBeTakenFromTheCache(component: ComponentDto) {
-    return !componentsNoCache.includes(component.type as any);
+    return !componentsNoCache.includes(component.type);
   }
 }
