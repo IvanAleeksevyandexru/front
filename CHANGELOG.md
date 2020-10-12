@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.5...v0.2.6) (2020-10-12)
+
+
+### Bug Fixes
+
+* add static assets for json-scenarios [ref EPGUCORE-38123] ([11e22e8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/11e22e89e32b89f8931f56a03cdbbb447fba2016))
+
 ### [0.2.5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.4...v0.2.5) (2020-10-11)
 
 
