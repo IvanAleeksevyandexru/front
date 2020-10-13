@@ -5,9 +5,8 @@ import { CachedAnswersService } from '../shared/services/applicant-answers/cache
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 
-
 @Injectable()
-export class ScreenService extends ScreenContent{
+export class ScreenService extends ScreenContent {
   private screenStore: ScreenStore;
   private isLoading = false;
   private isShown = true; // Показываем или нет кнопку
@@ -19,7 +18,7 @@ export class ScreenService extends ScreenContent{
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public isShown$: Observable<boolean> = this.isShownSubject.asObservable();
 
-  constructor (
+  constructor(
     private currentAnswersService: CurrentAnswersService,
     private cachedAnswersService: CachedAnswersService,
   ) {
@@ -69,15 +68,19 @@ export class ScreenService extends ScreenContent{
   private loadValueFromCachedAnswer(): void {
     const components: Array<ComponentBase> = [];
 
-    this.screenStore.display.components.forEach(item => {
-      const cachedValue = this.cachedAnswersService
-        .getCachedValueById(this.screenStore.cachedAnswers, item.id);
+    this.screenStore.display.components
+      .filter(this.cachedAnswersService.shouldBeTakenFromTheCache) // TODO HARDCODE from backend;
+      .forEach(item => {
+        const cachedValue = this.cachedAnswersService
+          .getCachedValueById(this.screenStore.cachedAnswers, item.id);
 
       const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value) } : item;
       components.push(component);
     });
 
-    this.screenStore.display = { ...this.screenStore.display, components };
+    if (components.length) {
+      this.screenStore.display = { ...this.screenStore.display, components };
+    }
   }
 
   /**
