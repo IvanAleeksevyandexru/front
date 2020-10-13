@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.10](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.9...v0.2.10) (2020-10-13)
+
+
+### Bug Fixes
+
+* new inline radio buttons on mobile ([c45c34c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c45c34cc457cea7ffaeefba7a7ea1a9c80b418e3))
+* добавил поддержку модальных окон в subheader ([7015755](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/701575591e40e22dc97c8544dab8c177e8bad45d))
+
 ### [0.2.9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.8...v0.2.9) (2020-10-13)
 
 
