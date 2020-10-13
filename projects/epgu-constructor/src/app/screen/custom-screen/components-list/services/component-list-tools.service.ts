@@ -1,21 +1,28 @@
 import { Injectable } from '@angular/core';
 import {
-  CustomComponent,
+  CustomComponent, CustomComponentDropDownItemList,
   CustomComponentRef,
   CustomComponentRefRelation,
   CustomListFormGroup,
   CustomListStatusElements,
-  CustomScreenComponentTypes
+  CustomScreenComponentTypes,
+  CustomListDropDowns
 } from '../../custom-screen.types';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { isEqual, isUndefined, stringToBoolean } from '../../../../shared/constants/uttils';
 
 @Injectable()
 export class ComponentListToolsService {
-  private readonly availableComponentTypesForParsing = [
+  private readonly availableComponentTypesToJsonParse = [
     CustomScreenComponentTypes.DropDown,
     CustomScreenComponentTypes.Lookup,
     CustomScreenComponentTypes.Dictionary,
+    CustomScreenComponentTypes.AddressInput,
+  ];
+
+  private readonly availableComponentTypesToAddressParse = [
+    CustomScreenComponentTypes.AddressInput,
+    CustomScreenComponentTypes.CityInput,
   ];
 
   updateStatusElements(
@@ -31,15 +38,21 @@ export class ComponentListToolsService {
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id
     );
+    const patchToNullAndUntouched = (control: AbstractControl): void => {
+      const valueControl: AbstractControl = control.get('value');
+      valueControl.patchValue(null);
+      valueControl.markAsUntouched();
+    };
     const isDependentDisabled: boolean = dependentComponent.attrs?.disabled;
 
     if (reference.relation === CustomComponentRefRelation.displayOn) {
       shownElements[dependentComponent.id] = valueEquals;
-      dependentControl.markAsUntouched();
+      patchToNullAndUntouched(dependentControl);
     }
 
     if (reference.relation === CustomComponentRefRelation.disabled) {
       if (valueEquals) {
+        patchToNullAndUntouched(dependentControl);
         dependentControl.disable();
       } else {
         dependentControl.enable();
@@ -113,30 +126,62 @@ export class ComponentListToolsService {
     return shownElements;
   }
 
-  convertedValue(component: CustomComponent) {
-    const isDateAndValue = !!(component.type === CustomScreenComponentTypes.DateInput && component.value);
+  convertedValue(component: CustomComponent): any {
+    const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
+    const parsedValue = (value: any): any => {
+      if (isDateAndValue) {
+        return new Date(value);
+      } else if (this.isAddress(component.type)) {
+        return value?.fullAddress;
+      } else if (this.isJson(component.type)) {
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          return value;
+        }
+      } else if (this.isCheckBox(component.type)) {
+        return stringToBoolean(value);
+      } else {
+        return value;
+      }
+    };
 
     if (String(component.value)) {
-      if (isDateAndValue) {
-        return new Date(component.value);
-      } else if (this.availableComponentTypesForParsing.includes(component.type)) {
-        try {
-          return JSON.parse(component.value);
-        } catch (e) {
-          return component.value;
-        }
-      } else if (component.type === CustomScreenComponentTypes.CheckBox) {
-        return stringToBoolean(component.value);
-      } else {
-        return component.value;
-      }
+      return parsedValue(component.value);
     } else if (!isUndefined(component.attrs?.defaultValue)) {
-      return component.attrs?.defaultValue;
+      return parsedValue(component.attrs?.defaultValue);
     }
   }
 
+  adaptiveDropDown(items: CustomComponentDropDownItemList): CustomListDropDowns {
+    return items.map((item, index) => ({
+      id: item.code || `${item.label}-${index}`,
+      text: item.label,
+      formatted: '',
+      unselectable: !!item.disable,
+      originalItem: item,
+      compare: () => false,
+    }));
+  }
+
+  isAddress(type: CustomScreenComponentTypes): boolean {
+    return this.availableComponentTypesToAddressParse.includes(type);
+  }
+
   isDropDown(type: CustomScreenComponentTypes): boolean {
-    return CustomScreenComponentTypes.DropDown === type;
+    return type === CustomScreenComponentTypes.DropDown;
+  }
+
+  isJson(type: CustomScreenComponentTypes): boolean {
+    return this.availableComponentTypesToJsonParse.includes(type);
+  }
+
+  isCheckBox(type: CustomScreenComponentTypes): boolean {
+    return type === CustomScreenComponentTypes.CheckBox;
+  }
+
+  isDate(type: CustomScreenComponentTypes): boolean {
+    return type === CustomScreenComponentTypes.DateInput;
   }
 
   /**

@@ -47,12 +47,6 @@ export interface CustomListGenericData<T> {
   data: T;
 }
 
-export interface CustomComponentDropDownStateInterface {
-  origin: CustomComponentDropDownItemList;
-  list: Array<Partial<ListItem>>;
-  selectedItem?: DictionaryItem;
-}
-
 export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
 export type CustomComponentDropDownItem = {
   label: string;

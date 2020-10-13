@@ -1,20 +1,11 @@
-import {
-  Component,
-  EventEmitter,
-  OnChanges,
-  Output,
-  Input,
-  SimpleChanges,
-  OnInit,
-} from '@angular/core';
-import { ListItem, ValidationShowOn } from 'epgu-lib';
+import { Component, EventEmitter, OnChanges, Output, Input, SimpleChanges } from '@angular/core';
+import { ValidationShowOn } from 'epgu-lib';
 import { FormArray } from '@angular/forms';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   CustomListDictionaries,
   CustomComponent,
-  CustomComponentDropDownItemList,
   CustomComponentOutputData,
   CustomScreenComponentTypes,
   CustomListReferenceData,
@@ -31,14 +22,12 @@ import {
   isDropDown,
   likeDictionary,
 } from '../tools/custom-screen-tools';
-import { ScreenService } from '../../screen.service';
 import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ConfigService } from '../../../config/config.service';
 import { ScreenStore } from '../../screen.types';
 import { isEqual } from '../../../shared/constants/uttils';
 import { DictionaryForList } from '../../../shared/constants/dictionary';
-import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
 import { ComponentListFormService } from './services/component-list-form.service';
 
 @Component({
@@ -46,7 +35,7 @@ import { ComponentListFormService } from './services/component-list-form.service
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
 })
-export class ComponentsListComponent implements OnChanges, OnInit {
+export class ComponentsListComponent implements OnChanges {
   form: FormArray;
   shownElements: { [key: string]: boolean } = {};
 
@@ -57,46 +46,35 @@ export class ComponentsListComponent implements OnChanges, OnInit {
 
   readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
-  private readonly availableTypesForCheckDependence: Array<CustomScreenComponentTypes> = [
-    CustomScreenComponentTypes.RadioInput,
-    CustomScreenComponentTypes.Dictionary,
-    CustomScreenComponentTypes.Lookup,
-    CustomScreenComponentTypes.DropDown,
-    CustomScreenComponentTypes.StringInput,
-    CustomScreenComponentTypes.DateInput,
-    CustomScreenComponentTypes.AddressInput,
-    CustomScreenComponentTypes.CheckBox,
-    CustomScreenComponentTypes.CityInput,
-  ];
 
   @Input() store: ScreenStore;
-  @Output() changes = new EventEmitter<CustomComponentOutputData>();
+  @Output() changes: EventEmitter<CustomComponentOutputData>;
 
   constructor(
     private dictionaryApiService: DictionaryApiService,
-    public screenService: ScreenService,
     public configService: ConfigService,
-    public addressHelperService: AddressHelperService,
     public formService: ComponentListFormService,
-  ) {}
-
-  ngOnInit() {}
+  ) {
+    this.changes = this.formService.changes;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     const components: Array<CustomComponent> = changes.store?.currentValue.display.components;
     if (components) {
       this.formService.create(components);
 
-      this.loadReferenceData$(components).subscribe((next: Array<CustomListReferenceData>) => {
-        this.initDataAfterLoading(next);
-        this.emmitChanges();
-      });
+      // Caution! If only emit reference data
+      this.loadReferenceData$(components).subscribe((next: Array<CustomListReferenceData>) =>
+        this.initDataAfterLoading(next),
+      );
 
-      this.formService.form.valueChanges.subscribe(() => {
-        console.log('form::', this.formService.form);
-        this.emmitChanges();
-      });
+      this.formWatcher();
+      this.formService.emmitChanges();
     }
+  }
+
+  private formWatcher(): void {
+    this.formService.watchFormArray$().subscribe(() => this.formService.emmitChanges());
   }
 
   private initDataAfterLoading(references: Array<CustomListReferenceData>): void {
@@ -109,7 +87,9 @@ export class ComponentsListComponent implements OnChanges, OnInit {
         this.initDictionary(reference as CustomListGenericData<DictionaryResponse>);
       }
 
-      console.log(reference, reference.component);
+      setTimeout(() => this.formService.patch(reference.component), 0);
+
+      this.formService.emmitChanges();
     });
   }
 
@@ -173,7 +153,7 @@ export class ComponentsListComponent implements OnChanges, OnInit {
   ): Observable<CustomListGenericData<CustomListDropDowns>> {
     return of({
       component,
-      data: this.adaptiveDropDown(component.attrs.dictionaryList),
+      data: this.formService.getAdaptiveDropDowns(component.attrs.dictionaryList),
     });
   }
 
@@ -184,50 +164,7 @@ export class ComponentsListComponent implements OnChanges, OnInit {
       if (prev && isCarMarkDic && !isEqual<string>(prev[index]?.value, component.value)) {
         // this.loadModelsTS(component.id);
       }
-      if (this.availableTypesForCheckDependence.includes(component.type)) {
-        if (prev && !isEqual<string>(prev[index]?.value, component.value)) {
-          this.emmitChanges(component);
-        }
-      } else {
-        this.emmitChanges();
-      }
     });
-  }
-
-  private adaptiveDropDown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
-    return items.map((item, index) => ({
-      id: item.code || `${item.label}-${index}`,
-      text: item.label,
-      formatted: '',
-      unselectable: !!item.disable,
-      originalItem: item,
-      compare: () => false,
-    }));
-  }
-
-  private async emmitChanges(component?: CustomComponent) {
-    if (component?.value && component.type === this.componentType.CityInput) {
-      await this.addressHelperService.normalizeAddress(
-        (component.value as unknown) as DadataSuggestionsAddressForLookup,
-      );
-    }
-    const prepareStateForSending = this.getPreparedStateForSending();
-    console.log('emitChanges', prepareStateForSending);
-    this.changes.emit(prepareStateForSending);
-  }
-
-  private getPreparedStateForSending(): any {
-    const { form } = this.formService;
-    return Object.entries(form.getRawValue()).reduce((acc, [key, val]) => {
-      const { disabled, valid } = this.formService.form.get([key, 'value']);
-      const { value } = val;
-      const isValid = disabled || valid;
-      if (this.formService.shownElements[val.id]) {
-        acc[val.id] = { value, isValid, disabled };
-      }
-
-      return acc;
-    }, {});
   }
 
   // private loadModelsTS(componentId: string): void {

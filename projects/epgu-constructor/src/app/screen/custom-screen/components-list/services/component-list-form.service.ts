@@ -1,20 +1,24 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import {
-  CustomComponent,
+  CustomComponent, CustomComponentDropDownItemList, CustomComponentOutputData, CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements
 } from '../../custom-screen.types';
 import { ValidationService } from '../../services/validation.service';
-import { pairwise, startWith, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { Observable } from 'rxjs';
 import { ComponentListToolsService } from './component-list-tools.service';
+import { isEqual } from '../../../../shared/constants/uttils';
+import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper.service';
+import { ListElement, LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 
 @Injectable()
 export class ComponentListFormService {
   private _form = new FormArray([]);
   private _shownElements: CustomListStatusElements = {};
+  private _changes = new EventEmitter<CustomComponentOutputData>();
 
   get shownElements(): CustomListStatusElements {
     return this._shownElements;
@@ -22,12 +26,16 @@ export class ComponentListFormService {
   get form(): FormArray {
     return this._form;
   }
+  get changes(): EventEmitter<CustomComponentOutputData> {
+    return this._changes;
+  }
 
   constructor(
     private fb: FormBuilder,
     private validationService: ValidationService,
     private unsubscribeService: UnsubscribeService,
     private toolsService: ComponentListToolsService,
+    private addressHelperService: AddressHelperService,
   ) { }
 
   create(components: Array<CustomComponent>): void {
@@ -38,10 +46,6 @@ export class ComponentListFormService {
     );
 
     components.forEach((component: CustomComponent) => {
-      if (this.toolsService.isDropDown(component.type)) {
-
-      }
-
       this._shownElements = this.toolsService.updateDependents(
         components,
         {
@@ -54,6 +58,54 @@ export class ComponentListFormService {
     });
   }
 
+  patch(component: CustomComponent): void {
+    const control = this._form.controls.find(
+      (ctrl) => ctrl.value.id === component.id,
+    );
+    control.get('value').patchValue(this.toolsService.convertedValue(component));
+  }
+
+  watchFormArray$(): Observable<Array<CustomListFormGroup>> {
+    return this.form.valueChanges
+      .pipe(
+        distinctUntilChanged((prev, next) => isEqual<any>(prev, next)),
+        takeUntil(this.unsubscribeService),
+      );
+  }
+
+  async emmitChanges(component?: CustomComponent) {
+    if (component?.value && this.toolsService.isAddress(component.type)) {
+      await this.addressHelperService.normalizeAddress(
+        (component.value as unknown) as DadataSuggestionsAddressForLookup,
+      );
+    }
+    const prepareStateForSending = this.getPreparedStateForSending();
+    console.log('emitChanges', prepareStateForSending);
+    this._changes.emit(prepareStateForSending);
+  }
+
+  addressHelperServiceProvider(): LookupProvider | LookupPartialProvider {
+    return this.addressHelperService.provider;
+  }
+
+  getAdaptiveDropDowns(items: CustomComponentDropDownItemList): CustomListDropDowns {
+    return this.toolsService.adaptiveDropDown(items);
+  }
+
+  private getPreparedStateForSending(): any {
+    return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
+      const { disabled, valid } = this.form.get([key, 'value']);
+      const { value } = val;
+      const isValid = disabled || valid;
+
+      if (this.shownElements[val.id]) {
+        acc[val.id] = { value, isValid, disabled };
+      }
+
+      return acc;
+    }, {});
+  }
+
   private createGroup(component: CustomComponent, components: Array<CustomComponent>): FormGroup {
     const form: FormGroup =  this.fb.group({
       ...component,
@@ -62,14 +114,14 @@ export class ComponentListFormService {
         this.validationService.customValidator(component)],
     });
 
-    this.watch$(form).subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
+    this.watchFormGroup$(form).subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
       this._shownElements = this.toolsService.updateDependents(components, next, this.shownElements, this.form);
     });
 
     return form;
   }
 
-  private watch$(form: FormGroup): Observable<Array<CustomListFormGroup>> {
+  private watchFormGroup$(form: FormGroup): Observable<Array<CustomListFormGroup>> {
     return form.valueChanges.pipe(
       startWith(form.getRawValue()),
       pairwise(),
