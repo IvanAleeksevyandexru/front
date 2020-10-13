@@ -64,6 +64,10 @@
       lib-radio:not(:first-child) {
         margin-left: $screen-pad-p;
       }
+
+      @include phones-down {
+        display: block;
+      }
     }
   }
 }
