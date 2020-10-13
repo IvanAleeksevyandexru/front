@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.8...v0.2.9) (2020-10-13)
+
+
+### Bug Fixes
+
+* remove doubling staticDomainAssetsPath props for icon in draft modal [ref EPGUCORE-36456] ([b6a4336](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b6a43361ded61b75e283496991f53071b1abe3a7))
+* resolve postinstall issue [ref EPGUCORE-36456] ([0c60e0d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0c60e0d50969e85dd7d63590fd9db1a621f53422))
+* update auto version bump for lib bundle [ref EPGUCORE-36456] ([f4cd0ab](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f4cd0ab2a4f4fd82e3458d54f30e7b44f9475e7a))
+* определили функцию которая решает какие данные нужно брать из кеша. ([414cf0b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/414cf0b2715cc4fe71252f54899d4767a32ab873))
+
 ### [0.2.8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.7...v0.2.8) (2020-10-12)
 
 
