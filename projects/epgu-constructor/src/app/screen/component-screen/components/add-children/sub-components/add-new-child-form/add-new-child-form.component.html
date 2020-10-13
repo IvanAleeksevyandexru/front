@@ -7,7 +7,8 @@
           align="left"
           id="birthDate"
           name="birthDate"
-          minDate="-18y"
+          [minDate]="data.attrs?.minDate ? data.attrs?.minDate : '-18y'"
+          [maxDate]="data.attrs?.maxDate ? data.attrs?.maxDate : 'today'"
           [(ngModel)]="item.birthDate"
         ></lib-date-picker>
       </div>
