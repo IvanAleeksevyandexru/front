@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ValidationService } from '../../services/validation.service';
 import { UnsubscribeService } from 'projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
 import { ComponentListToolsService } from './component-list-tools.service';
+import { AddressHelperService } from '../address-helper.service';
 
 describe('ComponentListFormService', () => {
   let service: ComponentListFormService;
@@ -12,7 +13,13 @@ describe('ComponentListFormService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      providers: [ComponentListFormService, ValidationService, UnsubscribeService, ComponentListToolsService],
+      providers: [
+        ComponentListFormService,
+        ValidationService,
+        UnsubscribeService,
+        ComponentListToolsService,
+        AddressHelperService,
+      ],
     });
     service = TestBed.inject(ComponentListFormService);
   });

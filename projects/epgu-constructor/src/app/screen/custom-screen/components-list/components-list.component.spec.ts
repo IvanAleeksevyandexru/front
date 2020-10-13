@@ -26,9 +26,6 @@ xdescribe('ComponentsListComponent', () => {
       providers: [
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide:  ConfigService, useClass: ConfigServiceStub },
-        ValidationService,
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        AddressHelperService,
         ComponentListFormService,
       ],
       imports: [
