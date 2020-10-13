@@ -3,11 +3,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-import { ScenarioDto } from 'projects/epgu-constructor/src/app/services/api/form-player-api/form-player-api.types';
-import { UnsubscribeService } from 'projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
 import { takeUntil, tap } from 'rxjs/operators';
 import { ConfigService } from '../../../../config/config.service';
 import { ValidationService } from '../../../custom-screen/services/validation.service';
+import { ScenarioDto } from '../../../../services/api/form-player-api/form-player-api.types';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-invitation-error',
