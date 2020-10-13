@@ -24,7 +24,14 @@
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input doc-input-screen__input--data">
       <epgu-constructor-label for="date">Дата выдачи</epgu-constructor-label>
-      <lib-date-picker id="date" name="date" align="left" [formControl]="form.get('date')" [maxDate]="maxDate"></lib-date-picker>
+      <lib-date-picker
+        id="date"
+        name="date"
+        align="left"
+        [formControl]="form.get('date')"
+        [minDate]="data.attrs?.minDate ? data.attrs?.minDate : '-120y'"
+        [maxDate]="data.attrs?.maxDate ? data.attrs?.maxDate : 'today'"
+      ></lib-date-picker>
     </div>
   </div>
   <div class="doc-input-screen__inputs-row">
