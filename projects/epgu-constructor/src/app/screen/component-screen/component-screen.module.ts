@@ -18,7 +18,7 @@ import { TemporaryRegistrationAddrScreenModule } from './components/confirm-pers
 import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
 import { DocInputModule } from './components/doc-input/doc-input.module';
 import { MvdGiacModule } from './components/mvd-giac/mvd-giac.module';
-import { SelectChildrenScreenModule } from './components/select-children/screens/select-children-screen/select-children-screen.module';
+import { SelectChildrenScreenModule } from './components/select-children/select-children-screen.module';
 
 
 const COMPONENTS = [

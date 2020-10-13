@@ -25,12 +25,13 @@
                 [items]="itemsToSelect"
               ></lib-dropdown>
             </div>
-            <epgu-constructor-add-new-child-form
+            <section
+              class="card__content"
               *ngIf="selectedItems[item] && selectedItems[item][isNewRef] === true"
-              [item]="selectedItems[item]"
-              [data]="data"
-              (childUpdateEvent)="updateChild($event, item)"
-            ></epgu-constructor-add-new-child-form>
+            >
+              <epgu-constructor-components-list (changes)="updateChild($event, item)">
+              </epgu-constructor-components-list>
+            </section>
           </div>
         </div>
       </div>

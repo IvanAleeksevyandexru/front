@@ -1,4 +1,4 @@
-import { ComponentBase } from '../../../../../../screen/screen.types';
+import { ComponentBase } from '../../../../screen/screen.types';
 
 export interface SelectChildrenInterface extends ComponentBase {
   attrs: Array<any>,

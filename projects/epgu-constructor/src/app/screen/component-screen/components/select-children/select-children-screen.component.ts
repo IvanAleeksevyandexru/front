@@ -4,10 +4,10 @@ import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
-import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
-import { CurrentAnswersService } from '../../../../../current-answers.service';
-import { ScreenService } from '../../../../../screen.service';
-import { ComponentBase } from '../../../../../screen.types';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { CurrentAnswersService } from '../../../current-answers.service';
+import { ScreenService } from '../../../screen.service';
+import { ComponentBase } from '../../../screen.types';
 
 @Component({
   selector: 'epgu-constructor-select-children-screen',
@@ -94,9 +94,21 @@ export class SelectChildrenScreenComponent implements OnInit {
   }
 
   updateChild(childData, item): void {
-    // augment new child data with data passed from add-new-child-form component
-    this.selectChildrenForm.controls[item].setValue(childData);
-    this.selectedItems[item] = childData;
+    const childItem = this.itemsList.find((value) => value[this.idRef] === item);
+    const formattedChildData = Object.keys(childData).reduce((accum, key) => {
+      // eslint-disable-next-line no-param-reassign
+      accum[key] = childData[key].value;
+      return accum;
+    }, {});
+    const updatedChildData = {
+      ...formattedChildData,
+      ...{
+        [this.idRef]: childItem[this.idRef],
+        [this.isNewRef]: childItem[this.isNewRef],
+      },
+    };
+    this.selectChildrenForm.controls[item].setValue(updatedChildData);
+    this.selectedItems[item] = updatedChildData;
     this.passDataToSend(Object.values(this.selectedItems));
     this.setHideStateToSelectedItems();
   }

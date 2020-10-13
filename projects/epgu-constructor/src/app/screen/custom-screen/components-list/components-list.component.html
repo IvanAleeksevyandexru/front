@@ -24,11 +24,15 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.StringInput">
-        <ng-template
-          [ngTemplateOutlet]="formLabel"
-          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
-        </ng-template>
-        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+        <div
+          [hidden]="componentData.value?.attrs?.hidden"
+        >
+          <ng-template
+            [ngTemplateOutlet]="formLabel"
+            [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+          </ng-template>
+          <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+        </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.DropDown">
@@ -75,18 +79,22 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.RadioInput">
-        <ng-template
-          [ngTemplateOutlet]="formLabel"
-          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
-        </ng-template>
-        <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio__inline' : 'form__radio__block'">
-          <lib-radio
-            *ngFor="let item of componentData.value?.attrs?.supportedValues"
-            [name]="componentData.value.id"
-            [labelText]="item.label"
-            [formControl]="componentData.get('value')"
-            [value]="item.value">
-          </lib-radio>
+        <div
+          [hidden]="componentData.value?.attrs?.hidden"
+        >
+          <ng-template
+            [ngTemplateOutlet]="formLabel"
+            [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+          </ng-template>
+          <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio__inline' : 'form__radio__block'">
+            <lib-radio
+              *ngFor="let item of componentData.value?.attrs?.supportedValues"
+              [name]="componentData.value.id"
+              [labelText]="item.label"
+              [formControl]="componentData.get('value')"
+              [value]="item.value">
+            </lib-radio>
+          </div>
         </div>
       </ng-container>
 
