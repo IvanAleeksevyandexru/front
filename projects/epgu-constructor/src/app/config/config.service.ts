@@ -12,6 +12,9 @@ export class ConfigService implements Config {
   private _lkUrl: string;
   private _paymentUrl: string;
   private _timeSlotApiUrl: string;
+  private _brakRouteNumber: string;
+  private _divorceRouteNumber: string;
+  private _gibddRouteNumber: string;
   private _listPaymentsApiUrl: string;
   private _uinApiUrl: string;
   private _yandexMapsApiKey: string;
@@ -61,6 +64,18 @@ export class ConfigService implements Config {
     return this._timeSlotApiUrl;
   }
 
+  get brakRouteNumber(): string {
+    return this._brakRouteNumber;
+  }
+
+  get divorceRouteNumber(): string {
+    return this._divorceRouteNumber;
+  }
+
+  get gibddRouteNumber(): string {
+    return this._gibddRouteNumber;
+  }
+
   get listPaymentsApiUrl(): string {
     return this._listPaymentsApiUrl;
   }
@@ -96,6 +111,9 @@ export class ConfigService implements Config {
     this._lkUrl = config.lkUrl;
     this._paymentUrl = config.paymentUrl;
     this._timeSlotApiUrl = config.timeSlotApiUrl;
+    this._brakRouteNumber = config.brakRouteNumber;
+    this._divorceRouteNumber = config.divorceRouteNumber;
+    this._gibddRouteNumber = config.gibddRouteNumber;
     this._listPaymentsApiUrl = config.listPaymentsApiUrl;
     this._uinApiUrl = config.uinApiUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;

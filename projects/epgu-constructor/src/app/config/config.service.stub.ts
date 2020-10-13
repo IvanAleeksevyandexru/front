@@ -8,6 +8,9 @@ export class ConfigServiceStub implements Config {
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
   _timeSlotApiUrl = '';
+  _brakRouteNumber = '00000000001';
+  _divorceRouteNumber = '00000000001';
+  _gibddRouteNumber = '00000000001';
   _listPaymentsApiUrl = '';
   _lkUrl = '';
   _paymentUrl = '';
@@ -55,6 +58,18 @@ export class ConfigServiceStub implements Config {
     return this._timeSlotApiUrl;
   }
 
+  get brakRouteNumber(): string {
+    return this._brakRouteNumber;
+  }
+
+  get divorceRouteNumber(): string {
+    return this._divorceRouteNumber;
+  }
+
+  get gibddRouteNumber(): string {
+    return this._gibddRouteNumber;
+  }
+
   get listPaymentsApiUrl(): string {
     return this._listPaymentsApiUrl;
   }
@@ -89,6 +104,9 @@ export class ConfigServiceStub implements Config {
     this._lkUrl = config.lkUrl;
     this._paymentUrl = config.paymentUrl;
     this._timeSlotApiUrl = config.timeSlotApiUrl;
+    this._brakRouteNumber = config.brakRouteNumber;
+    this._divorceRouteNumber = config.divorceRouteNumber;
+    this._gibddRouteNumber = config.gibddRouteNumber;
     this._listPaymentsApiUrl = config.listPaymentsApiUrl;
     this._uinApiUrl = config.uinApiUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
