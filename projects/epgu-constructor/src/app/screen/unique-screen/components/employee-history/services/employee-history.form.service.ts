@@ -36,22 +36,28 @@ export class EmployeeHistoryFormService {
   }
 
   newGeneration(generationData?: EmployeeHistoryModel): void {
-    const fromDate: MonthYear = generationData?.from;
-    const toDate: MonthYear = generationData?.to;
     const form: FormGroup = this.fb.group({
-      type: [generationData?.type || null, Validators.required],
-      from: [fromDate ? new MonthYear(fromDate?.month, fromDate?.year) : null, Validators.required],
-      to: [toDate ? new MonthYear(toDate?.month, toDate?.year) : null, Validators.required],
-      position: [generationData?.position || null],
-      place: [generationData?.place || null],
-      address: [generationData?.address || null],
-      checkboxToDate: [generationData?.checkboxToDate || false]
+      type: [null, Validators.required],
+      from: [null, Validators.required],
+      to: [null, Validators.required],
+      position: [null],
+      place: [null],
+      address: [null],
+      checkboxToDate: [false]
     });
 
     this.employeeHistoryForm.push(form);
     this.newGenerationWatch(form);
 
-    if (!generationData) {
+    if (generationData) {
+      for(const [key , value] of Object.entries(generationData)) {
+        let convertedValue: any = value;
+        if (['from', 'to'].includes(key)) {
+          convertedValue = new MonthYear(value?.month, value?.year);
+        }
+        form.get(key).patchValue(convertedValue);
+      }
+    } else {
       form.get('type').patchValue(this.defaultType);
     }
   }

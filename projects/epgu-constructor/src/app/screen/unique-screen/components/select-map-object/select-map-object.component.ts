@@ -53,7 +53,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public scrollConfig = { ressScrollX: true, wheelPropagation: false };
 
   private componentValue: any;
-  private selectedValueField: any;
   private screenStore: ScreenStore;
 
   constructor(
@@ -79,12 +78,11 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnDestroy(): void {
-    this.yaMapService.mapSubject.next(null);
+    this.clearMapVariables();
   }
 
   private initVariable() {
     this.initComponentAttrs();
-    this.initSelectedValue();
     this.controlsLogicInit();
   }
 
@@ -95,9 +93,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private initSelectedValue() {
-    if (this.data?.value && this.data?.value !== '{}' && this.data?.attrs?.selectedValue) {
-      this.selectedValue = this.getSelectedValue();
-      this.selectedValueField = this.data.attrs.selectedValueMapping?.value;
+    if (this.data?.value && this.data?.value !== '{}') {
+      const mapObject = JSON.parse(this.data?.value);
+      this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.id);
     }
   }
 
@@ -127,7 +125,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       .subscribe(() => {
         this.initMap();
       });
-    this.tryInitMapCenter();
+    this.initMapCenter();
   }
 
   /**
@@ -139,6 +137,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       (coords: IGeoCoordsResponse) => {
         this.handleFilledCoordinate(coords);
         this.mapIsLoaded = true;
+        this.initSelectedValue();
         this.cdr.detectChanges();
       },
     );
@@ -178,16 +177,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   /**
-   * Функция пытается инициализировать центр карты
+   * Функция инициализирует центр карты
    */
-  private tryInitMapCenter() {
+  private initMapCenter() {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { geo_lon, geo_lat } = this.componentValue;
-    if (geo_lon && geo_lat) {
-      this.mapCenter = [geo_lon, geo_lat];
-    } else {
-      this.mapCenter = [37.64, 55.76]; // Москва
-    }
+    const { geo_lon, geo_lat, center } = this.componentValue;
+    const moscowCenter = [37.64, 55.76]; // Москва
+    const geoCode = geo_lon && geo_lat ? [geo_lon, geo_lat] : null;
+    this.mapCenter = geoCode || center || moscowCenter;
   }
 
   /**
@@ -290,5 +287,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectedValue.children = this.selectedValue.children.map((child: DictionaryYMapItem) => {
       return { ...child, expanded: child.id === mapObject.id };
     });
+  }
+
+  private clearMapVariables() {
+    // Необходимо очистить behaviorSubject чтобы при следующей подписке он не стрельнул 2 раза (текущее значение и новое при создание карты)
+    this.yaMapService.mapSubject.next(null);
+    // Очищаем id выбранной ранее точки чтобы при возврате на карту он был пуст.
+    this.selectMapObjectService.mapOpenedBalloonId = null;
   }
 }

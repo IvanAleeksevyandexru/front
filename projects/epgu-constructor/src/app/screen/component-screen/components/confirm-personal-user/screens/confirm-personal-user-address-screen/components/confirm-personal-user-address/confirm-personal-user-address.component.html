@@ -27,7 +27,8 @@
       <lib-date-picker
         [name]="field.fieldName"
         align="left"
-        minDate="-50y"
+        [minDate]="field.minDate ? field.minDate : '-50y'"
+        [maxDate]="field.maxDate ? field.maxDate : 'today'"
         [(ngModel)]="valueParsed[field.fieldName]"
       >
       </lib-date-picker>

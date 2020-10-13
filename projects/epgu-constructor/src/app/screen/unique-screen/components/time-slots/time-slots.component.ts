@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
+import { takeUntil } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { CurrentAnswersService } from '../../../current-answers.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
@@ -13,6 +15,7 @@ import { SlotInterface } from './time-slots.types';
 import { Display } from '../../../screen.types';
 import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
 import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 const moment = moment_;
 
@@ -20,6 +23,7 @@ const moment = moment_;
   selector: 'epgu-constructor-time-slots',
   templateUrl: './time-slots.component.html',
   styleUrls: ['./time-slots.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class TimeSlotsComponent implements OnInit {
   @Input() isLoading: boolean;
@@ -72,12 +76,12 @@ export class TimeSlotsComponent implements OnInit {
   public fixedMonth = false;
   public inProgress = false;
   public changeTSConfirm = false;
-  initialized = false;
   bookedSlot: SlotInterface;
   errorMessage;
 
   private timeSlotServices: { [key: string]: TimeSlotsServiceInterface } = {};
   private currentService: TimeSlotsServiceInterface;
+  private errorModalResultSub = new Subscription();
 
   constructor(
     private changeDetection: ChangeDetectorRef,
@@ -88,6 +92,7 @@ export class TimeSlotsComponent implements OnInit {
     private modalService: ModalService,
     private currentAnswersService: CurrentAnswersService,
     public constants: TimeSlotsConstants,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = divorceTimeSlotsService;
@@ -220,11 +225,27 @@ export class TimeSlotsComponent implements OnInit {
   showError(errorMessage: string) {
     const params = this.constants.errorModal;
     params.text = errorMessage;
-    this.showModal(params);
+    params.buttons = [
+      {
+        label: 'Попробовать ещё раз',
+        closeModal: true,
+        value: true,
+      },
+    ];
+    this.errorModalResultSub.unsubscribe();
+    const errorModalResult$ = this.showModal(params);
+
+    this.errorModalResultSub = errorModalResult$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((result) => {
+        if (result) {
+          this.loadTimeSlots();
+        }
+      });
   }
 
   showModal(params) {
-    this.modalService.openModal(ConfirmationModalComponent, {
+    return this.modalService.openModal(ConfirmationModalComponent, {
       ...params,
     });
   }
@@ -238,53 +259,56 @@ export class TimeSlotsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.components[0]) {
-      this.inProgress = true;
-      this.label = this.data.components[0].label;
-      const value = JSON.parse(this.data.components[0].value);
-      this.initCalendar();
-      this.currentService = this.timeSlotServices[value.timeSlotType];
-      this.currentService.init(value).subscribe(
-        () => {
-          if (this.currentService.hasError()) {
-            this.inProgress = false;
-            this.errorMessage = this.currentService.getErrorMessage();
-            if (this.errorMessage === 101) {
-              this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
-            }
-            this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
-          } else {
-            this.errorMessage = undefined;
-            this.monthsYears = [];
-            this.activeMonthNumber = this.currentService.getCurrentMonth();
-            this.activeYearNumber = this.currentService.getCurrentYear();
-
-            const availableMonths = this.currentService.getAvailableMonths();
-            for (let i = 0; i < availableMonths.length; i += 1) {
-              this.monthsYears.push(this.getMonthsListItem(availableMonths[i]));
-            }
-            this.currentMonth = this.monthsYears.find(
-              (item) => item.id === `${this.activeYearNumber}-${this.activeMonthNumber + 1}`,
-            );
-            this.fixedMonth = this.monthsYears.length < 2;
-            this.renderSingleMonthGrid(this.weeks);
-
-            this.bookedSlot = this.currentService.getBookedSlot();
-            if (this.bookedSlot) {
-              this.selectDate(this.bookedSlot.slotTime);
-              this.chooseTimeSlot(this.bookedSlot);
-            }
-          }
-
-          this.inProgress = false;
-          this.initialized = true;
-        },
-        () => {
-          this.errorMessage = this.currentService.getErrorMessage();
-          this.inProgress = false;
-          this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
-        },
-      );
+      this.loadTimeSlots();
     }
+  }
+
+  private loadTimeSlots(): void {
+    this.inProgress = true;
+    this.label = this.data.components[0].label;
+    const value = JSON.parse(this.data.components[0].value);
+    this.initCalendar();
+    this.currentService = this.timeSlotServices[value.timeSlotType];
+    this.currentService.init(value).subscribe(
+      () => {
+        if (this.currentService.hasError()) {
+          this.inProgress = false;
+          this.errorMessage = this.currentService.getErrorMessage();
+          if (this.errorMessage === 101) {
+            this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
+          }
+          this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+        } else {
+          this.errorMessage = undefined;
+          this.monthsYears = [];
+          this.activeMonthNumber = this.currentService.getCurrentMonth();
+          this.activeYearNumber = this.currentService.getCurrentYear();
+
+          const availableMonths = this.currentService.getAvailableMonths();
+          for (let i = 0; i < availableMonths.length; i += 1) {
+            this.monthsYears.push(this.getMonthsListItem(availableMonths[i]));
+          }
+          this.currentMonth = this.monthsYears.find(
+            (item) => item.id === `${this.activeYearNumber}-${this.activeMonthNumber + 1}`,
+          );
+          this.fixedMonth = this.monthsYears.length < 2;
+          this.renderSingleMonthGrid(this.weeks);
+
+          this.bookedSlot = this.currentService.getBookedSlot();
+          if (this.bookedSlot) {
+            this.selectDate(this.bookedSlot.slotTime);
+            this.chooseTimeSlot(this.bookedSlot);
+          }
+        }
+
+        this.inProgress = false;
+      },
+      () => {
+        this.errorMessage = this.currentService.getErrorMessage();
+        this.inProgress = false;
+        this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+      },
+    );
   }
 
   private getMonthsListItem(monthYear: string) {
@@ -306,6 +330,6 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   calendarAvailable(): boolean {
-    return this.initialized && !this.errorMessage;
+    return !this.errorMessage;
   }
 }

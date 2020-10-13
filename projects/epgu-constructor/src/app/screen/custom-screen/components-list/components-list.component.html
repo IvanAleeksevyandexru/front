@@ -111,7 +111,8 @@
           [validationShowOn]="validationShowOn"
           [name]="componentData.value?.id"
           [formControl]="componentData.get('value')"
-          minDate="-18y"
+          [minDate]="componentData.value?.attrs?.minDate ? componentData.value?.attrs?.minDate : '-120y'"
+          [maxDate]="componentData.value?.attrs?.maxDate ? componentData.value?.attrs?.maxDate : '+50y'"
           align="left"
         ></lib-date-picker>
       </ng-container>
@@ -143,6 +144,7 @@
             [validationShowOn]="validationShowOn"
             [formControl]="componentData.get('value')"
             [itemsProvider]="addressHelperService.provider"
+            [clearable]="true"
           >
           </lib-lookup>
       </ng-container>
