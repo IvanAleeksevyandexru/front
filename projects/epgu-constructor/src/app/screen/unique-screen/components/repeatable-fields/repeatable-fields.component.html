@@ -13,7 +13,9 @@
         *ngIf="objectKeys(screens).length !== 1"
         (click)="removeItem(screenKey, i)"
       ></div>
-      <epgu-constructor-components-list [store]="screenService.getStore()" class="cmp-group__item" (changes)="changeComponentList($event, i)">
+      <epgu-constructor-components-list
+        [store]="screenService.getStore()" class="cmp-group__item"
+        (changes)="changeComponentList($event, i)">
 
       </epgu-constructor-components-list>
     </epgu-constructor-screen-pad>
