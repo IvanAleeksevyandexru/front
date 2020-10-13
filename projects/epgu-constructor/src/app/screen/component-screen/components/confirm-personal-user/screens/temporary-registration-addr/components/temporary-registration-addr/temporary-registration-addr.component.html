@@ -22,8 +22,8 @@
             : !field?.fieldName
         "
         [name]="field.fieldName"
-        minDate="-50y"
-        maxDate="+50y"
+        [minDate]="field.minDate ? field.minDate : '-50y'"
+        [maxDate]="field.maxDate ? field.maxDate : '+50y'"
         class="item__data"
         align="left"
         [(ngModel)]="forms[field.fieldName]"

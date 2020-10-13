@@ -21,7 +21,6 @@ export class DocInputComponent implements OnInit {
   @Input() data: DocInputComponentInterface;
 
   form = new FormGroup({});
-  readonly maxDate = new Date();
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
