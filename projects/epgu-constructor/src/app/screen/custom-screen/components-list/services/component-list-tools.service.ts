@@ -6,7 +6,7 @@ import {
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes,
-  CustomListDropDowns
+  CustomListDropDowns, CustomComponentDropDownItem
 } from '../../custom-screen.types';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { isBoolean, isEqual, isUndefined, toBoolean } from '../../../../shared/constants/uttils';
@@ -102,7 +102,7 @@ export class ComponentListToolsService {
 
     getDependentComponents(components).forEach((dependentComponent: CustomComponent) => {
       const reference = dependentComponent.attrs?.ref?.find(
-        (c) => c.relatedRel === component.id
+        (el) => el.relatedRel === component.id
       );
 
       if (reference) {
@@ -164,7 +164,7 @@ export class ComponentListToolsService {
   }
 
   adaptiveDropDown(items: CustomComponentDropDownItemList): CustomListDropDowns {
-    return items.map((item, index) => ({
+    return items.map((item: CustomComponentDropDownItem, index: number) => ({
       id: item.code || `${item.label}-${index}`,
       text: item.label,
       formatted: '',

@@ -37,7 +37,7 @@ export class ComponentListRepositoryService {
   ) {}
 
   loadReferenceData$(components: Array<CustomComponent>): Observable<any> {
-    const data: Array<Observable<any>> = [];
+    const data: Array<Observable<CustomListReferenceData>> = [];
     components.forEach((component: CustomComponent) => {
       if (isDropDown(component.type)) {
         data.push(this.getDropDowns$(component));
