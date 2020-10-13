@@ -9,7 +9,7 @@ import {
   CustomListDropDowns
 } from '../../custom-screen.types';
 import { AbstractControl, FormArray } from '@angular/forms';
-import { isEqual, isUndefined, stringToBoolean } from '../../../../shared/constants/uttils';
+import { isEqual, isUndefined, toBoolean } from '../../../../shared/constants/uttils';
 
 @Injectable()
 export class ComponentListToolsService {
@@ -25,6 +25,8 @@ export class ComponentListToolsService {
     CustomScreenComponentTypes.CityInput,
   ];
 
+  private prevValues: { [key: string]: any } = {};
+
   updateStatusElements(
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
@@ -33,29 +35,33 @@ export class ComponentListToolsService {
     form: FormArray,
     shownElements: CustomListStatusElements,
   ): CustomListStatusElements {
-
     const valueEquals: boolean = isEqual<any>(reference.val, componentVal);
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id
     );
-    const patchToNullAndUntouched = (control: AbstractControl): void => {
+    const patchToNullAndDisable = (control: AbstractControl): void => {
       const valueControl: AbstractControl = control.get('value');
-      valueControl.patchValue(null);
+      this.prevValues[dependentComponent.id] = valueControl.value;
+      valueControl.patchValue('');
       valueControl.markAsUntouched();
+      control.disable();
+    };
+    const patchToPrevValueAndEnable = (control: AbstractControl): void => {
+      control.get('value').patchValue(this.prevValues[dependentComponent.id]);
+      control.enable();
     };
     const isDependentDisabled: boolean = dependentComponent.attrs?.disabled;
 
     if (reference.relation === CustomComponentRefRelation.displayOn) {
       shownElements[dependentComponent.id] = valueEquals;
-      patchToNullAndUntouched(dependentControl);
+      dependentControl.markAsUntouched();
     }
 
     if (reference.relation === CustomComponentRefRelation.disabled) {
       if (valueEquals) {
-        patchToNullAndUntouched(dependentControl);
-        dependentControl.disable();
+        patchToNullAndDisable(dependentControl);
       } else {
-        dependentControl.enable();
+        patchToPrevValueAndEnable(dependentControl);
       }
     }
 
@@ -128,7 +134,7 @@ export class ComponentListToolsService {
 
   convertedValue(component: CustomComponent): any {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
-    const parsedValue = (value: any): any => {
+    const parseValue = (value: any): any => {
       if (isDateAndValue) {
         return new Date(value);
       } else if (this.isAddress(component.type)) {
@@ -140,16 +146,16 @@ export class ComponentListToolsService {
           return value;
         }
       } else if (this.isCheckBox(component.type)) {
-        return stringToBoolean(value);
+        return toBoolean(value);
       } else {
         return value;
       }
     };
 
     if (String(component.value)) {
-      return parsedValue(component.value);
+      return parseValue(component.value);
     } else if (!isUndefined(component.attrs?.defaultValue)) {
-      return parsedValue(component.attrs?.defaultValue);
+      return parseValue(component.attrs?.defaultValue);
     }
   }
 

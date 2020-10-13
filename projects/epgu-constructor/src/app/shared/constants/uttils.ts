@@ -25,6 +25,6 @@ export function isUndefined(value: any): boolean {
   return typeof value === 'undefined';
 }
 
-export function stringToBoolean(value: string): boolean {
-  return value === 'true';
+export function toBoolean(value: any): boolean {
+  return isBoolean(value) ? value : (value === 'true');
 }
