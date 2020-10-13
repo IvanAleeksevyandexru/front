@@ -1,8 +1,9 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import {
-  CustomComponent, CustomComponentDropDownItemList, CustomComponentOutputData, CustomListDropDowns,
-  CustomListFormGroup,
+  CustomComponent,
+  CustomComponentOutputData,
+  CustomListFormGroup, CustomListGenericData,
   CustomListStatusElements
 } from '../../custom-screen.types';
 import { ValidationService } from '../../services/validation.service';
@@ -12,7 +13,9 @@ import { Observable } from 'rxjs';
 import { ComponentListToolsService } from './component-list-tools.service';
 import { isEqual } from '../../../../shared/constants/uttils';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper.service';
-import { ListElement, LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
+import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
+import { ComponentListRepositoryService } from './component-list-repository.service';
+import { DictionaryResponse } from '../../../../services/api/dictionary-api/dictionary-api.types';
 
 @Injectable()
 export class ComponentListFormService {
@@ -36,6 +39,7 @@ export class ComponentListFormService {
     private unsubscribeService: UnsubscribeService,
     private toolsService: ComponentListToolsService,
     private addressHelperService: AddressHelperService,
+    private repository: ComponentListRepositoryService,
   ) { }
 
   create(components: Array<CustomComponent>): void {
@@ -56,6 +60,8 @@ export class ComponentListFormService {
         this.form
       );
     });
+
+    this.watchFormArray$().subscribe(() => this.emmitChanges());
   }
 
   patch(component: CustomComponent): void {
@@ -88,10 +94,6 @@ export class ComponentListFormService {
     return this.addressHelperService.provider;
   }
 
-  getAdaptiveDropDowns(items: CustomComponentDropDownItemList): CustomListDropDowns {
-    return this.toolsService.adaptiveDropDown(items);
-  }
-
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
       const { disabled, valid } = this.form.get([key, 'value']);
@@ -116,6 +118,37 @@ export class ComponentListFormService {
 
     this.watchFormGroup$(form).subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
       this._shownElements = this.toolsService.updateDependents(components, next, this.shownElements, this.form);
+      ////////HARDCODE!!!
+      if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqual<CustomListFormGroup>(prev, next)) {
+        const indexVehicle: number = this.form.controls.findIndex(
+          (control: AbstractControl) => control.value?.id === next.id,
+        );
+
+        const options: any = {
+          filter: {
+            simple: {
+              attributeName: 'Id_Mark',
+              condition: 'EQUALS',
+              value: {
+                asString: `${this.form.get(String(indexVehicle)).value?.value?.id}`,
+              },
+            },
+          },
+        };
+
+        const model: AbstractControl = this.form.controls.find(
+          (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS',
+        );
+
+        model.get('value').patchValue('');
+
+        this.repository
+          .getDictionaries$('MODEL_TS', model?.value, options)
+          .subscribe((dictionary) => {
+            this.repository.initDictionary(dictionary);
+        });
+      }
+      ///////////////////
     });
 
     return form;

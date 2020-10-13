@@ -9,7 +9,7 @@ import {
   CustomListDropDowns
 } from '../../custom-screen.types';
 import { AbstractControl, FormArray } from '@angular/forms';
-import { isEqual, isUndefined, toBoolean } from '../../../../shared/constants/uttils';
+import { isBoolean, isEqual, isUndefined, toBoolean } from '../../../../shared/constants/uttils';
 
 @Injectable()
 export class ComponentListToolsService {
@@ -47,7 +47,9 @@ export class ComponentListToolsService {
       control.disable();
     };
     const patchToPrevValueAndEnable = (control: AbstractControl): void => {
-      control.get('value').patchValue(this.prevValues[dependentComponent.id]);
+      const previousValue = typeof this.prevValues[dependentComponent.id] !== 'undefined' ?
+        this.prevValues[dependentComponent.id] : '';
+      control.get('value').patchValue(previousValue);
       control.enable();
     };
     const isDependentDisabled: boolean = dependentComponent.attrs?.disabled;
@@ -156,6 +158,8 @@ export class ComponentListToolsService {
       return parseValue(component.value);
     } else if (!isUndefined(component.attrs?.defaultValue)) {
       return parseValue(component.attrs?.defaultValue);
+    } else {
+      return component.value;
     }
   }
 
