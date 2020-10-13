@@ -13,8 +13,6 @@ import {
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ConfigService } from '../../../config/config.service';
 import { ScreenStore } from '../../screen.types';
-import { isEqual } from '../../../shared/constants/uttils';
-import { DictionaryForList } from '../../../shared/constants/dictionary';
 import { ComponentListFormService } from './services/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
 
@@ -64,18 +62,4 @@ export class ComponentsListComponent implements OnChanges {
         });
       });
   }
-
-  private screenDataEmitter(next: Array<CustomComponent>, prev?: Array<CustomComponent>): void {
-    next.forEach((component: CustomComponent, index: number) => {
-      const isCarMarkDic: boolean = component.attrs.dictionaryType === DictionaryForList.markTs;
-
-      if (prev && isCarMarkDic && !isEqual<string>(prev[index]?.value, component.value)) {
-        // this.loadModelsTS(component.id);
-      }
-    });
-  }
-
-  // private loadModelsTS(componentId: string): void {
-
-  // }
 }

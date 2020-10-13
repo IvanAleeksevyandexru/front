@@ -9,6 +9,7 @@ import { AddressHelperService } from '../address-helper.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { HttpClient } from '@angular/common/http';
 import { DictionaryApiServiceStub } from 'projects/epgu-constructor/src/app/services/api/dictionary-api/dictionary-api.service.stub';
+import { ComponentListRepositoryService } from './component-list-repository.service';
 
 describe('ComponentListFormService', () => {
   let service: ComponentListFormService;
@@ -22,6 +23,7 @@ describe('ComponentListFormService', () => {
         UnsubscribeService,
         ComponentListToolsService,
         AddressHelperService,
+        ComponentListRepositoryService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
       ],
     });
