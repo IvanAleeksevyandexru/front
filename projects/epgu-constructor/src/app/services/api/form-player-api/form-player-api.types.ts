@@ -1,6 +1,7 @@
 import { ScreenTypes } from '../../../screen/screen.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
+import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer
@@ -45,6 +46,11 @@ export interface ComponentDtoAction {
   type: ActionType;
 }
 
+export interface DisplaySubjHead {
+  text: string;
+  clarifications: Clarifications
+}
+
 /**
  * @property {}components
  * @property {string}header - текстовый заголовок компонента
@@ -56,7 +62,7 @@ export interface ComponentDtoAction {
 export interface DisplayDto {
   components: Array<ComponentDto>;
   header: string;
-  subHeader: string;
+  subHeader: DisplaySubjHead;
   label?: string;
   id: string;
   name: string;

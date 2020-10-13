@@ -12,6 +12,7 @@ import {
   TimeSlotValueInterface,
   ZagsDepartmentInterface
 } from './time-slots.types';
+import { ConfigService } from '../../../../config/config.service';
 
 const moment = moment_;
 
@@ -33,7 +34,8 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
 
   constructor(
     private http: HttpClient,
-    private smev3TimeSlotsRestService: Smev3TimeSlotsRestService
+    private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
+    private config: ConfigService
   ) {}
 
   book(selectedSlot: SmevSlotInterface) {
@@ -154,7 +156,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       caseNumber: this.orderId,
       serviceId: ['ЗагсБрак'],
       eserviceId: '10000057526',
-      routeNumber: '45382000',
+      routeNumber: this.config.brakRouteNumber,
       attributes: [
         {
           name: 'SolemnRegistration',
@@ -177,7 +179,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       preliminaryReservation: 'true',
       address: this.department.attributeValues.ADDRESS,
       orgName: this.department.attributeValues.FULLNAME,
-      routeNumber: '45382000',
+      routeNumber: this.config.brakRouteNumber,
       serviceCode: '-100000100821',
       subject: 'Регистрация заключения брака',
       params: [
