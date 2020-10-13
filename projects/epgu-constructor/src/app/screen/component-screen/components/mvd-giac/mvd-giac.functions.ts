@@ -14,7 +14,7 @@ function adaptiveData(item: DictionaryItem): Partial<ListItem> {
 
 export function getFilteredDictionaryForMvdGiac(
   dictionary: Array<Partial<ListItem>>,
-  regionName: string): Array<Partial<ListItem>> | undefined {
+  regionName: string = ''): Array<Partial<ListItem>> | undefined {
   let filteredDictionary;
 
   filteredDictionary = dictionary.filter((item) => {
