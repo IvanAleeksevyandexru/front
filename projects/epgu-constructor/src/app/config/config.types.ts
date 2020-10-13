@@ -24,6 +24,9 @@ export interface Config {
   dictionaryUrl: string;
   externalApiUrl: string;
   timeSlotApiUrl: string;
+  brakRouteNumber: string;
+  divorceRouteNumber: string;
+  gibddRouteNumber: string;
   listPaymentsApiUrl: string;
   uinApiUrl: string;
   billsApiUrl: string;
