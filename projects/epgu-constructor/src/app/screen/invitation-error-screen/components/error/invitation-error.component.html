@@ -1,38 +1,56 @@
 <epgu-constructor-screen-container>
-  <ng-container *ngIf="!readyToRegistration">
-    <div class="invitation-error__content">
-      <img class="invitation-error__image" [src]="config.staticDomainAssetsPath + data.attrs.url" />
-      <div class="invitation-error__message" [innerHTML]="data.label | imgPrefixer"></div>
-      <div class="invitation-error__actions">
-        <lib-button class="invitation-error__button" (click)="readyToRegistration = true">
-          Направить приглашение на регистрацию
-        </lib-button>
-        <lib-button class="invitation-error__button">
-          Вернуться к началу заполнения заявления
-        </lib-button>
-      </div>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="readyToRegistration">
-    <div class="invitation-error__content">
-      <img src="{{ config.staticDomainAssetsPath }}/assets/img/screens/s11_x2.png" />
-      <div class="invitation-error__message">
-        <epgu-constructor-label for="email">Введите адрес электронной почты</epgu-constructor-label>
-        <lib-standard-input
-          id="email"
-          type="email"
-          [formControl]="email"
-          placeholder="Email"
-        ></lib-standard-input>
-        <div class="invitation-error__info">
-          На указанный адрес электронной почты придет ссылка для регистрации на портале Госуслуг
+    <div class="invitation__content">
+      <ng-container *ngIf="!emailSent else result">
+        <div class="invitation__img">
+          <img src="{{ config.staticDomainAssetsPath }}/assets/img/screens/s11.png" />
         </div>
-      </div>
-      <div class="invitation-error__actions">
-        <lib-button class="invitation-error__button" (click)="sendEmail()">
-          Отправить приглашение и вернуться к началу заполнения заявления
-        </lib-button>
-      </div>
+        <p class="invitation__message">{{ data.label }}</p>
+        <form class="form">
+          <div class="form__item">
+            <lib-plain-input
+              id="email"
+              type="email"
+              [formControl]="email"
+              placeholder="Email"
+              [invalid]="email.invalid && email.touched"
+              [validationShowOn]="validationShowOn"
+            ></lib-plain-input>
+            <div class="form__error">
+              <small *ngIf="email.invalid && email.touched">
+                {{ email.getError('msg') }}
+              </small>
+            </div>
+          </div>
+        </form>
+        <p class="invitation__info">
+          На указанный адрес электронной почты придет ссылка для регистрации на портале Госуслуг
+        </p>
+        <div class="invitation__actions">
+          <lib-button
+            class="invitation__button"
+            (click)="sendEmail()"
+            [disabled]="!email.valid"
+          >Отправить приглашение</lib-button>
+        </div>
+      </ng-container>
+      <ng-template #result>
+        <div *ngIf="success else errorMessage" class="invitation__img">
+          <img src="{{ config.staticDomainAssetsPath }}/assets/img/screens/s11.png" />
+          <p>Емейл был успешно отправлен.</p>
+        </div>
+        <ng-template #errorMessage>
+          <div class="info">
+            <img class="info__img" src="{{ config.staticDomainAssetsPath }}/assets/img/server-error.svg" alt="" />
+            <div class="info__text">При получении реквизитов оплаты пошлины произошла ошибка.</div>
+            <div class="info__text">
+              Попробуйте зайти на страницу позже. Если ошибка не исчезнет,
+              <a href="https://www.gosuslugi.ru/help" target="_blank">сообщите нам о ней</a>
+            </div>
+          </div>
+        </ng-template>
+        <div class="invitation__actions">
+          <lib-button class="invitation__button" (click)="redirectToLK()">Вернуться в личный кабинет</lib-button>
+        </div>
+      </ng-template>
     </div>
-  </ng-container>
 </epgu-constructor-screen-container>

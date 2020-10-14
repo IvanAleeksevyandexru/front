@@ -13,6 +13,7 @@ export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
  * @property {string}paymentUrl - url до сервиса оплаты, как правило apiHostName
  * @property {string}fileUploadApiUrl - url до хранилища файлов, как правило apiHostName/api/storage/v1/files
  * @property {string}lkUrl - url до личного кабинета, как правило hostName/info
+ * @property {string}invitationUrl - url приглашения по емейл
  * @property {string}yandexMapsApiKey - токен для яндекс карт
  * @property {string}yandexMapsApiKey - токен для яндекс карт
  * @property {MockApi[]}mocks - массив апи для которых будет использваван mockUrl
@@ -33,6 +34,7 @@ export interface Config {
   paymentUrl: string;
   fileUploadApiUrl: string;
   lkUrl: string;
+  invitationUrl: string;
   yandexMapsApiKey: string;
   staticDomainAssetsPath: string;
   mocks?: MockApi[];
