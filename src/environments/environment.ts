@@ -3,22 +3,23 @@
 // The list of file replacements can be found in `angular.json`.
 
 import { MockApi } from '../../projects/epgu-constructor/src/app/config/config.types';
-
+const pguUrl = 'https://pgu-dev-fed.test.gosuslugi.ru/api';
 export const environment = {
   production: false,
   serviceId: 'local',
   targetId: '10000000100',
   orderId: '',
   apiUrl: '/api',
-  dictionaryUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary',
-  externalApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1',
-  timeSlotApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/equeue/agg',
+  dictionaryUrl: `${pguUrl}/nsi/v1/dictionary`,
+  externalApiUrl: `${pguUrl}/nsi/v1`,
+  timeSlotApiUrl: `${pguUrl}/nsi/v1/lk/v1/equeue/agg`,
+  listPaymentsApiUrl: `${pguUrl}/nsi/v1/lk/v1/orders/listpaymentsinfo`,
+  uinApiUrl: `${pguUrl}/nsi/v1/lk/v1/paygate/uin`,
+  billsApiUrl: `${pguUrl}/nsi/v1/pay/v1/bills`,
+  invitationUrl: `${pguUrl}/lk/v1`,
   brakRouteNumber: '00000000001',
   divorceRouteNumber: '00000000001',
   gibddRouteNumber: '46000000000',
-  listPaymentsApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/orders/listpaymentsinfo',
-  uinApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/paygate/uin',
-  billsApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/pay/v1/bills',
   yandexMapsApiKey: '9e8e2fc4-5970-4ca6-95c5-3e620095e8e3',
   lkUrl: 'https://pgu-dev-lk.test.gosuslugi.ru',
   paymentUrl: 'https://payment-dev-l14.test.gosuslugi.ru',

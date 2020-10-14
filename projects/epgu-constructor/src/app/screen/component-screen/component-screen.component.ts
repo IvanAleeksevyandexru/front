@@ -107,6 +107,8 @@ export class ComponentScreenComponent implements OnInit, Screen {
     const hasType = [
       ComponentScreenComponentTypes.divorceConsent,
       ComponentScreenComponentTypes.confirmPersonalUserData,
+      ComponentScreenComponentTypes.confirmAnotherUserData,
+      ComponentScreenComponentTypes.confirmChildData,
     ].includes(type);
 
     return hasType ? type : false;
