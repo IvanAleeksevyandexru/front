@@ -1,7 +1,7 @@
 import { ListItem } from 'epgu-lib';
 
 export function getMainGiac(items: Array<Partial<ListItem>>): Array<Partial<ListItem>> {
-  const mainGiacCode = '077';
+  const mainGiacCode = '85';
   return items.filter(({ originalItem }) => originalItem?.value === mainGiacCode);
 }
 
@@ -19,22 +19,21 @@ export function isUserRegionEqualToRegion(userRegion: string, region: string) {
     region.includes(userRegion.slice(0, -2));
 }
 
-export function getMvdGiasForUserAddress(dictionary: Array<Partial<ListItem>>, { q5, pd4, pd5 }): Array<Partial<ListItem>> {
-  // <--- константы
+export function getMvdGiasForUserAddress(
+  dictionary: Array<Partial<ListItem>>,
+  regAddrRegion,
+  factAddrRegion,
+  saidAddressSame
+): Array<Partial<ListItem>> {
   const baykanur = 'Байконур';
-  // <--- значение предыдущих экранов
-  const getCurrentRegion = (): string => JSON.parse(pd4?.value || '{}').regAddr?.region; // constant address
-  const getRegRegion = (): string => JSON.parse(pd5?.value || '{}').regAddr?.region; // registration address
-  // <--- проверки
-  const saidAddressSame = () => q5.value === 'Да'; // Ранее ответил что адреса совпадают;
-  const isSameRegion = () => getRegRegion() === getCurrentRegion();
-  const isBaykanur = () => getCurrentRegion() === baykanur && getRegRegion() === baykanur;
+  const isSameRegion = () => regAddrRegion === factAddrRegion;
+  const isBaykanur = () => regAddrRegion === baykanur && factAddrRegion === baykanur;
 
   if (isBaykanur()) {
     return getMainGiac(dictionary);
   }
-  if (saidAddressSame() || isSameRegion()) {
-    return getUserRegion(dictionary, getCurrentRegion());
+  if (saidAddressSame || isSameRegion()) {
+    return getUserRegion(dictionary, regAddrRegion);
   }
   return dictionary;
 }
@@ -44,15 +43,15 @@ export function getMvdGiasForUserAddress(dictionary: Array<Partial<ListItem>>, {
  * Сортировка основывается на том что в начале списка должны ноходиться пользовательские адреса
  * (постоянная, временная регистрация), а потом все другие адреса.
  */
-export function getSortUserMvdGias(dictionary: Array<Partial<ListItem>>, { pd4, pd5 }): Array<Partial<ListItem>> {
+export function getSortUserMvdGias(
+  dictionary: Array<Partial<ListItem>>,
+  regAddrRegion,
+  factAddrRegion
+): Array<Partial<ListItem>> {
   if (dictionary?.length > 1) {
-    // <--- значение предыдущих экранов
-    const currentRegion = JSON.parse(pd4?.value || '{}').regAddr?.region;
-    const registrationRegion = JSON.parse(pd5?.value || '{}').regAddr?.region;
-
     // <--- данные
-    const currentRegionIndex = getUserRegionIndex(dictionary, currentRegion);
-    const registrationRegionIndex = getUserRegionIndex(dictionary, registrationRegion);
+    const currentRegionIndex = getUserRegionIndex(dictionary, factAddrRegion);
+    const registrationRegionIndex = getUserRegionIndex(dictionary, regAddrRegion);
 
     // <--- проверки
     const hasCurrentRegion = () => currentRegionIndex !== -1;

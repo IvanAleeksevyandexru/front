@@ -77,12 +77,30 @@ export class MvdGiacComponent implements OnInit {
   }
 
   initDictionary(items: Array<DictionaryItem>) {
+    const { q5, q7, pd4, pd5, pd7 } = this.applicantAnswers;
+    const getRegAddrRegion = (): string => {
+      const regAddr = pd4 || pd7;
+      return JSON.parse(regAddr?.value).regAddr.region;
+    };
+    const getFactAddrRegion = (): string => {
+      return pd5 ? JSON.parse(pd5.value).regAddr.region : getRegAddrRegion();
+    };
+    const saidAddressSame = q5?.value === 'Да' || q7?.value === 'Да';
+    const regAddrRegion = getRegAddrRegion();
+    const factAddrRegion = getFactAddrRegion();
+
     const dictionary = DictionaryUtilities.adaptDictionaryToListItem(items);
-    this.dictionary = getMvdGiasForUserAddress(dictionary, this.applicantAnswers as any);
+
+    this.dictionary = getMvdGiasForUserAddress(
+      dictionary,
+      regAddrRegion,
+      factAddrRegion,
+      saidAddressSame,
+    );
     if (this.dictionary.length === 1) {
       this.setOneRegion(this.dictionary[0]);
     } else {
-      this.dictionary = getSortUserMvdGias(this.dictionary, this.applicantAnswers as any);
+      this.dictionary = getSortUserMvdGias(this.dictionary, regAddrRegion, factAddrRegion);
     }
   }
 
