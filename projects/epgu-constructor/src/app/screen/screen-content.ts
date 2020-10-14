@@ -2,7 +2,7 @@ import {
   ApplicantAnswersDto,
   ComponentDto,
   ComponentDtoAction, CurrentCycledFieldsDto,
-  DisplayDto,
+  DisplayDto, DisplaySubjHead,
   ScenarioErrorsDto
 } from '../services/api/form-player-api/form-player-api.types';
 import { ScreenStore, ScreenTypes } from './screen.types';
@@ -29,11 +29,11 @@ export class ScreenContent {
   }
   public header$ = this._header.asObservable();
 
-  private _subHeader = new BehaviorSubject<string>(null);
+  private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
   public get subHeader() {
     return this._subHeader.getValue();
   }
-  public set subHeader(val: string) {
+  public set subHeader(val: DisplaySubjHead) {
     this._subHeader.next(val);
   }
   public subHeader$ = this._subHeader.asObservable();

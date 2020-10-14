@@ -15,6 +15,7 @@ import { InvitationErrorScreenComponentTypes } from './invitation-error-screen.t
 })
 export class InvitationErrorScreenComponent implements OnInit, Screen {
   typeComponent = InvitationErrorScreenComponentTypes;
+  scenarioDto = this.screenService.getStore();
 
   constructor(
     private navigationService: NavigationService,
@@ -34,15 +35,5 @@ export class InvitationErrorScreenComponent implements OnInit, Screen {
 
   nextStep(payload?: NavigationPayload): void {
     this.navigationService.nextStep.next({ payload });
-  }
-
-  sendEmail(email: string): void {
-    const data: NavigationPayload = {};
-    const componentId = 'errorScr';
-    data[componentId] = {
-      visited: true,
-      value: email || '',
-    };
-    this.nextStep(data);
   }
 }

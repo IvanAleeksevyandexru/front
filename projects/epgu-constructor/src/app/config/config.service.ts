@@ -17,6 +17,7 @@ export class ConfigService implements Config {
   private _gibddRouteNumber: string;
   private _listPaymentsApiUrl: string;
   private _uinApiUrl: string;
+  private _invitationUrl: string;
   private _yandexMapsApiKey: string;
   private _staticDomainAssetsPath: string;
   private _mocks: MockApi[];
@@ -84,6 +85,10 @@ export class ConfigService implements Config {
     return this._uinApiUrl;
   }
 
+  get invitationUrl(): string {
+    return this._invitationUrl;
+  }
+
   get yandexMapsApiKey(): string {
     return this._yandexMapsApiKey;
   }
@@ -116,6 +121,7 @@ export class ConfigService implements Config {
     this._gibddRouteNumber = config.gibddRouteNumber;
     this._listPaymentsApiUrl = config.listPaymentsApiUrl;
     this._uinApiUrl = config.uinApiUrl;
+    this._invitationUrl = config.invitationUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
     this._staticDomainAssetsPath = config.staticDomainAssetsPath;
     this._mocks = config.mocks;

@@ -10,6 +10,10 @@
   color: $color-summer-night;
   font-family: $font-main;
 
+  img {
+    max-width: 100%;
+  }
+
   *,
   *:before,
   *:after {
