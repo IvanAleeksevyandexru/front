@@ -48,12 +48,13 @@ export class ComponentsListComponent implements OnChanges {
     public configService: ConfigService,
     public formService: ComponentListFormService,
     private repository: ComponentListRepositoryService,
+    private unsubscribeService: UnsubscribeService,
   ) {
     this.changes = this.formService.changes;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
+    this.unsubscribe();
     const components: Array<CustomComponent> = changes.components?.currentValue;
     if (components) {
       this.formService.create(components);
@@ -70,5 +71,10 @@ export class ComponentsListComponent implements OnChanges {
           this.formService.emmitChanges();
         });
       });
+  }
+
+  private unsubscribe(): void {
+    this.unsubscribeService.ngUnsubscribe$.next();
+    this.unsubscribeService.ngUnsubscribe$.complete();
   }
 }
