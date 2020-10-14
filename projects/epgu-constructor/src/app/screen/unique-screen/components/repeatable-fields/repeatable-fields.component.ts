@@ -15,6 +15,7 @@ export class RepeatableFieldsComponent {
   objectKeys = Object.keys;
   componentId;
   isValid: boolean;
+  componentValidation: Array<boolean> = [];
 
   /**
    * Словарь для хранения массива компонентов
@@ -54,8 +55,9 @@ export class RepeatableFieldsComponent {
 
   changeComponentList(changes: { [key: string]: any }, index: number) {
     const state = this.getState();
-    state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
     this.isValid = Object.values(changes).every((item) => item.isValid);
+    this.componentValidation[index] = this.isValid;
+    state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
     this.saveState(state);
   }
 
@@ -67,10 +69,12 @@ export class RepeatableFieldsComponent {
     delete this.screens[key];
     let state = this.getState();
     state = removeItemFromArrByIndex(state, index);
+    delete this.componentValidation[index];
+    this.isValid = this.componentValidation.every((valid: boolean) => valid);
     this.saveState(state);
   }
 
-  getState() {
+  getState(): { [key: string]: any } {
     return JSON.parse(this.currentAnswersService.state);
   }
   saveState(state) {

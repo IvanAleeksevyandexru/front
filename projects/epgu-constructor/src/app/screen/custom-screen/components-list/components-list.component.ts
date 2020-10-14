@@ -12,12 +12,10 @@ import {
 } from '../custom-screen.types';
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ConfigService } from '../../../config/config.service';
-import { ScreenStore } from '../../screen.types';
 import { ComponentListFormService } from './services/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
 import { ComponentListToolsService } from './services/component-list-tools.service';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
-import { UniqueScreenComponentTypes } from '../../unique-screen/unique-screen.types';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -42,7 +40,8 @@ export class ComponentsListComponent implements OnChanges {
   readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
 
-  @Input() store: ScreenStore;
+  @Input() components: CustomComponent;
+  @Input() errors: { [key: string]: string };
   @Output() changes: EventEmitter<CustomComponentOutputData>;
 
   constructor(
@@ -54,7 +53,8 @@ export class ComponentsListComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    const components: Array<CustomComponent> = this.getComponents(changes);
+    console.log(changes);
+    const components: Array<CustomComponent> = changes.components?.currentValue;
     if (components) {
       this.formService.create(components);
       this.loadRepository(components);
@@ -70,18 +70,5 @@ export class ComponentsListComponent implements OnChanges {
           this.formService.emmitChanges();
         });
       });
-  }
-
-  private getComponents(changes: SimpleChanges): Array<CustomComponent> {
-    const componentType: CustomScreenComponentTypes | UniqueScreenComponentTypes =
-      changes.store?.currentValue.display.components[0].type;
-    const isRepeatableFields: boolean =
-      componentType === UniqueScreenComponentTypes.repeatableFields;
-
-    if (isRepeatableFields) {
-      return changes.store?.currentValue.display.components[0].attrs.components;
-    }
-
-    return changes.store?.currentValue.display.components;
   }
 }

@@ -265,8 +265,8 @@
             {{ componentData.get('value').getError('msg') }}
           </small>
           <small
-            *ngIf="store.errors[componentData.get('id').value] && !componentData.get('value').touched">
-              {{ store.errors[componentData.get('id').value] }}
+            *ngIf="errors[componentData.get('id').value] && !componentData.get('value').touched">
+              {{ errors[componentData.get('id').value] }}
           </small>
         </div>
       </ng-template>

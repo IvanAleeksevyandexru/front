@@ -5,7 +5,8 @@
 
     <epgu-constructor-screen-pad class="body">
       <epgu-constructor-components-list
-        [store]="screenService.getStore()"
+        [components]="screenService.getStore().display.components"
+        [errors]="screenService.getStore().errors"
         (changes)="changeComponentsList($event)">
 
       </epgu-constructor-components-list>

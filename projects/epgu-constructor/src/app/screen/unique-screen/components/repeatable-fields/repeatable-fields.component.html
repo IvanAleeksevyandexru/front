@@ -14,7 +14,9 @@
         (click)="removeItem(screenKey, i)"
       ></div>
       <epgu-constructor-components-list
-        [store]="screenService.getStore()" class="cmp-group__item"
+        class="cmp-group__item"
+        [components]="screens[screenKey]"
+        [errors]="screenService.getStore().errors"
         (changes)="changeComponentList($event, i)">
 
       </epgu-constructor-components-list>
