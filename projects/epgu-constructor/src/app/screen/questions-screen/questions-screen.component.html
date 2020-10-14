@@ -12,12 +12,14 @@
     </epgu-constructor-output-html>
 
     <div class="answer">
-      <epgu-constructor-answer-button
-        class="answer__item"
-        *ngFor="let answer of screenService.component?.attrs?.actions"
-        (click)="answerChoose(answer)"
-        [data]="answer">
-      </epgu-constructor-answer-button>
+      <ng-container *ngFor="let answer of screenService.component?.attrs?.actions">
+        <epgu-constructor-answer-button
+          *ngIf="!answer.hidden"
+          class="answer__item"
+          (click)="answerChoose(answer)"
+          [data]="answer">
+        </epgu-constructor-answer-button>
+      </ng-container>
     </div>
   </div>
 
