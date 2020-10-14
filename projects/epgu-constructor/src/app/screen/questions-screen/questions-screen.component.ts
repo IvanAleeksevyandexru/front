@@ -60,6 +60,9 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   }
 
   answerChoose(answer: QuestionsComponentActions): void {
+    if (answer.disabled) {
+      return;
+    }
     const data: NavigationPayload = {};
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;

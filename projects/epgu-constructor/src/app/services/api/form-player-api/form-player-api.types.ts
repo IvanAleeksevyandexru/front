@@ -43,6 +43,8 @@ export interface ComponentDtoAction {
   value: string;
   action: string;
   type: ActionType;
+  hidden?: boolean;
+  disabled?: boolean;
 }
 
 /**
