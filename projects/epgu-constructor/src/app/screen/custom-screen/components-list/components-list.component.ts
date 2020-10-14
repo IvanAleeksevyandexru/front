@@ -15,11 +15,19 @@ import { ConfigService } from '../../../config/config.service';
 import { ScreenStore } from '../../screen.types';
 import { ComponentListFormService } from './services/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
+import { ComponentListToolsService } from './services/component-list-tools.service';
+import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
+  providers: [
+    ComponentListFormService,
+    ComponentListToolsService,
+    ComponentListRepositoryService,
+    UnsubscribeService,
+  ],
 })
 export class ComponentsListComponent implements OnChanges {
   form: FormArray;

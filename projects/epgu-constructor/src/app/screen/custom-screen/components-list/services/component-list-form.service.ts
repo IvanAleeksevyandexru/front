@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/for
 import {
   CustomComponent,
   CustomComponentOutputData,
-  CustomListFormGroup, CustomListGenericData,
+  CustomListFormGroup,
   CustomListStatusElements
 } from '../../custom-screen.types';
 import { ValidationService } from '../../services/validation.service';
@@ -15,7 +15,6 @@ import { isEqual } from '../../../../shared/constants/uttils';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper.service';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { ComponentListRepositoryService } from './component-list-repository.service';
-import { DictionaryResponse } from '../../../../services/api/dictionary-api/dictionary-api.types';
 
 @Injectable()
 export class ComponentListFormService {
@@ -62,6 +61,7 @@ export class ComponentListFormService {
     });
 
     this.watchFormArray$().subscribe(() => this.emmitChanges());
+    this.emmitChanges();
   }
 
   patch(component: CustomComponent): void {
@@ -86,7 +86,6 @@ export class ComponentListFormService {
       );
     }
     const prepareStateForSending = this.getPreparedStateForSending();
-    console.log('emitChanges', prepareStateForSending);
     this._changes.emit(prepareStateForSending);
   }
 

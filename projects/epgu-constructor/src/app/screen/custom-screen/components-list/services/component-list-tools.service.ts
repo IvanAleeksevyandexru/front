@@ -140,7 +140,11 @@ export class ComponentListToolsService {
       if (isDateAndValue) {
         return new Date(value);
       } else if (this.isAddress(component.type)) {
-        return value?.fullAddress;
+        try {
+          return JSON.parse(value).fullAddress;
+        } catch (e) {
+         return value;
+        }
       } else if (this.isJson(component.type)) {
         try {
           return JSON.parse(value);

@@ -6,9 +6,6 @@ import { CustomScreenComponent } from './custom-screen.component';
 import { ScreenService } from '../screen.service';
 import { ValidationService } from './services/validation.service';
 import { AddressHelperService } from './components-list/address-helper.service';
-import { ComponentListFormService } from './components-list/services/component-list-form.service';
-import { ComponentListToolsService } from './components-list/services/component-list-tools.service';
-import { ComponentListRepositoryService } from './components-list/services/component-list-repository.service';
 
 const COMPONENTS = [
   CustomScreenComponent,
@@ -30,9 +27,6 @@ const COMPONENTS = [
     ScreenService,
     ValidationService,
     AddressHelperService,
-    ComponentListFormService,
-    ComponentListToolsService,
-    ComponentListRepositoryService,
   ]
 })
 export class CustomScreenModule { }
