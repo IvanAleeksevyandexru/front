@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.12](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.11...v0.2.12) (2020-10-14)
+
+
+### Bug Fixes
+
+* исправил мерж пресета и кэша в случае когда preset просто строка, а не JSON ([5eaada8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5eaada8ab279ffb69e687ae0b8761ad3c780de23))
+
 ### [0.2.11](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.10...v0.2.11) (2020-10-14)
 
 
