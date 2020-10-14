@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../config/config.service';
 import { ValidationService } from '../../../custom-screen/services/validation.service';
 import { ScenarioDto } from '../../../../services/api/form-player-api/form-player-api.types';
@@ -58,17 +58,16 @@ export class InvitationErrorComponent implements OnInit {
     const path = `${urlPrefix}/orders/${this.scenarioDto.orderId}/invitations/inviteToSign/send`;
     this.http
       .post(path, userData, this.requestOptions)
-      .pipe(
-        tap(() => {
-          this.emailSent = true;
-        }),
-        takeUntil(this.ngUnsubscribe$),
-      )
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
         () => {
+          this.emailSent = true;
           this.success = true;
         },
-        (error) => console.error(error),
+        (error) => {
+          this.emailSent = true;
+          console.error(error);
+        },
       );
   }
   redirectToLK() {
