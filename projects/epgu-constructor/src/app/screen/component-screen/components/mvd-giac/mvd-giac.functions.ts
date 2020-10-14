@@ -1,4 +1,5 @@
 import { ListItem } from 'epgu-lib';
+import { MvdGiasDataFromPreviousPages } from './mvd-giac.types';
 
 export function getMainGiac(items: Array<Partial<ListItem>>): Array<Partial<ListItem>> {
   const mainGiacCode = '85';
@@ -23,7 +24,7 @@ export function getMvdGiasForUserAddress(
   dictionary: Array<Partial<ListItem>>,
   regAddrRegion,
   factAddrRegion,
-  saidAddressSame
+  isAddressSame
 ): Array<Partial<ListItem>> {
   const baykanur = 'Байконур';
   const isSameRegion = () => regAddrRegion === factAddrRegion;
@@ -32,7 +33,7 @@ export function getMvdGiasForUserAddress(
   if (isBaykanur()) {
     return getMainGiac(dictionary);
   }
-  if (saidAddressSame || isSameRegion()) {
+  if (isAddressSame || isSameRegion()) {
     return getUserRegion(dictionary, regAddrRegion);
   }
   return dictionary;
@@ -43,7 +44,7 @@ export function getMvdGiasForUserAddress(
  * Сортировка основывается на том что в начале списка должны ноходиться пользовательские адреса
  * (постоянная, временная регистрация), а потом все другие адреса.
  */
-export function getSortUserMvdGias(
+export function sortUserMvdGias(
   dictionary: Array<Partial<ListItem>>,
   regAddrRegion,
   factAddrRegion
@@ -69,4 +70,18 @@ export function getSortUserMvdGias(
   } else {
     return dictionary;
   }
+}
+
+export function getAnswerFromPreviousPageForMvdGias(answers): MvdGiasDataFromPreviousPages {
+  const { q5, q7, pd4, pd5, pd7 } = answers;
+  const regAddr = pd4 || pd7;
+  const regRegion = JSON.parse(regAddr?.value).regAddr.region;
+  const factRegion = pd5 ? JSON.parse(pd5.value).regAddr.region : regRegion;
+  const isAddressSame = q5?.value === 'Да' || q7?.value === 'Да';
+
+  return {
+    isAddressSame,
+    regRegion,
+    factRegion,
+  };
 }
