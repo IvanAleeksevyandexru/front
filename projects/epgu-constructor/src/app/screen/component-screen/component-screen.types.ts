@@ -2,6 +2,7 @@ export enum ComponentScreenComponentTypes {
   confirmPersonalUserRegAddr = 'ConfirmPersonalUserRegAddr',
   confirmPersonalUserData = 'ConfirmPersonalUserData',
   confirmAnotherUserData = 'ConfirmAnotherUserData',
+  confirmChildData = 'ConfirmChildData ',
   confirmPersonalUserEmail = 'ConfirmPersonalUserEmail',
   confirmPersonalUserPhone = 'ConfirmPersonalUserPhone',
   registrationAddr = 'RegistrationAddr',
