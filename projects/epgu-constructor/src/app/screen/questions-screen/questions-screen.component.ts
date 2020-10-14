@@ -35,6 +35,9 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   }
 
   answerChoose(answer: QuestionsComponentActions): void {
+    if (answer.disabled) {
+      return;
+    }
     const data: NavigationPayload = {};
 
     const componentId = this.screenService.component.id;
