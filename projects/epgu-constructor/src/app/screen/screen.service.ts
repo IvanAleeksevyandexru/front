@@ -69,11 +69,10 @@ export class ScreenService extends ScreenContent {
     const components: Array<ComponentBase> = [];
 
     this.screenStore.display.components
-      .filter(this.cachedAnswersService.shouldBeTakenFromTheCache) // TODO HARDCODE from backend;
       .forEach(item => {
-        const cachedValue = this.cachedAnswersService
+        const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(item); // TODO костыль от backend(-a);
+        const cachedValue = shouldBeTakenFromTheCache && this.cachedAnswersService
           .getCachedValueById(this.screenStore.cachedAnswers, item.id);
-
       const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value) } : item;
       components.push(component);
     });
