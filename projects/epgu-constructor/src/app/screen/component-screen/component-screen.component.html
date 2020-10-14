@@ -22,13 +22,6 @@
         >
         </epgu-constructor-confirm-personal-user-data-screen>
 
-        <epgu-constructor-confirm-personal-user-data-screen
-          *ngSwitchCase="screenComponentName.confirmAnotherUserData"
-          [data]="screenService.component"
-          [errors]="screenService.componentErrors"
-        >
-        </epgu-constructor-confirm-personal-user-data-screen>
-
         <epgu-constructor-confirm-personal-user-email-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserEmail"
           [data]="screenService.component"
