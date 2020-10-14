@@ -55,7 +55,9 @@ export class RepeatableFieldsComponent {
 
   changeComponentList(changes: { [key: string]: any }, index: number) {
     const state = this.getState();
-    this.isValid = Object.values(changes).every((item) => item.isValid);
+    setTimeout(() => {
+      this.isValid = Object.values(changes).every((item) => item.isValid);
+    }, 0);
     this.componentValidation[index] = this.isValid;
     state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
     this.saveState(state);
