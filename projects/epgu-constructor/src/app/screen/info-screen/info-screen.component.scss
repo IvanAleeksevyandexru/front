@@ -1,5 +1,6 @@
 @import "../../../styles/core/functions";
 @import "../../../styles/core/variables";
+@import "../../../styles/core";
 
 
 :host {
@@ -25,12 +26,41 @@
 .info__footer {
   text-align: center;
 }
+
 .info-footer__submit {
   display: inline-block;
   &::ng-deep button {
     min-width: 100px;
   }
 }
+
 .screen-container-mt {
   margin-top: $navigation-mb;
+}
+
+.gray-theme{
+  background-color: transparent;
+  padding-top: 0;
+  box-shadow: none;
+
+  & .divider{
+    display: none;
+  }
+
+  & .info__head{
+    margin-bottom: 0;
+  }
+
+  &::ng-deep ul{
+    background-color: $color-white;
+    border-radius: 8px;
+    box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+    margin-left: 0;
+    padding: 24px 24px 8px;
+
+    & li{
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+  }
 }

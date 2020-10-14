@@ -24,6 +24,7 @@ export interface Display {
   name: string;
   submitLabel: string;
   terminal: boolean;
+  cssClass: string;
   type: ScreenTypes
 }
 
