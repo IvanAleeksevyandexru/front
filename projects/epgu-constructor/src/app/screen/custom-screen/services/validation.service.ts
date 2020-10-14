@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CustomComponent, CustomComponentAttrValidation, CustomScreenComponentTypes } from '../custom-screen.types';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { REQUIRED_FIELD } from '../../../shared/constants/helper-texts';
+import { REQUIRED_FIELD, INVALID_FORMAT_FIELD } from '../../../shared/constants/helper-texts';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 
 @Injectable()
@@ -30,20 +30,23 @@ export class ValidationService {
       );
 
       if (control.value) {
+        const validationErrorMsg = (isValid: boolean): ValidationErrors =>
+            !isValid ? this.validationErrorMsg(INVALID_FORMAT_FIELD) : null;
+
         if (component.type === CustomScreenComponentTypes.OgrnInput) {
-          return checkOgrn(control.value);
+          return validationErrorMsg(checkOgrn(control.value));
         }
 
         if (component.type === CustomScreenComponentTypes.OgrnipInput) {
-          return checkOgrnip(control.value);
+          return validationErrorMsg(checkOgrnip(control.value));
         }
 
         if (component.type === CustomScreenComponentTypes.SnilsInput) {
-          return checkSnils(control.value);
+          return validationErrorMsg(checkSnils(control.value));
         }
 
         if (component.type === CustomScreenComponentTypes.PersonInnInput) {
-          return checkINN(control.value);
+          return validationErrorMsg(checkINN(control.value));
         }
       }
 
