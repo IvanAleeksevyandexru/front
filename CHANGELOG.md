@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.13](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.12...v0.2.13) (2020-10-14)
+
+
+### Bug Fixes
+
+* make invitationUrl optional [ref EPGUCORE-38636] ([9e8998e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9e8998ebd2941ed7378142b09a59c79eba043a13))
+
 ### [0.2.12](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.11...v0.2.12) (2020-10-14)
 
 
