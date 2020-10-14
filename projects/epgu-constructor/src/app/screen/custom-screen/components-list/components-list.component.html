@@ -199,10 +199,7 @@
         <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
       </ng-container>
 
-      <ng-template
-        [ngTemplateOutlet]="formErrors"
-        [ngTemplateOutletContext]="{ $implicit: componentData.get('value') }">
-      </ng-template>
+      <ng-template [ngTemplateOutlet]="formErrors"></ng-template>
 
       <ng-template
         [ngTemplateOutlet]="formHintAndRequired">
@@ -261,20 +258,24 @@
         </epgu-constructor-passport>
       </ng-container>
 
+      <ng-template #formErrors>
+        <div class="form__error">
+          <small
+            *ngIf="componentData.get('value').invalid && componentData.get('value').touched">
+            {{ componentData.get('value').getError('msg') }}
+          </small>
+          <small
+            *ngIf="store.errors[componentData.get('id').value] && !componentData.get('value').touched">
+              {{ store.errors[componentData.get('id').value] }}
+          </small>
+        </div>
+      </ng-template>
     </ng-container>
   </div>
 </form>
 
 <ng-template #formLabel let-label>
   <epgu-constructor-label>{{ label }}</epgu-constructor-label>
-</ng-template>
-
-<ng-template #formErrors let-control>
-  <div class="form__error">
-    <small *ngIf="control.invalid && control.touched">
-      {{ control.getError('msg') }}
-    </small>
-  </div>
 </ng-template>
 
 <ng-template #formOutputHtml let-data>

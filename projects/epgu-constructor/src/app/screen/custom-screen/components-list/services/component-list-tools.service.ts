@@ -47,9 +47,12 @@ export class ComponentListToolsService {
       control.disable();
     };
     const patchToPrevValueAndEnable = (control: AbstractControl): void => {
-      const previousValue = typeof this.prevValues[dependentComponent.id] !== 'undefined' ?
-        this.prevValues[dependentComponent.id] : '';
-      control.get('value').patchValue(previousValue);
+      const isFindAndValue: boolean =
+        !isUndefined(this.prevValues[dependentComponent.id]) && !!String(this.prevValues[dependentComponent.id]);
+      if (isFindAndValue) {
+        control.get('value').patchValue(this.prevValues[dependentComponent.id]);
+      }
+
       control.enable();
     };
     const isDependentDisabled: boolean = dependentComponent.attrs?.disabled;
