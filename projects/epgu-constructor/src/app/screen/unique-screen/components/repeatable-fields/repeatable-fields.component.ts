@@ -14,6 +14,7 @@ import {
 export class RepeatableFieldsComponent {
   objectKeys = Object.keys;
   componentId;
+  isValid: boolean;
 
   /**
    * Словарь для хранения массива компонентов
@@ -26,9 +27,6 @@ export class RepeatableFieldsComponent {
     this.initVariable();
     this.propData = data;
     this.screens[this.getId()] = data.components[0].attrs.components;
-    console.group('debug');
-    console.log(this.screens, this.screenService.getStore());
-    console.groupEnd();
   }
   @Output() nextStepEvent = new EventEmitter();
 
@@ -54,9 +52,10 @@ export class RepeatableFieldsComponent {
     this.screens[this.getId()] = this.propData.components[0].attrs.components;
   }
 
-  changeComponentList(changes, index: number) {
+  changeComponentList(changes: { [key: string]: any }, index: number) {
     const state = this.getState();
     state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
+    this.isValid = Object.values(changes).every((item) => item.isValid);
     this.saveState(state);
   }
 

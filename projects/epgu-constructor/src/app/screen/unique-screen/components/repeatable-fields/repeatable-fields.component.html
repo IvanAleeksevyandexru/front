@@ -30,7 +30,7 @@
       [showLoader]="isLoading"
       (click)="nextScreen()"
       class="footer__btn-submit"
-      [disabled]="isLoading"
+      [disabled]="isLoading || !isValid"
     >
       {{ propData.submitLabel || 'Далее' }}
     </lib-button>
