@@ -12,6 +12,7 @@ import {
 
   TimeSlotValueInterface
 } from './time-slots.types';
+import { ConfigService } from '../../../../config/config.service';
 
 const moment = moment_;
 
@@ -34,6 +35,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
+    private config: ConfigService,
   ) {}
 
   book(selectedSlot: SlotInterface) {
@@ -145,7 +147,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
       caseNumber: this.orderId,
       serviceId: ['10000593393'],
       eserviceId: '10000070732',
-      routeNumber: '46000000000',
+      routeNumber: this.config.gibddRouteNumber,
       attributes: [
         {
           name: 'organizationId',
@@ -167,7 +169,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
       preliminaryReservation: 'true',
       address: this.department.attributeValues.address,
       orgName: this.department.title,
-      routeNumber: '46000000000',
+      routeNumber: this.config.gibddRouteNumber,
       serviceCode: '-10001970000',
       subject: 'Запись на прием',
       eserviceId: '10000070732',

@@ -2,6 +2,100 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.8...v0.2.9) (2020-10-13)
+
+
+### Bug Fixes
+
+* remove doubling staticDomainAssetsPath props for icon in draft modal [ref EPGUCORE-36456] ([b6a4336](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b6a43361ded61b75e283496991f53071b1abe3a7))
+* resolve postinstall issue [ref EPGUCORE-36456] ([0c60e0d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0c60e0d50969e85dd7d63590fd9db1a621f53422))
+* update auto version bump for lib bundle [ref EPGUCORE-36456] ([f4cd0ab](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f4cd0ab2a4f4fd82e3458d54f30e7b44f9475e7a))
+* определили функцию которая решает какие данные нужно брать из кеша. ([414cf0b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/414cf0b2715cc4fe71252f54899d4767a32ab873))
+
+### [0.2.8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.7...v0.2.8) (2020-10-12)
+
+
+### Bug Fixes
+
+* remove doubling staticDomainAssetsPath props for icon in draft modal [ref EPGUCORE-36456] ([3fa4229](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3fa4229d463327dddba07ad9f21a665ba63d0696))
+* resolve postinstall issue [ref EPGUCORE-36456] ([3235848](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3235848f660345d6b5d5789b9220af080e1ad97e))
+* update auto version bump for lib bundle [ref EPGUCORE-36456] ([5006009](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5006009d8536b0abbdb8346544c5e26b3d65e7d3))
+
+### [0.2.7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.6...v0.2.7) (2020-10-12)
+
+
+### Features
+
+* added payCode get from JSON ([1ebffeb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1ebffeb3edfe96cee6862c1f7eb5a8213b587e76))
+
+
+### Bug Fixes
+
+* исправил затирание preset value из cachedAnswers [ref EPGUCORE-38623] ([faee444](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/faee4446a0b72e1be068cec302646765a0a8947c))
+
+### [0.2.6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.5...v0.2.6) (2020-10-12)
+
+
+### Bug Fixes
+
+* add static assets for json-scenarios [ref EPGUCORE-38123] ([11e22e8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/11e22e89e32b89f8931f56a03cdbbb447fba2016))
+
+### [0.2.5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.4...v0.2.5) (2020-10-11)
+
+
+### Features
+
+* новый тип компонента CityInput [ref EPGUCORE-38643] ([0544f7d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0544f7d23a814b1c0eb355a7c92281299e97fd6a))
+
+
+### Bug Fixes
+
+* refactoring ([132b870](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/132b8706f44d2b7802125a3ae5757771bbbadc38))
+* refactoring ([55b90b3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/55b90b32ad736cbe6040296355fb62c3ee05a928))
+* исправил "назад" для MapService [ref EPGUCORE-38644] ([eb22099](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/eb22099c3601b3788192c9a8b678661fdeddccad))
+* Исправил патчинг формы за 10 лет ([496e886](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/496e886abed6d26a037491f3d6bf81ae69bc5f52))
+* исправл возвращение обратна на страницу персональных данных. ([695bc21](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/695bc214cab870051182162e0f642781ac381d4b))
+
+### [0.2.4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.1...v0.2.4) (2020-10-11)
+
+
+### Features
+
+* Добавил новые методы для расчета деятельность ([b7a45f7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b7a45f7f35946417ac1e4e443a3bbe14d2d97777))
+* новый тип компонента CityInput [ref EPGUCORE-38030] ([c904fc3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c904fc34ea348bc0dc5b95c30b32f111b8014302))
+
+
+### Bug Fixes
+
+* add PassportLookup component to components list [ref EPGUCORE-36456] ([7c13b8c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/7c13b8c160a388aebdc080a1eb0fad21e46214dd))
+* fixes for calculation ([9b318ae](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9b318ae8cc51c95358e492bb2f5e344e210deb30))
+* New calc function ([48f51bf](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/48f51bfd37b4dc0d379cadb1758d0ab7969e524a))
+* New calc function ([0f87b2f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0f87b2f812305fb137af70675c0471efebeecab9))
+* New calc function ([3811e42](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3811e421cd0f66976501155b4ba1e5b5f70f29a5))
+* new init merge ([a9e75a2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a9e75a2d4d25c98458c5b7988018ebcc05d30e66))
+* new terrabyte url, allowCamera fix, get list of documents fix ([eced5cb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/eced5cb00344530f5dc12a75b70ecaba3f491e3c))
+* remove unneccessary epgu-lib config init on form-player load [ref EPGUCORE-36456] ([68081ea](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/68081eae3636f8c3894fe27c4523421d6611c3f7))
+* Rename isEqualObject to isEqual ([d1b7030](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d1b7030d74aad0f4bc834f8f04b711eb22caa1a1))
+* rename of function getBillsInfo and fix already payed error ([5e8d6d4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5e8d6d46bf76332afde3b7fdd399377345729899))
+* repair displayOn ref functionality for Lookup/Dictionary/DropDown lists [ref EPGUCORE-36456] ([0ed9f4f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0ed9f4f56516bb870e757fbbd5b3bd2c4b14b5c5))
+* resolve RadioInput boolean values validation issue [ref EPGUCORE-36456-dev] ([f608586](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f60858657566b002d93e3fb4a984cd8d64e50a8c))
+* translate PersonLookup -> PassportLookup [ref EPGUCORE-36456] ([ee92917](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ee92917110a34b8aaf10c1c6496319c06b7b95f4))
+* update epgu-lib@0.0.589 with hotfix for month-picker and temporary remove social-share buttons [ref EPGUCORE-36456] ([b59051c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b59051c774066bae96fdd3cfbb9484ed31e88a23))
+* вернуть поддержку компонент ([4fa80c4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4fa80c4b6b9b0ff4146b903550dec36994d65a7e))
+* добавил hideLevels для dadataWidget в components-list ([bf91b3d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/bf91b3dfce815757dd4f95d0c3f80955b11aebd4))
+* добавил hideLevels для dadataWidget в components-list ([b18e4fe](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b18e4feefc27fe7aad14c856aa78ab48f1c3dae6))
+* добавил айдишники для календарей ([99e806b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/99e806b1fe97ab0fe700eb4949bb0a4519908cd0))
+* Добавил сохранение данных на форме "10 лет", добавил валидацию формы ([97ca953](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/97ca9531eb9cf3fba6bf22e8468cbf9e7c3dcbdb))
+* добавил условие выхода из под сценария ([5d2b6a8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5d2b6a82a0615ed110645340b9ed3ba44096b28b))
+* заменил placeholder на маску ([caa2928](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/caa29282c619bb6556d91afaa017db2e817c9e3c))
+* Исправил сохранение данных, исправил ошибку линтера ([d773294](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d773294799ccb7d19c88671f1173dd3e2d08c8c9))
+* Исправил спеку форм сервиса ([040ecdd](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/040ecdde18fb341f64a6529c98486d82a3d79b86))
+* исправлен показ адреса при возврар назад;[EPGUCORE-38016] ([f1811f4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f1811f423353fe82e2ff952b60a3e54209c4e832))
+* исправлена ошибка пересчета в слотах на таймзону клиента [ref EPGUCORE-38255] ([9c1be04](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9c1be04f54a1830bb1c415d2042576335c44c955))
+* исправлено пересечение экранов на карте и центровка выбранного объекта [ref EPGUCORE-38103] ([ae40f2b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ae40f2be4aa3765f96d0bbeb35f19fced70a6a51))
+* Поправил формулировку для экрана s29 ([b08ebf2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b08ebf2f2bfbdc0853a5b58311d3f6d29b2dc2d3))
+* удалил коммент ([4198b54](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4198b54cd1923c61c1efc7e7733db2f8664dc86e))
+
 ### [0.2.3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.1...v0.2.3) (2020-10-11)
 
 

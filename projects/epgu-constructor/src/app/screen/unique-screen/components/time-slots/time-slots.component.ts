@@ -76,7 +76,6 @@ export class TimeSlotsComponent implements OnInit {
   public fixedMonth = false;
   public inProgress = false;
   public changeTSConfirm = false;
-  initialized = false;
   bookedSlot: SlotInterface;
   errorMessage;
 
@@ -303,7 +302,6 @@ export class TimeSlotsComponent implements OnInit {
         }
 
         this.inProgress = false;
-        this.initialized = true;
       },
       () => {
         this.errorMessage = this.currentService.getErrorMessage();
@@ -332,6 +330,6 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   calendarAvailable(): boolean {
-    return this.initialized && !this.errorMessage;
+    return !this.errorMessage;
   }
 }
