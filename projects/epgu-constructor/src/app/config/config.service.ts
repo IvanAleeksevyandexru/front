@@ -116,9 +116,9 @@ export class ConfigService implements Config {
     this._lkUrl = config.lkUrl;
     this._paymentUrl = config.paymentUrl;
     this._timeSlotApiUrl = config.timeSlotApiUrl;
-    this._brakRouteNumber = config.brakRouteNumber;
-    this._divorceRouteNumber = config.divorceRouteNumber;
-    this._gibddRouteNumber = config.gibddRouteNumber;
+    this._brakRouteNumber = config.brakRouteNumber || '45382000';
+    this._divorceRouteNumber = config.divorceRouteNumber || '45382000';
+    this._gibddRouteNumber = config.gibddRouteNumber || '46000000000';
     this._listPaymentsApiUrl = config.listPaymentsApiUrl;
     this._uinApiUrl = config.uinApiUrl;
     this._invitationUrl = config.invitationUrl;
