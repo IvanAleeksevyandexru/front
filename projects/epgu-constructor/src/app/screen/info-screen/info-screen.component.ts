@@ -7,6 +7,11 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { InfoScreenComponentTypes } from './info-screen.types';
+import {
+  ActionType,
+  ComponentDto,
+  ComponentDtoAction,
+} from '../../services/api/form-player-api/form-player-api.types';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.
@@ -20,6 +25,9 @@ import { InfoScreenComponentTypes } from './info-screen.types';
 export class InfoScreenComponent implements Screen, OnInit {
   // <-- constant
   infoScreenComponent = InfoScreenComponentTypes;
+
+  bodyActions: ComponentDtoAction[] = [];
+  footerActions: ComponentDtoAction[] = [];
 
   constructor(
     private navigationService: NavigationService,
@@ -35,6 +43,25 @@ export class InfoScreenComponent implements Screen, OnInit {
 
     this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.cycledFieldsService.initCycledFields(this.screenService.currentCycledFields);
+    });
+
+    this.screenService.component$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((component) => this.setActionButtons(component));
+  }
+
+  /**
+   * The method sets redirectToLk actions to footer and others to body of html
+   * @param component
+   */
+  setActionButtons(component: ComponentDto) {
+    component?.attrs?.actions?.forEach((action) => {
+      console.log('actions', action);
+      if (action.type === ActionType.redirectToLK) {
+        this.footerActions.push(action);
+      } else {
+        this.bodyActions.push(action);
+      }
     });
   }
 
