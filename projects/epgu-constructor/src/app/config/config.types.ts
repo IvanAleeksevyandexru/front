@@ -31,7 +31,7 @@ export interface Config {
   paymentUrl: string;
   fileUploadApiUrl: string;
   lkUrl: string;
-  invitationUrl: string;
+  invitationUrl?: string;
   yandexMapsApiKey: string;
   staticDomainAssetsPath: string;
   mocks?: MockApi[];
