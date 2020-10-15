@@ -73,9 +73,9 @@ export class ScreenService extends ScreenContent {
         const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(item); // TODO костыль от backend(-a);
         const cachedValue = shouldBeTakenFromTheCache && this.cachedAnswersService
           .getCachedValueById(this.screenStore.cachedAnswers, item.id);
-      const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value) } : item;
-      components.push(component);
-    });
+        const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value) } : item;
+        components.push(component);
+      });
 
     if (components.length) {
       this.screenStore.display = { ...this.screenStore.display, components };
@@ -88,13 +88,14 @@ export class ScreenService extends ScreenContent {
    * @param preset - preset значения из display.components[].value
    */
   private mergePresetCacheValue(cachedValue: string, preset: string) {
-    if (!preset) {
-      return cachedValue;
+    const isPresetParseable = preset.substr(0, 1) === '{';
+    if (isPresetParseable) {
+      return JSON.stringify({
+        ...JSON.parse(preset),
+        ...JSON.parse(cachedValue),
+      });
     }
-    return JSON.stringify({
-      ...JSON.parse(preset),
-      ...JSON.parse(cachedValue),
-    });
+    return cachedValue || preset;
   }
 
   /**
