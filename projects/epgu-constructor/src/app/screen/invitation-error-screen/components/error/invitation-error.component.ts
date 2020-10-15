@@ -45,7 +45,7 @@ export class InvitationErrorComponent implements OnInit {
       this.emailSent = true;
       return;
     }
-    const snils = JSON.parse(value).inputSnils;
+    const { snils } = JSON.parse(value);
     const userData = [
       {
         type: 'SNILS',
