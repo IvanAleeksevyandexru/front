@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../config/config.service';
 import { ValidationService } from '../../../custom-screen/services/validation.service';
 import { ScenarioDto } from '../../../../services/api/form-player-api/form-player-api.types';
@@ -13,6 +13,7 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
   selector: 'epgu-constructor-invitation-error',
   templateUrl: './invitation-error.component.html',
   styleUrls: ['./invitation-error.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class InvitationErrorComponent implements OnInit {
   @Input() data: any;
@@ -58,14 +59,17 @@ export class InvitationErrorComponent implements OnInit {
     const path = `${urlPrefix}/orders/${this.scenarioDto.orderId}/invitations/inviteToSign/send`;
     this.http
       .post(path, userData, this.requestOptions)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(
+        finalize(() => {
+          this.emailSent = true;
+        }),
+        takeUntil(this.ngUnsubscribe$),
+      )
       .subscribe(
         () => {
-          this.emailSent = true;
           this.success = true;
         },
         (error) => {
-          this.emailSent = true;
           console.error(error);
         },
       );
