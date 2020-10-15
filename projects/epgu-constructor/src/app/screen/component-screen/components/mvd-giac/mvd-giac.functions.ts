@@ -10,11 +10,11 @@ export function getUserRegion(items: Array<Partial<ListItem>>, userRegion: strin
   return items.filter(({ text: region }) => isUserRegionEqualToRegion(userRegion, region));
 }
 
-export function getUserRegionIndex(items: Array<Partial<ListItem>>, userRegion: string) {
+export function getUserRegionIndex(items: Array<Partial<ListItem>>, userRegion: string): number {
   return items.findIndex(({ text: region }) => isUserRegionEqualToRegion(userRegion, region));
 }
 
-export function isUserRegionEqualToRegion(userRegion: string, region: string) {
+export function isUserRegionEqualToRegion(userRegion: string, region: string): boolean {
   return region.includes(userRegion) ||
     region.includes(userRegion.slice(0, -1)) ||
     region.includes(userRegion.slice(0, -2));
