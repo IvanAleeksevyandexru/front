@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.14](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.13...v0.2.14) (2020-10-15)
+
+
+### Features
+
+* added redirectToLk action to footer in the INFO screen [ref EPGUCORE-39033] ([b34b7d7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b34b7d7b95957e93b0d25a6b7fed4c9e8cbaeb8d))
+* настроена возможность перехода на выбранный ранее загс [ref EPGUCORE-38771] ([5fdd002](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5fdd0025b282d971876ba3acaed571ad100c5358))
+
+
+### Bug Fixes
+
+* add-new-child form generating via components-list support [ref EPGUCORE-38025] ([ef08ded](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ef08ded4e693c381b7e959da9647e71967df5b17))
+* added condition to show placeholder or mask as placeholder ([f18d99a](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f18d99a39cc18cbf3424c0376d049b261797f904))
+* bugfix for snils cashed value in screen.service ([5a8ed96](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5a8ed960a036b1887e17803409b14286809a9e49))
+* invitation-error.component: fixed view of result screen [ref EPGUCORE-38516] ([8ff8fdd](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/8ff8fddc8b3085f2b1deb832d7f165ddbdc96ea5))
+* make invitationUrl optional [ref EPGUCORE-38636] ([5fd9052](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5fd9052ef159a8a02cecc44eea2bf5034ea5210c))
+* remove typo in confirmChildData type [ref EPGUCORE-38025] ([594e0b1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/594e0b14f5ec307933837ce2fab4f358f8f03171))
+* remove unneccessary cycledFields onInit logic in confirmPersonalUserAddress component [ref EPGUCORE-38025] ([d470c4d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d470c4dbb4b3cee38365a769b23db23f6bfc0473))
+* rename add-children component to select-children component [ref EPGUCORE-38025] ([2bf3292](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2bf329216efdec98d7547e61a44a73d53f0836c5))
+* rename add-children component to select-children component [ref EPGUCORE-38025] ([f48c3e7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f48c3e76e70229e4f49ffaae77bc8a7a1a95e80f))
+* resolve child name passing to select list [ref EPGUCORE-38025] ([a6d3cfd](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a6d3cfd4f66df4b2658b2898fd1c7f9148327474))
+* resolve doubling buttons on component footer issue [ref EPGUCORE-38025] ([1f7679e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1f7679e95e1c345d536d9c80aff70e34efb78a30))
+* small refactor in select-children-screen template [ref EPGUCORE-38636] ([dccf362](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/dccf3624e7f99a8434aadf79246a6a6b9cfcd831))
+* typo in confirmChildData [ref EPGUCORE-38636] ([3b4e27f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3b4e27f7ae1fad7cc04555422ba0a64ba686c3fa))
+* update select children list processing logic [ref EPGUCORE-38025] ([46a03ce](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/46a03ce910dfed8ab2d088b5c8288107271c5286))
+* update select children list processing logic [ref EPGUCORE-38025] ([eaeb9bd](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/eaeb9bd0f57ed33a53029cafa6488e839208070b))
+* update select children logic for cycled scenarios, remove redundant cycled handlers [ref EPGUCORE-38025] ([6898a94](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6898a94b16d210587aed40c9f582bc0553176265))
+* исправил нерабочий инпут [virtualScroll]="true" для lookup ([ace9dcf](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ace9dcfb8134b96a70a2c357f035b0f491723cec))
+* исправлена кривая стрелочка на кнопках ([f753a5b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f753a5bfc9a835827120dd3848f1a82b6c243900))
+
 ### [0.2.13](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.12...v0.2.13) (2020-10-14)
 
 ### Bug Fixes
