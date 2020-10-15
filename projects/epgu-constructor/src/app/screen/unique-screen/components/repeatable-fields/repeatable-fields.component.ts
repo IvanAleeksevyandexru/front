@@ -5,6 +5,7 @@ import {
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
 } from './repeatable-fields.constant';
+import { CustomComponent } from '../../../custom-screen/custom-screen.types';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
@@ -22,12 +23,21 @@ export class RepeatableFieldsComponent {
    */
   screens: { [key: string]: any };
   propData; // TODO указать тип
+  cache: { [key: string]: any } = {};
 
   @Input() isLoading: boolean;
   @Input() set data(data) {
+    this.cache = this.screenService.getStore().cachedAnswers[this.screenService.component.id];
     this.initVariable();
     this.propData = data;
-    this.screens[this.getId()] = data.components[0].attrs.components;
+
+    const isCached = Object.keys(this.cache || {}).length;
+
+    if (isCached) {
+      this.duplicateScreenAndPatch();
+    } else {
+      this.duplicateScreen();
+    }
   }
   @Output() nextStepEvent = new EventEmitter();
 
@@ -55,9 +65,8 @@ export class RepeatableFieldsComponent {
 
   changeComponentList(changes: { [key: string]: any }, index: number) {
     const state = this.getState();
-    setTimeout(() => {
-      this.isValid = Object.values(changes).every((item) => item.isValid);
-    }, 0);
+
+    this.isValid = Object.values(changes).every((item) => item.isValid);
     this.componentValidation[index] = this.isValid;
     state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
     this.saveState(state);
@@ -81,5 +90,26 @@ export class RepeatableFieldsComponent {
   }
   saveState(state) {
     this.currentAnswersService.state = JSON.stringify(state);
+  }
+
+  private duplicateScreenAndPatch(): void {
+    let cache;
+    try {
+      cache = JSON.parse(this.cache.value);
+    } catch (e) {
+      cache = {};
+    }
+    Object.keys(cache).forEach((key: string) => {
+      this.duplicateScreen();
+      Object.entries(cache[key]).forEach(([componentId, value]) => {
+        const index: number = Object.keys(this.screens).length;
+        this.screens[index] = this.screens[index].map((component: CustomComponent) => {
+          if (component.id === componentId) {
+            return { ...component, value };
+          }
+          return { ...component };
+        });
+      });
+    });
   }
 }
