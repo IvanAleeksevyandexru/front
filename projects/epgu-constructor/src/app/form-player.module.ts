@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { EpguLibModule } from 'epgu-lib';
+import { EpguLibModule, LoadService } from 'epgu-lib';
 import { ConfigService } from './config/config.service';
 import { FormPlayerComponent } from './form-player.component';
 import { AuthInterceptor } from './interceptor/authorization-interceptor';
@@ -31,6 +31,7 @@ import { UtilsService } from './services/utils/utils.service';
 import { ToolsService } from './shared/services/tools/tools.service';
 import { SharedModule } from './shared/shared.module';
 import { ActionApiService } from './services/api/action-api/action-api.service';
+import { FormPlayerConfigApiService } from './services/api/form-player-config-api/form-player-config-api.service';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
@@ -51,6 +52,8 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     InfoScreenModule,
   ],
   providers: [
+    LoadService,
+    FormPlayerConfigApiService,
     DictionaryApiService,
     FormPlayerService,
     FormPlayerApiService,

@@ -2,18 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
-import { ConfigService } from '../../../config/config.service';
 import { FormPlayerNavigation, NavigationOptions } from '../../../form-player.types';
 import { FormPlayerApiResponse, FormPlayerApiSuccessResponse, CheckOrderApiResponse } from './form-player-api.types';
 import { ServiceDataService } from '../../service-data/service-data.service';
 
 type CookieSession = { userId: string, token: string };
 
+export const apiUrl = '/api';
+
 @Injectable()
 export class FormPlayerApiService {
   constructor(
     private http: HttpClient,
-    private config: ConfigService,
     private serviceDataService: ServiceDataService,
     private cookieService: CookieService,
   ) {}
@@ -22,7 +22,7 @@ export class FormPlayerApiService {
     const { serviceId, targetId } = this.serviceDataService;
     const { userId, token } = this.getSessionFromCookie();
     const body = { targetId, userId, token };
-    const path = `${this.config.apiUrl}/service/${serviceId}/scenario/checkIfOrderIdExists`;
+    const path = `${apiUrl}/service/${serviceId}/scenario/checkIfOrderIdExists`;
 
     return this.post<CheckOrderApiResponse>(path, body);
   }
@@ -30,7 +30,7 @@ export class FormPlayerApiService {
   public getInviteServiceData(orderId: string): Observable<FormPlayerApiResponse> {
     const { targetId, serviceId } = this.serviceDataService;
     const { userId, token } = this.getSessionFromCookie();
-    const path = `${this.config.apiUrl}/invitation/${serviceId}/getService`;
+    const path = `${apiUrl}/invitation/${serviceId}/getService`;
     const body = { targetId, userId, token, orderId };
 
     return this.post<FormPlayerApiResponse>(path, body);
@@ -39,7 +39,7 @@ export class FormPlayerApiService {
   public getServiceData(orderId?: string): Observable<FormPlayerApiResponse> {
     const { serviceId, targetId } = this.serviceDataService;
     const { userId, token } = this.getSessionFromCookie();
-    const path = `${this.config.apiUrl}/service/${serviceId}/scenario/getService`;
+    const path = `${apiUrl}/service/${serviceId}/scenario/getService`;
     const body = { targetId, userId, token };
 
     if(orderId) {
@@ -82,7 +82,7 @@ export class FormPlayerApiService {
 
   private getNavigatePath(data, options: NavigationOptions, formPlayerNavigation: FormPlayerNavigation): string {
     const { serviceId } = this.serviceDataService;
-    let path = this.config.apiUrl;
+    let path = apiUrl;
     if (options.url) {
       path += `/${options.url}`;
     } else {

@@ -52,10 +52,8 @@ export class InvitationErrorComponent implements OnInit {
         email: this.email.value,
       },
     ];
-    const urlPrefix = this.config.mocks.includes('payment')
-      ? `${this.config.mockUrl}/lk/v1`
-      : `${this.config.invitationUrl}`;
-    const path = `${urlPrefix}/orders/${this.scenarioDto.orderId}/invitations/inviteToSign/send`;
+
+    const path = `${this.config.invitationUrl}/orders/${this.scenarioDto.orderId}/invitations/inviteToSign/send`;
     this.http
       .post(path, userData, this.requestOptions)
       .pipe(

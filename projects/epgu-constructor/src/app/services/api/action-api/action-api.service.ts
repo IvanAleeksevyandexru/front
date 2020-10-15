@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { ConfigService } from '../../../config/config.service';
 import { ScreenStore } from '../../../screen/screen.types';
+import { apiUrl } from '../form-player-api/form-player-api.service';
 
 @Injectable()
 export class ActionApiService {
@@ -11,11 +12,11 @@ export class ActionApiService {
 
   send<T>(path: string, body: ScreenStore, responseType?: 'blob'): Observable<T | Blob> {
     if (responseType === 'blob') {
-      return this.http.post(`${this.config.apiUrl}/${path}`, body, {
+      return this.http.post(`${apiUrl}/${path}`, body, {
         responseType: 'blob',
       });
     } else {
-      return this.http.post<T>(`${this.config.apiUrl}/${path}`, body);
+      return this.http.post<T>(`${apiUrl}/${path}`, body);
     }
   }
 }
