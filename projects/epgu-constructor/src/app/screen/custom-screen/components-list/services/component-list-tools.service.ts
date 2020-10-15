@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import {
-  CustomComponent, CustomComponentDropDownItemList,
+  CustomComponent,
+  CustomComponentDropDownItem,
+  CustomComponentDropDownItemList,
   CustomComponentRef,
   CustomComponentRefRelation,
+  CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements,
-  CustomScreenComponentTypes,
-  CustomListDropDowns, CustomComponentDropDownItem
+  CustomScreenComponentTypes
 } from '../../custom-screen.types';
 import { AbstractControl, FormArray } from '@angular/forms';
-import { isBoolean, isEqual, isUndefined, toBoolean } from '../../../../shared/constants/uttils';
+import { isEqual, isUndefined, toBoolean } from '../../../../shared/constants/uttils';
 
 @Injectable()
 export class ComponentListToolsService {
@@ -199,6 +201,23 @@ export class ComponentListToolsService {
 
   isDate(type: CustomScreenComponentTypes): boolean {
     return type === CustomScreenComponentTypes.DateInput;
+  }
+  
+  isINN(type: CustomScreenComponentTypes): boolean {
+    return type === CustomScreenComponentTypes.LegalInnInput ||
+           type === CustomScreenComponentTypes.PersonInnInput;
+  }
+
+  isSnils(type: CustomScreenComponentTypes): boolean {
+    return type === CustomScreenComponentTypes.SnilsInput;
+  }
+
+  isOgrnip(type: CustomScreenComponentTypes): boolean {
+    return type === CustomScreenComponentTypes.OgrnipInput;
+  }
+
+  isOgrn(type: CustomScreenComponentTypes): boolean {
+    return type === CustomScreenComponentTypes.OgrnInput;
   }
 
   /**

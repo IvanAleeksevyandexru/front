@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { CurrentAnswersService } from '../../../current-answers.service';
 import { ScreenService } from '../../../screen.service';
 import {
@@ -12,7 +19,7 @@ import { CustomComponent } from '../../../custom-screen/custom-screen.types';
   templateUrl: './repeatable-fields.component.html',
   styleUrls: ['./repeatable-fields.component.scss'],
 })
-export class RepeatableFieldsComponent {
+export class RepeatableFieldsComponent implements AfterViewChecked {
   objectKeys = Object.keys;
   componentId;
   isValid: boolean;
@@ -51,7 +58,12 @@ export class RepeatableFieldsComponent {
   constructor(
     private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
+    private cdr: ChangeDetectorRef,
   ) {}
+
+  ngAfterViewChecked() {
+    this.cdr.detectChanges();
+  }
 
   private initVariable() {
     this.screens = {};
@@ -65,9 +77,8 @@ export class RepeatableFieldsComponent {
 
   changeComponentList(changes: { [key: string]: any }, index: number) {
     const state = this.getState();
-
-    this.isValid = Object.values(changes).every((item) => item.isValid);
-    this.componentValidation[index] = this.isValid;
+    this.componentValidation[index] = Object.values(changes).every((item) => item.isValid);
+    this.isValid = this.componentValidation.every((valid: boolean) => valid);
     state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
     this.saveState(state);
   }

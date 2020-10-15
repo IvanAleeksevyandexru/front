@@ -14,19 +14,13 @@ import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ConfigService } from '../../../config/config.service';
 import { ComponentListFormService } from './services/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
-import { ComponentListToolsService } from './services/component-list-tools.service';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
-  providers: [
-    ComponentListFormService,
-    ComponentListToolsService,
-    ComponentListRepositoryService,
-    UnsubscribeService,
-  ],
+  providers: [ComponentListFormService, ComponentListRepositoryService, UnsubscribeService],
 })
 export class ComponentsListComponent implements OnChanges {
   form: FormArray;
