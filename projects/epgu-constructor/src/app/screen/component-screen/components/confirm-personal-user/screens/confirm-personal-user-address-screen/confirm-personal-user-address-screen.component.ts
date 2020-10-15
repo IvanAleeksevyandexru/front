@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CurrentAnswersService } from '../../../../../current-answers.service';
-import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
 @Component({
@@ -16,28 +15,9 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   isCycledFields: boolean;
   cycledValues: any;
 
-  constructor(
-    private currentAnswersService: CurrentAnswersService,
-    private toolsService: ToolsService,
-  ) {}
+  constructor(private currentAnswersService: CurrentAnswersService) {}
 
   ngOnInit(): void {
-    this.isCycledFields = !!Object.keys(this.currentCycledFields).length;
-    if (this.isCycledFields) {
-      [this.cycledValues] = [
-        ...Object.values(this.currentCycledFields).map((value) => JSON.parse(value)),
-      ];
-      // format state data to {fieldName: value} format
-      const data = this.data.attrs.fields.reduce((result, item) => {
-        const { fieldName } = item;
-        if (!fieldName) return result;
-
-        // eslint-disable-next-line no-param-reassign
-        result[fieldName] = this.cycledValues[fieldName];
-        return result;
-      }, {});
-      this.data.value = JSON.stringify(data);
-    }
     this.currentAnswersService.state = this.data.value;
   }
 
