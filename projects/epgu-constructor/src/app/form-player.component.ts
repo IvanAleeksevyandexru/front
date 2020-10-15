@@ -129,6 +129,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   checkProps() {
+    console.group('----- Init props ---------');
+    console.log('service', this.service);
+    console.log('config', this.config);
+    console.groupEnd();
     const { invited, orderId } = this.serviceDataService;
     if (!this.serviceDataService) {
       throw Error('Need to set Service for epgu form player');

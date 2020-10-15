@@ -11,7 +11,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private cookieService: CookieService, private config: ConfigService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!req.url.includes(this.config.fileUploadApiUrl)) {
+    if (!req.url.includes(this.config.fileUploadApiUrl) && !req.url.includes(this.config.timeSlotApiUrl)) {
       req = req.clone({
         setHeaders: {
           'Content-Type': 'application/json; charset=utf-8',
