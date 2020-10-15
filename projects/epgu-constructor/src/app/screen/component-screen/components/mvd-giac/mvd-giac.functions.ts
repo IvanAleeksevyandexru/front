@@ -1,5 +1,6 @@
 import { ListItem } from 'epgu-lib';
 import { MvdGiasDataFromPreviousPages } from './mvd-giac.types';
+import { BAYKANUR } from '../../../../shared/constants/mvd-giac';
 
 export function getMainGiac(items: Array<Partial<ListItem>>): Array<Partial<ListItem>> {
   const mainGiacCode = '85';
@@ -26,9 +27,8 @@ export function getMvdGiasForUserAddress(
   factAddrRegion,
   isAddressSame
 ): Array<Partial<ListItem>> {
-  const baykanur = 'Байконур';
   const isSameRegion = () => regAddrRegion === factAddrRegion;
-  const isBaykanur = () => regAddrRegion === baykanur && factAddrRegion === baykanur;
+  const isBaykanur = () => regAddrRegion === BAYKANUR && factAddrRegion === BAYKANUR;
 
   if (isBaykanur()) {
     return getMainGiac(dictionary);
