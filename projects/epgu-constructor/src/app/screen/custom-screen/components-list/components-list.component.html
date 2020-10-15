@@ -74,7 +74,9 @@
           [formControl]="componentData.get('value')"
           [queryMinSymbolsCount]="0"
           [searchCaseSensitive]="false"
-          [fixedItems]="dictionaries[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list">
+          [fixedItems]="dictionaries[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
+          [virtualScroll]="true"
+        >
         </lib-lookup>
       </ng-container>
 
