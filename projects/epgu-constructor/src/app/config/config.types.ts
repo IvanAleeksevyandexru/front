@@ -25,18 +25,18 @@ export interface Config {
   dictionaryUrl: string;
   externalApiUrl: string;
   timeSlotApiUrl: string;
-  brakRouteNumber: string;
-  divorceRouteNumber: string;
-  gibddRouteNumber: string;
   listPaymentsApiUrl: string;
   uinApiUrl: string;
   billsApiUrl: string;
   paymentUrl: string;
   fileUploadApiUrl: string;
   lkUrl: string;
-  invitationUrl: string;
+  invitationUrl?: string;
   yandexMapsApiKey: string;
   staticDomainAssetsPath: string;
   mocks?: MockApi[];
   mockUrl?: string;
+  brakRouteNumber?: string;
+  divorceRouteNumber?: string;
+  gibddRouteNumber?: string;
 }

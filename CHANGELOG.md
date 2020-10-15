@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.11](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.10...v0.2.11) (2020-10-14)
+
+
+### Features
+
+* add confirmChildData type for confirm user data component [ref EPGUCORE-38920] ([26a33b4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/26a33b49c597430dc2aaf9b9ae613f2b295dc1a7))
+* invitation-error.component update [EPGUCORE-38516] ([7b6bd62](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/7b6bd6258c878338d2ca9c7ba5e7bc6f027fbb9a))
+* новые флаги для кнопок disable и hidden [ref EPGUCORE-38882] ([18ed131](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/18ed13184dae67548cbfff8e0f892a93fc20fac0))
+
+
+### Bug Fixes
+
+* add img max-width: 100% style on form-player level [ref EPGUCORE-38636] ([8b03a27](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/8b03a275af64dd821b0ac6c8f7a00bfd2b7fd46c))
+* add img max-width: 100% style on form-player level [ref EPGUCORE-38636] ([76ffe7e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/76ffe7e777c685771c958c0fb667b3c09d1f01cf))
+* correct cycledFieldsValue for repeatable-fields dataTransform logic [ref EPGUCORE-38878] ([250a59e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/250a59eac3213537696190a2cbafbeea7c666294))
+* correct cycledFieldsValue for repeatable-fields dataTransform logic [ref EPGUCORE-38878] ([15e4e72](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/15e4e72773b937a3d590f2746f8fd2bb9eb217ca))
+* typo in confirmChildData [ref EPGUCORE-38636] ([586f8f2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/586f8f2d9c7dc13a913f7e434504155af98b6a61))
+* update auto version bump for lib bundle ([15e9371](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/15e9371e644d0fc22fcefb284cea7b4fb9c3cd2d))
+* добавил проверку на несуществующие поля, что бы не валились ошибки. ([5e778ad](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5e778ad738c5b2e877a4e123b2744613bf7f5fee))
+* добавил проверку на несуществующие поля, что бы не валились ошибки. ([b8f75b8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b8f75b8b9743a0fd72108d795f2ba4a274d423c1))
+* исправил фильтрацию для восстановление данных. ([9c6f6c0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9c6f6c05d700d422653fb8b93982a9b7dd05fe20))
+
+### [0.2.10](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.9...v0.2.10) (2020-10-13)
+
+
+### Bug Fixes
+
+* new inline radio buttons on mobile ([c45c34c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c45c34cc457cea7ffaeefba7a7ea1a9c80b418e3))
+* добавил поддержку модальных окон в subheader ([7015755](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/701575591e40e22dc97c8544dab8c177e8bad45d))
+
 ### [0.2.9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.8...v0.2.9) (2020-10-13)
 
 
