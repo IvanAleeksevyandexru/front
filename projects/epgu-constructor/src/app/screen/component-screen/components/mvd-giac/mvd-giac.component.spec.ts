@@ -10,6 +10,8 @@ import { ComponentScreenComponentTypes } from '../../component-screen.types';
 import { CachedAnswers, Display, ScreenTypes } from '../../../screen.types';
 import { ConfigService } from '../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../config/config.service.stub';
+import { ScreenService } from '../../../screen.service';
+import { ScreenServiceStub } from '../../../screen.service.stub';
 
 xdescribe('MvdGiacComponent', () => {
   let component: MvdGiacComponent;
@@ -17,6 +19,7 @@ xdescribe('MvdGiacComponent', () => {
 
   let dictionaryApiService: DictionaryApiService;
   let currentAnswersService: CurrentAnswersService;
+  let screenService: ScreenService;
 
   let getMvdDictionarySpy: jasmine.Spy;
 
@@ -73,6 +76,7 @@ xdescribe('MvdGiacComponent', () => {
       providers: [
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub }
       ]
     })
@@ -88,10 +92,9 @@ xdescribe('MvdGiacComponent', () => {
     fixture = TestBed.createComponent(MvdGiacComponent);
     component = fixture.componentInstance;
     component.data = mockData.components[0];
-    component.applicantAnswers = applicantAnswersMock;
-
-    dictionaryApiService = TestBed.inject(DictionaryApiService);
-    currentAnswersService = TestBed.inject(CurrentAnswersService);
+    screenService = fixture.debugElement.injector.get(ScreenService);
+    dictionaryApiService = fixture.debugElement.injector.get(DictionaryApiService);
+    currentAnswersService = fixture.debugElement.injector.get(CurrentAnswersService);
 
     let regionList = [
       {
@@ -185,9 +188,9 @@ xdescribe('MvdGiacComponent', () => {
         describe('document type is \'Эелектронная справка\'', () => {
           describe('same address', () => {
             beforeEach(() => {
-              component.applicantAnswers['q1'].value = 'Электронная справка';
-              component.applicantAnswers['q5'].value = 'Да';
-              component.applicantAnswers['pd4'].value = JSON.stringify({
+              screenService.applicantAnswers['q1'].value = 'Электронная справка';
+              screenService.applicantAnswers['q5'].value = 'Да';
+              screenService.applicantAnswers['pd4'].value = JSON.stringify({
                 regAddr: {
                   region: 'Москва'
                 }
@@ -211,9 +214,9 @@ xdescribe('MvdGiacComponent', () => {
 
           describe('not same address', () => {
             beforeEach(() => {
-              component.applicantAnswers['q1'].value = 'Электронная справка';
-              component.applicantAnswers['q5'].value = 'Нет';
-              component.applicantAnswers['pd4'].value = JSON.stringify({
+              screenService.applicantAnswers['q1'].value = 'Электронная справка';
+              screenService.applicantAnswers['q5'].value = 'Нет';
+              screenService.applicantAnswers['pd4'].value = JSON.stringify({
                 regAddr: {
                   region: 'Москва'
                 }
@@ -222,7 +225,7 @@ xdescribe('MvdGiacComponent', () => {
 
             describe('same region', () => {
               beforeEach(() => {
-                component.applicantAnswers['pd5'].value = JSON.stringify({
+                screenService.applicantAnswers['pd5'].value = JSON.stringify({
                   regAddr: {
                     region: 'Москва'
                   }
@@ -246,7 +249,7 @@ xdescribe('MvdGiacComponent', () => {
 
             describe('not same region', () => {
               beforeEach(() => {
-                component.applicantAnswers['pd5'].value = JSON.stringify({
+                screenService.applicantAnswers['pd5'].value = JSON.stringify({
                   regAddr: {
                     region: 'Другой'
                   }
@@ -271,13 +274,13 @@ xdescribe('MvdGiacComponent', () => {
 
           describe('finding region', () => {
             beforeEach(() => {
-              component.applicantAnswers['q1'].value = 'Электронная справка';
-              component.applicantAnswers['q5'].value = 'Да';
+              screenService.applicantAnswers['q1'].value = 'Электронная справка';
+              screenService.applicantAnswers['q5'].value = 'Да';
             });
 
             describe('find region without slicing', () => {
               beforeEach(() => {
-                component.applicantAnswers['pd4'].value = JSON.stringify({
+                screenService.applicantAnswers['pd4'].value = JSON.stringify({
                   regAddr: {
                     region: 'Татарстан'
                   }
@@ -301,7 +304,7 @@ xdescribe('MvdGiacComponent', () => {
 
             describe('find region without slicing 1 symbol', () => {
               beforeEach(() => {
-                component.applicantAnswers['pd4'].value = JSON.stringify({
+                screenService.applicantAnswers['pd4'].value = JSON.stringify({
                   regAddr: {
                     region: 'Москва'
                   }
@@ -325,7 +328,7 @@ xdescribe('MvdGiacComponent', () => {
 
             describe('find region without slicing 2 symbol', () => {
               beforeEach(() => {
-                component.applicantAnswers['pd4'].value = JSON.stringify({
+                screenService.applicantAnswers['pd4'].value = JSON.stringify({
                   regAddr: {
                     region: 'Московская'
                   }
@@ -349,9 +352,9 @@ xdescribe('MvdGiacComponent', () => {
 
             describe('check region is \'Байконур\'', () => {
               beforeEach(() => {
-                component.applicantAnswers['q1'].value = 'Электронная справка';
-                component.applicantAnswers['q5'].value = 'Да';
-                component.applicantAnswers['pd4'].value = JSON.stringify({
+                screenService.applicantAnswers['q1'].value = 'Электронная справка';
+                screenService.applicantAnswers['q5'].value = 'Да';
+                screenService.applicantAnswers['pd4'].value = JSON.stringify({
                   regAddr: {
                     region: 'Байконур'
                   }
@@ -375,9 +378,9 @@ xdescribe('MvdGiacComponent', () => {
 
             describe('when region wasn\'t found', () => {
               beforeEach(() => {
-                component.applicantAnswers['q1'].value = 'Электронная справка';
-                component.applicantAnswers['q5'].value = 'Да';
-                component.applicantAnswers['pd4'].value = JSON.stringify({
+                screenService.applicantAnswers['q1'].value = 'Электронная справка';
+                screenService.applicantAnswers['q5'].value = 'Да';
+                screenService.applicantAnswers['pd4'].value = JSON.stringify({
                   regAddr: {
                     region: 'Регион'
                   }
