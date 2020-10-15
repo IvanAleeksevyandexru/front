@@ -311,19 +311,28 @@ export class ComponentsListComponent implements OnInit {
     value: any,
   ): void {
     const id = key + component.id;
+    const defaultIndex =
+      typeof component.attrs?.defaultIndex === 'undefined'
+        ? null
+        : Number(component.attrs?.defaultIndex);
+
     this.dictionaries[id].loading = false;
     this.dictionaries[id].paginationLoading = false;
     this.dictionaries[id].data = data;
     this.dictionaries[id].origin = component;
     this.dictionaries[id].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
 
-    if (Object.keys(value).length) {
+    if (Object.keys(value).length || defaultIndex) {
       const index = this.form
         .getRawValue()
         .findIndex((c: CustomComponent) => c.id === component.id);
 
+      const valueForPatch = defaultIndex
+        ? this.dictionaries[id].list[defaultIndex]
+        : JSON.parse(value);
+
       setTimeout(() => {
-        this.form.get(`${index}.value`).patchValue(JSON.parse(value));
+        this.form.get(`${index}.value`).patchValue(valueForPatch);
       }, 0);
     }
   }
