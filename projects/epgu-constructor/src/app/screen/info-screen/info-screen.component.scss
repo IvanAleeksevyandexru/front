@@ -48,11 +48,11 @@
     padding-right: 0;
   }
 
-  & .divider{
+  .divider{
     display: none;
   }
 
-  & .info__head{
+  .info__head{
     margin-bottom: 0;
   }
 
@@ -63,7 +63,7 @@
     margin-left: 0;
     padding: 24px 24px 8px;
 
-    & li{
+    li{
       margin-top: 0;
       margin-bottom: 16px;
     }
