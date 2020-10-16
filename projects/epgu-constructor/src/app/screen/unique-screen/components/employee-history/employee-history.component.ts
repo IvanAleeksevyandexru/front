@@ -50,9 +50,14 @@ export class EmployeeHistoryComponent implements OnInit {
   }
 
   getNextScreen() {
-    this.nextStepEvent.emit(
-      JSON.stringify(this.employeeFormService.employeeHistoryForm.getRawValue()),
-    );
+    const employeeHistoryBeforeSend: Array<EmployeeHistoryModel> = this.employeeFormService.employeeHistoryForm
+      .getRawValue()
+      .map((employee: EmployeeHistoryModel) => {
+        const formattedEmployee = employee;
+        delete formattedEmployee.minDateTo;
+        return { ...formattedEmployee };
+      });
+    this.nextStepEvent.emit(JSON.stringify(employeeHistoryBeforeSend));
   }
 
   availableControlsOfType(type: string): EmployeeHistoryDataSource {

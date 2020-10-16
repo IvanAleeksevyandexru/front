@@ -75,6 +75,15 @@
       & > *:not(:last-child) {
         margin-right: 20px;
       }
+
+      @include tablets-down {
+        flex-direction: column;
+
+        & > *:not(:last-child) {
+          margin-right: 0;
+          margin-bottom: 20px;
+        }
+      }
     }
 
     &__button {

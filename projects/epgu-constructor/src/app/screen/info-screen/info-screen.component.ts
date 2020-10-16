@@ -56,7 +56,6 @@ export class InfoScreenComponent implements Screen, OnInit {
    */
   setActionButtons(component: ComponentDto) {
     component?.attrs?.actions?.forEach((action) => {
-      console.log('actions', action);
       if (action.type === ActionType.redirectToLK) {
         this.footerActions.push(action);
       } else {
