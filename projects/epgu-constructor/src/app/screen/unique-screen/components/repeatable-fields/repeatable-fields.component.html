@@ -16,7 +16,7 @@
       <epgu-constructor-components-list
         class="cmp-group__item"
         [components]="screens[screenKey]"
-        [errors]="screenService.componentError$ | async"
+        [errors]="screenService.getStore().errors"
         (changes)="changeComponentList($event, i)">
 
       </epgu-constructor-components-list>
