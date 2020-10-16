@@ -4,7 +4,7 @@ import {
   CustomComponent,
   CustomComponentOutputData,
   CustomListFormGroup,
-  CustomListStatusElements
+  CustomListStatusElements, CustomScreenComponentTypes
 } from '../../custom-screen.types';
 import { ValidationService } from '../../services/validation.service';
 import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
@@ -79,13 +79,18 @@ export class ComponentListFormService {
       );
   }
 
-  async emmitChanges(component?: CustomComponent) {
-    if (component?.value && this.toolsService.isAddress(component.type)) {
-      await this.addressHelperService.normalizeAddress(
-        (component.value as unknown) as DadataSuggestionsAddressForLookup,
-      );
+  async emmitChanges() {
+    const components = this.form.getRawValue();
+    for (const component of components) {
+      if (component?.type === CustomScreenComponentTypes.CityInput && component?.value) {
+        await this.addressHelperService.normalizeAddress(
+          (component.value as unknown) as DadataSuggestionsAddressForLookup,
+        );
+      }
     }
     const prepareStateForSending = this.getPreparedStateForSending();
+
+    console.log('emit', prepareStateForSending);
     this._changes.emit(prepareStateForSending);
   }
 
