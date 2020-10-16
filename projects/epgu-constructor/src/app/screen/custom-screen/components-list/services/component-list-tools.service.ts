@@ -20,6 +20,7 @@ export class ComponentListToolsService {
     CustomScreenComponentTypes.Lookup,
     CustomScreenComponentTypes.Dictionary,
     CustomScreenComponentTypes.AddressInput,
+    CustomScreenComponentTypes.CityInput,
   ];
 
   private readonly availableComponentTypesToAddressParse = [
@@ -184,7 +185,7 @@ export class ComponentListToolsService {
   }
 
   isAddress(type: CustomScreenComponentTypes): boolean {
-    return this.availableComponentTypesToAddressParse.includes(type);
+    return type === CustomScreenComponentTypes.AddressInput;
   }
 
   isDropDown(type: CustomScreenComponentTypes): boolean {
