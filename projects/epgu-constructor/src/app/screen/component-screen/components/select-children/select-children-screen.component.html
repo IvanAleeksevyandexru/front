@@ -1,6 +1,6 @@
-<section class="add-children-screen">
-  <form [formGroup]="addChildrenForm">
-    <div class="add-children-screen__card" *ngFor="let item of items; let idx = index">
+<section class="select-children-screen">
+  <form [formGroup]="selectChildrenForm">
+    <div class="select-children-screen__card" *ngFor="let item of items; let idx = index">
       <div class="card">
         <div class="card__wrapper">
           <div class="card__header">
@@ -25,18 +25,19 @@
                 [items]="itemsToSelect"
               ></lib-dropdown>
             </div>
-            <epgu-constructor-add-new-child-form
-              *ngIf="selectedItems[item] && selectedItems[item].isNew === true"
-              [item]="selectedItems[item]"
-              [data]="data"
-              (childUpdateEvent)="updateChild($event, item)"
-            ></epgu-constructor-add-new-child-form>
+            <section
+              class="card__content"
+              *ngIf="selectedItems[item] && selectedItems[item][isNewRef]"
+            >
+              <epgu-constructor-components-list (changes)="updateChild($event, item)">
+              </epgu-constructor-components-list>
+            </section>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="add-children-screen__action">
+    <div class="select-children-screen__action">
       <lib-button width="wide" color="white" (click)="addMoreChild()">
         <label>Добавить ребенка</label>
       </lib-button>

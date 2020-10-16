@@ -24,11 +24,15 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.StringInput">
-        <ng-template
-          [ngTemplateOutlet]="formLabel"
-          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
-        </ng-template>
-        <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+        <div
+          [hidden]="componentData.value?.attrs?.hidden"
+        >
+          <ng-template
+            [ngTemplateOutlet]="formLabel"
+            [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+          </ng-template>
+          <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
+        </div>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.DropDown">
@@ -70,23 +74,29 @@
           [formControl]="componentData.get('value')"
           [queryMinSymbolsCount]="0"
           [searchCaseSensitive]="false"
-          [fixedItems]="dictionaries[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list">
+          [fixedItems]="dictionaries[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
+          [virtualScroll]="true"
+        >
         </lib-lookup>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.RadioInput">
-        <ng-template
-          [ngTemplateOutlet]="formLabel"
-          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
-        </ng-template>
-        <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio__inline' : 'form__radio__block'">
-          <lib-radio
-            *ngFor="let item of componentData.value?.attrs?.supportedValues"
-            [name]="componentData.value.id"
-            [labelText]="item.label"
-            [formControl]="componentData.get('value')"
-            [value]="item.value">
-          </lib-radio>
+        <div
+          [hidden]="componentData.value?.attrs?.hidden"
+        >
+          <ng-template
+            [ngTemplateOutlet]="formLabel"
+            [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+          </ng-template>
+          <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio__inline' : 'form__radio__block'">
+            <lib-radio
+              *ngFor="let item of componentData.value?.attrs?.supportedValues"
+              [name]="componentData.value.id"
+              [labelText]="item.label"
+              [formControl]="componentData.get('value')"
+              [value]="item.value">
+            </lib-radio>
+          </div>
         </div>
       </ng-container>
 
@@ -239,7 +249,8 @@
           [clearable]="true"
           [mask]="componentData.value?.attrs?.mask | maskHandle"
           [name]="componentData.value?.id"
-          [showMaskAsPlaceholder]="true"
+          [showMaskAsPlaceholder]="!componentData.value?.attrs?.placeholder"
+          [placeholder]="componentData.value?.attrs?.placeholder"
           [showConstantMaskSymbols]="true"
           [formControl]="componentData.get('value')"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"

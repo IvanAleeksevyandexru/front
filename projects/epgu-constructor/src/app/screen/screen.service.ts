@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
+import { CustomScreenComponentTypes } from '../screen/custom-screen/custom-screen.types';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -73,7 +74,7 @@ export class ScreenService extends ScreenContent {
         const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(item); // TODO костыль от backend(-a);
         const cachedValue = shouldBeTakenFromTheCache && this.cachedAnswersService
           .getCachedValueById(this.screenStore.cachedAnswers, item.id);
-        const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value) } : item;
+        const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value, item.type) } : item;
         components.push(component);
       });
 
@@ -87,7 +88,10 @@ export class ScreenService extends ScreenContent {
    * @param cachedValue - кэш ответов из cachedAnswersService
    * @param preset - preset значения из display.components[].value
    */
-  private mergePresetCacheValue(cachedValue: string, preset: string) {
+  private mergePresetCacheValue(cachedValue: string, preset: string, componentType: string ) {
+    if (componentType === CustomScreenComponentTypes.SnilsInput) {
+      return JSON.parse(cachedValue).snils;
+    }
     const isPresetParseable = preset.substr(0, 1) === '{';
     if (isPresetParseable) {
       return JSON.stringify({
