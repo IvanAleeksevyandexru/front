@@ -110,17 +110,70 @@ export class TerraByteApiService {
 
   /**
    * Отдача пользователю файла прямо в браузер
-   * @private
+   * @param data - Blob данные для скачивания
+   * @param file - файл для загрузки
    */
   pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile) {
+    // eslint-disable-next-line max-len
+    const isMacOSWebView = /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent);
+    if ('download' in HTMLAnchorElement.prototype && !isMacOSWebView){
+      this.downloadLinkForAndroid(data, file);
+    }else{
+      this.downloadLinkForIOS(data, file, isMacOSWebView);
+    }
+  }
+
+  /**
+   * Скачивание ссылки для IOS
+   * @param data - Blob данные для скачивания
+   * @param file - файл для загрузки
+   * @param isMacOSWebView - Если это Маковский Webview
+   */
+  private downloadLinkForIOS(data: Blob, file: TerraUploadedFile, isMacOSWebView) {
+    const force = data.type === 'application/octet-stream';
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isChromeIOS = /CriOS\/[\d]+/.test(navigator.userAgent);
+
+    if ((isChromeIOS || force && isSafari || isMacOSWebView) && typeof FileReader !== 'undefined') {
+      // Safari doesn't allow downloading of blob URLs
+      var reader = new FileReader();
+
+      reader.onloadend = function () {
+        let url = reader.result;
+        url = isChromeIOS ? url : url.toString().replace(/^data:[^;]*;/, 'data:attachment/file;');
+        // @ts-ignore
+        location = url;
+      };
+
+      reader.readAsDataURL(data);
+    } else {
+      const url = URL.createObjectURL(data);
+      location.href = url;
+
+      setTimeout(function () {
+        URL.revokeObjectURL(url);
+      }, 4E4); // 40s
+    }
+  }
+
+  /**
+   * Скачивание ссылки для андроид и других устройств
+   * @param data - Blob данные для скачивания
+   * @param file - файл для загрузки
+   * @private
+   */
+  private downloadLinkForAndroid(data: Blob, file: TerraUploadedFile) {
     const url = window.URL.createObjectURL(data);
     const a = document.createElement('a');
     document.body.appendChild(a);
     a.setAttribute('style', 'display: none');
     a.href = url;
+    a.rel = 'noopener'; // tabnabbing
     a.download = file.fileName;
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+    }, 4E4);
     a.click();
-    window.URL.revokeObjectURL(url);
     a.remove();
   }
 }
