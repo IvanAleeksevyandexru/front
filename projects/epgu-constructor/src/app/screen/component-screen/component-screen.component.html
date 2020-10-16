@@ -22,14 +22,6 @@
         >
         </epgu-constructor-confirm-personal-user-data-screen>
 
-        <epgu-constructor-confirm-personal-user-data-screen
-          *ngSwitchCase="screenComponentName.confirmAnotherUserData"
-          [data]="screenService.component"
-          [currentCycledFields]="screenService.currentCycledFields"
-          [errors]="screenService.componentErrors"
-        >
-        </epgu-constructor-confirm-personal-user-data-screen>
-
         <epgu-constructor-confirm-personal-user-email-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserEmail"
           [data]="screenService.component"
@@ -77,36 +69,36 @@
           [data]="screenService.component"
         ></epgu-constructor-doc-input>
 
-        <epgu-constructor-add-children-screen
+        <epgu-constructor-select-children-screen
           *ngSwitchCase="screenComponentName.childrenListUnder14"
           [data]="screenService.component"
           (nextStepEvent)="nextStep()"
-        ></epgu-constructor-add-children-screen>
+        ></epgu-constructor-select-children-screen>
 
-        <epgu-constructor-add-children-screen
+        <epgu-constructor-select-children-screen
           *ngSwitchCase="screenComponentName.childrenListAbove14"
           [data]="screenService.component"
           (nextStepEvent)="nextStep()"
-        ></epgu-constructor-add-children-screen>
+        ></epgu-constructor-select-children-screen>
       </ng-container>
     </epgu-constructor-screen-pad>
 
     <div class="footer">
       <ng-container
-        *ngIf="(screenService.componentType$ | async) === screenComponentName.divorceConsent"
+      *ngIf="(screenService.componentType$ | async) === screenComponentName.divorceConsent"
+    >
+      <lib-button
+        *ngFor="let action of screenService.actions$ | async"
+        epgu-constructor-action
+        [action]="action"
+        class="footer__btn-action"
+        color="white"
       >
-        <lib-button
-          *ngFor="let action of screenService.actions$ | async"
-          epgu-constructor-action
-          [action]="action"
-          class="footer__btn-action"
-          color="white"
-        >
-          <div class="secondary-font">
-            {{ action.label }}
-          </div>
-        </lib-button>
-      </ng-container>
+        <div class="secondary-font">
+          {{ action.label }}
+        </div>
+      </lib-button>
+    </ng-container>
 
       <lib-button
         *ngIf="componentSetting.displayContinueBtn && (screenService.isShown$ | async)"

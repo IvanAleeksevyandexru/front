@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
+import { CustomScreenComponentTypes } from '../screen/custom-screen/custom-screen.types';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -69,14 +70,13 @@ export class ScreenService extends ScreenContent {
     const components: Array<ComponentBase> = [];
 
     this.screenStore.display.components
-      .filter(this.cachedAnswersService.shouldBeTakenFromTheCache) // TODO HARDCODE from backend;
       .forEach(item => {
-        const cachedValue = this.cachedAnswersService
+        const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(item); // TODO костыль от backend(-a);
+        const cachedValue = shouldBeTakenFromTheCache && this.cachedAnswersService
           .getCachedValueById(this.screenStore.cachedAnswers, item.id);
-
-      const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value) } : item;
-      components.push(component);
-    });
+        const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value, item.type) } : item;
+        components.push(component);
+      });
 
     if (components.length) {
       this.screenStore.display = { ...this.screenStore.display, components };
@@ -88,14 +88,18 @@ export class ScreenService extends ScreenContent {
    * @param cachedValue - кэш ответов из cachedAnswersService
    * @param preset - preset значения из display.components[].value
    */
-  private mergePresetCacheValue(cachedValue: string, preset: string) {
-    if (!preset) {
-      return cachedValue;
+  private mergePresetCacheValue(cachedValue: string, preset: string, componentType: string ) {
+    if (componentType === CustomScreenComponentTypes.SnilsInput) {
+      return JSON.parse(cachedValue).snils;
     }
-    return JSON.stringify({
-      ...JSON.parse(preset),
-      ...JSON.parse(cachedValue),
-    });
+    const isPresetParseable = preset.substr(0, 1) === '{';
+    if (isPresetParseable) {
+      return JSON.stringify({
+        ...JSON.parse(preset),
+        ...JSON.parse(cachedValue),
+      });
+    }
+    return cachedValue || preset;
   }
 
   /**

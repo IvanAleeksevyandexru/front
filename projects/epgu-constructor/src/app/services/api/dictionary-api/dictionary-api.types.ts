@@ -54,7 +54,8 @@ export interface DictionaryItem {
 export interface DictionaryYMapItem extends DictionaryItem {
   center: Array<number>;
   baloonContent: Object;
-  id: number
+  id: string;
+  idForMap: number;
   fullListItems;
   agreement: boolean;
   expanded: boolean;

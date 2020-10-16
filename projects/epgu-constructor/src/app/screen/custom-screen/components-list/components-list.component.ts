@@ -1,7 +1,22 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
 import { ListItem, ValidationShowOn } from 'epgu-lib';
 import { map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
+import { ConfigService } from '../../../config/config.service';
+import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
+import {
+  DictionaryOptions,
+  DictionaryResponse,
+} from '../../../services/api/dictionary-api/dictionary-api.types';
+import { ComponentDto } from '../../../services/api/form-player-api/form-player-api.types';
+import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
+import { DictionaryForList } from '../../../shared/constants/dictionary';
+import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
+import { isEqual } from '../../../shared/constants/uttils';
+import { ComponentScreenComponentTypes } from '../../component-screen/component-screen.types';
+import { ScreenService } from '../../screen.service';
+import { ComponentBase, ScreenStore } from '../../screen.types';
+import { UniqueScreenComponentTypes } from '../../unique-screen/unique-screen.types';
 import {
   CustomComponent,
   CustomComponentDictionaryState,
@@ -11,10 +26,7 @@ import {
   CustomComponentRefRelation,
   CustomScreenComponentTypes,
 } from '../custom-screen.types';
-import {
-  DictionaryOptions,
-  DictionaryResponse,
-} from '../../../services/api/dictionary-api/dictionary-api.types';
+import { ValidationService } from '../services/validation.service';
 import {
   getCalcRelation,
   getCustomScreenDictionaryFirstState,
@@ -23,17 +35,6 @@ import {
   isHaveNeededValueForRelation,
   likeDictionary,
 } from '../tools/custom-screen-tools';
-import { ScreenService } from '../../screen.service';
-import { DictionaryApiService } from '../../../services/api/dictionary-api/dictionary-api.service';
-import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
-import { ConfigService } from '../../../config/config.service';
-import { ComponentBase, ScreenStore } from '../../screen.types';
-import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
-import { ValidationService } from '../services/validation.service';
-import { UniqueScreenComponentTypes } from '../../unique-screen/unique-screen.types';
-import { ComponentDto } from '../../../services/api/form-player-api/form-player-api.types';
-import { isEqual } from '../../../shared/constants/uttils';
-import { DictionaryForList } from '../../../shared/constants/dictionary';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
 
 @Component({
@@ -119,7 +120,9 @@ export class ComponentsListComponent implements OnInit {
    * @private
    */
   private getComponents(screen: ScreenStore): Array<ComponentDto> {
-    return screen.display.components[0]?.type === UniqueScreenComponentTypes.repeatableFields
+    return screen.display.components[0]?.type === UniqueScreenComponentTypes.repeatableFields ||
+      screen.display.components[0]?.type === ComponentScreenComponentTypes.childrenListAbove14 ||
+      screen.display.components[0]?.type === ComponentScreenComponentTypes.childrenListUnder14
       ? screen.display.components[0].attrs.components
       : screen.display.components;
   }
@@ -308,19 +311,28 @@ export class ComponentsListComponent implements OnInit {
     value: any,
   ): void {
     const id = key + component.id;
+    const defaultIndex =
+      typeof component.attrs?.defaultIndex === 'undefined'
+        ? null
+        : Number(component.attrs?.defaultIndex);
+
     this.dictionaries[id].loading = false;
     this.dictionaries[id].paginationLoading = false;
     this.dictionaries[id].data = data;
     this.dictionaries[id].origin = component;
     this.dictionaries[id].list = getNormalizeDataCustomScreenDictionary(data.items, key, component);
 
-    if (Object.keys(value).length) {
+    if (Object.keys(value).length || defaultIndex) {
       const index = this.form
         .getRawValue()
         .findIndex((c: CustomComponent) => c.id === component.id);
 
+      const valueForPatch = defaultIndex
+        ? this.dictionaries[id].list[defaultIndex]
+        : JSON.parse(value);
+
       setTimeout(() => {
-        this.form.get(`${index}.value`).patchValue(JSON.parse(value));
+        this.form.get(`${index}.value`).patchValue(valueForPatch);
       }, 0);
     }
   }

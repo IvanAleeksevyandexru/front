@@ -1,6 +1,6 @@
 {
   "name": "epgu-constructor",
-  "version": "0.2.9",
+  "version": "0.2.13",
   "peerDependencies": {
     "@angular/common": "10.1.1",
     "@angular/cdk": "10.2.0",
@@ -14,7 +14,7 @@
     "moment": "2.24.0",
     "ngx-perfect-scrollbar": "8.0.0",
     "text-mask-core": "5.1.2",
-    "epgu-lib": "0.0.602"
+    "epgu-lib": "0.0.611"
   },
   "dependencies": {
     "tslib": "2.0.0",

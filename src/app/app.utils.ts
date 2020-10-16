@@ -15,6 +15,7 @@ export const getConfigFromEnvs = (): Config => {
     billsApiUrl: environment.billsApiUrl,
     uinApiUrl: environment.uinApiUrl,
     paymentUrl: environment.paymentUrl,
+    invitationUrl: environment.invitationUrl,
     yandexMapsApiKey: environment.yandexMapsApiKey,
     fileUploadApiUrl: environment.fileUploadApiUrl,
     lkUrl: environment.lkUrl,

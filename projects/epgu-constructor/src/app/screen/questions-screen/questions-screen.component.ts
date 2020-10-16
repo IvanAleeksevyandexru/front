@@ -14,12 +14,6 @@ import { QuestionsComponentActions } from './questions-screen.types';
   providers: [UnsubscribeService],
 })
 export class QuestionsScreenComponent implements OnInit, Screen {
-  isCycledFields = false;
-  cycledValues: Array<any>;
-
-  private currentCycledFields = {};
-  private cycledFieldsKeys = Object.keys(this.currentCycledFields);
-
   constructor(
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
@@ -27,28 +21,9 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   ) {}
 
   ngOnInit(): void {
-    this.initCycledFields();
-
     this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
-
-    this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.initCycledFields();
-    });
-  }
-
-  initCycledFields() {
-    this.currentCycledFields = this.screenService?.currentCycledFields || {};
-    this.cycledFieldsKeys = Object.keys(this.currentCycledFields);
-
-    const { currentCycledFields } = this;
-    this.isCycledFields = !!Object.keys(currentCycledFields).length;
-    if (this.isCycledFields && typeof currentCycledFields === 'object') {
-      [this.cycledValues] = [
-        ...Object.values(currentCycledFields).map((value: string) => JSON.parse(value)),
-      ];
-    }
   }
 
   prevStep(): void {
@@ -60,23 +35,16 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   }
 
   answerChoose(answer: QuestionsComponentActions): void {
-    const data: NavigationPayload = {};
-    if (this.isCycledFields) {
-      const [currentCycledFieldsKey] = this.cycledFieldsKeys;
-      const fieldNameRef = this.screenService.component?.attrs?.fields[0]?.fieldName;
-      const cycledValuesPrepared = { ...this.cycledValues };
-      const mergedCycledAndAnswerValues = { ...cycledValuesPrepared, [fieldNameRef]: answer.value };
-      data[currentCycledFieldsKey] = {
-        visited: true,
-        value: JSON.stringify(mergedCycledAndAnswerValues),
-      };
-    } else {
-      const componentId = this.screenService.component.id;
-      data[componentId] = {
-        visited: true,
-        value: answer.value || '',
-      };
+    if (answer.disabled) {
+      return;
     }
+    const data: NavigationPayload = {};
+
+    const componentId = this.screenService.component.id;
+    data[componentId] = {
+      visited: true,
+      value: answer.value || '',
+    };
 
     this.nextStep(data);
   }

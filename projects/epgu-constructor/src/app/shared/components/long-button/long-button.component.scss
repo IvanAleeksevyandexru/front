@@ -38,4 +38,10 @@ button {
     background: $color-background;
     border-color: $color-background;
   }
+
+  &[disabled] {
+    background: $color-bg-disabled;
+    color: $color-button-hover;
+    cursor: not-allowed;
+  }
 }

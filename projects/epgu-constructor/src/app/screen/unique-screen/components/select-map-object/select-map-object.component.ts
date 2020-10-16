@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { switchMap, filter, takeUntil, reduce } from 'rxjs/operators';
 import { of, merge } from 'rxjs';
-import { YaMapService } from 'epgu-lib';
+import { HelperService, YaMapService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
@@ -51,6 +51,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public selectedValue: any;
   public mapIsLoaded = false;
   public scrollConfig = { ressScrollX: true, wheelPropagation: false };
+  public isMobile: boolean;
 
   private componentValue: any;
   private screenStore: ScreenStore;
@@ -65,7 +66,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
     private zone: NgZone,
-  ) {}
+  ) {
+    this.isMobile = HelperService.isMobile();
+  }
 
   ngOnInit(): void {
     this.initVariable();
@@ -95,14 +98,23 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private initSelectedValue() {
     if (this.data?.value && this.data?.value !== '{}') {
       const mapObject = JSON.parse(this.data?.value);
-      this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.id);
+      // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
+      if (mapObject.idForMap) {
+        this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
+      } else if (this.data?.attrs.selectedValue) {
+        const selectedValue = this.getSelectedValue();
+        this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
+      }
     }
   }
 
+  /**
+   * Получаем выбранный ЗАГС из applicantAnswers по пути из attrs.selectedValue
+   */
   private getSelectedValue() {
     const selectedValue = UtilsService.getObjectProperty(
       this.applicantAnswers,
-      this.data.attrs.selectedValue.value,
+      this.data?.attrs.selectedValue,
     );
     return JSON.parse(selectedValue);
   }
@@ -240,7 +252,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   // TODO Сделать интерфейс для mapObject
   private selectMapObject(mapObject) {
     if (!mapObject) return;
-    this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.id);
+    this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
   }
 
   public lookupChanged(mapObject, lookup) {
@@ -285,7 +297,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public expandObject(mapObject: DictionaryYMapItem): void {
     if (mapObject.expanded) return;
     this.selectedValue.children = this.selectedValue.children.map((child: DictionaryYMapItem) => {
-      return { ...child, expanded: child.id === mapObject.id };
+      return { ...child, expanded: child.idForMap === mapObject.idForMap };
     });
   }
 
