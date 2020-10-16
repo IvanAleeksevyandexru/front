@@ -76,7 +76,12 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   private emmitData(): void {
     const dataToSend = this.getPreparedDataToSend();
-    this.dataEditedEvent.emit(dataToSend);
+
+    if (this.isFormValid()) {
+      this.dataEditedEvent.emit(dataToSend);
+    } else {
+      this.dataEditedEvent.emit(null);
+    }
   }
 
   getPreparedDataToSend(): string {
@@ -97,5 +102,11 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   private getAddress(regAddr: string | { fullAddress: string }): string {
     return typeof regAddr === 'string' ? regAddr : regAddr.fullAddress;
+  }
+
+  private isFormValid() {
+    const hasValue = () => Object.values(this.dataForm.form.value).every((value) => value);
+
+    return this.dataForm && this.dataForm.form.value && this.dataForm.form.valid && hasValue();
   }
 }
