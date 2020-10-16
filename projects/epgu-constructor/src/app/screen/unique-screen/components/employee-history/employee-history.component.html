@@ -44,7 +44,7 @@
             [id]="i + '_maxDate'"
             align="right"
             [formControl]="generation.get('to')"
-            [minMonth]="monthsService.minDateTo"
+            [minMonth]="generation.get('minDateTo').value || monthsService.minDateTo"
             [maxMonth]="monthsService.maxDate"
             [invalid]="generation.get('to').invalid"
             [validationShowOn]="validationShowOn"
