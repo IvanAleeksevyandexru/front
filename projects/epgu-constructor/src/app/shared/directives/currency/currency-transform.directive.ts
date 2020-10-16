@@ -15,7 +15,7 @@ export class CurrencyTransformDirective {
     if (this.currency) {
       let price = target.value ? +(target.value.replace(/[^\d,]/g, '').replace(/,/, '.')) : 0;
       if (!Number.isNaN(price)) {
-        target.value = this.currencyPipe.transform(price, 'RUB', 'symbol-narrow');
+        target.value = this.currencyPipe.transform(price, 'RUB', 'symbol-narrow', '0.0-0');
       }
     }
   }
