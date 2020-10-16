@@ -25,7 +25,6 @@ export interface Config {
   fileUploadApiUrl: string;
   lkUrl: string;
   yandexMapsApiKey: string;
-  staticDomainAssetsPath: string;
   invitationUrl: string;
   brakRouteNumber: string;
   divorceRouteNumber: string;
