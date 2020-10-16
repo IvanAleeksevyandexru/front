@@ -52,7 +52,7 @@ export class SelectMapObjectService {
     });
     this.dictionary.items.forEach((item, index) => {
       const coords = hashMap[item.attributeValues[this.componentAttrs.attributeNameWithAddress]];
-      item.id = index;
+      item.idForMap = index;
       if (coords) {
         item.center = [coords.longitude, coords.latitude];
       }
@@ -71,7 +71,7 @@ export class SelectMapObjectService {
       if (item.center) {
         const obj = {
           type: 'Feature',
-          id: item.id,
+          id: item.idForMap,
           geometry: { type: 'Point', coordinates: item.center },
           properties: {
             res: { ...item, btnName: 'Выбрать', agreement: item.agreement },
@@ -253,8 +253,15 @@ export class SelectMapObjectService {
     this.placeOjectsOnMap(this.yaMapService.map);
   }
 
-  public findObjectByValue(value) {
+  public findObjectByValue(value: string): DictionaryYMapItem {
     return this.filteredDictionaryItems.find((object) => object.value === value);
+  }
+
+  public centeredPlaceMarkByObjectValue(value: string) {
+    const valueFromDict = this.findObjectByValue(value);
+    if (valueFromDict?.idForMap) {
+      this.centeredPlaceMark(valueFromDict.center, valueFromDict.idForMap);
+    }
   }
 
   /**

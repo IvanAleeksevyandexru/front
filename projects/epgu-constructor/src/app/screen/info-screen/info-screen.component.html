@@ -23,24 +23,33 @@
     </div>
 
     <epgu-constructor-info-screen-button
-      *ngFor="let action of (screenService.component$ | async)?.attrs?.actions"
+      *ngFor="let action of bodyActions"
       epgu-constructor-action
       [action]="action"
       >{{ action.label }}
     </epgu-constructor-info-screen-button>
 
-    <div class="info__footer info-footer">
+    <div class="info__submit">
       <lib-button
         *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
-        class="info-footer__submit"
         [disabled]="screenService.isLoading$ | async"
       >
         {{screenService.submitLabel$ | async}}
       </lib-button>
     </div>
   </epgu-constructor-screen-pad>
+
+  <div class="info-footer">
+    <lib-button
+      *ngFor="let action of footerActions"
+      epgu-constructor-action
+      [action]="action"
+    >
+      {{ action.label }}
+    </lib-button>
+  </div>
 
   <!-- NOTICE: убрано по требованию до 25.10.20 -->
   <!-- <div *ngIf="!screenService.display?.isSocialButtonsHidden">

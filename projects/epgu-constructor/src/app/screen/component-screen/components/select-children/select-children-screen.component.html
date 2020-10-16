@@ -27,7 +27,7 @@
             </div>
             <section
               class="card__content"
-              *ngIf="selectedItems[item] && selectedItems[item][isNewRef] === true"
+              *ngIf="selectedItems[item] && selectedItems[item][isNewRef]"
             >
               <epgu-constructor-components-list (changes)="updateChild($event, item)">
               </epgu-constructor-components-list>
