@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.15](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.14...v0.2.15) (2020-10-16)
+
+
+### Bug Fixes
+
+* break line ([59ffe0c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/59ffe0c2753e9c339301cf5c4cc24dae02f29cf5))
+* CityInput поправил контрол ([498028f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/498028fb9459492939ecd0e94696c51b7e823eb9))
+* cleare console, moved services from module to component provider ([d0b2ebd](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d0b2ebdbe5044090541d83a59a72d595d907cf06))
+* fixed placeholder displaying bug [ref EPGUCORE-39060] ([5a6f92c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5a6f92cd2c4473bde3ccab990c459c781564dbcb))
+* native scroll at confirmation modal on mobile device ([0f4ad61](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0f4ad61e212a60832dce765e246f9f8658af0c50))
+* native scroll at confirmation modal on mobile device ([cd10fa8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/cd10fa850efdddd1ceb2be0e2af165eac7da3295))
+* spec ([ded51a4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ded51a4690a796fae2844c58c47f34249c15dcc5))
+* spec ([aa8d36d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/aa8d36d18c1bb370d581194f295c865a28d451e4))
+* spec ([52be84c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/52be84c6a2b6df584e2f757ee8ed50f34f7b878b))
+* specs ([46ee9aa](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/46ee9aa710f9cf14d8719894749172a07843ea65))
+* в Загране добавил валидацию даты "по" в деятельности за 10 лет ([3b7e65f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3b7e65fc041423e9a3ef762f1eb6cbe64f478d1c))
+* Временно отключил тест ([fc65582](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/fc655828742c7b2530eb1119de39b59e25614790))
+* Для мобильного приложения будет применяться мобильный нативный скрол, где для прокручивания применялась стороняя библиотека ([098e28a](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/098e28a2f915f36cbad38817341dc6efaa824928))
+* добавил обработку репитбл, добавил проверку на валидность в репитбл ([2a08c88](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2a08c88b1af5345c94e20a3fd629069081efca92))
+* исправил валидацию от сторонних библиотек ([eeb06a9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/eeb06a9215cc3ae99dbc8348ed3f0abba6763b12))
+* исправил деятельность за 10 лет после мержа девелопа ([89e0e1b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/89e0e1b2553aa3f2560b536ec2d16739271a5bb6))
+* Исправил обработку значения чекбокса ([d6857bb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d6857bbf50dad74b952221dc184b3d2566b0a37f))
+* Исправил ошибку "Expression has changed after it was checked" ([b8eff12](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b8eff12ff7446136e91c2ac56fdca996ada2adef))
+* Исправил ошибку, которая возникала в реактиве componentError$ ([53902ef](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/53902ef90f21e42406af51f5e3707c04967b4db0))
+* исправил патчинг значений в зависимых компонентах ([d9430cf](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d9430cfb7c24af5bb8a73daae6a80b4c68507935))
+* Исправил подгрузку данных с бэка ([16dcdf7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/16dcdf78a9f19c77342a3b26ce60ffecc7e9c5cd))
+* Поправил патч сохпраненных значений в AddressInput & CityInput ([8169ef7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/8169ef72aa681b1db7bbe68d33918229350743bb))
+* поправил типизацию ([31d2c74](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/31d2c746cd514a7129cde918b3c663da621c71f8))
+* Пофиксил спеку ([668e8f8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/668e8f84066f5c31699744f0f1b20b273f7a509b))
+* Убрал подписи под календарями в услуге "Загран" ([6b89ee5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6b89ee5ea7e130167c647ce3dc77cd86e07405c6))
+* фикс правки после мержа ([626313d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/626313d513c0266a6d400b6c0149535526d71085))
+
 ### [0.2.14](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.13...v0.2.14) (2020-10-15)
 
 
