@@ -11,7 +11,7 @@ export class FormPlayerConfigApiService {
   ) {}
 
   public getFormPlayerConfig(): Observable<Config> {
-    const path = '/api/pgu-service-config/default-config';
+    const path = '/api/pgu-service-config/config/default-config';
     return this.http.get<Config>(path);
   }
 
