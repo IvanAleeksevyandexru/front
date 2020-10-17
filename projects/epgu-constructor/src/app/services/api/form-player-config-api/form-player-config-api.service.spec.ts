@@ -24,7 +24,7 @@ describe('FormPlayerConfigApiService', () => {
   describe('getFormPlayerConfig()', () => {
     it('should call http with get method', fakeAsync(() => {
       service.getFormPlayerConfig().subscribe(response => expect(response).toBe(responseMock));
-      const req = http.expectOne('/form-player-config');
+      const req = http.expectOne('/api/pgu-service-config/config/default-config');
       expect(req.request.method).toBe('GET');
       req.flush(responseMock);
       tick();
