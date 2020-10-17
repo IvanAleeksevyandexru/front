@@ -1,20 +1,22 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent, LoaderComponent } from 'epgu-lib';
-
+import { ConfigService } from 'projects/epgu-constructor/src/app/config/config.service';
+import { ConfigServiceStub } from 'projects/epgu-constructor/src/app/config/config.service.stub';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
-import { TimerPipe } from '../pipes/timer.pipe';
-import { ConfirmMarriageComponent } from './confirm-marriage.component';
-import { TimerComponent } from './timer/timer.component';
 import { ScreenService } from '../../../../screen.service';
 import { ScreenServiceStub } from '../../../../screen.service.stub';
 import { ConfirmMarriageInfoInterface } from '../models/confirm-marriage-info.interface';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { TimerPipe } from '../pipes/timer.pipe';
+import { ConfirmMarriageComponent } from './confirm-marriage.component';
+import { TimerComponent } from './timer/timer.component';
+
 
 describe('ConfirmMarriageComponent', () => {
   let component: ConfirmMarriageComponent;
@@ -52,6 +54,7 @@ describe('ConfirmMarriageComponent', () => {
         UnsubscribeService,
         NavigationService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     }).compileComponents();
 
