@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.16](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.15...v0.2.16) (2020-10-17)
+
+
+### Features
+
+* Отображение рубля с помощью класса rubles ([5ac86c1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5ac86c1a6e3cd4fdce9d06c239c1702d8f3adbb3))
+* Отображение рубля с помощью класса rubles ([1576334](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1576334f7223d95a37562aaa451af1c186d87c4b))
+
+
+### Bug Fixes
+
+* fix filter for mvd-giac; ([2581385](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2581385d9a499baa7c64e4f5f966b07deed5e692))
+* ипсравил логику фильтрации и сортировки для MVDGIAS; ([7231ed9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/7231ed9c6a4f6e72cd15e826235c3a50f232c460))
+* исправлено фильтрацию для мвд ([9840ca3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9840ca360b43b7efcd82156c32d5ef5cf36d2b03))
+* поправил логику определения перевого экрана в navigation компоненте [ref EPGUCORE-38636] ([826d958](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/826d958806548e25be2a1c1d2712c7e310595c19))
+* поправил тесты, добавил флаг для npm run test:dev, который выводит РЕАЛЬНУЮ ошибку в тестах [ref EPGUCORE-38636] ([95e7833](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/95e7833303c924c80148db6b3f40ef571e9ccc71))
+* починил селектор 'Добавить нового ребенка' [ref EPGUCORE-38636] ([a5e72ce](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a5e72ceda7f6d3c8c98192ff97fbbb9612a374b9))
+* починила валидацию полей в customValidator ([69f7ce3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/69f7ce3799af227eed5fd55bba2885863882a587))
+* убрала копейки в стоимости ([89cb3be](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/89cb3be90d69014d4313b28e101651c96df55424))
+
 ### [0.2.15](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.14...v0.2.15) (2020-10-16)
 
 
