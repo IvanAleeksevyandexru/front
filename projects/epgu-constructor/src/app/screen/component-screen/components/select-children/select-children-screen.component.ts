@@ -32,7 +32,7 @@ export class SelectChildrenScreenComponent implements OnInit {
   constructor(
     private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {
