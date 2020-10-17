@@ -1,6 +1,8 @@
 <form class="form">
-  <div class="form__item" *ngFor="let componentData of form.controls; let idx = index;">
-    <ng-container [ngSwitch]="componentData.value?.type" *ngIf="shownElements[componentData.value?.id]">
+  <div class="form__item" *ngFor="let componentData of formService.form.controls; let idx = index;">
+    <ng-container
+      [ngSwitch]="componentData.value?.type"
+      *ngIf="formService.shownElements[componentData.value?.id]">
       <ng-container *ngSwitchCase="componentType.LabelSection">
         <ng-template
           [ngTemplateOutlet]="formOutputHtml"
@@ -42,7 +44,7 @@
         </ng-template>
         <lib-dropdown
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="dropDowns[componentData.value?.id]"
+          [items]="(dropDowns$ | async)[componentData.value?.id]"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
           class="cs__select cs-select">
@@ -56,7 +58,7 @@
         </ng-template>
         <lib-dropdown
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="dictionaries[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
+          [items]="(dictionaries$ | async)[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
           class="cs__select cs-select">
@@ -74,14 +76,16 @@
           [formControl]="componentData.get('value')"
           [queryMinSymbolsCount]="0"
           [searchCaseSensitive]="false"
-          [fixedItems]="dictionaries[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list">
+          [fixedItems]="(dictionaries$ | async)[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
+          [virtualScroll]="true"
+        >
         </lib-lookup>
       </ng-container>
 
       <ng-container *ngSwitchCase="componentType.RadioInput">
-        <div
-          [hidden]="componentData.value?.attrs?.hidden"
-        >
+          <div
+            [hidden]="componentData.value?.attrs?.hidden"
+          >
           <ng-template
             [ngTemplateOutlet]="formLabel"
             [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
@@ -151,7 +155,7 @@
             [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
             [validationShowOn]="validationShowOn"
             [formControl]="componentData.get('value')"
-            [itemsProvider]="addressHelperService.provider"
+            [itemsProvider]="formService.addressHelperServiceProvider()"
             [clearable]="true"
           >
           </lib-lookup>
@@ -205,10 +209,7 @@
         <ng-template [ngTemplateOutlet]="maskedInput"></ng-template>
       </ng-container>
 
-      <ng-template
-        [ngTemplateOutlet]="formErrors"
-        [ngTemplateOutletContext]="{ $implicit: componentData.get('value') }">
-      </ng-template>
+      <ng-template [ngTemplateOutlet]="formErrors"></ng-template>
 
       <ng-template
         [ngTemplateOutlet]="formHintAndRequired">
@@ -268,20 +269,24 @@
         </epgu-constructor-passport>
       </ng-container>
 
+      <ng-template #formErrors>
+        <div class="form__error">
+          <small
+            *ngIf="componentData.get('value').invalid && componentData.get('value').touched">
+            {{ componentData.get('value').getError('msg') }}
+          </small>
+          <small
+            *ngIf="errors[componentData.get('id').value] && !componentData.get('value').touched">
+              {{ errors[componentData.get('id').value] }}
+          </small>
+        </div>
+      </ng-template>
     </ng-container>
   </div>
 </form>
 
 <ng-template #formLabel let-label>
   <epgu-constructor-label>{{ label }}</epgu-constructor-label>
-</ng-template>
-
-<ng-template #formErrors let-control>
-  <div class="form__error">
-    <small *ngIf="control.invalid && control.touched">
-      {{ control.getError('msg') }}
-    </small>
-  </div>
 </ng-template>
 
 <ng-template #formOutputHtml let-data>
