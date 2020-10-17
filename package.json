@@ -17,7 +17,7 @@
     "stylelint": "stylelint \"**/*.scss\" --config .stylelintrc.json",
     "stylelint:fix": "stylelint \"**/*.scss\" --config .stylelintrc.json --fix",
     "test": "jest --ci",
-    "test:dev": "jest --watch -o",
+    "test:dev": "jest --runInBand --watch -o",
     "test:coverage": "jest --ci --coverage --no-cache --reporters=default --reporters=jest-junit --coverageDirectory=coverage/jest",
     "ci": "yarn lint && yarn stylelint && yarn test && yarn lib:build && yarn build",
     "release": "standard-version",

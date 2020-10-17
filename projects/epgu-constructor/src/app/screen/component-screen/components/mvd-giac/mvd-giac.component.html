@@ -1,22 +1,17 @@
-<section class="mvd-giac-screen">
-  <div class="mvd-giac-screen__form">
-    <form [formGroup]="regionForm" class="form__inputs">
-      <lib-dropdown
-        *ngIf="!isLoading else elseBlock"
-        localSearch="true"
-        id="regionList"
-        name="regionList"
-        formControlName="region"
-        [placeholder]="data.label"
-        [items]="dictionary"
-      ></lib-dropdown>
+<lib-dropdown
+  class="region__list"
+  *ngIf="!isLoading else elseBlock"
+  [localSearch]="true"
+  [formControl]="regionControl"
+  [placeholder]="screenService.componentLabel$ | async"
+  [items]="dictionary"
+  [validationShowOn]="validationShowOn.TOUCHED"
+  [invalid]="regionControl.invalid"
+></lib-dropdown>
 
-      <ng-template #elseBlock>
-        <div class="loader">
-          <lib-loader></lib-loader>
-        </div>
-      </ng-template>
-    </form>
+<ng-template #elseBlock>
+  <div class="loader">
+    <lib-loader></lib-loader>
   </div>
-</section>
+</ng-template>
 

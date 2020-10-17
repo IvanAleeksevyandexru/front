@@ -2,6 +2,7 @@
 @import '../../../../styles/core/typography';
 @import '../../../../styles/core/variables';
 @import '../../../../styles/core/functions';
+@import '../../../../styles/components/rubles';
 
 // test
 .form {
@@ -78,3 +79,5 @@
   line-height: 24px;
   font-weight: bold;
 }
+
+@include rubles('.custom__screen-html', '../../../../../src/assets/img/ruble.svg');

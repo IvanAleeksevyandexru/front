@@ -18,7 +18,6 @@ describe('ActionDirective', () => {
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ActionApiService, useClass: ActionApiServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
         NavigationService,
         UtilsService,
         ScreenService,
@@ -29,20 +28,18 @@ describe('ActionDirective', () => {
   });
 
   it('should create an instance', inject(
-    [ActionApiService, ConfigService, UtilsService, ScreenService, NavigationService],
+    [ActionApiService, UtilsService, ScreenService, NavigationService],
     (
       actionApiService: ActionApiService,
       utilsService: UtilsService,
       screenService: ScreenService,
       navigationService: NavigationService,
-      configService: ConfigService,
     ) => {
       const directive = new ActionDirective(
         actionApiService,
         screenService,
         navigationService,
         utilsService,
-        configService,
       );
 
       expect(directive).toBeTruthy();
