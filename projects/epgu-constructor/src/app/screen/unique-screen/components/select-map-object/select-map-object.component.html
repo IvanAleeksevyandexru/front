@@ -26,7 +26,10 @@
   >
   </lib-map>
   <div *ngIf="selectedValue" class="map-objects-list">
-    <perfect-scrollbar [config]="scrollConfig">
+    <perfect-scrollbar *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
+      <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
+    </perfect-scrollbar>
+    <ng-template #contentBlock>
       <div class="cross-btn" (click)="selectMapObjectService.closeBalloon()"></div>
       <div
         *ngFor="let mapObject of selectedValue.children"
@@ -45,7 +48,7 @@
             (click)="showModalFromTemplate('detailsTemplate', mapObject)"
             href="javascript:void(0)"
             class="details-link"
-            >Узнать подробнее
+          >Узнать подробнее
           </a>
           <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">
             На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы
@@ -53,15 +56,15 @@
               href="javascript:void(0)"
               (click)="showModalFromTemplate('informationTemplate', mapObject)"
               class="information-link"
-              >ознакомиться</a
+            >ознакомиться</a
             >
           </div>
           <lib-button [disabled]="!mapObject.agreement" width="wide" (click)="selectObject()"
-            >Выбрать
+          >Выбрать
           </lib-button>
         </ng-container>
       </div>
-    </perfect-scrollbar>
+    </ng-template>
   </div>
 </div>
 

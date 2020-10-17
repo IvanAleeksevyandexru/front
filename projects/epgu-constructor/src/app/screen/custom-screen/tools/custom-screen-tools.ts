@@ -2,7 +2,7 @@ import { ListItem } from 'epgu-lib';
 import { DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
 import {
   CustomComponent,
-  CustomComponentDictionaryState,
+  CustomListDictionary,
   CustomComponentRef,
   CustomComponentRefRelation,
   CustomScreenComponentTypes
@@ -19,7 +19,7 @@ function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListIte
   };
 }
 
-export function getCustomScreenDictionaryFirstState(): CustomComponentDictionaryState {
+export function getCustomScreenDictionaryFirstState(): CustomListDictionary {
   return {
     loading: true,
     loadError: false,

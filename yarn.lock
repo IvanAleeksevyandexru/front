@@ -220,13 +220,6 @@
   optionalDependencies:
     parse5 "^5.0.0"
 
-"@angular/cdk@9.2.4":
-  version "9.2.4"
-  resolved "http://npm.gosuslugi.local/@angular%2fcdk/-/cdk-9.2.4.tgz#8413958bd275e4c34be3b96f56444671dd30ba93"
-  integrity sha512-iw2+qHMXHYVC6K/fttHeNHIieSKiTEodVutZoOEcBu9rmRTGbLB26V/CRsfIRmA1RBk+uFYWc6UQZnMC3RdnJQ==
-  optionalDependencies:
-    parse5 "^5.0.0"
-
 "@angular/cli@10.1.0":
   version "10.1.0"
   resolved "http://npm.gosuslugi.local/@angular%2fcli/-/cli-10.1.0.tgz#f99df22ad832f58456089c98c7684fb5757be951"
@@ -5045,13 +5038,13 @@ env-variable@0.0.x:
   resolved "http://npm.gosuslugi.local/env-variable/-/env-variable-0.0.6.tgz#74ab20b3786c545b62b4a4813ab8cf22726c9808"
   integrity sha512-bHz59NlBbtS0NhftmR8+ExBEekE7br0e01jw+kk0NDro7TtZzBYZ5ScGPs3OmwnpyfHTHOtr1Y6uedCdrIldtg==
 
-epgu-lib@^0.0.603:
-  version "0.0.603"
-  resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.603.tgz#25133e89e4d3732d1278f8b1db34da5f0292f4d4"
-  integrity sha512-aNDLFewAd/yWin6UIbUBSfdpz3smIhGsnZLX5MouxtCn3nz9XaQC8uE2Uaf/ZWhOcdtQOWkIuKDisfRvZRrs7g==
+epgu-lib@0.0.611:
+  version "0.0.611"
+  resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.611.tgz#f3f5be84ec45b41c970d6d5511dae0a2b914e5b3"
+  integrity sha512-1mrR8+oDLbtOgF1UHa9MOLbUV3jzCElsm1sL4JgWbuntkbrwIzcWLJBtnMtp7nuot8DfHFOqOOicdb3G6VLUrA==
   dependencies:
     "@angular/animations" "10.1.1"
-    "@angular/cdk" "9.2.4"
+    "@angular/cdk" "10.2.0"
     "@angular/common" "10.1.1"
     "@angular/compiler" "10.1.1"
     "@angular/core" "10.1.1"
