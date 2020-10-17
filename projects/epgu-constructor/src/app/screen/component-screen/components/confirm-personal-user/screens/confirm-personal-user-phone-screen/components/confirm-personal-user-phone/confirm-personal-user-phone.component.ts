@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { ScreenService } from '../../../../../../../screen.service';
 
@@ -8,7 +8,7 @@ import { ScreenService } from '../../../../../../../screen.service';
   templateUrl: './confirm-personal-user-phone.component.html',
   styleUrls: ['./confirm-personal-user-phone.component.scss'],
 })
-export class ConfirmPersonalUserPhoneComponent implements OnChanges {
+export class ConfirmPersonalUserPhoneComponent implements OnInit, OnChanges {
   @Input() label: string;
   @Input() data: string;
 
@@ -37,6 +37,12 @@ export class ConfirmPersonalUserPhoneComponent implements OnChanges {
     private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
   ) {}
+
+  ngOnInit(): void {
+    if (!this.data) {
+      this.currentAnswersService.isValid = false;
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data?.currentValue) {

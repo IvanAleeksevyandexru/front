@@ -1,4 +1,5 @@
 @import "src/styles/core";
+@import "src/styles/components/rubles";
 
 // TODO Избавиться от ng-deep
 :host::ng-deep {
@@ -60,6 +61,8 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+
+      @include rubles('.conf-modal__body', '../../../../../../assets/img/ruble.svg');
     }
 
     &__content {
@@ -74,6 +77,15 @@
 
       & > *:not(:last-child) {
         margin-right: 20px;
+      }
+
+      @include tablets-down {
+        flex-direction: column;
+
+        & > *:not(:last-child) {
+          margin-right: 0;
+          margin-bottom: 20px;
+        }
       }
     }
 
@@ -97,5 +109,6 @@
   .conf-modal__body--without-header .ps-content {
     max-height: 420px;
   }
+
 }
 

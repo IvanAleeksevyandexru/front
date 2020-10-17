@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { switchMap, filter, takeUntil, reduce } from 'rxjs/operators';
 import { of, merge } from 'rxjs';
-import { YaMapService } from 'epgu-lib';
+import { HelperService, YaMapService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
@@ -51,6 +51,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public selectedValue: any;
   public mapIsLoaded = false;
   public scrollConfig = { ressScrollX: true, wheelPropagation: false };
+  public isMobile: boolean;
 
   private componentValue: any;
   private screenStore: ScreenStore;
@@ -65,7 +66,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
     private zone: NgZone,
-  ) {}
+  ) {
+    this.isMobile = HelperService.isMobile();
+  }
 
   ngOnInit(): void {
     this.initVariable();
