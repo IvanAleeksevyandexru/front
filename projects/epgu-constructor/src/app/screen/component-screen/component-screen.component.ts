@@ -5,8 +5,8 @@ import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { CurrentAnswersService } from '../current-answers.service';
-import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
+import { Screen } from '../screen.types';
 import { ComponentScreenComponentTypes } from './component-screen.types';
 
 interface ComponentSetting {
@@ -31,7 +31,6 @@ export class ComponentScreenComponent implements OnInit, Screen {
   };
   componentData = null;
   form: FormGroup;
-  isCycledFields = false;
 
   constructor(
     private navigationService: NavigationService,

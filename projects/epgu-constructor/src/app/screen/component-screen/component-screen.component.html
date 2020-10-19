@@ -10,7 +10,6 @@
         <epgu-constructor-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
           [data]="screenService.component"
-          [currentCycledFields]="screenService.currentCycledFields"
           [applicantAnswers]="screenService.applicantAnswers"
           (actionSelect)="nextStep()"
         ></epgu-constructor-confirm-personal-user-address-screen>
@@ -46,7 +45,6 @@
 
         <epgu-constructor-add-passport
           *ngSwitchCase="screenComponentName.passportLookup"
-          [currentCycledFields]="screenService.currentCycledFields"
           [data]="screenService.component"
         ></epgu-constructor-add-passport>
 
@@ -85,20 +83,20 @@
 
     <div class="footer">
       <ng-container
-      *ngIf="(screenService.componentType$ | async) === screenComponentName.divorceConsent"
-    >
-      <lib-button
-        *ngFor="let action of screenService.actions$ | async"
-        epgu-constructor-action
-        [action]="action"
-        class="footer__btn-action"
-        color="white"
+        *ngIf="(screenService.componentType$ | async) === screenComponentName.divorceConsent"
       >
-        <div class="secondary-font">
-          {{ action.label }}
-        </div>
-      </lib-button>
-    </ng-container>
+        <lib-button
+          *ngFor="let action of screenService.actions$ | async"
+          epgu-constructor-action
+          [action]="action"
+          class="footer__btn-action"
+          color="white"
+        >
+          <div class="secondary-font">
+            {{ action.label }}
+          </div>
+        </lib-button>
+      </ng-container>
 
       <lib-button
         *ngIf="componentSetting.displayContinueBtn && (screenService.isShown$ | async)"
