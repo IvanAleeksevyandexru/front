@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { HelperService } from 'epgu-lib';
 import { NavigationPayload } from '../../form-player.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
@@ -7,6 +7,7 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { ScreenService } from '../screen.service';
 import { Screen } from '../screen.types';
 import { QuestionsComponentActions } from './questions-screen.types';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -23,7 +24,9 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     private elRef: ElementRef,
   ) {
     if (HelperService.isMobile()) {
-      this.calculateHeight();
+      fromEvent(window, 'scroll')
+        .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
+        .subscribe(() => this.calculateHeight());
     }
   }
 
