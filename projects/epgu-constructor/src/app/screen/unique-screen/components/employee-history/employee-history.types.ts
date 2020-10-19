@@ -16,6 +16,7 @@ export interface EmployeeHistoryModel {
   place: string,
   address: string,
   checkboxToDate?: boolean;
+  minDateTo?: MonthYear;
 }
 
 export interface EmployeeHistoryAvailableDates {

@@ -52,8 +52,7 @@
 
         <epgu-constructor-mvd-giac
           *ngSwitchCase="screenComponentName.mvdGiac"
-          [applicantAnswers]="screenService.applicantAnswers"
-          [data]="screenService.component"
+          [data]="screenService.component$ | async"
         ></epgu-constructor-mvd-giac>
 
         <epgu-constructor-country-selection
@@ -112,6 +111,7 @@
           {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
         </div>
       </lib-button>
+
       <div *ngIf="componentSetting.displayWarningAnswers" class="footer__warning-answers">
         <epgu-constructor-answer-button
           (click)="nextStep()"

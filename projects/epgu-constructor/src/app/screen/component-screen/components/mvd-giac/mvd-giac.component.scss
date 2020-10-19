@@ -1,31 +1,5 @@
-@import "src/styles/core";
-
-.mvd-giac-screen {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-
-  height: 100%;
-
-  @include tablets-up {
-    background-color: $color-white;
-
-    padding: 24px;
-  }
-}
-
-.mvd-giac-screen__form {
-  flex: 1 1 auto;
-
-  width: 100%;
-}
-
-#regionList {
-  width: 100%;
-}
+//@import "src/styles/core";
 
 .loader {
-  width: 100%;
   text-align: center;
 }
