@@ -123,6 +123,7 @@
           [validationShowOn]="validationShowOn"
           [name]="componentData.value?.id"
           [formControl]="componentData.get('value')"
+          [readOnly]="componentData.value?.attrs?.readonly"
           [minDate]="componentData.value?.attrs?.minDate ? componentData.value?.attrs?.minDate : '-120y'"
           [maxDate]="componentData.value?.attrs?.maxDate ? componentData.value?.attrs?.maxDate : '+50y'"
           align="left"
@@ -237,6 +238,7 @@
           [name]="componentData.value?.id"
           [formControl]="componentData.get('value')"
           [validationShowOn]="validationShowOn"
+          [readOnly]="componentData.value?.attrs?.readonly"
         ></lib-plain-input>
       </ng-template>
 
@@ -253,7 +255,9 @@
           [showConstantMaskSymbols]="true"
           [formControl]="componentData.get('value')"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [validationShowOn]="validationShowOn">
+          [validationShowOn]="validationShowOn"
+          [readOnly]="componentData.value?.attrs?.readonly"
+        >
         </lib-standard-masked-input>
       </ng-template>
 
