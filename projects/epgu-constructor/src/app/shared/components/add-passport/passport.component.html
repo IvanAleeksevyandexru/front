@@ -10,7 +10,7 @@
       [validationShowOn]="touchedUnfocused"
       [invalid]="passportForm.controls[field.fieldName].invalid"
       [formControlName]="field.fieldName"
-      [mask]="field.mask"
+      [mask]="field.mask | maskHandle"
       [showMaskAsPlaceholder]="!field.placeholder"
       [placeholder]="field.placeholder"
       [showConstantMaskSymbols]="true"

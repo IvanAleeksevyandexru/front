@@ -3,6 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DocInputComponent } from './doc-input.component';
 import { DocInputComponentInterface } from './doc-input.types';
 import { CurrentAnswersService } from '../../../current-answers.service';
+import { SharedModule } from 'projects/epgu-constructor/src/app/shared/shared.module';
 
 
 describe('DocInputComponent', () => {
@@ -24,7 +25,8 @@ describe('DocInputComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ DocInputComponent ],
-      providers: [CurrentAnswersService]
+      providers: [CurrentAnswersService],
+      imports: [SharedModule],
     })
     .compileComponents();
   }));
