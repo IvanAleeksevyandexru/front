@@ -69,7 +69,16 @@ export class ComponentListFormService {
     const control = this._form.controls.find(
       (ctrl) => ctrl.value.id === component.id,
     );
-    control.get('value').patchValue(this.toolsService.convertedValue(component));
+    const defaultIndex = component.attrs?.defaultIndex;
+    // Если есть defaultIndex и не сохранненого ранее, то берем из справочника элемент по индексу defaultIndex
+    if (defaultIndex !== undefined && !component.value) {
+      const dicts = this.repository.dictionaries$.getValue();
+      const key = component.attrs.dictionaryType + component.id;
+      const value = dicts[key].list[defaultIndex];
+      control.get('value').patchValue(value);
+    } else {
+      control.get('value').patchValue(this.toolsService.convertedValue(component));
+    }
   }
 
   watchFormArray$(): Observable<Array<CustomListFormGroup>> {
