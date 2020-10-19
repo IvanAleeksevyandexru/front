@@ -15,6 +15,7 @@ import { isEqual } from '../../../../shared/constants/uttils';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper.service';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { ComponentListRepositoryService } from './component-list-repository.service';
+import { ScenarioErrorsDto } from '../../../../services/api/form-player-api/form-player-api.types';
 
 @Injectable()
 export class ComponentListFormService {
@@ -41,11 +42,11 @@ export class ComponentListFormService {
     private repository: ComponentListRepositoryService,
   ) { }
 
-  create(components: Array<CustomComponent>): void {
+  create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
     this.toolsService.createStatusElements(components, this.shownElements);
 
     this._form = new FormArray(
-      components.map((component: CustomComponent) => this.createGroup(component, components))
+      components.map((component: CustomComponent) => this.createGroup(component, components, errors))
     );
 
     components.forEach((component: CustomComponent) => {
@@ -112,12 +113,14 @@ export class ComponentListFormService {
     }, {});
   }
 
-  private createGroup(component: CustomComponent, components: Array<CustomComponent>): FormGroup {
+  private createGroup(component: CustomComponent, components: Array<CustomComponent>, errors: ScenarioErrorsDto): FormGroup {
     const form: FormGroup =  this.fb.group({
       ...component,
       value: [
         this.toolsService.convertedValue(component),
-        this.validationService.customValidator(component)],
+        [this.validationService.customValidator(component),
+        this.validationService.validationBackendError(errors, component)],
+      ],
     });
 
     this.watchFormGroup$(form).subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {

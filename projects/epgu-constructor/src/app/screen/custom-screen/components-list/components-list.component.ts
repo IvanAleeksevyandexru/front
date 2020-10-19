@@ -15,6 +15,7 @@ import { ConfigService } from '../../../config/config.service';
 import { ComponentListFormService } from './services/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
+import { ScenarioErrorsDto } from '../../../services/api/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -35,7 +36,7 @@ export class ComponentsListComponent implements OnChanges {
   readonly componentType = CustomScreenComponentTypes;
 
   @Input() components: CustomComponent;
-  @Input() errors: { [key: string]: string };
+  @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>;
 
   constructor(
@@ -51,7 +52,7 @@ export class ComponentsListComponent implements OnChanges {
     this.unsubscribe();
     const components: Array<CustomComponent> = changes.components?.currentValue;
     if (components) {
-      this.formService.create(components);
+      this.formService.create(components, this.errors);
       this.loadRepository(components);
     }
   }
