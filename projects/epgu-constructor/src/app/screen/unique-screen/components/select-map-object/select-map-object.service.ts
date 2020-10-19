@@ -259,7 +259,7 @@ export class SelectMapObjectService {
 
   public centeredPlaceMarkByObjectValue(value: string) {
     const valueFromDict = this.findObjectByValue(value);
-    if (valueFromDict?.idForMap) {
+    if (valueFromDict?.center) {
       this.centeredPlaceMark(valueFromDict.center, valueFromDict.idForMap);
     }
   }
