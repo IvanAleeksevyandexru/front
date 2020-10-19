@@ -93,10 +93,11 @@ export class ActionDirective {
   }
 
   private downloadAction(): void {
-    this.sendAction<Blob>().subscribe(
-      (value) => {
-        if (!value.errorList.length) {
-          this.utilsService.downloadFile(value.responseData.value);
+    this.sendAction<string>().subscribe(
+      (response) => {
+        if (!response.errorList.length) {
+          const { value, type } = response.responseData;
+          this.utilsService.downloadFile(value, type);
         }
       },
       (error) => {

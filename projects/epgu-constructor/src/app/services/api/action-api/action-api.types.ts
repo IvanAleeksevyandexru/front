@@ -7,5 +7,5 @@ export interface ActionApiDTO<T = {}> {
 
 export interface ActionApiResponse<T> {
   errorList: { [key: string]: any }[];
-  responseData: { value: T };
+  responseData: { value: T; type: string };
 }
