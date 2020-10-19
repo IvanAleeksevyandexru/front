@@ -8,12 +8,8 @@ import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 })
 export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   @Input() data: ConfirmAddressInterface;
-  @Input() currentCycledFields: object;
   @Input() applicantAnswers: object;
   @Output() actionSelect = new EventEmitter();
-
-  isCycledFields: boolean;
-  cycledValues: any;
 
   constructor(private currentAnswersService: CurrentAnswersService) {}
 
@@ -25,15 +21,6 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     }
   }
 
-  sameAddressAction() {
-    const [currentCycledFieldsKey] = Object.keys(this.currentCycledFields);
-    const rawValueRef = this.applicantAnswers[currentCycledFieldsKey].value;
-    const valueRef = typeof rawValueRef === 'string' ? JSON.parse(rawValueRef) : rawValueRef;
-    const { regAddr, regDate } = valueRef;
-    this.data.value = JSON.stringify({ regDate, regAddr });
-    this.data = { ...this.data };
-  }
-
   noAddressAction() {
     this.data.value = JSON.stringify({ regDate: '', regAddr: '' });
     this.data = { ...this.data };
@@ -42,9 +29,6 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   clickToAction(event): void {
     const { action } = event;
     switch (action) {
-      case 'sameAddress':
-        this.sameAddressAction();
-        break;
       case 'noAddress':
         this.noAddressAction();
         break;
