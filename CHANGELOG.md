@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.17](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.16...v0.2.17) (2020-10-19)
+
+
+### Features
+
+* добавил возможность применения флага readonly для контролов [ref EPGUCORE-39173] ([32ee1f2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/32ee1f232f814fba48f70e066fb0858484b52f22))
+* подсчёта высоты компонента, кнопки к низу[EPGUCORE-39016] ([10d826b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/10d826b928cdf58949d6898fccde7a6d2f80d9f3))
+
+
+### Bug Fixes
+
+* добавил поддержку обязательной mask (и опционально placeholder) для компонента DocInput [ref EPGUCORE-39399] ([efcad03](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/efcad03f64e75d12ff6baebe607ab87d63dae957))
+* добавил поддержку обязательной mask (и опционально placeholder) для компонента PassportLookup [ref EPGUCORE-39399] ([13ff9fd](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/13ff9fd5c68eeaebe42e4b9f45ed6858e73040ce))
+* исправил проставление выбранного загса, если загс был с 0 индексом в массиве. ([cf9657b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/cf9657ba5224c64214ef20af1c1dbecabee1515f))
+* поправил логику определения перевого экрана в navigation компоненте [ref EPGUCORE-38636] ([e28f921](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e28f9218e22e24b439584e5d36da6ec5dc46eb3a))
+* починил пару тестов, убрал рудиментные isCycledFields где нужно [ref EPGUCORE-38636] ([e161fd0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e161fd03d32e0f86fdde48f5c8874a7902915e31))
+
 ### [0.2.16](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.15...v0.2.16) (2020-10-17)
 
 
