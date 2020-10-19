@@ -12,6 +12,7 @@ import { NavigationService } from '../../services/navigation/navigation.service'
 import { UtilsService } from '../../../services/utils/utils.service';
 import { Answer } from '../../types/answer';
 import { ConfigService } from '../../../config/config.service';
+import { ActionApiDTO } from '../../../services/api/action-api/action-api.types';
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -29,8 +30,7 @@ export class ActionDirective {
     private navigationService: NavigationService,
     private utilsService: UtilsService,
     private configService: ConfigService,
-  ) {
-  }
+  ) {}
 
   private switchAction(): void {
     switch (this.action.type) {
@@ -47,11 +47,9 @@ export class ActionDirective {
   }
 
   private sendAction<T>(responseType?: 'blob'): Observable<T | Blob> {
-    return this.actionApiService.send<T>(
-      this.action.action,
-      this.screenService.getStore(),
-      responseType,
-    );
+    const data = this.getActionDTO();
+
+    return this.actionApiService.send<T>(this.action.action, data, responseType);
   }
 
   private nextStep(): void {
@@ -102,5 +100,12 @@ export class ActionDirective {
 
   private redirectToLK(): void {
     window.location.href = `${this.configService.lkUrl}/profile/personal`;
+  }
+
+  private getActionDTO(): ActionApiDTO {
+    return {
+      scenarioDto: this.screenService.getStore(),
+      additionalParams: {},
+    };
   }
 }
