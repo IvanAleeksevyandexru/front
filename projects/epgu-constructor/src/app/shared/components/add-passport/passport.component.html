@@ -1,8 +1,8 @@
 <div class="form__name">Паспорт РФ</div>
 <form [formGroup]="passportForm" class="form__inputs">
   <div class="inputs__field" *ngFor="let field of attrs.fields">
-    <epgu-constructor-label [attr.for]="field.fieldName">{{field.label}}</epgu-constructor-label>
-    <lib-plain-input
+    <epgu-constructor-label [attr.for]="field.fieldName">{{ field.label }}</epgu-constructor-label>
+    <lib-standard-masked-input
       epgu-constructor-trim
       epgu-constructor-text-transform
       [id]="field.fieldName"
@@ -10,6 +10,10 @@
       [validationShowOn]="touchedUnfocused"
       [invalid]="passportForm.controls[field.fieldName].invalid"
       [formControlName]="field.fieldName"
-    ></lib-plain-input>
+      [mask]="field.mask"
+      [showMaskAsPlaceholder]="!field.placeholder"
+      [placeholder]="field.placeholder"
+      [showConstantMaskSymbols]="true"
+    ></lib-standard-masked-input>
   </div>
 </form>
