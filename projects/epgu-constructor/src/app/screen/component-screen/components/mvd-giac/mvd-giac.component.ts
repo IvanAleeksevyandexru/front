@@ -29,7 +29,7 @@ export class MvdGiacComponent implements OnChanges {
   regionControl: FormControl;
   validationShowOn = ValidationShowOn;
   isLoading = true;
-
+  // asdasd
   @Input() data: ComponentDto;
   recalculateForm = () => this.regionControl.updateValueAndValidity();
 
