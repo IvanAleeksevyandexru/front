@@ -21,6 +21,9 @@ export class DocInputComponent implements OnInit {
   @Input() data: DocInputComponentInterface;
 
   form = new FormGroup({});
+  fields: {
+    [key: string]: IField;
+  } = {};
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
@@ -37,6 +40,7 @@ export class DocInputComponent implements OnInit {
 
   private generateFormGroup(): void {
     this.data.attrs.fields.forEach((field: IField) => {
+      this.fields[field.fieldName] = field;
       const validators = [Validators.required];
       if (field.maxlength) {
         validators.push(Validators.maxLength(field.maxlength));
