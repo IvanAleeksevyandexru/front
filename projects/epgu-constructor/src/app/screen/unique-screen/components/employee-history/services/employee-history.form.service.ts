@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { filter, takeUntil } from 'rxjs/operators';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import {
   EmployeeType,
@@ -43,7 +43,8 @@ export class EmployeeHistoryFormService {
       position: [null],
       place: [null],
       address: [null],
-      checkboxToDate: [false]
+      checkboxToDate: [false],
+      minDateTo: [null],
     });
 
     this.employeeHistoryForm.push(form);
@@ -67,6 +68,11 @@ export class EmployeeHistoryFormService {
   }
 
   private newGenerationWatch(form: FormGroup): void {
+    form.get('from').valueChanges.pipe(takeUntil(this.unsubscribeService)).subscribe((date: MonthYear) => {
+      form.get('to').reset();
+      form.get('minDateTo').patchValue(date);
+    });
+
     form.get('checkboxToDate').valueChanges
       .pipe(
         filter((checked: boolean) => checked),
@@ -83,7 +89,10 @@ export class EmployeeHistoryFormService {
     });
 
     combineLatest(form.get('from').valueChanges, form.get('to').valueChanges)
-      .pipe(takeUntil(this.unsubscribeService))
+      .pipe(
+        filter(([fromDate, toDate]) => toDate),
+        takeUntil(this.unsubscribeService),
+      )
       .subscribe(() => {
         this.monthsService.updateAvailableMonths(this.employeeHistoryForm.getRawValue());
       });

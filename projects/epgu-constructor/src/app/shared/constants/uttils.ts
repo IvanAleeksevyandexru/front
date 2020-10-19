@@ -16,3 +16,15 @@ export function getHiddenBlock(el: HTMLElement, id): HTMLElement {
 export function isEqual<T>(prev: T, next: T): boolean {
   return JSON.stringify(prev) === JSON.stringify(next);
 }
+
+export function isBoolean(value: any): boolean {
+  return typeof value === 'boolean';
+}
+
+export function isUndefined(value: any): boolean {
+  return typeof value === 'undefined';
+}
+
+export function toBoolean(value: any): boolean {
+  return isBoolean(value) ? value : (value === 'true');
+}

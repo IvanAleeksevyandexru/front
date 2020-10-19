@@ -1,5 +1,8 @@
 @import 'src/styles/core';
+@import 'src/styles/components/rubles';
 
 :host {
   display: block;
 }
+
+@include rubles('.info__text', '../../../../../assets/img/ruble.svg');

@@ -11,7 +11,6 @@ import { Navigation, NavigationOptions } from '../../../form-player.types';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { Answer } from '../../types/answer';
-import { ConfigService } from '../../../config/config.service';
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -22,13 +21,11 @@ export class ActionDirective {
   @HostListener('click') onClick() {
     this.switchAction();
   }
-
   constructor(
     private actionApiService: ActionApiService,
     private screenService: ScreenService,
-    private navigationService: NavigationService,
+    private navService: NavigationService,
     private utilsService: UtilsService,
-    private configService: ConfigService,
   ) {
   }
 
@@ -41,8 +38,14 @@ export class ActionDirective {
         this.nextStep();
         break;
       case ActionType.redirectToLK:
-        this.redirectToLK();
+        this.navService.redirectToLK();
         break;
+      case ActionType.profileEdit:
+        this.navService.redirectToProfileEdit();
+        break;
+      case ActionType.home:
+        this.navService.redirectToHome();
+      break;
     }
   }
 
@@ -62,7 +65,7 @@ export class ActionDirective {
       options,
     };
 
-    this.navigationService.nextStep.next(navigation);
+    this.navService.nextStep.next(navigation);
   }
 
   private getOptions(): NavigationOptions {
@@ -98,9 +101,5 @@ export class ActionDirective {
         console.log(error);
       },
     );
-  }
-
-  private redirectToLK(): void {
-    window.location.href = `${this.configService.lkUrl}/profile/personal`;
   }
 }

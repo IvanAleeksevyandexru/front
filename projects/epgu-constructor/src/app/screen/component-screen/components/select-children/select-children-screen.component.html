@@ -29,7 +29,11 @@
               class="card__content"
               *ngIf="selectedItems[item] && selectedItems[item][isNewRef]"
             >
-              <epgu-constructor-components-list (changes)="updateChild($event, item)">
+              <epgu-constructor-components-list
+                (changes)="updateChild($event, item)"
+                [components]="screenService.component?.attrs?.components"
+                [errors]="screenService.getStore().errors"
+              >
               </epgu-constructor-components-list>
             </section>
           </div>
