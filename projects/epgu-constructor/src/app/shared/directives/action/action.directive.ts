@@ -12,6 +12,7 @@ import { NavigationService } from '../../services/navigation/navigation.service'
 import { UtilsService } from '../../../services/utils/utils.service';
 import { Answer } from '../../types/answer';
 import { ActionApiDTO, ActionApiResponse } from '../../../services/api/action-api/action-api.types';
+import { filter } from 'rxjs/operators';
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -28,8 +29,7 @@ export class ActionDirective {
     private screenService: ScreenService,
     private navService: NavigationService,
     private utilsService: UtilsService,
-  ) {
-  }
+  ) {}
 
   private switchAction(): void {
     switch (this.action.type) {
@@ -93,17 +93,12 @@ export class ActionDirective {
   }
 
   private downloadAction(): void {
-    this.sendAction<string>().subscribe(
-      (response) => {
-        if (!response.errorList.length) {
-          const { value, type } = response.responseData;
-          this.utilsService.downloadFile(value, type);
-        }
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
+    this.sendAction<string>()
+      .pipe(filter((response) => !response.errorList.length))
+      .subscribe(
+        ({ responseData }) => this.utilsService.downloadFile(responseData),
+        (error) => console.log(error),
+      );
   }
 
   private getActionDTO(): ActionApiDTO {
