@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CurrentAnswersService } from '../../../../../current-answers.service';
-import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
 @Component({
@@ -9,45 +8,17 @@ import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 })
 export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   @Input() data: ConfirmAddressInterface;
-  @Input() currentCycledFields: object;
   @Input() applicantAnswers: object;
   @Output() actionSelect = new EventEmitter();
 
-  isCycledFields: boolean;
-  cycledValues: any;
-
-  constructor(
-    private currentAnswersService: CurrentAnswersService,
-    private toolsService: ToolsService,
-  ) {}
+  constructor(private currentAnswersService: CurrentAnswersService) {}
 
   ngOnInit(): void {
-    this.isCycledFields = !!Object.keys(this.currentCycledFields).length;
-    if (this.isCycledFields) {
-      [this.cycledValues] = [
-        ...Object.values(this.currentCycledFields).map((value) => JSON.parse(value)),
-      ];
-      // format state data to {fieldName: value} format
-      const data = this.data.attrs.fields.reduce((result, item) => {
-        const { fieldName } = item;
-        if (!fieldName) return result;
-
-        // eslint-disable-next-line no-param-reassign
-        result[fieldName] = this.cycledValues[fieldName];
-        return result;
-      }, {});
-      this.data.value = JSON.stringify(data);
-    }
     this.currentAnswersService.state = this.data.value;
-  }
 
-  sameAddressAction() {
-    const [currentCycledFieldsKey] = Object.keys(this.currentCycledFields);
-    const rawValueRef = this.applicantAnswers[currentCycledFieldsKey].value;
-    const valueRef = typeof rawValueRef === 'string' ? JSON.parse(rawValueRef) : rawValueRef;
-    const { regAddr, regDate } = valueRef;
-    this.data.value = JSON.stringify({ regDate, regAddr });
-    this.data = { ...this.data };
+    if (!this.data.value) {
+      this.currentAnswersService.isValid = false;
+    }
   }
 
   noAddressAction() {
@@ -58,9 +29,6 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   clickToAction(event): void {
     const { action } = event;
     switch (action) {
-      case 'sameAddress':
-        this.sameAddressAction();
-        break;
       case 'noAddress':
         this.noAddressAction();
         break;
@@ -77,6 +45,11 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
 
   handleDataChange(changes: any) {
     this.data.value = changes;
+    if (changes) {
+      this.currentAnswersService.isValid = true;
+    } else {
+      this.currentAnswersService.isValid = false;
+    }
     this.currentAnswersService.state = changes;
   }
 }

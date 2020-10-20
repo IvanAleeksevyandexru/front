@@ -1,16 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ListItem } from 'epgu-lib';
-import { filter, takeUntil } from 'rxjs/operators';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { ListItem, ValidationShowOn } from 'epgu-lib';
+import { takeUntil } from 'rxjs/operators';
 import { CurrentAnswersService } from '../../../current-answers.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import {
-  getFilteredDictionaryForMvdGiac,
-  getTransformedDictionaryForMvgGiac,
+  getAnswerFromPreviousPageForMvdGias,
+  getMvdGiasForUserAddress,
+  sortUserMvdGias,
 } from './mvd-giac.functions';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { DictionaryResponse } from '../../../../services/api/dictionary-api/dictionary-api.types';
-import { CachedAnswers } from '../../../screen.types';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../../../services/api/dictionary-api/dictionary-api.types';
+import { DictionaryUtilities } from '../../../../shared/services/dictionary/dictionary-utilities-service';
+import { ScreenService } from '../../../screen.service';
+import { ComponentDto } from '../../../../services/api/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-mvd-giac',
@@ -18,98 +24,73 @@ import { CachedAnswers } from '../../../screen.types';
   styleUrls: ['./mvd-giac.component.scss'],
   providers: [UnsubscribeService],
 })
-export class MvdGiacComponent implements OnInit {
-  @Input() data: any;
-  @Input() applicantAnswers: CachedAnswers;
-  @Output() valueChangedEvent = new EventEmitter();
+export class MvdGiacComponent implements OnChanges {
+  dictionary: Array<Partial<ListItem>> = [];
+  regionControl: FormControl;
+  validationShowOn = ValidationShowOn;
+  isLoading = true;
 
-  regionForm: FormGroup;
-  isLoading;
-
-  dictionary = [];
+  @Input() data: ComponentDto;
+  recalculateForm = () => this.regionControl.updateValueAndValidity();
 
   constructor(
-    private fb: FormBuilder,
     private currentAnswersService: CurrentAnswersService,
     private dictionaryApiService: DictionaryApiService,
     private ngUnsubscribe$: UnsubscribeService,
+    public screenService: ScreenService,
   ) {}
 
-  public ngOnInit(): void {
-    this.isLoading = true;
-    this.initForm();
-    this.loadDictionary(this.data.attrs.dictionaryType);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes?.data?.currentValue) {
+      this.initFormControl(changes?.data?.currentValue);
+      this.subscribeFormValueChanges();
+      this.recalculateForm();
+      this.loadDictionary(changes?.data?.currentValue.attrs.dictionaryType);
+    }
   }
 
-  private initForm() {
-    this.regionForm = this.getRegionGroupForm();
-    this.subscribeFormChanges();
+  private subscribeFormValueChanges(): void {
+    this.regionControl.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((value) => this.formValueChanges(value));
   }
 
-  private subscribeFormChanges() {
-    this.regionForm.valueChanges
-      .pipe(
-        takeUntil(this.ngUnsubscribe$),
-        filter(() => this.regionForm.valid),
-      )
-      .subscribe((value) => this.formChangesHandler(value));
+  private formValueChanges(value): void {
+    this.currentAnswersService.state = value;
+    this.currentAnswersService.isValid = this.regionControl.valid;
   }
 
-  private formChangesHandler(value) {
-    this.currentAnswersService.state = value.region;
+  private initFormControl(component: ComponentDto): void {
+    const getRequiredValidator = () => (component.required ? Validators.required : null);
+    this.regionControl = new FormControl(component.value, getRequiredValidator());
   }
 
-  private getRegionGroupForm() {
-    return this.fb.group({
-      region: this.fb.control({
-        value: null,
-      }),
-    });
-  }
-
-  private loadDictionary(dictionaryName: string) {
+  private loadDictionary(dictionaryName: string): void {
     this.dictionaryApiService
       .getMvdDictionary(dictionaryName, { pageNum: 0 })
       .subscribe((data) => this.loadDictionarySuccess(data));
   }
 
-  private loadDictionarySuccess(data: DictionaryResponse) {
-    this.dictionary = getTransformedDictionaryForMvgGiac(data);
-    this.filterRegion();
+  private loadDictionarySuccess(data: DictionaryResponse): void {
+    this.dictionary = this.getDictionary(data.items);
+    if (this.dictionary.length === 1) {
+      this.setOneRegion(this.dictionary[0].text);
+    }
     this.isLoading = false;
   }
 
-  private filterRegion() {
-    const { q1, q5, pd4, pd5 } = this.applicantAnswers;
-    // <--- значение предыдущих экранов
-    const getCurrentRegion = () => JSON.parse(pd4?.value || '{}').regAddr?.region;
-    const getRegistrationRegion = () => JSON.parse(pd5?.value || '{}').regAddr?.region;
-    const getDocumentType = () => q1?.value;
-    const isSameAddress = () => q5?.value === 'Да';
-    // <--- проверки
-    const isSameRegion = () => getRegistrationRegion() !== getCurrentRegion();
-    const isBaykanur = () => getCurrentRegion() === 'Байконур';
-    const isRegionDifferent = () => !isSameAddress() && isSameRegion();
-    const isWebDoc = getDocumentType() === 'Электронная справка';
+  getDictionary(items: Array<DictionaryItem>): Array<Partial<ListItem>> {
+    const userAnswers = getAnswerFromPreviousPageForMvdGias(this.screenService.applicantAnswers);
+    const { isAddressSame, regRegion, factRegion } = userAnswers;
+    const newItems = DictionaryUtilities.adaptDictionaryToListItem(items);
+    const dictionary = getMvdGiasForUserAddress(newItems, regRegion, factRegion, isAddressSame);
+    const getSortedMvdDic = () => sortUserMvdGias(dictionary, regRegion, factRegion);
 
-    if (!isWebDoc || isRegionDifferent() || isBaykanur()) {
-      return;
-    }
-
-    const filteredDictionary = getFilteredDictionaryForMvdGiac(this.dictionary, getCurrentRegion());
-
-    if (filteredDictionary) {
-      this.dictionary = filteredDictionary;
-    }
-
-    if (this.dictionary.length === 1) {
-      this.setOneRegion(this.dictionary[0]);
-    }
+    return dictionary.length > 2 ? getSortedMvdDic() : dictionary;
   }
 
-  private setOneRegion(region: ListItem) {
-    const regionControl = this.regionForm.get('region');
-    regionControl.patchValue(region);
-    regionControl.disable();
+  private setOneRegion(region: string) {
+    this.regionControl.patchValue(region);
+    this.regionControl.disable();
   }
 }

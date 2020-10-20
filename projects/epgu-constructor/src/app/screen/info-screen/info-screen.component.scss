@@ -11,27 +11,37 @@
   @include navigation-mt();
 }
 
-.info__head {
-  margin-bottom: 24px;
+.info {
+  &__head {
+    margin-bottom: 24px;
+  }
+
+  &__body {
+    margin-bottom: 24px;
+  }
+
+  &__submit {
+    text-align: center;
+    display: inline-block;
+
+    &::ng-deep button {
+      min-width: 100px;
+    }
+  }
 }
 
-.info__body {
-  margin-bottom: 24px;
+.info-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+
+  @include phones-down {
+    margin-top: 24px;
+  }
 }
 
 .divider {
   margin: 0 0 24px;
-}
-
-.info__footer {
-  text-align: center;
-}
-
-.info-footer__submit {
-  display: inline-block;
-  &::ng-deep button {
-    min-width: 100px;
-  }
 }
 
 .screen-container-mt {

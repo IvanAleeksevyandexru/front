@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { HelperService } from 'epgu-lib';
 import { ConfirmationModal } from '../confirmation-modal.interface';
 import { ConfirmationModalBaseButton } from './confirmation-modal-base.interface';
 
@@ -15,7 +16,12 @@ export class ConfirmationModalBaseComponent {
 
   @Output() closeModalChange = new EventEmitter();
 
+  public isMobile: boolean;
   public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
+
+  constructor() {
+    this.isMobile = HelperService.isMobile();
+  }
 
   closeModal() {
     this.closeModalChange.emit();

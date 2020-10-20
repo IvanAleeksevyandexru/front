@@ -1,6 +1,7 @@
 import { IdictionaryFilter } from '../../../screen/unique-screen/components/select-map-object/select-map-object.interface';
 import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
-import { DictionaryFilters } from '../../../services/api/dictionary-api/dictionary-api.types';
+import { DictionaryFilters, DictionaryItem } from '../../../services/api/dictionary-api/dictionary-api.types';
+import { ListItem } from 'epgu-lib';
 
 export class DictionaryUtilities {
 
@@ -66,17 +67,15 @@ export class DictionaryUtilities {
   }
 
   /**
-   * Мапим словарь под формат lib-lookup из EPGU-lib
-   * @param dictionaryItems массив элементов словаря
+   * Мапим словарь в ListItem для компонента EPGU отвечающий за список
+   * @param items массив элементов словаря
    */
-  public static adaptDictionaryForLookupForSelectMap(dictionaryItems: Array<any>) {
-    return dictionaryItems.map((item) => {
-      return {
-        originalItem: item,
-        id: item.value,
-        text: item.title,
-      };
-    });
+  public static adaptDictionaryToListItem(items: Array<DictionaryItem>): Array<Partial<ListItem>> {
+    return items.map((item) => ({
+      originalItem: item,
+      id: item.value,
+      text: item.title,
+    }));
   }
 
 }

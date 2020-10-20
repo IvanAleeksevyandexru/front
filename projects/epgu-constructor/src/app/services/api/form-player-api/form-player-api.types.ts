@@ -43,7 +43,7 @@ export interface ComponentDtoAction {
   label: string;
   value: string;
   action: string;
-  type: ActionType;
+  type?: ActionType;
   hidden?: boolean;
   disabled?: boolean;
 }
@@ -142,6 +142,8 @@ export enum ActionType {
   download = 'download',
   nextStep = 'nextStep',
   redirectToLK = 'redirectToLK',
+  profileEdit = 'profileEdit',
+  home = 'home'
 }
 
 export interface CheckOrderApiResponse {

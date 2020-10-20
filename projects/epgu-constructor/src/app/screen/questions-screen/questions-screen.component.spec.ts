@@ -6,6 +6,7 @@ import { ScreenStore, ScreenTypes } from '../screen.types';
 import { SharedModule } from '../../shared/shared.module';
 import { QuestionsScreenComponent } from './questions-screen.component';
 import { EpguLibModule } from 'epgu-lib';
+import { ElementRef, Renderer2 } from '@angular/core';
 
 xdescribe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
@@ -41,6 +42,8 @@ xdescribe('QuestionsScreenComponent', () => {
       declarations: [QuestionsScreenComponent],
       providers: [
         NavigationService,
+        Renderer2,
+        ElementRef,
         UnsubscribeService,
         ScreenService,
       ]

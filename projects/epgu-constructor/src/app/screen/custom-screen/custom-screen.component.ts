@@ -17,12 +17,7 @@ const moment = moment_;
 })
 export class CustomScreenComponent implements OnInit, Screen {
   dataToSend: NavigationPayload;
-  isCycledFields: boolean;
-  cycledValues: any;
   isValid: boolean;
-
-  private currentCycledFields = this.screenService?.currentCycledFields || {};
-  private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
     private navigationService: NavigationService,
@@ -59,7 +54,7 @@ export class CustomScreenComponent implements OnInit, Screen {
   }
 
   changeComponentsList(changes: { [key: string]: any }): void {
-    this.isValid = Object.values(changes).every((item) => item.valid);
+    this.isValid = Object.values(changes).every((item) => item.isValid);
     this.dataToSend = this.getFormattedData(changes);
   }
 
