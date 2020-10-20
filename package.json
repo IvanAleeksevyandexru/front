@@ -96,6 +96,7 @@
     "jest": "^26.4.2",
     "jest-junit": "11.1.0",
     "jest-preset-angular": "^8.3.1",
+    "json-server": "^0.16.2",
     "lint-staged": "10.2.11",
     "ng-bullet": "1.0.3",
     "ng-mocks": "10.1.2",
