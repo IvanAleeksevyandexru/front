@@ -41,7 +41,7 @@
     </div>
   </epgu-constructor-screen-pad>
 
-  <div class="info-footer">
+  <div class="info-footer" *ngIf="footerActions?.length">
     <lib-button
       *ngFor="let action of footerActions"
       epgu-constructor-action
