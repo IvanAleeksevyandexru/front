@@ -108,7 +108,9 @@
             [checkboxId]="componentData.value?.id"
             [formControl]="componentData.get('value')"
             [disabled]="componentData.value?.disabled"
-            [labelText]="componentData.value?.label">
+            [labelText]="componentData.value?.label"
+            [required]="componentData.value?.required"
+          >
           </lib-checkbox>
         </div>
       </ng-container>
@@ -221,7 +223,7 @@
           <span *ngIf="componentData.value?.attrs?.hint as hint" class="form__item__hint">
             {{ hint }}
           </span>
-          <epgu-constructor-helper-text *ngIf="!componentData.value?.required">
+          <epgu-constructor-helper-text *ngIf="!componentData.value?.required && componentData.value?.type !== componentType.CheckBox">
             {{ optionalField }}
           </epgu-constructor-helper-text>
         </div>
