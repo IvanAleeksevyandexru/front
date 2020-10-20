@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { CarInfoValues } from '../../models/car-info.interface';
-import { Display } from '../../../../../screen.types';
+import { DisplayDto } from '../../../../../../services/api/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-car-info',
@@ -10,7 +10,7 @@ import { Display } from '../../../../../screen.types';
 })
 export class CarInfoComponent implements OnInit {
   @Input() isLoading: boolean;
-  @Input() display: Display;
+  @Input() display: DisplayDto;
   @Output() nextStepEvent = new EventEmitter<string>();
 
   carInfo: CarInfoValues;
