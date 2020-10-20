@@ -139,8 +139,8 @@ export class ConfigService implements Config {
     this._invitationUrl = config.invitationUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
     this._staticDomainAssetsPath = this.getStaticDomainCfg();
-    this._mocks = config.mocks;
-    this._mockUrl = config.mockUrl;
+    this._mocks = config.mocks || [];
+    this._mockUrl = config.mockUrl || '';
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
   }
