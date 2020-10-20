@@ -16,6 +16,7 @@ import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../addr
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
 import { ScenarioErrorsDto } from '../../../../services/api/form-player-api/form-player-api.types';
+import { UtilsService as utils } from '../../../../services/utils/utils.service';
 
 @Injectable()
 export class ComponentListFormService {
@@ -70,10 +71,10 @@ export class ComponentListFormService {
       (ctrl) => ctrl.value.id === component.id,
     );
     const defaultIndex = component.attrs?.defaultIndex;
-    // Если есть defaultIndex и не сохранненого ранее, то берем из справочника элемент по индексу defaultIndex
+    // Если есть defaultIndex и нет сохранненого ранее значения, то берем из справочника элемент по индексу defaultIndex
     if (defaultIndex !== undefined && !component.value) {
-      const dicts = this.repository.dictionaries$.getValue();
-      const key = component.attrs.dictionaryType + component.id;
+      const dicts = this.repository.dictionaries;
+      const key = utils.getDictKeyByComp(component);
       const value = dicts[key].list[defaultIndex];
       control.get('value').patchValue(value);
     } else {

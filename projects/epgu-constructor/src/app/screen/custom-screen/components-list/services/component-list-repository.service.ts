@@ -16,6 +16,7 @@ import { DictionaryOptions, DictionaryResponse } from '../../../../services/api/
 import { map, tap } from 'rxjs/operators';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { ComponentListToolsService } from './component-list-tools.service';
+import { UtilsService as utils } from '../../../../services/utils/utils.service';
 
 @Injectable()
 export class ComponentListRepositoryService {
@@ -29,6 +30,10 @@ export class ComponentListRepositoryService {
 
   get dictionaries$(): BehaviorSubject<CustomListDictionaries> {
     return this._dictionaries$;
+  }
+
+  public get dictionaries(): CustomListDictionaries {
+    return this._dictionaries$.getValue();
   }
 
   constructor(
@@ -84,9 +89,9 @@ export class ComponentListRepositoryService {
   }
 
   initDictionary(reference: CustomListGenericData<DictionaryResponse>): void {
-    const dictionaries: CustomListDictionaries = this.dictionaries$.getValue();
+    const dictionaries: CustomListDictionaries = this.dictionaries;
     const { dictionaryType } = reference.component.attrs;
-    const id = dictionaryType + reference.component.id;
+    const id = utils.getDictKeyByComp(reference.component);
 
     dictionaries[id] = getCustomScreenDictionaryFirstState();
     dictionaries[id].loading = false;
