@@ -65,14 +65,14 @@ export class ScreenContent {
   }
   public terminal$ = this._terminal.asObservable();
 
-  private _cssClass = new BehaviorSubject<string>(null);
-  public get cssClass() {
-    return this._cssClass.getValue();
+  private _displayCssClass = new BehaviorSubject<string>(null);
+  public get displayCssClass() {
+    return this._displayCssClass.getValue();
   }
-  public set cssClass(val: string) {
-    this._cssClass.next(val);
+  public set displayCssClass(val: string) {
+    this._displayCssClass.next(val);
   }
-  public cssClass$ = this._cssClass.asObservable();
+  public displayCssClass$ = this._displayCssClass.asObservable();
 
   private _screenType = new BehaviorSubject<ScreenTypes>(null);
   public get screenType() {
@@ -194,7 +194,7 @@ export class ScreenContent {
     this.screenType = type;
     this.gender = gender;
     this.terminal = terminal;
-    this.cssClass = cssClass;
+    this.displayCssClass = cssClass;
     this.orderId = orderId;
     this.componentErrors = errors;
     this.componentError = errors[firstComponent?.id];

@@ -66,7 +66,7 @@ export interface DisplayDto {
   header: string;
   subHeader: DisplaySubjHead;
   label?: string;
-  cssClass?: string;
+  displayCssClass?: string;
   id: string;
   name: string;
   submitLabel: string;
