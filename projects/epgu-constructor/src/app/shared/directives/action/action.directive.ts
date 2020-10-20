@@ -11,6 +11,8 @@ import { Navigation, NavigationOptions } from '../../../form-player.types';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { Answer } from '../../types/answer';
+import { ActionApiDTO, ActionApiResponse } from '../../../services/api/action-api/action-api.types';
+import { filter } from 'rxjs/operators';
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -21,13 +23,13 @@ export class ActionDirective {
   @HostListener('click') onClick() {
     this.switchAction();
   }
+
   constructor(
     private actionApiService: ActionApiService,
     private screenService: ScreenService,
     private navService: NavigationService,
     private utilsService: UtilsService,
-  ) {
-  }
+  ) {}
 
   private switchAction(): void {
     switch (this.action.type) {
@@ -45,16 +47,14 @@ export class ActionDirective {
         break;
       case ActionType.home:
         this.navService.redirectToHome();
-      break;
+        break;
     }
   }
 
-  private sendAction<T>(responseType?: 'blob'): Observable<T | Blob> {
-    return this.actionApiService.send<T>(
-      this.action.action,
-      this.screenService.getStore(),
-      responseType,
-    );
+  private sendAction<T>(): Observable<ActionApiResponse<T>> {
+    const data = this.getActionDTO();
+
+    return this.actionApiService.send<T>(this.action.action, data);
   }
 
   private nextStep(): void {
@@ -93,13 +93,18 @@ export class ActionDirective {
   }
 
   private downloadAction(): void {
-    this.sendAction<Blob>('blob').subscribe(
-      (value) => {
-        this.utilsService.downloadFile(value);
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
+    this.sendAction<string>()
+      .pipe(filter((response) => !response.errorList.length))
+      .subscribe(
+        ({ responseData }) => this.utilsService.downloadFile(responseData),
+        (error) => console.log(error),
+      );
+  }
+
+  private getActionDTO(): ActionApiDTO {
+    return {
+      scenarioDto: this.screenService.getStore(),
+      additionalParams: {},
+    };
   }
 }
