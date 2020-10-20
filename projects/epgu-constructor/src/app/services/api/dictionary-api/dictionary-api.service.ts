@@ -21,14 +21,12 @@ export class DictionaryApiService {
   }
 
   getMvdDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
-    const urlPrefix = this.config.mocks.includes('mvd') ? `${this.config.mockUrl}/nsi/v1/dictionary` : this.config.dictionaryUrl;
-    const path = `${urlPrefix}/${dictionaryName}`;
+    const path = `${this.config.dictionaryUrl}/${dictionaryName}`;
     return this.post(path, options);
   }
 
   getSelectMapDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
-    const urlPrefix = this.config.mocks.includes('selectMap') ? `${this.config.mockUrl}/nsi/v1/dictionary` : this.config.dictionaryUrl;
-    const path = `${urlPrefix}/${dictionaryName}`;
+    const path = `${this.config.dictionaryUrl}/${dictionaryName}`;
     return this.post(path, options);
   }
 

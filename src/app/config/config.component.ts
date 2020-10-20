@@ -34,9 +34,6 @@ export class ConfigComponent implements OnInit {
   }
 
   saveConfig(): void {
-    if (typeof this.configForm.value.mocks === 'string') {
-      this.configForm.value.mocks = this.configForm.value.mocks.split(',');
-    }
     this.appService.saveConfig(this.configForm.value);
   }
 
