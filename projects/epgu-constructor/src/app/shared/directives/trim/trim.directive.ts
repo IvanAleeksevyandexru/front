@@ -9,6 +9,7 @@ export class TrimDirective {
     let value = this.removeNonAlphabeticOrNumeralSymbolsFromBeginning(target.value);
     value = this.removeExtraSpacesBetweenWords(value);
     target.value = value.trim();
+    target.dispatchEvent(new Event('input')); // triggers input event for updating value in model
   }
 
   removeNonAlphabeticOrNumeralSymbolsFromBeginning(value: string): string {
