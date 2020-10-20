@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AbstractControl, FormArray } from '@angular/forms';
+import { isUndefined, toBoolean } from '../../../../shared/constants/uttils';
 import {
   CustomComponent,
   CustomComponentDropDownItem,
@@ -10,8 +12,6 @@ import {
   CustomListStatusElements,
   CustomScreenComponentTypes
 } from '../../custom-screen.types';
-import { AbstractControl, FormArray } from '@angular/forms';
-import { isEqual, isUndefined, toBoolean } from '../../../../shared/constants/uttils';
 
 @Injectable()
 export class ComponentListToolsService {
@@ -38,7 +38,9 @@ export class ComponentListToolsService {
     form: FormArray,
     shownElements: CustomListStatusElements,
   ): CustomListStatusElements {
-    const valueEquals: boolean = isEqual<any>(reference.val, componentVal);
+    const valueEquals: boolean = typeof componentVal === 'string'
+      ? reference.val === componentVal
+      : reference.val === componentVal.id;
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id
     );
@@ -149,7 +151,7 @@ export class ComponentListToolsService {
         try {
           return JSON.parse(value).fullAddress;
         } catch (e) {
-         return value;
+          return value;
         }
       } else if (this.isJson(component.type)) {
         try {
@@ -203,10 +205,10 @@ export class ComponentListToolsService {
   isDate(type: CustomScreenComponentTypes): boolean {
     return type === CustomScreenComponentTypes.DateInput;
   }
-  
+
   isINN(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.LegalInnInput ||
-           type === CustomScreenComponentTypes.PersonInnInput;
+    return type === CustomScreenComponentTypes.LegalInnInput
+      || type === CustomScreenComponentTypes.PersonInnInput;
   }
 
   isSnils(type: CustomScreenComponentTypes): boolean {

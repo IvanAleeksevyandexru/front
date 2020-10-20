@@ -144,9 +144,11 @@ export class SelectChildrenScreenComponent implements OnInit {
   }
 
   private generateFormGroup(): void {
-    const id = uuid.v4();
-    this.selectChildrenForm.addControl(id, new FormControl());
-    this.items.push(id);
+    if (this.items.length) {
+      const id = uuid.v4();
+      this.selectChildrenForm.addControl(id, new FormControl());
+      this.items.push(id);
+    }
   }
 
   private addFormControl(id): void {

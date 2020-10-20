@@ -1,10 +1,10 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
-<epgu-constructor-screen-container>
-
-  <div class="question__wrapper">
-    <epgu-constructor-page-name>{{screenService.header$ | async}}</epgu-constructor-page-name>
+<epgu-constructor-navigation class="question__nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container class="question__container">
+    <epgu-constructor-page-name class="question__head">
+      {{screenService.header$ | async}}
+    </epgu-constructor-page-name>
     <epgu-constructor-output-html
-      class="question__wrapper__label"
+      class="question__text"
       *ngIf="screenService.component?.label"
       [html]="screenService.component?.label | imgPrefixer"
       [clarifications]="screenService.component?.attrs?.clarifications"
@@ -21,6 +21,5 @@
         </epgu-constructor-answer-button>
       </ng-container>
     </div>
-  </div>
 
 </epgu-constructor-screen-container>

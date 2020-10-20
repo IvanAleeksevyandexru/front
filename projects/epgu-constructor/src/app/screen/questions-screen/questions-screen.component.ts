@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { HelperService } from 'epgu-lib';
 import { NavigationPayload } from '../../form-player.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
@@ -18,7 +19,13 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
-  ) {}
+    private renderer: Renderer2,
+    private elRef: ElementRef,
+  ) {
+    if (HelperService.isMobile()) {
+      this.calculateHeight();
+    }
+  }
 
   ngOnInit(): void {
     this.navigationService.clickToBack$
@@ -47,5 +54,11 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     };
 
     this.nextStep(data);
+  }
+
+  calculateHeight(): void {
+    const menuHeight = 88;
+    const componentHeight: number = window.innerHeight - menuHeight;
+    this.renderer.setStyle(this.elRef.nativeElement, 'min-height', `${componentHeight}px`);
   }
 }

@@ -1,6 +1,6 @@
-import { ComponentBase } from '../../../screen.types';
-import { TextTransform } from '../../../../shared/types/textTransform';
 import { RelativeDate } from 'epgu-lib';
+import { TextTransform } from '../../../../shared/types/textTransform';
+import { ComponentBase } from '../../../screen.types';
 
 /**
  * Интерфейс компонента с полями
@@ -23,6 +23,8 @@ export interface IField {
   type: 'input';
   maxlength?: number;
   minlength?: number;
+  mask: Array<string>;
+  placeholder?: string;
 }
 
 /**
