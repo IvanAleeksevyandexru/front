@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Moment } from 'moment';
+import { CustomComponent } from '../../screen/custom-screen/custom-screen.types';
 
 @Injectable()
 export class UtilsService {
@@ -89,6 +90,14 @@ export class UtilsService {
         .reduce((res, key) => (res !== null && res !== undefined ? res[key] : res), obj);
     const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
     return result === undefined || result === obj ? defaultValue : result;
+  }
+
+  /**
+   * Функция возвращает ключ для получения словаря из ComponentListRepositoryService
+   * @param component экземпляр компонента
+   */
+  public static getDictKeyByComp(component: CustomComponent): string {
+    return component.attrs.dictionaryType + component.id;
   }
 
   /**

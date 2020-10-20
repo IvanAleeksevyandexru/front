@@ -16,6 +16,7 @@ import { ComponentListFormService } from './services/component-list-form.service
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 import { ScenarioErrorsDto } from '../../../services/api/form-player-api/form-player-api.types';
+import { UtilsService as utils } from '../../../services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -55,6 +56,10 @@ export class ComponentsListComponent implements OnChanges {
       this.formService.create(components, this.errors);
       this.loadRepository(components);
     }
+  }
+
+  public getDictKeyByComp(component: CustomComponent): string {
+    return utils.getDictKeyByComp(component);
   }
 
   private loadRepository(components: Array<CustomComponent>): void {

@@ -1,4 +1,9 @@
 /**
+ * Перечень поддерживаемых моков
+ */
+export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
+
+/**
  * @property {string}dictionaryUrl - url до сервиса словарей, как правило apiHostName/api/nsi/v1/dictionary
  * @property {string}externalApiUrl - url до сервиса dadata, как правило apiHostName/api/nsi/v1
  * @property {string}timeSlotApiUrl - url до сервиса тайм слотов, как правило apiHostName/api/lk/v1/equeue/agg
@@ -12,6 +17,8 @@
  * @property {string}brakRouteNumber - идентификатор для слотов по браку
  * @property {string}divorceRouteNumber - идентификатор для слотов по разводу
  * @property {string}gibddRouteNumber - идентификатор для слотов по ГИБДД
+ * @property {MockApi[]}mocks - массив апи для которых будет использваван mockUrl
+ * @property {string}mockUrl - url до mockApi
  */
 export interface Config {
   production: boolean;
@@ -29,4 +36,6 @@ export interface Config {
   brakRouteNumber: string;
   divorceRouteNumber: string;
   gibddRouteNumber: string;
+  mocks?: MockApi[];
+  mockUrl?: string;
 }
