@@ -1,4 +1,5 @@
 @import "src/styles/core";
+@import "src/styles/components/rubles";
 
 // TODO Избавиться от ng-deep
 :host::ng-deep {
@@ -6,16 +7,14 @@
     display: flex;
     flex-direction: column;
     @include modal-body();
-    width: 634px;
-    max-height: 485px;
+    width: 100%;
+    height: 100%;
     padding: 32px;
-    border-radius: 12px;
-
-    @include tablets-down {
-      max-height: none;
-      width: 100%;
-      height: 100%;
-      border-radius: 0;
+    @include tablets-up {
+      max-height: 485px;
+      width: 634px;
+      height: auto;
+      border-radius: 12px;
     }
 
     &__cross-button {
@@ -60,6 +59,8 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+
+      @include rubles('.conf-modal__body', '../../../../../../assets/img/ruble.svg');
     }
 
     &__content {
@@ -94,17 +95,12 @@
   }
 
   .ps-content {
-    max-height: 364px;
     padding-right: 5px; // fix overlapping content by scroll
     padding-bottom: 2px; // hack for avoid overlapping of buttons
 
-    @include tablets-down {
-      max-height: inherit;
+    @include tablets-up {
+      max-height: 364px;
     }
-  }
-
-  .conf-modal__body--without-header .ps-content {
-    max-height: 420px;
   }
 }
 

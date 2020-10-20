@@ -1,5 +1,10 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { isEqualObj } from '../../../../shared/constants/uttils';
 import {
   CustomComponent,
   CustomComponentOutputData,
@@ -7,14 +12,9 @@ import {
   CustomListStatusElements, CustomScreenComponentTypes
 } from '../../custom-screen.types';
 import { ValidationService } from '../../services/validation.service';
-import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { Observable } from 'rxjs';
-import { ComponentListToolsService } from './component-list-tools.service';
-import { isEqual } from '../../../../shared/constants/uttils';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper.service';
-import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { ComponentListRepositoryService } from './component-list-repository.service';
+import { ComponentListToolsService } from './component-list-tools.service';
 
 @Injectable()
 export class ComponentListFormService {
@@ -74,7 +74,7 @@ export class ComponentListFormService {
   watchFormArray$(): Observable<Array<CustomListFormGroup>> {
     return this.form.valueChanges
       .pipe(
-        distinctUntilChanged((prev, next) => isEqual<any>(prev, next)),
+        distinctUntilChanged((prev, next) => isEqualObj<any>(prev, next)),
         takeUntil(this.unsubscribeService),
       );
   }
@@ -123,7 +123,7 @@ export class ComponentListFormService {
     this.watchFormGroup$(form).subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
       this._shownElements = this.toolsService.updateDependents(components, next, this.shownElements, this.form);
       ////////HARDCODE!!!
-      if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqual<CustomListFormGroup>(prev, next)) {
+      if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqualObj<CustomListFormGroup>(prev, next)) {
         const indexVehicle: number = this.form.controls.findIndex(
           (control: AbstractControl) => control.value?.id === next.id,
         );

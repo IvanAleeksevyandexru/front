@@ -122,7 +122,8 @@ export class UtilsService {
   /**
    * Скачивание файла
    */
-  public downloadFile(blob: Blob) {
+  public downloadFile({ value, type }: { value: string; type: string }): void {
+    const blob = new Blob([value], { type });
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement('a');

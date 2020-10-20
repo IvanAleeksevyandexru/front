@@ -141,6 +141,8 @@ export enum ActionType {
   download = 'download',
   nextStep = 'nextStep',
   redirectToLK = 'redirectToLK',
+  profileEdit = 'profileEdit',
+  home = 'home'
 }
 
 export interface CheckOrderApiResponse {

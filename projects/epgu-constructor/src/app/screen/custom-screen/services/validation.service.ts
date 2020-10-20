@@ -26,9 +26,10 @@ export class ValidationService {
       }
 
       const err = component.attrs?.validation?.find(
-        (validator: CustomComponentAttrValidation) =>
-          validator.type === 'RegExp' && !new RegExp(validator.value).test(control.value),
-      );
+        (validator: CustomComponentAttrValidation) => {
+          return validator.type === 'RegExp' && !new RegExp(validator.value).test(control.value) ||
+          control.value && validator.type === 'validation-fn' && !this.hasValueValidation(component, control.value);
+        });
 
       if (control.value) {
         const validationErrorMsg = (isValid: boolean): ValidationErrors =>
@@ -55,6 +56,24 @@ export class ValidationService {
 
       return err && control.value ? this.validationErrorMsg(err.errorMsg) : null;
     };
+  }
+
+  private hasValueValidation(component, value): boolean {
+    if (component.type === CustomScreenComponentTypes.OgrnInput) {
+      return checkOgrn(value);
+    }
+
+    if (component.type === CustomScreenComponentTypes.OgrnipInput) {
+      return checkOgrnip(value);
+    }
+
+    if (component.type === CustomScreenComponentTypes.SnilsInput) {
+      return checkSnils(value);
+    }
+
+    if (component.type === CustomScreenComponentTypes.PersonInnInput) {
+      return checkINN(value);
+    }
   }
 
   private validationErrorMsg(error: string): ValidationErrors {

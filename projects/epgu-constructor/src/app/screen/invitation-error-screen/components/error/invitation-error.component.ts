@@ -40,7 +40,8 @@ export class InvitationErrorComponent implements OnInit {
   }
 
   sendEmail(): void {
-    const value = this.scenarioDto.applicantAnswers.sn1a?.value;
+    const ref: any = this.data.attrs?.ref;
+    const value = this.scenarioDto.applicantAnswers[ref]?.value;
     if (!value) {
       this.emailSent = true;
       return;
