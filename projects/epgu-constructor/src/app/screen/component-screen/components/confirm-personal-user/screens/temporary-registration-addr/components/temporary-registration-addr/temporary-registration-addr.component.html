@@ -11,7 +11,9 @@
         [hideHouseCheckbox]="true"
         [externalApiUrl]="config.externalApiUrl + '/'"
         [initValue]="forms[field.fieldName]"
-        [(ngModel)]="forms[field.fieldName]"
+        (ngModel)="forms[field.fieldName]"
+        [invalid]="!(dataForm?.controls)[field.fieldName]?.valid"
+        [validationShowOn]="validationShowOn"
       >
       </lib-dadata-widget>
 
@@ -27,7 +29,7 @@
         class="item__data"
         align="left"
         [(ngModel)]="forms[field.fieldName]"
-        [invalid]="!dataForm?.controls[field.fieldName]?.valid"
+        [invalid]="!(dataForm?.controls)[field.fieldName]?.valid"
         [validationShowOn]="validationShowOn"
         clearable="true"
       >
@@ -37,7 +39,8 @@
         epgu-constructor-trim
         epgu-constructor-text-transform
         [textTransformType]="textTransformType"
-        *ngSwitchDefault></lib-plain-input>
+        *ngSwitchDefault
+      ></lib-plain-input>
     </ng-container>
   </div>
   <div class="error">
