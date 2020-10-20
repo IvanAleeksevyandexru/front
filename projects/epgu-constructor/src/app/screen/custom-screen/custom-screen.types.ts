@@ -43,6 +43,10 @@ export interface CustomListDictionary {
   selectedItem: DictionaryItem;
 }
 
+export interface CustomListStatusElements {
+  [key: string]: boolean;
+}
+
 export interface CustomListGenericData<T> {
   component: CustomComponent,
   data: T;
