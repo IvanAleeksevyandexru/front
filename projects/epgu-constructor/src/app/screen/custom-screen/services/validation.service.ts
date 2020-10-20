@@ -81,11 +81,11 @@ export class ValidationService {
     return { msg: error };
   }
 
-  public validationBackendError(errors: ScenarioErrorsDto, component: CustomComponent): ValidatorFn {
+  public validationBackendError(errorMsg: string, component: CustomComponent): ValidatorFn {
     return (control: AbstractControl): ValidationErrors => {
-      const errorMsg = errors[component.id];
+      const isErrorValue = component.value !== control.value;
 
-      if (component.value !== control.value) {
+      if (isErrorValue) {
         return null;
       } else if (errorMsg) {
         return { serverError: errorMsg };

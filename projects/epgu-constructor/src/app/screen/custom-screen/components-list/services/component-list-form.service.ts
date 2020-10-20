@@ -46,7 +46,7 @@ export class ComponentListFormService {
     this.toolsService.createStatusElements(components, this.shownElements);
 
     this._form = new FormArray(
-      components.map((component: CustomComponent) => this.createGroup(component, components, errors))
+      components.map((component: CustomComponent) => this.createGroup(component, components, errors[component.id]))
     );
 
     components.forEach((component: CustomComponent) => {
@@ -113,13 +113,13 @@ export class ComponentListFormService {
     }, {});
   }
 
-  private createGroup(component: CustomComponent, components: Array<CustomComponent>, errors: ScenarioErrorsDto): FormGroup {
+  private createGroup(component: CustomComponent, components: Array<CustomComponent>, errorMsg: string): FormGroup {
     const form: FormGroup =  this.fb.group({
       ...component,
       value: [
         this.toolsService.convertedValue(component),
         [this.validationService.customValidator(component),
-        this.validationService.validationBackendError(errors, component)],
+        this.validationService.validationBackendError(errorMsg, component)],
       ],
     });
 
