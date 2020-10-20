@@ -108,8 +108,7 @@ export class ScreenContent {
   public set componentValue(val: {[key: string]: any} | string ) {
     this._componentValue.next(val);
   }
-  // TODO: давайте переименуем в componentType$ ???
-  public componentValue$ = this._componentType.asObservable();
+  public componentValue$ = this._componentValue.asObservable();
 
   private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
   public get componentErrors() {

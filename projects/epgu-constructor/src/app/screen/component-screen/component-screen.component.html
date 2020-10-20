@@ -102,7 +102,7 @@
         *ngIf="componentSetting.displayContinueBtn && (screenService.isShown$ | async)"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
-        class="footer__btn-submit"
+        class="btn__submit"
         [disabled]="!currentAnswersService.isValid || (screenService.isLoading$ | async)"
       >
         <div class="secondary-font">

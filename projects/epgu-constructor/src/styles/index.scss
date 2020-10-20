@@ -106,7 +106,17 @@
     height: 1px;
   }
 
-  .flex-container {
-    display: flex;
+  .btn__submit {
+    width: 100%;
+    @include tablets-up {
+      width: auto;
+    }
+    button {
+      width: 100%;
+      min-width: 100px;
+      @include tablets-up {
+        width: inherit;
+      }
+    }
   }
 }
