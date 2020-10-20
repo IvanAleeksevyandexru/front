@@ -224,6 +224,7 @@ hr {
      bottom: 0;
      max-height: calc(100vh - 250px);
      overflow-y: auto;
+     position: fixed;
    }
 
    .nav::ng-deep {
