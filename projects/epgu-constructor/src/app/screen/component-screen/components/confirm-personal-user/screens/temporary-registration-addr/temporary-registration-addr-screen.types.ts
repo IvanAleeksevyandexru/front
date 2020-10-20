@@ -1,10 +1,6 @@
-import { ComponentBase, Display } from '../../../../../screen.types';
+import { ComponentBase } from '../../../../../screen.types';
 import { TextTransform } from '../../../../../../shared/types/textTransform';
 import { RelativeDate } from 'epgu-lib';
-
-export interface TemporaryRegistrationDisplay extends Display {
-  components: Array<TemporaryRegistrationComponent>;
-}
 
 export interface TemporaryRegistrationComponent extends ComponentBase {
   attrs: TemporaryRegistrationComponentAttrs;

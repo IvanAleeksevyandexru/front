@@ -64,8 +64,9 @@ export interface DisplaySubjHead {
 export interface DisplayDto {
   components: Array<ComponentDto>;
   header: string;
-  subHeader: DisplaySubjHead;
+  subHeader?: DisplaySubjHead;
   label?: string;
+  displayCssClass?: string;
   id: string;
   name: string;
   submitLabel: string;

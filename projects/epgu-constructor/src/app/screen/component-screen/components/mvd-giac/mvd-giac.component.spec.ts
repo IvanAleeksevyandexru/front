@@ -7,7 +7,8 @@ import { CurrentAnswersService } from '../../../current-answers.service';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../services/api/dictionary-api/dictionary-api.service.stub';
 import { ComponentScreenComponentTypes } from '../../component-screen.types';
-import { CachedAnswers, Display, ScreenTypes } from '../../../screen.types';
+import { CachedAnswers, ScreenTypes } from '../../../screen.types';
+import { DisplayDto } from '../../../../services/api/form-player-api/form-player-api.types';
 import { ConfigService } from '../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../config/config.service.stub';
 import { ScreenService } from '../../../screen.service';
@@ -31,7 +32,7 @@ xdescribe('MvdGiacComponent', () => {
     dictionarySubject.next({ items: testRegionList });
   }
 
-  const mockData: Display = {
+  const mockData: DisplayDto = {
     components: [{
       attrs: {
         dictionaryType: 'MVD_TER_ORGAN_GIAC'

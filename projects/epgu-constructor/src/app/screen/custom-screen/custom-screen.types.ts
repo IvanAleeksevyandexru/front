@@ -1,6 +1,7 @@
 import { ListItem } from 'epgu-lib';
 import { DictionaryItem, DictionaryResponse } from '../../services/api/dictionary-api/dictionary-api.types';
-import { ComponentBase, Display } from '../screen.types';
+import { ComponentBase } from '../screen.types';
+import { DisplayDto } from '../../services/api/form-player-api/form-player-api.types';
 import { TextTransform } from '../../shared/types/textTransform';
 
 export enum CustomScreenComponentTypes {
@@ -40,6 +41,10 @@ export interface CustomListDictionary {
   list: Array<ListItem>;
   page: number;
   selectedItem: DictionaryItem;
+}
+
+export interface CustomListStatusElements {
+  [key: string]: boolean;
 }
 
 export interface CustomListGenericData<T> {
@@ -124,10 +129,6 @@ export interface CustomComponentRef {
   relation: CustomComponentRefRelation
 }
 
-export interface CustomListStatusElements {
-  [key: string]: boolean;
-}
-
 export interface CustomListFormGroup {
   attrs: CustomComponentAttr;
   id: string;
@@ -137,7 +138,7 @@ export interface CustomListFormGroup {
   value: any;
 }
 
-export interface CustomDisplay extends Display {
+export interface CustomDisplay extends DisplayDto {
   components: Array<CustomComponent>;
 }
 

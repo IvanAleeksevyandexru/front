@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormPlayerApiSuccessResponse } from '../api/form-player-api/form-player-api.types';
-import { Display, ScreenTypes } from '../../screen/screen.types';
+import { DisplayDto, FormPlayerApiSuccessResponse } from '../api/form-player-api/form-player-api.types';
+import { ScreenTypes } from '../../screen/screen.types';
 import { Gender } from '../../shared/types/gender';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class FormPlayerServiceStub {
     }};
   componentId: string;
   componentType: string;
-  componentData: Display;
+  componentData: DisplayDto;
   isLoading = false;
 
   getData(): void {}
