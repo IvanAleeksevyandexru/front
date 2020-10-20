@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.18](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.17...v0.2.18) (2020-10-20)
+
+
+### Features
+
+* added cssClass to screen data ([2f77d89](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2f77d89be99eb9370ad8c9b74f3444e4d6170b6f))
+* added cssClass to screen data ([939fe06](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/939fe06c167d87b86f2fb9f1cce1f1ecfd7b28e3))
+* added cssClass to screen data ([c8beacf](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c8beacf8174f692fc79f860bcee6a64e9dd06ddd))
+
+
+### Bug Fixes
+
+* вернул интерфейсы[EPGUCORE-38317] ([ea2a9b0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ea2a9b06727d5aa3fafdb490cc68d61a6ffe521f))
+* удалил не используеме интерфейсы[EPGUCORE-39396] ([6b17b3e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6b17b3eb28fecb5909db77db38295dbac132b8db))
+
 ### [0.2.17](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.16...v0.2.17) (2020-10-19)
 
 
