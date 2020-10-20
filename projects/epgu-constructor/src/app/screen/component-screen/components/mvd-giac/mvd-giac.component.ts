@@ -74,7 +74,7 @@ export class MvdGiacComponent implements OnChanges {
   private loadDictionarySuccess(data: DictionaryResponse): void {
     this.dictionary = this.getDictionary(data.items);
     if (this.dictionary.length === 1) {
-      this.setOneRegion(this.dictionary[0].text);
+      this.setOneRegion(this.dictionary[0]);
     }
     this.isLoading = false;
   }
@@ -89,8 +89,9 @@ export class MvdGiacComponent implements OnChanges {
     return dictionary.length > 2 ? getSortedMvdDic() : dictionary;
   }
 
-  private setOneRegion(region: string) {
+  private setOneRegion(region: Partial<ListItem>) {
     this.regionControl.patchValue(region);
     this.regionControl.disable();
+    this.currentAnswersService.isValid = true;
   }
 }
