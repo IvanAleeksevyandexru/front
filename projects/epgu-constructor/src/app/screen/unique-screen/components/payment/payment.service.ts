@@ -78,7 +78,10 @@ export class PaymentService {
       attributeValues.sum = '200';
     }
 
-    const path = `${this.config.uinApiUrl}/${code}?orderId=${orderId}`;
+    const urlPrefix = this.config.mocks.includes('payment')
+      ? `${this.config.mockUrl}/lk/v1/paygate/uin`
+      : this.config.uinApiUrl;
+    const path = `${urlPrefix}/${code}?orderId=${orderId}`;
     return this.http.post(path, attributeValues, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -96,8 +99,11 @@ export class PaymentService {
     // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
     // return billMockUp.asObservable();
 
+    const urlPrefix = this.config.mocks.includes('payment')
+      ? `${this.config.mockUrl}/pay/v1/bills`
+      : this.config.billsApiUrl;
     // eslint-disable-next-line max-len
-    const path = `${this.config.billsApiUrl}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    const path = `${urlPrefix}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
     return this.http.post(path, {}, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
@@ -111,7 +117,10 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    */
   getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<any> {
-    const path = `${this.config.uinApiUrl}/status/${code}?orderId=${orderId}`;
+    const urlPrefix = this.config.mocks.includes('payment')
+      ? `${this.config.mockUrl}/lk/v1/paygate/uin`
+      : this.config.uinApiUrl;
+    const path = `${urlPrefix}/status/${code}?orderId=${orderId}`;
     return this.http.get(path, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);

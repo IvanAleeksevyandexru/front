@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Config } from './config.types';
+import { Config, MockApi } from './config.types';
 import { BehaviorSubject } from 'rxjs';
 import { LoadService } from 'epgu-lib';
 
@@ -23,6 +23,8 @@ export class ConfigService implements Config {
   private _invitationUrl: string;
   private _yandexMapsApiKey: string;
   private _staticDomainAssetsPath: string;
+  private _mocks: MockApi[];
+  private _mockUrl: string;
 
   public isLoaded$ = this.isLoadedSubject.asObservable();
 
@@ -102,6 +104,14 @@ export class ConfigService implements Config {
     return this._staticDomainAssetsPath;
   }
 
+  get mocks(): MockApi[] {
+    return this._mocks;
+  }
+
+  get mockUrl(): string {
+    return this._mockUrl;
+  }
+
   private getStaticDomainCfg(): string {
     const domain = this.loadService.config.staticDomain;
 
@@ -129,6 +139,8 @@ export class ConfigService implements Config {
     this._invitationUrl = config.invitationUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
     this._staticDomainAssetsPath = this.getStaticDomainCfg();
+    this._mocks = config.mocks;
+    this._mockUrl = config.mockUrl;
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
   }
