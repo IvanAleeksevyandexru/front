@@ -58,7 +58,7 @@
         </ng-template>
         <lib-dropdown
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="(dictionaries$ | async)[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
+          [items]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
           class="cs__select cs-select">
@@ -76,7 +76,7 @@
           [formControl]="componentData.get('value')"
           [queryMinSymbolsCount]="0"
           [searchCaseSensitive]="false"
-          [fixedItems]="(dictionaries$ | async)[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
+          [fixedItems]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
           [virtualScroll]="true"
         >
         </lib-lookup>
