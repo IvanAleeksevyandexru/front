@@ -53,12 +53,12 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
   initFormGroup(): void {
     const controls = {};
     this.attrs.fields.forEach((field) => {
-      controls[field.fieldName] = this.fb.control(null, this.getValidators(field));
+      controls[field.fieldName] = this.fb.control(null, this.getValidatorsForField(field));
     });
     this.passportForm = this.fb.group(controls);
   }
 
-  getValidators(field): ValidatorFn[] {
+  getValidatorsForField(field): ValidatorFn[] {
     const validators = [Validators.required];
 
     if (field.maxlength) {
