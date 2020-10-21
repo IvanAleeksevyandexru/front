@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
-import { isEqualObj, isUndefined, toBoolean } from '../../../../shared/constants/uttils';
+import { isUndefined, toBoolean } from '../../../../shared/constants/uttils';
 import {
   CustomComponent,
   CustomComponentDropDownItem,
