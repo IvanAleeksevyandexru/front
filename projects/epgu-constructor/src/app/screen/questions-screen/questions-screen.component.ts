@@ -22,15 +22,16 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     public screenService: ScreenService,
     private renderer: Renderer2,
     private elRef: ElementRef,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     if (HelperService.isMobile()) {
+      this.calculateHeight();
       fromEvent(window, 'scroll')
         .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
         .subscribe(() => this.calculateHeight());
     }
-  }
 
-  ngOnInit(): void {
     this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());

@@ -31,7 +31,7 @@
   }
 }
 
-.answer__item {
+.answer__item:not(:last-child) {
   margin-bottom: 16px;
   @include tablets-up {
     margin-bottom: 24px;

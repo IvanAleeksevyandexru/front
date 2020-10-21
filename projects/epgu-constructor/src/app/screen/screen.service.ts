@@ -16,7 +16,6 @@ export class ScreenService extends ScreenContent {
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private isShownSubject = new BehaviorSubject<boolean>(this.isShown);
-  private screenStoreSubject = new BehaviorSubject<ScreenStore>(this.screenStore);
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public isShown$: Observable<boolean> = this.isShownSubject.asObservable();
@@ -36,7 +35,6 @@ export class ScreenService extends ScreenContent {
     this.screenStore = store;
     this.loadValueFromCachedAnswer();
     this.initComponentStateService();
-    this.screenStoreSubject.next(this.screenStore);
     this.updateScreenContent(store);
   }
 
@@ -46,7 +44,6 @@ export class ScreenService extends ScreenContent {
    */
   public updateScreenStore(newState: ScreenStore): void {
     this.screenStore = { ...this.screenStore, ...newState };
-    this.screenStoreSubject.next(this.screenStore);
     this.updateScreenContent(newState);
   }
 

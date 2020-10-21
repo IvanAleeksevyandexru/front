@@ -31,6 +31,7 @@
 
     <div class="info__submit">
       <lib-button
+        class="btn__submit"
         *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
@@ -41,7 +42,7 @@
     </div>
   </epgu-constructor-screen-pad>
 
-  <div class="info-footer">
+  <div class="info-footer" *ngIf="footerActions?.length">
     <lib-button
       *ngFor="let action of footerActions"
       epgu-constructor-action
