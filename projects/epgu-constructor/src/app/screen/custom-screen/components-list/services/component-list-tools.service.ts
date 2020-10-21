@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
-import { isUndefined, toBoolean } from '../../../../shared/constants/uttils';
+import { isEqualObj, isUndefined, toBoolean } from '../../../../shared/constants/uttils';
 import {
   CustomComponent,
   CustomComponentDropDownItem,
@@ -38,7 +38,7 @@ export class ComponentListToolsService {
     form: FormArray,
     shownElements: CustomListStatusElements,
   ): CustomListStatusElements {
-    const valueEquals: boolean = typeof componentVal === 'string'
+    const valueEquals: boolean = typeof componentVal === 'string' || typeof componentVal === 'boolean'
       ? reference.val === componentVal
       : reference.val === componentVal.id;
     const dependentControl: AbstractControl = form.controls.find(
