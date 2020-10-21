@@ -1,5 +1,8 @@
 <form class="form">
-  <div class="form__item" *ngFor="let componentData of formService.form.controls; let idx = index;">
+  <div *ngFor="let componentData of formService.form.controls; let idx = index;"
+       class="form__item"
+       [class.form__item--date]="componentData.value?.type === componentType.DateInput"
+  >
     <ng-container
       [ngSwitch]="componentData.value?.type"
       *ngIf="formService.shownElements[componentData.value?.id]">
