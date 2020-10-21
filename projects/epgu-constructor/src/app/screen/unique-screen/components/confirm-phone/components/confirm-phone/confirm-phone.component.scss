@@ -40,11 +40,4 @@
   @include tablets-up {
     margin-top: 32px;
   }
-  &__btn-submit {
-    width: auto;
-    &::ng-deep button {
-      width: inherit;
-      min-width: 100px;
-    }
-  }
 }

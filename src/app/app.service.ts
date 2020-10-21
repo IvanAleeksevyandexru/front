@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AppConfig, FormPlayerConfig } from './app.type';
-import { getConfigFromEnvs } from './app.utils';
+import { AppConfig } from './app.type';
 import { environment } from '../environments/environment';
-import { ConfigService } from '../../projects/epgu-constructor/src/app/config/config.service';
 import { ActivatedRoute } from '@angular/router';
 
 export const LOCAL_STORAGE_KEY = 'EPGU_FORM_PLAYER_TEST_STAND_CONFIG';
 
-const initValues: FormPlayerConfig = {
+const initValues: AppConfig = {
   serviceId: environment.serviceId,
   targetId: environment.targetId,
   orderId: environment.orderId,
@@ -22,7 +20,7 @@ export class AppService {
   configSubject = new BehaviorSubject(this.config);
   config$ = this.configSubject.asObservable();
 
-  constructor (private configService: ConfigService, private route: ActivatedRoute) {
+  constructor (private route: ActivatedRoute) {
     this.initConfig();
   }
 
@@ -45,7 +43,6 @@ export class AppService {
   saveConfig(newConfig: AppConfig) {
     this.config = newConfig;
     window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.config));
-    this.updateConfigToConfigService();
     this.configSubject.next(this.config)
   }
 
@@ -66,18 +63,12 @@ export class AppService {
       ...savedConfig
     }
     this.valuesFromQueryParams();
-    this.updateConfigToConfigService();
     this.configSubject.next(this.config)
-  }
-
-  updateConfigToConfigService() {
-    this.configService.config = this.config;
   }
 
   getInitConfigs() {
     return {
       ...initValues,
-      ...getConfigFromEnvs(),
     }
   }
 
@@ -99,7 +90,7 @@ export class AppService {
 
   resetConfig() {
     let config = this.config;
-    config = { ...initValues, ...config, ...getConfigFromEnvs() };
+    config = { ...initValues, ...config };
     this.saveConfig(config);
   }
 }

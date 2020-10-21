@@ -1,7 +1,6 @@
-@import "../../../styles/core/functions";
-@import "../../../styles/core/variables";
-@import "../../../styles/core";
-
+@import '../../../styles/core/functions';
+@import '../../../styles/core/variables';
+@import '../../../styles/core';
 
 :host {
   display: block;
@@ -22,11 +21,6 @@
 
   &__submit {
     text-align: center;
-    display: inline-block;
-
-    &::ng-deep button {
-      min-width: 100px;
-    }
   }
 }
 
@@ -48,7 +42,7 @@
   margin-top: $navigation-mb;
 }
 
-.gray-theme{
+.gray-theme {
   background-color: transparent;
   padding-top: 0;
   box-shadow: none;
@@ -58,22 +52,22 @@
     padding-right: 0;
   }
 
-  .divider{
+  .divider {
     display: none;
   }
 
-  .info__head{
+  .info__head {
     margin-bottom: 0;
   }
 
-  &::ng-deep ul{
+  &::ng-deep ul {
     background-color: $color-white;
     border-radius: 8px;
     box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
     margin-left: 0;
     padding: 24px 24px 8px;
 
-    li{
+    li {
       margin-top: 0;
       margin-bottom: 16px;
     }
