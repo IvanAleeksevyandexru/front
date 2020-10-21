@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { ComponentBase } from '../../../screen.types';
   styleUrls: ['./select-children-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class SelectChildrenScreenComponent implements OnInit {
+export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
   @Input() data: ComponentBase;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
@@ -52,10 +52,13 @@ export class SelectChildrenScreenComponent implements OnInit {
     ];
     this.selectedItems = {};
     this.passDataToSend(Object.values(this.selectedItems));
-    this.generateFormGroup();
     this.selectChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.items = Object.keys(this.selectChildrenForm.controls);
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.generateFirstFormItem();
   }
 
   getRefFromComponent(refName: string): string {
@@ -143,12 +146,10 @@ export class SelectChildrenScreenComponent implements OnInit {
     });
   }
 
-  private generateFormGroup(): void {
-    if (this.items.length) {
-      const id = uuid.v4();
-      this.selectChildrenForm.addControl(id, new FormControl());
-      this.items.push(id);
-    }
+  private generateFirstFormItem(): void {
+    const id = uuid.v4();
+    this.items.push(id);
+    this.addFormControl(id);
   }
 
   private addFormControl(id): void {
