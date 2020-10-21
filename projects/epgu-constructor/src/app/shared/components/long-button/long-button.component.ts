@@ -3,9 +3,10 @@ import { QuestionsComponentActions } from '../../../screen/questions-screen/ques
 
 @Component({
   selector: 'epgu-constructor-long-button',
-  template: `<button [disabled]="data?.disabled"><ng-content></ng-content></button>`,
+  template: `<button [disabled]="data?.disabled || disabled"><ng-content></ng-content></button>`,
   styleUrls: ['./long-button.component.scss'],
 })
 export class LongButtonComponent {
   @Input() data: QuestionsComponentActions;
+  @Input() disabled: boolean;
 }
