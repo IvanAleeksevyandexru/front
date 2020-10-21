@@ -38,7 +38,7 @@ export class ComponentListToolsService {
     form: FormArray,
     shownElements: CustomListStatusElements,
   ): CustomListStatusElements {
-    const valueEquals: boolean = typeof componentVal === 'string'
+    const valueEquals: boolean = typeof componentVal === 'string' || typeof componentVal === 'boolean'
       ? reference.val === componentVal
       : reference.val === componentVal.id;
     const dependentControl: AbstractControl = form.controls.find(
