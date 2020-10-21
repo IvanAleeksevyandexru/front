@@ -206,23 +206,6 @@ export class ComponentListToolsService {
     return type === CustomScreenComponentTypes.DateInput;
   }
 
-  isINN(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.LegalInnInput
-      || type === CustomScreenComponentTypes.PersonInnInput;
-  }
-
-  isSnils(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.SnilsInput;
-  }
-
-  isOgrnip(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.OgrnipInput;
-  }
-
-  isOgrn(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.OgrnInput;
-  }
-
   /**
    * Подсчитывает автовычисляемое значение из формулы, которую передали
    * @param itemRef - объект с информацией о связи
