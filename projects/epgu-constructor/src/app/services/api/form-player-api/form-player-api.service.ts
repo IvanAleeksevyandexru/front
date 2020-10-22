@@ -9,7 +9,6 @@ import { ServiceDataService } from '../../service-data/service-data.service';
 type CookieSession = { userId: string, token: string };
 
 export const apiUrl = '/api';
-// export const apiUrl = 'https://pgu-uat-fed.test.gosuslugi.ru/api';
 
 @Injectable()
 export class FormPlayerApiService {
