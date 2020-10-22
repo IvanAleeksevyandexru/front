@@ -21,12 +21,12 @@ export class CookieStorageService extends AbstractStorage{
     if (parts.length === 2) {
       return parts.pop().split(';').shift();
     } else {
-      return undefined;
+      return null;
     }
   }
 
   key(index: number): string | null {
-    return undefined;
+    return null;
   }
 
   removeItem(key: string): void {

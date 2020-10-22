@@ -13,11 +13,11 @@ export class SessionStorageService extends AbstractStorage {
   }
 
   getItem(key: string, options: any): string | null {
-    return undefined;
+    return null;
   }
 
   key(index: number): string | null {
-    return undefined;
+    return null;
   }
 
   // eslint-disable-next-line no-empty-function
