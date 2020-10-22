@@ -22,7 +22,7 @@ customValidator(component: CustomComponent): ValidatorFn {
     }
 
     if (component.required && !control.value) {
-      return this.validationErrorMsg(REQUIRED_FIELD);
+      return this.validationErrorMsg(control.touched ? REQUIRED_FIELD : '');
     }
 
     const validations = component.attrs?.validation;
