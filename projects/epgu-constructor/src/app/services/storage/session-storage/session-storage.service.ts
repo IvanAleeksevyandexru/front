@@ -24,6 +24,7 @@ export class SessionStorageService extends AbstractStorage {
   removeItem(key: string): void {
   }
 
+  // eslint-disable-next-line no-empty-function
   setItem(key: string, value: string): void {
   }
 }
