@@ -2,8 +2,8 @@
   <img
     class="info__img"
     *ngIf="data?.attrs?.image?.src"
-    [src]="config.staticDomainAssetsPath + data.attrs.image.src"
-    [attr.alt]="data?.attrs?.image?.alt ? data.attrs.image.alt : null"
+    [src]="data.attrs.image.src"
+    [attr.alt]="data.attrs.image.alt ? data.attrs.image.alt : null"
   />
 </div>
 
