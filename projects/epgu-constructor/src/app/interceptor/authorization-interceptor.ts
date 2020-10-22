@@ -11,7 +11,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private cookieService: CookieService, private config: ConfigService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!req.url.includes(this.config.fileUploadApiUrl) && !req.url.includes(this.config.timeSlotApiUrl)) {
+    if (this.checkForbiddenURLs(req.url)) {
       req = req.clone({
         setHeaders: {
           'Content-Type': 'application/json; charset=utf-8',
@@ -22,5 +22,16 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(req);
+  }
+
+  /**
+   * Возвращает true если url "хороший". У запрещенных нужно не отправлять header Authorization
+   * иначе РТ лабс ругается “Forbidden for scope”
+   * @param url url куда идет запрос.
+   */
+  private checkForbiddenURLs(url: string): boolean {
+    return !url.includes(this.config.fileUploadApiUrl)
+      && !url.includes(this.config.timeSlotApiUrl)
+      && !url.includes(this.config.paymentUrl);
   }
 }
