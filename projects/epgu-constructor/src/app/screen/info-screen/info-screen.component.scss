@@ -15,22 +15,22 @@
     margin-bottom: 24px;
   }
 
-  &__body {
-    margin-bottom: 24px;
-  }
-
   &__submit {
+    margin-top: 24px;
     text-align: center;
   }
-}
 
-.info-footer {
-  display: flex;
-  justify-content: center;
-  margin-top: 32px;
+  &__actions {
+    display: flex;
+    justify-content: center;
+  }
 
-  @include phones-down {
+  &__action {
     margin-top: 24px;
+
+    @include phones-down {
+      margin-top: 32px;
+    }
   }
 }
 
