@@ -54,6 +54,20 @@
         </lib-dropdown>
       </ng-container>
 
+      <ng-container *ngSwitchCase="componentType.MvdGiac">
+        <ng-template
+          [ngTemplateOutlet]="formLabel"
+          [ngTemplateOutletContext]="{ $implicit: componentData.value?.label }">
+        </ng-template>
+        <lib-dropdown
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [items]="(dropDowns$ | async)[componentData.value?.id]"
+          [validationShowOn]="validationShowOn"
+          [formControl]="componentData.get('value')"
+          class="cs__select cs-select">
+        </lib-dropdown>
+      </ng-container>
+
       <ng-container *ngSwitchCase="componentType.Dictionary">
         <ng-template
           [ngTemplateOutlet]="formLabel"
