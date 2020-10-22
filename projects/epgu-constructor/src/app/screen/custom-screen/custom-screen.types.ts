@@ -7,7 +7,7 @@ export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
   DropDown = 'DropDown',
-  MvdGiac = 'DropDown',
+  MvdGiac = 'MvdGiac',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
   RadioInput = 'RadioInput',
