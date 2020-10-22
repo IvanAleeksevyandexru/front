@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ConfigService } from './config.service';
+import { LoadService } from 'epgu-lib';
+import { LoadServiceStub } from './load-service-stub';
 
 
 describe('ConfigService', () => {
@@ -9,7 +11,8 @@ describe('ConfigService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ConfigService
+        ConfigService,
+        { provide: LoadService, useClass: LoadServiceStub }
       ]
     });
     service = TestBed.inject(ConfigService);

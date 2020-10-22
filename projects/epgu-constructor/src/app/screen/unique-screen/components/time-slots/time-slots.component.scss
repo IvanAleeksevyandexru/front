@@ -123,11 +123,6 @@
 .footer {
   text-align: center;
   margin-top: 40px;
-  &__btn-submit {
-    &::ng-deep button {
-      min-width: 80px;
-    }
-  }
 }
 
 .compact-selector {

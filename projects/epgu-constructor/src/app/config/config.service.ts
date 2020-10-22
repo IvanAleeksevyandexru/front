@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Config, MockApi } from './config.types';
+import { BehaviorSubject } from 'rxjs';
+import { LoadService } from 'epgu-lib';
 
 @Injectable()
 export class ConfigService implements Config {
+  private isLoadedSubject = new BehaviorSubject(false);
+  private _isLoaded = false;
   private _production: boolean;
-  private _apiUrl: string;
   private _billsApiUrl: string;
   private _dictionaryUrl: string;
   private _externalApiUrl: string;
@@ -23,18 +26,22 @@ export class ConfigService implements Config {
   private _mocks: MockApi[];
   private _mockUrl: string;
 
+  public isLoaded$ = this.isLoadedSubject.asObservable();
+
+  constructor (private loadService: LoadService) {}
+
   checkConfig(config: Config) {
     if (!config) {
       throw Error('Please set config at FormPlayerModule.forRoot()');
     }
   }
 
-  get production(): boolean {
-    return this._production;
+  get isLoaded(): boolean {
+    return this._isLoaded;
   }
 
-  get apiUrl(): string {
-    return this._apiUrl;
+  get production(): boolean {
+    return this._production;
   }
 
   get billsApiUrl(): string {
@@ -105,10 +112,18 @@ export class ConfigService implements Config {
     return this._mockUrl;
   }
 
+  private getStaticDomainCfg(): string {
+    const domain = this.loadService.config.staticDomain;
+
+    if (!domain) {
+      return '';
+    }
+    return domain.lastIndexOf('/') === domain.length - 1 ? domain.substring(0, domain.length - 1) : domain;
+  }
+
   // Do not use this method, only for testing stand
   set config(config: Config) {
     this.checkConfig(config);
-    this._apiUrl = config.apiUrl;
     this._billsApiUrl = config.billsApiUrl;
     this._dictionaryUrl = config.dictionaryUrl;
     this._externalApiUrl = config.externalApiUrl;
@@ -116,15 +131,17 @@ export class ConfigService implements Config {
     this._lkUrl = config.lkUrl;
     this._paymentUrl = config.paymentUrl;
     this._timeSlotApiUrl = config.timeSlotApiUrl;
-    this._brakRouteNumber = config.brakRouteNumber || '00000000001';
-    this._divorceRouteNumber = config.divorceRouteNumber || '00000000001';
-    this._gibddRouteNumber = config.gibddRouteNumber || '46000000000';
+    this._brakRouteNumber = config.brakRouteNumber;
+    this._divorceRouteNumber = config.divorceRouteNumber;
+    this._gibddRouteNumber = config.gibddRouteNumber;
     this._listPaymentsApiUrl = config.listPaymentsApiUrl;
     this._uinApiUrl = config.uinApiUrl;
     this._invitationUrl = config.invitationUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
-    this._staticDomainAssetsPath = config.staticDomainAssetsPath;
-    this._mocks = config.mocks;
-    this._mockUrl = config.mockUrl;
+    this._staticDomainAssetsPath = this.getStaticDomainCfg() || '';
+    this._mocks = config.mocks || [];
+    this._mockUrl = config.mockUrl || '';
+    this._isLoaded = true;
+    this.isLoadedSubject.next(this._isLoaded);
   }
 }

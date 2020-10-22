@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Moment } from 'moment';
+import { CustomComponent } from '../../screen/custom-screen/custom-screen.types';
 
 @Injectable()
 export class UtilsService {
@@ -92,6 +93,14 @@ export class UtilsService {
   }
 
   /**
+   * Функция возвращает ключ для получения словаря из ComponentListRepositoryService
+   * @param component экземпляр компонента
+   */
+  public static getDictKeyByComp(component: CustomComponent): string {
+    return component.attrs.dictionaryType + component.id;
+  }
+
+  /**
    * Форматирует объект moment даты в нужны формат и возвращает его
    * @param date - объект даты обёрнутый в библитеку moment
    * @param format - формат в котором выводить дату (из документации к moment.js)
@@ -122,7 +131,8 @@ export class UtilsService {
   /**
    * Скачивание файла
    */
-  public downloadFile(blob: Blob) {
+  public downloadFile({ value, type }: { value: string; type: string }): void {
+    const blob = new Blob([value], { type });
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement('a');

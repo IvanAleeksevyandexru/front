@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { HelperService } from 'epgu-lib';
+import { fromEvent } from 'rxjs';
 import { NavigationPayload } from '../../form-player.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
@@ -21,13 +22,16 @@ export class QuestionsScreenComponent implements OnInit, Screen {
     public screenService: ScreenService,
     private renderer: Renderer2,
     private elRef: ElementRef,
-  ) {
-    if (HelperService.isMobile()) {
-      this.calculateHeight();
-    }
-  }
+  ) {}
 
   ngOnInit(): void {
+    if (HelperService.isMobile()) {
+      this.calculateHeight();
+      fromEvent(window, 'scroll')
+        .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
+        .subscribe(() => this.calculateHeight());
+    }
+
     this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());

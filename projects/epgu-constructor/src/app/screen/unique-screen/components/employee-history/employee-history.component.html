@@ -113,7 +113,7 @@
     <lib-button
       (click)="getNextScreen()"
       [disabled]="(monthsService.isMonthComplete$ | async) === false || employeeFormService.employeeHistoryForm.invalid"
-      class="employee-history__footer__btn-submit"
+      class="btn__submit"
     >
         {{ display?.submitLabel || 'Продолжить' }}
     </lib-button>

@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from './config/config.service';
-import { Config } from './config/config.types';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
 import { ScreenComponent } from './screen/screen.const';
 import { FormPlayerService } from './services/form-player/form-player.service';
@@ -18,6 +17,7 @@ import { ServiceDataService } from './services/service-data/service-data.service
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from './shared/components/modal/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from './shared/services/navigation/navigation.service';
+import { FormPlayerConfigApiService } from './services/api/form-player-config-api/form-player-config-api.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -29,21 +29,29 @@ import { NavigationService } from './shared/services/navigation/navigation.servi
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() service: Service;
-  @Input() config: Config;
   screenComponent: ScreenComponent;
 
   constructor(
     private serviceDataService: ServiceDataService,
+    public formPlayerConfigApiService: FormPlayerConfigApiService,
     public formPlayerService: FormPlayerService,
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
-    private configService: ConfigService,
+    public configService: ConfigService,
     private modalService: ModalService,
   ) {}
 
   ngOnInit(): void {
     this.checkProps();
-    this.configService.config = this.config;
+    this.serviceDataService.init(this.service);
+
+    this.formPlayerConfigApiService
+      .getFormPlayerConfig()
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((config) => {
+        this.configService.config = config;
+      });
+
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.screenComponent = this.formPlayerService.getScreenComponent();
     });
@@ -67,8 +75,8 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(): void {
-    this.serviceDataService.init(this.service);
     this.checkProps();
+    this.serviceDataService.init(this.service);
   }
 
   getOrderIdFromApi() {
@@ -131,7 +139,6 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   checkProps() {
     console.group('----- Init props ---------');
     console.log('service', this.service);
-    console.log('config', this.config);
     console.groupEnd();
     const { invited, orderId } = this.serviceDataService;
     if (!this.serviceDataService) {
@@ -140,10 +147,6 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
     if (invited && !orderId) {
       throw Error('Should set orderId when invited');
-    }
-
-    if (!this.config) {
-      throw Error('Need to set config for epgu form player');
     }
   }
 }

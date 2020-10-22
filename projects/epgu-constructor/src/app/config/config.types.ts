@@ -4,7 +4,6 @@
 export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
 
 /**
- * @property {string}apiUrl - url до форм плеер сервиса, как правило apiHostName/api
  * @property {string}dictionaryUrl - url до сервиса словарей, как правило apiHostName/api/nsi/v1/dictionary
  * @property {string}externalApiUrl - url до сервиса dadata, как правило apiHostName/api/nsi/v1
  * @property {string}timeSlotApiUrl - url до сервиса тайм слотов, как правило apiHostName/api/lk/v1/equeue/agg
@@ -15,13 +14,14 @@ export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
  * @property {string}lkUrl - url до личного кабинета, как правило hostName/info
  * @property {string}invitationUrl - url приглашения по емейл
  * @property {string}yandexMapsApiKey - токен для яндекс карт
- * @property {string}yandexMapsApiKey - токен для яндекс карт
+ * @property {string}brakRouteNumber - идентификатор для слотов по браку
+ * @property {string}divorceRouteNumber - идентификатор для слотов по разводу
+ * @property {string}gibddRouteNumber - идентификатор для слотов по ГИБДД
  * @property {MockApi[]}mocks - массив апи для которых будет использваван mockUrl
  * @property {string}mockUrl - url до mockApi
  */
 export interface Config {
   production: boolean;
-  apiUrl: string;
   dictionaryUrl: string;
   externalApiUrl: string;
   timeSlotApiUrl: string;
@@ -31,12 +31,11 @@ export interface Config {
   paymentUrl: string;
   fileUploadApiUrl: string;
   lkUrl: string;
-  invitationUrl?: string;
   yandexMapsApiKey: string;
-  staticDomainAssetsPath: string;
+  invitationUrl: string;
+  brakRouteNumber: string;
+  divorceRouteNumber: string;
+  gibddRouteNumber: string;
   mocks?: MockApi[];
   mockUrl?: string;
-  brakRouteNumber?: string;
-  divorceRouteNumber?: string;
-  gibddRouteNumber?: string;
 }

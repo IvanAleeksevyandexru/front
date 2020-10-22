@@ -1,5 +1,8 @@
 <form class="form">
-  <div class="form__item" *ngFor="let componentData of formService.form.controls; let idx = index;">
+  <div *ngFor="let componentData of formService.form.controls; let idx = index;"
+       class="form__item"
+       [class.form__item--date]="componentData.value?.type === componentType.DateInput"
+  >
     <ng-container
       [ngSwitch]="componentData.value?.type"
       *ngIf="formService.shownElements[componentData.value?.id]">
@@ -58,7 +61,7 @@
         </ng-template>
         <lib-dropdown
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="(dictionaries$ | async)[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
+          [items]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
           class="cs__select cs-select">
@@ -76,7 +79,7 @@
           [formControl]="componentData.get('value')"
           [queryMinSymbolsCount]="0"
           [searchCaseSensitive]="false"
-          [fixedItems]="(dictionaries$ | async)[componentData.value?.attrs?.dictionaryType + componentData.value?.id]?.list"
+          [fixedItems]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
           [virtualScroll]="true"
         >
         </lib-lookup>
@@ -108,7 +111,9 @@
             [checkboxId]="componentData.value?.id"
             [formControl]="componentData.get('value')"
             [disabled]="componentData.value?.disabled"
-            [labelText]="componentData.value?.label">
+            [labelText]="componentData.value?.label"
+            [required]="componentData.value?.required"
+          >
           </lib-checkbox>
         </div>
       </ng-container>
@@ -221,7 +226,7 @@
           <span *ngIf="componentData.value?.attrs?.hint as hint" class="form__item__hint">
             {{ hint }}
           </span>
-          <epgu-constructor-helper-text *ngIf="!componentData.value?.required">
+          <epgu-constructor-helper-text *ngIf="!componentData.value?.required && componentData.value?.type !== componentType.CheckBox">
             {{ optionalField }}
           </epgu-constructor-helper-text>
         </div>
@@ -280,8 +285,8 @@
             {{ componentData.get('value').getError('msg') }}
           </small>
           <small
-            *ngIf="errors[componentData.get('id').value] && !componentData.get('value').touched">
-              {{ errors[componentData.get('id').value] }}
+            *ngIf="componentData.get('value').hasError('serverError')">
+            {{ componentData.get('value').getError('serverError') }}
           </small>
         </div>
       </ng-template>

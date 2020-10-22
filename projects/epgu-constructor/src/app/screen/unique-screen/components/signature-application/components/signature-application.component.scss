@@ -21,14 +21,6 @@
   align-items: center;
   justify-content: center;
   padding-top: 24px;
-
-  &__btn-submit {
-    width: auto;
-    &::ng-deep button {
-      width: inherit;
-      min-width: 100px;
-    }
-  }
 }
 
 @include laptop-down() {

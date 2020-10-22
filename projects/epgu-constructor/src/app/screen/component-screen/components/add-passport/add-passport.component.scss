@@ -32,11 +32,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    @include tablets-down {
-      .add-passport-screen-footer__btn-submit {
-        width: 100%;
-      }
-    }
 
     @include tablets-up {
       margin-top: 32px;
