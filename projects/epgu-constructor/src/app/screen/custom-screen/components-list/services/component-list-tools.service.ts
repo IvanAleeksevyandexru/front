@@ -38,7 +38,7 @@ export class ComponentListToolsService {
     form: FormArray,
     shownElements: CustomListStatusElements,
   ): CustomListStatusElements {
-    const valueEquals: boolean = typeof componentVal === 'string'
+    const valueEquals: boolean = typeof componentVal === 'string' || typeof componentVal === 'boolean'
       ? reference.val === componentVal
       : reference.val === componentVal.id;
     const dependentControl: AbstractControl = form.controls.find(
@@ -204,23 +204,6 @@ export class ComponentListToolsService {
 
   isDate(type: CustomScreenComponentTypes): boolean {
     return type === CustomScreenComponentTypes.DateInput;
-  }
-
-  isINN(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.LegalInnInput
-      || type === CustomScreenComponentTypes.PersonInnInput;
-  }
-
-  isSnils(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.SnilsInput;
-  }
-
-  isOgrnip(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.OgrnipInput;
-  }
-
-  isOgrn(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.OgrnInput;
   }
 
   /**

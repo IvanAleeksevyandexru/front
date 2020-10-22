@@ -71,8 +71,19 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     this.saveState([]);
   }
 
+  isScreensAvailable(): boolean {
+    const screensAmount: number = Object.keys(this.screens).length;
+    const defaultAvailable = 20;
+    return (
+      screensAmount < this.propData.components[0].attrs?.repeatAmount ||
+      screensAmount < defaultAvailable
+    );
+  }
+
   duplicateScreen() {
-    this.screens[this.getId()] = this.propData.components[0].attrs.components;
+    if (this.isScreensAvailable()) {
+      this.screens[this.getId()] = this.propData.components[0].attrs.components;
+    }
   }
 
   changeComponentList(changes: { [key: string]: any }, index: number) {

@@ -23,7 +23,7 @@
     </epgu-constructor-screen-pad>
   </div>
 
-  <epgu-constructor-long-button class="btn--add" (click)="duplicateScreen()">
+  <epgu-constructor-long-button [disabled]="!isScreensAvailable()" class="btn--add" (click)="duplicateScreen()">
     <div class="btn--add__text">Добавить данные</div>
   </epgu-constructor-long-button>
 
