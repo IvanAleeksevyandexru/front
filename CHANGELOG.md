@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.19](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.18...v0.2.19) (2020-10-22)
+
+
+### Features
+
+* добавил функционал значения по умолчанию для типа инпута Dictionary [ref EPGUCORE-39142] ([b49ca23](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b49ca23732df79ef2423f8146d79e15d56654c6d))
+* убрал текст "необязательно" для чекбоксов [ref EPGUCORE-39382] ([5cc1742](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5cc17427ee2ee15dfb117d6c1be5cd3bb63341e5))
+* убрал хедер Authorization из запросов оплаты [ref EPGUCORE-39655] ([8b07ae8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/8b07ae8f6fd6b083c8d4793089f96b780532f56b))
+* уменьшил отступы в шапке [ref EPGUCORE-39600] ([55aad87](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/55aad87278da82cd7b3a00a341f565ac5d74baf7))
+
+
+### Bug Fixes
+
+* Добавил возможность добавлять не более 20 изменений [ref: EPGUCORE-37598] ([8f53a32](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/8f53a32f118e9cca49168137bf52d792936abc4a))
+* изменено имя метода [ref EPGUCORE-39248] ([6abc450](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6abc450642afd781e6b998dab342a28ac9d5164b))
+* исправил выбор одного региона и валидацию[EPGUCORE-38655] ([f0d1e7b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f0d1e7b6d7d0918b045a3a1c02b826be253e248b))
+* исправил высоту модального окна[EPGUCORE-39396] ([926e079](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/926e079b01abb4fc75d58fd15c6b612f28e8795e))
+* исправил дополнительные отступы снизу[EPGUCORE-39423] ([b423559](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b42355931aa33fea55ebddb698a45ee4af3cf692))
+* исправил зависимые поля для чекбоксов [ref: EPGUCORE-38636] ([357c8c2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/357c8c2ae4038a220568dca69d36246d45979fe9))
+* исправил обрезание подразделений на карте[EPGUCORE-39475] ([298631e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/298631e169b5099d9f97b43b614397b4592cac27))
+* исправление linter(-a)[EPGUCORE-38655] ([8e7e629](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/8e7e6293ecff641f37a59a0567793e3e2484ecf4))
+* исправлено обновление отформатированного значения [ref EPGUCORE-39248] ([149c05e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/149c05e5417ad81def2e15664c2f4c9cc0195dd6))
+* перевел компонент temporary-registration-addr на использование реактивных форм для корректной работы валидации обязательных полей [ref EPGUCORE-39590] ([98df80f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/98df80ff9ce9c732404fc52cb0ad79d482bc89b8))
+* поправил работу зависимых ref'ов для Lookup и Dictionary компонентов, переименовал isEqual -> isEqualObj [ref EPGUCORE-38636] ([4a0380c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4a0380c3b87caf9761de1f59ec6cc9606e0d4428))
+* поправил форму селектора детей, чтобы сразу был один селектор для выбора [ref EPGUCORE-39624] ([e14a314](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e14a314b68e36c1079b6d82aa671ddab28511f11))
+* поправлено оформление кода [ref EPGUCORE-38977] ([e802590](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e8025903dc75712e6c52edbffa0c10d7b503c2f9))
+* убрал [object Object] для компонента regAddr при обработке ошибки с бэка о недействительном адресе [ref EPGUCORE-38977] ([20a08d0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/20a08d011d8c55bcb2bff2b7d1c96c4ba316ef38))
+* убрал лишний импорт [ref: EPGUCORE-38636] ([6405309](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/64053093fe170a7ee3b7a3559e91dbd77bcc29d5))
+
 ### [0.2.18](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.2.17...v0.2.18) (2020-10-20)
 
 
