@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AppConfig } from './app.type';
+import { AppConfig, LOCAL_STORAGE_KEY } from './app.type';
 import { environment } from '../environments/environment';
 import { ActivatedRoute } from '@angular/router';
-
-export const LOCAL_STORAGE_KEY = 'EPGU_FORM_PLAYER_TEST_STAND_CONFIG';
+import { LoadServiceDeviceType } from '../../projects/epgu-constructor/src/app/shared/services/device-detector/device-detector.service';
+import { LOCAL_STORAGE_PLATFORM_TYPE } from '../../projects/epgu-constructor/src/app/config/config.types';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 const initValues: AppConfig = {
   serviceId: environment.serviceId,
@@ -17,10 +18,10 @@ const initValues: AppConfig = {
 export class AppService {
   config: AppConfig;
 
-  configSubject = new BehaviorSubject(this.config);
+  configSubject = new BehaviorSubject<AppConfig>(this.config);
   config$ = this.configSubject.asObservable();
 
-  constructor (private route: ActivatedRoute) {
+  constructor (private route: ActivatedRoute, private ngxDeviceDetector: DeviceDetectorService) {
     this.initConfig();
   }
 
@@ -92,5 +93,22 @@ export class AppService {
     let config = this.config;
     config = { ...initValues, ...config };
     this.saveConfig(config);
+  }
+
+  initDeviceType() {
+    this.saveDeviceTypeInStorage();
+  }
+
+  private saveDeviceTypeInStorage() {
+    let getType = (): LoadServiceDeviceType => {
+      if (this.ngxDeviceDetector.isMobile()) {
+        return LoadServiceDeviceType.mob;
+      } else if (this.ngxDeviceDetector.isTablet()) {
+        return LoadServiceDeviceType.tab;
+      } else {
+        return LoadServiceDeviceType.desk;
+      }
+    };
+    localStorage.setItem(LOCAL_STORAGE_PLATFORM_TYPE, getType());
   }
 }

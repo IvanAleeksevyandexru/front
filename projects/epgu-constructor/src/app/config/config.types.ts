@@ -39,3 +39,5 @@ export interface Config {
   mocks?: MockApi[];
   mockUrl?: string;
 }
+
+export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';

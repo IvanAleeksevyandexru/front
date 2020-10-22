@@ -12,6 +12,7 @@ import { AppService } from './app.service';
 import { ConfigComponent } from './config/config.component';
 import { FpContainerComponent } from './fp-container/fp-container.component';
 import { LayoutModule } from './layout/layout.module';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { LayoutModule } from './layout/layout.module';
     AppService,
     UnsubscribeService,
     ConfigService,
+    DeviceDetectorService
   ],
   bootstrap: [AppComponent]
 })
