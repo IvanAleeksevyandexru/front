@@ -28,7 +28,9 @@ customValidator(component: CustomComponent): ValidatorFn {
     const validations = component.attrs?.validation;
     let customMessage;
     if (validations?.length) {
-        const error = validations.find(({ value, type }) => type === 'RegExp' && !new RegExp(value).test(control.value));
+        const error = validations.find(({ value, type }) =>
+            type === 'RegExp' && control.value && !new RegExp(value).test(control.value)
+        );
         if (error) {
           return this.validationErrorMsg(error.errorMsg);
         }
