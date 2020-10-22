@@ -48,11 +48,6 @@
           [data]="screenService.component"
         ></epgu-constructor-add-passport>
 
-        <epgu-constructor-mvd-giac
-          *ngSwitchCase="screenComponentName.mvdGiac"
-          [data]="screenService.component$ | async"
-        ></epgu-constructor-mvd-giac>
-
         <epgu-constructor-country-selection
           *ngSwitchCase="screenComponentName.countryApostil"
           [form]="form"

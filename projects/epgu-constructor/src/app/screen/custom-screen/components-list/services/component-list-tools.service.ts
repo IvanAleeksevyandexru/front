@@ -176,14 +176,17 @@ export class ComponentListToolsService {
   }
 
   adaptiveDropDown(items: CustomComponentDropDownItemList): CustomListDropDowns {
-    return items.map((item: CustomComponentDropDownItem, index: number) => ({
-      id: item.code || `${item.label}-${index}`,
-      text: item.label,
-      formatted: '',
-      unselectable: !!item.disable,
-      originalItem: item,
-      compare: () => false,
-    }));
+    return items.map((item: CustomComponentDropDownItem, index: number) => {
+      const itemText = item.label || item.title;
+      const itemCode = item.code || item?.value || `${itemText}-${index}`;
+      return {
+        id: itemCode,
+        text: itemText,
+        unselectable: !!item.disable,
+        originalItem: item,
+        compare: () => false,
+      };
+    });
   }
 
   isAddress(type: CustomScreenComponentTypes): boolean {
