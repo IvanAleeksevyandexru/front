@@ -87,7 +87,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   getPreparedDataToSend(): string {
     const { regDate } = this.valueParsed;
     const dataToSend = { ...this.valueParsed };
-    dataToSend.regDate = moment(regDate).format(DATE_STRING_DOT_FORMAT);
+    dataToSend.regDate = dataToSend.regAddr ? moment(regDate).format(DATE_STRING_DOT_FORMAT) : '';
     return JSON.stringify(dataToSend);
   }
 
@@ -105,8 +105,6 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   private isFormValid() {
-    const hasValue = () => Object.values(this.dataForm.form.value).every((value) => value);
-
-    return this.dataForm && this.dataForm.form.value && this.dataForm.form.valid && hasValue();
+    return this.dataForm && this.dataForm.form.value && this.dataForm.form.valid;
   }
 }
