@@ -34,6 +34,9 @@ import { ActionApiService } from './services/api/action-api/action-api.service';
 import { FormPlayerConfigApiService } from './services/api/form-player-config-api/form-player-config-api.service';
 import { initApp } from './form-player.functions';
 import { CookieService } from 'ngx-cookie-service';
+import { LocalStorageService } from './services/storage/local-storage/local-storage.service';
+import { CookieStorageService } from './services/storage/cookie-storage/cookie-storage.service';
+import { SessionStorageService } from './services/storage/session-storage/session-storage.service';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
@@ -69,6 +72,9 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     ConfigService,
     ServiceDataService,
     ToolsService,
+    LocalStorageService,
+    CookieStorageService,
+    SessionStorageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

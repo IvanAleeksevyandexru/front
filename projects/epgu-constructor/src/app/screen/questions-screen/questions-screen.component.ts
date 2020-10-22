@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { HelperService } from 'epgu-lib';
 import { fromEvent } from 'rxjs';
+import { DeviceDetectorService } from '../../shared/services/device-detector/device-detector.service';
 import { NavigationPayload } from '../../form-player.types';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
@@ -17,6 +17,7 @@ import { QuestionsComponentActions } from './questions-screen.types';
 })
 export class QuestionsScreenComponent implements OnInit, Screen {
   constructor(
+    private deviceDetector: DeviceDetectorService,
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
@@ -25,7 +26,7 @@ export class QuestionsScreenComponent implements OnInit, Screen {
   ) {}
 
   ngOnInit(): void {
-    if (HelperService.isMobile()) {
+    if (this.deviceDetector.isMobile) {
       this.calculateHeight();
       fromEvent(window, 'scroll')
         .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
@@ -62,7 +63,8 @@ export class QuestionsScreenComponent implements OnInit, Screen {
 
   calculateHeight(): void {
     const menuHeight = 88;
-    const componentHeight: number = window.innerHeight - menuHeight;
+    const buttonMarginBottom = 20;
+    const componentHeight: number = window.innerHeight - menuHeight - buttonMarginBottom;
     this.renderer.setStyle(this.elRef.nativeElement, 'min-height', `${componentHeight}px`);
   }
 }
