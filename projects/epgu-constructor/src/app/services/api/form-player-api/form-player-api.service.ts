@@ -8,7 +8,7 @@ import { ServiceDataService } from '../../service-data/service-data.service';
 
 type CookieSession = { userId: string, token: string };
 
-export const apiUrl = 'https://dev01.pgu2-pub.test.gosuslugi.ru/api';
+export const apiUrl = '/api';
 
 @Injectable()
 export class FormPlayerApiService {
