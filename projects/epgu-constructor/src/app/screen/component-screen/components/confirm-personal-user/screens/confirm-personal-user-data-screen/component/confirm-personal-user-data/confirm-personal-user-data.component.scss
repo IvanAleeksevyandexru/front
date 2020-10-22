@@ -1,5 +1,5 @@
-@import "src/styles/core";
-
+@import "src/styles/core/fonts";
+@import "src/styles/core/palettes";
 
 .data__group:not(:last-child) {
   margin-bottom: 16px;
@@ -44,5 +44,9 @@
   padding: 0;
   &__icon {
     margin-right: 8px;
+  }
+
+  &__text {
+    color: $color-gosblue;
   }
 }
