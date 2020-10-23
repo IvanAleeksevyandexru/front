@@ -139,5 +139,9 @@ export class ConfigService implements Config {
     this._mockUrl = config.mockUrl || '';
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
+
+    console.group('Config');
+    console.log({ ...this });
+    console.groupEnd();
   }
 }

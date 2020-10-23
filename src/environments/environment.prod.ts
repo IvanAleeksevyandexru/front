@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  serviceId: 'local',
-  targetId: '',
+  serviceId: '10000000100',
+  targetId: '10000000100',
   orderId: '',
   invited: false,
 };
