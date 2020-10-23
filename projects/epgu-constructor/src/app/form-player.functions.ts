@@ -9,7 +9,7 @@ export function initApp(smuEventsService: SmuEventsService, cookieService: Cooki
       if (isMobileView) {
         smuEventsService.init();
       }
-      loadService.load('portal');
+      loadService.load('core');
       resolve();
     });
   };

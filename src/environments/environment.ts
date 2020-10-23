@@ -8,6 +8,7 @@ export const environment = {
   targetId: '10000000100',
   orderId: '',
   invited: false,
+  core: {}
 };
 
 /*

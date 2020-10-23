@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import {isDevMode, NgModule} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormPlayerModule } from 'dist/epgu-constructor';
 import { EpguLibCommonModule, EpguLibModule } from 'epgu-lib';
@@ -13,6 +13,16 @@ import { ConfigComponent } from './config/config.component';
 import { FpContainerComponent } from './fp-container/fp-container.component';
 import { LayoutModule } from './layout/layout.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { environment } from '../environments/environment';
+
+const initCoreConfigs = () => {
+  if (!isDevMode()) {
+    // @ts-ignore
+    window.serverData = environment.core
+  }
+};
+initCoreConfigs();
+
 
 @NgModule({
   declarations: [
