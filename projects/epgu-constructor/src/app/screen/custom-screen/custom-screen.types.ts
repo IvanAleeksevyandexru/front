@@ -8,6 +8,7 @@ export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
   DropDown = 'DropDown',
+  MvdGiac = 'MvdGiac',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
   RadioInput = 'RadioInput',
@@ -54,8 +55,10 @@ export interface CustomListGenericData<T> {
 
 export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
 export type CustomComponentDropDownItem = {
-  label: string;
-  code: string;
+  title?: string;
+  label?: string; // TODO нужно удалить после обновления JSON, вместо него поле value
+  value?: string;
+  code?: string; // TODO нужно удалить после обновления JSON, вместо него поле value
   disable: boolean;
 };
 

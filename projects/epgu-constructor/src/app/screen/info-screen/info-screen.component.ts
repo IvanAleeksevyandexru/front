@@ -6,9 +6,7 @@ import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
-import { InfoScreenComponentTypes } from './info-screen.types';
 import {
-  ActionType,
   ComponentDto,
   ComponentDtoAction,
 } from '../../services/api/form-player-api/form-player-api.types';
@@ -23,11 +21,7 @@ import {
   providers: [UnsubscribeService],
 })
 export class InfoScreenComponent implements Screen, OnInit {
-  // <-- constant
-  infoScreenComponent = InfoScreenComponentTypes;
-
-  bodyActions: ComponentDtoAction[] = [];
-  footerActions: ComponentDtoAction[] = [];
+  actionButtons: ComponentDtoAction[] = [];
 
   constructor(
     private navigationService: NavigationService,
@@ -50,18 +44,8 @@ export class InfoScreenComponent implements Screen, OnInit {
       .subscribe((component) => this.setActionButtons(component));
   }
 
-  /**
-   * The method sets redirectToLk actions to footer and others to body of html
-   * @param component
-   */
   setActionButtons(component: ComponentDto) {
-    component?.attrs?.actions?.forEach((action) => {
-      if (action.type === ActionType.redirectToLK) {
-        this.footerActions.push(action);
-      } else {
-        this.bodyActions.push(action);
-      }
-    });
+    this.actionButtons = component?.attrs?.actions || [];
   }
 
   prevStep(): void {

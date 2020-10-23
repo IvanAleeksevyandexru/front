@@ -14,22 +14,22 @@
 
     <hr class="divider" />
 
-    <div class="info__body">
-      <ng-container [ngSwitch]="screenService.componentType$ | async">
-        <epgu-constructor-info-screen-body
-          *ngSwitchCase="infoScreenComponent.info"
-          [data]="screenService.component"
-        >
-        </epgu-constructor-info-screen-body>
-      </ng-container>
-    </div>
+    <epgu-constructor-info-screen-body
+      [data]="screenService.component"
+    >
+    </epgu-constructor-info-screen-body>
 
-    <epgu-constructor-info-screen-button
-      *ngFor="let action of bodyActions"
-      epgu-constructor-action
-      [action]="action"
-      >{{ action.label }}
-    </epgu-constructor-info-screen-button>
+    <div class="info__actions"
+         *ngIf="this.actionButtons.length">
+      <lib-button
+        *ngFor="let action of this.actionButtons"
+        class="info__action btn__submit"
+        epgu-constructor-action
+        [action]="action"
+      >
+        {{ action.label }}
+      </lib-button>
+    </div>
 
     <div class="info__submit">
       <lib-button
@@ -43,16 +43,6 @@
       </lib-button>
     </div>
   </epgu-constructor-screen-pad>
-
-  <div class="info-footer" *ngIf="footerActions?.length">
-    <lib-button
-      *ngFor="let action of footerActions"
-      epgu-constructor-action
-      [action]="action"
-    >
-      {{ action.label }}
-    </lib-button>
-  </div>
 
   <!-- NOTICE: убрано по требованию до 25.10.20 -->
   <!-- <div *ngIf="!screenService.display?.isSocialButtonsHidden">

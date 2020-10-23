@@ -11,7 +11,7 @@ import { fromEvent, of, Subject, Subscription } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { DeviceDetectorService } from 'ngx-device-detector';
+import { DeviceDetectorService } from '../../../../shared/services/device-detector/device-detector.service';
 import { ComponentBase } from '../../../screen.types';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
@@ -67,7 +67,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   howPhotoModalParameters: ConfirmationModal;
 
   constructor(
-    private deviceService: DeviceDetectorService,
+    private deviceDetector: DeviceDetectorService,
     private modalService: ModalService,
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
@@ -85,7 +85,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.checkImagePresence();
     this.setHowPhotoModalParams();
 
-    this.isDesktop = this.deviceService.isDesktop();
+    this.isDesktop = this.deviceDetector.isDesktop;
     this.allowedImgTypes = this.data?.attrs?.uploadedFile?.fileType || [];
     this.fileName = this.data?.attrs?.uploadedFile?.name || '';
 

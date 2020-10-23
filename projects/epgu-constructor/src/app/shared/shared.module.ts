@@ -43,6 +43,7 @@ import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.se
 import { WebcamService } from './services/webcam/webcam.service';
 import { ActionDirective } from './directives/action/action.directive';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
+import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 
 
 const COMPONENTS = [
@@ -88,6 +89,7 @@ const DIRECTIVES = [
     CycledFieldsService,
     WebcamService,
     TerraByteApiService,
+    DeviceDetectorService,
     ConfigService,
     CurrencyPipe,
   ],

@@ -12,6 +12,5 @@ export enum ComponentScreenComponentTypes {
   childrenListAbove14 = 'ChildrenListAbove14',
   docInput = 'DocInput',
   countryApostil = 'CountryApostil',
-  mvdGiac = 'MvdGiac',
   divorceConsent = 'DivorceConsent',
 }

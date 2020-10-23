@@ -78,7 +78,7 @@ export class ComponentListRepositoryService {
 
   initDataAfterLoading(references: Array<CustomListReferenceData>): void {
     references.forEach((reference: CustomListReferenceData) => {
-      if (reference.component.type === CustomScreenComponentTypes.DropDown) {
+      if (isDropDown(reference.component.type)) {
         this.initDropDown(reference as CustomListGenericData<CustomListDropDowns>);
       }
 

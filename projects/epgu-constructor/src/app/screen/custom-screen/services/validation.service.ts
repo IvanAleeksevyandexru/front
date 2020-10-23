@@ -22,13 +22,15 @@ customValidator(component: CustomComponent): ValidatorFn {
     }
 
     if (component.required && !control.value) {
-      return this.validationErrorMsg(REQUIRED_FIELD);
+      return this.validationErrorMsg(control.touched ? REQUIRED_FIELD : '');
     }
 
     const validations = component.attrs?.validation;
     let customMessage;
     if (validations?.length) {
-        const error = validations.find(({ value, type }) => type === 'RegExp' && !new RegExp(value).test(control.value));
+        const error = validations.find(({ value, type }) =>
+            type === 'RegExp' && control.value && !new RegExp(value).test(control.value)
+        );
         if (error) {
           return this.validationErrorMsg(error.errorMsg);
         }
