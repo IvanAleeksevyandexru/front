@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.3...v0.3.4) (2020-10-23)
+
+
+### Bug Fixes
+
+* добавил инициализацию LoadService; ([a24a8fc](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a24a8fc82d207688f40e033bcb6e7777642313d5))
+* замьютил сломанный тест для form-player ([d6f5575](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d6f557563b6d3fe1e51852bbade57c33221593fe))
+
 ### [0.3.3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.2...v0.3.3) (2020-10-23)
 
 
