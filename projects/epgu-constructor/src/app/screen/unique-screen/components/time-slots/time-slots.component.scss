@@ -108,10 +108,10 @@
     text-align: center;
     width: calc((100% / 3) - #{2 * $margin});
     @include phones-up() {
-      width: calc((100% / 4) - #{3 * $margin});
+      width: calc((100% / 4) - #{2 * $margin});
     }
     @include tablets-up {
-      width: calc((100% / 5) - #{4 * $margin});
+      width: calc((100% / 5) - #{2 * $margin});
     }
 
     &:hover {
