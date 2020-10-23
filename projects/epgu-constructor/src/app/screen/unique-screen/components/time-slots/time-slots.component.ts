@@ -27,6 +27,8 @@ const moment = moment_;
 })
 export class TimeSlotsComponent implements OnInit {
   @Input() isLoading: boolean;
+  @Input() data: DisplayDto;
+  @Output() nextStepEvent = new EventEmitter<any>();
 
   public date: Date = null;
   public label: string;
@@ -100,9 +102,6 @@ export class TimeSlotsComponent implements OnInit {
     this.timeSlotServices.MVD = mvdTimeSlotsService;
   }
 
-  @Input() data: DisplayDto;
-  @Output() nextStepEvent = new EventEmitter<any>();
-
   private renderSingleMonthGrid(output) {
     output.splice(0, output.length); // in-place clear
     const firstDayOfMonth = moment()
@@ -153,7 +152,11 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   public isDateLocked(date: Date) {
-    return this.isDateOutOfMonth(date) || this.currentService.isDateLocked(date);
+    return (
+      this.isDateOutOfMonth(date) ||
+      this.currentService.isDateLocked(date) ||
+      this.checkDateRestrictions(date)
+    );
   }
 
   public selectDate(date: Date) {
@@ -331,5 +334,24 @@ export class TimeSlotsComponent implements OnInit {
 
   calendarAvailable(): boolean {
     return !this.errorMessage;
+  }
+
+  private checkDateRestrictions(date: Date) {
+    let isInvalid = false;
+    const today = moment().startOf('day');
+    const restrictions = this.data.components[0].attrs?.restrictions || {};
+    // Объект с функциями проверки дат на заданные ограничения
+    const checks = {
+      minDate: (amount, type) => moment(date).isBefore(today.clone().add(amount, type)),
+      maxDate: (amount, type) => moment(date).isAfter(today.clone().add(amount, type)),
+    };
+    // Перебираем все ключи restrictions из attrs до первого "плохого"
+    // пример: "minDate": [30, "d"],
+    Object.keys(restrictions).some((key) => {
+      const [amount, type] = restrictions[key];
+      isInvalid = checks[key](amount, type);
+      return isInvalid;
+    });
+    return isInvalid;
   }
 }
