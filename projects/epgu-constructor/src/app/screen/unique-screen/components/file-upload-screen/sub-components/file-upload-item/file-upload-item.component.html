@@ -47,9 +47,9 @@
       </button>
     </div>
   </div>
-  <div class="fileupload__buttons" [class.nocamera]="cameraNotAllowed">
+  <div class="fileupload__buttons" [class.nocamera]="!isCameraAllowed">
     <button class="fileupload__button"
-            *ngIf="isMobile && !cameraNotAllowed"
+            *ngIf="isMobile && isCameraAllowed"
             (click)="openCamera()"
             [disabled]="isButtonsDisabled">
       <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg" class="fileupload__button-icon" alt="Фото"/>
