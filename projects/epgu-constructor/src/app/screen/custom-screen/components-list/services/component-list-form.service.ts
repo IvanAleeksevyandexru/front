@@ -7,7 +7,7 @@ import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe
 import { isEqualObj } from '../../../../shared/constants/uttils';
 import {
   CustomComponent,
-  CustomComponentOutputData,
+  CustomComponentOutputData, CustomListDictionaries, CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements, CustomScreenComponentTypes
 } from '../../custom-screen.types';
@@ -18,6 +18,7 @@ import { ComponentListToolsService } from './component-list-tools.service';
 import { ScenarioErrorsDto } from '../../../../services/api/form-player-api/form-player-api.types';
 import { UtilsService as utils } from '../../../../services/utils/utils.service';
 import { isDropDown } from '../../tools/custom-screen-tools';
+import { ListItem } from 'epgu-lib';
 
 @Injectable()
 export class ComponentListFormService {
@@ -75,14 +76,14 @@ export class ComponentListFormService {
     // Если есть defaultIndex и нет сохранненого ранее значения, то берем из справочника элемент по индексу defaultIndex
     if (defaultIndex !== undefined && !component.value) {
       if (isDropDown(component.type)) {
-        const dicts = this.repository.dropDowns$.getValue();
-        const key = component.id;
-        const value = dicts[key][defaultIndex];
+        const dicts: CustomListDropDowns = this.repository.dropDowns$.getValue();
+        const key: string = component.id;
+        const value: ListItem = dicts[key][defaultIndex];
         control.get('value').patchValue(value);
       } else {
-        const dicts = this.repository.dictionaries;
-        const key = utils.getDictKeyByComp(component);
-        const value = dicts[key].list[defaultIndex];
+        const dicts: CustomListDictionaries = this.repository.dictionaries;
+        const key: string = utils.getDictKeyByComp(component);
+        const value: ListItem = dicts[key].list[defaultIndex];
         control.get('value').patchValue(value);
       }
     } else {
