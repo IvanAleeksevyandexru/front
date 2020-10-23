@@ -15,10 +15,6 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentAnswersService.state = this.data.value;
-
-    if (!this.data.value) {
-      this.currentAnswersService.isValid = false;
-    }
   }
 
   noAddressAction() {
@@ -47,8 +43,6 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     this.data.value = changes;
     if (changes) {
       this.currentAnswersService.isValid = true;
-    } else {
-      this.currentAnswersService.isValid = false;
     }
     this.currentAnswersService.state = changes;
   }

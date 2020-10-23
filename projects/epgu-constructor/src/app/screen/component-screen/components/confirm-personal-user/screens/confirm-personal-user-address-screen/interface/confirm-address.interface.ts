@@ -16,6 +16,7 @@ export interface ConfirmAddressInterface {
   label: string;
   type: ComponentScreenComponentTypes;
   value: string;
+  required: boolean;
 }
 
 interface ConfirmAddressInterfaceAttr {
