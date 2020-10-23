@@ -97,13 +97,22 @@
   flex-flow: wrap;
 
   .time-slot-item {
+    $margin: 5px;
     background: rgba(29, 93, 235, 0.06);
     border-radius: 8px;
     color: $color-gosblue;
     padding: 10px 16px;
     line-height: 24px;
-    margin: 5px;
+    margin: $margin;
     cursor: pointer;
+    text-align: center;
+    width: calc((100% / 3) - #{2 * $margin});
+    @include phones-up() {
+      width: calc((100% / 4) - #{3 * $margin});
+    }
+    @include tablets-up {
+      width: calc((100% / 5) - #{4 * $margin});
+    }
 
     &:hover {
       background: rgba(29, 93, 235, 0.18);
