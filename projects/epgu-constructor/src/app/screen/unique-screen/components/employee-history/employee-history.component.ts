@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { Gender } from '../../../../shared/types/gender';
-import { ComponentBase, Display } from '../../../screen.types';
+import { ComponentBase } from '../../../screen.types';
+import { DisplayDto } from '../../../../services/api/form-player-api/form-player-api.types';
 import { EmployeeHistoryDataSource, EmployeeHistoryModel } from './employee-history.types';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
@@ -23,7 +24,7 @@ export interface EmployeeHistoryComponentInterface extends ComponentBase {
   providers: [UnsubscribeService],
 })
 export class EmployeeHistoryComponent implements OnInit {
-  @Input() display: Display;
+  @Input() display: DisplayDto;
   @Input() header: string;
   @Input() gender: Gender;
 

@@ -83,7 +83,7 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     {
       provide: APP_INITIALIZER,
       useFactory: initApp,
-      deps: [SmuEventsService, CookieService],
+      deps: [SmuEventsService, CookieService, LoadService],
       multi: true
     },
     ActionApiService,

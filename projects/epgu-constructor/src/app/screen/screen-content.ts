@@ -65,6 +65,15 @@ export class ScreenContent {
   }
   public terminal$ = this._terminal.asObservable();
 
+  private _displayCssClass = new BehaviorSubject<string>(null);
+  public get displayCssClass() {
+    return this._displayCssClass.getValue();
+  }
+  public set displayCssClass(val: string) {
+    this._displayCssClass.next(val);
+  }
+  public displayCssClass$ = this._displayCssClass.asObservable();
+
   private _screenType = new BehaviorSubject<ScreenTypes>(null);
   public get screenType() {
     return this._screenType.getValue();
@@ -175,7 +184,7 @@ export class ScreenContent {
 
   updateScreenContent(screenStore: ScreenStore) {
     const { display = {} as any, orderId, gender, errors = {} as any, currentCycledFields, applicantAnswers } = screenStore;
-    const { header, subHeader, submitLabel, type, components = [], terminal } = display;
+    const { header, subHeader, submitLabel, type, components = [], terminal, cssClass } = display;
     const firstComponent = components[0];
     this.display = display;
     this.header = header;
@@ -184,6 +193,7 @@ export class ScreenContent {
     this.screenType = type;
     this.gender = gender;
     this.terminal = terminal;
+    this.displayCssClass = cssClass;
     this.orderId = orderId;
     this.componentErrors = errors;
     this.componentError = errors[firstComponent?.id];

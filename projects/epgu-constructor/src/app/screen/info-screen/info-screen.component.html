@@ -5,7 +5,9 @@
 <epgu-constructor-screen-container
   [ngClass]="(screenService.terminal$ | async) ? 'screen-container-mt' : ''"
 >
-  <epgu-constructor-screen-pad>
+  <epgu-constructor-screen-pad
+    [ngClass]="screenService.displayCssClass$ | async"
+  >
     <epgu-constructor-page-name class="info__head">{{
       screenService.header$ | async
     }}</epgu-constructor-page-name>
