@@ -17,6 +17,7 @@ import { ComponentListRepositoryService } from './component-list-repository.serv
 import { ComponentListToolsService } from './component-list-tools.service';
 import { ScenarioErrorsDto } from '../../../../services/api/form-player-api/form-player-api.types';
 import { UtilsService as utils } from '../../../../services/utils/utils.service';
+import { isDropDown } from '../../tools/custom-screen-tools';
 
 @Injectable()
 export class ComponentListFormService {
@@ -73,10 +74,17 @@ export class ComponentListFormService {
     const defaultIndex = component.attrs?.defaultIndex;
     // Если есть defaultIndex и нет сохранненого ранее значения, то берем из справочника элемент по индексу defaultIndex
     if (defaultIndex !== undefined && !component.value) {
-      const dicts = this.repository.dictionaries;
-      const key = utils.getDictKeyByComp(component);
-      const value = dicts[key].list[defaultIndex];
-      control.get('value').patchValue(value);
+      if (isDropDown(component.type)) {
+        const dicts = this.repository.dropDowns$.getValue();
+        const key = component.id;
+        const value = dicts[key][defaultIndex];
+        control.get('value').patchValue(value);
+      } else {
+        const dicts = this.repository.dictionaries;
+        const key = utils.getDictKeyByComp(component);
+        const value = dicts[key].list[defaultIndex];
+        control.get('value').patchValue(value);
+      }
     } else {
       control.get('value').patchValue(this.toolsService.convertedValue(component));
     }

@@ -48,7 +48,7 @@ export function likeDictionary(type: CustomScreenComponentTypes): boolean {
  * @param type - тип поля
  */
 export function isDropDown(type: CustomScreenComponentTypes): boolean {
-  return CustomScreenComponentTypes.DropDown === type;
+  return type === CustomScreenComponentTypes.DropDown || type === CustomScreenComponentTypes.MvdGiac;
 }
 
 /**

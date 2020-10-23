@@ -193,10 +193,6 @@ export class ComponentListToolsService {
     return type === CustomScreenComponentTypes.AddressInput;
   }
 
-  isDropDown(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.DropDown;
-  }
-
   isJson(type: CustomScreenComponentTypes): boolean {
     return this.availableComponentTypesToJsonParse.includes(type);
   }
