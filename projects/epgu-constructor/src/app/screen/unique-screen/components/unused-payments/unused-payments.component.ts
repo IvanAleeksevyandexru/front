@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Display } from '../../../screen.types';
+import { DisplayDto } from '../../../../services/api/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { UsePaymentsModalComponent } from '../../../../shared/components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
 import { UnusedPaymentsService } from './unused-payments.service';
@@ -14,7 +14,7 @@ import { ScreenService } from '../../../screen.service';
 })
 export class UnusedPaymentsComponent implements OnInit {
   // @Input() orderId: string;
-  @Input() data: Display;
+  @Input() data: DisplayDto;
   @Output() nextStepEvent = new EventEmitter<any>();
 
   orderId: string;
