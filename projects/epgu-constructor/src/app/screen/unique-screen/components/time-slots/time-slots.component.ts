@@ -328,8 +328,4 @@ export class TimeSlotsComponent implements OnInit {
   isBookSlotSelected(): boolean {
     return this.bookedSlot?.slotId === this.currentSlot?.slotId;
   }
-
-  calendarAvailable(): boolean {
-    return !this.errorMessage;
-  }
 }
