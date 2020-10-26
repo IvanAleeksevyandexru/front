@@ -4,17 +4,21 @@ import { Navigation } from '../../../form-player.types';
 import { SmuEventsService } from 'epgu-lib';
 import { ConfigService } from '../../../config/config.service';
 import { MobilViewEvents } from '../../constants/redirect-event';
+import { DeviceDetectorService } from '../device-detector/device-detector.service';
 
 
 @Injectable()
 export class NavigationService {
 
-  isWebView = this.smuEventsService.smuInit;
+  isWebView: boolean;
 
   constructor(
     private smuEventsService: SmuEventsService,
+    private deviceDetector: DeviceDetectorService,
     private configService: ConfigService
-  ) {}
+  ) {
+    this.isWebView = this.deviceDetector.isWebView;
+  }
 
   clickToBack = new Subject();
   clickToBack$ = this.clickToBack.asObservable();
