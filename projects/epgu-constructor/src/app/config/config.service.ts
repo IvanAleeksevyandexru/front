@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Config, MockApi } from './config.types';
-import { BehaviorSubject } from 'rxjs';
 import { LoadService } from 'epgu-lib';
+import { BehaviorSubject } from 'rxjs';
+import { Config, MockApi } from './config.types';
 
 @Injectable()
 export class ConfigService implements Config {

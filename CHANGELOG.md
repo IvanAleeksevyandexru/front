@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.4...v0.3.5) (2020-10-23)
+
+
+### Bug Fixes
+
+* дополнил значение по-дефолту для staticDomainAssetsPath конфига ([a8e6187](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a8e61876ecad2eb405be0428822628565c9f2bf3))
+
 ### [0.3.4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.3...v0.3.4) (2020-10-23)
 
 
