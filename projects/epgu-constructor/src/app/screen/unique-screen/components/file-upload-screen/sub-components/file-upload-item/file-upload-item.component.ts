@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { HelperService } from 'epgu-lib';
 import {
   FileResponseToBackendUploadsItem,
   FileUploadItem,
@@ -26,6 +25,7 @@ import {
 } from '../../../../../../shared/components/webcam-shoot/webcamevents';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 import { ConfigService } from '../../../../../../config/config.service';
+import { DeviceDetectorService } from '../../../../../../shared/services/device-detector/device-detector.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -106,9 +106,10 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   constructor(
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
+    private deviceDetectorService: DeviceDetectorService,
     public config: ConfigService,
   ) {
-    this.isMobile = HelperService.isMobile();
+    this.isMobile = deviceDetectorService.isMobile;
   }
 
   /**
@@ -391,14 +392,19 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.webcamService.isWebcamAllowed().subscribe(
-      (isAvailable) => {
-        this.isCameraAllowed = isAvailable;
-      },
-      () => {
-        // eslint-disable-next-line no-console
-        this.isCameraAllowed = false;
-      },
-    );
+    this.checkCamAvailability();
+  }
+
+  private checkCamAvailability() {
+    if (this.isMobile) {
+      this.webcamService.isWebcamAllowed().subscribe(
+        (isAvailable) => {
+          this.isCameraAllowed = isAvailable;
+        },
+        () => {
+          this.isCameraAllowed = false;
+        },
+      );
+    }
   }
 }
