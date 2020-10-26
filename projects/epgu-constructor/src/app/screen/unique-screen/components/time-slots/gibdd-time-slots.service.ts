@@ -47,7 +47,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
           this.bookId = response.bookId;
           this.activeMonthNumber = selectedSlot.slotTime.getMonth();
           this.activeYearNumber = selectedSlot.slotTime.getFullYear();
-          response.timeStart = new Date(response.timeSlot.visitTimeISO);
+          response.timeStart = new Date();
           response.timeFinish = moment(response.timeStart).add(240, 'm').toDate();
         } else {
           this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';

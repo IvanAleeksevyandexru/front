@@ -101,6 +101,7 @@ const DIRECTIVES = [
     ConfirmationModalComponent,
     CommonModalComponent,
     UsePaymentsModalComponent,
+    WebcamShootComponent,
   ],
 })
 export class SharedModule {}

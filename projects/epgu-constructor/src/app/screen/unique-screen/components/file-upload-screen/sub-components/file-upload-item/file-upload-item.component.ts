@@ -84,7 +84,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   private subs: Subscription[] = [];
   private maxFileNumber = -1;
 
-  cameraNotAllowed = false; // Флаг, что камеры нет или она запрещена
+  isCameraAllowed = false; // Флаг, что камеры нет или она запрещена
   listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
   files$$ = new BehaviorSubject<TerraUploadedFile[]>([]); // Список уже загруженных файлов
@@ -393,11 +393,11 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.webcamService.isWebcamAllowed().subscribe(
       (isAvailable) => {
-        this.cameraNotAllowed = !isAvailable;
+        this.isCameraAllowed = isAvailable;
       },
       () => {
         // eslint-disable-next-line no-console
-        this.cameraNotAllowed = true;
+        this.isCameraAllowed = false;
       },
     );
   }
