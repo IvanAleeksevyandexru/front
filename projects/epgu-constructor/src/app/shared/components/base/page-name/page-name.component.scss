@@ -12,4 +12,8 @@
 h1 {
   margin-bottom: 8px;
   @include typ-h3;
+
+  &:only-child {
+    margin-bottom: 0;
+  }
 }
