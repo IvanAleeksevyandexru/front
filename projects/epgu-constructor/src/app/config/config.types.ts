@@ -39,7 +39,6 @@ export interface Config {
   staticDomainAssetsPath: string;
   mocks?: MockApi[];
   mockUrl?: string;
-  staticDomainAssetsPath?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';
