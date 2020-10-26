@@ -20,23 +20,19 @@ export class ConfirmPhoneComponent {
   count = 59;
   countInterval = 1000;
 
-  get characterMask(): string {
-    return this.screenService.component.attrs.characterMask;
-  }
-
-  get codeLength(): number {
-    return this.screenService.component.attrs.codeLength;
-  }
-
-  get mask(): string[] {
-    return new Array(this.codeLength).fill(new RegExp(this.characterMask));
-  }
+  characterMask: string;
+  codeLength: number;
+  mask: string[];
 
   constructor(
     public screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
     private navigationService: NavigationService,
-  ) {}
+  ) {
+    this.characterMask = this.screenService.component.attrs.characterMask;
+    this.codeLength = this.screenService.component.attrs.codeLength;
+    this.mask = new Array(this.codeLength).fill(new RegExp(this.characterMask));
+  }
 
   sendCodeAgain() {
     const url = this.screenService.component.attrs.resendCodeUrl;
