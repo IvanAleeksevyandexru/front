@@ -47,7 +47,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
         } else {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;
-          response.timeStart = new Date(response.timeSlot.visitTimeISO);
+          response.timeStart = new Date();
           response.timeFinish = moment(response.timeStart).add(1440, 'm').toDate();
         }
       }),
