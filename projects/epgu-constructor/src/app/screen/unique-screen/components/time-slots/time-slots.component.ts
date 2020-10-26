@@ -322,11 +322,11 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   buttonDisabled(): boolean {
-    return !this.currentAnswersService.isValid || this.inProgress || this.isBookSlotSelected();
+    return !this.currentAnswersService.isValid || this.inProgress || !this.isBookSlotSelected();
   }
 
   isBookSlotSelected(): boolean {
-    return this.bookedSlot?.slotId === this.currentSlot?.slotId;
+    return this.currentSlot?.slotId;
   }
 
   calendarAvailable(): boolean {
