@@ -15,15 +15,6 @@ import { LayoutModule } from './layout/layout.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { environment } from '../environments/environment';
 
-const initCoreConfigs = () => {
-  if (!isDevMode()) {
-    // @ts-ignore
-    window.serverData = environment.core
-  }
-};
-initCoreConfigs();
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,6 +42,14 @@ initCoreConfigs();
 })
 export class AppModule {
   constructor(private loadService: LoadService) {
+    const initCoreConfigs = () => {
+      if (!isDevMode()) {
+        // @ts-ignore
+        window.serverData = environment.core
+      }
+    };
+    initCoreConfigs();
+
     loadService.load('core');
   }
 }
