@@ -11,7 +11,8 @@ const initValues: AppConfig = {
   serviceId: environment.serviceId,
   targetId: environment.targetId,
   orderId: environment.orderId,
-  invited: false
+  invited: false,
+  canStartNew: true,
 }
 
 @Injectable()
@@ -26,7 +27,7 @@ export class AppService {
   }
 
   valuesFromQueryParams(): void {
-    const { serviceId, targetId, orderId, invited } = this.route.snapshot.queryParams;
+    const { serviceId, targetId, orderId, invited, canStartNew } = this.route.snapshot.queryParams;
     if(serviceId) {
       this.config.serviceId = serviceId;
     }
@@ -38,6 +39,9 @@ export class AppService {
     }
     if(invited) {
       this.config.invited = invited;
+    }
+    if(canStartNew) {
+      this.config.canStartNew = canStartNew;
     }
   }
 

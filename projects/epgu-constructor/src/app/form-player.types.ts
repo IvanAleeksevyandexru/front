@@ -4,12 +4,16 @@ import { Answer } from './shared/types/answer';
  * @property serviceId - идентификатор услуги в formPlayerApi
  * @property targetId - идентификатор услуги в ФРГУ
  * @property orderId - идентификатор черновика заявления
+ * @property invited - флаг для запуска инвайт сценариев
+ * @property canStartNew - флаг для возможности отображения модального окна "продолжить черновик",
+ *   по дефолту значение true. Если поставить false, то модального окна не будет.
  */
 export interface Service {
   serviceId: string;
   targetId: string;
   orderId?: string;
   invited?: boolean;
+  canStartNew?: boolean;
 }
 
 /**

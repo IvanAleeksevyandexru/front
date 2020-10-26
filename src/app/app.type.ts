@@ -5,4 +5,5 @@ export interface AppConfig {
   targetId: string;
   orderId?: string;
   invited?: boolean
+  canStartNew?: boolean
 }

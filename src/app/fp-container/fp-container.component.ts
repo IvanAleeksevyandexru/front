@@ -21,6 +21,7 @@ export class FpContainerComponent implements OnInit {
         targetId: config.targetId,
         orderId: config.orderId,
         invited: config.invited,
+        canStartNew: config.canStartNew,
       };
     });
   }

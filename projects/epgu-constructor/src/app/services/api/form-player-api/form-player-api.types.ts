@@ -152,4 +152,5 @@ export enum ActionType {
 export interface CheckOrderApiResponse {
   scenarioDto: ScenarioDto;
   isInviteScenario: boolean;
+  canStartNew: boolean;
 }
