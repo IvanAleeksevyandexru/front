@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "start:stage": "ng serve --configuration staging",
-    "start:backend": "java -jar fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api --draft-client.enabled=false --orderid.integration=false",
+    "start:backend": "java -jar fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api --draft-client.enabled=false",
     "start:config": "json-server --watch form-player-config.json --routes form-player-config-routes.json",
     "build": "ng build",
     "lib:build": "ng build epgu-constructor --prod",
