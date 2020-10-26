@@ -65,6 +65,10 @@
 
     &__content {
       overflow-y: auto;
+
+      .text {
+        padding-right: 15px;
+      }
     }
 
     &__controls {
