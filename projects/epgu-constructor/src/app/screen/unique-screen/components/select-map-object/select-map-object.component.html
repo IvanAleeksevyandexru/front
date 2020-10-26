@@ -17,7 +17,7 @@
     </div>
   </div>
   <lib-map
-    [externalMode]="!config.production"
+    [externalMode]="!config.staticDomainAssetsPath"
     [enterpriseYandexMapsEnabled]="true"
     [yandexMapsApiKey]="config.yandexMapsApiKey"
     [center]="mapCenter"

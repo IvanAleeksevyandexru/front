@@ -57,7 +57,6 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     InfoScreenModule,
   ],
   providers: [
-    LoadService,
     FormPlayerConfigApiService,
     DictionaryApiService,
     FormPlayerService,

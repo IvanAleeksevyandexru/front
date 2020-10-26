@@ -1,8 +1,8 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import {isDevMode, NgModule} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormPlayerModule } from 'dist/epgu-constructor';
-import { EpguLibCommonModule, EpguLibModule } from 'epgu-lib';
+import {EpguLibCommonModule, EpguLibModule, LoadService} from 'epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
 import { ConfigService } from '../../projects/epgu-constructor/src/app/config/config.service';
 import { UnsubscribeService } from '../../projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
@@ -13,6 +13,16 @@ import { ConfigComponent } from './config/config.component';
 import { FpContainerComponent } from './fp-container/fp-container.component';
 import { LayoutModule } from './layout/layout.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { environment } from '../environments/environment';
+
+const initCoreConfigs = () => {
+  if (!isDevMode()) {
+    // @ts-ignore
+    window.serverData = environment.core
+  }
+};
+initCoreConfigs();
+
 
 @NgModule({
   declarations: [
@@ -34,9 +44,14 @@ import { DeviceDetectorService } from 'ngx-device-detector';
     AppService,
     UnsubscribeService,
     ConfigService,
-    DeviceDetectorService
+    DeviceDetectorService,
+    LoadService
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private loadService: LoadService) {
+    loadService.load('core');
+  }
+}
 
