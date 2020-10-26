@@ -17,10 +17,20 @@ export class ConfirmPhoneComponent {
   isTimerShow = true;
 
   // <-- constant
-  correctCodeLength = 4;
-  mask = [/\d/, /\d/, /\d/, /\d/];
   count = 59;
   countInterval = 1000;
+
+  get characterMask(): string {
+    return this.screenService.component.attrs.characterMask;
+  }
+
+  get codeLength(): number {
+    return this.screenService.component.attrs.codeLength;
+  }
+
+  get mask(): string[] {
+    return new Array(this.codeLength).fill(new RegExp(this.characterMask));
+  }
 
   constructor(
     public screenService: ScreenService,
@@ -29,16 +39,16 @@ export class ConfirmPhoneComponent {
   ) {}
 
   sendCodeAgain() {
-    const options: NavigationOptions = {
-      url: 'service/actions/resendPhoneConfirmationCode', // TODO вынести куда нибудь
-    };
+    const url = this.screenService.component.attrs.resendCodeUrl;
+    const options: NavigationOptions = { url };
     this.navigationService.nextStep.next({ options });
     this.isTimerShow = true;
   }
 
   enterCode(code: any) {
     this.enteredCode = code;
-    if (String(code).length === this.correctCodeLength) {
+
+    if (String(code).length === this.codeLength) {
       this.navigationService.nextStep.next({ payload: this.getComponentState() });
     }
   }
