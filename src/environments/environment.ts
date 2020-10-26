@@ -4,10 +4,11 @@
 
 export const environment = {
   production: false,
-  serviceId: 'local',
+  serviceId: '10000000100',
   targetId: '10000000100',
   orderId: '',
   invited: false,
+  core: {}
 };
 
 /*

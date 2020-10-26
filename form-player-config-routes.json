@@ -1,3 +1,4 @@
 {
-  "/api/pgu-service-config/config/default-config": "/pgu-service-config"
+  "/api/pgu-service-config/config/default-config": "/default-config",
+  "/node-api/core": "/core"
 }

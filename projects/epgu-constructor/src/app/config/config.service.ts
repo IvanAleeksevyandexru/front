@@ -7,7 +7,6 @@ import { Config, MockApi } from './config.types';
 export class ConfigService implements Config {
   private isLoadedSubject = new BehaviorSubject(false);
   private _isLoaded = false;
-  private _production: boolean;
   private _billsApiUrl: string;
   private _dictionaryUrl: string;
   private _externalApiUrl: string;
@@ -38,10 +37,6 @@ export class ConfigService implements Config {
 
   get isLoaded(): boolean {
     return this._isLoaded;
-  }
-
-  get production(): boolean {
-    return this._production;
   }
 
   get billsApiUrl(): string {
@@ -124,24 +119,29 @@ export class ConfigService implements Config {
   // Do not use this method, only for testing stand
   set config(config: Config) {
     this.checkConfig(config);
-    this._billsApiUrl = config.billsApiUrl;
-    this._dictionaryUrl = config.dictionaryUrl;
-    this._externalApiUrl = config.externalApiUrl;
-    this._fileUploadApiUrl = config.fileUploadApiUrl;
-    this._lkUrl = config.lkUrl;
-    this._paymentUrl = config.paymentUrl;
-    this._timeSlotApiUrl = config.timeSlotApiUrl;
+    this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}bills`;
+    this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
+    this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
+    this._fileUploadApiUrl = config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;
+    this._lkUrl = config.lkUrl ?? `${this.loadService.config.lkUrl}`;
+    this._paymentUrl = config.paymentUrl ?? `${this.loadService.config.oplataUrl}`;
+    this._timeSlotApiUrl = config.timeSlotApiUrl ?? `${this.loadService.config.lkApiUrl}equeue/agg`;
+    this._listPaymentsApiUrl = config.listPaymentsApiUrl ?? `${this.loadService.config.lkApiUrl}orders/listpaymentsinfo`;
+    this._uinApiUrl = config.uinApiUrl ?? `${this.loadService.config.lkApiUrl}paygate/uin`;
+    this._invitationUrl = config.invitationUrl ?? `${this.loadService.config.lkApiUrl}`;
+    this._yandexMapsApiKey = config.yandexMapsApiKey ?? `${this.loadService.config.yandexMapsApiKey}`;
+    this._staticDomainAssetsPath = config.staticDomainAssetsPath ?? this.getStaticDomainCfg();
+
     this._brakRouteNumber = config.brakRouteNumber;
     this._divorceRouteNumber = config.divorceRouteNumber;
     this._gibddRouteNumber = config.gibddRouteNumber;
-    this._listPaymentsApiUrl = config.listPaymentsApiUrl;
-    this._uinApiUrl = config.uinApiUrl;
-    this._invitationUrl = config.invitationUrl;
-    this._yandexMapsApiKey = config.yandexMapsApiKey;
-    this._staticDomainAssetsPath = this.getStaticDomainCfg() || config.staticDomainAssetsPath || '';
     this._mocks = config.mocks || [];
     this._mockUrl = config.mockUrl || '';
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
+
+    console.group('Config');
+    console.log({ ...this });
+    console.groupEnd();
   }
 }
