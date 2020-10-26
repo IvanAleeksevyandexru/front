@@ -55,7 +55,7 @@ export interface DisplaySubjHead {
 
 /**
  * @property {}components
- * @property {boolean}isFirstScreen - ствойсвто отвечает на вопрос, на первом ли экране мы находимся,
+ * @property {boolean}firstScreen - ствойсвто отвечает на вопрос, на первом ли экране мы находимся,
  * если экран не первый то свойства не должно быть
  * @property {string}header - текстовый заголовок компонента
  * @property {string}id - идентификатор экрана
@@ -65,7 +65,7 @@ export interface DisplaySubjHead {
  */
 export interface DisplayDto {
   components: Array<ComponentDto>;
-  isFirstScreen?: boolean;
+  firstScreen?: boolean;
   header: string;
   subHeader?: DisplaySubjHead;
   label?: string;
