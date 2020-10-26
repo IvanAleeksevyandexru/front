@@ -8,6 +8,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { LoadService } from 'epgu-lib';
+import { combineLatest } from 'rxjs';
 import { ConfigService } from './config/config.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
 import { ScreenComponent } from './screen/screen.const';
@@ -38,6 +40,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     public configService: ConfigService,
+    public loadService: LoadService,
     private modalService: ModalService,
   ) {}
 
@@ -45,11 +48,12 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.checkProps();
     this.serviceDataService.init(this.service);
 
-    this.formPlayerConfigApiService
-      .getFormPlayerConfig()
+    combineLatest([this.formPlayerConfigApiService.getFormPlayerConfig(), this.loadService.loaded])
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((config) => {
-        this.configService.config = config;
+      .subscribe((result) => {
+        console.log('result');
+        console.log(result);
+        [this.configService.config] = result;
       });
 
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {

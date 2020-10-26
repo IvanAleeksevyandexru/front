@@ -17,11 +17,11 @@ export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
  * @property {string}brakRouteNumber - идентификатор для слотов по браку
  * @property {string}divorceRouteNumber - идентификатор для слотов по разводу
  * @property {string}gibddRouteNumber - идентификатор для слотов по ГИБДД
+ * @property {string}staticDomainAssetsPath - путь до статики
  * @property {MockApi[]}mocks - массив апи для которых будет использваван mockUrl
  * @property {string}mockUrl - url до mockApi
  */
 export interface Config {
-  production: boolean;
   dictionaryUrl: string;
   externalApiUrl: string;
   timeSlotApiUrl: string;
@@ -36,9 +36,9 @@ export interface Config {
   brakRouteNumber: string;
   divorceRouteNumber: string;
   gibddRouteNumber: string;
+  staticDomainAssetsPath: string;
   mocks?: MockApi[];
   mockUrl?: string;
-  staticDomainAssetsPath?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';
