@@ -57,11 +57,6 @@
         >
         </epgu-constructor-country-selection>
 
-        <epgu-constructor-doc-input
-          *ngSwitchCase="screenComponentName.docInput"
-          [data]="screenService.component"
-        ></epgu-constructor-doc-input>
-
         <epgu-constructor-select-children-screen
           *ngSwitchCase="screenComponentName.childrenListUnder14"
           [data]="screenService.component"

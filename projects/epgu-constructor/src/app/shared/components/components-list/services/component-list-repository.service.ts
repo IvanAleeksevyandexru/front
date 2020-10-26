@@ -4,14 +4,14 @@ import {
   CustomListDictionaries,
   CustomListDropDowns,
   CustomListGenericData, CustomListReferenceData, CustomScreenComponentTypes
-} from '../../custom-screen.types';
+} from '../../../../screen/custom-screen/custom-screen.types';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import {
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
   likeDictionary
-} from '../../tools/custom-screen-tools';
+} from '../../../../screen/custom-screen/tools/custom-screen-tools';
 import { DictionaryOptions, DictionaryResponse } from '../../../../services/api/dictionary-api/dictionary-api.types';
 import { map, tap } from 'rxjs/operators';
 import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';

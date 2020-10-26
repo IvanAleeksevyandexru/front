@@ -5,8 +5,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { CustomScreenComponent } from './custom-screen.component';
 import { ScreenService } from '../screen.service';
 import { ValidationService } from './services/validation.service';
-import { AddressHelperService } from './components-list/address-helper.service';
-import { ComponentListToolsService } from './components-list/services/component-list-tools.service';
+import { AddressHelperService } from '../../shared/components/components-list/address-helper.service';
+import { ComponentListToolsService } from '../../shared/components/components-list/services/component-list-tools.service';
 
 const COMPONENTS = [
   CustomScreenComponent,

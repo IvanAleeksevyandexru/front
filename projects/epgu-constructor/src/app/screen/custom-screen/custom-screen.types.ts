@@ -25,6 +25,7 @@ export enum CustomScreenComponentTypes {
   PassportLookup = 'PassportLookup',
   SnilsInput = 'SnilsInput',
   CityInput = 'CityInput',
+  DocInput = 'DocInput',
 }
 
 export type CustomListDropDowns = Array<Partial<ListItem>>;

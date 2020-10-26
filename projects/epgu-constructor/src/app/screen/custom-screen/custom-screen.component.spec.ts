@@ -10,7 +10,7 @@ import { CachedAnswersService } from '../../shared/services/applicant-answers/ca
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
-import { ComponentsListComponent } from './components-list/components-list.component';
+import { ComponentsListComponent } from '../../shared/components/components-list/components-list.component';
 import { CustomScreenComponent } from './custom-screen.component';
 import { ValidationService } from './services/validation.service';
 import { CurrentAnswersService } from '../current-answers.service';

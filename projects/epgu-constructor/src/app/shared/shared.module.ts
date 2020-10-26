@@ -5,7 +5,7 @@ import { EpguLibModule } from 'epgu-lib';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { WebcamModule } from 'ngx-webcam';
 import { ConfigService } from '../config/config.service';
-import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
+import { ComponentsListComponent } from './components/components-list/components-list.component';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { ModalService } from '../services/modal/modal.service';
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';
@@ -44,7 +44,8 @@ import { WebcamService } from './services/webcam/webcam.service';
 import { ActionDirective } from './directives/action/action.directive';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
-
+import { DocInputComponent } from './components/doc-input/doc-input.component';
+import { ComponentItemComponent } from './components/component-item/component-item.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -63,10 +64,12 @@ const COMPONENTS = [
   GenderRadioButtonComponent,
   OutputHtmlComponent,
   ComponentsListComponent,
+  ComponentItemComponent,
   LongButtonComponent,
   WebcamShootComponent,
   PassportComponent,
   ActionButtonComponent,
+  DocInputComponent,
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe, ImgPrefixerPipe, SafePipe];

@@ -3,7 +3,7 @@ import { CustomComponent, CustomComponentAttrValidation, CustomScreenComponentTy
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { REQUIRED_FIELD, INVALID_FORMAT_FIELD } from '../../../shared/constants/helper-texts';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
-import { ComponentListToolsService } from '../components-list/services/component-list-tools.service';
+import { ComponentListToolsService } from '../../../shared/components/components-list/services/component-list-tools.service';
 
 @Injectable()
 export class ValidationService {
@@ -42,7 +42,7 @@ customValidator(component: CustomComponent): ValidatorFn {
     }
 
   return this.isValid(component, control.value) ? null : this.validationErrorMsg(customMessage?.errorMsg);
-  
+
   };
 }
 

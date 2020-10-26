@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
-import { isUndefined, toBoolean } from '../../../../shared/constants/uttils';
+import { isUndefined, toBoolean } from '../../../constants/uttils';
 import {
   CustomComponent,
   CustomComponentDropDownItem,
@@ -11,7 +11,7 @@ import {
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes
-} from '../../custom-screen.types';
+} from '../../../../screen/custom-screen/custom-screen.types';
 
 @Injectable()
 export class ComponentListToolsService {

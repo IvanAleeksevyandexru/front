@@ -16,9 +16,7 @@ import { ConfirmPersonalUserPhoneScreenModule } from './components/confirm-perso
 // eslint-disable-next-line max-len
 import { TemporaryRegistrationAddrScreenModule } from './components/confirm-personal-user/screens/temporary-registration-addr/temporary-registration-addr-screen.module';
 import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
-import { DocInputModule } from './components/doc-input/doc-input.module';
 import { SelectChildrenScreenModule } from './components/select-children/select-children-screen.module';
-
 
 const COMPONENTS = [
   ComponentScreenComponent,
@@ -37,7 +35,6 @@ const COMPONENTS = [
     SelectChildrenScreenModule,
     TemporaryRegistrationAddrScreenModule,
     AddPassportModule,
-    DocInputModule,
     SharedModule,
     EpguLibModule,
   ],

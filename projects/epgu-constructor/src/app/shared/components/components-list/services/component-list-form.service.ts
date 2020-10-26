@@ -4,20 +4,20 @@ import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropd
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { isEqualObj } from '../../../../shared/constants/uttils';
+import { isEqualObj } from '../../../constants/uttils';
 import {
   CustomComponent,
   CustomComponentOutputData, CustomListDictionaries, CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements, CustomScreenComponentTypes
-} from '../../custom-screen.types';
-import { ValidationService } from '../../services/validation.service';
+} from '../../../../screen/custom-screen/custom-screen.types';
+import { ValidationService } from '../../../../screen/custom-screen/services/validation.service';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper.service';
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
 import { ScenarioErrorsDto } from '../../../../services/api/form-player-api/form-player-api.types';
 import { UtilsService as utils } from '../../../../services/utils/utils.service';
-import { isDropDown } from '../../tools/custom-screen-tools';
+import { isDropDown } from '../../../../screen/custom-screen/tools/custom-screen-tools';
 import { ListItem } from 'epgu-lib';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { RelativeDate } from 'epgu-lib';
-import { TextTransform } from '../../../../shared/types/textTransform';
-import { ComponentBase } from '../../../screen.types';
+import { TextTransform } from '../../types/textTransform';
+import { ComponentBase } from '../../../screen/screen.types';
 
 /**
  * Интерфейс компонента с полями
