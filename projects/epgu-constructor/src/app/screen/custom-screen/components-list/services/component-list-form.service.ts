@@ -19,6 +19,10 @@ import { ScenarioErrorsDto } from '../../../../services/api/form-player-api/form
 import { UtilsService as utils } from '../../../../services/utils/utils.service';
 import { isDropDown } from '../../tools/custom-screen-tools';
 import { ListItem } from 'epgu-lib';
+import { CustomScreenComponent } from '../../custom-screen.component';
+import * as moment_ from 'moment';
+
+const moment = moment_;
 
 @Injectable()
 export class ComponentListFormService {
@@ -121,10 +125,13 @@ export class ComponentListFormService {
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
       const { disabled, valid } = this.form.get([key, 'value']);
-      const { value } = val;
+      let { value, type } = val;
       const isValid = disabled || valid;
 
       if (this.shownElements[val.id]) {
+        if (type === CustomScreenComponentTypes.DateInput) {
+          value = moment(value).toISOString(true); // NOTICE: обработка даты и "правильное" приведение к ISO-строке
+        }
         acc[val.id] = { value, isValid, disabled };
       }
 
