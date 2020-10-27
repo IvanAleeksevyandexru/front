@@ -17,12 +17,13 @@ export class ConfirmPhoneComponent {
   isTimerShow = true;
 
   // <-- constant
+  correctCodeLength = 4;
+  mask = [/\d/, /\d/, /\d/, /\d/];
   count = 59;
   countInterval = 1000;
 
   characterMask: string;
   codeLength: number;
-  mask: RegExp[];
 
   constructor(
     public screenService: ScreenService,

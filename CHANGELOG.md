@@ -7,14 +7,26 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* выравнил стили в плашечках тайм слотов [ref EPGUCORE-39477] ([0362b54](https://git.gosuslugi.local///commit/0362b54a7d3b9a9f1fde700eb3146cba2826464f))
-* выравнил стили в плашечках тайм слотов [ref EPGUCORE-39477] ([3f459a2](https://git.gosuslugi.local///commit/3f459a2bdbc61ea5cc27b8f8fd28f982c224df79))
-* исправил логику отключения кнопки Отправить заявление на таймслотах [ref EPGUCORE-39504] ([9d632f5](https://git.gosuslugi.local///commit/9d632f5f0d301852d277185732e2475ee485f917))
-* исправил обработчик первого экрана [EPGUCORE-39788]; ([1097bf0](https://git.gosuslugi.local///commit/1097bf07a08a109237d83948aa4a3109be2b3953))
-* исправил показ кнопки на редиактирования персональных данных; ([542381d](https://git.gosuslugi.local///commit/542381deb8a27375a650f53b68254027ed4ce078))
-* исправлена ошибка создания компонента для фотографирования [ref EPGUCORE-39301] ([a8ef0a1](https://git.gosuslugi.local///commit/a8ef0a1f6b91ea0d714ffd1756d9537dc8be2a0d))
-* поправил иконку черновика в первом диалоговом окне ([cf0033c](https://git.gosuslugi.local///commit/cf0033c90958445a433a42eea8ab07f0cae44c6f))
-* убрал большой отступ [ref: EPGUCORE-39560] ([bee412f](https://git.gosuslugi.local///commit/bee412f14331f13716ef51af01bcb0cab8df913b))
+* задизейблен дропдаун при наличии одного айтема справочника [ref EPGUCORE-39364] ([802726e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/802726e92be9340fb2cc28fdb83622ee1f8e3aef))
+
+### [0.3.8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.7...v0.3.8) (2020-10-26)
+
+### [0.3.7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.6...v0.3.7) (2020-10-26)
+
+
+### Bug Fixes
+
+* выравнил стили в плашечках тайм слотов [ref EPGUCORE-39477] ([0362b54](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0362b54a7d3b9a9f1fde700eb3146cba2826464f))
+* выравнил стили в плашечках тайм слотов [ref EPGUCORE-39477] ([3f459a2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3f459a2bdbc61ea5cc27b8f8fd28f982c224df79))
+* добавил возможность использования ограничений minDate maxDate для календаря таймслотов [ref EPGUCORE-38731] ([18f75a1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/18f75a17a4d41d7ee41914235d2e0513cc077473))
+* добавлено правильное приведение к ISO-строке для всех DateInput компонентов [ref EPGUCORE-39900] ([b3cb0bb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b3cb0bbf1164ebc6cfb7f405554a52f3dd98497f))
+* исправил логику отключения кнопки Отправить заявление на таймслотах [ref EPGUCORE-39504] ([9d632f5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9d632f5f0d301852d277185732e2475ee485f917))
+* исправил обработчик первого экрана [EPGUCORE-39788]; ([1097bf0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1097bf07a08a109237d83948aa4a3109be2b3953))
+* исправил показ кнопки на редиактирования персональных данных; ([542381d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/542381deb8a27375a650f53b68254027ed4ce078))
+* исправлена ошибка создания компонента для фотографирования [ref EPGUCORE-39301] ([a8ef0a1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a8ef0a1f6b91ea0d714ffd1756d9537dc8be2a0d))
+* поправил иконку черновика в первом диалоговом окне ([51bdfa4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/51bdfa41b7ef99eacb35c65fe5de5db9e17f07d8))
+* поправил урл для storageApi в дефолтном конфиге ([7bd0d7e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/7bd0d7ec5c3f7703d96a8d2573393efd07725da5))
+* убрал большой отступ [ref: EPGUCORE-39560] ([bee412f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/bee412f14331f13716ef51af01bcb0cab8df913b))
 
 ### [0.3.6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.5...v0.3.6) (2020-10-26)
 
