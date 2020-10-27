@@ -6,6 +6,11 @@
 
 .item {
   display: block;
+  margin-bottom: 0;
+
+  &:not(:first-child) {
+    margin-bottom: 20px;
+  }
 
   &--date {
     width: 50%;

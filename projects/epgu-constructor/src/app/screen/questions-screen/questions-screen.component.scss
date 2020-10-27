@@ -25,14 +25,6 @@
 
 .question__text {
   margin-bottom: 30px;
-
-  &::ng-deep {
-    .text {
-      p:first-child {
-        margin-top: 0;
-      }
-    }
-  }
 }
 
 .question__nav {
