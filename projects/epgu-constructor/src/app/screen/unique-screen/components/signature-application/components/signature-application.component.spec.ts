@@ -20,6 +20,8 @@ import {
   ApplicantAnswersDto,
   ComponentDto,
 } from '../../../../../services/api/form-player-api/form-player-api.types';
+import { DeviceDetectorService } from '../../../../../shared/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../../shared/services/device-detector/device-detector.service.stub';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -39,7 +41,7 @@ describe('SignatureApplicationComponent', () => {
     attrs: {},
     label: '',
     type: '',
-    id: '',
+    id: '12',
     value: '',
   };
 
@@ -68,6 +70,7 @@ describe('SignatureApplicationComponent', () => {
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: ScreenService, useClass: ScreenServiceStub },
           { provide: ConfigService, useClass: ConfigServiceStub },
+          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         ],
       }).compileComponents();
 

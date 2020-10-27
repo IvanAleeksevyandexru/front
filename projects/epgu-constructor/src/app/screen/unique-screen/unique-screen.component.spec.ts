@@ -10,6 +10,8 @@ import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { UniqueScreenComponent } from './unique-screen.component';
+import { DeviceDetectorService } from '../../shared/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../shared/services/device-detector/device-detector.service.stub';
 
 describe('UniqueScreenComponent', () => {
   let component: UniqueScreenComponent;
@@ -48,6 +50,7 @@ describe('UniqueScreenComponent', () => {
         CurrentAnswersService,
         CycledFieldsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ]
     })
     .compileComponents();

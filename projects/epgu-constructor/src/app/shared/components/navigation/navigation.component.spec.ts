@@ -7,6 +7,8 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { ScreenContainerComponent } from '../screen-container/screen-container.component';
 import { NavigationComponent } from './navigation.component';
+import { DeviceDetectorService } from '../../services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../services/device-detector/device-detector.service.stub';
 
 
 describe('NavigationComponent', () => {
@@ -22,6 +24,7 @@ describe('NavigationComponent', () => {
         NavigationService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ]
     })
     .compileComponents();
