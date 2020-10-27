@@ -8,7 +8,7 @@ import { NavigationService } from '../../services/navigation/navigation.service'
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnInit {
-  isFirstScreen = () => this.screenService.display.isFirstScreen;
+  isFirstScreen = () => this.screenService.display.firstScreen;
   constructor(private navService: NavigationService, private screenService: ScreenService) {}
 
   ngOnInit(): void {}
