@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, takeUntil, tap } from 'rxjs/operators';
 import {
   FileResponseToBackendUploadsItem,
   FileUploadItem,
@@ -26,11 +26,13 @@ import {
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 import { ConfigService } from '../../../../../../config/config.service';
 import { DeviceDetectorService } from '../../../../../../shared/services/device-detector/device-detector.service';
+import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
   templateUrl: './file-upload-item.component.html',
   styleUrls: ['./file-upload-item.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class FileUploadItemComponent implements OnDestroy, OnInit {
   private loadData: FileUploadItem;
@@ -51,6 +53,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
         }),
       )
       .pipe(
+        takeUntil(this.ngUnsubscribe$),
         map((result) => this.filterServerListItemsForCurrentForm(result)),
         map((list: TerabyteListItem[]) => this.transformTerabyteItemsToUploadedFiles(list)),
       )
@@ -91,6 +94,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   files$ = this.files$$
     .asObservable()
     .pipe(
+      takeUntil(this.ngUnsubscribe$),
       tap((files) => {
         if (this.loadData) {
           this.newValueSet.emit({
@@ -107,6 +111,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
     private deviceDetectorService: DeviceDetectorService,
+    private ngUnsubscribe$: UnsubscribeService,
     public config: ConfigService,
   ) {
     this.isMobile = deviceDetectorService.isMobile;
@@ -198,6 +203,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     if (uploaded) {
       this.terabyteService
         .getFileInfo(uploadedFile.getParamsForFileOptions())
+        .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe((result: TerabyteListItem) => {
           this.setFileInfoUploaded(uploadedFile, result.fileSize, uploaded);
         });
@@ -227,6 +233,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
       this.terabyteService
         .uploadFile(fileToUpload.getParamsForUploadFileOptions(), file)
         .pipe(
+          takeUntil(this.ngUnsubscribe$),
           catchError((e: any) => {
             this.filesInUploading -= 1;
             this.updateFileInfoFromServer(fileToUpload, false);
@@ -299,6 +306,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
       this.terabyteService
         .deleteFile(file.getParamsForFileOptions())
         .pipe(
+          takeUntil(this.ngUnsubscribe$),
           catchError((e: any) => {
             this.filesInUploading -= 1;
             return throwError(e);
@@ -354,7 +362,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
       this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
     } else {
       const webcamEvents = this.webcamService.open();
-      webcamEvents.events.subscribe((event: WebcamEvent) => {
+      webcamEvents.events.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((event: WebcamEvent) => {
         if (isCloseWebcamEvent(event) || isCloseAndSaveWebcamEvent(event)) {
           if (isCloseAndSaveWebcamEvent(event)) {
             // Если данные нужно сохранить и отправить
@@ -376,6 +384,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     const subs: Subscription = this.terabyteService
       .downloadFile(file.getParamsForFileOptions())
       .pipe(
+        takeUntil(this.ngUnsubscribe$),
         catchError((e: any) => {
           this.errors.push(`Не удалось скачать файл ${file.fileName}`);
           return throwError(e);
@@ -397,14 +406,17 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
 
   private checkCamAvailability() {
     if (this.isMobile) {
-      this.webcamService.isWebcamAllowed().subscribe(
-        (isAvailable) => {
-          this.isCameraAllowed = isAvailable;
-        },
-        () => {
-          this.isCameraAllowed = false;
-        },
-      );
+      this.webcamService
+        .isWebcamAllowed()
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(
+          (isAvailable) => {
+            this.isCameraAllowed = isAvailable;
+          },
+          () => {
+            this.isCameraAllowed = false;
+          },
+        );
     }
   }
 }
