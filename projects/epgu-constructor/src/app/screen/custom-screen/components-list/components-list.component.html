@@ -64,6 +64,7 @@
           [items]="(dropDowns$ | async)[componentData.value?.id]"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
+          [disabled]="(dropDowns$ | async)[componentData.value?.id]?.length === 1"
           class="cs__select cs-select">
         </lib-dropdown>
       </ng-container>
