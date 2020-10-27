@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.10](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.9...v0.3.10) (2020-10-27)
+
+
+### Bug Fixes
+
+* добавлено правильное приведение к ISO-строке для всех DateInput компонентов [ref EPGUCORE-39900] ([e43f528](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e43f528ff98a9731be248b9ce3a42625f7d9b83d))
+* поправил урл для storageApi в дефолтном конфиге ([36c6151](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/36c615186be8b2c2afdce6e19389585d8fde233b))
+
+## [0.4.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.6...v0.4.0) (2020-10-26)
+
+
+### Bug Fixes
+
+* поправил иконку черновика в первом диалоговом окне ([cf0033c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/cf0033c90958445a433a42eea8ab07f0cae44c6f))
+
 ## [0.4.0](https://git.gosuslugi.local///compare/v0.3.6...v0.4.0) (2020-10-26)
 
 
