@@ -17,20 +17,14 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     this.currentAnswersService.state = this.data.value;
   }
 
-  noAddressAction() {
-    this.data.value = JSON.stringify({ regDate: '', regAddr: '' });
-    this.data = { ...this.data };
-  }
-
   clickToAction(event): void {
     const { action } = event;
     switch (action) {
       case 'noAddress':
-        this.noAddressAction();
+        this.handleDataChange();
         break;
       case 'noAddressAndSubmit':
-        this.noAddressAction();
-        this.handleDataChange({ regDate: '', regAddr: '' });
+        this.handleDataChange();
         this.actionSelect.emit(action);
         break;
       default:
@@ -39,7 +33,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     }
   }
 
-  handleDataChange(changes: any) {
+  handleDataChange(changes: any = JSON.stringify({ regDate: '', regAddr: '' })) {
     this.data.value = changes;
     if (changes) {
       this.currentAnswersService.isValid = true;
