@@ -70,9 +70,9 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const { orderId, invited } = this.serviceDataService;
+    const { orderId, invited, canStartNew } = this.serviceDataService;
     if (orderId) {
-      this.handleOrder(orderId, invited);
+      this.handleOrder(orderId, invited, canStartNew);
     } else {
       this.getOrderIdFromApi();
     }
@@ -86,15 +86,21 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   getOrderIdFromApi() {
     this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
       const invited = checkOrderApiResponse.isInviteScenario;
+      const { canStartNew } = checkOrderApiResponse;
       const orderId = checkOrderApiResponse.scenarioDto?.orderId;
       this.serviceDataService.invited = invited;
       this.serviceDataService.orderId = orderId;
-      this.handleOrder(orderId, invited);
+      this.serviceDataService.canStartNew = canStartNew;
+      this.handleOrder(orderId, invited, canStartNew);
     });
   }
 
-  handleOrder(orderId?: string, invited?: boolean) {
-    if (!invited && orderId) {
+  handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean) {
+    const shouldShowModal = (): boolean => {
+      return !invited && canStartNew && !!orderId;
+    };
+
+    if (shouldShowModal()) {
       this.showModal();
     } else {
       this.formPlayerService.initData(orderId, invited);

@@ -34,7 +34,9 @@ export class ConfigComponent implements OnInit {
   }
 
   saveConfig(): void {
-    this.appService.saveConfig(this.configForm.value);
+    const config = this.configForm.value;
+    config.canStartNew = config.canStartNew.toString() !== 'false';
+    this.appService.saveConfig(config);
   }
 
   resetConfig(): void {
