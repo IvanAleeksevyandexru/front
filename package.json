@@ -58,7 +58,7 @@
     "@types/uuid": "8.3.0",
     "angular-resize-event": "^2.0.0",
     "angular2-text-mask": "9.0.0",
-    "epgu-lib": "0.0.611",
+    "epgu-lib": "0.0.636",
     "ics": "^2.24.0",
     "moment": "2.24.0",
     "ngx-cookie-service": "10.0.1",
