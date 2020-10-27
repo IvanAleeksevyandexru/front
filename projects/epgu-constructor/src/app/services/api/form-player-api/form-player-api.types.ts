@@ -1,7 +1,7 @@
 import { ScreenTypes } from '../../../screen/screen.types';
+import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
-import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer
@@ -146,7 +146,9 @@ export enum ActionType {
   nextStep = 'nextStep',
   redirectToLK = 'redirectToLK',
   profileEdit = 'profileEdit',
-  home = 'home'
+  home = 'home',
+  editPhoneNumber = 'service/actions/editPhoneNumber',
+  editEmail = 'service/actions/editUserEmail',
 }
 
 export interface CheckOrderApiResponse {
