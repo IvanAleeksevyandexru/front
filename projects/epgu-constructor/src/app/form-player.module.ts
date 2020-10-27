@@ -4,6 +4,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { EpguLibModule, LoadService, SmuEventsService } from 'epgu-lib';
 import { ConfigService } from './config/config.service';
 import { FormPlayerComponent } from './form-player.component';
+import { AuthInterceptor } from './interceptor/authorization-interceptor';
 import { ComponentScreenComponent } from './screen/component-screen/component-screen.component';
 import { ComponentScreenModule } from './screen/component-screen/component-screen.module';
 import { CustomScreenComponent } from './screen/custom-screen/custom-screen.component';
@@ -73,6 +74,11 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     LocalStorageService,
     CookieStorageService,
     SessionStorageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initApp,

@@ -2,30 +2,30 @@
 
 <epgu-constructor-screen-container class="screen-container">
   <epgu-constructor-screen-pad>
-    <epgu-constructor-page-name>{{ screenService?.header }}</epgu-constructor-page-name>
+    <epgu-constructor-page-name>{{ screenService.header }}</epgu-constructor-page-name>
 
     <div class="data-group">
-      <div class="data-item">
-        <div class="data-item__label">{{ screenService.component?.attrs?.place?.label }}</div>
-        <div class="data-item__value">{{ value?.place }}</div>
+      <div *ngIf="value.place" class="data-item">
+        <div class="data-item__label">{{ screenService.component.attrs.place.label }}</div>
+        <div class="data-item__value">{{ value.place }}</div>
       </div>
 
-      <div class="data-item">
-        <div class="data-item__label">{{ screenService.component?.attrs?.address?.label }}</div>
-        <div class="data-item__value">{{ value?.address }}</div>
+      <div *ngIf="value.address" class="data-item">
+        <div class="data-item__label">{{ screenService.component.attrs.address.label }}</div>
+        <div class="data-item__value">{{ value.address }}</div>
       </div>
 
-      <div class="data-item">
-        <div class="data-item__label">{{ screenService.component?.attrs?.ceremonyType?.label }}</div>
-        <div class="data-item__value">{{ value?.ceremonyType }}</div>
+      <div *ngIf="value.ceremonyType" class="data-item">
+        <div class="data-item__label">{{ screenService.component.attrs.ceremonyType.label }}</div>
+        <div class="data-item__value">{{ value.ceremonyType }}</div>
       </div>
 
-      <div class="data-item">
-        <div class="data-item__label">{{ screenService.component?.attrs?.time?.label }}</div>
-        <div class="data-item__value">{{ value?.time }}</div>
+      <div *ngIf="value.time" class="data-item">
+        <div class="data-item__label">{{ screenService.component.attrs.time.label }}</div>
+        <div class="data-item__value">{{ value.time }}</div>
       </div>
 
-      <div class="data-item">
+      <div *ngIf="screenService.componentLabel" class="data-item">
         <div class="data-item__info">{{ this.screenService.componentLabel }}</div>
       </div>
 
@@ -36,7 +36,6 @@
   <div class="footer">
     <lib-button
       [showLoader]="screenService.isLoading$ | async"
-      [disabled]="isTimeCorrect()"
       (click)="nextStep()"
       class="btn__submit"
     >

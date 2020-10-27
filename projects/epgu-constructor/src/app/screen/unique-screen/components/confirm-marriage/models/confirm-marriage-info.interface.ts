@@ -3,8 +3,9 @@ export interface ConfirmMarriageInfoInterface {
   address: string;
   ceremonyType: string;
   time: string;
-  timer: {
+  timer?: {
     start: string;
     finish: string;
   };
+  ReservationPeriod?: number;
 }

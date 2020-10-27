@@ -47,10 +47,6 @@ export class ConfirmMarriageComponent implements OnInit {
       .subscribe();
   }
 
-  isTimeCorrect() {
-    return this.timer.start - Date.now() > 0 || this.timer.finish - Date.now() < 0;
-  }
-
   startTimerHandler() {
     this.timer.offset =
       -((this.timer.completion - this.timer.progress + 1000) / this.timer.completion) *
