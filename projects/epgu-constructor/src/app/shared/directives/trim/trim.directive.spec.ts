@@ -1,6 +1,6 @@
 import { TrimDirective } from './trim.directive';
 import { Component, Input } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 @Component({
   template: `
@@ -15,9 +15,9 @@ describe('TrimDirective', () => {
   let directive: TrimDirective;
   let inputValue: string;
 
-  beforeEach(() => {
+  beforeEach(waitForAsync(() => {
     directive = new TrimDirective();
-  });
+  }));
 
   it('should create an instance', () => {
     expect(directive).toBeTruthy();
@@ -39,13 +39,13 @@ describe('TrimDirective', () => {
     let component: MockComponent;
     let fixture: ComponentFixture<MockComponent>;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [TrimDirective, MockComponent],
       }).compileComponents();
     }));
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(waitForAsync(() => {
       fixture = TestBed.createComponent(MockComponent);
       component = fixture.componentInstance;
       component.value = '   42Тыц   8тыц -тац тац-тац';
