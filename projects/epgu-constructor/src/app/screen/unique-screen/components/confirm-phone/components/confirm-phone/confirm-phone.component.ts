@@ -24,7 +24,6 @@ export class ConfirmPhoneComponent {
 
   characterMask: string;
   codeLength: number;
-  mask: RegExp[];
 
   constructor(
     public screenService: ScreenService,
