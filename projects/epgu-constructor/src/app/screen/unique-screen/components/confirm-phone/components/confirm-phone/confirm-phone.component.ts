@@ -22,23 +22,31 @@ export class ConfirmPhoneComponent {
   count = 59;
   countInterval = 1000;
 
+  characterMask: string;
+  codeLength: number;
+  mask: RegExp[];
+
   constructor(
     public screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
     private navigationService: NavigationService,
-  ) {}
+  ) {
+    this.characterMask = this.screenService.component.attrs.characterMask;
+    this.codeLength = this.screenService.component.attrs.codeLength;
+    this.mask = new Array(this.codeLength).fill(new RegExp(this.characterMask));
+  }
 
   sendCodeAgain() {
-    const options: NavigationOptions = {
-      url: 'service/actions/resendPhoneConfirmationCode', // TODO вынести куда нибудь
-    };
+    const url = this.screenService.component.attrs.resendCodeUrl;
+    const options: NavigationOptions = { url };
     this.navigationService.nextStep.next({ options });
     this.isTimerShow = true;
   }
 
   enterCode(code: any) {
     this.enteredCode = code;
-    if (String(code).length === this.correctCodeLength) {
+
+    if (String(code).length === this.codeLength) {
       this.navigationService.nextStep.next({ payload: this.getComponentState() });
     }
   }
