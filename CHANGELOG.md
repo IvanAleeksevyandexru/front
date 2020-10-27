@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.12](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.11...v0.3.12) (2020-10-27)
+
+
+### Bug Fixes
+
+* рефактор и визуальная доработка компонентов confirm-user-phone и confirm-user-email [ref EPGUCORE-40050] ([f568c83](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f568c83b2181bbce152b9f3e55cd18825ba63f7f))
+
 ### [0.3.11](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.9...v0.3.11) (2020-10-27)
 
 
