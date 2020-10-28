@@ -8,10 +8,12 @@
 .container {
   max-width: 592px;
   width: 100%;
-  padding: 0 16px;
   margin-right: auto;
   margin-left: auto;
+  padding: 0 16px;
+
   @include tablets-up {
-      min-height: auto;
+    min-height: auto;
+    padding: 0;
   }
 }
