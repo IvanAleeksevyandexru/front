@@ -11,7 +11,8 @@
     height: 100%;
     padding: 32px;
     @include tablets-up {
-      max-height: 485px;
+      max-height: calc(100vh - 96px - 96px);
+      min-height: 293px;
       width: 634px;
       height: auto;
       border-radius: 12px;
@@ -53,6 +54,7 @@
     &__header {
       border-bottom: 1px solid $color-devider;
       padding-bottom: 24px;
+      margin-bottom: 16px;
     }
 
     &__body {
@@ -103,7 +105,7 @@
     padding-bottom: 2px; // hack for avoid overlapping of buttons
 
     @include tablets-up {
-      max-height: 364px;
+      max-height: calc(100vh - 96px - 96px - 64px - 57px - 55px);
     }
   }
 }
