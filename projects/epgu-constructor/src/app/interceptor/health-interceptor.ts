@@ -1,10 +1,10 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
-import { UtilsService } from '../services/utils/utils.service';
 import { HealthService } from 'epgu-lib';
+import { UtilsService } from '../shared/services/utils/utils.service';
 
 @Injectable()
 export class HealthInterceptor implements HttpInterceptor {
@@ -28,7 +28,7 @@ export class HealthInterceptor implements HttpInterceptor {
         if (this.utils.isValidHttpUrl(error['url'])) {
           this.health.measureEnd(serviceName, 1, null);
         }
-        return of(error);
+        return throwError(error);
       })
     );
   }

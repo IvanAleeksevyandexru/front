@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.17](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.16...v0.3.17) (2020-10-28)
+
+
+### Bug Fixes
+
+* исправлена обработка ошибки в health interceptor ([051a371](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/051a371735280b5305a0076e365d63a7255f7f6c))
+
 ### [0.3.16](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.15...v0.3.16) (2020-10-28)
 
 ### [0.3.15](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.14...v0.3.15) (2020-10-28)
