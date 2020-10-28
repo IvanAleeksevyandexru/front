@@ -223,7 +223,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   private async sendFile(source: File | Blob) {
     this.filesInUploading += 1;
 
-    let file = source;
+    let file: any = source;
     if (this.compressTypes.includes(file.type)) {
       file = await this.compressionService.imageCompression(file, {
         maxSizeMB: getSizeInMB(this.data.maxSize),
