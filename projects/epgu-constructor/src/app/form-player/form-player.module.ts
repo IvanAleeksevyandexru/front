@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { EpguLibModule, SmuEventsService } from 'epgu-lib';
+import { SmuEventsService } from 'epgu-lib';
 import { ConfigService } from '../shared/config/config.service';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
@@ -11,6 +11,8 @@ import { FormPlayerConfigApiService } from './services/form-player-config-api/fo
 import { initApp } from './form-player.functions';
 import { CookieService } from 'ngx-cookie-service';
 import { ScreenModule } from '../screen/screen.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HealthInterceptor } from './interceptor/health-interceptor';
 
 /**
  * Домен форм плеера. Сдесь храняться всё что связано с форм плеером, его интеграцие с форм плеер апи.
@@ -32,6 +34,11 @@ import { ScreenModule } from '../screen/screen.module';
     SmuEventsService,
     ConfigService,
     ServiceDataService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HealthInterceptor,
+      multi: true,
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initApp,
