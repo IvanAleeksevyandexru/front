@@ -45,10 +45,10 @@
     [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-car-info>
-  <epgu-constructor-confirm-marriage
-    *ngSwitchCase="uniqueComponentName.confirmMarriage"
+  <epgu-constructor-confirm
+    *ngSwitchCase="uniqueComponentName.timer"
     (nextStepEvent)="nextDataForStep($event)">
-  </epgu-constructor-confirm-marriage>
+  </epgu-constructor-confirm>
   <epgu-constructor-signature-application
     *ngSwitchCase="uniqueComponentName.signatureApplication"
     (nextStepEvent)="nextDataForStep($event)">
