@@ -16,7 +16,7 @@ import { DictionaryOptions, DictionaryResponse } from '../../../services/diction
 import { map, tap } from 'rxjs/operators';
 import { DictionaryApiService } from '../../../services/dictionary-api/dictionary-api.service';
 import { ComponentListToolsService } from './component-list-tools.service';
-import { UtilsService as utils } from '../../../../services/utils/utils.service';
+import { UtilsService as utils } from '../../../../shared/services/utils/utils.service';
 
 @Injectable()
 export class ComponentListRepositoryService {

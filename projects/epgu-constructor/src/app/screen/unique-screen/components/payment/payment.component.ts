@@ -4,7 +4,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../config/config.service';
 import { CurrentAnswersService } from '../../../current-answers.service';
 import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
-import { UtilsService } from '../../../../services/utils/utils.service';
+import { UtilsService } from '../../../../shared/services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
 import { ScreenService } from '../../../screen.service';
 import { ComponentBase } from '../../../screen.types';

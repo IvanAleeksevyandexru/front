@@ -6,7 +6,6 @@ import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
-import { UtilsService } from './services/utils/utils.service';
 import { SharedModule } from './shared/shared.module';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { initApp } from './form-player.functions';
@@ -34,7 +33,6 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     FormPlayerApiService,
     CookieService,
     SmuEventsService,
-    UtilsService, // TODO: подумать над переносом в скрин слой, возможно разделить сервис вынести лоакл сторадж логику
     ConfigService,
     ServiceDataService,
 

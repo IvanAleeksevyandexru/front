@@ -42,6 +42,7 @@ import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.se
 import { ActionDirective } from './directives/action/action.directive';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
+import { UtilsService } from './services/utils/utils.service';
 
 
 const COMPONENTS = [
@@ -88,6 +89,7 @@ const DIRECTIVES = [
     DeviceDetectorService,
     ConfigService,
     CurrencyPipe,
+    UtilsService,
   ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [CommonModule, EpguLibModule, FormsModule, WebcamModule, PerfectScrollbarModule],

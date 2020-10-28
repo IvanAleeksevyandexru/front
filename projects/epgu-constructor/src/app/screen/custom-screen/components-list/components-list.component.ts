@@ -16,7 +16,7 @@ import { ComponentListFormService } from './services/component-list-form.service
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
 import { UnsubscribeService } from '../../../shared/services/unsubscribe/unsubscribe.service';
 import { ScenarioErrorsDto } from '../../../services/form-player-api/form-player-api.types';
-import { UtilsService as utils } from '../../../services/utils/utils.service';
+import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',

@@ -4,7 +4,7 @@ import { ActionDirective } from './action.directive';
 import { ConfigService } from '../../../config/config.service';
 import { ConfigServiceStub } from '../../../config/config.service.stub';
 import { NavigationService } from '../../services/navigation/navigation.service';
-import { UtilsService } from '../../../services/utils/utils.service';
+import { UtilsService } from '../../services/utils/utils.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { CachedAnswersService } from '../../services/applicant-answers/cached-answers.service';

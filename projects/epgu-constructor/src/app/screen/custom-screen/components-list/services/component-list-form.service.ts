@@ -16,7 +16,7 @@ import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../addr
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
 import { ScenarioErrorsDto } from '../../../../services/form-player-api/form-player-api.types';
-import { UtilsService as utils } from '../../../../services/utils/utils.service';
+import { UtilsService as utils } from '../../../../shared/services/utils/utils.service';
 import { isDropDown } from '../../tools/custom-screen-tools';
 import { ListItem } from 'epgu-lib';
 import { CustomScreenComponent } from '../../custom-screen.component';

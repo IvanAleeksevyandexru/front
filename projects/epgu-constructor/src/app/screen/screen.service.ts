@@ -6,7 +6,7 @@ import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 import { CustomScreenComponentTypes } from './custom-screen/custom-screen.types';
 import { ComponentDto } from '../services/form-player-api/form-player-api.types';
-import { UtilsService } from '../services/utils/utils.service';
+import { UtilsService } from '../shared/services/utils/utils.service';
 
 @Injectable()
 export class ScreenService extends ScreenContent {

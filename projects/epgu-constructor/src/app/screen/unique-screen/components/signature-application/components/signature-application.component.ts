@@ -3,7 +3,7 @@ import { HelperService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../../config/config.service';
 import { ScreenService } from '../../../../screen.service';
-import { UtilsService } from '../../../../../services/utils/utils.service';
+import { UtilsService } from '../../../../../shared/services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../../shared/constants/form-player';
 import { SignatureApplicationData } from '../models/application.interface';
 

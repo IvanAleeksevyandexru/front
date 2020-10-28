@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as moment_ from 'moment';
-import { UtilsService } from '../../../../../services/utils/utils.service';
+import { UtilsService } from '../../../../../shared/services/utils/utils.service';
 import { TenureDates } from '../models/car-info.interface';
 
 const moment = moment_;

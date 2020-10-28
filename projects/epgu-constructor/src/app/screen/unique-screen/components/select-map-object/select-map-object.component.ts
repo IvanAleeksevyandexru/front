@@ -19,7 +19,7 @@ import { SelectMapObjectService } from './select-map-object.service';
 import { DictionaryApiService } from '../../../services/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
 import { IGeoCoordsResponse, IdictionaryFilter } from './select-map-object.interface';
-import { UtilsService } from '../../../../services/utils/utils.service';
+import { UtilsService } from '../../../../shared/services/utils/utils.service';
 import { DictionaryUtilities } from '../../../../shared/services/dictionary/dictionary-utilities-service';
 import { ComponentBase, ScreenStore } from '../../../screen.types';
 import { ScreenService } from '../../../screen.service';

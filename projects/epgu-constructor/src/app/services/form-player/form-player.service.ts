@@ -12,7 +12,7 @@ import {
   ScenarioDto
 } from '../form-player-api/form-player-api.types';
 import { ServiceDataService } from '../service-data/service-data.service';
-import { UtilsService } from '../utils/utils.service';
+import { UtilsService } from '../../shared/services/utils/utils.service';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi

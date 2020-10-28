@@ -9,7 +9,7 @@ import {
 import { ScreenService } from '../../../screen/screen.service';
 import { Navigation, NavigationOptions } from '../../../form-player.types';
 import { NavigationService } from '../../services/navigation/navigation.service';
-import { UtilsService } from '../../../services/utils/utils.service';
+import { UtilsService } from '../../services/utils/utils.service';
 import { Answer } from '../../types/answer';
 import { filter } from 'rxjs/operators';
 import { FormPlayerApiService } from '../../../services/form-player-api/form-player-api.service';
