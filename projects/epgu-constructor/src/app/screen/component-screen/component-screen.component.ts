@@ -112,4 +112,14 @@ export class ComponentScreenComponent implements OnInit, Screen {
 
     return hasType ? type : false;
   }
+
+  isUserContactData(): boolean | ComponentScreenComponentTypes {
+    const type = this.screenService.componentType as ComponentScreenComponentTypes;
+    const hasType = [
+      ComponentScreenComponentTypes.confirmPersonalUserPhone,
+      ComponentScreenComponentTypes.confirmPersonalUserEmail,
+    ].includes(type);
+
+    return hasType ? type : false;
+  }
 }
