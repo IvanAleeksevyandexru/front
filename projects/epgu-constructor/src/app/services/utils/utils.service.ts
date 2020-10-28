@@ -128,6 +128,21 @@ export class UtilsService {
     return forms[2];
   }
 
+  public getServiceName(url: string): string {
+    const splitByQueryParam = url.split('?');
+    const splitByDirLocation = splitByQueryParam[0].split('/');
+    const serviceName = splitByDirLocation.slice(-1)[0];
+
+    return `${serviceName.replace(/(?:^_-\w|[A-Z]|\b\w)/g, (word, index) => {
+      return index === 0 ? word.toLowerCase() : word.toUpperCase();
+    }).replace(/[-_\s]+/g, '')}Service`;
+  }
+
+
+  public isValidHttpUrl(url: string | undefined): boolean {
+    return url && typeof url === 'string';
+  }
+
   /**
    * Скачивание файла
    */

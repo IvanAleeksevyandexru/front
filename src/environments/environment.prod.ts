@@ -13,6 +13,7 @@ export const environment = {
       lkUrl: 'https://lk.gosuslugi.ru/',
       lkApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/',
       yandexMapsApiKey: '9e8e2fc4-5970-4ca6-95c5-3e620095e8e3',
+      timingApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/health',
       staticDomain: '',
       isEmbedded: false
     },
