@@ -1,9 +1,9 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfigService } from '../../config/config.service';
-import { ConfigServiceStub } from '../../config/config.service.stub';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { ConfigService } from '../../shared/config/config.service';
+import { ConfigServiceStub } from '../../shared/config/config.service.stub';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
+import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { CurrentAnswersService } from '../current-answers.service';

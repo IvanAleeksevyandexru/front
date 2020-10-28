@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
-import { ConfigService } from '../../../../config/config.service';
+import { ConfigService } from '../../../../shared/config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
-import { DictionaryResponseForYMap, DictionaryYMapItem } from '../../../../services/api/dictionary-api/dictionary-api.types';
+import { DictionaryResponseForYMap, DictionaryYMapItem } from '../../../services/dictionary-api/dictionary-api.types';
 
 @Injectable()
 export class SelectMapObjectService {

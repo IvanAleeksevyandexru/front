@@ -11,8 +11,8 @@ import {
 } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../../../config/config.service';
-import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { ConfigService } from '../../../../../../../../shared/config/config.service';
+import { UnsubscribeService } from '../../../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constants/dates';
 import { TextTransform } from '../../../../../../../../shared/types/textTransform';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';

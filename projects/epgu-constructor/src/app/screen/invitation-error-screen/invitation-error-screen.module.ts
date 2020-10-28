@@ -19,8 +19,6 @@ const COMPONENTS = [
     SharedModule,
     EpguLibModule
   ],
-  providers: [
-    ScreenService
-  ]
+  providers: []
 })
 export class InvitationErrorScreenModule { }

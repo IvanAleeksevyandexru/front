@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CurrentAnswersService } from '../../../../../current-answers.service';
-import { ToolsService } from '../../../../../../shared/services/tools/tools.service';
+import { ToolsService } from '../../../../../services/tools/tools.service';
 import { ComponentScreenComponentTypes } from '../../../../component-screen.types';
 import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-user-address-screen.component';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';

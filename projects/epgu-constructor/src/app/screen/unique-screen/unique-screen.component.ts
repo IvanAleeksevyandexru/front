@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { Screen } from '../screen.types';
 import { UniqueScreenComponentTypes } from './unique-screen.types';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
-import { NavigationPayload } from '../../form-player.types';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
+import { NavigationPayload } from '../../form-player/form-player.types';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',

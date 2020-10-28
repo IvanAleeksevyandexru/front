@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { NavigationPayload } from '../../form-player.types';
+import { NavigationPayload } from '../../form-player/form-player.types';
 import { InvitationErrorScreenComponentTypes } from './invitation-error-screen.types';
 
 @Component({

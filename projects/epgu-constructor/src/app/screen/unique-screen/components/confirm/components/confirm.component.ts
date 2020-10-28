@@ -3,10 +3,10 @@ import { takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { timer } from 'rxjs';
 
 import { ConfirmInfoInterface } from '../models/confirm-info.interface';
-import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { TimerInterface } from '../models/timer.interface';
 import { createTimer } from './confirm.helper';
 import { ScreenService } from '../../../../screen.service';
+import { UnsubscribeService } from '../../../../../shared/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-confirm',

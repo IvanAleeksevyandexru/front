@@ -3,9 +3,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ValidationService } from 'epgu-lib';
-import { UnsubscribeService } from 'projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
-import { ConfigService } from '../../../../config/config.service';
-import { ConfigServiceStub } from '../../../../config/config.service.stub';
+import { UnsubscribeService } from 'projects/epgu-constructor/src/app/shared/services/unsubscribe/unsubscribe.service';
+import { ConfigService } from '../../../../shared/config/config.service';
+import { ConfigServiceStub } from '../../../../shared/config/config.service.stub';
 import { ImgPrefixerPipe } from '../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 import { InvitationErrorComponent } from './invitation-error.component';
 

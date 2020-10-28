@@ -1,17 +1,17 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Navigation, NavigationOptions } from '../../../form-player.types';
 import { ScreenService } from '../../../screen/screen.service';
-import { ActionApiService } from '../../../services/api/action-api/action-api.service';
-import { ActionApiDTO, ActionApiResponse } from '../../../services/api/action-api/action-api.types';
-import {
-  ActionType,
-  ComponentDtoAction
-} from '../../../services/api/form-player-api/form-player-api.types';
-import { UtilsService } from '../../../services/utils/utils.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { Answer } from '../../types/answer';
+import {
+  ActionApiResponse, ActionDTO,
+  ActionType,
+  ComponentDtoAction
+} from '../../../form-player/services/form-player-api/form-player-api.types';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { UtilsService } from '../../services/utils/utils.service';
+import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
 
 
 @Directive({
@@ -25,7 +25,7 @@ export class ActionDirective {
   }
 
   constructor(
-    private actionApiService: ActionApiService,
+    private actionApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private navService: NavigationService,
     private utilsService: UtilsService,
@@ -57,7 +57,7 @@ export class ActionDirective {
   private sendAction<T>(): Observable<ActionApiResponse<T>> {
     const data = this.getActionDTO();
 
-    return this.actionApiService.send<T>(this.action.action, data);
+    return this.actionApiService.sendAction<T>(this.action.action, data);
   }
 
   private doStep(stepType: string): void {
@@ -104,7 +104,7 @@ export class ActionDirective {
       );
   }
 
-  private getActionDTO(): ActionApiDTO {
+  private getActionDTO(): ActionDTO {
     return {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},
