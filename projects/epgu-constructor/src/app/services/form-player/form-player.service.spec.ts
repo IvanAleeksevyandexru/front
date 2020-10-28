@@ -5,7 +5,6 @@ import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../api/form-player-api/form-player-api.service.stub';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
-import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { ServiceDataService } from '../service-data/service-data.service';
 
@@ -21,7 +20,6 @@ describe('FormPlayerService', () => {
         ServiceDataService,
         CachedAnswersService,
         CurrentAnswersService,
-        ScreenResolverService,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
       ]
     });
