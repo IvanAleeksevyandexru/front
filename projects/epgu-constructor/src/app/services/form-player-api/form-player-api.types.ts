@@ -146,7 +146,9 @@ export enum ActionType {
   nextStep = 'nextStep',
   redirectToLK = 'redirectToLK',
   profileEdit = 'profileEdit',
-  home = 'home'
+  home = 'home',
+  editPhoneNumber = 'service/actions/editPhoneNumber',
+  editEmail = 'service/actions/editUserEmail',
 }
 
 export interface CheckOrderApiResponse {
