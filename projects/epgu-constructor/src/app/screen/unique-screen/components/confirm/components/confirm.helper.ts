@@ -1,6 +1,6 @@
 import { TimerInterface } from '../models/timer.interface';
 
-export function createTimerForConfirmMarriage(start: number, finish: number): TimerInterface {
+export function createTimer(start: number, finish: number): TimerInterface {
   const now = Date.now();
 
   const isCorrectTime = finish - now > 0;

@@ -6,7 +6,7 @@ export enum UniqueScreenComponentTypes {
   carInfo = 'CarInfo',
   repeatableFields = 'RepeatableFields',
   employeeHistory = 'EmployeeHistory',
-  confirmMarriage = 'ConfirmMarriage',
+  timer = 'Timer',
   genderSelector = 'GenderSelector',
   signatureApplication = 'EsepSign',
   paymentScr = 'PaymentScr',

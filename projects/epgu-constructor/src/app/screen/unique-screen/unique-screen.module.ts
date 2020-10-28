@@ -9,7 +9,7 @@ import { RepeatableFieldsComponent } from './components/repeatable-fields/repeat
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { TimeSlotsModule } from './components/time-slots/time-slots.module';
-import { ConfirmMarriageModule } from './components/confirm-marriage/confirm-marriage.module';
+import { ConfirmModule } from './components/confirm/confirm.module';
 import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
 import { PaymentModule } from './components/payment/payment.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
@@ -39,7 +39,7 @@ const COMPONENTS = [UniqueScreenComponent];
     CarInfoModule,
     EmployeeHistoryModule,
     TimeSlotsModule,
-    ConfirmMarriageModule,
+    ConfirmModule,
     PaymentModule,
     UnusedPaymentsModule,
     ConfirmPhoneModule,
