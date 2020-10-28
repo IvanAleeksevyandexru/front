@@ -1,23 +1,56 @@
  @import "src/styles/core";
 
-.doc-input-screen {
+.doc-input {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
 
-  &__inputs-row {
+  &__group {
     display: flex;
-    margin: 0 -10px;
+    flex-wrap: wrap;
   }
 
-  &__input {
-    flex: 1 1 auto;
-    margin: 10px;
+  &__group-item {
+    flex: 1;
+    margin: 0 8px;
 
-    &--data {
-      width: 50%;
-
-      @include phones-down {
-        width: 100%;
-      }
+    &:first-child {
+      margin-left: 0;
     }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &__series {
+    margin-right: 8px;
+  }
+
+  &__number {
+    margin: 0 8px;
+
+    @include phones-down {
+      margin-right: 0;
+    }
+  }
+
+  &__date {
+    flex-grow: 2;
+    margin-left: 8px;
+
+    @include phones-down {
+      flex-basis: 100%;
+      margin: 16px 0 0 0;
+    }
+  }
+
+  &__emmiter {
+    margin-top: 24px;
+  }
+
+  &__hint {
+    margin-top: 4px;
   }
 
   &__label {

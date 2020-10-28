@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { isEqualObj } from '../../../constants/uttils';
 import {

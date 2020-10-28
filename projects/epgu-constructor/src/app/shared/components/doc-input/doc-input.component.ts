@@ -1,15 +1,22 @@
 import { Component, Input, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
+import { ValidationShowOn } from 'epgu-lib';
+
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
-import { TextTransform } from '../../types/textTransform';
-import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { DocInputComponentInterface, IField, IForm } from './doc-input.types';
+
+import { DocInputControl, DocInputField } from './doc-input.types';
+import { ComponentListFormService } from '../components-list/services/component-list-form.service';
 
 const moment = moment_;
+
+enum ValidatorTypes {
+  RegExp = 'RegExp',
+  Required = 'required',
+}
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -18,49 +25,95 @@ const moment = moment_;
   providers: [UnsubscribeService],
 })
 export class DocInputComponent implements OnInit {
-  @Input() data: DocInputComponentInterface;
+  @Input() data: AbstractControl | DocInputControl;
+
+  fields: { [fieldName: string]: DocInputField };
+  fieldsNames = ['series', 'number', 'date', 'emitter'];
+
+  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
   form = new FormGroup({});
-  fields: {
-    [key: string]: IField;
-  } = {};
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
-    private currentAnswersService: CurrentAnswersService,
+    private formService: ComponentListFormService,
   ) {}
 
   ngOnInit(): void {
+    this.fields = this.data.value.attrs.fields;
+
     this.generateFormGroup();
   }
 
-  get textTransformType(): TextTransform {
-    return this.data?.attrs?.fstuc;
-  }
-
-  private generateFormGroup(): void {
-    this.data.attrs.fields.forEach((field: IField) => {
-      this.fields[field.fieldName] = field;
-      const validators = [Validators.required];
-      if (field.maxlength) {
-        validators.push(Validators.maxLength(field.maxlength));
+  generateFormGroup(): void {
+    this.fieldsNames.forEach((fieldName) => {
+      const validators: ValidatorFn[] = [];
+      if (this.fields[fieldName].attrs.validation) {
+        this.fields[fieldName].attrs.validation.forEach((validationItem) => {
+          validators.push(
+            this.getCustomValidator({
+              validationType: validationItem.type,
+              msg: validationItem.errorMsg,
+              pattern: validationItem.value,
+            }),
+          );
+        });
       }
-      if (field.minlength) {
-        validators.push(Validators.minLength(field.minlength));
+      if (this.fields[fieldName].required) {
+        validators.push(
+          this.getCustomValidator({
+            validationType: ValidatorTypes.Required,
+            msg: 'Поле обязательно для заполнения',
+          }),
+        );
       }
-      this.form.addControl(field.fieldName, new FormControl(null, validators));
+      this.form.addControl(fieldName, new FormControl(null, validators));
     });
 
     this.form.valueChanges
       .pipe(
-        map((form: IForm) => ({
+        map((form) => ({
           ...form,
-          date: moment(form.date).format(DATE_STRING_DOT_FORMAT),
+          date: form.date ? moment(form.date).format(DATE_STRING_DOT_FORMAT) : null,
         })),
         takeUntil(this.ngUnsubscribe$),
       )
-      .subscribe((next: IForm) => {
-        this.currentAnswersService.state = next;
+      .subscribe((next) => {
+        if (this.form.valid) {
+          this.data.get('value').setValue(next);
+        } else {
+          this.data.get('value').setErrors({ invalidForm: true });
+        }
+        this.formService.emmitChanges();
       });
+  }
+
+  getCustomValidator(config: {
+    validationType: string;
+    pattern?: string;
+    msg: string;
+  }): ValidatorFn {
+    return (control: FormControl) => {
+      const validationHandler = this.getValidationHandler()[config.validationType];
+      return validationHandler(control, config);
+    };
+  }
+
+  getValidationHandler() {
+    const regExp = (control, config) => {
+      if (control.value && !control.value.match(config.pattern)) {
+        return { msg: config.msg };
+      }
+      return null;
+    };
+
+    const required = (control, config) => {
+      if (!control.value) {
+        return { msg: config.msg };
+      }
+      return null;
+    };
+
+    return { [ValidatorTypes.RegExp]: regExp, [ValidatorTypes.Required]: required };
   }
 }

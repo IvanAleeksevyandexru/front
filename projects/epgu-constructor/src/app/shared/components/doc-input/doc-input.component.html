@@ -1,57 +1,86 @@
-<section class="doc-input-screen">
-  <div class="doc-input-screen__inputs-row">
-    <div class="doc-input-screen__input">
-      <epgu-constructor-label for="series">Серия</epgu-constructor-label>
+<section class="doc-input">
+  <div class="form__error">
+    <epgu-constructor-input-error *ngFor="let fieldName of fieldsNames | slice:0:-1">
+      <span *ngIf="form.get(fieldName).invalid && form.get(fieldName).touched">
+        {{fields[fieldName].label}}: {{form.get(fieldName).errors.msg}}
+      </span>
+    </epgu-constructor-input-error>
+    <!--    <small-->
+    <!--      *ngIf="data.get('value').hasError('serverError')">-->
+    <!--      {{ data.get('value').getError('serverError') }}-->
+    <!--    </small>-->
+  </div>
+
+  <div class="doc-input__group">
+    <div class="doc-input__group-item doc-input__series">
+      <epgu-constructor-label for="series">{{ fields['series'].label }}</epgu-constructor-label>
       <lib-standard-masked-input
         epgu-constructor-trim
         epgu-constructor-text-transform
-        [textTransformType]="textTransformType"
+        [textTransformType]="fields['series']?.attrs?.fstuc"
         id="series"
         [formControl]="form.get('series')"
-        [mask]="fields['series']?.mask | maskHandle"
+        [mask]="fields['series']?.attrs?.mask | maskHandle"
         [showMaskAsPlaceholder]="!fields['series']?.placeholder"
         [placeholder]="fields['series']?.placeholder"
         [showConstantMaskSymbols]="true"
+        [invalid]="form.get('series').invalid && form.get('series').touched"
+        [validationShowOn]="validationShowOn"
       ></lib-standard-masked-input>
     </div>
-    <div class="doc-input-screen__input">
-      <epgu-constructor-label for="number">Номер</epgu-constructor-label>
+    <div class="doc-input__group-item doc-input__number">
+      <epgu-constructor-label for="number">{{ fields['number'].label }}</epgu-constructor-label>
       <lib-standard-masked-input
         epgu-constructor-trim
         epgu-constructor-text-transform
-        [textTransformType]="textTransformType"
+        [textTransformType]="fields['number']?.attrs?.fstuc"
         id="number"
         [formControl]="form.get('number')"
-        [mask]="fields['number']?.mask | maskHandle"
+        [mask]="fields['number']?.attrs?.mask | maskHandle"
         [showMaskAsPlaceholder]="!fields['number']?.placeholder"
         [placeholder]="fields['number']?.placeholder"
         [showConstantMaskSymbols]="true"
+        [invalid]="form.get('number').invalid && form.get('number').touched"
+        [validationShowOn]="validationShowOn"
       ></lib-standard-masked-input>
     </div>
-  </div>
-  <div class="doc-input-screen__inputs-row">
-    <div class="doc-input-screen__input doc-input-screen__input--data">
-      <epgu-constructor-label for="date">Дата выдачи</epgu-constructor-label>
+    <div class="doc-input__group-item doc-input__date">
+      <epgu-constructor-label for="date">{{ fields['date'].label }}</epgu-constructor-label>
       <lib-date-picker
         id="date"
-        name="date"
         align="left"
         [formControl]="form.get('date')"
-        [minDate]="data.attrs?.minDate ? data.attrs?.minDate : '-120y'"
-        [maxDate]="data.attrs?.maxDate ? data.attrs?.maxDate : 'today'"
+        [minDate]="fields['date']?.attrs?.minDate || '-120y'"
+        [maxDate]="fields['date']?.attrs?.maxDate || 'today'"
+        [invalid]="form.get('date').invalid && form.get('date').touched"
+        [validationShowOn]="validationShowOn"
       ></lib-date-picker>
     </div>
   </div>
-  <div class="doc-input-screen__inputs-row">
-    <div class="doc-input-screen__input">
-      <epgu-constructor-label for="emitter">Кем выдано</epgu-constructor-label>
-      <lib-plain-input
-        epgu-constructor-trim
-        epgu-constructor-text-transform
-        [textTransformType]="textTransformType"
-        id="emitter"
-        [formControl]="form.get('emiter')"
-      ></lib-plain-input>
-    </div>
+  <epgu-constructor-helper-text
+    *ngIf="fields['hint']?.label"
+    class="doc-input__hint">
+    {{ fields['hint']?.label }}
+  </epgu-constructor-helper-text>
+
+  <div class="doc-input__emmiter">
+    <epgu-constructor-label for="emitter">{{ fields['emitter'].label }}</epgu-constructor-label>
+    <epgu-constructor-input-error *ngIf="form.get('emitter').invalid && form.get('emitter').touched">
+      {{form.get('emitter').errors.msg}}
+    </epgu-constructor-input-error>
+    <lib-plain-input
+      epgu-constructor-trim
+      epgu-constructor-text-transform
+      [textTransformType]="fields['emitter']?.attrs?.fstuc"
+      id="emitter"
+      [formControl]="form.get('emitter')"
+      [invalid]="form.get('emitter').invalid && form.get('emitter').touched"
+      [validationShowOn]="validationShowOn"
+    ></lib-plain-input>
   </div>
+  <epgu-constructor-helper-text
+    *ngIf="fields['emitter']?.hint"
+    class="doc-input__hint">
+    {{ fields['emitter']?.hint }}
+  </epgu-constructor-helper-text>
 </section>

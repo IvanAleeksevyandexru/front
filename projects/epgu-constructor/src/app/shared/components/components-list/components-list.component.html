@@ -171,12 +171,8 @@
         </epgu-constructor-passport>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item *ngSwitchCase="componentType.DocInput"
-                                       [data]="componentData">
-        <epgu-constructor-doc-input [data]="componentData">
-        </epgu-constructor-doc-input>
-      </epgu-constructor-component-item>
-
+      <epgu-constructor-doc-input [data]="componentData">
+      </epgu-constructor-doc-input>
     </ng-container>
   </div>
 </form>

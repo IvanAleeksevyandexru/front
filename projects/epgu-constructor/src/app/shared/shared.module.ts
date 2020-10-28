@@ -46,6 +46,7 @@ import { ActionButtonComponent } from './components/action-button/action-button.
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 import { DocInputComponent } from './components/doc-input/doc-input.component';
 import { ComponentItemComponent } from './components/component-item/component-item.component';
+import { InputErrorComponent } from './components/input-error/input-error.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -84,7 +85,7 @@ const DIRECTIVES = [
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
+  declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES, InputErrorComponent],
   providers: [
     NavigationService,
     CachedAnswersService,
