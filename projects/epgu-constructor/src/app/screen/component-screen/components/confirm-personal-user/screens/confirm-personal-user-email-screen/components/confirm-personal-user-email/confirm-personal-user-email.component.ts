@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { ScreenService } from '../../../../../../../screen.service';
 

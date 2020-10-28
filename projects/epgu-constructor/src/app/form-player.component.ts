@@ -15,7 +15,7 @@ import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ModalService } from './shared/services/modal/modal.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
-import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from './shared/services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from './shared/components/modal/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from './shared/services/navigation/navigation.service';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';

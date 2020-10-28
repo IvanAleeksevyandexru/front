@@ -14,7 +14,7 @@ import { QuestionsScreenComponent } from './screen/questions-screen/questions-sc
 import { UniqueScreenComponent } from './screen/unique-screen/unique-screen.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
-import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from './shared/services/unsubscribe/unsubscribe.service';
 import { ModalContainerComponent } from './shared/components/modal/modal-container/modal-container.component';
 import { NavigationService } from './shared/services/navigation/navigation.service';
 

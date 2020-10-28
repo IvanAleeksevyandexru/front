@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import { TextTransform } from '../../../../shared/types/textTransform';
 import { CurrentAnswersService } from '../../../current-answers.service';

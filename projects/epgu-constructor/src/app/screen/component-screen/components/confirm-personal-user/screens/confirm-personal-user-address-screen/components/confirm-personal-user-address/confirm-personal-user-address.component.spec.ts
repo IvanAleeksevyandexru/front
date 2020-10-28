@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
 import { CurrentAnswersService } from '../../../../../../../current-answers.service';
-import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { ComponentScreenComponentTypes } from '../../../../../../component-screen.types';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';

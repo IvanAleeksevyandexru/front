@@ -15,7 +15,7 @@ import { SlotInterface } from './time-slots.types';
 import { DisplayDto } from '../../../../services/form-player-api/form-player-api.types';
 import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
 import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../screen.service';
 
 const moment = moment_;

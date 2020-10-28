@@ -3,7 +3,7 @@ import { takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { timer } from 'rxjs';
 
 import { ConfirmMarriageInfoInterface } from '../models/confirm-marriage-info.interface';
-import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { TimerInterface } from '../models/timer.interface';
 import { createTimerForConfirmMarriage } from './confirm-marriage.helper';
 import { ScreenService } from '../../../../screen.service';

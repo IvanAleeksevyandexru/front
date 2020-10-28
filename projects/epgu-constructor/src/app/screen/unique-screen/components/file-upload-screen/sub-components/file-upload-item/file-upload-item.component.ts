@@ -26,7 +26,7 @@ import {
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 import { ConfigService } from '../../../../../../config/config.service';
 import { DeviceDetectorService } from '../../../../../../shared/services/device-detector/device-detector.service';
-import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',

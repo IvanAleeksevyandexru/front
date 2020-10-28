@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
 import { ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-screen-resolver',

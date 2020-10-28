@@ -3,7 +3,7 @@ import { ConfirmPhoneComponent } from './confirm-phone.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CounterDirective } from '../../../../../../shared/directives/counter/counter.directive';
 import { ScreenService } from '../../../../../screen.service';
-import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
 import { EpguLibModule } from 'epgu-lib';
 import { ScreenServiceStub } from '../../../../../screen.service.stub';

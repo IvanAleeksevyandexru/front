@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
 import { Gender } from '../../../../shared/types/gender';
 import { ComponentBase } from '../../../screen.types';
 import { DisplayDto } from '../../../../services/form-player-api/form-player-api.types';

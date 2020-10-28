@@ -6,7 +6,9 @@ import { ConfigService } from '../../../config/config.service';
 import { MobilViewEvents } from '../../constants/redirect-event';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 
-
+/**
+ * Этот сервис должен быть запровайден только на уровне компанент, не стоит его провайдить через модули.
+ */
 @Injectable()
 export class NavigationService {
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ScreenService } from '../../../../../screen.service';
-import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../../form-player.types';
 

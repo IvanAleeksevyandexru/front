@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfigService } from '../../../../../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../config/config.service.stub';
-import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
