@@ -9,6 +9,11 @@
   &__item {
     margin-bottom: $screen-pad-p;
 
+    &:not(:first-child) {
+      margin-bottom: 0;
+    }
+
+
     &__hint {
       @include first-letter-uppercase();
       margin: 4px 4px 0 0;
