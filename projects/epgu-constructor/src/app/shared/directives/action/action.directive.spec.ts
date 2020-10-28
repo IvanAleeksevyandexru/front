@@ -1,8 +1,8 @@
 import { inject, TestBed } from '@angular/core/testing';
 
 import { ActionDirective } from './action.directive';
-import { ConfigService } from '../../../config/config.service';
-import { ConfigServiceStub } from '../../../config/config.service.stub';
+import { ConfigService } from '../../config/config.service';
+import { ConfigServiceStub } from '../../config/config.service.stub';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
@@ -10,8 +10,8 @@ import { ScreenService } from '../../../screen/screen.service';
 import { CachedAnswersService } from '../../services/applicant-answers/cached-answers.service';
 import { DeviceDetectorService } from '../../services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../services/device-detector/device-detector.service.stub';
-import { FormPlayerApiService } from '../../../services/form-player-api/form-player-api.service';
-import { FormPlayerApiServiceStub } from '../../../services/form-player-api/form-player-api.service.stub';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
 
 describe('ActionDirective', () => {
   beforeEach(() => {

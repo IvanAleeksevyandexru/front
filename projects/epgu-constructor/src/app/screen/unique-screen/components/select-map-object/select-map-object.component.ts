@@ -14,7 +14,7 @@ import { switchMap, filter, takeUntil, reduce } from 'rxjs/operators';
 import { of, merge } from 'rxjs';
 import { HelperService, YaMapService } from 'epgu-lib';
 
-import { ConfigService } from '../../../../config/config.service';
+import { ConfigService } from '../../../../shared/config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
 import { DictionaryApiService } from '../../../services/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';

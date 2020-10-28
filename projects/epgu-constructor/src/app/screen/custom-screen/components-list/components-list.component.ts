@@ -11,11 +11,11 @@ import {
   CustomListDropDowns,
 } from '../custom-screen.types';
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../shared/config/config.service';
 import { ComponentListFormService } from './services/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
 import { UnsubscribeService } from '../../../shared/services/unsubscribe/unsubscribe.service';
-import { ScenarioErrorsDto } from '../../../services/form-player-api/form-player-api.types';
+import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
 
 @Component({

@@ -5,9 +5,9 @@ import {
   ConfirmUserData,
   ConfirmUserDataState,
 } from '../../../../../../types/confirm-user-data.types';
-import { ConfigService } from '../../../../../../../../config/config.service';
+import { ConfigService } from '../../../../../../../../shared/config/config.service';
 import { ScreenService } from '../../../../../../../screen.service';
-import { ActionType } from '../../../../../../../../services/form-player-api/form-player-api.types';
+import { ActionType } from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-data',

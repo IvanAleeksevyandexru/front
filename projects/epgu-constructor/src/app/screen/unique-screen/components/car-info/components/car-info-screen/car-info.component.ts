@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { CarInfoValues } from '../../models/car-info.interface';
-import { DisplayDto } from '../../../../../../services/form-player-api/form-player-api.types';
+import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-car-info',

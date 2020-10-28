@@ -5,8 +5,8 @@ import { UnsubscribeService } from '../../../../../../shared/services/unsubscrib
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenServiceStub } from '../../../../../screen.service.stub';
-import { ConfigService } from '../../../../../../config/config.service';
-import { ConfigServiceStub } from '../../../../../../config/config.service.stub';
+import { ConfigService } from '../../../../../../shared/config/config.service';
+import { ConfigServiceStub } from '../../../../../../shared/config/config.service.stub';
 
 xdescribe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;

@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { EpguLibModule, SmuEventsService } from 'epgu-lib';
-import { ConfigService } from './config/config.service';
+import { ConfigService } from '../shared/config/config.service';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { initApp } from './form-player.functions';
 import { CookieService } from 'ngx-cookie-service';
-import { ScreenModule } from './screen/screen.module';
+import { ScreenModule } from '../screen/screen.module';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 

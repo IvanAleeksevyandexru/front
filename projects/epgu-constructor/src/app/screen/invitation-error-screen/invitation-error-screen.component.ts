@@ -4,7 +4,7 @@ import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscrib
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { NavigationPayload } from '../../form-player.types';
+import { NavigationPayload } from '../../form-player/form-player.types';
 import { InvitationErrorScreenComponentTypes } from './invitation-error-screen.types';
 
 @Component({

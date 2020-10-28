@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { ScreenService } from '../../../../../screen.service';
 import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
-import { NavigationOptions, NavigationPayload } from '../../../../../../form-player.types';
+import {
+  NavigationOptions,
+  NavigationPayload,
+} from '../../../../../../form-player/form-player.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-phone',

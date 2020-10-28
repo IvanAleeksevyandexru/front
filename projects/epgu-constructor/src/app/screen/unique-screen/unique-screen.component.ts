@@ -6,7 +6,7 @@ import { ScreenService } from '../screen.service';
 import { Screen } from '../screen.types';
 import { UniqueScreenComponentTypes } from './unique-screen.types';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
-import { NavigationPayload } from '../../form-player.types';
+import { NavigationPayload } from '../../form-player/form-player.types';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',

@@ -1,8 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormatPhonePipe } from 'epgu-lib';
-import { ConfigService } from '../../../../../../config/config.service';
-import { ConfigServiceStub } from '../../../../../../config/config.service.stub';
+import { ConfigService } from '../../../../../../shared/config/config.service';
+import { ConfigServiceStub } from '../../../../../../shared/config/config.service.stub';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../current-answers.service';
@@ -10,7 +10,7 @@ import { ComponentBase } from '../../../../../screen.types';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserScreenLayoutComponent } from '../../sub-components/confirm-personal-user-screen-layout/confirm-personal-user-screen-layout.component';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
-import { ActionType } from '../../../../../../services/form-player-api/form-player-api.types';
+import { ActionType } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 
 xdescribe('ConfirmPersonalUserPhoneEmailComponent', () => {

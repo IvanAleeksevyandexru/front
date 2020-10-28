@@ -3,14 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DictionaryApiService } from '../../services/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../screen.service';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../shared/config/config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ScreenServiceStub } from '../../screen.service.stub';
 import { MaskHandlePipe } from '../../../shared/pipes/mask-handle/mask-handle.pipe';
 import { FormsModule, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { ValidationService } from '../services/validation.service';
 import { DictionaryApiServiceStub } from '../../services/dictionary-api/dictionary-api.service.stub';
-import { ConfigServiceStub } from '../../../config/config.service.stub';
+import { ConfigServiceStub } from '../../../shared/config/config.service.stub';
 import { AddressHelperService } from './address-helper.service';
 import { ComponentListFormService } from './services/component-list-form.service';
 

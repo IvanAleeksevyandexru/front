@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { startWith, takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../../../config/config.service';
+import { ConfigService } from '../../../../../../../../shared/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';

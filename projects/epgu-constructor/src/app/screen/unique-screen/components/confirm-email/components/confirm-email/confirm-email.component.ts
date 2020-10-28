@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../config/config.service';
+import { ConfigService } from '../../../../../../shared/config/config.service';
 import {
   Navigation,
   NavigationOptions,
   NavigationPayload,
-} from '../../../../../../form-player.types';
+} from '../../../../../../form-player/form-player.types';
 import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../../../../../screen.service';

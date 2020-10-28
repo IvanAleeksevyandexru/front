@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { WebcamModule } from 'ngx-webcam';
-import { ConfigService } from '../config/config.service';
+import { ConfigService } from './config/config.service';
 import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
 import { ModalService } from './services/modal/modal.service';
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';

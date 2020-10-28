@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Config } from '../../config/config.types';
+import { Config } from '../../../shared/config/config.types';
 
 
 @Injectable()

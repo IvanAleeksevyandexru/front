@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DisplayDto } from '../../../../services/form-player-api/form-player-api.types';
+import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../shared/services/modal/modal.service';
 import { UsePaymentsModalComponent } from '../../../../shared/components/modal/use-payment-modal/use-payment-modal/use-payments-modal.component';
 import { UnusedPaymentsService } from './unused-payments.service';

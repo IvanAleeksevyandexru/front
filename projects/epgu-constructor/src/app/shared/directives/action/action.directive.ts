@@ -5,14 +5,14 @@ import {
   ActionApiResponse, ActionDTO,
   ActionType,
   ComponentDtoAction,
-} from '../../../services/form-player-api/form-player-api.types';
+} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
-import { Navigation, NavigationOptions } from '../../../form-player.types';
+import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Answer } from '../../types/answer';
 import { filter } from 'rxjs/operators';
-import { FormPlayerApiService } from '../../../services/form-player-api/form-player-api.service';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 
 @Directive({
   selector: '[epgu-constructor-action]',

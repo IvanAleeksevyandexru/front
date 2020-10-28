@@ -1,7 +1,7 @@
 import { ListItem } from 'epgu-lib';
 import { DictionaryItem, DictionaryResponse } from '../services/dictionary-api/dictionary-api.types';
 import { ComponentBase } from '../screen.types';
-import { DisplayDto } from '../../services/form-player-api/form-player-api.types';
+import { DisplayDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { TextTransform } from '../../shared/types/textTransform';
 
 export enum CustomScreenComponentTypes {

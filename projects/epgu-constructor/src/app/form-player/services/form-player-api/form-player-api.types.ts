@@ -1,7 +1,7 @@
-import { ScreenTypes } from '../../screen/screen.types';
-import { Answer } from '../../shared/types/answer';
-import { Gender } from '../../shared/types/gender';
-import { Clarifications } from '../../shared/services/terra-byte-api/terra-byte-api.types';
+import { ScreenTypes } from '../../../screen/screen.types';
+import { Answer } from '../../../shared/types/answer';
+import { Gender } from '../../../shared/types/gender';
+import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer

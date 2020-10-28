@@ -1,4 +1,4 @@
-import { Answer } from './shared/types/answer';
+import { Answer } from '../shared/types/answer';
 
 /**
  * @property serviceId - идентификатор услуги в formPlayerApi

@@ -24,7 +24,7 @@ import {
   WebcamEvent,
 } from '../../../../../../shared/components/webcam-shoot/webcamevents';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
-import { ConfigService } from '../../../../../../config/config.service';
+import { ConfigService } from '../../../../../../shared/config/config.service';
 import { DeviceDetectorService } from '../../../../../../shared/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
 

@@ -4,8 +4,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
 import { ServiceDataService } from '../service-data/service-data.service';
-import { Gender } from '../../shared/types/gender';
-import { ScreenTypes } from '../../screen/screen.types';
+import { Gender } from '../../../shared/types/gender';
+import { ScreenTypes } from '../../../screen/screen.types';
 
 
 xdescribe('FormPlayerApiService', () => {
