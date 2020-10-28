@@ -24,7 +24,7 @@ import {
   isCloseAndSaveWebcamEvent,
   WebcamEvent,
 } from '../../../../shared/components/webcam-shoot/webcamevents';
-import { CompressionService } from '../../../../services/utils/compression.service';
+import { CompressionService } from './compression/compression.service';
 import { ConfigService } from '../../../../config/config.service';
 import { ScreenService } from '../../../screen.service';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';

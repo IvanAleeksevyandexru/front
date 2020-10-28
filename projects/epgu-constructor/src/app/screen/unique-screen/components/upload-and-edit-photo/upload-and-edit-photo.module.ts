@@ -15,7 +15,7 @@ import { UploadAndEditPhotoComponent } from './upload-and-edit-photo.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
 import { SharedModule } from '../../../../shared/shared.module';
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
-import { CompressionService } from '../../../../services/utils/compression.service';
+import { CompressionService } from './compression/compression.service';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';
 
 
