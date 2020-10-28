@@ -15,7 +15,7 @@ import { ValidationService } from '../../services/validation.service';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper.service';
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
-import { ScenarioErrorsDto } from '../../../../services/api/form-player-api/form-player-api.types';
+import { ScenarioErrorsDto } from '../../../../services/form-player-api/form-player-api.types';
 import { UtilsService as utils } from '../../../../services/utils/utils.service';
 import { isDropDown } from '../../tools/custom-screen-tools';
 import { ListItem } from 'epgu-lib';

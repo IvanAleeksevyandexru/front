@@ -7,7 +7,7 @@ import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from '../current-answers.service';
-import { FormPlayerApiService } from '../../services/api/form-player-api/form-player-api.service';
+import { FormPlayerApiService } from '../../services/form-player-api/form-player-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../config/config.service';
 import { ServiceDataService } from '../../services/service-data/service-data.service';

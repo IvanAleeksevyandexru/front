@@ -10,8 +10,8 @@ import { ScreenService } from '../../../screen/screen.service';
 import { CachedAnswersService } from '../../services/applicant-answers/cached-answers.service';
 import { DeviceDetectorService } from '../../services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../services/device-detector/device-detector.service.stub';
-import { FormPlayerApiService } from '../../../services/api/form-player-api/form-player-api.service';
-import { FormPlayerApiServiceStub } from '../../../services/api/form-player-api/form-player-api.service.stub';
+import { FormPlayerApiService } from '../../../services/form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../../../services/form-player-api/form-player-api.service.stub';
 
 describe('ActionDirective', () => {
   beforeEach(() => {

@@ -2,14 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
-import { FormPlayerNavigation, NavigationOptions } from '../../../form-player.types';
+import { FormPlayerNavigation, NavigationOptions } from '../../form-player.types';
 import {
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   CheckOrderApiResponse,
   ActionDTO, ActionApiResponse
 } from './form-player-api.types';
-import { ServiceDataService } from '../../service-data/service-data.service';
+import { ServiceDataService } from '../service-data/service-data.service';
 
 type CookieSession = { userId: string, token: string };
 

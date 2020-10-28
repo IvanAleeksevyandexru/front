@@ -12,7 +12,7 @@ import { EmployeeHistoryDatasourceService } from './services/employee-history.da
 import { EpguLibModule } from 'epgu-lib';
 import { Gender } from '../../../../shared/types/gender';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
-import { DisplayDto } from '../../../../services/api/form-player-api/form-player-api.types';
+import { DisplayDto } from '../../../../services/form-player-api/form-player-api.types';
 
 xdescribe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;

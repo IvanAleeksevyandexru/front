@@ -4,13 +4,13 @@ import { FormPlayerNavigation, Navigation, NavigationPayload } from '../../form-
 import { ScreenService } from '../../screen/screen.service';
 import { ScreenTypes } from '../../screen/screen.types';
 import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
-import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
+import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import {
   CheckOrderApiResponse,
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto
-} from '../api/form-player-api/form-player-api.types';
+} from '../form-player-api/form-player-api.types';
 import { ServiceDataService } from '../service-data/service-data.service';
 import { UtilsService } from '../utils/utils.service';
 

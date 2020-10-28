@@ -9,7 +9,7 @@ import { ScreenService } from '../screen.service';
 import {
   ComponentDto,
   ComponentDtoAction,
-} from '../../services/api/form-player-api/form-player-api.types';
+} from '../../services/form-player-api/form-player-api.types';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.

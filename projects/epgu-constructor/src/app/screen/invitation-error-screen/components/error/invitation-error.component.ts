@@ -6,7 +6,7 @@ import { ValidationShowOn } from 'epgu-lib';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../config/config.service';
 import { ValidationService } from '../../../custom-screen/services/validation.service';
-import { ScenarioDto } from '../../../../services/api/form-player-api/form-player-api.types';
+import { ScenarioDto } from '../../../../services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 
 @Component({

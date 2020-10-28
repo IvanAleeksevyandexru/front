@@ -18,7 +18,7 @@ import { ServiceDataService } from './services/service-data/service-data.service
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from './shared/components/modal/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from './shared/services/navigation/navigation.service';
-import { FormPlayerConfigApiService } from './services/api/form-player-config-api/form-player-config-api.service';
+import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',

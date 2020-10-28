@@ -1,11 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { CookieService } from 'ngx-cookie-service';
-import { FormPlayerNavigation } from '../../../form-player.types';
+import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
-import { ServiceDataService } from '../../service-data/service-data.service';
-import { Gender } from '../../../shared/types/gender';
-import { ScreenTypes } from '../../../screen/screen.types';
+import { ServiceDataService } from '../service-data/service-data.service';
+import { Gender } from '../../shared/types/gender';
+import { ScreenTypes } from '../../screen/screen.types';
 
 
 xdescribe('FormPlayerApiService', () => {

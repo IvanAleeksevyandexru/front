@@ -3,7 +3,7 @@ import { ValidationShowOn } from 'epgu-lib';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { Gender } from '../../../../shared/types/gender';
 import { ComponentBase } from '../../../screen.types';
-import { DisplayDto } from '../../../../services/api/form-player-api/form-player-api.types';
+import { DisplayDto } from '../../../../services/form-player-api/form-player-api.types';
 import { EmployeeHistoryDataSource, EmployeeHistoryModel } from './employee-history.types';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';

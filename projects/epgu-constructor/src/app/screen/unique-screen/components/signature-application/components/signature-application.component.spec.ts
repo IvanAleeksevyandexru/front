@@ -19,7 +19,7 @@ import { UtilsService } from '../../../../../services/utils/utils.service';
 import {
   ApplicantAnswersDto,
   ComponentDto,
-} from '../../../../../services/api/form-player-api/form-player-api.types';
+} from '../../../../../services/form-player-api/form-player-api.types';
 import { DeviceDetectorService } from '../../../../../shared/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../../shared/services/device-detector/device-detector.service.stub';
 

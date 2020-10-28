@@ -4,7 +4,7 @@ import {
   ComponentDtoAction, CurrentCycledFieldsDto,
   DisplayDto, DisplaySubjHead,
   ScenarioErrorsDto
-} from '../services/api/form-player-api/form-player-api.types';
+} from '../services/form-player-api/form-player-api.types';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { BehaviorSubject } from 'rxjs';
 import { Gender } from '../shared/types/gender';

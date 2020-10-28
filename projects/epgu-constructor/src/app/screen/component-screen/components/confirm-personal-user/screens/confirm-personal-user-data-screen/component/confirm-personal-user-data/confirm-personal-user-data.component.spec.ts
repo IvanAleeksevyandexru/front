@@ -6,7 +6,7 @@ import { ToJsonPipe } from '../../../../../../../../shared/pipes/toJson/to-json.
 import { ConfirmUserData } from '../../../../../../types/confirm-user-data.types';
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ScreenService } from '../../../../../../../screen.service';
-import { ActionType } from '../../../../../../../../services/api/form-player-api/form-player-api.types';
+import { ActionType } from '../../../../../../../../services/form-player-api/form-player-api.types';
 import { ActionDirective } from '../../../../../../../../shared/directives/action/action.directive';
 import { ScreenServiceStub } from '../../../../../../../screen.service.stub';
 

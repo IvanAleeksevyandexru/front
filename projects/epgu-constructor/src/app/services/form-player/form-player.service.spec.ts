@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { FormPlayerService } from './form-player.service';
 import { ScreenService } from '../../screen/screen.service';
-import { FormPlayerApiService } from '../api/form-player-api/form-player-api.service';
-import { FormPlayerApiServiceStub } from '../api/form-player-api/form-player-api.service.stub';
+import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { ServiceDataService } from '../service-data/service-data.service';

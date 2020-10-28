@@ -3,7 +3,7 @@ import { NavigationPayload } from '../../../form-player.types';
 import { ScreenService } from '../../screen.service';
 import { ScreenStore } from '../../screen.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen/unique-screen.types';
-import { CurrentCycledFieldsDto } from '../../../services/api/form-player-api/form-player-api.types';
+import { CurrentCycledFieldsDto } from '../../../services/form-player-api/form-player-api.types';
 
 @Injectable()
 export class CycledFieldsService {
