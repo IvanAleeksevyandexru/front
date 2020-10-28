@@ -44,6 +44,7 @@ import { ActionButtonComponent } from './components/action-button/action-button.
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 import { UtilsService } from './services/utils/utils.service';
 
+export const EpguLibModuleInited = EpguLibModule.forRoot();
 
 const COMPONENTS = [
   PageNameComponent,
@@ -97,7 +98,7 @@ const DIRECTIVES = [
     UtilsService,
   ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  imports: [CommonModule, EpguLibModule, FormsModule, WebcamModule, PerfectScrollbarModule],
+  imports: [CommonModule, EpguLibModuleInited, FormsModule, WebcamModule, PerfectScrollbarModule],
   entryComponents: [
     ModalBaseComponent,
     ModalContainerComponent,

@@ -6,8 +6,6 @@ import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../shared/shared.module';
 import { FormConstructorComponent } from './form-constructor.component';
 
-const EpguLibModuleInited = EpguLibModule.forRoot();
-
 /**
  * Домен конструктора форм. Сдесь храняться тулзы для создания сценариев.
  *
@@ -20,7 +18,6 @@ const EpguLibModuleInited = EpguLibModule.forRoot();
   imports: [
     CommonModule,
     SharedModule,
-    EpguLibModuleInited,
   ],
   exports: [
     FormConstructorComponent,

@@ -12,8 +12,6 @@ import { initApp } from './form-player.functions';
 import { CookieService } from 'ngx-cookie-service';
 import { ScreenModule } from '../screen/screen.module';
 
-const EpguLibModuleInited = EpguLibModule.forRoot();
-
 /**
  * Домен форм плеера. Сдесь храняться всё что связано с форм плеером, его интеграцие с форм плеер апи.
  */
@@ -25,7 +23,6 @@ const EpguLibModuleInited = EpguLibModule.forRoot();
     ScreenModule,
     CommonModule,
     SharedModule,
-    EpguLibModuleInited,
   ],
   providers: [
     FormPlayerConfigApiService,

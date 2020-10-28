@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { EpguLibModule } from 'epgu-lib';
+import { SharedModule } from '../shared/shared.module';
 
-
-const EpguLibModuleInited = EpguLibModule.forRoot();
 
 /**
  * Домен компанент. Сдесь храниться всё что связанно со компанентами и их обязками.
@@ -13,7 +11,7 @@ const EpguLibModuleInited = EpguLibModule.forRoot();
 @NgModule({
   imports: [
     CommonModule,
-    EpguLibModuleInited
+    SharedModule
   ],
 })
 export class ComponentModule {}

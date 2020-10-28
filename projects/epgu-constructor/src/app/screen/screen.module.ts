@@ -23,9 +23,6 @@ import { ScreenService } from './screen.service';
 import { ToolsService } from './services/tools/tools.service';
 import { CycledFieldsService } from './services/cycled-fields/cycled-fields.service';
 
-
-const EpguLibModuleInited = EpguLibModule.forRoot();
-
 /**
  * Домен скринов. Сдесь храниться всё что связанно со скринами и их обязками.
  */
@@ -42,7 +39,6 @@ const EpguLibModuleInited = EpguLibModule.forRoot();
     UniqueScreenModule,
     InvitationErrorScreenModule,
     SharedModule,
-    EpguLibModuleInited,
     InfoScreenModule,
   ],
   providers: [
