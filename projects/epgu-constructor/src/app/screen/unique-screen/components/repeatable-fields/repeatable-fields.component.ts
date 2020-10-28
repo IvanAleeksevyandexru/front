@@ -102,7 +102,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     delete this.screens[key];
     let state = this.getState();
     state = removeItemFromArrByIndex(state, index);
-    delete this.componentValidation[index];
+    this.componentValidation.splice(index, 1);
     this.isValid = this.componentValidation.every((valid: boolean) => valid);
     this.saveState(state);
   }
