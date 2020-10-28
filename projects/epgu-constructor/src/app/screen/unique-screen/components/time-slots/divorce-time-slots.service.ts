@@ -5,18 +5,19 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { TimeSlotsService } from './time-slots.service';
+import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
   SmevSlotInterface,
   SmevSlotsMapInterface,
   TimeSlotValueInterface,
   ZagsDepartmentInterface
 } from './time-slots.types';
+import { ConfigService } from '../../../../config/config.service';
 
 const moment = moment_;
 
 @Injectable()
-export class DivorceTimeSlotsService implements TimeSlotsService {
+export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
 
   private department: ZagsDepartmentInterface;
   private orderId;
@@ -32,7 +33,8 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
 
   constructor(
     private http: HttpClient,
-    private smev3TimeSlotsRestService: Smev3TimeSlotsRestService
+    private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
+    private config: ConfigService,
   ) {}
 
   book(selectedSlot: SmevSlotInterface) {
@@ -143,7 +145,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
       caseNumber: this.orderId,
       serviceId: ['ЗагсРазводФорма12-1'],
       eserviceId: '10000057526',
-      routeNumber: '45382000',
+      routeNumber: this.config.divorceRouteNumber,
       attributes: [
         // {
         //   name: 'fiasCode',
@@ -161,7 +163,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
       preliminaryReservation: 'true',
       address: this.department.attributeValues.ADDRESS,
       orgName: this.department.attributeValues.FULLNAME,
-      routeNumber: '45382000',
+      routeNumber: this.config.divorceRouteNumber,
       serviceCode: '-100000100821',
       subject: 'Регистрация расторжения брака',
       params: [
@@ -200,7 +202,7 @@ export class DivorceTimeSlotsService implements TimeSlotsService {
 
   private initSlotsMap(slots: any[]): void {
     slots.forEach((slot) => {
-      const slotDate = new Date(slot.visitTime);
+      const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
       }

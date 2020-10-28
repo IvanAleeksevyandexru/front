@@ -1,9 +1,6 @@
-import { ComponentBase, Display } from '../../../../../screen.types';
+import { ComponentBase } from '../../../../../screen.types';
 import { TextTransform } from '../../../../../../shared/types/textTransform';
-
-export interface TemporaryRegistrationDisplay extends Display {
-  components: Array<TemporaryRegistrationComponent>;
-}
+import { RelativeDate } from 'epgu-lib';
 
 export interface TemporaryRegistrationComponent extends ComponentBase {
   attrs: TemporaryRegistrationComponentAttrs;
@@ -32,8 +29,11 @@ export interface TemporaryRegistrationHints {
  * @property {"input"}type -
  */
 export interface TemporaryRegistrationFields {
-  fieldName: 'regDate' | 'regAddr',
-  label: string,
-  type: 'input'|'date',
-  regexp: string | RegExp,
+  fieldName: 'regDate' | 'regAddr';
+  label: string;
+  type: 'input'|'date';
+  regexp: string | RegExp;
+  hideLevels?: Array<string>;
+  minDate?: Date | RelativeDate | string;
+  maxDate?: Date | RelativeDate | string;
 }

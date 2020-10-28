@@ -11,7 +11,8 @@ import { Navigation, NavigationOptions } from '../../../form-player.types';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { Answer } from '../../types/answer';
-import { ConfigService } from '../../../config/config.service';
+import { ActionApiDTO, ActionApiResponse } from '../../../services/api/action-api/action-api.types';
+import { filter } from 'rxjs/operators';
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -26,9 +27,8 @@ export class ActionDirective {
   constructor(
     private actionApiService: ActionApiService,
     private screenService: ScreenService,
-    private navigationService: NavigationService,
+    private navService: NavigationService,
     private utilsService: UtilsService,
-    private configService: ConfigService,
   ) {}
 
   private switchAction(): void {
@@ -40,17 +40,21 @@ export class ActionDirective {
         this.nextStep();
         break;
       case ActionType.redirectToLK:
-        this.redirectToLK();
+        this.navService.redirectToLK();
+        break;
+      case ActionType.profileEdit:
+        this.navService.redirectToProfileEdit();
+        break;
+      case ActionType.home:
+        this.navService.redirectToHome();
         break;
     }
   }
 
-  private sendAction<T>(responseType?: 'blob'): Observable<T | Blob> {
-    return this.actionApiService.send<T>(
-      this.action.action,
-      this.screenService.getStore(),
-      responseType,
-    );
+  private sendAction<T>(): Observable<ActionApiResponse<T>> {
+    const data = this.getActionDTO();
+
+    return this.actionApiService.send<T>(this.action.action, data);
   }
 
   private nextStep(): void {
@@ -61,11 +65,20 @@ export class ActionDirective {
       options,
     };
 
-    this.navigationService.nextStep.next(navigation);
+    this.navService.nextStep.next(navigation);
   }
 
   private getOptions(): NavigationOptions {
-    return this.action.action.includes('service') ? { url: this.action.action } : {};
+    const isService = () => this.action.action.includes('service');
+    const isLastPageInInternalScenario = () => this.action.action.includes('goBackToMainScenario');
+
+    if (isService()) {
+      return { url: this.action.action };
+    } else if (isLastPageInInternalScenario()) {
+      return { isInternalScenarioFinish: true };
+    } else {
+      return {};
+    }
   }
 
   private getComponentStateForNavigate(): {
@@ -80,17 +93,18 @@ export class ActionDirective {
   }
 
   private downloadAction(): void {
-    this.sendAction<Blob>('blob').subscribe(
-      (value) => {
-        this.utilsService.downloadFile(value);
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
+    this.sendAction<string>()
+      .pipe(filter((response) => !response.errorList.length))
+      .subscribe(
+        ({ responseData }) => this.utilsService.downloadFile(responseData),
+        (error) => console.log(error),
+      );
   }
 
-  private redirectToLK(): void {
-    window.location.href = `${this.configService.lkUrl}/profile/personal`;
+  private getActionDTO(): ActionApiDTO {
+    return {
+      scenarioDto: this.screenService.getStore(),
+      additionalParams: {},
+    };
   }
 }

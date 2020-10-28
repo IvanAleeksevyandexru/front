@@ -5,10 +5,9 @@ import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { CurrentAnswersService } from '../current-answers.service';
-import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
+import { Screen } from '../screen.types';
 import { ComponentScreenComponentTypes } from './component-screen.types';
-import { ConfirmUserDataState } from './types/confirm-user-data.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -32,7 +31,6 @@ export class ComponentScreenComponent implements OnInit, Screen {
   };
   componentData = null;
   form: FormGroup;
-  isCycledFields = false;
 
   constructor(
     private navigationService: NavigationService,
@@ -71,9 +69,6 @@ export class ComponentScreenComponent implements OnInit, Screen {
     let value: string;
     if (typeof this.currentAnswersService.state === 'object') {
       value = JSON.stringify(this.currentAnswersService.state);
-    } else if (this.isUserData()) {
-      const { storedValues } = JSON.parse(this.currentAnswersService.state) as ConfirmUserDataState;
-      value = JSON.stringify(storedValues);
     } else {
       value = this.currentAnswersService.state;
     }
@@ -111,6 +106,18 @@ export class ComponentScreenComponent implements OnInit, Screen {
     const hasType = [
       ComponentScreenComponentTypes.divorceConsent,
       ComponentScreenComponentTypes.confirmPersonalUserData,
+      ComponentScreenComponentTypes.confirmAnotherUserData,
+      ComponentScreenComponentTypes.confirmChildData,
+    ].includes(type);
+
+    return hasType ? type : false;
+  }
+
+  isUserContactData(): boolean | ComponentScreenComponentTypes {
+    const type = this.screenService.componentType as ComponentScreenComponentTypes;
+    const hasType = [
+      ComponentScreenComponentTypes.confirmPersonalUserPhone,
+      ComponentScreenComponentTypes.confirmPersonalUserEmail,
     ].includes(type);
 
     return hasType ? type : false;

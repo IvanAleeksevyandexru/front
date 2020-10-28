@@ -1,34 +1,50 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { CurrentAnswersService } from '../../../current-answers.service';
 import { ScreenService } from '../../../screen.service';
 import {
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
 } from './repeatable-fields.constant';
+import { CustomComponent } from '../../../custom-screen/custom-screen.types';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
   templateUrl: './repeatable-fields.component.html',
   styleUrls: ['./repeatable-fields.component.scss'],
 })
-export class RepeatableFieldsComponent {
+export class RepeatableFieldsComponent implements AfterViewChecked {
   objectKeys = Object.keys;
   componentId;
+  isValid: boolean;
+  componentValidation: Array<boolean> = [];
 
   /**
    * Словарь для хранения массива компонентов
    */
   screens: { [key: string]: any };
   propData; // TODO указать тип
+  cache: { [key: string]: any } = {};
 
   @Input() isLoading: boolean;
   @Input() set data(data) {
+    this.cache = this.screenService.getStore().cachedAnswers[this.screenService.component.id];
     this.initVariable();
     this.propData = data;
-    this.screens[this.getId()] = data.components[0].attrs.components;
-    console.group('debug');
-    console.log(this.screens, this.screenService.getStore());
-    console.groupEnd();
+
+    const isCached = Object.keys(this.cache || {}).length;
+
+    if (isCached) {
+      this.duplicateScreenAndPatch();
+    } else {
+      this.duplicateScreen();
+    }
   }
   @Output() nextStepEvent = new EventEmitter();
 
@@ -42,7 +58,12 @@ export class RepeatableFieldsComponent {
   constructor(
     private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
+    private cdr: ChangeDetectorRef,
   ) {}
+
+  ngAfterViewChecked() {
+    this.cdr.detectChanges();
+  }
 
   private initVariable() {
     this.screens = {};
@@ -50,12 +71,25 @@ export class RepeatableFieldsComponent {
     this.saveState([]);
   }
 
-  duplicateScreen() {
-    this.screens[this.getId()] = this.propData.components[0].attrs.components;
+  isScreensAvailable(): boolean {
+    const screensAmount: number = Object.keys(this.screens).length;
+    const defaultAvailable = 20;
+    return (
+      screensAmount < this.propData.components[0].attrs?.repeatAmount ||
+      screensAmount < defaultAvailable
+    );
   }
 
-  changeComponentList(changes, index: number) {
+  duplicateScreen() {
+    if (this.isScreensAvailable()) {
+      this.screens[this.getId()] = this.propData.components[0].attrs.components;
+    }
+  }
+
+  changeComponentList(changes: { [key: string]: any }, index: number) {
     const state = this.getState();
+    this.componentValidation[index] = Object.values(changes).every((item) => item.isValid);
+    this.isValid = this.componentValidation.every((valid: boolean) => valid);
     state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
     this.saveState(state);
   }
@@ -68,13 +102,36 @@ export class RepeatableFieldsComponent {
     delete this.screens[key];
     let state = this.getState();
     state = removeItemFromArrByIndex(state, index);
+    delete this.componentValidation[index];
+    this.isValid = this.componentValidation.every((valid: boolean) => valid);
     this.saveState(state);
   }
 
-  getState() {
+  getState(): { [key: string]: any } {
     return JSON.parse(this.currentAnswersService.state);
   }
   saveState(state) {
     this.currentAnswersService.state = JSON.stringify(state);
+  }
+
+  private duplicateScreenAndPatch(): void {
+    let cache;
+    try {
+      cache = JSON.parse(this.cache.value);
+    } catch (e) {
+      cache = {};
+    }
+    Object.keys(cache).forEach((key: string) => {
+      this.duplicateScreen();
+      Object.entries(cache[key]).forEach(([componentId, value]) => {
+        const index: number = Object.keys(this.screens).length;
+        this.screens[index] = this.screens[index].map((component: CustomComponent) => {
+          if (component.id === componentId) {
+            return { ...component, value };
+          }
+          return { ...component };
+        });
+      });
+    });
   }
 }

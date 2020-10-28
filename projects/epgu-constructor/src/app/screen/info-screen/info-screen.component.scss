@@ -1,6 +1,6 @@
-@import "../../../styles/core/functions";
-@import "../../../styles/core/variables";
-
+@import '../../../styles/core/functions';
+@import '../../../styles/core/variables';
+@import '../../../styles/core';
 
 :host {
   display: block;
@@ -10,27 +10,62 @@
   @include navigation-mt();
 }
 
-.info__head {
-  margin-bottom: 24px;
-}
+.info {
+  &__head {
+    margin-bottom: 24px;
+  }
 
-.info__body {
-  margin-bottom: 24px;
+  &__submit {
+    margin-top: 24px;
+    text-align: center;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__action {
+    margin-top: 24px;
+
+    @include phones-down {
+      margin-top: 32px;
+    }
+  }
 }
 
 .divider {
   margin: 0 0 24px;
 }
 
-.info__footer {
-  text-align: center;
-}
-.info-footer__submit {
-  display: inline-block;
-  &::ng-deep button {
-    min-width: 100px;
-  }
-}
 .screen-container-mt {
   margin-top: $navigation-mb;
+}
+
+.gray-theme {
+  background-color: transparent;
+  padding-top: 0;
+  box-shadow: none;
+
+  @include phones-down {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  &::ng-deep ul {
+    background-color: $color-white;
+    border-radius: 8px;
+    box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+    margin-left: 0;
+    padding: 24px 24px 8px;
+
+    li {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+  }
 }

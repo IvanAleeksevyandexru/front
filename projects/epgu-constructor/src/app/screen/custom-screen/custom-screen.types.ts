@@ -1,12 +1,14 @@
 import { ListItem } from 'epgu-lib';
 import { DictionaryItem, DictionaryResponse } from '../../services/api/dictionary-api/dictionary-api.types';
-import { ComponentBase, Display } from '../screen.types';
+import { ComponentBase } from '../screen.types';
+import { DisplayDto } from '../../services/api/form-player-api/form-player-api.types';
 import { TextTransform } from '../../shared/types/textTransform';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
   DropDown = 'DropDown',
+  MvdGiac = 'MvdGiac',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
   RadioInput = 'RadioInput',
@@ -22,11 +24,15 @@ export enum CustomScreenComponentTypes {
   PersonInnInput = 'PersonInnInput',
   PassportLookup = 'PassportLookup',
   SnilsInput = 'SnilsInput',
+  CityInput = 'CityInput',
 }
 
+export type CustomListDropDowns = Array<Partial<ListItem>>;
+export type CustomListDictionaries = Array<CustomListDictionary>;
+export type CustomListReferenceData = CustomListGenericData<CustomListDropDowns | DictionaryResponse>;
 export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
-export interface CustomComponentDictionaryState {
+export interface CustomListDictionary {
   loading: boolean,
   loadError: boolean,
   loadEnd: boolean,
@@ -38,16 +44,21 @@ export interface CustomComponentDictionaryState {
   selectedItem: DictionaryItem;
 }
 
-export interface CustomComponentDropDownStateInterface {
-  origin: CustomComponentDropDownItemList;
-  list: Array<Partial<ListItem>>;
-  selectedItem?: DictionaryItem;
+export interface CustomListStatusElements {
+  [key: string]: boolean;
+}
+
+export interface CustomListGenericData<T> {
+  component: CustomComponent,
+  data: T;
 }
 
 export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
 export type CustomComponentDropDownItem = {
-  label: string;
-  code: string;
+  title?: string;
+  label?: string; // TODO нужно удалить после обновления JSON, вместо него поле value
+  value?: string;
+  code?: string; // TODO нужно удалить после обновления JSON, вместо него поле value
   disable: boolean;
 };
 
@@ -121,7 +132,16 @@ export interface CustomComponentRef {
   relation: CustomComponentRefRelation
 }
 
-export interface CustomDisplay extends Display {
+export interface CustomListFormGroup {
+  attrs: CustomComponentAttr;
+  id: string;
+  label: string;
+  required: boolean;
+  type: CustomScreenComponentTypes;
+  value: any;
+}
+
+export interface CustomDisplay extends DisplayDto {
   components: Array<CustomComponent>;
 }
 
@@ -133,6 +153,7 @@ export interface CustomComponent extends ComponentBase {
   fstuc?: TextTransform;
   isShown?: boolean;
   price?: boolean;
+  searchProvider?: { search: Function };
 }
 
 export interface SupportedValue {

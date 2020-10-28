@@ -1,20 +1,12 @@
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
-import { NgForm, ValidatorFn, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-import { takeUntil } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../../../config/config.service';
-import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { UnsubscribeService } from '../../../../../../../../services/unsubscribe/unsubscribe.service';
+import { CurrentAnswersService } from '../../../../../../../current-answers.service';
 import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
 import { DateValidator } from './date-validator';
-import { TextTransform } from '../../../../../../../../shared/types/textTransform';
 
 @Component({
   selector: 'epgu-constructor-temporary-registration-addr',
@@ -22,75 +14,77 @@ import { TextTransform } from '../../../../../../../../shared/types/textTransfor
   styleUrls: ['./temporary-registration-addr.component.scss'],
   providers: [UnsubscribeService],
 })
-export class TemporaryRegistrationAddrComponent implements OnChanges, AfterViewInit {
-  forms: any = {};
-  @ViewChild('dataForm', { static: false }) dataForm: NgForm;
+export class TemporaryRegistrationAddrComponent implements OnInit {
   @Input() data: TemporaryRegistrationComponent;
   @Input() error: string;
-  validationShowOn = ValidationShowOn.IMMEDIATE;
+  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  redAddrForm: FormGroup;
 
   constructor(
     public config: ConfigService,
     private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
+    private fb: FormBuilder,
   ) {}
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
+    this.initFormGroup();
     this.subscribeToFormChanges();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes?.data?.currentValue) {
-      setTimeout(() => {
-        this.setValidatorsToForm();
-      });
-    }
+  initFormGroup(): void {
+    const controls = {};
+    const initValue = this.getInitValue(this.data?.value);
+
+    this.data?.attrs?.fields.forEach((field) => {
+      controls[field.fieldName] = this.fb.control(initValue, this.getValidatorsForField(field));
+    });
+    this.redAddrForm = this.fb.group(controls);
   }
 
   hintClick(timestamp: number) {
     const currentDayTimestamp = new Date().getTime();
-    this.forms.regDate = new Date(currentDayTimestamp + timestamp);
+    this.redAddrForm.patchValue({ regDate: new Date(currentDayTimestamp + timestamp) });
   }
 
-  get textTransformType(): TextTransform {
-    return this.data?.attrs?.fstuc;
-  }
+  private getValidatorsForField(field): ValidatorFn[] {
+    const regExp = field?.regexp || null;
+    const isRequired = this.data.required;
+    const isDateType = field?.type === 'date';
+    const validators: Array<ValidatorFn> = [];
+    if (regExp) {
+      validators.push(Validators.pattern(regExp));
+    }
 
-  private formChanges(changesData) {
-    this.currentAnswersService.state = changesData;
-  }
+    if (isDateType) {
+      validators.push(DateValidator.date);
+    }
 
-  private setValidatorsToForm(): void {
-    Object.keys(this.dataForm.controls).forEach((key) => {
-      const currentField = this.data.attrs?.fields.find((field) => field.fieldName === key);
-      const regExp = currentField?.regexp || null;
-      const isRequired = this.data.required;
-      const isDateType = currentField?.type === 'date';
-      const validators: Array<ValidatorFn> = [];
-      if (regExp) {
-        validators.push(Validators.pattern(regExp));
-      }
+    if (isRequired) {
+      validators.push(Validators.required);
+    }
 
-      if (isDateType) {
-        validators.push(DateValidator.date);
-      }
-
-      if (isRequired) {
-        validators.push(Validators.required);
-      }
-
-      this.dataForm.controls[key].setValidators(validators);
-    });
+    return validators;
   }
 
   private subscribeToFormChanges(): void {
-    this.dataForm.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((changes) => {
-      if (this.dataForm.invalid) {
-        this.currentAnswersService.isValid = false;
-      } else {
-        this.currentAnswersService.isValid = true;
-        this.formChanges(changes);
-      }
-    });
+    this.redAddrForm.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe$), startWith(this.redAddrForm.value))
+      .subscribe((changes) => {
+        if (this.redAddrForm.invalid) {
+          this.currentAnswersService.isValid = false;
+        } else {
+          this.currentAnswersService.isValid = true;
+          this.currentAnswersService.state = changes;
+        }
+      });
+  }
+
+  /**
+   * метод парсит (при наличие) строку с объектом от dadata-widget и возвращает в него fullAddress
+   * @param value строка с JSON объектом от dadata-widget
+   */
+  private getInitValue(value: string) {
+    return (value && JSON.parse(value).regAddr.fullAddress) || null;
   }
 }

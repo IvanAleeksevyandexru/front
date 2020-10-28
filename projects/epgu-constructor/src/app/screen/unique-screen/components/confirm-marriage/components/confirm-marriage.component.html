@@ -38,7 +38,7 @@
       [showLoader]="screenService.isLoading$ | async"
       [disabled]="isTimeCorrect()"
       (click)="nextStep()"
-      class="footer__btn-submit"
+      class="btn__submit"
     >
       {{ screenService?.submitLabel || 'Продолжить' }}
     </lib-button>

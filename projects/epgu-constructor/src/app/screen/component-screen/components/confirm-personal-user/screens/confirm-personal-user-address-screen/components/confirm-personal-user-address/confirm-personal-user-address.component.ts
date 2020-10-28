@@ -57,6 +57,10 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     if (this.valueParsed?.regDate) {
       this.valueParsed.regDate = this.getDate(this.valueParsed.regDate);
     }
+
+    if (this.valueParsed?.regAddr) {
+      this.valueParsed.regAddr = this.getAddress(this.valueParsed.regAddr);
+    }
   }
 
   private subscribeFormChanges(): void {
@@ -72,16 +76,18 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   private emmitData(): void {
     const dataToSend = this.getPreparedDataToSend();
-    this.dataEditedEvent.emit(dataToSend);
+
+    if (this.isFormValid()) {
+      this.dataEditedEvent.emit(dataToSend);
+    } else {
+      this.dataEditedEvent.emit(null);
+    }
   }
 
   getPreparedDataToSend(): string {
-    const { regAddr, regDate } = this.valueParsed;
+    const { regDate } = this.valueParsed;
     const dataToSend = { ...this.valueParsed };
-    if (typeof regAddr === 'string') {
-      dataToSend.regAddr = { fullAddress: regAddr };
-    }
-    dataToSend.regDate = moment(regDate).format(DATE_STRING_DOT_FORMAT);
+    dataToSend.regDate = dataToSend.regAddr ? moment(regDate).format(DATE_STRING_DOT_FORMAT) : '';
     return JSON.stringify(dataToSend);
   }
 
@@ -92,5 +98,16 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   private getDate(regDate: string): Date {
     const date = moment(regDate);
     return date.isValid() ? date.toDate() : moment().toDate();
+  }
+
+  private getAddress(regAddr: string | { fullAddress: string }): string {
+    return typeof regAddr === 'string' ? regAddr : regAddr.fullAddress;
+  }
+
+  private isFormValid() {
+    const hasValue = () =>
+      this.data.required ? Object.values(this.dataForm.form.value).every((value) => value) : true;
+
+    return this.dataForm?.form?.value && this.dataForm?.form?.valid && hasValue();
   }
 }

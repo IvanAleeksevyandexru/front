@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Display, ScreenTypes } from '../../../screen.types';
+import { ScreenTypes } from '../../../screen.types';
 import { EmployeeHistoryComponent } from './employee-history.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PageNameComponent } from '../../../../shared/components/base/page-name/page-name.component';
@@ -12,18 +12,22 @@ import { EmployeeHistoryDatasourceService } from './services/employee-history.da
 import { EpguLibModule } from 'epgu-lib';
 import { Gender } from '../../../../shared/types/gender';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
+import { DisplayDto } from '../../../../services/api/form-player-api/form-player-api.types';
 
 xdescribe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;
   let fixture: ComponentFixture<EmployeeHistoryComponent>;
-  let mockDisplay: Display = {
+  let mockDisplay: DisplayDto = {
     components: [],
+    subHeader: { text: '', clarifications: {}},
     header: '',
+    label: '',
     id: '',
     name: '',
+    displayCssClass: '',
     submitLabel: '',
     terminal: false,
-    type: ScreenTypes.UNIQUE
+    type: ScreenTypes.UNIQUE,
   };
   beforeEach(() => {
     TestBed.configureTestingModule({

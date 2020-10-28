@@ -53,11 +53,4 @@ export const getDocInfo = (bill: BillInfoResponse): string => {
   ].join(' ');
 };
 
-/**
- * Фильтруем данные по нашему счёту
- * @param answer - ответ сервера
- * @private
- */
-export const filterBillInfoResponse = (answer: any): BillsInfoResponse => {
-  return answer?.response || answer;
-};
+

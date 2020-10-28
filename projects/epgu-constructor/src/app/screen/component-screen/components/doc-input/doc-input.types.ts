@@ -1,5 +1,6 @@
-import { ComponentBase } from '../../../screen.types';
+import { RelativeDate } from 'epgu-lib';
 import { TextTransform } from '../../../../shared/types/textTransform';
+import { ComponentBase } from '../../../screen.types';
 
 /**
  * Интерфейс компонента с полями
@@ -8,6 +9,8 @@ export interface DocInputComponentInterface extends ComponentBase {
   attrs: {
     fields: Array<IField>;
     fstuc?: TextTransform;
+    minDate?: Date | RelativeDate | string;
+    maxDate?: Date | RelativeDate | string;
   };
 }
 
@@ -20,6 +23,8 @@ export interface IField {
   type: 'input';
   maxlength?: number;
   minlength?: number;
+  mask: Array<string>;
+  placeholder?: string;
 }
 
 /**

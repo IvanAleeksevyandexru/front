@@ -11,7 +11,6 @@ export class ScreenServiceStub extends ScreenContent {
 
   private isLoadingSubject: BehaviorSubject<boolean>;
   private isShownSubject: BehaviorSubject<boolean>;
-  private screenStoreSubject: BehaviorSubject<ScreenStore>;
 
   public isLoading$: Observable<boolean>;
   public isShown$: Observable<boolean>;

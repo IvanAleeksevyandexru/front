@@ -1,4 +1,5 @@
 import { ScreenTypes } from '../../../screen/screen.types';
+import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 
@@ -42,11 +43,20 @@ export interface ComponentDtoAction {
   label: string;
   value: string;
   action: string;
-  type: ActionType;
+  type?: ActionType;
+  hidden?: boolean;
+  disabled?: boolean;
+}
+
+export interface DisplaySubjHead {
+  text: string;
+  clarifications: Clarifications
 }
 
 /**
  * @property {}components
+ * @property {boolean}firstScreen - ствойсвто отвечает на вопрос, на первом ли экране мы находимся,
+ * если экран не первый то свойства не должно быть
  * @property {string}header - текстовый заголовок компонента
  * @property {string}id - идентификатор экрана
  * @property {string}name - краткая информация о том что за компонент (на фронте не используется)
@@ -55,9 +65,11 @@ export interface ComponentDtoAction {
  */
 export interface DisplayDto {
   components: Array<ComponentDto>;
+  firstScreen?: boolean;
   header: string;
-  subHeader: string;
+  subHeader?: DisplaySubjHead;
   label?: string;
+  displayCssClass?: string;
   id: string;
   name: string;
   submitLabel: string;
@@ -133,6 +145,10 @@ export enum ActionType {
   download = 'download',
   nextStep = 'nextStep',
   redirectToLK = 'redirectToLK',
+  profileEdit = 'profileEdit',
+  home = 'home',
+  editPhoneNumber = 'service/actions/editPhoneNumber',
+  editEmail = 'service/actions/editUserEmail',
 }
 
 export interface CheckOrderApiResponse {

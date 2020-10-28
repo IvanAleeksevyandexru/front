@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import * as moment_ from 'moment';
 import { Moment } from 'moment';
 import {
@@ -6,6 +6,7 @@ import {
   EmployeeHistoryModel
 } from '../employee-history.types';
 import { MonthYear } from 'epgu-lib';
+import { BehaviorSubject } from 'rxjs';
 
 const moment = moment_;
 
@@ -16,6 +17,8 @@ export class EmployeeHistoryMonthsService {
   minDateFrom: MonthYear;
   minDateTo: MonthYear;
   availableMonths: EmployeeHistoryAvailableDates[];
+  isNonStop: boolean;
+  isMonthComplete$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   initSettings(): void {
     this.maxDate = MonthYear.fromDate(moment().endOf('month').toDate());
@@ -47,7 +50,7 @@ export class EmployeeHistoryMonthsService {
     );
   }
 
-  updateAvailableMonths(generation: EmployeeHistoryModel[]): void {
+  updateAvailableMonths(generation: Array<EmployeeHistoryModel>): void {
     this.uncheckAvailableMonths();
 
     generation.forEach((e: EmployeeHistoryModel) => {
@@ -63,5 +66,30 @@ export class EmployeeHistoryMonthsService {
         }));
       }
     });
+
+    this.checkMonthCompleted();
+  }
+
+  private checkMonthCompleted(): void {
+    if (this.isNonStop) {
+      const isComplete: boolean = this.availableMonths.every(
+        (e: EmployeeHistoryAvailableDates) => e.checked,
+      );
+      this.isMonthComplete$.next(isComplete);
+    } else {
+      const convertedDate = this.availableMonths
+        .filter((stringDate: EmployeeHistoryAvailableDates) => stringDate.checked)
+        .map((stringDate: EmployeeHistoryAvailableDates) => {
+          const c = stringDate.date.split('/');
+          return moment(`${c[0]}/01/${c[1]}`);
+        });
+      const diff = moment.max(convertedDate).diff(moment.min(convertedDate), 'years');
+      if (diff === this.years) {
+        this.isMonthComplete$.next(true);
+      } else {
+        this.isMonthComplete$.next(false);
+      }
+    }
+
   }
 }

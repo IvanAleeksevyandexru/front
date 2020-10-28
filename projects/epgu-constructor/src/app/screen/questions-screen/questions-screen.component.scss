@@ -1,35 +1,34 @@
 @import "../../../styles/core";
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
-.nav {
-  @include navigation-mt();
-}
 
 .question {
-  &__wrapper {
+  &__container {
     display: flex;
-    flex-direction: column;
-    min-height: inherit;
-    @include phones-down {
-      $header-production-h: 88px;
-      $navigation-h: 44px;
-      min-height: calc(100vh - #{$header-production-h + $navigation-h + $navigation-mb});
-    }
+    flex-grow: 1;
 
-    &__label {
-      margin-bottom: 30px;
+    &::ng-deep .container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
     }
   }
 
-  &__body {
-    margin-top: auto;
-    @include tablets-up {
-      margin-top: 0;
-    }
+  &__head {
+    margin-bottom: 16px;
   }
+}
+
+.question__text {
+  margin-bottom: 30px;
+}
+
+.question__nav {
+  @include navigation-mt();
 }
 
 .answer {
@@ -38,7 +37,7 @@
   }
 }
 
-.answer__item {
+.answer__item:not(:last-child) {
   margin-bottom: 16px;
   @include tablets-up {
     margin-bottom: 24px;

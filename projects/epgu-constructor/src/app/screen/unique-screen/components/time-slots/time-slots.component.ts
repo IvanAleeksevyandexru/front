@@ -1,18 +1,22 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
+import { takeUntil } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { CurrentAnswersService } from '../../../current-answers.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
-import { TimeSlotsService } from './time-slots.service';
+import { TimeSlotsServiceInterface } from './time-slots.interface';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 import { GibddTimeSlotsService } from './gibdd-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { ModalService } from '../../../../services/modal/modal.service';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { SlotInterface } from './time-slots.types';
-import { Display } from '../../../screen.types';
+import { DisplayDto } from '../../../../services/api/form-player-api/form-player-api.types';
 import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
 import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
+import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { ScreenService } from '../../../screen.service';
 
 const moment = moment_;
 
@@ -20,9 +24,12 @@ const moment = moment_;
   selector: 'epgu-constructor-time-slots',
   templateUrl: './time-slots.component.html',
   styleUrls: ['./time-slots.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class TimeSlotsComponent implements OnInit {
   @Input() isLoading: boolean;
+  @Input() data: DisplayDto;
+  @Output() nextStepEvent = new EventEmitter<any>();
 
   public date: Date = null;
   public label: string;
@@ -72,12 +79,12 @@ export class TimeSlotsComponent implements OnInit {
   public fixedMonth = false;
   public inProgress = false;
   public changeTSConfirm = false;
-  initialized = false;
   bookedSlot: SlotInterface;
   errorMessage;
 
-  private timeSlotServices: { [key: string]: TimeSlotsService } = {};
-  private currentService: TimeSlotsService;
+  private timeSlotServices: { [key: string]: TimeSlotsServiceInterface } = {};
+  private currentService: TimeSlotsServiceInterface;
+  private errorModalResultSub = new Subscription();
 
   constructor(
     private changeDetection: ChangeDetectorRef,
@@ -88,15 +95,14 @@ export class TimeSlotsComponent implements OnInit {
     private modalService: ModalService,
     private currentAnswersService: CurrentAnswersService,
     public constants: TimeSlotsConstants,
+    private ngUnsubscribe$: UnsubscribeService,
+    private screenService: ScreenService,
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = divorceTimeSlotsService;
     this.timeSlotServices.GIBDD = gibddTimeSlotsService;
     this.timeSlotServices.MVD = mvdTimeSlotsService;
   }
-
-  @Input() data: Display;
-  @Output() nextStepEvent = new EventEmitter<any>();
 
   private renderSingleMonthGrid(output) {
     output.splice(0, output.length); // in-place clear
@@ -148,7 +154,11 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   public isDateLocked(date: Date) {
-    return this.isDateOutOfMonth(date) || this.currentService.isDateLocked(date);
+    return (
+      this.isDateOutOfMonth(date) ||
+      this.currentService.isDateLocked(date) ||
+      this.checkDateRestrictions(date)
+    );
   }
 
   public selectDate(date: Date) {
@@ -220,11 +230,27 @@ export class TimeSlotsComponent implements OnInit {
   showError(errorMessage: string) {
     const params = this.constants.errorModal;
     params.text = errorMessage;
-    this.showModal(params);
+    params.buttons = [
+      {
+        label: 'Попробовать ещё раз',
+        closeModal: true,
+        value: true,
+      },
+    ];
+    this.errorModalResultSub.unsubscribe();
+    const errorModalResult$ = this.showModal(params);
+
+    this.errorModalResultSub = errorModalResult$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((result) => {
+        if (result) {
+          this.loadTimeSlots();
+        }
+      });
   }
 
   showModal(params) {
-    this.modalService.openModal(ConfirmationModalComponent, {
+    return this.modalService.openModal(ConfirmationModalComponent, {
       ...params,
     });
   }
@@ -237,54 +263,57 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data.components[0]) {
-      this.inProgress = true;
-      this.label = this.data.components[0].label;
-      const value = JSON.parse(this.data.components[0].value);
-      this.initCalendar();
-      this.currentService = this.timeSlotServices[value.timeSlotType];
-      this.currentService.init(value).subscribe(
-        () => {
-          if (this.currentService.hasError()) {
-            this.inProgress = false;
-            this.errorMessage = this.currentService.getErrorMessage();
-            if (this.errorMessage === 101) {
-              this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
-            }
-            this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
-          } else {
-            this.errorMessage = undefined;
-            this.monthsYears = [];
-            this.activeMonthNumber = this.currentService.getCurrentMonth();
-            this.activeYearNumber = this.currentService.getCurrentYear();
-
-            const availableMonths = this.currentService.getAvailableMonths();
-            for (let i = 0; i < availableMonths.length; i += 1) {
-              this.monthsYears.push(this.getMonthsListItem(availableMonths[i]));
-            }
-            this.currentMonth = this.monthsYears.find(
-              (item) => item.id === `${this.activeYearNumber}-${this.activeMonthNumber + 1}`,
-            );
-            this.fixedMonth = this.monthsYears.length < 2;
-            this.renderSingleMonthGrid(this.weeks);
-
-            this.bookedSlot = this.currentService.getBookedSlot();
-            if (this.bookedSlot) {
-              this.selectDate(this.bookedSlot.slotTime);
-              this.chooseTimeSlot(this.bookedSlot);
-            }
-          }
-
-          this.inProgress = false;
-          this.initialized = true;
-        },
-        () => {
-          this.errorMessage = this.currentService.getErrorMessage();
-          this.inProgress = false;
-          this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
-        },
-      );
+    if (this.screenService.component) {
+      this.loadTimeSlots();
     }
+  }
+
+  private loadTimeSlots(): void {
+    this.inProgress = true;
+    this.label = this.screenService.component?.label;
+    const value = JSON.parse(this.screenService.component?.value);
+    this.initCalendar();
+    this.currentService = this.timeSlotServices[value.timeSlotType];
+    this.currentService.init(value).subscribe(
+      () => {
+        if (this.currentService.hasError()) {
+          this.inProgress = false;
+          this.errorMessage = this.currentService.getErrorMessage();
+          if (this.errorMessage === 101) {
+            this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
+          }
+          this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+        } else {
+          this.errorMessage = undefined;
+          this.monthsYears = [];
+          this.activeMonthNumber = this.currentService.getCurrentMonth();
+          this.activeYearNumber = this.currentService.getCurrentYear();
+
+          const availableMonths = this.currentService.getAvailableMonths();
+          for (let i = 0; i < availableMonths.length; i += 1) {
+            this.monthsYears.push(this.getMonthsListItem(availableMonths[i]));
+          }
+          this.currentMonth = this.monthsYears.find(
+            (item) => item.id === `${this.activeYearNumber}-${this.activeMonthNumber + 1}`,
+          );
+          this.fixedMonth = this.monthsYears.length < 2;
+          this.renderSingleMonthGrid(this.weeks);
+
+          this.bookedSlot = this.currentService.getBookedSlot();
+          if (this.bookedSlot) {
+            this.selectDate(this.bookedSlot.slotTime);
+            this.chooseTimeSlot(this.bookedSlot);
+          }
+        }
+
+        this.inProgress = false;
+      },
+      () => {
+        this.errorMessage = this.currentService.getErrorMessage();
+        this.inProgress = false;
+        this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+      },
+    );
   }
 
   private getMonthsListItem(monthYear: string) {
@@ -298,14 +327,33 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   buttonDisabled(): boolean {
-    return !this.currentAnswersService.isValid || this.inProgress || this.isBookSlotSelected();
+    return !this.currentAnswersService.isValid || this.inProgress || !this.isBookSlotSelected();
   }
 
   isBookSlotSelected(): boolean {
-    return this.bookedSlot?.slotId === this.currentSlot?.slotId;
+    return this.currentSlot?.slotId;
   }
 
   calendarAvailable(): boolean {
-    return this.initialized && !this.errorMessage;
+    return !this.errorMessage;
+  }
+
+  private checkDateRestrictions(date: Date) {
+    let isInvalid = false;
+    const today = moment().startOf('day');
+    const restrictions = this.screenService.component?.attrs?.restrictions || {};
+    // Объект с функциями проверки дат на заданные ограничения
+    const checks = {
+      minDate: (amount, type) => moment(date).isBefore(today.clone().add(amount, type)),
+      maxDate: (amount, type) => moment(date).isAfter(today.clone().add(amount, type)),
+    };
+    // Перебираем все ключи restrictions из attrs до первого "плохого"
+    // пример: "minDate": [30, "d"],
+    Object.keys(restrictions).some((key) => {
+      const [amount, type] = restrictions[key];
+      isInvalid = checks[key](amount, type);
+      return isInvalid;
+    });
+    return isInvalid;
   }
 }

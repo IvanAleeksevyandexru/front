@@ -2,29 +2,44 @@
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input">
       <epgu-constructor-label for="series">Серия</epgu-constructor-label>
-      <lib-plain-input
+      <lib-standard-masked-input
         epgu-constructor-trim
         epgu-constructor-text-transform
         [textTransformType]="textTransformType"
         id="series"
-        [formControl]="form.get('series') || form.get('rfDocumentSeries')"
-      ></lib-plain-input>
+        [formControl]="form.get('series')"
+        [mask]="fields['series']?.mask | maskHandle"
+        [showMaskAsPlaceholder]="!fields['series']?.placeholder"
+        [placeholder]="fields['series']?.placeholder"
+        [showConstantMaskSymbols]="true"
+      ></lib-standard-masked-input>
     </div>
     <div class="doc-input-screen__input">
       <epgu-constructor-label for="number">Номер</epgu-constructor-label>
-      <lib-plain-input
+      <lib-standard-masked-input
         epgu-constructor-trim
         epgu-constructor-text-transform
         [textTransformType]="textTransformType"
         id="number"
-        [formControl]="form.get('number') || form.get('rfDocumentNumber')"
-      ></lib-plain-input>
+        [formControl]="form.get('number')"
+        [mask]="fields['number']?.mask | maskHandle"
+        [showMaskAsPlaceholder]="!fields['number']?.placeholder"
+        [placeholder]="fields['number']?.placeholder"
+        [showConstantMaskSymbols]="true"
+      ></lib-standard-masked-input>
     </div>
   </div>
   <div class="doc-input-screen__inputs-row">
     <div class="doc-input-screen__input doc-input-screen__input--data">
       <epgu-constructor-label for="date">Дата выдачи</epgu-constructor-label>
-      <lib-date-picker id="date" name="date" align="left" [formControl]="form.get('date')" [maxDate]="maxDate"></lib-date-picker>
+      <lib-date-picker
+        id="date"
+        name="date"
+        align="left"
+        [formControl]="form.get('date')"
+        [minDate]="data.attrs?.minDate ? data.attrs?.minDate : '-120y'"
+        [maxDate]="data.attrs?.maxDate ? data.attrs?.maxDate : 'today'"
+      ></lib-date-picker>
     </div>
   </div>
   <div class="doc-input-screen__inputs-row">

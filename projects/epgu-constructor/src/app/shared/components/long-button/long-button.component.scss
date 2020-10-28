@@ -1,6 +1,7 @@
 @import "../../../../styles/core/functions";
 @import "../../../../styles/core/variables";
 @import "../../../../styles/core/palettes";
+@import "../../../../styles/core/typography";
 
 :host{
   display: block;
@@ -28,14 +29,15 @@ button {
     padding: 24px 32px;
   }
 
-  &:focus {
-    border-color: $color-devider;
-    transition-delay: .1s;
-    border-style: dashed;
-  }
   &:hover,
   &:active {
     background: $color-background;
     border-color: $color-background;
+  }
+
+  &[disabled] {
+    background: $color-bg-disabled;
+    color: $color-button-hover;
+    cursor: not-allowed;
   }
 }

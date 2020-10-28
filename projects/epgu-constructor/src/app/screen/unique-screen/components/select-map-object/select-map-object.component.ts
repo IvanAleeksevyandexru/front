@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { switchMap, filter, takeUntil, reduce } from 'rxjs/operators';
 import { of, merge } from 'rxjs';
-import { YaMapService } from 'epgu-lib';
+import { HelperService, YaMapService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
@@ -51,9 +51,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public selectedValue: any;
   public mapIsLoaded = false;
   public scrollConfig = { ressScrollX: true, wheelPropagation: false };
+  public isMobile: boolean;
 
   private componentValue: any;
-  private selectedValueField: any;
   private screenStore: ScreenStore;
 
   constructor(
@@ -66,7 +66,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
     private zone: NgZone,
-  ) {}
+  ) {
+    this.isMobile = HelperService.isMobile();
+  }
 
   ngOnInit(): void {
     this.initVariable();
@@ -79,12 +81,11 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnDestroy(): void {
-    this.yaMapService.mapSubject.next(null);
+    this.clearMapVariables();
   }
 
   private initVariable() {
     this.initComponentAttrs();
-    this.initSelectedValue();
     this.controlsLogicInit();
   }
 
@@ -95,16 +96,25 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private initSelectedValue() {
-    if (this.data?.value && this.data?.value !== '{}' && this.data?.attrs?.selectedValue) {
-      this.selectedValue = this.getSelectedValue();
-      this.selectedValueField = this.data.attrs.selectedValueMapping?.value;
+    if (this.data?.value && this.data?.value !== '{}') {
+      const mapObject = JSON.parse(this.data?.value);
+      // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
+      if (mapObject.idForMap) {
+        this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
+      } else if (this.data?.attrs.selectedValue) {
+        const selectedValue = this.getSelectedValue();
+        this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
+      }
     }
   }
 
+  /**
+   * Получаем выбранный ЗАГС из applicantAnswers по пути из attrs.selectedValue
+   */
   private getSelectedValue() {
     const selectedValue = UtilsService.getObjectProperty(
       this.applicantAnswers,
-      this.data.attrs.selectedValue.value,
+      this.data?.attrs.selectedValue,
     );
     return JSON.parse(selectedValue);
   }
@@ -127,7 +137,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       .subscribe(() => {
         this.initMap();
       });
-    this.tryInitMapCenter();
+    this.initMapCenter();
   }
 
   /**
@@ -139,6 +149,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       (coords: IGeoCoordsResponse) => {
         this.handleFilledCoordinate(coords);
         this.mapIsLoaded = true;
+        this.initSelectedValue();
         this.cdr.detectChanges();
       },
     );
@@ -153,6 +164,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         bottom: 'auto',
         left: 'auto',
       },
+      size: HelperService.isMobile() ? 'small' : 'large',
     });
     this.yaMapService.map.copyrights.togglePromo();
   }
@@ -178,16 +190,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   /**
-   * Функция пытается инициализировать центр карты
+   * Функция инициализирует центр карты
    */
-  private tryInitMapCenter() {
+  private initMapCenter() {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { geo_lon, geo_lat } = this.componentValue;
-    if (geo_lon && geo_lat) {
-      this.mapCenter = [geo_lon, geo_lat];
-    } else {
-      this.mapCenter = [37.64, 55.76]; // Москва
-    }
+    const { geo_lon, geo_lat, center } = this.componentValue;
+    const moscowCenter = [37.64, 55.76]; // Москва
+    const geoCode = geo_lon && geo_lat ? [geo_lon, geo_lat] : null;
+    this.mapCenter = geoCode || center || moscowCenter;
   }
 
   /**
@@ -243,7 +253,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   // TODO Сделать интерфейс для mapObject
   private selectMapObject(mapObject) {
     if (!mapObject) return;
-    this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.id);
+    this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
   }
 
   public lookupChanged(mapObject, lookup) {
@@ -255,7 +265,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return (searchString) => {
       this.selectMapObjectService.searchMapObject(searchString);
       return of(
-        DictionaryUtilities.adaptDictionaryForLookupForSelectMap(
+        DictionaryUtilities.adaptDictionaryToListItem(
           this.selectMapObjectService.filteredDictionaryItems,
         ),
       );
@@ -288,7 +298,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public expandObject(mapObject: DictionaryYMapItem): void {
     if (mapObject.expanded) return;
     this.selectedValue.children = this.selectedValue.children.map((child: DictionaryYMapItem) => {
-      return { ...child, expanded: child.id === mapObject.id };
+      return { ...child, expanded: child.idForMap === mapObject.idForMap };
     });
+  }
+
+  private clearMapVariables() {
+    // Необходимо очистить behaviorSubject чтобы при следующей подписке он не стрельнул 2 раза (текущее значение и новое при создание карты)
+    this.yaMapService.mapSubject.next(null);
+    // Очищаем id выбранной ранее точки чтобы при возврате на карту он был пуст.
+    this.selectMapObjectService.mapOpenedBalloonId = null;
   }
 }

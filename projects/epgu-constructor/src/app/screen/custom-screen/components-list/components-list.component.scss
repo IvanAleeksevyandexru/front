@@ -2,11 +2,17 @@
 @import '../../../../styles/core/typography';
 @import '../../../../styles/core/variables';
 @import '../../../../styles/core/functions';
+@import '../../../../styles/components/rubles';
 
 // test
 .form {
   &__item {
     margin-bottom: $screen-pad-p;
+
+    &:not(:first-child) {
+      margin-bottom: 0;
+    }
+
 
     &__hint {
       @include first-letter-uppercase();
@@ -64,6 +70,10 @@
       lib-radio:not(:first-child) {
         margin-left: $screen-pad-p;
       }
+
+      @include phones-down {
+        display: block;
+      }
     }
   }
 }
@@ -74,3 +84,5 @@
   line-height: 24px;
   font-weight: bold;
 }
+
+@include rubles('.custom__screen-html', '../../../../../src/assets/img/ruble.svg');

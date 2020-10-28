@@ -6,8 +6,7 @@
     </div>
 
     <epgu-constructor-screen-pad class="body">
-      <div *ngIf="calendarAvailable()" class="card">
-        <label>Выберите дату и время</label>
+      <div class="card">
         <div class="months-list">
           <lib-dropdown
             [disabled]="fixedMonth"
@@ -57,7 +56,7 @@
       <lib-button
         [showLoader]="isLoading || inProgress"
         (click)="clickSubmit()"
-        class="footer__btn-submit"
+        class="btn__submit"
         [disabled]="buttonDisabled()"
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>

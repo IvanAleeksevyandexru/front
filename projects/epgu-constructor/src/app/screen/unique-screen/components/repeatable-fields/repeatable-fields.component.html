@@ -13,13 +13,17 @@
         *ngIf="objectKeys(screens).length !== 1"
         (click)="removeItem(screenKey, i)"
       ></div>
-      <epgu-constructor-components-list class="cmp-group__item" (changes)="changeComponentList($event, i)">
+      <epgu-constructor-components-list
+        class="cmp-group__item"
+        [components]="screens[screenKey]"
+        [errors]="screenService.getStore().errors"
+        (changes)="changeComponentList($event, i)">
 
       </epgu-constructor-components-list>
     </epgu-constructor-screen-pad>
   </div>
 
-  <epgu-constructor-long-button class="btn--add" (click)="duplicateScreen()">
+  <epgu-constructor-long-button [disabled]="!isScreensAvailable()" class="btn--add" (click)="duplicateScreen()">
     <div class="btn--add__text">Добавить данные</div>
   </epgu-constructor-long-button>
 
@@ -27,8 +31,8 @@
     <lib-button
       [showLoader]="isLoading"
       (click)="nextScreen()"
-      class="footer__btn-submit"
-      [disabled]="isLoading"
+      class="btn__submit"
+      [disabled]="isLoading || !isValid"
     >
       {{ propData.submitLabel || 'Далее' }}
     </lib-button>

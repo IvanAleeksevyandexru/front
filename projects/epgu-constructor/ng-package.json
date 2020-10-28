@@ -6,7 +6,6 @@
     "epgu-lib",
     "ics",
     "@alyle/ui",
-    "ngx-device-detector",
     "angular-resize-event"
   ],
   "lib": {
@@ -22,7 +21,6 @@
       "epgu-lib": "epgu-lib",
       "ics": "ics",
       "@alyle/ui": "@alyle/ui",
-      "ngx-device-detector": "ngx-device-detector",
       "angular-resize-event": "angular-resize-event"
     },
     "styleIncludePaths": ["."]

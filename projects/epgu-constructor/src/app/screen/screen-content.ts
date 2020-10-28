@@ -2,7 +2,7 @@ import {
   ApplicantAnswersDto,
   ComponentDto,
   ComponentDtoAction, CurrentCycledFieldsDto,
-  DisplayDto,
+  DisplayDto, DisplaySubjHead,
   ScenarioErrorsDto
 } from '../services/api/form-player-api/form-player-api.types';
 import { ScreenStore, ScreenTypes } from './screen.types';
@@ -29,11 +29,11 @@ export class ScreenContent {
   }
   public header$ = this._header.asObservable();
 
-  private _subHeader = new BehaviorSubject<string>(null);
+  private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
   public get subHeader() {
     return this._subHeader.getValue();
   }
-  public set subHeader(val: string) {
+  public set subHeader(val: DisplaySubjHead) {
     this._subHeader.next(val);
   }
   public subHeader$ = this._subHeader.asObservable();
@@ -64,6 +64,15 @@ export class ScreenContent {
     this._terminal.next(val);
   }
   public terminal$ = this._terminal.asObservable();
+
+  private _displayCssClass = new BehaviorSubject<string>(null);
+  public get displayCssClass() {
+    return this._displayCssClass.getValue();
+  }
+  public set displayCssClass(val: string) {
+    this._displayCssClass.next(val);
+  }
+  public displayCssClass$ = this._displayCssClass.asObservable();
 
   private _screenType = new BehaviorSubject<ScreenTypes>(null);
   public get screenType() {
@@ -108,7 +117,7 @@ export class ScreenContent {
   public set componentValue(val: {[key: string]: any} | string ) {
     this._componentValue.next(val);
   }
-  public componentValue$ = this._componentType.asObservable();
+  public componentValue$ = this._componentValue.asObservable();
 
   private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
   public get componentErrors() {
@@ -175,7 +184,7 @@ export class ScreenContent {
 
   updateScreenContent(screenStore: ScreenStore) {
     const { display = {} as any, orderId, gender, errors = {} as any, currentCycledFields, applicantAnswers } = screenStore;
-    const { header, subHeader, submitLabel, type, components = [], terminal } = display;
+    const { header, subHeader, submitLabel, type, components = [], terminal, cssClass } = display;
     const firstComponent = components[0];
     this.display = display;
     this.header = header;
@@ -184,6 +193,7 @@ export class ScreenContent {
     this.screenType = type;
     this.gender = gender;
     this.terminal = terminal;
+    this.displayCssClass = cssClass;
     this.orderId = orderId;
     this.componentErrors = errors;
     this.componentError = errors[firstComponent?.id];

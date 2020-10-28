@@ -1,13 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { CurrentAnswersService } from '../../../current-answers.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
-import { DocInputComponentInterface, IField, IForm } from './doc-input.types';
 import { TextTransform } from '../../../../shared/types/textTransform';
+import { CurrentAnswersService } from '../../../current-answers.service';
+import { DocInputComponentInterface, IField, IForm } from './doc-input.types';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -19,7 +21,9 @@ export class DocInputComponent implements OnInit {
   @Input() data: DocInputComponentInterface;
 
   form = new FormGroup({});
-  readonly maxDate = new Date();
+  fields: {
+    [key: string]: IField;
+  } = {};
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
@@ -36,6 +40,7 @@ export class DocInputComponent implements OnInit {
 
   private generateFormGroup(): void {
     this.data.attrs.fields.forEach((field: IField) => {
+      this.fields[field.fieldName] = field;
       const validators = [Validators.required];
       if (field.maxlength) {
         validators.push(Validators.maxLength(field.maxlength));

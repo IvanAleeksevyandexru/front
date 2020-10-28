@@ -16,27 +16,8 @@ export interface ComponentBase {
   hint?: string;
 }
 
-export interface Display {
-  components: Array<ComponentBase>;
-  header: string;
-  label?: string;
-  id: string;
-  name: string;
-  submitLabel: string;
-  terminal: boolean;
-  type: ScreenTypes
-}
-
 export interface CachedAnswers {
   [key: string]: Answer
-}
-
-export interface ScenarioErrors {
-  [key: string]: string
-}
-
-export interface CurrentCycledFields {
-  [key: string]: string
 }
 
 export interface ScreenStore extends Partial<ScenarioDto>{ }

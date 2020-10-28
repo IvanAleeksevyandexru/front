@@ -44,12 +44,4 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  &__btn-submit {
-    width: auto;
-    &::ng-deep button {
-      width: inherit;
-      min-width: 100px;
-    }
-  }
 }

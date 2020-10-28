@@ -191,7 +191,7 @@ hr {
   }
 }
 
- @include laptop-down {
+ @include desktops-down {
    .widget {
      height: calc(100vh - 104px);
      overflow: hidden;
@@ -224,6 +224,7 @@ hr {
      bottom: 0;
      max-height: calc(100vh - 250px);
      overflow-y: auto;
+     position: fixed;
    }
 
    .nav::ng-deep {

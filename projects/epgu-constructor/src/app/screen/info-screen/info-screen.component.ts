@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Screen } from '../screen.types';
-import { NavigationOptions, NavigationPayload } from '../../form-player.types';
+import { NavigationPayload } from '../../form-player.types';
 import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
-import { InfoScreenComponentTypes } from './info-screen.types';
+import {
+  ComponentDto,
+  ComponentDtoAction,
+} from '../../services/api/form-player-api/form-player-api.types';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.
@@ -18,8 +21,7 @@ import { InfoScreenComponentTypes } from './info-screen.types';
   providers: [UnsubscribeService],
 })
 export class InfoScreenComponent implements Screen, OnInit {
-  // <-- constant
-  infoScreenComponent = InfoScreenComponentTypes;
+  actionButtons: ComponentDtoAction[] = [];
 
   constructor(
     private navigationService: NavigationService,
@@ -36,6 +38,14 @@ export class InfoScreenComponent implements Screen, OnInit {
     this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.cycledFieldsService.initCycledFields(this.screenService.currentCycledFields);
     });
+
+    this.screenService.component$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((component) => this.setActionButtons(component));
+  }
+
+  setActionButtons(component: ComponentDto) {
+    this.actionButtons = component?.attrs?.actions || [];
   }
 
   prevStep(): void {
@@ -43,22 +53,8 @@ export class InfoScreenComponent implements Screen, OnInit {
   }
 
   nextStep(): void {
-    const navigation = {
-      payload: this.getComponentState(),
-      options: this.getNavigationOptions(),
-    };
+    const navigation = { payload: this.getComponentState() };
     this.navigationService.nextStep.next(navigation);
-  }
-
-  private getNavigationOptions(): NavigationOptions {
-    const options: NavigationOptions = {};
-    const isFinishInternalScenario =
-      this.screenService.actions[0]?.action === 'goBackToMainScenario';
-    if (isFinishInternalScenario) {
-      options.isInternalScenarioFinish = true;
-    }
-
-    return options;
   }
 
   getComponentState(): NavigationPayload {

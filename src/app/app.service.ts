@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AppConfig, FormPlayerConfig } from './app.type';
-import { getConfigFromEnvs } from './app.utils';
+import { AppConfig, LOCAL_STORAGE_KEY } from './app.type';
 import { environment } from '../environments/environment';
-import { ConfigService } from '../../projects/epgu-constructor/src/app/config/config.service';
 import { ActivatedRoute } from '@angular/router';
+import { LoadServiceDeviceType } from '../../projects/epgu-constructor/src/app/shared/services/device-detector/device-detector.service';
+import { LOCAL_STORAGE_PLATFORM_TYPE } from '../../projects/epgu-constructor/src/app/config/config.types';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
-export const LOCAL_STORAGE_KEY = 'EPGU_FORM_PLAYER_TEST_STAND_CONFIG';
-
-const initValues: FormPlayerConfig = {
+const initValues: AppConfig = {
   serviceId: environment.serviceId,
   targetId: environment.targetId,
   orderId: environment.orderId,
@@ -19,10 +18,10 @@ const initValues: FormPlayerConfig = {
 export class AppService {
   config: AppConfig;
 
-  configSubject = new BehaviorSubject(this.config);
+  configSubject = new BehaviorSubject<AppConfig>(this.config);
   config$ = this.configSubject.asObservable();
 
-  constructor (private configService: ConfigService, private route: ActivatedRoute) {
+  constructor (private route: ActivatedRoute, private ngxDeviceDetector: DeviceDetectorService) {
     this.initConfig();
   }
 
@@ -45,7 +44,6 @@ export class AppService {
   saveConfig(newConfig: AppConfig) {
     this.config = newConfig;
     window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.config));
-    this.updateConfigToConfigService();
     this.configSubject.next(this.config)
   }
 
@@ -66,18 +64,12 @@ export class AppService {
       ...savedConfig
     }
     this.valuesFromQueryParams();
-    this.updateConfigToConfigService();
     this.configSubject.next(this.config)
-  }
-
-  updateConfigToConfigService() {
-    this.configService.config = this.config;
   }
 
   getInitConfigs() {
     return {
       ...initValues,
-      ...getConfigFromEnvs(),
     }
   }
 
@@ -99,7 +91,24 @@ export class AppService {
 
   resetConfig() {
     let config = this.config;
-    config = { ...initValues, ...config, ...getConfigFromEnvs() };
+    config = { ...initValues, ...config };
     this.saveConfig(config);
+  }
+
+  initDeviceType() {
+    this.saveDeviceTypeInStorage();
+  }
+
+  private saveDeviceTypeInStorage() {
+    let getType = (): LoadServiceDeviceType => {
+      if (this.ngxDeviceDetector.isMobile()) {
+        return LoadServiceDeviceType.mob;
+      } else if (this.ngxDeviceDetector.isTablet()) {
+        return LoadServiceDeviceType.tab;
+      } else {
+        return LoadServiceDeviceType.desk;
+      }
+    };
+    localStorage.setItem(LOCAL_STORAGE_PLATFORM_TYPE, getType());
   }
 }
