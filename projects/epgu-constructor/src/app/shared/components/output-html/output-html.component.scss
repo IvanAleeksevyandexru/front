@@ -70,8 +70,16 @@
     margin-top: 16px;
   }
 
-  p:first-child {
-    margin-top: 0;
+  p {
+    margin-top: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   .color-blue-bayoux {
