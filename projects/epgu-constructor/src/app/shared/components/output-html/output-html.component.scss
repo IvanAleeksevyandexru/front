@@ -71,9 +71,7 @@
   }
 
   p {
-    &:not(:first-child) {
-      margin-top: 16px;
-    }
+    margin-top: 16px;
 
     &:last-child {
       margin-bottom: 0;
