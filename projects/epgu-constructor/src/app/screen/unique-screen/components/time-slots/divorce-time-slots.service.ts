@@ -36,7 +36,9 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
   ) {}
-
+  checkBooking(selectedSlot: SmevSlotInterface) {
+    return this.book(selectedSlot);
+  }
   book(selectedSlot: SmevSlotInterface) {
     this.errorMessage = undefined;
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(

@@ -215,7 +215,7 @@ export class TimeSlotsComponent implements OnInit {
 
   public bookTimeSlot() {
     this.inProgress = true;
-    this.currentService.book(this.currentSlot).subscribe((response) => {
+    this.currentService.checkBooking(this.currentSlot).subscribe((response) => {
       this.inProgress = false;
       if (this.currentService.hasError()) {
         this.showError(

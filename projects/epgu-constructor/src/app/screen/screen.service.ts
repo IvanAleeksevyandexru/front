@@ -132,7 +132,10 @@ export class ScreenService extends ScreenContent {
     const [id, path] = item.attrs.preset.value.split(/\.(.+)/);
     const cachedValue = this.cachedAnswersService
       .getCachedValueById(this.screenStore.cachedAnswers, id);
-    const value = UtilsService.getObjectProperty(JSON.parse(cachedValue), path, item.value);
+    let value = '';
+      if (cachedValue) {
+        value = UtilsService.getObjectProperty(JSON.parse(cachedValue), path, item.value);
+      }
 
     return { ...item, value };
   }
