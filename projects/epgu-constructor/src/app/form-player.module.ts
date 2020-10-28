@@ -10,9 +10,6 @@ import { SharedModule } from './shared/shared.module';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { initApp } from './form-player.functions';
 import { CookieService } from 'ngx-cookie-service';
-import { LocalStorageService } from './services/storage/local-storage/local-storage.service';
-import { CookieStorageService } from './services/storage/cookie-storage/cookie-storage.service';
-import { SessionStorageService } from './services/storage/session-storage/session-storage.service';
 import { ScreenModule } from './screen/screen.module';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
@@ -35,10 +32,6 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     SmuEventsService,
     ConfigService,
     ServiceDataService,
-
-    LocalStorageService,
-    CookieStorageService, // TODO: возможно стоит удалить как старое решение
-    SessionStorageService, // TODO: возможно стоит удалить как старое решение
     {
       provide: APP_INITIALIZER,
       useFactory: initApp,
