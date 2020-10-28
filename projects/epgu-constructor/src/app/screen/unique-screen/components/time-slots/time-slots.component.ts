@@ -9,7 +9,7 @@ import { TimeSlotsServiceInterface } from './time-slots.interface';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 import { GibddTimeSlotsService } from './gibdd-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
-import { ModalService } from '../../../../services/modal/modal.service';
+import { ModalService } from '../../../../shared/services/modal/modal.service';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { SlotInterface } from './time-slots.types';
 import { DisplayDto } from '../../../../services/form-player-api/form-player-api.types';

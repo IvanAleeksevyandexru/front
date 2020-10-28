@@ -6,7 +6,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { WebcamModule } from 'ngx-webcam';
 import { ConfigService } from '../config/config.service';
 import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
-import { ModalService } from '../services/modal/modal.service';
+import { ModalService } from './services/modal/modal.service';
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';
 import { HelperTextComponent } from './components/base/helper-text/helper-text.component';
 import { LabelComponent } from './components/base/label/label.component';

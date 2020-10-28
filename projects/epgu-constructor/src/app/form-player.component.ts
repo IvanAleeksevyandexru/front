@@ -13,7 +13,7 @@ import { combineLatest } from 'rxjs';
 import { ConfigService } from './config/config.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
 import { FormPlayerService } from './services/form-player/form-player.service';
-import { ModalService } from './services/modal/modal.service';
+import { ModalService } from './shared/services/modal/modal.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from './shared/components/modal/confirmation-modal/confirmation-modal.component';

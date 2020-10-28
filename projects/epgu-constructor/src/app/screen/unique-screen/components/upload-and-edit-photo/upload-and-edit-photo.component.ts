@@ -13,7 +13,7 @@ import { fromPromise } from 'rxjs/internal-compatibility';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../shared/services/device-detector/device-detector.service';
 import { ComponentBase } from '../../../screen.types';
-import { ModalService } from '../../../../services/modal/modal.service';
+import { ModalService } from '../../../../shared/services/modal/modal.service';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
 import { minCropSize, uploadPhotoElemId } from './upload-and-edit-photo.constant';

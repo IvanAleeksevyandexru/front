@@ -27,7 +27,7 @@ import {
   DictionaryOptions,
   DictionaryYMapItem,
 } from '../../../services/dictionary-api/dictionary-api.types';
-import { ModalService } from '../../../../services/modal/modal.service';
+import { ModalService } from '../../../../shared/services/modal/modal.service';
 import { CommonModalComponent } from '../../../../shared/components/modal/common-modal/common-modal.component';
 
 @Component({

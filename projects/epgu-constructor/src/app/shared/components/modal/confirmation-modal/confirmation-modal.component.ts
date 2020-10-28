@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { ModalBaseComponent } from '../modal-base/modal-base.component';
 import { ConfirmationModal } from './confirmation-modal.interface';
-import { ModalService } from '../../../../services/modal/modal.service';
+import { ModalService } from '../../../services/modal/modal.service';
 
 @Component({
   selector: 'epgu-constructor-confirmation-modal',
