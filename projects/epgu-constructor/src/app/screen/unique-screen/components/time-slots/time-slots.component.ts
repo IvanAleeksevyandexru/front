@@ -16,6 +16,7 @@ import { DisplayDto } from '../../../../services/api/form-player-api/form-player
 import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
 import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { ScreenService } from '../../../screen.service';
 
 const moment = moment_;
 
@@ -27,6 +28,8 @@ const moment = moment_;
 })
 export class TimeSlotsComponent implements OnInit {
   @Input() isLoading: boolean;
+  @Input() data: DisplayDto;
+  @Output() nextStepEvent = new EventEmitter<any>();
 
   public date: Date = null;
   public label: string;
@@ -93,15 +96,13 @@ export class TimeSlotsComponent implements OnInit {
     private currentAnswersService: CurrentAnswersService,
     public constants: TimeSlotsConstants,
     private ngUnsubscribe$: UnsubscribeService,
+    private screenService: ScreenService,
   ) {
     this.timeSlotServices.BRAK = brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = divorceTimeSlotsService;
     this.timeSlotServices.GIBDD = gibddTimeSlotsService;
     this.timeSlotServices.MVD = mvdTimeSlotsService;
   }
-
-  @Input() data: DisplayDto;
-  @Output() nextStepEvent = new EventEmitter<any>();
 
   private renderSingleMonthGrid(output) {
     output.splice(0, output.length); // in-place clear
@@ -153,7 +154,11 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   public isDateLocked(date: Date) {
-    return this.isDateOutOfMonth(date) || this.currentService.isDateLocked(date);
+    return (
+      this.isDateOutOfMonth(date) ||
+      this.currentService.isDateLocked(date) ||
+      this.checkDateRestrictions(date)
+    );
   }
 
   public selectDate(date: Date) {
@@ -258,15 +263,15 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data.components[0]) {
+    if (this.screenService.component) {
       this.loadTimeSlots();
     }
   }
 
   private loadTimeSlots(): void {
     this.inProgress = true;
-    this.label = this.data.components[0].label;
-    const value = JSON.parse(this.data.components[0].value);
+    this.label = this.screenService.component?.label;
+    const value = JSON.parse(this.screenService.component?.value);
     this.initCalendar();
     this.currentService = this.timeSlotServices[value.timeSlotType];
     this.currentService.init(value).subscribe(
@@ -322,14 +327,33 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   buttonDisabled(): boolean {
-    return !this.currentAnswersService.isValid || this.inProgress || this.isBookSlotSelected();
+    return !this.currentAnswersService.isValid || this.inProgress || !this.isBookSlotSelected();
   }
 
   isBookSlotSelected(): boolean {
-    return this.bookedSlot?.slotId === this.currentSlot?.slotId;
+    return this.currentSlot?.slotId;
   }
 
   calendarAvailable(): boolean {
     return !this.errorMessage;
+  }
+
+  private checkDateRestrictions(date: Date) {
+    let isInvalid = false;
+    const today = moment().startOf('day');
+    const restrictions = this.screenService.component?.attrs?.restrictions || {};
+    // Объект с функциями проверки дат на заданные ограничения
+    const checks = {
+      minDate: (amount, type) => moment(date).isBefore(today.clone().add(amount, type)),
+      maxDate: (amount, type) => moment(date).isAfter(today.clone().add(amount, type)),
+    };
+    // Перебираем все ключи restrictions из attrs до первого "плохого"
+    // пример: "minDate": [30, "d"],
+    Object.keys(restrictions).some((key) => {
+      const [amount, type] = restrictions[key];
+      isInvalid = checks[key](amount, type);
+      return isInvalid;
+    });
+    return isInvalid;
   }
 }

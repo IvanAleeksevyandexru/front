@@ -6,14 +6,20 @@
 }
 
 
-.question__container {
-  display: flex;
-  flex-grow: 1;
-
-  &::ng-deep .container {
+.question {
+  &__container {
     display: flex;
-    flex-direction: column;
     flex-grow: 1;
+
+    &::ng-deep .container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+  }
+
+  &__head {
+    margin-bottom: 16px;
   }
 }
 

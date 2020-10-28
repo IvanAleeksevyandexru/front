@@ -8,9 +8,7 @@ import { NavigationService } from '../../services/navigation/navigation.service'
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnInit {
-  // TODO КОСТЫЛЬ как быстрое решение. Требоуется доработка от backend(-a)
-  //  на добавление флага о том что страница первая
-  isFirstScreen = () => !Object.keys(this.screenService.applicantAnswers).length;
+  isFirstScreen = () => this.screenService.display.firstScreen;
   constructor(private navService: NavigationService, private screenService: ScreenService) {}
 
   ngOnInit(): void {}

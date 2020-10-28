@@ -1,7 +1,7 @@
 import { ScreenTypes } from '../../../screen/screen.types';
+import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
-import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer
@@ -55,6 +55,8 @@ export interface DisplaySubjHead {
 
 /**
  * @property {}components
+ * @property {boolean}firstScreen - ствойсвто отвечает на вопрос, на первом ли экране мы находимся,
+ * если экран не первый то свойства не должно быть
  * @property {string}header - текстовый заголовок компонента
  * @property {string}id - идентификатор экрана
  * @property {string}name - краткая информация о том что за компонент (на фронте не используется)
@@ -63,6 +65,7 @@ export interface DisplaySubjHead {
  */
 export interface DisplayDto {
   components: Array<ComponentDto>;
+  firstScreen?: boolean;
   header: string;
   subHeader?: DisplaySubjHead;
   label?: string;
@@ -143,7 +146,9 @@ export enum ActionType {
   nextStep = 'nextStep',
   redirectToLK = 'redirectToLK',
   profileEdit = 'profileEdit',
-  home = 'home'
+  home = 'home',
+  editPhoneNumber = 'service/actions/editPhoneNumber',
+  editEmail = 'service/actions/editUserEmail',
 }
 
 export interface CheckOrderApiResponse {
