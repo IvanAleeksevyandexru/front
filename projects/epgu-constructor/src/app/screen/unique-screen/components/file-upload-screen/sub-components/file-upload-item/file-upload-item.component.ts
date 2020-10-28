@@ -27,6 +27,7 @@ import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 import { ConfigService } from '../../../../../../config/config.service';
 import { DeviceDetectorService } from '../../../../../../shared/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { CompressionService } from '../../../../../../services/utils/compression.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -87,6 +88,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   private subs: Subscription[] = [];
   private maxFileNumber = -1;
 
+  private compressTypes = ['image/jpeg', 'image/png'];
   isCameraAllowed = false; // Флаг, что камеры нет или она запрещена
   listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
@@ -111,6 +113,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
     private deviceDetectorService: DeviceDetectorService,
+    private compressionService: CompressionService,
     private ngUnsubscribe$: UnsubscribeService,
     public config: ConfigService,
   ) {
@@ -214,14 +217,21 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
 
   /**
    * Отправляет файл на сервер
-   * @param file - file object to upload
+   * @param source - file object to upload
    * @private
    */
-  private sendFile(file: File | Blob) {
+  private async sendFile(source: File | Blob) {
     this.filesInUploading += 1;
 
+    let file: any = source;
+    if (this.compressTypes.includes(file.type)) {
+      file = await this.compressionService.imageCompression(file, {
+        maxSizeMB: getSizeInMB(this.data.maxSize),
+      });
+    }
+
     const fileToUpload = new TerraUploadedFile({
-      fileName: file instanceof File ? file.name : `camera_${this.filesInUploading}.jpg`,
+      fileName: file.name ? file.name : `camera_${this.filesInUploading}.jpg`,
       objectId: this.objectId,
       objectTypeId: UPLOAD_OBJECT_TYPE,
       mnemonic: this.getMnemonic(),
