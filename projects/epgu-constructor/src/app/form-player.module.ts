@@ -3,17 +3,12 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { EpguLibModule, SmuEventsService } from 'epgu-lib';
 import { ConfigService } from './config/config.service';
 import { FormPlayerComponent } from './form-player.component';
-import { ScreenService } from './screen/screen.service';
-import { DictionaryApiService } from './services/api/dictionary-api/dictionary-api.service';
 import { FormPlayerApiService } from './services/api/form-player-api/form-player-api.service';
-import { CurrentAnswersService } from './screen/current-answers.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { UtilsService } from './services/utils/utils.service';
-import { ToolsService } from './shared/services/tools/tools.service';
 import { SharedModule } from './shared/shared.module';
-import { ActionApiService } from './services/api/action-api/action-api.service';
 import { FormPlayerConfigApiService } from './services/api/form-player-config-api/form-player-config-api.service';
 import { initApp } from './form-player.functions';
 import { CookieService } from 'ngx-cookie-service';
@@ -36,28 +31,24 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
   ],
   providers: [
     FormPlayerConfigApiService,
-    DictionaryApiService,
     FormPlayerService,
     FormPlayerApiService,
-    ScreenService,
     CookieService,
     SmuEventsService,
-    CurrentAnswersService,
-    UnsubscribeService,
-    UtilsService,
+    UnsubscribeService, // TODO: Надо выпиливать от сюдого
+    UtilsService, // TODO: подумать над переносом в скрин слой, возможно разделить сервис вынести лоакл сторадж логику
     ConfigService,
     ServiceDataService,
-    ToolsService,
+
     LocalStorageService,
-    CookieStorageService,
-    SessionStorageService,
+    CookieStorageService, // TODO: возможно стоит удалить как старое решение
+    SessionStorageService, // TODO: возможно стоит удалить как старое решение
     {
       provide: APP_INITIALIZER,
       useFactory: initApp,
       deps: [SmuEventsService, CookieService],
       multi: true
     },
-    ActionApiService,
   ],
   exports: [
     FormPlayerComponent,

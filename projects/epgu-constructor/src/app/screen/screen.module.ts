@@ -17,6 +17,10 @@ import { UniqueScreenComponent } from './unique-screen/unique-screen.component';
 import { CustomScreenComponent } from './custom-screen/custom-screen.component';
 import { InvitationErrorScreenComponent } from './invitation-error-screen/invitation-error-screen.component';
 import { ScreenResolverComponent } from './screen-resolver/screen-resolver.component';
+import { DictionaryApiService } from './services/dictionary-api/dictionary-api.service';
+import { CurrentAnswersService } from './current-answers.service';
+import { ScreenService } from './screen.service';
+import { ToolsService } from './services/tools/tools.service';
 
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
@@ -36,6 +40,12 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     SharedModule,
     EpguLibModuleInited,
     InfoScreenModule,
+  ],
+  providers: [
+    ScreenService,
+    CurrentAnswersService,
+    DictionaryApiService,
+    ToolsService
   ],
   exports: [
     ScreenResolverComponent

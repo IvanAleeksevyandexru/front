@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
-import { CustomScreenComponentTypes } from '../screen/custom-screen/custom-screen.types';
+import { CustomScreenComponentTypes } from './custom-screen/custom-screen.types';
 import { ComponentDto } from '../services/api/form-player-api/form-player-api.types';
 import { UtilsService } from '../services/utils/utils.service';
 

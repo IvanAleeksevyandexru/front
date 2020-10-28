@@ -166,4 +166,17 @@ xdescribe('FormPlayerApiService', () => {
       tick();
     }));
   });
+
+  describe('navigate()', () => {
+    it('should call http with post method', fakeAsync(() => {
+      const path = 'editPhoneNumber';
+      const responseMockData = {};
+
+      service.sendAction(path, mockData).subscribe((response) => expect(response).toBe(responseMockData));
+      const req = http.expectOne(`${apiUrl}/${path}`);
+      expect(req.request.method).toBe('POST');
+      req.flush(responseMockData);
+      tick();
+    }));
+  });
 });

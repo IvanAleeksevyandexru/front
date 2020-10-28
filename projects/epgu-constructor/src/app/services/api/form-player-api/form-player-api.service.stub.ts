@@ -18,6 +18,10 @@ export class FormPlayerApiServiceStub {
     return of({});
   }
 
+  public sendAction(): Observable<any> {
+    return of({});
+  }
+
   public getOrderId(): Observable<string> {
     return of(null);
   }

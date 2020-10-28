@@ -1,23 +1,34 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
 import { ScreenTypes } from '../screen.types';
+import { ScreenService } from '../screen.service';
+import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-screen-resolver',
   templateUrl: './screen-resolver.component.html',
   styleUrls: ['./screen-resolver.component.scss'],
+  providers: [UnsubscribeService],
 })
-export class ScreenResolverComponent {
-  @Input() playerLoaded = false;
-  @Input() set screenType(screenType: ScreenTypes) {
-    this.screenComponent = this.getScreenComponentByType(ScreenTypes.INFO);
+export class ScreenResolverComponent implements OnInit {
+  screenComponent: ScreenComponent;
+
+  constructor(private screenService: ScreenService, private ngUnsubscribe$: UnsubscribeService) {}
+
+  ngOnInit(): void {
+    this.screenService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((screenType) => {
+      this.setScreenComponent(screenType);
+    });
+  }
+
+  setScreenComponent(screenType: ScreenTypes) {
+    this.screenComponent = this.getScreenComponentByType(screenType);
 
     if (!this.screenComponent) {
       this.handleScreenComponentError(screenType);
     }
   }
-
-  screenComponent: ScreenComponent;
 
   getScreenComponentByType(screenType: ScreenTypes) {
     return SCREEN_COMPONENTS[screenType];
@@ -25,6 +36,6 @@ export class ScreenResolverComponent {
 
   private handleScreenComponentError(screenType: ScreenTypes) {
     // TODO: need to find a better way for handling this error, maybe show it on UI
-    throw new Error(`We cant find screen component for this type: ${screenType}`);
+    throw new Error(`We cant find screen component for this screen type: ${screenType}`);
   }
 }

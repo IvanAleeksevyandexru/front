@@ -154,3 +154,13 @@ export interface CheckOrderApiResponse {
   isInviteScenario: boolean;
   canStartNew: boolean;
 }
+
+export interface ActionDTO<T = {}> {
+  scenarioDto: Partial<ScenarioDto>;
+  additionalParams?: T;
+}
+
+export interface ActionApiResponse<T> {
+  errorList: { [key: string]: any }[];
+  responseData: { value: T; type: string };
+}

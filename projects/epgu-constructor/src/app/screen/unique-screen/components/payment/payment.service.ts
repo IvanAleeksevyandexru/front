@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map, takeUntil } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { getPaymentRequestOptions } from './payment.constants';
-import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../services/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../screen.service';
 import { ConfigService } from '../../../../config/config.service';
 import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payment.types';

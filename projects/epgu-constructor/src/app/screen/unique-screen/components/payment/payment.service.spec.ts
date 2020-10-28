@@ -3,7 +3,7 @@ import { PaymentService } from './payment.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConfigService } from '../../../../config/config.service';
 import { ConfigServiceStub } from '../../../../config/config.service.stub';
-import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../services/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../screen.service';
 import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
 import { FormPlayerApiService } from '../../../../services/api/form-player-api/form-player-api.service';

@@ -1,4 +1,4 @@
-import { DictionaryResponseError } from '../dictionary-api/dictionary-api.types';
+import { DictionaryResponseError } from '../../../screen/services/dictionary-api/dictionary-api.types';
 
 export interface DadataSuggestionsAddress {
   address: string,

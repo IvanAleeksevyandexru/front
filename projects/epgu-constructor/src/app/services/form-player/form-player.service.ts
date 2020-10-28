@@ -25,7 +25,6 @@ export class FormPlayerService {
   private playerLoaded = false;
   private isLoading = false;
   private screenType: string;
-  public screenType$ = new Subject<ScreenTypes>();
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
@@ -244,7 +243,6 @@ export class FormPlayerService {
   private updateScreenType(scenarioDto: ScenarioDto): void {
     const { display } = scenarioDto;
     this.screenType = display.type;
-    this.screenType$.next(display.type);
   }
 
   /**

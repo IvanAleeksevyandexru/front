@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { DictionaryOptions, DictionaryResponse } from './dictionary-api.types';
 import { ConfigService } from '../../../config/config.service';
 import { Observable } from 'rxjs';
-import { DadataNormalizeAnswer, DadataSuggestionsAnswer } from '../dadata-api/dadata-api.types';
+import { DadataNormalizeAnswer, DadataSuggestionsAnswer } from '../../../services/api/dadata-api/dadata-api.types';
 
 @Injectable()
 export class DictionaryApiService {

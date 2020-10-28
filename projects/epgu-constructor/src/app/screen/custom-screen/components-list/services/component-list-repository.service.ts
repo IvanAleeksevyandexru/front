@@ -12,9 +12,9 @@ import {
   isDropDown,
   likeDictionary
 } from '../../tools/custom-screen-tools';
-import { DictionaryOptions, DictionaryResponse } from '../../../../services/api/dictionary-api/dictionary-api.types';
+import { DictionaryOptions, DictionaryResponse } from '../../../services/dictionary-api/dictionary-api.types';
 import { map, tap } from 'rxjs/operators';
-import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../services/dictionary-api/dictionary-api.service';
 import { ComponentListToolsService } from './component-list-tools.service';
 import { UtilsService as utils } from '../../../../services/utils/utils.service';
 

@@ -2,17 +2,17 @@ import { Directive, HostListener, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import {
+  ActionApiResponse, ActionDTO,
   ActionType,
   ComponentDtoAction,
 } from '../../../services/api/form-player-api/form-player-api.types';
-import { ActionApiService } from '../../../services/api/action-api/action-api.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { Navigation, NavigationOptions } from '../../../form-player.types';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { Answer } from '../../types/answer';
-import { ActionApiDTO, ActionApiResponse } from '../../../services/api/action-api/action-api.types';
 import { filter } from 'rxjs/operators';
+import { FormPlayerApiService } from '../../../services/api/form-player-api/form-player-api.service';
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -25,7 +25,7 @@ export class ActionDirective {
   }
 
   constructor(
-    private actionApiService: ActionApiService,
+    private formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private navService: NavigationService,
     private utilsService: UtilsService,
@@ -54,7 +54,7 @@ export class ActionDirective {
   private sendAction<T>(): Observable<ActionApiResponse<T>> {
     const data = this.getActionDTO();
 
-    return this.actionApiService.send<T>(this.action.action, data);
+    return this.formPlayerApiService.sendAction<T>(this.action.action, data);
   }
 
   private nextStep(): void {
@@ -101,7 +101,7 @@ export class ActionDirective {
       );
   }
 
-  private getActionDTO(): ActionApiDTO {
+  private getActionDTO(): ActionDTO {
     return {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},
