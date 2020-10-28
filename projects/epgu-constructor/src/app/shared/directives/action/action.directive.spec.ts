@@ -10,6 +10,8 @@ import { UtilsService } from '../../../services/utils/utils.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { CachedAnswersService } from '../../services/applicant-answers/cached-answers.service';
+import { DeviceDetectorService } from '../../services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../services/device-detector/device-detector.service.stub';
 
 describe('ActionDirective', () => {
   beforeEach(() => {
@@ -18,6 +20,7 @@ describe('ActionDirective', () => {
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ActionApiService, useClass: ActionApiServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         NavigationService,
         UtilsService,
         ScreenService,

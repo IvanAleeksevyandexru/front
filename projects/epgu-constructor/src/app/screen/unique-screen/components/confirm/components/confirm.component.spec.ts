@@ -16,6 +16,8 @@ import { ConfirmInfoInterface } from '../models/confirm-info.interface';
 import { TimerPipe } from '../pipes/timer.pipe';
 import { ConfirmComponent } from './confirm.component';
 import { TimerComponent } from './timer/timer.component';
+import { DeviceDetectorService } from '../../../../../shared/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../../shared/services/device-detector/device-detector.service.stub';
 
 
 describe('ConfirmMarriageComponent', () => {
@@ -55,6 +57,7 @@ describe('ConfirmMarriageComponent', () => {
         NavigationService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     }).compileComponents();
 
