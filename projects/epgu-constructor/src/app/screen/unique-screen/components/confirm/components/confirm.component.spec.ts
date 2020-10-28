@@ -12,19 +12,19 @@ import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../../../../screen.service';
 import { ScreenServiceStub } from '../../../../screen.service.stub';
-import { ConfirmMarriageInfoInterface } from '../models/confirm-marriage-info.interface';
+import { ConfirmInfoInterface } from '../models/confirm-info.interface';
 import { TimerPipe } from '../pipes/timer.pipe';
-import { ConfirmMarriageComponent } from './confirm-marriage.component';
+import { ConfirmComponent } from './confirm.component';
 import { TimerComponent } from './timer/timer.component';
 
 
 describe('ConfirmMarriageComponent', () => {
-  let component: ConfirmMarriageComponent;
-  let fixture: ComponentFixture<ConfirmMarriageComponent>;
+  let component: ConfirmComponent;
+  let fixture: ComponentFixture<ConfirmComponent>;
   let navigationService: NavigationService;
   let screenService: ScreenService;
 
-  const mockComponentValue: ConfirmMarriageInfoInterface = {
+  const mockComponentValue: ConfirmInfoInterface = {
     place: '',
     time: '',
     ceremonyType: '',
@@ -40,7 +40,7 @@ describe('ConfirmMarriageComponent', () => {
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       imports: [RouterTestingModule],
       declarations: [
-        ConfirmMarriageComponent,
+        ConfirmComponent,
         ButtonComponent,
         TimerComponent,
         TimerPipe,
@@ -64,7 +64,7 @@ describe('ConfirmMarriageComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConfirmMarriageComponent);
+    fixture = TestBed.createComponent(ConfirmComponent);
     component = fixture.componentInstance;
 
     fixture.detectChanges();

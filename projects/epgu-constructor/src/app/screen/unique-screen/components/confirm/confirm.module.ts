@@ -4,11 +4,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
 
 import { SharedModule } from '../../../../shared/shared.module';
-import { ConfirmMarriageComponent } from './components/confirm-marriage.component';
+import { ConfirmComponent } from './components/confirm.component';
 import { TimerComponent } from './components/timer/timer.component';
 import { TimerPipe } from './pipes/timer.pipe';
 
-const COMPONENTS = [ConfirmMarriageComponent, TimerComponent, TimerPipe];
+const COMPONENTS = [ConfirmComponent, TimerComponent, TimerPipe];
 
 @NgModule({
   declarations: [...COMPONENTS],
@@ -16,4 +16,4 @@ const COMPONENTS = [ConfirmMarriageComponent, TimerComponent, TimerPipe];
   providers: [],
   imports: [CommonModule, SharedModule, ReactiveFormsModule, EpguLibModule],
 })
-export class ConfirmMarriageModule {}
+export class ConfirmModule {}

@@ -2,34 +2,31 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { timer } from 'rxjs';
 
-import { ConfirmMarriageInfoInterface } from '../models/confirm-marriage-info.interface';
+import { ConfirmInfoInterface } from '../models/confirm-info.interface';
 import { UnsubscribeService } from '../../../../../services/unsubscribe/unsubscribe.service';
 import { TimerInterface } from '../models/timer.interface';
-import { createTimerForConfirmMarriage } from './confirm-marriage.helper';
+import { createTimer } from './confirm.helper';
 import { ScreenService } from '../../../../screen.service';
 
 @Component({
-  selector: 'epgu-constructor-confirm-marriage',
-  templateUrl: './confirm-marriage.component.html',
-  styleUrls: ['./confirm-marriage.component.scss'],
+  selector: 'epgu-constructor-confirm',
+  templateUrl: './confirm.component.html',
+  styleUrls: ['./confirm.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ConfirmMarriageComponent implements OnInit {
+export class ConfirmComponent implements OnInit {
   @Output() nextStepEvent = new EventEmitter<string>();
 
   timer: TimerInterface;
 
   get value() {
-    return this.screenService.componentValue as ConfirmMarriageInfoInterface;
+    return this.screenService.componentValue as ConfirmInfoInterface;
   }
 
   constructor(private ngUnsubscribe$: UnsubscribeService, public screenService: ScreenService) {}
 
   ngOnInit(): void {
-    this.timer = createTimerForConfirmMarriage(
-      this.getMarriageStartDate(),
-      this.getMarriageFinishDate(),
-    );
+    this.timer = createTimer(this.getStartDate(), this.getFinishDate());
     this.startTimer();
   }
 
@@ -55,11 +52,11 @@ export class ConfirmMarriageComponent implements OnInit {
     this.timer.time -= 1000;
   }
 
-  private getMarriageStartDate() {
+  private getStartDate() {
     return new Date(this.value.timer.start).getTime();
   }
 
-  private getMarriageFinishDate() {
+  private getFinishDate() {
     return new Date(this.value.timer.finish).getTime();
   }
 }

@@ -22,7 +22,7 @@
 
       <div *ngIf="value.time" class="data-item">
         <div class="data-item__label">{{ screenService.component.attrs.time.label }}</div>
-        <div class="data-item__value">{{ value.time }}</div>
+        <div class="data-item__value">{{ value.time | date:'dd LLLL, EEEE, HH:mm'}}</div>
       </div>
 
       <div *ngIf="screenService.componentLabel" class="data-item">

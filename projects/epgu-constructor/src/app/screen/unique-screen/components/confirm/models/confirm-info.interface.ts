@@ -1,4 +1,4 @@
-export interface ConfirmMarriageInfoInterface {
+export interface ConfirmInfoInterface {
   place: string;
   address: string;
   ceremonyType: string;
@@ -7,5 +7,4 @@ export interface ConfirmMarriageInfoInterface {
     start: string;
     finish: string;
   };
-  ReservationPeriod?: number;
 }
