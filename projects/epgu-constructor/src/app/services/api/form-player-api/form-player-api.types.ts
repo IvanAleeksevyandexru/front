@@ -1,7 +1,7 @@
 import { ScreenTypes } from '../../../screen/screen.types';
+import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
-import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer
@@ -143,6 +143,7 @@ export type FormPlayerApiResponse = FormPlayerApiSuccessResponse | FormPlayerApi
 
 export enum ActionType {
   download = 'download',
+  prevStep = 'prevStep',
   nextStep = 'nextStep',
   redirectToLK = 'redirectToLK',
   profileEdit = 'profileEdit',
