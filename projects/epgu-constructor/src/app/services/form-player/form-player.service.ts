@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { FormPlayerNavigation, Navigation, NavigationPayload } from '../../form-player.types';
-import { ScreenComponent } from '../../screen/screen.const';
 import { ScreenService } from '../../screen/screen.service';
 import { ScreenTypes } from '../../screen/screen.types';
 import { COMPONENT_DATA_KEY } from '../../shared/constants/form-player';
@@ -12,7 +11,6 @@ import {
   FormPlayerApiSuccessResponse,
   ScenarioDto
 } from '../api/form-player-api/form-player-api.types';
-import { ScreenResolverService } from '../screen-resolver/screen-resolver.service';
 import { ServiceDataService } from '../service-data/service-data.service';
 import { UtilsService } from '../utils/utils.service';
 
@@ -39,27 +37,7 @@ export class FormPlayerService {
     public formPlayerApiService: FormPlayerApiService,
     private serviceDataService: ServiceDataService,
     private screenService: ScreenService,
-    private screenResolverService: ScreenResolverService,
   ) {}
-
-  /**
-   * Возвращает компонент для показа экрана переданного типа
-   */
-  getScreenComponent(): ScreenComponent {
-    const screenType = this.screenService.screenType as string;
-    const screenComponent = this.screenResolverService.getScreenComponentByType(screenType);
-
-    if (!screenComponent) {
-      this.handleScreenComponentError(this.screenService.screenType);
-    }
-
-    return screenComponent;
-  }
-
-  private handleScreenComponentError(screenType: string) {
-    // TODO: need to find a better way for handling this error, maybe show it on UI
-    throw new Error(`We cant find screen component for this type: ${screenType}`);
-  }
 
   public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
     return this.formPlayerApiService.checkIfOrderExist();

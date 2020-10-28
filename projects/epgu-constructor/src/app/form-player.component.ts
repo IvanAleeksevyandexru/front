@@ -12,7 +12,6 @@ import { LoadService } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
 import { ConfigService } from './config/config.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
-import { ScreenComponent } from './screen/screen.const';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ModalService } from './services/modal/modal.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
@@ -31,7 +30,6 @@ import { FormPlayerConfigApiService } from './services/api/form-player-config-ap
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-form-player') class = true;
   @Input() service: Service;
-  screenComponent: ScreenComponent;
 
   constructor(
     private serviceDataService: ServiceDataService,
@@ -51,14 +49,8 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     combineLatest([this.formPlayerConfigApiService.getFormPlayerConfig(), this.loadService.loaded])
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((result) => {
-        console.log('result');
-        console.log(result);
         [this.configService.config] = result;
       });
-
-    this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.screenComponent = this.formPlayerService.getScreenComponent();
-    });
 
     this.navigationService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
