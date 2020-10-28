@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DadataSuggestions, DadataSuggestionsAddress } from '../../../services/api/dadata-api/dadata-api.types';
 import { DictionaryApiService } from '../../services/dictionary-api/dictionary-api.service';
+import { DadataSuggestions, DadataSuggestionsAddress } from '../../services/dictionary-api/dictionary-api.types';
 
 export interface DadataSuggestionsAddressForLookup extends DadataSuggestionsAddress {
   id: string,

@@ -1,9 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DictionaryOptions, DictionaryResponse } from './dictionary-api.types';
+import {
+  DadataNormalizeAnswer,
+  DadataSuggestionsAnswer,
+  DictionaryOptions,
+  DictionaryResponse
+} from './dictionary-api.types';
 import { ConfigService } from '../../../config/config.service';
 import { Observable } from 'rxjs';
-import { DadataNormalizeAnswer, DadataSuggestionsAnswer } from '../../../services/api/dadata-api/dadata-api.types';
 
 @Injectable()
 export class DictionaryApiService {
