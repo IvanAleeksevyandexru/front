@@ -24,7 +24,8 @@ describe('ConfirmPersonalUserAddressComponent', () => {
     id: '',
     value: '{}',
     label: '',
-    type: ComponentScreenComponentTypes.confirmPersonalUserRegAddr
+    type: ComponentScreenComponentTypes.confirmPersonalUserRegAddr,
+    required: false
   };
 
   beforeEach(waitForAsync(() => {

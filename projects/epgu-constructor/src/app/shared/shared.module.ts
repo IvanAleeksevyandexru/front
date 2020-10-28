@@ -39,7 +39,6 @@ import { CachedAnswersService } from './services/applicant-answers/cached-answer
 import { PassportComponent } from './components/add-passport/passport.component';
 import { NavigationService } from './services/navigation/navigation.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
-import { WebcamService } from './services/webcam/webcam.service';
 import { ActionDirective } from './directives/action/action.directive';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
@@ -85,7 +84,6 @@ const DIRECTIVES = [
     NavigationService,
     CachedAnswersService,
     ModalService,
-    WebcamService,
     TerraByteApiService,
     DeviceDetectorService,
     ConfigService,

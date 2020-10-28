@@ -19,7 +19,7 @@ import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.
 import { minCropSize, uploadPhotoElemId } from './upload-and-edit-photo.constant';
 import { ImgSubject } from './upload-and-edit-photo.model';
 import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
-import { WebcamService } from '../../../../shared/services/webcam/webcam.service';
+import { WebcamService } from '../../services/webcam/webcam.service';
 import {
   isCloseAndSaveWebcamEvent,
   WebcamEvent,

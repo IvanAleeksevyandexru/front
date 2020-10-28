@@ -19,8 +19,6 @@ const COMPONENT = [
     InfoScreenBodyModule,
     EpguLibModule,
   ],
-  providers: [
-    ScreenService
-  ]
+  providers: []
 })
 export class InfoScreenModule { }

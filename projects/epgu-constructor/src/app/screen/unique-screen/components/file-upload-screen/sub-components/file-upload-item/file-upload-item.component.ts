@@ -17,7 +17,7 @@ import {
   TerabyteListItem,
 } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { TerraByteApiService } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.service';
-import { WebcamService } from '../../../../../../shared/services/webcam/webcam.service';
+import { WebcamService } from '../../../../services/webcam/webcam.service';
 import {
   isCloseAndSaveWebcamEvent,
   isCloseWebcamEvent,
