@@ -21,6 +21,7 @@ import { DictionaryApiService } from './services/dictionary-api/dictionary-api.s
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenService } from './screen.service';
 import { ToolsService } from './services/tools/tools.service';
+import { CycledFieldsService } from './services/cycled-fields/cycled-fields.service';
 
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
@@ -45,7 +46,8 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     ScreenService,
     CurrentAnswersService,
     DictionaryApiService,
-    ToolsService
+    ToolsService,
+    CycledFieldsService
   ],
   exports: [
     ScreenResolverComponent

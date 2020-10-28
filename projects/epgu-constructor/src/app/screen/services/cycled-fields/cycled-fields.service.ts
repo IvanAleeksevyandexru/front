@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { NavigationPayload } from '../../form-player.types';
-import { ScreenService } from '../../screen/screen.service';
-import { ScreenStore } from '../../screen/screen.types';
-import { UniqueScreenComponentTypes } from '../../screen/unique-screen/unique-screen.types';
-import { CurrentCycledFieldsDto } from '../api/form-player-api/form-player-api.types';
+import { NavigationPayload } from '../../../form-player.types';
+import { ScreenService } from '../../screen.service';
+import { ScreenStore } from '../../screen.types';
+import { UniqueScreenComponentTypes } from '../../unique-screen/unique-screen.types';
+import { CurrentCycledFieldsDto } from '../../../services/api/form-player-api/form-player-api.types';
 
 @Injectable()
 export class CycledFieldsService {

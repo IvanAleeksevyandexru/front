@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Screen } from '../screen.types';
 import { NavigationPayload } from '../../form-player.types';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';

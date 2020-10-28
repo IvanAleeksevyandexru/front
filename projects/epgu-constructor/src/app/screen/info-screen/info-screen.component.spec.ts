@@ -11,7 +11,7 @@ import { FormPlayerApiService } from '../../services/api/form-player-api/form-pl
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../config/config.service';
 import { ServiceDataService } from '../../services/service-data/service-data.service';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { DeviceDetectorService } from '../../shared/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../shared/services/device-detector/device-detector.service.stub';
 
