@@ -7,6 +7,7 @@ import { ConfigService } from '../../../../config/config.service';
 import { ComponentBase } from '../../../screen.types';
 import { ScreenService } from '../../../screen.service';
 import { Subject } from 'rxjs';
+import { WebcamService } from '../../services/webcam/webcam.service';
 
 class МockScreenService {
   header = '';
@@ -50,6 +51,7 @@ describe('UploadAndEditPhotoComponent', () => {
       providers: [
         TerraByteApiService,
         ConfigService,
+        WebcamService,
         { provide: ScreenService, useClass: МockScreenService },
       ],
     })
