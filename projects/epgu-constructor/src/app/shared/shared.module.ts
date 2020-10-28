@@ -79,6 +79,9 @@ const DIRECTIVES = [
   ActionDirective
 ];
 
+/**
+ * Шара. Тут храним что необходимо одновременно нескольким другим доменам.
+ */
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   providers: [

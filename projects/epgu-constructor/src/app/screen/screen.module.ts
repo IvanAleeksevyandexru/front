@@ -24,8 +24,11 @@ import { ToolsService } from './services/tools/tools.service';
 import { CycledFieldsService } from './services/cycled-fields/cycled-fields.service';
 
 
-export const EpguLibModuleInited = EpguLibModule.forRoot();
+const EpguLibModuleInited = EpguLibModule.forRoot();
 
+/**
+ * Домен скринов. Сдесь храниться всё что связанно со скринами и их обязками.
+ */
 @NgModule({
   declarations: [
     ScreenResolverComponent
