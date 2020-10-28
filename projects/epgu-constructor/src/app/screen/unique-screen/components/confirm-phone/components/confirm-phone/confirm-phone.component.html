@@ -6,15 +6,16 @@
 
   <epgu-constructor-screen-pad class="form">
 
-    <lib-standard-masked-input
-      class="form__item"
-      id="snils"
-      [ngModel]="enteredCode"
-      (ngModelChange)="enterCode($event)"
-      [mask]="mask"
-      [showMaskAsPlaceholder]="true"
-      [showConstantMaskSymbols]="true">
-    </lib-standard-masked-input>
+    <div class="form__group" #codeGroup>
+      <lib-standard-masked-input *ngFor="let control of codeFormArray.controls"
+        class="form__item"
+        maxlength="1"
+        [mask]="control.get('codeMask').value"
+        [formControl]="control.get('codeValue')"
+        [showMaskAsPlaceholder]="true"
+        [showConstantMaskSymbols]="false">
+      </lib-standard-masked-input>
+    </div>
 
     <div class="form__error">{{screenService.componentError$ | async}}</div>
 

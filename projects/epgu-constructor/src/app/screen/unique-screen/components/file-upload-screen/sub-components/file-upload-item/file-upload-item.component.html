@@ -1,4 +1,8 @@
- <div class="fileupload__wrapper">
+<div class="fileupload__wrapper">
+  <div *ngIf="data.title"
+       class="title">
+    {{data.title}}
+  </div>
   <div class="file__bottom">
     <epgu-constructor-output-html
       class="info__text"
@@ -8,15 +12,15 @@
 
     <div class="fileupload__label" *ngIf="refData?.length"
          [innerHTML]="refData"></div>
-     <div class="info">
-       <div class="info__item">
-         Объем загружаемых данных не должен превышать 5 МБ
-       </div>
-       <div class="info__item" *ngIf="data.maxFileCount">
-         Количество загружаемых файлов не более {{ data.maxFileCount }}
-       </div>
-     </div>
-   </div>
+    <div class="info">
+      <div class="info__item" *ngIf="data.maxFileCount">
+        Количество загружаемых файлов не более {{ data.maxFileCount }}
+      </div>
+      <div class="info__item">
+        Объем загружаемых данных не должен превышать 5 МБ
+      </div>
+    </div>
+  </div>
   <input #fileUploadInput type="file" [attr.accept]="getAcceptTypes()" (change)="updateSelectedFilesInfoAndSend()"
          multiple/>
   <div class="errors" *ngIf="errors.length">
@@ -52,13 +56,15 @@
             *ngIf="isMobile && isCameraAllowed"
             (click)="openCamera()"
             [disabled]="isButtonsDisabled">
-      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg" class="fileupload__button-icon" alt="Фото"/>
+      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg" class="fileupload__button-icon"
+           alt="Фото"/>
       Фото
     </button>
     <button class="fileupload__button"
             (click)="selectFilesEvent()"
             [disabled]="isButtonsDisabled">
-      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg" class="fileupload__button-icon"  alt="Файл"/>
+      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg" class="fileupload__button-icon"
+           alt="Файл"/>
       Файл
     </button>
   </div>
