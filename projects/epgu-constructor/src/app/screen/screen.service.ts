@@ -131,7 +131,7 @@ export class ScreenService extends ScreenContent {
   private getPresetValue(item: ComponentDto): ComponentDto {
     const [id, path] = item.attrs.preset.value.split(/\.(.+)/);
     const cachedValue = this.cachedAnswersService
-      .getCachedValueById(this.screenStore.cachedAnswers, id);
+      .getCachedValueById(this.screenStore.cachedAnswers, id) || '{}';
     const value = UtilsService.getObjectProperty(JSON.parse(cachedValue), path, item.value);
 
     return { ...item, value };
