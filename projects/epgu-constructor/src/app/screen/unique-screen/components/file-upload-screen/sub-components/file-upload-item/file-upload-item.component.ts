@@ -333,17 +333,24 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     this.errors = [];
     const inputFiles: File[] = this.prepareFilesToUpload(this.uploadInput.nativeElement.files);
 
-    let maxFileCountError = false;
-    inputFiles.forEach((file: File) => {
-      if (!maxFileCountError) {
-        if (this.data.maxFileCount && this.files$$.value.length === this.data.maxFileCount) {
-          maxFileCountError = true;
-          this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
-        } else {
-          this.sendFile(file);
-        }
+    for (let i = 0; i < inputFiles.length; i += 1) {
+      if (this.data.maxFileCount && this.files$$.value.length === this.data.maxFileCount) {
+        this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
+        return;
       }
-    });
+      if (!this.isFileTypeValid(inputFiles[i])) {
+        this.errors.push(`Недопустимый тип файла ${inputFiles[i].name}`);
+        break;
+      }
+      this.sendFile(inputFiles[i]);
+    }
+  }
+
+  isFileTypeValid(file: File): boolean {
+    const fileExtension = `.${file.name.split('.').pop()}`;
+    const validTypes = this.getAcceptTypes().split(',');
+
+    return validTypes.some((validType) => validType.toLowerCase() === fileExtension.toLowerCase());
   }
 
   /**
