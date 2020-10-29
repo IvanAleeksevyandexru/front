@@ -1,8 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormatPhonePipe } from 'epgu-lib';
-import { ConfigService } from '../../../../../../shared/config/config.service';
-import { ConfigServiceStub } from '../../../../../../shared/config/config.service.stub';
+import { ConfigService } from '../../../../../../core/config/config.service';
+import { ConfigServiceStub } from '../../../../../../core/config/config.service.stub';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';

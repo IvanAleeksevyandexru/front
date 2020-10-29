@@ -23,11 +23,11 @@ import {
   WebcamEvent,
 } from '../../../../../../shared/components/webcam-shoot/webcamevents';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
-import { DeviceDetectorService } from '../../../../../../shared/services/device-detector/device-detector.service';
-import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
+import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
+import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { WebcamService } from '../../../../services/webcam/webcam.service';
 import { CompressionService } from '../../../upload-and-edit-photo/compression/compression.service';
-import { ConfigService } from '../../../../../../shared/config/config.service';
+import { ConfigService } from '../../../../../../core/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',

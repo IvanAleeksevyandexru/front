@@ -19,6 +19,7 @@ import { CurrentAnswersService } from './current-answers.service';
 import { ScreenService } from './screen.service';
 import { CycledFieldsService } from './services/cycled-fields/cycled-fields.service';
 import { CoreModule } from '../core/core.module';
+import { ModalModule } from '../modal/modal.module';
 
 /**
  * Домен скринов. Сдесь храниться всё что связанно со скринами и их обязками.
@@ -37,6 +38,7 @@ import { CoreModule } from '../core/core.module';
     InvitationErrorScreenModule,
     SharedModule,
     InfoScreenModule,
+    ModalModule,
   ],
   providers: [
     ScreenService,

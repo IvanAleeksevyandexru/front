@@ -10,14 +10,14 @@ import {
 import { takeUntil } from 'rxjs/operators';
 import { LoadService } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
-import { ConfigService } from '../shared/config/config.service';
+import { ConfigService } from '../core/config/config.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
 import { FormPlayerService } from './services/form-player/form-player.service';
-import { ModalService } from '../shared/services/modal/modal.service';
+import { ModalService } from '../modal/modal.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
-import { UnsubscribeService } from '../shared/services/unsubscribe/unsubscribe.service';
-import { ConfirmationModalComponent } from '../shared/components/modal/confirmation-modal/confirmation-modal.component';
-import { NavigationService } from '../shared/services/navigation/navigation.service';
+import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
+import { ConfirmationModalComponent } from '../modal/components/confirmation-modal/confirmation-modal.component';
+import { NavigationService } from '../core/services/navigation/navigation.service';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 
 @Component({

@@ -2,7 +2,7 @@ import { Directive, HostListener, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ScreenService } from '../../../screen/screen.service';
-import { NavigationService } from '../../services/navigation/navigation.service';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { Answer } from '../../types/answer';
 import {
   ActionApiResponse, ActionDTO,

@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UploadAndEditPhotoComponent } from './upload-and-edit-photo.component';
 import { UploadAndEditPhotoModule } from './upload-and-edit-photo.module';
 import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
-import { ConfigService } from '../../../../shared/config/config.service';
+import { ConfigService } from '../../../../core/config/config.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { Subject } from 'rxjs';

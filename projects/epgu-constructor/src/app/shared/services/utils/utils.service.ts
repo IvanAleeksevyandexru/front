@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Moment } from 'moment';
-import { CustomComponent } from '../../../component/custom-screen/custom-screen-components.types';
+import { CustomComponent } from '../../../component/components-list/components-list.types';
 
 @Injectable()
 export class UtilsService {

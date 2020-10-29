@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
-import { UnsubscribeService } from '../../../projects/epgu-constructor/src/app/shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../projects/epgu-constructor/src/app/core/services/unsubscribe/unsubscribe.service';
 import { AppService } from '../app.service';
 import { AppConfig } from '../app.type';
 

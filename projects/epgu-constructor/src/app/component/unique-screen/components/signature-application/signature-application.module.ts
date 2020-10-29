@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { EpguLibModule } from 'epgu-lib';
-
 import { SharedModule } from '../../../../shared/shared.module';
 import { SignatureApplicationComponent } from './components/signature-application.component';
+import { CoreModule } from '../../../../core/core.module';
 
 const COMPONENTS = [SignatureApplicationComponent];
 
@@ -12,6 +9,6 @@ const COMPONENTS = [SignatureApplicationComponent];
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   providers: [],
-  imports: [CommonModule, SharedModule, ReactiveFormsModule, EpguLibModule],
+  imports: [CoreModule, SharedModule],
 })
 export class SignatureApplicationModule {}

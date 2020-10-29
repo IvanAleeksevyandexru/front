@@ -5,7 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { getPaymentRequestOptions } from './payment.constants';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ConfigService } from '../../../../shared/config/config.service';
+import { ConfigService } from '../../../../core/config/config.service';
 import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payment.types';
 
 /**

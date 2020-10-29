@@ -12,7 +12,7 @@ import {
 
   TimeSlotValueInterface
 } from './time-slots.types';
-import { ConfigService } from '../../../../shared/config/config.service';
+import { ConfigService } from '../../../../core/config/config.service';
 
 const moment = moment_;
 

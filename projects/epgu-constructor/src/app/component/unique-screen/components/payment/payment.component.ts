@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../shared/config/config.service';
+import { ConfigService } from '../../../../core/config/config.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../shared/services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
 import { ScreenService } from '../../../../screen/screen.service';

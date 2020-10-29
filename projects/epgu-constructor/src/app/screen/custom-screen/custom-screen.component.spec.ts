@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
-import { ComponentsListComponent } from '../../component/custom-screen/components-list/components-list.component';
+import { ComponentsListComponent } from '../../component/components-list/components-list.component';
 import { CustomScreenComponent } from './custom-screen.component';
-import { ValidationService } from '../../component/custom-screen/services/validation.service';
+import { ValidationService } from '../../component/components-list/services/validation.service';
 import { CurrentAnswersService } from '../current-answers.service';
 
 xdescribe('CustomScreenComponent', () => {
