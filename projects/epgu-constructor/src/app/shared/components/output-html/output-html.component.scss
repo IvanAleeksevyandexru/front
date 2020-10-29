@@ -69,4 +69,20 @@
   li:not(:first-child) {
     margin-top: 16px;
   }
+
+  p {
+    margin-top: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .color-blue-bayoux {
+    color: $color-blue-bayoux
+  }
 }

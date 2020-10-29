@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
-import { InvitationErrorComponent } from './components/error/invitation-error.component';
 import { SharedModule } from '../../shared/shared.module';
 import { EpguLibModule } from 'epgu-lib';
-import { ScreenService } from '../screen.service';
+import { InvitationErrorScreenComponentsModule } from '../../component/invitation-error-screen/invitation-error-screen-components.module';
 
 const COMPONENTS = [
-  InvitationErrorComponent,
   InvitationErrorScreenComponent
 ];
 
@@ -17,10 +15,9 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     SharedModule,
-    EpguLibModule
+    EpguLibModule,
+    InvitationErrorScreenComponentsModule
   ],
-  providers: [
-    ScreenService
-  ]
+  providers: []
 })
 export class InvitationErrorScreenModule { }

@@ -2,23 +2,26 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, map, pairwise, startWith, takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { isEqualObj } from '../../shared/constants/uttils';
+import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
+import { isEqualObj } from '../../../../shared/constants/uttils';
 import {
   CustomComponent,
   CustomComponentOutputData, CustomListDictionaries, CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements, CustomScreenComponentTypes
-} from '../../screen/custom-screen/custom-screen.types';
-import { ValidationService } from '../../shared/services/validation/validation.service';
+} from '../../custom-screen-components.types';
+import { ValidationService } from '../../services/validation.service';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper.service';
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
-import { ScenarioErrorsDto } from '../../services/api/form-player-api/form-player-api.types';
-import { UtilsService as utils } from '../../services/utils/utils.service';
-import { isDropDown } from '../../screen/custom-screen/tools/custom-screen-tools';
+import { ScenarioErrorsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { UtilsService as utils } from '../../../../shared/services/utils/utils.service';
+import { isDropDown } from '../../tools/custom-screen-tools';
 import { ListItem } from 'epgu-lib';
+import * as moment_ from 'moment';
+
+const moment = moment_;
 
 @Injectable()
 export class ComponentListFormService {
@@ -121,10 +124,13 @@ export class ComponentListFormService {
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
       const { disabled, valid } = this.form.get([key, 'value']);
-      const { value } = val;
+      let { value, type } = val;
       const isValid = disabled || valid;
 
       if (this.shownElements[val.id]) {
+        if (type === CustomScreenComponentTypes.DateInput) {
+          value = moment(value).toISOString(true); // NOTICE: обработка даты и "правильное" приведение к ISO-строке
+        }
         acc[val.id] = { value, isValid, disabled };
       }
 
@@ -138,7 +144,7 @@ export class ComponentListFormService {
       value: [
         this.toolsService.convertedValue(component),
         [this.validationService.customValidator(component),
-        this.validationService.validationBackendError(errorMsg, component)],
+          this.validationService.validationBackendError(errorMsg, component)],
       ],
     });
 
@@ -172,7 +178,7 @@ export class ComponentListFormService {
           .getDictionaries$('MODEL_TS', model?.value, options)
           .subscribe((dictionary) => {
             this.repository.initDictionary(dictionary);
-        });
+          });
       }
       ///////////////////
     });

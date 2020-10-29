@@ -1,0 +1,30 @@
+@import '../../../../../../styles/core/index';
+
+.nav {
+  @include navigation-mt();
+}
+
+.application {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 24px;
+}
+
+@include laptop-down() {
+  .screen-container {
+    margin-top: 32px;
+  }
+}

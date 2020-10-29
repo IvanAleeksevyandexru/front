@@ -4,7 +4,6 @@
     [data]="screenService.display"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-unused-payments>
-<ng-container [ngSwitch]="screenService.componentType$ | async">
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
     [data]="screenService.component"
@@ -45,10 +44,10 @@
     [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-car-info>
-  <epgu-constructor-confirm-marriage
-    *ngSwitchCase="uniqueComponentName.confirmMarriage"
+  <epgu-constructor-confirm
+    *ngSwitchCase="uniqueComponentName.timer"
     (nextStepEvent)="nextDataForStep($event)">
-  </epgu-constructor-confirm-marriage>
+  </epgu-constructor-confirm>
   <epgu-constructor-signature-application
     *ngSwitchCase="uniqueComponentName.signatureApplication"
     (nextStepEvent)="nextDataForStep($event)">

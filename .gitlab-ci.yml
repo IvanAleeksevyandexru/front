@@ -27,7 +27,7 @@ Install:
   only:
     - merge_requests
     - master
-    - develop
+    - stage
 
 Lint:
   stage: code-quality
@@ -42,8 +42,8 @@ Lint:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Code-quality:
   stage: code-quality
   except:
@@ -57,8 +57,8 @@ Code-quality:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Library-build:
   stage: library-build
   except:
@@ -69,8 +69,8 @@ Library-build:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Library-publish:
   stage: library-publish
   except:
@@ -86,6 +86,9 @@ Library-publish:
     - echo $GITLAB_USER_LOGIN
     - echo $CI_USER
     - echo $CI_USER_EMAIL
+    - echo $CI_COMMIT_BRANCH
+    - echo $CI_COMMIT_REF_NAME
+    - echo $CI_COMMIT_SHA
     - git config --global user.email $CI_USER_EMAIL
     - git config --global user.name $CI_USER
     - git config receive.advertisePushOptions true
@@ -94,15 +97,17 @@ Library-publish:
     - npm run generate-lib-version-ts
     - CURRENT_TAG=$(git describe --abbrev=0)
     - echo $CURRENT_TAG
-    - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@git.gosuslugi.local/luxoft/epgu2-form-frontend.git --follow-tags ${CI_COMMIT_REF_NAME}:master
+    - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@git.gosuslugi.local/luxoft/epgu2-form-frontend.git --follow-tags ${CI_COMMIT_REF_NAME}:${CI_COMMIT_BRANCH}
     - cd dist/epgu-constructor
     - npm version ${CURRENT_TAG:1}
-    - npm publish
+    - if [ $CI_COMMIT_BRANCH == 'stage' ]; then npm publish --tag beta; else npm publish --tag stable; fi
   after_script:
+    - CURRENT_TAG=$(git describe --abbrev=0)
     - git tag -d $CURRENT_TAG
     - git reset --hard HEAD~1
   only:
     - master
+    - stage
 
 Build:
   stage: build
@@ -115,8 +120,8 @@ Build:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Build-image:
   stage: image
   except:
@@ -140,8 +145,8 @@ Build-image:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Deploy to review env:
   stage: deploy
   except:
@@ -162,8 +167,8 @@ Deploy to review env:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Drop review env:
   stage: deploy
   except:
@@ -184,4 +189,4 @@ Drop review env:
   only:
     - merge_requests
     - master
-    - develop
+    - stage

@@ -4,14 +4,15 @@ import { AppConfig, LOCAL_STORAGE_KEY } from './app.type';
 import { environment } from '../environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { LoadServiceDeviceType } from '../../projects/epgu-constructor/src/app/shared/services/device-detector/device-detector.service';
-import { LOCAL_STORAGE_PLATFORM_TYPE } from '../../projects/epgu-constructor/src/app/config/config.types';
+import { LOCAL_STORAGE_PLATFORM_TYPE } from '../../projects/epgu-constructor/src/app/shared/config/config.types';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 const initValues: AppConfig = {
   serviceId: environment.serviceId,
   targetId: environment.targetId,
   orderId: environment.orderId,
-  invited: false
+  invited: false,
+  canStartNew: true,
 }
 
 @Injectable()
@@ -26,7 +27,7 @@ export class AppService {
   }
 
   valuesFromQueryParams(): void {
-    const { serviceId, targetId, orderId, invited } = this.route.snapshot.queryParams;
+    const { serviceId, targetId, orderId, invited, canStartNew } = this.route.snapshot.queryParams;
     if(serviceId) {
       this.config.serviceId = serviceId;
     }
@@ -38,6 +39,9 @@ export class AppService {
     }
     if(invited) {
       this.config.invited = invited;
+    }
+    if(canStartNew) {
+      this.config.canStartNew = canStartNew;
     }
   }
 

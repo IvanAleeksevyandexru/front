@@ -21,19 +21,12 @@
         >
         </epgu-constructor-confirm-personal-user-data-screen>
 
-        <epgu-constructor-confirm-personal-user-email-screen
-          *ngSwitchCase="screenComponentName.confirmPersonalUserEmail"
+        <epgu-constructor-confirm-personal-user-phone-email
+          *ngSwitchCase="isUserContactData()"
           [data]="screenService.component"
           [errors]="screenService.componentErrors"
         >
-        </epgu-constructor-confirm-personal-user-email-screen>
-
-        <epgu-constructor-confirm-personal-user-phone-screen
-          *ngSwitchCase="screenComponentName.confirmPersonalUserPhone"
-          [data]="screenService.component"
-          [errors]="screenService.componentErrors"
-        >
-        </epgu-constructor-confirm-personal-user-phone-screen>
+        </epgu-constructor-confirm-personal-user-phone-email>
 
         <epgu-constructor-temporary-registration-addr-screen
           *ngSwitchCase="screenComponentName.registrationAddr"

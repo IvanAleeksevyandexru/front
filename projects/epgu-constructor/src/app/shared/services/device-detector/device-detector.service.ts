@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { LoadService } from 'epgu-lib';
-import { LOCAL_STORAGE_PLATFORM_TYPE } from '../../../config/config.types';
+import { LoadService, SmuEventsService } from 'epgu-lib';
+import { LOCAL_STORAGE_PLATFORM_TYPE } from '../../config/config.types';
 
 export enum LoadServiceDeviceType {
   'desk'= 'desk',
@@ -13,35 +12,25 @@ export enum LoadServiceDeviceType {
 @Injectable()
 export class DeviceDetectorService {
 
-  // Определение платформы не работает локально, потому что информация приходит от сервера node,
-  // который есть на портале но нет у нас. Там использует пакет ismobilejs.
+  // Определение платформы работает на backend(-e) на портале, там используется node c пакетом ismobilejs.
+  // для локальной работы и для наших стендов используется angular пакет device-detector
 
-  private _isMobile = new BehaviorSubject<boolean>(false);
-  get isMobile(): boolean {
-    return this._isMobile.getValue();
-  }
-  public isMobile$ = this._isMobile.asObservable();
-  private _isTablet = new BehaviorSubject<boolean>(false);
-  get isTablet(): boolean {
-    return this._isTablet.getValue();
-  }
-  public isTablet$ = this._isTablet.asObservable();
-  private _isDesktop = new BehaviorSubject<boolean>(false);
-  get isDesktop(): boolean {
-    return this._isDesktop.getValue();
-  }
-  public isDesktop$ = this._isDesktop.asObservable();
+  isMobile: boolean;
+  isTablet: boolean;
+  isDesktop: boolean;
+  isWebView: boolean;
 
-  constructor (private loadService: LoadService) {
+  constructor (private loadService: LoadService, private smuEventsService: SmuEventsService) {
     this.initState();
   }
 
   initState() {
     const defaultDeviceType = localStorage.getItem(LOCAL_STORAGE_PLATFORM_TYPE);
     const { deviceType = defaultDeviceType } = this.loadService.attributes;
-    this._isMobile.next(deviceType === LoadServiceDeviceType.mob);
-    this._isTablet.next(deviceType === LoadServiceDeviceType.tab);
-    this._isDesktop.next(deviceType === LoadServiceDeviceType.desk);
+    this.isMobile = deviceType === LoadServiceDeviceType.mob;
+    this.isTablet = deviceType === LoadServiceDeviceType.tab;
+    this.isDesktop = deviceType === LoadServiceDeviceType.desk;
+    this.isWebView = this.smuEventsService.smuInit;
     console.log('deviceType:', deviceType);
   }
 }

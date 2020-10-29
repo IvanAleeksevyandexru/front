@@ -1,19 +1,18 @@
 import { ComponentsListComponent } from './components-list.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DictionaryApiService } from '../services/api/dictionary-api/dictionary-api.service';
-import { ScreenService } from '../screen/screen.service';
-import { ConfigService } from '../config/config.service';
+import { DictionaryApiService } from '../../shared/services/dictionary-api/dictionary-api.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { ConfigService } from '../../../shared/config/config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ScreenServiceStub } from '../screen/screen.service.stub';
-import { MaskHandlePipe } from '../shared/pipes/mask-handle/mask-handle.pipe';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { MaskHandlePipe } from '../../../shared/pipes/mask-handle/mask-handle.pipe';
 import { FormsModule, ReactiveFormsModule, FormArray } from '@angular/forms';
-import { ValidationService } from '../shared/services/validation/validation.service';
-import { DictionaryApiServiceStub } from '../services/api/dictionary-api/dictionary-api.service.stub';
-import { ConfigServiceStub } from '../config/config.service.stub';
+import { ValidationService } from '../services/validation.service';
+import { DictionaryApiServiceStub } from '../../shared/services/dictionary-api/dictionary-api.service.stub';
+import { ConfigServiceStub } from '../../../shared/config/config.service.stub';
 import { AddressHelperService } from './address-helper.service';
 import { ComponentListFormService } from './services/component-list-form.service';
-import { CustomComponentAttr, CustomScreenComponentTypes } from '../screen/custom-screen/custom-screen.types';
 
 
 xdescribe('ComponentsListComponent', () => {
@@ -42,7 +41,6 @@ xdescribe('ComponentsListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ComponentsListComponent);
     component = fixture.componentInstance;
-    component.components = null;
     // fixture.debugElement.injector.get(DictionaryApiService);
     // fixture.debugElement.injector.get(ScreenService);
     // fixture.debugElement.injector.get(ConfigService);

@@ -1,4 +1,4 @@
-import { TerraUploadedFile } from '../../../screen/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { TerraUploadedFile } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 /**
  * Интерфейс для опций файла, при получении обновлении или удалении
  */
@@ -79,6 +79,7 @@ export interface FileUploadItem {
   uploadId: string;
   type: FileUploadItemTypes;
   label: string;
+  title?: string;
   fileType: string[];
   maxFileCount?: number;
   maxSize?: number;
