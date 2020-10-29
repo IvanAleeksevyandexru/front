@@ -6,6 +6,7 @@ interface Options {
   maxIteration?: number;
   exifOrientation?: number;
   fileType?: string;
+  deepChecking?: boolean;
 }
 
 @Injectable()
@@ -316,6 +317,35 @@ export class CompressionService {
     canvas['height'] = 0;
   }
 
+  private async isAnImage(file: File | Blob, deepChecking?: boolean) {
+    const hasImageType = /^image/.test(file['type']);
+    if (!hasImageType) {
+      return false;
+    } else if (hasImageType && !deepChecking) {
+      return true;
+    } else {
+      return await this.addImageProcess(file);
+    }
+  }
+
+  private addImageProcess(file: File | Blob){
+    return new Promise((resolve, reject) => {
+      const objUrl = URL.createObjectURL(file);
+      let img = new Image();
+
+      img.onload = () => {
+        URL.revokeObjectURL(objUrl);
+        return resolve(true);
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(objUrl);
+        return reject(false);
+      };
+
+      img.src = objUrl;
+    });
+  }
+
   /**
   * @param {File} file
   * @param {Object} options -{ maxSizeMB=Number.POSITIVE_INFINITY, maxWidthOrHeight, maxIteration = 10, exifOrientation, fileType }
@@ -413,7 +443,7 @@ export class CompressionService {
 
     if (!(file instanceof Blob)) {
       throw new Error('The file given is not an instance of Blob or File');
-    } else if (!/^image/.test(file['type'])) {
+    } else if (!await this.isAnImage(file, options.deepChecking)) {
       throw new Error('The file given is not an image');
     }
 
@@ -422,7 +452,7 @@ export class CompressionService {
     try {
       compressedFile['name'] = file['name'];
       compressedFile['lastModified'] = file['lastModified'];
-    } catch (e) {};
+    } catch (e) {}
 
     return compressedFile;
   }

@@ -136,6 +136,12 @@ input[type="file"] {
   border-radius: 8px;
   box-sizing: border-box;
 
+  &--disabled {
+    color: $color-text-helper;
+    background-color: $color-button-disabled;
+    border: none;
+  }
+
   @include phones-down {
     padding: 0 18px;
   }
