@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.19](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.17...v0.3.19) (2020-10-29)
+
+
+### Bug Fixes
+
+* добавил вывод бизнес-ошибок в компоненте confirm-user-phone-email [ref EPGUCORE-40132] ([96b2788](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/96b278890a6ca7ae0d07cdcec4135dbf468f693c))
+* доработан gitlab-ci [ref EPGUCORE-40088] ([8f036d1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/8f036d132971b7ba416f9d776e0b1e6979ffd0a1))
+* доработан gitlab-ci [ref EPGUCORE-40088] ([fb3c7e5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/fb3c7e5500b38a794f41d21d8e59df4eb774c903))
+* исправил ошибку с дизейблом кнопки продолжить [ref: EPGUCORE-40078] ([907090e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/907090e2e7f0370407600bd93ca3f5a804717462))
+
+### [0.3.18](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.17...v0.3.18) (2020-10-29)
+
+
+### Bug Fixes
+
+* добавил вывод бизнес-ошибок в компоненте confirm-user-phone-email [ref EPGUCORE-40132] ([96b2788](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/96b278890a6ca7ae0d07cdcec4135dbf468f693c))
+* исправил ошибку с дизейблом кнопки продолжить [ref: EPGUCORE-40078] ([907090e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/907090e2e7f0370407600bd93ca3f5a804717462))
+
+### [0.3.17](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.16...v0.3.17) (2020-10-28)
+
+
+### Bug Fixes
+
+* исправлена обработка ошибки в health interceptor ([051a371](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/051a371735280b5305a0076e365d63a7255f7f6c))
+
+### [0.3.16](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.15...v0.3.16) (2020-10-28)
+
+### [0.3.15](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.14...v0.3.15) (2020-10-28)
+
+
+### Features
+
+* добавлена валидация загружаемых файлов + добавлен title  [ref EPGUCORE-40124] ([0912af9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0912af9893f5703922c66be699a797c59e0046e2))
+
+### [0.3.14](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.13...v0.3.14) (2020-10-28)
+
+
+### Bug Fixes
+
+* обновил UI для подтвержения телефона ([71d5462](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/71d54629b95730920f2751843c1f33c28a9340cf))
+* поправил отступы в cofirm-user-phone-email компоненте [ref EPGUCORE-40050] ([85adffa](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/85adffa4d14555df0e70d825ea664db6ba3e4304))
+
 ### [0.3.13](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.12...v0.3.13) (2020-10-27)
 
 ### [0.3.12](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.11...v0.3.12) (2020-10-27)
