@@ -4,7 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CounterDirective } from '../../../../../../shared/directives/counter/counter.directive';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
+import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { EpguLibModule } from 'epgu-lib';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 

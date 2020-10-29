@@ -7,6 +7,8 @@ import { OutputHtmlComponent } from './components/output-html/output-html.compon
 import { ImgPrefixerPipe } from './pipes/img-prefixer/img-prefixer.pipe';
 import { SafePipe } from './pipes/safe/safe.pipe';
 import { ConfigService } from './config/config.service';
+import { DeviceDetectorService } from './services/device-detector/device-detector.service';
+import { NavigationService } from './services/navigation/navigation.service';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
@@ -45,7 +47,9 @@ const PIPES = [
     ...PIPES
   ],
   providers: [
-    ConfigService
+    ConfigService,
+    DeviceDetectorService,
+    NavigationService
   ]
 })
 export class CoreModule {}

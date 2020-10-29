@@ -3,7 +3,7 @@ import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { Screen } from '../screen.types';
 

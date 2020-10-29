@@ -7,7 +7,7 @@ import { NavigationComponent } from '../../shared/components/navigation/navigati
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list/components-list.component';

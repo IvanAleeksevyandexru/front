@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DeviceDetectorService } from './device-detector.service';
 import { LoadService } from 'epgu-lib';
-import { LoadServiceStub } from '../../../core/config/load-service-stub';
+import { LoadServiceStub } from '../../config/load-service-stub';
 
 xdescribe('DeviceDetectorService', () => {
   let service: DeviceDetectorService;

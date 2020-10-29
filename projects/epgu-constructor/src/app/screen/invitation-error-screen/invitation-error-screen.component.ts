@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationPayload } from '../../form-player/form-player.types';

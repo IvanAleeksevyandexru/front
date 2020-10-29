@@ -4,7 +4,7 @@ import { ModalService } from '../../../../modal/modal.service';
 import { UsePaymentsModalComponent } from '../../../../modal/components/use-payment-modal/use-payment-modal/use-payments-modal.component';
 import { UnusedPaymentsService } from './unused-payments.service';
 import { UnusedPaymentInterface } from './unused-payment.interface';
-import { NavigationService } from '../../../../shared/services/navigation/navigation.service';
+import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { ScreenService } from '../../../../screen/screen.service';
 
 @Component({

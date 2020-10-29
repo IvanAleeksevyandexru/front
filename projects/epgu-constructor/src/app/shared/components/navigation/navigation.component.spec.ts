@@ -4,11 +4,11 @@ import { ConfigService } from '../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../core/config/config.service.stub';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { NavigationService } from '../../services/navigation/navigation.service';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { ScreenContainerComponent } from '../screen-container/screen-container.component';
 import { NavigationComponent } from './navigation.component';
-import { DeviceDetectorService } from '../../services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../services/device-detector/device-detector.service.stub';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
 
 
 describe('NavigationComponent', () => {

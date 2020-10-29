@@ -6,7 +6,7 @@ import { SignatureApplicationComponent } from './signature-application.component
 import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
 import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
-import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
+import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { OutputHtmlComponent } from '../../../../../core/components/output-html/output-html.component';
 import { ConfigService } from '../../../../../core/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -20,8 +20,8 @@ import {
   ApplicantAnswersDto,
   ComponentDto,
 } from '../../../../../form-player/services/form-player-api/form-player-api.types';
-import { DeviceDetectorService } from '../../../../../shared/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../../../shared/services/device-detector/device-detector.service.stub';
+import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../../core/services/device-detector/device-detector.service.stub';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;

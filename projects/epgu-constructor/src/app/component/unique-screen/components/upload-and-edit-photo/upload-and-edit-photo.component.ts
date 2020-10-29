@@ -11,7 +11,7 @@ import { fromEvent, of, Subject, Subscription } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { DeviceDetectorService } from '../../../../shared/services/device-detector/device-detector.service';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ModalService } from '../../../../modal/modal.service';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';

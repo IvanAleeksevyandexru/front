@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ScreenService } from '../../../screen/screen.service';
-import { NavigationService } from '../../services/navigation/navigation.service';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
 
 @Component({
   selector: 'epgu-constructor-navigation',

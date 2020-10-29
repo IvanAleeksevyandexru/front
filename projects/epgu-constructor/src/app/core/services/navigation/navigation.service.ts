@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Navigation } from '../../../form-player/form-player.types';
 import { SmuEventsService } from 'epgu-lib';
-import { ConfigService } from '../../../core/config/config.service';
-import { MobilViewEvents } from '../../constants/redirect-event';
+import { ConfigService } from '../../config/config.service';
+import { MobilViewEvents } from '../../../shared/constants/redirect-event';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 
 /**

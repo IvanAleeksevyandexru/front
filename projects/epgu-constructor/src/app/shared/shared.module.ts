@@ -20,11 +20,9 @@ import { MaskHandlePipe } from './pipes/mask-handle/mask-handle.pipe';
 import { ToJsonPipe } from './pipes/toJson/to-json.pipe';
 import { CachedAnswersService } from './services/applicant-answers/cached-answers.service';
 import { PassportComponent } from './components/add-passport/passport.component';
-import { NavigationService } from './services/navigation/navigation.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
 import { ActionDirective } from './directives/action/action.directive';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
-import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 import { UtilsService } from './services/utils/utils.service';
 import { CoreModule } from '../core/core.module';
 
@@ -62,10 +60,8 @@ const DIRECTIVES = [
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   providers: [
-    NavigationService,
     CachedAnswersService,
     TerraByteApiService,
-    DeviceDetectorService,
     CurrencyPipe,
     UtilsService,
   ],

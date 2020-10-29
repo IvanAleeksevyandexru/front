@@ -9,15 +9,15 @@ import { PageNameComponent } from '../../../../../shared/components/base/page-na
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
-import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
+import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { ConfirmInfoInterface } from '../models/confirm-info.interface';
 import { TimerPipe } from '../pipes/timer.pipe';
 import { ConfirmComponent } from './confirm.component';
 import { TimerComponent } from './timer/timer.component';
-import { DeviceDetectorService } from '../../../../../shared/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../../../shared/services/device-detector/device-detector.service.stub';
+import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../../core/services/device-detector/device-detector.service.stub';
 
 
 describe('ConfirmMarriageComponent', () => {
