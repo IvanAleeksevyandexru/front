@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Screen } from '../screen.types';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
-import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import {

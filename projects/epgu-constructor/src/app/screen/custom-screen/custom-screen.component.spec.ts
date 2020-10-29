@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';

@@ -5,7 +5,7 @@ import { FormPlayerModule } from 'dist/epgu-constructor';
 import {EpguLibCommonModule, EpguLibModule, LoadService} from 'epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
 import { ConfigService } from '../../projects/epgu-constructor/src/app/core/config/config.service';
-import { UnsubscribeService } from '../../projects/epgu-constructor/src/app/shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../projects/epgu-constructor/src/app/core/services/unsubscribe/unsubscribe.service';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { AppService } from './app.service';

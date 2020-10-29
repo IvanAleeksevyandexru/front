@@ -7,7 +7,7 @@ import {
   NavigationOptions,
   NavigationPayload,
 } from '../../../../../../form-player/form-player.types';
-import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 

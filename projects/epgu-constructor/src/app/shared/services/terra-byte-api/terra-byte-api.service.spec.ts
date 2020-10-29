@@ -4,7 +4,7 @@ import { TerraByteApiService } from './terra-byte-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../core/config/config.service.stub';
-import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 
 describe('TerraByteApiService', () => {
   let service: TerraByteApiService;

@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent, LoaderComponent } from 'epgu-lib';
 import { ConfigService } from 'projects/epgu-constructor/src/app/core/config/config.service';
 import { ConfigServiceStub } from 'projects/epgu-constructor/src/app/core/config/config.service.stub';
-import { UnsubscribeService } from '../../../../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';

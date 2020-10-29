@@ -4,7 +4,7 @@ import { EmptyScreenComponent } from './empty-screen.component';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from '../current-answers.service';
 

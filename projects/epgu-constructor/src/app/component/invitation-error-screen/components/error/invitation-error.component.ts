@@ -7,7 +7,7 @@ import { finalize, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
 import { ValidationService } from '../../../custom-screen/services/validation.service';
 import { ScenarioDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-invitation-error',
