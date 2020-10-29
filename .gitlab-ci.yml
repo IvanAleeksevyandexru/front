@@ -101,12 +101,10 @@ Library-publish:
     - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@git.gosuslugi.local/luxoft/epgu2-form-frontend.git --follow-tags ${CI_COMMIT_REF_NAME}:${CI_COMMIT_BRANCH}
     - cd dist/epgu-constructor
     - npm version ${CURRENT_TAG:1}
-    - npm publish
     - if [ $CI_COMMIT_BRANCH == 'stage' ]; then npm publish --tag beta; else npm publish --tag stable; fi
   after_script:
     - git tag -d $CURRENT_TAG
     - git reset --hard HEAD~1
-    - git tag
   only:
     - master
     - stage
