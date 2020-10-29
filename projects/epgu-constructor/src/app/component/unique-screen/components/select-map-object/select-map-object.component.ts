@@ -29,6 +29,7 @@ import {
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { ModalService } from '../../../../shared/services/modal/modal.service';
 import { CommonModalComponent } from '../../../../shared/components/modal/common-modal/common-modal.component';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -66,6 +67,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
     private zone: NgZone,
+    private notificationService: NotificationService,
   ) {
     this.isMobile = HelperService.isMobile();
   }
@@ -73,6 +75,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   ngOnInit(): void {
     this.initVariable();
     this.subscribeToEmmitNextStepData();
+    this.notificationService.setNotification('ERROR');
   }
 
   ngAfterViewInit(): void {

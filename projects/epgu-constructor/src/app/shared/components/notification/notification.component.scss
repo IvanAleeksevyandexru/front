@@ -1,0 +1,9 @@
+@import "src/styles/core";
+
+.notification {
+  position: absolute;
+  min-width: 350px;
+  bottom: 0;
+  right: 0;
+  background: $color-white;
+}

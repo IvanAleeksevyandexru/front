@@ -40,6 +40,8 @@ import { ActionButtonComponent } from './components/action-button/action-button.
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 import { UtilsService } from './services/utils/utils.service';
 import { CoreModule } from '../core/core.module';
+import { NotificationService } from './services/notification/notification.service';
+import { NotificationComponent } from './components/notification/notification.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -61,6 +63,7 @@ const COMPONENTS = [
   WebcamShootComponent,
   PassportComponent,
   ActionButtonComponent,
+  NotificationComponent,
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe, ImgPrefixerPipe, SafePipe];
@@ -80,7 +83,7 @@ const DIRECTIVES = [
  * TODO: Разбить модуль, создать core домен для общих штук, оставить только специфик шарабл кейсы
  */
 @NgModule({
-  declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
+  declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES, NotificationComponent],
   providers: [
     NavigationService,
     CachedAnswersService,
@@ -90,6 +93,7 @@ const DIRECTIVES = [
     ConfigService,
     CurrencyPipe,
     UtilsService,
+    NotificationService,
   ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [WebcamModule, CoreModule],
