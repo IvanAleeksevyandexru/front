@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.2...v0.4.3) (2020-10-29)
+
+
+### Bug Fixes
+
+* поправил условие в if блоке [ref EPGUCORE-40088] ([dbe4e95](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/dbe4e95fbf96a4497dff2c6403bf940913e7ab24))
+
 ### [0.4.2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.17...v0.4.2) (2020-10-29)
 
 
