@@ -9,6 +9,8 @@ import { SafePipe } from './pipes/safe/safe.pipe';
 import { ConfigService } from './config/config.service';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 import { NavigationService } from './services/navigation/navigation.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HealthInterceptor } from '../form-player/interceptor/health-interceptor';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
@@ -51,6 +53,11 @@ const PIPES = [
     DeviceDetectorService,
     NavigationService,
     SmuEventsService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HealthInterceptor,
+      multi: true,
+    },
   ]
 })
 export class CoreModule {}

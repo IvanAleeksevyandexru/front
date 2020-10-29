@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
 import { HealthService } from 'epgu-lib';
-import { UtilsService } from '../shared/services/utils/utils.service';
+import { UtilsService } from '../../shared/services/utils/utils.service';
 
 @Injectable()
 export class HealthInterceptor implements HttpInterceptor {

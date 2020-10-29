@@ -10,8 +10,6 @@ import { FormPlayerConfigApiService } from './services/form-player-config-api/fo
 import { initApp } from './form-player.functions';
 import { CookieService } from 'ngx-cookie-service';
 import { ScreenModule } from '../screen/screen.module';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HealthInterceptor } from './interceptor/health-interceptor';
 import { CoreModule } from '../core/core.module';
 import { ModalModule } from '../modal/modal.module';
 
@@ -36,11 +34,6 @@ import { ModalModule } from '../modal/modal.module';
     SmuEventsService,
     ConfigService,
     ServiceDataService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HealthInterceptor,
-      multi: true,
-    },
     {
       provide: APP_INITIALIZER,
       useFactory: initApp,
