@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InfoScreenBodyComponent } from './info-screen-body.component';
+import { SharedModule } from '../../shared/shared.module';
 import { EpguLibModule } from 'epgu-lib';
-import { SharedModule } from '../../../../shared/shared.module';
+import { InvitationErrorComponent } from './components/error/invitation-error.component';
 
 const COMPONENTS = [
-  InfoScreenBodyComponent
+  InvitationErrorComponent,
 ];
 
 @NgModule({
@@ -14,8 +14,8 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     SharedModule,
-    EpguLibModule,
-  ]
+    EpguLibModule
+  ],
+  providers: []
 })
-export class InfoScreenBodyModule { }
-
+export class InvitationErrorScreenComponentsModule { }

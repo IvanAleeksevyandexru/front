@@ -6,6 +6,8 @@ import { ValidationService } from './services/validation.service';
 import { AddressHelperService } from './components-list/address-helper.service';
 import { ComponentListToolsService } from './components-list/services/component-list-tools.service';
 import { ComponentsListComponent } from './components-list/components-list.component';
+import { ToolsService } from '../shared/services/tools/tools.service';
+import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 
 const COMPONENTS = [
   ComponentsListComponent,
@@ -27,6 +29,8 @@ const COMPONENTS = [
     ValidationService,
     AddressHelperService,
     ComponentListToolsService,
+    ToolsService,
+    DictionaryApiService
   ]
 })
 export class CustomScreenComponentsModule { }

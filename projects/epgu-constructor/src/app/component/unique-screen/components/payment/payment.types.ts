@@ -1,4 +1,4 @@
-import { DictionaryOptions } from '../../../../screen/services/dictionary-api/dictionary-api.types';
+import { DictionaryOptions } from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 /**
  * Информация о нужном платеже

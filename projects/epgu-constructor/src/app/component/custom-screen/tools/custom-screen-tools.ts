@@ -1,5 +1,5 @@
 import { ListItem } from 'epgu-lib';
-import { DictionaryItem } from '../../../screen/services/dictionary-api/dictionary-api.types';
+import { DictionaryItem } from '../../shared/services/dictionary-api/dictionary-api.types';
 import {
   CustomComponent,
   CustomListDictionary,

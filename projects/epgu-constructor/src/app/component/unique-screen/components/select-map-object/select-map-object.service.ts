@@ -5,7 +5,7 @@ import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
 import { ConfigService } from '../../../../shared/config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
-import { DictionaryResponseForYMap, DictionaryYMapItem } from '../../../../screen/services/dictionary-api/dictionary-api.types';
+import { DictionaryResponseForYMap, DictionaryYMapItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 @Injectable()
 export class SelectMapObjectService {

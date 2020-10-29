@@ -14,6 +14,8 @@ import { TemporaryRegistrationAddrScreenModule } from './components/confirm-pers
 import { AddPassportModule } from './components/add-passport/add-passport.module';
 import { DocInputModule } from './components/doc-input/doc-input.module';
 import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
+import { ToolsService } from '../shared/services/tools/tools.service';
+import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 
 const COMPONENTS = [
   CountrySelectionComponent,
@@ -43,5 +45,9 @@ const COMPONENTS = [
     AddPassportModule,
     DocInputModule
   ],
+  providers: [
+    ToolsService,
+    DictionaryApiService
+  ]
 })
 export class ComponentScreenComponentsModule {}

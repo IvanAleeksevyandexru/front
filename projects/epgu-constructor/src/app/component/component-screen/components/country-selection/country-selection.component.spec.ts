@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CountrySelectionComponent } from './country-selection.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DictionaryApiServiceStub } from '../../../../screen/services/dictionary-api/dictionary-api.service.stub';
-import { DictionaryApiService } from '../../../../screen/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../shared/services/dictionary-api/dictionary-api.service.stub';
+import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { ModalService } from '../../../../shared/services/modal/modal.service';
 import { ModalServiceStub } from '../../../../shared/services/modal/modal.service.stub';
 

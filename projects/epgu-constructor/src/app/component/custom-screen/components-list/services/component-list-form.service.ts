@@ -19,7 +19,6 @@ import { ScenarioErrorsDto } from '../../../../form-player/services/form-player-
 import { UtilsService as utils } from '../../../../shared/services/utils/utils.service';
 import { isDropDown } from '../../tools/custom-screen-tools';
 import { ListItem } from 'epgu-lib';
-import { CustomScreenComponent } from '../../../../screen/custom-screen/custom-screen.component';
 import * as moment_ from 'moment';
 
 const moment = moment_;

@@ -16,6 +16,7 @@ import { ConfirmEmailModule } from './components/confirm-email/confirm-email.mod
 import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { WebcamService } from './services/webcam/webcam.service';
+import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
 const COMPONENTS = [RepeatableFieldsComponent];
@@ -58,6 +59,7 @@ const COMPONENTS = [RepeatableFieldsComponent];
   ],
   providers: [
     WebcamService,
+    DictionaryApiService
   ]
 })
 export class UniqueScreenComponentsModule {}

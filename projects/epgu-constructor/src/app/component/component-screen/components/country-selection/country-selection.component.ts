@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalService } from '../../../../shared/services/modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
-import { DictionaryApiService } from '../../../../screen/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
 import { ComponentScreenComponent } from '../../../../screen/component-screen/component-screen.component';
 

@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfigService } from '../../../../shared/config/config.service';
-import { ConfigServiceStub } from '../../../../shared/config/config.service.stub';
+import { ConfigService } from '../../../shared/config/config.service';
+import { ConfigServiceStub } from '../../../shared/config/config.service.stub';
 import { InfoScreenBodyComponent } from './info-screen-body.component';
 
 describe('InfoScreenBodyComponent', () => {

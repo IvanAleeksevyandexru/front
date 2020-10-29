@@ -16,7 +16,7 @@ import { HelperService, YaMapService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../shared/config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
-import { DictionaryApiService } from '../../../../screen/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
 import { IGeoCoordsResponse, IdictionaryFilter } from './select-map-object.interface';
 import { UtilsService } from '../../../../shared/services/utils/utils.service';
@@ -26,7 +26,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryOptions,
   DictionaryYMapItem,
-} from '../../../../screen/services/dictionary-api/dictionary-api.types';
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { ModalService } from '../../../../shared/services/modal/modal.service';
 import { CommonModalComponent } from '../../../../shared/components/modal/common-modal/common-modal.component';
 

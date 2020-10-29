@@ -2,9 +2,9 @@ import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DictionaryApiService } from './dictionary-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConfigService } from '../../../shared/config/config.service';
-import { ConfigServiceStub } from '../../../shared/config/config.service.stub';
-import { UnsubscribeService } from '../../../shared/services/unsubscribe/unsubscribe.service';
+import { ConfigService } from '../../../../shared/config/config.service';
+import { ConfigServiceStub } from '../../../../shared/config/config.service.stub';
+import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
 
 describe('DictionaryApiService', () => {
   let service: DictionaryApiService;
