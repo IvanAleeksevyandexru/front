@@ -6,6 +6,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { OutputHtmlComponent } from './components/output-html/output-html.component';
 import { ImgPrefixerPipe } from './pipes/img-prefixer/img-prefixer.pipe';
 import { SafePipe } from './pipes/safe/safe.pipe';
+import { ConfigService } from './config/config.service';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
@@ -42,6 +43,9 @@ const PIPES = [
     PerfectScrollbarModule,
     ...COMPONENTS,
     ...PIPES
+  ],
+  providers: [
+    ConfigService
   ]
 })
 export class CoreModule {}

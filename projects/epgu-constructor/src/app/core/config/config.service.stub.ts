@@ -21,10 +21,6 @@ export class ConfigServiceStub implements Config {
   _mocks = [];
   _mockUrl = '';
 
-  get production(): boolean {
-    return this._production;
-  }
-
   get billsApiUrl(): string {
     return this._billsApiUrl;
   }

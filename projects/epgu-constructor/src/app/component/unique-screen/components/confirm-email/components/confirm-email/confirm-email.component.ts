@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../shared/config/config.service';
+import { ConfigService } from '../../../../../../core/config/config.service';
 import {
   Navigation,
   NavigationOptions,

@@ -27,7 +27,7 @@ import { DeviceDetectorService } from '../../../../../../shared/services/device-
 import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { WebcamService } from '../../../../services/webcam/webcam.service';
 import { CompressionService } from '../../../upload-and-edit-photo/compression/compression.service';
-import { ConfigService } from '../../../../../../shared/config/config.service';
+import { ConfigService } from '../../../../../../core/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',

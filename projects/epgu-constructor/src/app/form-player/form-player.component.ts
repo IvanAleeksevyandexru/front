@@ -10,7 +10,7 @@ import {
 import { takeUntil } from 'rxjs/operators';
 import { LoadService } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
-import { ConfigService } from '../shared/config/config.service';
+import { ConfigService } from '../core/config/config.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ModalService } from '../modal/modal.service';

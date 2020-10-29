@@ -9,7 +9,7 @@ import { CachedAnswersService } from '../../shared/services/applicant-answers/ca
 import { CurrentAnswersService } from '../current-answers.service';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConfigService } from '../../shared/config/config.service';
+import { ConfigService } from '../../core/config/config.service';
 import { ServiceDataService } from '../../form-player/services/service-data/service-data.service';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { DeviceDetectorService } from '../../shared/services/device-detector/device-detector.service';

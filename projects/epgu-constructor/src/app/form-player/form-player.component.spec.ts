@@ -2,7 +2,7 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EpguLibModule, LoadService } from 'epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { LoadServiceStub } from '../shared/config/load-service-stub';
+import { LoadServiceStub } from '../core/config/load-service-stub';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerModule } from './form-player.module';
 import { ComponentScreenComponent } from '../screen/component-screen/component-screen.component';

@@ -4,8 +4,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ValidationService } from 'epgu-lib';
 import { UnsubscribeService } from 'projects/epgu-constructor/src/app/shared/services/unsubscribe/unsubscribe.service';
-import { ConfigService } from '../../../../shared/config/config.service';
-import { ConfigServiceStub } from '../../../../shared/config/config.service.stub';
+import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
 import { ImgPrefixerPipe } from '../../../../core/pipes/img-prefixer/img-prefixer.pipe';
 import { InvitationErrorComponent } from './invitation-error.component';
 

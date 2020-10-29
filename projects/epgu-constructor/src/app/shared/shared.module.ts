@@ -1,7 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { WebcamModule } from 'ngx-webcam';
-import { ConfigService } from './config/config.service';
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';
 import { HelperTextComponent } from './components/base/helper-text/helper-text.component';
 import { LabelComponent } from './components/base/label/label.component';
@@ -67,7 +66,6 @@ const DIRECTIVES = [
     CachedAnswersService,
     TerraByteApiService,
     DeviceDetectorService,
-    ConfigService,
     CurrencyPipe,
     UtilsService,
   ],

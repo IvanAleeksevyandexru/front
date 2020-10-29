@@ -1,8 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ConfigService } from '../../../../../../../../shared/config/config.service';
-import { ConfigServiceStub } from '../../../../../../../../shared/config/config.service.stub';
+import { ConfigService } from '../../../../../../../../core/config/config.service';
+import { ConfigServiceStub } from '../../../../../../../../core/config/config.service.stub';
 import { UnsubscribeService } from '../../../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';

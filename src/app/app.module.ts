@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormPlayerModule } from 'dist/epgu-constructor';
 import {EpguLibCommonModule, EpguLibModule, LoadService} from 'epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
-import { ConfigService } from '../../projects/epgu-constructor/src/app/shared/config/config.service';
+import { ConfigService } from '../../projects/epgu-constructor/src/app/core/config/config.service';
 import { UnsubscribeService } from '../../projects/epgu-constructor/src/app/shared/services/unsubscribe/unsubscribe.service';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';

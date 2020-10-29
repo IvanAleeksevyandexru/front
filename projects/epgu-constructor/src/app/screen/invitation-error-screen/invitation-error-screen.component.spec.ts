@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
-import { ConfigService } from '../../shared/config/config.service';
-import { ConfigServiceStub } from '../../shared/config/config.service.stub';
+import { ConfigService } from '../../core/config/config.service';
+import { ConfigServiceStub } from '../../core/config/config.service.stub';
 import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';

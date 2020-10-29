@@ -25,7 +25,7 @@ import {
   WebcamEvent,
 } from '../../../../shared/components/webcam-shoot/webcamevents';
 import { CompressionService } from './compression/compression.service';
-import { ConfigService } from '../../../../shared/config/config.service';
+import { ConfigService } from '../../../../core/config/config.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';
 import { ConfirmationModalComponent } from '../../../../modal/components/confirmation-modal/confirmation-modal.component';

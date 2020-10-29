@@ -3,7 +3,7 @@ import { ModalBaseComponent } from '../../../../../modal/components/modal-base/m
 import { ConfirmationModalBaseButton } from '../../../../../modal/components/confirmation-modal/confirmation-modal-base/confirmation-modal-base.interface';
 import { uploadPhotoElemId } from '../upload-and-edit-photo.constant';
 import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
-import { ConfigService } from '../../../../../shared/config/config.service';
+import { ConfigService } from '../../../../../core/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-photo-requirements-modal',

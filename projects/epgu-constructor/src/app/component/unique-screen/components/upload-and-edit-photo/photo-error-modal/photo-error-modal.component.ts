@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ModalBaseComponent } from '../../../../../modal/components/modal-base/modal-base.component';
 import { imageErrorText } from '../upload-and-edit-photo.constant';
 import { ImageErrorText } from '../upload-and-edit-photo.model';
-import { ConfigService } from '../../../../../shared/config/config.service';
+import { ConfigService } from '../../../../../core/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-photo-error-modal',

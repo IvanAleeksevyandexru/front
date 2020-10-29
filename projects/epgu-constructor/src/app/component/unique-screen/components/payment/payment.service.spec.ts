@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { PaymentService } from './payment.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConfigService } from '../../../../shared/config/config.service';
-import { ConfigServiceStub } from '../../../../shared/config/config.service.stub';
+import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
