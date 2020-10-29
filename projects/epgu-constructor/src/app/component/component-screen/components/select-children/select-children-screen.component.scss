@@ -1,0 +1,77 @@
+@import '../../../../../styles/core/index';
+
+.nav {
+  @include navigation-mt();
+}
+
+.select-children-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  &__card {
+    background-color: $color-white;
+    box-shadow: 0px 24px 48px $color-box-shadow;
+    border-radius: 12px;
+    &:not(:first-of-type) {
+      margin-top: 16px;
+    }
+  }
+  &__form {
+    margin-top: 32px;
+  }
+  &__action {
+    margin-top: 24px;
+  }
+}
+
+.card {
+  &__wrapper {
+    padding: 24px;
+  }
+  &__header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  &__title {
+    font-size: 18px;
+    font-weight: $fw-bold;
+    font-family: $font-main;
+  }
+  &__close {
+    margin-left: auto;
+  }
+  &__content {
+    margin-top: 24px;
+  }
+  &__select {
+    & select {
+      width: 100%;
+    }
+  }
+  & .button-close {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+    background-color: transparent;
+    transform: translateX(2px);
+  }
+}
+
+.title {
+  text-align: center;
+  &::ng-deep span {
+    color: $color-gray;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  @include tablets-up {
+    margin-top: 32px;
+  }
+}

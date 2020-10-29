@@ -1,0 +1,22 @@
+@import '../../../../../../../styles/core/index';
+
+:host {
+  width: 100%;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.confirm-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  width: 100%;
+  padding: 20px;
+  @include shadow-main();
+
+}
+
+.btn--light:hover .icon-arrow {
+  background-image: url('../../../../../../../assets/icons/svg/arrow-forward.svg');
+}
