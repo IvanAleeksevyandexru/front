@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CachedAnswers } from '../../../screen/screen.types';
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { UniqueScreenComponentTypes } from '../../../screen/unique-screen/unique-screen.types';
+import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 
 // TODO нужно утащить на backend (HARDCODE from backend)
 export const componentsNoCache: Array<string> = [

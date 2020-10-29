@@ -8,7 +8,7 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenStore, ScreenTypes } from '../screen.types';
-import { InvitationErrorComponent } from './components/error/invitation-error.component';
+import { InvitationErrorComponent } from '../../component/invitation-error-screen/components/error/invitation-error.component';
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
 import { DeviceDetectorService } from '../../shared/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../shared/services/device-detector/device-detector.service.stub';

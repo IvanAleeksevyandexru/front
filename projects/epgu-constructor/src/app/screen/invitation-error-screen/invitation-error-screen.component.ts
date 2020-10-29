@@ -5,7 +5,7 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import { InvitationErrorScreenComponentTypes } from './invitation-error-screen.types';
+import { InvitationErrorScreenComponentTypes } from '../../component/invitation-error-screen/invitation-error-screen-components.types';
 
 @Component({
   selector: 'epgu-constructor-invitation-screen',
