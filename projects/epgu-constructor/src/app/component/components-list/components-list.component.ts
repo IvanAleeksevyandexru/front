@@ -9,14 +9,14 @@ import {
   CustomScreenComponentTypes,
   CustomListReferenceData,
   CustomListDropDowns,
-} from '../custom-screen-components.types';
-import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
-import { ConfigService } from '../../../core/config/config.service';
+} from './components-list.types';
+import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
+import { ConfigService } from '../../core/config/config.service';
 import { ComponentListFormService } from './services/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { ScenarioErrorsDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import { UtilsService as utils } from '../../shared/services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',

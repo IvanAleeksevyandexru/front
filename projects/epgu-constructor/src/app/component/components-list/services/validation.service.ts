@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { CustomComponent, CustomComponentAttrValidation, CustomScreenComponentTypes } from '../custom-screen-components.types';
+import { CustomComponent, CustomComponentAttrValidation, CustomScreenComponentTypes } from '../components-list.types';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { REQUIRED_FIELD, INVALID_FORMAT_FIELD } from '../../../shared/constants/helper-texts';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
-import { ComponentListToolsService } from '../components-list/services/component-list-tools.service';
+import { ComponentListToolsService } from './component-list-tools.service';
 
 @Injectable()
 export class ValidationService {

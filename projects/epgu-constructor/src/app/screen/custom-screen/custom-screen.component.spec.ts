@@ -10,9 +10,9 @@ import { CachedAnswersService } from '../../shared/services/applicant-answers/ca
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
-import { ComponentsListComponent } from '../../component/custom-screen/components-list/components-list.component';
+import { ComponentsListComponent } from '../../component/components-list/components-list.component';
 import { CustomScreenComponent } from './custom-screen.component';
-import { ValidationService } from '../../component/custom-screen/services/validation.service';
+import { ValidationService } from '../../component/components-list/services/validation.service';
 import { CurrentAnswersService } from '../current-answers.service';
 
 xdescribe('CustomScreenComponent', () => {

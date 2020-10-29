@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomScreenComponent } from './custom-screen.component';
-import { CustomScreenComponentsModule } from '../../component/custom-screen/custom-screen-components.module';
+import { ComponentsListModule } from '../../component/components-list/components-list.module';
 import { CoreModule } from '../../core/core.module';
 
 const COMPONENTS = [
@@ -18,7 +18,7 @@ const COMPONENTS = [
   imports: [
     CoreModule,
     SharedModule,
-    CustomScreenComponentsModule
+    ComponentsListModule
   ],
 })
 export class CustomScreenModule { }

@@ -4,19 +4,19 @@ import {
   CustomListDictionaries,
   CustomListDropDowns,
   CustomListGenericData, CustomListReferenceData, CustomScreenComponentTypes
-} from '../../custom-screen-components.types';
+} from '../components-list.types';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import {
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
   likeDictionary
-} from '../../tools/custom-screen-tools';
-import { DictionaryOptions, DictionaryResponse } from '../../../shared/services/dictionary-api/dictionary-api.types';
+} from './custom-screen-tools';
+import { DictionaryOptions, DictionaryResponse } from '../../shared/services/dictionary-api/dictionary-api.types';
 import { map, tap } from 'rxjs/operators';
-import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../shared/services/dictionary-api/dictionary-api.service';
 import { ComponentListToolsService } from './component-list-tools.service';
-import { UtilsService as utils } from '../../../../shared/services/utils/utils.service';
+import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
 
 @Injectable()
 export class ComponentListRepositoryService {

@@ -5,7 +5,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
-import { ValidationService } from '../../../custom-screen/services/validation.service';
+import { ValidationService } from '../../../components-list/services/validation.service';
 import { ScenarioDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 

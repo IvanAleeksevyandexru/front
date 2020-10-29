@@ -4,6 +4,7 @@ import { CachedAnswersService } from '../../../../shared/services/applicant-answ
 import { SharedModule } from '../../../../shared/shared.module';
 import { SelectChildrenScreenComponent } from './select-children-screen.component';
 import { CoreModule } from '../../../../core/core.module';
+import { ComponentsListModule } from '../../../components-list/components-list.module';
 
 const COMPONENTS = [ SelectChildrenScreenComponent ];
 
@@ -12,6 +13,7 @@ const COMPONENTS = [ SelectChildrenScreenComponent ];
   imports: [
     CoreModule,
     SharedModule,
+    ComponentsListModule
   ],
   exports: [ ...COMPONENTS ],
   providers: [
