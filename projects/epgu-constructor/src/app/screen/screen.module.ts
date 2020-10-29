@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { InvitationErrorScreenModule } from './invitation-error-screen/invitation-error-screen.module';
 import { UniqueScreenModule } from './unique-screen/unique-screen.module';
@@ -19,6 +18,7 @@ import { ScreenResolverComponent } from './screen-resolver/screen-resolver.compo
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenService } from './screen.service';
 import { CycledFieldsService } from './services/cycled-fields/cycled-fields.service';
+import { CoreModule } from '../core/core.module';
 
 /**
  * Домен скринов. Сдесь храниться всё что связанно со скринами и их обязками.
@@ -28,7 +28,7 @@ import { CycledFieldsService } from './services/cycled-fields/cycled-fields.serv
     ScreenResolverComponent
   ],
   imports: [
-    CommonModule,
+    CoreModule,
     ComponentScreenModule,
     CustomScreenModule,
     EmptyScreenModule,
