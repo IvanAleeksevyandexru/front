@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.6...v0.4.7) (2020-10-29)
+
+
+### Bug Fixes
+
+* возможный фикс принудительного удаления тэга в after_script [ref EPGUCORE-40088] ([6686ad7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6686ad719310d1728c196747965c849a3a6e2939))
+
 ### [0.4.6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.5...v0.4.6) (2020-10-29)
 
 
