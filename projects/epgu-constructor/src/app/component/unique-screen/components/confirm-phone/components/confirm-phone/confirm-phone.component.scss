@@ -1,0 +1,43 @@
+@import "../../../../../../../styles/core/index";
+
+.nav {
+  @include navigation-mt();
+}
+
+.form {
+  &__item {
+    display: block;
+    margin: 0 auto;
+    width: 175px;
+    &::ng-deep input {
+      letter-spacing: 8px;
+      text-align: center;
+    }
+  }
+  &__error {
+    color: $color-gosred;
+    text-align: center;
+  }
+}
+
+.form-hint {
+  width: 269px;
+  @include typ-plain-small();
+  color: $color-text-helper;
+  text-align: center;
+  margin: 16px auto 0;
+  &__timer {
+    color: $color-black;
+  }
+}
+
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+  @include tablets-up {
+    margin-top: 32px;
+  }
+}

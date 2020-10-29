@@ -1,4 +1,4 @@
-import { IdictionaryFilter } from '../../../screen/unique-screen/components/select-map-object/select-map-object.interface';
+import { IdictionaryFilter } from '../../../component/unique-screen/components/select-map-object/select-map-object.interface';
 import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
 import { DictionaryFilters, DictionaryItem } from '../../../screen/services/dictionary-api/dictionary-api.types';
 import { ListItem } from 'epgu-lib';

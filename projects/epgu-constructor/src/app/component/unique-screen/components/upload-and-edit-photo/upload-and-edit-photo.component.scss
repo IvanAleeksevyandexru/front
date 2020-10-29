@@ -1,0 +1,156 @@
+@import "../../../../../styles/core/index";
+
+.screen-container::ng-deep {
+  .container {
+    @include phones-up {
+      padding: 0;
+    }
+  }
+}
+
+.photo {
+  display: flex;
+
+  @include phones-down {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  &--flex-column {
+    @include phones-down {
+      flex-direction: column;
+    }
+  }
+
+  &__uploading-container {
+    height: 100%;
+    background-color: $color-white;
+    border-radius: 8px;
+    flex-basis: 344px;
+    padding: 32px;
+
+    @include phones-down {
+      flex-basis: 100%;
+      padding: 24px;
+      border-radius: 12px;
+    }
+
+    .file-over {
+      opacity: .7;
+    }
+  }
+
+  &__cropped-image {
+    border-radius: 8px;
+    width: 100%;
+
+    @include phones-down {
+      border-radius: 12px;
+    }
+  }
+
+  &__uploading-area {
+    position: relative;
+  }
+
+  &__text {
+    flex: 1;
+
+    @include phones-up {
+      padding-left: 32px;
+    }
+  }
+
+  &__uploading-inner-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    flex-direction: column;
+    text-align: center;
+    width: 200px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @include tablets-down {
+      width: 188px;
+    }
+  }
+
+  &__uploading-text {
+    color: $color-text-helper;
+    margin-bottom: 12px;
+
+    @include typ-plain-text;
+
+    @include tablets-up {
+      width: 240px;
+    }
+
+    @include tablets-down {
+      margin-bottom: 16px;
+    }
+
+    &_mt-68 {
+      margin-top: 68px;
+    }
+
+    &_mt-80 {
+      margin-top: 80px;
+    }
+  }
+
+  &__uploading-button {
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+    padding: 0 24px;
+    color: $color-gosblue;
+    cursor: pointer;
+    height: 52px;
+    border: 2px solid $color-gosblue;
+    border-radius: 8px;
+    background-color: $color-white;
+    margin-bottom: 18px;
+    width: 100%;
+
+    img {
+      margin-right: auto;
+    }
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}
+
+.photo-footer {
+  &::ng-deep {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+
+    @include phones-down {
+      flex-direction: column;
+    }
+
+    button {
+      height: 52px;
+      width: 175px;
+
+      @include phones-down {
+        width: 100%;
+      }
+    }
+  }
+
+  &__button:first-child {
+    @include phones-up {
+      margin-right: 32px;
+    }
+
+    @include phones-down {
+      margin-bottom: 15px;
+    }
+  }
+}
