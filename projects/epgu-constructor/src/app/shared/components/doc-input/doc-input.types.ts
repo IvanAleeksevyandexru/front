@@ -1,5 +1,5 @@
 import { AbstractControl } from '@angular/forms';
-import { CustomComponentAttrValidation } from '../../../screen/custom-screen/custom-screen.types';
+import { CustomComponentAttrValidation } from '../../types/custom-screen-components.types';
 
 interface DocInputControl extends Partial<AbstractControl> {
   value: DocInputComponentData;

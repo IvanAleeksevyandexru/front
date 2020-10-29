@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ComponentItemComponent } from './component-item.component';
 import { AbstractControl, FormBuilder } from '@angular/forms';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { formattedError } from '@angular/compiler';
 
 describe('ComponentItemComponent', () => {

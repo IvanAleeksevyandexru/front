@@ -6,7 +6,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
 import { SharedModule } from '../../../../shared/shared.module';
 import { SelectChildrenScreenComponent } from './select-children-screen.component';
-import { ComponentsListModule } from '../../../../components-list/components-list.module';
+import { ComponentsListModule } from '../../../components-list/components-list.module';
 
 const COMPONENTS = [ SelectChildrenScreenComponent ];
 

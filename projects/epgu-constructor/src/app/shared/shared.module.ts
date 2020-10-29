@@ -42,7 +42,7 @@ import { UtilsService } from './services/utils/utils.service';
 import { CoreModule } from '../core/core.module';
 import { DocInputComponent } from './components/doc-input/doc-input.component';
 import { InputErrorComponent } from './components/input-error/input-error.component';
-import { ValidationService } from './services/validation/validation.service';
+import { ValidationService } from './services/validation/services/validation.service';
 
 const COMPONENTS = [
   PageNameComponent,

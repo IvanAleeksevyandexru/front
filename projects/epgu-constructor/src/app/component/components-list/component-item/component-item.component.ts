@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
-import { CustomScreenComponentTypes } from '../../screen/custom-screen/custom-screen.types';
+import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
+import { CustomScreenComponentTypes } from '../../../shared/types/custom-screen-components.types';
 
 @Component({
   selector: 'epgu-constructor-component-item',

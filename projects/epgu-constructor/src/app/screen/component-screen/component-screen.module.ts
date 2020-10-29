@@ -4,7 +4,7 @@ import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../shared/shared.module';
 import { ComponentScreenComponent } from './component-screen.component';
 import { ComponentScreenComponentsModule } from '../../component/component-screen/component-screen-components.module';
-import { ComponentsListModule } from '../../components-list/components-list.module';
+import { ComponentsListModule } from '../../component/components-list/components-list.module';
 
 
 const COMPONENTS = [

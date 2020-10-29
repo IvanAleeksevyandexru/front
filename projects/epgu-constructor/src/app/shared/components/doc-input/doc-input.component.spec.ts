@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DocInputComponent } from './doc-input.component';
-import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { SharedModule } from '../../shared.module';
-import { ComponentsListModule } from '../../../components-list/components-list.module';
+import { ComponentsListModule } from '../../../component/components-list/components-list.module';
 
 xdescribe('DocInputComponent', () => {
   let component: DocInputComponent;

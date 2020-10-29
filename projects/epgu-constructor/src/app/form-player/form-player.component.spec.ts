@@ -17,7 +17,7 @@ import { FormPlayerServiceStub } from './services/form-player/form-player.servic
 import { UnsubscribeService } from '../shared/services/unsubscribe/unsubscribe.service';
 import { ModalContainerComponent } from '../shared/components/modal/modal-container/modal-container.component';
 import { NavigationService } from '../shared/services/navigation/navigation.service';
-import { ComponentsListComponent } from './components-list/components-list.component';
+import { ComponentsListComponent } from '../component/components-list/components-list.component';
 
 export const epguLibModule = EpguLibModule.forRoot();
 

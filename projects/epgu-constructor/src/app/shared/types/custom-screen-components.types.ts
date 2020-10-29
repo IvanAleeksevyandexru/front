@@ -1,8 +1,8 @@
 import { ListItem } from 'epgu-lib';
-import { DictionaryItem, DictionaryResponse } from '../shared/services/dictionary-api/dictionary-api.types';
+import { DictionaryItem, DictionaryResponse } from '../../component/shared/services/dictionary-api/dictionary-api.types';
 import { ComponentBase } from '../../screen/screen.types';
 import { DisplayDto } from '../../form-player/services/form-player-api/form-player-api.types';
-import { TextTransform } from '../../shared/types/textTransform';
+import { TextTransform } from './textTransform';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',

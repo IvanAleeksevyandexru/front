@@ -5,11 +5,11 @@ import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
 import { ValidationShowOn } from 'epgu-lib';
 
-import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 
 import { DocInputControl, DocInputField, DocInputFormFields } from './doc-input.types';
-import { ComponentListFormService } from '../../../components-list/services/component-list-form.service';
+import { ComponentListFormService } from '../../../component/components-list/services/component-list-form.service';
 
 const moment = moment_;
 

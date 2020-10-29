@@ -4,10 +4,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../config/config.service';
-import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { ScenarioDto } from '../../../../services/api/form-player-api/form-player-api.types';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { ConfigService } from '../../../../shared/config/config.service';
+import { ValidationService } from '../../../../shared/services/validation/services/validation.service';
+import { ScenarioDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-invitation-error',

@@ -6,7 +6,7 @@ import {
   CustomComponentRef,
   CustomComponentRefRelation,
   CustomScreenComponentTypes
-} from '../custom-screen-components.types';
+} from '../../../shared/types/custom-screen-components.types';
 
 function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
   return {
