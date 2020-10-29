@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TemporaryRegistrationAddrScreenComponent } from './temporary-registration-addr-screen.component';
 import { SubComponentsModule } from '../../sub-components/sub-components.module';
 import { TemporaryRegistrationAddrComponent } from './components/temporary-registration-addr/temporary-registration-addr.component';
-import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../../../../../shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CoreModule } from '../../../../../../core/core.module';
 
 const COMPONENTS = [
   TemporaryRegistrationAddrScreenComponent,
@@ -16,12 +14,9 @@ const COMPONENTS = [
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   imports: [
-    CommonModule,
+    CoreModule,
     SharedModule,
     SubComponentsModule,
-    EpguLibModule,
-    FormsModule,
-    ReactiveFormsModule
   ]
 })
 export class TemporaryRegistrationAddrScreenModule { }

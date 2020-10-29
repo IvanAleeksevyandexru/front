@@ -1,0 +1,25 @@
+@import "../../../../styles/core/index";
+
+// TODO Избавиться от ng-deep
+:host::ng-deep {
+  .conf-modal__text {
+    white-space: pre-line;
+    font-size: 16px;
+    line-height: 24px;
+
+    div.photoSimple {
+      p {
+        @include typ-plain-small();
+        margin-top: 10px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      p.large-m {
+        margin-bottom: $screen-pad-p;
+      }
+    }
+  }
+}
+
+

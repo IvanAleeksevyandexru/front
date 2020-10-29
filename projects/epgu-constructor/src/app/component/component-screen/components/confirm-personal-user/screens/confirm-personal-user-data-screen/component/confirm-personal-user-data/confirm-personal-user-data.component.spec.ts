@@ -1,6 +1,6 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfigService } from '../../../../../../../../shared/config/config.service';
-import { ConfigServiceStub } from '../../../../../../../../shared/config/config.service.stub';
+import { ConfigService } from '../../../../../../../../core/config/config.service';
+import { ConfigServiceStub } from '../../../../../../../../core/config/config.service.stub';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ToJsonPipe } from '../../../../../../../../shared/pipes/toJson/to-json.pipe';
 import { ConfirmUserData } from '../../confirm-personal-user-data-screen.types';

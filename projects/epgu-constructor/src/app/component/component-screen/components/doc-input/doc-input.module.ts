@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../../../shared/shared.module';
 import { DocInputComponent } from './doc-input.component';
+import { CoreModule } from '../../../../core/core.module';
 
 const COMPONENTS = [ DocInputComponent ];
 
 @NgModule({
   declarations: [ ...COMPONENTS ],
   imports: [
-    CommonModule,
-    EpguLibModule,
+    CoreModule,
     SharedModule,
   ],
   exports: [ ...COMPONENTS ]

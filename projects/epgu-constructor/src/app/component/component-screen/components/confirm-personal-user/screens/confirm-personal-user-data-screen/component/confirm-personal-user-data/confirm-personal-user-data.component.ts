@@ -5,7 +5,7 @@ import {
   ConfirmUserData,
   ConfirmUserDataState,
 } from '../../confirm-personal-user-data-screen.types';
-import { ConfigService } from '../../../../../../../../shared/config/config.service';
+import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ActionType } from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
 

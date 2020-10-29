@@ -2,8 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
+import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import {
   NavigationOptions,
   NavigationPayload,

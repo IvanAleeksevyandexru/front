@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../shared/shared.module';
 import { InfoScreenBodyModule } from './info-screen-body/info-screen-body.module';
 import { InfoScreenComponent } from './info-screen.component';
+import { CoreModule } from '../../core/core.module';
 
 const COMPONENT = [
   InfoScreenComponent
@@ -13,10 +12,9 @@ const COMPONENT = [
   declarations: [...COMPONENT],
   exports: [...COMPONENT],
   imports: [
-    CommonModule,
+    CoreModule,
     SharedModule,
     InfoScreenBodyModule,
-    EpguLibModule,
   ],
   providers: []
 })

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal.component';
-import { ConfigService } from '../../../../../shared/config/config.service';
+import { ConfigService } from '../../../../../core/config/config.service';
 
 xdescribe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;

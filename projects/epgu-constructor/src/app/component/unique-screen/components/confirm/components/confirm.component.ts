@@ -6,7 +6,7 @@ import { ConfirmInfoInterface } from '../models/confirm-info.interface';
 import { TimerInterface } from '../models/timer.interface';
 import { createTimer } from './confirm.helper';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-confirm',
