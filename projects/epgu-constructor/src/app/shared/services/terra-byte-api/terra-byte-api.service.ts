@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TerraFileOptions, TerraUploadFileOptions } from './terra-byte-api.types';
 import { Observable } from 'rxjs';
-import { TerraUploadedFile } from '../../../screen/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { TerraUploadedFile } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { ConfigService } from '../../config/config.service';
 
 /**

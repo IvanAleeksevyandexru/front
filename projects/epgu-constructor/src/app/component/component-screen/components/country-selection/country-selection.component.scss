@@ -1,0 +1,14 @@
+@import "../../../../../styles/core/index";
+
+:host::ng-deep {
+  .country-apostil {
+    &__warning {
+      margin-top: 19px;
+    }
+
+    &__minsk-convention-link {
+      cursor: pointer;
+    }
+  }
+}
+

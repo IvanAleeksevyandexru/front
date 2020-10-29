@@ -1,0 +1,29 @@
+@import "../../../../../styles/core/index";
+
+.doc-input-screen {
+
+  &__inputs-row {
+    display: flex;
+    margin: 0 -10px;
+  }
+
+  &__input {
+    flex: 1 1 auto;
+    margin: 10px;
+
+    &--data {
+      width: 50%;
+
+      @include phones-down {
+        width: 100%;
+      }
+    }
+  }
+
+  &__label {
+    display: block;
+    margin: 7px 0;
+    text-align: left;
+    color: $color-gray;
+  }
+}
