@@ -8,13 +8,13 @@
 
 .confirm-btn {
   display: flex;
+  border: 0;
   align-items: center;
   justify-content: space-between;
   text-align: left;
   width: 100%;
   padding: 20px;
   @include shadow-main();
-
 }
 
 .btn--light:hover .icon-arrow {

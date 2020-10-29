@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
@@ -7,17 +9,26 @@ import {
   NavigationPayload,
 } from '../../../../../../form-player/form-player.types';
 
+interface CodeFormGroup {
+  codeMask: Array<RegExp>;
+  codeValue: string | number;
+  codeIndexElement: number;
+}
+
 @Component({
   selector: 'epgu-constructor-confirm-phone',
   templateUrl: './confirm-phone.component.html',
   styleUrls: ['./confirm-phone.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ConfirmPhoneComponent {
+export class ConfirmPhoneComponent implements OnInit {
+  @ViewChild('codeGroup') codeGroupElement: ElementRef;
   // <-- variable
   enteredCode: number;
   timer: number;
   isTimerShow = true;
+
+  codeFormArray = new FormArray([]);
 
   // <-- constant
   correctCodeLength = 4;
@@ -32,10 +43,15 @@ export class ConfirmPhoneComponent {
     public screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
     private navigationService: NavigationService,
+    private fb: FormBuilder,
   ) {
     this.characterMask = this.screenService.component.attrs.characterMask;
     this.codeLength = this.screenService.component.attrs.codeLength;
     this.mask = new Array(this.codeLength).fill(new RegExp(this.characterMask));
+  }
+
+  ngOnInit(): void {
+    this.initCodeFormArray();
   }
 
   sendCodeAgain() {
@@ -46,18 +62,16 @@ export class ConfirmPhoneComponent {
   }
 
   enterCode(code: any) {
-    this.enteredCode = code;
-
     if (String(code).length === this.codeLength) {
-      this.navigationService.nextStep.next({ payload: this.getComponentState() });
+      this.navigationService.nextStep.next({ payload: this.getComponentState(code) });
     }
   }
 
-  getComponentState(): NavigationPayload {
+  getComponentState(code: any): NavigationPayload {
     return {
       [this.screenService.component.id]: {
         visited: true,
-        value: String(this.enteredCode),
+        value: String(code),
       },
     };
   }
@@ -68,5 +82,49 @@ export class ConfirmPhoneComponent {
     } else {
       this.isTimerShow = false;
     }
+  }
+
+  private initCodeFormArray(): void {
+    for (let i = 0; i < this.codeLength; i += 1) {
+      const codeFormGroup: FormGroup = this.fb.group({
+        codeMask: [new Array(1).fill(this.mask[i])],
+        codeValue: [null],
+        codeIndexElement: [i],
+      });
+      this.codeFormArray.push(codeFormGroup);
+
+      codeFormGroup.valueChanges
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe((next: CodeFormGroup) => {
+          const code: any = this.codeFormArray
+            .getRawValue()
+            .map((elem: CodeFormGroup) => elem.codeValue)
+            .join('');
+
+          if (next.codeValue) {
+            this.navigateToControl(next);
+          }
+
+          this.enterCode(code);
+        });
+    }
+  }
+
+  private getInput(element: HTMLElement): HTMLElement {
+    return element.getElementsByTagName('input')[0];
+  }
+
+  private focusToElement(element: HTMLElement): void {
+    setTimeout(() => element.focus(), 0);
+  }
+
+  private navigateToControl(obj: CodeFormGroup): void {
+    const isLastIndex: boolean = this.codeLength - 1 === obj.codeIndexElement;
+    const nextIndex: number = isLastIndex ? obj.codeIndexElement : obj.codeIndexElement + 1;
+    const input: HTMLElement = this.getInput(
+      this.codeGroupElement.nativeElement.children[nextIndex],
+    );
+
+    this.focusToElement(input);
   }
 }

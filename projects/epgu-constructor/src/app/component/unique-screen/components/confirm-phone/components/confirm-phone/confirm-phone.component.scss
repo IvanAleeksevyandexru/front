@@ -5,12 +5,17 @@
 }
 
 .form {
+  &__group {
+    display: flex;
+    justify-content: center;
+  }
   &__item {
     display: block;
-    margin: 0 auto;
-    width: 175px;
+    margin: 4px;
+    width: 48px;
     &::ng-deep input {
-      letter-spacing: 8px;
+      height: 52px;
+      // letter-spacing: 8px;
       text-align: center;
     }
   }

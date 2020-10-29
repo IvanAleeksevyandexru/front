@@ -10,6 +10,13 @@
   color: $color-text-helper;
 }
 
+.title {
+  @include typ-h5;
+
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
 .fileupload__wrapper {
   margin-bottom: 24px;
   box-sizing: border-box;
@@ -96,6 +103,7 @@ input[type="file"] {
   background-color: $color-white;
   cursor: pointer;
   margin-left: 12px;
+  border: 0;
 
   &:focus {
     outline: 0;
