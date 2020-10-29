@@ -1,5 +1,5 @@
-@import "src/styles/core/fonts";
-@import "src/styles/core/palettes";
+@import 'src/styles/core/fonts';
+@import 'src/styles/core/palettes';
 
 .data__group:not(:last-child) {
   margin-bottom: 16px;
@@ -19,7 +19,7 @@
   margin-bottom: 16px;
 
   &__label {
-    color: rgba($storm-gray, .5);
+    color: rgba($storm-gray, 0.5);
     margin-bottom: 4px;
   }
 }
@@ -37,6 +37,7 @@
 
 .btn-edit {
   cursor: pointer;
+  border: 0;
   display: flex;
   align-items: center;
   font-size: $font-sm;
