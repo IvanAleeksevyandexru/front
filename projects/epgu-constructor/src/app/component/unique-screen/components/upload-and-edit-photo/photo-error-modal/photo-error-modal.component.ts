@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalBaseComponent } from '../../../../../shared/components/modal/modal-base/modal-base.component';
+import { ModalBaseComponent } from '../../../../../modal/components/modal-base/modal-base.component';
 import { imageErrorText } from '../upload-and-edit-photo.constant';
 import { ImageErrorText } from '../upload-and-edit-photo.model';
 import { ConfigService } from '../../../../../shared/config/config.service';

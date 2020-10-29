@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalService } from '../../services/modal/modal.service';
-import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirmation-modal.component';
-import { getHiddenBlock } from '../../constants/uttils';
-import { Clarifications } from '../../services/terra-byte-api/terra-byte-api.types';
+import { ModalService } from '../../../modal/modal.service';
+import { ConfirmationModalComponent } from '../../../modal/components/confirmation-modal/confirmation-modal.component';
+import { getHiddenBlock } from '../../../shared/constants/uttils';
+import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 @Component({
   selector: 'epgu-constructor-output-html',

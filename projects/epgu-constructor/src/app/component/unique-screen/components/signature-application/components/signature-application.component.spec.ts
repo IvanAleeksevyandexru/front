@@ -7,13 +7,13 @@ import { ScreenContainerComponent } from '../../../../../shared/components/scree
 import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
-import { OutputHtmlComponent } from '../../../../../shared/components/output-html/output-html.component';
+import { OutputHtmlComponent } from '../../../../../core/components/output-html/output-html.component';
 import { ConfigService } from '../../../../../shared/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { ConfigServiceStub } from '../../../../../shared/config/config.service.stub';
-import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/shared/pipes/img-prefixer/img-prefixer.pipe';
-import { SafePipe } from '../../../../../shared/pipes/safe/safe.pipe';
+import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/core/pipes/img-prefixer/img-prefixer.pipe';
+import { SafePipe } from '../../../../../core/pipes/safe/safe.pipe';
 import { SignatureApplicationData } from '../models/application.interface';
 import { UtilsService } from '../../../../../shared/services/utils/utils.service';
 import {

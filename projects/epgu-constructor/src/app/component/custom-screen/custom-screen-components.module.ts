@@ -1,6 +1,4 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../shared/shared.module';
 import { ValidationService } from './services/validation.service';
 import { AddressHelperService } from './components-list/address-helper.service';
@@ -8,6 +6,7 @@ import { ComponentListToolsService } from './components-list/services/component-
 import { ComponentsListComponent } from './components-list/components-list.component';
 import { ToolsService } from '../shared/services/tools/tools.service';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
+import { CoreModule } from '../../core/core.module';
 
 const COMPONENTS = [
   ComponentsListComponent,
@@ -21,9 +20,8 @@ const COMPONENTS = [
     ...COMPONENTS
   ],
   imports: [
-    CommonModule,
+    CoreModule,
     SharedModule,
-    EpguLibModule,
   ],
   providers: [
     ValidationService,

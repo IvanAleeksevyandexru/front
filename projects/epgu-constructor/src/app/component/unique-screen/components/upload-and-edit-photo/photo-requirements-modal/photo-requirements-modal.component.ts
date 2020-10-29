@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalBaseComponent } from '../../../../../shared/components/modal/modal-base/modal-base.component';
-import { ConfirmationModalBaseButton } from '../../../../../shared/components/modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.interface';
+import { ModalBaseComponent } from '../../../../../modal/components/modal-base/modal-base.component';
+import { ConfirmationModalBaseButton } from '../../../../../modal/components/confirmation-modal/confirmation-modal-base/confirmation-modal-base.interface';
 import { uploadPhotoElemId } from '../upload-and-edit-photo.constant';
 import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
 import { ConfigService } from '../../../../../shared/config/config.service';

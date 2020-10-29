@@ -1,10 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { EpguLibModule } from 'epgu-lib';
-
 import { SharedModule } from '../../../../../shared/shared.module';
 import { FileUploadItemComponent } from './file-upload-item/file-upload-item.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { CoreModule } from '../../../../../core/core.module';
 
 const COMPONENTS = [
   FileUploadComponent,
@@ -15,9 +13,8 @@ const COMPONENTS = [
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   imports: [
-    CommonModule,
+    CoreModule,
     SharedModule,
-    EpguLibModule,
   ],
   entryComponents: [...COMPONENTS]
 })

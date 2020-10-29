@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { OutputHtmlComponent } from './output-html.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenTypes } from '../../../screen/screen.types';
-import { ModalService } from '../../services/modal/modal.service';
-import { ModalServiceStub } from '../../services/modal/modal.service.stub';
+import { ModalService } from '../../../modal/modal.service';
+import { ModalServiceStub } from '../../../modal/modal.service.stub';
 
 xdescribe('OutputHtmlComponent', () => {
   let component: OutputHtmlComponent;

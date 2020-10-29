@@ -13,7 +13,7 @@ import { fromPromise } from 'rxjs/internal-compatibility';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../shared/services/device-detector/device-detector.service';
 import { ComponentBase } from '../../../../screen/screen.types';
-import { ModalService } from '../../../../shared/services/modal/modal.service';
+import { ModalService } from '../../../../modal/modal.service';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
 import { minCropSize, uploadPhotoElemId } from './upload-and-edit-photo.constant';
@@ -28,8 +28,8 @@ import { CompressionService } from './compression/compression.service';
 import { ConfigService } from '../../../../shared/config/config.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';
-import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModalComponent } from '../../../../modal/components/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../modal/components/confirmation-modal/confirmation-modal.interface';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',

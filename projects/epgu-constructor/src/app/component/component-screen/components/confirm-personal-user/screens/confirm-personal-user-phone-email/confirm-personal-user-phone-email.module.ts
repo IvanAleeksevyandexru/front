@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../../../../../shared/shared.module';
 import { SubComponentsModule } from '../../sub-components/sub-components.module';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
+import { CoreModule } from '../../../../../../core/core.module';
 
 const COMPONENTS = [
   ConfirmPersonalUserPhoneEmailComponent,
@@ -13,10 +12,9 @@ const COMPONENTS = [
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   imports: [
-    CommonModule,
+    CoreModule,
     SharedModule,
     SubComponentsModule,
-    EpguLibModule,
   ],
 })
 export class ConfirmPersonalUserPhoneEmailModule { }

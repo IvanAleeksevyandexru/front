@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomScreenComponent } from './custom-screen.component';
 import { CustomScreenComponentsModule } from '../../component/custom-screen/custom-screen-components.module';
+import { CoreModule } from '../../core/core.module';
 
 const COMPONENTS = [
   CustomScreenComponent,
@@ -17,9 +16,8 @@ const COMPONENTS = [
     ...COMPONENTS
   ],
   imports: [
-    CommonModule,
+    CoreModule,
     SharedModule,
-    EpguLibModule,
     CustomScreenComponentsModule
   ],
 })
