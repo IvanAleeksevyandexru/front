@@ -3,15 +3,15 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/for
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { isEqualObj } from '../../../shared/constants/uttils';
 import {
   CustomComponent,
   CustomComponentOutputData, CustomListDictionaries, CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements, CustomScreenComponentTypes
-} from '../../../shared/types/custom-screen-components.types';
-import { ValidationService } from '../../../shared/services/validation/services/validation.service';
+} from '../components-list.types';
+import { ValidationService } from './validation.service';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
@@ -144,7 +144,7 @@ export class ComponentListFormService {
       value: [
         this.toolsService.convertedValue(component),
         [this.validationService.customValidator(component),
-          this.validationService.validationBackendError(errorMsg, component)],
+        this.validationService.validationBackendError(errorMsg, component)],
       ],
     });
 

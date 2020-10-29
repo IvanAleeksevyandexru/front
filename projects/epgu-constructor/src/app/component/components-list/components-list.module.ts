@@ -1,36 +1,38 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ComponentsListComponent } from './components-list.component';
-import { ComponentListFormService } from './services/component-list-form.service';
-import { ComponentListToolsService } from './services/component-list-tools.service';
-import { ComponentListRepositoryService } from './services/component-list-repository.service';
-import { ComponentItemComponent } from './component-item/component-item.component';
 import { SharedModule } from '../../shared/shared.module';
+import { ValidationService } from './services/validation.service';
 import { AddressHelperService } from './services/address-helper.service';
-import { EpguLibModule } from 'epgu-lib';
+import { ComponentListToolsService } from './services/component-list-tools.service';
+import { ComponentsListComponent } from './components-list.component';
+import { ToolsService } from '../shared/services/tools/tools.service';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoreModule } from '../../core/core.module';
+import { ComponentItemComponent } from './component-item/component-item.component';
+import { DocInputComponent } from './doc-input/doc-input.component';
+
+const COMPONENTS = [
+  ComponentsListComponent,
+  ComponentItemComponent,
+  DocInputComponent,
+];
 
 @NgModule({
   declarations: [
-    ComponentsListComponent,
-    ComponentItemComponent,
-  ],
-  imports: [
-    SharedModule,
-    CommonModule,
-    EpguLibModule,
-    BrowserAnimationsModule,
+    ...COMPONENTS,
   ],
   exports: [
-    ComponentsListComponent,
+    ...COMPONENTS
+  ],
+  imports: [
+    CoreModule,
+    SharedModule,
   ],
   providers: [
-    ComponentListFormService,
-    ComponentListRepositoryService,
-    ComponentListToolsService,
+    ValidationService,
     AddressHelperService,
-    DictionaryApiService,
+    ComponentListToolsService,
+    ToolsService,
+    DictionaryApiService
   ]
 })
 export class ComponentsListModule { }

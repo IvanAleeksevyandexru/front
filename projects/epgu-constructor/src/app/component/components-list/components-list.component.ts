@@ -9,12 +9,12 @@ import {
   CustomScreenComponentTypes,
   CustomListReferenceData,
   CustomListDropDowns,
-} from '../../shared/types/custom-screen-components.types';
+} from './components-list.types';
 import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
-import { ConfigService } from '../../shared/config/config.service';
+import { ConfigService } from '../../core/config/config.service';
 import { ComponentListFormService } from './services/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
-import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScenarioErrorsDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { UtilsService as utils } from '../../shared/services/utils/utils.service';
 

@@ -1,4 +1,4 @@
-import { CustomComponentOutputData } from '../../../../shared/types/custom-screen-components.types';
+import { CustomComponentOutputData } from '../../../components-list/components-list.types';
 
 export const removeItemFromArrByIndex = (arr,index) => arr.filter((_, i) => i !== index);
 

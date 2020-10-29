@@ -14,10 +14,10 @@ import { switchMap, filter, takeUntil, reduce } from 'rxjs/operators';
 import { of, merge } from 'rxjs';
 import { HelperService, YaMapService } from 'epgu-lib';
 
-import { ConfigService } from '../../../../shared/config/config.service';
+import { ConfigService } from '../../../../core/config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { IGeoCoordsResponse, IdictionaryFilter } from './select-map-object.interface';
 import { UtilsService } from '../../../../shared/services/utils/utils.service';
 import { DictionaryUtilities } from '../../../../shared/services/dictionary/dictionary-utilities-service';
@@ -27,8 +27,8 @@ import {
   DictionaryOptions,
   DictionaryYMapItem,
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
-import { ModalService } from '../../../../shared/services/modal/modal.service';
-import { CommonModalComponent } from '../../../../shared/components/modal/common-modal/common-modal.component';
+import { ModalService } from '../../../../modal/modal.service';
+import { CommonModalComponent } from '../../../../modal/components/common-modal/common-modal.component';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',

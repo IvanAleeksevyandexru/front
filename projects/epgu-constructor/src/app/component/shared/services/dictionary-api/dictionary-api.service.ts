@@ -6,7 +6,7 @@ import {
   DictionaryOptions,
   DictionaryResponse
 } from './dictionary-api.types';
-import { ConfigService } from '../../../../shared/config/config.service';
+import { ConfigService } from '../../../../core/config/config.service';
 import { Observable } from 'rxjs';
 
 @Injectable()

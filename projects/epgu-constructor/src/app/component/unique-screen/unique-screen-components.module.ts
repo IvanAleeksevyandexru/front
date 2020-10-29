@@ -1,6 +1,4 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { EpguLibModule } from 'epgu-lib';
 import { SharedModule } from '../../shared/shared.module';
 import { RepeatableFieldsComponent } from './components/repeatable-fields/repeatable-fields.component';
 import { FileUploadModule } from './components/file-upload-screen/file-upload.module';
@@ -18,6 +16,8 @@ import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upl
 import { WebcamService } from './services/webcam/webcam.service';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 import { ComponentsListModule } from '../components-list/components-list.module';
+import { ModalModule } from '../../modal/modal.module';
+import { CoreModule } from '../../core/core.module';
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
 const COMPONENTS = [RepeatableFieldsComponent];
@@ -27,10 +27,10 @@ const COMPONENTS = [RepeatableFieldsComponent];
     ...COMPONENTS,
   ],
   imports: [
-    CommonModule,
+    CoreModule,
     SharedModule,
+    ModalModule,
     FileUploadModule,
-    EpguLibModule,
     SelectMapObjectModule,
     CarInfoModule,
     EmployeeHistoryModule,

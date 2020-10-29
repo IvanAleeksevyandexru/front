@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
-import { EpguLibModule } from 'epgu-lib';
 import { InvitationErrorComponent } from './components/error/invitation-error.component';
+import { ModalModule } from '../../modal/modal.module';
+import { CoreModule } from '../../core/core.module';
 
 const COMPONENTS = [
   InvitationErrorComponent,
@@ -12,9 +12,9 @@ const COMPONENTS = [
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   imports: [
-    CommonModule,
+    CoreModule,
     SharedModule,
-    EpguLibModule
+    ModalModule
   ],
   providers: []
 })

@@ -3,14 +3,15 @@ import {
   CustomComponent,
   CustomListDictionaries,
   CustomListDropDowns,
-  CustomListGenericData, CustomListReferenceData, CustomScreenComponentTypes
-} from '../../../shared/types/custom-screen-components.types';
+  CustomListGenericData,
+  CustomListReferenceData,
+} from '../components-list.types';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import {
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
-  likeDictionary
+  likeDictionary,
 } from '../tools/custom-screen-tools';
 import { DictionaryOptions, DictionaryResponse } from '../../shared/services/dictionary-api/dictionary-api.types';
 import { map, tap } from 'rxjs/operators';

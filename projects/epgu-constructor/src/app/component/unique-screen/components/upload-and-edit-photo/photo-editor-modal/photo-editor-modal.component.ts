@@ -2,7 +2,7 @@ import { Component, ViewChild, AfterViewInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ImgCropperConfig, ImgCropperEvent, LyImageCropper } from '@alyle/ui/image-cropper';
 import { Subject } from 'rxjs';
-import { ModalBaseComponent } from '../../../../../shared/components/modal/modal-base/modal-base.component';
+import { ModalBaseComponent } from '../../../../../modal/components/modal-base/modal-base.component';
 import { ImageErrorText, NewSizeEvent } from '../upload-and-edit-photo.model';
 import { imageErrorText, minCropSize } from '../upload-and-edit-photo.constant';
 import {
@@ -11,7 +11,7 @@ import {
   photoMaskSrc,
   showErrorTime,
 } from './photo-editor-modal.constant';
-import { ConfigService } from '../../../../../shared/config/config.service';
+import { ConfigService } from '../../../../../core/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-photo-editor-modal',

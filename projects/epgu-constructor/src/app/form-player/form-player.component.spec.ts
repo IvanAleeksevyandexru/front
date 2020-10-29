@@ -2,7 +2,7 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EpguLibModule, LoadService } from 'epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { LoadServiceStub } from '../shared/config/load-service-stub';
+import { LoadServiceStub } from '../core/config/load-service-stub';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerModule } from './form-player.module';
 import { ComponentScreenComponent } from '../screen/component-screen/component-screen.component';
@@ -14,9 +14,9 @@ import { QuestionsScreenComponent } from '../screen/questions-screen/questions-s
 import { UniqueScreenComponent } from '../screen/unique-screen/unique-screen.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
-import { UnsubscribeService } from '../shared/services/unsubscribe/unsubscribe.service';
-import { ModalContainerComponent } from '../shared/components/modal/modal-container/modal-container.component';
-import { NavigationService } from '../shared/services/navigation/navigation.service';
+import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
+import { ModalContainerComponent } from '../modal/components/modal-container/modal-container.component';
+import { NavigationService } from '../core/services/navigation/navigation.service';
 import { ComponentsListComponent } from '../component/components-list/components-list.component';
 
 export const epguLibModule = EpguLibModule.forRoot();

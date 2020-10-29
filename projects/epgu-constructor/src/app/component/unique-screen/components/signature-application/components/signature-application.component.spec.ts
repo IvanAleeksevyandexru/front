@@ -6,22 +6,22 @@ import { SignatureApplicationComponent } from './signature-application.component
 import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
 import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
-import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
-import { OutputHtmlComponent } from '../../../../../shared/components/output-html/output-html.component';
-import { ConfigService } from '../../../../../shared/config/config.service';
+import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
+import { OutputHtmlComponent } from '../../../../../core/components/output-html/output-html.component';
+import { ConfigService } from '../../../../../core/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { ConfigServiceStub } from '../../../../../shared/config/config.service.stub';
-import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/shared/pipes/img-prefixer/img-prefixer.pipe';
-import { SafePipe } from '../../../../../shared/pipes/safe/safe.pipe';
+import { ConfigServiceStub } from '../../../../../core/config/config.service.stub';
+import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/core/pipes/img-prefixer/img-prefixer.pipe';
+import { SafePipe } from '../../../../../core/pipes/safe/safe.pipe';
 import { SignatureApplicationData } from '../models/application.interface';
 import { UtilsService } from '../../../../../shared/services/utils/utils.service';
 import {
   ApplicantAnswersDto,
   ComponentDto,
 } from '../../../../../form-player/services/form-player-api/form-player-api.types';
-import { DeviceDetectorService } from '../../../../../shared/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../../../shared/services/device-detector/device-detector.service.stub';
+import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../../core/services/device-detector/device-detector.service.stub';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
