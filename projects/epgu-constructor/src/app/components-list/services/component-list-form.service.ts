@@ -3,21 +3,21 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/for
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map, pairwise, startWith, takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
-import { isEqualObj } from '../../../constants/uttils';
+import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { isEqualObj } from '../../shared/constants/uttils';
 import {
   CustomComponent,
   CustomComponentOutputData, CustomListDictionaries, CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements, CustomScreenComponentTypes
-} from '../../../../screen/custom-screen/custom-screen.types';
-import { ValidationService } from '../../../../screen/custom-screen/services/validation.service';
+} from '../../screen/custom-screen/custom-screen.types';
+import { ValidationService } from '../../shared/services/validation/validation.service';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper.service';
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
-import { ScenarioErrorsDto } from '../../../../services/api/form-player-api/form-player-api.types';
-import { UtilsService as utils } from '../../../../services/utils/utils.service';
-import { isDropDown } from '../../../../screen/custom-screen/tools/custom-screen-tools';
+import { ScenarioErrorsDto } from '../../services/api/form-player-api/form-player-api.types';
+import { UtilsService as utils } from '../../services/utils/utils.service';
+import { isDropDown } from '../../screen/custom-screen/tools/custom-screen-tools';
 import { ListItem } from 'epgu-lib';
 
 @Injectable()

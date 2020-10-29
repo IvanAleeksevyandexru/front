@@ -5,7 +5,6 @@ import { EpguLibModule } from 'epgu-lib';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { WebcamModule } from 'ngx-webcam';
 import { ConfigService } from '../config/config.service';
-import { ComponentsListComponent } from './components/components-list/components-list.component';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { ModalService } from '../services/modal/modal.service';
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';
@@ -45,8 +44,8 @@ import { ActionDirective } from './directives/action/action.directive';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 import { DocInputComponent } from './components/doc-input/doc-input.component';
-import { ComponentItemComponent } from './components/component-item/component-item.component';
 import { InputErrorComponent } from './components/input-error/input-error.component';
+import { ValidationService } from './services/validation/validation.service';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -64,8 +63,6 @@ const COMPONENTS = [
   HelperTextComponent,
   GenderRadioButtonComponent,
   OutputHtmlComponent,
-  ComponentsListComponent,
-  ComponentItemComponent,
   LongButtonComponent,
   WebcamShootComponent,
   PassportComponent,
@@ -96,6 +93,7 @@ const DIRECTIVES = [
     DeviceDetectorService,
     ConfigService,
     CurrencyPipe,
+    ValidationService,
   ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [CommonModule, EpguLibModule, FormsModule, WebcamModule, PerfectScrollbarModule],

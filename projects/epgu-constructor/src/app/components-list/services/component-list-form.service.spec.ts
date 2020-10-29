@@ -2,11 +2,11 @@ import { TestBed } from '@angular/core/testing';
 
 import { ComponentListFormService } from './component-list-form.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ValidationService } from '../../../../screen/custom-screen/services/validation.service';
+import { ValidationService } from '../../shared/services/validation/validation.service';
 import { UnsubscribeService } from 'projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
 import { ComponentListToolsService } from './component-list-tools.service';
 import { AddressHelperService } from '../address-helper.service';
-import { DictionaryApiService } from '../../../../services/api/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../services/api/dictionary-api/dictionary-api.service';
 import { HttpClient } from '@angular/common/http';
 import { DictionaryApiServiceStub } from 'projects/epgu-constructor/src/app/services/api/dictionary-api/dictionary-api.service.stub';
 import { ComponentListRepositoryService } from './component-list-repository.service';

@@ -17,6 +17,7 @@ import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upl
 import { ConfirmPhoneModule } from './components/confirm-phone/confirm-phone.module';
 import { ConfirmEmailModule } from './components/confirm-email/confirm-email.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
+import { ComponentsListModule } from '../../components-list/components-list.module';
 
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
@@ -46,6 +47,7 @@ const COMPONENTS = [UniqueScreenComponent];
     ConfirmEmailModule,
     SignatureApplicationModule,
     UploadAndEditPhotoModule,
+    ComponentsListModule,
   ],
   providers: [
     ScreenService

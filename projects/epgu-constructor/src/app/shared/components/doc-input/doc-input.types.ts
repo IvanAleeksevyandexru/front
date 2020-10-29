@@ -2,10 +2,10 @@ import { AbstractControl } from '@angular/forms';
 import { CustomComponentAttrValidation } from '../../../screen/custom-screen/custom-screen.types';
 
 interface DocInputControl extends Partial<AbstractControl> {
-  value: DocInputComponent;
+  value: DocInputComponentData;
 }
 
-interface DocInputComponent {
+interface DocInputComponentData {
   id: string;
   type?: string;
   label?: string;
@@ -32,4 +32,11 @@ interface DocInputField {
   };
 }
 
-export { DocInputControl, DocInputComponent, DocInputField };
+interface DocInputFormFields {
+  series: number;
+  number: number;
+  date: string;
+  emitter: string;
+}
+
+export { DocInputControl, DocInputComponentData, DocInputField, DocInputFormFields };

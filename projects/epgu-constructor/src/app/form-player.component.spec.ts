@@ -16,6 +16,7 @@ import { QuestionsScreenComponent } from './screen/questions-screen/questions-sc
 import { EmptyScreenComponent } from './screen/empty-screen/empty-screen.component';
 import { CustomScreenComponent } from './screen/custom-screen/custom-screen.component';
 import { ComponentScreenComponent } from './screen/component-screen/component-screen.component';
+import { ComponentsListComponent } from './components-list/components-list.component';
 
 export const epguLibModule = EpguLibModule.forRoot();
 
@@ -29,6 +30,7 @@ describe('FormPlayerComponent', () => {
   let EmptyScreenComponentMock = MockComponent(EmptyScreenComponent);
   let CustomScreenComponentMock = MockComponent(CustomScreenComponent);
   let ComponentScreenComponentMock = MockComponent(ComponentScreenComponent);
+  let ComponentsListComponentMock = MockComponent(ComponentsListComponent);
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -46,6 +48,7 @@ describe('FormPlayerComponent', () => {
         EmptyScreenComponentMock,
         CustomScreenComponentMock,
         ComponentScreenComponentMock,
+        ComponentsListComponentMock,
       ],
       providers: [
         NavigationService,

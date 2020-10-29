@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import * as moment_ from 'moment';
@@ -8,8 +8,8 @@ import { ValidationShowOn } from 'epgu-lib';
 import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 
-import { DocInputControl, DocInputField } from './doc-input.types';
-import { ComponentListFormService } from '../components-list/services/component-list-form.service';
+import { DocInputControl, DocInputField, DocInputFormFields } from './doc-input.types';
+import { ComponentListFormService } from '../../../components-list/services/component-list-form.service';
 
 const moment = moment_;
 
@@ -24,7 +24,7 @@ enum ValidatorTypes {
   styleUrls: ['./doc-input.component.scss'],
   providers: [UnsubscribeService],
 })
-export class DocInputComponent implements OnInit {
+export class DocInputComponent implements OnInit, AfterViewInit {
   @Input() data: AbstractControl | DocInputControl;
 
   fields: { [fieldName: string]: DocInputField };
@@ -41,51 +41,92 @@ export class DocInputComponent implements OnInit {
 
   ngOnInit(): void {
     this.fields = this.data.value.attrs.fields;
-
-    this.generateFormGroup();
+    this.addFormGroupControls();
+    this.subscribeOnFormChange();
   }
 
-  generateFormGroup(): void {
-    this.fieldsNames.forEach((fieldName) => {
-      const validators: ValidatorFn[] = [];
-      if (this.fields[fieldName].attrs.validation) {
-        this.fields[fieldName].attrs.validation.forEach((validationItem) => {
-          validators.push(
-            this.getCustomValidator({
-              validationType: validationItem.type,
-              msg: validationItem.errorMsg,
-              pattern: validationItem.value,
-            }),
-          );
-        });
-      }
-      if (this.fields[fieldName].required) {
-        validators.push(
-          this.getCustomValidator({
-            validationType: ValidatorTypes.Required,
-            msg: 'Поле обязательно для заполнения',
-          }),
-        );
-      }
-      this.form.addControl(fieldName, new FormControl(null, validators));
-    });
+  ngAfterViewInit() {
+    setTimeout(() => this.handleServerErrors()); // https://stackoverflow.com/questions/54611631/expressionchangedafterithasbeencheckederror-on-angular-6-while-using-mat-tab
+  }
 
+  /**
+   * If there are server errors - adds them to appropriate fields and displays by setting field's state to touched
+   */
+  handleServerErrors() {
+    const serverErrorJson = this.data?.get('value')?.errors?.serverError || null;
+
+    if (serverErrorJson) {
+      const serverError = JSON.parse(serverErrorJson);
+
+      this.fieldsNames.forEach((fieldName) => {
+        const fieldControl = this.form.get(fieldName);
+        if (serverError[fieldName] && fieldControl) {
+          fieldControl.setErrors({ msg: serverError[fieldName] });
+          fieldControl.markAsTouched();
+        }
+      });
+    }
+  }
+
+  subscribeOnFormChange() {
     this.form.valueChanges
       .pipe(
-        map((form) => ({
-          ...form,
-          date: form.date ? moment(form.date).format(DATE_STRING_DOT_FORMAT) : null,
-        })),
         takeUntil(this.ngUnsubscribe$),
+        map((formFields: DocInputFormFields) => this.formatDateValue(formFields)),
       )
-      .subscribe((next) => {
-        if (this.form.valid) {
-          this.data.get('value').setValue(next);
-        } else {
-          this.data.get('value').setErrors({ invalidForm: true });
-        }
-        this.formService.emmitChanges();
+      .subscribe((formFields) => this.emitToParentForm(formFields));
+  }
+
+  formatDateValue(formFields: DocInputFormFields): DocInputFormFields {
+    return {
+      ...formFields,
+      date: formFields.date ? moment(formFields.date).format(DATE_STRING_DOT_FORMAT) : null,
+    };
+  }
+
+  emitToParentForm(formFields: DocInputFormFields) {
+    if (this.form.valid) {
+      this.data.get('value').setValue(formFields);
+    } else {
+      this.data.get('value').setErrors({ invalidForm: true });
+    }
+    this.formService.emmitChanges();
+  }
+
+  addFormGroupControls(): void {
+    const componentValues = JSON.parse(this.data.value.value || '{}'); // gets value for fields if they have already existed
+
+    this.fieldsNames.forEach((fieldName) => {
+      const validators = this.getFormFieldValidators(fieldName);
+      this.form.addControl(fieldName, new FormControl(componentValues[fieldName], validators));
+    });
+  }
+
+  getFormFieldValidators(fieldName: string): ValidatorFn[] {
+    const validators: ValidatorFn[] = [];
+
+    if (this.fields[fieldName].attrs.validation) {
+      this.fields[fieldName].attrs.validation.forEach((validationItem) => {
+        validators.push(
+          this.getCustomValidator({
+            validationType: validationItem.type,
+            msg: validationItem.errorMsg,
+            pattern: validationItem.value,
+          }),
+        );
       });
+    }
+
+    if (this.fields[fieldName].required) {
+      validators.push(
+        this.getCustomValidator({
+          validationType: ValidatorTypes.Required,
+          msg: 'Поле обязательно для заполнения',
+        }),
+      );
+    }
+
+    return validators;
   }
 
   getCustomValidator(config: {

@@ -5,6 +5,13 @@
   flex-direction: column;
   flex: 1 1 auto;
 
+  &__title {
+    @include typ-h6;
+
+    font-weight: $fw-bold;
+    margin-bottom: 4px;
+  }
+
   &__group {
     display: flex;
     flex-wrap: wrap;

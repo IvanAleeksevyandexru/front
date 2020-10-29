@@ -17,6 +17,7 @@ import { ConfirmPersonalUserPhoneScreenModule } from './components/confirm-perso
 import { TemporaryRegistrationAddrScreenModule } from './components/confirm-personal-user/screens/temporary-registration-addr/temporary-registration-addr-screen.module';
 import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
 import { SelectChildrenScreenModule } from './components/select-children/select-children-screen.module';
+import { ComponentsListModule } from '../../components-list/components-list.module';
 
 const COMPONENTS = [
   ComponentScreenComponent,
@@ -37,6 +38,7 @@ const COMPONENTS = [
     AddPassportModule,
     SharedModule,
     EpguLibModule,
+    ComponentsListModule,
   ],
   providers: [
     ScreenService
