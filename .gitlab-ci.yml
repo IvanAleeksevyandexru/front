@@ -94,7 +94,7 @@ Library-publish:
     - npm run generate-lib-version-ts
     - CURRENT_TAG=$(git describe --abbrev=0)
     - echo $CURRENT_TAG
-    - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@git.gosuslugi.local/luxoft/epgu2-form-frontend.git --follow-tags ${CI_COMMIT_REF_NAME}:master
+    - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@git.gosuslugi.local/luxoft/epgu2-form-frontend.git --follow-tags ${CI_COMMIT_REF_NAME}:${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
     - cd dist/epgu-constructor
     - npm version ${CURRENT_TAG:1}
     - npm publish
