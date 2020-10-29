@@ -11,7 +11,7 @@ import {
   photoMaskSrc,
   showErrorTime,
 } from './photo-editor-modal.constant';
-import { ConfigService } from '../../../../../config/config.service';
+import { ConfigService } from '../../../../../shared/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-photo-editor-modal',

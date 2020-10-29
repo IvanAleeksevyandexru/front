@@ -8,18 +8,20 @@ import { PageNameComponent } from '../../../../../shared/components/base/page-na
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../shared/services/navigation/navigation.service';
 import { OutputHtmlComponent } from '../../../../../shared/components/output-html/output-html.component';
-import { ConfigService } from '../../../../../config/config.service';
+import { ConfigService } from '../../../../../shared/config/config.service';
 import { ScreenService } from '../../../../screen.service';
 import { ScreenServiceStub } from '../../../../screen.service.stub';
-import { ConfigServiceStub } from '../../../../../config/config.service.stub';
+import { ConfigServiceStub } from '../../../../../shared/config/config.service.stub';
 import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/shared/pipes/img-prefixer/img-prefixer.pipe';
 import { SafePipe } from '../../../../../shared/pipes/safe/safe.pipe';
 import { SignatureApplicationData } from '../models/application.interface';
-import { UtilsService } from '../../../../../services/utils/utils.service';
+import { UtilsService } from '../../../../../shared/services/utils/utils.service';
 import {
   ApplicantAnswersDto,
   ComponentDto,
-} from '../../../../../services/api/form-player-api/form-player-api.types';
+} from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { DeviceDetectorService } from '../../../../../shared/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../../shared/services/device-detector/device-detector.service.stub';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -39,7 +41,7 @@ describe('SignatureApplicationComponent', () => {
     attrs: {},
     label: '',
     type: '',
-    id: '',
+    id: '12',
     value: '',
   };
 
@@ -68,6 +70,7 @@ describe('SignatureApplicationComponent', () => {
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: ScreenService, useClass: ScreenServiceStub },
           { provide: ConfigService, useClass: ConfigServiceStub },
+          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         ],
       }).compileComponents();
 

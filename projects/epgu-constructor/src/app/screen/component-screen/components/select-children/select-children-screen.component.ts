@@ -4,7 +4,7 @@ import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../current-answers.service';
 import { ScreenService } from '../../../screen.service';
 import { ComponentBase } from '../../../screen.types';

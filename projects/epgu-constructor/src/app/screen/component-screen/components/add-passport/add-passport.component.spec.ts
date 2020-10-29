@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ToolsService } from '../../../../shared/services/tools/tools.service';
+import { ToolsService } from '../../../services/tools/tools.service';
 import { SharedModule } from '../../../../shared/shared.module';
 import { CurrentAnswersService } from '../../../current-answers.service';
 import { ComponentBase } from '../../../screen.types';

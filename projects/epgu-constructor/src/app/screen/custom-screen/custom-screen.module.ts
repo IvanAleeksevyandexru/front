@@ -25,7 +25,6 @@ const COMPONENTS = [
     EpguLibModule,
   ],
   providers: [
-    ScreenService,
     ValidationService,
     AddressHelperService,
     ComponentListToolsService,

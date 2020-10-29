@@ -1,10 +1,10 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ConfigService } from '../../../../../../config/config.service';
-import { ActionType } from '../../../../../../services/api/form-player-api/form-player-api.types';
+import { ConfigService } from '../../../../../../shared/config/config.service';
 import { CurrentAnswersService } from '../../../../../current-answers.service';
 import { ScreenService } from '../../../../../screen.service';
 import { ComponentBase } from '../../../../../screen.types';
 import { ComponentScreenComponentTypes } from '../../../../component-screen.types';
+import { ActionType } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-phone-email',

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '../../../../config/config.service';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { ConfigService } from '../../../../shared/config/config.service';
+import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { UnusedPaymentInterface } from './unused-payment.interface';

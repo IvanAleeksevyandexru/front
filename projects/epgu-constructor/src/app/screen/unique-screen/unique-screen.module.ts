@@ -9,14 +9,14 @@ import { RepeatableFieldsComponent } from './components/repeatable-fields/repeat
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { TimeSlotsModule } from './components/time-slots/time-slots.module';
-import { ScreenService } from '../screen.service';
-import { ConfirmMarriageModule } from './components/confirm-marriage/confirm-marriage.module';
+import { ConfirmModule } from './components/confirm/confirm.module';
 import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
 import { PaymentModule } from './components/payment/payment.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { ConfirmPhoneModule } from './components/confirm-phone/confirm-phone.module';
 import { ConfirmEmailModule } from './components/confirm-email/confirm-email.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
+import { WebcamService } from './services/webcam/webcam.service';
 
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
@@ -39,7 +39,7 @@ const COMPONENTS = [UniqueScreenComponent];
     CarInfoModule,
     EmployeeHistoryModule,
     TimeSlotsModule,
-    ConfirmMarriageModule,
+    ConfirmModule,
     PaymentModule,
     UnusedPaymentsModule,
     ConfirmPhoneModule,
@@ -48,7 +48,7 @@ const COMPONENTS = [UniqueScreenComponent];
     UploadAndEditPhotoModule,
   ],
   providers: [
-    ScreenService
+    WebcamService,
   ]
 })
 export class UniqueScreenModule {}

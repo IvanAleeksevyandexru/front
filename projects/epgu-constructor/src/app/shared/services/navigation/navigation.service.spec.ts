@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
 import { NavigationService } from './navigation.service';
-import { ConfigServiceStub } from '../../../config/config.service.stub';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigServiceStub } from '../../config/config.service.stub';
+import { ConfigService } from '../../config/config.service';
+import { DeviceDetectorService } from '../device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
 
 xdescribe('NavigationService', () => {
   let service: NavigationService;
@@ -11,6 +13,7 @@ xdescribe('NavigationService', () => {
     TestBed.configureTestingModule({
       providers: [
         NavigationService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ]
     });

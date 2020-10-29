@@ -7,12 +7,12 @@ import { LabelComponent } from '../../../../shared/components/base/label/label.c
 import { NavigationComponent } from '../../../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
-import { UnsubscribeService } from '../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { EpguLibModule } from 'epgu-lib';
 import { Gender } from '../../../../shared/types/gender';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
-import { DisplayDto } from '../../../../services/api/form-player-api/form-player-api.types';
+import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 xdescribe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;

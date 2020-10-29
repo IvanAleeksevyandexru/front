@@ -4,10 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { WebcamModule } from 'ngx-webcam';
-import { ConfigService } from '../config/config.service';
+import { ConfigService } from './config/config.service';
 import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
-import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
-import { ModalService } from '../services/modal/modal.service';
+import { ModalService } from './services/modal/modal.service';
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';
 import { HelperTextComponent } from './components/base/helper-text/helper-text.component';
 import { LabelComponent } from './components/base/label/label.component';
@@ -40,11 +39,12 @@ import { CachedAnswersService } from './services/applicant-answers/cached-answer
 import { PassportComponent } from './components/add-passport/passport.component';
 import { NavigationService } from './services/navigation/navigation.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
-import { WebcamService } from './services/webcam/webcam.service';
 import { ActionDirective } from './directives/action/action.directive';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
+import { UtilsService } from './services/utils/utils.service';
 
+export const EpguLibModuleInited = EpguLibModule.forRoot();
 
 const COMPONENTS = [
   PageNameComponent,
@@ -80,21 +80,25 @@ const DIRECTIVES = [
   ActionDirective
 ];
 
+/**
+ * Шара. Тут храним что необходимо одновременно нескольким другим доменам.
+ *
+ * TODO: Разбить модуль, создать core домен для общих штук, оставить только специфик шарабл кейсы
+ */
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   providers: [
     NavigationService,
     CachedAnswersService,
     ModalService,
-    CycledFieldsService,
-    WebcamService,
     TerraByteApiService,
     DeviceDetectorService,
     ConfigService,
     CurrencyPipe,
+    UtilsService,
   ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  imports: [CommonModule, EpguLibModule, FormsModule, WebcamModule, PerfectScrollbarModule],
+  imports: [CommonModule, EpguLibModuleInited, FormsModule, WebcamModule, PerfectScrollbarModule],
   entryComponents: [
     ModalBaseComponent,
     ModalContainerComponent,

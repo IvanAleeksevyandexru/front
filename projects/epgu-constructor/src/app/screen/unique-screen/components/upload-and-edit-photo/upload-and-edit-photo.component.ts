@@ -13,19 +13,19 @@ import { fromPromise } from 'rxjs/internal-compatibility';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../shared/services/device-detector/device-detector.service';
 import { ComponentBase } from '../../../screen.types';
-import { ModalService } from '../../../../services/modal/modal.service';
+import { ModalService } from '../../../../shared/services/modal/modal.service';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
 import { minCropSize, uploadPhotoElemId } from './upload-and-edit-photo.constant';
 import { ImgSubject } from './upload-and-edit-photo.model';
 import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
-import { WebcamService } from '../../../../shared/services/webcam/webcam.service';
+import { WebcamService } from '../../services/webcam/webcam.service';
 import {
   isCloseAndSaveWebcamEvent,
   WebcamEvent,
 } from '../../../../shared/components/webcam-shoot/webcamevents';
-import { CompressionService } from '../../../../services/utils/compression.service';
-import { ConfigService } from '../../../../config/config.service';
+import { CompressionService } from './compression/compression.service';
+import { ConfigService } from '../../../../shared/config/config.service';
 import { ScreenService } from '../../../screen.service';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';
 import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';

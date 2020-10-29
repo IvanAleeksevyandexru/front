@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Screen } from '../screen.types';
-import { NavigationPayload } from '../../form-player.types';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { NavigationPayload } from '../../form-player/form-player.types';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
+import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import {
   ComponentDto,
   ComponentDtoAction,
-} from '../../services/api/form-player-api/form-player-api.types';
+} from '../../form-player/services/form-player-api/form-player-api.types';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.

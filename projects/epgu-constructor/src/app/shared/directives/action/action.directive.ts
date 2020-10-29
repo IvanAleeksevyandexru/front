@@ -1,18 +1,18 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import {
-  ActionType,
-  ComponentDtoAction,
-} from '../../../services/api/form-player-api/form-player-api.types';
-import { ActionApiService } from '../../../services/api/action-api/action-api.service';
-import { ScreenService } from '../../../screen/screen.service';
-import { Navigation, NavigationOptions } from '../../../form-player.types';
-import { NavigationService } from '../../services/navigation/navigation.service';
-import { UtilsService } from '../../../services/utils/utils.service';
-import { Answer } from '../../types/answer';
-import { ActionApiDTO, ActionApiResponse } from '../../../services/api/action-api/action-api.types';
 import { filter } from 'rxjs/operators';
+import { ScreenService } from '../../../screen/screen.service';
+import { NavigationService } from '../../services/navigation/navigation.service';
+import { Answer } from '../../types/answer';
+import {
+  ActionApiResponse, ActionDTO,
+  ActionType,
+  ComponentDtoAction
+} from '../../../form-player/services/form-player-api/form-player-api.types';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { UtilsService } from '../../services/utils/utils.service';
+import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
+
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -25,7 +25,7 @@ export class ActionDirective {
   }
 
   constructor(
-    private actionApiService: ActionApiService,
+    private actionApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private navService: NavigationService,
     private utilsService: UtilsService,
@@ -36,8 +36,11 @@ export class ActionDirective {
       case ActionType.download:
         this.downloadAction();
         break;
+      case ActionType.prevStep:
+        this.doStep('prevStep');
+        break;
       case ActionType.nextStep:
-        this.nextStep();
+        this.doStep('nextStep');
         break;
       case ActionType.redirectToLK:
         this.navService.redirectToLK();
@@ -54,10 +57,10 @@ export class ActionDirective {
   private sendAction<T>(): Observable<ActionApiResponse<T>> {
     const data = this.getActionDTO();
 
-    return this.actionApiService.send<T>(this.action.action, data);
+    return this.actionApiService.sendAction<T>(this.action.action, data);
   }
 
-  private nextStep(): void {
+  private doStep(stepType: string): void {
     const options = this.getOptions();
 
     const navigation: Navigation = {
@@ -65,7 +68,7 @@ export class ActionDirective {
       options,
     };
 
-    this.navService.nextStep.next(navigation);
+    this.navService[stepType].next(navigation);
   }
 
   private getOptions(): NavigationOptions {
@@ -101,7 +104,7 @@ export class ActionDirective {
       );
   }
 
-  private getActionDTO(): ActionApiDTO {
+  private getActionDTO(): ActionDTO {
     return {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},

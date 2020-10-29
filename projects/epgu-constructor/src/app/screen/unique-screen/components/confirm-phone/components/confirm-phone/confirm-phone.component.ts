@@ -2,9 +2,12 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../screen.service';
-import { UnsubscribeService } from '../../../../../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../../../../shared/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../../shared/services/navigation/navigation.service';
-import { NavigationOptions, NavigationPayload } from '../../../../../../form-player.types';
+import {
+  NavigationOptions,
+  NavigationPayload,
+} from '../../../../../../form-player/form-player.types';
 
 interface CodeFormGroup {
   codeMask: Array<RegExp>;

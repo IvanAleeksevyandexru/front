@@ -12,7 +12,7 @@ import {
   TimeSlotValueInterface,
   ZagsDepartmentInterface
 } from './time-slots.types';
-import { ConfigService } from '../../../../config/config.service';
+import { ConfigService } from '../../../../shared/config/config.service';
 
 const moment = moment_;
 
