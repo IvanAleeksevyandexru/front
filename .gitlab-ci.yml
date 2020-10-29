@@ -27,7 +27,7 @@ Install:
   only:
     - merge_requests
     - master
-    - develop
+    - stage
 
 Lint:
   stage: code-quality
@@ -42,8 +42,8 @@ Lint:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Code-quality:
   stage: code-quality
   except:
@@ -57,8 +57,8 @@ Code-quality:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Library-build:
   stage: library-build
   except:
@@ -69,8 +69,8 @@ Library-build:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Library-publish:
   stage: library-publish
   except:
@@ -103,6 +103,7 @@ Library-publish:
     - git reset --hard HEAD~1
   only:
     - master
+    - stage
 
 Build:
   stage: build
@@ -115,8 +116,8 @@ Build:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Build-image:
   stage: image
   except:
@@ -140,8 +141,8 @@ Build-image:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Deploy to review env:
   stage: deploy
   except:
@@ -162,8 +163,8 @@ Deploy to review env:
   only:
     - merge_requests
     - master
-    - develop
-    
+    - stage
+
 Drop review env:
   stage: deploy
   except:
@@ -184,4 +185,4 @@ Drop review env:
   only:
     - merge_requests
     - master
-    - develop
+    - stage
