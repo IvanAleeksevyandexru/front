@@ -1,12 +1,12 @@
 import { ListItem } from 'epgu-lib';
-import { DictionaryItem } from '../../services/dictionary-api/dictionary-api.types';
+import { DictionaryItem } from '../../../screen/services/dictionary-api/dictionary-api.types';
 import {
   CustomComponent,
   CustomListDictionary,
   CustomComponentRef,
   CustomComponentRefRelation,
   CustomScreenComponentTypes
-} from '../custom-screen.types';
+} from '../custom-screen-components.types';
 
 function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListItem> {
   return {

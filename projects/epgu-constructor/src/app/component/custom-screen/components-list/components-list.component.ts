@@ -9,7 +9,7 @@ import {
   CustomScreenComponentTypes,
   CustomListReferenceData,
   CustomListDropDowns,
-} from '../custom-screen.types';
+} from '../custom-screen-components.types';
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { ConfigService } from '../../../shared/config/config.service';
 import { ComponentListFormService } from './services/component-list-form.service';

@@ -11,7 +11,7 @@ import {
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes
-} from '../../custom-screen.types';
+} from '../../custom-screen-components.types';
 
 @Injectable()
 export class ComponentListToolsService {

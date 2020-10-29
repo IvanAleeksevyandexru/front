@@ -1,6 +1,6 @@
 import { ListItem } from 'epgu-lib';
-import { DictionaryItem, DictionaryResponse } from '../services/dictionary-api/dictionary-api.types';
-import { ComponentBase } from '../screen.types';
+import { DictionaryItem, DictionaryResponse } from '../../screen/services/dictionary-api/dictionary-api.types';
+import { ComponentBase } from '../../screen/screen.types';
 import { DisplayDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { TextTransform } from '../../shared/types/textTransform';
 

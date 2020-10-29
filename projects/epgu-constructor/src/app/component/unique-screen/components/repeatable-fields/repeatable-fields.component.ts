@@ -12,7 +12,7 @@ import {
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
 } from './repeatable-fields.constant';
-import { CustomComponent } from '../../../../screen/custom-screen/custom-screen.types';
+import { CustomComponent } from '../../../custom-screen/custom-screen-components.types';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
