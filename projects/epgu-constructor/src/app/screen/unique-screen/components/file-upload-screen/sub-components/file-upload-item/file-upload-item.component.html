@@ -9,11 +9,11 @@
     <div class="fileupload__label" *ngIf="refData?.length"
          [innerHTML]="refData"></div>
      <div class="info">
-       <div class="info__item">
-         Общий размер файлов в сумме не должен превышать 5 Мб.
-       </div>
        <div class="info__item" *ngIf="data.maxFileCount">
          Количество загружаемых файлов не более {{ data.maxFileCount }}
+       </div>
+       <div class="info__item">
+         Общий размер файлов в сумме не должен превышать 5 Мб
        </div>
      </div>
    </div>
