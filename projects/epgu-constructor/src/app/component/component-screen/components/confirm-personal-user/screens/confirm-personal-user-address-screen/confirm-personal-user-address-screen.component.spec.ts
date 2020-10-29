@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ToolsService } from '../../../../../shared/services/tools/tools.service';
 import { ComponentScreenComponentTypes } from '../../../../component-screen-components.types';
@@ -22,7 +22,7 @@ describe('ConfirmPersonalUserAddressScreenComponent', () => {
     required: false
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ ConfirmPersonalUserAddressScreenComponent ],
@@ -35,8 +35,6 @@ describe('ConfirmPersonalUserAddressScreenComponent', () => {
     fixture = TestBed.createComponent(ConfirmPersonalUserAddressScreenComponent);
     component = fixture.componentInstance;
     component.data = mockData;
-    component.errors = {};
-    component.currentCycledFields = {};
     component.applicantAnswers = {};
     fixture.detectChanges();
   });
