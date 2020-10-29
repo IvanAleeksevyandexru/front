@@ -108,7 +108,6 @@ Library-publish:
   only:
     - master
     - stage
-    - ci
 
 Build:
   stage: build
