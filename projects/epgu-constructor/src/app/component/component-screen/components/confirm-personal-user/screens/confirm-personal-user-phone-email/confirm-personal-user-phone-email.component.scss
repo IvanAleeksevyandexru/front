@@ -1,5 +1,11 @@
 @import '../../../../../../../styles/core/index';
 
+.error {
+  @include typ-plain-small();
+  color: $color-gosred;
+  margin: 4px 0 12px 0;
+}
+
 .item {
   margin-top: 4px;
 }
