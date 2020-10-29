@@ -40,6 +40,7 @@ const COMPONENTS = [
   WebcamShootComponent,
   PassportComponent,
   ActionButtonComponent,
+  InputErrorComponent,
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe];
@@ -50,7 +51,7 @@ const DIRECTIVES = [
   TextTransformDirective,
   DragAndDropDirective,
   CurrencyTransformDirective,
-  ActionDirective
+  ActionDirective,
 ];
 
 /**
@@ -59,7 +60,7 @@ const DIRECTIVES = [
  * TODO: Разбить модуль, создать core домен для общих штук, оставить только специфик шарабл кейсы
  */
 @NgModule({
-  declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES, InputErrorComponent],
+  declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   providers: [
     CachedAnswersService,
     TerraByteApiService,
