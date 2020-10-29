@@ -86,6 +86,8 @@ Library-publish:
     - echo $GITLAB_USER_LOGIN
     - echo $CI_USER
     - echo $CI_USER_EMAIL
+    - echo $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
     - git config --global user.email $CI_USER_EMAIL
     - git config --global user.name $CI_USER
     - git config receive.advertisePushOptions true
