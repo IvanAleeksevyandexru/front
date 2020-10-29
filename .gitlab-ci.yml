@@ -83,6 +83,7 @@ Library-publish:
     - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
   script:
+    - git tag
     - echo $GITLAB_USER_LOGIN
     - echo $CI_USER
     - echo $CI_USER_EMAIL
@@ -101,10 +102,11 @@ Library-publish:
     - cd dist/epgu-constructor
     - npm version ${CURRENT_TAG:1}
     - npm publish
-    - if [ $CI_COMMIT_BRANCH == 'stage' ]; then `npm publish --tag beta`; else `npm publish --tag stable`; fi
+    - if [ $CI_COMMIT_BRANCH == 'stage' ]; then npm publish --tag beta; else npm publish --tag stable; fi
   after_script:
     - git tag -d $CURRENT_TAG
     - git reset --hard HEAD~1
+    - git tag
   only:
     - master
     - stage
