@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EpguLibModule } from 'epgu-lib';
+import { EpguLibModule, SmuEventsService } from 'epgu-lib';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { OutputHtmlComponent } from './components/output-html/output-html.component';
 import { ImgPrefixerPipe } from './pipes/img-prefixer/img-prefixer.pipe';
@@ -49,7 +49,8 @@ const PIPES = [
   providers: [
     ConfigService,
     DeviceDetectorService,
-    NavigationService
+    NavigationService,
+    SmuEventsService,
   ]
 })
 export class CoreModule {}
