@@ -7,7 +7,7 @@ import { NavigationService } from '../../shared/services/navigation/navigation.s
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { Screen } from '../screen.types';
-import { ComponentScreenComponentTypes } from './component-screen.types';
+import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;

@@ -1,11 +1,7 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { EpguLibModule } from 'epgu-lib';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { WebcamModule } from 'ngx-webcam';
 import { ConfigService } from './config/config.service';
-import { ComponentsListComponent } from '../screen/custom-screen/components-list/components-list.component';
 import { ModalService } from './services/modal/modal.service';
 import { AnswerButtonComponent } from './components/answer-button/answer-button.component';
 import { HelperTextComponent } from './components/base/helper-text/helper-text.component';
@@ -43,8 +39,7 @@ import { ActionDirective } from './directives/action/action.directive';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 import { UtilsService } from './services/utils/utils.service';
-
-export const EpguLibModuleInited = EpguLibModule.forRoot();
+import { CoreModule } from '../core/core.module';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -62,7 +57,6 @@ const COMPONENTS = [
   HelperTextComponent,
   GenderRadioButtonComponent,
   OutputHtmlComponent,
-  ComponentsListComponent,
   LongButtonComponent,
   WebcamShootComponent,
   PassportComponent,
@@ -98,7 +92,7 @@ const DIRECTIVES = [
     UtilsService,
   ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  imports: [CommonModule, EpguLibModuleInited, FormsModule, WebcamModule, PerfectScrollbarModule],
+  imports: [WebcamModule, CoreModule],
   entryComponents: [
     ModalBaseComponent,
     ModalContainerComponent,

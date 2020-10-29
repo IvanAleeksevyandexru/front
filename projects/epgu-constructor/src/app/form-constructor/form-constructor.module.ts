@@ -1,10 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { EpguLibModule } from 'epgu-lib';
-
-
 import { SharedModule } from '../shared/shared.module';
 import { FormConstructorComponent } from './form-constructor.component';
+import { CoreModule } from '../core/core.module';
 
 /**
  * Домен конструктора форм. Сдесь храняться тулзы для создания сценариев.
@@ -16,7 +13,7 @@ import { FormConstructorComponent } from './form-constructor.component';
     FormConstructorComponent
   ],
   imports: [
-    CommonModule,
+    CoreModule,
     SharedModule,
   ],
   exports: [

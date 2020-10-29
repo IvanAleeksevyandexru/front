@@ -13,6 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { ScreenModule } from '../screen/screen.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HealthInterceptor } from './interceptor/health-interceptor';
+import { CoreModule } from '../core/core.module';
 
 /**
  * Домен форм плеера. Сдесь храняться всё что связано с форм плеером, его интеграцие с форм плеер апи.
@@ -23,7 +24,7 @@ import { HealthInterceptor } from './interceptor/health-interceptor';
   ],
   imports: [
     ScreenModule,
-    CommonModule,
+    CoreModule,
     SharedModule,
   ],
   providers: [

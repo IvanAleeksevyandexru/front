@@ -4,7 +4,7 @@ import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscrib
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { Screen } from '../screen.types';
-import { UniqueScreenComponentTypes } from './unique-screen.types';
+import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 
