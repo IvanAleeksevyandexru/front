@@ -28,7 +28,7 @@ import {
   DictionaryYMapItem,
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { ModalService } from '../../../../modal/modal.service';
-import { CommonModalComponent } from '../../../../modal/components/common-modal/common-modal.component';
+import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',

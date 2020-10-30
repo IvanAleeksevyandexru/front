@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ModalService } from '../../modal.service';
+import { ModalService } from '../modal.service';
 import { ScreenModalComponent } from './screen-modal.component';
 
 @Injectable()

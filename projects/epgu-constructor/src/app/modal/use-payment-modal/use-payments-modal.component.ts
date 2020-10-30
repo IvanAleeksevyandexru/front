@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ModalBaseComponent } from '../../modal-base/modal-base.component';
-import { UnusedPaymentInterface } from '../../../../component/unique-screen/components/unused-payments/unused-payment.interface';
+import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
+import { UnusedPaymentInterface } from '../../component/unique-screen/components/unused-payments/unused-payment.interface';
 
 @Component({
   selector: 'epgu-constructor-use-payments-modal',

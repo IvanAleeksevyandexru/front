@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalBaseComponent } from '../modal-base/modal-base.component';
+import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 
 @Component({
   selector: 'epgu-constructor-confirmation-modal',

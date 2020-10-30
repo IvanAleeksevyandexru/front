@@ -15,7 +15,7 @@ import {
 } from 'rxjs/operators';
 import { COMMON_ERROR_MODAL_PARAMS } from './errors.interceptor.constants';
 import { ModalService } from '../../../modal/modal.service';
-import { ConfirmationModalComponent } from '../../../modal/components/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Injectable()
 export class ErrorsInterceptorService implements HttpInterceptor {
