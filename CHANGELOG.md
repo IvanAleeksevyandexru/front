@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.21](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.20...v0.3.21) (2020-10-30)
+
+
+### Bug Fixes
+
+* вернул на место иконку warn.svg в компоненте confirm-email [ref EPGUCORE-40183-40183] ([2c09fc8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2c09fc839e8db9a3cf6246a576d75b69ea7f7ddd))
+
 ### [0.3.20](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.19...v0.3.20) (2020-10-29)
 
 ### [0.3.19](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.17...v0.3.19) (2020-10-29)
