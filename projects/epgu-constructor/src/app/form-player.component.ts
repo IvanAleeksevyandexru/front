@@ -48,8 +48,8 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.serviceDataService.init(this.service);
 
     this.loadService.loaded
-      .pipe(mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()))
       .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()))
       .subscribe((config) => {
         this.configService.config = config;
       });
