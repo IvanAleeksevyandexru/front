@@ -1,3 +1,4 @@
+import { ErrorsInterceptorService } from './interceptor/errors/errors.interceptor';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
@@ -84,6 +85,11 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
       useFactory: initApp,
       deps: [SmuEventsService, CookieService],
       multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorsInterceptorService,
+      multi: true,
     },
     ActionApiService,
   ],
