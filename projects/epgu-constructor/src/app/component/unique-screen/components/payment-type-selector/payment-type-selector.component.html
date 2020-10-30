@@ -1,0 +1,27 @@
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+
+<epgu-constructor-screen-container>
+  <epgu-constructor-page-name>{{
+    this.screenService.component.attrs.states[this.screenService.component.attrs.state].header
+  }}</epgu-constructor-page-name>
+
+  <epgu-constructor-output-html
+    class="info__text"
+    [html]="
+      this.screenService.component.attrs.states[this.screenService.component.attrs.state].body
+    "
+    [clarifications]="screenService.component?.attrs?.clarifications"
+  >
+  </epgu-constructor-output-html>
+
+  <epgu-constructor-action-button
+    *ngFor="
+      let action of this.screenService.component.attrs.states[
+        this.screenService.component.attrs.state
+      ].actions
+    "
+    epgu-constructor-action
+    [action]="action"
+    >{{ action.label }}</epgu-constructor-action-button
+  >
+</epgu-constructor-screen-container>

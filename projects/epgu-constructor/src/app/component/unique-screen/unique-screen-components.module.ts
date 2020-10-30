@@ -17,6 +17,7 @@ import { SignatureApplicationModule } from './components/signature-application/s
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { WebcamService } from './services/webcam/webcam.service';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
+import { PaymentTypeSelectorModule } from './components/payment-type-selector/payment-type-selector.module';
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
 const COMPONENTS = [RepeatableFieldsComponent];
@@ -41,6 +42,7 @@ const COMPONENTS = [RepeatableFieldsComponent];
     ConfirmEmailModule,
     SignatureApplicationModule,
     UploadAndEditPhotoModule,
+    PaymentTypeSelectorModule,
   ],
   exports: [
     ...COMPONENTS,
@@ -56,6 +58,7 @@ const COMPONENTS = [RepeatableFieldsComponent];
     ConfirmPhoneModule,
     ConfirmEmailModule,
     SignatureApplicationModule,
+    PaymentTypeSelectorModule,
   ],
   providers: [
     WebcamService,
