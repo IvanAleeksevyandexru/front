@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ActionApiDTO, ActionApiResponse } from './action-api.types';
-import { apiUrl } from '../form-player-api/form-player-api.service';
+import { apiUrlDefault } from '../form-player-api/form-player-api.service';
 
 @Injectable()
 export class ActionApiService {
@@ -14,6 +14,6 @@ export class ActionApiService {
    * @param body - тело запроса
    */
   send<T>(path: string, body: ActionApiDTO): Observable<ActionApiResponse<T>> {
-    return this.http.post<ActionApiResponse<T>>(`${apiUrl}/${path}`, body);
+    return this.http.post<ActionApiResponse<T>>(`${apiUrlDefault}/${path}`, body);
   }
 }
