@@ -317,7 +317,7 @@ export class CompressionService {
     canvas['height'] = 0;
   }
 
-  private async isAnImage(file: File | Blob, deepChecking?: boolean) {
+  private async isAnImage(file: File | Blob, deepChecking?: boolean): Promise<boolean> {
     const hasImageType = /^image/.test(file['type']);
     if (!hasImageType) {
       return false;
@@ -328,7 +328,7 @@ export class CompressionService {
     }
   }
 
-  private addImageProcess(file: File | Blob){
+  private addImageProcess(file: File | Blob): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const objUrl = URL.createObjectURL(file);
       let img = new Image();
