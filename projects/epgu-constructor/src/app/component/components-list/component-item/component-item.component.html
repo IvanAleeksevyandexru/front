@@ -1,0 +1,24 @@
+<epgu-constructor-label *ngIf="!disableLabel">{{ data.value?.label }}</epgu-constructor-label>
+<div class="form__error"
+     *ngIf="!disableError">
+  <small
+    *ngIf="data.get('value')?.invalid && data.get('value').touched">
+    {{ data.get('value')?.getError('msg') }}
+  </small>
+  <small
+    *ngIf="data.get('value')?.hasError('serverError')">
+    {{ data.get('value')?.getError('serverError') }}
+  </small>
+</div>
+<ng-content>
+</ng-content>
+<div class="form__info"
+     *ngIf="!disableHint">
+          <span *ngIf="data.value?.attrs?.hint as hint" class="form__hint">
+            {{ hint }}
+          </span>
+  <epgu-constructor-helper-text
+    *ngIf="!data.value?.required && data.value?.type !== componentType.CheckBox">
+    {{ optionalField }}
+  </epgu-constructor-helper-text>
+</div>

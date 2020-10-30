@@ -15,36 +15,36 @@ export class ValidationService {
     CustomScreenComponentTypes.HtmlString,
   ];
 
-customValidator(component: CustomComponent): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors => {
-    if (this.typesWithoutValidation.includes(component.type)) {
-      return null;
-    }
+  customValidator(component: CustomComponent): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors => {
+      if (this.typesWithoutValidation.includes(component.type)) {
+        return null;
+      }
 
-    if (component.required && !control.value) {
-      return this.validationErrorMsg(control.touched ? REQUIRED_FIELD : '');
-    }
+      if (component.required && !control.value) {
+        return this.validationErrorMsg(control.touched ? REQUIRED_FIELD : '');
+      }
 
-    const validations = component.attrs?.validation;
-    let customMessage;
-    if (validations?.length) {
+      const validations = component.attrs?.validation;
+      let customMessage;
+      if (validations?.length) {
         const error = validations.find(({ value, type }) =>
-            type === 'RegExp' && control.value && !new RegExp(value).test(control.value)
+          type === 'RegExp' && control.value && !new RegExp(value).test(control.value)
         );
         if (error) {
           return this.validationErrorMsg(error.errorMsg);
         }
         customMessage = validations.find((validator: CustomComponentAttrValidation) => validator.type === 'validation-fn');
-    }
+      }
 
-    if (!control.value) {
-      return null;
-    }
+      if (!control.value) {
+        return null;
+      }
 
-  return this.isValid(component, control.value) ? null : this.validationErrorMsg(customMessage?.errorMsg);
+      return this.isValid(component, control.value) ? null : this.validationErrorMsg(customMessage?.errorMsg);
 
-  };
-}
+    };
+  }
 
   private isValid(component, value): boolean {
     switch (component.type) {

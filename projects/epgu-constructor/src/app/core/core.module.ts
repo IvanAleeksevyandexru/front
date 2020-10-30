@@ -12,6 +12,7 @@ import { NavigationService } from './services/navigation/navigation.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HealthInterceptor } from '../form-player/interceptor/health-interceptor';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
+import { ErrorsInterceptorService } from './interceptor/errors/errors.interceptor';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
@@ -58,6 +59,11 @@ const PIPES = [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HealthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorsInterceptorService,
       multi: true,
     },
   ]

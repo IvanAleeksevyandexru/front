@@ -17,6 +17,7 @@ import { FormPlayerServiceStub } from './services/form-player/form-player.servic
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
 import { ModalContainerComponent } from '../modal/components/modal-container/modal-container.component';
 import { NavigationService } from '../core/services/navigation/navigation.service';
+import { ComponentsListComponent } from '../component/components-list/components-list.component';
 
 export const epguLibModule = EpguLibModule.forRoot();
 
@@ -30,6 +31,7 @@ xdescribe('FormPlayerComponent', () => {
   let EmptyScreenComponentMock = MockComponent(EmptyScreenComponent);
   let CustomScreenComponentMock = MockComponent(CustomScreenComponent);
   let ComponentScreenComponentMock = MockComponent(ComponentScreenComponent);
+  let ComponentsListComponentMock = MockComponent(ComponentsListComponent);
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -47,6 +49,7 @@ xdescribe('FormPlayerComponent', () => {
         EmptyScreenComponentMock,
         CustomScreenComponentMock,
         ComponentScreenComponentMock,
+        ComponentsListComponentMock,
       ],
       providers: [
         NavigationService,

@@ -12,12 +12,12 @@ import {
   CustomListStatusElements, CustomScreenComponentTypes
 } from '../components-list.types';
 import { ValidationService } from './validation.service';
-import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper.service';
+import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
 import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
-import { isDropDown } from './custom-screen-tools';
+import { isDropDown } from '../tools/custom-screen-tools';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 
@@ -178,7 +178,7 @@ export class ComponentListFormService {
           .getDictionaries$('MODEL_TS', model?.value, options)
           .subscribe((dictionary) => {
             this.repository.initDictionary(dictionary);
-        });
+          });
       }
       ///////////////////
     });
