@@ -7,9 +7,8 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 import { LoadService } from 'epgu-lib';
-import { combineLatest } from 'rxjs';
 import { ConfigService } from './config/config.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
 import { ScreenComponent } from './screen/screen.const';
@@ -48,12 +47,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.checkProps();
     this.serviceDataService.init(this.service);
 
-    combineLatest([this.formPlayerConfigApiService.getFormPlayerConfig(), this.loadService.loaded])
+    this.loadService.loaded
+      .pipe(mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()))
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((result) => {
-        console.log('result');
-        console.log(result);
-        [this.configService.config] = result;
+      .subscribe((config) => {
+        this.configService.config = config;
       });
 
     this.formPlayerService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
@@ -70,12 +68,14 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const { orderId, invited } = this.serviceDataService;
-    if (orderId) {
-      this.handleOrder(orderId, invited);
-    } else {
-      this.getOrderIdFromApi();
-    }
+    this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      const { orderId, invited } = this.serviceDataService;
+      if (orderId) {
+        this.handleOrder(orderId, invited);
+      } else {
+        this.getOrderIdFromApi();
+      }
+    });
   }
 
   ngOnChanges(): void {
