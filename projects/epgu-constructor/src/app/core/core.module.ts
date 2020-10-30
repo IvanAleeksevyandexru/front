@@ -11,6 +11,7 @@ import { DeviceDetectorService } from './services/device-detector/device-detecto
 import { NavigationService } from './services/navigation/navigation.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HealthInterceptor } from '../form-player/interceptor/health-interceptor';
+import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
@@ -52,6 +53,7 @@ const PIPES = [
     ConfigService,
     DeviceDetectorService,
     NavigationService,
+    NavigationModalService,
     SmuEventsService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -7,6 +7,7 @@ import { ModalContainerComponent } from './components/modal-container/modal-cont
 import { ModalBaseComponent } from './components/modal-base/modal-base.component';
 import { UsePaymentsModalComponent } from './components/use-payment-modal/use-payment-modal/use-payments-modal.component';
 import { ModalService } from './modal.service';
+import { ScreenModalComponent } from './components/screen-modal/screen-modal.component';
 
 const COMPONENTS = [
   ConfirmationModalComponent,
@@ -15,6 +16,7 @@ const COMPONENTS = [
   ModalContainerComponent,
   ModalBaseComponent,
   UsePaymentsModalComponent,
+  ScreenModalComponent
 ];
 
 /**
