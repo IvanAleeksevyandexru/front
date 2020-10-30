@@ -3,6 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class NotificationService {
+  private _closeNotificationTime = 5000;
+
   private _text = new BehaviorSubject<string>(null);
   public get text() {
     return this._text.getValue();
@@ -31,9 +33,11 @@ export class NotificationService {
     this.text = text;
     this.title = title;
     this.hasNotification = true;
+
+    setTimeout(() => this.close(), this._closeNotificationTime);
   }
 
   close() {
-    this.hasNotification = false;
+    this._hasNotification.next(false);
   }
 }

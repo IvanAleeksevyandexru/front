@@ -1,24 +1,24 @@
 import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
   AfterViewInit,
   ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
   NgZone,
   OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
 } from '@angular/core';
-import { switchMap, filter, takeUntil, reduce } from 'rxjs/operators';
-import { of, merge } from 'rxjs';
+import { filter, reduce, switchMap, takeUntil } from 'rxjs/operators';
+import { merge, of } from 'rxjs';
 import { HelperService, YaMapService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../shared/config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
-import { IGeoCoordsResponse, IdictionaryFilter } from './select-map-object.interface';
+import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
 import { UtilsService } from '../../../../shared/services/utils/utils.service';
 import { DictionaryUtilities } from '../../../../shared/services/dictionary/dictionary-utilities-service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
@@ -30,6 +30,8 @@ import {
 import { ModalService } from '../../../../shared/services/modal/modal.service';
 import { CommonModalComponent } from '../../../../shared/components/modal/common-modal/common-modal.component';
 import { NotificationService } from '../../../../shared/services/notification/notification.service';
+import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
+import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -75,7 +77,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   ngOnInit(): void {
     this.initVariable();
     this.subscribeToEmmitNextStepData();
-    this.notificationService.setNotification('ERROR');
+    if (this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
+      this.availablePaymentInGIBDD(10000605153);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -276,6 +280,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public selectObject() {
+    if (this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
+      this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code);
+    }
+
     this.zone.run(() => {
       const answer = { ...this.selectedValue, children: null };
       this.nextStepEvent.emit(JSON.stringify(answer));
@@ -310,5 +318,34 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.yaMapService.mapSubject.next(null);
     // Очищаем id выбранной ранее точки чтобы при возврате на карту он был пуст.
     this.selectMapObjectService.mapOpenedBalloonId = null;
+  }
+
+  /**
+   * Метод проверяет доступность оплаты в выбранном отделе ГИБДД
+   * @param id объект на карте
+   */
+  private availablePaymentInGIBDD(id: number) {
+    const options = getPaymentRequestOptionGIBDD(id);
+    this.dictionaryApiService
+      .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
+      .pipe(
+        filter((response) => {
+          const hasAttributeValues = response.items.every((item) =>
+            this.screenService.component.attrs.checkedParametersGIBDD.every(
+              (param) => item.attributeValues[param],
+            ),
+          );
+
+          return response.error.code !== 0 || !!response.items.length || !hasAttributeValues;
+        }),
+      )
+      .subscribe(() => {
+        const { GIBDDpaymentError } = this.screenService.component.attrs;
+        this.notificationService.setNotification(GIBDDpaymentError.text, GIBDDpaymentError.title);
+
+        this.modalService.openModal(ConfirmationModalComponent, {
+          ...GIBDDpaymentError,
+        });
+      });
   }
 }
