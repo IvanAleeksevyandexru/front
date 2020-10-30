@@ -12,15 +12,15 @@
 
     <div class="fileupload__label" *ngIf="refData?.length"
          [innerHTML]="refData"></div>
-    <div class="info">
-      <div class="info__item" *ngIf="data.maxFileCount">
-        Количество загружаемых файлов не более {{ data.maxFileCount }}
-      </div>
-      <div class="info__item">
-        Объем загружаемых данных не должен превышать 5 МБ
-      </div>
-    </div>
-  </div>
+     <div class="info">
+       <div class="info__item" *ngIf="data.maxFileCount">
+         Количество загружаемых файлов не более {{ data.maxFileCount }}
+       </div>
+       <div class="info__item">
+         Общий размер файлов в сумме не должен превышать 5 Мб
+       </div>
+     </div>
+   </div>
   <input #fileUploadInput type="file" [attr.accept]="getAcceptTypes()" (change)="updateSelectedFilesInfoAndSend()"
          multiple/>
   <div class="errors" *ngIf="errors.length">
