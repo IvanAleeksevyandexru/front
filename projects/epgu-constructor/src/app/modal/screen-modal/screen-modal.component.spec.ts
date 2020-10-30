@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 
 import { ScreenModalComponent } from './screen-modal.component';
@@ -8,7 +8,7 @@ xdescribe('ScreenModalComponent', () => {
   let component: ScreenModalComponent;
   let fixture: ComponentFixture<ScreenModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ CommonModule ],
       declarations: [ ScreenModalComponent ]
