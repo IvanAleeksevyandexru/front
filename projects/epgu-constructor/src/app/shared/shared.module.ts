@@ -25,6 +25,7 @@ import { ActionDirective } from './directives/action/action.directive';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
 import { UtilsService } from './services/utils/utils.service';
 import { CoreModule } from '../core/core.module';
+import { InputErrorComponent } from './components/input-error/input-error.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -39,6 +40,7 @@ const COMPONENTS = [
   WebcamShootComponent,
   PassportComponent,
   ActionButtonComponent,
+  InputErrorComponent,
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe];
@@ -49,7 +51,7 @@ const DIRECTIVES = [
   TextTransformDirective,
   DragAndDropDirective,
   CurrencyTransformDirective,
-  ActionDirective
+  ActionDirective,
 ];
 
 /**

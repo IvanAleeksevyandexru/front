@@ -10,7 +10,6 @@ import { SelectChildrenScreenModule } from './components/select-children/select-
 // eslint-disable-next-line max-len
 import { TemporaryRegistrationAddrScreenModule } from './components/confirm-personal-user/screens/temporary-registration-addr/temporary-registration-addr-screen.module';
 import { AddPassportModule } from './components/add-passport/add-passport.module';
-import { DocInputModule } from './components/doc-input/doc-input.module';
 import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
 import { ToolsService } from '../shared/services/tools/tools.service';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
@@ -31,7 +30,6 @@ const COMPONENTS = [
     SelectChildrenScreenModule,
     TemporaryRegistrationAddrScreenModule,
     AddPassportModule,
-    DocInputModule,
   ],
   exports: [
     ...COMPONENTS,
@@ -41,7 +39,6 @@ const COMPONENTS = [
     SelectChildrenScreenModule,
     TemporaryRegistrationAddrScreenModule,
     AddPassportModule,
-    DocInputModule
   ],
   providers: [
     ToolsService,

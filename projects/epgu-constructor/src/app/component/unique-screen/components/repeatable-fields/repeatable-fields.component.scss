@@ -1,6 +1,6 @@
-@import '../../../../../styles/core/functions';
-@import '../../../../../styles/core/typography';
-@import '../../../../../styles/core/variables';
+@import 'src/styles/core/functions';
+@import 'src/styles/core/typography';
+@import 'src/styles/core/variables';
 
 .nav {
   @include navigation-mt();

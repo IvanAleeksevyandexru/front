@@ -1,25 +1,13 @@
-@import '../../../styles/core/palettes';
-@import '../../../styles/core/typography';
-@import '../../../styles/core/variables';
-@import '../../../styles/core/functions';
-@import '../../../styles/components/rubles';
+@import 'src/styles/core/palettes';
+@import 'src/styles/core/typography';
+@import 'src/styles/core/variables';
+@import 'src/styles/core/functions';
+@import 'src/styles/components/rubles';
 
 // test
 .form {
   &__item {
     margin-bottom: $screen-pad-p;
-
-    &:not(:first-child) {
-      margin-bottom: 0;
-    }
-
-
-    &__hint {
-      @include first-letter-uppercase();
-      margin: 4px 4px 0 0;
-      color: $color-blue-bayoux;
-      @include typ-plain-small();
-    }
 
     &--date {
       width: 50%;
@@ -29,6 +17,7 @@
       }
     }
   }
+
   &__title {
     font-size: 14px;
     font-family: $font-main;
@@ -36,10 +25,7 @@
     color: $color-summer-night;
     margin-bottom: 4px;
   }
-  &__error {
-    margin-top: 4px;
-    color: $color-gosred;
-  }
+
   &__radio {
 
     &__block {
@@ -76,13 +62,6 @@
       }
     }
   }
-}
-
-.label {
-  margin-bottom: $screen-pad-p;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: bold;
 }
 
 @include rubles('.custom__screen-html', '../../../../../src/assets/img/ruble.svg');

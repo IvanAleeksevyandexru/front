@@ -13,9 +13,9 @@ import { SignatureApplicationModule } from './components/signature-application/s
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { WebcamService } from './services/webcam/webcam.service';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
+import { ComponentsListModule } from '../components-list/components-list.module';
 import { ModalModule } from '../../modal/modal.module';
 import { CoreModule } from '../../core/core.module';
-import { ComponentsListModule } from '../components-list/components-list.module';
 import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
 import { ConfirmPhoneComponent } from './components/confirm-phone/confirm-phone.component';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
@@ -41,7 +41,7 @@ const COMPONENTS = [RepeatableFieldsComponent, ConfirmEmailComponent, ConfirmPho
     UnusedPaymentsModule,
     SignatureApplicationModule,
     UploadAndEditPhotoModule,
-    ComponentsListModule
+    ComponentsListModule,
   ],
   exports: [
     ...COMPONENTS,
