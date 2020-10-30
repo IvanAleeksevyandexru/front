@@ -5,24 +5,33 @@ import { Observable } from 'rxjs';
 import { FormPlayerNavigation, NavigationOptions } from '../../../form-player.types';
 import { FormPlayerApiResponse, FormPlayerApiSuccessResponse, CheckOrderApiResponse } from './form-player-api.types';
 import { ServiceDataService } from '../../service-data/service-data.service';
+import { LoadService } from 'epgu-lib';
 
 type CookieSession = { userId: string, token: string };
 
-export const apiUrl = '/api';
+export const apiUrlDefault = '/api';
 
 @Injectable()
 export class FormPlayerApiService {
+  private apiUrl = apiUrlDefault;
+
   constructor(
     private http: HttpClient,
     private serviceDataService: ServiceDataService,
     private cookieService: CookieService,
-  ) {}
+    private loadService: LoadService
+  ) {
+    this.loadService.loaded.subscribe(() => {
+      const coreApiUrl = this.loadService.config.newSfApiUrl;
+      this.apiUrl = coreApiUrl ?? apiUrlDefault;
+    });
+  }
 
   public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
     const { serviceId, targetId } = this.serviceDataService;
     const { userId, token } = this.getSessionFromCookie();
     const body = { targetId, userId, token };
-    const path = `${apiUrl}/service/${serviceId}/scenario/checkIfOrderIdExists`;
+    const path = `${this.apiUrl}/service/${serviceId}/scenario/checkIfOrderIdExists`;
 
     return this.post<CheckOrderApiResponse>(path, body);
   }
@@ -30,7 +39,7 @@ export class FormPlayerApiService {
   public getInviteServiceData(orderId: string): Observable<FormPlayerApiResponse> {
     const { targetId, serviceId } = this.serviceDataService;
     const { userId, token } = this.getSessionFromCookie();
-    const path = `${apiUrl}/invitation/${serviceId}/getService`;
+    const path = `${this.apiUrl}/invitation/${serviceId}/getService`;
     const body = { targetId, userId, token, orderId };
 
     return this.post<FormPlayerApiResponse>(path, body);
@@ -39,7 +48,7 @@ export class FormPlayerApiService {
   public getServiceData(orderId?: string): Observable<FormPlayerApiResponse> {
     const { serviceId, targetId } = this.serviceDataService;
     const { userId, token } = this.getSessionFromCookie();
-    const path = `${apiUrl}/service/${serviceId}/scenario/getService`;
+    const path = `${this.apiUrl}/service/${serviceId}/scenario/getService`;
     const body = { targetId, userId, token };
 
     if(orderId) {
@@ -82,7 +91,7 @@ export class FormPlayerApiService {
 
   private getNavigatePath(data, options: NavigationOptions, formPlayerNavigation: FormPlayerNavigation): string {
     const { serviceId } = this.serviceDataService;
-    let path = apiUrl;
+    let path = this.apiUrl;
     if (options.url) {
       path += `/${options.url}`;
     } else {
