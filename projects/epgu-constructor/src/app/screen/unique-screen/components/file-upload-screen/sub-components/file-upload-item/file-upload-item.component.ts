@@ -224,7 +224,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     let file: any = source;
     if (this.compressTypes.includes(file.type)) {
       file = await this.compressionService.imageCompression(file, {
-        maxSizeMB: getSizeInMB(this.data.maxSize),
+        maxSizeMB: 1,
       });
     }
 
