@@ -45,20 +45,20 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     this.subscribeOnFormChange();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     setTimeout(() => this.handleServerErrors()); // https://stackoverflow.com/questions/54611631/expressionchangedafterithasbeencheckederror-on-angular-6-while-using-mat-tab
   }
 
   /**
    * If there are server errors - adds them to appropriate fields and displays by setting field's state to touched
    */
-  handleServerErrors() {
+  handleServerErrors(): void {
     const serverErrorJson = this.data?.get('value')?.errors?.serverError || null;
 
     if (serverErrorJson) {
       const serverError = JSON.parse(serverErrorJson);
 
-      this.fieldsNames.forEach((fieldName) => {
+      this.fieldsNames.forEach((fieldName: string) => {
         const fieldControl = this.form.get(fieldName);
         if (serverError[fieldName] && fieldControl) {
           fieldControl.setErrors({ msg: serverError[fieldName] });
@@ -68,7 +68,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     }
   }
 
-  subscribeOnFormChange() {
+  subscribeOnFormChange(): void {
     this.form.valueChanges
       .pipe(
         takeUntil(this.ngUnsubscribe$),
@@ -84,7 +84,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     };
   }
 
-  emitToParentForm(formFields: DocInputFormFields) {
+  emitToParentForm(formFields: DocInputFormFields): void {
     if (this.form.valid) {
       this.data.get('value').setValue(formFields);
     } else {
@@ -96,7 +96,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   addFormGroupControls(): void {
     const componentValues = JSON.parse(this.data.value.value || '{}'); // gets value for fields if they have already existed
 
-    this.fieldsNames.forEach((fieldName) => {
+    this.fieldsNames.forEach((fieldName: string) => {
       const validators = this.getFormFieldValidators(fieldName);
       this.form.addControl(fieldName, new FormControl(componentValues[fieldName], validators));
     });
@@ -140,7 +140,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     };
   }
 
-  getValidationHandler() {
+  getValidationHandler(): { [key: string]: Function } {
     const regExp = (control, config) => {
       if (control.value && !control.value.match(config.pattern)) {
         return { msg: config.msg };

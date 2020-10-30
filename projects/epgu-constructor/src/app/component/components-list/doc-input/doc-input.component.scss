@@ -1,4 +1,6 @@
- @import "../../../../styles/core";
+ @import "src/styles/core/functions";
+ @import "src/styles/core/typography";
+ @import "src/styles/core/palettes";
 
 .doc-input {
   display: flex;
