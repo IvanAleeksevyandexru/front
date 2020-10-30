@@ -31,7 +31,9 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     private http: HttpClient,
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService
   ) {}
-
+  checkBooking(selectedSlot: SlotInterface) {
+    return this.book(selectedSlot);
+  }
   book(selectedSlot: SlotInterface) {
     this.errorMessage = undefined;
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(

@@ -7,19 +7,6 @@
     <div class="head" [innerHTML]="screenService.componentLabel$ | async | safe: 'html'"></div>
 
     <img class="icon" src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/warn.svg" />
-
-<!--    <div class="error">{{ screenService.componentError$ | async }}</div>-->
-
-<!--    <div class="hint" *ngIf="isTimerShow">-->
-<!--      Повторная отправка кода будет возможна через-->
-<!--      <b-->
-<!--        class="hint__timer"-->
-<!--        [epgu-constructor-counter]="count"-->
-<!--        [interval]="countInterval"-->
-<!--        (value)="timerChange($event)"-->
-<!--        >{{ timer | formatTime }}</b-->
-<!--      >-->
-<!--    </div>-->
   </epgu-constructor-screen-pad>
 
   <div class="action">
