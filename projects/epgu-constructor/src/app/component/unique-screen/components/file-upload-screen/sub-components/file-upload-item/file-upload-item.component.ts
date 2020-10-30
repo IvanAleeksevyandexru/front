@@ -223,16 +223,9 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
 
     let file: any = source;
     if (this.compressTypes.includes(file.type)) {
-      try {
-        file = await this.compressionService.imageCompression(file, {
-          maxSizeMB: getSizeInMB(this.data.maxSize),
-          deepChecking: true,
-        });
-      } catch (e) {
-        this.filesInUploading -= 1;
-        this.errors.push(`Ошибка. Не удалось прикрепить файл ${file.name}`);
-        return;
-      }
+      file = await this.compressionService.imageCompression(file, {
+        maxSizeMB: 1,
+      });
     }
 
     const fileToUpload = new TerraUploadedFile({
