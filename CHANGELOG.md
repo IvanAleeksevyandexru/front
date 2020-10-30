@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.24](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.23...v0.3.24) (2020-10-30)
+
+
+### Bug Fixes
+
+* убрал 'глобальный' стиль border: 0 у button и добавил его на уровне компонентов, где нужно [ref EPGUCORE-38636] ([3c479eb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3c479eb06d1b607c6a93a56212fe0f270e054e39))
+
 ### [0.3.23](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.22...v0.3.23) (2020-10-30)
 
 ### [0.3.22](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.21...v0.3.22) (2020-10-30)
