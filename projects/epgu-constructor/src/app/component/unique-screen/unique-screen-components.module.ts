@@ -9,18 +9,19 @@ import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { ConfirmModule } from './components/confirm/confirm.module';
 import { PaymentModule } from './components/payment/payment.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
-import { ConfirmPhoneModule } from './components/confirm-phone/confirm-phone.module';
-import { ConfirmEmailModule } from './components/confirm-email/confirm-email.module';
 import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { WebcamService } from './services/webcam/webcam.service';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
+import { ComponentsListModule } from '../components-list/components-list.module';
 import { ModalModule } from '../../modal/modal.module';
 import { CoreModule } from '../../core/core.module';
-import { ComponentsListModule } from '../components-list/components-list.module';
+import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
+import { ConfirmPhoneComponent } from './components/confirm-phone/confirm-phone.component';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
-const COMPONENTS = [RepeatableFieldsComponent];
+const COMPONENTS = [RepeatableFieldsComponent, ConfirmEmailComponent, ConfirmPhoneComponent];
 
 @NgModule({
   declarations: [
@@ -38,11 +39,9 @@ const COMPONENTS = [RepeatableFieldsComponent];
     ConfirmModule,
     PaymentModule,
     UnusedPaymentsModule,
-    ConfirmPhoneModule,
-    ConfirmEmailModule,
     SignatureApplicationModule,
     UploadAndEditPhotoModule,
-    ComponentsListModule
+    ComponentsListModule,
   ],
   exports: [
     ...COMPONENTS,
@@ -55,13 +54,12 @@ const COMPONENTS = [RepeatableFieldsComponent];
     ConfirmModule,
     PaymentModule,
     UnusedPaymentsModule,
-    ConfirmPhoneModule,
-    ConfirmEmailModule,
     SignatureApplicationModule,
   ],
   providers: [
     WebcamService,
-    DictionaryApiService
+    DictionaryApiService,
+    UnsubscribeService
   ]
 })
 export class UniqueScreenComponentsModule {}

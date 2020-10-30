@@ -29,7 +29,8 @@ xdescribe('QuestionsScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: ScreenTypes.QUESTION
+      type: ScreenTypes.QUESTION,
+      terminal: false,
     }
   };
 

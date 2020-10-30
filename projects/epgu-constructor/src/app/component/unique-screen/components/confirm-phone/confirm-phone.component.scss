@@ -1,4 +1,4 @@
-@import "../../../../../../../styles/core/index";
+@import "../../../../../styles/core/index";
 
 .nav {
   @include navigation-mt();
@@ -17,6 +17,18 @@
       height: 52px;
       // letter-spacing: 8px;
       text-align: center;
+
+      /* Chrome, Safari, Edge, Opera */
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      &[type=number] {
+        -moz-appearance: textfield;
+      }
     }
   }
   &__error {

@@ -8,6 +8,7 @@ export interface TimeSlotsServiceInterface {
   isDateLocked(date: Date): boolean;
   getAvailableSlots(selectedDay: Date): Observable<any[]>;
   getBookedSlot(): any;
+  checkBooking(selectedSlot: any): Observable<any>;
   book(selectedSlot: any): Observable<any>;
   hasError(): boolean;
   getErrorMessage(): string;

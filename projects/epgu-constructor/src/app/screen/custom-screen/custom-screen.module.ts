@@ -18,7 +18,7 @@ const COMPONENTS = [
   imports: [
     CoreModule,
     SharedModule,
-    ComponentsListModule
+    ComponentsListModule,
   ],
 })
 export class CustomScreenModule { }
