@@ -31,7 +31,6 @@ import { ModalService } from '../../../../shared/services/modal/modal.service';
 import { CommonModalComponent } from '../../../../shared/components/modal/common-modal/common-modal.component';
 import { NotificationService } from '../../../../shared/services/notification/notification.service';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
-import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -342,10 +341,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       .subscribe(() => {
         const { GIBDDpaymentError } = this.screenService.component.attrs;
         this.notificationService.setNotification(GIBDDpaymentError.text, GIBDDpaymentError.title);
-
-        this.modalService.openModal(ConfirmationModalComponent, {
-          ...GIBDDpaymentError,
-        });
       });
   }
 }
