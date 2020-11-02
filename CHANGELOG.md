@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.12](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.11...v0.4.12) (2020-11-02)
+
+
+### Bug Fixes
+
+* добавлены классы для цветов текста, используемых в json-сценариях [ref EPGUCORE-40312] ([a5ae46d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a5ae46db085a69861b5e0243a13a6d3d6b6a4800))
+
+### [0.4.10](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.24...v0.4.10) (2020-10-30)
+
+### [0.4.9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.8...v0.4.9) (2020-10-29)
+
 ### [0.4.11](https://git.gosuslugi.local///compare/v0.3.26...v0.4.11) (2020-11-02)
 
 
