@@ -21,9 +21,9 @@
        </div>
      </div>
    </div>
-  <input #fileUploadInput type="file" [attr.accept]="getAcceptTypes()" (change)="updateSelectedFilesInfoAndSend($event.target.files, true)"
+  <input #fileUploadInput type="file" [attr.accept]="getAcceptTypes()" (change)="updateSelectedFilesInfoAndSend($event.target.files)"
          multiple/>
-  <input #cameraInput type="file" capture="environment" accept="image/*" (change)="updateSelectedFilesInfoAndSend($event.target.files)">
+  <input #cameraInput type="file" capture="environment" accept="image/*" (change)="updateSelectedFilesInfoAndSend($event.target.files, true)">
   <div class="errors" *ngIf="errors.length">
     <div class="error" *ngFor="let error of errors" [innerText]="error"></div>
   </div>
