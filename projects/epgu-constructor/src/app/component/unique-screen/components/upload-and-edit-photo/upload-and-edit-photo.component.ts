@@ -28,8 +28,8 @@ import { CompressionService } from './compression/compression.service';
 import { ConfigService } from '../../../../core/config/config.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';
-import { ConfirmationModalComponent } from '../../../../modal/components/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../modal/components/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',

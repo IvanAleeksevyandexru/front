@@ -15,7 +15,7 @@ import { UniqueScreenComponent } from '../screen/unique-screen/unique-screen.com
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
-import { ModalContainerComponent } from '../modal/components/modal-container/modal-container.component';
+import { ModalContainerComponent } from '../modal/shared/modal-container/modal-container.component';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { ComponentsListComponent } from '../component/components-list/components-list.component';
 

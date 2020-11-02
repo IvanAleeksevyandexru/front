@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalService } from '../../../modal/modal.service';
-import { ConfirmationModalComponent } from '../../../modal/components/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { getHiddenBlock } from '../../../shared/constants/uttils';
 import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 
