@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { ScreenModalComponent } from './screen-modal.component';
-import { ModalService } from '../modal.service';
 import { CoreModule } from '../../core/core.module';
+import { ScreenModalService } from './screen-modal.service';
 
 
 @NgModule({
   declarations: [ScreenModalComponent],
   providers: [
-    ModalService,
+    ScreenModalService,
   ],
   exports: [ScreenModalComponent],
   imports: [CoreModule],
