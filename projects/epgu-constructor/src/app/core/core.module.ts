@@ -10,11 +10,11 @@ import { ConfigService } from './config/config.service';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 import { NavigationService } from './services/navigation/navigation.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HealthInterceptor } from '../form-player/interceptor/health-interceptor';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
 import { ErrorsInterceptorService } from './interceptor/errors/errors.interceptor';
 import { initApp } from './initializers/app.initializer';
 import { CookieService } from 'ngx-cookie-service';
+import { HealthInterceptor } from './interceptor/health-interceptor';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
