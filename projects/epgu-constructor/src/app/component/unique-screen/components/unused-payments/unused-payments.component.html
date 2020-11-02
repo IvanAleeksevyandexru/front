@@ -1,3 +1,15 @@
-<div>
-  <h3 *ngIf="paymentUIN">Использована оплата по УИН {{paymentUIN}}</h3>
-</div>
+<!--<div>-->
+<!--  <h3 *ngIf="paymentUIN">Использована оплата по УИН {{paymentUIN}}</h3>-->
+<!--</div>-->
+<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container>
+  <div class="inner">
+    <div *ngIf="data?.name" class="head">
+      <epgu-constructor-page-name>{{ data.name }}</epgu-constructor-page-name>
+    </div>
+    <div class="unused-payments__description">Выберите пошлину, которую вы оплатили, но еще не использовали</div>
+  </div>
+  <epgu-constructor-radio-tax (selected)="tax = $event" [data]="paymentsList"></epgu-constructor-radio-tax>
+</epgu-constructor-screen-container>
+
+

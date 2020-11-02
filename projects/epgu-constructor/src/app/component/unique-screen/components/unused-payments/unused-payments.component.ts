@@ -18,10 +18,12 @@ export class UnusedPaymentsComponent implements OnInit {
   @Output() nextStepEvent = new EventEmitter<any>();
 
   orderId: string;
-  paymentsList: UnusedPaymentInterface[];
+  paymentsList: UnusedPaymentInterface[] = [];
   paymentUIN: string;
 
   mockOrderId = '763444783';
+
+  tax: UnusedPaymentInterface;
 
   constructor(
     private modalService: ModalService,
@@ -50,7 +52,7 @@ export class UnusedPaymentsComponent implements OnInit {
     const value = JSON.parse(this.data.components[0].value);
     if (value.length) {
       this.paymentsList = value;
-      this.showModal();
+      // this.showModal();
     }
   }
 
@@ -65,7 +67,7 @@ export class UnusedPaymentsComponent implements OnInit {
   getListPaymentsInfoSuccess = (data) => {
     if (data.length) {
       this.paymentsList = data;
-      this.showModal();
+      // this.showModal();
     } else {
       // TODO: должно заменить вызов usePaymentsListData, когда будет работать rest api
       // this.navigationService.prevStep.next();
@@ -80,6 +82,7 @@ export class UnusedPaymentsComponent implements OnInit {
   };
 
   public ngOnInit() {
+    console.log(this.data);
     const { orderId } = this.screenService.getStore();
     this.orderId = orderId;
     this.listPaymentsService
