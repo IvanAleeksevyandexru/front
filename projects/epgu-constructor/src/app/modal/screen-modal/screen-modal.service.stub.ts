@@ -1,9 +1,6 @@
-import  { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ScreenModalServiceStub {
-  public openModal(): Observable<any> {
-    return of({});
-  }
+  navigate(): void {}
 }

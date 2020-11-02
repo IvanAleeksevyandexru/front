@@ -34,7 +34,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     private serviceDataService: ServiceDataService,
     public formPlayerConfigApiService: FormPlayerConfigApiService,
     public formPlayerService: FormPlayerService,
-    private navigationService: NavigationService,
+    private navService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     public configService: ConfigService,
     public loadService: LoadService,
@@ -52,11 +52,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
         this.configService.config = config;
       });
 
-    this.navigationService.nextStep$
+    this.navService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.nextStep(data));
 
-    this.navigationService.prevStep$
+    this.navService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.prevStep(data));
   }
