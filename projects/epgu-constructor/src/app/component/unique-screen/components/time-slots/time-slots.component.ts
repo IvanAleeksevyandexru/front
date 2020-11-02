@@ -13,8 +13,8 @@ import { ModalService } from '../../../../modal/modal.service';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { SlotInterface } from './time-slots.types';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { ConfirmationModal } from '../../../../modal/components/confirmation-modal/confirmation-modal.interface';
-import { ConfirmationModalComponent } from '../../../../modal/components/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../../screen/screen.service';
 
