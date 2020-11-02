@@ -14,7 +14,7 @@ import { NavigationModalService } from './services/navigation-modal/navigation-m
 import { ErrorsInterceptorService } from './interceptor/errors/errors.interceptor';
 import { initApp } from './initializers/app.initializer';
 import { CookieService } from 'ngx-cookie-service';
-import { HealthInterceptor } from './interceptor/health-interceptor';
+import { HealthInterceptor } from './interceptor/health/health.interceptor';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
