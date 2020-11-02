@@ -17,11 +17,6 @@ import {
   TerabyteListItem,
 } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { TerraByteApiService } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.service';
-import {
-  isCloseAndSaveWebcamEvent,
-  isCloseWebcamEvent,
-  WebcamEvent,
-} from '../../../../../../shared/components/webcam-shoot/webcamevents';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -79,6 +74,11 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
     static: true,
   })
   uploadInput: ElementRef;
+
+  @ViewChild('cameraInput', {
+    static: true,
+  })
+  cameraInput: ElementRef;
   get isButtonsDisabled() {
     return this.listIsUploadingNow || this.filesInUploading > 0;
   }
@@ -337,16 +337,16 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
   /**
    * Обновляет данные о файлах, которые были загружены
    */
-  updateSelectedFilesInfoAndSend() {
+  updateSelectedFilesInfoAndSend(fileList: FileList, selectedFile?: boolean) {
     this.errors = [];
-    const inputFiles: File[] = this.prepareFilesToUpload(this.uploadInput.nativeElement.files);
+    const inputFiles: File[] = this.prepareFilesToUpload(fileList);
 
     for (let i = 0; i < inputFiles.length; i += 1) {
       if (this.data.maxFileCount && this.files$$.value.length === this.data.maxFileCount) {
         this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
         return;
       }
-      if (!this.isFileTypeValid(inputFiles[i])) {
+      if (selectedFile && !this.isFileTypeValid(inputFiles[i])) {
         this.errors.push(`Недопустимый тип файла ${inputFiles[i].name}`);
         break;
       }
@@ -372,22 +372,7 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
    * Открытие камеры для получения изображения и последующей загрузки
    */
   openCamera() {
-    this.errors = [];
-    if (this.data.maxFileCount && this.files$$.value.length === this.data.maxFileCount) {
-      this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
-    } else {
-      const webcamEvents = this.webcamService.open();
-      webcamEvents.events.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((event: WebcamEvent) => {
-        if (isCloseWebcamEvent(event) || isCloseAndSaveWebcamEvent(event)) {
-          if (isCloseAndSaveWebcamEvent(event)) {
-            // Если данные нужно сохранить и отправить
-            const { data } = event;
-            this.sendFile(TerraByteApiService.base64toBlob(data));
-          }
-          this.webcamService.close();
-        }
-      });
-    }
+    this.cameraInput.nativeElement.click();
   }
 
   /**
