@@ -1,8 +1,11 @@
+import { of } from 'rxjs';
+
 export class LoadServiceStub {
-  config: {
+  public config = {
     staticDomain: ''
   };
-  attributes: {
+  public attributes = {
     deviceType: 'dev'
   };
+  public loaded = of(true);
 }
