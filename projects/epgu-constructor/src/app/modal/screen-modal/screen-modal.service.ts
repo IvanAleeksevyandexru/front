@@ -15,7 +15,6 @@ export class ScreenModalService {
   private store: FormPlayerApiSuccessResponse;
   private playerLoaded = false;
   private isLoading = false;
-  private screenType: string;
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
@@ -28,6 +27,11 @@ export class ScreenModalService {
     public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
   ) {}
+
+  resetStore(): void {
+    this.updatePlayerLoaded(false);
+    this.store = null;
+  }
 
   navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation): void {
     this.store = this.store ?? JSON.parse(JSON.stringify(this.formPlayerService.store));
@@ -136,7 +140,6 @@ export class ScreenModalService {
     const scenarioDto = response.scenarioDto;
 
     this.initScreenStore(scenarioDto);
-    this.updateScreenType(scenarioDto);
     this.updatePlayerLoaded(true);
 
     // TODO: move it to log service
@@ -149,16 +152,6 @@ export class ScreenModalService {
   handleInvalidResponse() {
     console.error('----- ERROR DATA MODAL ---------');
     console.error('Invalid Response');
-  }
-
-  /**
-   * Обновляем тип экрана
-   * @param scenarioDto - сведения о сценарии
-   * @private
-   */
-  private updateScreenType(scenarioDto: ScenarioDto): void {
-    const { display } = scenarioDto;
-    this.screenType = display.type;
   }
 
   /**
@@ -180,7 +173,7 @@ export class ScreenModalService {
     this.isLoading = newState;
     this.isLoadingSubject.next(newState);
     this.screenService.updateLoading(newState);
-    if(!this.playerLoaded) {
+    if(!this.playerLoaded && !newState) {
       this.updatePlayerLoaded(true);
     }
   }

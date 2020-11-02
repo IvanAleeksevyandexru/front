@@ -54,6 +54,6 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   }
 
   closeModal(): void {
-    console.log('close screen modal');
+    this.screenModalService.resetStore();
   }
 }

@@ -39,18 +39,18 @@ export class ActionDirective {
       case ActionType.download:
         this.downloadAction();
         break;
-      case ActionType.prevStep:
-        this.navigateModal('prevStep');
-        break;
-      case ActionType.nextStep:
-        this.navigateModal('nextStep');
-        break;
       // case ActionType.prevStep:
-      //   this.navigate('prevStep');
+      //   this.navigateModal('prevStep');
       //   break;
       // case ActionType.nextStep:
-      //   this.navigate('nextStep');
+      //   this.navigateModal('nextStep');
       //   break;
+      case ActionType.prevStep:
+        this.navigate('prevStep');
+        break;
+      case ActionType.nextStep:
+        this.navigate('nextStep');
+        break;
       case ActionType.redirectToLK:
         this.navService.redirectToLK();
         break;
