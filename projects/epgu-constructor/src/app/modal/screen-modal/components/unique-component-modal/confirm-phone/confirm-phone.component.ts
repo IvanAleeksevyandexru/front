@@ -64,6 +64,10 @@ export class ConfirmPhoneComponent implements OnInit {
     }
   }
 
+  editNumber() {
+    this.navModalService.prev({});
+  }
+
   getComponentState(code: any): NavigationPayload {
     return {
       [this.screenService.component.id]: {

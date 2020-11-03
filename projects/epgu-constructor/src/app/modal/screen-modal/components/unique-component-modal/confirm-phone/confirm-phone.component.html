@@ -1,33 +1,33 @@
-<h4 class="header header--fake">Введите код подтверждения</h4>
+<h4 class="header header--fake title-h4">Введите код подтверждения</h4>
 
-<div class="form">
-  <div class="form__group" #codeGroup>
-    <lib-plain-input *ngFor="let control of codeFormArray.controls"
-      class="form__item"
-      maxlength="1"
-      type="number"
-      [formControl]="control.get('codeValue')">
-    </lib-plain-input>
+<div class="confirm-phone">
+  <span class="confirm-phone__helper-text">Код отправлен в SMS-сообщении на номер</span>
+
+  <ng-container  *ngIf="(screenService.applicantAnswers$ | async)['pd1']?.value as phoneNumber">
+    <span class="confirm-phone__number">{{phoneNumber}}</span>
+    <button class="confirm-phone__edit-number" (click)="editNumber()">Редактировать номер</button>
+  </ng-container>
+  <div class="form">
+    <div class="form__group" #codeGroup>
+      <lib-plain-input *ngFor="let control of codeFormArray.controls"
+                       class="form__item"
+                       maxlength="1"
+                       type="number"
+                       [formControl]="control.get('codeValue')">
+      </lib-plain-input>
+    </div>
+
+    <div class="form__error">{{screenService.componentError$ | async}}</div>
+
+    <div class="form__hint form-hint" *ngIf="isTimerShow">
+      Получить код повторно можно через
+      <b class="form-hint__timer"
+         [epgu-constructor-counter]="count"
+         [interval]="countInterval"
+         (value)="timerChange($event)">{{timer | formatTime}}</b>
+    </div>
+    <div class="form__hint form-hint" *ngIf="!isTimerShow">
+      <button class="confirm-phone__send-again" (click)="sendCodeAgain()">Получить код повторно</button>
+    </div>
   </div>
-
-  <div class="form__error">{{screenService.componentError$ | async}}</div>
-
-  <div class="form__hint form-hint" *ngIf="isTimerShow">
-    Повторная отправка кода будет возможна через
-    <b class="form-hint__timer"
-       [epgu-constructor-counter]="count"
-       [interval]="countInterval"
-       (value)="timerChange($event)">{{timer | formatTime}}</b>
-  </div>
-</div>
-
-
-<div class="footer">
-  <lib-button
-    [disabled]="isTimerShow"
-    (click)="sendCodeAgain()"
-    class="btn__submit"
-  >
-    {{ (screenService?.submitLabel$ | async) }}
-  </lib-button>
 </div>

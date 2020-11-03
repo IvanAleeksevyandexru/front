@@ -1,16 +1,39 @@
-@import "../../../../../../styles/core/index";
+@import "../../../../../../styles/core";
 
-.header {
-  &--fake {
-    @include phones-down {
-      @include typ-h3;
-      padding-right: 50px;
-      color: $color-summer-night;
-      border-bottom: 1px solid $color-devider;
-      padding-bottom: 24px;
-      margin-bottom: 16px;
-    }
+.confirm-phone {
+  &__helper-text {
+    display: block;
+    margin: 8px auto;
+    text-align: center;
+    @include typ-plain-text;
+    color: $color-text-helper;
   }
+
+  &__number {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    @include typ-h5;
+    color: $color-summer-night;
+  }
+
+  &__edit-number,
+  &__send-again {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    @include typ-plain-small;
+    color: $color-gosblue;
+    text-transform: none;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__edit-number {
+    margin: 8px auto 24px;
+  }
+
 }
 
 .form {
@@ -47,11 +70,11 @@
 }
 
 .form-hint {
-  width: 269px;
+  width: 100%;
   @include typ-plain-small();
   color: $color-text-helper;
   text-align: center;
-  margin: 16px auto 0;
+  margin: 24px auto 0;
   &__timer {
     color: $color-black;
   }
