@@ -4,6 +4,7 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
 import { Navigation, NavigationPayload } from '../../../../form-player/form-player.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
+import { ScreenModalService } from '../../screen-modal.service';
 
 const moment = moment_;
 
@@ -20,6 +21,7 @@ export class ComponentListModalComponent {
   constructor(
     private navModalService: NavigationModalService,
     public screenService: ScreenService,
+    public screenModalService: ScreenModalService,
   ) {}
 
   nextStep(navigation?: Navigation) {

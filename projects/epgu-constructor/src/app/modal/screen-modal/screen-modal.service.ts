@@ -15,12 +15,15 @@ export class ScreenModalService {
   private store: FormPlayerApiSuccessResponse;
   private playerLoaded = false;
   private isLoading = false;
+  private minContentHeight = 0;
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
+  private minContentHeightSubject = new BehaviorSubject<number>(this.minContentHeight);
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
+  public minContentHeight$: Observable<number> = this.minContentHeightSubject.asObservable();
 
   constructor(
     public formPlayerService: FormPlayerService,
@@ -154,6 +157,33 @@ export class ScreenModalService {
   handleInvalidResponse() {
     console.error('----- ERROR DATA MODAL ---------');
     console.error('Invalid Response');
+  }
+
+  getVerticalPaddings() {
+    const screenModal = document.querySelector('.screen-modal');
+
+    if (!screenModal) {
+      return 0;
+    }
+
+    const style = window.getComputedStyle(screenModal, null);
+    const paddingTop = style.getPropertyValue('padding-top');
+    const paddingBottom = style.getPropertyValue('padding-bottom');
+    const parsePadding = (value) => {
+      return parseInt(value.replace(/[^0-9\.]+/g,''));
+    };
+
+    return parsePadding(paddingTop) + parsePadding(paddingBottom);
+  }
+
+  updateMinContentHeight(headerHeight: number) {
+    if(window.innerWidth <= 768) {
+      this.minContentHeight = window.innerHeight - headerHeight - this.getVerticalPaddings();
+    } else {
+      this.minContentHeight = 0;
+    }
+
+    this.minContentHeightSubject.next(this.minContentHeight);
   }
 
   /**

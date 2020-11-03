@@ -1,6 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HelperService } from 'epgu-lib';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, delay, takeUntil } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
 import {
   FormPlayerNavigation,
   Navigation,
@@ -26,7 +27,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   isValid: boolean;
   screenTypes = ScreenTypes;
 
-  @ViewChild('headerBlock') headerBlock: ElementRef;
+  @ViewChild('headerBlock', { static: false }) headerBlock;
 
   constructor(
     public screenModalService: ScreenModalService,
@@ -40,6 +41,20 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   ngOnInit(): void {
     this.isMobile = HelperService.isMobile();
 
+    fromEvent(window, 'resize')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(debounceTime(50))
+      .subscribe(() => {
+        this.updateHeaderHeight();
+      });
+
+    this.screenService.header$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(delay(100))
+      .subscribe(() => {
+        this.updateHeaderHeight();
+      });
+
     this.navModalService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.nextStep(data));
@@ -49,9 +64,12 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
       .subscribe((data: NavigationPayload) => this.prevStep(data));
   }
 
-  ngAfterViewInit() {
-    console.log('header offsetHeight');
-    console.log(this.headerBlock?.nativeElement?.offsetHeight ?? 0);
+  updateHeaderHeight() {
+    const elem = this.headerBlock?.nativeElement;
+    const extraSpace = 2; // допуск для избежаний появления скролла
+    const marginBottom = 16;
+    const headerHeight = (elem?.offsetHeight ?? 0) + marginBottom + extraSpace;
+    this.screenModalService.updateMinContentHeight(headerHeight);
   }
 
   nextStep(navigation?: Navigation) {

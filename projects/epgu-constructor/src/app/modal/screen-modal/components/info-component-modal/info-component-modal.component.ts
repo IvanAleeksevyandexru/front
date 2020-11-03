@@ -9,6 +9,7 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
 import { CycledFieldsService } from '../../../../screen/services/cycled-fields/cycled-fields.service';
 import { NavigationPayload } from '../../../../form-player/form-player.types';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
+import { ScreenModalService } from '../../screen-modal.service';
 
 @Component({
   selector: 'epgu-constructor-info-component-modal',
@@ -23,6 +24,7 @@ export class InfoComponentModalComponent {
     private navModalService: NavigationModalService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
+    public screenModalService: ScreenModalService,
     private cycledFieldsService: CycledFieldsService,
   ) {}
 
