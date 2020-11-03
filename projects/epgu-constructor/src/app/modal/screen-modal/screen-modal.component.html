@@ -26,11 +26,9 @@
         *ngSwitchCase="screenTypes.UNIQUE">
       </epgu-constructor-unique-component-modal>
 
-      <epgu-constructor-info-screen-body
-        *ngSwitchCase="screenTypes.INFO"
-        [data]="screenService.component"
-      >
-      </epgu-constructor-info-screen-body>
+      <epgu-constructor-info-component-modal
+        *ngSwitchCase="screenTypes.INFO">
+      </epgu-constructor-info-component-modal>
     </ng-container>
   </div>
 

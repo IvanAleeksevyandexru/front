@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UniqueComponentModalComponent } from './unique-component-modal.component';
+import { InfoComponentModalComponent } from './info-component-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 
 
-xdescribe('UniqueComponentModalComponent', () => {
-  let component: UniqueComponentModalComponent;
-  let fixture: ComponentFixture<UniqueComponentModalComponent>;
+xdescribe('InfoComponentModalComponent', () => {
+  let component: InfoComponentModalComponent;
+  let fixture: ComponentFixture<InfoComponentModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UniqueComponentModalComponent],
+      declarations: [InfoComponentModalComponent],
       providers: [
         { provide: ScreenService,useClass: ScreenServiceStub },
       ],
@@ -21,7 +21,7 @@ xdescribe('UniqueComponentModalComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UniqueComponentModalComponent);
+    fixture = TestBed.createComponent(InfoComponentModalComponent);
     component = fixture.componentInstance;
     fixture.debugElement.injector.get(ScreenService);
 
