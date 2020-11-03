@@ -13,6 +13,7 @@ import { ScreenModalService } from './screen-modal.service';
 import { ScreenService } from '../../screen/screen.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { ScreenTypes } from '../../screen/screen.types';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 
 @Component({
   selector: 'epgu-constructor-screen-modal',
@@ -33,6 +34,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
     public screenModalService: ScreenModalService,
     public screenService: ScreenService,
     private navModalService: NavigationModalService,
+    private navService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {
     super();
@@ -73,10 +75,22 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   }
 
   nextStep(navigation?: Navigation) {
+    if (navigation?.options?.isInternalScenarioFinish) {
+      this.navService.nextStep.next(navigation);
+      this.closeModal();
+      return;
+    }
+
     this.screenModalService.navigate(navigation, FormPlayerNavigation.NEXT);
   }
 
   prevStep(navigation?: Navigation) {
+    if (navigation?.options?.isInternalScenarioFinish) {
+      this.navService.prevStep.next(navigation);
+      this.closeModal();
+      return;
+    }
+
     this.screenModalService.navigate(navigation, FormPlayerNavigation.PREV);
   }
 
