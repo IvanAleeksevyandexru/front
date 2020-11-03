@@ -129,6 +129,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.selectedValue
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: any) => {
+        if (value && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
+          this.availablePaymentInGIBDD(value.attributeValues.code);
+        }
+
         this.selectedValue = value;
         this.cdr.detectChanges();
       });
@@ -279,10 +283,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public selectObject() {
-    if (this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
-      this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code);
-    }
-
     this.zone.run(() => {
       const answer = { ...this.selectedValue, children: null };
       this.nextStepEvent.emit(JSON.stringify(answer));
