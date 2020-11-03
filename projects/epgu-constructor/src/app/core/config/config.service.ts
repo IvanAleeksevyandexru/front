@@ -27,7 +27,12 @@ export class ConfigService implements Config {
 
   public isLoaded$ = this.isLoadedSubject.asObservable();
 
-  constructor (private loadService: LoadService) {}
+  constructor (private loadService: LoadService) {
+    // TODO отписаться
+    this.loadService.loaded.subscribe(() => {
+      this.initCore();
+    });
+  }
 
   checkConfig(config: Config) {
     if (!config) {
@@ -116,9 +121,7 @@ export class ConfigService implements Config {
     return domain.lastIndexOf('/') === domain.length - 1 ? domain.substring(0, domain.length - 1) : domain;
   }
 
-  // Do not use this method, only for testing stand
-  set config(config: Config) {
-    this.checkConfig(config);
+  initCore(config: Config = {} as any) {
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}bills`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
@@ -131,6 +134,11 @@ export class ConfigService implements Config {
     this._invitationUrl = config.invitationUrl ?? `${this.loadService.config.lkApiUrl}`;
     this._yandexMapsApiKey = config.yandexMapsApiKey ?? `${this.loadService.config.yandexMapsApiKey}`;
     this._staticDomainAssetsPath = config.staticDomainAssetsPath ?? this.getStaticDomainCfg();
+  }
+
+  set config(config: Config) {
+    this.checkConfig(config);
+    this.initCore(config);
 
     this._brakRouteNumber = config.brakRouteNumber;
     this._divorceRouteNumber = config.divorceRouteNumber;

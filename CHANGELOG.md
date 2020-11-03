@@ -2,6 +2,92 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.12](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.11...v0.4.12) (2020-11-02)
+
+
+### Bug Fixes
+
+* добавлены классы для цветов текста, используемых в json-сценариях [ref EPGUCORE-40312] ([a5ae46d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a5ae46db085a69861b5e0243a13a6d3d6b6a4800))
+
+### [0.4.10](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.24...v0.4.10) (2020-10-30)
+
+### [0.4.9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.8...v0.4.9) (2020-10-29)
+
+### [0.4.11](https://git.gosuslugi.local///compare/v0.3.26...v0.4.11) (2020-11-02)
+
+
+### Features
+
+* добавлена обработка ошибки с сервера для docInput [ref EPGUCORE-39803] ([8641580](https://git.gosuslugi.local///commit/86415802c1a0ff473dc09f5ea5dfc54da8138fa5))
+
+
+### Bug Fixes
+
+* added interfaces [ref EPGUCORE-39803] ([1503f5e](https://git.gosuslugi.local///commit/1503f5e2960002e12e0e3b5e0f5cb298d9c91924))
+* fixed component export [ref EPGUCORE-39803] ([cdb3ac9](https://git.gosuslugi.local///commit/cdb3ac9834446bd292760ae211396e6517cef4df))
+* вернул на место иконку warn.svg в компоненте confirm-email [ref EPGUCORE-40183-40183] ([070a3e6](https://git.gosuslugi.local///commit/070a3e6ca228b6ffaf4f8e03b24fa02a368cc896))
+* добавлен свитч кейс для docInput ([17dd775](https://git.gosuslugi.local///commit/17dd775000785036fe805f1209a404f52ed55d33))
+* добалена глубокая проверка файла на тип изображения + добавлены дизейбл стили для кнопок компонента фото [ref EPGUCORE-40198] ([4758da2](https://git.gosuslugi.local///commit/4758da238fb99d22f5c160e3cc6d73075761075a))
+* исправлена работа кнопки "сделать фото" [ref EPGUCORE-39301] ([3052695](https://git.gosuslugi.local///commit/30526952b886c4738e8880257823f0d57158e176))
+
+### [0.4.8](https://git.gosuslugi.local///compare/v0.3.19...v0.4.8) (2020-10-29)
+
+### [0.4.7](https://git.gosuslugi.local///compare/v0.4.6...v0.4.7) (2020-10-29)
+
+
+### Bug Fixes
+
+* возможный фикс принудительного удаления тэга в after_script [ref EPGUCORE-40088] ([6686ad7](https://git.gosuslugi.local///commit/6686ad719310d1728c196747965c849a3a6e2939))
+* доработан gitlab-ci [ref EPGUCORE-40088] ([529ef98](https://git.gosuslugi.local///commit/529ef98f6461a880f528507ef490c9c51feaef1d))
+
+### [0.4.6](https://git.gosuslugi.local///compare/v0.4.5...v0.4.6) (2020-10-29)
+
+
+### Bug Fixes
+
+* убрал лишний npm install [ref EPGUCORE-40088] ([aa65e5d](https://git.gosuslugi.local///commit/aa65e5df18bc2add9733151062764bb8a1c057c7))
+
+### [0.4.5](https://git.gosuslugi.local///compare/v0.4.4...v0.4.5) (2020-10-29)
+
+
+### Bug Fixes
+
+* бамп версии 0.4.4 [ref EPGUCORE-40088] ([f5c43ae](https://git.gosuslugi.local///commit/f5c43aec07f87ce304611e105b29bd82aa04c4c4))
+
+### [0.4.4](https://git.gosuslugi.local///compare/v0.4.3...v0.4.4) (2020-10-29)
+
+
+### Bug Fixes
+
+* бампнул ручками 0.4.3 [ref EPGUCORE-40088] ([2ae55f5](https://git.gosuslugi.local///commit/2ae55f53737ac0692eeaf304eb971142c37ff9b4))
+
+### [0.4.3](https://git.gosuslugi.local///compare/v0.4.2...v0.4.3) (2020-10-29)
+
+
+### Bug Fixes
+
+* поправил условие в if блоке [ref EPGUCORE-40088] ([dbe4e95](https://git.gosuslugi.local///commit/dbe4e95fbf96a4497dff2c6403bf940913e7ab24))
+
+### [0.4.2](https://git.gosuslugi.local///compare/v0.4.1...v0.4.2) (2020-10-29)
+
+
+### Bug Fixes
+
+* поправил скрипт [ref EPGUCORE-40088] ([d060476](https://git.gosuslugi.local///commit/d060476fb45adad86a1594b5359978d2c8361717))
+
+### [0.4.1](https://git.gosuslugi.local///compare/v0.3.17...v0.4.1) (2020-10-29)
+
+
+### Bug Fixes
+
+* джобы для develop ветки перенесены на stage ветку и для последнего добавлен джоб сборки npm-версии ([73465c1](https://git.gosuslugi.local///commit/73465c12ffcbbbba3e8320cf9ad7ff65ab9fdd1e))
+* добавил поддержку prevStep в action.directive, плюс небольшой рефактор [ref EPGUCORE-39850] ([2e7defe](https://git.gosuslugi.local///commit/2e7defef744dd76f24c6997dbd490ccfedec6ff8))
+* исправил вопрос о доступе камеры для десктопа [ref EPGUCORE-39414] ([ded678e](https://git.gosuslugi.local///commit/ded678ebaed6b046947ebaf65024cdf09fd53e8e))
+* поправил целевую ветку для мердж-реквестов в gitlab-ci ([a5742ea](https://git.gosuslugi.local///commit/a5742ea49a5a0312917b21d59e39fcf845a44b69))
+* поправлен номер версии ([6be1016](https://git.gosuslugi.local///commit/6be101697f59dd13d9defa995ae737075fea0926))
+* телефон стирался в случае ошибки перепривязки с бэка во время редактирования [ref EPGUCORE-39421] ([56f2797](https://git.gosuslugi.local///commit/56f27972274f2bce38783f7e7d0fdf7f15b641f8))
+* убрал 'глобальный' стиль border: 0 у button и добавил его на уровне компонентов, где нужно [ref EPGUCORE-38636] ([853f5b5](https://git.gosuslugi.local///commit/853f5b593e4ea53e458910d9b6bbc340d9835fc1))
+
 ### [0.4.10](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.20...v0.4.10) (2020-10-30)
 
 

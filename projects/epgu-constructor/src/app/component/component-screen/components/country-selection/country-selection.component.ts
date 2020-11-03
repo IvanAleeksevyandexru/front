@@ -2,8 +2,8 @@ import { Component, Input, EventEmitter, OnInit, Output, AfterViewInit } from '@
 // @ts-ignore
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalService } from '../../../../modal/modal.service';
-import { ConfirmationModalComponent } from '../../../../modal/components/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../modal/components/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
 import { ComponentScreenComponent } from '../../../../screen/component-screen/component-screen.component';
