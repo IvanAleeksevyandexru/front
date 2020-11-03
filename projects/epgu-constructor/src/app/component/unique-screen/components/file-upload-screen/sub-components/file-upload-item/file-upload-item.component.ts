@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -20,7 +19,6 @@ import { TerraByteApiService } from '../../../../../../shared/services/terra-byt
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { WebcamService } from '../../../../services/webcam/webcam.service';
 import { CompressionService } from '../../../upload-and-edit-photo/compression/compression.service';
 import { ConfigService } from '../../../../../../core/config/config.service';
 
@@ -30,7 +28,7 @@ import { ConfigService } from '../../../../../../core/config/config.service';
   styleUrls: ['./file-upload-item.component.scss'],
   providers: [UnsubscribeService],
 })
-export class FileUploadItemComponent implements OnDestroy, OnInit {
+export class FileUploadItemComponent implements OnDestroy {
   private loadData: FileUploadItem;
   isMobile: boolean;
   @Input() objectId: string;
@@ -109,7 +107,6 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
 
   constructor(
     private terabyteService: TerraByteApiService,
-    private webcamService: WebcamService,
     private deviceDetectorService: DeviceDetectorService,
     private compressionService: CompressionService,
     private ngUnsubscribe$: UnsubscribeService,
@@ -398,25 +395,5 @@ export class FileUploadItemComponent implements OnDestroy, OnInit {
 
   ngOnDestroy(): void {
     this.subs.forEach((sub) => sub.unsubscribe());
-  }
-
-  ngOnInit(): void {
-    this.checkCamAvailability();
-  }
-
-  private checkCamAvailability() {
-    if (this.isMobile) {
-      this.webcamService
-        .isWebcamAllowed()
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(
-          (isAvailable) => {
-            this.isCameraAllowed = isAvailable;
-          },
-          () => {
-            this.isCameraAllowed = false;
-          },
-        );
-    }
   }
 }
