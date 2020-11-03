@@ -5,7 +5,6 @@ import { ScreenService } from '../../../../screen/screen.service';
 @Component({
   selector: 'epgu-constructor-unique-component-modal',
   templateUrl: './unique-component-modal.component.html',
-  styleUrls: ['./confirm-phone.component.scss'],
 })
 export class UniqueComponentModalComponent {
   uniqueComponentName = UniqueScreenComponentTypes;
