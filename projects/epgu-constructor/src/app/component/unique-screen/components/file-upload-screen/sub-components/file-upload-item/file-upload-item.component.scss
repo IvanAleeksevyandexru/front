@@ -152,11 +152,6 @@ input[type="file"] {
   &:first-child {
     margin-right: 24px;
 
-    .nocamera & {
-      margin-right: 0;
-    }
-
-
     @include phones-down {
       margin-right: 15px;
     }
