@@ -9,7 +9,15 @@
     </div>
     <div class="unused-payments__description">Выберите пошлину, которую вы оплатили, но еще не использовали</div>
   </div>
-  <epgu-constructor-radio-tax (selected)="tax = $event" [data]="paymentsList"></epgu-constructor-radio-tax>
+  <epgu-constructor-radio-tax *ngIf="(paymentsList$ | async) as paymentsList" (selected)="tax = $event" [data]="paymentsList"></epgu-constructor-radio-tax>
+    <lib-button
+      class="btn__submit"
+      (click)="next()"
+    >
+      <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
+    </lib-button>
+
+
 </epgu-constructor-screen-container>
 
 

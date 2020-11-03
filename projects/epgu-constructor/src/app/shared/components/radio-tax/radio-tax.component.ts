@@ -13,10 +13,16 @@ export class RadioTaxComponent implements OnInit {
 
   selectedItem: UnusedPaymentInterface;
 
+  select(index: number) {
+    this.selectedItem = this.data[index];
+    this.selected.emit(this.selectedItem);
+  }
+
   ngOnInit(): void {
     if (this.data.length > 0) {
       const [item] = this.data;
       this.selectedItem = item;
+      this.selected.emit(this.selectedItem);
     }
   }
 }
