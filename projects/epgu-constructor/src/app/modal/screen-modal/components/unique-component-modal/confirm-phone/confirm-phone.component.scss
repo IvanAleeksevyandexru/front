@@ -45,6 +45,18 @@
     display: block;
     margin: 4px;
     width: 48px;
+    &--has-value::ng-deep input {
+      @include typ-h2;
+      color: $color-gosblue;
+      background: transparent;
+      border: none;
+      padding: 0;
+
+      &.focused {
+        padding: 0;
+      }
+    }
+    
     &::ng-deep input {
       height: 52px;
       // letter-spacing: 8px;

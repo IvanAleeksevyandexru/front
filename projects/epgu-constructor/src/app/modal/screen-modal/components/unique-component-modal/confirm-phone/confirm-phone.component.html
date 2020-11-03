@@ -11,6 +11,7 @@
     <div class="form__group" #codeGroup>
       <lib-plain-input *ngFor="let control of codeFormArray.controls"
                        class="form__item"
+                       [class.form__item--has-value]="control.value.codeValue"
                        maxlength="1"
                        type="number"
                        [formControl]="control.get('codeValue')">
