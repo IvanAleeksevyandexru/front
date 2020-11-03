@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
 import * as moment_ from 'moment';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import {
-  FormPlayerNavigation,
-  Navigation,
-  NavigationPayload,
-} from '../../../../form-player/form-player.types';
+import { Navigation, NavigationPayload } from '../../../../form-player/form-player.types';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenModalService } from '../../screen-modal.service';
+import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 
 const moment = moment_;
 
@@ -22,16 +18,16 @@ export class ComponentListModalComponent {
   isValid: boolean;
 
   constructor(
-    private screenModalService: ScreenModalService,
+    private navModalService: NavigationModalService,
     public screenService: ScreenService,
   ) {}
 
   nextStep(navigation?: Navigation) {
-    this.screenModalService.navigate(navigation, FormPlayerNavigation.NEXT);
+    this.navModalService.next(navigation);
   }
 
   prevStep(navigation?: Navigation) {
-    this.screenModalService.navigate(navigation, FormPlayerNavigation.PREV);
+    this.navModalService.prev(navigation);
   }
 
   nextScreen(): void {

@@ -3,10 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { ScreenModalService } from './screen-modal.service';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { ScreenService } from '../../screen/screen.service';
-import { ServiceDataService } from '../../form-player/services/service-data/service-data.service';
-import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
-import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';
+import { FormPlayerServiceStub } from '../../form-player/services/form-player/form-player.service.stub';
+import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
+import { ScreenServiceStub } from '../../screen/screen.service.stub';
 
 
 describe('ScreenModalService', () => {
@@ -18,9 +18,8 @@ describe('ScreenModalService', () => {
       providers: [
         ScreenModalService,
         ScreenService,
-        ServiceDataService,
-        CachedAnswersService,
-        CurrentAnswersService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
       ]
     });

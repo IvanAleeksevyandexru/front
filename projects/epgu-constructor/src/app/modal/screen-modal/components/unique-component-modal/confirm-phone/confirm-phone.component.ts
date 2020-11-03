@@ -3,8 +3,8 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
+import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 
 interface CodeFormGroup {
   codeMask: Array<RegExp>;
@@ -39,7 +39,7 @@ export class ConfirmPhoneComponent implements OnInit {
   constructor(
     public screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
-    private navigationService: NavigationService,
+    private navModalService: NavigationModalService,
     private fb: FormBuilder,
   ) {
     this.characterMask = this.screenService.component.attrs.characterMask;
@@ -54,13 +54,13 @@ export class ConfirmPhoneComponent implements OnInit {
   sendCodeAgain() {
     const url = this.screenService.component.attrs.resendCodeUrl;
     const options: NavigationOptions = { url };
-    this.navigationService.nextStep.next({ options });
+    this.navModalService.next({ options });
     this.isTimerShow = true;
   }
 
   enterCode(code: any) {
     if (String(code).length === this.codeLength) {
-      this.navigationService.nextStep.next({ payload: this.getComponentState(code) });
+      this.navModalService.next({ payload: this.getComponentState(code) });
     }
   }
 
