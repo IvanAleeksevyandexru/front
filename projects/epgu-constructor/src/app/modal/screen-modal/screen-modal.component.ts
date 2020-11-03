@@ -11,6 +11,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ScreenModalService } from './screen-modal.service';
 import { ScreenService } from '../../screen/screen.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
+import { ScreenTypes } from '../../screen/screen.types';
 
 @Component({
   selector: 'epgu-constructor-screen-modal',
@@ -19,10 +20,11 @@ import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
   providers: [ScreenService, ScreenModalService], // Нужен отдельный инстанс для ScreenService
 })
 export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
+  scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   showCrossButton = true;
-  title = 'some title';
   isMobile: boolean;
-  public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
+  isValid: boolean;
+  screenTypes = ScreenTypes;
 
   constructor(
     public screenModalService: ScreenModalService,

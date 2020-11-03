@@ -1,0 +1,40 @@
+@import "../../../../../styles/core";
+
+
+.nav {
+  @include navigation-mt();
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: inherit;
+  min-height: inherit;
+  @include tablets-up {
+    min-height: auto;
+  }
+}
+
+.body {
+  display: flex;
+  text-align: left;
+  @include tablets-down {
+    flex-grow: 1;
+  }
+  > * {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+  @include tablets-up {
+    margin-top: 32px;
+  }
+}

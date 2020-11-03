@@ -34,7 +34,9 @@ export class ScreenModalService {
   }
 
   navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation): void {
-    this.store = this.store ?? JSON.parse(JSON.stringify(this.formPlayerService.store));
+    if (!this.store) {
+      this.store = JSON.parse(JSON.stringify(this.formPlayerService.store));
+    }
 
     this.updateLoading(true);
     this.updateRequest(navigation.payload);

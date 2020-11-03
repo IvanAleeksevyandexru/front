@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfirmPhoneComponent } from './confirm-phone.component';
+import { UniqueComponentModalComponent } from './unique-component-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CounterDirective } from '../../../../shared/directives/counter/counter.directive';
-import { ScreenService } from '../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../../../core/services/navigation/navigation.service';
+import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { EpguLibModule } from 'epgu-lib';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 
 xdescribe('ConfirmPhoneComponent', () => {
-  let component: ConfirmPhoneComponent;
-  let fixture: ComponentFixture<ConfirmPhoneComponent>;
+  let component: UniqueComponentModalComponent;
+  let fixture: ComponentFixture<UniqueComponentModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ConfirmPhoneComponent, CounterDirective],
+      declarations: [UniqueComponentModalComponent, CounterDirective],
       imports: [EpguLibModule],
       providers: [
         UnsubscribeService,
@@ -27,7 +27,7 @@ xdescribe('ConfirmPhoneComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConfirmPhoneComponent);
+    fixture = TestBed.createComponent(UniqueComponentModalComponent);
     component = fixture.componentInstance;
     fixture.debugElement.injector.get(ScreenService);
     fixture.debugElement.injector.get(UnsubscribeService);

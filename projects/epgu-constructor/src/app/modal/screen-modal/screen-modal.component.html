@@ -9,21 +9,29 @@
         <perfect-scrollbar *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
           <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
         </perfect-scrollbar>
-        <ng-template #contentBlock>
-          <div class="screen-modal__content">
-            <h1>Screen popup!!!</h1>
-  <!--          <div class="screen-modal__controls">-->
-  <!--            <lib-button-->
-  <!--              *ngFor="let button of buttons"-->
-  <!--              [showLoader]="button.loader"-->
-  <!--              class="conf-modal__button"-->
-  <!--              [color]="button.color || ''"-->
-  <!--              (click)="button.handler()"-->
-  <!--            >{{ button.label }}</lib-button>-->
-  <!--          </div>-->
-          </div>
-        </ng-template>
       </div>
     </div>
   </div>
 </ng-container>
+
+
+<ng-template #contentBlock>
+  <div class="screen-modal__content">
+    <ng-container [ngSwitch]="screenService.screenType$ | async">
+      <epgu-constructor-component-list-modal
+        *ngSwitchCase="screenTypes.CUSTOM">
+      </epgu-constructor-component-list-modal>
+
+      <epgu-constructor-unique-component-modal
+        *ngSwitchCase="screenTypes.UNIQUE">
+      </epgu-constructor-unique-component-modal>
+
+      <epgu-constructor-info-screen-body
+        *ngSwitchCase="screenTypes.INFO"
+        [data]="screenService.component"
+      >
+      </epgu-constructor-info-screen-body>
+    </ng-container>
+  </div>
+
+</ng-template>
