@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HelperService } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -26,6 +26,8 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   isValid: boolean;
   screenTypes = ScreenTypes;
 
+  @ViewChild('headerBlock') headerBlock: ElementRef;
+
   constructor(
     public screenModalService: ScreenModalService,
     public screenService: ScreenService,
@@ -45,6 +47,11 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
     this.navModalService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.prevStep(data));
+  }
+
+  ngAfterViewInit() {
+    console.log('header offsetHeight');
+    console.log(this.headerBlock?.nativeElement?.offsetHeight ?? 0);
   }
 
   nextStep(navigation?: Navigation) {

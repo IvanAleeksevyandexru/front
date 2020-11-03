@@ -132,6 +132,16 @@ $controlHeight: 55px;
       }
     }
   }
+
+  .info__status-image {
+    height: 80px;
+    width: 80px;
+    margin: 36px auto;
+
+    @include tablets-down {
+      margin-top: 30vh;
+    }
+  }
 }
 
 

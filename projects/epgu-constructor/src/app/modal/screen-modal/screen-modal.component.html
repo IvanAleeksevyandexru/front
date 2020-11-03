@@ -2,7 +2,7 @@
   <div class="modal-overlay">
     <div class="screen-modal">
       <div *ngIf="showCrossButton" class="screen-modal__cross-button" (click)="closeModal()"></div>
-      <div *ngIf="screenService.header$ | async as title" class="screen-modal__header">
+      <div *ngIf="screenService.header$ | async as title" class="screen-modal__header" #headerBlock>
         <h4 class="screen-modal__title" [innerHTML]="title | safe: 'html'"></h4>
       </div>
       <div class="screen-modal__body">

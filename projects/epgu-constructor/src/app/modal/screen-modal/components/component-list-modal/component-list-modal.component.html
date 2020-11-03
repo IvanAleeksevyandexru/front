@@ -1,18 +1,20 @@
-<div class="body">
-<epgu-constructor-components-list
-  [components]="(screenService.display$ | async).components"
-  [errors]="screenService.componentErrors$ | async"
-  (changes)="changeComponentsList($event)">
-</epgu-constructor-components-list>
-</div>
+<div class="component-list">
+  <div class="component-list__body">
+    <epgu-constructor-components-list
+      [components]="(screenService.display$ | async).components"
+      [errors]="screenService.componentErrors$ | async"
+      (changes)="changeComponentsList($event)">
+    </epgu-constructor-components-list>
+  </div>
 
-<div class="footer">
-  <lib-button *ngIf="screenService.isShown$ | async"
-              [showLoader]="screenService.isLoading$ | async"
-              (click)="nextScreen()"
-              class="btn__submit"
-              [disabled]="(screenService.isLoading$ | async) || !isValid"
-  >
-    {{ screenService.submitLabel$ | async }}
-  </lib-button>
+  <div class="component-list__footer">
+    <lib-button *ngIf="screenService.isShown$ | async"
+                [showLoader]="screenService.isLoading$ | async"
+                (click)="nextScreen()"
+                class="btn__submit"
+                [disabled]="(screenService.isLoading$ | async) || !isValid"
+    >
+      {{ screenService.submitLabel$ | async }}
+    </lib-button>
+  </div>
 </div>

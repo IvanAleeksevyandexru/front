@@ -1,28 +1,34 @@
-<epgu-constructor-info-screen-body
-  [data]="screenService.component"
->
-</epgu-constructor-info-screen-body>
+<div class="info">
+  <div class="info__body">
+    <epgu-constructor-info-screen-body
+      [data]="screenService.component"
+    >
+    </epgu-constructor-info-screen-body>
+  </div>
 
-<div class="info__actions"
-     *ngIf="this.actionButtons.length">
-  <lib-button
-    *ngFor="let action of this.actionButtons"
-    class="info__action btn__submit"
-    epgu-constructor-action
-    [action]="action"
-  >
-    {{ action.label }}
-  </lib-button>
-</div>
+  <div class="info__footer">
+    <div class="info__actions"
+         *ngIf="this.actionButtons.length">
+      <lib-button
+        *ngFor="let action of this.actionButtons"
+        class="info__action btn__submit"
+        epgu-constructor-action
+        [action]="action"
+      >
+        {{ action.label }}
+      </lib-button>
+    </div>
 
-<div class="info__submit">
-  <lib-button
-    class="btn__submit"
-    *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
-    [showLoader]="screenService.isLoading$ | async"
-    (click)="nextStep()"
-    [disabled]="screenService.isLoading$ | async"
-  >
-    {{screenService.submitLabel$ | async}}
-  </lib-button>
+    <div class="info__submit">
+      <lib-button
+        class="btn__submit"
+        *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
+        [showLoader]="screenService.isLoading$ | async"
+        (click)="nextStep()"
+        [disabled]="screenService.isLoading$ | async"
+      >
+        {{screenService.submitLabel$ | async}}
+      </lib-button>
+    </div>
+  </div>
 </div>

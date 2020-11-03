@@ -78,3 +78,14 @@
   z-index: $modal-z-index;
   backdrop-filter: blur(8px);
 }
+
+// Миксин для установки высоты контента для модалок чтоб на таблетках и мобилке кнопки были внизу
+@mixin modal-content-height {
+  @include tablets-down {
+    min-height: calc(100vh - 64px);
+  }
+
+  @include phones-down {
+    min-height: calc(100vh - 48px);
+  }
+}

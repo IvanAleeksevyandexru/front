@@ -7,6 +7,23 @@
 
 @include rubles('.info__text', '../../../../../../assets/img/ruble.svg');
 
-.info__img-wrapper {
-  text-align: center;
+.info {
+  display: flex;
+  flex-direction: column;
+
+  &__body {
+    flex: 1 0 auto;
+  }
+
+  &__actions,
+  &__submit {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__img-wrapper {
+    text-align: center;
+  }
 }
+
