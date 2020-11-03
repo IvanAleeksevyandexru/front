@@ -35,7 +35,7 @@ interface DocInputField {
 interface DocInputFormFields {
   series: number;
   number: number;
-  date: string;
+  date: string | Date;
   emitter: string;
 }
 
