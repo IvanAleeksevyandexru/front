@@ -1,85 +1,20 @@
-import { PaymentDictionaryOptionsInterface, SubPaymentDictionaryInterface } from './payment.types';
+import { PaymentDictionaryOptionsInterface, SubPaymentDictionaryOptionInterface } from './payment.types';
+import { ConfigService } from '../../../../core/config/config.service';
 
-// Тестовый id заявки на регистрацию брака
-export const mockOrderId = '763430121';
+/**
+ * Интерфейс для части опции запроса на создание оплаты
+ */
+export enum SubPaymentDictionaryOptionType {
+  EQUALS = 'EQUALS'
+}
 
-// Тестовый УИН, на случай если сервис лежит
-export const mockUpUIN = 'PRIOR0315867900000009698772488';
-
-// Тестовая информация о счете на оплату, если сервис лежит
-// eslint-disable-next-line max-len
-export const mockUpBillsInfo = {
-  response:{
-    bills:[
-      {
-        billId:22209660,
-        billNumber:'0316373317011700000057047',
-        billName:'Госпошлина ЗАГС',
-        signature:'La9aAQra2OdpQMDyJHhg2A',
-        billDate:'2019-04-29T12:44:47.000+0300',
-        createDate:'2020-09-07T12:00:17.000+0300',
-        billStatus:{ code:'NEW',name:'Новый' },
-        isPaid:false,
-        amount:359,
-        currencyCode:'643',
-        comment:'Госпошлина ЗАГС',
-        service:{ code:'GIBDD_1',name:'Оплата штрафа за нарушение ПДД' },
-        billSource:{ code:'FK',name:'ГИС ГМП' },
-        serviceType:{ code:'000000',name:'Государственные услуги' },
-        billSumm:[{ summId:25740082,summ:359 }],
-        payRequsites:{
-          account:'40101810900000010007',
-          bankName:'ГРКЦ ГУ Банка России по Томской области г.Томск',
-          bic:'046902001',
-          kbk:'18811107141011000110',
-          oktmo:'69632000',
-          payPurpose:'Госпошлина ЗАГС',
-          receiverInn:'7018016237',
-          receiverKpp:'701701001',
-          receiverName:'УФК по Томской области'
-        },paidIds:[],
-        addAttrs:[
-          { value:'01',name:'FKStatus',title:'FKStatus' },
-          { value:'0',name:'FKPurpose',title:'FKPurpose' },
-          { value:'0',name:'FKTaxDocDate',title:'FKTaxDocDate' },
-          { value:'FMS',name:'billType',title:'Find by' },
-          { value:'г. Томск, ЗАГС №18',name:'ReceiverPdfName',title:'ReceiverPdfName' },
-          { value:'512.00',name:'BillTotalAmount',title:'BillTotalAmount' },
-          { value:'г. Томск, ЗАГС №18',name:'SupplierFullName',title:'SupplierFullName' },
-          { value:'0',name:'FKPaymentType',title:'FKPaymentType' },
-          { value:'0',name:'FKTaxDocNumber',title:'FKTaxDocNumber' },
-          { value:'УФК по Томской области',name:'TreasureBranch',title:'TreasureBranch' },
-          { value:'512',name:'OriginalAmount',title:'OriginalAmount' },
-          { value:'0',name:'FKTaxPeriod',title:'FKTaxPeriod' },
-          { value:'30',name:'MultiplierSize',title:'MultiplierSize' },
-          { value:'11801265',name:'billRequestId',title:'billRequestId' },
-          { value:'1400000000000069600068643',name:'AltPayerIdentifier',title:'AltPayerIdentifier' },
-          { value:'00069600068',name:'number_doc',title:'number_doc' },
-          { value:'CНИЛС',name:'type_doc',title:'type_doc' },
-          { value:'763430121',name:'epgu_order_id',title:'epgu_order_id' },
-          { value:'2',name:'FKQuittanceStatus',title:'FKQuittanceStatus' },
-          { value:'Недоплата 512,00 руб',name:'FKQuittanceComment',title:'FKQuittanceComment' },
-          { value:'true',name:'isPaidNoAddress',title:'isPaidNoAddress' }],
-        selectedByWhiteList:false,
-        serviceCategory:{ code:'FINE',name:'Штраф' },
-        isMessage:false,
-        appealAvailable:true,
-        refundAvailable:false,
-        hasPhoto:false
-      }],
-    hasEditableSumm:false,
-    userHasAddress:true,
-    addressValid:true,
-    paiedBillIds:[],
-    warning:true,
-    unidentifiedBillIds:[],
-    fkSmevVersion:2,
-    hasUnidentifiedBills:false
-  },
-  error:{
-    code:0
-  }
-};
+/**
+ * Тип справочников для услуг
+ */
+export enum paymentNSIType{
+  REGISTER_MARRIAGE = 'fns_zgs_getpay_79272', //Регистрация брака
+  REGISTER_VEHICLE = 'MVD_equeue_70732', //Регистрация транспортного средства
+}
 
 // Статусы оплаты
 export enum PaymentStatus {
@@ -88,73 +23,105 @@ export enum PaymentStatus {
   SERVER_ERROR = 'serverError',
 }
 
+const requestPageSize = 258; //Сколько сведений на одной странице отдавать для запросов
+
 /**
- * Возвращает опции запроса для получения информации по платежу
- * @param filterReg - объект фильтра для оплаты
- * @param dictItemCode - код элемента справочника на оплату
- * @constructor
+ * Возвращает объект секции фильтра для опций получения информации о платеже
+ * @param subs - массив опций фильтра
+ * @param unionKind - тип объединения фильтров
  */
-export const getPaymentRequestOptions = (filterReg, dictItemCode): PaymentDictionaryOptionsInterface => {
+const getPaymentRequestOptionsFilter = (subs: SubPaymentDictionaryOptionInterface[], unionKind: string = 'AND') => {
   return {
-    pageSize: '258',
+    pageSize: requestPageSize,
     filter: {
       union: {
         unionKind: 'AND',
-        subs: [
-          getPaymentRequestOptionFiasCode(filterReg),
-          getPaymentRequestOptionFilterReg(filterReg),
-          getPaymentRequestOptionDictemCode(filterReg, dictItemCode),
-        ],
-      },
-    },
-    tx: '41588125-d55f-11ea-8b86-fa163ee4b849',
-  };
-};
-
-/**
- * Возвращает опции атрибута запроса FiasCode
- * @param filterReg - объект фильтра для оплаты
- */
-export const getPaymentRequestOptionFiasCode = (filterReg): SubPaymentDictionaryInterface => {
-  return {
-    simple: {
-      attributeName: 'FiasCode',
-      condition: 'EQUALS',
-      value: {
-        asString: filterReg.value.substring(0, 3)
+        subs: subs
       }
     }
   };
 };
 
 /**
- * Возвращает опции атрибута запроса filter_reg
+ * Возвращает опции запроса для получения информации по платежу для рестрации брака
  * @param filterReg - объект фильтра для оплаты
+ * @param attrs - переданные аттрибуты
+ * @constructor
  */
-export const getPaymentRequestOptionFilterReg = (filterReg): SubPaymentDictionaryInterface => {
+const getPaymentRequestOptionsForRegisterBrak = (filterReg: any, attrs: any): any => {
   return {
-    simple: {
-      attributeName: 'filter_reg',
-      condition: 'EQUALS',
-      value: {
-        asString: filterReg.value
-      }
-    }
+    ...getPaymentRequestOptionsFilter([
+      getPaymentSimpleRequestOption('FiasCode', filterReg.value.substring(0, 3)),
+      getPaymentSimpleRequestOption('filter_reg', filterReg.value),
+      getPaymentSimpleRequestOption('dictem_code', attrs.dictItemCode),
+    ]),
+    tx: '41588125-d55f-11ea-8b86-fa163ee4b849'
   };
 };
 
 /**
- * Возвращает опции атрибута запроса dictem_code
+ * Возвращает опции запроса для получения информации по платежу для рестрации транспортного средства
  * @param filterReg - объект фильтра для оплаты
- * @param dictItemCode - код элемента справочника на оплату
+ * @param attrs - объект с аттрибутами компонента
+ * @param gibddRouteNumber - переданные аттрибуты
+ * @constructor
  */
-export const getPaymentRequestOptionDictemCode = (filterReg, dictItemCode): SubPaymentDictionaryInterface => {
+const getPaymentRequestOptionsForRegisterTS = (filterReg: any, attrs: any, gibddRouteNumber: string): any => {
+  return {
+    ...getPaymentRequestOptionsFilter([
+      getPaymentSimpleRequestOption('region', gibddRouteNumber),
+      //getPaymentSimpleRequestOption('code', filterReg?.attributeValues?.code),
+      //TODO: HARDCODE пока неизвестно с номером справочника
+      getPaymentSimpleRequestOption('code', '10000593393'),
+    ]),
+    treeFiltering: 'ONELEVEL',
+    pageSize: 10000,
+    parentRefItemValue: '',
+    selectAttributes: ['*'],
+    tx: ''
+  };
+};
+
+/**
+ * Возвращает опции запроса для получения информации по платежу
+ * @param filterReg - объект фильтра для оплаты
+ * @param attrs - объект с аттрибутами компонента
+ * @param config - конфиг приложения
+ * @constructor
+ */
+// eslint-disable-next-line max-len
+export const getPaymentRequestOptions = (filterReg: any, attrs: any, config: ConfigService): PaymentDictionaryOptionsInterface => {
+  const { nsi } = attrs;
+
+  switch (nsi){
+    case paymentNSIType.REGISTER_VEHICLE:
+      return getPaymentRequestOptionsForRegisterTS(filterReg, attrs, config.gibddRouteNumber);
+      break;
+    case paymentNSIType.REGISTER_MARRIAGE:
+    default:
+      return getPaymentRequestOptionsForRegisterBrak(filterReg, attrs);
+      break;
+  }
+};
+
+
+/**
+ * Возвращает одну опции атрибута запроса фильтра по платежам
+ * @param attributeName - аттрибут для запроса
+ * @param value - значение
+ * @param condition - тип опции
+ */
+export const getPaymentSimpleRequestOption = (
+  attributeName: string,
+  value: string,
+  condition: string = SubPaymentDictionaryOptionType.EQUALS
+): SubPaymentDictionaryOptionInterface => {
   return {
     simple: {
-      attributeName: 'dictem_code',
-      condition: 'EQUALS',
+      attributeName: attributeName,
+      condition: condition,
       value: {
-        asString: dictItemCode
+        asString: value
       }
     }
   };

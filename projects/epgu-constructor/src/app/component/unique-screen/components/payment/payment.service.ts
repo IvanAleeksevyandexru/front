@@ -1,25 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, takeUntil } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import { getPaymentRequestOptions } from './payment.constants';
-import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import { ScreenService } from '../../../../screen/screen.service';
+import { paymentNSIType } from './payment.constants';
 import { ConfigService } from '../../../../core/config/config.service';
-import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payment.types';
+import { PaymentInfoInterface } from './payment.types';
+import { PaymentRegisterMarriageService } from './subservices/register.marriage.service';
+import { PaymentRegisterVehicleService } from './subservices/register.vehicle.service';
 
 /**
  * Сервис для оплаты услуг пользователем
  */
 @Injectable()
 export class PaymentService {
-  private requestOptions = { withCredentials: true };
+  public requestOptions = { withCredentials: true };
 
   constructor(
-    private http: HttpClient,
-    private dictionaryApiService: DictionaryApiService,
-    private config: ConfigService,
-    private screenService: ScreenService,
+    public http: HttpClient,
+    public config: ConfigService,
+    public paymentRegisterMarriageService: PaymentRegisterMarriageService,
+    public paymentRegisterVehicleService: PaymentRegisterVehicleService,
   ) {}
 
   /**
@@ -36,28 +36,22 @@ export class PaymentService {
 
   /**
    * Загружает данные по оплате с реквизитами
-   * @param orderId - идентификатор заявления
-   * @param nsi - наименование справочника с информацией
-   * @param dictItemCode - код нужного справочника
-   * @param fiasCode - код справочника
+   * @param attrs - объект с аттрибутами компонента
    */
-  loadPaymentInfo(orderId, nsi, dictItemCode, fiasCode): Observable<any> {
-    const dictionaryOptions = this.createPaymentRequestOptions(dictItemCode, fiasCode);
+  loadPaymentInfo(attrs: any): Observable<any> {
+    const { nsi } = attrs;
 
-    return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
-      map((res: any) => {
-        if (res.error.code === 0) {
-          return res.items[0].attributeValues;
-        }
-        throw Error();
-      }),
-      catchError((err: any) => {
-        return throwError(err);
-      }),
-    );
+    switch (nsi){ //Код справочника о услуге
+      case paymentNSIType.REGISTER_VEHICLE:
+        return this.paymentRegisterVehicleService.loadPaymentInfo(nsi, attrs);
+        break;
+      case paymentNSIType.REGISTER_MARRIAGE:
+      default:
+        return this.paymentRegisterMarriageService.loadPaymentInfo(nsi, attrs);
+        break;
+    }
   }
 
-  //TODO: Идентификатор заявителя ниже должен откуда-то браться
   /**
    * Получение номера УИН для по номеру заявки
    * @param orderId - идентификатор заявления
@@ -65,15 +59,7 @@ export class PaymentService {
    * @param attributeValues - дополнительные параметры
    */
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
-    // TODO: HARDCODE Специальная подмена на оплату 1,4 рубля гос пошлины, иначе будет как есть снятие
-    // if (location.hostname === 'local.test.gosuslugi.ru') {
-    //   const uinMockUp = new BehaviorSubject({
-    //     value: mockUpUIN
-    //   });
-    //   return uinMockUp.asObservable();
-    // }
-
-    // TODO: Хардкод для локальной отладки
+    // TODO: Хардкод для локальной отладки подмена суммы оплаты пошлины
     if (location.hostname.includes('test.gosuslugi.ru')) {
       attributeValues.sum = '200';
     }
@@ -101,7 +87,7 @@ export class PaymentService {
 
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/pay/v1/bills`
-      : this.config.billsApiUrl;
+      : `${this.config.billsApiUrl}bills`;
     // eslint-disable-next-line max-len
     const path = `${urlPrefix}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
     return this.http.post(path, {}, this.requestOptions).pipe(
@@ -144,35 +130,5 @@ export class PaymentService {
    */
   getPaymentLink(billId: number): string {
     return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${this.getReturnUrl()}&subscribe=true`;
-  }
-
-  /**
-   * Возращает значение из объекта по массиву переданных ключей
-   * @param obj_or_result - объект или значение объекта
-   * @param path - массив с путём ключей
-   * @private
-   */
-  private getValueFromObjectAsArray(obj_or_result: any, path: string[]): string | null {
-    if (path.length){
-      const key = path.shift();
-      if (obj_or_result.hasOwnProperty(key)){
-        return this.getValueFromObjectAsArray(obj_or_result[key], path);
-      }
-      return null;
-    }
-    return obj_or_result;
-  }
-
-  /**
-   * Возвращает опции для запроса на оплату
-   * @param dictItemCode - код элемента справочника на оплату
-   * @param fiasCode - код справочника
-   */
-  createPaymentRequestOptions(dictItemCode: string, fiasCode: string): PaymentDictionaryOptionsInterface {
-    const { applicantAnswers } = this.screenService;
-    const path = fiasCode.split('.'); // Путь к ответу
-    const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, path));
-
-    return getPaymentRequestOptions(filterReg, dictItemCode);
   }
 }

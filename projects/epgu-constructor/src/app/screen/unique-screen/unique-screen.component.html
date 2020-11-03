@@ -58,6 +58,12 @@
     [data]="screenService.component"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-payment>
+  <epgu-constructor-invoice
+    *ngSwitchCase="uniqueComponentName.invoiceScr"
+    [header]="screenService.header"
+    [data]="screenService.component"
+    (nextStepEvent)="nextDataForStep()"
+  ></epgu-constructor-invoice>
   <epgu-constructor-confirm-phone
     *ngSwitchCase="uniqueComponentName.phoneNumberConfirmCodeInput">
   </epgu-constructor-confirm-phone>

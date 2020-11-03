@@ -8,6 +8,7 @@ export enum UniqueScreenComponentTypes {
   timer = 'Timer',
   signatureApplication = 'EsepSign',
   paymentScr = 'PaymentScr',
+  invoiceScr = 'InvoiceScr',
   phoneNumberConfirmCodeInput = 'PhoneNumberConfirmCodeInput',
   ConfirmNewEmail = 'ConfirmNewEmail',
   unusedPayments = 'UnusedPayments',

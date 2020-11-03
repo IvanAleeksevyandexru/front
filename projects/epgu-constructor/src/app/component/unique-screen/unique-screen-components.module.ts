@@ -7,7 +7,8 @@ import { CarInfoModule } from './components/car-info/car-info.module';
 import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
 import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { ConfirmModule } from './components/confirm/confirm.module';
-import { PaymentModule } from './components/payment/payment.module';
+import { PaymentModule } from './components/payment/components/payment/payment.module';
+import { InvoiceModule } from './components/payment/components/invoice/invoice.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
 import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
@@ -38,6 +39,7 @@ const COMPONENTS = [RepeatableFieldsComponent, ConfirmEmailComponent, ConfirmPho
     TimeSlotsModule,
     ConfirmModule,
     PaymentModule,
+    InvoiceModule,
     UnusedPaymentsModule,
     SignatureApplicationModule,
     UploadAndEditPhotoModule,
@@ -53,6 +55,7 @@ const COMPONENTS = [RepeatableFieldsComponent, ConfirmEmailComponent, ConfirmPho
     TimeSlotsModule,
     ConfirmModule,
     PaymentModule,
+    InvoiceModule,
     UnusedPaymentsModule,
     SignatureApplicationModule,
   ],

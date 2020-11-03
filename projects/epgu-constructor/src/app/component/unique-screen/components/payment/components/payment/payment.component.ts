@@ -1,22 +1,22 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../core/config/config.service';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { UtilsService } from '../../../../shared/services/utils/utils.service';
-import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentBase } from '../../../../screen/screen.types';
+import { ConfigService } from '../../../../../../core/config/config.service';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { UtilsService } from '../../../../../../shared/services/utils/utils.service';
+import { COMPONENT_DATA_KEY } from '../../../../../../shared/constants/form-player';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { ComponentBase } from '../../../../../../screen/screen.types';
 import { getDiscountDate, getDiscountPrice, getDocInfo } from './payment.component.functions';
-import { PaymentStatus } from './payment.constants';
-import { PaymentService } from './payment.service';
+import { PaymentStatus } from '../../payment.constants';
+import { PaymentService } from '../../payment.service';
 import {
   BillInfoResponse,
   BillsInfoResponse,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
-} from './payment.types';
+} from '../../payment.types';
 
 @Component({
   selector: 'epgu-constructor-payment',
@@ -40,11 +40,12 @@ export class PaymentComponent implements OnDestroy {
   private payStatusIntervalLink = null;
   private payStatusInterval = 30;
   private billPosition = 0; // Какой счет брать из списка
-  private billId: number;
+  public billId: number;
+  public billDate: string;
   private orderId: string; // Номер заявления
 
   @Input() header = 'Оплата госпошлины'; // Заголовок
-  private attrData: ComponentBase;
+  protected attrData: ComponentBase;
   @Input()
   set data(data: ComponentBase) {
     this.isPaid = false;
@@ -58,10 +59,10 @@ export class PaymentComponent implements OnDestroy {
   @Output() nextStepEvent = new EventEmitter<void>();
 
   constructor(
-    private paymentService: PaymentService,
-    private screenService: ScreenService,
-    private currentAnswersService: CurrentAnswersService,
-    private ngUnsubscribe$: UnsubscribeService,
+    public paymentService: PaymentService,
+    public screenService: ScreenService,
+    public currentAnswersService: CurrentAnswersService,
+    public ngUnsubscribe$: UnsubscribeService,
     public config: ConfigService,
   ) {}
 
@@ -69,9 +70,8 @@ export class PaymentComponent implements OnDestroy {
    * Получает информацию для оплате
    * @private
    */
-  private loadPaymentInfo() {
-    const { nsi, dictItemCode, ref, payCode } = this.data.attrs;
-    const { fiasCode } = ref;
+  protected loadPaymentInfo() {
+    const { payCode } = this.data.attrs;
     if (payCode) {
       this.payCode = payCode;
     }
@@ -79,7 +79,7 @@ export class PaymentComponent implements OnDestroy {
     this.orderId = this.screenService.orderId;
 
     this.paymentService
-      .loadPaymentInfo(this.orderId, nsi, dictItemCode, fiasCode)
+      .loadPaymentInfo(this.data.attrs)
       .pipe(
         switchMap((attributeValues: PaymentInfoInterface) =>
           this.getRequestForUinByOrder(attributeValues),
@@ -141,19 +141,28 @@ export class PaymentComponent implements OnDestroy {
   }
 
   /**
+   * Обрабатывает ошибки из успешного запроса на информацию о платеже
+   * @param info
+   * @private
+   */
+  private getBillsInfoByUINErrorsFromSuccess(info: BillsInfoResponse) {
+    // Если ошибка, что уже оплачено
+    if (info.error.code === 23) {
+      this.setInfoLoadedState();
+      this.nextStep();
+    } else {
+      this.setInfoLoadedState();
+      this.status = PaymentStatus.ERROR;
+    }
+  }
+
+  /**
    * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
    * @param {BillsInfoResponse}info
    */
   private getBillsInfoByUINSuccess(info: BillsInfoResponse) {
     if (info.error?.code) {
-      // Если ошибка, что уже оплачено
-      if (info.error.code === 23) {
-        this.setInfoLoadedState();
-        this.nextStep();
-      } else {
-        this.setInfoLoadedState();
-        this.status = PaymentStatus.ERROR;
-      }
+      this.getBillsInfoByUINErrorsFromSuccess(info);
     }
     const bill: BillInfoResponse = info.response.bills[this.billPosition];
 
@@ -221,7 +230,7 @@ export class PaymentComponent implements OnDestroy {
   /**
    * Переход к следующему экрану
    */
-  private nextStep(): void {
+  nextStep(): void {
     this.nextStepEvent.emit();
   }
 

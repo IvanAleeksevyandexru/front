@@ -1,4 +1,5 @@
 import { DictionaryOptions } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { Observable } from 'rxjs';
 
 /**
  * Информация о нужном платеже
@@ -52,15 +53,17 @@ export interface PaymentDictionaryOptionsInterface extends DictionaryOptions {
   filter: {
     union: {
       unionKind: string;
-      subs: SubPaymentDictionaryInterface[];
+      subs: SubPaymentDictionaryOptionInterface[];
     };
   };
 }
 
+
+
 /**
  * Интерфейс для части опции запроса на создание оплаты
  */
-export interface SubPaymentDictionaryInterface {
+export interface SubPaymentDictionaryOptionInterface {
   simple: {
     attributeName: string;
     condition: string;
@@ -158,7 +161,17 @@ export interface BillsInfoResponse{
   }
 }
 
+/**
+ * Интерфейс ошибки оплаты
+ */
 export interface HttpPaymentError{
   code: number,
   message: string
+}
+
+/**
+ * Интерфейс для API сервисов получения реквизитов платежей
+ */
+export declare interface PaymentSubServices{
+  loadPaymentInfo(nsi: string, attrs: any): Observable<any>;
 }
