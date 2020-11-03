@@ -6,7 +6,6 @@ import { map, takeUntil } from 'rxjs/operators';
 import { ValidationShowOn } from 'epgu-lib';
 
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 
 import { DocInputControl, DocInputField, DocInputFormFields } from './doc-input.types';
 import { ComponentListFormService } from '../services/component-list-form.service';
@@ -80,7 +79,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   formatDateValue(formFields: DocInputFormFields): DocInputFormFields {
     return {
       ...formFields,
-      date: formFields.date ? moment(formFields.date).format(DATE_STRING_DOT_FORMAT) : null,
+      date: formFields.date ? moment(formFields.date).toISOString(true) : null,
     };
   }
 
@@ -93,9 +92,16 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     this.formService.emmitChanges();
   }
 
-  addFormGroupControls(): void {
-    const componentValues = JSON.parse(this.data.value.value || '{}'); // gets value for fields if they have already existed
+  private getParsedComponentValues(): DocInputFormFields {
+    const componentValues: DocInputFormFields = JSON.parse(this.data.value.value || '{}');
+    return {
+      ...componentValues,
+      date: componentValues.date ? new Date(componentValues.date) : null,
+    };
+  }
 
+  addFormGroupControls(): void {
+    const componentValues = this.getParsedComponentValues();
     this.fieldsNames.forEach((fieldName: string) => {
       const validators = this.getFormFieldValidators(fieldName);
       this.form.addControl(fieldName, new FormControl(componentValues[fieldName], validators));
