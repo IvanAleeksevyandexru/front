@@ -1,9 +1,5 @@
 @import "../../../../../styles/core/index";
 
-.nav {
-  @include navigation-mt();
-}
-
 .form {
   &__group {
     display: flex;
@@ -45,16 +41,5 @@
   margin: 16px auto 0;
   &__timer {
     color: $color-black;
-  }
-}
-
-
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 24px;
-  @include tablets-up {
-    margin-top: 32px;
   }
 }

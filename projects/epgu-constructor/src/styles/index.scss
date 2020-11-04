@@ -189,4 +189,17 @@
       color: $color-button-hit;
     }
   }
+
+  .container {
+    width: 100%;
+    max-width: 592px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    @include tablets-up {
+      box-sizing: content-box;
+    }
+  }
 }

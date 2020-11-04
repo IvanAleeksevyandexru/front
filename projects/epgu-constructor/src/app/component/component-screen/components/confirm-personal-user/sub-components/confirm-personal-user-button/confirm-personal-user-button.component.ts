@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 
+// TODO компонент кандидат на удаление
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-button',
   templateUrl: './confirm-personal-user-button.component.html',

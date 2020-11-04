@@ -31,7 +31,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
   helperText: string;
 
   @Input() data: any;
-  @Input() form: FormGroup;
+  form: FormGroup;
 
   @Output() changeComponentSettings = new EventEmitter();
   @Output() changeComponentData = new EventEmitter();

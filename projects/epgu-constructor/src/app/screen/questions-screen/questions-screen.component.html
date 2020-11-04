@@ -1,5 +1,6 @@
-<epgu-constructor-navigation class="question__nav"></epgu-constructor-navigation>
-<epgu-constructor-screen-container class="question__container">
+<epgu-constructor-screen-container>
+
+  <div class="screen-body">
     <epgu-constructor-page-name class="question__head">
       {{screenService.header$ | async}}
     </epgu-constructor-page-name>
@@ -10,16 +11,17 @@
       [clarifications]="screenService.component?.attrs?.clarifications"
     >
     </epgu-constructor-output-html>
+  </div>
 
-    <div class="answer">
-      <ng-container *ngFor="let answer of screenService.component?.attrs?.actions">
-        <epgu-constructor-answer-button
-          *ngIf="!answer.hidden"
-          class="answer__item"
-          (click)="answerChoose(answer)"
-          [data]="answer">
-        </epgu-constructor-answer-button>
-      </ng-container>
-    </div>
+  <div class="answer__list screen-footer">
+    <ng-container *ngFor="let answer of screenService.component?.attrs?.actions">
+      <epgu-constructor-answer-button
+        *ngIf="!answer.hidden"
+        class="answer__item"
+        (click)="answerChoose(answer)"
+        [data]="answer">
+      </epgu-constructor-answer-button>
+    </ng-container>
+  </div>
 
 </epgu-constructor-screen-container>

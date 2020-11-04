@@ -193,7 +193,7 @@ hr {
 
  @include desktops-down {
    .widget {
-     height: calc(100vh - 104px);
+     height: calc(100vh - 104px); // TODO что это за число 104px?
      overflow: hidden;
    }
 
@@ -251,7 +251,7 @@ hr {
 
  @include tablets-down() {
    .widget {
-     height: calc(100vh - 104px);
+     height: calc(100vh - 104px); // TODO что это за число 104px?
      overflow: hidden;
    }
  }

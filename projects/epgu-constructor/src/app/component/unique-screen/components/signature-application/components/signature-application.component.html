@@ -1,19 +1,19 @@
-<epgu-constructor-navigation *ngIf="!isMobile" class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container [show-nav]="!isMobile">
 
-<epgu-constructor-screen-container class="screen-container">
-  <epgu-constructor-page-name>{{ screenService.header }}</epgu-constructor-page-name>
-
-  <div class="application-container" *ngIf="isMobile; else desktopTemplate">
-    <div class="application">
+  <div class="screen-body">
+    <epgu-constructor-page-name>{{ screenService.header }}</epgu-constructor-page-name>
+    <div class="application" *ngIf="isMobile; else desktopTemplate">
       <div class="application__center">
-        <img [src]="screenService.component.attrs.image.src" />
+        <img [src]="screenService.component.attrs.image.src"/>
       </div>
 
       <epgu-constructor-output-html
         [html]="screenService.component.label"
       ></epgu-constructor-output-html>
     </div>
+  </div>
 
+  <div class="screen-footer">
     <div class="footer">
       <lib-button
         [showLoader]="screenService.isLoading$ | async"
