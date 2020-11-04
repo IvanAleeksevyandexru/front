@@ -5,6 +5,7 @@ import { fromEvent } from 'rxjs';
 import {
   FormPlayerNavigation,
   Navigation,
+  NavigationDirection,
   NavigationPayload,
 } from '../../form-player/form-player.types';
 import { NavigationModalService } from '../../core/services/navigation-modal/navigation-modal.service';
@@ -76,8 +77,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
 
   nextStep(navigation?: Navigation) {
     if (navigation?.options?.isInternalScenarioFinish) {
-      this.navService.nextStep.next(navigation);
-      this.closeModal();
+      this.switchNavigationToFormPlayer(navigation, NavigationDirection.NEXT);
       return;
     }
 
@@ -86,12 +86,18 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
 
   prevStep(navigation?: Navigation) {
     if (navigation?.options?.isInternalScenarioFinish) {
-      this.navService.prevStep.next(navigation);
-      this.closeModal();
+      this.switchNavigationToFormPlayer(navigation, NavigationDirection.PREV);
       return;
     }
 
     this.screenModalService.navigate(navigation, FormPlayerNavigation.PREV);
+  }
+
+  switchNavigationToFormPlayer(navigation: Navigation, navDirection: NavigationDirection) {
+    // eslint-disable-next-line no-param-reassign
+    navigation.options.store = this.screenModalService.store;
+    this.navService[navDirection].next(navigation);
+    this.closeModal();
   }
 
   closeModal(): void {

@@ -115,7 +115,7 @@ export class FormPlayerService {
 
   navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation): void {
     this.updateLoading(true);
-    this.updateRequest(navigation.payload);
+    this.updateRequest(navigation);
     this.formPlayerApiService.navigate(this._store, navigation.options, formPlayerNavigation).subscribe(
       (response) => {
         this.processResponse(response);
@@ -168,7 +168,14 @@ export class FormPlayerService {
     return errors && !!Object.keys(errors).length;
   }
 
-  updateRequest(navigationPayload?: NavigationPayload): void {
+  updateRequest(navigation: Navigation): void {
+    const navigationPayload = navigation?.payload;
+    const passedStore = navigation?.options?.store;
+
+    if(passedStore) {
+      this._store = passedStore;
+    }
+
     console.log('updateRequest');
     console.log(navigationPayload);
     if (this.isEmptyNavigationPayload(navigationPayload)) {

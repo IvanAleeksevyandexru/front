@@ -12,7 +12,7 @@ import { FormPlayerService } from '../../form-player/services/form-player/form-p
 
 @Injectable()
 export class ScreenModalService {
-  private store: FormPlayerApiSuccessResponse;
+  private _store: FormPlayerApiSuccessResponse;
   private playerLoaded = false;
   private isLoading = false;
   private minContentHeight = 0;
@@ -33,18 +33,25 @@ export class ScreenModalService {
 
   resetStore(): void {
     this.updatePlayerLoaded(false);
-    this.store = null;
+    this._store = null;
+  }
+
+  /**
+   * Вернет текущий стор
+   */
+  get store(): FormPlayerApiSuccessResponse {
+    return this._store;
   }
 
   navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation): void {
-    if (!this.store) {
-      this.store = JSON.parse(JSON.stringify(this.formPlayerService.store));
+    if (!this._store) {
+      this._store = JSON.parse(JSON.stringify(this.formPlayerService.store));
     }
 
     this.updateLoading(true);
     this.updateRequest(navigation.payload);
 
-    this.formPlayerApiService.navigate(this.store, navigation.options, formPlayerNavigation).subscribe(
+    this.formPlayerApiService.navigate(this._store, navigation.options, formPlayerNavigation).subscribe(
       (response) => {
         this.processResponse(response);
       },
@@ -98,14 +105,14 @@ export class ScreenModalService {
     console.log('updateRequest');
     console.log(navigationPayload);
     if (this.isEmptyNavigationPayload(navigationPayload)) {
-      this.store.scenarioDto.currentValue = {};
-      const componentId = this.store.scenarioDto.display.components[0].id;
-      this.store.scenarioDto.currentValue[componentId] = {
+      this._store.scenarioDto.currentValue = {};
+      const componentId = this._store.scenarioDto.display.components[0].id;
+      this._store.scenarioDto.currentValue[componentId] = {
         value: '',
         visited: true
       };
     } else {
-      this.store.scenarioDto.currentValue = navigationPayload;
+      this._store.scenarioDto.currentValue = navigationPayload;
     }
   }
 
@@ -115,7 +122,7 @@ export class ScreenModalService {
 
   sendDataSuccess(response): void {
     console.log('----- SET DATA MODAL ---------');
-    console.log('request', this.store);
+    console.log('request', this._store);
     this.initResponse(response);
   }
 
@@ -141,7 +148,7 @@ export class ScreenModalService {
       return;
     }
 
-    this.store = response;
+    this._store = response;
     const scenarioDto = response.scenarioDto;
 
     this.initScreenStore(scenarioDto);
