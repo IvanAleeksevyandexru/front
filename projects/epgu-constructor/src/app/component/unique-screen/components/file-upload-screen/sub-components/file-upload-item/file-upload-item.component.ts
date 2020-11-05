@@ -289,7 +289,8 @@ export class FileUploadItemComponent implements OnDestroy {
     this.handleError(ErrorActions.clear);
     const files = isPhoto ? Array.from(filesToUpload) : this.filterValidFiles(filesToUpload);
 
-    if (files.length > this.uploadedFilesAmount) {
+    const filesLength = files.length + this.uploadedFilesAmount;
+    if (filesLength > this.data.maxFileCount) {
       this.handleError(ErrorActions.addMaxAmount);
       return [];
     }
