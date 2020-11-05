@@ -20,7 +20,6 @@
     "skipTemplateCodegen": true,
     "strictMetadataEmit": false,
     "enableResourceInlining": true,
-    "enableIvy": true
   },
   "exclude": [
     "**/*.spec.ts"

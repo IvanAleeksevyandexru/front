@@ -1,7 +1,7 @@
 <epgu-constructor-confirm-personal-user-screen-layout>
-  <div class="body">
+  <div class="body confirm__body">
     <div class="flex-row">
-      <epgu-constructor-label>{{ data.label }}</epgu-constructor-label>
+      <span class="label-helper">{{ data.label }}</span>
     </div>
 
     <div class="error" *ngIf="screenService.componentError">
@@ -18,7 +18,7 @@
   </div>
 
   <div
-    class="footer"
+    class="footer confirm__footer"
     *ngIf="
       screenService.action.action === actionType.editPhoneNumber ||
       screenService.action.action === actionType.editEmail

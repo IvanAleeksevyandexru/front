@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { FormPlayerNavigation, Navigation, NavigationPayload } from '../../form-player.types';
 import { ScreenService } from '../../../screen/screen.service';
-import { ScreenTypes } from '../../../screen/screen.types';
 import { COMPONENT_DATA_KEY } from '../../../shared/constants/form-player';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import {
@@ -21,7 +20,7 @@ import { UtilsService } from '../../../shared/services/utils/utils.service';
  */
 @Injectable()
 export class FormPlayerService {
-  private store: FormPlayerApiSuccessResponse;
+  private _store: FormPlayerApiSuccessResponse;
   private playerLoaded = false;
   private isLoading = false;
   private screenType: string;
@@ -68,7 +67,7 @@ export class FormPlayerService {
     this.updateLoading(true);
 
     if (this.isNeedToShowLastScreen()) {
-      this.getDataFromLocalStorage();
+      this.loadDataFromLocalStorage();
     } else {
       if (invited) {
         this.getInviteOrderData(orderId);
@@ -106,7 +105,7 @@ export class FormPlayerService {
   /**
    * Достаёт данные из localStorage для текущего экрана
    */
-  getDataFromLocalStorage() {
+  loadDataFromLocalStorage(): void {
     const store = UtilsService.getLocalStorageJSON(COMPONENT_DATA_KEY);
     this.processResponse(store);
     this.updateLoading(false);
@@ -114,10 +113,10 @@ export class FormPlayerService {
   }
 
 
-  navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation) {
+  navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation): void {
     this.updateLoading(true);
-    this.updateRequest(navigation.payload);
-    this.formPlayerApiService.navigate(this.store, navigation.options, formPlayerNavigation).subscribe(
+    this.updateRequest(navigation);
+    this.formPlayerApiService.navigate(this._store, navigation.options, formPlayerNavigation).subscribe(
       (response) => {
         this.processResponse(response);
       },
@@ -169,18 +168,25 @@ export class FormPlayerService {
     return errors && !!Object.keys(errors).length;
   }
 
-  updateRequest(navigationPayload?: NavigationPayload): void {
+  updateRequest(navigation: Navigation): void {
+    const navigationPayload = navigation?.payload;
+    const passedStore = navigation?.options?.store;
+
+    if(passedStore) {
+      this._store = passedStore;
+    }
+
     console.log('updateRequest');
     console.log(navigationPayload);
     if (this.isEmptyNavigationPayload(navigationPayload)) {
-      this.store.scenarioDto.currentValue = {};
-      const componentId = this.store.scenarioDto.display.components[0].id;
-      this.store.scenarioDto.currentValue[componentId] = {
+      this._store.scenarioDto.currentValue = {};
+      const componentId = this._store.scenarioDto.display.components[0].id;
+      this._store.scenarioDto.currentValue[componentId] = {
         value: '',
         visited: true
       };
     } else {
-      this.store.scenarioDto.currentValue = navigationPayload;
+      this._store.scenarioDto.currentValue = navigationPayload;
     }
   }
 
@@ -190,7 +196,7 @@ export class FormPlayerService {
 
   sendDataSuccess(response): void {
     console.log('----- SET DATA ---------');
-    console.log('request', this.store);
+    console.log('request', this._store);
     this.initResponse(response);
   }
 
@@ -216,7 +222,7 @@ export class FormPlayerService {
       return;
     }
 
-    this.store = response;
+    this._store = response;
     const scenarioDto = response.scenarioDto;
 
     this.initScreenStore(scenarioDto);
@@ -233,6 +239,13 @@ export class FormPlayerService {
   handleInvalidResponse() {
     console.error('----- ERROR DATA ---------');
     console.error('Invalid Response');
+  }
+
+  /**
+   * Вернет текущий стор
+   */
+  get store(): FormPlayerApiSuccessResponse {
+    return this._store;
   }
 
   /**

@@ -1,4 +1,4 @@
-@import '../../../../../../../styles/core/index';
+@import '../../../../../../../styles/core';
 
 .error {
   @include typ-plain-small();
@@ -10,10 +10,19 @@
   margin-top: 4px;
 }
 
-.footer {
-  margin: 0;
-  margin-top: 16px;
-  display: block;
+.label-helper {
+  @include typ-plain-text;
+  color: $color-text-helper;
+  &:first-letter {
+    text-transform: capitalize;
+  }
+}
+
+.confirm {
+  &__footer.footer {
+    margin: 0;
+    display: block;
+  }
 }
 
 .flex-row {
@@ -24,7 +33,7 @@
 }
 
 .divider {
-  margin-bottom: 24px;
+  margin: 16px 0 24px;
 }
 
 .btn-edit {

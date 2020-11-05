@@ -134,7 +134,9 @@
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.PhoneNumberChangeInput"
                                        [data]="componentData">
-        <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+        <div class="half-width">
+          <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+        </div>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.OgrnInput"
