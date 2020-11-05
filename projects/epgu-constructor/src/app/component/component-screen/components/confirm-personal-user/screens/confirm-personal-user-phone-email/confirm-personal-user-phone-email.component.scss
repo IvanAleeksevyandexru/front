@@ -13,6 +13,8 @@
 .footer {
   margin: 16px 0 0;
   display: block;
+}
+
 .label-helper {
   @include typ-plain-text;
   color: $color-text-helper;
