@@ -1,6 +1,6 @@
 const minCropSize = {
-  width: 306,
-  height: 350,
+  width: 413,
+  height: 531
 };
 
 const imageErrorText = {
