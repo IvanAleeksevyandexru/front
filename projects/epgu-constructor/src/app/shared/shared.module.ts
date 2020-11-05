@@ -26,6 +26,7 @@ import { ActionButtonComponent } from './components/action-button/action-button.
 import { UtilsService } from './services/utils/utils.service';
 import { CoreModule } from '../core/core.module';
 import { InputErrorComponent } from './components/input-error/input-error.component';
+import { RadioTaxComponent } from './components/radio-tax/radio-tax.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -41,6 +42,7 @@ const COMPONENTS = [
   PassportComponent,
   ActionButtonComponent,
   InputErrorComponent,
+  RadioTaxComponent
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe];
