@@ -1,5 +1,4 @@
-@import "../../../../../../../styles/core/index";
-@import '../../../../../../../styles/components/rubles';
+@import "../../../../../styles/core";
 
 .payment{
   padding: 24px;
@@ -77,5 +76,3 @@
 .footer__item{
   margin-bottom: 10px;
 }
-
-@include rubles('.info__text', '../../../../../src/assets/img/ruble.svg');

@@ -64,4 +64,8 @@
   }
 }
 
+.half-width {
+  width: 50%;
+}
+
 @include rubles('.custom__screen-html', '../../../../../src/assets/img/ruble.svg');
