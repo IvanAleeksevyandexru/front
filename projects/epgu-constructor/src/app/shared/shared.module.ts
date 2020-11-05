@@ -26,6 +26,7 @@ import { ActionButtonComponent } from './components/action-button/action-button.
 import { UtilsService } from './services/utils/utils.service';
 import { CoreModule } from '../core/core.module';
 import { InputErrorComponent } from './components/input-error/input-error.component';
+import { DateRangeService } from './services/date-range/date-range.service';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -66,6 +67,7 @@ const DIRECTIVES = [
     TerraByteApiService,
     CurrencyPipe,
     UtilsService,
+    DateRangeService,
   ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [WebcamModule, CoreModule],
