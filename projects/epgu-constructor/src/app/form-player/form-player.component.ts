@@ -3,12 +3,14 @@ import {
   Component,
   HostBinding,
   Input,
+  NgZone,
   OnChanges,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { mergeMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, mergeMap, takeUntil } from 'rxjs/operators';
 import { LoadService } from 'epgu-lib';
+import { fromEvent } from 'rxjs';
 import { ConfigService } from '../core/config/config.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
 import { FormPlayerService } from './services/form-player/form-player.service';
@@ -18,27 +20,31 @@ import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.ser
 import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirmation-modal.component';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
+import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
   templateUrl: './form-player.component.html',
-  styleUrls: ['../../styles/index.scss', 'form-player.component.scss'],
+  styleUrls: ['../../styles/index.scss'],
   providers: [UnsubscribeService],
   encapsulation: ViewEncapsulation.None,
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
+  @HostBinding('style.minHeight.px') minHeight: number;
   @HostBinding('class.epgu-form-player') class = true;
   @Input() service: Service;
 
   constructor(
+    private deviceDetector: DeviceDetectorService,
     private serviceDataService: ServiceDataService,
     public formPlayerConfigApiService: FormPlayerConfigApiService,
     public formPlayerService: FormPlayerService,
-    private navigationService: NavigationService,
+    private navService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     public configService: ConfigService,
     public loadService: LoadService,
     private modalService: ModalService,
+    private zone: NgZone,
   ) {}
 
   ngOnInit(): void {
@@ -52,13 +58,18 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
         this.configService.config = config;
       });
 
-    this.navigationService.nextStep$
+    this.navService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.nextStep(data));
 
-    this.navigationService.prevStep$
+    this.navService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.prevStep(data));
+
+    if (this.deviceDetector.isMobile) {
+      this.calculateHeight();
+      this.subscribeToScroll();
+    }
   }
 
   ngAfterViewInit() {
@@ -75,6 +86,20 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges(): void {
     this.checkProps();
     this.serviceDataService.init(this.service);
+  }
+
+  subscribeToScroll() {
+    this.zone.runOutsideAngular(() => {
+      fromEvent(window, 'resize')
+        .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
+        .subscribe(() => this.zone.run(() => this.calculateHeight()));
+    });
+  }
+
+  calculateHeight(): void {
+    const menuHeight = 88;
+    const marginBottomFrom = 20; // отступ от нижней части экрана
+    this.minHeight = window.innerHeight - menuHeight - marginBottomFrom;
   }
 
   getOrderIdFromApi() {

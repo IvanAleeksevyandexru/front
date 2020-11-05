@@ -57,7 +57,7 @@ export class NavigationService {
     }
   }
 
-  private navigateInsideWebView(options) {
+  private navigateInsideWebView(options: any) {
     this.smuEventsService.notify(options);
   }
 }

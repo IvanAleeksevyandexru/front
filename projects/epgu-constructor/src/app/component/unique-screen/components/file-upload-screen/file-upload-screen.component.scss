@@ -1,8 +1,4 @@
-@import "../../../../../styles/core/index";
-
-.nav {
-  @include navigation-mt();
-}
+@import "../../../../../styles/core";
 
 .inner {
   display: flex;
@@ -12,17 +8,5 @@
   min-height: inherit;
   @include tablets-up {
     min-height: auto;
-  }
-}
-
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 32px;
-  margin-bottom: 40px;
-
-  @include tablets-up {
-    margin-top: 40px;
   }
 }
