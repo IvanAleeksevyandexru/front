@@ -1,4 +1,5 @@
 import { Answer } from '../shared/types/answer';
+import { FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
 
 /**
  * @property serviceId - идентификатор услуги в formPlayerApi
@@ -24,6 +25,11 @@ export enum FormPlayerNavigation {
   'PREV' = 'getPrevStep',
 }
 
+export enum NavigationDirection {
+  'NEXT' = 'nextStep',
+  'PREV' = 'prevStep',
+}
+
 /**
  * Данные для отправки и навигации
  */
@@ -38,6 +44,7 @@ export interface NavigationPayload {
 export interface NavigationOptions {
   isInternalScenarioFinish?: boolean
   url?: string;
+  store?: FormPlayerApiSuccessResponse;
 }
 
 export interface Navigation {

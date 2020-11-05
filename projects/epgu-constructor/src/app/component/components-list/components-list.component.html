@@ -95,14 +95,17 @@
       <epgu-constructor-component-item *ngSwitchCase="componentType.DateInput"
                                        [data]="componentData">
         <lib-date-picker
+          (dateSelected)="dateRangeService.changeDate($event, componentData.value?.attrs)"
+          (cleared)="dateRangeService.clearDate(componentData.value?.id, componentData.value?.attrs)"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [name]="componentData.value?.id"
           [formControl]="componentData.get('value')"
           [readOnly]="componentData.value?.attrs?.readonly"
-          [minDate]="componentData.value?.attrs?.minDate ? componentData.value?.attrs?.minDate : '-120y'"
-          [maxDate]="componentData.value?.attrs?.maxDate ? componentData.value?.attrs?.maxDate : '+50y'"
-          align="left"
+          [minDate]="dateRangeService.rangeMap.get(componentData.value?.id)?.min || componentData.value?.attrs?.minDate  || '-120y'"
+          [maxDate]="dateRangeService.rangeMap.get(componentData.value?.id)?.max || componentData.value?.attrs?.maxDate || '+50y'"
+          [clearable]="componentData.value?.attrs?.limit"
+          [align]="'left'"
         ></lib-date-picker>
       </epgu-constructor-component-item>
 
@@ -134,7 +137,9 @@
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.PhoneNumberChangeInput"
                                        [data]="componentData">
-        <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+        <div class="half-width">
+          <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+        </div>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.OgrnInput"
@@ -171,8 +176,7 @@
         </epgu-constructor-passport>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-doc-input *ngSwitchCase="componentType.DocInput"
-                                  [data]="componentData">
+      <epgu-constructor-doc-input [data]="componentData" *ngSwitchCase="componentType.DocInput">
       </epgu-constructor-doc-input>
     </ng-container>
   </div>

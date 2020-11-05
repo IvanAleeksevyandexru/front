@@ -22,7 +22,7 @@ import { CoreModule } from '../core/core.module';
 import { ModalModule } from '../modal/modal.module';
 
 /**
- * Домен скринов. Сдесь храниться всё что связанно со скринами и их обязками.
+ * Домен скринов. Здесь храниться всё что связанно со скринами и их обязками.
  */
 @NgModule({
   declarations: [

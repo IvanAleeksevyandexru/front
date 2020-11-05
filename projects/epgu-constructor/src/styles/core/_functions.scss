@@ -66,3 +66,26 @@
     margin-top: 32px;
   }
 }
+
+@mixin modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  background: rgba($color-summer-night, 0.62);
+  transition: background .25s;
+  z-index: $modal-z-index;
+  backdrop-filter: blur(8px);
+}
+
+// Миксин для установки высоты контента для модалок чтоб на таблетках и мобилке кнопки были внизу
+@mixin modal-content-height {
+  @include tablets-down {
+    min-height: calc(100vh - 64px);
+  }
+
+  @include phones-down {
+    min-height: calc(100vh - 48px);
+  }
+}

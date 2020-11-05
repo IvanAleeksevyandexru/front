@@ -17,12 +17,18 @@ import { ComponentListRepositoryService } from './services/component-list-reposi
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScenarioErrorsDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { UtilsService as utils } from '../../shared/services/utils/utils.service';
+import { DateRangeService } from '../../shared/services/date-range/date-range.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
-  providers: [ComponentListFormService, ComponentListRepositoryService, UnsubscribeService],
+  providers: [
+    ComponentListFormService,
+    ComponentListRepositoryService,
+    UnsubscribeService,
+    DateRangeService,
+  ],
 })
 export class ComponentsListComponent implements OnChanges {
   form: FormArray;
@@ -43,6 +49,7 @@ export class ComponentsListComponent implements OnChanges {
   constructor(
     public configService: ConfigService,
     public formService: ComponentListFormService,
+    public dateRangeService: DateRangeService,
     private repository: ComponentListRepositoryService,
     private unsubscribeService: UnsubscribeService,
   ) {

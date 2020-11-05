@@ -9,18 +9,13 @@
       [html]="data.label"
       [clarifications]="clarification">
     </epgu-constructor-output-html>
-
-    <div class="fileupload__label" *ngIf="refData?.length"
-         [innerHTML]="refData"></div>
-     <div class="info">
-       <div class="info__item" *ngIf="data.maxFileCount">
-         Количество загружаемых файлов не более {{ data.maxFileCount }}
-       </div>
-       <div class="info__item">
-         Общий размер файлов в сумме не должен превышать 5 Мб
-       </div>
-     </div>
-   </div>
+    <div
+      *ngIf="refData?.length"
+      class="fileupload__label" 
+      [innerHTML]="refData"
+    >
+    </div>
+  </div>
   <input #fileUploadInput
          type="file"
          [attr.accept]="getAcceptTypes()"

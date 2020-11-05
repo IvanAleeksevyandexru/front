@@ -1,0 +1,5 @@
+<ng-container [ngSwitch]="screenService.componentType$ | async">
+<epgu-constructor-confirm-phone
+  *ngSwitchCase="uniqueComponentName.phoneNumberConfirmCodeInput">
+</epgu-constructor-confirm-phone>
+</ng-container>

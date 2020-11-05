@@ -1,4 +1,4 @@
-@import '../../../../../../../styles/core/index';
+@import '../../../../../../../styles/core';
 
 .error {
   @include typ-plain-small();
@@ -13,6 +13,12 @@
 .footer {
   margin: 16px 0 0;
   display: block;
+.label-helper {
+  @include typ-plain-text;
+  color: $color-text-helper;
+  &:first-letter {
+    text-transform: capitalize;
+  }
 }
 
 .flex-row {
@@ -23,7 +29,7 @@
 }
 
 .divider {
-  margin-bottom: 24px;
+  margin: 16px 0 24px;
 }
 
 .btn-edit {

@@ -12,6 +12,7 @@ import {
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
+import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 
 
 @Directive({
@@ -28,19 +29,27 @@ export class ActionDirective {
     private actionApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private navService: NavigationService,
+    private navModalService: NavigationModalService,
     private utilsService: UtilsService,
   ) {}
 
   private switchAction(): void {
+    console.log(this.action.type);
     switch (this.action.type) {
       case ActionType.download:
         this.downloadAction();
         break;
+      case ActionType.prevStepModal:
+        this.navigateModal('prevStep');
+        break;
+      case ActionType.nextStepModal:
+        this.navigateModal('nextStep');
+        break;
       case ActionType.prevStep:
-        this.doStep('prevStep');
+        this.navigate('prevStep');
         break;
       case ActionType.nextStep:
-        this.doStep('nextStep');
+        this.navigate('nextStep');
         break;
       case ActionType.redirectToLK:
         this.navService.redirectToLK();
@@ -60,7 +69,17 @@ export class ActionDirective {
     return this.actionApiService.sendAction<T>(this.action.action, data);
   }
 
-  private doStep(stepType: string): void {
+  navigate(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    this.navService[stepType].next(navigation);
+  }
+
+  navigateModal(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    this.navModalService[stepType].next(navigation);
+  }
+
+  private prepareNavigationData(): Navigation {
     const options = this.getOptions();
 
     const navigation: Navigation = {
@@ -68,7 +87,7 @@ export class ActionDirective {
       options,
     };
 
-    this.navService[stepType].next(navigation);
+    return navigation;
   }
 
   private getOptions(): NavigationOptions {
