@@ -20,8 +20,8 @@ export class UnusedPaymentsComponent implements OnInit {
   @Output() nextStepEvent = new EventEmitter<any>();
 
   orderId: string;
-  private paymentsList$$: BehaviorSubject<UnusedPaymentInterface[]> = new BehaviorSubject([]);
-  paymentsList$ = this.paymentsList$$.pipe(filter((v) => v.length > 0));
+  private paymentsList: BehaviorSubject<UnusedPaymentInterface[]> = new BehaviorSubject([]);
+  paymentsList$ = this.paymentsList.pipe(filter((v) => v.length > 0));
   paymentUIN: string;
 
   mockOrderId = '763444783';
@@ -60,7 +60,7 @@ export class UnusedPaymentsComponent implements OnInit {
   usePaymentsListData() {
     const value = JSON.parse(this.data.components[0].value);
     if (value.length) {
-      this.paymentsList$$.next(value);
+      this.paymentsList.next(value);
       // this.paymentsList = value;
       // this.showModal();
     }
@@ -68,7 +68,7 @@ export class UnusedPaymentsComponent implements OnInit {
 
   showModal() {
     this.modalService.openModal(UsePaymentsModalComponent, {
-      paymentsList: this.paymentsList$$.getValue(),
+      paymentsList: this.paymentsList.getValue(),
       usePaymentHandler: this.usePayment,
       skipPaymentHandler: this.cancelUsePayment,
     });
@@ -76,7 +76,7 @@ export class UnusedPaymentsComponent implements OnInit {
 
   getListPaymentsInfoSuccess = (data) => {
     if (data.length) {
-      this.paymentsList$$.next(data);
+      this.paymentsList.next(data);
       // this.paymentsList = data;
       // this.showModal();
     } else {

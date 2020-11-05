@@ -19,33 +19,37 @@
     flex-wrap: wrap;
     margin-bottom: 16px;
   }
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
-.radio-tax__container:last-child {
-  margin-bottom: 0;
-}
+
 .radio-tax__info {
   @include phones-down {
     flex-basis: 85%;
   }
   flex-grow: 1;
-
-  .radio-tax__uin {
-    margin-top: 8px;
-    margin-bottom: 16px;
-    color: $color-blue-bayoux;
-    font-weight: 400;
-  }
-  .radio-tax__uin, .radio-tax__link {
-    @include typ-plain-small;
-  }
-  .radio-tax__link {
-    color: $color-gosblue;
-  }
 }
+
+.radio-tax__uin {
+  margin-top: 8px;
+  margin-bottom: 16px;
+  color: $color-blue-bayoux;
+  font-weight: 400;
+}
+
+.radio-tax__uin, .radio-tax__link {
+  @include typ-plain-small;
+}
+
+.radio-tax__link {
+  color: $color-gosblue;
+}
+
 .radio-tax__title {
   @include typ-plain-text;
 }
-.radio-tax__title,.radio-tax__amount {
+.radio-tax__title, .radio-tax__amount {
   color:$color-summer-night;
 }
 .radio-tax__amount {
