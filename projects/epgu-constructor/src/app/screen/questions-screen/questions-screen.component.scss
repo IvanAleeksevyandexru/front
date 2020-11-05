@@ -7,34 +7,14 @@
 
 
 .question {
-  &__container {
-    display: flex;
-    flex-grow: 1;
-
-    &::ng-deep .container {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-  }
-
   &__head {
     margin-bottom: 16px;
   }
 }
 
-.question__text {
-  margin-bottom: 30px;
-}
-
-.question__nav {
-  @include navigation-mt();
-}
-
-.answer {
-  @include tablets-down {
-    margin-top: auto;
-  }
+.answer__list {
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .answer__item:not(:last-child) {

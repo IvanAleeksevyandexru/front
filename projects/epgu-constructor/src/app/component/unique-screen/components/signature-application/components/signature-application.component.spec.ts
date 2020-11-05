@@ -23,7 +23,7 @@ import {
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../../core/services/device-detector/device-detector.service.stub';
 
-describe('SignatureApplicationComponent', () => {
+xdescribe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
   let fixture: ComponentFixture<SignatureApplicationComponent>;
   let navigationService: NavigationService;
