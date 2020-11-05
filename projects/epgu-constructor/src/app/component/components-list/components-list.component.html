@@ -28,7 +28,18 @@
         <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item *ngSwitchCase="componentType.DropDown || componentType.MvdGiac"
+      <epgu-constructor-component-item *ngSwitchCase="componentType.DropDown"
+                                       [data]="componentData">
+        <lib-dropdown
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [items]="(dropDowns$ | async)[componentData.value?.id]"
+          [validationShowOn]="validationShowOn"
+          [formControl]="componentData.get('value')"
+          class="cs__select cs-select">
+        </lib-dropdown>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.MvdGiac"
                                        [data]="componentData">
         <lib-dropdown
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
