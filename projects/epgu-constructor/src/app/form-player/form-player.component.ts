@@ -3,6 +3,7 @@ import {
   Component,
   HostBinding,
   Input,
+  NgZone,
   OnChanges,
   OnInit,
   ViewEncapsulation,
@@ -43,6 +44,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     public configService: ConfigService,
     public loadService: LoadService,
     private modalService: ModalService,
+    private zone: NgZone,
   ) {}
 
   ngOnInit(): void {
@@ -87,16 +89,17 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   subscribeToScroll() {
-    fromEvent(window, 'scroll')
-      .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
-      .subscribe(() => this.calculateHeight());
+    this.zone.runOutsideAngular(() => {
+      fromEvent(window, 'resize')
+        .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
+        .subscribe(() => this.zone.run(() => this.calculateHeight()));
+    });
   }
 
   calculateHeight(): void {
     const menuHeight = 88;
-    const buttonMarginBottom = 20;
-    const componentHeight: number = window.innerHeight - menuHeight - buttonMarginBottom;
-    this.minHeight = componentHeight;
+    const marginBottomFrom = 20; // отступ от нижней части экрана
+    this.minHeight = window.innerHeight - menuHeight - marginBottomFrom;
   }
 
   getOrderIdFromApi() {
