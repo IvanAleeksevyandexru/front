@@ -6,6 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./screen-container.component.scss'],
 })
 export class ScreenContainerComponent implements OnInit {
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('show-nav') showNav = true;
   ngOnInit(): void {}
 }
