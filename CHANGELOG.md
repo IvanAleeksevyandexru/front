@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.14](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.13...v0.4.14) (2020-11-05)
+
+
+### Features
+
+* зависимость периода выбранных дат календарей [ref EPGUCORE-40403] ([e075837](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e07583722e0ac593d7278486273865c19b2417c0))
+* Компонент Укажите реквизиты паспорта привести в соответствие с дизайн-контролем [ref: EPGUCORE-40468] ([031a27a](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/031a27ad5853e63e5b95c93e2c6e6fadca54bc30))
+* перевёл компоненты на новый формат ([1de1211](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1de1211f58c7fe04cfa6a15402c80d1a5732641a))
+
+
+### Bug Fixes
+
+* добавил префиксы для кроссбраузерности; ([d87f03d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d87f03d22418a53d7d6c11b8604a40136a137568))
+* добавлены классы для цветов текста, используемых в json-сценариях [ref EPGUCORE-40312] ([5b045ec](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5b045ec809ba24f084719830c5971dbc5819b50a))
+* исправлен lint [ref EPGUCORE-40346] ([5c52891](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5c5289188e7187293a4a12513de8e29f9df147d1))
+* исправлен показ компоента MVD [EPGUCORE-40365] ([22af4ab](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/22af4ab573f223551b0fd39dee2f50eaabd1b624))
+* исправлена логика отображения кнопки фото [ref EPGUCORE-40433] ([b50c019](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b50c01923eb255820a375ce04113c7e38dd16f18))
+* исправления ошибки с количеством подгружаемых фалов. ([ab61c68](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ab61c682fb3d6472c09b62a55474cfcb8deb0b9f))
+* исправления после merge ([1d742a6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1d742a6d4cf5e3ec6a9c9ea12a6568c1679c7f0e))
+* исправлено ограничение по количеству загрузки файлов, по общему размеру файлов [ref EPGUCORE-40346] ([d515201](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d51520140b5227d9646e568461193942e142176f))
+* исправлено оторажение и блокировка кнопки фото [ref EPGUCORE-40366] ([e2f689c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e2f689c9a9c08042129ccca60d3372317942b8aa))
+* исправлено состояние блокирование кнопки для компонента загрузки файлов [ref EPGUCORE-39301] ([27a9355](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/27a9355c8aa39d731c6fec31463bae5c52b549a1))
+* обновил header для обёртки [EPGUCORE-40231] ([37273b8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/37273b8dd7c8ceb788d4d979965655d26c9261d3))
+* стоимость позволяет вводить только числа [ref EPGUCORE-40405] ([534b773](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/534b7732621fbfa5bc42956b018f509eaaaf340a))
+* удалил статичный текст валидации [ref EPGUCORE-40432] ([dfdcfee](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/dfdcfeebb8175319b36e4d1efce350f942f63e22))
+
 ### [0.4.13](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.12...v0.4.13) (2020-11-05)
 
 ### [0.4.12](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.11...v0.4.12) (2020-11-02)
