@@ -250,7 +250,16 @@ export class FileUploadItemComponent implements OnDestroy {
       objectTypeId: UPLOAD_OBJECT_TYPE,
       mnemonic: this.getMnemonic(),
     });
+
     const files = this.files$$.value;
+    const filesSize = this.getFilesSize(files);
+
+    if (filesSize + file.size > this.data.maxSize) {
+      this.handleError(ErrorActions.addMaxSize);
+      this.filesInUploading -= 1;
+      return;
+    }
+
     files.push(fileToUpload);
     this.files$$.next(files);
     this.subs.push(
@@ -285,11 +294,6 @@ export class FileUploadItemComponent implements OnDestroy {
       return [];
     }
 
-    if (this.getFilesSize(files) > this.data.maxSize) {
-      this.handleError(ErrorActions.addMaxSize);
-      return [];
-    }
-
     return files;
   }
 
@@ -304,13 +308,13 @@ export class FileUploadItemComponent implements OnDestroy {
     }, []);
   }
 
-  getFilesSize(files: File[]): number {
+  getFilesSize(files: TerraUploadedFile[]): number {
     let totalSize = this.uploadedFilesSize;
-    files.forEach((file: File) => {
-      if (/^image/.test(file.type)) {
-        totalSize += file.size <= maxImgSizeInBytes ? file.size : maxImgSizeInBytes;
+    files.forEach((file: TerraUploadedFile) => {
+      if (/^image/.test(file.fileName)) {
+        totalSize += file.fileSize <= maxImgSizeInBytes ? file.fileSize : maxImgSizeInBytes;
       } else {
-        totalSize += file.size;
+        totalSize += file.fileSize;
       }
     });
     return totalSize;
