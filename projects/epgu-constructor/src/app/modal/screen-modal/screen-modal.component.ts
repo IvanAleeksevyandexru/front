@@ -58,6 +58,15 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
         this.updateHeaderHeight();
       });
 
+    this.screenModalService.isInternalScenarioFinish$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(delay(3000))
+      .subscribe((isInternalScenarioFinish) => {
+        if (isInternalScenarioFinish) {
+          this.nextStep({ options: { isInternalScenarioFinish } });
+        }
+      });
+
     this.navModalService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.nextStep(data));
