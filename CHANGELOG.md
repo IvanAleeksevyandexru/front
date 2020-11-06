@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.17](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.16...v0.4.17) (2020-11-06)
+
+
+### Bug Fixes
+
+* обраотка успешной загрузки фото без ответа: Комаров ([2d81b2e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2d81b2ee0de3337d6616172c61ce439f6291ccff))
+
 ### [0.4.16](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.15...v0.4.16) (2020-11-06)
 
 
