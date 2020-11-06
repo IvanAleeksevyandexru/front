@@ -1,4 +1,4 @@
-<div *ngIf="notificationService.hasNotification | async" class="notification">
+<div *ngIf="notificationService.hasNotification$ | async" class="notification">
   <lib-disclaimer-elk
     (click)="notificationService.close()"
     color="#FFD54C"

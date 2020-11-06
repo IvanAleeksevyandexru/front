@@ -10,7 +10,7 @@ import {
   NgZone,
   OnDestroy,
 } from '@angular/core';
-import { filter, reduce, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { merge, of } from 'rxjs';
 import { HelperService, YaMapService } from 'epgu-lib';
 
@@ -124,12 +124,15 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private subscribeToEmmitNextStepData() {
     this.selectMapObjectService.selectedValue
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        tap((value: any) => {
+          if (value && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
+            this.availablePaymentInGIBDD(value.attributeValues.code);
+          }
+        }),
+      )
       .subscribe((value: any) => {
-        if (value && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
-          this.availablePaymentInGIBDD(value.attributeValues.code);
-        }
-
         this.selectedValue = value;
         this.cdr.detectChanges();
       });
@@ -320,7 +323,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Метод проверяет доступность оплаты в выбранном отделе ГИБДД
    * @param id объект на карте
    */
-  availablePaymentInGIBDD(id: number) {
+  private availablePaymentInGIBDD(id: number) {
     const options = getPaymentRequestOptionGIBDD(id);
     this.dictionaryApiService
       .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)

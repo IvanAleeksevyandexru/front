@@ -5,39 +5,45 @@ import { BehaviorSubject } from 'rxjs';
 export class NotificationService {
   private _closeNotificationTime = 20000;
 
-  private _text = new BehaviorSubject<string>(null);
+  private _text$ = new BehaviorSubject<string>(null);
   public get text() {
-    return this._text.getValue();
+    return this._text$.getValue();
   }
   public set text(val: string) {
-    this._text.next(val);
+    this._text$.next(val);
   }
 
-  private _title = new BehaviorSubject<string>(null);
+  private _title$ = new BehaviorSubject<string>(null);
   public get title() {
-    return this._title.getValue();
+    return this._title$.getValue();
   }
   public set title(val: string) {
-    this._title.next(val);
+    this._title$.next(val);
   }
 
-  public hasNotification = new BehaviorSubject<boolean>(false);
-  // public get hasNotification() {
-  //   return this._hasNotification.getValue();
-  // }
-  // public set hasNotification(val: boolean) {
-  //   this._hasNotification.next(val);
-  // }
+  public hasNotification$ = new BehaviorSubject<boolean>(false);
 
-  setNotification(text: string, title: string = 'Предупреждение') {
+  private _timerId: any;
+
+  public setNotification(text: string, title: string = 'Предупреждение'): void {
     this.text = text;
     this.title = title;
-    this.hasNotification.next(true);
+    this.open();
 
-    setTimeout(() => this.close(), this._closeNotificationTime);
+    if (!this._timerId) {
+      this._timerId = setTimeout(() => this.close(), this._closeNotificationTime);
+    } else {
+      this._timerId = null;
+      this.close();
+      this._timerId = setTimeout(() => this.close(), this._closeNotificationTime);
+    }
   }
 
-  close() {
-    this.hasNotification.next(false);
+  public close(): void {
+    this.hasNotification$.next(false);
+  }
+
+  public open(): void {
+    this.hasNotification$.next(true);
   }
 }
