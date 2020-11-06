@@ -33,6 +33,7 @@
         <lib-dropdown
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [items]="(dropDowns$ | async)[componentData.value?.id]"
+          [disabled]="(dropDowns$ | async)[componentData.value?.id]?.length === 1"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
           class="cs__select cs-select">
@@ -44,6 +45,7 @@
         <lib-dropdown
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [items]="(dropDowns$ | async)[componentData.value?.id]"
+          [disabled]="(dropDowns$ | async)[componentData.value?.id].length === 1"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
           class="cs__select cs-select">
@@ -56,6 +58,7 @@
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [items]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
           [validationShowOn]="validationShowOn"
+          [disabled]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list?.length === 1"
           [formControl]="componentData.get('value')"
           class="cs__select cs-select">
         </lib-dropdown>
