@@ -7,8 +7,8 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { BehaviorSubject, Subscription, throwError } from 'rxjs';
-import { catchError, map, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
+import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import {
   FileResponseToBackendUploadsItem,
   FileUploadItem,
@@ -27,6 +27,7 @@ enum ErrorActions {
   addMaxSize = 'maxSize',
   addMaxAmount = 'maxAmount',
   addInvalidType = 'invalidType',
+  addInvalidFile = 'invalidFile',
 }
 
 const maxImgSizeInBytes = 525288;
@@ -231,34 +232,20 @@ export class FileUploadItemComponent implements OnDestroy {
 
   /**
    * Отправляет файл на сервер
-   * @param source - file object to upload
+   * @param file - file object to upload
    * @private
    */
-  private async sendFile(source: File | Blob) {
+  private async sendFile(file: File) {
     this.filesInUploading += 1;
 
-    let file: any = source;
-    if (this.compressTypes.includes(file.type)) {
-      file = await this.compressionService.imageCompression(file, {
-        maxSizeMB: getSizeInMB(maxImgSizeInBytes),
-      });
-    }
-
     const fileToUpload = new TerraUploadedFile({
-      fileName: file.name ? file.name : `camera_${this.filesInUploading}.jpg`,
+      fileName: file.name ? file.name : `Фото_${this.filesInUploading}.jpg`,
       objectId: this.objectId,
       objectTypeId: UPLOAD_OBJECT_TYPE,
       mnemonic: this.getMnemonic(),
     });
 
     const files = this.files$$.value;
-    const filesSize = this.getFilesSize(files);
-
-    if (filesSize + file.size > this.data.maxSize) {
-      this.handleError(ErrorActions.addMaxSize);
-      this.filesInUploading -= 1;
-      return;
-    }
 
     files.push(fileToUpload);
     this.files$$.next(files);
@@ -285,17 +272,50 @@ export class FileUploadItemComponent implements OnDestroy {
    * @param isPhoto
    * @private
    */
-  private prepareFilesToUpload(filesToUpload: FileList, isPhoto?: boolean): File[] {
+  private prepareFilesToUpload(filesToUpload: FileList, isPhoto?: boolean): Observable<File> {
     this.handleError(ErrorActions.clear);
     const files = isPhoto ? Array.from(filesToUpload) : this.filterValidFiles(filesToUpload);
-
     const filesLength = files.length + this.uploadedFilesAmount;
+
     if (filesLength > this.data.maxFileCount) {
       this.handleError(ErrorActions.addMaxAmount);
-      return [];
+      return of();
     }
 
-    return files;
+    const compressedFiles = this.compressImages(files);
+
+    return merge(...compressedFiles).pipe(takeWhile((file: File) => this.isValidFilesSize(file)));
+  }
+
+  compressImages(files: File[]): Array<Observable<any>> {
+    const compressedImageOptions = {
+      maxSizeMB: getSizeInMB(maxImgSizeInBytes),
+      deepChecking: true,
+    };
+
+    return files.map((file: File) => {
+      if (this.compressTypes.includes(file.type)) {
+        return from(this.compressionService.imageCompression(file, compressedImageOptions)).pipe(
+          catchError(() => {
+            this.handleError(ErrorActions.addInvalidFile, file);
+            return of();
+          }),
+        );
+      }
+      return of(file);
+    });
+  }
+
+  isValidFilesSize(file: File): boolean {
+    const currentSize = this.uploadedFilesSize + file.size;
+
+    if (currentSize < this.data.maxSize) {
+      this.uploadedFilesSize = currentSize;
+      return true;
+    }
+
+    this.handleError(ErrorActions.addMaxSize);
+    return false;
   }
 
   filterValidFiles(files: FileList): File[] {
@@ -307,18 +327,6 @@ export class FileUploadItemComponent implements OnDestroy {
       }
       return acc;
     }, []);
-  }
-
-  getFilesSize(files: TerraUploadedFile[]): number {
-    let totalSize = this.uploadedFilesSize;
-    files.forEach((file: TerraUploadedFile) => {
-      if (/^image/.test(file.fileName)) {
-        totalSize += file.fileSize <= maxImgSizeInBytes ? file.fileSize : maxImgSizeInBytes;
-      } else {
-        totalSize += file.fileSize;
-      }
-    });
-    return totalSize;
   }
 
   handleError(action: ErrorActions, file?: File): void {
@@ -334,6 +342,9 @@ export class FileUploadItemComponent implements OnDestroy {
         break;
       case ErrorActions.addInvalidType:
         this.errors.push(`Недопустимый тип файла "${file?.name}"`);
+        break;
+      case ErrorActions.addInvalidFile:
+        this.errors.push(`Ошибка загрузки файла "${file?.name}"`);
         break;
       default:
         break;
@@ -415,9 +426,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * Обновляет данные о файлах, которые были загружены
    */
   updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean) {
-    const files: File[] = this.prepareFilesToUpload(fileList, isPhoto);
-
-    files.forEach((file: File) => this.sendFile(file));
+    this.prepareFilesToUpload(fileList, isPhoto).subscribe((file: File) => this.sendFile(file));
   }
 
   isFileTypeValid(file: File): boolean {
