@@ -9,6 +9,7 @@ import { FormPlayerApiService } from '../../form-player/services/form-player-api
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload } from '../../form-player/form-player.types';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 
 @Injectable()
 export class ScreenModalService {
@@ -20,15 +21,17 @@ export class ScreenModalService {
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
   private minContentHeightSubject = new BehaviorSubject<number>(this.minContentHeight);
+  private isInternalScenarioFinishSub = new BehaviorSubject<boolean>(false);
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
   public minContentHeight$: Observable<number> = this.minContentHeightSubject.asObservable();
+  public isInternalScenarioFinish$: Observable<boolean> = this.isInternalScenarioFinishSub.asObservable();
 
   constructor(
     public formPlayerService: FormPlayerService,
     public formPlayerApiService: FormPlayerApiService,
-    private screenService: ScreenService,
+    private screenService: ScreenService
   ) {}
 
   resetStore(): void {
@@ -153,12 +156,19 @@ export class ScreenModalService {
 
     this.initScreenStore(scenarioDto);
     this.updatePlayerLoaded(true);
+    this.isInternalScenarioFinish();
 
     // TODO: move it to log service
     console.log('----- GET DATA MODAL ---------');
     console.log('componentId:', scenarioDto.display.components[0].id);
     console.log('componentType:', scenarioDto.display.components[0].type);
     console.log('initResponse:', response);
+  }
+
+  isInternalScenarioFinish () {
+    const isInternalScenarioFinish = this._store.scenarioDto?.display?.components[0]
+      ?.attrs?.actions?.some(action => action.action === 'goBackToMainScenario');
+    this.isInternalScenarioFinishSub.next(isInternalScenarioFinish);
   }
 
   handleInvalidResponse() {
