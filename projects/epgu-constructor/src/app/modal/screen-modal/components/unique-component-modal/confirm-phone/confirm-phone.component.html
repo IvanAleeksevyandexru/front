@@ -1,16 +1,30 @@
 <h4 class="header header--fake title-h4">Введите код подтверждения</h4>
 
 <div class="confirm-phone">
-  <span class="confirm-phone__helper-text">Код отправлен в SMS-сообщении на номер</span>
+  <span class="confirm-phone__helper-text">Код придет в СМС на номер</span>
 
   <ng-container  *ngIf="(screenService.applicantAnswers$ | async)['pd1']?.value as phoneNumber">
     <span class="confirm-phone__number">{{phoneNumber}}</span>
-    <button class="confirm-phone__edit-number" (click)="editNumber()">Редактировать номер</button>
+    <button class="confirm-phone__edit-number" (click)="editNumber()">Редактировать</button>
   </ng-container>
+
+  <div class="confirm-phone__warning" *ngIf="(screenService.component$ | async)?.attrs?.validateMessage">
+    <div>
+      <b><svg width="32" height="4" viewBox="0 0 32 4"
+              xmlns="http://www.w3.org/2000/svg"
+              style=" margin-right: 8px; vertical-align: middle; ">
+        <path d="M32 0H0V4H32V0Z" fill="#FED13E"></path> </svg>Обратите внимание!</b>
+      <p class="confirm-phone__warning-text">
+        {{(screenService.component$ | async)?.attrs?.validateMessage}}
+      </p>
+    </div>
+  </div>
+
   <div class="form">
     <div class="form__group" #codeGroup>
       <lib-plain-input *ngFor="let control of codeFormArray.controls"
                        class="form__item"
+                       [class.form__item--has-error]="screenService.componentError$ | async"
                        [class.form__item--has-value]="control.value.codeValue"
                        maxlength="1"
                        type="number"
@@ -18,7 +32,7 @@
       </lib-plain-input>
     </div>
 
-    <div class="form__error">{{screenService.componentError$ | async}}</div>
+    <div class="form__error" *ngIf="screenService.componentError$ | async as error">{{error}}</div>
 
     <div class="form__hint form-hint" *ngIf="isTimerShow">
       Получить код повторно можно через
