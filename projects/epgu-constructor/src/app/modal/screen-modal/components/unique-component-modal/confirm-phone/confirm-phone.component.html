@@ -10,7 +10,10 @@
 
   <div class="confirm-phone__warning" *ngIf="(screenService.component$ | async)?.attrs?.validateMessage">
     <div>
-      <b><svg width="32" height="4" viewBox="0 0 32 4" xmlns="http://www.w3.org/2000/svg" style=" margin-right: 8px; vertical-align: middle; "> <path d="M32 0H0V4H32V0Z" fill="#FED13E"></path> </svg>Обратите внимание!</b>
+      <b><svg width="32" height="4" viewBox="0 0 32 4"
+              xmlns="http://www.w3.org/2000/svg"
+              style=" margin-right: 8px; vertical-align: middle; ">
+        <path d="M32 0H0V4H32V0Z" fill="#FED13E"></path> </svg>Обратите внимание!</b>
       <p class="confirm-phone__warning-text">
         {{(screenService.component$ | async)?.attrs?.validateMessage}}
       </p>
