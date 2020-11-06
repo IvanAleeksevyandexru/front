@@ -16,7 +16,7 @@ import { ComponentBase } from '../../../../screen/screen.types';
 import { ModalService } from '../../../../modal/modal.service';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
-import { minCropSize, uploadPhotoElemId } from './upload-and-edit-photo.constant';
+import { minSize, uploadPhotoElemId } from './upload-and-edit-photo.constant';
 import { ImgSubject } from './upload-and-edit-photo.model';
 import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../services/webcam/webcam.service';
@@ -180,8 +180,8 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       (allowedType) => allowedType.toLowerCase() === imageType.toLowerCase(),
     );
     const isSizeValid =
-      (width >= minCropSize.width && height >= minCropSize.height) ||
-      (width >= minCropSize.height && height >= minCropSize.width);
+      (width >= minSize.width && height >= minSize.height) ||
+      (width >= minSize.height && height >= minSize.width);
 
     if (isTypeValid && isSizeValid) {
       this.imgSubject.next({ imageObjectUrl: src });
