@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
-import { catchError, takeUntil } from 'rxjs/operators';
-import { Subscription, throwError } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
@@ -216,16 +216,8 @@ export class TimeSlotsComponent implements OnInit {
 
   public bookTimeSlot() {
     this.inProgress = true;
-    this.currentService
-      .checkBooking(this.currentSlot)
-      .pipe(
-        catchError((error) => {
-          this.inProgress = false;
-          this.showModal(COMMON_ERROR_MODAL_PARAMS);
-          return throwError(error);
-        }),
-      )
-      .subscribe((response) => {
+    this.currentService.checkBooking(this.currentSlot).subscribe(
+      (response) => {
         this.inProgress = false;
         if (this.currentService.hasError()) {
           this.showError(
@@ -234,7 +226,12 @@ export class TimeSlotsComponent implements OnInit {
           return;
         }
         this.nextStepEvent.emit(JSON.stringify(response));
-      });
+      },
+      () => {
+        this.inProgress = false;
+        this.showModal(COMMON_ERROR_MODAL_PARAMS);
+      },
+    );
   }
 
   showError(errorMessage: string) {
