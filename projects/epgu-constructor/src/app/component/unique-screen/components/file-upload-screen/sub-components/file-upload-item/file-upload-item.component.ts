@@ -30,6 +30,8 @@ enum ErrorActions {
   addInvalidFile = 'invalidFile',
 }
 
+const photoBaseName = 'Снимок';
+
 const maxImgSizeInBytes = 525288;
 
 @Component({
@@ -43,6 +45,7 @@ export class FileUploadItemComponent implements OnDestroy {
   isMobile: boolean;
   uploadedFilesAmount = 0;
   uploadedFilesSize = 0;
+  uploadedCameraPhotosAmount = 0;
 
   @Input() objectId: string;
   @Input() clarification: Clarifications;
@@ -230,6 +233,17 @@ export class FileUploadItemComponent implements OnDestroy {
     }
   }
 
+  updateUploadedCameraPhotosInfo(addPhoto: boolean, fileName: string) {
+    if (!fileName?.includes(photoBaseName)) {
+      return;
+    }
+    if (addPhoto) {
+      this.uploadedCameraPhotosAmount += 1;
+    } else {
+      this.uploadedCameraPhotosAmount -= 1;
+    }
+  }
+
   /**
    * Отправляет файл на сервер
    * @param file - file object to upload
@@ -238,14 +252,14 @@ export class FileUploadItemComponent implements OnDestroy {
   private async sendFile(file: File) {
     this.filesInUploading += 1;
 
+    const files = this.files$$.value;
+
     const fileToUpload = new TerraUploadedFile({
-      fileName: file.name ? file.name : `Фото_${this.filesInUploading}.jpg`,
+      fileName: file.name,
       objectId: this.objectId,
       objectTypeId: UPLOAD_OBJECT_TYPE,
       mnemonic: this.getMnemonic(),
     });
-
-    const files = this.files$$.value;
 
     files.push(fileToUpload);
     this.files$$.next(files);
@@ -259,7 +273,8 @@ export class FileUploadItemComponent implements OnDestroy {
             return throwError(e);
           }),
         )
-        .subscribe(() => {
+        .subscribe((fileInfo: TerraUploadedFile) => {
+          this.updateUploadedCameraPhotosInfo(true, fileInfo.fileName);
           this.updateFileInfoFromServer(fileToUpload);
         }),
     );
@@ -274,7 +289,9 @@ export class FileUploadItemComponent implements OnDestroy {
    */
   private prepareFilesToUpload(filesToUpload: FileList, isPhoto?: boolean): Observable<File> {
     this.handleError(ErrorActions.clear);
-    const files = isPhoto ? Array.from(filesToUpload) : this.filterValidFiles(filesToUpload);
+    const files = isPhoto
+      ? this.handleAndFormatPhotoFiles(filesToUpload)
+      : this.filterValidFiles(filesToUpload);
     const filesLength = files.length + this.uploadedFilesAmount;
 
     if (filesLength > this.data.maxFileCount) {
@@ -287,6 +304,15 @@ export class FileUploadItemComponent implements OnDestroy {
     return merge(...compressedFiles).pipe(
       takeWhile((file: File) => this.validateAndHandleFilesSize(file)),
     );
+  }
+
+  handleAndFormatPhotoFiles(filesToUpload: FileList): File[] {
+    return Array.from(filesToUpload).map((photo: File) => {
+      const photoType = photo.name.split('.').pop() || 'jpg';
+      const photoFullName = `${photoBaseName}_${this.uploadedCameraPhotosAmount + 1}.${photoType}`;
+
+      return { ...photo, name: photoFullName };
+    });
   }
 
   compressImages(files: File[]): Array<Observable<any>> {
@@ -399,6 +425,7 @@ export class FileUploadItemComponent implements OnDestroy {
         )
         .subscribe((deletedFileInfo: TerraUploadedFile) => {
           this.filesInUploading -= 1;
+          this.updateUploadedCameraPhotosInfo(false, deletedFileInfo.fileName);
           this.updateUploadingInfo(deletedFileInfo, true);
 
           let files = this.files$$.value;
