@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.16](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.15...v0.4.16) (2020-11-06)
+
+
+### Bug Fixes
+
+* добавил блокировку если в dropdown(-е) один элемент.[EPGUCORE-40660] ([b9dc029](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b9dc0299fb85797a6cb07fbac1848558d148a868))
+* добавил отступ для элементро экрана проверки адреса.[EPGUCORE-40638] ([1386a14](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1386a14d30827cc9f287efc5b9ef4eac9571eab9))
+* изменено название переменной ([6c220f4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6c220f449124ff37c7af5d36931065e56bc7da88))
+* испаравлено сохранение данных на стр. персональны данных ([9483d59](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9483d59d1dc71f089717ae478c5406a3527d2593))
+* исправил валидации на загрузке файлов [ref EPGUCORE-40475] ([e636ae3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e636ae37e4b6ae1efcdf0275019e223c1afafd54))
+* исправил слипание кнопок находящиеся внизу [EPGUCORE-40638] ([5afc9bb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5afc9bbad09faeb2012a18005203861945929369))
+* исправлена генерация названия прикреплённого фото [ref EPGUCORE-40654] ([2dfa461](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2dfa46170866f42cc96db5f10f76aa4674035c51))
+* исправления представление текста для firefox ([bee9bfa](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/bee9bfabbc07751bd3264ba55342bb022b8cb6ae))
+* исправлено загрузка битых фото, ограничение файлов до 5 мб ([aede393](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/aede3931cfc2443da1c510a39bf805faa5e5b64e))
+* исправленя по стилям ([3e149cc](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3e149cc6aad2eae47bdaa2e0a72e3fec96b1fc9f))
+* исправленя по стилям ([99bb418](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/99bb418ce608de44c2e07ea1ddbdd58bc8ea9da3))
+* Не верно работает рег. выражение для компонента Кем выдано [EPGUCORE-40630] ([b42910a](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b42910a2f47db01c00185c9b27656519825b997d))
+* Обработка ошибки 404 при падении бронирования таймслотов [EPGUCORE-40431] ([c6f4613](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c6f4613e4bd8e46391732bb2d6733412845d2186))
+* переименован метод ([f2280ea](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f2280eae58e9fc9436f960c350d0e135db530e62))
+* увеличил зону для клика по кнопкам. Исправил button на библиотечный lib-button [ref EPGUCORE-40434] ([3389fc1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3389fc17cc81ec36714fc30af678985f2aae28fe))
+
 ### [0.4.15](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.14...v0.4.15) (2020-11-05)
 
 ### [0.4.14](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.13...v0.4.14) (2020-11-05)
