@@ -9,7 +9,7 @@ export class CurrencyTransformDirective {
 
   constructor(private currencyPipe: CurrencyPipe) {
   }
-  @HostListener('window:keypress', ['$event'])
+  @HostListener('keypress', ['$event'])
   onKeyPress(event: KeyboardEvent) {
     if (this.currency) {
       return event.key != ' ' && (event.key >= '0' && event.key <= '9');
