@@ -28,11 +28,24 @@
         <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item *ngSwitchCase="componentType.DropDown || componentType.MvdGiac"
+      <epgu-constructor-component-item *ngSwitchCase="componentType.DropDown"
                                        [data]="componentData">
         <lib-dropdown
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [items]="(dropDowns$ | async)[componentData.value?.id]"
+          [disabled]="(dropDowns$ | async)[componentData.value?.id]?.length === 1"
+          [validationShowOn]="validationShowOn"
+          [formControl]="componentData.get('value')"
+          class="cs__select cs-select">
+        </lib-dropdown>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.MvdGiac"
+                                       [data]="componentData">
+        <lib-dropdown
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [items]="(dropDowns$ | async)[componentData.value?.id]"
+          [disabled]="(dropDowns$ | async)[componentData.value?.id].length === 1"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
           class="cs__select cs-select">
@@ -45,6 +58,7 @@
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [items]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
           [validationShowOn]="validationShowOn"
+          [disabled]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list?.length === 1"
           [formControl]="componentData.get('value')"
           class="cs__select cs-select">
         </lib-dropdown>
@@ -95,14 +109,17 @@
       <epgu-constructor-component-item *ngSwitchCase="componentType.DateInput"
                                        [data]="componentData">
         <lib-date-picker
+          (dateSelected)="dateRangeService.changeDate($event, componentData.value?.attrs)"
+          (cleared)="dateRangeService.clearDate(componentData.value?.id, componentData.value?.attrs)"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [name]="componentData.value?.id"
           [formControl]="componentData.get('value')"
           [readOnly]="componentData.value?.attrs?.readonly"
-          [minDate]="componentData.value?.attrs?.minDate ? componentData.value?.attrs?.minDate : '-120y'"
-          [maxDate]="componentData.value?.attrs?.maxDate ? componentData.value?.attrs?.maxDate : '+50y'"
-          align="left"
+          [minDate]="dateRangeService.rangeMap.get(componentData.value?.id)?.min || componentData.value?.attrs?.minDate  || '-120y'"
+          [maxDate]="dateRangeService.rangeMap.get(componentData.value?.id)?.max || componentData.value?.attrs?.maxDate || '+50y'"
+          [clearable]="componentData.value?.attrs?.limit"
+          [align]="'left'"
         ></lib-date-picker>
       </epgu-constructor-component-item>
 
@@ -173,8 +190,7 @@
         </epgu-constructor-passport>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-doc-input *ngSwitchCase="componentType.DocInput"
-                                  [data]="componentData">
+      <epgu-constructor-doc-input [data]="componentData" *ngSwitchCase="componentType.DocInput">
       </epgu-constructor-doc-input>
     </ng-container>
   </div>

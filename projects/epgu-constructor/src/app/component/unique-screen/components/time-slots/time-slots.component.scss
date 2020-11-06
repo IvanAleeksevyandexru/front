@@ -129,11 +129,6 @@
   text-align: center;
 }
 
-.footer {
-  text-align: center;
-  margin-top: 40px;
-}
-
 .compact-selector {
   ::ng-deep.dropdown.compact {
     width: 195px;
@@ -192,12 +187,5 @@
     box-sizing: border-box;
     border-radius: 4px;
     color: $color-button-hit;
-  }
-}
-
-.inner {
-  height: 100%;
-  @include phones-down {
-    overflow-y: auto;
   }
 }

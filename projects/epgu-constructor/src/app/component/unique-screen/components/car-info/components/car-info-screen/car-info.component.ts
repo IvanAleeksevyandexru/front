@@ -3,6 +3,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CarInfoValues } from '../../models/car-info.interface';
 import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
+// TODO компонент на удаление (объединить с epgu-constructor-confirm-personal-user-data)
 @Component({
   selector: 'epgu-constructor-car-info',
   templateUrl: './car-info.component.html',

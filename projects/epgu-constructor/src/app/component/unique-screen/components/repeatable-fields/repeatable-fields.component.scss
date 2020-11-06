@@ -2,10 +2,6 @@
 @import 'src/styles/core/typography';
 @import 'src/styles/core/variables';
 
-.nav {
-  @include navigation-mt();
-}
-
 .cmp-group {
   &__layer {
     &:not(:last-child) {
@@ -24,15 +20,5 @@
   &__text {
     width: 100%;
     text-align: center;
-  }
-}
-
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 24px;
-  @include tablets-up {
-    margin-top: 32px;
   }
 }

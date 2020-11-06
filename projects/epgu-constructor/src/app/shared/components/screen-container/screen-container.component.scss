@@ -1,19 +1,51 @@
 @import "src/styles/core";
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  @include tablets-down {
+    min-height: inherit;
+  }
 }
 
 .container {
-  max-width: 592px;
-  width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  @include tablets-down {
+    flex-grow: 1;
+  }
+}
 
+.form-player__navigation {
+  @include navigation-mt();
+}
+
+:host::ng-deep .screen-body {
+  margin-bottom: 24px;
+}
+
+:host::ng-deep .screen-footer {
+  $footer-item-mx: 16px;
+  $footer-mt: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: auto;
   @include tablets-up {
-    min-height: auto;
-    padding: 0;
+    margin-left: -$footer-item-mx;
+    margin-right: -$footer-item-mx;
+    margin-top: $footer-mt - $footer-item-mx;
+  }
+  & > * {
+    margin-top: $footer-item-mx;
+    width: 100%;
+    @include tablets-up {
+      width: auto;
+      margin-left: $footer-item-mx;
+      margin-right: $footer-item-mx;
+    }
   }
 }

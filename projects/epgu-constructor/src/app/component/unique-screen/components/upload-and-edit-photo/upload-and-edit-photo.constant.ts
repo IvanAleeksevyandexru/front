@@ -3,6 +3,11 @@ const minCropSize = {
   height: 350,
 };
 
+const minSize = {
+  width: 413,
+  height: 531,
+};
+
 const imageErrorText = {
   fileType: {
     title: 'Проверьте формат файла',
@@ -12,7 +17,7 @@ const imageErrorText = {
   size: {
     title: 'Маленькое разрешение',
     text: 'Загрузите фото побольше. Например, от',
-    textRules: `${minCropSize.width}x${minCropSize.height} px.`,
+    textRules: `${minSize.width}x${minSize.height} px.`,
   },
   common: {
     title: 'Ошибка загрузки',
@@ -26,6 +31,6 @@ enum uploadPhotoElemId {
   howToTakePhoto = 'howtotakephoto',
 }
 
-export { imageErrorText, minCropSize, uploadPhotoElemId };
+export { imageErrorText, minCropSize, uploadPhotoElemId, minSize };
 
 

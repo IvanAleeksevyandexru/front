@@ -6,41 +6,36 @@
 }
 
 
-.question {
-  &__container {
-    display: flex;
-    flex-grow: 1;
-
-    &::ng-deep .container {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-  }
-
-  &__head {
-    margin-bottom: 16px;
-  }
-}
-
-.question__text {
-  margin-bottom: 30px;
-}
-
-.question__nav {
-  @include navigation-mt();
-}
-
-.answer {
-  @include tablets-down {
-    margin-top: auto;
-  }
-}
-
-.answer__item:not(:last-child) {
-  margin-bottom: 16px;
+.quiz__content {
   @include tablets-up {
-    margin-bottom: 24px;
+    margin-bottom: 32px;
+  }
+}
+
+.quiz__head {
+  margin-bottom: 16px;
+  &:only-child {
+    margin-bottom: 0;
+  }
+}
+
+.quiz__answers {
+  flex-direction: column;
+  align-items: stretch !important; // в какой то момент стили компонента переопределяют то что навешенно сверху.
+  margin-left: 0;
+  margin-right: 0;
+  @include tablets-up {
+    margin-top: 0;
+  }
+}
+
+.quiz__answer {
+
+  @include tablets-up {
+    margin: 0 0 24px 0;
+  }
+  &:last-child {
+    margin-bottom: 0;
   }
 }
 

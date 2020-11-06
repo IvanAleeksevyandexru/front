@@ -1,20 +1,19 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container>
 
-<epgu-constructor-screen-container class="screen-container">
-  <div *ngIf="header" class="head">
-    <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
+  <div class="screen-body">
+    <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
+
+    <epgu-constructor-file-upload
+      [objectId]="screenService.orderId$ | async"
+      [applicantAnswers]="applicantAnswers"
+      [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
+      [attributes]="data.attrs"
+      (newValueSet)="handleNewValueSet($event)"
+    >
+    </epgu-constructor-file-upload>
   </div>
 
-  <epgu-constructor-file-upload
-    [objectId]="screenService.orderId$ | async"
-    [applicantAnswers]="applicantAnswers"
-    [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
-    [attributes]="data.attrs"
-    (newValueSet)="handleNewValueSet($event)"
-  >
-  </epgu-constructor-file-upload>
-
-  <div class="footer">
+  <div class="screen-footer">
     <lib-button
       [showLoader]="isLoading"
       [disabled]="disabled"

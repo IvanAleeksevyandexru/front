@@ -25,11 +25,6 @@ export enum FormPlayerNavigation {
   'PREV' = 'getPrevStep',
 }
 
-export enum NavigationDirection {
-  'NEXT' = 'nextStep',
-  'PREV' = 'prevStep',
-}
-
 /**
  * Данные для отправки и навигации
  */

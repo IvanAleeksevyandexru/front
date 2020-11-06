@@ -10,6 +10,11 @@
   margin-top: 4px;
 }
 
+.footer {
+  margin: 16px 0 0;
+  display: block;
+}
+
 .label-helper {
   @include typ-plain-text;
   color: $color-text-helper;
@@ -18,22 +23,8 @@
   }
 }
 
-.confirm {
-  &__footer.footer {
-    margin: 0;
-    display: block;
-  }
-}
-
-.flex-row {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  align-items: center;
-}
-
 .divider {
-  margin: 16px 0 24px;
+  margin: 0 0 24px;
 }
 
 .btn-edit {

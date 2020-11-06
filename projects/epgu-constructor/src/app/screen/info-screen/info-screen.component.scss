@@ -6,10 +6,6 @@
   display: block;
 }
 
-.nav {
-  @include navigation-mt();
-}
-
 .info {
   &__head {
     margin-bottom: 24px;
@@ -43,14 +39,12 @@
 }
 
 .gray-theme {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  padding: 0;
   background-color: transparent;
-  padding-top: 0;
   box-shadow: none;
-
-  @include phones-down {
-    padding-left: 0;
-    padding-right: 0;
-  }
 
   .divider {
     display: none;

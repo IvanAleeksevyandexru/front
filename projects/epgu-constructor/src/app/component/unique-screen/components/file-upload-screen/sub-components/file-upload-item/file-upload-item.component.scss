@@ -125,35 +125,18 @@ input[type="file"] {
 }
 
 .fileupload__button {
-  font-size: 16px;
-  color: $color-gosblue;
-  line-height: 50px;
-  text-align: left;
-  padding: 0 40px;
-  cursor: pointer;
-  border: 2px solid $color-gosblue;
-  background-color: $color-white;
-  border-radius: 8px;
-  box-sizing: border-box;
-
-  &--disabled {
-    color: $color-text-helper;
-    background-color: $color-button-disabled;
-    border: none;
-  }
+  padding: 5px;
+  margin: -5px;
 
   @include phones-down {
     padding: 0 18px;
   }
-  &:focus {
-    outline: 0;
-  }
 
   &:first-child {
-    margin-right: 24px;
+    margin-right: 19px;
 
     @include phones-down {
-      margin-right: 15px;
+      margin-right: 10px;
     }
   }
 }
