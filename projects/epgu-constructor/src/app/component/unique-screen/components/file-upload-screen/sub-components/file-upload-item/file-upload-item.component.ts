@@ -309,10 +309,10 @@ export class FileUploadItemComponent implements OnDestroy {
   }
 
   validateAndHandleFilesSize(file: File): boolean {
-    const currentSize = this.uploadedFilesSize + file.size;
+    const newSize = this.uploadedFilesSize + file.size;
 
-    if (currentSize < this.data.maxSize) {
-      this.uploadedFilesSize = currentSize;
+    if (newSize < this.data.maxSize) {
+      this.uploadedFilesSize = newSize;
       return true;
     }
 
