@@ -47,7 +47,6 @@ export class ComponentListModalComponent {
   }
 
   changeComponentsList(changes: { [key: string]: any }): void {
-    console.log('changeComponentsList');
     this.isValid = Object.values(changes).every((item) => item.isValid);
     this.dataToSend = this.getFormattedData(changes);
   }

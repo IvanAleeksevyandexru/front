@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
@@ -17,7 +17,7 @@ import { ScreenModalService } from '../../screen-modal.service';
   styleUrls: ['./info-component-modal.component.scss'],
   providers: [UnsubscribeService],
 })
-export class InfoComponentModalComponent {
+export class InfoComponentModalComponent implements OnInit {
   actionButtons: ComponentDtoAction[] = [];
 
   constructor(

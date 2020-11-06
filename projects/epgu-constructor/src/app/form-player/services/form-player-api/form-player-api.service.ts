@@ -73,7 +73,6 @@ export class FormPlayerApiService {
     options: NavigationOptions = {},
     formPlayerNavigation: FormPlayerNavigation
   ): Observable<FormPlayerApiResponse> {
-
     let path = this.getNavigatePath(data, options, formPlayerNavigation);
     const { userId, token } = this.getSessionFromCookie();
 
