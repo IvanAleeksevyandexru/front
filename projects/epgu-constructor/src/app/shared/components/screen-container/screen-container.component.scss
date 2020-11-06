@@ -22,13 +22,28 @@
 }
 
 :host::ng-deep .screen-body {
-  &:not(:only-child) {
-    margin-bottom: 24px;
-  }
+  margin-bottom: 24px;
 }
+
 :host::ng-deep .screen-footer {
+  $footer-item-mx: 16px;
+  $footer-mt: 24px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   margin-top: auto;
+  @include tablets-up {
+    margin-left: -$footer-item-mx;
+    margin-right: -$footer-item-mx;
+    margin-top: $footer-mt - $footer-item-mx;
+  }
+  & > * {
+    margin-top: $footer-item-mx;
+    @include tablets-up {
+      margin-left: $footer-item-mx;
+      margin-right: $footer-item-mx;
+    }
+  }
 }
