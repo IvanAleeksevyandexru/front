@@ -41,7 +41,9 @@
   }
   & > * {
     margin-top: $footer-item-mx;
+    width: 100%;
     @include tablets-up {
+      width: auto;
       margin-left: $footer-item-mx;
       margin-right: $footer-item-mx;
     }
