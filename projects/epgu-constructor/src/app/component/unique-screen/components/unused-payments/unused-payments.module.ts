@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../../shared/shared.module';
-import { ReactiveFormsModule } from '@angular/forms';
-import { EpguLibModule } from 'epgu-lib';
 import { UnusedPaymentsComponent } from './unused-payments.component';
 import { UnusedPaymentsService } from './unused-payments.service';
+import { CoreModule } from '../../../../core/core.module';
 
 const COMPONENTS = [
   UnusedPaymentsComponent
@@ -17,10 +15,8 @@ const COMPONENTS = [
     UnusedPaymentsService
   ],
   imports: [
-    CommonModule,
+    CoreModule,
     SharedModule,
-    ReactiveFormsModule,
-    EpguLibModule,
   ]
 })
 export class UnusedPaymentsModule { }

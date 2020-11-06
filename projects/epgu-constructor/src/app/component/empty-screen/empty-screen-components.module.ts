@@ -1,6 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RedirectComponent } from './components/redirect.component';
+import { ModalModule } from '../../modal/modal.module';
+import { CoreModule } from '../../core/core.module';
 
 @NgModule({
 	declarations: [
@@ -10,7 +11,8 @@ import { RedirectComponent } from './components/redirect.component';
     RedirectComponent
   ],
 	imports: [
-		CommonModule,
+		CoreModule,
+    ModalModule
 	],
 })
 export class EmptyScreenComponentsModule {}

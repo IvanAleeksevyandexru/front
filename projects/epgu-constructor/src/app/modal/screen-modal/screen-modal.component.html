@@ -1,0 +1,35 @@
+<ng-container *ngIf="screenModalService.playerLoaded$ | async">
+  <div class="modal-overlay">
+    <div class="screen-modal">
+      <div *ngIf="showCrossButton" class="screen-modal__cross-button" (click)="closeModal()"></div>
+      <div *ngIf="screenService.header$ | async as title" class="screen-modal__header" #headerBlock>
+        <h4 class="screen-modal__title" [innerHTML]="title | safe: 'html'"></h4>
+      </div>
+      <div class="screen-modal__body">
+        <perfect-scrollbar *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
+          <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
+        </perfect-scrollbar>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+<ng-template #contentBlock>
+  <div class="screen-modal__content">
+    <ng-container [ngSwitch]="screenService.screenType$ | async">
+      <epgu-constructor-component-list-modal
+        *ngSwitchCase="screenTypes.CUSTOM">
+      </epgu-constructor-component-list-modal>
+
+      <epgu-constructor-unique-component-modal
+        *ngSwitchCase="screenTypes.UNIQUE">
+      </epgu-constructor-unique-component-modal>
+
+      <epgu-constructor-info-component-modal
+        *ngSwitchCase="screenTypes.INFO">
+      </epgu-constructor-info-component-modal>
+    </ng-container>
+  </div>
+
+</ng-template>

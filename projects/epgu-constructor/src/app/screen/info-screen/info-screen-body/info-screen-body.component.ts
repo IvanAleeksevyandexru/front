@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ConfigService } from '../../../shared/config/config.service';
+import { ConfigService } from '../../../core/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-info-screen-body',

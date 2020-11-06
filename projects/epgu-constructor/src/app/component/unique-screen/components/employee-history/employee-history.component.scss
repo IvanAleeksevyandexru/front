@@ -2,10 +2,6 @@
 @import 'src/styles/core/functions';
 @import 'src/styles/core/typography';
 
-.nav {
-  @include navigation-mt();
-}
-
 .employee-history {
   &__generation {
     @include shadow-second();
@@ -39,15 +35,6 @@
   }
 
   &__footer {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    margin-top: 8px;
-    @include tablets-up {
-      margin-top: 32px;
-    }
-
     &__msg {
       color: $color-gosred;
       padding: $screen-pad-p;

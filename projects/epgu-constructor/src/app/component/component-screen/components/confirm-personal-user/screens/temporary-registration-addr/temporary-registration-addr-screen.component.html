@@ -1,18 +1,12 @@
-<epgu-constructor-confirm-personal-user-screen-layout>
-  <div class="body">
-    <epgu-constructor-temporary-registration-addr
-      [data]="data"
-      [error]="errors && errors[data?.id]"
-    ></epgu-constructor-temporary-registration-addr>
-  </div>
+<epgu-constructor-temporary-registration-addr
+  [data]="data"
+  [error]="errors && errors[data?.id]"
+></epgu-constructor-temporary-registration-addr>
 
-  <div class="footer">
-    <epgu-constructor-confirm-personal-user-button
-      class="confirm-personal-user-button"
-      *ngFor="let action of data?.attrs?.actions"
-      [action]="action.method"
-      (tap)="clickToAction(action)"
-      >{{ action.label }}</epgu-constructor-confirm-personal-user-button
-    >
-  </div>
-</epgu-constructor-confirm-personal-user-screen-layout>
+<epgu-constructor-confirm-personal-user-button
+  class="confirm-personal-user-button"
+  *ngFor="let action of data?.attrs?.actions"
+  [action]="action.method"
+  (tap)="clickToAction(action)"
+>{{ action.label }}</epgu-constructor-confirm-personal-user-button
+>

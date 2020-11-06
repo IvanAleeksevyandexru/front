@@ -1,25 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
-import { NavigationComponent } from '../../../../shared/components/navigation/navigation.component';
-import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
-import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
-import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { PageNameComponent } from '../../../../shared/components/base/page-name/page-name.component';
-import { ActionButtonComponent } from '../../../../shared/components/action-button/action-button.component';
-import { ImgPrefixerPipe } from '../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
-import { SafePipe } from '../../../../shared/pipes/safe/safe.pipe';
-import { LongButtonComponent } from '../../../../shared/components/long-button/long-button.component';
-import { NavigationService } from '../../../../shared/services/navigation/navigation.service';
+import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { SharedModule } from '../../../../shared/shared.module';
+import { ModalModule } from '../../../../modal/modal.module';
+import { CoreModule } from '../../../../core/core.module';
+import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
   let fixture: ComponentFixture<PaymentTypeSelectorComponent>;
   let screenService: ScreenService;
-  let navigationService: NavigationService;
   const mockComponent: ComponentDto = {
     attrs: {
       applicantType: 'success',
@@ -27,37 +23,39 @@ describe('PaymentTypeSelectorComponent', () => {
       states: {
         success: {
           header: 'success',
-          label: '',
-          clarifications: {},
-          actions: [],
+          label: 'test',
+          clarifications: { registration: { title: '', text: '<p>Регистрации подлежат:</p>' }},
+          actions: [
+            {
+              label: 'На портале со скидкой 30%',
+              value: '"На портале со скидкой 30%',
+              type: 'nextStep',
+              action: 'getNextScreen',
+            },
+          ],
         },
       },
     },
     label: '',
-    type: '',
+    type: 'PaymentTypeSelector',
     id: '12',
     value: '',
+    required: true,
+    visited: true,
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        PaymentTypeSelectorComponent,
-        NavigationComponent,
-        ScreenContainerComponent,
-        OutputHtmlComponent,
-        ActionDirective,
-        PageNameComponent,
-        ActionButtonComponent,
-        SafePipe,
-        ImgPrefixerPipe,
-        LongButtonComponent,
+      declarations: [PaymentTypeSelectorComponent],
+      imports: [SharedModule, ModalModule, CoreModule],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
       ],
-      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }, NavigationService],
     }).compileComponents();
 
     screenService = TestBed.inject(ScreenService);
-    navigationService = TestBed.inject(NavigationService);
 
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
   });
@@ -65,14 +63,6 @@ describe('PaymentTypeSelectorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentTypeSelectorComponent);
     component = fixture.componentInstance;
-    // component.paymentTypeSelector = {
-    //   applicantType: '',
-    //   actions: [],
-    //   clarifications: {},
-    //   header: '',
-    //   label: '',
-    // };
-    // fixture.debugElement.injector.get(ScreenService);
     fixture.detectChanges();
   });
 

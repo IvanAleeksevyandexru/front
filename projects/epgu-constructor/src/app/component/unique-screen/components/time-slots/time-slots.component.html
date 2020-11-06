@@ -1,11 +1,9 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <epgu-constructor-screen-container>
-  <div class="inner">
-    <div *ngIf="data?.header" class="head">
-      <epgu-constructor-page-name>{{ data.header }}</epgu-constructor-page-name>
-    </div>
 
-    <epgu-constructor-screen-pad class="body">
+  <div class="screen-body">
+    <epgu-constructor-page-name *ngIf="data?.header">{{ data.header }}</epgu-constructor-page-name>
+
+    <epgu-constructor-screen-pad>
       <div class="card">
         <div class="months-list">
           <lib-dropdown
@@ -52,15 +50,16 @@
         </div>
       </div>
     </epgu-constructor-screen-pad>
-    <div class="footer">
-      <lib-button
-        [showLoader]="isLoading || inProgress"
-        (click)="clickSubmit()"
-        class="btn__submit"
-        [disabled]="buttonDisabled()"
-      >
-        <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
-      </lib-button>
-    </div>
+  </div>
+
+  <div class="screen-footer">
+    <lib-button
+      [showLoader]="isLoading || inProgress"
+      (click)="clickSubmit()"
+      class="btn__submit"
+      [disabled]="buttonDisabled()"
+    >
+      <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
+    </lib-button>
   </div>
 </epgu-constructor-screen-container>

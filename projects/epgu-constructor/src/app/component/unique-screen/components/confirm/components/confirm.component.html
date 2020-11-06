@@ -1,7 +1,6 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
-
 <epgu-constructor-screen-container class="screen-container">
-  <epgu-constructor-screen-pad>
+
+  <epgu-constructor-screen-pad class="screen-body">
     <epgu-constructor-page-name>{{ screenService.header }}</epgu-constructor-page-name>
 
     <div class="data-group">
@@ -33,7 +32,7 @@
     </div>
   </epgu-constructor-screen-pad>
 
-  <div class="footer">
+  <div class="screen-footer">
     <lib-button
       [showLoader]="screenService.isLoading$ | async"
       (click)="nextStep()"

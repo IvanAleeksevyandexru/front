@@ -72,15 +72,19 @@ export interface SmevBookResponseInterface {
     duration;
     attributes: [];
   };
-  error: {
-    errorDetail: {
-      errorCode: number;
-      errorMessage: string;
-    };
-    fieldErrors: [];
-  };
+  error: ErrorInterface;
   timeStart: Date;
   timeFinish: Date;
+}
+
+export interface CancelSlotResponseInterface {
+  bookId: string;
+  error: ErrorInterface;
+  esiaId: string;
+  status: { 
+    statusCode: number,
+    statusMessage: string;
+  }
 }
 
 export interface SmevSlotsResponseInterface {
@@ -98,13 +102,15 @@ export interface SmevSlotsResponseInterface {
       attributes: [];
     }
   ];
-  error: {
-    errorDetail: {
-      errorCode: number;
-      errorMessage: string;
-    };
-    fieldErrors: [];
+  error: ErrorInterface;
+}
+
+interface ErrorInterface {
+  errorDetail: {
+    errorCode: number;
+    errorMessage: string;
   };
+  fieldErrors: [];
 }
 
 export enum TimeSlotsServiceTypes {

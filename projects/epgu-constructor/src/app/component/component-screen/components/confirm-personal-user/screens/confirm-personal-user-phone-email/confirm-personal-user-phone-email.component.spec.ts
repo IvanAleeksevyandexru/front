@@ -1,14 +1,13 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormatPhonePipe } from 'epgu-lib';
-import { ConfigService } from '../../../../../../shared/config/config.service';
-import { ConfigServiceStub } from '../../../../../../shared/config/config.service.stub';
+import { ConfigService } from '../../../../../../core/config/config.service';
+import { ConfigServiceStub } from '../../../../../../core/config/config.service.stub';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ComponentBase } from '../../../../../../screen/screen.types';
 // eslint-disable-next-line max-len
-import { ConfirmPersonalUserScreenLayoutComponent } from '../../sub-components/confirm-personal-user-screen-layout/confirm-personal-user-screen-layout.component';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
 import { ActionType } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
@@ -37,7 +36,6 @@ xdescribe('ConfirmPersonalUserPhoneEmailComponent', () => {
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [
         ConfirmPersonalUserPhoneEmailComponent,
-        ConfirmPersonalUserScreenLayoutComponent,
         FormatPhonePipe,
       ],
       providers: [

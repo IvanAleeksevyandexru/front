@@ -1,25 +1,20 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ConfirmPersonalUserDataScreenComponent } from './confirm-personal-user-data-screen.component';
 import { SubComponentsModule } from '../../sub-components/sub-components.module';
-import { EpguLibModule } from 'epgu-lib';
 import { ConfirmPersonalUserDataComponent } from './component/confirm-personal-user-data/confirm-personal-user-data.component';
 import { SharedModule } from '../../../../../../shared/shared.module';
+import { CoreModule } from '../../../../../../core/core.module';
 
 const COMPONENTS = [
-  ConfirmPersonalUserDataScreenComponent
+  ConfirmPersonalUserDataComponent
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS,
-    ConfirmPersonalUserDataComponent,
-    ],
+  declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   imports: [
-    CommonModule,
+    CoreModule,
     SharedModule,
     SubComponentsModule,
-    EpguLibModule,
   ]
 })
 export class ConfirmPersonalUserDataScreenModule { }

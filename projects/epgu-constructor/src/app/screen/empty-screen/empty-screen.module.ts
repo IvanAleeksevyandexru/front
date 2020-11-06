@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { EmptyScreenComponent } from './empty-screen.component';
 import { EmptyScreenComponentsModule } from '../../component/empty-screen/empty-screen-components.module';
+import { CoreModule } from '../../core/core.module';
 
 @NgModule({
 	declarations: [
@@ -11,7 +11,7 @@ import { EmptyScreenComponentsModule } from '../../component/empty-screen/empty-
 	  EmptyScreenComponent
   ],
 	imports: [
-		CommonModule,
+		CoreModule,
     EmptyScreenComponentsModule
 	],
 })

@@ -1,4 +1,4 @@
-@import "../../../../../styles/core/index";
+@import "../../../../../styles/core";
 
 .payment{
   padding: 24px;
@@ -54,16 +54,4 @@
   line-height: 32px;
   padding: 0 10px;
   border-radius: 16px;
-}
-
-.footer{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 32px;
-  padding-bottom: 40px;
-
-  @include tablets-up {
-    margin-top: 44px;
-  }
 }

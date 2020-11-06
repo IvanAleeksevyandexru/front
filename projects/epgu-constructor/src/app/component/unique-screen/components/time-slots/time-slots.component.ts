@@ -9,13 +9,13 @@ import { TimeSlotsServiceInterface } from './time-slots.interface';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 import { GibddTimeSlotsService } from './gibdd-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
-import { ModalService } from '../../../../shared/services/modal/modal.service';
+import { ModalService } from '../../../../modal/modal.service';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { SlotInterface } from './time-slots.types';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { ConfirmationModal } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.interface';
-import { ConfirmationModalComponent } from '../../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
-import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
+import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../../screen/screen.service';
 
 const moment = moment_;
@@ -215,7 +215,7 @@ export class TimeSlotsComponent implements OnInit {
 
   public bookTimeSlot() {
     this.inProgress = true;
-    this.currentService.book(this.currentSlot).subscribe((response) => {
+    this.currentService.checkBooking(this.currentSlot).subscribe((response) => {
       this.inProgress = false;
       if (this.currentService.hasError()) {
         this.showError(

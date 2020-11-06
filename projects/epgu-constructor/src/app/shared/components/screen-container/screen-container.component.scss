@@ -1,19 +1,34 @@
 @import "src/styles/core";
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  @include tablets-down {
+    min-height: inherit;
+  }
 }
 
 .container {
-  max-width: 592px;
-  width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding: 0 16px;
-
-  @include tablets-up {
-    min-height: auto;
-    padding: 0;
+  display: flex;
+  flex-direction: column;
+  @include tablets-down {
+    flex-grow: 1;
   }
+}
+
+.form-player__navigation {
+  @include navigation-mt();
+}
+
+:host::ng-deep .screen-body {
+  &:not(:only-child) {
+    margin-bottom: 24px;
+  }
+}
+:host::ng-deep .screen-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
 }

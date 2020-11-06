@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class NotificationService {
-  private _closeNotificationTime = 5000;
+  private _closeNotificationTime = 20000;
 
   private _text = new BehaviorSubject<string>(null);
   public get text() {
@@ -21,23 +21,23 @@ export class NotificationService {
     this._title.next(val);
   }
 
-  private _hasNotification = new BehaviorSubject<boolean>(null);
-  public get hasNotification() {
-    return this._hasNotification.getValue();
-  }
-  public set hasNotification(val: boolean) {
-    this._hasNotification.next(val);
-  }
+  public hasNotification = new BehaviorSubject<boolean>(false);
+  // public get hasNotification() {
+  //   return this._hasNotification.getValue();
+  // }
+  // public set hasNotification(val: boolean) {
+  //   this._hasNotification.next(val);
+  // }
 
   setNotification(text: string, title: string = 'Предупреждение') {
     this.text = text;
     this.title = title;
-    this.hasNotification = true;
+    this.hasNotification.next(true);
 
     setTimeout(() => this.close(), this._closeNotificationTime);
   }
 
   close() {
-    this._hasNotification.next(false);
+    this.hasNotification.next(false);
   }
 }

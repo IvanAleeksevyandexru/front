@@ -136,6 +136,12 @@ input[type="file"] {
   border-radius: 8px;
   box-sizing: border-box;
 
+  &--disabled {
+    color: $color-text-helper;
+    background-color: $color-button-disabled;
+    border: none;
+  }
+
   @include phones-down {
     padding: 0 18px;
   }
@@ -145,11 +151,6 @@ input[type="file"] {
 
   &:first-child {
     margin-right: 24px;
-
-    .nocamera & {
-      margin-right: 0;
-    }
-
 
     @include phones-down {
       margin-right: 15px;

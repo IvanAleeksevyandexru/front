@@ -1,19 +1,4 @@
-@import "../../../../../../../styles/core/index";
-
-.nav {
-  @include navigation-mt();
-}
-
-.inner {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: inherit;
-  min-height: inherit;
-  @include tablets-up {
-    min-height: auto;
-  }
-}
+@import "../../../../../../../styles/core";
 
 .car__info--title {
   font-family: 'Lato', sans-serif;
@@ -23,7 +8,7 @@
   line-height: 24px;
 }
 
-.car__info--block {
+.car__info--block:not(:last-child) {
   margin-bottom: 24px;
 }
 
@@ -38,10 +23,4 @@
   .bold {
     font-weight: bold;
   }
-}
-
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }

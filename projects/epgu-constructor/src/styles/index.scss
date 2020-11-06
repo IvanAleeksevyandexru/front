@@ -6,6 +6,7 @@
 // stylelint-disable
 
 .epgu-form-player {
+  display: block;
   color: $color-summer-night;
   font-family: $font-main;
 
@@ -117,6 +118,88 @@
       @include tablets-up {
         width: inherit;
       }
+    }
+  }
+
+  .text-color {
+    &--white {
+      color: $color-white;
+    }
+    &--gosblue {
+      color: $color-gosblue;
+    }
+    &--gosred {
+      color: $color-gosred;
+    }
+    &--tela-rossa {
+      color: $color-tela-rossa;
+    }
+    &--summer-night {
+      color: $color-summer-night;
+    }
+    &--input {
+      color: $color-input;
+    }
+    &--devider {
+      color: $color-devider;
+    }
+    &--error-highlight {
+      color: $color-error-highlight;
+    }
+    &--shadow {
+      color: $color-shadow;
+    }
+    &--background {
+      color: $color-background;
+    }
+    &--bg-disabled {
+      color: $color-bg-disabled;
+    }
+    &--text-helper {
+      color: $color-text-helper;
+    }
+    &--active-item {
+      color: $color-active-item;
+    }
+    &--giallo-brillante {
+      color: $color-giallo-brillante;
+    }
+    &--giallo-selezionato {
+      color: $color-giallo-selezionato;
+    }
+    &--tag-line {
+      color: $color-tag-line;
+    }
+    &--button-disabled {
+      color: $color-button-disabled;
+    }
+    &--button-hover {
+      color: $color-button-hover;
+    }
+    &--tagline-hit {
+      color: $color-tagline-hit;
+    }
+    &--nephritis {
+      color: $color-nephritis;
+    }
+    &--green-sea {
+      color: $color-green-sea;
+    }
+    &--button-hit {
+      color: $color-button-hit;
+    }
+  }
+
+  .container {
+    width: 100%;
+    max-width: 592px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    @include tablets-up {
+      box-sizing: content-box;
     }
   }
 }

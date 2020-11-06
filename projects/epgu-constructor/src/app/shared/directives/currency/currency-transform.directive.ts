@@ -9,13 +9,25 @@ export class CurrencyTransformDirective {
 
   constructor(private currencyPipe: CurrencyPipe) {
   }
+  @HostListener('window:keypress', ['$event'])
+  onKeyPress(event: KeyboardEvent) {
+    if (this.currency) {
+      return event.key != ' ' && (event.key >= '0' && event.key <= '9');
+    }
+  }
+  @HostListener('input', ['$event.target'])
+  onInput(target) {
+    if (this.currency) {
+      target.value = target.value.replace(/[^\d]/g, '') || '0';
+    }
+  }
 
   @HostListener('change', ['$event.target'])
   onBlur(target) {
     if (this.currency) {
-      let price = target.value ? +(target.value.replace(/[^\d,]/g, '').replace(/,/, '.')) : 0;
-      if (!Number.isNaN(price)) {
-        target.value = this.currencyPipe.transform(price, 'RUB', 'symbol-narrow', '0.0-0');
+      let price = target.value || '0';
+      if (!Number.isNaN(+price)) {
+        target.value = this.currencyPipe.transform(price.substring(0, 10), 'RUB', 'symbol-narrow', '0.0-0');
       }
     }
   }

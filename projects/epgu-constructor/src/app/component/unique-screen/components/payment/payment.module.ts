@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { EpguLibModule } from 'epgu-lib';
 import { PaymentComponent } from './payment.component';
 import { SharedModule } from '../../../../shared/shared.module';
 import { PaymentService } from './payment.service';
+import { CoreModule } from '../../../../core/core.module';
 
 @NgModule({
 	declarations: [
@@ -16,9 +15,8 @@ import { PaymentService } from './payment.service';
     PaymentService
   ],
 	imports: [
-		CommonModule,
+		CoreModule,
 		SharedModule,
-		EpguLibModule,
 	]
 })
 export class PaymentModule { }

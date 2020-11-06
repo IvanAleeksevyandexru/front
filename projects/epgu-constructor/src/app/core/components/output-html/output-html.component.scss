@@ -1,0 +1,88 @@
+@import '../../../../styles/core';
+
+:host {
+  display: block;
+}
+:host::ng-deep {
+  & > * {
+    margin: 0;
+    line-height: 24px;
+    &:not(:first-child) {
+      margin-top: 24px;
+    }
+  }
+
+  ol {
+    counter-reset: number;
+  }
+
+  li {
+    line-height: 24px;
+    &:first-letter {
+      margin-top: 0;
+      text-transform: uppercase;
+    }
+  }
+
+  ul, ol {
+    padding: 0;
+    margin: 0 0 0 12px;
+    list-style: none;
+
+    &:not(:first-child) {
+      margin: 24px 0 0 12px;
+    }
+  }
+
+
+  ol li {
+    padding-left: 16px;
+    position: relative;
+
+    &::before {
+      counter-increment: number;
+      content: counter(number)"\a0";
+      color: $color-gosblue;
+      padding-right: 6px;
+      font-weight: $fw-semi-bold;
+      position: absolute;
+      left: 0;
+    }
+  }
+
+
+  ul li {
+    padding-left: 16px;
+
+    &::before {
+      color: $color-gosblue;
+      content: "•";
+      display: inline-block;
+      font-weight: 900;
+      margin-left: -1em;
+      width: 1em;
+      vertical-align: top;
+      font-size: 17px;
+    }
+  }
+
+  li:not(:first-child) {
+    margin-top: 16px;
+  }
+
+  p {
+    margin-top: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .color-blue-bayoux {
+    color: $color-blue-bayoux
+  }
+}

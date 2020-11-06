@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DisclaimerElkComponent } from 'epgu-lib';
 
 import { NotificationComponent } from './notification.component';
+import { NotificationService } from '../../services/notification/notification.service';
 
 describe('NotificationComponent', () => {
   let component: NotificationComponent;
@@ -8,7 +10,8 @@ describe('NotificationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NotificationComponent ]
+      declarations: [ NotificationComponent, DisclaimerElkComponent ],
+      providers: [NotificationService]
     })
     .compileComponents();
   });

@@ -1,62 +1,60 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+<epgu-constructor-screen-container>
 
-<epgu-constructor-screen-container class="screen-container">
-<div class="inner">
-  <div *ngIf="display?.header" class="head">
-    <epgu-constructor-page-name>{{ display?.header }}</epgu-constructor-page-name>
-  </div>
+  <div class="screen-body">
+    <div *ngIf="display?.header" class="head">
+      <epgu-constructor-page-name>{{ display?.header }}</epgu-constructor-page-name>
+    </div>
 
-  <epgu-constructor-screen-pad
-    *ngIf="!carInfo.brandModel && !carInfo.status && !carInfo.owners && !carInfo.legals && !carInfo.accidenceCount"
-    class="car__info--block"
-  >
+    <epgu-constructor-screen-pad
+      *ngIf="!carInfo.brandModel && !carInfo.status && !carInfo.owners && !carInfo.legals && !carInfo.accidenceCount"
+      class="car__info--block"
+    >
       <h5 class="car__info--title">Данные не получены</h5>
       <div class="car__info--item">Не удалось получить данные о состоянии ТС</div>
-  </epgu-constructor-screen-pad>
+    </epgu-constructor-screen-pad>
 
-  <epgu-constructor-screen-pad *ngIf="carInfo.brandModel" class="car__info--block">
+    <epgu-constructor-screen-pad *ngIf="carInfo.brandModel" class="car__info--block">
       <h5 class="car__info--title">Марка и модель</h5>
       <div class="car__info--item">{{ carInfo.brandModel }}</div>
-  </epgu-constructor-screen-pad>
+    </epgu-constructor-screen-pad>
 
-  <epgu-constructor-screen-pad *ngIf="carInfo.status" class="car__info--block">
-    <h5 class="car__info--title">Сведения из государственного реестра</h5>
-    <div class="car__info--item">{{ carInfo.status | carInfoStatus }}</div>
-  </epgu-constructor-screen-pad>
+    <epgu-constructor-screen-pad *ngIf="carInfo.status" class="car__info--block">
+      <h5 class="car__info--title">Сведения из государственного реестра</h5>
+      <div class="car__info--item">{{ carInfo.status | carInfoStatus }}</div>
+    </epgu-constructor-screen-pad>
 
-  <epgu-constructor-screen-pad *ngIf="carInfo.owners" class="car__info--block">
-    <h5 class="car__info--title">Владельцы по ПТС</h5>
-    <div class="car__info--item" *ngFor="let owner of carInfo.owners">
-      <div class="car__info--owner">{{ owner.ownerType | carInfoOwner }}
-        <span class="bold">{{ owner.tenure | carInfoDate:'DIFF' }}</span>
+    <epgu-constructor-screen-pad *ngIf="carInfo.owners" class="car__info--block">
+      <h5 class="car__info--title">Владельцы по ПТС</h5>
+      <div class="car__info--item" *ngFor="let owner of carInfo.owners">
+        <div class="car__info--owner">{{ owner.ownerType | carInfoOwner }}
+          <span class="bold">{{ owner.tenure | carInfoDate:'DIFF' }}</span>
         </div>
-      <div class="car__info--dates">{{ owner.tenure | carInfoDate }}</div>
-    </div>
-    <div class="car__info--item" *ngIf="carInfo.owners?.length === 0">Нет данных</div>
-  </epgu-constructor-screen-pad>
+        <div class="car__info--dates">{{ owner.tenure | carInfoDate }}</div>
+      </div>
+      <div class="car__info--item" *ngIf="carInfo.owners?.length === 0">Нет данных</div>
+    </epgu-constructor-screen-pad>
 
-  <epgu-constructor-screen-pad *ngIf="carInfo.legals" class="car__info--block">
-    <h5 class="car__info--title">Юридическая чистота</h5>
-    <div class="car__info--item" *ngFor="let legal of carInfo.legals">
-      {{legal.name | carInfoLegal}}: <span class="bold">{{ legal ? 'Да' : 'Нет' }}</span>
-    </div>
-    <div class="car__info--item" *ngIf="carInfo.legals?.length === 0">Нет данных</div>
-  </epgu-constructor-screen-pad>
+    <epgu-constructor-screen-pad *ngIf="carInfo.legals" class="car__info--block">
+      <h5 class="car__info--title">Юридическая чистота</h5>
+      <div class="car__info--item" *ngFor="let legal of carInfo.legals">
+        {{legal.name | carInfoLegal}}: <span class="bold">{{ legal ? 'Да' : 'Нет' }}</span>
+      </div>
+      <div class="car__info--item" *ngIf="carInfo.legals?.length === 0">Нет данных</div>
+    </epgu-constructor-screen-pad>
 
-  <epgu-constructor-screen-pad *ngIf="carInfo.accidenceCount" class="car__info--block">
-    <h5 class="car__info--title">Участие в ДТП</h5>
-    <div class="car__info--item" [innerHtml]="carInfo.accidenceCount | carInfoAccidents"></div>
-  </epgu-constructor-screen-pad>
-
-  <div class="footer">
+    <epgu-constructor-screen-pad *ngIf="carInfo.accidenceCount" class="car__info--block">
+      <h5 class="car__info--title">Участие в ДТП</h5>
+      <div class="car__info--item" [innerHtml]="carInfo.accidenceCount | carInfoAccidents"></div>
+    </epgu-constructor-screen-pad>
+  </div>
+  <div class="screen-footer">
     <lib-button
       [showLoader]="isLoading"
       (click)="nextStep()"
       class="btn__submit"
-      >
-        {{ display?.submitLabel || 'Продолжить' }}
-      </lib-button
+    >
+      {{ display?.submitLabel || 'Продолжить' }}
+    </lib-button
     >
   </div>
-</div>
 </epgu-constructor-screen-container>

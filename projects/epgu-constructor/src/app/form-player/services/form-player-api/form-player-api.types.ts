@@ -144,6 +144,8 @@ export type FormPlayerApiResponse = FormPlayerApiSuccessResponse | FormPlayerApi
 
 export enum ActionType {
   download = 'download',
+  prevStepModal = 'prevStepModal',
+  nextStepModal = 'nextStepModal',
   prevStep = 'prevStep',
   nextStep = 'nextStep',
   redirectToLK = 'redirectToLK',

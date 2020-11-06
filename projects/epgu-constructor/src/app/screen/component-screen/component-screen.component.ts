@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
-import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { Screen } from '../screen.types';
@@ -30,20 +29,16 @@ export class ComponentScreenComponent implements OnInit, Screen {
     displayWarningAnswers: false,
   };
   componentData = null;
-  form: FormGroup;
 
   constructor(
     private navigationService: NavigationService,
     public currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
-    private fb: FormBuilder,
     private cycledFieldsService: CycledFieldsService,
   ) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group({});
-
     this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());

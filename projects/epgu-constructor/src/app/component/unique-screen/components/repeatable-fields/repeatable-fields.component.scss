@@ -1,10 +1,6 @@
-@import '../../../../../styles/core/functions';
-@import '../../../../../styles/core/typography';
-@import '../../../../../styles/core/variables';
-
-.nav {
-  @include navigation-mt();
-}
+@import 'src/styles/core/functions';
+@import 'src/styles/core/typography';
+@import 'src/styles/core/variables';
 
 .cmp-group {
   &__layer {
@@ -24,15 +20,5 @@
   &__text {
     width: 100%;
     text-align: center;
-  }
-}
-
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 24px;
-  @include tablets-up {
-    margin-top: 32px;
   }
 }

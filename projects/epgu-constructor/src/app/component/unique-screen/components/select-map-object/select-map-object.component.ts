@@ -1,24 +1,24 @@
 import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
   AfterViewInit,
   ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
   NgZone,
   OnDestroy,
-  OnInit,
-  Output,
-  ViewChild,
 } from '@angular/core';
 import { filter, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { merge, of } from 'rxjs';
 import { HelperService, YaMapService } from 'epgu-lib';
 
-import { ConfigService } from '../../../../shared/config/config.service';
+import { ConfigService } from '../../../../core/config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import { UnsubscribeService } from '../../../../shared/services/unsubscribe/unsubscribe.service';
-import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { IGeoCoordsResponse, IdictionaryFilter } from './select-map-object.interface';
 import { UtilsService } from '../../../../shared/services/utils/utils.service';
 import { DictionaryUtilities } from '../../../../shared/services/dictionary/dictionary-utilities-service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
@@ -27,8 +27,8 @@ import {
   DictionaryOptions,
   DictionaryYMapItem,
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
-import { ModalService } from '../../../../shared/services/modal/modal.service';
-import { CommonModalComponent } from '../../../../shared/components/modal/common-modal/common-modal.component';
+import { ModalService } from '../../../../modal/modal.service';
+import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
 import { NotificationService } from '../../../../shared/services/notification/notification.service';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 
@@ -76,9 +76,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   ngOnInit(): void {
     this.initVariable();
     this.subscribeToEmmitNextStepData();
-    if (this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
-      this.availablePaymentInGIBDD(10000605153);
-    }
   }
 
   ngAfterViewInit(): void {
@@ -323,7 +320,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Метод проверяет доступность оплаты в выбранном отделе ГИБДД
    * @param id объект на карте
    */
-  private availablePaymentInGIBDD(id: number) {
+  availablePaymentInGIBDD(id: number) {
     const options = getPaymentRequestOptionGIBDD(id);
     this.dictionaryApiService
       .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
@@ -335,7 +332,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
             ),
           );
 
-          return response.error.code !== 0 || !!response.items.length || !hasAttributeValues;
+          return response.error.code !== 0 || !response.items.length || !hasAttributeValues;
         }),
       )
       .subscribe(() => {

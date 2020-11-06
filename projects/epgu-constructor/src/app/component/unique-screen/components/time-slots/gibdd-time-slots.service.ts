@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
@@ -12,7 +11,7 @@ import {
 
   TimeSlotValueInterface
 } from './time-slots.types';
-import { ConfigService } from '../../../../shared/config/config.service';
+import { ConfigService } from '../../../../core/config/config.service';
 
 const moment = moment_;
 
@@ -37,6 +36,30 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
   ) {}
+
+  checkBooking(selectedSlot: SlotInterface) {
+    if (this.bookedSlot) {
+      return this.smev3TimeSlotsRestService.cancelSlot(
+        { eserviceId: '10000070732', bookId: this.bookId })
+      .pipe(
+        switchMap((response) => {
+          if (!response.error) {
+            this.bookId = null;
+            return this.book(selectedSlot);
+          } else {
+            this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
+            console.log(response.error);
+            return of(null);
+          }
+        }),
+        catchError(error => {
+          this.errorMessage = error.message;
+          return throwError(error);
+        })
+      );
+    }
+    return this.book(selectedSlot);
+  }
 
   book(selectedSlot: SlotInterface) {
     this.errorMessage = undefined;

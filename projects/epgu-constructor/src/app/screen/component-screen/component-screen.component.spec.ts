@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ComponentScreenComponent } from './component-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScreenService } from '../screen.service';
-import { UnsubscribeService } from '../../shared/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
