@@ -34,6 +34,11 @@
     margin: 8px auto 24px;
   }
 
+  &__warning &__warning-text {
+    margin: 8px 0 16px;
+    color: $color-text-helper;
+    @include typ-plain-small;
+  }
 }
 
 .form {
