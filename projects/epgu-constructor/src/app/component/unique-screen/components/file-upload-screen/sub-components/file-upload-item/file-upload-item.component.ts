@@ -284,7 +284,9 @@ export class FileUploadItemComponent implements OnDestroy {
 
     const compressedFiles = this.compressImages(files);
 
-    return merge(...compressedFiles).pipe(takeWhile((file: File) => this.isValidFilesSize(file)));
+    return merge(...compressedFiles).pipe(
+      takeWhile((file: File) => this.validateAndHandleFilesSize(file)),
+    );
   }
 
   compressImages(files: File[]): Array<Observable<any>> {
@@ -306,7 +308,7 @@ export class FileUploadItemComponent implements OnDestroy {
     });
   }
 
-  isValidFilesSize(file: File): boolean {
+  validateAndHandleFilesSize(file: File): boolean {
     const currentSize = this.uploadedFilesSize + file.size;
 
     if (currentSize < this.data.maxSize) {
