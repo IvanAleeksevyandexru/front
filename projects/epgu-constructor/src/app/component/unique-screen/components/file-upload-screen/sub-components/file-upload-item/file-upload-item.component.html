@@ -55,23 +55,26 @@
     </div>
   </div>
   <div class="fileupload__buttons">
-    <button
+    <lib-button
       *ngIf="this.isMobile"
-      class="fileupload__button"
-      [ngClass]="{'fileupload__button--disabled': isButtonsDisabled}"
+      [disabled]="isButtonsDisabled"
+      [color]="'white'"
       (click)="openCamera()"
+      class="fileupload__button"
     >
       <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg" class="fileupload__button-icon"
            alt="Фото"/>
       Фото
-    </button>
-    <button class="fileupload__button"
-            [ngClass]="{'fileupload__button--disabled': isButtonsDisabled}"
-            [disabled]="isButtonsDisabled"
-            (click)="selectFilesEvent()">
+    </lib-button>
+    <lib-button
+      [disabled]="isButtonsDisabled"
+      [color]="'white'"
+      (click)="selectFilesEvent()"
+      class="fileupload__button"
+    >
       <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg" class="fileupload__button-icon"
            alt="Файл"/>
       Файл
-    </button>
+    </lib-button>
   </div>
 </div>
