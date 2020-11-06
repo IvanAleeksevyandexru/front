@@ -114,6 +114,7 @@ export class FileUploadItemComponent implements OnDestroy {
           this.newValueSet.emit({
             uploadId: this.loadData.uploadId,
             value: files,
+            errors: this.errors,
           } as FileResponseToBackendUploadsItem);
         }
       }),
@@ -248,7 +249,6 @@ export class FileUploadItemComponent implements OnDestroy {
     const files = this.files$$.value;
 
     files.push(fileToUpload);
-    this.files$$.next(files);
     this.subs.push(
       this.terabyteService
         .uploadFile(fileToUpload.getParamsForUploadFileOptions(), file)
@@ -310,14 +310,14 @@ export class FileUploadItemComponent implements OnDestroy {
 
   validateAndHandleFilesSize(file: File): boolean {
     const newSize = this.uploadedFilesSize + file.size;
+    const isSizeValid = newSize < this.data.maxSize;
 
-    if (newSize < this.data.maxSize) {
+    if (isSizeValid) {
       this.uploadedFilesSize = newSize;
-      return true;
+    } else {
+      this.handleError(ErrorActions.addMaxSize);
     }
-
-    this.handleError(ErrorActions.addMaxSize);
-    return false;
+    return isSizeValid;
   }
 
   filterValidFiles(files: FileList): File[] {
@@ -332,24 +332,21 @@ export class FileUploadItemComponent implements OnDestroy {
   }
 
   handleError(action: ErrorActions, file?: File): void {
-    switch (action) {
-      case ErrorActions.addMaxAmount:
-        this.errors.push(`Максимальное число файлов на загрузку - ${this.data.maxFileCount}`);
-        break;
-      case ErrorActions.addMaxSize:
-        this.errors.push(`Размер файлов превышает ${getSizeInMB(this.data.maxSize)} МБ`);
-        break;
-      case ErrorActions.clear:
-        this.errors = [];
-        break;
-      case ErrorActions.addInvalidType:
-        this.errors.push(`Недопустимый тип файла "${file?.name}"`);
-        break;
-      case ErrorActions.addInvalidFile:
-        this.errors.push(`Ошибка загрузки файла "${file?.name}"`);
-        break;
-      default:
-        break;
+    const errorHandler = {};
+    // eslint-disable-next-line prettier/prettier
+    errorHandler[ErrorActions.addMaxAmount] = `Максимальное число файлов на загрузку - ${this.data.maxFileCount}`;
+    // eslint-disable-next-line prettier/prettier
+    errorHandler[ErrorActions.addMaxSize] = `Размер файлов превышает ${getSizeInMB(this.data.maxSize)} МБ`;
+    // eslint-disable-next-line prettier/prettier
+    errorHandler[ErrorActions.addInvalidType] = `Недопустимый тип файла "${file?.name}"`;
+    // eslint-disable-next-line prettier/prettier
+    errorHandler[ErrorActions.addInvalidFile] = `Ошибка загрузки файла "${file?.name}"`;
+
+    if (action === ErrorActions.clear) {
+      this.errors = [];
+    } else {
+      this.errors.push(errorHandler[action]);
+      this.newValueSet.emit({ errors: this.errors });
     }
   }
 

@@ -24,7 +24,7 @@ export class FileUploadComponent {
     if (attrs?.ref) {
       this.refData = this.getRefValuesForApplicantAnswers(attrs);
     }
-    this.value = this.fillUploadsDefaultValue();
+    this.value.files = this.fillUploadsDefaultValue();
     this.newValueSet.emit(this.value);
   }
   get attributes(): FileUploadAttributes {
@@ -33,7 +33,10 @@ export class FileUploadComponent {
   @Input() prefixForMnemonic: string;
   @Input() uploadId: string = null;
   refData: string = null;
-  private value: FileResponseToBackendUploadsItem[] = []; // Здесь будет храниться значение на передачу
+  private value: {
+    files: FileResponseToBackendUploadsItem[]; // Здесь будет храниться значение на передачу
+    errors: string[];
+  } = { files: [], errors: [] };
   @Output() newValueSet: EventEmitter<object> = new EventEmitter<object>();
   @Output() newRelatedValueSet: EventEmitter<any> = new EventEmitter<any>();
 
@@ -107,20 +110,21 @@ export class FileUploadComponent {
    * @param $eventData - новые значения от формы
    */
   handleNewValueForItem($eventData: FileResponseToBackendUploadsItem) {
-    this.value.map((valueItem: FileResponseToBackendUploadsItem) => {
+    this.value.files.forEach((valueItem: FileResponseToBackendUploadsItem) => {
       if (valueItem.uploadId === $eventData.uploadId) {
         // eslint-disable-next-line no-param-reassign
         valueItem.value = $eventData.value;
       }
       return valueItem;
     });
+    this.value.errors = $eventData.errors;
 
     if (!this.isRelatedUploads) {
       this.newValueSet.emit(this.value);
     } else {
       this.newRelatedValueSet.emit({
         uploadId: this.uploadId,
-        uploads: this.value,
+        uploads: this.value.files,
       } as FileResponseToBackendWithRelatedUploads);
     }
   }
