@@ -21,6 +21,9 @@
   }
   &__action {
     margin-top: 24px;
+    @include tablets-up {
+      margin: 24px 8px 0;
+    }
   }
 }
 
