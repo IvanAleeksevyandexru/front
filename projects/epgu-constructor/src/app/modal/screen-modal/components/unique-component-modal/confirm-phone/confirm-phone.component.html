@@ -21,6 +21,7 @@
     <div class="form__group" #codeGroup>
       <lib-plain-input *ngFor="let control of codeFormArray.controls"
                        class="form__item"
+                       [class.form__item--has-error]="screenService.componentError$ | async"
                        [class.form__item--has-value]="control.value.codeValue"
                        maxlength="1"
                        type="number"
@@ -28,7 +29,7 @@
       </lib-plain-input>
     </div>
 
-    <div class="form__error">{{screenService.componentError$ | async}}</div>
+    <div class="form__error" *ngIf="screenService.componentError$ | async as error">{{error}}</div>
 
     <div class="form__hint form-hint" *ngIf="isTimerShow">
       Получить код повторно можно через

@@ -50,9 +50,9 @@
     display: block;
     margin: 4px;
     width: 48px;
-    &--has-value::ng-deep input {
+    &--has-value::ng-deep input,
+    &--has-error::ng-deep input {
       @include typ-h2;
-      color: $color-gosblue;
       background: transparent;
       border: none;
       padding: 0;
@@ -60,6 +60,14 @@
       &.focused {
         padding: 0;
       }
+    }
+
+    &--has-value::ng-deep input {
+      color: $color-gosblue;
+    }
+
+    &--has-error::ng-deep input {
+      color: $color-tela-rossa;
     }
 
     &::ng-deep input {
@@ -81,14 +89,15 @@
     }
   }
   &__error {
-    color: $color-gosred;
+    color: $color-tela-rossa;
     text-align: center;
+    @include typ-plain-small;
   }
 }
 
 .form-hint {
   width: 100%;
-  @include typ-plain-small();
+  @include typ-plain-small;
   color: $color-text-helper;
   text-align: center;
   margin: 24px auto 0;
