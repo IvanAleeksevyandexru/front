@@ -9,6 +9,7 @@ import { FormPlayerApiService } from '../../form-player/services/form-player-api
 import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload } from '../../form-player/form-player.types';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 
 @Injectable()
 export class ScreenModalService {
@@ -30,7 +31,7 @@ export class ScreenModalService {
   constructor(
     public formPlayerService: FormPlayerService,
     public formPlayerApiService: FormPlayerApiService,
-    private screenService: ScreenService,
+    private screenService: ScreenService
   ) {}
 
   resetStore(): void {
