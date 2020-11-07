@@ -109,9 +109,10 @@
   }
 
   .btn__submit {
-    width: 100%;
+    min-width: 100%;
     @include tablets-up {
       width: auto;
+      min-width: auto;
     }
     button {
       width: 100%;
