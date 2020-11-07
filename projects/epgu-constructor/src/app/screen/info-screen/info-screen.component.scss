@@ -18,12 +18,15 @@
 
   &__actions {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
   }
 
   &__action {
     margin-top: 24px;
-
+    @include tablets-up {
+      margin: 24px 8px 0;
+    }
     @include phones-down {
       margin-top: 32px;
     }
