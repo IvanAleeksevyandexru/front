@@ -38,11 +38,11 @@ interface ModalParams {
   showCloseButton: boolean;
   showCrossButton: boolean;
   preview: boolean;
-  buttons: Array<{ 
-    label: string, 
-    closeModal: boolean, 
-    handler: () => any 
-  }>
+  buttons: Array<{
+    label: string;
+    closeModal: boolean;
+    handler: () => any;
+  }>;
 }
 
 const photoBaseName = 'Снимок';
@@ -156,14 +156,12 @@ export class FileUploadItemComponent implements OnDestroy {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result as string);
-      reader.onerror = error => reject(error);
-  });
+      reader.onerror = (error) => reject(error);
+    });
   }
 
   private openPreviewModal(modalParams: ModalParams): void {
-    this.modal.openModal(ConfirmationModalComponent,
-      modalParams,
-    );
+    this.modal.openModal(ConfirmationModalComponent, modalParams);
   }
 
   /**
@@ -282,7 +280,6 @@ export class FileUploadItemComponent implements OnDestroy {
    * @private
    */
   private async sendFile(file: File) {
-    console.log(file);
     this.filesInUploading += 1;
 
     const files = this.files$$.value;
@@ -319,7 +316,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * @param isPhoto
    * @private
    */
-  private prepareFilesToUpload(filesToUpload: FileList, isPhoto?: boolean): Observable<File | any > {
+  private prepareFilesToUpload(filesToUpload: FileList, isPhoto?: boolean): Observable<File> {
     this.handleError(ErrorActions.clear);
     const files = isPhoto
       ? this.handleAndFormatPhotoFiles(filesToUpload)
@@ -483,31 +480,31 @@ export class FileUploadItemComponent implements OnDestroy {
   /**
    * Обновляет данные о файлах, которые были загружены
    */
-   updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean) {
-    this.prepareFilesToUpload(fileList, isPhoto).subscribe(
-      async (file: File) => {
-        if (isPhoto) {
-          const src = await this.fileToBase64(file);
+  updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean) {
+    this.prepareFilesToUpload(fileList, isPhoto).subscribe(async (file: File) => {
+      if (isPhoto) {
+        const src = await this.fileToBase64(file);
 
-          this.openPreviewModal({
-            text: `<div style="padding:0;">
+        this.openPreviewModal({
+          text: `<div style="padding:0;">
                     <img src="${src}" alt="${file.name}" />
                   </div>`,
-            title: 'Просмотр фото',
-            showCloseButton: false,
-            showCrossButton: true,
-            preview: true,
-            buttons: [{
+          title: 'Просмотр фото',
+          showCloseButton: false,
+          showCrossButton: true,
+          preview: true,
+          buttons: [
+            {
               label: 'Использовать',
               closeModal: true,
               handler: () => this.sendFile(file),
-            }]
-          });
-        } else {
-          this.sendFile(file)
-        }
+            },
+          ],
+        });
+      } else {
+        this.sendFile(file);
       }
-    );
+    });
   }
 
   isFileTypeValid(file: File): boolean {
