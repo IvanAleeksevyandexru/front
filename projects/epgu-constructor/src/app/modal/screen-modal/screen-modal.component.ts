@@ -102,7 +102,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   }
 
   switchNavigationToFormPlayer() {
-    this.navService.prevStep.next({});
+    this.navService.prevStep.next({ options: { store: this.screenModalService.initStore } });
   }
 
   closeModal(): void {

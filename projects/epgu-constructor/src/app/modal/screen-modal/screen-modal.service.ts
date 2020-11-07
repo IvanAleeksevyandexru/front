@@ -14,6 +14,7 @@ import { NavigationService } from '../../core/services/navigation/navigation.ser
 @Injectable()
 export class ScreenModalService {
   private _store: FormPlayerApiSuccessResponse;
+  private _initStore: FormPlayerApiSuccessResponse;
   private playerLoaded = false;
   private isLoading = false;
   private minContentHeight = 0;
@@ -37,13 +38,14 @@ export class ScreenModalService {
   resetStore(): void {
     this.updatePlayerLoaded(false);
     this._store = null;
+    this._initStore = null;
   }
 
   /**
    * Вернет текущий стор
    */
-  get store(): FormPlayerApiSuccessResponse {
-    return this._store;
+  get initStore(): FormPlayerApiSuccessResponse {
+    return this._initStore;
   }
 
   navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation): void {
@@ -152,6 +154,10 @@ export class ScreenModalService {
     }
 
     this._store = response;
+    if(this._initStore) {
+      this._initStore = response;
+    }
+
     const scenarioDto = response.scenarioDto;
 
     this.initScreenStore(scenarioDto);
