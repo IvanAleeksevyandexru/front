@@ -62,6 +62,14 @@ $controlHeight: 55px;
       margin-bottom: 16px;
     }
 
+    &__content {
+      overflow-y: auto;
+
+      .text {
+        padding-right: 15px;
+      }
+    }
+
     &__body {
       overflow: hidden;
       display: flex;
@@ -71,14 +79,6 @@ $controlHeight: 55px;
 
       &.preview .text{
         padding: 0;
-      }
-    }
-
-    &__content {
-      overflow-y: auto;
-
-      .text {
-        padding-right: 15px;
       }
     }
 
