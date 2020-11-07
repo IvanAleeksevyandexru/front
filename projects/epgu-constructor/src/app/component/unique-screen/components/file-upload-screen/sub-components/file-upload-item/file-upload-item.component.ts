@@ -21,6 +21,8 @@ import { DeviceDetectorService } from '../../../../../../core/services/device-de
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CompressionService } from '../../../upload-and-edit-photo/compression/compression.service';
 import { ConfigService } from '../../../../../../core/config/config.service';
+import { ModalService } from '../../../../../../modal/modal.service';
+import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 enum ErrorActions {
   clear = 'clear',
@@ -28,6 +30,19 @@ enum ErrorActions {
   addMaxAmount = 'maxAmount',
   addInvalidType = 'invalidType',
   addInvalidFile = 'invalidFile',
+}
+
+interface ModalParams {
+  text: string;
+  title: string;
+  showCloseButton: boolean;
+  showCrossButton: boolean;
+  preview: boolean;
+  buttons: Array<{ 
+    label: string, 
+    closeModal: boolean, 
+    handler: () => any 
+  }>
 }
 
 const photoBaseName = 'Снимок';
@@ -131,8 +146,24 @@ export class FileUploadItemComponent implements OnDestroy {
     private compressionService: CompressionService,
     private ngUnsubscribe$: UnsubscribeService,
     public config: ConfigService,
+    public modal: ModalService,
   ) {
     this.isMobile = deviceDetectorService.isMobile;
+  }
+
+  private fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+  });
+  }
+
+  private openPreviewModal(modalParams: ModalParams): void {
+    this.modal.openModal(ConfirmationModalComponent,
+      modalParams,
+    );
   }
 
   /**
@@ -251,6 +282,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * @private
    */
   private async sendFile(file: File) {
+    console.log(file);
     this.filesInUploading += 1;
 
     const files = this.files$$.value;
@@ -287,7 +319,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * @param isPhoto
    * @private
    */
-  private prepareFilesToUpload(filesToUpload: FileList, isPhoto?: boolean): Observable<File> {
+  private prepareFilesToUpload(filesToUpload: FileList, isPhoto?: boolean): Observable<File | any > {
     this.handleError(ErrorActions.clear);
     const files = isPhoto
       ? this.handleAndFormatPhotoFiles(filesToUpload)
@@ -311,7 +343,7 @@ export class FileUploadItemComponent implements OnDestroy {
       const photoType = photo.name.split('.').pop() || 'jpg';
       const photoFullName = `${photoBaseName}_${this.uploadedCameraPhotosAmount + 1}.${photoType}`;
 
-      return { ...photo, name: photoFullName };
+      return new File([photo], `${photoFullName}`, { ...photo });
     });
   }
 
@@ -451,8 +483,31 @@ export class FileUploadItemComponent implements OnDestroy {
   /**
    * Обновляет данные о файлах, которые были загружены
    */
-  updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean) {
-    this.prepareFilesToUpload(fileList, isPhoto).subscribe((file: File) => this.sendFile(file));
+   updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean) {
+    this.prepareFilesToUpload(fileList, isPhoto).subscribe(
+      async (file: File) => {
+        if (isPhoto) {
+          const src = await this.fileToBase64(file);
+
+          this.openPreviewModal({
+            text: `<div style="padding:0;">
+                    <img src="${src}" alt="${file.name}" />
+                  </div>`,
+            title: 'Просмотр фото',
+            showCloseButton: false,
+            showCrossButton: true,
+            preview: true,
+            buttons: [{
+              label: 'Использовать',
+              closeModal: true,
+              handler: () => this.sendFile(file),
+            }]
+          });
+        } else {
+          this.sendFile(file)
+        }
+      }
+    );
   }
 
   isFileTypeValid(file: File): boolean {

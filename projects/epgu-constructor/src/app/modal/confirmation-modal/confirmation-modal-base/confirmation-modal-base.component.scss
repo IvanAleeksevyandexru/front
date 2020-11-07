@@ -68,6 +68,10 @@ $controlHeight: 55px;
       flex-direction: column;
 
       @include rubles('.conf-modal__body', '../../../../../../assets/img/ruble.svg');
+
+      &.preview .text{
+        padding: 0;
+      }
     }
 
     &__content {
