@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 
-interface Options {
+export interface CompressionOptions {
   maxSizeMB?: number;
   maxWidthOrHeight?: number;
   maxIteration?: number;
   exifOrientation?: number;
   fileType?: string;
+  customFileName?: string;
   deepChecking?: boolean;
 }
 
@@ -222,7 +223,8 @@ export class CompressionService {
   * @param options
   * @returns {HTMLCanvasElement | OffscreenCanvas}
   */
-  private handleMaxWidthOrHeight(canvas: HTMLCanvasElement | OffscreenCanvas, options: Options): HTMLCanvasElement | OffscreenCanvas {
+  private handleMaxWidthOrHeight(canvas: HTMLCanvasElement | OffscreenCanvas,
+                                 options: CompressionOptions): HTMLCanvasElement | OffscreenCanvas {
     const width = canvas['width'];
     const height = canvas['height'];
     const maxWidthOrHeight = options['maxWidthOrHeight'];
@@ -356,7 +358,7 @@ export class CompressionService {
   * @param {string} [options.fileType]
   * @returns {Promise<File | Blob>}
   */
-  private async compress(file: File | Blob, options: Options): Promise<File | Blob> {
+  private async compress(file: File | Blob, options: CompressionOptions): Promise<File | Blob> {
     let remainingTrials = options['maxIteration'] || 10;
     const maxSizeByte = options['maxSizeMB'] * 1024 * 1024;
 
@@ -438,7 +440,7 @@ export class CompressionService {
   * @param {string} [options.fileType]
   * @returns {Promise<File | Blob>}
   */
-  public async imageCompression(file: File | Blob, options: Options): Promise<File | Blob> {
+  public async imageCompression(file: File | Blob, options: CompressionOptions): Promise<File | Blob> {
     let compressedFile;
 
     if (!(file instanceof Blob)) {
@@ -450,7 +452,7 @@ export class CompressionService {
     compressedFile = await this.compress(file, options);
 
     try {
-      compressedFile['name'] = file['name'];
+      compressedFile['name'] = options?.customFileName || file['name'];
       compressedFile['lastModified'] = file['lastModified'];
     } catch (e) {}
 
