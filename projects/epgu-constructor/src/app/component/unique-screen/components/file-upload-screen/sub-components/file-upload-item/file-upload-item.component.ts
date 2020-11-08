@@ -305,8 +305,8 @@ export class FileUploadItemComponent implements OnDestroy {
             return throwError(e);
           }),
         )
-        .subscribe((fileInfo: TerraUploadedFile) => {
-          this.updateUploadedCameraPhotosInfo(true, fileInfo.fileName);
+        .subscribe(() => {
+          this.updateUploadedCameraPhotosInfo(true, file.name);
           this.updateUploadedCameraPhotosInfo(true, file.name);
           this.updateFileInfoFromServer(fileToUpload);
         }),
