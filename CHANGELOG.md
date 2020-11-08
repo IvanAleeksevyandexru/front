@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.21](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.20...v0.4.21) (2020-11-08)
+
+
+### Bug Fixes
+
+* исправил ошибку при загрузке фото, файл загружается успешно но не возвращаются данные. ([6b3b5d5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6b3b5d5dbb44c5e7e27dd645ea60719a400e7720))
+
 ### [0.4.20](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.19...v0.4.20) (2020-11-08)
 
 ### [0.4.19](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.18...v0.4.19) (2020-11-08)
