@@ -62,19 +62,23 @@ $controlHeight: 55px;
       margin-bottom: 16px;
     }
 
+    &__content {
+      overflow-y: auto;
+
+      .text {
+        padding-right: 15px;
+      }
+    }
+
     &__body {
       overflow: hidden;
       display: flex;
       flex-direction: column;
 
       @include rubles('.conf-modal__body', '../../../../../../assets/img/ruble.svg');
-    }
 
-    &__content {
-      overflow-y: auto;
-
-      .text {
-        padding-right: 15px;
+      &.preview .text{
+        padding: 0;
       }
     }
 
