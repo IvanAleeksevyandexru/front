@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmEmailComponent } from './confirm-email.component';
-import { ScreenService } from '../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../../../core/services/navigation/navigation.service';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { ConfigService } from '../../../../core/config/config.service';
-import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
+import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
+import { ConfigService } from '../../../../../core/config/config.service';
+import { ConfigServiceStub } from '../../../../../core/config/config.service.stub';
 
 xdescribe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;
