@@ -8,6 +8,7 @@ import { FormPlayerApiService } from '../../../../form-player/services/form-play
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import { ScreenService } from '../../../../screen/screen.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -23,6 +24,7 @@ describe('PaymentService', () => {
         FormPlayerApiService,
         UnsubscribeService,
         DictionaryApiService,
+        ScreenService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });
