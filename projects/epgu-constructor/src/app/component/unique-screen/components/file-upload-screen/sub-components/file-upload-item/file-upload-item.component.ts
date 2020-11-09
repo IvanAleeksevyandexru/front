@@ -481,20 +481,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * @param file - объект файла
    */
   downloadFile(file: TerraUploadedFile) {
-    this.errors = [];
-    const subs: Subscription = this.terabyteService
-      .downloadFile(file.getParamsForFileOptions())
-      .pipe(
-        takeUntil(this.ngUnsubscribe$),
-        catchError((e: any) => {
-          this.errors.push(`Не удалось скачать файл ${file.fileName}`);
-          return throwError(e);
-        }),
-      )
-      .subscribe((result) => {
-        this.terabyteService.pushFileToBrowserForDownload(result, file);
-        subs.unsubscribe();
-      });
+    window.open(this.terabyteService.downloadFileLink(file.getParamsForFileOptions()), '_blank');
   }
 
   ngOnDestroy(): void {

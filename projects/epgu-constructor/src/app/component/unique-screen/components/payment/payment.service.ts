@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import { paymentNSIType } from './payment.constants';
 import { ConfigService } from '../../../../core/config/config.service';
-import { PaymentInfoInterface } from './payment.types';
-import { PaymentRegisterMarriageService } from './subservices/register.marriage.service';
-import { PaymentRegisterVehicleService } from './subservices/register.vehicle.service';
+import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payment.types';
+import { getPaymentRequestOptions } from './payment.constants';
+import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import { ScreenService } from '../../../../screen/screen.service';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -18,8 +18,8 @@ export class PaymentService {
   constructor(
     public http: HttpClient,
     public config: ConfigService,
-    public paymentRegisterMarriageService: PaymentRegisterMarriageService,
-    public paymentRegisterVehicleService: PaymentRegisterVehicleService,
+    public dictionaryApiService: DictionaryApiService,
+    public screenService: ScreenService
   ) {}
 
   /**
@@ -39,17 +39,7 @@ export class PaymentService {
    * @param attrs - объект с аттрибутами компонента
    */
   loadPaymentInfo(attrs: any): Observable<any> {
-    const { nsi } = attrs;
-
-    switch (nsi){ //Код справочника о услуге
-      case paymentNSIType.REGISTER_VEHICLE:
-        return this.paymentRegisterVehicleService.loadPaymentInfo(nsi, attrs);
-        break;
-      case paymentNSIType.REGISTER_MARRIAGE:
-      default:
-        return this.paymentRegisterMarriageService.loadPaymentInfo(nsi, attrs);
-        break;
-    }
+    return this.getDictionaryInfo(attrs);
   }
 
   /**
@@ -102,7 +92,7 @@ export class PaymentService {
    * @param orderId - идентификатор заявления
    * @param code - идентификатор заявителя
    */
-  getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<any> {
+  getPaymentStatusByUIN(orderId: string | number, code: number = 1): Observable<any> {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/lk/v1/paygate/uin`
       : this.config.uinApiUrl;
@@ -130,5 +120,57 @@ export class PaymentService {
    */
   getPaymentLink(billId: number): string {
     return `${this.config.paymentUrl}/?billIds=${billId}&returnUrl=${this.getReturnUrl()}&subscribe=true`;
+  }
+
+  /**
+   * Загружает информацию из справочников для оплаты
+   * @param attrs - аттрибуты
+   */
+  getDictionaryInfo(attrs: any): Observable<any> {
+    const { nsi } = attrs;
+    const dictionaryOptions = this.createPaymentRequestOptions(attrs);
+
+    return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
+      map((res: any) => {
+        if (res.error.code === 0) {
+          return res.items[0].attributeValues;
+        }
+        throw Error();
+      }),
+      catchError((err: any) => {
+        return throwError(err);
+      }),
+    );
+  }
+
+  /**
+   * Возвращает опции для запроса на оплату
+   * @param attrs - аттрибуты компонента
+   */
+  createPaymentRequestOptions(attrs: any): PaymentDictionaryOptionsInterface {
+    const { applicantAnswers } = this.screenService;
+    const { ref } = attrs;
+    const { fiasCode } = ref;
+    const path = fiasCode.split('.'); // Путь к ответу
+    const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, path));
+
+    return getPaymentRequestOptions(filterReg, attrs, this.config);
+  }
+
+  /**
+   * Возращает значение из объекта по массиву переданных ключей
+   * @param obj_or_result - объект или значение объекта
+   * @param path - массив с путём ключей
+   * @private
+   */
+  private getValueFromObjectAsArray(obj_or_result: any, path: string[]): string | null {
+    if (path.length){
+      const key = path.shift();
+      if (obj_or_result.hasOwnProperty(key)){
+        return this.getValueFromObjectAsArray(obj_or_result[key], path);
+      }
+      return null;
+    }
+    return obj_or_result;
   }
 }

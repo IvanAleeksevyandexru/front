@@ -12,7 +12,7 @@ import { CoreModule } from '../../../../../../core/core.module';
 	  PaymentComponent
   ],
   providers: [
-    PaymentService
+    PaymentService,
   ],
 	imports: [
 		CoreModule,

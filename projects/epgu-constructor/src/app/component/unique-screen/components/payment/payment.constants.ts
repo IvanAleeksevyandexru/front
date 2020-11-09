@@ -1,5 +1,4 @@
 import { PaymentDictionaryOptionsInterface, SubPaymentDictionaryOptionInterface } from './payment.types';
-import { ConfigService } from '../../../../core/config/config.service';
 
 /**
  * Интерфейс для части опции запроса на создание оплаты
@@ -13,7 +12,6 @@ export enum SubPaymentDictionaryOptionType {
  */
 export enum paymentNSIType{
   REGISTER_MARRIAGE = 'fns_zgs_getpay_79272', //Регистрация брака
-  REGISTER_VEHICLE = 'MVD_equeue_70732', //Регистрация транспортного средства
 }
 
 // Статусы оплаты
@@ -35,7 +33,7 @@ const getPaymentRequestOptionsFilter = (subs: SubPaymentDictionaryOptionInterfac
     pageSize: requestPageSize,
     filter: {
       union: {
-        unionKind: 'AND',
+        unionKind: unionKind,
         subs: subs
       }
     }
@@ -60,48 +58,14 @@ const getPaymentRequestOptionsForRegisterBrak = (filterReg: any, attrs: any): an
 };
 
 /**
- * Возвращает опции запроса для получения информации по платежу для рестрации транспортного средства
- * @param filterReg - объект фильтра для оплаты
- * @param attrs - объект с аттрибутами компонента
- * @param gibddRouteNumber - переданные аттрибуты
- * @constructor
- */
-const getPaymentRequestOptionsForRegisterTS = (filterReg: any, attrs: any, gibddRouteNumber: string): any => {
-  return {
-    ...getPaymentRequestOptionsFilter([
-      getPaymentSimpleRequestOption('region', gibddRouteNumber),
-      //getPaymentSimpleRequestOption('code', filterReg?.attributeValues?.code),
-      //TODO: HARDCODE пока неизвестно с номером справочника
-      getPaymentSimpleRequestOption('code', '10000593393'),
-    ]),
-    treeFiltering: 'ONELEVEL',
-    pageSize: 10000,
-    parentRefItemValue: '',
-    selectAttributes: ['*'],
-    tx: ''
-  };
-};
-
-/**
  * Возвращает опции запроса для получения информации по платежу
  * @param filterReg - объект фильтра для оплаты
  * @param attrs - объект с аттрибутами компонента
- * @param config - конфиг приложения
  * @constructor
  */
 // eslint-disable-next-line max-len
-export const getPaymentRequestOptions = (filterReg: any, attrs: any, config: ConfigService): PaymentDictionaryOptionsInterface => {
-  const { nsi } = attrs;
-
-  switch (nsi){
-    case paymentNSIType.REGISTER_VEHICLE:
-      return getPaymentRequestOptionsForRegisterTS(filterReg, attrs, config.gibddRouteNumber);
-      break;
-    case paymentNSIType.REGISTER_MARRIAGE:
-    default:
-      return getPaymentRequestOptionsForRegisterBrak(filterReg, attrs);
-      break;
-  }
+export const getPaymentRequestOptions = (filterReg: any, attrs: any): PaymentDictionaryOptionsInterface => {
+  return getPaymentRequestOptionsForRegisterBrak(filterReg, attrs);
 };
 
 

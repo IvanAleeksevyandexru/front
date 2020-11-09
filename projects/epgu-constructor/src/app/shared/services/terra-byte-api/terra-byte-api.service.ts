@@ -98,6 +98,15 @@ export class TerraByteApiService {
 
 
   /**
+   * Возвращает ссылку на загрузку файла
+   * @param options - данные о файле
+   */
+  downloadFileLink(options: TerraFileOptions): string {
+    // eslint-disable-next-line max-len
+    return this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`);
+  }
+
+  /**
    * Запрос на загрузку уже существующего
    * @param options - данные о файле
    */

@@ -6,7 +6,7 @@ import { UniqueComponentModalComponent } from './unique-component-modal.componen
 
 @NgModule({
   declarations: [UniqueComponentModalComponent, ConfirmPhoneComponent],
-  exports: [UniqueComponentModalComponent],
+    exports: [UniqueComponentModalComponent, ConfirmPhoneComponent],
   imports: [CoreModule, SharedModule],
 })
 export class UniqueComponentModalModule {}

@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { switchMap, takeUntil } from 'rxjs/operators';
+import * as moment from 'moment';
 import { ConfigService } from '../../../../../../core/config/config.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -17,6 +18,7 @@ import {
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
 } from '../../payment.types';
+import { DATE_STRING_DOT_FORMAT } from '../../../../../../shared/constants/dates';
 
 @Component({
   selector: 'epgu-constructor-payment',
@@ -56,6 +58,7 @@ export class PaymentComponent implements OnDestroy {
   get data() {
     return this.attrData;
   }
+  @Input() value: any; // Значение для компонента
   @Output() nextStepEvent = new EventEmitter<void>();
 
   constructor(
@@ -71,6 +74,40 @@ export class PaymentComponent implements OnDestroy {
    * @private
    */
   protected loadPaymentInfo() {
+    // console.log('this.value', this.value);
+
+    const value = this.getDataFromValue();
+
+    if (value) {
+      const { billNumber, billId, amount, billName, billDate, payCode } = value;
+      this.uin = billNumber;
+      this.sum = PaymentService.transformSumForPenny(amount);
+      this.paymentPurpose = billName;
+      this.billId = billId;
+      this.billDate = moment(billDate).format(DATE_STRING_DOT_FORMAT);
+      this.payCode = payCode;
+      this.inLoading = false;
+      this.isShown = true;
+      this.status = PaymentStatus.SUCCESS;
+
+      // Проверим оплачено ли ранее
+      this.paymentService
+        .getBillsInfoByUIN(this.uin, this.orderId)
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(
+          (info: BillsInfoResponse) => this.getBillsInfoByUINSuccess(info),
+          (error) => this.setPaymentStatusFromErrorRequest(error),
+        );
+    } else {
+      this.loadPaymentInfoOldType();
+    }
+  }
+
+  /**
+   * Загружает информацию платеже старым способом
+   * @private
+   */
+  private loadPaymentInfoOldType() {
     const { payCode } = this.data.attrs;
     if (payCode) {
       this.payCode = payCode;
@@ -78,6 +115,7 @@ export class PaymentComponent implements OnDestroy {
 
     this.orderId = this.screenService.orderId;
 
+    // Если УИН явно не передан
     this.paymentService
       .loadPaymentInfo(this.data.attrs)
       .pipe(
@@ -91,6 +129,20 @@ export class PaymentComponent implements OnDestroy {
         (res) => this.setPaymentStatusFromSuccessRequest(res),
         (error) => this.setPaymentStatusFromErrorRequest(error),
       );
+  }
+
+  /**
+   * Возвращает объект значений из переданных данных
+   * @private
+   */
+  private getDataFromValue(): any {
+    this.value =
+      '{"billNumber": "1005000000000000000003629","billId": "22216599","billName": "Оплата гос. пошлины","billDate": "2020-11-04T18:31:42-03","amount": "10500"}';
+
+    if (this.value) {
+      return JSON.parse(this.value);
+    }
+    return null;
   }
 
   /**
@@ -158,9 +210,10 @@ export class PaymentComponent implements OnDestroy {
 
   /**
    * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
-   * @param {BillsInfoResponse}info
+   * @param info - информация о выставленном счете
+   * @param oldGetInfoType - использовать старые функции получения информации о счете?
    */
-  private getBillsInfoByUINSuccess(info: BillsInfoResponse) {
+  private getBillsInfoByUINSuccess(info: BillsInfoResponse, oldGetInfoType = false) {
     if (info.error?.code) {
       this.getBillsInfoByUINErrorsFromSuccess(info);
     }
@@ -172,18 +225,20 @@ export class PaymentComponent implements OnDestroy {
       this.nextStep();
     }
 
-    // Ищем сведения по скидке, цене и начислению
-    this.validDiscountDate = getDiscountDate(bill);
-    this.sumWithoutDiscount = getDiscountPrice(bill);
-    this.docInfo = getDocInfo(bill);
+    if (oldGetInfoType) {
+      // Ищем сведения по скидке, цене и начислению
+      this.validDiscountDate = getDiscountDate(bill);
+      this.sumWithoutDiscount = getDiscountPrice(bill);
+      this.docInfo = getDocInfo(bill);
 
-    if (bill?.comment?.length) {
-      this.paymentPurpose = bill.comment;
+      if (bill?.comment?.length) {
+        this.paymentPurpose = bill.comment;
+      }
+
+      this.sum = String(bill.amount);
+      this.inLoading = false;
+      this.billId = bill.billId;
     }
-
-    this.sum = String(bill.amount);
-    this.inLoading = false;
-    this.billId = bill.billId;
   }
 
   /**
