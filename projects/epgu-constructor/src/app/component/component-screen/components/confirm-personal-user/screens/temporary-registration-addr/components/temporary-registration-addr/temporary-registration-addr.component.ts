@@ -7,6 +7,7 @@ import { UnsubscribeService } from '../../../../../../../../core/services/unsubs
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
 import { DateValidator } from './date-validator';
+import { ScreenService } from '../../../../../../../../screen/screen.service';
 
 @Component({
   selector: 'epgu-constructor-temporary-registration-addr',
@@ -22,6 +23,7 @@ export class TemporaryRegistrationAddrComponent implements OnInit {
 
   constructor(
     public config: ConfigService,
+    private screenService: ScreenService,
     private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     private fb: FormBuilder,
@@ -71,6 +73,7 @@ export class TemporaryRegistrationAddrComponent implements OnInit {
     this.redAddrForm.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$), startWith(this.redAddrForm.value))
       .subscribe((changes) => {
+        delete this.screenService.componentErrors[this.data.id];
         if (this.redAddrForm.invalid) {
           this.currentAnswersService.isValid = false;
         } else {
