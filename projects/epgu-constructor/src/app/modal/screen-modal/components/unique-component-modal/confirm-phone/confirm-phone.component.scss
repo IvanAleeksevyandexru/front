@@ -3,7 +3,7 @@
 .confirm-phone {
   &__helper-text {
     display: block;
-    margin: 8px auto;
+    margin: 16px auto 4px;
     text-align: center;
     @include typ-plain-text;
     color: $color-text-helper;

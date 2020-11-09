@@ -1,0 +1,8 @@
+<div *ngIf="notificationService.hasNotification$ | async" class="notification">
+  <lib-disclaimer-elk
+    (click)="notificationService.close()"
+    color="#FFD54C"
+    [title]="notificationService.title"
+    [text]="notificationService.text"
+  ></lib-disclaimer-elk>
+</div>

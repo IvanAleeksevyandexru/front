@@ -19,8 +19,13 @@ import { TerraByteApiService } from '../../../../../../shared/services/terra-byt
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { CompressionService } from '../../../upload-and-edit-photo/compression/compression.service';
+import {
+  CompressionOptions,
+  CompressionService,
+} from '../../../upload-and-edit-photo/compression/compression.service';
 import { ConfigService } from '../../../../../../core/config/config.service';
+import { ModalService } from '../../../../../../modal/modal.service';
+import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 enum ErrorActions {
   clear = 'clear',
@@ -28,6 +33,19 @@ enum ErrorActions {
   addMaxAmount = 'maxAmount',
   addInvalidType = 'invalidType',
   addInvalidFile = 'invalidFile',
+}
+
+interface ModalParams {
+  text: string;
+  title: string;
+  showCloseButton: boolean;
+  showCrossButton: boolean;
+  preview: boolean;
+  buttons: Array<{
+    label: string;
+    closeModal: boolean;
+    handler: () => any;
+  }>;
 }
 
 const photoBaseName = 'Снимок';
@@ -103,7 +121,7 @@ export class FileUploadItemComponent implements OnDestroy {
   private subs: Subscription[] = [];
   private maxFileNumber = -1;
 
-  private compressTypes = ['image/jpeg', 'image/png'];
+  private compressType = 'image';
   isCameraAllowed = false; // Флаг, что камеры нет или она запрещена
   listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
@@ -131,8 +149,22 @@ export class FileUploadItemComponent implements OnDestroy {
     private compressionService: CompressionService,
     private ngUnsubscribe$: UnsubscribeService,
     public config: ConfigService,
+    public modal: ModalService,
   ) {
     this.isMobile = deviceDetectorService.isMobile;
+  }
+
+  private fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
+  private openPreviewModal(modalParams: ModalParams): void {
+    this.modal.openModal(ConfirmationModalComponent, modalParams);
   }
 
   /**
@@ -273,8 +305,9 @@ export class FileUploadItemComponent implements OnDestroy {
             return throwError(e);
           }),
         )
-        .subscribe((fileInfo: TerraUploadedFile) => {
-          this.updateUploadedCameraPhotosInfo(true, fileInfo.fileName);
+        .subscribe(() => {
+          this.updateUploadedCameraPhotosInfo(true, file.name);
+          this.updateUploadedCameraPhotosInfo(true, file.name);
           this.updateFileInfoFromServer(fileToUpload);
         }),
     );
@@ -289,9 +322,7 @@ export class FileUploadItemComponent implements OnDestroy {
    */
   private prepareFilesToUpload(filesToUpload: FileList, isPhoto?: boolean): Observable<File> {
     this.handleError(ErrorActions.clear);
-    const files = isPhoto
-      ? this.handleAndFormatPhotoFiles(filesToUpload)
-      : this.filterValidFiles(filesToUpload);
+    const files = isPhoto ? Array.from(filesToUpload) : this.filterValidFiles(filesToUpload);
     const filesLength = files.length + this.uploadedFilesAmount;
 
     if (filesLength > this.data.maxFileCount) {
@@ -299,30 +330,30 @@ export class FileUploadItemComponent implements OnDestroy {
       return of();
     }
 
-    const compressedFiles = this.compressImages(files);
+    const compressedFiles = this.compressImages(files, isPhoto);
 
     return merge(...compressedFiles).pipe(
       takeWhile((file: File) => this.validateAndHandleFilesSize(file)),
     );
   }
 
-  handleAndFormatPhotoFiles(filesToUpload: FileList): File[] {
-    return Array.from(filesToUpload).map((photo: File) => {
-      const photoType = photo.name.split('.').pop() || 'jpg';
-      const photoFullName = `${photoBaseName}_${this.uploadedCameraPhotosAmount + 1}.${photoType}`;
-
-      return { ...photo, name: photoFullName };
-    });
+  getPhotoName(photo: File): string {
+    const photoType = photo.name.split('.').pop() || 'jpeg';
+    return `${photoBaseName}_${this.uploadedCameraPhotosAmount + 1}.${photoType}`;
   }
 
-  compressImages(files: File[]): Array<Observable<any>> {
-    const compressedImageOptions = {
+  compressImages(files: File[], isPhoto?: boolean): Array<Observable<any>> {
+    const compressedImageOptions: CompressionOptions = {
       maxSizeMB: getSizeInMB(maxImgSizeInBytes),
       deepChecking: true,
     };
 
     return files.map((file: File) => {
-      if (this.compressTypes.includes(file.type)) {
+      if (file.type.includes(this.compressType)) {
+        if (isPhoto) {
+          compressedImageOptions.customFileName = this.getPhotoName(file);
+        }
+
         return from(this.compressionService.imageCompression(file, compressedImageOptions)).pipe(
           catchError(() => {
             this.handleError(ErrorActions.addInvalidFile, file);
@@ -452,7 +483,30 @@ export class FileUploadItemComponent implements OnDestroy {
    * Обновляет данные о файлах, которые были загружены
    */
   updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean) {
-    this.prepareFilesToUpload(fileList, isPhoto).subscribe((file: File) => this.sendFile(file));
+    this.prepareFilesToUpload(fileList, isPhoto).subscribe(async (file: File) => {
+      if (isPhoto) {
+        const src = await this.fileToBase64(file);
+
+        this.openPreviewModal({
+          text: `<div style="padding:0;">
+                    <img src="${src}" alt="${file.name}" />
+                  </div>`,
+          title: 'Просмотр фото',
+          showCloseButton: false,
+          showCrossButton: true,
+          preview: true,
+          buttons: [
+            {
+              label: 'Использовать',
+              closeModal: true,
+              handler: () => this.sendFile(file),
+            },
+          ],
+        });
+      } else {
+        this.sendFile(file);
+      }
+    });
   }
 
   isFileTypeValid(file: File): boolean {

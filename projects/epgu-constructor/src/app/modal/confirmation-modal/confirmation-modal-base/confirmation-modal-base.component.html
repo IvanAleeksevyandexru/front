@@ -3,7 +3,7 @@
   <div *ngIf="title" class="conf-modal__header">
     <h4 class="conf-modal__title" [innerHTML]="title | safe: 'html'"></h4>
   </div>
-  <div class="conf-modal__body">
+  <div class="conf-modal__body" [class.preview]="preview">
     <perfect-scrollbar *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
       <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
     </perfect-scrollbar>
@@ -23,3 +23,4 @@
     </ng-template>
   </div>
 </div>
+{{preview|json}}

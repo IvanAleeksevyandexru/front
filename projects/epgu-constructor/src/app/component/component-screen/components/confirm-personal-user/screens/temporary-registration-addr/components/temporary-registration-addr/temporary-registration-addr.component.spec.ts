@@ -7,6 +7,8 @@ import { UnsubscribeService } from '../../../../../../../../core/services/unsubs
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
+import { ScreenService } from '../../../../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
 
 
 describe('TemporaryRegistrationAddrComponent', () => {
@@ -33,7 +35,8 @@ describe('TemporaryRegistrationAddrComponent', () => {
       providers: [
         UnsubscribeService,
         CurrentAnswersService,
-        { provide: ConfigService, useClass: ConfigServiceStub }
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     })
     .compileComponents();
