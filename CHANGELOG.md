@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.22](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.21...v0.4.22) (2020-11-09)
+
+
+### Bug Fixes
+
+* добавил скрытие ошибок валидации с бэка после изменения значения в полях для компонента "адрес для временной регистрации" [ref EPGUCORE-37184] ([4e2d798](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4e2d798341a61306454a04b4d61f0c50a38b0d50))
+* исправлена блокировка перехода на следующий скрин для загрузки файлов [ref EPGUCORE-40730] ([c8965d3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c8965d3b7eb785173b9bb9735354ddcc433daa45))
+* исправлена вёрстка компонента фото для ipad mini [ref EPGUCORE-40580] ([46cf118](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/46cf11882a182c110c72f384ee8cee65ef38bd1b))
+
 ### [0.4.21](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.20...v0.4.21) (2020-11-08)
 
 
