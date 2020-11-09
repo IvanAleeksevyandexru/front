@@ -103,7 +103,7 @@ export class FileUploadScreenComponent {
     } else {
       this.value.uploads = $eventData.files;
     }
-    this.disabled = !this.isAllFilesUploaded(this.value.uploads) || $eventData.errors.length;
+    this.disabled = !this.isAllFilesUploaded(this.value.uploads);
   }
 
   /**
