@@ -127,11 +127,27 @@ export class UtilsService {
 
     return forms[2];
   }
-
-  public getServiceName(url: string): string {
+  /**
+   * Returns url separated by subdirectories and query parameters
+   * @param url 
+   */
+  public getSplittedUrl(url: string): string[] {
     const splitByQueryParam = url.split('?');
     const splitByDirLocation = splitByQueryParam[0].split('/');
-    const serviceName = splitByDirLocation.slice(-1)[0];
+
+    return splitByDirLocation;
+  }
+
+  /**
+   * Returns modified service name in camelCase format
+   * Example:
+   * https://www.gosuslugi.ru/600101/1/form-item -> form-item -> formItemService
+   * https://www.gosuslugi.ru/600101/1/form_item -> form_item -> formItemService
+   * https://www.gosuslugi.ru/600101/1/form -> form -> formService
+   * @param url 
+   */
+  public getServiceName(url: string): string {
+    const serviceName = this.getSplittedUrl(url).slice(-1)[0];
 
     return `${serviceName.replace(/(?:^_-\w|[A-Z]|\b\w)/g, (word, index) => {
       return index === 0 ? word.toLowerCase() : word.toUpperCase();
@@ -139,6 +155,10 @@ export class UtilsService {
   }
 
 
+  /**
+   * Returns a boolean value if url is an instance of a string type
+   * @param url 
+   */
   public isValidHttpUrl(url: string | undefined): boolean {
     return url && typeof url === 'string';
   }
