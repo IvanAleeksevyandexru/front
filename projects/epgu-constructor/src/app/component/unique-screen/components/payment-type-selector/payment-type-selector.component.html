@@ -1,20 +1,20 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
-
 <epgu-constructor-screen-container>
-  <epgu-constructor-page-name>{{ paymentTypeSelector.header }}</epgu-constructor-page-name>
+  <div class="screen-body">
+    <epgu-constructor-page-name>{{ paymentTypeSelector.header }}</epgu-constructor-page-name>
 
-  <epgu-constructor-output-html
-    [html]="paymentTypeSelector.label"
-    [clarifications]="paymentTypeSelector?.clarifications"
-  >
-  </epgu-constructor-output-html>
+    <epgu-constructor-output-html
+      [html]="paymentTypeSelector.label"
+      [clarifications]="paymentTypeSelector?.clarifications"
+    >
+    </epgu-constructor-output-html>
+  </div>
 
-  <ng-container *ngFor="let action of paymentTypeSelector.actions">
+  <div class="screen-footer" *ngFor="let action of paymentTypeSelector.actions">
     <epgu-constructor-action-button
       *ngIf="action.applicantType === paymentTypeSelector.applicantType"
       epgu-constructor-action
       [action]="action"
       >{{ action.label }}</epgu-constructor-action-button
     >
-  </ng-container>
+  </div>
 </epgu-constructor-screen-container>

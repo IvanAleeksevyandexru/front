@@ -13,7 +13,7 @@ import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscri
 export class NotificationComponent implements OnInit {
   constructor(
     public notificationService: NotificationService,
-    private cdk: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     private unsubscribeService$: UnsubscribeService,
   ) {}
 
@@ -21,7 +21,7 @@ export class NotificationComponent implements OnInit {
     this.notificationService.hasNotification$
       .pipe(takeUntil(this.unsubscribeService$))
       .subscribe(() => {
-        this.cdk.detectChanges();
+        this.cdr.detectChanges();
       });
   }
 }

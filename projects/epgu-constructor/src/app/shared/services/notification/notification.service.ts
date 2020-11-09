@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class NotificationService {
-  private _closeNotificationTime = 20000;
+  private closeNotificationTime = 20000;
 
   private _text$ = new BehaviorSubject<string>(null);
   public get text() {
@@ -31,11 +31,11 @@ export class NotificationService {
     this.open();
 
     if (!this._timerId) {
-      this._timerId = setTimeout(() => this.close(), this._closeNotificationTime);
+      this._timerId = setTimeout(() => this.close(), this.closeNotificationTime);
     } else {
       this._timerId = null;
       this.close();
-      this._timerId = setTimeout(() => this.close(), this._closeNotificationTime);
+      this._timerId = setTimeout(() => this.close(), this.closeNotificationTime);
     }
   }
 

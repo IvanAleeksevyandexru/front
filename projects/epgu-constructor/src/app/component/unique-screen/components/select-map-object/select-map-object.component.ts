@@ -329,13 +329,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
       .pipe(
         filter((response) => {
-          const hasAttributeValues = response.items.every((item) =>
-            this.screenService.component.attrs.checkedParametersGIBDD.every(
-              (param) => item.attributeValues[param],
-            ),
-          );
+          const hasAttributeValues = () =>
+            response.items.every((item) =>
+              this.screenService.component.attrs.checkedParametersGIBDD.every(
+                (param) => item.attributeValues[param],
+              ),
+            );
 
-          return response.error.code !== 0 || !response.items.length || !hasAttributeValues;
+          return response.error.code !== 0 || !response.items.length || !hasAttributeValues();
         }),
       )
       .subscribe(() => {
