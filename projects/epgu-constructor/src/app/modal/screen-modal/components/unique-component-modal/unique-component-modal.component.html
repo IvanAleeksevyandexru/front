@@ -1,5 +1,8 @@
 <ng-container [ngSwitch]="screenService.componentType$ | async">
-<epgu-constructor-confirm-phone
-  *ngSwitchCase="uniqueComponentName.phoneNumberConfirmCodeInput">
-</epgu-constructor-confirm-phone>
+  <epgu-constructor-confirm-phone
+    *ngSwitchCase="uniqueComponentName.phoneNumberConfirmCodeInput">
+  </epgu-constructor-confirm-phone>
+  <epgu-constructor-confirm-email
+    *ngSwitchCase="uniqueComponentName.ConfirmNewEmail">
+  </epgu-constructor-confirm-email>
 </ng-container>

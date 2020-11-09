@@ -59,7 +59,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
 
     this.screenModalService.isInternalScenarioFinish$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .pipe(delay(3000))
+      // .pipe(delay(3000))
       .subscribe((isInternalScenarioFinish) => {
         if (isInternalScenarioFinish) {
           this.nextStep({ options: { isInternalScenarioFinish } });

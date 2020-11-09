@@ -1,0 +1,18 @@
+<h4 class="header header--fake title-h4">Подтвердите адрес почты</h4>
+
+<div class="confirm-email">
+  <div class="confirm-email__body">
+      <div class="head" [innerHTML]="screenService.componentLabel$ | async | safe: 'html'"></div>
+      <img class="icon" src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/warn.svg" />
+  </div>
+
+<!--  <div class="confirm-email__footer">-->
+<!--    <div class="action">-->
+<!--      <epgu-constructor-long-button class="action__item" (click)="goBackTo()">-->
+<!--        {{ screenService.actions[0]?.label }}-->
+<!--      </epgu-constructor-long-button>-->
+<!--    </div>-->
+<!--    <lib-button [disabled]="isTimerShow" (click)="sendPostAgain()" class="btn__submit">-->
+<!--      {{ screenService?.submitLabel$ | async }}-->
+<!--    </lib-button>-->
+<!--  </div>-->
