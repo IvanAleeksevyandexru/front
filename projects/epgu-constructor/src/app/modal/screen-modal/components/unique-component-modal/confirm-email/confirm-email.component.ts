@@ -18,7 +18,6 @@ import { ScreenService } from '../../../../../screen/screen.service';
   providers: [UnsubscribeService],
 })
 export class ConfirmEmailComponent {
-  // <-- variable
   timer: number;
   isTimerShow = true;
 
@@ -31,21 +30,7 @@ export class ConfirmEmailComponent {
     private ngUnsubscribe$: UnsubscribeService,
     private navigationService: NavigationService,
     public config: ConfigService,
-  ) {
-    interval(5000)
-      .pipe(takeUntil(ngUnsubscribe$))
-      .subscribe(() => {
-        this.navigationService.nextStep.next({ payload: this.getComponentState() });
-      });
-  }
-
-  goBackTo() {
-    const navigation: Navigation = {
-      payload: this.getComponentState(),
-      options: this.getOptions(),
-    };
-    this.navigationService.nextStep.next(navigation);
-  }
+  ) {}
 
   sendPostAgain() {
     const options: NavigationOptions = {
@@ -55,31 +40,11 @@ export class ConfirmEmailComponent {
     this.isTimerShow = true;
   }
 
-  getComponentState(): NavigationPayload {
-    return {
-      [this.screenService.component.id]: {
-        visited: true,
-        value: String(this.screenService.componentValue),
-      },
-    };
-  }
-
   timerChange(num: number) {
     if (num) {
       this.timer = num;
     } else {
       this.isTimerShow = false;
     }
-  }
-
-  private getOptions(): NavigationOptions {
-    const options: NavigationOptions = {};
-    const isFinishInternalScenario =
-      this.screenService.actions[0]?.action === 'goBackToMainScenario';
-    if (isFinishInternalScenario) {
-      options.isInternalScenarioFinish = true;
-    }
-
-    return options;
   }
 }

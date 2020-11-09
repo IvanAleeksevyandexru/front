@@ -1,34 +1,55 @@
 @import "../../../../../../styles/core";
 
-.head {
-  margin-bottom: 32px;
-}
+.confirm-email {
+  &__helper-text {
+    display: block;
+    margin: 16px auto 4px;
+    text-align: center;
+    @include typ-plain-text;
+    color: $color-text-helper;
 
-.icon {
-  display: block;
-  margin: 0 auto 6px;
-  max-width: 100%;
-}
+    &:last-child {
+      margin-bottom: 8px;
+    }
+  }
 
-.error {
-  color: $color-gosred;
-  text-align: center;
-}
+  &__icon {
+    display: block;
+    margin: 24px auto 24px;
+    width: 80px;
+    height: 80px;
+  }
 
-.hint {
-  width: 269px;
-  @include typ-plain-small();
-  color: $color-text-helper;
-  text-align: center;
-  margin: 16px auto 0;
-  &__timer {
-    color: $color-black;
+  &__address {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    @include typ-h5;
+    color: $color-summer-night;
+  }
+
+  &__edit-address,
+  &__send-again {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    @include typ-plain-small;
+    color: $color-gosblue;
+    text-transform: none;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
   }
 }
 
-.action {
-  margin-top: 24px;
-  &__item {
-    justify-content: center;
+
+.form-hint {
+  width: 100%;
+  @include typ-plain-small;
+  color: $color-text-helper;
+  text-align: center;
+  margin: 0 auto;
+  &__timer {
+    color: $color-black;
   }
 }
