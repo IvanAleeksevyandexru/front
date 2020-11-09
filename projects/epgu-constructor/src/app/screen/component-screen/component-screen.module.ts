@@ -4,7 +4,7 @@ import { ComponentScreenComponent } from './component-screen.component';
 import { ComponentScreenComponentsModule } from '../../component/component-screen/component-screen-components.module';
 import { CoreModule } from '../../core/core.module';
 import { ComponentsListModule } from '../../component/components-list/components-list.module';
-
+import { DatePipe } from '@angular/common';
 
 const COMPONENTS = [
   ComponentScreenComponent,
@@ -19,6 +19,6 @@ const COMPONENTS = [
     ComponentScreenComponentsModule,
     ComponentsListModule,
   ],
-  providers: []
+  providers: [DatePipe]
 })
 export class ComponentScreenModule {}
