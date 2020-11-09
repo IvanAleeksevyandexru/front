@@ -22,6 +22,8 @@ export class ConfirmationModalComponent extends ModalBaseComponent
    *  */
   elemEventHandlers: ConfirmationModal['elemEventHandlers'] = [];
   clarifications?: ConfirmationModal['buttons'];
+  preview?: ConfirmationModal['preview'];
+
   buttons: ConfirmationModal['buttons'] = [];
   showCrossButton: boolean;
 

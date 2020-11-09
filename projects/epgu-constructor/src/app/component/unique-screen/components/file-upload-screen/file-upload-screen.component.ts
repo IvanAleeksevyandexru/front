@@ -92,18 +92,18 @@ export class FileUploadScreenComponent {
    * @param $eventData - данные из компонента
    */
   handleNewValueSet($eventData: any) {
-    if ($eventData.relatedUploads && this.value?.uploads) {
+    if ($eventData.files.relatedUploads && this.value?.uploads) {
       this.value.uploads = this.value.uploads.map((value: any) => {
-        if ($eventData.uploadId === value.uploadId) {
+        if ($eventData.files.uploadId === value.uploadId) {
           // eslint-disable-next-line no-param-reassign
-          value = { ...value, ...$eventData };
+          value = { ...value, ...$eventData.files };
         }
         return value;
       });
     } else {
-      this.value.uploads = $eventData;
+      this.value.uploads = $eventData.files;
     }
-    this.disabled = !this.isAllFilesUploaded(this.value.uploads);
+    this.disabled = !this.isAllFilesUploaded(this.value.uploads) || $eventData.errors.length;
   }
 
   /**

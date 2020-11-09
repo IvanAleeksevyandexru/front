@@ -17,6 +17,7 @@ import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirma
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
 
 const moment = moment_;
 
@@ -215,16 +216,22 @@ export class TimeSlotsComponent implements OnInit {
 
   public bookTimeSlot() {
     this.inProgress = true;
-    this.currentService.checkBooking(this.currentSlot).subscribe((response) => {
-      this.inProgress = false;
-      if (this.currentService.hasError()) {
-        this.showError(
-          `${this.constants.errorFailBookTimeSlot}  (${this.currentService.getErrorMessage()})`,
-        );
-        return;
-      }
-      this.nextStepEvent.emit(JSON.stringify(response));
-    });
+    this.currentService.checkBooking(this.currentSlot).subscribe(
+      (response) => {
+        this.inProgress = false;
+        if (this.currentService.hasError()) {
+          this.showError(
+            `${this.constants.errorFailBookTimeSlot}  (${this.currentService.getErrorMessage()})`,
+          );
+          return;
+        }
+        this.nextStepEvent.emit(JSON.stringify(response));
+      },
+      () => {
+        this.inProgress = false;
+        this.showModal(COMMON_ERROR_MODAL_PARAMS);
+      },
+    );
   }
 
   showError(errorMessage: string) {

@@ -5,7 +5,6 @@ import { fromEvent } from 'rxjs';
 import {
   FormPlayerNavigation,
   Navigation,
-  NavigationDirection,
   NavigationPayload,
 } from '../../form-player/form-player.types';
 import { NavigationModalService } from '../../core/services/navigation-modal/navigation-modal.service';
@@ -58,6 +57,15 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
         this.updateHeaderHeight();
       });
 
+    this.screenModalService.isInternalScenarioFinish$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(delay(3000))
+      .subscribe((isInternalScenarioFinish) => {
+        if (isInternalScenarioFinish) {
+          this.nextStep({ options: { isInternalScenarioFinish } });
+        }
+      });
+
     this.navModalService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.nextStep(data));
@@ -77,7 +85,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
 
   nextStep(navigation?: Navigation) {
     if (navigation?.options?.isInternalScenarioFinish) {
-      this.switchNavigationToFormPlayer(navigation, NavigationDirection.NEXT);
+      this.closeModal();
       return;
     }
 
@@ -86,21 +94,19 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
 
   prevStep(navigation?: Navigation) {
     if (navigation?.options?.isInternalScenarioFinish) {
-      this.switchNavigationToFormPlayer(navigation, NavigationDirection.PREV);
+      this.closeModal();
       return;
     }
 
     this.screenModalService.navigate(navigation, FormPlayerNavigation.PREV);
   }
 
-  switchNavigationToFormPlayer(navigation: Navigation, navDirection: NavigationDirection) {
-    // eslint-disable-next-line no-param-reassign
-    navigation.options.store = this.screenModalService.store;
-    this.navService[navDirection].next(navigation);
-    this.closeModal();
+  switchNavigationToFormPlayer() {
+    this.navService.prevStep.next({ options: { store: this.screenModalService.initStore } });
   }
 
   closeModal(): void {
+    this.switchNavigationToFormPlayer();
     this.screenModalService.resetStore();
   }
 }

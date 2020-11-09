@@ -13,6 +13,7 @@ export class ConfirmationModalBaseComponent {
   @Input() text: ConfirmationModal['text'];
   @Input() buttons: ConfirmationModalBaseButton[] = [];
   @Input() showCrossButton?: boolean;
+  @Input() preview?: boolean;
 
   @Output() closeModalChange = new EventEmitter();
 
