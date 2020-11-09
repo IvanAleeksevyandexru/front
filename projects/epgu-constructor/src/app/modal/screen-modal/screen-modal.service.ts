@@ -154,7 +154,7 @@ export class ScreenModalService {
     }
 
     this._store = response;
-    if(this._initStore) {
+    if(!this._initStore) {
       this._initStore = response;
     }
 
