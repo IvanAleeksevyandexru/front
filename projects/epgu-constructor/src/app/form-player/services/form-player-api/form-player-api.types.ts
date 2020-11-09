@@ -46,6 +46,7 @@ export interface ComponentDtoAction {
   type?: ActionType;
   hidden?: boolean;
   disabled?: boolean;
+  applicantType?: string;
 }
 
 export interface DisplaySubjHead {

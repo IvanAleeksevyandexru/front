@@ -1,0 +1,55 @@
+@import "../../../../../../styles/core";
+
+.confirm-email {
+  &__helper-text {
+    display: block;
+    margin: 16px auto 4px;
+    text-align: center;
+    @include typ-plain-text;
+    color: $color-text-helper;
+
+    &:last-child {
+      margin-bottom: 8px;
+    }
+  }
+
+  &__icon {
+    display: block;
+    margin: 24px auto 24px;
+    width: 80px;
+    height: 80px;
+  }
+
+  &__address {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    @include typ-h5;
+    color: $color-summer-night;
+  }
+
+  &__edit-address,
+  &__send-again {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    @include typ-plain-small;
+    color: $color-gosblue;
+    text-transform: none;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+}
+
+
+.form-hint {
+  width: 100%;
+  @include typ-plain-small;
+  color: $color-text-helper;
+  text-align: center;
+  margin: 0 auto;
+  &__timer {
+    color: $color-black;
+  }
+}

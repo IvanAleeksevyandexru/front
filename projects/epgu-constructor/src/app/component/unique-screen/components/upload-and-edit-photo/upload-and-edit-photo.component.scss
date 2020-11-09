@@ -21,15 +21,15 @@
     flex-basis: 344px;
     padding: 32px;
 
-    @include phones-down {
-      flex-basis: 100%;
-      padding: 24px;
-      border-radius: 12px;
-    }
-
     .file-over {
       opacity: .7;
     }
+  }
+
+  &__uploading-container-mobile {
+    flex-basis: 288px;
+    padding: 24px;
+    border-radius: 12px;
   }
 
   &__cropped-image {

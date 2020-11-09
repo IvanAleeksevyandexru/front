@@ -16,11 +16,11 @@ import { DictionaryApiService } from '../shared/services/dictionary-api/dictiona
 import { ComponentsListModule } from '../components-list/components-list.module';
 import { ModalModule } from '../../modal/modal.module';
 import { CoreModule } from '../../core/core.module';
-import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { PaymentTypeSelectorModule } from './components/payment-type-selector/payment-type-selector.module';
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
-const COMPONENTS = [RepeatableFieldsComponent, ConfirmEmailComponent];
+const COMPONENTS = [RepeatableFieldsComponent];
 
 @NgModule({
   declarations: [
@@ -41,6 +41,7 @@ const COMPONENTS = [RepeatableFieldsComponent, ConfirmEmailComponent];
     SignatureApplicationModule,
     UploadAndEditPhotoModule,
     ComponentsListModule,
+    PaymentTypeSelectorModule,
   ],
   exports: [
     ...COMPONENTS,
@@ -54,6 +55,7 @@ const COMPONENTS = [RepeatableFieldsComponent, ConfirmEmailComponent];
     PaymentModule,
     UnusedPaymentsModule,
     SignatureApplicationModule,
+    PaymentTypeSelectorModule,
   ],
   providers: [
     WebcamService,

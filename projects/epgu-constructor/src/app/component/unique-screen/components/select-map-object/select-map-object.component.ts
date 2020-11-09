@@ -10,8 +10,8 @@ import {
   NgZone,
   OnDestroy,
 } from '@angular/core';
-import { switchMap, filter, takeUntil, reduce } from 'rxjs/operators';
-import { of, merge } from 'rxjs';
+import { filter, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { merge, of } from 'rxjs';
 import { HelperService, YaMapService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../core/config/config.service';
@@ -29,6 +29,8 @@ import {
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { ModalService } from '../../../../modal/modal.service';
 import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
+import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -66,6 +68,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
     private zone: NgZone,
+    private notificationService: NotificationService,
   ) {
     this.isMobile = HelperService.isMobile();
   }
@@ -121,7 +124,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private subscribeToEmmitNextStepData() {
     this.selectMapObjectService.selectedValue
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        tap((value: any) => {
+          if (value && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
+            this.availablePaymentInGIBDD(value.attributeValues.code);
+          }
+        }),
+      )
       .subscribe((value: any) => {
         this.selectedValue = value;
         this.cdr.detectChanges();
@@ -307,5 +317,31 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.yaMapService.mapSubject.next(null);
     // Очищаем id выбранной ранее точки чтобы при возврате на карту он был пуст.
     this.selectMapObjectService.mapOpenedBalloonId = null;
+  }
+
+  /**
+   * Метод проверяет доступность оплаты в выбранном отделе ГИБДД
+   * @param id объект на карте
+   */
+  private availablePaymentInGIBDD(id: number) {
+    const options = getPaymentRequestOptionGIBDD(id);
+    this.dictionaryApiService
+      .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
+      .pipe(
+        filter((response) => {
+          const hasAttributeValues = () =>
+            response.items.every((item) =>
+              this.screenService.component.attrs.checkedParametersGIBDD.every(
+                (param) => item.attributeValues[param],
+              ),
+            );
+
+          return response.error.code !== 0 || !response.items.length || !hasAttributeValues();
+        }),
+      )
+      .subscribe(() => {
+        const { GIBDDpaymentError } = this.screenService.component.attrs;
+        this.notificationService.setNotification(GIBDDpaymentError.text, GIBDDpaymentError.title);
+      });
   }
 }
