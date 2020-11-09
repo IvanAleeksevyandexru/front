@@ -2,6 +2,244 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.21](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.20...v0.4.21) (2020-11-08)
+
+
+### Bug Fixes
+
+* исправил ошибку при загрузке фото, файл загружается успешно но не возвращаются данные. ([6b3b5d5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6b3b5d5dbb44c5e7e27dd645ea60719a400e7720))
+
+### [0.4.20](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.19...v0.4.20) (2020-11-08)
+
+### [0.4.19](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.18...v0.4.19) (2020-11-08)
+
+
+### Bug Fixes
+
+* исправлено прикрепление фото [ref EPGUCORE-40743] ([64d83a1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/64d83a1ad14643cf35dac29043206a80cc4844fc))
+
+### [0.4.18](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.17...v0.4.18) (2020-11-07)
+
+
+### Bug Fixes
+
+* Некорректное отображение экрана Заявление отправлено [EPGUCORE-40644] ([51cac25](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/51cac25c792bc0154b2bafe898b86ca9ba6a9032))
+
+### [0.4.17](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.16...v0.4.17) (2020-11-06)
+
+
+### Bug Fixes
+
+* обраотка успешной загрузки фото без ответа: Комаров ([2d81b2e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2d81b2ee0de3337d6616172c61ce439f6291ccff))
+
+### [0.4.16](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.15...v0.4.16) (2020-11-06)
+
+
+### Bug Fixes
+
+* добавил блокировку если в dropdown(-е) один элемент.[EPGUCORE-40660] ([b9dc029](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b9dc0299fb85797a6cb07fbac1848558d148a868))
+* добавил отступ для элементро экрана проверки адреса.[EPGUCORE-40638] ([1386a14](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1386a14d30827cc9f287efc5b9ef4eac9571eab9))
+* изменено название переменной ([6c220f4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6c220f449124ff37c7af5d36931065e56bc7da88))
+* испаравлено сохранение данных на стр. персональны данных ([9483d59](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9483d59d1dc71f089717ae478c5406a3527d2593))
+* исправил валидации на загрузке файлов [ref EPGUCORE-40475] ([e636ae3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e636ae37e4b6ae1efcdf0275019e223c1afafd54))
+* исправил слипание кнопок находящиеся внизу [EPGUCORE-40638] ([5afc9bb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5afc9bbad09faeb2012a18005203861945929369))
+* исправлена генерация названия прикреплённого фото [ref EPGUCORE-40654] ([2dfa461](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2dfa46170866f42cc96db5f10f76aa4674035c51))
+* исправления представление текста для firefox ([bee9bfa](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/bee9bfabbc07751bd3264ba55342bb022b8cb6ae))
+* исправлено загрузка битых фото, ограничение файлов до 5 мб ([aede393](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/aede3931cfc2443da1c510a39bf805faa5e5b64e))
+* исправленя по стилям ([3e149cc](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3e149cc6aad2eae47bdaa2e0a72e3fec96b1fc9f))
+* исправленя по стилям ([99bb418](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/99bb418ce608de44c2e07ea1ddbdd58bc8ea9da3))
+* Не верно работает рег. выражение для компонента Кем выдано [EPGUCORE-40630] ([b42910a](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b42910a2f47db01c00185c9b27656519825b997d))
+* Обработка ошибки 404 при падении бронирования таймслотов [EPGUCORE-40431] ([c6f4613](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c6f4613e4bd8e46391732bb2d6733412845d2186))
+* переименован метод ([f2280ea](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f2280eae58e9fc9436f960c350d0e135db530e62))
+* увеличил зону для клика по кнопкам. Исправил button на библиотечный lib-button [ref EPGUCORE-40434] ([3389fc1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3389fc17cc81ec36714fc30af678985f2aae28fe))
+
+### [0.4.15](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.14...v0.4.15) (2020-11-05)
+
+### [0.4.14](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.13...v0.4.14) (2020-11-05)
+
+
+### Features
+
+* зависимость периода выбранных дат календарей [ref EPGUCORE-40403] ([e075837](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e07583722e0ac593d7278486273865c19b2417c0))
+* Компонент Укажите реквизиты паспорта привести в соответствие с дизайн-контролем [ref: EPGUCORE-40468] ([031a27a](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/031a27ad5853e63e5b95c93e2c6e6fadca54bc30))
+* перевёл компоненты на новый формат ([1de1211](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1de1211f58c7fe04cfa6a15402c80d1a5732641a))
+
+
+### Bug Fixes
+
+* добавил префиксы для кроссбраузерности; ([d87f03d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d87f03d22418a53d7d6c11b8604a40136a137568))
+* добавлены классы для цветов текста, используемых в json-сценариях [ref EPGUCORE-40312] ([5b045ec](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5b045ec809ba24f084719830c5971dbc5819b50a))
+* исправлен lint [ref EPGUCORE-40346] ([5c52891](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5c5289188e7187293a4a12513de8e29f9df147d1))
+* исправлен показ компоента MVD [EPGUCORE-40365] ([22af4ab](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/22af4ab573f223551b0fd39dee2f50eaabd1b624))
+* исправлена логика отображения кнопки фото [ref EPGUCORE-40433] ([b50c019](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b50c01923eb255820a375ce04113c7e38dd16f18))
+* исправления ошибки с количеством подгружаемых фалов. ([ab61c68](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ab61c682fb3d6472c09b62a55474cfcb8deb0b9f))
+* исправления после merge ([1d742a6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1d742a6d4cf5e3ec6a9c9ea12a6568c1679c7f0e))
+* исправлено ограничение по количеству загрузки файлов, по общему размеру файлов [ref EPGUCORE-40346] ([d515201](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d51520140b5227d9646e568461193942e142176f))
+* исправлено оторажение и блокировка кнопки фото [ref EPGUCORE-40366] ([e2f689c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e2f689c9a9c08042129ccca60d3372317942b8aa))
+* исправлено состояние блокирование кнопки для компонента загрузки файлов [ref EPGUCORE-39301] ([27a9355](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/27a9355c8aa39d731c6fec31463bae5c52b549a1))
+* обновил header для обёртки [EPGUCORE-40231] ([37273b8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/37273b8dd7c8ceb788d4d979965655d26c9261d3))
+* стоимость позволяет вводить только числа [ref EPGUCORE-40405] ([534b773](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/534b7732621fbfa5bc42956b018f509eaaaf340a))
+* удалил статичный текст валидации [ref EPGUCORE-40432] ([dfdcfee](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/dfdcfeebb8175319b36e4d1efce350f942f63e22))
+
+### [0.4.13](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.12...v0.4.13) (2020-11-05)
+
+### [0.4.12](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.11...v0.4.12) (2020-11-02)
+
+
+### Bug Fixes
+
+* добавлены классы для цветов текста, используемых в json-сценариях [ref EPGUCORE-40312] ([a5ae46d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a5ae46db085a69861b5e0243a13a6d3d6b6a4800))
+
+### [0.4.10](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.24...v0.4.10) (2020-10-30)
+
+### [0.4.9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.8...v0.4.9) (2020-10-29)
+
+### [0.4.11](https://git.gosuslugi.local///compare/v0.3.26...v0.4.11) (2020-11-02)
+
+
+### Features
+
+* добавлена обработка ошибки с сервера для docInput [ref EPGUCORE-39803] ([8641580](https://git.gosuslugi.local///commit/86415802c1a0ff473dc09f5ea5dfc54da8138fa5))
+
+
+### Bug Fixes
+
+* added interfaces [ref EPGUCORE-39803] ([1503f5e](https://git.gosuslugi.local///commit/1503f5e2960002e12e0e3b5e0f5cb298d9c91924))
+* fixed component export [ref EPGUCORE-39803] ([cdb3ac9](https://git.gosuslugi.local///commit/cdb3ac9834446bd292760ae211396e6517cef4df))
+* вернул на место иконку warn.svg в компоненте confirm-email [ref EPGUCORE-40183-40183] ([070a3e6](https://git.gosuslugi.local///commit/070a3e6ca228b6ffaf4f8e03b24fa02a368cc896))
+* добавлен свитч кейс для docInput ([17dd775](https://git.gosuslugi.local///commit/17dd775000785036fe805f1209a404f52ed55d33))
+* добалена глубокая проверка файла на тип изображения + добавлены дизейбл стили для кнопок компонента фото [ref EPGUCORE-40198] ([4758da2](https://git.gosuslugi.local///commit/4758da238fb99d22f5c160e3cc6d73075761075a))
+* исправлена работа кнопки "сделать фото" [ref EPGUCORE-39301] ([3052695](https://git.gosuslugi.local///commit/30526952b886c4738e8880257823f0d57158e176))
+
+### [0.4.8](https://git.gosuslugi.local///compare/v0.3.19...v0.4.8) (2020-10-29)
+
+### [0.4.7](https://git.gosuslugi.local///compare/v0.4.6...v0.4.7) (2020-10-29)
+
+
+### Bug Fixes
+
+* возможный фикс принудительного удаления тэга в after_script [ref EPGUCORE-40088] ([6686ad7](https://git.gosuslugi.local///commit/6686ad719310d1728c196747965c849a3a6e2939))
+* доработан gitlab-ci [ref EPGUCORE-40088] ([529ef98](https://git.gosuslugi.local///commit/529ef98f6461a880f528507ef490c9c51feaef1d))
+
+### [0.4.6](https://git.gosuslugi.local///compare/v0.4.5...v0.4.6) (2020-10-29)
+
+
+### Bug Fixes
+
+* убрал лишний npm install [ref EPGUCORE-40088] ([aa65e5d](https://git.gosuslugi.local///commit/aa65e5df18bc2add9733151062764bb8a1c057c7))
+
+### [0.4.5](https://git.gosuslugi.local///compare/v0.4.4...v0.4.5) (2020-10-29)
+
+
+### Bug Fixes
+
+* бамп версии 0.4.4 [ref EPGUCORE-40088] ([f5c43ae](https://git.gosuslugi.local///commit/f5c43aec07f87ce304611e105b29bd82aa04c4c4))
+
+### [0.4.4](https://git.gosuslugi.local///compare/v0.4.3...v0.4.4) (2020-10-29)
+
+
+### Bug Fixes
+
+* бампнул ручками 0.4.3 [ref EPGUCORE-40088] ([2ae55f5](https://git.gosuslugi.local///commit/2ae55f53737ac0692eeaf304eb971142c37ff9b4))
+
+### [0.4.3](https://git.gosuslugi.local///compare/v0.4.2...v0.4.3) (2020-10-29)
+
+
+### Bug Fixes
+
+* поправил условие в if блоке [ref EPGUCORE-40088] ([dbe4e95](https://git.gosuslugi.local///commit/dbe4e95fbf96a4497dff2c6403bf940913e7ab24))
+
+### [0.4.2](https://git.gosuslugi.local///compare/v0.4.1...v0.4.2) (2020-10-29)
+
+
+### Bug Fixes
+
+* поправил скрипт [ref EPGUCORE-40088] ([d060476](https://git.gosuslugi.local///commit/d060476fb45adad86a1594b5359978d2c8361717))
+
+### [0.4.1](https://git.gosuslugi.local///compare/v0.3.17...v0.4.1) (2020-10-29)
+
+
+### Bug Fixes
+
+* джобы для develop ветки перенесены на stage ветку и для последнего добавлен джоб сборки npm-версии ([73465c1](https://git.gosuslugi.local///commit/73465c12ffcbbbba3e8320cf9ad7ff65ab9fdd1e))
+* добавил поддержку prevStep в action.directive, плюс небольшой рефактор [ref EPGUCORE-39850] ([2e7defe](https://git.gosuslugi.local///commit/2e7defef744dd76f24c6997dbd490ccfedec6ff8))
+* исправил вопрос о доступе камеры для десктопа [ref EPGUCORE-39414] ([ded678e](https://git.gosuslugi.local///commit/ded678ebaed6b046947ebaf65024cdf09fd53e8e))
+* поправил целевую ветку для мердж-реквестов в gitlab-ci ([a5742ea](https://git.gosuslugi.local///commit/a5742ea49a5a0312917b21d59e39fcf845a44b69))
+* поправлен номер версии ([6be1016](https://git.gosuslugi.local///commit/6be101697f59dd13d9defa995ae737075fea0926))
+* телефон стирался в случае ошибки перепривязки с бэка во время редактирования [ref EPGUCORE-39421] ([56f2797](https://git.gosuslugi.local///commit/56f27972274f2bce38783f7e7d0fdf7f15b641f8))
+* убрал 'глобальный' стиль border: 0 у button и добавил его на уровне компонентов, где нужно [ref EPGUCORE-38636] ([853f5b5](https://git.gosuslugi.local///commit/853f5b593e4ea53e458910d9b6bbc340d9835fc1))
+
+### [0.4.10](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.20...v0.4.10) (2020-10-30)
+
+
+### Bug Fixes
+
+* added interfaces [ref EPGUCORE-39803] ([1503f5e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1503f5e2960002e12e0e3b5e0f5cb298d9c91924))
+* fixed component export [ref EPGUCORE-39803] ([cdb3ac9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/cdb3ac9834446bd292760ae211396e6517cef4df))
+* вернул на место иконку warn.svg в компоненте confirm-email [ref EPGUCORE-40183-40183] ([070a3e6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/070a3e6ca228b6ffaf4f8e03b24fa02a368cc896))
+* добалена глубокая проверка файла на тип изображения + добавлены дизейбл стили для кнопок компонента фото [ref EPGUCORE-40198] ([4758da2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4758da238fb99d22f5c160e3cc6d73075761075a))
+
+### [0.4.9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.8...v0.4.9) (2020-10-29)
+
+
+### Features
+
+* добавлена обработка ошибки с сервера для docInput [ref EPGUCORE-39803] ([8641580](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/86415802c1a0ff473dc09f5ea5dfc54da8138fa5))
+
+### [0.4.8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.19...v0.4.8) (2020-10-29)
+
+### [0.4.7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.6...v0.4.7) (2020-10-29)
+
+
+### Bug Fixes
+
+* возможный фикс принудительного удаления тэга в after_script [ref EPGUCORE-40088] ([6686ad7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6686ad719310d1728c196747965c849a3a6e2939))
+* доработан gitlab-ci [ref EPGUCORE-40088] ([529ef98](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/529ef98f6461a880f528507ef490c9c51feaef1d))
+
+### [0.4.6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.5...v0.4.6) (2020-10-29)
+
+
+### Bug Fixes
+
+* убрал лишний npm install [ref EPGUCORE-40088] ([aa65e5d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/aa65e5df18bc2add9733151062764bb8a1c057c7))
+
+### [0.4.5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.4...v0.4.5) (2020-10-29)
+
+
+### Bug Fixes
+
+* бамп версии 0.4.4 [ref EPGUCORE-40088] ([f5c43ae](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f5c43aec07f87ce304611e105b29bd82aa04c4c4))
+
+### [0.4.4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.3...v0.4.4) (2020-10-29)
+
+
+### Bug Fixes
+
+* бампнул ручками 0.4.3 [ref EPGUCORE-40088] ([2ae55f5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2ae55f53737ac0692eeaf304eb971142c37ff9b4))
+
+### [0.4.3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.2...v0.4.3) (2020-10-29)
+
+
+### Bug Fixes
+
+* поправил условие в if блоке [ref EPGUCORE-40088] ([dbe4e95](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/dbe4e95fbf96a4497dff2c6403bf940913e7ab24))
+
+### [0.4.2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.17...v0.4.2) (2020-10-29)
+
+
+### Bug Fixes
+
+* джобы для develop ветки перенесены на stage ветку и для последнего добавлен джоб сборки npm-версии ([73465c1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/73465c12ffcbbbba3e8320cf9ad7ff65ab9fdd1e))
+* добавил поддержку prevStep в action.directive, плюс небольшой рефактор [ref EPGUCORE-39850] ([2e7defe](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/2e7defef744dd76f24c6997dbd490ccfedec6ff8))
+* исправил вопрос о доступе камеры для десктопа [ref EPGUCORE-39414] ([ded678e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ded678ebaed6b046947ebaf65024cdf09fd53e8e))
+* поправил скрипт [ref EPGUCORE-40088] ([d060476](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d060476fb45adad86a1594b5359978d2c8361717))
+* поправил целевую ветку для мердж-реквестов в gitlab-ci ([a5742ea](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a5742ea49a5a0312917b21d59e39fcf845a44b69))
+* поправлен номер версии ([6be1016](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6be101697f59dd13d9defa995ae737075fea0926))
+* телефон стирался в случае ошибки перепривязки с бэка во время редактирования [ref EPGUCORE-39421] ([56f2797](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/56f27972274f2bce38783f7e7d0fdf7f15b641f8))
+* убрал 'глобальный' стиль border: 0 у button и добавил его на уровне компонентов, где нужно [ref EPGUCORE-38636] ([853f5b5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/853f5b593e4ea53e458910d9b6bbc340d9835fc1))
+
+### [0.4.9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.8...v0.4.9) (2020-10-29)
+
 ### [0.4.8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.19...v0.4.8) (2020-10-29)
 
 ### [0.4.7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.6...v0.4.7) (2020-10-29)

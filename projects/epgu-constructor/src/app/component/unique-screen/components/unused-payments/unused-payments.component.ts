@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../modal/modal.service';
 import { UsePaymentsModalComponent } from '../../../../modal/use-payment-modal/use-payments-modal.component';
@@ -18,10 +20,13 @@ export class UnusedPaymentsComponent implements OnInit {
   @Output() nextStepEvent = new EventEmitter<any>();
 
   orderId: string;
-  paymentsList: UnusedPaymentInterface[];
+  private paymentsList: BehaviorSubject<UnusedPaymentInterface[]> = new BehaviorSubject([]);
+  paymentsList$ = this.paymentsList.pipe(filter((v) => v.length > 0));
   paymentUIN: string;
 
   mockOrderId = '763444783';
+
+  tax: UnusedPaymentInterface;
 
   constructor(
     private modalService: ModalService,
@@ -46,17 +51,24 @@ export class UnusedPaymentsComponent implements OnInit {
     this.nextStepEvent.emit(data);
   }
 
+  next() {
+    if (this.tax) {
+      this.nextStep(JSON.stringify({ reusePaymentUin: this.tax.uin }));
+    }
+  }
+
   usePaymentsListData() {
     const value = JSON.parse(this.data.components[0].value);
     if (value.length) {
-      this.paymentsList = value;
-      this.showModal();
+      this.paymentsList.next(value);
+      // this.paymentsList = value;
+      // this.showModal();
     }
   }
 
   showModal() {
     this.modalService.openModal(UsePaymentsModalComponent, {
-      paymentsList: this.paymentsList,
+      paymentsList: this.paymentsList.getValue(),
       usePaymentHandler: this.usePayment,
       skipPaymentHandler: this.cancelUsePayment,
     });
@@ -64,8 +76,9 @@ export class UnusedPaymentsComponent implements OnInit {
 
   getListPaymentsInfoSuccess = (data) => {
     if (data.length) {
-      this.paymentsList = data;
-      this.showModal();
+      this.paymentsList.next(data);
+      // this.paymentsList = data;
+      // this.showModal();
     } else {
       // TODO: должно заменить вызов usePaymentsListData, когда будет работать rest api
       // this.navigationService.prevStep.next();
@@ -80,6 +93,7 @@ export class UnusedPaymentsComponent implements OnInit {
   };
 
   public ngOnInit() {
+    console.log(this.data);
     const { orderId } = this.screenService.getStore();
     this.orderId = orderId;
     this.listPaymentsService
