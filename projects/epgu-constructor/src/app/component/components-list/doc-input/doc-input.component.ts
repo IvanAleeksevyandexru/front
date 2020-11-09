@@ -1,13 +1,18 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
 import { ValidationShowOn } from 'epgu-lib';
 
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 
-import { DocInputControl, DocInputField, DocInputFormFields } from './doc-input.types';
+import {
+  DocInputControl,
+  DocInputField,
+  DocInputFields,
+  DocInputFormFields,
+} from './doc-input.types';
 import { ComponentListFormService } from '../services/component-list-form.service';
 
 const moment = moment_;
@@ -28,14 +33,16 @@ export class DocInputComponent implements OnInit, AfterViewInit {
 
   fields: { [fieldName: string]: DocInputField };
   fieldsNames = ['series', 'number', 'date', 'emitter'];
+  seriesNumDateGroup = 'seriesNumDate'; // name of nested form group
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
-  form = new FormGroup({});
+  form: FormGroup;
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
     private formService: ComponentListFormService,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -71,19 +78,21 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     this.form.valueChanges
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        map((formFields: DocInputFormFields) => this.formatDateValue(formFields)),
+        map((formFields: DocInputFormFields) => this.formatFormFields(formFields)),
       )
       .subscribe((formFields) => this.emitToParentForm(formFields));
   }
 
-  formatDateValue(formFields: DocInputFormFields): DocInputFormFields {
+  formatFormFields(formFields: DocInputFormFields): DocInputFields {
+    const { seriesNumDate } = formFields;
     return {
-      ...formFields,
-      date: formFields.date ? moment(formFields.date).toISOString(true) : null,
+      ...seriesNumDate,
+      date: seriesNumDate.date ? moment(seriesNumDate.date).toISOString(true) : null,
+      emitter: formFields.emitter,
     };
   }
 
-  emitToParentForm(formFields: DocInputFormFields): void {
+  emitToParentForm(formFields: DocInputFields): void {
     if (this.form.valid) {
       this.data.get('value').setValue(formFields);
     } else {
@@ -92,8 +101,8 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     this.formService.emmitChanges();
   }
 
-  private getParsedComponentValues(): DocInputFormFields {
-    const componentValues: DocInputFormFields = JSON.parse(this.data.value.value || '{}');
+  private getParsedComponentValues(): DocInputFields {
+    const componentValues: DocInputFields = JSON.parse(this.data.value.value || '{}');
     return {
       ...componentValues,
       date: componentValues.date ? new Date(componentValues.date) : null,
@@ -102,10 +111,34 @@ export class DocInputComponent implements OnInit, AfterViewInit {
 
   addFormGroupControls(): void {
     const componentValues = this.getParsedComponentValues();
+
+    const seriesNumDate = {
+      [this.fieldsNames[0]]: null,
+      [this.fieldsNames[1]]: null,
+      [this.fieldsNames[2]]: null,
+    };
+    const emitter = {
+      [this.fieldsNames[3]]: null,
+    };
+
     this.fieldsNames.forEach((fieldName: string) => {
       const validators = this.getFormFieldValidators(fieldName);
-      this.form.addControl(fieldName, new FormControl(componentValues[fieldName], validators));
+
+      if (Object.prototype.hasOwnProperty.call(seriesNumDate, fieldName)) {
+        seriesNumDate[fieldName] = new FormControl(componentValues[fieldName], validators);
+      } else {
+        emitter[fieldName] = new FormControl(componentValues[fieldName], validators);
+      }
     });
+
+    this.form = this.fb.group({
+      [this.seriesNumDateGroup]: this.fb.group(seriesNumDate),
+      ...emitter,
+    });
+  }
+
+  isValidationShown(control: string | string[]): boolean {
+    return this.form.get(control).invalid && this.form.get(control).touched;
   }
 
   getFormFieldValidators(fieldName: string): ValidatorFn[] {
