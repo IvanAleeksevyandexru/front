@@ -154,7 +154,7 @@ export class PaymentService {
     const path = fiasCode.split('.'); // Путь к ответу
     const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, path));
 
-    return getPaymentRequestOptions(filterReg, attrs, this.config);
+    return getPaymentRequestOptions(filterReg, attrs);
   }
 
   /**
