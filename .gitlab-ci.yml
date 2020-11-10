@@ -120,9 +120,18 @@ Build:
     - yarn build --prod
     - /devops/notify/notify.sh fronted_new_master_available
   only:
-    - merge_requests
     - master
     - stage
+
+BuildMR:
+  stage: build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  script:
+    - yarn build --prod
+  only:
+    - merge_requests
 
 Build-image:
   stage: image
