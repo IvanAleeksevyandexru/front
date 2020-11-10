@@ -49,6 +49,21 @@
     }
   }
 
+  &__error-date {
+    margin-top: 8px;
+
+    & span {
+      @include typ-h6();
+    }
+
+    & div {
+      @include typ-plain-small();
+      color: $color-tela-rossa;
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+  }
+
   &__type {
     display: flex;
 
@@ -102,13 +117,5 @@
 
   &__newGeneration {
     text-align: center;
-
-    &__button {
-      @include typ-plain-text();
-      padding: 15px;
-      display: inline-block;
-      margin: 10px auto;
-      border: 0;
-    }
   }
 }

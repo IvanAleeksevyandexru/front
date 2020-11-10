@@ -10,6 +10,8 @@ export interface CompressionOptions {
   deepChecking?: boolean;
 }
 
+const unsupportedImageTypes = ['TIFF', 'TIF'];
+
 @Injectable()
 export class CompressionService {
 
@@ -319,15 +321,25 @@ export class CompressionService {
     canvas['height'] = 0;
   }
 
-  private async isAnImage(file: File | Blob, deepChecking?: boolean): Promise<boolean> {
-    const hasImageType = /^image/.test(file['type']);
-    if (!hasImageType) {
+  private async isValidImage(file: File | Blob, deepChecking?: boolean): Promise<boolean> {
+    const isValidImageType = this.isValidImageType(file);
+
+    if (!isValidImageType) {
       return false;
-    } else if (hasImageType && !deepChecking) {
+    } else if (isValidImageType && !deepChecking) {
       return true;
     } else {
       return await this.addImageProcess(file);
     }
+  }
+
+  isValidImageType(file: File | Blob): boolean {
+    const hasImageType = /^image/.test(file?.type);
+
+    const unsupportedTypesRegexp = new RegExp( unsupportedImageTypes.join( '|' ), 'i');
+    const hasSupportedType = !unsupportedTypesRegexp.test(file?.type);
+
+    return hasImageType && hasSupportedType;
   }
 
   private addImageProcess(file: File | Blob): Promise<boolean> {
@@ -339,7 +351,7 @@ export class CompressionService {
         URL.revokeObjectURL(objUrl);
         return resolve(true);
       };
-      img.onerror = () => {
+      img.onerror = (e) => {
         URL.revokeObjectURL(objUrl);
         return reject(false);
       };
@@ -445,8 +457,8 @@ export class CompressionService {
 
     if (!(file instanceof Blob)) {
       throw new Error('The file given is not an instance of Blob or File');
-    } else if (!await this.isAnImage(file, options.deepChecking)) {
-      throw new Error('The file given is not an image');
+    } else if (!await this.isValidImage(file, options.deepChecking)) {
+      throw new Error('The file given is not a valid image');
     }
 
     compressedFile = await this.compress(file, options);

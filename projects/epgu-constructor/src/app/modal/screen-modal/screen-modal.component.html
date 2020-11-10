@@ -1,4 +1,4 @@
-<ng-container *ngIf="screenModalService.playerLoaded$ | async">
+<ng-container *ngIf="showModal">
   <div class="modal-overlay">
     <div class="screen-modal">
       <div *ngIf="showCrossButton" class="screen-modal__cross-button" (click)="closeModal()"></div>

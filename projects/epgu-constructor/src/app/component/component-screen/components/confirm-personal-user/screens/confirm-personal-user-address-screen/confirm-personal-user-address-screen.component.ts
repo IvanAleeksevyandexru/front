@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
 
@@ -11,7 +12,7 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
   @Input() applicantAnswers: object;
   @Output() actionSelect = new EventEmitter();
 
-  constructor(private currentAnswersService: CurrentAnswersService) {}
+  constructor(private currentAnswersService: CurrentAnswersService, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     this.currentAnswersService.state = this.data.value;
@@ -33,7 +34,12 @@ export class ConfirmPersonalUserAddressScreenComponent implements OnInit {
     }
   }
 
-  handleDataChange(changes: any = JSON.stringify({ regDate: '', regAddr: '' })) {
+  handleDataChange(
+    changes: any = JSON.stringify({
+      regDate: this.datePipe.transform(Date.now(), 'dd.MM.yyyy'),
+      regAddr: '',
+    }),
+  ) {
     this.data.value = changes;
     if (changes) {
       this.currentAnswersService.isValid = true;

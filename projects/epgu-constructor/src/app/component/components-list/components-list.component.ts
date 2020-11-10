@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnChanges, Output, Input, SimpleChanges } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
-import { FormArray } from '@angular/forms';
+import { AbstractControl, FormArray } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import {
   CustomListDictionaries,
@@ -18,6 +18,12 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ScenarioErrorsDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { UtilsService as utils } from '../../shared/services/utils/utils.service';
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
+
+const halfWidthItemTypes = [
+  CustomScreenComponentTypes.DateInput,
+  CustomScreenComponentTypes.NewEmailInput,
+  CustomScreenComponentTypes.PhoneNumberChangeInput,
+];
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -67,6 +73,10 @@ export class ComponentsListComponent implements OnChanges {
 
   public getDictKeyByComp(component: CustomComponent): string {
     return utils.getDictKeyByComp(component);
+  }
+
+  public isHalfWidthItem(componentData: AbstractControl): boolean {
+    return halfWidthItemTypes.includes(componentData.value?.type);
   }
 
   private loadRepository(components: Array<CustomComponent>): void {

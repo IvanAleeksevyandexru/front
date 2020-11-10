@@ -11,7 +11,7 @@
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
           [data]="screenService.component"
           [applicantAnswers]="screenService.applicantAnswers"
-          (actionSelect)="nextStep()"
+          (actionSelect)="nextStep($event)"
         ></epgu-constructor-confirm-personal-user-address-screen>
 
         <epgu-constructor-confirm-personal-user-data
