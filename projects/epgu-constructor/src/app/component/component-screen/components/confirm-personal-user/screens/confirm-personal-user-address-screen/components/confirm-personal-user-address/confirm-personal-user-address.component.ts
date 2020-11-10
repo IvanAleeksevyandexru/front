@@ -96,7 +96,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   private getDate(regDate: string): Date {
-    const date = moment(regDate);
+    const date = moment(regDate, 'DDMMYYY');
     return date.isValid() ? date.toDate() : moment().toDate();
   }
 
