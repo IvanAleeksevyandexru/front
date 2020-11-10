@@ -33,6 +33,9 @@ export class NavigationService {
   prevStep = new Subject<Navigation>();
   prevStep$ = this.prevStep.asObservable();
 
+  skipStep = new Subject<Navigation>();
+  skipStep$ = this.skipStep.asObservable();
+
   redirectToProfileEdit(): void {
     if (this.isWebView) {
       window.location.href = '/profile/user';
