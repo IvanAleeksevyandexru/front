@@ -5,6 +5,7 @@ import { ToolsService } from '../../../../../shared/services/tools/tools.service
 import { ComponentScreenComponentTypes } from '../../../../component-screen-components.types';
 import { ConfirmPersonalUserAddressScreenComponent } from './confirm-personal-user-address-screen.component';
 import { ConfirmAddressInterface } from './interface/confirm-address.interface';
+import { DatePipe } from '@angular/common';
 
 
 describe('ConfirmPersonalUserAddressScreenComponent', () => {
@@ -26,7 +27,7 @@ describe('ConfirmPersonalUserAddressScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ ConfirmPersonalUserAddressScreenComponent ],
-      providers: [ CurrentAnswersService, ToolsService ]
+      providers: [ CurrentAnswersService, ToolsService, DatePipe ]
     })
     .compileComponents();
   }));
