@@ -1,12 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { PassportComponent } from './passport.component';
-import { EpguLibModule } from 'epgu-lib';
 import { FormsModule } from '@angular/forms';
-import { UnsubscribeService } from '../../../services/unsubscribe/unsubscribe.service';
-import { LabelComponent } from '../base/label/label.component';
-import { TextTransformDirective } from '../../directives/text-transform/text-transform.directive';
-import { TrimDirective } from '../../directives/trim/trim.directive';
+import { EpguLibModule } from 'epgu-lib';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { SharedModule } from '../../shared.module';
+import { PassportComponent } from './passport.component';
 
 describe('PassportComponent', () => {
   let component: PassportComponent;
@@ -14,9 +11,9 @@ describe('PassportComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ EpguLibModule, FormsModule ],
-      declarations: [ PassportComponent, LabelComponent, TextTransformDirective, TrimDirective ],
-      providers: [ UnsubscribeService ],
+      imports: [ EpguLibModule, FormsModule, SharedModule ],
+      declarations: [],
+      providers: [UnsubscribeService],
     })
     .compileComponents();
   }));

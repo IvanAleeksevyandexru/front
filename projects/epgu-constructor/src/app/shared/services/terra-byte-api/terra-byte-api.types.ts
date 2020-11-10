@@ -1,4 +1,4 @@
-import { TerraUploadedFile } from '../../../screen/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { TerraUploadedFile } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 /**
  * Интерфейс для опций файла, при получении обновлении или удалении
  */
@@ -21,11 +21,12 @@ export interface TerraUploadFileOptions extends TerraFileOptions {
  * Интерфейс для экспорта одного значения для компонента загрузки
  */
 export interface FileResponseToBackendUploadsItem {
-  uploadId: string;
+  uploadId?: string;
   value?: UploadedFile[]
   relatedUploads?: {
     uploads: FileResponseToBackendUploadsItem[]
   }
+  errors?: string[]
 }
 /**
  * Интерфейс для экспорта одного значения для компонента загрузки для связанных компонентов
@@ -67,7 +68,7 @@ export interface RelatedUploads extends FileUploadAttributes {
 /**
  * Интерфейс для типов загружаемых данных
  */
-export enum FileUploadItemTypes{
+export enum FileUploadItemTypes {
   single = 'single',
   cycle = 'cycle'
 }
@@ -79,6 +80,7 @@ export interface FileUploadItem {
   uploadId: string;
   type: FileUploadItemTypes;
   label: string;
+  title?: string;
   fileType: string[];
   maxFileCount?: number;
   maxSize?: number;
@@ -114,7 +116,7 @@ export interface UploadedFile {
 /***
  * Интерфейс для файла из списка файлов в хранилище террабайт
  */
-export interface TerabyteListItem{
+export interface TerabyteListItem {
   alternativeMimeTypes: string[];
   created: string;
   deleted: boolean;
@@ -148,8 +150,8 @@ export interface FileUploadEmitValue{
 /**
  * Интерфейс для события значений файлов применительно к блоку для загрузки
  */
-export interface FileUploadEmitValueForComponent{
+export interface FileUploadEmitValueForComponent {
   id: string;
   type: string;
-  uploads?: FileUploadEmitValue[]
+  uploads?: FileUploadEmitValue[];
 }

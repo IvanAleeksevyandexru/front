@@ -1,0 +1,23 @@
+<div class="data">
+  <div class="data__group data-group" *ngFor="let groupItem of preparedData">
+    <div class="flex-row">
+      <div class="data-group__title">{{ groupItem?.groupName }}</div>
+    </div>
+    <div class="data-group__items">
+      <div class="data__item data-item" *ngFor="let field of groupItem.fields">
+        <div class="data-item__label">{{ field.label }}</div>
+        <div class="data-item__value">{{ field.value }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="data-footer" *ngIf="screenService.action.type === actionType.profileEdit">
+  <div class="divider"></div>
+  <button class="btn-edit" epgu-constructor-action [action]="screenService.action$ | async">
+    <img
+      class="btn-edit__icon"
+      src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"
+    />
+    <span class="btn-edit__text">{{ (screenService.action$ | async).label }}</span>
+  </button>
+</div>

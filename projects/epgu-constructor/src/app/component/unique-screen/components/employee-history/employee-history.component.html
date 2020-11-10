@@ -1,0 +1,123 @@
+<epgu-constructor-screen-container class="employee-history">
+
+  <div class="screen-body">
+    <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
+    <section
+      class="employee-history__generation"
+      *ngFor="let generation of employeeFormService.employeeHistoryForm.controls; let i = index">
+      <div
+        class="icon-close"
+        *ngIf="employeeFormService.employeeHistoryForm.controls.length !== 1"
+        (click)="employeeFormService.removeGeneration(i)"
+      ></div>
+      <div class="employee-history__type">
+        <div>
+          <lib-radio *ngFor="let role of ds"
+                     [name]="i + '_generationType'"
+                     [formControl]="generation.get('type')"
+                     [labelText]="role.label"
+                     [value]="role.type"
+          ></lib-radio>
+        </div>
+      </div>
+      <div class="employee-history__date">
+        <div>
+          <epgu-constructor-label for="from">Укажите дату с (месяц, год)</epgu-constructor-label>
+          <lib-month-picker
+            [id]="i + '_minDate'"
+            [formControl]="generation.get('from')"
+            [minMonth]="monthsService.minDateFrom"
+            [maxMonth]="monthsService.maxDate"
+            [invalid]="generation.get('from').invalid"
+            [validationShowOn]="validationShowOn"
+            [hideTillNowAvailable]="true"
+          ></lib-month-picker>
+        </div>
+
+        <div>
+          <ng-container *ngIf="!generation.get('checkboxToDate').value">
+            <epgu-constructor-label for="to">Укажите дату по (месяц, год)</epgu-constructor-label>
+            <lib-month-picker
+              [id]="i + '_maxDate'"
+              [formControl]="generation.get('to')"
+              [minMonth]="generation.get('minDateTo').value || monthsService.minDateTo"
+              [maxMonth]="monthsService.maxDate"
+              [invalid]="generation.get('to').invalid"
+              [validationShowOn]="validationShowOn"
+              [hideTillNowAvailable]="true"
+            ></lib-month-picker>
+          </ng-container>
+        </div>
+      </div>
+      <div class="employee-history__input">
+        <lib-checkbox
+          [id]="i + '_checkboxToDate'"
+          [formControl]="generation.get('checkboxToDate')"
+          labelText="По настоящее время"
+        ></lib-checkbox>
+      </div>
+      <div class="employee-history__input"
+           *ngIf="availableControlsOfType(generation.get('type').value)?.position as position">
+        <epgu-constructor-label for="position">{{ position }}</epgu-constructor-label>
+        <lib-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
+          [name]="i + '_position'"
+          [formControl]="generation.get('position')"
+          [invalid]="generation.get('position').invalid"
+          [validationShowOn]="validationShowOn"
+        ></lib-plain-input>
+      </div>
+      <div class="employee-history__input"
+           *ngIf="availableControlsOfType(generation.get('type').value)?.place as place">
+        <epgu-constructor-label for="place">{{ place }}</epgu-constructor-label>
+        <lib-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
+          [name]="i + '_place'"
+          [formControl]="generation.get('place')"
+          [invalid]="generation.get('place').invalid"
+          [validationShowOn]="validationShowOn"
+        ></lib-plain-input>
+      </div>
+      <div class="employee-history__input"
+           *ngIf="availableControlsOfType(generation.get('type').value)?.address as address">
+        <epgu-constructor-label [for]="'address'">{{ address }}</epgu-constructor-label>
+        <lib-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType"
+          [name]="i + '_address'"
+          [formControl]="generation.get('address')"
+          [invalid]="generation.get('address').invalid"
+          [validationShowOn]="validationShowOn"
+        ></lib-plain-input>
+      </div>
+    </section>
+    <section class="employee-history__newGeneration">
+      <button class="btn btn--light employee-history__newGeneration__button"
+              (click)="employeeFormService.newGeneration()"
+      >Добавить еще</button>
+    </section>
+    <section
+      *ngIf="(monthsService.isMonthComplete$ | async) && employeeFormService.employeeHistoryForm.valid"
+      class="employee-history__completed">
+      <div class="employee-history__completed__icon"></div>
+      <div class="employee-history__completed__msg">Вы заполнили {{ monthsService.years }} лет</div>
+    </section>
+  </div>
+
+
+
+  <div class="screen-footer">
+    <lib-button
+      (click)="getNextScreen()"
+      [disabled]="(monthsService.isMonthComplete$ | async) === false || employeeFormService.employeeHistoryForm.invalid"
+      class="btn__submit"
+    >
+        {{ display?.submitLabel || 'Продолжить' }}
+    </lib-button>
+  </div>
+</epgu-constructor-screen-container>

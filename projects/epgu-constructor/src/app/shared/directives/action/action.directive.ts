@@ -1,17 +1,19 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import {
-  ActionType,
-  ComponentDtoAction,
-} from '../../../services/api/form-player-api/form-player-api.types';
-import { ActionApiService } from '../../../services/api/action-api/action-api.service';
+import { filter } from 'rxjs/operators';
 import { ScreenService } from '../../../screen/screen.service';
-import { Navigation, NavigationOptions } from '../../../form-player.types';
-import { NavigationService } from '../../services/navigation/navigation.service';
-import { UtilsService } from '../../../services/utils/utils.service';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { Answer } from '../../types/answer';
-import { ConfigService } from '../../../config/config.service';
+import {
+  ActionApiResponse, ActionDTO,
+  ActionType,
+  ComponentDtoAction
+} from '../../../form-player/services/form-player-api/form-player-api.types';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { UtilsService } from '../../services/utils/utils.service';
+import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
+import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
+
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -24,37 +26,60 @@ export class ActionDirective {
   }
 
   constructor(
-    private actionApiService: ActionApiService,
+    private actionApiService: FormPlayerApiService,
     private screenService: ScreenService,
-    private navigationService: NavigationService,
+    private navService: NavigationService,
+    private navModalService: NavigationModalService,
     private utilsService: UtilsService,
-    private configService: ConfigService,
-  ) {
-  }
+  ) {}
 
   private switchAction(): void {
+    console.log(this.action.type);
     switch (this.action.type) {
       case ActionType.download:
         this.downloadAction();
         break;
+      case ActionType.prevStepModal:
+        this.navigateModal('prevStep');
+        break;
+      case ActionType.nextStepModal:
+        this.navigateModal('nextStep');
+        break;
+      case ActionType.prevStep:
+        this.navigate('prevStep');
+        break;
       case ActionType.nextStep:
-        this.nextStep();
+        this.navigate('nextStep');
         break;
       case ActionType.redirectToLK:
-        this.redirectToLK();
+        this.navService.redirectToLK();
+        break;
+      case ActionType.profileEdit:
+        this.navService.redirectToProfileEdit();
+        break;
+      case ActionType.home:
+        this.navService.redirectToHome();
         break;
     }
   }
 
-  private sendAction<T>(responseType?: 'blob'): Observable<T | Blob> {
-    return this.actionApiService.send<T>(
-      this.action.action,
-      this.screenService.getStore(),
-      responseType,
-    );
+  private sendAction<T>(): Observable<ActionApiResponse<T>> {
+    const data = this.getActionDTO();
+
+    return this.actionApiService.sendAction<T>(this.action.action, data);
   }
 
-  private nextStep(): void {
+  navigate(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    this.navService[stepType].next(navigation);
+  }
+
+  navigateModal(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    this.navModalService[stepType].next(navigation);
+  }
+
+  private prepareNavigationData(): Navigation {
     const options = this.getOptions();
 
     const navigation: Navigation = {
@@ -62,7 +87,7 @@ export class ActionDirective {
       options,
     };
 
-    this.navigationService.nextStep.next(navigation);
+    return navigation;
   }
 
   private getOptions(): NavigationOptions {
@@ -90,17 +115,18 @@ export class ActionDirective {
   }
 
   private downloadAction(): void {
-    this.sendAction<Blob>('blob').subscribe(
-      (value) => {
-        this.utilsService.downloadFile(value);
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
+    this.sendAction<string>()
+      .pipe(filter((response) => !response.errorList.length))
+      .subscribe(
+        ({ responseData }) => this.utilsService.downloadFile(responseData),
+        (error) => console.log(error),
+      );
   }
 
-  private redirectToLK(): void {
-    window.location.href = `${this.configService.lkUrl}/profile/personal`;
+  private getActionDTO(): ActionDTO {
+    return {
+      scenarioDto: this.screenService.getStore(),
+      additionalParams: {},
+    };
   }
 }

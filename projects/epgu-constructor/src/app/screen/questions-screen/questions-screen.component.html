@@ -1,26 +1,27 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <epgu-constructor-screen-container>
 
-  <div class="question__wrapper">
-    <epgu-constructor-page-name>{{screenService.header$ | async}}</epgu-constructor-page-name>
+  <div class="screen-body quiz__content">
+    <epgu-constructor-page-name class="quiz__head">
+      {{screenService.header$ | async}}
+    </epgu-constructor-page-name>
     <epgu-constructor-output-html
-      class="question__wrapper__label"
+      class="quiz__text"
       *ngIf="screenService.component?.label"
       [html]="screenService.component?.label | imgPrefixer"
       [clarifications]="screenService.component?.attrs?.clarifications"
     >
     </epgu-constructor-output-html>
+  </div>
 
-    <div class="answer">
-      <ng-container *ngFor="let answer of screenService.component?.attrs?.actions">
-        <epgu-constructor-answer-button
-          *ngIf="!answer.hidden"
-          class="answer__item"
-          (click)="answerChoose(answer)"
-          [data]="answer">
-        </epgu-constructor-answer-button>
-      </ng-container>
-    </div>
+  <div class="screen-footer quiz__answers">
+    <ng-container *ngFor="let answer of screenService.component?.attrs?.actions">
+      <epgu-constructor-answer-button
+        *ngIf="!answer.hidden"
+        class="quiz__answer"
+        (click)="answerChoose(answer)"
+        [data]="answer">
+      </epgu-constructor-answer-button>
+    </ng-container>
   </div>
 
 </epgu-constructor-screen-container>

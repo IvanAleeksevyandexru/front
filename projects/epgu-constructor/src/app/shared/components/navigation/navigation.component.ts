@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationService } from '../../services/navigation/navigation.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
 
 @Component({
   selector: 'epgu-constructor-navigation',
@@ -7,11 +8,16 @@ import { NavigationService } from '../../services/navigation/navigation.service'
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnInit {
-  constructor(private navigationService: NavigationService) {}
+  isFirstScreen = () => this.screenService.display.firstScreen;
+  constructor(private navService: NavigationService, private screenService: ScreenService) {}
 
   ngOnInit(): void {}
 
   clickGoBack() {
-    this.navigationService.clickToBack.next();
+    if (this.isFirstScreen()) {
+      this.navService.redirectToHome();
+    } else {
+      this.navService.clickToBack.next();
+    }
   }
 }

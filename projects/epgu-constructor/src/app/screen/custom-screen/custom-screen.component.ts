@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { NavigationPayload } from '../../form-player.types';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { NavigationPayload } from '../../form-player/form-player.types';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { Screen } from '../screen.types';
 
@@ -17,12 +17,7 @@ const moment = moment_;
 })
 export class CustomScreenComponent implements OnInit, Screen {
   dataToSend: NavigationPayload;
-  isCycledFields: boolean;
-  cycledValues: any;
   isValid: boolean;
-
-  private currentCycledFields = this.screenService?.currentCycledFields || {};
-  private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
   constructor(
     private navigationService: NavigationService,
@@ -59,7 +54,7 @@ export class CustomScreenComponent implements OnInit, Screen {
   }
 
   changeComponentsList(changes: { [key: string]: any }): void {
-    this.isValid = Object.values(changes).every((item) => item.valid);
+    this.isValid = Object.values(changes).every((item) => item.isValid);
     this.dataToSend = this.getFormattedData(changes);
   }
 

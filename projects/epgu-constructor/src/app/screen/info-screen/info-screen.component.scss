@@ -1,13 +1,9 @@
-@import "../../../styles/core/functions";
-@import "../../../styles/core/variables";
-
+@import '../../../styles/core/functions';
+@import '../../../styles/core/variables';
+@import '../../../styles/core';
 
 :host {
   display: block;
-}
-
-.nav {
-  @include navigation-mt();
 }
 
 .info {
@@ -15,26 +11,25 @@
     margin-bottom: 24px;
   }
 
-  &__body {
-    margin-bottom: 24px;
-  }
-
   &__submit {
-    text-align: center;
-
-    &::ng-deep button {
-      min-width: 100px;
-    }
-  }
-}
-
-.info-footer {
-  display: flex;
-  justify-content: center;
-  margin-top: 32px;
-
-  @include phones-down {
     margin-top: 24px;
+    text-align: center;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &__action {
+    margin-top: 24px;
+    @include tablets-up {
+      margin: 24px 8px 0;
+    }
+    @include phones-down {
+      margin-top: 32px;
+    }
   }
 }
 
@@ -44,4 +39,30 @@
 
 .screen-container-mt {
   margin-top: $navigation-mb;
+}
+
+.gray-theme {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  padding: 0;
+  background-color: transparent;
+  box-shadow: none;
+
+  .divider {
+    display: none;
+  }
+
+  &::ng-deep ul {
+    background-color: $color-white;
+    border-radius: 8px;
+    box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+    margin-left: 0;
+    padding: 24px 24px 8px;
+
+    li {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+  }
 }

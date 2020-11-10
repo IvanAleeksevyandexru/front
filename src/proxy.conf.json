@@ -1,4 +1,12 @@
 {
+  "/node-api/core": {
+    "target": "http://localhost:3000",
+    "secure": false
+  },
+  "/api/pgu-service-config": {
+    "target": "http://localhost:3000",
+    "secure": false
+  },
   "/api": {
     "target": "http://localhost:8080",
     "secure": false

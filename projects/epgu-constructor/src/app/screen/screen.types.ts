@@ -1,6 +1,6 @@
-import { NavigationPayload } from '../form-player.types';
+import { NavigationPayload } from '../form-player/form-player.types';
 import { Answer } from '../shared/types/answer';
-import { ScenarioDto } from '../services/api/form-player-api/form-player-api.types';
+import { ScenarioDto } from '../form-player/services/form-player-api/form-player-api.types';
 
 /**
  * Интерфейс для базового компонента
@@ -16,27 +16,8 @@ export interface ComponentBase {
   hint?: string;
 }
 
-export interface Display {
-  components: Array<ComponentBase>;
-  header: string;
-  label?: string;
-  id: string;
-  name: string;
-  submitLabel: string;
-  terminal: boolean;
-  type: ScreenTypes
-}
-
 export interface CachedAnswers {
   [key: string]: Answer
-}
-
-export interface ScenarioErrors {
-  [key: string]: string
-}
-
-export interface CurrentCycledFields {
-  [key: string]: string
 }
 
 export interface ScreenStore extends Partial<ScenarioDto>{ }

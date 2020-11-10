@@ -4,7 +4,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
-import { CustomScreenComponentTypes } from '../screen/custom-screen/custom-screen.types';
+import { CustomScreenComponentTypes } from '../component/components-list/components-list.types';
+import { ComponentDto } from '../form-player/services/form-player-api/form-player-api.types';
+import { UtilsService } from '../shared/services/utils/utils.service';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -14,7 +16,6 @@ export class ScreenService extends ScreenContent {
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   private isShownSubject = new BehaviorSubject<boolean>(this.isShown);
-  private screenStoreSubject = new BehaviorSubject<ScreenStore>(this.screenStore);
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
   public isShown$: Observable<boolean> = this.isShownSubject.asObservable();
@@ -34,7 +35,6 @@ export class ScreenService extends ScreenContent {
     this.screenStore = store;
     this.loadValueFromCachedAnswer();
     this.initComponentStateService();
-    this.screenStoreSubject.next(this.screenStore);
     this.updateScreenContent(store);
   }
 
@@ -44,7 +44,6 @@ export class ScreenService extends ScreenContent {
    */
   public updateScreenStore(newState: ScreenStore): void {
     this.screenStore = { ...this.screenStore, ...newState };
-    this.screenStoreSubject.next(this.screenStore);
     this.updateScreenContent(newState);
   }
 
@@ -72,6 +71,14 @@ export class ScreenService extends ScreenContent {
     this.screenStore.display.components
       .forEach(item => {
         const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(item); // TODO костыль от backend(-a);
+        const hasPresetTypeRef = item.attrs?.preset?.type === 'REF';
+
+        if (hasPresetTypeRef && shouldBeTakenFromTheCache) {
+          const component = this.getPresetValue(item);
+          components.push(component);
+          return;
+        }
+
         const cachedValue = shouldBeTakenFromTheCache && this.cachedAnswersService
           .getCachedValueById(this.screenStore.cachedAnswers, item.id);
         const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value, item.type) } : item;
@@ -116,5 +123,17 @@ export class ScreenService extends ScreenContent {
    */
   public getStore(): ScreenStore {
     return this.screenStore;
+  }
+
+  /**
+   * Возвращает данные из cachedAnswers, если в JSON есть preset.type = REF
+   */
+  private getPresetValue(item: ComponentDto): ComponentDto {
+    const [id, path] = item.attrs.preset.value.split(/\.(.+)/);
+    const cachedValue = this.cachedAnswersService
+      .getCachedValueById(this.screenStore.cachedAnswers, id) || '{}';
+    const value = UtilsService.getObjectProperty(JSON.parse(cachedValue), path, item.value);
+
+    return { ...item, value };
   }
 }

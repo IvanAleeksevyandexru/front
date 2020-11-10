@@ -1,0 +1,25 @@
+<epgu-constructor-screen-container>
+
+  <div class="screen-body">
+    <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
+
+    <epgu-constructor-file-upload
+      [objectId]="screenService.orderId$ | async"
+      [applicantAnswers]="applicantAnswers"
+      [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
+      [attributes]="data.attrs"
+      (newValueSet)="handleNewValueSet($event)"
+    >
+    </epgu-constructor-file-upload>
+  </div>
+
+  <div class="screen-footer">
+    <lib-button
+      [showLoader]="isLoading"
+      [disabled]="disabled"
+      (click)="nextScreen()"
+      class="btn__submit">
+      {{ submitLabel || "Продолжить" }}
+    </lib-button>
+  </div>
+</epgu-constructor-screen-container>

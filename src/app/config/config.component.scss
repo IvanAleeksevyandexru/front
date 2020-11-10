@@ -4,7 +4,7 @@
   margin: 40px auto;
   max-width: 592px;
   width: 100%;
-  padding: 0 16px;
+  padding: 16px;
 
   &__input {
     margin-bottom: 20px;
@@ -19,12 +19,11 @@
   }
 
   &__cta-wrapper {
-    height: 50px;
+    text-align: right;
   }
 
   &__cta {
     display: inline-block;
     margin: 10px 0 0 10px;
-    float: right;
   }
 }

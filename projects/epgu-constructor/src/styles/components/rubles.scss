@@ -1,0 +1,21 @@
+// TODO вынести в глобальную область и избавиться от mixin!
+@mixin rubles($class-name, $background-path) {
+  #{$class-name}{
+    &::ng-deep .rubles{
+      display: inline-block;
+      position: relative;
+      margin-right: 14px;
+    }
+
+    &::ng-deep .rubles::after{
+      content: "";
+      width: 13px;
+      height: 13px;
+      position: absolute;
+      right: -14px;
+      top: 5px;
+      background: no-repeat center center url($background-path);
+      background-size: contain;
+    }
+  }
+}

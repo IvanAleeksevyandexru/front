@@ -1,6 +1,6 @@
-<epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 <epgu-constructor-screen-container>
-  <form class="inner" [formGroup]="form">
+
+  <div class="screen-body">
     <div *ngIf="screenService.header$ | async as header" class="head">
       <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
     </div>
@@ -10,31 +10,21 @@
         <epgu-constructor-confirm-personal-user-address-screen
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
           [data]="screenService.component"
-          [currentCycledFields]="screenService.currentCycledFields"
           [applicantAnswers]="screenService.applicantAnswers"
           (actionSelect)="nextStep()"
         ></epgu-constructor-confirm-personal-user-address-screen>
 
-        <epgu-constructor-confirm-personal-user-data-screen
+        <epgu-constructor-confirm-personal-user-data
           *ngSwitchCase="isUserData()"
-          [data]="screenService.component"
-          [errors]="screenService.componentErrors"
-        >
-        </epgu-constructor-confirm-personal-user-data-screen>
+          [data]="screenService.component">
+        </epgu-constructor-confirm-personal-user-data>
 
-        <epgu-constructor-confirm-personal-user-email-screen
-          *ngSwitchCase="screenComponentName.confirmPersonalUserEmail"
+        <epgu-constructor-confirm-personal-user-phone-email
+          *ngSwitchCase="isUserContactData()"
           [data]="screenService.component"
           [errors]="screenService.componentErrors"
         >
-        </epgu-constructor-confirm-personal-user-email-screen>
-
-        <epgu-constructor-confirm-personal-user-phone-screen
-          *ngSwitchCase="screenComponentName.confirmPersonalUserPhone"
-          [data]="screenService.component"
-          [errors]="screenService.componentErrors"
-        >
-        </epgu-constructor-confirm-personal-user-phone-screen>
+        </epgu-constructor-confirm-personal-user-phone-email>
 
         <epgu-constructor-temporary-registration-addr-screen
           *ngSwitchCase="screenComponentName.registrationAddr"
@@ -46,29 +36,16 @@
 
         <epgu-constructor-add-passport
           *ngSwitchCase="screenComponentName.passportLookup"
-          [currentCycledFields]="screenService.currentCycledFields"
           [data]="screenService.component"
         ></epgu-constructor-add-passport>
 
-        <epgu-constructor-mvd-giac
-          *ngSwitchCase="screenComponentName.mvdGiac"
-          [applicantAnswers]="screenService.applicantAnswers"
-          [data]="screenService.component"
-        ></epgu-constructor-mvd-giac>
-
         <epgu-constructor-country-selection
           *ngSwitchCase="screenComponentName.countryApostil"
-          [form]="form"
           [data]="screenService.component"
           (changeComponentSettings)="changeComponentSettings($event)"
           (changeComponentData)="changedComponentData($event)"
         >
         </epgu-constructor-country-selection>
-
-        <epgu-constructor-doc-input
-          *ngSwitchCase="screenComponentName.docInput"
-          [data]="screenService.component"
-        ></epgu-constructor-doc-input>
 
         <epgu-constructor-select-children-screen
           *ngSwitchCase="screenComponentName.childrenListUnder14"
@@ -83,35 +60,37 @@
         ></epgu-constructor-select-children-screen>
       </ng-container>
     </epgu-constructor-screen-pad>
+  </div>
 
-    <div class="footer">
+    <div class="screen-footer">
       <ng-container
-      *ngIf="(screenService.componentType$ | async) === screenComponentName.divorceConsent"
-    >
-      <lib-button
-        *ngFor="let action of screenService.actions$ | async"
-        epgu-constructor-action
-        [action]="action"
-        class="footer__btn-action"
-        color="white"
+        *ngIf="(screenService.componentType$ | async) === screenComponentName.divorceConsent"
       >
-        <div class="secondary-font">
-          {{ action.label }}
-        </div>
-      </lib-button>
-    </ng-container>
+        <lib-button
+          *ngFor="let action of screenService.actions$ | async"
+          epgu-constructor-action
+          [action]="action"
+          class="footer__btn-action"
+          color="white"
+        >
+          <div class="secondary-font">
+            {{ action.label }}
+          </div>
+        </lib-button>
+      </ng-container>
 
       <lib-button
         *ngIf="componentSetting.displayContinueBtn && (screenService.isShown$ | async)"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
-        class="footer__btn-submit"
+        class="btn__submit"
         [disabled]="!currentAnswersService.isValid || (screenService.isLoading$ | async)"
       >
         <div class="secondary-font">
           {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
         </div>
       </lib-button>
+
       <div *ngIf="componentSetting.displayWarningAnswers" class="footer__warning-answers">
         <epgu-constructor-answer-button
           (click)="nextStep()"
@@ -126,5 +105,4 @@
         </epgu-constructor-answer-button>
       </div>
     </div>
-  </form>
 </epgu-constructor-screen-container>

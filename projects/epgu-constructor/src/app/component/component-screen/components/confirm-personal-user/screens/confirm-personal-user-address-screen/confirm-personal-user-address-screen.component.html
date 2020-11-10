@@ -1,0 +1,12 @@
+<epgu-constructor-confirm-personal-user-address
+  [data]="data"
+  (dataEditedEvent)="handleDataChange($event)"
+></epgu-constructor-confirm-personal-user-address>
+
+<epgu-constructor-confirm-personal-user-button
+  class="confirm-personal-user-button"
+  *ngFor="let action of data?.attrs?.actions"
+  (tap)="clickToAction(action)"
+>
+  {{ action.label }}
+</epgu-constructor-confirm-personal-user-button>

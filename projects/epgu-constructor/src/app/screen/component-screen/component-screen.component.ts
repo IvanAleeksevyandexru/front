@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { CurrentAnswersService } from '../current-answers.service';
-import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { ComponentScreenComponentTypes } from './component-screen.types';
+import { Screen } from '../screen.types';
+import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -30,21 +29,16 @@ export class ComponentScreenComponent implements OnInit, Screen {
     displayWarningAnswers: false,
   };
   componentData = null;
-  form: FormGroup;
-  isCycledFields = false;
 
   constructor(
     private navigationService: NavigationService,
     public currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
-    private fb: FormBuilder,
     private cycledFieldsService: CycledFieldsService,
   ) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group({});
-
     this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
@@ -109,6 +103,16 @@ export class ComponentScreenComponent implements OnInit, Screen {
       ComponentScreenComponentTypes.confirmPersonalUserData,
       ComponentScreenComponentTypes.confirmAnotherUserData,
       ComponentScreenComponentTypes.confirmChildData,
+    ].includes(type);
+
+    return hasType ? type : false;
+  }
+
+  isUserContactData(): boolean | ComponentScreenComponentTypes {
+    const type = this.screenService.componentType as ComponentScreenComponentTypes;
+    const hasType = [
+      ComponentScreenComponentTypes.confirmPersonalUserPhone,
+      ComponentScreenComponentTypes.confirmPersonalUserEmail,
     ].includes(type);
 
     return hasType ? type : false;

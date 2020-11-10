@@ -1,0 +1,114 @@
+@import 'src/styles/core/palettes';
+@import 'src/styles/core/functions';
+@import 'src/styles/core/typography';
+
+.employee-history {
+  &__generation {
+    @include shadow-second();
+    border-radius: $border-xl;
+    padding: $screen-pad-p;
+    margin-bottom: $screen-pad-p;
+    background: $color-white;
+
+    .icon-close {
+      display: flex;
+      margin-left: auto;
+      cursor: pointer;
+    }
+  }
+
+  &__completed {
+    display: flex;
+    &__icon {
+      margin-left: auto;
+      width: 33px;
+      height: 32px;
+      background-image: url('../../../../../assets/icons/svg/complete_form.svg');
+    }
+
+    &__msg {
+      @include typ-h5();
+      padding-top: 5px;
+      margin-right: auto;
+      margin-left: 16px;
+    }
+  }
+
+  &__footer {
+    &__msg {
+      color: $color-gosred;
+      padding: $screen-pad-p;
+    }
+  }
+
+  &__removeGeneration {
+    .button-close {
+      background: none;
+      cursor: pointer;
+      border: 0;
+    }
+  }
+
+  &__type {
+    display: flex;
+
+    & > div:not(.employee-history__removeGeneration) {
+      flex: 1;
+    }
+
+    lib-radio {
+      display: block;
+      margin-bottom: 16px;
+    }
+  }
+
+  &__date {
+    &__hint {
+      display: none;
+    }
+
+    & > div:first-child {
+      margin-bottom: $screen-pad-p;
+    }
+
+    @include phones-up() {
+      display: flex;
+
+      & > div {
+        flex: 1;
+
+        &:first-child {
+          margin-bottom: 0;
+        }
+
+        &:not(:first-child) {
+          margin-left: $screen-pad-p;
+        }
+      }
+
+      &__hint {
+        color: $color-text-helper;
+        @include typ-plain-small();
+        margin-top: 8px;
+        display: block;
+      }
+    }
+  }
+
+  &__date,
+  &__input {
+    margin-bottom: $screen-pad-p;
+  }
+
+  &__newGeneration {
+    text-align: center;
+
+    &__button {
+      @include typ-plain-text();
+      padding: 15px;
+      display: inline-block;
+      margin: 10px auto;
+      border: 0;
+    }
+  }
+}

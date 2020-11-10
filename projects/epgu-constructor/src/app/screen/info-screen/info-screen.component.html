@@ -1,58 +1,50 @@
-<epgu-constructor-navigation
-  *ngIf="(screenService.terminal$ | async) === false"
-  class="nav"
-></epgu-constructor-navigation>
 <epgu-constructor-screen-container
-  [ngClass]="(screenService.terminal$ | async) ? 'screen-container-mt' : ''"
+  [show-nav]="(screenService.terminal$ | async) === false"
+  [class.screen-container-mt]="screenService.terminal$ | async"
 >
-  <epgu-constructor-screen-pad>
-    <epgu-constructor-page-name class="info__head">{{
-      screenService.header$ | async
-    }}</epgu-constructor-page-name>
-
-    <hr class="divider" />
-
-    <div class="info__body">
-      <ng-container [ngSwitch]="screenService.componentType$ | async">
-        <epgu-constructor-info-screen-body
-          *ngSwitchCase="infoScreenComponent.info"
-          [data]="screenService.component"
-        >
-        </epgu-constructor-info-screen-body>
-      </ng-container>
-    </div>
-
-    <epgu-constructor-info-screen-button
-      *ngFor="let action of bodyActions"
-      epgu-constructor-action
-      [action]="action"
-      >{{ action.label }}
-    </epgu-constructor-info-screen-button>
-
-    <div class="info__submit">
-      <lib-button
-        *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
-        [showLoader]="screenService.isLoading$ | async"
-        (click)="nextStep()"
-        [disabled]="screenService.isLoading$ | async"
-      >
-        {{screenService.submitLabel$ | async}}
-      </lib-button>
-    </div>
-  </epgu-constructor-screen-pad>
-
-  <div class="info-footer">
-    <lib-button
-      *ngFor="let action of footerActions"
-      epgu-constructor-action
-      [action]="action"
+    <epgu-constructor-screen-pad
+      class="screen-body"
+      [ngClass]="screenService.displayCssClass$ | async"
     >
-      {{ action.label }}
-    </lib-button>
-  </div>
+      <epgu-constructor-page-name class="info__head">{{
+        screenService.header$ | async
+        }}</epgu-constructor-page-name>
+
+      <hr class="divider" />
+
+      <epgu-constructor-info-screen-body
+        [data]="screenService.component"
+      >
+      </epgu-constructor-info-screen-body>
+
+      <div class="info__actions"
+           *ngIf="this.actionButtons.length">
+        <lib-button
+          *ngFor="let action of this.actionButtons"
+          class="info__action btn__submit"
+          epgu-constructor-action
+          [action]="action"
+        >
+          {{ action.label }}
+        </lib-button>
+      </div>
+
+      <div class="info__submit">
+        <lib-button
+          class="btn__submit"
+          *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
+          [showLoader]="screenService.isLoading$ | async"
+          (click)="nextStep()"
+          [disabled]="screenService.isLoading$ | async"
+        >
+          {{screenService.submitLabel$ | async}}
+        </lib-button>
+      </div>
+    </epgu-constructor-screen-pad>
 
   <!-- NOTICE: убрано по требованию до 25.10.20 -->
   <!-- <div *ngIf="!screenService.display?.isSocialButtonsHidden">
     <lib-social-share></lib-social-share>
   </div> -->
 </epgu-constructor-screen-container>
+

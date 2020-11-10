@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { EmptyScreenComponentTypes } from './empty-screen.types';
+import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 
 @Component({
   selector: 'epgu-constructor-empty-screen',

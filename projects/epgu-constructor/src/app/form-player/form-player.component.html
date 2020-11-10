@@ -1,0 +1,7 @@
+<ng-container *ngIf="(formPlayerService.playerLoaded$ | async) && (configService.isLoaded$ | async)">
+  <epgu-constructor-screen-resolver></epgu-constructor-screen-resolver>
+</ng-container>
+<epgu-constructor-screen-modal></epgu-constructor-screen-modal>
+<epgu-constructor-modal-container></epgu-constructor-modal-container>
+
+<epgu-constructor-notification></epgu-constructor-notification>

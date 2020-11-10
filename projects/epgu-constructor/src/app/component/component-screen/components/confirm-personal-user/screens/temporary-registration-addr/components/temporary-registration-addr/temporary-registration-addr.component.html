@@ -1,0 +1,64 @@
+<form [formGroup]="redAddrForm" class="form">
+  <div class="item" *ngFor="let field of data?.attrs?.fields">
+    <epgu-constructor-label [attr.for]="field.fieldName">{{ field.label }}</epgu-constructor-label>
+
+    <ng-container [ngSwitch]="field.fieldName">
+      <lib-dadata-widget
+        *ngSwitchCase="'regAddr'"
+        [simpleMode]="true"
+        [hideLevels]="field?.hideLevels || []"
+        [hideHouseCheckbox]="true"
+        [externalApiUrl]="config.externalApiUrl + '/'"
+        [id]="field.fieldName"
+        [validationShowOn]="validationShowOn"
+        [invalid]="redAddrForm.controls[field.fieldName].invalid"
+        [formControlName]="field.fieldName"
+        clearable="true"
+      >
+      </lib-dadata-widget>
+
+      <lib-date-picker
+        *ngSwitchCase="
+          ['regFrom', 'regTo', 'regDate'].includes(field?.fieldName)
+            ? field?.fieldName
+            : !field?.fieldName
+        "
+        [minDate]="field.minDate ? field.minDate : '-50y'"
+        [maxDate]="field.maxDate ? field.maxDate : '+50y'"
+        class="item__data"
+        align="left"
+        [validationShowOn]="validationShowOn"
+        [id]="field.fieldName"
+        [invalid]="redAddrForm.controls[field.fieldName].invalid"
+        [formControlName]="field.fieldName"
+        clearable="true"
+      >
+      </lib-date-picker>
+
+      <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="data?.attrs?.fstuc"
+        [id]="field.fieldName"
+        [validationShowOn]="validationShowOn"
+        [invalid]="redAddrForm.controls[field.fieldName].invalid"
+        [formControlName]="field.fieldName"
+        *ngSwitchDefault
+      ></lib-plain-input>
+    </ng-container>
+  </div>
+  <div class="error">
+    <small>{{ error }}</small>
+  </div>
+</form>
+
+<div class="item hint-wrapper">
+  <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
+  <div
+    class="item__hint"
+    *ngFor="let hint of data?.attrs?.hints"
+    (click)="hintClick(hint.timestamp)"
+  >
+    {{ hint.label }}
+  </div>
+</div>

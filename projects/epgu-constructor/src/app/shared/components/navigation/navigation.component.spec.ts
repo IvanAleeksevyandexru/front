@@ -1,19 +1,31 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { NavigationComponent } from './navigation.component';
-import { NavigationService } from '../../services/navigation/navigation.service';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
+import { ConfigService } from '../../../core/config/config.service';
+import { ConfigServiceStub } from '../../../core/config/config.service.stub';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { ScreenContainerComponent } from '../screen-container/screen-container.component';
+import { NavigationComponent } from './navigation.component';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
+
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
   let fixture: ComponentFixture<NavigationComponent>;
   let ScreenContainerComponentMock = MockComponent(ScreenContainerComponent);
+  let screenService: ScreenService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NavigationComponent, ScreenContainerComponentMock ],
-      providers: [ NavigationService ]
+      providers: [
+        NavigationService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+      ]
     })
     .compileComponents();
   }));
@@ -21,6 +33,8 @@ describe('NavigationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NavigationComponent);
     component = fixture.componentInstance;
+    screenService = fixture.debugElement.injector.get(ScreenService);
+    jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue({});
     fixture.detectChanges();
   });
 

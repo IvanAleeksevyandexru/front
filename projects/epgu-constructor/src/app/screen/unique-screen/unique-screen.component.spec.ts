@@ -1,13 +1,17 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { UniqueScreenComponent } from './unique-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ScreenStore, ScreenTypes } from '../screen.types';
-import { ScreenService } from '../screen.service';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ConfigService } from '../../core/config/config.service';
+import { ConfigServiceStub } from '../../core/config/config.service.stub';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { CurrentAnswersService } from '../current-answers.service';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
+import { ScreenService } from '../screen.service';
+import { ScreenStore, ScreenTypes } from '../screen.types';
+import { UniqueScreenComponent } from './unique-screen.component';
+import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../core/services/device-detector/device-detector.service.stub';
 
 describe('UniqueScreenComponent', () => {
   let component: UniqueScreenComponent;
@@ -45,6 +49,8 @@ describe('UniqueScreenComponent', () => {
         CachedAnswersService,
         CurrentAnswersService,
         CycledFieldsService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ]
     })
     .compileComponents();
