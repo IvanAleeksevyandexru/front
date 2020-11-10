@@ -92,8 +92,11 @@
         </div>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item *ngSwitchCase="componentType.CheckBox"
-                                       [data]="componentData">
+      <epgu-constructor-component-item
+        *ngSwitchCase="componentType.CheckBox"
+        [data]="componentData"
+        [disableLabel]="true"
+      >
         <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'">
           <lib-checkbox
             [checkboxId]="componentData.value?.id"
