@@ -9,7 +9,7 @@
   &__item {
     margin-bottom: $screen-pad-p;
 
-    &--date {
+    &--half {
       width: 50%;
 
       @include phones-down {
@@ -61,14 +61,6 @@
         display: block;
       }
     }
-  }
-}
-
-.half-width {
-  width: 50%;
-
-  @include phones-down {
-    width: 100%;
   }
 }
 

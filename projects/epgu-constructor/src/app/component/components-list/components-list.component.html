@@ -1,7 +1,7 @@
 <form class="form">
   <div *ngFor="let componentData of formService.form.controls; let idx = index;"
        class="form__item"
-       [class.form__item--date]="componentData.value?.type === componentType.DateInput"
+       [class.form__item--half]="isHalfWidthItem(componentData)"
   >
     <ng-container
       [ngSwitch]="componentData.value?.type"
@@ -151,9 +151,7 @@
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.PhoneNumberChangeInput"
                                        [data]="componentData">
-        <div class="half-width">
           <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
-        </div>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.OgrnInput"
