@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { filter, takeUntil, tap } from 'rxjs/operators';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { filter, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   EmployeeType,
@@ -10,6 +10,10 @@ import { EmployeeHistoryMonthsService } from './employee-history.months.service'
 import { MonthYear } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
 import { EmployeeHistoryDatasourceService } from './employee-history.datasource.service';
+import * as moment_ from 'moment';
+import { EmployeeHostoryErrors } from '../employee-hostory.enums';
+
+const moment = moment_;
 
 @Injectable()
 export class EmployeeHistoryFormService {
@@ -69,7 +73,15 @@ export class EmployeeHistoryFormService {
 
   private newGenerationWatch(form: FormGroup): void {
     form.get('from').valueChanges.pipe(takeUntil(this.unsubscribeService)).subscribe((date: MonthYear) => {
-      form.get('to').reset();
+      const toDateValue: MonthYear = form.get('to').value;
+      const fromDate: moment_.Moment = moment().year(date.year).month(date.month);
+      const toDate: moment_.Moment = toDateValue ? moment().year(toDateValue.year).month(toDateValue.month) : moment();
+
+      if (fromDate.diff(toDate) > 0) {
+        form.get('to').setErrors({ error: EmployeeHostoryErrors.FailedDateTo });
+      } else {
+        form.get('to').setErrors(null);
+      }
       form.get('minDateTo').patchValue(date);
     });
 
