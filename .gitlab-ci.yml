@@ -115,6 +115,7 @@ Build:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
   script:
+    - npm run release -- --release-as patch
     - npm run generate-lib-version-ts
     - yarn build --prod
     - /devops/notify/notify.sh fronted_new_master_available
