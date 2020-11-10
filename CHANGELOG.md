@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.23](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.22...v0.4.23) (2020-11-10)
+
+
+### Bug Fixes
+
+* добавлен формат TIFF как исключение из сжатия изображений [ref EPGUCORE-40821] ([5d3487f](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5d3487f015ee7e1d21ab201721ac39af5cea326e))
+* изменена валидация согласно требованию дизайна [ref EPGUCORE-40776] ([9b99a01](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9b99a011649f6ec69c5e17fcfa5b8960541413a0))
+* Изменил механизм валидации дат [ref: EPGUCORE-40571] ([d884ade](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d884ade4177180632b2ff948f89fe505635db210))
+* исправил инвертирование даты при возврате назад [EPGUCORE-40838] ([9a6a889](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9a6a889c22af6e054f25c6eaac343718e1be4571))
+* исправил формат даты [EPGUCORE-40838] ([5d35fe6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5d35fe648af206d958a92edb238ca82a622f63a8))
+* исправлено отображение ошибки required filed после первой потери фокуса с поля [ref EPGUCORE-40916] ([88d1dbb](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/88d1dbbda4f2460f38af37a0c829f11a5cbb896f))
+* обработал случай когда нет адреса. [EPGUCORE-40789][EPGUCORE-40790] ([f447288](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f447288e0dcee1872a72bffe48378b0a828b8d56))
+* поправил типы [ref: EPGUCORE-40571] ([0f27184](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0f271846ff1fe0af1cfc9f55e879a69bdb03967d))
+
 ### [0.4.22](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.21...v0.4.22) (2020-11-09)
 
 
