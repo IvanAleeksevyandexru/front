@@ -12,7 +12,6 @@ import { combineLatest } from 'rxjs';
 import { EmployeeHistoryDatasourceService } from './employee-history.datasource.service';
 import * as moment_ from 'moment';
 import { EmployeeHostoryErrors } from '../employee-hostory.enums';
-import { Moment } from 'moment';
 
 const moment = moment_;
 
@@ -75,8 +74,8 @@ export class EmployeeHistoryFormService {
   private newGenerationWatch(form: FormGroup): void {
     form.get('from').valueChanges.pipe(takeUntil(this.unsubscribeService)).subscribe((date: MonthYear) => {
       const toDateValue: MonthYear = form.get('to').value;
-      const fromDate: Moment = moment().year(date.year).month(date.month);
-      const toDate: Moment = toDateValue ? moment().year(toDateValue.year).month(toDateValue.month) : moment();
+      const fromDate: moment_.Moment = moment().year(date.year).month(date.month);
+      const toDate: moment_.Moment = toDateValue ? moment().year(toDateValue.year).month(toDateValue.month) : moment();
 
       if (fromDate.diff(toDate) > 0) {
         form.get('to').setErrors({ error: EmployeeHostoryErrors.FailedDateTo });
