@@ -60,7 +60,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
   /**
    * Переход на следующую страницу и передача данных
    */
-  nextStep(): void {
+  nextStep(action: any): void {
     let value: string;
     if (typeof this.currentAnswersService.state === 'object') {
       value = JSON.stringify(this.currentAnswersService.state);
@@ -68,9 +68,15 @@ export class ComponentScreenComponent implements OnInit, Screen {
       value = this.currentAnswersService.state;
     }
 
-    this.navigationService.nextStep.next({
-      payload: { ...this.cycledFieldsService.dataTransform(value) },
-    });
+    if (action === 'skipStep') {
+      this.navigationService.skipStep.next({
+        payload: { ...this.cycledFieldsService.dataTransform(value) },
+      });
+    } else {
+      this.navigationService.nextStep.next({
+        payload: { ...this.cycledFieldsService.dataTransform(value) },
+      });
+    }
   }
 
   /**

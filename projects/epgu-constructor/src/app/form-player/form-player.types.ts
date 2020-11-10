@@ -23,6 +23,7 @@ export interface Service {
 export enum FormPlayerNavigation {
   'NEXT' = 'getNextStep',
   'PREV' = 'getPrevStep',
+  'SKIP' = 'skipStep',
 }
 
 /**

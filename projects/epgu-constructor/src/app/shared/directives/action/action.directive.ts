@@ -34,7 +34,6 @@ export class ActionDirective {
   ) {}
 
   private switchAction(): void {
-    console.log(this.action.type);
     switch (this.action.type) {
       case ActionType.download:
         this.downloadAction();

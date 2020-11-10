@@ -66,6 +66,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.prevStep(data));
 
+    this.navService.skipStep$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((data: NavigationPayload) => this.skipStep(data));
+
     if (this.deviceDetector.isMobile) {
       this.calculateHeight();
       this.subscribeToScroll();
@@ -128,7 +132,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   showModal() {
     const modalResult$ = this.modalService.openModal(ConfirmationModalComponent, {
-      text: `<div><img style="display:block; margin: 56px auto 24px" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
+      text: `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
         <h4 style="text-align: center">У вас есть черновик заявления</h4>
         <p class="helper-text" style="text-align: center; margin: 0">Продолжить его заполнение?</p></div>`,
       showCloseButton: false,
@@ -163,6 +167,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   prevStep(navigation?: Navigation) {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.PREV);
+  }
+
+  skipStep(navigation?: Navigation) {
+    this.formPlayerService.navigate(navigation, FormPlayerNavigation.SKIP);
   }
 
   checkProps() {
