@@ -5,6 +5,7 @@ $my: 96px;
 $pyConfModal: 64px;
 $headerHeight: 57px;
 $controlHeight: 55px;
+$minModalHeight: 293px;
 
 // TODO Избавиться от ng-deep
 :host::ng-deep {
@@ -17,7 +18,7 @@ $controlHeight: 55px;
     padding: 32px;
     @include tablets-up {
       max-height: calc(100vh - #{$my * 2});
-      min-height: 293px;
+      min-height: #{$minModalHeight};
       width: 634px;
       height: auto;
       border-radius: 12px;
@@ -60,6 +61,10 @@ $controlHeight: 55px;
       border-bottom: 1px solid $color-devider;
       padding-bottom: 24px;
       margin-bottom: 16px;
+
+      &-empty {
+        border-bottom: none;
+      }
     }
 
     &__content {
@@ -115,6 +120,7 @@ $controlHeight: 55px;
 
     @include tablets-up {
       max-height: calc(100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight});
+      min-height: calc(#{$minModalHeight} - #{$pyConfModal} - #{$headerHeight});
     }
   }
 }

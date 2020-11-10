@@ -1,6 +1,6 @@
 <div class="conf-modal">
   <div *ngIf="showCrossButton" class="conf-modal__cross-button" (click)="closeModal()"></div>
-  <div *ngIf="title" class="conf-modal__header">
+  <div class="conf-modal__header" [class.conf-modal__header-empty]="title">
     <h4 class="conf-modal__title" [innerHTML]="title | safe: 'html'"></h4>
   </div>
   <div class="conf-modal__body" [class.preview]="preview">

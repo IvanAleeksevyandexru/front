@@ -10,7 +10,7 @@ import { ModalService } from '../modal.service';
 })
 export class ConfirmationModalComponent extends ModalBaseComponent
   implements OnInit, AfterViewInit {
-  title?: ConfirmationModal['title'];
+  title?: ConfirmationModal['title'] = ' ';
   text: ConfirmationModal['text'];
   showCloseButton: ConfirmationModal['showCloseButton'] = true;
   /** use elemEventHandlers to attach event handler to html element (tag).

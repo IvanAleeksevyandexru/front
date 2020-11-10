@@ -128,7 +128,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   showModal() {
     const modalResult$ = this.modalService.openModal(ConfirmationModalComponent, {
-      text: `<div><img style="display:block; margin: 56px auto 24px" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
+      text: `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
         <h4 style="text-align: center">У вас есть черновик заявления</h4>
         <p class="helper-text" style="text-align: center; margin: 0">Продолжить его заполнение?</p></div>`,
       showCloseButton: false,
