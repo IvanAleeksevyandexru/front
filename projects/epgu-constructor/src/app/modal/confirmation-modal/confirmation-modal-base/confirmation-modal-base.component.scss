@@ -62,7 +62,7 @@ $minModalHeight: 293px;
       padding-bottom: 24px;
       margin-bottom: 16px;
 
-      &-empty {
+      &:empty {
         border-bottom-color: transparent;
       }
     }
