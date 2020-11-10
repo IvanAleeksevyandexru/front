@@ -156,7 +156,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
 
     const required = (control, config) => {
       if (!control.value) {
-        return { msg: config.msg };
+        return control.touched ? { msg: config.msg } : '';
       }
       return null;
     };
