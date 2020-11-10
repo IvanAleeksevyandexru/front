@@ -76,9 +76,6 @@ Library-publish:
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
-  cache:
-    <<: *global_cache
-    policy: pull
   before_script:
     - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
@@ -93,7 +90,6 @@ Library-publish:
     - git config --global user.name $CI_USER
     - git config receive.advertisePushOptions true
     - git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
-    - git tag -d v0.3.30
     - npm run release -- --release-as patch
     - npm run generate-lib-version-ts
     - CURRENT_TAG=$(git describe --abbrev=0)
@@ -116,22 +112,11 @@ Build:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
   script:
-    - npm run release -- --release-as patch
-    - npm run generate-lib-version-ts
     - yarn build --prod
     - /devops/notify/notify.sh fronted_new_master_available
   only:
     - master
     - stage
-
-BuildMR:
-  stage: build
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
-  script:
-    - yarn build --prod
-  only:
     - merge_requests
 
 Build-image:
