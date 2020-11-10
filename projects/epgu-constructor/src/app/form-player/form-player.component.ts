@@ -66,6 +66,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.prevStep(data));
 
+    this.navService.skipStep$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((data: NavigationPayload) => this.skipStep(data));
+
     if (this.deviceDetector.isMobile) {
       this.calculateHeight();
       this.subscribeToScroll();
@@ -163,6 +167,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   prevStep(navigation?: Navigation) {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.PREV);
+  }
+
+  skipStep(navigation?: Navigation) {
+    this.formPlayerService.navigate(navigation, FormPlayerNavigation.SKIP);
   }
 
   checkProps() {
