@@ -121,8 +121,6 @@ export class FileUploadItemComponent implements OnDestroy {
   private subs: Subscription[] = [];
   private maxFileNumber = -1;
 
-  private compressType = 'image';
-  isCameraAllowed = false; // Флаг, что камеры нет или она запрещена
   listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
   files$$ = new BehaviorSubject<TerraUploadedFile[]>([]); // Список уже загруженных файлов
@@ -383,7 +381,7 @@ export class FileUploadItemComponent implements OnDestroy {
     };
 
     return files.map((file: File) => {
-      if (file.type.includes(this.compressType)) {
+      if (this.compressionService.isValidImageType(file)) {
         if (isPhoto) {
           compressedImageOptions.customFileName = this.getPhotoName(file);
         }
