@@ -8,14 +8,29 @@ export interface EmployeeHistoryDataSource {
   address: string;
 }
 
-export interface EmployeeHistoryModel {
+interface EmployeeHistoryDate {
+  month: number;
+  year: number;
+  monthCode: string;
+}
+
+interface EmployeeHistoryBaseModel {
   type: EmployeeType,
-  from: MonthYear,
-  to: MonthYear,
   position: string,
   place: string,
   address: string,
   checkboxToDate?: boolean;
+}
+
+export interface EmployeeHistoryServerModel extends EmployeeHistoryBaseModel {
+  label: string;
+  from: EmployeeHistoryDate;
+  to: EmployeeHistoryDate;
+}
+
+export interface EmployeeHistoryModel extends EmployeeHistoryBaseModel {
+  from: MonthYear,
+  to: MonthYear,
   minDateTo?: MonthYear;
 }
 

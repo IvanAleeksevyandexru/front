@@ -4,12 +4,17 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
 import { Gender } from '../../../../shared/types/gender';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { EmployeeHistoryDataSource, EmployeeHistoryModel } from './employee-history.types';
+import {
+  EmployeeHistoryDataSource,
+  EmployeeHistoryModel,
+  EmployeeHistoryServerModel,
+} from './employee-history.types';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 import { TextTransform } from '../../../../shared/types/textTransform';
 import { ScreenService } from '../../../../screen/screen.service';
+import { months } from '../../../../shared/constants/dates';
 
 export interface EmployeeHistoryComponentInterface extends ComponentBase {
   attrs: {
@@ -51,14 +56,20 @@ export class EmployeeHistoryComponent implements OnInit {
   }
 
   getNextScreen() {
-    const employeeHistoryBeforeSend: Array<EmployeeHistoryModel> = this.employeeFormService.employeeHistoryForm
+    const employeeHistoryBeforeSend: Array<EmployeeHistoryServerModel> = this.employeeFormService.employeeHistoryForm
       .getRawValue()
-      .map((employee: EmployeeHistoryModel) => {
-        const formattedEmployee = employee;
-        delete formattedEmployee.minDateTo;
-        return { ...formattedEmployee };
-      });
+      .map((employee: EmployeeHistoryModel) => this.formatToServerModel(employee));
     this.nextStepEvent.emit(JSON.stringify(employeeHistoryBeforeSend));
+  }
+
+  formatToServerModel(employee: EmployeeHistoryModel): EmployeeHistoryServerModel {
+    const { minDateTo, to, from, ...employeeHistory } = employee;
+
+    const toFormatted = { ...to, monthCode: months[to.month] };
+    const fromFormatted = { ...from, monthCode: months[from.month] };
+    const chosenRole = this.ds.filter((role) => role.type === employee.type) || [{ label: null }];
+
+    return { ...employeeHistory, to: toFormatted, from: fromFormatted, label: chosenRole[0].label };
   }
 
   availableControlsOfType(type: string): EmployeeHistoryDataSource {
