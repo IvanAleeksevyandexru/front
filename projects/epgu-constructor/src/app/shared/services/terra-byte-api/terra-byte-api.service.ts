@@ -120,8 +120,9 @@ export class TerraByteApiService {
 
     reader.onerror = (e) => console.error(e);
     reader.onloadend = () => {
+      const replaceDataRegex = /^data:[^;]*;/;
       let url = reader.result;
-      url = isChromeIOS ? url : url.toString().replace(/^data:[^;]*;/, 'data:attachment/file;');
+      url = isChromeIOS ? url : url.toString().replace(replaceDataRegex, 'data:attachment/file;');
       // @ts-ignore
       location = url;
     };
