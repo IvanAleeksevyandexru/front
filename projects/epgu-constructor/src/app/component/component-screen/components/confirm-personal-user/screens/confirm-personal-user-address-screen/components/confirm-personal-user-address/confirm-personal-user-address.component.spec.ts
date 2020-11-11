@@ -36,8 +36,6 @@ describe('ConfirmPersonalUserAddressComponent', () => {
       providers: [
         UnsubscribeService,
         CurrentAnswersService,
-        UnsubscribeService,
-        CurrentAnswersService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]

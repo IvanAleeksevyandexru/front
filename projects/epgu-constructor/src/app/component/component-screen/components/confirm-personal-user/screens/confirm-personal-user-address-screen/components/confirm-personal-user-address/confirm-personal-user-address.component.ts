@@ -111,8 +111,8 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   public isFormValid() {
     const hasValue = () => Object.values(this.dataForm.form.value).every((value) => value);
     const isValid = () => (this.data.required ? hasValue() : true);
-    const isFormInit = () => this.dataForm?.form?.value;
+    const isFormInited = () => this.dataForm?.form?.value;
 
-    return isFormInit() && isValid();
+    return isFormInited() && isValid();
   }
 }
