@@ -23,7 +23,9 @@ describe('PaymentTypeSelectorComponent', () => {
       states: {
         success: {
           header: 'success',
-          label: 'test',
+          subHeader: 'success',
+          imgSrc: 'asset',
+          body: 'test',
           clarifications: { registration: { title: '', text: '<p>Регистрации подлежат:</p>' }},
           actions: [
             {
