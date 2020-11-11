@@ -13,7 +13,7 @@ export class TrimDirective {
   }
 
   removeNonAlphabeticOrNumeralSymbolsFromBeginning(value: string): string {
-    const index = value.match(/[0-9a-zA-Za-яА-Я]/)?.index;
+    const index = value.match(/[0-9a-zA-Za-яА-ЯёЁ]/)?.index;
     return index ? value.slice(index) : value;
   }
 
