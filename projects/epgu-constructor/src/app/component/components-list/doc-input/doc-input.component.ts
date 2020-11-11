@@ -138,7 +138,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   }
 
   isValidationShown(control: string | string[]): boolean {
-    return this.form.get(control).invalid;
+    return this.form.get(control).invalid && this.form.get(control).touched;
   }
 
   getFormFieldValidators(fieldName: string): ValidatorFn[] {
