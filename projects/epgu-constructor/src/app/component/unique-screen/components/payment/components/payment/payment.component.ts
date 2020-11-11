@@ -136,8 +136,10 @@ export class PaymentComponent implements OnDestroy {
    * @private
    */
   private getDataFromValue(): any {
-    this.value =
-      '{"billNumber": "1005000000000000000003629","billId": "22216599","billName": "Оплата гос. пошлины","billDate": "2020-11-04T18:31:42-03","amount": "10500"}';
+    // this.value =
+    //  '{"billNumber": "1005000000000000000003629","billId": "22216599","billName": "Оплата гос. пошлины","billDate": "2020-11-04T18:31:42-03","amount": "10500"}';
+
+    console.log('this.value', this.value);
 
     if (this.value) {
       return JSON.parse(this.value);

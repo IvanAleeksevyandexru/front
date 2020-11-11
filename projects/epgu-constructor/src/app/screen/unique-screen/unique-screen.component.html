@@ -56,7 +56,7 @@
     *ngSwitchCase="uniqueComponentName.paymentScr"
     [header]="screenService.header"
     [data]="screenService.component"
-    [value]="screenService.componentValue"
+    [value]="screenService"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-payment>
   <epgu-constructor-bill-info
