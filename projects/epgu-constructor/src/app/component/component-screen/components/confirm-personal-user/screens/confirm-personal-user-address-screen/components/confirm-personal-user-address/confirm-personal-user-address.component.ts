@@ -17,6 +17,7 @@ import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constants
 import { TextTransform } from '../../../../../../../../shared/types/textTransform';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
+import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 
 const moment = moment_;
 
@@ -38,6 +39,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     private changeDetection: ChangeDetectorRef,
+    private currentAnswersService: CurrentAnswersService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -79,8 +81,10 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   private emmitData(): void {
     if (this.isFormValid()) {
       this.dataEditedEvent.emit(this.getPreparedDataToSend());
+      this.currentAnswersService.isValid = true;
     } else {
       this.dataEditedEvent.emit(null);
+      this.currentAnswersService.isValid = false;
     }
   }
 
@@ -105,9 +109,10 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   public isFormValid() {
-    const hasValue = () =>
-      this.data.required ? Object.values(this.dataForm.form.value).every((value) => value) : true;
+    const hasValue = () => Object.values(this.dataForm.form.value).every((value) => value);
+    const isValid = () => (this.data.required ? hasValue() : true);
+    const isFormInited = () => this.dataForm?.form?.value;
 
-    return this.dataForm?.form?.value && this.dataForm?.form?.valid && hasValue();
+    return isFormInited() && isValid();
   }
 }
