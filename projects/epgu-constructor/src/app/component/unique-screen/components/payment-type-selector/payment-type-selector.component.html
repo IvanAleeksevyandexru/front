@@ -1,6 +1,6 @@
 <epgu-constructor-screen-container class="payment-type-selector">
   <epgu-constructor-screen-pad class="screen-body">
-    <div class="payment-type-selector__img">
+    <div *ngIf="paymentTypeSelector.srcImg" class="payment-type-selector__img">
       <img src="{{ config.staticDomainAssetsPath }}{{paymentTypeSelector.srcImg}}" />
     </div>
 

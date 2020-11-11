@@ -12,7 +12,7 @@ interface PaymentTypeSelectorInterface {
   header: string;
   subHeader: string;
   clarifications: Clarifications;
-  srcImg: string;
+  srcImg?: string;
 }
 
 @Component({
