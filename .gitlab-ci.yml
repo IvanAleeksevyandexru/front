@@ -76,9 +76,6 @@ Library-publish:
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
-  cache:
-    <<: *global_cache
-    policy: pull
   before_script:
     - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
@@ -118,9 +115,9 @@ Build:
     - yarn build --prod
     - /devops/notify/notify.sh fronted_new_master_available
   only:
-    - merge_requests
     - master
     - stage
+    - merge_requests
 
 Build-image:
   stage: image

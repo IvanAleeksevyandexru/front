@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { interval } from 'rxjs';
 import { ConfigService } from '../../../../../core/config/config.service';
-import { NavigationOptions } from '../../../../../form-player/form-player.types';
+import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { ScreenService } from '../../../../../screen/screen.service';
+import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-email',
@@ -22,16 +25,32 @@ export class ConfirmEmailComponent {
   constructor(
     public screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
-    private navigationService: NavigationService,
+    private navService: NavigationService,
+    private navModalService: NavigationModalService,
     public config: ConfigService,
-  ) {}
+  ) {
+    interval(5000)
+      .pipe(takeUntil(ngUnsubscribe$))
+      .subscribe(() => {
+        this.navModalService.next({ payload: this.getComponentState() });
+      });
+  }
 
   sendPostAgain() {
     const options: NavigationOptions = {
       url: 'service/actions/resendEmailConfirmation', // TODO вынести куда нибудь
     };
-    this.navigationService.nextStep.next({ options });
+    this.navService.nextStep.next({ options });
     this.isTimerShow = true;
+  }
+
+  getComponentState(): NavigationPayload {
+    return {
+      [this.screenService.component.id]: {
+        visited: true,
+        value: String(this.screenService.componentValue),
+      },
+    };
   }
 
   timerChange(num: number) {

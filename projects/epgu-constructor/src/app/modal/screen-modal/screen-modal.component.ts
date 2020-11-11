@@ -22,6 +22,7 @@ import { NavigationService } from '../../core/services/navigation/navigation.ser
   providers: [ScreenService, ScreenModalService], // Нужен отдельный инстанс для ScreenService
 })
 export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
+  showModal = false;
   scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   showCrossButton = true;
   isMobile: boolean;
@@ -48,6 +49,12 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
       .pipe(debounceTime(50))
       .subscribe(() => {
         this.updateHeaderHeight();
+      });
+
+    this.screenModalService.playerLoaded$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((showModal) => {
+        this.showModal = showModal;
       });
 
     this.screenService.header$
@@ -106,7 +113,9 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   }
 
   closeModal(): void {
-    this.switchNavigationToFormPlayer();
-    this.screenModalService.resetStore();
+    if (this.showModal) {
+      this.switchNavigationToFormPlayer();
+      this.screenModalService.resetStore();
+    }
   }
 }

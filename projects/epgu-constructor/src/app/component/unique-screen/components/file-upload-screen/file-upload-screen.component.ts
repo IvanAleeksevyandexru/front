@@ -76,8 +76,8 @@ export class FileUploadScreenComponent {
    * @private
    */
   private isAllFilesUploaded(uploads: FileUploadEmitValue[]): boolean {
-    const allUploads = uploads.length;
-    const uploadsWithFiles = uploads.filter((fileUploadsInfo) => {
+    const allUploads = uploads?.length;
+    const uploadsWithFiles = uploads?.filter((fileUploadsInfo) => {
       // Если это зависимые подэлементы для загрузки
       return fileUploadsInfo.relatedUploads
         ? this.isAllFilesUploaded(fileUploadsInfo.relatedUploads.uploads)
@@ -92,16 +92,27 @@ export class FileUploadScreenComponent {
    * @param $eventData - данные из компонента
    */
   handleNewValueSet($eventData: any) {
-    if ($eventData.files.relatedUploads && this.value?.uploads) {
-      this.value.uploads = this.value.uploads.map((value: any) => {
-        if ($eventData.files.uploadId === value.uploadId) {
+    if ($eventData.relatedUploads && this.value?.uploads) {
+      this.value.uploads = this.value.uploads.map((value: FileUploadEmitValue) => {
+        if ($eventData.uploadId === value.uploadId) {
           // eslint-disable-next-line no-param-reassign
-          value = { ...value, ...$eventData.files };
+          value = { ...value, relatedUploads: $eventData.relatedUploads };
         }
         return value;
       });
     } else {
-      this.value.uploads = $eventData.files;
+      const relatedUpload: FileUploadEmitValue = this.value.uploads?.find(
+        (value: FileUploadEmitValue) => value.relatedUploads,
+      );
+
+      this.value.uploads = $eventData.files?.map((value: FileUploadEmitValue) => {
+        let resultValue = value;
+        if (relatedUpload && value?.uploadId === relatedUpload.uploadId) {
+          resultValue = { ...value, relatedUploads: relatedUpload.relatedUploads };
+        }
+
+        return resultValue;
+      });
     }
     this.disabled = !this.isAllFilesUploaded(this.value.uploads);
   }

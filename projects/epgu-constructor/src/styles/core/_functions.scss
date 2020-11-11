@@ -22,6 +22,19 @@
   }
 }
 
+@mixin btn--transparent {
+  background: none;
+  color: $color-button-hit;
+  &:hover {
+    background: $color-active-item;
+    color: $color-white;
+  }
+  &:active {
+    background: $color-button-hit;
+    color: $color-white;
+  }
+}
+
 @mixin btn--primary {
   background: $color-gosblue;
   color: $color-white;

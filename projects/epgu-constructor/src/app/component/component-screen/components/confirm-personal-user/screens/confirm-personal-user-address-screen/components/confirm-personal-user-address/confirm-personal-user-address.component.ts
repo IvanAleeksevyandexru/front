@@ -17,6 +17,7 @@ import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constants
 import { TextTransform } from '../../../../../../../../shared/types/textTransform';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
+import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 
 const moment = moment_;
 
@@ -31,18 +32,19 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   @Input() data: ConfirmAddressInterface;
   @Output() dataEditedEvent = new EventEmitter();
-  valueParsed: any;
+  valueParsed: any = {};
 
   constructor(
     public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     private changeDetection: ChangeDetectorRef,
+    private currentAnswersService: CurrentAnswersService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data?.currentValue) {
-      this.setState();
+      this.setState(changes.data?.currentValue.value);
       this.emmitData();
     }
   }
@@ -52,14 +54,16 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     this.changeDetection.detectChanges();
   }
 
-  setState(): void {
-    this.valueParsed = JSON.parse(this.data.value || '{}');
-    if (this.valueParsed?.regDate) {
-      this.valueParsed.regDate = this.getDate(this.valueParsed.regDate);
-    }
+  setState(preset: string): void {
+    if (preset) {
+      const localValueParsed = JSON.parse(preset);
+      if (localValueParsed?.regDate) {
+        this.valueParsed.regDate = this.getDate(localValueParsed.regDate);
+      }
 
-    if (this.valueParsed?.regAddr) {
-      this.valueParsed.regAddr = this.getAddress(this.valueParsed.regAddr);
+      if (localValueParsed?.regAddr) {
+        this.valueParsed.regAddr = this.getAddress(localValueParsed.regAddr);
+      }
     }
   }
 
@@ -75,17 +79,17 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   private emmitData(): void {
-    const dataToSend = this.getPreparedDataToSend();
-
     if (this.isFormValid()) {
-      this.dataEditedEvent.emit(dataToSend);
+      this.dataEditedEvent.emit(this.getPreparedDataToSend());
+      this.currentAnswersService.isValid = true;
     } else {
       this.dataEditedEvent.emit(null);
+      this.currentAnswersService.isValid = false;
     }
   }
 
   getPreparedDataToSend(): string {
-    const { regDate } = this.valueParsed;
+    const { regDate } = this.valueParsed || {};
     const dataToSend = { ...this.valueParsed };
     dataToSend.regDate = dataToSend.regAddr ? moment(regDate).format(DATE_STRING_DOT_FORMAT) : '';
     return JSON.stringify(dataToSend);
@@ -96,7 +100,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   private getDate(regDate: string): Date {
-    const date = moment(regDate);
+    const date = moment(regDate, DATE_STRING_DOT_FORMAT);
     return date.isValid() ? date.toDate() : moment().toDate();
   }
 
@@ -104,10 +108,11 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     return typeof regAddr === 'string' ? regAddr : regAddr.fullAddress;
   }
 
-  private isFormValid() {
-    const hasValue = () =>
-      this.data.required ? Object.values(this.dataForm.form.value).every((value) => value) : true;
+  public isFormValid() {
+    const hasValue = () => Object.values(this.dataForm.form.value).every((value) => value);
+    const isValid = () => (this.data.required ? hasValue() : true);
+    const isFormInited = () => this.dataForm?.form?.value;
 
-    return this.dataForm?.form?.value && this.dataForm?.form?.valid && hasValue();
+    return isFormInited() && isValid();
   }
 }

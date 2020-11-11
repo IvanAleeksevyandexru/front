@@ -121,8 +121,6 @@ export class FileUploadItemComponent implements OnDestroy {
   private subs: Subscription[] = [];
   private maxFileNumber = -1;
 
-  private compressType = 'image';
-  isCameraAllowed = false; // Флаг, что камеры нет или она запрещена
   listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
   files$$ = new BehaviorSubject<TerraUploadedFile[]>([]); // Список уже загруженных файлов
@@ -154,6 +152,10 @@ export class FileUploadItemComponent implements OnDestroy {
     this.isMobile = deviceDetectorService.isMobile;
   }
 
+  /**
+   * Converts the file to base64 format
+   * @param file
+   */
   private fileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -163,8 +165,38 @@ export class FileUploadItemComponent implements OnDestroy {
     });
   }
 
-  private openPreviewModal(modalParams: ModalParams): void {
+  /**
+   * Opens a modal window with the specified parameters
+   * @param modalParams
+   */
+  private openModal(modalParams: ModalParams): void {
     this.modal.openModal(ConfirmationModalComponent, modalParams);
+  }
+
+  /**
+   * Opens a modal window of photo preview
+   * Do not use for the "Get a criminal record" service
+   * @param file
+   */
+  private async openPreviewModal(file: File) {
+    const src = await this.fileToBase64(file);
+
+    this.openModal({
+      text: `<div style="padding:0;">
+                <img src="${src}" alt="${file.name}" />
+              </div>`,
+      title: 'Просмотр фото',
+      showCloseButton: false,
+      showCrossButton: true,
+      preview: true,
+      buttons: [
+        {
+          label: 'Использовать',
+          closeModal: true,
+          handler: () => this.sendFile(file),
+        },
+      ],
+    });
   }
 
   /**
@@ -307,7 +339,6 @@ export class FileUploadItemComponent implements OnDestroy {
         )
         .subscribe(() => {
           this.updateUploadedCameraPhotosInfo(true, file.name);
-          this.updateUploadedCameraPhotosInfo(true, file.name);
           this.updateFileInfoFromServer(fileToUpload);
         }),
     );
@@ -349,7 +380,7 @@ export class FileUploadItemComponent implements OnDestroy {
     };
 
     return files.map((file: File) => {
-      if (file.type.includes(this.compressType)) {
+      if (this.compressionService.isValidImageType(file)) {
         if (isPhoto) {
           compressedImageOptions.customFileName = this.getPhotoName(file);
         }
@@ -483,29 +514,8 @@ export class FileUploadItemComponent implements OnDestroy {
    * Обновляет данные о файлах, которые были загружены
    */
   updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean) {
-    this.prepareFilesToUpload(fileList, isPhoto).subscribe(async (file: File) => {
-      if (isPhoto) {
-        const src = await this.fileToBase64(file);
-
-        this.openPreviewModal({
-          text: `<div style="padding:0;">
-                    <img src="${src}" alt="${file.name}" />
-                  </div>`,
-          title: 'Просмотр фото',
-          showCloseButton: false,
-          showCrossButton: true,
-          preview: true,
-          buttons: [
-            {
-              label: 'Использовать',
-              closeModal: true,
-              handler: () => this.sendFile(file),
-            },
-          ],
-        });
-      } else {
-        this.sendFile(file);
-      }
+    this.prepareFilesToUpload(fileList, isPhoto).subscribe((file: File) => {
+      this.sendFile(file);
     });
   }
 
