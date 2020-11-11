@@ -57,7 +57,7 @@ export class AddressHelperService {
 
     if (normalAddress.address && normalAddress.address.elements) {
       const regionKladrId = normalAddress.address.elements.slice(-1)[0].kladrCode;
-      regionCode = regionKladrId.toString().substring(0,2)
+      regionCode = regionKladrId.toString().substring(0,2);
     }
     
     Object.assign(address, normalAddress, { regionCode });
