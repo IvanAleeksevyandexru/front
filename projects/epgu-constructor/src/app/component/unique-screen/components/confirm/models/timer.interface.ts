@@ -1,12 +1,6 @@
 export interface TimerInterface {
-  progress: number;
-  completion: number;
-  size: number;
-  strokeWidth: number;
-  radius: number;
-  center: number;
-  circumference: number;
-  offset: number;
+  isWarning: boolean;
+  isFinish: boolean;
   time: number;
   start: number;
   finish: number;

@@ -3,7 +3,7 @@
     "brakRouteNumber": "45382000",
     "divorceRouteNumber": "45382000",
     "gibddRouteNumber": "46000000000",
-    "mocks": [],
+    "mocks": ["mvd", "selectMap", "timeSlot"],
     "mockUrl": "https://dev-l11.pgu2-pub.test.gosuslugi.ru/mock/api"
   },
   "core": {

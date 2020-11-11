@@ -8,5 +8,6 @@ import { TimerInterface } from '../../models/timer.interface';
   styleUrls: ['./timer.component.scss'],
 })
 export class TimerComponent {
+  @Input() label: string;
   @Input() timer: TimerInterface;
 }

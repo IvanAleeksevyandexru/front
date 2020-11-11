@@ -17,27 +17,40 @@ import { UnsubscribeService } from '../../../../../core/services/unsubscribe/uns
 export class ConfirmComponent implements OnInit {
   @Output() nextStepEvent = new EventEmitter<string>();
 
+  private secondInMiliSeconds = 1000;
+  replayButton: string;
+  needTimer = true;
   timer: TimerInterface;
 
-  get value() {
+  /**
+   * Возвращает текущее значение для инициализации таймера
+   */
+  get value(): ConfirmInfoInterface {
     return this.screenService.componentValue as ConfirmInfoInterface;
   }
 
   constructor(private ngUnsubscribe$: UnsubscribeService, public screenService: ScreenService) {}
 
   ngOnInit(): void {
-    this.timer = createTimer(this.getStartDate(), this.getFinishDate());
+    this.timer = createTimer(
+      this.getStartDate(),
+      this.getFinishDate(),
+      this.value.timer.warningTime,
+    );
     this.startTimer();
   }
 
   nextStep(): void {
-    this.nextStepEvent.emit(JSON.stringify({ isExpired: this.timer.progress === 0 }));
+    this.nextStepEvent.emit(JSON.stringify({ isExpired: this.timer.time === 0 }));
   }
 
+  /**
+   * Стартует работу таймера
+   */
   startTimer() {
-    timer(this.timer.start - Date.now(), 1000)
+    timer(this.timer.start - Date.now(), this.secondInMiliSeconds)
       .pipe(
-        takeWhile(() => this.timer.progress > 0),
+        takeWhile(() => this.timer.time - this.secondInMiliSeconds >= -this.secondInMiliSeconds),
         takeUntil(this.ngUnsubscribe$),
         tap(() => this.startTimerHandler()),
       )
@@ -45,18 +58,25 @@ export class ConfirmComponent implements OnInit {
   }
 
   startTimerHandler() {
-    this.timer.offset =
-      -((this.timer.completion - this.timer.progress + 1000) / this.timer.completion) *
-      this.timer.circumference;
-    this.timer.progress -= 1000;
-    this.timer.time -= 1000;
+    const time = this.timer.time - this.secondInMiliSeconds;
+    this.timer.isWarning = time <= this.value.timer.warningTime;
+    this.timer.isFinish = time === 0;
+    this.timer.time = time;
   }
 
-  private getStartDate() {
+  /**
+   * Возвращает дату старта таймера в милисекундах
+   * @private
+   */
+  private getStartDate(): number {
     return new Date(this.value.timer.start).getTime();
   }
 
-  private getFinishDate() {
+  /**
+   * Возвращает дату завершения таймера в милисекундах
+   * @private
+   */
+  private getFinishDate(): number {
     return new Date(this.value.timer.finish).getTime();
   }
 }

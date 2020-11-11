@@ -28,7 +28,7 @@
         <div class="data-item__info">{{ this.screenService.componentLabel }}</div>
       </div>
 
-      <epgu-constructor-timer [timer]="timer"></epgu-constructor-timer>
+      <epgu-constructor-timer *ngIf="needTimer" [timer]="timer"></epgu-constructor-timer>
     </div>
   </epgu-constructor-screen-pad>
 

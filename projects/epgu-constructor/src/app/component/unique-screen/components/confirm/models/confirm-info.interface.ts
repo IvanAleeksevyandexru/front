@@ -6,5 +6,6 @@ export interface ConfirmInfoInterface {
   timer?: {
     start: string;
     finish: string;
+    warningTime: number;
   };
 }
