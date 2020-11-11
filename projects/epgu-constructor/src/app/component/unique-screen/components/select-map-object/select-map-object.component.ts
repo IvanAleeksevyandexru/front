@@ -29,7 +29,6 @@ import {
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { ModalService } from '../../../../modal/modal.service';
 import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
-import { NotificationService } from '../../../../shared/services/notification/notification.service';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
@@ -69,7 +68,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
     private zone: NgZone,
-    private notificationService: NotificationService,
   ) {
     this.isMobile = HelperService.isMobile();
   }
