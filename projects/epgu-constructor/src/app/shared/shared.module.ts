@@ -28,6 +28,7 @@ import { CoreModule } from '../core/core.module';
 import { NotificationService } from './services/notification/notification.service';
 import { NotificationComponent } from './components/notification/notification.component';
 import { InputErrorComponent } from './components/input-error/input-error.component';
+import { RadioTaxComponent } from './components/radio-tax/radio-tax.component';
 import { DateRangeService } from './services/date-range/date-range.service';
 
 const COMPONENTS = [
@@ -45,7 +46,7 @@ const COMPONENTS = [
   ActionButtonComponent,
   NotificationComponent,
   InputErrorComponent,
-  NotificationComponent,
+  RadioTaxComponent
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe];
