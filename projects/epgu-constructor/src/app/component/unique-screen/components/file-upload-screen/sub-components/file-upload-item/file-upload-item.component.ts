@@ -339,7 +339,6 @@ export class FileUploadItemComponent implements OnDestroy {
         )
         .subscribe(() => {
           this.updateUploadedCameraPhotosInfo(true, file.name);
-          this.updateUploadedCameraPhotosInfo(true, file.name);
           this.updateFileInfoFromServer(fileToUpload);
         }),
     );
