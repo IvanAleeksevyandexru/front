@@ -107,6 +107,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
         this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
+      } else {
+        this.selectClosestMapObject();
       }
     }
   }
@@ -343,5 +345,24 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         const { GIBDDpaymentError } = this.screenService.component.attrs;
         this.notificationService.setNotification(GIBDDpaymentError.text, GIBDDpaymentError.title);
       });
+  }
+
+  /**
+   * Метод ищет и выбирает среди всех объектов ближайший к this.mapCenter
+   */
+  private selectClosestMapObject() {
+    let minDistance = 9999999;
+    let chosenMapObject;
+    this.selectMapObjectService.filteredDictionaryItems.forEach((mapObj) => {
+      // Находим катеты вычитая координаты X и Y центра карты из координат объектов на карте
+      const cathetusX = this.mapCenter[0] - mapObj.center[0];
+      const cathetusY = this.mapCenter[1] - mapObj.center[1];
+      const distance = Math.sqrt(cathetusX * cathetusX + cathetusY * cathetusY);
+      if (distance < minDistance) {
+        minDistance = distance;
+        chosenMapObject = mapObj;
+      }
+    });
+    this.selectMapObjectService.centeredPlaceMark(chosenMapObject.center, chosenMapObject.idForMap);
   }
 }
