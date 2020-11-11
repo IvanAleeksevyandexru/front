@@ -332,6 +332,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return this.dictionaryApiService
       .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
       .pipe(
+        takeUntil(this.ngUnsubscribe$),
         filter((response) => {
           const hasAttributeValues = () =>
             response.items.every((item) =>
