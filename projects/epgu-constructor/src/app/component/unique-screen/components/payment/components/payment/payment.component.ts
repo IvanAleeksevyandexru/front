@@ -58,7 +58,6 @@ export class PaymentComponent implements OnDestroy {
   get data() {
     return this.attrData;
   }
-  @Input() value: any; // Значение для компонента
   @Output() nextStepEvent = new EventEmitter<void>();
 
   constructor(
@@ -74,8 +73,7 @@ export class PaymentComponent implements OnDestroy {
    * @private
    */
   protected loadPaymentInfo() {
-    // console.log('this.value', this.value);
-
+    this.orderId = this.screenService.orderId;
     const value = this.getDataFromValue();
 
     if (value) {
@@ -86,16 +84,16 @@ export class PaymentComponent implements OnDestroy {
       this.billId = billId;
       this.billDate = moment(billDate).format(DATE_STRING_DOT_FORMAT);
       this.payCode = payCode;
-      this.inLoading = false;
+      this.inLoading = true;
       this.isShown = true;
       this.status = PaymentStatus.SUCCESS;
 
       // Проверим оплачено ли ранее
       this.paymentService
-        .getBillsInfoByUIN(this.uin, this.orderId)
+        .getBillsInfoByBillId(this.billId, this.orderId)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
-          (info: BillsInfoResponse) => this.getBillsInfoByUINSuccess(info),
+          (info: BillsInfoResponse) => this.getBillsInfoByBillIdSuccess(info),
           (error) => this.setPaymentStatusFromErrorRequest(error),
         );
     } else {
@@ -112,8 +110,6 @@ export class PaymentComponent implements OnDestroy {
     if (payCode) {
       this.payCode = payCode;
     }
-
-    this.orderId = this.screenService.orderId;
 
     // Если УИН явно не передан
     this.paymentService
@@ -136,13 +132,8 @@ export class PaymentComponent implements OnDestroy {
    * @private
    */
   private getDataFromValue(): any {
-    // this.value =
-    //  '{"billNumber": "1005000000000000000003629","billId": "22216599","billName": "Оплата гос. пошлины","billDate": "2020-11-04T18:31:42-03","amount": "10500"}';
-
-    console.log('this.value', this.value);
-
-    if (this.value) {
-      return JSON.parse(this.value);
+    if (this.data.value) {
+      return JSON.parse(this.data.value);
     }
     return null;
   }
@@ -213,6 +204,25 @@ export class PaymentComponent implements OnDestroy {
   /**
    * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
    * @param info - информация о выставленном счете
+   */
+  private getBillsInfoByBillIdSuccess(info: BillsInfoResponse) {
+    if (info.error?.code) {
+      this.getBillsInfoByUINErrorsFromSuccess(info);
+    }
+
+    const bill: BillInfoResponse = info.response.bills[this.billPosition];
+
+    this.isPaid = bill.isPaid;
+    if (this.isPaid) {
+      this.isShown = false;
+      this.nextStep();
+    }
+    this.inLoading = false;
+  }
+
+  /**
+   * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
+   * @param info - информация о выставленном счете
    * @param oldGetInfoType - использовать старые функции получения информации о счете?
    */
   private getBillsInfoByUINSuccess(info: BillsInfoResponse, oldGetInfoType = false) {
@@ -238,9 +248,9 @@ export class PaymentComponent implements OnDestroy {
       }
 
       this.sum = String(bill.amount);
-      this.inLoading = false;
       this.billId = bill.billId;
     }
+    this.inLoading = false;
   }
 
   /**

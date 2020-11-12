@@ -70,7 +70,7 @@ export class PaymentService {
    * @param uin - уникальный идентификатор патежа
    * @param orderId - идентификатор заявления
    */
-  getBillsInfoByUIN(uin: string, orderId: string): Observable<any> {
+  getBillsInfoByUIN(uin: string | number, orderId: string): Observable<any> {
     // На случай если сервис лежит, только для теста
     // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
     // return billMockUp.asObservable();
@@ -80,6 +80,28 @@ export class PaymentService {
       : `${this.config.billsApiUrl}bills`;
     // eslint-disable-next-line max-len
     const path = `${urlPrefix}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    return this.http.post(path, {}, this.requestOptions).pipe(
+      catchError((err: any) => {
+        return throwError(err);
+      }),
+    );
+  }
+
+  /**
+   * Получение данных (предначисления) по номеру счета, полная информация
+   * @param billId - номер патежа
+   * @param orderId - идентификатор заявления
+   */
+  getBillsInfoByBillId(billId: number, orderId: string): Observable<any> {
+    // На случай если сервис лежит, только для теста
+    // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
+    // return billMockUp.asObservable();
+
+    const urlPrefix = this.config.mocks.includes('payment')
+      ? `${this.config.mockUrl}/pay/v1/bills`
+      : `${this.config.billsApiUrl}bills`;
+    // eslint-disable-next-line max-len
+    const path = `${urlPrefix}?billIds=${billId}&ci=false`;
     return this.http.post(path, {}, this.requestOptions).pipe(
       catchError((err: any) => {
         return throwError(err);
