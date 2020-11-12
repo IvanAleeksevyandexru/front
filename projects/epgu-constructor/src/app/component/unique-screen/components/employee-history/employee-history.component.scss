@@ -19,6 +19,7 @@
 
   &__completed {
     display: flex;
+    margin-top: $screen-pad-p;
     &__icon {
       margin-left: auto;
       width: 33px;
@@ -46,6 +47,21 @@
       background: none;
       cursor: pointer;
       border: 0;
+    }
+  }
+
+  &__error-date {
+    margin-top: 8px;
+
+    & span {
+      @include typ-h6();
+    }
+
+    & div {
+      @include typ-plain-small();
+      color: $color-tela-rossa;
+      margin-top: 4px;
+      margin-bottom: 12px;
     }
   }
 
@@ -102,13 +118,11 @@
 
   &__newGeneration {
     text-align: center;
+  }
+}
 
-    &__button {
-      @include typ-plain-text();
-      padding: 15px;
-      display: inline-block;
-      margin: 10px auto;
-      border: 0;
-    }
+:host {
+  .screen-footer {
+    margin-top: 0;
   }
 }

@@ -14,6 +14,7 @@ export class ConfirmationModalBaseComponent {
   @Input() buttons: ConfirmationModalBaseButton[] = [];
   @Input() showCrossButton?: boolean;
   @Input() preview?: boolean;
+  @Input() isShortModal?: boolean;
 
   @Output() closeModalChange = new EventEmitter();
 

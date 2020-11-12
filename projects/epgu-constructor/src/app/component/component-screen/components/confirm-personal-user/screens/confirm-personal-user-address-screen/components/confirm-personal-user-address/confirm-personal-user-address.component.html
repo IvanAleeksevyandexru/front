@@ -3,7 +3,7 @@
     *ngFor="let field of data?.attrs?.fields; let i = index"
     [ngSwitch]="field?.fieldName"
   >
-    <epgu-constructor-address-item *ngSwitchCase="'regAddr'" class="item" [label]="field.label">
+    <epgu-constructor-address-item [tips]="field?.attrs?.labelHint" *ngSwitchCase="'regAddr'" class="item" [label]="field.label">
       <lib-dadata-widget
         [simpleMode]="true"
         [hideHouseCheckbox]="true"
@@ -46,7 +46,7 @@
       </lib-plain-input>
     </epgu-constructor-address-item>
   </ng-container>
-  <div class="error" *ngIf="screenService.componentError$ | async">
+  <div class="error" *ngIf="(screenService.componentError$ | async) && !isFormValid()">
     <small>{{ screenService.componentError$ | async }}</small>
   </div>
 </form>

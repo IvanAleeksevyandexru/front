@@ -21,6 +21,7 @@ import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirma
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
+import { ConfirmationModal } from '../modal/confirmation-modal/confirmation-modal.interface';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -65,6 +66,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.navService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.prevStep(data));
+
+    this.navService.skipStep$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((data: NavigationPayload) => this.skipStep(data));
 
     if (this.deviceDetector.isMobile) {
       this.calculateHeight();
@@ -127,32 +132,31 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   showModal() {
-    const modalResult$ = this.modalService.openModal(ConfirmationModalComponent, {
-      text: `<div><img style="display:block; margin: 56px auto 24px" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
+    const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
+      ConfirmationModalComponent,
+      {
+        text: `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
         <h4 style="text-align: center">У вас есть черновик заявления</h4>
         <p class="helper-text" style="text-align: center; margin: 0">Продолжить его заполнение?</p></div>`,
-      showCloseButton: false,
-      showCrossButton: true,
-      buttons: [
-        {
-          label: 'Начать заново',
-          color: 'white',
-          closeModal: true,
-        },
-        {
-          label: 'Продолжить',
-          closeModal: true,
-          value: true,
-        },
-      ],
-    });
+        showCloseButton: false,
+        showCrossButton: true,
+        buttons: [
+          {
+            label: 'Начать заново',
+            color: 'white',
+            closeModal: true,
+          },
+          {
+            label: 'Продолжить',
+            closeModal: true,
+            value: true,
+          },
+        ],
+        isShortModal: true,
+      },
+    );
     modalResult$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((result) => {
-      let orderId;
-      if (result) {
-        orderId = this.serviceDataService.orderId;
-      } else {
-        orderId = null;
-      }
+      const orderId = result ? this.serviceDataService.orderId : null;
       this.formPlayerService.initData(orderId, false);
     });
   }
@@ -163,6 +167,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   prevStep(navigation?: Navigation) {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.PREV);
+  }
+
+  skipStep(navigation?: Navigation) {
+    this.formPlayerService.navigate(navigation, FormPlayerNavigation.SKIP);
   }
 
   checkProps() {

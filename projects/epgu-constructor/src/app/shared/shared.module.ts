@@ -25,9 +25,8 @@ import { ActionDirective } from './directives/action/action.directive';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
 import { UtilsService } from './services/utils/utils.service';
 import { CoreModule } from '../core/core.module';
-import { NotificationService } from './services/notification/notification.service';
-import { NotificationComponent } from './components/notification/notification.component';
 import { InputErrorComponent } from './components/input-error/input-error.component';
+import { RadioTaxComponent } from './components/radio-tax/radio-tax.component';
 import { DateRangeService } from './services/date-range/date-range.service';
 
 const COMPONENTS = [
@@ -43,9 +42,8 @@ const COMPONENTS = [
   WebcamShootComponent,
   PassportComponent,
   ActionButtonComponent,
-  NotificationComponent,
   InputErrorComponent,
-  NotificationComponent,
+  RadioTaxComponent
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe];
@@ -71,7 +69,6 @@ const DIRECTIVES = [
     TerraByteApiService,
     CurrencyPipe,
     UtilsService,
-    NotificationService,
     DateRangeService,
   ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],

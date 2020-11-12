@@ -47,12 +47,19 @@ export class AddressHelperService {
    * @param address - объект с адресом из suggestions
    */
   public async normalizeAddress(address: DadataSuggestionsAddressForLookup) {
+    let regionCode = null;
     // Если в address объект, значит уже нормализовано
     const isNormalized = typeof address.address === 'object';
     if (isNormalized) {
       return;
     }
     const normalAddress = await this.dictionaryApiService.getDadataNormalize(address.address).toPromise();
-    Object.assign(address, normalAddress);
+
+    if (normalAddress.address && normalAddress.address.elements) {
+      const regionKladrId = normalAddress.address.elements.slice(-1)[0].kladrCode;
+      regionCode = regionKladrId.toString().substring(0,2);
+    }
+    
+    Object.assign(address, normalAddress, { regionCode });
   }
 }

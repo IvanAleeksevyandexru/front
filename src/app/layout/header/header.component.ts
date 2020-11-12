@@ -8,4 +8,8 @@ import { Component } from '@angular/core';
 export class HeaderComponent {
   scenarioUrl = '';
   configUrl = 'config';
+
+  goToMainPage() {
+    window.location.href = this.scenarioUrl;
+  }
 }

@@ -16,6 +16,7 @@ import {
 import { COMMON_ERROR_MODAL_PARAMS } from './errors.interceptor.constants';
 import { ModalService } from '../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
 
 @Injectable()
 export class ErrorsInterceptorService implements HttpInterceptor {
@@ -30,7 +31,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
     );
   }
 
-  private showModal(params): Observable<HttpEvent<any>> {
+  private showModal(params: ConfirmationModal): Observable<HttpEvent<any>> {
     return this.modalService.openModal(ConfirmationModalComponent,
       params,
     );

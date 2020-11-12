@@ -23,6 +23,7 @@ interface DocInputField {
   required?: boolean;
   hint?: string;
   attrs: {
+    labelHint?: string;
     mask?: Array<string>;
     validation?: CustomComponentAttrValidation[],
     maxDate?: string;
@@ -33,10 +34,19 @@ interface DocInputField {
 }
 
 interface DocInputFormFields {
+  seriesNumDate: {
+    series: number;
+    number: number;
+    date: string | Date;
+  };
+  emitter: string;
+}
+
+interface DocInputFields {
   series: number;
   number: number;
   date: string | Date;
   emitter: string;
 }
 
-export { DocInputControl, DocInputComponentData, DocInputField, DocInputFormFields };
+export { DocInputControl, DocInputComponentData, DocInputField, DocInputFormFields, DocInputFields };

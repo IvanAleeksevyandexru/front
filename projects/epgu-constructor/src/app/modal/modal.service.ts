@@ -21,7 +21,7 @@ export class ModalService {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
-  public openModal<T>(modalComponent: Type<any>, modalParameters?: any): Observable<T> {
+  public openModal<T, K = any>(modalComponent: Type<any>, modalParameters?: K): Observable<T> {
     const modalResult = new Subject<T>();
 
     const componentFactory = this.cfr.resolveComponentFactory(modalComponent);

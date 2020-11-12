@@ -1,0 +1,12 @@
+@import "./../../../../../styles/core/index";
+
+
+.unused-payments__description {
+ @include typ-plain-text;
+  margin: 0 0 24px;
+}
+
+
+.btn__submit {
+  text-align: center;
+}
