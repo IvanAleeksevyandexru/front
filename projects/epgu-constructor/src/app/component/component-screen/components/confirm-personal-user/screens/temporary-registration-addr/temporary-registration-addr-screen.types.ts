@@ -36,4 +36,5 @@ export interface TemporaryRegistrationFields {
   hideLevels?: Array<string>;
   minDate?: Date | RelativeDate | string;
   maxDate?: Date | RelativeDate | string;
+  attrs?: {labelHint?: string};
 }

@@ -23,6 +23,7 @@ interface DocInputField {
   required?: boolean;
   hint?: string;
   attrs: {
+    labelHint?: string;
     mask?: Array<string>;
     validation?: CustomComponentAttrValidation[],
     maxDate?: string;
