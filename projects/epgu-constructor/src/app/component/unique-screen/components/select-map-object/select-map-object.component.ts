@@ -276,9 +276,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   public selectObject() {
     if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
-      this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code).subscribe(() =>
-        this.nextStep(),
-      );
+      this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code)
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(() => this.nextStep());
       return;
     }
 
@@ -332,7 +332,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return this.dictionaryApiService
       .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
       .pipe(
-        takeUntil(this.ngUnsubscribe$),
         filter((response) => {
           const hasAttributeValues = () =>
             response.items.every((item) =>
