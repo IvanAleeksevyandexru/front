@@ -36,8 +36,8 @@
     </epgu-constructor-address-item>
     <epgu-constructor-helper-text
       class="item-date-hint"
-      *ngIf="field?.fieldName === 'regDate'">
-      {{ regDateHelperText }}
+      *ngIf="field?.hint as hint">
+      {{ hint }}
     </epgu-constructor-helper-text>
 
     <epgu-constructor-address-item *ngSwitchDefault class="item" [label]="field.label">

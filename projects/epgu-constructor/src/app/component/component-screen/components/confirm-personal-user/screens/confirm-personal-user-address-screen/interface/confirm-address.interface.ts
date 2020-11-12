@@ -45,4 +45,5 @@ interface ConfirmAddressFieldsInterface {
   label: 'адрес';
   minDate?: Date | RelativeDate | string;
   maxDate?: Date | RelativeDate | string;
+  hint?: string;
 }
