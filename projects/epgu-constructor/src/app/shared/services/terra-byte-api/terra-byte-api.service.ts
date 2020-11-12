@@ -116,7 +116,7 @@ export class TerraByteApiService {
   pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile) {
     const isChromeIOS = /CriOS\/[\d]+/.test(navigator.userAgent);
 
-    var reader = new FileReader();
+    const reader = new FileReader();
 
     reader.onerror = (e) => console.error(e);
     reader.onloadend = () => {
