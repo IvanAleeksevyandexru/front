@@ -1,10 +1,5 @@
-<epgu-constructor-label *ngIf="!disableLabel">{{ data.value?.label }}
-  <lib-question-help-tip class="labelTip"
-                         *ngIf="data.value?.attrs?.labelHint"
-                         [questionTip]="data.value?.attrs?.labelHint"
-  ></lib-question-help-tip>
-</epgu-constructor-label>
-
+<epgu-constructor-label [tips]="data.value?.attrs?.labelHint"
+                        *ngIf="!disableLabel">{{ data.value?.label }}</epgu-constructor-label>
 <div class="form__error"
      *ngIf="!disableError">
   <small

@@ -23,16 +23,3 @@
   line-height: 24px;
   font-weight: bold;
 }
-
-.labelTip::ng-deep {
-  .question-icon, .question-icon.hover-controlled.hovered {
-    background-size: contain;
-  }
-
-  .dialog-icon {
-    width: 16px;
-    height: 16px;
-    margin-top: -4px;
-  }
-}
-
