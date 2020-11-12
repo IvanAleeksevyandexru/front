@@ -36,7 +36,7 @@ export class TerraByteApiService {
    * @param relativePath - относительный путь от API для запросов
    */
   private getTerabyteApiUrl = (relativePath): string =>
-      this.config.fileUploadApiUrl + relativePath;
+    this.config.fileUploadApiUrl + relativePath;
 
   /**
    * Возращает опции запроса
@@ -98,15 +98,6 @@ export class TerraByteApiService {
 
 
   /**
-   * Возвращает ссылку на загрузку файла
-   * @param options - данные о файле
-   */
-  downloadFileLink(options: TerraFileOptions): string {
-    // eslint-disable-next-line max-len
-    return this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`);
-  }
-
-  /**
    * Запрос на загрузку уже существующего
    * @param options - данные о файле
    */
@@ -118,18 +109,24 @@ export class TerraByteApiService {
   }
 
   /**
-   * Отдача пользователю файла прямо в браузер
-   * @private
+   * Скачивание по ссылке файла в браузер
+   * @param data - Blob данные для скачивания
+   * @param file - файл для загрузки
    */
   pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile) {
-    const url = window.URL.createObjectURL(data);
-    const a = document.createElement('a');
-    document.body.appendChild(a);
-    a.setAttribute('style', 'display: none');
-    a.href = url;
-    a.download = file.fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
-    a.remove();
+    const isChromeIOS = /CriOS\/[\d]+/.test(navigator.userAgent);
+
+    const reader = new FileReader();
+
+    reader.onerror = (e) => console.error(e);
+    reader.onloadend = () => {
+      const replaceDataRegex = /^data:[^;]*;/;
+      let url = reader.result;
+      url = isChromeIOS ? url : url.toString().replace(replaceDataRegex, 'data:attachment/file;');
+      // @ts-ignore
+      location = url;
+    };
+
+    reader.readAsDataURL(data);
   }
 }
