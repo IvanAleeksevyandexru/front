@@ -3,7 +3,7 @@
     *ngFor="let field of data?.attrs?.fields; let i = index"
     [ngSwitch]="field?.fieldName"
   >
-    <epgu-constructor-address-item *ngSwitchCase="'regAddr'" class="item" [label]="field.label">
+    <epgu-constructor-address-item [tips]="field?.attrs?.labelHint" *ngSwitchCase="'regAddr'" class="item" [label]="field.label">
       <lib-dadata-widget
         [simpleMode]="true"
         [hideHouseCheckbox]="true"
