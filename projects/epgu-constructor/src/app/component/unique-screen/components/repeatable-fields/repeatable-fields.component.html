@@ -23,9 +23,9 @@
       </epgu-constructor-screen-pad>
     </div>
 
-    <epgu-constructor-long-button [disabled]="!isScreensAvailable()" class="btn--add" (click)="duplicateScreen()">
-      <div class="btn--add__text">Добавить данные</div>
-    </epgu-constructor-long-button>
+    <button [disabled]="!isScreensAvailable()" class="btn btn--transparent btn--clone" (click)="duplicateScreen()">
+      Добавить данные
+    </button>
   </div>
 
   <div class="screen-footer">
