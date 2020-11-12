@@ -28,6 +28,9 @@ const moment = moment_;
   providers: [UnsubscribeService],
 })
 export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterViewInit {
+  regDateHelperText =
+    'Дату регистрации можно найти на штампе о регистрации на стр. 5-12 паспорта РФ';
+
   @ViewChild('dataForm', { static: false }) dataForm;
 
   @Input() data: ConfirmAddressInterface;

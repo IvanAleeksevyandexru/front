@@ -22,6 +22,7 @@
           : !field?.fieldName
       "
       class="item item--date"
+      [class.item_reg-date]="field?.fieldName === 'regDate'"
       [label]="field.label"
     >
       <lib-date-picker
@@ -33,6 +34,11 @@
       >
       </lib-date-picker>
     </epgu-constructor-address-item>
+    <epgu-constructor-helper-text
+      class="item-date-hint"
+      *ngIf="field?.fieldName === 'regDate'">
+      {{ regDateHelperText }}
+    </epgu-constructor-helper-text>
 
     <epgu-constructor-address-item *ngSwitchDefault class="item" [label]="field.label">
       <lib-plain-input
