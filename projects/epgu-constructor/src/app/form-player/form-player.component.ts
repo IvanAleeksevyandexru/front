@@ -149,6 +149,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
           value: true,
         },
       ],
+      isShortModal: true,
     });
     modalResult$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((result) => {
       let orderId;

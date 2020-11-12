@@ -17,4 +17,5 @@ export interface ConfirmationModal {
     value?: any;
   }[];
   clarifications?: object;
+  isShortModal?: boolean;
 }
