@@ -2,6 +2,7 @@ export interface ConfirmationModal {
   title?: string;
   text?: string;
   showCloseButton?: boolean;
+  showCrossButton?: boolean;
   preview?: boolean;
   elemEventHandlers?: {
     elemId: string;
@@ -17,4 +18,5 @@ export interface ConfirmationModal {
     value?: any;
   }[];
   clarifications?: object;
+  isShortModal?: boolean;
 }
