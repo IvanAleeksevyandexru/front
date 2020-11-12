@@ -111,8 +111,11 @@ export class EmployeeHistoryFormService {
   }
 
   private setValidatorsByDataSource(ds: EmployeeHistoryDataSource, form: FormGroup): void {
+    // Список контролов, на которых не нужно вешать валидаторы
+    const missedControls = ['type', 'label', 'positionHint', 'placeHint'];
+
     for(const [key, value] of Object.entries(ds)) {
-      if (key !== 'type' && key !== 'label') {
+      if (!missedControls.includes(key)) {
         if (value) {
           form.get(String(key)).setValidators(Validators.required);
         } else {
