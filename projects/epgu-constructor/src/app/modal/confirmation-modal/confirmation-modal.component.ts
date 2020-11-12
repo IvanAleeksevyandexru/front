@@ -26,6 +26,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
 
   buttons: ConfirmationModal['buttons'] = [];
   showCrossButton: boolean;
+  isShortModal?: ConfirmationModal['isShortModal'];
 
   constructor(private modalService: ModalService, private elemRef: ElementRef) {
     super();

@@ -17,7 +17,6 @@ import { ComponentsListModule } from '../components-list/components-list.module'
 import { ModalModule } from '../../modal/modal.module';
 import { CoreModule } from '../../core/core.module';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { PaymentTypeSelectorModule } from './components/payment-type-selector/payment-type-selector.module';
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
 const COMPONENTS = [RepeatableFieldsComponent];
@@ -41,7 +40,6 @@ const COMPONENTS = [RepeatableFieldsComponent];
     SignatureApplicationModule,
     UploadAndEditPhotoModule,
     ComponentsListModule,
-    PaymentTypeSelectorModule,
   ],
   exports: [
     ...COMPONENTS,
@@ -55,7 +53,6 @@ const COMPONENTS = [RepeatableFieldsComponent];
     PaymentModule,
     UnusedPaymentsModule,
     SignatureApplicationModule,
-    PaymentTypeSelectorModule,
   ],
   providers: [
     WebcamService,

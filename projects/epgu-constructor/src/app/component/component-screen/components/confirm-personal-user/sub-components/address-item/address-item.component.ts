@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
 export class AddressItemComponent {
   @Input() label: string;
   @Input() hint: string;
+  @Input() tips: string;
 }
