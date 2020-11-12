@@ -67,9 +67,14 @@ export class EmployeeHistoryComponent implements OnInit {
 
     const toFormatted = { ...to, monthCode: months[to.month] };
     const fromFormatted = { ...from, monthCode: months[from.month] };
-    const chosenRole = this.ds.filter((role) => role.type === employee.type) || [{ label: null }];
+    const chosenRole = this.ds.filter((role) => role.type === employee.type);
 
-    return { ...employeeHistory, to: toFormatted, from: fromFormatted, label: chosenRole[0].label };
+    return {
+      ...employeeHistory,
+      to: toFormatted,
+      from: fromFormatted,
+      label: chosenRole[0]?.label || null,
+    };
   }
 
   availableControlsOfType(type: string): EmployeeHistoryDataSource {
