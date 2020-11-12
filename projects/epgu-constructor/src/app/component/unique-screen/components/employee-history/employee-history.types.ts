@@ -4,7 +4,9 @@ export interface EmployeeHistoryDataSource {
   label: string;
   type: EmployeeType;
   position: string;
+  positionHint?: string;
   place: string;
+  placeHint?: string;
   address: string;
 }
 
