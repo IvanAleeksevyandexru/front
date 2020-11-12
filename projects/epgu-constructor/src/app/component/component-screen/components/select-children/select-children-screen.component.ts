@@ -9,6 +9,11 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 
+enum ItemActions {
+  selectChild = 'selectChild',
+  removeItem = 'removeItem',
+}
+
 @Component({
   selector: 'epgu-constructor-select-children-screen',
   templateUrl: './select-children-screen.component.html',
@@ -21,8 +26,8 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
 
   valueParsed: any;
   itemsList: any = [];
-  itemsToSelect: Array<ListItem>;
-  selectedItems: any = {};
+  itemsToSelect: Array<Partial<ListItem>>;
+  selectedItems: { [id: string]: { [ref: string]: any } } = {};
   items: Array<string> = [];
   selectChildrenForm = new FormGroup({});
   firstNameRef: string;
@@ -85,10 +90,8 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
   }
 
   removeChild(item: string): void {
-    this.selectChildrenForm.removeControl(item);
-    delete this.selectedItems[item];
+    this.updateItems(ItemActions.removeItem, item);
     this.passDataToSend(Object.values(this.selectedItems));
-    this.setHideStateToSelectedItems();
   }
 
   passDataToSend(selectedItems): void {
@@ -120,29 +123,35 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
     this.addFormControl(uuid.v4());
   }
 
-  handleSelect(event, item: string): void {
+  handleSelect(event, itemId: string): void {
     const { id } = event;
     if (id === 'new') {
-      this.addNewChild(item);
+      this.addNewChild(itemId);
     } else {
-      const selectedChild = this.itemsList.find((child) => child[this.idRef] === id);
-      this.selectedItems[item] = selectedChild;
+      this.updateItems(ItemActions.selectChild, itemId, id);
       this.passDataToSend(Object.values(this.selectedItems));
-      this.setHideStateToSelectedItems();
     }
   }
 
+  updateItems(action: 'removeItem' | 'selectChild', itemId: string, childId?: string): void {
+    if (action === ItemActions.selectChild && childId) {
+      this.selectedItems[itemId] = this.itemsList.find((child) => child[this.idRef] === childId);
+    } else if (action === ItemActions.removeItem) {
+      this.selectChildrenForm.removeControl(itemId);
+      delete this.selectedItems[itemId];
+    }
+    this.setHideStateToSelectedItems();
+  }
+
   private setHideStateToSelectedItems(): void {
-    const selectedItemsKeys: Array<string | number> = Object.values(this.selectedItems).map(
-      (selectedItem: any) => selectedItem[this.idRef],
+    const selectedItemsIds = Object.values(this.selectedItems).map(
+      (selectedItem: { [ref: string]: any }) => selectedItem[this.idRef],
     );
-    this.itemsToSelect = this.itemsToSelect.map((item) => {
-      const newItem = item;
-      newItem.unselectable = false;
-      if (selectedItemsKeys.includes(newItem[this.idRef])) {
-        newItem.unselectable = true;
-      }
-      return newItem;
+
+    this.itemsToSelect = this.itemsToSelect.map((item: ListItem) => {
+      // eslint-disable-next-line no-param-reassign
+      item.hidden = Boolean(selectedItemsIds.includes(item.id));
+      return item;
     });
   }
 
