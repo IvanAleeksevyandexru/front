@@ -133,7 +133,7 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
     }
   }
 
-  updateItems(action: 'removeItem' | 'selectChild', itemId: string, childId?: string): void {
+  updateItems(action: ItemActions, itemId: string, childId?: string): void {
     if (action === ItemActions.selectChild && childId) {
       this.selectedItems[itemId] = this.itemsList.find((child) => child[this.idRef] === childId);
     } else if (action === ItemActions.removeItem) {
