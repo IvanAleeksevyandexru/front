@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.25...v0.5.1) (2020-11-13)
+
+
+### Features
+
+* добавил текстовое сообщения[EPGUCORE-41098] ([1176dc3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1176dc351436580d43c9ccae5f2afb68ac2d779d))
+* изменён формат данных EmployeeHistory для отправки на сервер [ref EPGUCORE-40745] ([155b75d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/155b75d6c7885d9045be9cc67f201a1304847c22))
+* Исправил стили кнопки для репитбл филдов [ref: EPGUCORE-40992] ([5121587](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5121587184cee6e8f341f6fdfec70513e713ac93))
+
+
+### Bug Fixes
+
+* возврат условия для docInput [ref EPGUCORE-40745] ([ed1d3f6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ed1d3f63ddd543afa3f2056de88a59383f87b7c2))
+* Добавил подсказки для ИП [ref: EPGUCORE-41056] ([3197a0b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3197a0b0a4a899977c6888e4ea52b9a529551ea8))
+* Исправил стили для информационного сообщения [ref: EPGUCORE-40991] ([8867478](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/8867478325f86e3b3f38b897bdbc2902da05945a))
+* исправлена валидация даты DocInput ([ec5406a](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ec5406a8072f8fb154279d86aff876b1e1e61141))
+* исправлено отображение детей в дропдауне [ref EPGUCORE-40842] ([9a6bc46](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9a6bc46bf669449ac67cc1f965d5ef1ecdc24a3d))
+* исправлено условие [ref EPGUCORE-40745] ([017b534](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/017b53498c42dda218c540d40e02a3384c7515f7))
+* перенёс сообщения на JSON[EPGUCORE-41098] ([bdc6753](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/bdc67536186fd96c722105662905ff289f932e6b))
+
 ### [0.4.25](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.24...v0.4.25) (2020-11-12)
 
 ### [0.4.24](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.3.31...v0.4.24) (2020-11-11)
