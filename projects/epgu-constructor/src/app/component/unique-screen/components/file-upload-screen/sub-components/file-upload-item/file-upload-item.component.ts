@@ -422,7 +422,7 @@ export class FileUploadItemComponent implements OnDestroy {
   handleError(action: ErrorActions, file?: File): void {
     const errorHandler = {};
     // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxAmount] = `Максимальное число файлов на загрузку - ${this.data.maxFileCount}`;
+    errorHandler[ErrorActions.addMaxAmount] = `Максимальное число файлов - ${this.data.maxFileCount}`;
     // eslint-disable-next-line prettier/prettier
     errorHandler[ErrorActions.addMaxSize] = `Размер файлов превышает ${getSizeInMB(this.data.maxSize)} МБ`;
     // eslint-disable-next-line prettier/prettier
