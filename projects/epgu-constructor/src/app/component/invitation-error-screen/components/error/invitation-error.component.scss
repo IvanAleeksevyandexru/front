@@ -1,0 +1,44 @@
+@import '../../../../../styles/core';
+
+:host {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.invitation {
+  &__img img {
+      margin: auto;
+      display: block;
+      max-width: 100%;
+  }
+}
+
+.invitation__content {
+
+  .invitation__image {
+    margin-top: 32px;
+  }
+
+  .invitation__message {
+    margin: 32px 0;
+  }
+  .form {
+    &__error {
+      margin-top: 4px;
+      line-height: 20px;
+      color: $color-gosred;
+    }
+    &__item {
+      margin-bottom: $screen-pad-p;
+    }
+  }
+
+  @include tablets-up {
+    margin-bottom: 32px;
+  }
+}
+
+.screen-footer {
+  flex-direction: column;
+}

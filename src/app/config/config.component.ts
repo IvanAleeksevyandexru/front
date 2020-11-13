@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
-import { UnsubscribeService } from '../../../projects/epgu-constructor/src/app/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '../../../projects/epgu-constructor/src/app/core/services/unsubscribe/unsubscribe.service';
 import { AppService } from '../app.service';
 import { AppConfig } from '../app.type';
 
@@ -34,7 +34,9 @@ export class ConfigComponent implements OnInit {
   }
 
   saveConfig(): void {
-    this.appService.saveConfig(this.configForm.value);
+    const config = this.configForm.value;
+    config.canStartNew = config.canStartNew.toString() !== 'false';
+    this.appService.saveConfig(config);
   }
 
   resetConfig(): void {

@@ -1,0 +1,12 @@
+@import "../../../../../styles/core";
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: inherit;
+  min-height: inherit;
+  @include tablets-up {
+    min-height: auto;
+  }
+}

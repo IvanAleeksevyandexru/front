@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CachedAnswers } from '../../../screen/screen.types';
-import { ComponentDto } from '../../../services/api/form-player-api/form-player-api.types';
-import { UniqueScreenComponentTypes } from '../../../screen/unique-screen/unique-screen.types';
-import { CustomScreenComponentTypes } from '../../../screen/custom-screen/custom-screen.types';
-
+import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
+import { ComponentScreenComponentTypes } from '../../../component/component-screen/component-screen-components.types';
 
 // TODO нужно утащить на backend (HARDCODE from backend)
 export const componentsNoCache: Array<string> = [
   UniqueScreenComponentTypes.carInfo,
-  CustomScreenComponentTypes.PhoneNumberChangeInput
+  ComponentScreenComponentTypes.confirmPersonalUserPhone,
+  ComponentScreenComponentTypes.confirmPersonalUserEmail,
 ];
 
 @Injectable()

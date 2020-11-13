@@ -4,9 +4,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
-import { CustomScreenComponentTypes } from '../screen/custom-screen/custom-screen.types';
-import { ComponentDto } from '../services/api/form-player-api/form-player-api.types';
-import { UtilsService } from '../services/utils/utils.service';
+import { CustomScreenComponentTypes } from '../component/components-list/components-list.types';
+import { ComponentDto } from '../form-player/services/form-player-api/form-player-api.types';
+import { UtilsService } from '../shared/services/utils/utils.service';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -131,7 +131,7 @@ export class ScreenService extends ScreenContent {
   private getPresetValue(item: ComponentDto): ComponentDto {
     const [id, path] = item.attrs.preset.value.split(/\.(.+)/);
     const cachedValue = this.cachedAnswersService
-      .getCachedValueById(this.screenStore.cachedAnswers, id);
+      .getCachedValueById(this.screenStore.cachedAnswers, id) || '{}';
     const value = UtilsService.getObjectProperty(JSON.parse(cachedValue), path, item.value);
 
     return { ...item, value };

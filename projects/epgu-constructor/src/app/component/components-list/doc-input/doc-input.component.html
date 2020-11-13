@@ -1,0 +1,86 @@
+<section class="doc-input">
+  <div *ngIf="this.data.value.label && isValidationShown(seriesNumDateGroup)"
+       class="doc-input__title">
+    <span>{{ this.data.value.label }}</span>
+  </div>
+  <div class="form__error">
+    <epgu-constructor-input-error *ngFor="let fieldName of fieldsNames | slice:0:-1">
+      <span *ngIf="isValidationShown([seriesNumDateGroup, fieldName])">
+        {{fields[fieldName].label}}: {{form.get([seriesNumDateGroup, fieldName]).errors.msg}}
+      </span>
+    </epgu-constructor-input-error>
+  </div>
+
+  <div class="doc-input__group">
+    <div class="doc-input__group-item doc-input__series">
+      <epgu-constructor-label for="series">{{ fields['series'].label }}</epgu-constructor-label>
+      <lib-standard-masked-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="fields['series']?.attrs?.fstuc"
+        id="series"
+        [formControl]="form.get([seriesNumDateGroup, 'series'])"
+        [mask]="fields['series']?.attrs?.mask | maskHandle"
+        [showMaskAsPlaceholder]="!fields['series']?.placeholder"
+        [placeholder]="fields['series']?.placeholder"
+        [showConstantMaskSymbols]="true"
+        [invalid]="isValidationShown([seriesNumDateGroup, 'series'])"
+        [validationShowOn]="validationShowOn"
+      ></lib-standard-masked-input>
+    </div>
+    <div class="doc-input__group-item doc-input__number">
+      <epgu-constructor-label for="number">{{ fields['number'].label }}</epgu-constructor-label>
+      <lib-standard-masked-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
+        [textTransformType]="fields['number']?.attrs?.fstuc"
+        id="number"
+        [formControl]="form.get([seriesNumDateGroup, 'number'])"
+        [mask]="fields['number']?.attrs?.mask | maskHandle"
+        [showMaskAsPlaceholder]="!fields['number']?.placeholder"
+        [placeholder]="fields['number']?.placeholder"
+        [showConstantMaskSymbols]="true"
+        [invalid]="isValidationShown([seriesNumDateGroup, 'number'])"
+        [validationShowOn]="validationShowOn"
+      ></lib-standard-masked-input>
+    </div>
+    <div class="doc-input__group-item doc-input__date">
+      <epgu-constructor-label for="date">{{ fields['date'].label }}</epgu-constructor-label>
+      <lib-date-picker
+        id="date"
+        align="left"
+        [formControl]="form.get([seriesNumDateGroup, 'date'])"
+        [minDate]="fields['date']?.attrs?.minDate || '-120y'"
+        [maxDate]="fields['date']?.attrs?.maxDate || 'today'"
+        [invalid]="isValidationShown([seriesNumDateGroup, 'date'])"
+        [validationShowOn]="validationShowOn"
+      ></lib-date-picker>
+    </div>
+  </div>
+  <epgu-constructor-helper-text
+    *ngIf="fields['hint']?.label && isValidationShown(seriesNumDateGroup)"
+    class="doc-input__hint">
+    {{ fields['hint']?.label }}
+  </epgu-constructor-helper-text>
+
+  <div class="doc-input__emmiter">
+    <epgu-constructor-label for="emitter">{{ fields['emitter'].label }}</epgu-constructor-label>
+    <epgu-constructor-input-error *ngIf="form.get('emitter').invalid && form.get('emitter').touched">
+      {{form.get('emitter').errors.msg}}
+    </epgu-constructor-input-error>
+    <lib-plain-input
+      epgu-constructor-trim
+      epgu-constructor-text-transform
+      [textTransformType]="fields['emitter']?.attrs?.fstuc"
+      id="emitter"
+      [formControl]="form.get('emitter')"
+      [invalid]="isValidationShown('emitter')"
+      [validationShowOn]="validationShowOn"
+    ></lib-plain-input>
+  </div>
+  <epgu-constructor-helper-text
+    *ngIf="fields['emitter']?.hint && isValidationShown('emitter')"
+    class="doc-input__hint">
+    {{ fields['emitter']?.hint }}
+  </epgu-constructor-helper-text>
+</section>

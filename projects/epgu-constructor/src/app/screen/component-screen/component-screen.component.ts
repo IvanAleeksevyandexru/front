@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { CycledFieldsService } from '../../services/cycled-fields/cycled-fields.service';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { Screen } from '../screen.types';
-import { ComponentScreenComponentTypes } from './component-screen.types';
+import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -30,20 +29,16 @@ export class ComponentScreenComponent implements OnInit, Screen {
     displayWarningAnswers: false,
   };
   componentData = null;
-  form: FormGroup;
 
   constructor(
     private navigationService: NavigationService,
     public currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
-    private fb: FormBuilder,
     private cycledFieldsService: CycledFieldsService,
   ) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group({});
-
     this.navigationService.clickToBack$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.prevStep());
@@ -65,7 +60,7 @@ export class ComponentScreenComponent implements OnInit, Screen {
   /**
    * Переход на следующую страницу и передача данных
    */
-  nextStep(): void {
+  nextStep(action: any): void {
     let value: string;
     if (typeof this.currentAnswersService.state === 'object') {
       value = JSON.stringify(this.currentAnswersService.state);
@@ -73,9 +68,15 @@ export class ComponentScreenComponent implements OnInit, Screen {
       value = this.currentAnswersService.state;
     }
 
-    this.navigationService.nextStep.next({
-      payload: { ...this.cycledFieldsService.dataTransform(value) },
-    });
+    if (action === 'skipStep') {
+      this.navigationService.skipStep.next({
+        payload: { ...this.cycledFieldsService.dataTransform(value) },
+      });
+    } else {
+      this.navigationService.nextStep.next({
+        payload: { ...this.cycledFieldsService.dataTransform(value) },
+      });
+    }
   }
 
   /**

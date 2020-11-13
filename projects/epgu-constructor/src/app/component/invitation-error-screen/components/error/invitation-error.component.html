@@ -1,0 +1,60 @@
+<epgu-constructor-screen-container>
+      <ng-container *ngIf="!emailSent else result">
+        <div class="screen-body">
+          <div class="invitation__img">
+            <img src="{{ config.staticDomainAssetsPath }}/assets/img/screens/s11.png" />
+          </div>
+          <p class="invitation__message">{{ data.label }}</p>
+          <form class="form">
+            <div class="form__item">
+              <lib-plain-input
+                id="email"
+                type="email"
+                [formControl]="email"
+                placeholder="Email"
+                [invalid]="email.invalid && email.touched"
+                [validationShowOn]="validationShowOn"
+              ></lib-plain-input>
+              <div class="form__error">
+                <small *ngIf="email.invalid && email.touched">
+                  {{ email.getError('msg') }}
+                </small>
+              </div>
+            </div>
+          </form>
+          <p class="invitation__info">
+            На указанный адрес электронной почты придет ссылка для регистрации на портале Госуслуг
+          </p>
+        </div>
+        <div class="screen-footer">
+          <lib-button
+            (click)="sendEmail()"
+            [disabled]="!email.valid"
+          >Отправить приглашение</lib-button>
+        </div>
+      </ng-container>
+      <ng-template #result>
+        <div class="screen-body">
+          <div *ngIf="success else errorMessage" class="invitation__img">
+            <img src="{{ config.staticDomainAssetsPath }}/assets/img/screens/s11.png" />
+            <p>Емейл был успешно отправлен.</p>
+          </div>
+          <ng-template #errorMessage>
+            <div class="info">
+              <img class="info__img" src="{{ config.staticDomainAssetsPath }}/assets/img/server-error.svg" alt="" />
+              <div class="info__text">При получении реквизитов оплаты пошлины произошла ошибка.</div>
+              <div class="info__text">
+                Попробуйте зайти на страницу позже. Если ошибка не исчезнет,
+                <a href="https://www.gosuslugi.ru/help" target="_blank">сообщите нам о ней</a>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="screen-footer">
+          <lib-button (click)="redirectToLK()">
+            Вернуться в личный кабинет
+          </lib-button>
+        </div>
+      </ng-template>
+</epgu-constructor-screen-container>

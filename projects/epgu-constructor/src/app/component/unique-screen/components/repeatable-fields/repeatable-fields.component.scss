@@ -1,0 +1,24 @@
+@import 'src/styles/core/functions';
+@import 'src/styles/core/typography';
+@import 'src/styles/core/variables';
+
+.cmp-group {
+  &__layer {
+    &:not(:last-child) {
+      margin-bottom: 25px;
+    }
+  }
+}
+
+.icon-close {
+  display: flex;
+  margin-left: auto;
+}
+
+.btn--add {
+  margin-top: $screen-pad-p;
+  &__text {
+    width: 100%;
+    text-align: center;
+  }
+}

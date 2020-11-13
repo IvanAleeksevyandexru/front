@@ -1,0 +1,145 @@
+@import '../../../../../../../styles/core/typography';
+@import '../../../../../../../styles/core/palettes';
+@import '../../../../../../../styles/core/breakpoint';
+@import '../../../../../../../styles/components/rubles';
+
+.info {
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 24px;
+  color: $color-text-helper;
+}
+
+.title {
+  @include typ-h5;
+
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.fileupload__wrapper {
+  margin-bottom: 24px;
+  box-sizing: border-box;
+  background-color: $color-white;
+  padding: 24px;
+  border-radius: 12px;
+}
+
+.file__bottom {
+  border-bottom: 1px solid $color-devider;
+  margin-bottom: 24px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.error {
+  color: $color-gosred;
+  margin-bottom: 10px;
+}
+
+.file {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.file__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-right: 12px;
+  background: no-repeat center center url('../../../../../../../assets/icons/svg/file_inprogress.svg');
+
+  &.uploaded {
+    background-image: url('../../../../../../../assets/icons/svg/file_accept.svg');
+  }
+
+  &.has-error {
+    background-image: url('../../../../../../../assets/icons/svg/file_red.svg');
+  }
+}
+
+.file__title-wrapper {
+  width: 100%;
+}
+
+.file__title {
+  font-size: 16px;
+  line-height: 24px;
+  color: $color-text-helper;
+  word-break: break-all;
+
+  &.uploaded {
+    color: $color-summer-night;
+
+    &:not(.has-error) {
+      cursor: pointer;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &.has-error {
+    color: $color-gosred;
+  }
+}
+
+.file__title-info {
+  font-size: 14px;
+  color: $color-green-sea;
+}
+
+.file__action {
+  font-size: 14px;
+  line-height: 20px;
+  flex-shrink: 0;
+  color: $color-gosred;
+  background-color: $color-white;
+  cursor: pointer;
+  margin-left: 12px;
+  border: 0;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.webcam__video {
+  display: none;
+}
+
+.fileupload__button-icon {
+  vertical-align: middle;
+  margin-right: 8.6px;
+}
+
+.fileupload__buttons {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.fileupload__button {
+  padding: 5px;
+  margin: -5px;
+
+  @include phones-down {
+    padding: 0 18px;
+  }
+
+  &:first-child {
+    margin-right: 19px;
+
+    @include phones-down {
+      margin-right: 10px;
+    }
+  }
+}
+
+@include rubles('.info__text', '../../../../../../../assets/img/ruble.svg');
+

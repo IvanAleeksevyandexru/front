@@ -1,0 +1,245 @@
+<form class="form">
+  <div *ngFor="let componentData of formService.form.controls; let idx = index;"
+       class="form__item"
+       [class.form__item--half]="isHalfWidthItem(componentData)"
+  >
+    <ng-container
+      [ngSwitch]="componentData.value?.type"
+      *ngIf="formService.shownElements[componentData.value?.id]">
+
+      <ng-container *ngSwitchCase="componentType.LabelSection">
+        <ng-container *ngTemplateOutlet="formOutputHtml; context: { $implicit: { class: 'label', value: componentData.value } }">
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="componentType.HtmlString">
+        <ng-container *ngTemplateOutlet="formOutputHtml; context: { $implicit: { class: 'info__text', value: componentData.value } }">
+        </ng-container>
+      </ng-container>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.NewEmailInput"
+                                       [data]="componentData">
+        <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.StringInput"
+                                       [data]="componentData"
+                                       [hidden]="componentData.value?.attrs?.hidden">
+        <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.DropDown"
+                                       [data]="componentData">
+        <lib-dropdown
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [items]="(dropDowns$ | async)[componentData.value?.id]"
+          [disabled]="(dropDowns$ | async)[componentData.value?.id]?.length === 1"
+          [validationShowOn]="validationShowOn"
+          [formControl]="componentData.get('value')"
+          class="cs__select cs-select">
+        </lib-dropdown>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.MvdGiac"
+                                       [data]="componentData">
+        <lib-dropdown
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [items]="(dropDowns$ | async)[componentData.value?.id]"
+          [disabled]="(dropDowns$ | async)[componentData.value?.id].length === 1"
+          [validationShowOn]="validationShowOn"
+          [formControl]="componentData.get('value')"
+          class="cs__select cs-select">
+        </lib-dropdown>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.Dictionary"
+                                       [data]="componentData">
+        <lib-dropdown
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [items]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
+          [validationShowOn]="validationShowOn"
+          [disabled]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list?.length === 1"
+          [formControl]="componentData.get('value')"
+          class="cs__select cs-select">
+        </lib-dropdown>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.Lookup"
+                                       [data]="componentData">
+        <lib-lookup
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [validationShowOn]="validationShowOn"
+          [formControl]="componentData.get('value')"
+          [queryMinSymbolsCount]="0"
+          [searchCaseSensitive]="false"
+          [fixedItems]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
+          [virtualScroll]="true"
+        >
+        </lib-lookup>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.RadioInput"
+                                       [data]="componentData"
+                                       [hidden]="componentData.value?.attrs?.hidden">
+        <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio__inline' : 'form__radio__block'">
+          <lib-radio
+            *ngFor="let item of componentData.value?.attrs?.supportedValues"
+            [name]="componentData.value.id"
+            [labelText]="item.label"
+            [formControl]="componentData.get('value')"
+            [value]="item.value">
+          </lib-radio>
+        </div>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item
+        *ngSwitchCase="componentType.CheckBox"
+        [data]="componentData"
+        [disableLabel]="true"
+      >
+        <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'">
+          <lib-checkbox
+            [checkboxId]="componentData.value?.id"
+            [formControl]="componentData.get('value')"
+            [disabled]="componentData.value?.disabled"
+            [labelText]="componentData.value?.label"
+            [required]="componentData.value?.required"
+          >
+          </lib-checkbox>
+        </div>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.DateInput"
+                                       [data]="componentData">
+        <lib-date-picker
+          (dateSelected)="dateRangeService.changeDate($event, componentData.value?.attrs)"
+          (cleared)="dateRangeService.clearDate(componentData.value?.id, componentData.value?.attrs)"
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [validationShowOn]="validationShowOn"
+          [name]="componentData.value?.id"
+          [formControl]="componentData.get('value')"
+          [readOnly]="componentData.value?.attrs?.readonly"
+          [minDate]="dateRangeService.rangeMap.get(componentData.value?.id)?.min || componentData.value?.attrs?.minDate  || '-120y'"
+          [maxDate]="dateRangeService.rangeMap.get(componentData.value?.id)?.max || componentData.value?.attrs?.maxDate || '+50y'"
+          [clearable]="componentData.value?.attrs?.limit"
+          [align]="'left'"
+        ></lib-date-picker>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.AddressInput"
+                                       [data]="componentData">
+        <lib-dadata-widget
+          [simpleMode]="true"
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [validationShowOn]="validationShowOn"
+          [hideHouseCheckbox]="true"
+          [externalApiUrl]="configService.externalApiUrl + '/'"
+          [formControl]="componentData.get('value')"
+          [hideLevels]="componentData.value?.attrs?.hideLevels"
+        >
+        </lib-dadata-widget>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.CityInput"
+                                       [data]="componentData">
+        <lib-lookup
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [validationShowOn]="validationShowOn"
+          [formControl]="componentData.get('value')"
+          [itemsProvider]="formService.addressHelperServiceProvider()"
+          [clearable]="true"
+        >
+        </lib-lookup>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.PhoneNumberChangeInput"
+                                       [data]="componentData">
+          <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.OgrnInput"
+                                       [data]="componentData">
+        <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.OgrnipInput"
+                                       [data]="componentData">
+        <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.LegalInnInput"
+                                       [data]="componentData">
+        <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.SnilsInput"
+                                       [data]="componentData">
+        <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.PersonInnInput"
+                                       [data]="componentData">
+        <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item *ngSwitchCase="componentType.PassportLookup"
+                                       [data]="componentData">
+        <epgu-constructor-passport
+          [formControl]="componentData.get('value')"
+          [attrs]="componentData.value?.attrs"
+        >
+        </epgu-constructor-passport>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-doc-input [data]="componentData" *ngSwitchCase="componentType.DocInput">
+      </epgu-constructor-doc-input>
+    </ng-container>
+  </div>
+</form>
+
+<ng-template #formOutputHtml let-data>
+  <epgu-constructor-output-html
+    class="custom__screen-html"
+    [class]="data.class"
+    [html]="data.value?.label"
+    [clarifications]="data.value?.attrs?.clarifications">
+  </epgu-constructor-output-html>
+</ng-template>
+
+<ng-template #maskedAndPlainInput let-data>
+  <ng-container *ngTemplateOutlet="data.value?.attrs?.mask ? maskedInput : plainInput; context: { $implicit: data }">
+  </ng-container>
+</ng-template>
+
+<ng-template #plainInput let-data>
+  <lib-plain-input
+    [epgu-constructor-currency-transform]="data.value?.attrs?.price"
+    epgu-constructor-trim
+    epgu-constructor-text-transform
+    [textTransformType]="data.value?.attrs?.fstuc"
+    [invalid]="data.get('value').invalid && data.get('value').touched"
+    [name]="data.value?.id"
+    [formControl]="data.get('value')"
+    [validationShowOn]="validationShowOn"
+    [readOnly]="data.value?.attrs?.readonly"
+  ></lib-plain-input>
+</ng-template>
+
+<ng-template #maskedInput let-data>
+  <lib-standard-masked-input
+    *ngIf="data.value?.attrs?.mask"
+    epgu-constructor-text-transform
+    [textTransformType]="data.value?.attrs?.fstuc"
+    [clearable]="true"
+    [mask]="data.value?.attrs?.mask | maskHandle"
+    [name]="data.value?.id"
+    [showMaskAsPlaceholder]="!data.value?.attrs?.placeholder"
+    [placeholder]="data.value?.attrs?.placeholder"
+    [showConstantMaskSymbols]="true"
+    [formControl]="data.get('value')"
+    [invalid]="data.get('value').invalid && data.get('value').touched"
+    [validationShowOn]="validationShowOn"
+    [readOnly]="data.value?.attrs?.readonly"
+  >
+  </lib-standard-masked-input>
+</ng-template>

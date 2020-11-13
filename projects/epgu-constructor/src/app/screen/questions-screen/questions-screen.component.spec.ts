@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../shared/services/navigation/navigation.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
 import { SharedModule } from '../../shared/shared.module';
@@ -29,7 +29,8 @@ xdescribe('QuestionsScreenComponent', () => {
       id: '',
       name: '',
       submitLabel: '',
-      type: ScreenTypes.QUESTION
+      type: ScreenTypes.QUESTION,
+      terminal: false,
     }
   };
 

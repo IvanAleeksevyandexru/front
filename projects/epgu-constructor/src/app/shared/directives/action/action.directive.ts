@@ -1,18 +1,19 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import {
-  ActionType,
-  ComponentDtoAction,
-} from '../../../services/api/form-player-api/form-player-api.types';
-import { ActionApiService } from '../../../services/api/action-api/action-api.service';
-import { ScreenService } from '../../../screen/screen.service';
-import { Navigation, NavigationOptions } from '../../../form-player.types';
-import { NavigationService } from '../../services/navigation/navigation.service';
-import { UtilsService } from '../../../services/utils/utils.service';
-import { Answer } from '../../types/answer';
-import { ActionApiDTO, ActionApiResponse } from '../../../services/api/action-api/action-api.types';
 import { filter } from 'rxjs/operators';
+import { ScreenService } from '../../../screen/screen.service';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
+import { Answer } from '../../types/answer';
+import {
+  ActionApiResponse, ActionDTO,
+  ActionType,
+  ComponentDtoAction
+} from '../../../form-player/services/form-player-api/form-player-api.types';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { UtilsService } from '../../services/utils/utils.service';
+import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
+import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
+
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -25,9 +26,10 @@ export class ActionDirective {
   }
 
   constructor(
-    private actionApiService: ActionApiService,
+    private actionApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private navService: NavigationService,
+    private navModalService: NavigationModalService,
     private utilsService: UtilsService,
   ) {}
 
@@ -36,8 +38,17 @@ export class ActionDirective {
       case ActionType.download:
         this.downloadAction();
         break;
+      case ActionType.prevStepModal:
+        this.navigateModal('prevStep');
+        break;
+      case ActionType.nextStepModal:
+        this.navigateModal('nextStep');
+        break;
+      case ActionType.prevStep:
+        this.navigate('prevStep');
+        break;
       case ActionType.nextStep:
-        this.nextStep();
+        this.navigate('nextStep');
         break;
       case ActionType.redirectToLK:
         this.navService.redirectToLK();
@@ -54,10 +65,20 @@ export class ActionDirective {
   private sendAction<T>(): Observable<ActionApiResponse<T>> {
     const data = this.getActionDTO();
 
-    return this.actionApiService.send<T>(this.action.action, data);
+    return this.actionApiService.sendAction<T>(this.action.action, data);
   }
 
-  private nextStep(): void {
+  navigate(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    this.navService[stepType].next(navigation);
+  }
+
+  navigateModal(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    this.navModalService[stepType].next(navigation);
+  }
+
+  private prepareNavigationData(): Navigation {
     const options = this.getOptions();
 
     const navigation: Navigation = {
@@ -65,7 +86,7 @@ export class ActionDirective {
       options,
     };
 
-    this.navService.nextStep.next(navigation);
+    return navigation;
   }
 
   private getOptions(): NavigationOptions {
@@ -101,7 +122,7 @@ export class ActionDirective {
       );
   }
 
-  private getActionDTO(): ActionApiDTO {
+  private getActionDTO(): ActionDTO {
     return {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},

@@ -1,0 +1,25 @@
+@import 'src/styles/core/palettes';
+@import 'src/styles/core/typography';
+@import 'src/styles/core/variables';
+@import 'src/styles/core/functions';
+
+.form {
+  &__hint {
+    @include first-letter-uppercase();
+    margin: 4px 4px 0 0;
+    color: $color-blue-bayoux;
+    @include typ-plain-small();
+  }
+
+  &__error {
+    margin-bottom: 4px;
+    color: $color-gosred;
+  }
+}
+
+.label {
+  margin-bottom: $screen-pad-p;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: bold;
+}

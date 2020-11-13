@@ -1,6 +1,6 @@
-import { NavigationPayload } from '../form-player.types';
+import { NavigationPayload } from '../form-player/form-player.types';
 import { Answer } from '../shared/types/answer';
-import { ScenarioDto } from '../services/api/form-player-api/form-player-api.types';
+import { ScenarioDto } from '../form-player/services/form-player-api/form-player-api.types';
 
 /**
  * Интерфейс для базового компонента
