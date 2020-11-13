@@ -19,6 +19,7 @@
 
   &__completed {
     display: flex;
+    margin-top: $screen-pad-p;
     &__icon {
       margin-left: auto;
       width: 33px;
@@ -117,5 +118,11 @@
 
   &__newGeneration {
     text-align: center;
+  }
+}
+
+:host {
+  .screen-footer {
+    margin-top: 0;
   }
 }

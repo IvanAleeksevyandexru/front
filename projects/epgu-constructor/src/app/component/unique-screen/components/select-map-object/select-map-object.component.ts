@@ -10,8 +10,8 @@ import {
   NgZone,
   OnDestroy,
 } from '@angular/core';
-import { filter, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { merge, of } from 'rxjs';
+import { filter, reduce, switchMap, takeUntil } from 'rxjs/operators';
+import { merge, Observable, of } from 'rxjs';
 import { HelperService, YaMapService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../core/config/config.service';
@@ -29,8 +29,8 @@ import {
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { ModalService } from '../../../../modal/modal.service';
 import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
-import { NotificationService } from '../../../../shared/services/notification/notification.service';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -68,7 +68,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
     private zone: NgZone,
-    private notificationService: NotificationService,
   ) {
     this.isMobile = HelperService.isMobile();
   }
@@ -126,14 +125,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private subscribeToEmmitNextStepData() {
     this.selectMapObjectService.selectedValue
-      .pipe(
-        takeUntil(this.ngUnsubscribe$),
-        tap((value: any) => {
-          if (value && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
-            this.availablePaymentInGIBDD(value.attributeValues.code);
-          }
-        }),
-      )
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: any) => {
         this.selectedValue = value;
         this.cdr.detectChanges();
@@ -285,6 +277,17 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public selectObject() {
+    if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
+      this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code)
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(() => this.nextStep());
+      return;
+    }
+
+    this.nextStep();
+  }
+
+  private nextStep(): void {
     this.zone.run(() => {
       const answer = { ...this.selectedValue, children: null };
       this.nextStepEvent.emit(JSON.stringify(answer));
@@ -325,9 +328,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Метод проверяет доступность оплаты в выбранном отделе ГИБДД
    * @param id объект на карте
    */
-  private availablePaymentInGIBDD(id: number) {
+  private availablePaymentInGIBDD(id: number): Observable<boolean> {
     const options = getPaymentRequestOptionGIBDD(id);
-    this.dictionaryApiService
+
+    return this.dictionaryApiService
       .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
       .pipe(
         filter((response) => {
@@ -340,11 +344,19 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
           return response.error.code !== 0 || !response.items.length || !hasAttributeValues();
         }),
-      )
-      .subscribe(() => {
-        const { GIBDDpaymentError } = this.screenService.component.attrs;
-        this.notificationService.setNotification(GIBDDpaymentError.text, GIBDDpaymentError.title);
-      });
+        switchMap(() => {
+          const { GIBDDpaymentError } = this.screenService.component.attrs;
+
+          return this.modalService.openModal(ConfirmationModalComponent, {
+            title: GIBDDpaymentError.title,
+            text: GIBDDpaymentError.text,
+            showCloseButton: false,
+            showCrossButton: true,
+            buttons: GIBDDpaymentError.buttons,
+          });
+        }),
+        filter((isNextStep: boolean) => isNextStep),
+      );
   }
 
   /**

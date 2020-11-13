@@ -1,7 +1,7 @@
 @import "../../../../styles/core";
 @import "../../../../styles/components/rubles";
 
-$my: 96px;
+$my: 7vh;
 $pyConfModal: 64px;
 $headerHeight: 57px;
 $controlHeight: 55px;
@@ -72,6 +72,12 @@ $minModalHeight: 293px;
 
       .text {
         padding-right: 15px;
+      }
+    }
+
+    &__short-modal {
+      .text {
+        padding-right: 0;
       }
     }
 
