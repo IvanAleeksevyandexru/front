@@ -26,7 +26,9 @@ import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
 
 const ALREADY_PAY_ERROR = 23;
 
-@Component({})
+@Component({
+  template: '',
+})
 export abstract class AbstractPaymentComponent implements OnDestroy {
   public paymentStatus = PaymentStatus;
   public paymentPurpose = '';
