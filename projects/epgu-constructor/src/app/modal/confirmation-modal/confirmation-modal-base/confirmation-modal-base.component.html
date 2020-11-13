@@ -8,7 +8,7 @@
       <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
     </perfect-scrollbar>
     <ng-template #contentBlock>
-      <div class="conf-modal__content">
+      <div class="conf-modal__content" [class.conf-modal__short-modal]="isShortModal">
         <ng-content></ng-content>
         <div class="conf-modal__controls">
           <lib-button
