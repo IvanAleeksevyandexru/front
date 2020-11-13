@@ -1,6 +1,13 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
 import { ValidationShowOn } from 'epgu-lib';
@@ -125,9 +132,15 @@ export class DocInputComponent implements OnInit, AfterViewInit {
       const validators = this.getFormFieldValidators(fieldName);
 
       if (Object.prototype.hasOwnProperty.call(seriesNumDate, fieldName)) {
-        seriesNumDate[fieldName] = new FormControl(componentValues[fieldName], validators);
+        seriesNumDate[fieldName] = new FormControl(componentValues[fieldName], [
+          Validators.required,
+          ...validators,
+        ]);
       } else {
-        emitter[fieldName] = new FormControl(componentValues[fieldName], validators);
+        emitter[fieldName] = new FormControl(componentValues[fieldName], [
+          Validators.required,
+          ...validators,
+        ]);
       }
     });
 
@@ -137,8 +150,12 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     });
   }
 
+  markControlAsDirty(control: string | string[]) {
+    this.form.get(control).markAsDirty();
+  }
+
   isValidationShown(control: string | string[]): boolean {
-    return this.form.get(control).invalid && this.form.get(control).touched;
+    return this.form.get(control).invalid && this.form.get(control).dirty;
   }
 
   getFormFieldValidators(fieldName: string): ValidatorFn[] {
@@ -189,7 +206,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
 
     const required = (control, config) => {
       if (!control.value) {
-        return control.touched ? { msg: config.msg } : '';
+        return { msg: config.msg };
       }
       return null;
     };

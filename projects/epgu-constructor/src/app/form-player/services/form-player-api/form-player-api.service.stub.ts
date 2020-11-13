@@ -6,6 +6,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class FormPlayerApiServiceStub {
 
+  public checkIfOrderExist(): Observable<any> {
+    return of({});
+  }
+
   public getInviteServiceData(): Observable<any> {
     return of({});
   }

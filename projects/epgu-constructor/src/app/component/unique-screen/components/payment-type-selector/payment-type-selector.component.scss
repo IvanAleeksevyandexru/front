@@ -1,9 +1,28 @@
-.payment-type-selector {
+@import '../../../../../styles/core';
 
-  .screen-footer {
-    &__btn {
-      margin-top: 0;
-      width: 100%;
+.payment-type-selector {
+  &__img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+
+    img {
+      max-width: 217px;
+      max-height: 217px;
     }
   }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  &__sub-header {
+    font-size: 16px;
+    color: $color-text-helper;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
 }

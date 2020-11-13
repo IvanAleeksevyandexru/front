@@ -1,5 +1,5 @@
 <form [formGroup]="form">
-  <epgu-constructor-label>{{ data.label }}</epgu-constructor-label>
+  <epgu-constructor-label [tips]="data?.attrs?.labelHint">{{ data.label }}</epgu-constructor-label>
   <lib-dropdown
     formControlName="countryDropdown"
     [placeholder]="placeholder"
