@@ -162,6 +162,13 @@ export interface BillsInfoResponse{
 }
 
 /**
+ * Интерфейс филтра опции оплаты
+ */
+export interface IFilterRegItems{
+  value: string
+}
+
+/**
  * Интерфейс ошибки оплаты
  */
 export interface HttpPaymentError{

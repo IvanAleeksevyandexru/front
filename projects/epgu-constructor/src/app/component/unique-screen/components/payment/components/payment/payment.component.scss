@@ -64,10 +64,7 @@
   justify-content: center;
   margin-top: 32px;
   padding-bottom: 40px;
-
-  &.footer-column{
-    flex-direction: column;
-  }
+  flex-direction: column;
 
   @include tablets-up {
     margin-top: 44px;

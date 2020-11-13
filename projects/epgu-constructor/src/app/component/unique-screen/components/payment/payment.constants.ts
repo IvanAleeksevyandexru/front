@@ -1,4 +1,4 @@
-import { PaymentDictionaryOptionsInterface, SubPaymentDictionaryOptionInterface } from './payment.types';
+import { IFilterRegItems, PaymentDictionaryOptionsInterface, SubPaymentDictionaryOptionInterface } from './payment.types';
 
 /**
  * Интерфейс для части опции запроса на создание оплаты
@@ -41,12 +41,13 @@ const getPaymentRequestOptionsFilter = (subs: SubPaymentDictionaryOptionInterfac
 };
 
 /**
- * Возвращает опции запроса для получения информации по платежу для рестрации брака
+ * Возвращает опции запроса для получения информации по платежу
  * @param filterReg - объект фильтра для оплаты
- * @param attrs - переданные аттрибуты
+ * @param attrs - объект с аттрибутами компонента
  * @constructor
  */
-const getPaymentRequestOptionsForRegisterBrak = (filterReg: any, attrs: any): any => {
+// eslint-disable-next-line max-len
+export const getPaymentRequestOptions = (filterReg: IFilterRegItems, attrs: any): PaymentDictionaryOptionsInterface => {
   return {
     ...getPaymentRequestOptionsFilter([
       getPaymentSimpleRequestOption('FiasCode', filterReg.value.substring(0, 3)),
@@ -55,17 +56,6 @@ const getPaymentRequestOptionsForRegisterBrak = (filterReg: any, attrs: any): an
     ]),
     tx: '41588125-d55f-11ea-8b86-fa163ee4b849'
   };
-};
-
-/**
- * Возвращает опции запроса для получения информации по платежу
- * @param filterReg - объект фильтра для оплаты
- * @param attrs - объект с аттрибутами компонента
- * @constructor
- */
-// eslint-disable-next-line max-len
-export const getPaymentRequestOptions = (filterReg: any, attrs: any): PaymentDictionaryOptionsInterface => {
-  return getPaymentRequestOptionsForRegisterBrak(filterReg, attrs);
 };
 
 

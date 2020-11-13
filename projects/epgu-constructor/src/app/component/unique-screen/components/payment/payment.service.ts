@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { ConfigService } from '../../../../core/config/config.service';
-import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payment.types';
+import {
+  BillsInfoResponse,
+  PaymentDictionaryOptionsInterface,
+  PaymentInfoForPaidStatusData,
+  PaymentInfoInterface
+} from './payment.types';
 import { getPaymentRequestOptions } from './payment.constants';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -58,11 +63,7 @@ export class PaymentService {
       ? `${this.config.mockUrl}/lk/v1/paygate/uin`
       : this.config.uinApiUrl;
     const path = `${urlPrefix}/${code}?orderId=${orderId}`;
-    return this.http.post(path, attributeValues, this.requestOptions).pipe(
-      catchError((err: any) => {
-        return throwError(err);
-      })
-    );
+    return this.http.post(path, attributeValues, this.requestOptions);
   }
 
   /**
@@ -70,21 +71,13 @@ export class PaymentService {
    * @param uin - уникальный идентификатор патежа
    * @param orderId - идентификатор заявления
    */
-  getBillsInfoByUIN(uin: string | number, orderId: string): Observable<any> {
-    // На случай если сервис лежит, только для теста
-    // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
-    // return billMockUp.asObservable();
-
+  getBillsInfoByUIN(uin: string | number, orderId: string): Observable<BillsInfoResponse> {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/pay/v1/bills`
       : `${this.config.billsApiUrl}bills`;
     // eslint-disable-next-line max-len
     const path = `${urlPrefix}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
-    return this.http.post(path, {}, this.requestOptions).pipe(
-      catchError((err: any) => {
-        return throwError(err);
-      }),
-    );
+    return this.http.post<BillsInfoResponse>(path, {}, this.requestOptions);
   }
 
   /**
@@ -102,11 +95,7 @@ export class PaymentService {
       : `${this.config.billsApiUrl}bills`;
     // eslint-disable-next-line max-len
     const path = `${urlPrefix}?billIds=${billId}&ci=false`;
-    return this.http.post(path, {}, this.requestOptions).pipe(
-      catchError((err: any) => {
-        return throwError(err);
-      }),
-    );
+    return this.http.post(path, {}, this.requestOptions);
   }
 
   /**
@@ -114,16 +103,12 @@ export class PaymentService {
    * @param orderId - идентификатор заявления
    * @param code - идентификатор заявителя
    */
-  getPaymentStatusByUIN(orderId: string | number, code: number = 1): Observable<any> {
+  getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<PaymentInfoForPaidStatusData> {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/lk/v1/paygate/uin`
       : this.config.uinApiUrl;
     const path = `${urlPrefix}/status/${code}?orderId=${orderId}`;
-    return this.http.get(path, this.requestOptions).pipe(
-      catchError((err: any) => {
-        return throwError(err);
-      }),
-    );
+    return this.http.get<PaymentInfoForPaidStatusData>(path, this.requestOptions);
   }
 
   /**
@@ -159,9 +144,6 @@ export class PaymentService {
         }
         throw Error();
       }),
-      catchError((err: any) => {
-        return throwError(err);
-      }),
     );
   }
 
@@ -171,10 +153,7 @@ export class PaymentService {
    */
   createPaymentRequestOptions(attrs: any): PaymentDictionaryOptionsInterface {
     const { applicantAnswers } = this.screenService;
-    const { ref } = attrs;
-    const { fiasCode } = ref;
-    const path = fiasCode.split('.'); // Путь к ответу
-    const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, path));
+    const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, attrs?.ref?.fiasCode?.split('.')));
 
     return getPaymentRequestOptions(filterReg, attrs);
   }
