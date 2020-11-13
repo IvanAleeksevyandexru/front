@@ -14,6 +14,7 @@ describe('FormPlayerService', () => {
   let service: FormPlayerService;
   let formPlayerApiService: FormPlayerApiService;
   let location: Location;
+  let orderId: string;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -30,6 +31,10 @@ describe('FormPlayerService', () => {
     service = TestBed.inject(FormPlayerService);
     location = TestBed.inject(Location);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
+  });
+
+  beforeEach(() => {
+    orderId = '1234';
   });
 
   describe('checkIfOrderExist()',() => {
@@ -76,6 +81,48 @@ describe('FormPlayerService', () => {
 
     it('should return false', () => {
       expect(service['isHaveOrderDataInLocalStorage']()).toBeFalsy();
+    });
+  });
+
+  describe('initData()',() => {
+    it('should call updateLoading with true param', () => {
+      spyOn<any>(service, 'updateLoading').and.callThrough();
+      service.initData();
+      expect(service['updateLoading']).toHaveBeenCalled();
+    });
+
+    it('should call isNeedToShowLastScreen', () => {
+      spyOn<any>(service, 'isNeedToShowLastScreen').and.callThrough();
+      service.initData();
+      expect(service['isNeedToShowLastScreen']).toHaveBeenCalled();
+    });
+
+    it('should call loadDataFromLocalStorage when isNeedToShowLastScreen return true', () => {
+      spyOn<any>(service, 'isNeedToShowLastScreen').and.returnValue(true);
+      spyOn<any>(service, 'loadDataFromLocalStorage').and.callThrough();
+      service.initData();
+      expect(service['loadDataFromLocalStorage']).toHaveBeenCalled();
+    });
+
+    it('should call loadDataFromLocalStorage when isNeedToShowLastScreen return true', () => {
+      spyOn<any>(service, 'isNeedToShowLastScreen').and.returnValue(true);
+      spyOn<any>(service, 'loadDataFromLocalStorage').and.callThrough();
+      service.initData();
+      expect(service['loadDataFromLocalStorage']).toHaveBeenCalled();
+    });
+
+    it('should call getInviteOrderData with orderId when isNeedToShowLastScreen return false and has invited case', () => {
+      spyOn<any>(service, 'isNeedToShowLastScreen').and.returnValue(false);
+      spyOn<any>(service, 'getInviteOrderData').and.callThrough();
+      service.initData(orderId, true);
+      expect(service['getInviteOrderData']).toHaveBeenCalledWith(orderId);
+    });
+
+    it('should call getOrderData with orderId when isNeedToShowLastScreen return false and hasn\'t invited case', () => {
+      spyOn<any>(service, 'isNeedToShowLastScreen').and.returnValue(false);
+      spyOn<any>(service, 'getOrderData').and.callThrough();
+      service.initData(orderId, false);
+      expect(service['getOrderData']).toHaveBeenCalledWith(orderId);
     });
   });
 });
