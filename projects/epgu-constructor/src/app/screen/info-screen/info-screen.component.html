@@ -10,7 +10,7 @@
         screenService.header$ | async
         }}</epgu-constructor-page-name>
 
-      <hr *ngIf="screenService.header$ | async" class="divider" />
+      <hr class="divider" />
 
       <epgu-constructor-info-screen-body
         [data]="screenService.component"
@@ -22,7 +22,6 @@
         <lib-button
           *ngFor="let action of this.actionButtons"
           class="info__action btn__submit"
-          [color]="action.color"
           epgu-constructor-action
           [action]="action"
         >
