@@ -109,18 +109,24 @@ export class TerraByteApiService {
   }
 
   /**
-   * Отдача пользователю файла прямо в браузер
-   * @private
+   * Скачивание по ссылке файла в браузер
+   * @param data - Blob данные для скачивания
+   * @param file - файл для загрузки
    */
   pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile) {
-    const url = window.URL.createObjectURL(data);
-    const a = document.createElement('a');
-    document.body.appendChild(a);
-    a.setAttribute('style', 'display: none');
-    a.href = url;
-    a.download = file.fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
-    a.remove();
+    const isChromeIOS = /CriOS\/[\d]+/.test(navigator.userAgent);
+
+    const reader = new FileReader();
+
+    reader.onerror = (e) => console.error(e);
+    reader.onloadend = () => {
+      const replaceDataRegex = /^data:[^;]*;/;
+      let url = reader.result;
+      url = isChromeIOS ? url : url.toString().replace(replaceDataRegex, 'data:attachment/file;');
+      // @ts-ignore
+      location = url;
+    };
+
+    reader.readAsDataURL(data);
   }
 }
