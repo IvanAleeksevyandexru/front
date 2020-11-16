@@ -33,7 +33,7 @@
               <epgu-constructor-components-list
                 (changes)="updateChild($event, item)"
                 (emitFormStatus)="updateItemValidationStatus($event, item)"
-                [components]="this.screenService.component?.attrs?.components"
+                [components]="screenService.component?.attrs?.components"
                 [errors]="screenService.getStore().errors"
               >
               </epgu-constructor-components-list>
