@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -14,13 +14,18 @@ enum ItemActions {
   removeItem = 'removeItem',
 }
 
+enum ItemStatus {
+  invalid = 'INVALID',
+  valid = 'VALID',
+}
+
 @Component({
   selector: 'epgu-constructor-select-children-screen',
   templateUrl: './select-children-screen.component.html',
   styleUrls: ['./select-children-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
+export class SelectChildrenScreenComponent implements OnInit {
   @Input() data: ComponentBase;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
@@ -33,6 +38,7 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
   firstNameRef: string;
   idRef: string;
   isNewRef: string;
+  newChildren: { [id: string]: boolean } = {};
   defaultAvailable = 20;
 
   constructor(
@@ -61,12 +67,20 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
 
     this.selectChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.items = Object.keys(this.selectChildrenForm.controls);
-      this.isValidForm();
+      this.updateCurrentAnswerServiceValidation();
     });
+
+    this.generateFirstFormItem();
   }
 
-  ngAfterViewInit(): void {
-    this.generateFirstFormItem();
+  updateCurrentAnswerServiceValidation(): void {
+    this.currentAnswersService.isValid = this.selectChildrenForm.valid && !!this.items.length;
+  }
+
+  updateItemValidationStatus(status: ItemStatus, itemId): void {
+    const error = status === ItemStatus.valid ? null : { invalidForm: true };
+    this.selectChildrenForm.get(itemId).setErrors(error);
+    this.updateCurrentAnswerServiceValidation();
   }
 
   getRefFromComponent(refName: string): string {
@@ -88,8 +102,7 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
       [this.isNewRef]: true,
       [this.idRef]: id,
     };
-
-    this.selectChildrenForm.controls[item].disable();
+    this.newChildren[id] = true;
     this.itemsList.push(newChild);
     this.handleSelect({ id }, item);
   }
@@ -145,6 +158,7 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
       this.selectedItems[itemId] = this.itemsList.find((child) => child[this.idRef] === childId);
     } else if (action === ItemActions.removeItem) {
       this.selectChildrenForm.removeControl(itemId);
+      this.newChildren[itemId] = false;
       delete this.selectedItems[itemId];
     }
     this.setHideStateToSelectedItems();
@@ -155,14 +169,6 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
     const repeatAmount = this.screenService.component?.attrs?.repeatAmount || this.defaultAvailable;
 
     return screensAmount >= repeatAmount;
-  }
-
-  isValidForm() {
-    const selectChildrenForm: { [key: string]: string }[] = Object.values(
-      this.selectChildrenForm.value,
-    );
-    this.currentAnswersService.isValid =
-      selectChildrenForm.length !== 0 && selectChildrenForm.every((child) => child);
   }
 
   private setHideStateToSelectedItems(): void {
@@ -184,6 +190,6 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
   }
 
   private addFormControl(id): void {
-    this.selectChildrenForm.addControl(id, new FormControl());
+    this.selectChildrenForm.addControl(id, new FormControl(null, [Validators.required]));
   }
 }
