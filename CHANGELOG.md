@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.4](https://git.gosuslugi.local///compare/v0.4.26...v0.5.4) (2020-11-16)
+
+
+### Features
+
+* добавил текстовое сообщения[EPGUCORE-41098] ([1176dc3](https://git.gosuslugi.local///commit/1176dc351436580d43c9ccae5f2afb68ac2d779d))
+* изменён формат данных EmployeeHistory для отправки на сервер [ref EPGUCORE-40745] ([155b75d](https://git.gosuslugi.local///commit/155b75d6c7885d9045be9cc67f201a1304847c22))
+* Изменил логику установки минимально даты [ref: EPGUCORE-41118] ([0206abf](https://git.gosuslugi.local///commit/0206abff3ee1dfb094443572c9f268b708b3e616))
+* Исправил стили кнопки для репитбл филдов [ref: EPGUCORE-40992] ([5121587](https://git.gosuslugi.local///commit/5121587184cee6e8f341f6fdfec70513e713ac93))
+* исправлены тесты [ref EPGUCORE-41155] ([7674929](https://git.gosuslugi.local///commit/7674929979dd5ca2de13a166d89b7fb6af5b0724))
+
+
+### Bug Fixes
+
+* RegEx вынесен в переменную ([3d86832](https://git.gosuslugi.local///commit/3d86832705b216c8f1c9ba98a5e4e42807f28162))
+* var заменено на const ([b4abccb](https://git.gosuslugi.local///commit/b4abccb05a471bd270f5ac295d22772e40567058))
+* актуализировал цвет text-helper и labels, где необходимо [ref EPGUCORE-41122] ([704cc34](https://git.gosuslugi.local///commit/704cc34acf009243d93b732187ce2f137cbf89a9))
+* возврат условия для docInput [ref EPGUCORE-40745] ([ed1d3f6](https://git.gosuslugi.local///commit/ed1d3f63ddd543afa3f2056de88a59383f87b7c2))
+* Добавил подсказки для ИП [ref: EPGUCORE-41056] ([3197a0b](https://git.gosuslugi.local///commit/3197a0b0a4a899977c6888e4ea52b9a529551ea8))
+* Исправил стили для информационного сообщения [ref: EPGUCORE-40991] ([8867478](https://git.gosuslugi.local///commit/8867478325f86e3b3f38b897bdbc2902da05945a))
+* исправлена валидация даты DocInput ([ec5406a](https://git.gosuslugi.local///commit/ec5406a8072f8fb154279d86aff876b1e1e61141))
+* исправлена валидация полей и блокирование кнопки продолжить [ref EPGUCORE-41155] ([8724ecb](https://git.gosuslugi.local///commit/8724ecbc1b51f4f6042c408523da9d589b03fcef))
+* исправлено отображение детей в дропдауне [ref EPGUCORE-40842] ([9a6bc46](https://git.gosuslugi.local///commit/9a6bc46bf669449ac67cc1f965d5ef1ecdc24a3d))
+* Исправлено скачивание файла ([9fd02a8](https://git.gosuslugi.local///commit/9fd02a8bcb79dc38313ba3dc313cf5b66feed7ff))
+* исправлено условие [ref EPGUCORE-40745] ([017b534](https://git.gosuslugi.local///commit/017b53498c42dda218c540d40e02a3384c7515f7))
+* перенёс сообщения на JSON[EPGUCORE-41098] ([bdc6753](https://git.gosuslugi.local///commit/bdc67536186fd96c722105662905ff289f932e6b))
+* правки по замечаниям в код-ревью [ref EPGUCORE-41122] ([031b864](https://git.gosuslugi.local///commit/031b8648624c126aef9724f5925da6578678d808))
+* удалён this из шаблона[ref EPGUCORE-41155] ([076ec8a](https://git.gosuslugi.local///commit/076ec8ae7132baed4282d62a56195d3104bae57b))
+* уменьшил максимально возможное отдаление на карте[ref EPGUCORE-41316] ([8160ef3](https://git.gosuslugi.local///commit/8160ef373bfc83e866b27dfba75ef0bb194f1c73))
+* Фикс для скачивания файлов на IOS ([003994e](https://git.gosuslugi.local///commit/003994e63201f401f4015ff5f15bb63c678044f3))
+
 ### [0.5.3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.26...v0.5.3) (2020-11-16)
 
 
