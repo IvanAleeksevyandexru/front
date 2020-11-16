@@ -36,13 +36,17 @@ export interface ConfirmAddressActionsInterface {
   value: string;
 }
 
+export type ConfirmAddressFieldName = 'regAddr' | 'regFrom' | 'regTo' | 'regDate';
+
 /**
  * @property {string}fieldName - field id
  * @property {string}label - field name
  */
 interface ConfirmAddressFieldsInterface {
-  fieldName: 'regAddr';
+  fieldName: ConfirmAddressFieldName;
   label: 'адрес';
   minDate?: Date | RelativeDate | string;
   maxDate?: Date | RelativeDate | string;
+  attrs?: { labelHint?: string };
+  hint?: string;
 }

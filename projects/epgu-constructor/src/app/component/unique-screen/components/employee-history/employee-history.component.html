@@ -77,6 +77,11 @@
           [invalid]="generation.get('position').invalid"
           [validationShowOn]="validationShowOn"
         ></lib-plain-input>
+        <epgu-constructor-helper-text
+          *ngIf="availableControlsOfType(generation.get('type').value)?.positionHint as positionHint"
+        >
+          {{ positionHint }}
+        </epgu-constructor-helper-text>
       </div>
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.place as place">
@@ -90,6 +95,11 @@
           [invalid]="generation.get('place').invalid"
           [validationShowOn]="validationShowOn"
         ></lib-plain-input>
+        <epgu-constructor-helper-text
+          *ngIf="availableControlsOfType(generation.get('type').value)?.placeHint as placeHint"
+        >
+          {{ placeHint }}
+        </epgu-constructor-helper-text>
       </div>
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.address as address">

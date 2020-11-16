@@ -9,6 +9,7 @@ import {
 } from '../form-player-api/form-player-api.types';
 import { UtilsService } from '../../../shared/services/utils/utils.service';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
+import { Location } from '@angular/common';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -20,29 +21,13 @@ export class FormPlayerService extends FormPlayerBaseService {
   constructor(
     public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
+    private location: Location
   ) {
     super(formPlayerApiService, screenService);
   }
 
   public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
     return this.formPlayerApiService.checkIfOrderExist();
-  }
-
-  /**
-   * Проверяет нужно ли нам достать ранее сохранённые данные
-   * для подмены экрана на тот на котором остановились
-   * @private
-   */
-  private isNeedToShowLastScreen(): boolean {
-    return location.href.includes('getLastScreen=') && this.isHaveOrderDataInLocalStorage();
-  }
-
-  /**
-   * Возвращает true, если в LocalStorage если данные для показа
-   * @private
-   */
-  private isHaveOrderDataInLocalStorage(): boolean {
-    return !!localStorage.getItem(COMPONENT_DATA_KEY);
   }
 
   /**
@@ -112,5 +97,22 @@ export class FormPlayerService extends FormPlayerBaseService {
       },
       () => this.updateLoading(false)
     );
+  }
+
+  /**
+   * Проверяет нужно ли нам достать ранее сохранённые данные
+   * для подмены экрана на тот на котором остановились
+   * @private
+   */
+  private isNeedToShowLastScreen(): boolean {
+    return this.location.path(true).includes('getLastScreen=') && this.isHaveOrderDataInLocalStorage();
+  }
+
+  /**
+   * Возвращает true, если в LocalStorage если данные для показа
+   * @private
+   */
+  private isHaveOrderDataInLocalStorage(): boolean {
+    return !!localStorage.getItem(COMPONENT_DATA_KEY);
   }
 }

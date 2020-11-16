@@ -1,23 +1,35 @@
 <epgu-constructor-screen-container class="payment-type-selector">
-  <div class="screen-body">
-    <epgu-constructor-page-name>{{ paymentTypeSelector.header }}</epgu-constructor-page-name>
+  <epgu-constructor-screen-pad class="screen-body">
+    <div *ngIf="paymentTypeSelector.srcImg" class="payment-type-selector__img">
+      <img src="{{ config.staticDomainAssetsPath }}{{paymentTypeSelector.srcImg}}" />
+    </div>
+
+    <epgu-constructor-page-name class="payment-type-selector__header">{{
+      paymentTypeSelector.header
+    }}</epgu-constructor-page-name>
 
     <epgu-constructor-output-html
-      [html]="paymentTypeSelector.label"
+      class="payment-type-selector__sub-header"
+      [html]="paymentTypeSelector.subHeader"
+    ></epgu-constructor-output-html>
+
+    <epgu-constructor-output-html
+      [html]="paymentTypeSelector.body"
       [clarifications]="paymentTypeSelector?.clarifications"
     >
     </epgu-constructor-output-html>
-  </div>
 
-  <div class="screen-footer">
-    <ng-container *ngFor="let action of paymentTypeSelector.actions">
-      <epgu-constructor-action-button
-        *ngIf="action.applicantType === paymentTypeSelector.applicantType"
-        epgu-constructor-action
-        [action]="action"
-        class="screen-footer__btn"
-        >{{ action.label }}</epgu-constructor-action-button
-      >
-    </ng-container>
-  </div>
+    <div class="screen-footer">
+      <ng-container *ngFor="let action of paymentTypeSelector.actions">
+        <lib-button
+          *ngIf="action.applicantType === paymentTypeSelector.applicantType"
+          epgu-constructor-action
+          [action]="action"
+          [color]="action.color"
+          class="screen-footer__btn"
+          >{{ action.label }}</lib-button
+        >
+      </ng-container>
+    </div>
+  </epgu-constructor-screen-pad>
 </epgu-constructor-screen-container>

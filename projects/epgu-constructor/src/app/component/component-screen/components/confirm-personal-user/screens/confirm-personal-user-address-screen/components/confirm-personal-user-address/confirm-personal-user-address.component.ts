@@ -15,7 +15,10 @@ import { ConfigService } from '../../../../../../../../core/config/config.servic
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constants/dates';
 import { TextTransform } from '../../../../../../../../shared/types/textTransform';
-import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
+import {
+  ConfirmAddressFieldName,
+  ConfirmAddressInterface,
+} from '../../interface/confirm-address.interface';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 
@@ -114,5 +117,10 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     const isFormInited = () => this.dataForm?.form?.value;
 
     return isFormInited() && isValid();
+  }
+
+  isDate(fieldName: ConfirmAddressFieldName): boolean | ConfirmAddressFieldName {
+    const dateType = ['regFrom', 'regTo', 'regDate'];
+    return dateType.includes(fieldName) ? fieldName : false;
   }
 }

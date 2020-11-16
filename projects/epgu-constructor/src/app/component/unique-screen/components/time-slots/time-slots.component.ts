@@ -18,6 +18,7 @@ import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
+import { months, weekDaysAbbr } from '../../../../shared/constants/dates';
 
 const moment = moment_;
 
@@ -54,21 +55,8 @@ export class TimeSlotsComponent implements OnInit {
     ],
   };
 
-  public daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-  public months = [
-    'Январь',
-    'Февраль',
-    'Март',
-    'Апрель',
-    'Май',
-    'Июнь',
-    'Июль',
-    'Август',
-    'Сентябрь',
-    'Октябрь',
-    'Ноябрь',
-    'Декабрь',
-  ];
+  public daysOfWeek = weekDaysAbbr;
+  public months = months;
 
   public weeks = [];
   public monthsYears: ListItem[] = [];
