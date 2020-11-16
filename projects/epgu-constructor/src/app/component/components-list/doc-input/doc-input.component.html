@@ -55,6 +55,7 @@
         [formControl]="form.get([seriesNumDateGroup, 'date'])"
         [minDate]="fields['date']?.attrs?.minDate || '-120y'"
         [maxDate]="fields['date']?.attrs?.maxDate || 'today'"
+        (blur)="markControlAsDirty([seriesNumDateGroup, 'date'])"
         [invalid]="isValidationShown([seriesNumDateGroup, 'date'])"
         [validationShowOn]="validationShowOn"
       ></lib-date-picker>
