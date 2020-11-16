@@ -150,6 +150,7 @@ export class PaymentService {
   /**
    * Возвращает опции для запроса на оплату
    * @param attrs - аттрибуты компонента
+   * TODO: В будущем этот метод надо будет удалть, т.к. для совместимости с получением сведения для услуги брака/разбрака
    */
   createPaymentRequestOptions(attrs: any): PaymentDictionaryOptionsInterface {
     const { applicantAnswers } = this.screenService;

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnDestroy, Output } from '@angular/core';
 import * as moment from 'moment';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -48,6 +48,11 @@ export abstract class AbstractPaymentComponent implements OnDestroy {
   public billId: number;
   public billDate: string;
   private orderId: string; // Номер заявления
+  public paymentService: PaymentService;
+  public screenService: ScreenService;
+  public currentAnswersService: CurrentAnswersService;
+  public ngUnsubscribe$: UnsubscribeService;
+  public config: ConfigService;
 
   @Input() header = 'Оплата госпошлины'; // Заголовок
   protected attrData: ComponentBase;
@@ -63,13 +68,13 @@ export abstract class AbstractPaymentComponent implements OnDestroy {
   }
   @Output() nextStepEvent = new EventEmitter<void>();
 
-  protected constructor(
-    public paymentService: PaymentService,
-    public screenService: ScreenService,
-    public currentAnswersService: CurrentAnswersService,
-    public ngUnsubscribe$: UnsubscribeService,
-    public config: ConfigService,
-  ) {}
+  protected constructor(public injector: Injector) {
+    this.paymentService = this.injector.get(PaymentService);
+    this.screenService = this.injector.get(ScreenService);
+    this.currentAnswersService = this.injector.get(CurrentAnswersService);
+    this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
+    this.config = this.injector.get(ConfigService);
+  }
 
   /**
    * Получает информацию для оплате

@@ -175,10 +175,3 @@ export interface HttpPaymentError{
   code: number,
   message: string
 }
-
-/**
- * Интерфейс для API сервисов получения реквизитов платежей
- */
-export declare interface PaymentSubServices{
-  loadPaymentInfo(nsi: string, attrs: any): Observable<any>;
-}
