@@ -152,7 +152,7 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
 
   isScreensAvailable(): boolean {
     const screensAmount = this.items.length;
-    const repeatAmount = this.screenService.component.attrs.repeatAmount || this.defaultAvailable;
+    const repeatAmount = this.screenService.component?.attrs?.repeatAmount || this.defaultAvailable;
 
     return screensAmount >= repeatAmount;
   }
