@@ -1,4 +1,4 @@
-@import "src/styles/core";
+@import 'src/styles/core';
 
 :host {
   display: flex;
@@ -37,7 +37,6 @@
   @include tablets-up {
     margin-left: -$footer-item-mx;
     margin-right: -$footer-item-mx;
-    margin-top: $footer-mt - $footer-item-mx;
   }
   & > * {
     margin-top: $footer-item-mx;
@@ -47,5 +46,9 @@
       margin-left: $footer-item-mx;
       margin-right: $footer-item-mx;
     }
+  }
+  & > .social-share {
+    max-width: 335px;
+    width: 100%;
   }
 }
