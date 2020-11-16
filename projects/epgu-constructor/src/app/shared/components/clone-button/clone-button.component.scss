@@ -30,6 +30,11 @@
     box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
     color: $color-button-hover;
     border: none;
+
+    &:hover {
+      background: $color-bg-disabled;
+      color: $color-button-hover;
+    }
   }
 }
 
