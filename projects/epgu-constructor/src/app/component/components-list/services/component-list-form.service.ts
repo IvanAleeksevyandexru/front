@@ -148,6 +148,10 @@ export class ComponentListFormService {
       ],
     });
 
+    if (component.attrs?.hidden) {
+      form.disable();
+    }
+
     this.watchFormGroup$(form).subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
       this._shownElements = this.toolsService.updateDependents(components, next, this.shownElements, this.form);
       ////////HARDCODE!!!
