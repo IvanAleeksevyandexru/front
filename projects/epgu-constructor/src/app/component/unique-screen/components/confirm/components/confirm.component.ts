@@ -21,6 +21,7 @@ export class ConfirmComponent implements OnInit {
   replayButton: string;
   needTimer = true;
   timer: TimerInterface;
+  timerLabel: string;
 
   /**
    * Возвращает текущее значение для инициализации таймера
@@ -37,6 +38,7 @@ export class ConfirmComponent implements OnInit {
       this.getFinishDate(),
       this.value.timer.warningTime,
     );
+    this.timerLabel = this.value.label;
     this.startTimer();
   }
 

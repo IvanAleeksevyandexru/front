@@ -3,6 +3,7 @@ export interface ConfirmInfoInterface {
   address: string;
   ceremonyType: string;
   time: string;
+  label: string;
   timer?: {
     start: string;
     finish: string;
