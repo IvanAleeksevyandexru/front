@@ -1,17 +1,15 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MockComponent } from 'ng-mocks';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { PageNameComponent } from '../../../../shared/components/base/page-name/page-name.component';
 import { NavigationComponent } from '../../../../shared/components/navigation/navigation.component';
-import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
-import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
-import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { SelectChildrenScreenComponent } from './select-children-screen.component';
+import { SharedModule } from '../../../../shared/shared.module';
+import { ComponentsListModule } from '../../../components-list/components-list.module';
+import { CoreModule } from '../../../../core/core.module';
 
 describe('SelectChildrenScreenComponent', () => {
   let component: SelectChildrenScreenComponent;
@@ -31,21 +29,18 @@ describe('SelectChildrenScreenComponent', () => {
       declarations: [
         SelectChildrenScreenComponent,
         NavigationComponentMock,
-        PageNameComponent,
-        ScreenPadComponent,
-        ScreenContainerComponent,
-        NavigationComponentMock,
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       imports: [
+        CoreModule,
+        SharedModule,
         ReactiveFormsModule,
+        ComponentsListModule,
       ],
       providers: [
         CurrentAnswersService,
         UnsubscribeService,
         ScreenService,
-        CachedAnswersService,
-      ]
+      ],
     })
     .compileComponents();
   });

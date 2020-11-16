@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
@@ -25,7 +25,7 @@ enum ItemStatus {
   styleUrls: ['./select-children-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
+export class SelectChildrenScreenComponent implements OnInit {
   @Input() data: ComponentBase;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
@@ -68,11 +68,8 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
     this.selectChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.items = Object.keys(this.selectChildrenForm.controls);
       this.updateCurrentAnswerServiceValidation();
-      this.isValidForm();
     });
-  }
 
-  ngAfterViewInit(): void {
     this.generateFirstFormItem();
   }
 
@@ -172,14 +169,6 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
     const repeatAmount = this.screenService.component?.attrs?.repeatAmount || this.defaultAvailable;
 
     return screensAmount >= repeatAmount;
-  }
-
-  isValidForm() {
-    const selectChildrenForm: { [key: string]: string }[] = Object.values(
-      this.selectChildrenForm.value,
-    );
-    this.currentAnswersService.isValid =
-      selectChildrenForm.length !== 0 && selectChildrenForm.every((child) => child);
   }
 
   private setHideStateToSelectedItems(): void {

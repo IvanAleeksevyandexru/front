@@ -23,7 +23,7 @@
                 [formControlName]="item"
                 (changed)="handleSelect($event, item)"
                 [items]="itemsToSelect"
-                [disabled]="newChildren[item]"
+                [attr.disabled]="newChildren[item]"
               ></lib-dropdown>
             </div>
             <section
@@ -44,7 +44,9 @@
     </div>
 
     <div class="select-children-screen__action">
-      <lib-button width="wide" color="white" (click)="addMoreChild()" [disabled]="isScreensAvailable()">
+      <lib-button width="wide" color="white"
+                  (click)="addMoreChild()"
+                  [disabled]="isScreensAvailable()">
         <label>Добавить ребенка</label>
       </lib-button>
     </div>
