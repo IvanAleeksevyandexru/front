@@ -170,6 +170,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       },
       size: HelperService.isMobile() ? 'small' : 'large',
     });
+    this.yaMapService.map.options.set('minZoom', 4);
     this.yaMapService.map.copyrights.togglePromo();
   }
 
