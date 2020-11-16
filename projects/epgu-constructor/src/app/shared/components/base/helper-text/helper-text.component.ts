@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 
 enum Size {
-  sm = 'sm',
   lg = 'lg',
 }
 
@@ -12,5 +11,4 @@ enum Size {
 })
 export class HelperTextComponent {
   @Input() size: Size = Size.lg;
-  @Input() color: Size = Size.lg;
 }
