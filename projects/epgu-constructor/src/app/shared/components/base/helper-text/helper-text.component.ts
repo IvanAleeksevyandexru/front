@@ -10,5 +10,5 @@ enum Size {
   styleUrls: ['./helper-text.component.scss'],
 })
 export class HelperTextComponent {
-  @Input() size: Size = Size.lg;
+  @Input() size: Size;
 }
