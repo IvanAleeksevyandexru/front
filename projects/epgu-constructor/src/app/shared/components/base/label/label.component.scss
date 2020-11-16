@@ -12,4 +12,8 @@
   &::first-letter {
     text-transform: uppercase;
   }
+
+  &--text-helper-color {
+    color: $color-text-helper;
+  }
 }
