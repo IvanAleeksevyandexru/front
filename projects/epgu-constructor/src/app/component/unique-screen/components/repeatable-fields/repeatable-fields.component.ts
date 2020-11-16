@@ -73,7 +73,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
 
   isScreensAvailable(): boolean {
     const screensAmount: number = Object.keys(this.screens).length;
-    const defaultAvailable = 20;
+    const defaultAvailable = 2;
     return (
       screensAmount < this.propData.components[0].attrs?.repeatAmount ||
       screensAmount < defaultAvailable

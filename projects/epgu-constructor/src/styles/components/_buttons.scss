@@ -30,10 +30,12 @@
   border-radius: $border-round;
   padding: $screen-pad-p;
   width: 100%;
+  height: 72px;
   @include typ-plain-text();
 
   @include tablets-down() {
     padding: 16px;
+    height: 52px;
     @include typ-plain-small();
   }
 }

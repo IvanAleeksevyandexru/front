@@ -1,0 +1,9 @@
+<button
+  [disabled]="disabled"
+  class="clone-btn btn btn--transparent btn--clone"
+  [class.clone-btn__disabled]="disabled"
+  (click)="onClick()"
+>
+  <ng-content></ng-content>
+</button>
+
