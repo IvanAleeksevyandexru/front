@@ -36,7 +36,7 @@ import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal
   selector: 'epgu-constructor-select-map-object',
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
-  providers: [UnsubscribeService],
+  providers: [UnsubscribeService, SelectMapObjectService],
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() data: ComponentBase;
@@ -54,6 +54,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public mapIsLoaded = false;
   public scrollConfig = { ressScrollX: true, wheelPropagation: false };
   public isMobile: boolean;
+  public isSearchTitleVisible = true;
 
   private componentValue: any;
   private screenStore: ScreenStore;
@@ -127,6 +128,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.selectedValue
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: any) => {
+        this.isSearchTitleVisible = !value;
         this.selectedValue = value;
         this.cdr.detectChanges();
       });

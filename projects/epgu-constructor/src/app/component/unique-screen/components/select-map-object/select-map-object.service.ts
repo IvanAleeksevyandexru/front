@@ -6,6 +6,8 @@ import { Icons } from './constants';
 import { ConfigService } from '../../../../core/config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { DictionaryResponseForYMap, DictionaryYMapItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 export class SelectMapObjectService {
@@ -27,7 +29,14 @@ export class SelectMapObjectService {
     private config: ConfigService,
     private yaMapService: YaMapService,
     private icons: Icons,
-  ) { }
+    private unsubscribeService: UnsubscribeService,
+  ) {
+    this.selectedValue.pipe(takeUntil(this.unsubscribeService)).subscribe((value: any) => {
+      if (!value) {
+        this.mapOpenedBalloonId = null;
+      }
+    });
+  }
 
   /**
    * Returns geo coords of physical addresses array
