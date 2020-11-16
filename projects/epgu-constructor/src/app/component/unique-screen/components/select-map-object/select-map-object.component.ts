@@ -343,7 +343,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
               ),
             );
 
-          return response.error.code !== 0 || !response.items.length || !hasAttributeValues();
+          return response.error.code === 0 || !response.items.length || !hasAttributeValues();
         }),
         switchMap(() => {
           const { GIBDDpaymentError } = this.screenService.component.attrs;

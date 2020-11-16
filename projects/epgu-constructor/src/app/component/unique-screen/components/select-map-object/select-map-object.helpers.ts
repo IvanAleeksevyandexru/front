@@ -12,7 +12,7 @@ export const getPaymentRequestOptionGIBDD = (id: number) => {
         subs: [
           {
             simple: {
-              attributeName: 'DIV_FRGU_ID',
+              attributeName: 'OFFICE_FRGU',
               condition: 'CONTAINS',
               value: {
                 asString: `${id}`,
