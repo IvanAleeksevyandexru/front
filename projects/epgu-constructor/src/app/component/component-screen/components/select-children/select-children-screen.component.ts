@@ -33,6 +33,7 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
   firstNameRef: string;
   idRef: string;
   isNewRef: string;
+  defaultAvailable = 20;
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -57,8 +58,10 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
     ];
     this.selectedItems = {};
     this.passDataToSend(Object.values(this.selectedItems));
+
     this.selectChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.items = Object.keys(this.selectChildrenForm.controls);
+      this.isValidForm();
     });
   }
 
@@ -75,11 +78,13 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
   addNewChild(item): void {
     const id = item;
     const newChild: any = {
-      ...this.screenService.component?.attrs?.components?.reduce((accum, value: any) => {
-        // eslint-disable-next-line no-param-reassign
-        accum[value.id] = '';
-        return accum;
-      }, {}),
+      ...this.screenService.component?.attrs?.components?.reduce(
+        (accum, value: any) => ({
+          ...accum,
+          [value.id]: '',
+        }),
+        {},
+      ),
       [this.isNewRef]: true,
       [this.idRef]: id,
     };
@@ -101,11 +106,13 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
 
   updateChild(childData, item): void {
     const childItem = this.itemsList.find((value) => value[this.idRef] === item);
-    const formattedChildData = Object.keys(childData).reduce((accum, key) => {
-      // eslint-disable-next-line no-param-reassign
-      accum[key] = childData[key].value;
-      return accum;
-    }, {});
+    const formattedChildData = Object.keys(childData).reduce(
+      (accum, key) => ({
+        ...accum,
+        [key]: childData[key].value,
+      }),
+      {},
+    );
     const updatedChildData = {
       ...formattedChildData,
       ...{
@@ -141,6 +148,21 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
       delete this.selectedItems[itemId];
     }
     this.setHideStateToSelectedItems();
+  }
+
+  isScreensAvailable(): boolean {
+    const screensAmount = this.items.length;
+    const repeatAmount = this.screenService.component.attrs.repeatAmount || this.defaultAvailable;
+
+    return screensAmount >= repeatAmount;
+  }
+
+  isValidForm() {
+    const selectChildrenForm: { [key: string]: string }[] = Object.values(
+      this.selectChildrenForm.value,
+    );
+    this.currentAnswersService.isValid =
+      selectChildrenForm.length !== 0 && selectChildrenForm.every((child) => child);
   }
 
   private setHideStateToSelectedItems(): void {
