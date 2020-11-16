@@ -9,7 +9,7 @@ export class LabelComponent implements OnInit {
   @Input() for: string;
   @Input() required: boolean;
   @Input() tips: string;
-  @Input() textHelperColor: boolean;
+  @Input() isTextHelper: boolean;
 
   ngOnInit(): void {}
 }

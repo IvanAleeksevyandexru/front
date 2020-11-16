@@ -8,6 +8,7 @@
   display: block;
   text-align: left;
   color: $color-summer-night;
+  @include typ-plain-small;
 
   &::first-letter {
     text-transform: uppercase;
@@ -15,5 +16,6 @@
 
   &--text-helper-color {
     color: $color-text-helper;
+    @include typ-plain-text;
   }
 }
