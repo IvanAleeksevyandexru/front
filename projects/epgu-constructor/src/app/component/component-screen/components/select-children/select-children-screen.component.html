@@ -44,7 +44,7 @@
     </div>
 
     <div class="select-children-screen__action">
-      <lib-button width="wide" color="white" (click)="addMoreChild()">
+      <lib-button width="wide" color="white" (click)="addMoreChild()" [disabled]="isScreensAvailable()">
         <label>Добавить ребенка</label>
       </lib-button>
     </div>

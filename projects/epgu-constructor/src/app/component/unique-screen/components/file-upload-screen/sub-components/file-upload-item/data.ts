@@ -50,7 +50,7 @@ export class TerraUploadedFile implements UploadedFile{
    */
   getFileSize(): string {
     const sizeInMB = getSizeInMB(this.fileSize);
-    return sizeInMB > 0 ? `${sizeInMB} МБ` : `${getSizeInKB(this.fileSize)} КБ`;
+    return `${(sizeInMB < 0.1 ? 0.1 : sizeInMB).toFixed(1)} МБ`;
   }
 }
 
