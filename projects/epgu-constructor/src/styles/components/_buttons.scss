@@ -20,24 +20,6 @@
   @include btn--primary();
 }
 
-.btn--clone {
-  &:focus {
-    outline: 0;
-  }
-
-  border: $border-sm dashed $color-active-item !important;
-  box-sizing: border-box;
-  border-radius: $border-round;
-  padding: $screen-pad-p;
-  width: 100%;
-  @include typ-plain-text();
-
-  @include tablets-down() {
-    padding: 16px;
-    @include typ-plain-small();
-  }
-}
-
 .cross-btn {
   position: absolute;
   right: 8px;
