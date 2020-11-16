@@ -22,6 +22,7 @@ import { NavigationService } from '../core/services/navigation/navigation.servic
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { ConfirmationModal } from '../modal/confirmation-modal/confirmation-modal.interface';
+import { ScreenService } from '../screen/screen.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -33,6 +34,7 @@ import { ConfirmationModal } from '../modal/confirmation-modal/confirmation-moda
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('style.minHeight.px') minHeight: number;
   @HostBinding('class.epgu-form-player') class = true;
+  @HostBinding('attr.test-screen-id') screenId: string;
   @Input() service: Service;
 
   constructor(
@@ -46,6 +48,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     public loadService: LoadService,
     private modalService: ModalService,
     private zone: NgZone,
+    private screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +78,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       this.calculateHeight();
       this.subscribeToScroll();
     }
+
+    this.screenService.display$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((display) => {
+      this.screenId = display?.id;
+    });
   }
 
   ngAfterViewInit() {
