@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -14,13 +14,18 @@ enum ItemActions {
   removeItem = 'removeItem',
 }
 
+enum ItemStatus {
+  invalid = 'INVALID',
+  valid = 'VALID',
+}
+
 @Component({
   selector: 'epgu-constructor-select-children-screen',
   templateUrl: './select-children-screen.component.html',
   styleUrls: ['./select-children-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
+export class SelectChildrenScreenComponent implements OnInit {
   @Input() data: ComponentBase;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
@@ -33,6 +38,8 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
   firstNameRef: string;
   idRef: string;
   isNewRef: string;
+  newChildren: { [id: string]: boolean } = {};
+  defaultAvailable = 20;
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -57,13 +64,23 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
     ];
     this.selectedItems = {};
     this.passDataToSend(Object.values(this.selectedItems));
+
     this.selectChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.items = Object.keys(this.selectChildrenForm.controls);
+      this.updateCurrentAnswerServiceValidation();
     });
+
+    this.generateFirstFormItem();
   }
 
-  ngAfterViewInit(): void {
-    this.generateFirstFormItem();
+  updateCurrentAnswerServiceValidation(): void {
+    this.currentAnswersService.isValid = this.selectChildrenForm.valid && !!this.items.length;
+  }
+
+  updateItemValidationStatus(status: ItemStatus, itemId): void {
+    const error = status === ItemStatus.valid ? null : { invalidForm: true };
+    this.selectChildrenForm.get(itemId).setErrors(error);
+    this.updateCurrentAnswerServiceValidation();
   }
 
   getRefFromComponent(refName: string): string {
@@ -75,16 +92,17 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
   addNewChild(item): void {
     const id = item;
     const newChild: any = {
-      ...this.screenService.component?.attrs?.components?.reduce((accum, value: any) => {
-        // eslint-disable-next-line no-param-reassign
-        accum[value.id] = '';
-        return accum;
-      }, {}),
+      ...this.screenService.component?.attrs?.components?.reduce(
+        (accum, value: any) => ({
+          ...accum,
+          [value.id]: '',
+        }),
+        {},
+      ),
       [this.isNewRef]: true,
       [this.idRef]: id,
     };
-
-    this.selectChildrenForm.controls[item].disable();
+    this.newChildren[id] = true;
     this.itemsList.push(newChild);
     this.handleSelect({ id }, item);
   }
@@ -101,11 +119,13 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
 
   updateChild(childData, item): void {
     const childItem = this.itemsList.find((value) => value[this.idRef] === item);
-    const formattedChildData = Object.keys(childData).reduce((accum, key) => {
-      // eslint-disable-next-line no-param-reassign
-      accum[key] = childData[key].value;
-      return accum;
-    }, {});
+    const formattedChildData = Object.keys(childData).reduce(
+      (accum, key) => ({
+        ...accum,
+        [key]: childData[key].value,
+      }),
+      {},
+    );
     const updatedChildData = {
       ...formattedChildData,
       ...{
@@ -138,9 +158,17 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
       this.selectedItems[itemId] = this.itemsList.find((child) => child[this.idRef] === childId);
     } else if (action === ItemActions.removeItem) {
       this.selectChildrenForm.removeControl(itemId);
+      this.newChildren[itemId] = false;
       delete this.selectedItems[itemId];
     }
     this.setHideStateToSelectedItems();
+  }
+
+  isScreensAvailable(): boolean {
+    const screensAmount = this.items.length;
+    const repeatAmount = this.screenService.component?.attrs?.repeatAmount || this.defaultAvailable;
+
+    return screensAmount >= repeatAmount;
   }
 
   private setHideStateToSelectedItems(): void {
@@ -162,6 +190,6 @@ export class SelectChildrenScreenComponent implements OnInit, AfterViewInit {
   }
 
   private addFormControl(id): void {
-    this.selectChildrenForm.addControl(id, new FormControl());
+    this.selectChildrenForm.addControl(id, new FormControl(null, [Validators.required]));
   }
 }

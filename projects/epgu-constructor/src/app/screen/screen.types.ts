@@ -11,8 +11,8 @@ export interface ComponentBase {
   label: string;
   type: string;
   value: string;
-  required?: boolean
-  visited?: boolean
+  required?: boolean;
+  visited?: boolean;
   hint?: string;
 }
 

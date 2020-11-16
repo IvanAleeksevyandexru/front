@@ -1,7 +1,8 @@
 import { Component, EventEmitter, OnChanges, Output, Input, SimpleChanges } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
-import { AbstractControl, FormArray } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import {
   CustomListDictionaries,
   CustomComponent,
@@ -37,7 +38,6 @@ const halfWidthItemTypes = [
   ],
 })
 export class ComponentsListComponent implements OnChanges {
-  form: FormArray;
   shownElements: { [key: string]: boolean } = {};
 
   dropDowns$: BehaviorSubject<CustomListDropDowns> = this.repository.dropDowns$;
@@ -51,6 +51,7 @@ export class ComponentsListComponent implements OnChanges {
   @Input() components: CustomComponent;
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>;
+  @Output() emitFormStatus = new EventEmitter();
 
   constructor(
     public configService: ConfigService,
@@ -62,12 +63,22 @@ export class ComponentsListComponent implements OnChanges {
     this.changes = this.formService.changes;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     this.unsubscribe();
     const components: Array<CustomComponent> = changes.components?.currentValue;
     if (components) {
       this.formService.create(components, this.errors);
+      this.subscribeOnFormStatusChanging();
       this.loadRepository(components);
+    }
+  }
+
+  subscribeOnFormStatusChanging(): void {
+    if (this.emitFormStatus.observers.length) {
+      this.emitFormStatus.emit(this.formService.form.status);
+      this.formService.form.statusChanges
+        .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
+        .subscribe((formStatus) => this.emitFormStatus.emit(formStatus));
     }
   }
 

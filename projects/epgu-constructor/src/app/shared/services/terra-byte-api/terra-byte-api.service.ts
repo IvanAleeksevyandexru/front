@@ -41,7 +41,7 @@ export class TerraByteApiService {
    * @param relativePath - относительный путь от API для запросов
    */
   private getTerabyteApiUrl = (relativePath): string =>
-    this.config.fileUploadApiUrl + relativePath;
+      this.config.fileUploadApiUrl + relativePath;
 
   /**
    * Возращает опции запроса
