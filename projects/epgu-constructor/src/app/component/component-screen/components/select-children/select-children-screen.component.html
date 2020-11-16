@@ -23,6 +23,7 @@
                 [formControlName]="item"
                 (changed)="handleSelect($event, item)"
                 [items]="itemsToSelect"
+                [disabled]="newChildren[item]"
               ></lib-dropdown>
             </div>
             <section
@@ -31,7 +32,8 @@
             >
               <epgu-constructor-components-list
                 (changes)="updateChild($event, item)"
-                [components]="screenService.component?.attrs?.components"
+                (emitFormStatus)="updateItemValidationStatus($event, item)"
+                [components]="this.screenService.component?.attrs?.components"
                 [errors]="screenService.getStore().errors"
               >
               </epgu-constructor-components-list>
