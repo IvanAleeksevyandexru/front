@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { ScreenService } from '../../../../screen/screen.service';
+import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { NavigationPayload } from '../../../../form-player/form-player.types';
 import {
   ComponentDto,
   ComponentDtoAction,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { ScreenService } from '../../../../screen/screen.service';
 import { CycledFieldsService } from '../../../../screen/services/cycled-fields/cycled-fields.service';
-import { NavigationPayload } from '../../../../form-player/form-player.types';
-import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { ScreenModalService } from '../../screen-modal.service';
 
 @Component({
