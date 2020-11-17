@@ -288,8 +288,9 @@ export class TimeSlotsComponent implements OnInit {
           for (let i = 0; i < availableMonths.length; i += 1) {
             this.monthsYears.push(this.getMonthsListItem(availableMonths[i]));
           }
+          const activeMonthNumber = String(`00${this.activeMonthNumber + 1}`).slice(-2);
           this.currentMonth = this.monthsYears.find(
-            (item) => item.id === `${this.activeYearNumber}-${this.activeMonthNumber + 1}`,
+            (item) => item.id === `${this.activeYearNumber}-${activeMonthNumber}`,
           );
           this.fixedMonth = this.monthsYears.length < 2;
           this.renderSingleMonthGrid(this.weeks);
