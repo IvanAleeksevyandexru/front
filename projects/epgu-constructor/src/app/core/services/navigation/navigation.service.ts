@@ -22,9 +22,6 @@ export class NavigationService {
     this.isWebView = this.deviceDetector.isWebView;
   }
 
-  clickToBack = new Subject();
-  clickToBack$ = this.clickToBack.asObservable();
-
   // TODO для nextStep.next добавить обёртку, next(),
   //  что бы удобней было обращаться к этому методу
   nextStep = new Subject<Navigation>();

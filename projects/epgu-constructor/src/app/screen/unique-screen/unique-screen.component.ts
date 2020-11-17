@@ -21,8 +21,6 @@ export class UniqueScreenComponent extends ScreenClass implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscribeToNavigatePrev();
-
     this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.cycledFieldsService.initCycledFields(this.screenService.currentCycledFields);
     });

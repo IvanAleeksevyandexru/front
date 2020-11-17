@@ -12,16 +12,12 @@ const moment = moment_;
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class CustomScreenComponent extends ScreenClass implements OnInit {
+export class CustomScreenComponent extends ScreenClass {
   dataToSend: NavigationPayload;
   isValid: boolean;
 
   constructor(public injector: Injector) {
     super(injector);
-  }
-
-  ngOnInit(): void {
-    this.subscribeToNavigatePrev();
   }
 
   nextStep(payload?: NavigationPayload): void {

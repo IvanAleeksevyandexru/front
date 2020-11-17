@@ -10,16 +10,12 @@ import { ScreenClass } from '../screen.class';
   styleUrls: ['./invitation-error-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class InvitationErrorScreenComponent extends ScreenClass implements OnInit {
+export class InvitationErrorScreenComponent extends ScreenClass {
   typeComponent = InvitationErrorScreenComponentTypes;
   scenarioDto = this.screenService.getStore();
 
   constructor(public injector: Injector) {
     super(injector);
-  }
-
-  ngOnInit(): void {
-    this.subscribeToNavigatePrev();
   }
 
   nextStep(payload?: NavigationPayload): void {

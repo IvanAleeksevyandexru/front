@@ -1,7 +1,6 @@
 import { Injector } from '@angular/core';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { ScreenService } from './screen.service';
 import { NavigationPayload } from '../form-player/form-player.types';
 
@@ -15,19 +14,6 @@ export abstract class ScreenClass {
     this.navigationService = this.injector.get(NavigationService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.screenService = this.injector.get(ScreenService);
-  }
-
-  subscribeToNavigatePrev() {
-    this.navigationService.clickToBack$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.prevStep());
-  }
-
-  /**
-   * Возвращение на экран назад
-   */
-  prevStep(): void {
-    this.navigationService.prevStep.next();
   }
 
   abstract nextStep(data?: NavigationPayload): void;

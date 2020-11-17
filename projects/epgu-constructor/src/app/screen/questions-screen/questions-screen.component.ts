@@ -10,13 +10,9 @@ import { ScreenClass } from '../screen.class';
   styleUrls: ['./questions-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class QuestionsScreenComponent extends ScreenClass implements OnInit {
+export class QuestionsScreenComponent extends ScreenClass {
   constructor(public injector: Injector) {
     super(injector);
-  }
-
-  ngOnInit(): void {
-    this.subscribeToNavigatePrev();
   }
 
   nextStep(payload?: NavigationPayload): void {

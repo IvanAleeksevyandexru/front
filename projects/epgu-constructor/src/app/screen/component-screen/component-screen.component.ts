@@ -37,8 +37,6 @@ export class ComponentScreenComponent extends ScreenClass implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscribeToNavigatePrev();
-
     this.screenService.currentCycledFields$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((currentCycledFields) => {
