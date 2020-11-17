@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { Component, Injector, OnInit } from '@angular/core';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { Screen } from '../screen.types';
-import { ScreenService } from '../screen.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { InvitationErrorScreenComponentTypes } from '../../component/invitation-error-screen/invitation-error-screen-components.types';
+import { ScreenClass } from '../screen.class';
 
 @Component({
   selector: 'epgu-constructor-invitation-screen',
@@ -13,24 +10,16 @@ import { InvitationErrorScreenComponentTypes } from '../../component/invitation-
   styleUrls: ['./invitation-error-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class InvitationErrorScreenComponent implements OnInit, Screen {
+export class InvitationErrorScreenComponent extends ScreenClass implements OnInit {
   typeComponent = InvitationErrorScreenComponentTypes;
   scenarioDto = this.screenService.getStore();
 
-  constructor(
-    private navigationService: NavigationService,
-    private ngUnsubscribe$: UnsubscribeService,
-    public screenService: ScreenService,
-  ) {}
-
-  ngOnInit(): void {
-    this.navigationService.clickToBack$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.prevStep());
+  constructor(public injector: Injector) {
+    super(injector);
   }
 
-  prevStep(): void {
-    this.navigationService.prevStep.next();
+  ngOnInit(): void {
+    this.subscribeToNavigatePrev();
   }
 
   nextStep(payload?: NavigationPayload): void {

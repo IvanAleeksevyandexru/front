@@ -22,11 +22,6 @@ export interface CachedAnswers {
 
 export interface ScreenStore extends Partial<ScenarioDto>{ }
 
-export interface Screen {
-  prevStep: (data?: NavigationPayload) => void,
-  nextStep: (data?: NavigationPayload) => void,
-}
-
 export enum ScreenTypes {
   'QUESTION' = 'QUESTION',
   'INFO' = 'INFO',

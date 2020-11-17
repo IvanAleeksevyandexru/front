@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { Screen } from '../screen.types';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { ScreenService } from '../screen.service';
 import {
   ComponentDto,
   ComponentDtoAction,
 } from '../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenClass } from '../screen.class';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.
@@ -20,20 +18,15 @@ import {
   styleUrls: ['./info-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class InfoScreenComponent implements Screen, OnInit {
+export class InfoScreenComponent extends ScreenClass implements OnInit {
   actionButtons: ComponentDtoAction[] = [];
 
-  constructor(
-    private navigationService: NavigationService,
-    private ngUnsubscribe$: UnsubscribeService,
-    public screenService: ScreenService,
-    private cycledFieldsService: CycledFieldsService,
-  ) {}
+  constructor(public injector: Injector, private cycledFieldsService: CycledFieldsService) {
+    super(injector);
+  }
 
   ngOnInit(): void {
-    this.navigationService.clickToBack$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.prevStep());
+    this.subscribeToNavigatePrev();
 
     this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.cycledFieldsService.initCycledFields(this.screenService.currentCycledFields);
@@ -46,10 +39,6 @@ export class InfoScreenComponent implements Screen, OnInit {
 
   setActionButtons(component: ComponentDto) {
     this.actionButtons = component?.attrs?.actions || [];
-  }
-
-  prevStep(): void {
-    this.navigationService.prevStep.next();
   }
 
   nextStep(): void {

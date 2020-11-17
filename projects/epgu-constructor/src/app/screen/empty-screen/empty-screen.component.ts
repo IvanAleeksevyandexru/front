@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { Screen } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 
@@ -9,7 +8,7 @@ import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-sc
   templateUrl: './empty-screen.component.html',
   providers: [UnsubscribeService],
 })
-export class EmptyScreenComponent implements Screen {
+export class EmptyScreenComponent {
   emptyComponentName = EmptyScreenComponentTypes;
 
   constructor(public screenService: ScreenService) {}
@@ -25,8 +24,4 @@ export class EmptyScreenComponent implements Screen {
 
     return ref ? linkFromRef() : linkFromComponent();
   }
-
-  nextStep(): void {}
-
-  prevStep(): void {}
 }
