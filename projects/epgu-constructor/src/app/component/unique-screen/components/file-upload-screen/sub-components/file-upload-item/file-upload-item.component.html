@@ -11,7 +11,7 @@
     </epgu-constructor-output-html>
     <div
       *ngIf="refData?.length"
-      class="fileupload__label" 
+      class="fileupload__label"
       [innerHTML]="refData"
     >
     </div>
@@ -26,30 +26,30 @@
          capture="environment"
          accept="image/*"
          (change)="updateSelectedFilesInfoAndSend($event.target.files, true)">
-  <div class="errors" *ngIf="errors.length">
-    <div class="error" *ngFor="let error of errors" [innerText]="error"></div>
-  </div>
-  <div class="files" *ngIf="(files$$ | async) as files">
-    <div class="file" *ngFor="let file of files">
+  <div *ngIf="(files$$ | async) as files"
+       class="files">
+    <div *ngFor="let file of files"
+         class="file">
       <div class="file__icon"
-           [class.uploaded]="file.uploaded"
-           [class.has-error]="file.hasError"></div>
+           [class.uploaded]="file.uploaded">
+      </div>
       <div class="file__title-wrapper">
-        <div class="file__title uploaded" *ngIf="file.uploaded; else fileNotUploaded"
+        <div *ngIf="file.uploaded"
+             class="file__title uploaded"
              [innerText]="file.fileName"
              (click)="downloadFile(file)">
         </div>
-        <ng-template #fileNotUploaded>
-          <div class="file__title"
-               [class.has-error]="file.hasError"
-               [innerText]="file.hasError ? 'Ошибка загрузки' : 'Файл загружается'">
-          </div>
-        </ng-template>
-        <div class="file__title-info" *ngIf="file.uploaded">
+        <span *ngIf="!file.uploaded && !file.hasError"
+              class="file__title">
+          Файл загружается
+        </span>
+        <div *ngIf="file.uploaded"
+             class="file__title-info">
           Файл загружен ({{file.getFileSize()}})
         </div>
       </div>
-      <button class="file__action" (click)="deleteFile(file)">
+      <button class="file__action"
+              (click)="deleteFile(file)">
         Удалить
       </button>
     </div>
@@ -62,7 +62,8 @@
       (click)="openCamera()"
       class="fileupload__button"
     >
-      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg" class="fileupload__button-icon"
+      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"
+           class="fileupload__button-icon"
            alt="Фото"/>
       Фото
     </lib-button>
@@ -72,9 +73,17 @@
       (click)="selectFilesEvent()"
       class="fileupload__button"
     >
-      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg" class="fileupload__button-icon"
+      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"
+           class="fileupload__button-icon"
            alt="Файл"/>
       Файл
     </lib-button>
+  </div>
+  <div *ngIf="errors.length">
+    <div *ngFor="let error of errors"
+         class="error">
+      <div class="file__icon has-error"></div>
+      <span>{{error}}</span>
+    </div>
   </div>
 </div>
