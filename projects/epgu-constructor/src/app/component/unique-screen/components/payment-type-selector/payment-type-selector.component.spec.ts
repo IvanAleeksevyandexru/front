@@ -11,6 +11,7 @@ import { ModalModule } from '../../../../modal/modal.module';
 import { CoreModule } from '../../../../core/core.module';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
+import { DatePipe } from '@angular/common';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -51,6 +52,7 @@ describe('PaymentTypeSelectorComponent', () => {
       declarations: [PaymentTypeSelectorComponent],
       imports: [SharedModule, ModalModule, CoreModule],
       providers: [
+        DatePipe,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
