@@ -7,7 +7,7 @@ import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 @NgModule({
   declarations: [UniqueComponentModalComponent, ConfirmPhoneComponent, ConfirmEmailComponent],
-  exports: [UniqueComponentModalComponent],
+  exports: [UniqueComponentModalComponent, ConfirmPhoneComponent],
   imports: [CoreModule, SharedModule],
 })
 export class UniqueComponentModalModule {}
