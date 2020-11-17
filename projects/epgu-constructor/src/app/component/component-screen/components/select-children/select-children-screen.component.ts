@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
 import { ListItem } from 'epgu-lib';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 
 enum ItemStatus {
   invalid = 'INVALID',
@@ -16,6 +18,7 @@ enum ItemStatus {
   selector: 'epgu-constructor-select-children-screen',
   templateUrl: './select-children-screen.component.html',
   styleUrls: ['./select-children-screen.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class SelectChildrenScreenComponent implements OnInit {
   @Input() data: ComponentBase;
@@ -29,12 +32,12 @@ export class SelectChildrenScreenComponent implements OnInit {
   firstNameRef: string;
   idRef: string;
   isNewRef: string;
-  newChildren: { [id: string]: boolean } = {};
   defaultAvailable = 20;
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +55,11 @@ export class SelectChildrenScreenComponent implements OnInit {
     const newChildObj = { id: 'new', text: 'Добавить нового ребенка' };
     newChildObj[this.idRef] = 'new';
     this.itemsToSelect.push(newChildObj as ListItem);
+
+    this.selectChildrenForm.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.updateCurrentAnswerServiceValidation());
+
     this.initStartValues();
   }
 
@@ -64,10 +72,7 @@ export class SelectChildrenScreenComponent implements OnInit {
         const childId = isNew ? 'new' : child[this.idRef];
         // По ID получаем ребенка для подстановки в formControl
         const childFromList = this.itemsToSelect.find((item) => item[this.idRef] === childId);
-        const newChild = this.addMoreChild(childFromList, child);
-        if (isNew) {
-          this.selectChildrenForm.controls[newChild.controlId].disable();
-        }
+        this.addMoreChild(childFromList, child);
         this.handleSelect(child, index);
       });
     } else {
@@ -107,16 +112,14 @@ export class SelectChildrenScreenComponent implements OnInit {
       [this.isNewRef]: 'true',
       [this.idRef]: id,
     };
-    this.newChildren[id] = true;
     this.handleSelect(newChild, index);
   }
 
   removeChild(index: number): void {
     const { controlId } = this.items[index];
-    this.selectChildrenForm.removeControl(controlId);
     this.items.splice(index, 1);
     this.itemsComponents.splice(index, 1);
-    this.newChildren[controlId] = false;
+    this.selectChildrenForm.removeControl(controlId);
     this.passDataToSend(this.items);
   }
 
@@ -165,13 +168,12 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param initValue значальное значение для контрола
    * @param childFromCache ребенок из кэша. Используется для заполнения полей кастомного беренка
    */
-  addMoreChild(initValue?: any, childFromCache: any = {}): any {
+  addMoreChild(initValue?: any, childFromCache: any = {}): void {
     const index = this.items.length;
     const controlId = `child_${uuid.v4()}`;
     this.addFormControl(controlId, initValue);
     this.items.push({ controlId });
     this.itemsComponents[index] = this.prepareItemComponents(childFromCache);
-    return this.items[index];
   }
 
   /**
@@ -184,7 +186,6 @@ export class SelectChildrenScreenComponent implements OnInit {
     if (event[this.idRef] === 'new') {
       this.addNewChild(index);
     } else {
-      this.updateCurrentAnswerServiceValidation();
       this.passDataToSend(this.items);
     }
   }
