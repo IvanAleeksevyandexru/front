@@ -29,7 +29,7 @@ export interface TemporaryRegistrationHints {
  * @property {"input"}type -
  */
 export interface TemporaryRegistrationFields {
-  fieldName: 'regDate' | 'regAddr';
+  fieldName: FieldNames;
   label: string;
   type: 'input'|'date';
   regexp: string | RegExp;
@@ -37,4 +37,9 @@ export interface TemporaryRegistrationFields {
   minDate?: Date | RelativeDate | string;
   maxDate?: Date | RelativeDate | string;
   attrs?: {labelHint?: string};
+}
+
+export enum FieldNames {
+  regDate = 'regDate',
+  regAddr = 'regAddr',
 }
