@@ -1,17 +1,17 @@
+import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
-import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
-import { SharedModule } from '../../../../shared/shared.module';
-import { ModalModule } from '../../../../modal/modal.module';
 import { CoreModule } from '../../../../core/core.module';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { DatePipe } from '@angular/common';
+import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ModalModule } from '../../../../modal/modal.module';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { SharedModule } from '../../../../shared/shared.module';
+import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
+
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;

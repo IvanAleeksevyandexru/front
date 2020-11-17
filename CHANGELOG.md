@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.8...v0.5.9) (2020-11-17)
+
+
+### Bug Fixes
+
+* исправил дизайн на карте. Отступы, заголовок в поиске на мобильной версии [ref EPGUCORE-39249] ([aa313d6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/aa313d68eb88ccf713684c2686eba3e7a4cf8f3a))
+* исправлено отображение кешированной даты [ref EPGUCORE-41261] ([5012f21](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/5012f21089d5a64495dd26d71b961e1415d3e5fe))
+* поправил тест для payment-type-selector ([8183338](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/8183338c3a5c8424c55e7d39ace73b688960275d))
+
+### [0.5.8](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.7...v0.5.8) (2020-11-17)
+
+
+### Bug Fixes
+
+* Исправил сохранение [ref: EPGUCORE-41390] ([20439f7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/20439f7658c266aa801fc3e2818350460f7b2933))
+
+### [0.5.7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.6...v0.5.7) (2020-11-17)
+
+
+### Bug Fixes
+
+* удалил неиспользуемые картинки [ref EPGUCORE-41352] ([ceeb443](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/ceeb4434aeeb63b8d8193e1b2b71eedce33c649d))
+
+### [0.5.6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.5...v0.5.6) (2020-11-17)
+
+
+### Bug Fixes
+
+* бамп epgu-lib@0.0.682 ([a2f9dfc](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a2f9dfc4579ebb9b6ff0a927690e8258592b9995))
+
 ### [0.5.5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.4...v0.5.5) (2020-11-16)
 
 ### [0.5.4](https://git.gosuslugi.local///compare/v0.4.26...v0.5.4) (2020-11-16)
