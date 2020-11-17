@@ -82,7 +82,7 @@ export class ScreenModalService extends FormPlayerBaseService {
   isInternalScenarioFinish () {
     const isGoBackAction = ({ action }) => action === DTOActionAction.goBackToMainScenario;
     const actions = this._store.scenarioDto?.display?.components[0]?.attrs?.actions || [];
-    const isInternalScenarioFinish = actions?.some(isGoBackAction);
+    const isInternalScenarioFinish = actions.some(isGoBackAction);
     this.isInternalScenarioFinishSub.next(isInternalScenarioFinish);
   }
 

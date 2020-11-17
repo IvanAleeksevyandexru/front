@@ -44,8 +44,8 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data?.currentValue) {
-      this.currentAnswersService.state = changes.data?.currentValue.value;
-      this.setState(changes.data?.currentValue.value);
+      this.currentAnswersService.state = changes.data.currentValue.value;
+      this.setState(changes.data.currentValue.value);
       this.emmitData();
     }
   }
@@ -80,13 +80,9 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   private emmitData(): void {
-    if (this.isFormValid()) {
-      this.currentAnswersService.state = this.getPreparedDataToSend();
-      this.currentAnswersService.isValid = true;
-    } else {
-      this.currentAnswersService.state = null;
-      this.currentAnswersService.isValid = false;
-    }
+    const isValid = this.isFormValid();
+    this.currentAnswersService.state = isValid ? this.getPreparedDataToSend() : null;
+    this.currentAnswersService.isValid = isValid;
   }
 
   getPreparedDataToSend(): string {
@@ -109,7 +105,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     return typeof regAddr === 'string' ? regAddr : regAddr.fullAddress;
   }
 
-  public isFormValid() {
+  public isFormValid(): boolean {
     const hasValue = () => Object.values(this.dataForm.form.value).every((value) => value);
     const isValid = () => (this.data.required ? hasValue() : true);
     const isFormInited = () => this.dataForm?.form?.value;

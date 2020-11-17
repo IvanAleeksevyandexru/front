@@ -15,6 +15,7 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnChanges {
   @Input() data: ComponentBase;
   @Input() errors: object;
 
+  isEditContactAction: boolean;
   componentScreenComponentTypes = ComponentScreenComponentTypes;
 
   constructor(
@@ -25,6 +26,7 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { value } = changes.data.currentValue;
+    this.isEditContactAction = this.getIsEditContactAction();
     if (value) {
       this.currentAnswersService.isValid = true;
       this.currentAnswersService.state = this.data?.value;
@@ -33,9 +35,9 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnChanges {
     }
   }
 
-  isEditContact() {
+  getIsEditContactAction(): boolean {
     const isEditPhone = this.screenService.action.action === DTOActionAction.editPhoneNumber;
-    const isEmail = this.screenService.action.action === DTOActionAction.editEmail;
-    return isEditPhone || isEmail;
+    const isEditEmail = this.screenService.action.action === DTOActionAction.editEmail;
+    return isEditPhone || isEditEmail;
   }
 }

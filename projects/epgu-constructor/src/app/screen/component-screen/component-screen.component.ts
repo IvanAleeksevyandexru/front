@@ -22,6 +22,7 @@ interface ComponentSetting {
 export class ComponentScreenComponent implements OnInit, Screen {
   // <-- constant
   screenComponentName = ComponentScreenComponentTypes;
+  isShowActionBtn = false;
 
   // <-- variables
   componentSetting: ComponentSetting = {
@@ -48,6 +49,10 @@ export class ComponentScreenComponent implements OnInit, Screen {
       .subscribe((currentCycledFields) => {
         this.cycledFieldsService.initCycledFields(currentCycledFields);
       });
+
+    this.screenService.componentType$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((type) => this.calcIsShowActionBtn(type as ComponentScreenComponentTypes));
   }
 
   /**
@@ -124,18 +129,11 @@ export class ComponentScreenComponent implements OnInit, Screen {
     return hasType ? type : false;
   }
 
-  isShowActionBtn() {
-    // static
-    const { divorceConsent } = this.screenComponentName;
-    const tempRegAdr = this.screenComponentName.registrationAddr;
-    const permanentAdr = this.screenComponentName.confirmPersonalUserRegAddr;
-    const getComponentType = this.screenService.componentType;
-    // checker
-    const isDivorceConsentComponent = getComponentType === divorceConsent;
-    const isTempAdr = getComponentType === tempRegAdr;
-    const isPermanentAdr = getComponentType === permanentAdr;
-    const isAdrComponent = isTempAdr || isPermanentAdr;
-
-    return isDivorceConsentComponent || isAdrComponent;
+  calcIsShowActionBtn(type: ComponentScreenComponentTypes) {
+    this.isShowActionBtn = [
+      ComponentScreenComponentTypes.registrationAddr,
+      ComponentScreenComponentTypes.confirmPersonalUserRegAddr,
+      ComponentScreenComponentTypes.divorceConsent,
+    ].includes(type);
   }
 }
