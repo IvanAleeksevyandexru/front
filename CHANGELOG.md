@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.5...v0.5.6) (2020-11-17)
+
+
+### Bug Fixes
+
+* бамп epgu-lib@0.0.682 ([a2f9dfc](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a2f9dfc4579ebb9b6ff0a927690e8258592b9995))
+
 ### [0.5.5](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.4...v0.5.5) (2020-11-16)
 
 ### [0.5.4](https://git.gosuslugi.local///compare/v0.4.26...v0.5.4) (2020-11-16)
