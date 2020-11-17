@@ -15,7 +15,6 @@ export class ComponentItemComponent {
   @Input() disableError = false;
   @Input() disableHint = false;
 
-  readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
 
   optionalText() {
