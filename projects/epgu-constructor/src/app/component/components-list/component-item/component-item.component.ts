@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { OPTIONAL_FIELD, SPECIAL_OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
+import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { CustomScreenComponentTypes } from '../components-list.types';
 
 @Component({
@@ -15,11 +15,6 @@ export class ComponentItemComponent {
   @Input() disableError = false;
   @Input() disableHint = false;
 
+  readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
-
-  optionalText() {
-    return this.data.value?.label?.toLowerCase() === 'отчество'
-      ? SPECIAL_OPTIONAL_FIELD
-      : OPTIONAL_FIELD;
-  }
 }
