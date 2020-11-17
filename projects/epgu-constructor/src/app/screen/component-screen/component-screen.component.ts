@@ -123,4 +123,19 @@ export class ComponentScreenComponent implements OnInit, Screen {
 
     return hasType ? type : false;
   }
+
+  isShowActionBtn() {
+    // static
+    const { divorceConsent } = this.screenComponentName;
+    const tempRegAdr = this.screenComponentName.registrationAddr;
+    const permanentAdr = this.screenComponentName.confirmPersonalUserRegAddr;
+    const getComponentType = this.screenService.componentType;
+    // checker
+    const isDivorceConsentComponent = getComponentType === divorceConsent;
+    const isTempAdr = getComponentType === tempRegAdr;
+    const isPermanentAdr = getComponentType === permanentAdr;
+    const isAdrComponent = isTempAdr || isPermanentAdr;
+
+    return isDivorceConsentComponent || isAdrComponent;
+  }
 }

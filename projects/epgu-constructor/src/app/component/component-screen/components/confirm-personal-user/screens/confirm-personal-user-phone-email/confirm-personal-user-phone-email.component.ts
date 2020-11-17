@@ -4,7 +4,7 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ComponentBase } from '../../../../../../screen/screen.types';
 import { ComponentScreenComponentTypes } from '../../../../component-screen-components.types';
-import { ActionType } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { DTOActionAction } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-phone-email',
@@ -15,7 +15,6 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnChanges {
   @Input() data: ComponentBase;
   @Input() errors: object;
 
-  actionType = ActionType;
   componentScreenComponentTypes = ComponentScreenComponentTypes;
 
   constructor(
@@ -32,5 +31,11 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnChanges {
     } else {
       this.currentAnswersService.isValid = false;
     }
+  }
+
+  isEditContact() {
+    const isEditPhone = this.screenService.action.action === DTOActionAction.editPhoneNumber;
+    const isEmail = this.screenService.action.action === DTOActionAction.editEmail;
+    return isEditPhone || isEmail;
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
+  DTOActionAction,
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse
 } from '../../form-player/services/form-player-api/form-player-api.types';
@@ -79,8 +80,9 @@ export class ScreenModalService extends FormPlayerBaseService {
   }
 
   isInternalScenarioFinish () {
-    const isInternalScenarioFinish = this._store.scenarioDto?.display?.components[0]
-      ?.attrs?.actions?.some(action => action.action === 'goBackToMainScenario');
+    const isGoBackAction = ({ action }) => action === DTOActionAction.goBackToMainScenario;
+    const actions = this._store.scenarioDto?.display?.components[0]?.attrs?.actions || [];
+    const isInternalScenarioFinish = actions?.some(isGoBackAction);
     this.isInternalScenarioFinishSub.next(isInternalScenarioFinish);
   }
 

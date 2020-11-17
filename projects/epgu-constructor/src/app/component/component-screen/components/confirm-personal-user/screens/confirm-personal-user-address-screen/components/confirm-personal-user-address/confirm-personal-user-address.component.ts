@@ -2,10 +2,8 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   OnChanges,
-  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -34,7 +32,6 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   @ViewChild('dataForm', { static: false }) dataForm;
 
   @Input() data: ConfirmAddressInterface;
-  @Output() dataEditedEvent = new EventEmitter();
   valueParsed: any = {};
 
   constructor(
@@ -47,6 +44,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data?.currentValue) {
+      this.currentAnswersService.state = changes.data?.currentValue.value;
       this.setState(changes.data?.currentValue.value);
       this.emmitData();
     }
@@ -83,10 +81,10 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   private emmitData(): void {
     if (this.isFormValid()) {
-      this.dataEditedEvent.emit(this.getPreparedDataToSend());
+      this.currentAnswersService.state = this.getPreparedDataToSend();
       this.currentAnswersService.isValid = true;
     } else {
-      this.dataEditedEvent.emit(null);
+      this.currentAnswersService.state = null;
       this.currentAnswersService.isValid = false;
     }
   }
