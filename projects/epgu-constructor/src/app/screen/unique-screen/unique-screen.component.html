@@ -58,6 +58,12 @@
     [data]="screenService.component"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-payment>
+  <epgu-constructor-bill-info
+    *ngSwitchCase="uniqueComponentName.billInfo"
+    [header]="screenService.header"
+    [data]="screenService.component"
+    (nextStepEvent)="nextDataForStep()"
+  ></epgu-constructor-bill-info>
   <epgu-constructor-upload-and-edit-photo
     *ngSwitchCase="uniqueComponentName.photoUploadComponent"
     (nextStepEvent)="nextDataForStep($event)">
