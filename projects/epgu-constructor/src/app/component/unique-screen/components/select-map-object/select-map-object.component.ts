@@ -128,7 +128,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.selectedValue
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: any) => {
-        this.isSearchTitleVisible = !value;
+        this.isSearchTitleVisible = !value || !this.isMobile;
         this.selectedValue = value;
         this.cdr.detectChanges();
       });

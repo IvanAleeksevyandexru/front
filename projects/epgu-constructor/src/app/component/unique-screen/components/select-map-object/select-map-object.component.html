@@ -2,7 +2,7 @@
   <div class="widget__form widget-form">
     <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
     <span
-      *ngIf="isSearchTitleVisible || !isMobile"
+      *ngIf="isSearchTitleVisible"
       class="widget-form__title"
       [innerHTML]="data.label | safe: 'html'"
     ></span>
@@ -72,6 +72,7 @@
   </div>
 </div>
 
+<!--В данное модальное окно информацию должен предоставлять сервис который пока что не работает / не существует-->
 <ng-template #detailsTemplate>
   <h3>ЗАГС Кутузовский</h3>
   <hr />

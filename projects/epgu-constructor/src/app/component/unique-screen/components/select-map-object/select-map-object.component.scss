@@ -1,5 +1,7 @@
 @import "../../../../../styles/core";
 
+$crossBtnRightPadding: 42px;
+
 hr {
   width: 100%;
 }
@@ -66,7 +68,7 @@ hr {
   .cross-btn {
     top: 12px;
     position: sticky;
-    left: calc(100% - 42px);
+    left: calc(100% - #{$crossBtnRightPadding});
   }
 }
 
