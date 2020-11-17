@@ -9,6 +9,9 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ServiceDataService } from '../service-data/service-data.service';
 import { Location } from '@angular/common';
 import { COMPONENT_DATA_KEY } from '../../../shared/constants/form-player';
+import { of, throwError } from 'rxjs';
+import { FormPlayerServiceStub } from './form-player.service.stub';
+import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
 
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
@@ -123,6 +126,34 @@ describe('FormPlayerService', () => {
       spyOn<any>(service, 'getOrderData').and.callThrough();
       service.initData(orderId, false);
       expect(service['getOrderData']).toHaveBeenCalledWith(orderId);
+    });
+  });
+
+  describe('getInviteOrderData()',() => {
+    it('should call getInviteServiceData of formPlayerApiService when call getInviteOrderData', () => {
+      spyOn(formPlayerApiService, 'getInviteServiceData').and.callThrough();
+      service.getInviteOrderData(orderId);
+      expect(formPlayerApiService.getInviteServiceData).toHaveBeenCalled();
+    });
+
+    it('should call processResponse with response when call getInviteOrderData with success response case', () => {
+      const response = new FormPlayerServiceStub().response;
+      spyOn(formPlayerApiService, 'getInviteServiceData').and.returnValue(of(response));
+      spyOn<any>(service, 'processResponse').and.callThrough();
+      service.getInviteOrderData(orderId);
+      expect(service.processResponse).toHaveBeenCalledWith(response);
+    });
+
+    it('should call sendDataError with error response when call getInviteOrderData with error response case', () => {
+      const errorResponse = {
+        message: 'oops... i did it again',
+        description: 'a-e-e-e-e-e...',
+        status: 500
+      };
+      spyOn(formPlayerApiService, 'getInviteServiceData').and.returnValue(throwError(errorResponse));
+      spyOn<any>(service, 'sendDataError').and.callThrough();
+      service.getInviteOrderData(orderId);
+      expect(service.sendDataError).toHaveBeenCalledWith(errorResponse);
     });
   });
 });
