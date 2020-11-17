@@ -1,5 +1,7 @@
 @import "../../../../../styles/core";
 
+$crossBtnRightPadding: 42px;
+
 hr {
   width: 100%;
 }
@@ -66,7 +68,7 @@ hr {
   .cross-btn {
     top: 12px;
     position: sticky;
-    left: calc(100% - 30px);
+    left: calc(100% - #{$crossBtnRightPadding});
   }
 }
 
@@ -76,11 +78,17 @@ hr {
   @include typ-plain-small;
 
   &__header {
-    padding-bottom: 16px;
+    padding-bottom: 8px;
   }
 
   &__attr:last-of-type {
     padding-bottom: 24px;
+  }
+
+  .details-link {
+    padding-bottom: 24px;
+    margin-top: -8px;
+    display: flex;
   }
 
   &__label {
@@ -204,7 +212,9 @@ hr {
    }
 
    .widget-form__title {
-     display: none;
+     display: block;
+     margin-bottom: -12px;
+     margin-left: 12px;
    }
 
    .widget-form__input {
