@@ -3,6 +3,10 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ScreenService } from '../screen.service';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 
+/**
+ * Это тезнический компонент для организации каких-то действий не требующийх отображения данных.
+ * @example сервер может прислать ссылку на которую нужно сделать редирект
+ */
 @Component({
   selector: 'epgu-constructor-empty-screen',
   templateUrl: './empty-screen.component.html',
