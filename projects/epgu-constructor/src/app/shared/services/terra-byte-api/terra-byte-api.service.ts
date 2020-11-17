@@ -4,6 +4,7 @@ import { TerraFileOptions, TerraUploadFileOptions } from './terra-byte-api.types
 import { Observable } from 'rxjs';
 import { TerraUploadedFile } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { ConfigService } from '../../../core/config/config.service';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
@@ -11,7 +12,11 @@ import { ConfigService } from '../../../core/config/config.service';
 @Injectable()
 export class TerraByteApiService {
 
-  constructor(private http: HttpClient, private config: ConfigService) {}
+  constructor(
+    private http: HttpClient,
+    private config: ConfigService,
+    private deviceDetectorService: DeviceDetectorService,
+  ) {}
 
   /**
    * Переводит base64 картинку в Blob
@@ -109,18 +114,22 @@ export class TerraByteApiService {
   }
 
   /**
-   * Отдача пользователю файла прямо в браузер
-   * @private
+   * Скачивание по ссылке файла в браузер
+   * @param data - Blob данные для скачивания
+   * @param file - файл для загрузки
    */
   pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile) {
-    const url = window.URL.createObjectURL(data);
-    const a = document.createElement('a');
-    document.body.appendChild(a);
-    a.setAttribute('style', 'display: none');
-    a.href = url;
-    a.download = file.fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
-    a.remove();
+    const reader = new FileReader();
+
+    reader.onerror = (e) => console.error(e);
+    reader.onloadend = () => {
+      const replaceDataRegex = /^data:[^;]*;/;
+      let url = reader.result;
+      url = this.deviceDetectorService.isChromeIOS() ? url : url.toString().replace(replaceDataRegex, 'data:attachment/file;');
+      // @ts-ignore
+      location = url;
+    };
+
+    reader.readAsDataURL(data);
   }
 }

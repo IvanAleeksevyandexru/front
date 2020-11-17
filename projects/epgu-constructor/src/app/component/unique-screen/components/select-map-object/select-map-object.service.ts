@@ -274,6 +274,7 @@ export class SelectMapObjectService {
   }
 
   public closeBalloon() {
+    this.selectedValue.next(null);
     this.mapEvents.fire('userclose');
   }
 
