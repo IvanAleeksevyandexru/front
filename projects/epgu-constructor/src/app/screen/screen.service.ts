@@ -12,13 +12,10 @@ import { UtilsService } from '../shared/services/utils/utils.service';
 export class ScreenService extends ScreenContent {
   private screenStore: ScreenStore;
   private isLoading = false;
-  private isShown = true; // Показываем или нет кнопку
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
-  private isShownSubject = new BehaviorSubject<boolean>(this.isShown);
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
-  public isShown$: Observable<boolean> = this.isShownSubject.asObservable();
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -107,15 +104,6 @@ export class ScreenService extends ScreenContent {
       });
     }
     return cachedValue || preset;
-  }
-
-  /**
-   * Обновляет статус показывать кнопку или нет
-   * @param val - показывать кнопку?
-   */
-  public updateIsShown(val: boolean): void {
-    this.isShown = val;
-    this.isShownSubject.next(val);
   }
 
   /**
