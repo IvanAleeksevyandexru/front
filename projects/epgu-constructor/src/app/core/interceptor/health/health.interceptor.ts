@@ -6,11 +6,20 @@ import { tap, catchError } from 'rxjs/operators';
 import { HealthService } from 'epgu-lib';
 import { UtilsService } from '../../../shared/services/utils/utils.service';
 
-const EXCEPTIONS = ['lib-assets', 'storage'];
+const EXCEPTIONS = ['lib-assets'];
+
+interface ConfigParams {
+  id: string; 
+  name: string; 
+  error?: string; 
+  errorMessage?: string;
+}
 
 @Injectable()
 export class HealthInterceptor implements HttpInterceptor {
   constructor(private health: HealthService, private utils: UtilsService) {}
+
+  private configParams: ConfigParams | null = null;
 
   /**
    * Returns a boolean value for exceptions
@@ -20,7 +29,7 @@ export class HealthInterceptor implements HttpInterceptor {
     const splitByDirLocation = this.utils.getSplittedUrl(url);
     const exceptValidationStatus = splitByDirLocation.some(name => EXCEPTIONS.includes(name));
 
-    return exceptValidationStatus && splitByDirLocation.includes('upload') ? false: exceptValidationStatus;
+    return exceptValidationStatus;
   }
 
   /**
@@ -29,6 +38,10 @@ export class HealthInterceptor implements HttpInterceptor {
    */
   private isValid(payload: HttpRequest<any> | HttpEvent<any> | HttpErrorResponse): boolean {
     return this.utils.isValidHttpUrl(payload['url']) && !this.exceptionsValidator(payload['url']);
+  }
+
+  private isValidScenarioDto(dto: any): boolean {
+    return dto && dto.display; 
   }
 
 
@@ -42,14 +55,24 @@ export class HealthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(req).pipe(
-      tap(res => {
-        if (this.isValid(res)) {
-          this.health.measureEnd(serviceName, 0, null);
+      tap(response => {
+        if (this.isValid(response)) {
+          const { scenarioDto } = (response as any).body;
+          const validationStatus = this.isValidScenarioDto(scenarioDto);
+
+          if (validationStatus) {
+            this.configParams = { id: scenarioDto.display?.id, name: scenarioDto.display?.name };
+          }
+
+          this.health.measureEnd(serviceName, 0, this.configParams);
         }
       }),
       catchError(error => {
         if (this.isValid(error)) {
-          this.health.measureEnd(serviceName, 1, null);
+          this.configParams['error'] = error.status;
+          this.configParams['errorMessage'] = error.message;
+
+          this.health.measureEnd(serviceName, 1, this.configParams);
         }
         return throwError(error);
       })
