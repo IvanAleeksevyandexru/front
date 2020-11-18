@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.21](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.20...v0.5.21) (2020-11-18)
+
+
+### Bug Fixes
+
+* исправлено дефолтное значение количества дублирующих скринов [ref EPGUCORE-41578] ([55866ff](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/55866ff8f5a58090971f8e5f25fe5d52b9eca13a))
+
 ### [0.5.20](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.19...v0.5.20) (2020-11-18)
 
 ### [0.5.19](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.18...v0.5.19) (2020-11-18)
