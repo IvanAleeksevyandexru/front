@@ -1,20 +1,14 @@
 import { NgModule } from '@angular/core';
-import { SubComponentsModule } from '../../sub-components/sub-components.module';
-import { ConfirmPersonalUserDataComponent } from './component/confirm-personal-user-data/confirm-personal-user-data.component';
 import { SharedModule } from '../../../../../../shared/shared.module';
 import { CoreModule } from '../../../../../../core/core.module';
-
-const COMPONENTS = [
-  ConfirmPersonalUserDataComponent
-];
+import { ConfirmPersonalUserDataComponent } from './component/confirm-personal-user-data/confirm-personal-user-data.component';
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
+  declarations: [ConfirmPersonalUserDataComponent],
+  exports: [ConfirmPersonalUserDataComponent],
   imports: [
     CoreModule,
     SharedModule,
-    SubComponentsModule,
   ]
 })
 export class ConfirmPersonalUserDataScreenModule { }

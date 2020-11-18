@@ -14,7 +14,7 @@
   </div>
 
   <div class="screen-footer">
-      <lib-button *ngIf="screenService.isShown$ | async"
+      <lib-button
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextScreen()"
         class="btn__submit"

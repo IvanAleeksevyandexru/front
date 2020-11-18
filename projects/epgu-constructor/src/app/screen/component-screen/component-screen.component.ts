@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { CurrentAnswersService } from '../current-answers.service';
-import { ScreenService } from '../screen.service';
-import { Screen } from '../screen.types';
 import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
+import { ScreenBase } from '../screenBase';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -19,9 +17,10 @@ interface ComponentSetting {
   styleUrls: ['./component-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ComponentScreenComponent implements OnInit, Screen {
+export class ComponentScreenComponent extends ScreenBase implements OnInit {
   // <-- constant
   screenComponentName = ComponentScreenComponentTypes;
+  isShowActionBtn = false;
 
   // <-- variables
   componentSetting: ComponentSetting = {
@@ -31,30 +30,23 @@ export class ComponentScreenComponent implements OnInit, Screen {
   componentData = null;
 
   constructor(
-    private navigationService: NavigationService,
     public currentAnswersService: CurrentAnswersService,
-    private ngUnsubscribe$: UnsubscribeService,
-    public screenService: ScreenService,
     private cycledFieldsService: CycledFieldsService,
-  ) {}
+    public injector: Injector,
+  ) {
+    super(injector);
+  }
 
   ngOnInit(): void {
-    this.navigationService.clickToBack$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.prevStep());
-
     this.screenService.currentCycledFields$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((currentCycledFields) => {
         this.cycledFieldsService.initCycledFields(currentCycledFields);
       });
-  }
 
-  /**
-   * Возвращение на экран назад
-   */
-  prevStep(): void {
-    this.navigationService.prevStep.next();
+    this.screenService.componentType$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((type) => this.calcIsShowActionBtn(type as ComponentScreenComponentTypes));
   }
 
   /**
@@ -122,5 +114,13 @@ export class ComponentScreenComponent implements OnInit, Screen {
     ].includes(type);
 
     return hasType ? type : false;
+  }
+
+  calcIsShowActionBtn(type: ComponentScreenComponentTypes) {
+    this.isShowActionBtn = [
+      ComponentScreenComponentTypes.registrationAddr,
+      ComponentScreenComponentTypes.confirmPersonalUserRegAddr,
+      ComponentScreenComponentTypes.divorceConsent,
+    ].includes(type);
   }
 }

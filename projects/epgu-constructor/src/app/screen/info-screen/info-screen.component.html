@@ -2,37 +2,34 @@
   [show-nav]="(screenService.terminal$ | async) === false"
   [class.screen-container-mt]="screenService.terminal$ | async"
 >
-    <epgu-constructor-screen-pad
-      class="screen-body"
-      [ngClass]="screenService.displayCssClass$ | async"
-    >
-      <epgu-constructor-page-name class="info__head">{{
-        screenService.header$ | async
-        }}</epgu-constructor-page-name>
+  <epgu-constructor-screen-pad
+    class="screen-body"
+    [ngClass]="screenService.displayCssClass$ | async"
+  >
+    <epgu-constructor-page-name class="info__head">{{
+      screenService.header$ | async
+    }}</epgu-constructor-page-name>
 
-      <hr class="divider" />
+    <hr class="divider" />
 
-      <epgu-constructor-info-screen-body
-        [data]="screenService.component"
+    <epgu-constructor-info-screen-body [data]="screenService.component">
+    </epgu-constructor-info-screen-body>
+
+    <div class="info__actions" *ngIf="this.actionButtons.length">
+      <lib-button
+        *ngFor="let action of this.actionButtons"
+        class="info__action btn__submit"
+        epgu-constructor-action
+        [action]="action"
       >
-      </epgu-constructor-info-screen-body>
-
-      <div class="info__actions"
-           *ngIf="this.actionButtons.length">
-        <lib-button
-          *ngFor="let action of this.actionButtons"
-          class="info__action btn__submit"
-          epgu-constructor-action
-          [action]="action"
-        >
-          {{ action.label }}
-        </lib-button>
-      </div>
+        {{ action.label }}
+      </lib-button>
+    </div>
 
       <div class="info__submit">
         <lib-button
           class="btn__submit"
-          *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
+          *ngIf="screenService.submitLabel$ | async"
           [showLoader]="screenService.isLoading$ | async"
           (click)="nextStep()"
           [disabled]="screenService.isLoading$ | async"
@@ -42,9 +39,11 @@
       </div>
     </epgu-constructor-screen-pad>
 
-  <!-- NOTICE: убрано по требованию до 25.10.20 -->
-  <!-- <div *ngIf="!screenService.display?.isSocialButtonsHidden">
-    <lib-social-share></lib-social-share>
-  </div> -->
+  <div class="screen-footer">
+    <lib-social-share
+      class="social-share"
+      isNewDesign="true"
+      isNewDesignDisabled="true"
+    ></lib-social-share>
+  </div>
 </epgu-constructor-screen-container>
-
