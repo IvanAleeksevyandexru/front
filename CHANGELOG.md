@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.11](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.10...v0.5.11) (2020-11-18)
+
+
+### Bug Fixes
+
+* исправлено отображение нумерации загрузки фото с камеры [ref EPGUCORE-41335] ([3fc05cc](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3fc05cc7fea54453a52b459c0d87d00b4c2aa4f5))
+
 ### [0.5.10](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.9...v0.5.10) (2020-11-17)
 
 
