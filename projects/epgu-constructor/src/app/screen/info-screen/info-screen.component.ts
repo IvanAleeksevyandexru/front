@@ -7,7 +7,7 @@ import {
   ComponentDto,
   ComponentDtoAction,
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { ScreenClass } from '../screen.class';
+import { ScreenBase } from '../screenBase';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.
@@ -18,7 +18,7 @@ import { ScreenClass } from '../screen.class';
   styleUrls: ['./info-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class InfoScreenComponent extends ScreenClass implements OnInit {
+export class InfoScreenComponent extends ScreenBase implements OnInit {
   actionButtons: ComponentDtoAction[] = [];
 
   constructor(public injector: Injector, private cycledFieldsService: CycledFieldsService) {

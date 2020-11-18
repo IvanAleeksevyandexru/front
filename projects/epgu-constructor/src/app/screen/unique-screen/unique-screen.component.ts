@@ -4,7 +4,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import { ScreenClass } from '../screen.class';
+import { ScreenBase } from '../screenBase';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',
@@ -12,7 +12,7 @@ import { ScreenClass } from '../screen.class';
   styleUrls: ['./unique-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class UniqueScreenComponent extends ScreenClass implements OnInit {
+export class UniqueScreenComponent extends ScreenBase implements OnInit {
   // <-- constant
   uniqueComponentName = UniqueScreenComponentTypes;
 

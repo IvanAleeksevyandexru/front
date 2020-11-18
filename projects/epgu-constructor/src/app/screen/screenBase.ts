@@ -5,7 +5,7 @@ import { ScreenService } from './screen.service';
 import { NavigationPayload } from '../form-player/form-player.types';
 
 // Желательно больше не наследоваться потому что это может усложнить логику.
-export abstract class ScreenClass {
+export abstract class ScreenBase{
   public navigationService: NavigationService;
   public ngUnsubscribe$: UnsubscribeService;
   public screenService: ScreenService;

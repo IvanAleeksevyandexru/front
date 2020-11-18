@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { QuestionsComponentActions } from './questions-screen.types';
-import { ScreenClass } from '../screen.class';
+import { ScreenBase } from '../screenBase';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -10,7 +10,7 @@ import { ScreenClass } from '../screen.class';
   styleUrls: ['./questions-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class QuestionsScreenComponent extends ScreenClass {
+export class QuestionsScreenComponent extends ScreenBase {
   constructor(public injector: Injector) {
     super(injector);
   }

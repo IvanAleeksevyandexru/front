@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { InvitationErrorScreenComponentTypes } from '../../component/invitation-error-screen/invitation-error-screen-components.types';
-import { ScreenClass } from '../screen.class';
+import { ScreenBase } from '../screenBase';
 
 @Component({
   selector: 'epgu-constructor-invitation-screen',
@@ -10,7 +10,7 @@ import { ScreenClass } from '../screen.class';
   styleUrls: ['./invitation-error-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class InvitationErrorScreenComponent extends ScreenClass {
+export class InvitationErrorScreenComponent extends ScreenBase {
   typeComponent = InvitationErrorScreenComponentTypes;
   scenarioDto = this.screenService.getStore();
 

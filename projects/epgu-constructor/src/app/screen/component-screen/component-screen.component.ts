@@ -4,7 +4,7 @@ import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.ser
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
-import { ScreenClass } from '../screen.class';
+import { ScreenBase } from '../screenBase';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -17,7 +17,7 @@ interface ComponentSetting {
   styleUrls: ['./component-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ComponentScreenComponent extends ScreenClass implements OnInit {
+export class ComponentScreenComponent extends ScreenBase implements OnInit {
   // <-- constant
   screenComponentName = ComponentScreenComponentTypes;
 

@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import * as moment_ from 'moment';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { ScreenClass } from '../screen.class';
+import { ScreenBase } from '../screenBase';
 
 const moment = moment_;
 
@@ -12,7 +12,7 @@ const moment = moment_;
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class CustomScreenComponent extends ScreenClass {
+export class CustomScreenComponent extends ScreenBase {
   dataToSend: NavigationPayload;
   isValid: boolean;
 
