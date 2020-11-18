@@ -249,4 +249,8 @@ export class SelectChildrenScreenComponent implements OnInit {
   isNewId(itemId: string): boolean {
     return itemId === this.NEW_ID;
   }
+
+  isMoreThanOneChild(): boolean {
+    return this.items.length > 1;
+  }
 }
