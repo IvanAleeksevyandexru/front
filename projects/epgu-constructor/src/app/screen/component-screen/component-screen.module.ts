@@ -4,13 +4,10 @@ import { ComponentScreenComponent } from './component-screen.component';
 import { ComponentScreenComponentsModule } from '../../component/component-screen/component-screen-components.module';
 import { CoreModule } from '../../core/core.module';
 import { ComponentsListModule } from '../../component/components-list/components-list.module';
-const COMPONENTS = [
-  ComponentScreenComponent,
-];
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
+  declarations: [ComponentScreenComponent],
+  exports: [ComponentScreenComponent],
   imports: [
     CoreModule,
     SharedModule,

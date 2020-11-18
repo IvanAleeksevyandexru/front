@@ -12,13 +12,7 @@
   }}
 </div>
 
-<div
-  class="footer"
-  *ngIf="
-      screenService.action.action === actionType.editPhoneNumber ||
-      screenService.action.action === actionType.editEmail
-    "
->
+<div class="footer" *ngIf="isEditContactAction">
   <div class="divider"></div>
   <button class="btn-edit" epgu-constructor-action [action]="screenService.action$ | async">
     <img

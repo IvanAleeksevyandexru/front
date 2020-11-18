@@ -26,18 +26,18 @@
       </lib-button>
     </div>
 
-    <div class="info__submit">
-      <lib-button
-        class="btn__submit"
-        *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
-        [showLoader]="screenService.isLoading$ | async"
-        (click)="nextStep()"
-        [disabled]="screenService.isLoading$ | async"
-      >
-        {{ screenService.submitLabel$ | async }}
-      </lib-button>
-    </div>
-  </epgu-constructor-screen-pad>
+      <div class="info__submit">
+        <lib-button
+          class="btn__submit"
+          *ngIf="screenService.submitLabel$ | async"
+          [showLoader]="screenService.isLoading$ | async"
+          (click)="nextStep()"
+          [disabled]="screenService.isLoading$ | async"
+        >
+          {{screenService.submitLabel$ | async}}
+        </lib-button>
+      </div>
+    </epgu-constructor-screen-pad>
 
   <div class="screen-footer">
     <lib-social-share

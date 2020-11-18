@@ -20,6 +20,7 @@ interface ComponentSetting {
 export class ComponentScreenComponent extends ScreenBase implements OnInit {
   // <-- constant
   screenComponentName = ComponentScreenComponentTypes;
+  isShowActionBtn = false;
 
   // <-- variables
   componentSetting: ComponentSetting = {
@@ -42,6 +43,10 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
       .subscribe((currentCycledFields) => {
         this.cycledFieldsService.initCycledFields(currentCycledFields);
       });
+
+    this.screenService.componentType$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((type) => this.calcIsShowActionBtn(type as ComponentScreenComponentTypes));
   }
 
   /**
@@ -109,5 +114,13 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
     ].includes(type);
 
     return hasType ? type : false;
+  }
+
+  calcIsShowActionBtn(type: ComponentScreenComponentTypes) {
+    this.isShowActionBtn = [
+      ComponentScreenComponentTypes.registrationAddr,
+      ComponentScreenComponentTypes.confirmPersonalUserRegAddr,
+      ComponentScreenComponentTypes.divorceConsent,
+    ].includes(type);
   }
 }

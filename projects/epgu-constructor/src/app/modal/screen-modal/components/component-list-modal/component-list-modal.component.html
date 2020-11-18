@@ -8,11 +8,11 @@
   </div>
 
   <div class="component-list__footer">
-    <lib-button *ngIf="screenService.isShown$ | async"
-                [showLoader]="screenService.isLoading$ | async"
-                (click)="nextScreen()"
-                class="btn__submit"
-                [disabled]="(screenService.isLoading$ | async) || !isValid"
+    <lib-button
+      [showLoader]="screenService.isLoading$ | async"
+      (click)="nextScreen()"
+      class="btn__submit"
+      [disabled]="(screenService.isLoading$ | async) || !isValid"
     >
       {{ screenService.submitLabel$ | async }}
     </lib-button>
