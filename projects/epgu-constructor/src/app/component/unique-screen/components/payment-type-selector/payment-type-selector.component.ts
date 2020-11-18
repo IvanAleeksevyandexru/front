@@ -22,10 +22,12 @@ interface PaymentTypeSelectorInterface {
 })
 export class PaymentTypeSelectorComponent {
   paymentTypeSelector: PaymentTypeSelectorInterface;
+  isErrorTemplate: boolean;
 
   constructor(private screenService: ScreenService, public config: ConfigService) {
     this.paymentTypeSelector = this.screenService.component.attrs.states[
       this.screenService.component.attrs.state
     ];
+    this.isErrorTemplate = this.paymentTypeSelector.actions.length < 3;
   }
 }
