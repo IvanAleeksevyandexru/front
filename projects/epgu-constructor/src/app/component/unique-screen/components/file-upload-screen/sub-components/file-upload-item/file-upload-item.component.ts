@@ -63,7 +63,7 @@ export class FileUploadItemComponent implements OnDestroy {
   isMobile: boolean;
   uploadedFilesAmount = 0;
   uploadedFilesSize = 0;
-  uploadedCameraPhotosAmount = 0;
+  uploadedCameraPhotoNumber = 0;
 
   @Input() objectId: string;
   @Input() clarification: Clarifications;
@@ -303,9 +303,7 @@ export class FileUploadItemComponent implements OnDestroy {
       return;
     }
     if (addPhoto) {
-      this.uploadedCameraPhotosAmount += 1;
-    } else {
-      this.uploadedCameraPhotosAmount -= 1;
+      this.uploadedCameraPhotoNumber += 1;
     }
   }
 
@@ -370,7 +368,7 @@ export class FileUploadItemComponent implements OnDestroy {
 
   getPhotoName(photo: File): string {
     const photoType = photo.name.split('.').pop() || 'jpeg';
-    return `${photoBaseName}_${this.uploadedCameraPhotosAmount + 1}.${photoType}`;
+    return `${photoBaseName}_${this.uploadedCameraPhotoNumber + 1}.${photoType}`;
   }
 
   compressImages(files: File[], isPhoto?: boolean): Array<Observable<any>> {
