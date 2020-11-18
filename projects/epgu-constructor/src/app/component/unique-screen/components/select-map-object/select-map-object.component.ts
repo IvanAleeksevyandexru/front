@@ -345,10 +345,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
               ),
             );
 
-          return !response.items.length || !hasAttributeValues();
+          return !!response.items.length && hasAttributeValues();
         }),
-        switchMap((hasError) => {
-          if (!hasError) {
+        switchMap((hasPayment) => {
+          if (hasPayment) {
             return of(true);
           }
 
