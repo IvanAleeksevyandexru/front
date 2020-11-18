@@ -6,6 +6,7 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { UtilsService } from '../../../../../shared/services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../../shared/constants/form-player';
 import { SignatureApplicationData } from '../models/application.interface';
+import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
@@ -16,7 +17,7 @@ export class SignatureApplicationComponent implements OnInit {
   @Input() isLoading: boolean;
   @Output() nextStepEvent = new EventEmitter<string>();
 
-  isMobile = HelperService.isMobile();
+  isMobile = this.deviceDetector.isMobile;
 
   get data() {
     return this.screenService.componentValue as SignatureApplicationData;
@@ -30,7 +31,11 @@ export class SignatureApplicationComponent implements OnInit {
     }
   }
 
-  constructor(public config: ConfigService, public screenService: ScreenService) {}
+  constructor(
+    public config: ConfigService,
+    public screenService: ScreenService,
+    private deviceDetector: DeviceDetectorService,
+  ) {}
 
   ngOnInit(): void {
     if (this.isSigned()) {
