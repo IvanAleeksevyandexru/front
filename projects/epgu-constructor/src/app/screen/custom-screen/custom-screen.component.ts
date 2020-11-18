@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import * as moment_ from 'moment';
-import { takeUntil } from 'rxjs/operators';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { ScreenService } from '../screen.service';
-import { Screen } from '../screen.types';
+import { ScreenBase } from '../screenBase';
 
 const moment = moment_;
 
@@ -15,24 +12,12 @@ const moment = moment_;
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class CustomScreenComponent implements OnInit, Screen {
+export class CustomScreenComponent extends ScreenBase {
   dataToSend: NavigationPayload;
   isValid: boolean;
 
-  constructor(
-    private navigationService: NavigationService,
-    private ngUnsubscribe$: UnsubscribeService,
-    public screenService: ScreenService,
-  ) {}
-
-  ngOnInit(): void {
-    this.navigationService.clickToBack$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.prevStep());
-  }
-
-  prevStep(): void {
-    this.navigationService.prevStep.next();
+  constructor(public injector: Injector) {
+    super(injector);
   }
 
   nextStep(payload?: NavigationPayload): void {
