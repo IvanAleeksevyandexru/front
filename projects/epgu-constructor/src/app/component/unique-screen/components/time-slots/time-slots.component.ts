@@ -331,9 +331,9 @@ export class TimeSlotsComponent implements OnInit {
   /**
    * Преобразует номер месяца в формат с ведущим нулем
    * @example
-   * this.getMonthWithZero(1) // "01"
-   * this.getMonthWithZero(2) // "02"
-   * this.getMonthWithZero(10) // "10"
+   * this.getMonthWithZero(0) // "01"
+   * this.getMonthWithZero(1) // "02"
+   * this.getMonthWithZero(10) // "11"
    * @param month от 0 до 11
    */
   private getMonthWithZero(month: number): string {
