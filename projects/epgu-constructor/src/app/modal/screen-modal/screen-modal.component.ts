@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
 import { debounceTime, delay, takeUntil } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
+import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
 import {
   FormPlayerNavigation,
   Navigation,
