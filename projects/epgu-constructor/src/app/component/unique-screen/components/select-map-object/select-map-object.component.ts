@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { filter, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { merge, Observable, of } from 'rxjs';
-import { HelperService, YaMapService } from 'epgu-lib';
+import { YaMapService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../core/config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
@@ -31,6 +31,7 @@ import { ModalService } from '../../../../modal/modal.service';
 import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -69,8 +70,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
     private zone: NgZone,
+    private deviceDetector: DeviceDetectorService,
   ) {
-    this.isMobile = HelperService.isMobile();
+    this.isMobile = this.deviceDetector.isMobile;
   }
 
   ngOnInit(): void {
@@ -170,7 +172,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         bottom: 'auto',
         left: 'auto',
       },
-      size: HelperService.isMobile() ? 'small' : 'large',
+      size: this.isMobile ? 'small' : 'large',
     });
     this.yaMapService.map.options.set('minZoom', 4);
     this.yaMapService.map.copyrights.togglePromo();
