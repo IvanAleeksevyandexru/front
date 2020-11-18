@@ -41,27 +41,28 @@ export class HealthInterceptor implements HttpInterceptor {
   }
 
   private isValidScenarioDto(dto: any): boolean {
-    return dto && dto.display; 
+    return dto && dto.scenarioDto && dto.scenarioDto.display; 
   }
-
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let serviceName = '';
 
     if (this.isValid(req)) {
       serviceName = this.utils.getServiceName(req['url']);
-      serviceName = serviceName === 'getNextStepService' ? 'renderForm' : serviceName;
+      serviceName = serviceName === 'scenarioGetNextStepService' ? 'renderForm' : serviceName;
       this.health.measureStart(serviceName);
     }
 
     return next.handle(req).pipe(
       tap(response => {
         if (this.isValid(response)) {
-          const { scenarioDto } = (response as any).body;
-          const validationStatus = this.isValidScenarioDto(scenarioDto);
+          const result = (response as any).body;
+          const validationStatus = this.isValidScenarioDto(result);
 
           if (validationStatus) {
-            this.configParams = { id: scenarioDto.display?.id, name: scenarioDto.display?.name };
+            const { scenarioDto } = result;
+
+            this.configParams = { id: scenarioDto.display.id, name: scenarioDto.display.name };
           }
 
           this.health.measureEnd(serviceName, 0, this.configParams);
