@@ -23,12 +23,12 @@
                 [formControlName]="item.controlId"
                 (changed)="handleSelect($event, idx)"
                 [items]="itemsToSelect"
-                [disabled]="item.id === 'new'"
+                [disabled]="item.id === NEW_ID"
               ></lib-dropdown>
             </div>
             <section
               class="card__content"
-              *ngIf="item.id === 'new'"
+              *ngIf="item.id === NEW_ID"
             >
               <epgu-constructor-components-list
                 (changes)="updateChild($event, item, idx)"
@@ -44,10 +44,11 @@
     </div>
 
     <div class="select-children-screen__action">
-      <lib-button width="wide"
-                  color="white"
-                  (click)="addMoreChild()"
-                  [disabled]="isScreensAvailable()"
+      <lib-button
+        width="wide"
+        color="white"
+        (click)="addMoreChild()"
+        [disabled]="isScreensAvailable()"
       >
         <label>Добавить ребенка</label>
       </lib-button>

@@ -14,6 +14,12 @@ enum ItemStatus {
   valid = 'VALID',
 }
 
+interface ChildI {
+  id?: number | string;
+  text?: string;
+  [key: string]: any;
+}
+
 @Component({
   selector: 'epgu-constructor-select-children-screen',
   templateUrl: './select-children-screen.component.html',
@@ -24,6 +30,7 @@ export class SelectChildrenScreenComponent implements OnInit {
   @Input() data: ComponentBase;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
+  NEW_ID = 'new';
   valueParsed: any;
   itemsToSelect: Array<ListItem>; // Дети для выпадающего списка
   items: Array<any> = []; // Выбранные дети
@@ -41,26 +48,41 @@ export class SelectChildrenScreenComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const component = this.screenService.getCompFromDisplay(this.data.id);
-    const itemsList = component ? JSON.parse(component.presetValue) : [];
-    this.firstNameRef = this.getRefFromComponent('firstName');
-    this.isNewRef = this.getRefFromComponent('isNew');
-    this.idRef = this.getRefFromComponent('id');
-    this.itemsToSelect = itemsList.map((child) => {
-      const childForSelect = { ...child };
-      childForSelect.id = child[this.idRef];
-      childForSelect.text = child[this.firstNameRef];
-      return childForSelect;
-    });
-    const newChildObj = { id: 'new', text: 'Добавить нового ребенка' };
-    newChildObj[this.idRef] = 'new';
-    this.itemsToSelect.push(newChildObj as ListItem);
-
+    this.initVariables();
     this.selectChildrenForm.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.updateCurrentAnswerServiceValidation());
 
     this.initStartValues();
+  }
+
+  initVariables() {
+    const component = this.screenService.getCompFromDisplay(this.data.id);
+    const itemsList = component ? JSON.parse(component.presetValue) : [];
+    this.firstNameRef = this.getRefFromComponent('firstName');
+    this.isNewRef = this.getRefFromComponent('isNew');
+    this.idRef = this.getRefFromComponent('id');
+    this.itemsToSelect = this.getItemsToSelect(itemsList);
+  }
+
+  private getItemsToSelect(itemsList) {
+    return itemsList
+      .map((child) => {
+        return {
+          ...child,
+          id: child[this.idRef],
+          text: child[this.firstNameRef],
+        };
+      })
+      .concat(this.getChildForAddChildren(this.idRef));
+  }
+
+  private getChildForAddChildren(prop: string) {
+    return {
+      id: this.NEW_ID,
+      text: 'Добавить нового ребенка',
+      [prop]: this.NEW_ID,
+    };
   }
 
   initStartValues(): void {
@@ -69,7 +91,7 @@ export class SelectChildrenScreenComponent implements OnInit {
       const children = JSON.parse(cachedValue);
       children.forEach((child, index) => {
         const isNew = JSON.parse(child[this.isNewRef]);
-        const childId = isNew ? 'new' : child[this.idRef];
+        const childId = isNew ? this.NEW_ID : child[this.idRef];
         // По ID получаем ребенка для подстановки в formControl
         const childFromList = this.itemsToSelect.find((item) => item[this.idRef] === childId);
         this.addMoreChild(childFromList, child);
@@ -168,7 +190,7 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param initValue значальное значение для контрола
    * @param childFromCache ребенок из кэша. Используется для заполнения полей кастомного беренка
    */
-  addMoreChild(initValue?: any, childFromCache: any = {}): void {
+  addMoreChild(initValue?: ChildI, childFromCache: ChildI = {}): void {
     const index = this.items.length;
     const controlId = `child_${uuid.v4()}`;
     this.addFormControl(controlId, initValue);
@@ -183,7 +205,7 @@ export class SelectChildrenScreenComponent implements OnInit {
    */
   handleSelect(event, index?: number): void {
     Object.assign(this.items[index], event);
-    if (event[this.idRef] === 'new') {
+    if (event[this.idRef] === this.NEW_ID) {
       this.addNewChild(index);
     } else {
       this.passDataToSend(this.items);
@@ -217,9 +239,10 @@ export class SelectChildrenScreenComponent implements OnInit {
    */
   private prepareItemComponents(child = {}) {
     return this.screenService.component?.attrs?.components.map((component) => {
-      const componentWithValue = { ...component };
-      componentWithValue.value = child[componentWithValue.id];
-      return componentWithValue;
+      return {
+        ...component,
+        value: child[component.id],
+      };
     });
   }
 }
