@@ -269,8 +269,6 @@ export class FileUploadItemComponent implements OnDestroy {
         // eslint-disable-next-line no-param-reassign
         f.uploaded = uploaded;
         // eslint-disable-next-line no-param-reassign
-        f.hasError = !uploaded;
-        // eslint-disable-next-line no-param-reassign
         f.fileSize = fileSize;
       }
     });
@@ -293,9 +291,9 @@ export class FileUploadItemComponent implements OnDestroy {
       this.terabyteService
         .getFileInfo(uploadedFile.getParamsForFileOptions())
         .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe((result: TerabyteListItem) => {
-          this.setFileInfoUploaded(uploadedFile, result.fileSize, uploaded);
-        });
+        .subscribe((result: TerabyteListItem) =>
+          this.setFileInfoUploaded(uploadedFile, result.fileSize, uploaded),
+        );
     } else {
       this.removeFileFromStore(uploadedFile);
     }
