@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.19](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.18...v0.5.19) (2020-11-18)
+
 ### [0.5.18](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.17...v0.5.18) (2020-11-18)
 
 ### [0.5.17](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.16...v0.5.17) (2020-11-18)
