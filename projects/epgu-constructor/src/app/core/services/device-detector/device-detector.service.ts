@@ -24,13 +24,22 @@ export class DeviceDetectorService {
     this.initState();
   }
 
+  /**
+   * Инициализирует типы устройства с которого смотрим
+   */
   initState() {
-    const defaultDeviceType = localStorage.getItem(LOCAL_STORAGE_PLATFORM_TYPE);
-    const { deviceType = defaultDeviceType } = this.loadService.attributes;
-    this.isMobile = deviceType === LoadServiceDeviceType.mob;
-    this.isTablet = deviceType === LoadServiceDeviceType.tab;
+    const { deviceType = localStorage.getItem(LOCAL_STORAGE_PLATFORM_TYPE) } = this.loadService.attributes;
+    this.isMobile  = deviceType === LoadServiceDeviceType.mob;
+    this.isTablet  = deviceType === LoadServiceDeviceType.tab;
     this.isDesktop = deviceType === LoadServiceDeviceType.desk;
     this.isWebView = this.smuEventsService.smuInit;
     console.log('deviceType:', deviceType);
+  }
+
+  /**
+   * Возвращает IOS в браузере Chrome это или нет
+   */
+  isChromeIOS() {
+    return /CriOS\/[\d]+/.test(navigator.userAgent);
   }
 }

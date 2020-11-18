@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PaymentComponent } from './payment.component';
-import { SharedModule } from '../../../../shared/shared.module';
-import { PaymentService } from './payment.service';
-import { CoreModule } from '../../../../core/core.module';
+import { SharedModule } from '../../../../../../shared/shared.module';
+import { PaymentService } from '../../payment.service';
+import { CoreModule } from '../../../../../../core/core.module';
 
 @NgModule({
 	declarations: [
@@ -12,7 +12,7 @@ import { CoreModule } from '../../../../core/core.module';
 	  PaymentComponent
   ],
   providers: [
-    PaymentService
+    PaymentService,
   ],
 	imports: [
 		CoreModule,

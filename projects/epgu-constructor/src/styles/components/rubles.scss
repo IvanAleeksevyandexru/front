@@ -5,6 +5,8 @@
       display: inline-block;
       position: relative;
       margin-right: 14px;
+      width: 0;
+      height: 17px;
     }
 
     &::ng-deep .rubles::after{
