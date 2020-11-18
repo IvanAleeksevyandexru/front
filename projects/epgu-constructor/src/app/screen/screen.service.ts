@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ComponentBase, ScreenStore } from './screen.types';
+import { ComponentBase, ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { CurrentAnswersService } from './current-answers.service';
@@ -10,7 +10,7 @@ import { UtilsService } from '../shared/services/utils/utils.service';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
-  private screenStore: ScreenStore;
+  private screenStore: ScreenStore = {};
   private isLoading = false;
   private isShown = true; // Показываем или нет кнопку
 
@@ -81,6 +81,7 @@ export class ScreenService extends ScreenContent {
 
         const cachedValue = shouldBeTakenFromTheCache && this.cachedAnswersService
           .getCachedValueById(this.screenStore.cachedAnswers, item.id);
+        item.presetValue = item.value;
         const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value, item.type) } : item;
         components.push(component);
       });
@@ -135,5 +136,15 @@ export class ScreenService extends ScreenContent {
     const value = UtilsService.getObjectProperty(JSON.parse(cachedValue), path, item.value);
 
     return { ...item, value };
+  }
+
+  public getCompFromDisplay(componentId: string): ScreenStoreComponentDtoI {
+    const component = this.display?.components.find((comp) => comp.id === componentId);
+    return component;
+  }
+
+  public getCompValueFromCachedAnswers(componentId: string) {
+    const cachedAnswers = this.getStore().cachedAnswers;
+    return cachedAnswers && cachedAnswers[componentId]?.value;
   }
 }
