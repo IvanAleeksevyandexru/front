@@ -39,15 +39,7 @@ export abstract class FormPlayerBaseService {
    * Обработка ответа сервера
    * @param response - ответ сервера на запрос
    */
-  processResponse(response: FormPlayerApiResponse): void {
-    if (this.hasError(response)) {
-      this.sendDataError(response);
-    } else {
-      this.sendDataSuccess(response);
-      // reset view by scrolling to top
-      window.scroll(0,0);
-    }
-  };
+  abstract processResponse(response: FormPlayerApiResponse): void;
 
   /**
    * Возвращает true, если есть ошибки

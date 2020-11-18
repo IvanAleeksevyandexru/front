@@ -12,6 +12,7 @@ import { COMPONENT_DATA_KEY } from '../../../shared/constants/form-player';
 import { of, throwError } from 'rxjs';
 import { FormPlayerServiceStub } from './form-player.service.stub';
 import { FormPlayerNavigation } from '../../form-player.types';
+import { WINDOW, WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 
 const response = new FormPlayerServiceStub().response;
 
@@ -30,6 +31,7 @@ describe('FormPlayerService', () => {
         CachedAnswersService,
         CurrentAnswersService,
         Location,
+        WINDOW_PROVIDERS,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
       ]
     });
@@ -249,6 +251,46 @@ describe('FormPlayerService', () => {
       spyOn<any>(service, 'updateLoading').and.callThrough();
       service.navigate(navigation, FormPlayerNavigation.NEXT);
       expect(service['updateLoading']).toHaveBeenCalled();
+    });
+  });
+
+
+
+  describe('processResponse()',() => {
+    it('should call hasError with response param', () => {
+      spyOn<any>(service, 'hasError').and.callThrough();
+      service.processResponse(response);
+      expect(service['hasError']).toHaveBeenCalledWith(response);
+    });
+
+    it('should call sendDataError with response param when hasError return true', () => {
+      spyOn<any>(service, 'hasError').and.returnValue(true);
+      spyOn<any>(service, 'sendDataError').and.callThrough();
+      service.processResponse(response);
+      expect(service['sendDataError']).toHaveBeenCalledWith(response);
+    });
+
+    it('should call sendDataSuccess with response param when hasError return false', () => {
+      spyOn<any>(service, 'hasError').and.returnValue(false);
+      spyOn<any>(service, 'sendDataSuccess').and.callThrough();
+      service.processResponse(response);
+      expect(service['sendDataSuccess']).toHaveBeenCalledWith(response);
+    });
+
+    it('should call resetViewByChangeScreen with response param when hasError return false', () => {
+      spyOn<any>(service, 'hasError').and.returnValue(false);
+      spyOn<any>(service, 'resetViewByChangeScreen').and.callThrough();
+      service.processResponse(response);
+      expect(service['resetViewByChangeScreen']).toHaveBeenCalled();
+    });
+  });
+
+  describe('resetViewByChangeScreen()',() => {
+    it('should call scroll method of window  with (0, 0) params', () => {
+      const window = TestBed.inject(WINDOW);
+      spyOn<any>(window, 'scroll').and.callThrough();
+      service['resetViewByChangeScreen']();
+      expect(window['scroll']).toHaveBeenCalledWith(0, 0);
     });
   });
 });

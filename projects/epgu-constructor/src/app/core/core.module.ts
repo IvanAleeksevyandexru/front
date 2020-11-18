@@ -15,6 +15,7 @@ import { ErrorsInterceptorService } from './interceptor/errors/errors.intercepto
 import { initApp } from './initializers/app.initializer';
 import { CookieService } from 'ngx-cookie-service';
 import { HealthInterceptor } from './interceptor/health/health.interceptor';
+import { WINDOW_PROVIDERS } from './providers/window.provider';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
@@ -74,6 +75,7 @@ const PIPES = [
       deps: [SmuEventsService, CookieService],
       multi: true
     },
+    WINDOW_PROVIDERS
   ]
 })
 export class CoreModule {}
