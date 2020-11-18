@@ -11,7 +11,9 @@ import { Location } from '@angular/common';
 import { COMPONENT_DATA_KEY } from '../../../shared/constants/form-player';
 import { of, throwError } from 'rxjs';
 import { FormPlayerServiceStub } from './form-player.service.stub';
-import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
+import { FormPlayerNavigation } from '../../form-player.types';
+
+const response = new FormPlayerServiceStub().response;
 
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
@@ -38,6 +40,7 @@ describe('FormPlayerService', () => {
 
   beforeEach(() => {
     orderId = '1234';
+    service['_store'] = JSON.parse(JSON.stringify(response));
   });
 
   describe('checkIfOrderExist()',() => {
@@ -137,7 +140,6 @@ describe('FormPlayerService', () => {
     });
 
     it('should call processResponse with response when call getInviteOrderData with success response case', () => {
-      const response = new FormPlayerServiceStub().response;
       spyOn(formPlayerApiService, 'getInviteServiceData').and.returnValue(of(response));
       spyOn<any>(service, 'processResponse').and.callThrough();
       service.getInviteOrderData(orderId);
@@ -154,6 +156,99 @@ describe('FormPlayerService', () => {
       spyOn<any>(service, 'sendDataError').and.callThrough();
       service.getInviteOrderData(orderId);
       expect(service.sendDataError).toHaveBeenCalledWith(errorResponse);
+    });
+
+    it('should call updateLoading with false param when call getInviteOrderData', () => {
+      spyOn(formPlayerApiService, 'getInviteServiceData').and.returnValue(of(response));
+      spyOn<any>(service, 'getInviteOrderData').and.callThrough();
+      service.getInviteOrderData(orderId);
+      expect(service['getInviteOrderData']).toHaveBeenCalled();
+    });
+  });
+
+  describe('getOrderData()',() => {
+    it('should call getServiceData of formPlayerApiService when call getOrderData', () => {
+      spyOn(formPlayerApiService, 'getServiceData').and.callThrough();
+      service.getOrderData(orderId);
+      expect(formPlayerApiService.getServiceData).toHaveBeenCalled();
+    });
+
+    it('should call processResponse with response when call getOrderData with success response case', () => {
+      spyOn(formPlayerApiService, 'getServiceData').and.returnValue(of(response));
+      spyOn<any>(service, 'processResponse').and.callThrough();
+      service.getOrderData(orderId);
+      expect(service.processResponse).toHaveBeenCalledWith(response);
+    });
+
+    it('should call sendDataError with error response when call getOrderData with error response case', () => {
+      const errorResponse = {
+        message: 'oops... i did it again',
+        description: 'a-e-e-e-e-e...',
+        status: 500
+      };
+      spyOn(formPlayerApiService, 'getServiceData').and.returnValue(throwError(errorResponse));
+      spyOn<any>(service, 'sendDataError').and.callThrough();
+      service.getOrderData(orderId);
+      expect(service.sendDataError).toHaveBeenCalledWith(errorResponse);
+    });
+
+    it('should call updateLoading with false param when call getOrderData', () => {
+      spyOn(formPlayerApiService, 'getServiceData').and.returnValue(of(response));
+      spyOn<any>(service, 'getOrderData').and.callThrough();
+      service.getOrderData(orderId);
+      expect(service['getOrderData']).toHaveBeenCalled();
+    });
+  });
+
+  describe('navigate()',() => {
+
+    it('should call updateLoading with false true', () => {
+      spyOn<any>(service, 'updateLoading').and.callThrough();
+      service.navigate({}, FormPlayerNavigation.NEXT);
+      expect(service['updateLoading']).toHaveBeenCalled();
+    });
+
+    it('should call updateRequest with navigation param', () => {
+      const navigation = {};
+      spyOn<any>(service, 'updateRequest').and.callThrough();
+      service.navigate(navigation, FormPlayerNavigation.NEXT);
+      expect(service['updateRequest']).toHaveBeenCalledWith(navigation);
+    });
+
+    it('should call navigate of formPlayerApiService with params when call navigate', () => {
+      const navigation = {};
+      spyOn(formPlayerApiService, 'navigate').and.callThrough();
+      service.navigate(navigation, FormPlayerNavigation.NEXT);
+      expect(formPlayerApiService.navigate).toHaveBeenCalled();
+    });
+
+    it('should call processResponse with response when call navigate with success response case', () => {
+      const navigation = {};
+      spyOn(formPlayerApiService, 'navigate').and.returnValue(of(response));
+      spyOn<any>(service, 'processResponse').and.callThrough();
+      service.navigate(navigation, FormPlayerNavigation.NEXT);
+      expect(service.processResponse).toHaveBeenCalledWith(response);
+    });
+
+    it('should call sendDataError with error response when call navigate with error response case', () => {
+      const navigation = {};
+      const errorResponse = {
+        message: 'oops... i did it again',
+        description: 'a-e-e-e-e-e...',
+        status: 500
+      };
+      spyOn(formPlayerApiService, 'navigate').and.returnValue(throwError(errorResponse));
+      spyOn<any>(service, 'sendDataError').and.callThrough();
+      service.navigate(navigation, FormPlayerNavigation.NEXT);
+      expect(service.sendDataError).toHaveBeenCalledWith(errorResponse);
+    });
+
+    it('should call updateLoading with false param when call navigate', () => {
+      const navigation = {};
+      spyOn(formPlayerApiService, 'navigate').and.returnValue(of(response));
+      spyOn<any>(service, 'updateLoading').and.callThrough();
+      service.navigate(navigation, FormPlayerNavigation.NEXT);
+      expect(service['updateLoading']).toHaveBeenCalled();
     });
   });
 });

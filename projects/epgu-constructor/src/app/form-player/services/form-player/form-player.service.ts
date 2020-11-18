@@ -65,7 +65,7 @@ export class FormPlayerService extends FormPlayerBaseService {
    * Получает и устанавливает данные для заявления для id услуги
    * @param orderId - идентификатор черновика
    */
-  getOrderData(orderId?: string) {
+  getOrderData(orderId: string) {
     this.formPlayerApiService.getServiceData(orderId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
