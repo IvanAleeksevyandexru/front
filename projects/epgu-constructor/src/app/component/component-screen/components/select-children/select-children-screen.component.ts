@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
 import { ListItem } from 'epgu-lib';
+import { takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 
 enum ItemStatus {
   invalid = 'INVALID',
@@ -244,5 +244,9 @@ export class SelectChildrenScreenComponent implements OnInit {
         value: child[component.id],
       };
     });
+  }
+
+  isNewId(itemId: string): boolean {
+    return itemId === this.NEW_ID;
   }
 }
