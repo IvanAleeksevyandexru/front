@@ -15,6 +15,11 @@ export class ComponentItemComponent {
   @Input() disableError = false;
   @Input() disableHint = false;
 
-  readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
+
+  customUnRecLabel() {
+    return this.data.value?.attrs?.customUnrecLabel
+      ? this.data.value?.attrs?.customUnrecLabel
+      : OPTIONAL_FIELD;
+  }
 }
