@@ -3,6 +3,7 @@ import * as moment_ from 'moment';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenBase } from '../screenBase';
+import { CustomComponentValidationConditions } from '../../component/components-list/components-list.types';
 
 const moment = moment_;
 
@@ -39,7 +40,13 @@ export class CustomScreenComponent extends ScreenBase {
   }
 
   changeComponentsList(changes: { [key: string]: any }): void {
-    this.isValid = Object.values(changes).every((item) => item.isValid);
+    this.isValid =
+      Object.values(changes)
+        .filter((item) => item.condition !== CustomComponentValidationConditions.atLeastOne)
+        .every((item) => item.isValid) &&
+      Object.values(changes)
+        .filter((item) => item.condition === CustomComponentValidationConditions.atLeastOne)
+        .some((item) => item.isValid && item.value);
     this.dataToSend = this.getFormattedData(changes);
   }
 
