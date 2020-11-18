@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
-import { CustomComponent, CustomComponentAttrValidation, CustomScreenComponentTypes } from '../components-list.types';
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { REQUIRED_FIELD, INVALID_FORMAT_FIELD } from '../../../shared/constants/helper-texts';
+import {
+  CustomComponent,
+  CustomComponentAttrValidation,
+  CustomComponentValidationConditions,
+  CustomScreenComponentTypes
+} from '../components-list.types';
+import { AbstractControl, FormArray, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { REQUIRED_FIELD, InvalidControlMsg } from '../../../shared/constants/helper-texts';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
-import { ComponentListToolsService } from './component-list-tools.service';
 
 @Injectable()
 export class ValidationService {
 
-  constructor(private toolsService: ComponentListToolsService) { }
+  constructor() { }
 
   private readonly typesWithoutValidation: Array<CustomScreenComponentTypes> = [
     CustomScreenComponentTypes.LabelSection,
@@ -61,7 +65,7 @@ export class ValidationService {
     }
   }
 
-  private validationErrorMsg(error: string = INVALID_FORMAT_FIELD): ValidationErrors {
+  private validationErrorMsg(error: string = InvalidControlMsg.formatField): ValidationErrors {
     return { msg: error };
   }
 
