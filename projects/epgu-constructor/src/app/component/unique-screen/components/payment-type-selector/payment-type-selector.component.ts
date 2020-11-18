@@ -28,6 +28,6 @@ export class PaymentTypeSelectorComponent {
     this.paymentTypeSelector = this.screenService.component.attrs.states[
       this.screenService.component.attrs.state
     ];
-    this.isErrorTemplate = this.paymentTypeSelector.actions.length < 3;
+    this.isErrorTemplate = this.screenService.component.attrs.state !== 'SUCCESS';
   }
 }
