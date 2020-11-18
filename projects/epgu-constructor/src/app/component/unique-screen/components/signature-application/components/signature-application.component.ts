@@ -1,5 +1,4 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
-import { HelperService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../../core/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
