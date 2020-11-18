@@ -23,6 +23,7 @@ export class ModalBaseComponent {
   }
 
   closeModal(value?: any): void {
+    document.body.style.overflow = null;
     this.detachView(value || this.modalResult.value);
   }
 }
