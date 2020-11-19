@@ -27,8 +27,13 @@ export interface ScreenStoreDisplayDtoI extends DisplayDto {
   components: Array<ScreenStoreComponentDtoI>;
 }
 
-export interface ScreenStore extends Partial<ScenarioDto> { 
+export interface ScreenStore extends Partial<ScenarioDto> {
   display?: ScreenStoreDisplayDtoI;
+}
+
+export interface Screen {
+  prevStep: (data?: NavigationPayload) => void,
+  nextStep: (data?: NavigationPayload) => void,
 }
 
 export enum ScreenTypes {
