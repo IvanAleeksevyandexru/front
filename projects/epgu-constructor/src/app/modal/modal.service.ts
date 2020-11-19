@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
+import { HelperService } from 'epgu-lib';
 
 @Injectable()
 export class ModalService {
@@ -18,13 +18,12 @@ export class ModalService {
 
   constructor(private cfr: ComponentFactoryResolver,
               private rendererFactory: RendererFactory2,
-              private deviceDetector: DeviceDetectorService,
               private appRef: ApplicationRef) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
   public openModal<T, K = any>(modalComponent: Type<any>, modalParameters?: K): Observable<T> {
-    if (this.deviceDetector.isMobile) {
+    if (HelperService.isTouchDevice()) {
       document.body.style.overflow = 'hidden';
     }
 
