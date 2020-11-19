@@ -28,7 +28,9 @@
 
     <div class="screen-footer">
       <ng-container *ngFor="let action of paymentTypeSelector.actions">
-        <ng-container *ngIf="action.applicantType === paymentTypeSelector.applicantType">
+        <ng-container
+          *ngIf="showBtn(action.applicantType)"
+        >
           <ng-container *ngIf="isErrorTemplate; else answerBtn">
             <ng-container *ngTemplateOutlet="actionBtn"></ng-container>
           </ng-container>
