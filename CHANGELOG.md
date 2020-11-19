@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.22](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.21...v0.5.22) (2020-11-19)
+
+
+### Bug Fixes
+
+* добавил конфиг явной 'прод' сборки приложения с отключенным Ivy ([b9129ca](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/b9129ca44b0b3ba35b3c572644daf7c1f2f6e268))
+
 ### [0.5.21](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.20...v0.5.21) (2020-11-18)
 
 
