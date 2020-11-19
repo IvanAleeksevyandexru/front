@@ -40,13 +40,23 @@ export class CustomScreenComponent extends ScreenBase {
   }
 
   changeComponentsList(changes: { [key: string]: any }): void {
-    this.isValid =
-      Object.values(changes)
-        .filter((item) => item.condition !== CustomComponentValidationConditions.atLeastOne)
-        .every((item) => item.isValid) &&
-      Object.values(changes)
-        .filter((item) => item.condition === CustomComponentValidationConditions.atLeastOne)
-        .some((item) => item.isValid && item.value);
+    const notAtLeastOne = Object.values(changes).filter(
+      (item) => item.condition !== CustomComponentValidationConditions.atLeastOne,
+    );
+    const atLeastOne = Object.values(changes).filter(
+      (item) => item.condition === CustomComponentValidationConditions.atLeastOne,
+    );
+
+    const notAtLeastOneExpression: boolean = notAtLeastOne.length
+      ? notAtLeastOne.every((item) => item.isValid)
+      : true;
+
+    const atLeastOneExpression: boolean = atLeastOne.length
+      ? atLeastOne.some((item) => item.value) && atLeastOne.every((item) => item.isValid)
+      : true;
+
+    this.isValid = notAtLeastOneExpression && atLeastOneExpression;
+
     this.dataToSend = this.getFormattedData(changes);
   }
 
