@@ -6,10 +6,10 @@ import { CoreModule } from '../../../../../../core/core.module';
 
 @NgModule({
 	declarations: [
-	  PaymentComponent
+	  PaymentComponent,
   ],
 	exports: [
-	  PaymentComponent
+	  PaymentComponent,
   ],
   providers: [
     PaymentService,
