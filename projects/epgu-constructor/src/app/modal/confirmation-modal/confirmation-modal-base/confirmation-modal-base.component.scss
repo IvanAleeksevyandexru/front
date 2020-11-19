@@ -1,5 +1,5 @@
-@import "../../../../styles/core";
-@import "../../../../styles/components/rubles";
+@import '../../../../styles/core';
+@import '../../../../styles/components/rubles';
 
 $my: 7vh;
 $pyConfModal: 64px;
@@ -26,9 +26,9 @@ $minModalHeight: 293px;
 
     &__cross-button {
       position: absolute;
-      right: 26px;
-      width: 16px;
-      height: 16px;
+      right: 32px;
+      width: 20px;
+      height: 20px;
       cursor: pointer;
       z-index: 2;
 
@@ -36,9 +36,10 @@ $minModalHeight: 293px;
       &:after {
         content: '';
         position: absolute;
+        left: 10px;
         width: 2px;
         height: 20px;
-        background: $color-button-hit;
+        background: $color-gosblue;
         transform: rotate(45deg);
       }
 
@@ -88,7 +89,7 @@ $minModalHeight: 293px;
 
       @include rubles('.conf-modal__body', '../../../../../../assets/img/ruble.svg');
 
-      &.preview .text{
+      &.preview .text {
         padding: 0;
       }
     }
@@ -115,7 +116,7 @@ $minModalHeight: 293px;
 
     &__button {
       @include tablets-down {
-        width: 100%
+        width: 100%;
       }
     }
   }
@@ -130,4 +131,3 @@ $minModalHeight: 293px;
     }
   }
 }
-

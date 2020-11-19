@@ -1,4 +1,4 @@
-@import "../../../../styles/core";
+@import '../../../../styles/core';
 
 // TODO Избавиться от ng-deep
 :host::ng-deep {
@@ -55,6 +55,7 @@
     }
 
     &__body {
+      margin-top: 24px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -73,17 +74,15 @@
 
     &__controls {
       display: flex;
-      margin-top: 26px;
+      margin-top: 24px;
       justify-content: center;
       flex: 1;
     }
 
     &__button {
       @include tablets-down {
-        width: 100%
+        width: 100%;
       }
     }
   }
 }
-
-

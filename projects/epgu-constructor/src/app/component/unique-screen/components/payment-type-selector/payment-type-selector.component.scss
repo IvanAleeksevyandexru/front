@@ -1,5 +1,10 @@
 @import '../../../../../styles/core';
 
+:host {
+  display: block;
+  min-height: inherit;
+}
+
 .payment-type-selector {
   &__img {
     display: flex;
@@ -25,4 +30,14 @@
     margin-bottom: 24px;
   }
 
+  .answer-btn {
+    width: 100%;
+
+    @include tablets-up {
+      margin: 0 0 24px 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }

@@ -10,10 +10,8 @@ export class ScreenServiceStub extends ScreenContent {
   private isShown = true; // Показываем или нет кнопку
 
   private isLoadingSubject: BehaviorSubject<boolean>;
-  private isShownSubject: BehaviorSubject<boolean>;
 
   public isLoading$: Observable<boolean>;
-  public isShown$: Observable<boolean>;
 
   public get componentValue(): { [p: string]: any } | string {
     return '';
@@ -28,8 +26,6 @@ export class ScreenServiceStub extends ScreenContent {
   private initComponentStateService() {}
 
   private loadValueFromCachedAnswer(): void {}
-
-  public updateIsShown(val: boolean): void {}
 
   public getStore() {}
 }

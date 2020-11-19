@@ -6,8 +6,8 @@ import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/opera
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { isEqualObj } from '../../../shared/constants/uttils';
 import {
-  CustomComponent,
-  CustomComponentOutputData, CustomListDictionaries, CustomListDropDowns,
+  CustomComponent, CustomComponentAttrValidation,
+  CustomComponentOutputData, CustomComponentValidationConditions, CustomListDictionaries, CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements, CustomScreenComponentTypes
 } from '../components-list.types';
@@ -124,6 +124,11 @@ export class ComponentListFormService {
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
       const { disabled, valid } = this.form.get([key, 'value']);
+      const isLeastOneCondition: boolean = this.form.get([key, 'attrs']).value.validation?.some(
+        (validation: CustomComponentAttrValidation) =>
+          validation.condition === CustomComponentValidationConditions.atLeastOne);
+      const condition: CustomComponentValidationConditions | null =
+        isLeastOneCondition ? CustomComponentValidationConditions.atLeastOne : null;
       let { value, type } = val;
       const isValid = disabled || valid;
 
@@ -131,7 +136,7 @@ export class ComponentListFormService {
         if (type === CustomScreenComponentTypes.DateInput) {
           value = moment(value).toISOString(true); // NOTICE: обработка даты и "правильное" приведение к ISO-строке
         }
-        acc[val.id] = { value, isValid, disabled };
+        acc[val.id] = { value, isValid, disabled, condition };
       }
 
       return acc;

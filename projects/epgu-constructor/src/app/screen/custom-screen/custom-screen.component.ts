@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import * as moment_ from 'moment';
-import { takeUntil } from 'rxjs/operators';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { ScreenService } from '../screen.service';
-import { Screen } from '../screen.types';
+import { ScreenBase } from '../screenBase';
+import { CustomComponentValidationConditions } from '../../component/components-list/components-list.types';
 
 const moment = moment_;
 
@@ -15,24 +13,12 @@ const moment = moment_;
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class CustomScreenComponent implements OnInit, Screen {
+export class CustomScreenComponent extends ScreenBase {
   dataToSend: NavigationPayload;
   isValid: boolean;
 
-  constructor(
-    private navigationService: NavigationService,
-    private ngUnsubscribe$: UnsubscribeService,
-    public screenService: ScreenService,
-  ) {}
-
-  ngOnInit(): void {
-    this.navigationService.clickToBack$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.prevStep());
-  }
-
-  prevStep(): void {
-    this.navigationService.prevStep.next();
+  constructor(public injector: Injector) {
+    super(injector);
   }
 
   nextStep(payload?: NavigationPayload): void {
@@ -54,7 +40,23 @@ export class CustomScreenComponent implements OnInit, Screen {
   }
 
   changeComponentsList(changes: { [key: string]: any }): void {
-    this.isValid = Object.values(changes).every((item) => item.isValid);
+    const notAtLeastOne = Object.values(changes).filter(
+      (item) => item.condition !== CustomComponentValidationConditions.atLeastOne,
+    );
+    const atLeastOne = Object.values(changes).filter(
+      (item) => item.condition === CustomComponentValidationConditions.atLeastOne,
+    );
+
+    const notAtLeastOneExpression: boolean = notAtLeastOne.length
+      ? notAtLeastOne.every((item) => item.isValid)
+      : true;
+
+    const atLeastOneExpression: boolean = atLeastOne.length
+      ? atLeastOne.some((item) => item.value) && atLeastOne.every((item) => item.isValid)
+      : true;
+
+    this.isValid = notAtLeastOneExpression && atLeastOneExpression;
+
     this.dataToSend = this.getFormattedData(changes);
   }
 

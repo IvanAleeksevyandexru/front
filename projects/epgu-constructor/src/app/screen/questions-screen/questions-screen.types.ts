@@ -5,4 +5,7 @@ export interface QuestionsComponentActions {
   value: string;
   disabled?: boolean;
   hidden?: boolean;
+  type?: string;
+  title?: string;
+  body?: string;
 }

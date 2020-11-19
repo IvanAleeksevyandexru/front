@@ -2,10 +2,8 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   OnChanges,
-  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -34,7 +32,6 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   @ViewChild('dataForm', { static: false }) dataForm;
 
   @Input() data: ConfirmAddressInterface;
-  @Output() dataEditedEvent = new EventEmitter();
   valueParsed: any = {};
 
   constructor(
@@ -47,7 +44,8 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data?.currentValue) {
-      this.setState(changes.data?.currentValue.value);
+      this.currentAnswersService.state = changes.data.currentValue.value;
+      this.setState(changes.data.currentValue.value);
       this.emmitData();
     }
   }
@@ -82,13 +80,9 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   private emmitData(): void {
-    if (this.isFormValid()) {
-      this.dataEditedEvent.emit(this.getPreparedDataToSend());
-      this.currentAnswersService.isValid = true;
-    } else {
-      this.dataEditedEvent.emit(null);
-      this.currentAnswersService.isValid = false;
-    }
+    const isValid = this.isFormValid();
+    this.currentAnswersService.state = isValid ? this.getPreparedDataToSend() : null;
+    this.currentAnswersService.isValid = isValid;
   }
 
   getPreparedDataToSend(): string {
@@ -111,7 +105,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     return typeof regAddr === 'string' ? regAddr : regAddr.fullAddress;
   }
 
-  public isFormValid() {
+  public isFormValid(): boolean {
     const hasValue = () => Object.values(this.dataForm.form.value).every((value) => value);
     const isValid = () => (this.data.required ? hasValue() : true);
     const isFormInited = () => this.dataForm?.form?.value;

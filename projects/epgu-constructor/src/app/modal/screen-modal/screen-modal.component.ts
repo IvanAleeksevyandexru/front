@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HelperService } from 'epgu-lib';
 import { debounceTime, delay, takeUntil } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
+import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
 import {
   FormPlayerNavigation,
   Navigation,
@@ -37,12 +37,13 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
     private navModalService: NavigationModalService,
     private navService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
+    private deviceDetector: DeviceDetectorService,
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.isMobile = HelperService.isMobile();
+    this.isMobile = this.deviceDetector.isMobile;
 
     fromEvent(window, 'resize')
       .pipe(takeUntil(this.ngUnsubscribe$))

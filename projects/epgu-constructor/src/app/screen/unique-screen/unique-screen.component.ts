@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { ScreenService } from '../screen.service';
-import { Screen } from '../screen.types';
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
 import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
+import { ScreenBase } from '../screenBase';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',
@@ -14,22 +12,15 @@ import { NavigationPayload } from '../../form-player/form-player.types';
   styleUrls: ['./unique-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class UniqueScreenComponent implements OnInit, Screen {
+export class UniqueScreenComponent extends ScreenBase implements OnInit {
   // <-- constant
   uniqueComponentName = UniqueScreenComponentTypes;
 
-  constructor(
-    private navigationService: NavigationService,
-    private ngUnsubscribe$: UnsubscribeService,
-    public screenService: ScreenService,
-    private cycledFieldsService: CycledFieldsService,
-  ) {}
+  constructor(public injector: Injector, private cycledFieldsService: CycledFieldsService) {
+    super(injector);
+  }
 
   ngOnInit(): void {
-    this.navigationService.clickToBack$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.prevStep());
-
     this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.cycledFieldsService.initCycledFields(this.screenService.currentCycledFields);
     });
@@ -49,12 +40,5 @@ export class UniqueScreenComponent implements OnInit, Screen {
    */
   nextStep(payload?: NavigationPayload): void {
     this.navigationService.nextStep.next({ payload });
-  }
-
-  /**
-   * Переход на предыдущий экран
-   */
-  prevStep(): void {
-    this.navigationService.prevStep.next();
   }
 }

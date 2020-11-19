@@ -122,6 +122,10 @@ export enum CustomComponentRefRelation {
   calc = 'calc',
 }
 
+export enum CustomComponentValidationConditions {
+  atLeastOne = 'atLeastOne',
+}
+
 /**
  * @property relatedRel - id компонента от которого зависим
  * @property val - ключевое значение которое должен принимать компонент от которого заивисм
