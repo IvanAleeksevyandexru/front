@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalService } from '../../modal.service';
 import { ModalContainerComponent } from './modal-container.component';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 describe('ModalContainerComponent', () => {
@@ -9,8 +11,9 @@ describe('ModalContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ModalContainerComponent],
-      providers: [ ModalService ],
+      declarations: [ ModalContainerComponent ],
+      providers: [ DeviceDetectorService, ModalService ],
+      imports: [ HttpClientModule ]
     })
     .compileComponents();
   }));

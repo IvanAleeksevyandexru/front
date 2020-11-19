@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 
 @Injectable()
 export class ModalService {
@@ -17,12 +18,16 @@ export class ModalService {
 
   constructor(private cfr: ComponentFactoryResolver,
               private rendererFactory: RendererFactory2,
+              private deviceDetector: DeviceDetectorService,
               private appRef: ApplicationRef) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
   public openModal<T, K = any>(modalComponent: Type<any>, modalParameters?: K): Observable<T> {
-    document.body.style.overflow = 'hidden';
+    if (this.deviceDetector.isMobile) {
+      document.body.style.overflow = 'hidden';
+    }
+
     const modalResult = new Subject<T>();
 
     const componentFactory = this.cfr.resolveComponentFactory(modalComponent);

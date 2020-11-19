@@ -18,8 +18,6 @@ export class ComponentItemComponent {
   readonly componentType = CustomScreenComponentTypes;
 
   customUnRecLabel() {
-    return this.data.value?.attrs?.customUnrecLabel
-      ? this.data.value?.attrs?.customUnrecLabel
-      : OPTIONAL_FIELD;
+    return this.data.value?.attrs?.customUnrecLabel || OPTIONAL_FIELD;
   }
 }
