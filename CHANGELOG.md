@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.25...v0.6.1) (2020-11-19)
+
+
+### Features
+
+* Добавил валидацию согласно тикета [ref: EPGUCORE-41087] ([384f07b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/384f07bb93175e92c0b120468788c928d1aad338))
+* добавил для всех InfoScr обновленный виджет соц.сетей с заблокированными кнопками [ref EPGUCORE-38796] ([9a2dbf2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/9a2dbf2fc2c634085f9e65336df31de337ae2999))
+* добавил тип modalRedirectTo и показ этой модалки в QuestionScr компонентах [ref EPGUCORE-41205] ([f26ce4c](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f26ce4cac856d9e789eb37b08c5bf3a3c7dbc6be))
+* добавлен функционал 'Очистить' для выпадающих списков [ref EPGUCORE-41459] ([5809364](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/58093641338f33d68b6a564bde96bc1237c2f5ae))
+* реализовал сохранение детей на загран паспорте [ref EPGUCORE-41016] ([3200c20](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/3200c20de6c62fb71a34d4e365b7a0e4a134b750))
+
+
+### Bug Fixes
+
+* Внесены правки по замечаниям из мерж реквеста ([11d834b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/11d834ba678e7894556fae84478dffe38c14f767))
+* Внесены правки по замечаниям из мерж реквеста ([c1196cc](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c1196ccd9ae33248050e84371f6798b6ce9f140f))
+* Внесены правки по мерж реквесту, сокращен синтаксис компонентов оплаты, добавлен инжектор, ибран лишний код ([0f352e7](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/0f352e79badd7a453c4b3471b745974c2d7e2515))
+* исправил ошибку в epgu-constructor-temporary-registration-addr, мешающая сборке ([079a073](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/079a073ece1dc385f70ac716a9add14feabd75c0))
+* Исправил условие сравнения [ref: EPGUCORE-41087] ([c73f1c2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c73f1c2a6db2c4c68e0026a4b747dd5c996dbf80))
+* исправлены конфликты, замечания по код ревью [ref EPGUCORE-40605] ([cdc54ca](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/cdc54cafd2fe836f6644843b3e004da4ce7905ba))
+* правка eslint ошибки в info-component-modal [ref EPGUCORE-40605_SAVE_CHILDREN] ([e7ecf4b](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e7ecf4b16f433f334248f8c5fd016d332d30e8cf))
+* правки по замечаниям в код-ревью [ref EPGUCORE-38796] ([1e4182d](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1e4182d572663a056a7bb2b73ffedbbe33f8287c))
+* правки по замечаниям в код-ревью [ref EPGUCORE-40605] ([cfce2a2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/cfce2a2b43239c5784b22255b6e7f4483ebd0c09))
+* Правки по оплате ([e85dcfc](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e85dcfc65f793a630a09d48d9d6ad2e3cb01eeff))
+* убрал кнопку закрытия плашки выбора детей, когда на экране только один ребенок [ref EPGUCORE-41250] ([a02414e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a02414ea0c3e6dfcc89c03d337332f184afb31a9))
+* убрал неиспользуемый isShown$ ([27087d9](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/27087d9c1aee113ec6ee9c6efbcb5f71f999bc67))
+* удалил свойство которое неиспользуется [EPGUCORE-41348] ([be51fc0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/be51fc04390eea4a094bd35cdef2cf4642165f34))
+
+### [0.5.2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.1...v0.5.2) (2020-11-13)
+
+### [0.5.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.4.26...v0.5.1) (2020-11-13)
+
+
+### Features
+
+* Создание компонента счета для оплаты пошлины ([1cd5ac6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/1cd5ac68680affd0a6b56ddc46ad0ec3c8862f02))
+* Создание компонента счета для оплаты пошлины через счет и правка компонента оплаты на сайте с новыми данными и оставление совместимости со старым способом ([dbac9d2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/dbac9d2ba3007a2352a05e485616ce9a74ed0483))
+* Создание компонента счета для оплаты пошлины через счет и правка компонента оплаты на сайте с новыми данными и оставление совместимости со старым способом ([6fa68f1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/6fa68f1982ea7b0e78b56f8caf5f70001cea800d))
+* Создание компонента счета для оплаты пошлины через счет и правка компонента оплаты на сайте с новыми данными и оставление совместимости со старым способом ([f8a2f95](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f8a2f95fe5f3a51a35c6de2bc77a7c9e117db734))
+* Создание компонента счета для оплаты пошлины через счет и правка компонента оплаты на сайте с новыми данными и оставление совместимости со старым способом ([7ec8470](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/7ec84700d02084135e8456c5635f9ff7416b4290))
+
+
+### Bug Fixes
+
+* value проверка при оплате ([f2334d1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/f2334d148ca93f6144a5e70cba23e61ed586926e))
+* Исправлено полечение значение поля value и верно формируется запрос по номеру начисления ([a662797](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/a66279724ce6371b9eeef3a49d26b6572896a927))
+* Подправлена совместимость скачивания файлов с задачей EPGUCORE-39035, чтобы везде было одинаково ([22cf223](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/22cf223e9d9ee7dccd18ef4411433cee0bb9202e))
+
 ### [0.5.25](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.24...v0.5.25) (2020-11-19)
 
 ### [0.5.24](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.23...v0.5.24) (2020-11-19)
