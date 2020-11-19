@@ -112,15 +112,15 @@
       <epgu-constructor-component-item *ngSwitchCase="componentType.DateInput"
                                        [data]="componentData">
         <lib-date-picker
-          (dateSelected)="dateRangeService.changeDate($event, componentData.value?.attrs)"
+          (dateSelected)="dateRangeService.changeDate($event, componentData.value?.attrs, componentData.value?.id)"
           (cleared)="dateRangeService.clearDate(componentData.value?.id, componentData.value?.attrs)"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [name]="componentData.value?.id"
           [formControl]="componentData.get('value')"
           [readOnly]="componentData.value?.attrs?.readonly"
-          [minDate]="dateRangeService.rangeMap.get(componentData.value?.id)?.min || componentData.value?.attrs?.minDate  || '-120y'"
-          [maxDate]="dateRangeService.rangeMap.get(componentData.value?.id)?.max || componentData.value?.attrs?.maxDate || '+50y'"
+          [minDate]="dateRangeService.getMinDate(componentData.value) || componentData.value?.attrs?.minDate  || '-120y'"
+          [maxDate]="dateRangeService.getMaxDate(componentData.value) || componentData.value?.attrs?.maxDate || '+50y'"
           [clearable]="componentData.value?.attrs?.limit"
           [align]="'left'"
         ></lib-date-picker>
