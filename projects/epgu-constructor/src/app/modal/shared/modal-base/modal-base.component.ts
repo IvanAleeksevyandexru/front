@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 
 @Component({
   template: '',
@@ -9,6 +10,7 @@ export class ModalBaseComponent {
 
   modalResult = new BehaviorSubject<any>(null);
 
+  constructor(private deviceDetector: DeviceDetectorService) {}
   @HostListener('document:keydown', ['$event']) onKeydownComponent(event: KeyboardEvent): void {
     if (event.key === 'Escape' || event.key === 'Esc') {
       this.closeModal();
@@ -23,7 +25,9 @@ export class ModalBaseComponent {
   }
 
   closeModal(value?: any): void {
-    document.body.style.overflow = null;
+    if (this.deviceDetector.isMobile) {
+      document.body.style.overflow = null;
+    }
     this.detachView(value || this.modalResult.value);
   }
 }
