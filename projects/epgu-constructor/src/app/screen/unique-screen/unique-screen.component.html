@@ -44,10 +44,12 @@
     [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-car-info>
-  <epgu-constructor-confirm
+  <epgu-constructor-timer
     *ngSwitchCase="uniqueComponentName.timer"
+    [value]="screenService.componentValue"
+    [data]="screenService.component"
     (nextStepEvent)="nextDataForStep($event)">
-  </epgu-constructor-confirm>
+  </epgu-constructor-timer>
   <epgu-constructor-signature-application
     *ngSwitchCase="uniqueComponentName.signatureApplication"
     (nextStepEvent)="nextDataForStep($event)">

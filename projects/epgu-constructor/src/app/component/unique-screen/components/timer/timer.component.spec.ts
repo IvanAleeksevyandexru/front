@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimerComponent } from './timer.component';
-import { TimerPipe } from '../../pipes/timer.pipe';
+import { TimerPipe } from './pipes/timer.pipe';
 
 describe('TimerComponent', () => {
   let component: TimerComponent;

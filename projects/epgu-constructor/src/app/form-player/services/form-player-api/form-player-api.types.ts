@@ -143,6 +143,12 @@ export interface FormPlayerApiErrorResponse {
 
 export type FormPlayerApiResponse = FormPlayerApiSuccessResponse | FormPlayerApiErrorResponse;
 
+export enum ButtonType {
+  anchor = 'anchor',
+  search = 'search',
+  button = 'button'
+}
+
 export enum ActionType {
   download = 'download',
   prevStepModal = 'prevStepModal',

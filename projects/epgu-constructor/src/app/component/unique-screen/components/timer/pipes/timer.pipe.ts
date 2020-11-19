@@ -1,7 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment_ from 'moment';
-
-const moment = moment_;
+import * as moment from 'moment';
 
 /**
  * Преобразовывает переданное время в формат HH:mm:ss
