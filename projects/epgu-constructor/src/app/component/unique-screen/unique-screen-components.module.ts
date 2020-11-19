@@ -7,7 +7,6 @@ import { CarInfoModule } from './components/car-info/car-info.module';
 import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
 import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { ConfirmModule } from './components/confirm/confirm.module';
-import { PaymentModule } from './components/payment/components/payment/payment.module';
 import { BillinfoModule } from './components/payment/components/billinfo/billinfo.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
 import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
@@ -37,7 +36,6 @@ const COMPONENTS = [RepeatableFieldsComponent];
     EmployeeHistoryModule,
     TimeSlotsModule,
     ConfirmModule,
-    PaymentModule,
     BillinfoModule,
     UnusedPaymentsModule,
     SignatureApplicationModule,
@@ -54,7 +52,6 @@ const COMPONENTS = [RepeatableFieldsComponent];
     EmployeeHistoryModule,
     TimeSlotsModule,
     ConfirmModule,
-    PaymentModule,
     BillinfoModule,
     UnusedPaymentsModule,
     SignatureApplicationModule,
