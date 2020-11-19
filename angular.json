@@ -36,9 +36,7 @@
                 "output": "./lib-assets"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -48,7 +46,8 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "tsConfig": "./tsconfig.app.prod.json"
             }
           }
         },
@@ -121,13 +120,8 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "eslintConfig": "projects/epgu-constructor/.eslintrc.js",
-            "tsConfig": [
-              "projects/epgu-constructor/tsconfig.lib.json",
-              "tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["projects/epgu-constructor/tsconfig.lib.json", "tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }

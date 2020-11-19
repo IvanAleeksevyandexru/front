@@ -10,7 +10,7 @@ import {
   NgZone,
   OnDestroy,
 } from '@angular/core';
-import { filter, reduce, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { merge, Observable, of } from 'rxjs';
 import { HelperService, YaMapService } from 'epgu-lib';
 
@@ -337,7 +337,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return this.dictionaryApiService
       .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
       .pipe(
-        filter((response) => {
+        map((response) => {
           const hasAttributeValues = () =>
             response.items.every((item) =>
               this.screenService.component.attrs.checkedParametersGIBDD.every(
@@ -345,9 +345,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
               ),
             );
 
-          return response.error.code === 0 || !response.items.length || !hasAttributeValues();
+          return !!response.items.length && hasAttributeValues();
         }),
-        switchMap(() => {
+        switchMap((hasPayment) => {
+          if (hasPayment) {
+            return of(true);
+          }
+
           const { GIBDDpaymentError } = this.screenService.component.attrs;
 
           return this.modalService.openModal(ConfirmationModalComponent, {

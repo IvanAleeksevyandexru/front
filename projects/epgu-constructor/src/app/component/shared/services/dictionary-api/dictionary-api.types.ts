@@ -10,7 +10,7 @@ export interface DictionaryOptions {
   filter?: any;
   treeFiltering?: string;
   pageNum?: number;
-  pageSize?: string;
+  pageSize?: string | number;
   parentRefItemValue?: string;
   selectAttributes?: Array<string>;
   tx?: string;
