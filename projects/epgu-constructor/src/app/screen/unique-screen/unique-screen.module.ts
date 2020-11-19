@@ -10,13 +10,13 @@ import { AbstractPaymentComponent } from '../../component/unique-screen/componen
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
 const COMPONENTS = [
-  AbstractPaymentComponent,
   UniqueScreenComponent
 ];
 
 @NgModule({
   declarations: [
     ...COMPONENTS,
+    AbstractPaymentComponent
   ],
   exports: [
     ...COMPONENTS,
