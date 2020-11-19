@@ -9,3 +9,5 @@ export function prepareDataToSendForRepeatableFieldsComponent(
     return acc;
   }, {});
 }
+
+export const defaultScreensAmount = 20;

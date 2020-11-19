@@ -9,6 +9,7 @@ import {
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
+  defaultScreensAmount,
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
 } from './repeatable-fields.constant';
@@ -73,10 +74,10 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
 
   isScreensAvailable(): boolean {
     const screensAmount: number = Object.keys(this.screens).length;
-    const defaultAvailable = 2;
+
     return (
       screensAmount < this.propData.components[0].attrs?.repeatAmount ||
-      screensAmount < defaultAvailable
+      screensAmount < defaultScreensAmount
     );
   }
 

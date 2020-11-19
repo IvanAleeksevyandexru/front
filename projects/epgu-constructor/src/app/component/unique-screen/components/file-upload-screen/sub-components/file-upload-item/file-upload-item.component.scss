@@ -35,8 +35,10 @@ input[type="file"] {
 }
 
 .error {
+  display: flex;
+  align-items: center;
   color: $color-gosred;
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .file {
