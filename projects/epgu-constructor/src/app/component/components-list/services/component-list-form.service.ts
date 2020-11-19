@@ -1,28 +1,27 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { ListItem } from 'epgu-lib';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
+import * as moment_ from 'moment';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { isEqualObj } from '../../../shared/constants/uttils';
+import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
 import {
-  CustomComponent,
+  CustomComponent, CustomComponentAttrValidation,
   CustomComponentOutputData,
-  CustomListDictionaries,
-  CustomListDropDowns,
+  CustomComponentValidationConditions, CustomListDictionaries, CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements,
-  CustomScreenComponentTypes,
+  CustomScreenComponentTypes
 } from '../components-list.types';
-import { ValidationService } from './validation.service';
+import { isDropDown } from '../tools/custom-screen-tools';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
-import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
-import { isDropDown } from '../tools/custom-screen-tools';
-import { ListItem } from 'epgu-lib';
-import * as moment_ from 'moment';
+import { ValidationService } from './validation.service';
 
 const moment = moment_;
 
@@ -126,6 +125,11 @@ export class ComponentListFormService {
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
       const { disabled, valid } = this.form.get([key, 'value']);
+      const isLeastOneCondition: boolean = this.form.get([key, 'attrs']).value.validation?.some(
+        (validation: CustomComponentAttrValidation) =>
+          validation.condition === CustomComponentValidationConditions.atLeastOne);
+      const condition: CustomComponentValidationConditions | null =
+        isLeastOneCondition ? CustomComponentValidationConditions.atLeastOne : null;
       let { value, type } = val;
       const isValid = disabled || valid;
 
@@ -133,7 +137,7 @@ export class ComponentListFormService {
         if (type === CustomScreenComponentTypes.DateInput) {
           value = moment(value).toISOString(true); // NOTICE: обработка даты и "правильное" приведение к ISO-строке
         }
-        acc[val.id] = { value, isValid, disabled };
+        acc[val.id] = { value, isValid, disabled, condition };
       }
 
       return acc;

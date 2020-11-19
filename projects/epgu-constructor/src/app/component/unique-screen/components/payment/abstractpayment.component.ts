@@ -29,7 +29,7 @@ const ALREADY_PAY_ERROR = 23;
 @Component({
   template: '',
 })
-export abstract class AbstractPaymentComponent implements OnDestroy {
+export class AbstractPaymentComponent implements OnDestroy {
   public paymentStatus = PaymentStatus;
   public paymentPurpose = '';
   public uin = ''; // Уникальный идентификатор платежа
@@ -68,7 +68,7 @@ export abstract class AbstractPaymentComponent implements OnDestroy {
   }
   @Output() nextStepEvent = new EventEmitter<void>();
 
-  protected constructor(public injector: Injector) {
+  constructor(public injector: Injector) {
     this.paymentService = this.injector.get(PaymentService);
     this.screenService = this.injector.get(ScreenService);
     this.currentAnswersService = this.injector.get(CurrentAnswersService);

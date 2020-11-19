@@ -27,7 +27,7 @@ export interface ScreenStoreDisplayDtoI extends DisplayDto {
   components: Array<ScreenStoreComponentDtoI>;
 }
 
-export interface ScreenStore extends Partial<ScenarioDto> { 
+export interface ScreenStore extends Partial<ScenarioDto> {
   display?: ScreenStoreDisplayDtoI;
 }
 

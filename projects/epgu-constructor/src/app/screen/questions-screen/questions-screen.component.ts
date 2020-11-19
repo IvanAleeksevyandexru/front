@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { Component, Injector } from '@angular/core';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { ScreenService } from '../screen.service';
-import { Screen } from '../screen.types';
 import { QuestionsComponentActions } from './questions-screen.types';
+import { ScreenBase } from '../screenBase';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -13,21 +10,9 @@ import { QuestionsComponentActions } from './questions-screen.types';
   styleUrls: ['./questions-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class QuestionsScreenComponent implements OnInit, Screen {
-  constructor(
-    private navigationService: NavigationService,
-    private ngUnsubscribe$: UnsubscribeService,
-    public screenService: ScreenService,
-  ) {}
-
-  ngOnInit(): void {
-    this.navigationService.clickToBack$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.prevStep());
-  }
-
-  prevStep(): void {
-    this.navigationService.prevStep.next();
+export class QuestionsScreenComponent extends ScreenBase {
+  constructor(public injector: Injector) {
+    super(injector);
   }
 
   nextStep(payload?: NavigationPayload): void {
