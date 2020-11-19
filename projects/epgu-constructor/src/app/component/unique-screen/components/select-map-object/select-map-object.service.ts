@@ -1,4 +1,4 @@
-import { Injectable, TemplateRef } from '@angular/core';
+import { Injectable, OnDestroy, TemplateRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
@@ -6,9 +6,10 @@ import { Icons } from './constants';
 import { ConfigService } from '../../../../core/config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
 import { DictionaryResponseForYMap, DictionaryYMapItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { filter } from 'rxjs/operators';
 
 @Injectable()
-export class SelectMapObjectService {
+export class SelectMapObjectService implements OnDestroy {
 
   public dictionary: DictionaryResponseForYMap;
   public filteredDictionaryItems = [];
@@ -27,7 +28,15 @@ export class SelectMapObjectService {
     private config: ConfigService,
     private yaMapService: YaMapService,
     private icons: Icons,
-  ) { }
+  ) {
+    this.selectedValue.pipe(filter((value) => !value)).subscribe((value: any) => {
+      this.mapOpenedBalloonId = null;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.selectedValue.complete();
+  }
 
   /**
    * Returns geo coords of physical addresses array

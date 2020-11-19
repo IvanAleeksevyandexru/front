@@ -22,10 +22,21 @@ interface PaymentTypeSelectorInterface {
 })
 export class PaymentTypeSelectorComponent {
   paymentTypeSelector: PaymentTypeSelectorInterface;
+  isErrorTemplate: boolean;
+  success = 'SUCCESS';
 
   constructor(private screenService: ScreenService, public config: ConfigService) {
     this.paymentTypeSelector = this.screenService.component.attrs.states[
       this.screenService.component.attrs.state
     ];
+    this.isErrorTemplate = this.screenService.component.attrs.state !== this.success;
+  }
+
+  showBtn(applicantType: string): boolean {
+    if (this.paymentTypeSelector.applicantType === applicantType) {
+      return true;
+    }
+
+    return !applicantType;
   }
 }

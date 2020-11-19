@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Injector, Input, OnDestroy, Output } from '@angular/core';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PaymentService } from './payment.service';
@@ -25,11 +25,12 @@ import { UtilsService } from '../../../../shared/services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
 
 const ALREADY_PAY_ERROR = 23;
+const moment = moment_;
 
 @Component({
   template: '',
 })
-export abstract class AbstractPaymentComponent implements OnDestroy {
+export class AbstractPaymentComponent implements OnDestroy {
   public paymentStatus = PaymentStatus;
   public paymentPurpose = '';
   public uin = ''; // Уникальный идентификатор платежа
@@ -68,7 +69,7 @@ export abstract class AbstractPaymentComponent implements OnDestroy {
   }
   @Output() nextStepEvent = new EventEmitter<void>();
 
-  protected constructor(public injector: Injector) {
+  constructor(public injector: Injector) {
     this.paymentService = this.injector.get(PaymentService);
     this.screenService = this.injector.get(ScreenService);
     this.currentAnswersService = this.injector.get(CurrentAnswersService);

@@ -42,7 +42,7 @@ export interface ComponentDto {
 export interface ComponentDtoAction {
   label: string;
   value: string;
-  action: string;
+  action: DTOActionAction;
   type?: ActionType;
   hidden?: boolean;
   disabled?: boolean;
@@ -158,8 +158,13 @@ export enum ActionType {
   redirectToLK = 'redirectToLK',
   profileEdit = 'profileEdit',
   home = 'home',
+}
+
+export enum DTOActionAction {
+  noAddressAndSubmit= 'noAddressAndSubmit',
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editEmail = 'service/actions/editUserEmail',
+  goBackToMainScenario = 'goBackToMainScenario'
 }
 
 export interface CheckOrderApiResponse {

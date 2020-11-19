@@ -33,6 +33,9 @@ enum ErrorActions {
   addMaxAmount = 'maxAmount',
   addInvalidType = 'invalidType',
   addInvalidFile = 'invalidFile',
+  addDownloadErr = 'addDownloadErr',
+  addUploadErr = 'addUploadErr',
+  addDeletionErr = 'addDeletionErr',
 }
 
 interface ModalParams {
@@ -63,7 +66,7 @@ export class FileUploadItemComponent implements OnDestroy {
   isMobile: boolean;
   uploadedFilesAmount = 0;
   uploadedFilesSize = 0;
-  uploadedCameraPhotosAmount = 0;
+  uploadedCameraPhotoNumber = 0;
 
   @Input() objectId: string;
   @Input() clarification: Clarifications;
@@ -266,8 +269,6 @@ export class FileUploadItemComponent implements OnDestroy {
         // eslint-disable-next-line no-param-reassign
         f.uploaded = uploaded;
         // eslint-disable-next-line no-param-reassign
-        f.hasError = !uploaded;
-        // eslint-disable-next-line no-param-reassign
         f.fileSize = fileSize;
       }
     });
@@ -290,11 +291,11 @@ export class FileUploadItemComponent implements OnDestroy {
       this.terabyteService
         .getFileInfo(uploadedFile.getParamsForFileOptions())
         .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe((result: TerabyteListItem) => {
-          this.setFileInfoUploaded(uploadedFile, result.fileSize, uploaded);
-        });
+        .subscribe((result: TerabyteListItem) =>
+          this.setFileInfoUploaded(uploadedFile, result.fileSize, uploaded),
+        );
     } else {
-      this.setFileInfoUploaded(uploadedFile, 0, uploaded);
+      this.removeFileFromStore(uploadedFile);
     }
   }
 
@@ -303,9 +304,7 @@ export class FileUploadItemComponent implements OnDestroy {
       return;
     }
     if (addPhoto) {
-      this.uploadedCameraPhotosAmount += 1;
-    } else {
-      this.uploadedCameraPhotosAmount -= 1;
+      this.uploadedCameraPhotoNumber += 1;
     }
   }
 
@@ -333,6 +332,7 @@ export class FileUploadItemComponent implements OnDestroy {
         .pipe(
           takeUntil(this.ngUnsubscribe$),
           catchError((e: any) => {
+            this.handleError(ErrorActions.addUploadErr, file);
             this.updateFileInfoFromServer(fileToUpload, false);
             return throwError(e);
           }),
@@ -370,7 +370,7 @@ export class FileUploadItemComponent implements OnDestroy {
 
   getPhotoName(photo: File): string {
     const photoType = photo.name.split('.').pop() || 'jpeg';
-    return `${photoBaseName}_${this.uploadedCameraPhotosAmount + 1}.${photoType}`;
+    return `${photoBaseName}_${this.uploadedCameraPhotoNumber + 1}.${photoType}`;
   }
 
   compressImages(files: File[], isPhoto?: boolean): Array<Observable<any>> {
@@ -419,16 +419,17 @@ export class FileUploadItemComponent implements OnDestroy {
     }, []);
   }
 
-  handleError(action: ErrorActions, file?: File): void {
+  handleError(action: ErrorActions, file?: Partial<File>): void {
     const errorHandler = {};
     // eslint-disable-next-line prettier/prettier
     errorHandler[ErrorActions.addMaxAmount] = `Максимальное число файлов - ${this.data.maxFileCount}`;
     // eslint-disable-next-line prettier/prettier
     errorHandler[ErrorActions.addMaxSize] = `Размер файлов превышает ${getSizeInMB(this.data.maxSize)} МБ`;
-    // eslint-disable-next-line prettier/prettier
     errorHandler[ErrorActions.addInvalidType] = `Недопустимый тип файла "${file?.name}"`;
-    // eslint-disable-next-line prettier/prettier
     errorHandler[ErrorActions.addInvalidFile] = `Ошибка загрузки файла "${file?.name}"`;
+    errorHandler[ErrorActions.addDownloadErr] = `Не удалось скачать файл "${file?.name}"`;
+    errorHandler[ErrorActions.addUploadErr] = `Ошибка загрузки файла "${file?.name}" на сервер`;
+    errorHandler[ErrorActions.addDeletionErr] = `Не удалось удалить файл "${file?.name}"`;
 
     if (action === ErrorActions.clear) {
       this.errors = [];
@@ -464,12 +465,18 @@ export class FileUploadItemComponent implements OnDestroy {
       .toLowerCase();
   }
 
+  removeFileFromStore(file: TerraUploadedFile) {
+    let files = this.files$$.value;
+    files = files.filter((f) => f.mnemonic !== file.mnemonic);
+    this.files$$.next(files);
+  }
+
   /**
    * Удаление файла из стека
    * @param file - объект файла на удаление
    */
   deleteFile(file: TerraUploadedFile) {
-    this.errors = [];
+    this.handleError(ErrorActions.clear);
 
     if (file.uploaded) {
       this.filesInUploading += 1;
@@ -479,6 +486,7 @@ export class FileUploadItemComponent implements OnDestroy {
           takeUntil(this.ngUnsubscribe$),
           catchError((e: any) => {
             this.filesInUploading -= 1;
+            this.handleError(ErrorActions.addDeletionErr, { name: file.fileName });
             return throwError(e);
           }),
         )
@@ -486,10 +494,7 @@ export class FileUploadItemComponent implements OnDestroy {
           this.filesInUploading -= 1;
           this.updateUploadedCameraPhotosInfo(false, deletedFileInfo.fileName);
           this.updateUploadingInfo(deletedFileInfo, true);
-
-          let files = this.files$$.value;
-          files = files.filter((f) => f.mnemonic !== file.mnemonic);
-          this.files$$.next(files);
+          this.removeFileFromStore(file);
         });
     } else {
       let files = this.files$$.value;
@@ -514,9 +519,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * Обновляет данные о файлах, которые были загружены
    */
   updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean) {
-    this.prepareFilesToUpload(fileList, isPhoto).subscribe((file: File) => {
-      this.sendFile(file);
-    });
+    this.prepareFilesToUpload(fileList, isPhoto).subscribe((file: File) => this.sendFile(file));
   }
 
   isFileTypeValid(file: File): boolean {
@@ -545,13 +548,13 @@ export class FileUploadItemComponent implements OnDestroy {
    * @param file - объект файла
    */
   downloadFile(file: TerraUploadedFile) {
-    this.errors = [];
+    this.handleError(ErrorActions.clear);
     const subs: Subscription = this.terabyteService
       .downloadFile(file.getParamsForFileOptions())
       .pipe(
         takeUntil(this.ngUnsubscribe$),
         catchError((e: any) => {
-          this.errors.push(`Не удалось скачать файл ${file.fileName}`);
+          this.handleError(ErrorActions.addDownloadErr, { name: file.fileName });
           return throwError(e);
         }),
       )

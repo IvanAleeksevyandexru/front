@@ -49,6 +49,7 @@ export class EmployeeHistoryFormService {
       address: [null],
       checkboxToDate: [false],
       minDateTo: [null],
+      label: [null],
     });
 
     this.employeeHistoryForm.push(form);

@@ -1,25 +1,27 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { ListItem } from 'epgu-lib';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
+import * as moment_ from 'moment';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { isEqualObj } from '../../../shared/constants/uttils';
+import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
 import {
-  CustomComponent,
-  CustomComponentOutputData, CustomListDictionaries, CustomListDropDowns,
+  CustomComponent, CustomComponentAttrValidation,
+  CustomComponentOutputData,
+  CustomComponentValidationConditions, CustomListDictionaries, CustomListDropDowns,
   CustomListFormGroup,
-  CustomListStatusElements, CustomScreenComponentTypes
+  CustomListStatusElements,
+  CustomScreenComponentTypes
 } from '../components-list.types';
-import { ValidationService } from './validation.service';
+import { isDropDown } from '../tools/custom-screen-tools';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
-import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
-import { isDropDown } from '../tools/custom-screen-tools';
-import { ListItem } from 'epgu-lib';
-import * as moment_ from 'moment';
+import { ValidationService } from './validation.service';
 
 const moment = moment_;
 
@@ -46,13 +48,15 @@ export class ComponentListFormService {
     private toolsService: ComponentListToolsService,
     private addressHelperService: AddressHelperService,
     private repository: ComponentListRepositoryService,
-  ) { }
+  ) {}
 
   create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
     this.toolsService.createStatusElements(components, this.shownElements);
 
     this._form = new FormArray(
-      components.map((component: CustomComponent) => this.createGroup(component, components, errors[component.id]))
+      components.map((component: CustomComponent) =>
+        this.createGroup(component, components, errors[component.id]),
+      ),
     );
 
     components.forEach((component: CustomComponent) => {
@@ -60,10 +64,10 @@ export class ComponentListFormService {
         components,
         {
           ...component,
-          value: this.toolsService.convertedValue(component)
+          value: this.toolsService.convertedValue(component),
         },
         this.shownElements,
-        this.form
+        this.form,
       );
     });
 
@@ -72,9 +76,7 @@ export class ComponentListFormService {
   }
 
   patch(component: CustomComponent): void {
-    const control = this._form.controls.find(
-      (ctrl) => ctrl.value.id === component.id,
-    );
+    const control = this._form.controls.find((ctrl) => ctrl.value.id === component.id);
     const defaultIndex = component.attrs?.defaultIndex;
     // Если есть defaultIndex и нет сохранненого ранее значения, то берем из справочника элемент по индексу defaultIndex
     if (defaultIndex !== undefined && !component.value) {
@@ -95,11 +97,10 @@ export class ComponentListFormService {
   }
 
   watchFormArray$(): Observable<Array<CustomListFormGroup>> {
-    return this.form.valueChanges
-      .pipe(
-        distinctUntilChanged((prev, next) => isEqualObj<any>(prev, next)),
-        takeUntil(this.unsubscribeService),
-      );
+    return this.form.valueChanges.pipe(
+      distinctUntilChanged((prev, next) => isEqualObj<any>(prev, next)),
+      takeUntil(this.unsubscribeService),
+    );
   }
 
   async emmitChanges() {
@@ -124,6 +125,11 @@ export class ComponentListFormService {
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
       const { disabled, valid } = this.form.get([key, 'value']);
+      const isLeastOneCondition: boolean = this.form.get([key, 'attrs']).value.validation?.some(
+        (validation: CustomComponentAttrValidation) =>
+          validation.condition === CustomComponentValidationConditions.atLeastOne);
+      const condition: CustomComponentValidationConditions | null =
+        isLeastOneCondition ? CustomComponentValidationConditions.atLeastOne : null;
       let { value, type } = val;
       const isValid = disabled || valid;
 
@@ -131,61 +137,80 @@ export class ComponentListFormService {
         if (type === CustomScreenComponentTypes.DateInput) {
           value = moment(value).toISOString(true); // NOTICE: обработка даты и "правильное" приведение к ISO-строке
         }
-        acc[val.id] = { value, isValid, disabled };
+        acc[val.id] = { value, isValid, disabled, condition };
       }
 
       return acc;
     }, {});
   }
 
-  private createGroup(component: CustomComponent, components: Array<CustomComponent>, errorMsg: string): FormGroup {
-    const form: FormGroup =  this.fb.group({
-      ...component,
-      value: [
-        this.toolsService.convertedValue(component),
-        [this.validationService.customValidator(component),
-        this.validationService.validationBackendError(errorMsg, component)],
-      ],
-    });
+  private createGroup(
+    component: CustomComponent,
+    components: Array<CustomComponent>,
+    errorMsg: string,
+  ): FormGroup {
+    const form: FormGroup = this.fb.group(
+      {
+        ...component,
+        value: [
+          this.toolsService.convertedValue(component),
+          [
+            this.validationService.customValidator(component),
+            this.validationService.validationBackendError(errorMsg, component),
+          ],
+        ],
+      },
+      { updateOn: this.isPlainInput(component) ? 'blur' : 'change' },
+    );
 
     if (component.attrs?.hidden) {
       form.disable();
     }
 
-    this.watchFormGroup$(form).subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
-      this._shownElements = this.toolsService.updateDependents(components, next, this.shownElements, this.form);
-      ////////HARDCODE!!!
-      if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqualObj<CustomListFormGroup>(prev, next)) {
-        const indexVehicle: number = this.form.controls.findIndex(
-          (control: AbstractControl) => control.value?.id === next.id,
+    this.watchFormGroup$(form).subscribe(
+      ([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
+        this._shownElements = this.toolsService.updateDependents(
+          components,
+          next,
+          this.shownElements,
+          this.form,
         );
+        ////////HARDCODE!!!
+        if (
+          next.attrs.dictionaryType === 'MARKI_TS' &&
+          !isEqualObj<CustomListFormGroup>(prev, next)
+        ) {
+          const indexVehicle: number = this.form.controls.findIndex(
+            (control: AbstractControl) => control.value?.id === next.id,
+          );
 
-        const options: any = {
-          filter: {
-            simple: {
-              attributeName: 'Id_Mark',
-              condition: 'EQUALS',
-              value: {
-                asString: `${this.form.get(String(indexVehicle)).value?.value?.id}`,
+          const options: any = {
+            filter: {
+              simple: {
+                attributeName: 'Id_Mark',
+                condition: 'EQUALS',
+                value: {
+                  asString: `${this.form.get(String(indexVehicle)).value?.value?.id}`,
+                },
               },
             },
-          },
-        };
+          };
 
-        const model: AbstractControl = this.form.controls.find(
-          (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS',
-        );
+          const model: AbstractControl = this.form.controls.find(
+            (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS',
+          );
 
-        model.get('value').patchValue('');
+          model.get('value').patchValue('');
 
-        this.repository
-          .getDictionaries$('MODEL_TS', model?.value, options)
-          .subscribe((dictionary) => {
-            this.repository.initDictionary(dictionary);
-          });
-      }
-      ///////////////////
-    });
+          this.repository
+            .getDictionaries$('MODEL_TS', model?.value, options)
+            .subscribe((dictionary) => {
+              this.repository.initDictionary(dictionary);
+            });
+        }
+        ///////////////////
+      },
+    );
 
     return form;
   }
@@ -196,5 +221,15 @@ export class ComponentListFormService {
       pairwise(),
       takeUntil(this.unsubscribeService),
     );
+  }
+
+  private isPlainInput(component: CustomComponent): boolean {
+    const isStringInput = [
+      CustomScreenComponentTypes.StringInput,
+      CustomScreenComponentTypes.NewEmailInput,
+    ].includes(component.type);
+    const hasMask = !component.attrs.mask;
+
+    return isStringInput && hasMask;
   }
 }

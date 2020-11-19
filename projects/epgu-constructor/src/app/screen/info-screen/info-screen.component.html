@@ -29,7 +29,7 @@
     <div class="info__submit">
       <lib-button
         class="btn__submit"
-        *ngIf="(screenService.isShown$ | async) && (screenService.submitLabel$ | async)"
+        *ngIf="screenService.submitLabel$ | async"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
         [disabled]="screenService.isLoading$ | async"
