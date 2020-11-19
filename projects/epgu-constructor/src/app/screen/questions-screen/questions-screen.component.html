@@ -1,8 +1,7 @@
 <epgu-constructor-screen-container>
-
   <div class="screen-body quiz__content">
     <epgu-constructor-page-name class="quiz__head">
-      {{screenService.header$ | async}}
+      {{ screenService.header$ | async }}
     </epgu-constructor-page-name>
     <epgu-constructor-output-html
       class="quiz__text"
@@ -14,14 +13,14 @@
   </div>
 
   <div class="screen-footer quiz__answers">
-    <ng-container *ngFor="let answer of screenService.component?.attrs?.actions">
+    <ng-container *ngFor="let action of screenService.component?.attrs?.actions">
       <epgu-constructor-answer-button
-        *ngIf="!answer.hidden"
+        *ngIf="!action.hidden"
         class="quiz__answer"
-        (click)="answerChoose(answer)"
-        [data]="answer">
+        (click)="answerChoose(action)"
+        [data]="action"
+      >
       </epgu-constructor-answer-button>
     </ng-container>
   </div>
-
 </epgu-constructor-screen-container>
