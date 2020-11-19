@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.24](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.23...v0.5.24) (2020-11-19)
+
+
+### Bug Fixes
+
+* Внесены правки для реализации оплаты ([4e1f938](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4e1f938527cb633aa06e86f478e6c982860d23cc))
+* Внесены правки для реализации таймера ([4ba8171](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/4ba81713378d9e6a0a9c12960be1b91c5d4da6d6))
+
+### [0.5.23](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.22...v0.5.23) (2020-11-19)
+
+
+### Bug Fixes
+
+* Внесены правки для реализации таймера ([e50459e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/e50459eb9b6f98de47b7e33a0e8a778f363cf87c))
+* Внесены правки для реализации таймера ([c22165e](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/c22165e10bee244a447184314177ea987b3069bb))
+* Поправлен импорт абстрктного компонента оплаты ([d29ced6](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/commit/d29ced694da33b405b4d32bab6fa45afac633caf))
+
 ### [0.5.22](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/compare/v0.5.21...v0.5.22) (2020-11-19)
 
 
