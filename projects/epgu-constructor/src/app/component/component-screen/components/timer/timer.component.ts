@@ -29,7 +29,7 @@ export class TimerComponent {
 
     this.timer = createTimer(
       this.getStartDate(),
-      this.getStartDate() + 3 * 60 * 1000,
+      this.getFinishDate(),
       this.componentBase.attrs?.timerRules?.warningColorFromTime,
     );
     if (this.data.attrs?.timerRules?.labels?.length) {
@@ -71,7 +71,7 @@ export class TimerComponent {
       this.timer.finish,
       this.data.attrs?.timerRules?.warningColorFromTime,
     );
-    this.timer.isFinish = time === 0;
+    this.timer.isFinish = time <= 1000;
     this.timer.time = time;
     this.label = this.componentBase.label;
     if (this.data.attrs?.timerRules?.labels?.length) {
@@ -86,10 +86,10 @@ export class TimerComponent {
   private sortLabelsByTime() {
     this.data.attrs.timerRules.labels = this.data.attrs.timerRules.labels.sort((a, b) => {
       if (a.fromTime > b.fromTime) {
-        return 1;
+        return -1;
       }
       if (a.fromTime < b.fromTime) {
-        return -1;
+        return 1;
       }
       return 0;
     });

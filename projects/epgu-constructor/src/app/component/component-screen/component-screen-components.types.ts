@@ -14,4 +14,5 @@ export enum ComponentScreenComponentTypes {
   countryApostil = 'CountryApostil',
   divorceConsent = 'DivorceConsent',
   fieldList = 'FieldList',
+  timer = 'Timer',
 }

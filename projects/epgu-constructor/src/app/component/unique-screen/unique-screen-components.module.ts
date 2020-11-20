@@ -6,7 +6,6 @@ import { SelectMapObjectModule } from './components/select-map-object/select-map
 import { CarInfoModule } from './components/car-info/car-info.module';
 import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
 import { TimeSlotsModule } from './components/time-slots/time-slots.module';
-import { TimerModule } from './components/timer/timer.module';
 import { PaymentModule } from './components/payment/components/payment/payment.module';
 import { BillinfoModule } from './components/payment/components/billinfo/billinfo.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
@@ -36,7 +35,6 @@ const COMPONENTS = [RepeatableFieldsComponent];
     CarInfoModule,
     EmployeeHistoryModule,
     TimeSlotsModule,
-    TimerModule,
     PaymentModule,
     BillinfoModule,
     UnusedPaymentsModule,
@@ -53,7 +51,6 @@ const COMPONENTS = [RepeatableFieldsComponent];
     CarInfoModule,
     EmployeeHistoryModule,
     TimeSlotsModule,
-    TimerModule,
     PaymentModule,
     BillinfoModule,
     UnusedPaymentsModule,

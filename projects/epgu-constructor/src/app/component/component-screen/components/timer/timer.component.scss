@@ -65,6 +65,6 @@
   }
 }
 
-.info__action{
+.info__action::ng-deep button{
   margin-bottom: 24px;
 }
