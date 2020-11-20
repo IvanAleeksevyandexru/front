@@ -1,7 +1,15 @@
 import { IdictionaryFilter } from '../../../component/unique-screen/components/select-map-object/select-map-object.interface';
 import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
-import { DictionaryFilters, DictionaryItem } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
+import {
+  DictionaryFilters,
+  DictionaryItem,
+  DictionaryValue
+} from '../../../component/shared/services/dictionary-api/dictionary-api.types';
 import { ListItem } from 'epgu-lib';
+
+export type ComponentValue = {
+  [key: string]: string | number
+};
 
 export class DictionaryUtilities {
 
@@ -12,7 +20,7 @@ export class DictionaryUtilities {
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
   public static getFilterOptions(
-    componentValue: any,
+    componentValue: ComponentValue,
     screenStore: ScreenStore,
     dictionaryFilters?: Array<IdictionaryFilter>,
   ): DictionaryFilters {
@@ -40,11 +48,11 @@ export class DictionaryUtilities {
    * @param applicantAnswers ответы с экранов в scenarioDto
    * @param path путь до значения в applicantAnswers (примеp: pd1.value.firstName)
    */
-  private static getValueViaRef(applicantAnswers: CachedAnswers, path: string): any {
-    return path.split('.').reduce((ret: any, current, index) => {
+  private static getValueViaRef(applicantAnswers: CachedAnswers, path: string): string {
+    return path.split('.').reduce((ret: ComponentValue | string, current, index) => {
       // Eсли путь ссылается на поле в value, то его (value) необходимо предварительно распарсить, всегда index === 2
       if (index === 2) {
-        ret = JSON.parse(ret);
+        ret = JSON.parse(ret as string);
       }
       return ret[current];
     }, applicantAnswers);
@@ -56,7 +64,7 @@ export class DictionaryUtilities {
    * @param scenarioDto значение scenarioDto пришедшение с бэкэнда
    * @param dFilter фильтр из атрибутов компонента
    */
-  private static getValueForFilter(componentValue: any, screenStore: ScreenStore, dFilter: IdictionaryFilter): any {
+  private static getValueForFilter(componentValue: ComponentValue, screenStore: ScreenStore, dFilter: IdictionaryFilter): DictionaryValue {
     const filterTypes = {
       value: (dFilter) => JSON.parse(dFilter.value),
       preset: (dFilter) => ({ asString: componentValue[dFilter.value] }),
