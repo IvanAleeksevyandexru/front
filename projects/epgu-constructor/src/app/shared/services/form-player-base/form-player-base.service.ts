@@ -7,6 +7,7 @@ import {
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerNavigation, Navigation } from '../../../form-player/form-player.types';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 
 /**
@@ -31,6 +32,7 @@ export abstract class FormPlayerBaseService {
   constructor(
     public formPlayerApiService: FormPlayerApiService,
     private screenServiceBase: ScreenService,
+    private loggerBase: LoggerService
   ) {}
 
   abstract navigate(navigation: Navigation, formPlayerNavigation: FormPlayerNavigation): void;
@@ -76,8 +78,8 @@ export abstract class FormPlayerBaseService {
       this._store = passedStore;
     }
 
-    console.log(`updateRequest ${this.logSuffix}`);
-    console.log(navigationPayload);
+
+    this.loggerBase.log([`updateRequest ${this.logSuffix}`, navigationPayload]);
     if (this.isEmptyNavigationPayload(navigationPayload)) {
       this._store.scenarioDto.currentValue = {};
       const componentId = this._store.scenarioDto.display.components[0].id;

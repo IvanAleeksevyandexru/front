@@ -13,6 +13,9 @@ import { of, throwError } from 'rxjs';
 import { FormPlayerServiceStub } from './form-player.service.stub';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { WINDOW, WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
+import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
+import { LoggerService } from '../../../core/services/logger/logger.service';
+import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
 
 const response = new FormPlayerServiceStub().response;
 
@@ -33,6 +36,7 @@ describe('FormPlayerService', () => {
         Location,
         WINDOW_PROVIDERS,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
       ]
     });
     service = TestBed.inject(FormPlayerService);
@@ -291,6 +295,58 @@ describe('FormPlayerService', () => {
       spyOn<any>(window, 'scroll').and.callThrough();
       service['resetViewByChangeScreen']();
       expect(window['scroll']).toHaveBeenCalledWith(0, 0);
+    });
+  });
+
+  describe('hasError()',() => {
+    it('should return true if hasRequestErrors', () => {
+      spyOn<any>(service, 'hasRequestErrors').and.returnValue(true);
+      const hasError = service['hasError'](response);
+      expect(hasError).toBeTruthy();
+    });
+
+    it('should return true if hasBusinessErrors', () => {
+      spyOn<any>(service, 'hasBusinessErrors').and.returnValue(true);
+      const hasError = service['hasError'](response);
+      expect(hasError).toBeTruthy();
+    });
+
+    it('should return false if not hasRequestErrors and not hasBusinessErrors', () => {
+      spyOn<any>(service, 'hasRequestErrors').and.returnValue(false);
+      spyOn<any>(service, 'hasBusinessErrors').and.returnValue(false);
+      const hasError = service['hasError'](response);
+      expect(hasError).toBeFalsy();
+    });
+  });
+
+  describe('hasRequestErrors()',() => {
+    it('should return true if response have badRequest status', () => {
+      const errorResponse = {
+        description: 'oooh some error here',
+        message: 'oooh some error here',
+        status: FormPlayerApiErrorStatuses.badRequest
+      };
+      const hasRequestErrors = service['hasRequestErrors'](errorResponse);
+      expect(hasRequestErrors).toBeTruthy();
+    });
+
+    it('should return false if response haven\'t any error status', () => {
+      const hasRequestErrors = service['hasError'](response);
+      expect(hasRequestErrors).toBeFalsy();
+    });
+  });
+
+  describe('hasBusinessErrors()',() => {
+    it('should return true if response have business errors', () => {
+      const errorResponse = JSON.parse(JSON.stringify(response));
+      errorResponse.scenarioDto.errors = { error: 'error message here' };
+      const hasBusinessErrors = service['hasBusinessErrors'](errorResponse);
+      expect(hasBusinessErrors).toBeTruthy();
+    });
+
+    it('should return false if response haven\'t any business error', () => {
+      const hasBusinessErrors = service['hasBusinessErrors'](response);
+      expect(hasBusinessErrors).toBeFalsy();
     });
   });
 });

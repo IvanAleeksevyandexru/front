@@ -11,6 +11,7 @@ import { UtilsService } from '../../../shared/services/utils/utils.service';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
 import { Location } from '@angular/common';
 import { WINDOW } from '../../../core/providers/window.provider';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -23,9 +24,10 @@ export class FormPlayerService extends FormPlayerBaseService {
     public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private location: Location,
-    @Inject(WINDOW) private window: Window
+    @Inject(WINDOW) private window: Window,
+    private logger: LoggerService
   ) {
-    super(formPlayerApiService, screenService);
+    super(formPlayerApiService, screenService, logger);
   }
 
   public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
