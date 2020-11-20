@@ -133,6 +133,8 @@
     }
   }
 
+  /* Utility classes */
+
   .text-color {
     &--white {
       color: $color-white;
@@ -200,9 +202,11 @@
     &--button-hit {
       color: $color-button-hit;
     }
+    &--blue-bayoux {
+      color: $color-text-helper;
+    }
   }
 
-  /* Utility classes */
   .block {
     &--with-icon {
       display: flex;

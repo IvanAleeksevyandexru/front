@@ -1,4 +1,4 @@
-@import "./../../../../styles/core/index";
+@import './../../../../styles/core/index';
 
 :host {
   margin-bottom: 32px;
@@ -34,11 +34,12 @@
 .radio-tax__uin {
   margin-top: 8px;
   margin-bottom: 16px;
-  color: $color-blue-bayoux;
+  color: $color-text-helper;
   font-weight: 400;
 }
 
-.radio-tax__uin, .radio-tax__link {
+.radio-tax__uin,
+.radio-tax__link {
   @include typ-plain-small;
 }
 
@@ -49,8 +50,9 @@
 .radio-tax__title {
   @include typ-plain-text;
 }
-.radio-tax__title, .radio-tax__amount {
-  color:$color-summer-night;
+.radio-tax__title,
+.radio-tax__amount {
+  color: $color-summer-night;
 }
 .radio-tax__amount {
   @include phones-down {
@@ -72,7 +74,7 @@
   cursor: pointer;
   &.active:after {
     background-color: $color-active-item;
-    content: "";
+    content: '';
     width: 14px;
     border-radius: 50%;
     height: 14px;
