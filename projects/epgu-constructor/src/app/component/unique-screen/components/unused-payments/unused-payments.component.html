@@ -9,16 +9,23 @@
     </div>
     <div class="unused-payments__description">Выберите пошлину, которую вы оплатили, но еще не использовали</div>
   </div>
-  <epgu-constructor-radio-tax
-    *ngIf="(paymentsList$ | async) as paymentsData"
-    (selected)="tax = $event"
-    [data]="paymentsData"></epgu-constructor-radio-tax>
-    <lib-button
-      class="btn__submit"
-      (click)="next()"
-    >
-      <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
-    </lib-button>
+  <div class="radio-list" *ngIf="(paymentsList$ | async) as paymentsData; else emptyList">
+    <epgu-constructor-radio-tax
+
+      (selected)="tax = $event"
+      [data]="paymentsData"></epgu-constructor-radio-tax>
+      <lib-button
+        class="btn__submit"
+        (click)="next()"
+      >
+        <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
+      </lib-button>
+  </div>
+  <ng-template #emptyList>
+    <div class="radio-list-empty">
+      У вас нет ранее оплаченных пошлин для использования. Выберите другой вид оплаты
+    </div>
+  </ng-template>
 
 
 </epgu-constructor-screen-container>
