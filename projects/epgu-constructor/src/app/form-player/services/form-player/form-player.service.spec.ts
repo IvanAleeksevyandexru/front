@@ -13,7 +13,7 @@ import { of, throwError } from 'rxjs';
 import { FormPlayerServiceStub } from './form-player.service.stub';
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { WINDOW, WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
-import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
+import { FormPlayerApiErrorStatuses, FormPlayerApiResponse } from '../form-player-api/form-player-api.types';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
 
@@ -450,6 +450,45 @@ describe('FormPlayerService', () => {
       spyOn<any>(service, 'initResponse').and.callThrough();
       service['sendDataSuccess'](response);
       expect(service.initResponse).toBeCalledWith(response);
+    });
+  });
+
+  describe('sendDataError()',() => {
+    let errorResponse;
+
+    beforeEach(() => {
+      errorResponse = JSON.parse(JSON.stringify(response));
+      errorResponse.scenarioDto.errors = { error: 'error message here' };
+    });
+
+    it('should call error of loggerService', () => {
+      spyOn<any>(logger, 'error').and.callThrough();
+      service['sendDataError'](errorResponse);
+      expect(logger.error).toBeCalled();
+    });
+
+    it('should call initResponse with response param when response has business errors', () => {
+      spyOn<any>(service, 'initResponse').and.callThrough();
+      service['sendDataError'](errorResponse);
+      expect(service.initResponse).toBeCalledWith(errorResponse);
+    });
+
+    it('shouldn\'t call initResponse with response param when response error status', () => {
+      const errorResponse = {
+        message: 'oops... i did it again',
+        description: 'a-e-e-e-e-e...',
+        status: 500
+      };
+      spyOn<any>(service, 'initResponse').and.callThrough();
+      // @ts-ignore
+      service['sendDataError'](errorResponse);
+      expect(service.initResponse).not.toBeCalled();
+    });
+
+    it('should call updateLoading with false param', () => {
+      spyOn<any>(service, 'updateLoading').and.callThrough();
+      service['sendDataError'](errorResponse);
+      expect(service['updateLoading']).toBeCalledWith(false);
     });
   });
 });
