@@ -13,14 +13,16 @@ import { of, throwError } from 'rxjs';
 import { FormPlayerServiceStub } from './form-player.service.stub';
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { WINDOW, WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
-import { FormPlayerApiErrorStatuses, FormPlayerApiResponse } from '../form-player-api/form-player-api.types';
+import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
 const response = new FormPlayerServiceStub().response;
 
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
+  let screenService: ScreenService;
   let formPlayerApiService: FormPlayerApiService;
   let logger: LoggerService;
   let location: Location;
@@ -31,17 +33,18 @@ describe('FormPlayerService', () => {
     TestBed.configureTestingModule({
       providers: [
         FormPlayerService,
-        ScreenService,
         ServiceDataService,
         CachedAnswersService,
         CurrentAnswersService,
         Location,
         WINDOW_PROVIDERS,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
       ]
     });
     service = TestBed.inject(FormPlayerService);
+    screenService = TestBed.inject(ScreenService);
     location = TestBed.inject(Location);
     logger = TestBed.inject(LoggerService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
@@ -540,10 +543,43 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('get store()',() => {
-    it('should return store', () => {
-      const store = service.store;
-      expect(store).toBe(service['_store']);
+  describe('initScreenStore()',() => {
+    it('should call initScreenStore of screenService with scenarioDto', () => {
+      spyOn<any>(screenService, 'initScreenStore').and.callThrough();
+      service['initScreenStore'](response.scenarioDto);
+      expect(screenService.initScreenStore).toBeCalledWith(response.scenarioDto);
+    });
+  });
+
+  describe('updateLoading()',() => {
+    it('should set isLoading by new value', () => {
+      service['updateLoading'](true);
+      expect(service['isLoading']).toBe(true);
+    });
+
+    it('should call isLoadingSubject next with new value', () => {
+      spyOn<any>(service['isLoadingSubject'], 'next').and.callThrough();
+      service['updateLoading'](true);
+      expect(service['isLoadingSubject'].next).toBeCalledWith(true);
+    });
+
+    it('should call updateLoading of screenService with new value', () => {
+      spyOn<any>(screenService, 'updateLoading').and.callThrough();
+      service['updateLoading'](true);
+      expect(screenService.updateLoading).toBeCalledWith(true);
+    });
+  });
+
+  describe('updatePlayerLoaded()',() => {
+    it('should set playerLoaded by new value', () => {
+      service['updatePlayerLoaded'](true);
+      expect(service['playerLoaded']).toBe(true);
+    });
+
+    it('should call playerLoadedSubject next with new value', () => {
+      spyOn<any>(service['playerLoadedSubject'], 'next').and.callThrough();
+      service['updatePlayerLoaded'](true);
+      expect(service['playerLoadedSubject'].next).toBeCalledWith(true);
     });
   });
 });
