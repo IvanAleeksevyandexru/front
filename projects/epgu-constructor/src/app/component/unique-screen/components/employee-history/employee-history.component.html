@@ -121,6 +121,20 @@
       >
     </section>
     <section
+      *ngIf="monthsService.getUncheckedPeriods().length"
+      class="employee-history__progress">
+      <div class="employee-history__progress__notification">
+        <div class="employee-history__progress__icon"></div>
+        <div class="employee-history__progress__msg">Не заполнены периоды</div>
+      </div>
+      <div class="employee-history__progress__periods">
+        <div *ngFor="let period of monthsService.getUncheckedPeriods()">
+          <span *ngIf="period.from === period.to">{{ period.from }}</span>
+          <span *ngIf="period.from !== period.to">{{ period.from }} — {{ period.to  }}</span>
+        </div>
+      </div>
+    </section>
+    <section
       *ngIf="(monthsService.isMonthComplete$ | async) && employeeFormService.employeeHistoryForm.valid"
       class="employee-history__completed">
       <div class="employee-history__completed__icon"></div>

@@ -1,9 +1,10 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
 import { Moment } from 'moment';
 import {
   EmployeeHistoryAvailableDates,
-  EmployeeHistoryModel
+  EmployeeHistoryModel,
+  EmployeeHistoryUncheckedPeriod
 } from '../employee-history.types';
 import { MonthYear } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
@@ -25,6 +26,49 @@ export class EmployeeHistoryMonthsService {
     this.minDateFrom = MonthYear.fromDate(moment().subtract(this.years + 60, 'years').toDate());
     this.minDateTo = this.minDateFrom;
     this.availableMonths = this.getAvailableMonths();
+  }
+
+
+  getUncheckedPeriods(): EmployeeHistoryUncheckedPeriod[] {
+    const periods: Array<Array<EmployeeHistoryAvailableDates>> = [];
+    const result: Array<EmployeeHistoryUncheckedPeriod> = [];
+    let periodIndex = 0;
+
+    periods[periodIndex] = [];
+
+    for (let i = 0; i < this.availableMonths.length; i++) {
+      if (this.availableMonths[i].checked) {
+        if (!this.availableMonths[i+1]?.checked) {
+          periodIndex++;
+          periods[periodIndex] = [];
+        }
+      } else {
+        periods[periodIndex].push(this.availableMonths[i]);
+      }
+    }
+
+    periods.forEach((period) => {
+      if (period.length) {
+        const convertedDates: Array<Moment> =
+          period.map((stringDate: EmployeeHistoryAvailableDates) => this.getConvertedDates(stringDate));
+
+        const getPeriod = (type: 'min' | 'max'): string => {
+          const formatString = 'MMMM YYYY';
+
+          if (type === 'max') {
+            return moment.max(convertedDates).format(formatString);
+          }
+
+          return moment.min(convertedDates).format(formatString);
+        };
+
+        result.push({
+          from: getPeriod('min'),
+          to: getPeriod('max')
+        });
+      }
+    });
+    return result;
   }
 
   private getAvailableMonths(
@@ -79,10 +123,7 @@ export class EmployeeHistoryMonthsService {
     } else {
       const convertedDate = this.availableMonths
         .filter((stringDate: EmployeeHistoryAvailableDates) => stringDate.checked)
-        .map((stringDate: EmployeeHistoryAvailableDates) => {
-          const c = stringDate.date.split('/');
-          return moment(`${c[0]}/01/${c[1]}`);
-        });
+        .map((stringDate: EmployeeHistoryAvailableDates) => this.getConvertedDates(stringDate));
       const diff = moment.max(convertedDate).diff(moment.min(convertedDate), 'years');
       if (diff === this.years) {
         this.isMonthComplete$.next(true);
@@ -91,5 +132,10 @@ export class EmployeeHistoryMonthsService {
       }
     }
 
+  }
+
+  private getConvertedDates(stringDate: EmployeeHistoryAvailableDates): Moment {
+    const c = stringDate.date.split('/');
+    return moment(`${c[0]}/01/${c[1]}`);
   }
 }
