@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { ScreenService } from '../../../screen/screen.service';
@@ -21,13 +21,13 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
 @Injectable()
 export class FormPlayerService extends FormPlayerBaseService {
   constructor(
+    public injector: Injector,
     public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private location: Location,
     @Inject(WINDOW) private window: Window,
-    private logger: LoggerService
   ) {
-    super(formPlayerApiService, screenService, logger);
+    super(injector);
   }
 
   public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
