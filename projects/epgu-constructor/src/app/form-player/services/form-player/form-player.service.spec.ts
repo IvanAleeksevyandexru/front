@@ -167,7 +167,7 @@ describe('FormPlayerService', () => {
       spyOn(formPlayerApiService, 'getInviteServiceData').and.returnValue(throwError(errorResponse));
       spyOn<any>(service, 'sendDataError').and.callThrough();
       service.getInviteOrderData(orderId);
-      expect(service.sendDataError).toHaveBeenCalledWith(errorResponse);
+      expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should call updateLoading with false param when call getInviteOrderData', () => {
@@ -201,7 +201,7 @@ describe('FormPlayerService', () => {
       spyOn(formPlayerApiService, 'getServiceData').and.returnValue(throwError(errorResponse));
       spyOn<any>(service, 'sendDataError').and.callThrough();
       service.getOrderData(orderId);
-      expect(service.sendDataError).toHaveBeenCalledWith(errorResponse);
+      expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should call updateLoading with false param when call getOrderData', () => {
@@ -252,7 +252,7 @@ describe('FormPlayerService', () => {
       spyOn(formPlayerApiService, 'navigate').and.returnValue(throwError(errorResponse));
       spyOn<any>(service, 'sendDataError').and.callThrough();
       service.navigate(navigation, FormPlayerNavigation.NEXT);
-      expect(service.sendDataError).toHaveBeenCalledWith(errorResponse);
+      expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should call updateLoading with false param when call navigate', () => {
@@ -452,7 +452,7 @@ describe('FormPlayerService', () => {
     it('should call initResponse with response param', () => {
       spyOn<any>(service, 'initResponse').and.callThrough();
       service['sendDataSuccess'](response);
-      expect(service.initResponse).toBeCalledWith(response);
+      expect(service['initResponse']).toBeCalledWith(response);
     });
   });
 
@@ -473,7 +473,7 @@ describe('FormPlayerService', () => {
     it('should call initResponse with response param when response has business errors', () => {
       spyOn<any>(service, 'initResponse').and.callThrough();
       service['sendDataError'](errorResponse);
-      expect(service.initResponse).toBeCalledWith(errorResponse);
+      expect(service['initResponse']).toBeCalledWith(errorResponse);
     });
 
     it('shouldn\'t call initResponse with response param when response error status', () => {
@@ -485,7 +485,7 @@ describe('FormPlayerService', () => {
       spyOn<any>(service, 'initResponse').and.callThrough();
       // @ts-ignore
       service['sendDataError'](errorResponse);
-      expect(service.initResponse).not.toBeCalled();
+      expect(service['initResponse']).not.toBeCalled();
     });
 
     it('should call updateLoading with false param', () => {

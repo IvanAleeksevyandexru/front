@@ -46,7 +46,7 @@ export abstract class FormPlayerBaseService {
    * Возвращает true, если есть ошибки
    * @param response - ответ сервера
    */
-  hasError(response: FormPlayerApiResponse) {
+  protected hasError(response: FormPlayerApiResponse) {
     return this.hasRequestErrors(response as FormPlayerApiErrorResponse)
       || this.hasBusinessErrors(response as FormPlayerApiSuccessResponse);
   }
@@ -55,7 +55,7 @@ export abstract class FormPlayerBaseService {
    * Возвращает true, если есть ошибки в ответе на запрос
    * @param response - ответ сервера
    */
-  hasRequestErrors(response: FormPlayerApiErrorResponse): boolean {
+  private hasRequestErrors(response: FormPlayerApiErrorResponse): boolean {
     const errors = response?.status;
     return errors === FormPlayerApiErrorStatuses.badRequest;
   }
@@ -64,12 +64,12 @@ export abstract class FormPlayerBaseService {
    * Возвращает true, если есть ошибки в ответе с DTO секцией ошибок
    * @param response - ответ сервера
    */
-  hasBusinessErrors(response: FormPlayerApiSuccessResponse): boolean {
+  private hasBusinessErrors(response: FormPlayerApiSuccessResponse): boolean {
     const errors = response?.scenarioDto?.errors;
     return errors && !!Object.keys(errors).length;
   }
 
-  updateRequest(navigation: Navigation): void {
+  protected updateRequest(navigation: Navigation): void {
     const navigationPayload = navigation?.payload;
     const passedStore = navigation?.options?.store;
 
@@ -88,7 +88,7 @@ export abstract class FormPlayerBaseService {
     }
   }
 
-  setDefaultCurrentValue(): void {
+  private setDefaultCurrentValue(): void {
     this._store.scenarioDto.currentValue = {};
     const componentId = this._store.scenarioDto.display.components[0].id;
     this._store.scenarioDto.currentValue[componentId] = {
@@ -97,11 +97,11 @@ export abstract class FormPlayerBaseService {
     };
   }
 
-  isEmptyNavigationPayload(navigationPayload) {
+  private isEmptyNavigationPayload(navigationPayload): boolean {
     return !(navigationPayload && Object.keys(navigationPayload).length);
   }
 
-  sendDataSuccess(response): void {
+  protected sendDataSuccess(response): void {
     this.loggerBase.log([
       'request',
       this._store
@@ -109,7 +109,7 @@ export abstract class FormPlayerBaseService {
     this.initResponse(response);
   }
 
-  sendDataError(response: FormPlayerApiResponse): void {
+  protected sendDataError(response: FormPlayerApiResponse): void {
     const error = response as FormPlayerApiErrorResponse;
     const businessError = response as FormPlayerApiSuccessResponse;
 
@@ -130,7 +130,7 @@ export abstract class FormPlayerBaseService {
     this.updateLoading(false);
   }
 
-  initResponse(response: FormPlayerApiSuccessResponse): void {
+  private initResponse(response: FormPlayerApiSuccessResponse): void {
     if (!response) {
       this.handleInvalidResponse();
       return;
@@ -152,7 +152,7 @@ export abstract class FormPlayerBaseService {
     ], `----- GET DATA ${this.logSuffix}---------`);
   }
 
-  handleInvalidResponse() {
+  private handleInvalidResponse(): void {
     this.loggerBase.error([
       'Invalid Response'
     ], `----- ERROR DATA ${this.logSuffix}---------`);
