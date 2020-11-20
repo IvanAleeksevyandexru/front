@@ -1,12 +1,12 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
-import { Observable } from 'rxjs';
-import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { distinctUntilChanged, pairwise, startWith, takeUntil, map, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { isEqualObj } from '../../../shared/constants/uttils';
 import {
-  CustomComponent, CustomComponentAttrValidation,
+  CustomComponent, CustomComponentAttr, CustomComponentAttrValidation,
   CustomComponentOutputData, CustomComponentValidationConditions, CustomListDictionaries, CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements, CustomScreenComponentTypes
@@ -28,6 +28,12 @@ export class ComponentListFormService {
   private _form = new FormArray([]);
   private _shownElements: CustomListStatusElements = {};
   private _changes = new EventEmitter<CustomComponentOutputData>();
+  private mapRelationTypes = {
+    RegExp: this.relationRegExp.bind(this),
+    MinDate: this.relationMinDate.bind(this),
+    MaxDate: this.relationMaxDate.bind(this),
+  };
+  private cachedAttrsComponents: Record<string, {base: CustomComponentAttr, last: string }> = {};
 
   get shownElements(): CustomListStatusElements {
     return this._shownElements;
@@ -48,11 +54,16 @@ export class ComponentListFormService {
     private repository: ComponentListRepositoryService,
   ) { }
 
+  indexesByIds: Record<string, number> = {};
   create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
+    this.indexesByIds = {};
     this.toolsService.createStatusElements(components, this.shownElements);
 
     this._form = new FormArray(
-      components.map((component: CustomComponent) => this.createGroup(component, components, errors[component.id]))
+      components.map((component: CustomComponent, index) => {
+        this.indexesByIds[component.id] = index;
+        return this.createGroup(component, components, errors[component.id]);
+      })
     );
 
     components.forEach((component: CustomComponent) => {
@@ -98,7 +109,7 @@ export class ComponentListFormService {
     return this.form.valueChanges
       .pipe(
         distinctUntilChanged((prev, next) => isEqualObj<any>(prev, next)),
-        takeUntil(this.unsubscribeService),
+        takeUntil(this.unsubscribeService)
       );
   }
 
@@ -143,6 +154,76 @@ export class ComponentListFormService {
     }, {});
   }
 
+
+
+
+  private relationRegExp(value: string, params: any) {
+    return value.match(params);
+  }
+  private relationMinDate(value: string, params: string) {
+    return moment(value).isAfter(params);
+  }
+  private relationMaxDate(value: string, params: any) {
+    return moment(value).isBefore(params);
+  }
+
+
+
+  private relationPatch(component: CustomComponent, patch: CustomComponentAttr) {
+    const resultPath = { ...component, attrs: patch };
+    console.log(resultPath);
+    return this.patch(resultPath);
+  }
+
+  private resetRelation(component: CustomComponent) {
+      return this.relationPatch(component, this.cachedAttrsComponents[component.id].base);
+  }
+
+  private setRelationResult(component: CustomComponent, result?: CustomComponentAttr) {
+    if (!result) {
+      console.log('result null', component, result);
+      if (this.cachedAttrsComponents[component.id]) {
+        this.resetRelation(component);
+      }
+      return;
+    }
+    if (!this.cachedAttrsComponents[component.id]) {
+      this.cachedAttrsComponents[component.id] = { base: component.attrs, last: '' };
+    }
+
+    const stringResult = JSON.stringify(result);
+    if (this.cachedAttrsComponents[component.id].last !== stringResult) {
+      console.log('set relationPath', component, result);
+      this.relationPatch(component, result.attrs);
+      this.cachedAttrsComponents[component.id].last = stringResult;
+    }
+  }
+
+  private relationMapChanges([prev, next]: [CustomListFormGroup, CustomListFormGroup])  {
+    if (next.attrs?.relation) {
+      const { ref, conditions } = next.attrs?.relation;
+      const value = this.form.value[this.indexesByIds[next.id]].value;
+      const refComponent = this.form.value[this.indexesByIds[ref]];
+
+      let result;
+      for (let condition of conditions) {
+        const func = this.mapRelationTypes[condition.type];
+        if (!func) {
+          console.error(`Relation condition type: ${condition.type} - not found.`);
+          return;
+        }
+        if (func(value,condition.value)) {
+          console.log('condition.type enabled',condition.type, value, condition.value);
+          result = condition.result;
+          break;
+        } else {
+          console.log('condition.type disabled',condition.type,value, condition.value);
+        }
+      }
+
+      this.setRelationResult(refComponent, result);
+    }
+  }
   private createGroup(component: CustomComponent, components: Array<CustomComponent>, errorMsg: string): FormGroup {
     const form: FormGroup =  this.fb.group({
       ...component,
@@ -157,7 +238,11 @@ export class ComponentListFormService {
       form.disable();
     }
 
-    this.watchFormGroup$(form).subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
+    this.watchFormGroup$(form)
+      .pipe(
+        tap(this.relationMapChanges.bind(this))
+      )
+      .subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
       this._shownElements = this.toolsService.updateDependents(components, next, this.shownElements, this.form);
       ////////HARDCODE!!!
       if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqualObj<CustomListFormGroup>(prev, next)) {
