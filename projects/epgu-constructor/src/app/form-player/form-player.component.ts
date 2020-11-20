@@ -109,9 +109,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   calculateHeight(): void {
-    const menuHeight = 88;
-    const marginBottomFrom = 20; // отступ от нижней части экрана
-    this.minHeight = window.innerHeight - menuHeight - marginBottomFrom;
+    const bottomIndent = 20; // отступ от нижней части экрана
+    const headerHeight = document.querySelector('header').scrollHeight;
+    const viewPortHeight = window.innerHeight;
+    this.minHeight = viewPortHeight - headerHeight - bottomIndent;
   }
 
   getOrderIdFromApi() {
