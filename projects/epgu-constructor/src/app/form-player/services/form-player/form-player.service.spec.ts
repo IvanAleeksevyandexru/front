@@ -530,4 +530,12 @@ describe('FormPlayerService', () => {
       expect(logger.log).toBeCalled();
     });
   });
+
+  describe('handleInvalidResponse()',() => {
+    it('should call error of loggerService', () => {
+      spyOn<any>(logger, 'error').and.callThrough();
+      service['handleInvalidResponse']();
+      expect(logger.error).toBeCalled();
+    });
+  });
 });
