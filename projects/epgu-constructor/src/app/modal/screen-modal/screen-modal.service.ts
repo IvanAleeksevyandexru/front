@@ -10,6 +10,7 @@ import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerNavigation, Navigation } from '../../form-player/form-player.types';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerBaseService } from '../../shared/services/form-player-base/form-player-base.service';
+import { LoggerService } from '../../core/services/logger/logger.service';
 
 @Injectable()
 export class ScreenModalService extends FormPlayerBaseService {
@@ -25,9 +26,10 @@ export class ScreenModalService extends FormPlayerBaseService {
   constructor(
     public formPlayerService: FormPlayerService,
     public formPlayerApiService: FormPlayerApiService,
-    private screenService: ScreenService
+    private screenService: ScreenService,
+    private logger: LoggerService
   ) {
-    super(formPlayerApiService, screenService);
+    super(formPlayerApiService, screenService, logger);
     this.logSuffix = 'MODAL';
   }
 
