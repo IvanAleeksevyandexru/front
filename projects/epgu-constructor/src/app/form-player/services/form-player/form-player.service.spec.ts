@@ -512,12 +512,6 @@ describe('FormPlayerService', () => {
       expect(service['initScreenStore']).toBeCalledWith(response.scenarioDto);
     });
 
-    it('should call updateScreenType with scenarioDto param', () => {
-      spyOn<any>(service, 'updateScreenType').and.callThrough();
-      service['initResponse'](response);
-      expect(service['updateScreenType']).toBeCalledWith(response.scenarioDto);
-    });
-
     it('should call updatePlayerLoaded with true param', () => {
       spyOn<any>(service, 'updatePlayerLoaded').and.callThrough();
       service['initResponse'](response);
@@ -536,6 +530,13 @@ describe('FormPlayerService', () => {
       spyOn<any>(logger, 'error').and.callThrough();
       service['handleInvalidResponse']();
       expect(logger.error).toBeCalled();
+    });
+  });
+
+  describe('get store()',() => {
+    it('should return store', () => {
+      const store = service.store;
+      expect(store).toBe(service['_store']);
     });
   });
 

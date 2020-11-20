@@ -20,7 +20,6 @@ export abstract class FormPlayerBaseService {
   protected _store: FormPlayerApiSuccessResponse;
   protected playerLoaded = false;
   protected isLoading = false;
-  protected screenType: string;
   protected logSuffix = '';
 
   protected isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
@@ -141,7 +140,6 @@ export abstract class FormPlayerBaseService {
     const scenarioDto = response.scenarioDto;
 
     this.initScreenStore(scenarioDto);
-    this.updateScreenType(scenarioDto);
     this.updatePlayerLoaded(true);
 
     this.loggerBase.log([
@@ -165,16 +163,6 @@ export abstract class FormPlayerBaseService {
    */
   get store(): FormPlayerApiSuccessResponse {
     return this._store;
-  }
-
-  /**
-   * Обновляем тип экрана
-   * @param scenarioDto - сведения о сценарии
-   * @private
-   */
-  protected updateScreenType(scenarioDto: ScenarioDto): void {
-    const { display } = scenarioDto;
-    this.screenType = display.type;
   }
 
   /**
