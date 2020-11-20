@@ -7,20 +7,20 @@ import { Observable } from 'rxjs';
 export interface PaymentInfoInterface {
   codeOrg: string;
   paymentPurpose: string;
-  recipientAccountNumberTOFK: any;
-  recipientAccountNumberTaxAuthority: any;
-  recipientBankAccountNumber: any;
+  recipientAccountNumberTOFK: number;
+  recipientAccountNumberTaxAuthority: number;
+  recipientBankAccountNumber: number;
   recipientBankBIK: string;
   recipientBankName: string;
-  recipientBankSWIFT: any;
+  recipientBankSWIFT: string;
   recipientINN: string;
   recipientKBK: string;
   recipientKPP: string;
-  recipientNameFK: any;
+  recipientNameFK: string;
   recipientOKTMO: string;
   recipientPaymentAccount: string;
-  recipientTOFK: any;
-  recipientTaxAuthorityName: any;
+  recipientTOFK: string;
+  recipientTaxAuthorityName: string;
   recipientTitle: string;
   sum: string;
 }

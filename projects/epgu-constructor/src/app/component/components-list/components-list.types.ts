@@ -71,7 +71,7 @@ export type CustomComponentDropDownItem = {
  * @property dictionaryType - dictionary name for request {@see getDictionary}
  */
 export interface CustomComponentAttr {
-  [key:string]:any;
+  [key:string]: any;
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType: string;
   labelAttr: string;
