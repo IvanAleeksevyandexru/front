@@ -30,7 +30,7 @@ export class ConfirmPhoneComponent implements OnInit {
   // <-- constant
   correctCodeLength = 4;
   mask = [/\d/, /\d/, /\d/, /\d/];
-  count = 59;
+  count = 89;
   countInterval = 1000;
 
   characterMask: string;

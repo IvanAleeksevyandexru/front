@@ -5,7 +5,10 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
-import { TemporaryRegistrationComponent } from '../../temporary-registration-addr-screen.types';
+import {
+  FieldNames,
+  TemporaryRegistrationComponent,
+} from '../../temporary-registration-addr-screen.types';
 import { DateValidator } from './date-validator';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 
@@ -36,10 +39,14 @@ export class TemporaryRegistrationAddrComponent implements OnInit {
 
   initFormGroup(): void {
     const controls = {};
-    const initValue = this.getInitValue(this.data?.value);
+    const initData = JSON.parse(this.data?.value || '{}');
 
     this.data?.attrs?.fields.forEach((field) => {
-      controls[field.fieldName] = this.fb.control(initValue, this.getValidatorsForField(field));
+      const formControlValue = this.getInitFormValue(initData, field.fieldName);
+      controls[field.fieldName] = this.fb.control(
+        formControlValue,
+        this.getValidatorsForField(field),
+      );
     });
     this.redAddrForm = this.fb.group(controls);
   }
@@ -84,10 +91,17 @@ export class TemporaryRegistrationAddrComponent implements OnInit {
   }
 
   /**
-   * метод парсит (при наличие) строку с объектом от dadata-widget и возвращает в него fullAddress
-   * @param value строка с JSON объектом от dadata-widget
+   * метод возвращает (при наличие) начальное значение для контрола формы
+   * @param fieldName - имя поля
+   * @param data строка с JSON объектом
    */
-  private getInitValue(value: string) {
-    return (value && JSON.parse(value).regAddr.fullAddress) || null;
+  private getInitFormValue(data: any, fieldName: FieldNames): string | Date {
+    if (fieldName === FieldNames.regAddr) {
+      return data?.regAddr?.fullAddress || null;
+    }
+    if (fieldName === FieldNames.regDate) {
+      return data?.regDate ? new Date(data?.regDate) : null;
+    }
+    return null;
   }
 }

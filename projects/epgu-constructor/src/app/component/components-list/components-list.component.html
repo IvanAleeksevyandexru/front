@@ -36,6 +36,7 @@
           [disabled]="(dropDowns$ | async)[componentData.value?.id]?.length === 1"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
+          [clearable]="true"
           class="cs__select cs-select">
         </lib-dropdown>
       </epgu-constructor-component-item>
@@ -48,6 +49,7 @@
           [disabled]="(dropDowns$ | async)[componentData.value?.id].length === 1"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
+          [clearable]="true"
           class="cs__select cs-select">
         </lib-dropdown>
       </epgu-constructor-component-item>
@@ -60,6 +62,7 @@
           [validationShowOn]="validationShowOn"
           [disabled]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list?.length === 1"
           [formControl]="componentData.get('value')"
+          [clearable]="true"
           class="cs__select cs-select">
         </lib-dropdown>
       </epgu-constructor-component-item>
@@ -74,6 +77,7 @@
           [searchCaseSensitive]="false"
           [fixedItems]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
           [virtualScroll]="true"
+          [clearable]="true"
         >
         </lib-lookup>
       </epgu-constructor-component-item>

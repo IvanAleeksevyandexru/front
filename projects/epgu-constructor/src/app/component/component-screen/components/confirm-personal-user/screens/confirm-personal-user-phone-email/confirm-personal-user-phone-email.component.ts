@@ -4,7 +4,7 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ComponentBase } from '../../../../../../screen/screen.types';
 import { ComponentScreenComponentTypes } from '../../../../component-screen-components.types';
-import { ActionType } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { DTOActionAction } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-phone-email',
@@ -15,7 +15,7 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnChanges {
   @Input() data: ComponentBase;
   @Input() errors: object;
 
-  actionType = ActionType;
+  isEditContactAction: boolean;
   componentScreenComponentTypes = ComponentScreenComponentTypes;
 
   constructor(
@@ -26,11 +26,18 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { value } = changes.data.currentValue;
+    this.isEditContactAction = this.getIsEditContactAction();
     if (value) {
       this.currentAnswersService.isValid = true;
       this.currentAnswersService.state = this.data?.value;
     } else {
       this.currentAnswersService.isValid = false;
     }
+  }
+
+  getIsEditContactAction(): boolean {
+    const isEditPhone = this.screenService.action.action === DTOActionAction.editPhoneNumber;
+    const isEditEmail = this.screenService.action.action === DTOActionAction.editEmail;
+    return isEditPhone || isEditEmail;
   }
 }

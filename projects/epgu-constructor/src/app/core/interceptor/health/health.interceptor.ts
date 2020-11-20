@@ -6,11 +6,20 @@ import { tap, catchError } from 'rxjs/operators';
 import { HealthService } from 'epgu-lib';
 import { UtilsService } from '../../../shared/services/utils/utils.service';
 
-const EXCEPTIONS = ['lib-assets', 'storage'];
+const EXCEPTIONS = ['lib-assets'];
+
+interface ConfigParams {
+  id: string; 
+  name: string; 
+  error?: string; 
+  errorMessage?: string;
+}
 
 @Injectable()
 export class HealthInterceptor implements HttpInterceptor {
   constructor(private health: HealthService, private utils: UtilsService) {}
+
+  private configParams: ConfigParams | null = null;
 
   /**
    * Returns a boolean value for exceptions
@@ -20,7 +29,7 @@ export class HealthInterceptor implements HttpInterceptor {
     const splitByDirLocation = this.utils.getSplittedUrl(url);
     const exceptValidationStatus = splitByDirLocation.some(name => EXCEPTIONS.includes(name));
 
-    return exceptValidationStatus && splitByDirLocation.includes('upload') ? false: exceptValidationStatus;
+    return exceptValidationStatus;
   }
 
   /**
@@ -31,25 +40,47 @@ export class HealthInterceptor implements HttpInterceptor {
     return this.utils.isValidHttpUrl(payload['url']) && !this.exceptionsValidator(payload['url']);
   }
 
+  private isValidScenarioDto(dto: any): boolean {
+    return dto && dto.scenarioDto && dto.scenarioDto.display; 
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let serviceName = '';
 
     if (this.isValid(req)) {
       serviceName = this.utils.getServiceName(req['url']);
-      serviceName = serviceName === 'getNextStepService' ? 'renderForm' : serviceName;
+      serviceName = serviceName === 'scenarioGetNextStepService' ? 'renderForm' : serviceName;
       this.health.measureStart(serviceName);
     }
 
     return next.handle(req).pipe(
-      tap(res => {
-        if (this.isValid(res)) {
-          this.health.measureEnd(serviceName, 0, null);
+      tap(response => {
+        if (this.isValid(response)) {
+          const result = (response as any).body;
+          const validationStatus = this.isValidScenarioDto(result);
+          let successRequestPayload = null;
+
+          if (validationStatus) {
+            const { scenarioDto } = result;
+            this.configParams = { id: scenarioDto.display.id, name: scenarioDto.display.name };
+          }
+
+          if (this.configParams !== null) {
+            const { id, name } = this.configParams;
+            successRequestPayload = { id, name };
+          }
+
+          this.health.measureEnd(serviceName, 0, successRequestPayload);
         }
       }),
       catchError(error => {
         if (this.isValid(error)) {
-          this.health.measureEnd(serviceName, 1, null);
+          if (error.status !== 404) {
+            this.configParams['error'] = error.status;
+            this.configParams['errorMessage'] = error.message;
+  
+            this.health.measureEnd(serviceName, 1, this.configParams);
+          }
         }
         return throwError(error);
       })

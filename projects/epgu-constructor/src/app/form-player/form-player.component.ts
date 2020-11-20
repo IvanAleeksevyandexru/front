@@ -8,21 +8,21 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { debounceTime, mergeMap, takeUntil } from 'rxjs/operators';
 import { LoadService } from 'epgu-lib';
 import { fromEvent } from 'rxjs';
+import { debounceTime, mergeMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../core/config/config.service';
-import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
-import { FormPlayerService } from './services/form-player/form-player.service';
-import { ModalService } from '../modal/modal.service';
-import { ServiceDataService } from './services/service-data/service-data.service';
+import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
+import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirmation-modal.component';
-import { NavigationService } from '../core/services/navigation/navigation.service';
-import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
-import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { ConfirmationModal } from '../modal/confirmation-modal/confirmation-modal.interface';
+import { ModalService } from '../modal/modal.service';
 import { ScreenService } from '../screen/screen.service';
+import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
+import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
+import { FormPlayerService } from './services/form-player/form-player.service';
+import { ServiceDataService } from './services/service-data/service-data.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -109,9 +109,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   calculateHeight(): void {
-    const menuHeight = 88;
-    const marginBottomFrom = 20; // отступ от нижней части экрана
-    this.minHeight = window.innerHeight - menuHeight - marginBottomFrom;
+    const bottomIndent = 20; // отступ от нижней части экрана
+    const headerHeight = document.querySelector('header').scrollHeight;
+    const viewPortHeight = window.innerHeight;
+    this.minHeight = viewPortHeight - headerHeight - bottomIndent;
   }
 
   getOrderIdFromApi() {
@@ -144,7 +145,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       {
         text: `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
         <h4 style="text-align: center">У вас есть черновик заявления</h4>
-        <p class="helper-text" style="text-align: center; margin: 0">Продолжить его заполнение?</p></div>`,
+        <p class="helper-text" style="text-align: center; margin-top: 8px;">Продолжить его заполнение?</p></div>`,
         showCloseButton: false,
         showCrossButton: true,
         buttons: [

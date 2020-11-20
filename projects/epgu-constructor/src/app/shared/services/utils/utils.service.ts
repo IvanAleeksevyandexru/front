@@ -138,6 +138,10 @@ export class UtilsService {
     return splitByDirLocation;
   }
 
+  private sliceArrayFromRight(arr: any[], from: number, includeFirst: boolean = true) {
+    return arr.slice(Math.max(arr.length - from, includeFirst ? 0 : 1));
+  }
+
   /**
    * Returns modified service name in camelCase format
    * Example:
@@ -147,7 +151,15 @@ export class UtilsService {
    * @param url 
    */
   public getServiceName(url: string): string {
-    const serviceName = this.getSplittedUrl(url).slice(-1)[0];
+    const numRegex = /^\d+$/;
+    const splittedUrl = this.getSplittedUrl(url);
+
+    let preparedArray = this.sliceArrayFromRight(splittedUrl, 3);
+
+    preparedArray = numRegex.test(preparedArray[0]) ? this.sliceArrayFromRight(preparedArray, 3, false) : preparedArray;
+    preparedArray = preparedArray.map(urlPath => numRegex.test(urlPath) ? '' : urlPath);
+
+    const serviceName = preparedArray.join('-');
 
     return `${serviceName.replace(/(?:^_-\w|[A-Z]|\b\w)/g, (word, index) => {
       return index === 0 ? word.toLowerCase() : word.toUpperCase();

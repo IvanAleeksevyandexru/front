@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { HelperService } from 'epgu-lib';
 
 @Injectable()
 export class ModalService {
@@ -22,6 +23,10 @@ export class ModalService {
   }
 
   public openModal<T, K = any>(modalComponent: Type<any>, modalParameters?: K): Observable<T> {
+    if (HelperService.isTouchDevice()) {
+      document.body.style.overflow = 'hidden';
+    }
+
     const modalResult = new Subject<T>();
 
     const componentFactory = this.cfr.resolveComponentFactory(modalComponent);
