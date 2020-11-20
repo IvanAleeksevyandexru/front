@@ -29,6 +29,7 @@ import { InputErrorComponent } from './components/input-error/input-error.compon
 import { RadioTaxComponent } from './components/radio-tax/radio-tax.component';
 import { DateRangeService } from './services/date-range/date-range.service';
 import { CloneButtonComponent } from './components/clone-button/clone-button.component';
+import { FieldListComponent } from './components/field-list/field-list.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -46,6 +47,7 @@ const COMPONENTS = [
   InputErrorComponent,
   RadioTaxComponent,
   CloneButtonComponent,
+  FieldListComponent,
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe];
