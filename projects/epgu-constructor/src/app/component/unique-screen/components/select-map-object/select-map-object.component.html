@@ -47,13 +47,14 @@
             <span class="map-object__label">{{ itemContent.label }}: </span>
             <span class="PGU-AttrsValue">{{ itemContent.value }}</span>
           </div>
-          <a
-            *ngIf="data.attrs.showExtraInfoLink"
-            (click)="showModalFromTemplate('detailsTemplate', mapObject)"
-            href="javascript:void(0)"
-            class="details-link"
-          >Узнать подробнее
-          </a>
+<!--          Скрыто в рамках задачи EPGUCORE-41464-->
+<!--          <a-->
+<!--            *ngIf="data.attrs.showExtraInfoLink"-->
+<!--            (click)="showModalFromTemplate('detailsTemplate', mapObject)"-->
+<!--            href="javascript:void(0)"-->
+<!--            class="details-link"-->
+<!--          >Узнать подробнее-->
+<!--          </a>-->
           <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">
             На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы
             <a
