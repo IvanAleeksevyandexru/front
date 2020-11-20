@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
 import { COMPONENT_DATA_KEY } from '../../../shared/constants/form-player';
 import { of, throwError } from 'rxjs';
 import { FormPlayerServiceStub } from './form-player.service.stub';
-import { FormPlayerNavigation } from '../../form-player.types';
+import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { WINDOW, WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
 import { LoggerService } from '../../../core/services/logger/logger.service';
@@ -22,8 +22,10 @@ const response = new FormPlayerServiceStub().response;
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
   let formPlayerApiService: FormPlayerApiService;
+  let logger: LoggerService;
   let location: Location;
   let orderId: string;
+  let navigation: Navigation;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -41,6 +43,7 @@ describe('FormPlayerService', () => {
     });
     service = TestBed.inject(FormPlayerService);
     location = TestBed.inject(Location);
+    logger = TestBed.inject(LoggerService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
   });
 
@@ -347,6 +350,106 @@ describe('FormPlayerService', () => {
     it('should return false if response haven\'t any business error', () => {
       const hasBusinessErrors = service['hasBusinessErrors'](response);
       expect(hasBusinessErrors).toBeFalsy();
+    });
+  });
+
+  describe('updateRequest()',() => {
+    let navigation;
+
+    beforeEach(() => {
+      navigation = {
+        payload: {
+          k1: {
+            value: 'some value',
+              visited: true
+          }
+        }
+      };
+    });
+
+    it('should call log of loggerService', () => {
+      spyOn<any>(logger, 'log').and.callThrough();
+      service['updateRequest'](navigation );
+      expect(logger.log).toBeCalled();
+    });
+
+    it('should call isEmptyNavigationPayload with param', () => {
+      spyOn<any>(service, 'isEmptyNavigationPayload').and.callThrough();
+      service['updateRequest'](navigation);
+      expect(service['isEmptyNavigationPayload']).toBeCalledWith(navigation.payload);
+    });
+
+    it('should call setDefaultCurrentValue when isEmptyNavigationPayload return true', () => {
+      spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(true);
+      spyOn<any>(service, 'setDefaultCurrentValue').and.callThrough();
+      service['updateRequest'](navigation);
+      expect(service['setDefaultCurrentValue']).toBeCalled();
+    });
+
+    it('should set navigation.payload as currentValue when isEmptyNavigationPayload return false', () => {
+      spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(false);
+      service['updateRequest'](navigation);
+      expect(service['_store'].scenarioDto.currentValue).toBe(navigation.payload);
+    });
+
+    it('should update store when navigation.options has store', () => {
+      const newStore = JSON.parse(JSON.stringify(response));
+      navigation = {
+        options: {
+          store: newStore
+        }
+      };
+      spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(false);
+      service['updateRequest'](navigation);
+      expect(service['_store']).toBe(navigation.options.store);
+    });
+  });
+
+  describe('setDefaultCurrentValue()',() => {
+    it('should set default currentValue by first component', () => {
+      navigation = {};
+      const defaultCurrentValue = {
+        [response.scenarioDto.display.components[0].id]: {
+          value: '',
+          visited: true
+        }
+      };
+      service['setDefaultCurrentValue']();
+      expect(service['_store'].scenarioDto.currentValue).toEqual(defaultCurrentValue);
+    });
+  });
+
+  describe('isEmptyNavigationPayload()',() => {
+    it('should return true if hasn\'t payload with keys', () => {
+      navigation = { payload: {}};
+      const isEmptyNavigationPayload = service['isEmptyNavigationPayload'](navigation.payload);
+      expect(isEmptyNavigationPayload).toBeTruthy();
+    });
+
+    it('should return true if hasn\'t payload with keys', () => {
+      navigation = {};
+      const isEmptyNavigationPayload = service['isEmptyNavigationPayload'](navigation.payload);
+      expect(isEmptyNavigationPayload).toBeTruthy();
+    });
+
+    it('should return false if hasn\'t payload with keys', () => {
+      navigation = { payload: { k1: { value: '', visited: true }}};
+      const isEmptyNavigationPayload = service['isEmptyNavigationPayload'](navigation.payload);
+      expect(isEmptyNavigationPayload).toBeFalsy();
+    });
+  });
+
+  describe('sendDataSuccess()',() => {
+    it('should call log of loggerService', () => {
+      spyOn<any>(logger, 'log').and.callThrough();
+      service['sendDataSuccess'](response);
+      expect(logger.log).toBeCalled();
+    });
+
+    it('should call initResponse with response param', () => {
+      spyOn<any>(service, 'initResponse').and.callThrough();
+      service['sendDataSuccess'](response);
+      expect(service.initResponse).toBeCalledWith(response);
     });
   });
 });

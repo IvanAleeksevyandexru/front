@@ -78,18 +78,24 @@ export abstract class FormPlayerBaseService {
       this._store = passedStore;
     }
 
-
-    this.loggerBase.log([`updateRequest ${this.logSuffix}`, navigationPayload]);
+    this.loggerBase.log([
+      `updateRequest ${this.logSuffix}`,
+      navigationPayload
+    ]);
     if (this.isEmptyNavigationPayload(navigationPayload)) {
-      this._store.scenarioDto.currentValue = {};
-      const componentId = this._store.scenarioDto.display.components[0].id;
-      this._store.scenarioDto.currentValue[componentId] = {
-        value: '',
-        visited: true
-      };
+      this.setDefaultCurrentValue();
     } else {
       this._store.scenarioDto.currentValue = navigationPayload;
     }
+  }
+
+  setDefaultCurrentValue(): void {
+    this._store.scenarioDto.currentValue = {};
+    const componentId = this._store.scenarioDto.display.components[0].id;
+    this._store.scenarioDto.currentValue[componentId] = {
+      value: '',
+      visited: true
+    };
   }
 
   isEmptyNavigationPayload(navigationPayload) {
@@ -97,8 +103,10 @@ export abstract class FormPlayerBaseService {
   }
 
   sendDataSuccess(response): void {
-    console.log(`----- SET DATA ${this.logSuffix}---------`);
-    console.log('request', this._store);
+    this.loggerBase.log([
+      'request',
+      this._store
+    ], `----- SET DATA ${this.logSuffix}---------`);
     this.initResponse(response);
   }
 
@@ -106,12 +114,17 @@ export abstract class FormPlayerBaseService {
     const error = response as FormPlayerApiErrorResponse;
     const businessError = response as FormPlayerApiSuccessResponse;
 
-    console.error(`----- ERROR DATA ${this.logSuffix}---------`);
+    const groupLogName = `----- ERROR DATA ${this.logSuffix}---------`;
+
     if (error.status) {
-      console.error(error);
+      this.loggerBase.error([
+        error
+      ], groupLogName);
     } else {
       // NOTICE: passing business errors to components layers, do not change this logic!
-      console.error(businessError.scenarioDto?.errors);
+      this.loggerBase.error([
+        businessError.scenarioDto?.errors
+      ], groupLogName);
       this.initResponse(businessError);
     }
 
@@ -131,16 +144,20 @@ export abstract class FormPlayerBaseService {
     this.updateScreenType(scenarioDto);
     this.updatePlayerLoaded(true);
 
-    // TODO: move it to log service
-    console.log(`----- GET DATA ${this.logSuffix}---------`);
-    console.log('componentId:', scenarioDto.display.components[0].id);
-    console.log('componentType:', scenarioDto.display.components[0].type);
-    console.log('initResponse:', response);
+    this.loggerBase.log([
+      'componentId:',
+      scenarioDto.display.components[0].id,
+      'componentType:',
+      scenarioDto.display.components[0].type,
+      'initResponse:',
+      response
+    ], `----- GET DATA ${this.logSuffix}---------`);
   }
 
   handleInvalidResponse() {
-    console.error(`----- ERROR DATA ${this.logSuffix}---------`);
-    console.error('Invalid Response');
+    this.loggerBase.error([
+      'Invalid Response'
+    ], `----- ERROR DATA ${this.logSuffix}---------`);
   }
 
   /**
