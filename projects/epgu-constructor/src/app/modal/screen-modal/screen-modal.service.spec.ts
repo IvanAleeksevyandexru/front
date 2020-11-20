@@ -75,14 +75,6 @@ describe('ScreenModalService', () => {
   });
 
   describe('navigate()',() => {
-
-    it('should set store from formPlayerService.store if store is empty', () => {
-      service['_store'] = null;
-      spyOn<any>(formPlayerService, 'store').and.callThrough();
-      service.navigate({}, FormPlayerNavigation.NEXT);
-      expect(formPlayerService.store).toBeCalled();
-    });
-
     it('should call updateLoading with false true', () => {
       spyOn<any>(service, 'updateLoading').and.callThrough();
       service.navigate({}, FormPlayerNavigation.NEXT);
