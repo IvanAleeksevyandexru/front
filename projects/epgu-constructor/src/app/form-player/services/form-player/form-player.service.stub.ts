@@ -55,4 +55,6 @@ export class FormPlayerServiceStub {
   sendDataError(): void {}
 
   initResponse(): void {}
+
+  store(): FormPlayerApiSuccessResponse { return this.response; }
 }
