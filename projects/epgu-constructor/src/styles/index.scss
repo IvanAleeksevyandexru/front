@@ -197,6 +197,23 @@
     }
   }
 
+  /* Utility classes */
+  .block {
+    &--with-icon {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      & > img {
+        flex: 0 0 auto;
+        max-width: 25px;
+        margin-right: 17px;
+        @include phones-down {
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+
   .container {
     width: 100%;
     max-width: 592px;
