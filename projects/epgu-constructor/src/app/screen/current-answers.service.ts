@@ -5,6 +5,8 @@ export class CurrentAnswersService {
 
   // <-- component
   private _state: any;
+  private _isValid: boolean;
+
   get state () {
     return this._state;
   }
@@ -12,7 +14,12 @@ export class CurrentAnswersService {
     this._state = val;
   }
 
-  isValid: boolean;
+  get isValid () {
+    return this._isValid;
+  }
+  set isValid (val: boolean) {
+    this._isValid = val;
+  }
 
   constructor() { }
 }

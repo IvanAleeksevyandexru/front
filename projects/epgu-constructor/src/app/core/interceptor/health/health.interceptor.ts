@@ -58,22 +58,29 @@ export class HealthInterceptor implements HttpInterceptor {
         if (this.isValid(response)) {
           const result = (response as any).body;
           const validationStatus = this.isValidScenarioDto(result);
+          let successRequestPayload = null;
 
           if (validationStatus) {
             const { scenarioDto } = result;
-
             this.configParams = { id: scenarioDto.display.id, name: scenarioDto.display.name };
           }
 
-          this.health.measureEnd(serviceName, 0, this.configParams);
+          if (this.configParams !== null) {
+            const { id, name } = this.configParams;
+            successRequestPayload = { id, name };
+          }
+
+          this.health.measureEnd(serviceName, 0, successRequestPayload);
         }
       }),
       catchError(error => {
         if (this.isValid(error)) {
-          this.configParams['error'] = error.status;
-          this.configParams['errorMessage'] = error.message;
-
-          this.health.measureEnd(serviceName, 1, this.configParams);
+          if (error.status !== 404) {
+            this.configParams['error'] = error.status;
+            this.configParams['errorMessage'] = error.message;
+  
+            this.health.measureEnd(serviceName, 1, this.configParams);
+          }
         }
         return throwError(error);
       })

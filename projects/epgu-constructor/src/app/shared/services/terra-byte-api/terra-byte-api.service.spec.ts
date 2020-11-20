@@ -5,6 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../core/config/config.service.stub';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 
 describe('TerraByteApiService', () => {
   let service: TerraByteApiService;
@@ -15,6 +16,7 @@ describe('TerraByteApiService', () => {
       providers: [
         TerraByteApiService,
         UnsubscribeService,
+        DeviceDetectorService,
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });

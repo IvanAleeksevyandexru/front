@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, takeUntil } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { ConfigService } from '../../../../core/config/config.service';
+import {
+  BillsInfoResponse,
+  PaymentDictionaryOptionsInterface,
+  PaymentInfoForPaidStatusData,
+  PaymentInfoInterface
+} from './payment.types';
 import { getPaymentRequestOptions } from './payment.constants';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ConfigService } from '../../../../core/config/config.service';
-import { PaymentDictionaryOptionsInterface, PaymentInfoInterface } from './payment.types';
 
 /**
  * Сервис для оплаты услуг пользователем
  */
 @Injectable()
 export class PaymentService {
-  private requestOptions = { withCredentials: true };
+  public requestOptions = { withCredentials: true };
 
   constructor(
-    private http: HttpClient,
-    private dictionaryApiService: DictionaryApiService,
-    private config: ConfigService,
-    private screenService: ScreenService,
+    public http: HttpClient,
+    public config: ConfigService,
+    public dictionaryApiService: DictionaryApiService,
+    public screenService: ScreenService
   ) {}
 
   /**
@@ -36,28 +41,12 @@ export class PaymentService {
 
   /**
    * Загружает данные по оплате с реквизитами
-   * @param orderId - идентификатор заявления
-   * @param nsi - наименование справочника с информацией
-   * @param dictItemCode - код нужного справочника
-   * @param fiasCode - код справочника
+   * @param attrs - объект с аттрибутами компонента
    */
-  loadPaymentInfo(orderId, nsi, dictItemCode, fiasCode): Observable<any> {
-    const dictionaryOptions = this.createPaymentRequestOptions(dictItemCode, fiasCode);
-
-    return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
-      map((res: any) => {
-        if (res.error.code === 0) {
-          return res.items[0].attributeValues;
-        }
-        throw Error();
-      }),
-      catchError((err: any) => {
-        return throwError(err);
-      }),
-    );
+  loadPaymentInfo(attrs: any): Observable<any> {
+    return this.getDictionaryInfo(attrs);
   }
 
-  //TODO: Идентификатор заявителя ниже должен откуда-то браться
   /**
    * Получение номера УИН для по номеру заявки
    * @param orderId - идентификатор заявления
@@ -65,15 +54,7 @@ export class PaymentService {
    * @param attributeValues - дополнительные параметры
    */
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
-    // TODO: HARDCODE Специальная подмена на оплату 1,4 рубля гос пошлины, иначе будет как есть снятие
-    // if (location.hostname === 'local.test.gosuslugi.ru') {
-    //   const uinMockUp = new BehaviorSubject({
-    //     value: mockUpUIN
-    //   });
-    //   return uinMockUp.asObservable();
-    // }
-
-    // TODO: Хардкод для локальной отладки
+    // TODO: Хардкод для локальной отладки подмена суммы оплаты пошлины
     if (location.hostname.includes('test.gosuslugi.ru')) {
       attributeValues.sum = '200';
     }
@@ -82,11 +63,7 @@ export class PaymentService {
       ? `${this.config.mockUrl}/lk/v1/paygate/uin`
       : this.config.uinApiUrl;
     const path = `${urlPrefix}/${code}?orderId=${orderId}`;
-    return this.http.post(path, attributeValues, this.requestOptions).pipe(
-      catchError((err: any) => {
-        return throwError(err);
-      })
-    );
+    return this.http.post(path, attributeValues, this.requestOptions);
   }
 
   /**
@@ -94,21 +71,31 @@ export class PaymentService {
    * @param uin - уникальный идентификатор патежа
    * @param orderId - идентификатор заявления
    */
-  getBillsInfoByUIN(uin: string, orderId: string): Observable<any> {
+  getBillsInfoByUIN(uin: string | number, orderId: string): Observable<BillsInfoResponse> {
+    const urlPrefix = this.config.mocks.includes('payment')
+      ? `${this.config.mockUrl}/pay/v1/bills`
+      : `${this.config.billsApiUrl}bills`;
+    // eslint-disable-next-line max-len
+    const path = `${urlPrefix}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
+    return this.http.post<BillsInfoResponse>(path, {}, this.requestOptions);
+  }
+
+  /**
+   * Получение данных (предначисления) по номеру счета, полная информация
+   * @param billId - номер патежа
+   * @param orderId - идентификатор заявления
+   */
+  getBillsInfoByBillId(billId: number, orderId: string): Observable<any> {
     // На случай если сервис лежит, только для теста
     // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
     // return billMockUp.asObservable();
 
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/pay/v1/bills`
-      : this.config.billsApiUrl;
+      : `${this.config.billsApiUrl}bills`;
     // eslint-disable-next-line max-len
-    const path = `${urlPrefix}?billNumber=${uin}&returnUrl=${this.getReturnUrl()}&ci=false&senderTypeCode=ORDER&subscribe=true&epgu_id=${orderId}`;
-    return this.http.post(path, {}, this.requestOptions).pipe(
-      catchError((err: any) => {
-        return throwError(err);
-      }),
-    );
+    const path = `${urlPrefix}?billIds=${billId}&ci=false`;
+    return this.http.post(path, {}, this.requestOptions);
   }
 
   /**
@@ -116,16 +103,12 @@ export class PaymentService {
    * @param orderId - идентификатор заявления
    * @param code - идентификатор заявителя
    */
-  getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<any> {
+  getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<PaymentInfoForPaidStatusData> {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/lk/v1/paygate/uin`
       : this.config.uinApiUrl;
     const path = `${urlPrefix}/status/${code}?orderId=${orderId}`;
-    return this.http.get(path, this.requestOptions).pipe(
-      catchError((err: any) => {
-        return throwError(err);
-      }),
-    );
+    return this.http.get<PaymentInfoForPaidStatusData>(path, this.requestOptions);
   }
 
   /**
@@ -147,6 +130,36 @@ export class PaymentService {
   }
 
   /**
+   * Загружает информацию из справочников для оплаты
+   * @param attrs - аттрибуты
+   */
+  getDictionaryInfo(attrs: any): Observable<any> {
+    const { nsi } = attrs;
+    const dictionaryOptions = this.createPaymentRequestOptions(attrs);
+
+    return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
+      map((res: any) => {
+        if (res.error.code === 0) {
+          return res.items[0].attributeValues;
+        }
+        throw Error();
+      }),
+    );
+  }
+
+  /**
+   * Возвращает опции для запроса на оплату
+   * @param attrs - аттрибуты компонента
+   * TODO: В будущем этот метод надо будет удалть, т.к. для совместимости с получением сведения для услуги брака/разбрака
+   */
+  createPaymentRequestOptions(attrs: any): PaymentDictionaryOptionsInterface {
+    const { applicantAnswers } = this.screenService;
+    const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, attrs?.ref?.fiasCode?.split('.')));
+
+    return getPaymentRequestOptions(filterReg, attrs);
+  }
+
+  /**
    * Возращает значение из объекта по массиву переданных ключей
    * @param obj_or_result - объект или значение объекта
    * @param path - массив с путём ключей
@@ -161,18 +174,5 @@ export class PaymentService {
       return null;
     }
     return obj_or_result;
-  }
-
-  /**
-   * Возвращает опции для запроса на оплату
-   * @param dictItemCode - код элемента справочника на оплату
-   * @param fiasCode - код справочника
-   */
-  createPaymentRequestOptions(dictItemCode: string, fiasCode: string): PaymentDictionaryOptionsInterface {
-    const { applicantAnswers } = this.screenService;
-    const path = fiasCode.split('.'); // Путь к ответу
-    const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, path));
-
-    return getPaymentRequestOptions(filterReg, dictItemCode);
   }
 }
