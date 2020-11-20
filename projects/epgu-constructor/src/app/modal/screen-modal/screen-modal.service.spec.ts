@@ -7,6 +7,8 @@ import { FormPlayerApiServiceStub } from '../../form-player/services/form-player
 import { FormPlayerServiceStub } from '../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
+import { LoggerService } from '../../core/services/logger/logger.service';
+import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
 
 
 describe('ScreenModalService', () => {
@@ -21,6 +23,7 @@ describe('ScreenModalService', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
       ]
     });
     service = TestBed.inject(ScreenModalService);
