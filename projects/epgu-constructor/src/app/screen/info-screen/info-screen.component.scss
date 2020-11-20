@@ -9,6 +9,9 @@
 .info {
   &__head {
     margin-bottom: 24px;
+    &--hidden {
+      display: none;
+    }
   }
 
   &__submit {

@@ -24,7 +24,8 @@
     }
   }
 
-  ul, ol {
+  ul,
+  ol {
     padding: 0;
     margin: 0 0 0 12px;
     list-style: none;
@@ -34,15 +35,14 @@
     }
   }
 
-
   ol li {
     padding-left: 16px;
     position: relative;
 
     &::before {
       counter-increment: number;
-      content: counter(number)"\a0";
-      color: $color-gosblue;
+      content: counter(number) '\a0';
+      color: $color-blu-digitale;
       padding-right: 6px;
       font-weight: $fw-semi-bold;
       position: absolute;
@@ -50,13 +50,12 @@
     }
   }
 
-
   ul li {
     padding-left: 16px;
 
     &::before {
-      color: $color-gosblue;
-      content: "•";
+      color: $color-blu-digitale;
+      content: '•';
       display: inline-block;
       font-weight: 900;
       margin-left: -1em;
@@ -67,11 +66,11 @@
   }
 
   li:not(:first-child) {
-    margin-top: 16px;
+    margin-top: 12px;
   }
 
   p {
-    margin-top: 16px;
+    margin-top: 12px;
 
     &:last-child {
       margin-bottom: 0;
@@ -83,6 +82,6 @@
   }
 
   .color-blue-bayoux {
-    color: $color-blue-bayoux
+    color: $color-blue-bayoux;
   }
 }

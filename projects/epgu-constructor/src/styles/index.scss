@@ -11,7 +11,11 @@
   font-family: $font-main;
 
   img {
-    max-width: 100%;
+    max-width: 200px;
+    margin-bottom: 24px;
+    @include tablets-down {
+      max-width: 66%;
+    }
   }
 
   *,
@@ -27,6 +31,7 @@
   h5,
   h6 {
     margin: 0;
+    word-wrap: break-word;
   }
 
   h1 {
@@ -224,6 +229,12 @@
 
     @include tablets-up {
       box-sizing: content-box;
+    }
+  }
+
+  .title {
+    &--header {
+      margin-bottom: 16px;
     }
   }
 }
