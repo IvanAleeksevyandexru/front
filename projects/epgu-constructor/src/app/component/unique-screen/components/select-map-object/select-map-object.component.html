@@ -64,7 +64,12 @@
             >ознакомиться</a
             >
           </div>
-          <lib-button [disabled]="!mapObject.agreement" width="wide" (click)="selectObject()" class="btn__submit"
+          <lib-button
+            [showLoader]="screenService.isLoading$ | async"
+            [disabled]="!mapObject.agreement"
+            (click)="selectObject()"
+            class="btn__submit"
+            width="wide"
           >Выбрать
           </lib-button>
         </ng-container>
