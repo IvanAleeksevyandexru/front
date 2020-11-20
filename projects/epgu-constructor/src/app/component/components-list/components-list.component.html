@@ -193,6 +193,11 @@
 
       <epgu-constructor-doc-input [data]="componentData" *ngSwitchCase="componentType.DocInput">
       </epgu-constructor-doc-input>
+      <epgu-constructor-field-list
+        [data]="componentData.get('value')"
+        *ngSwitchCase="componentType.FieldList"
+      >
+      </epgu-constructor-field-list>
     </ng-container>
   </div>
 </form>

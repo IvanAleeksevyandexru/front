@@ -55,6 +55,12 @@
           [data]="screenService.component"
           (nextStepEvent)="nextStep()"
         ></epgu-constructor-select-children-screen>
+
+        <epgu-constructor-field-list
+          [data]="screenService.component"
+          *ngSwitchCase="screenComponentName.fieldList"
+        >
+        </epgu-constructor-field-list>
       </ng-container>
     </epgu-constructor-screen-pad>
   </div>
