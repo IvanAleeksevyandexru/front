@@ -7,6 +7,7 @@ import {
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerNavigation, Navigation } from '../../../form-player/form-player.types';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 
 /**
@@ -19,7 +20,6 @@ export abstract class FormPlayerBaseService {
   protected _store: FormPlayerApiSuccessResponse;
   protected playerLoaded = false;
   protected isLoading = false;
-  protected screenType: string;
   protected logSuffix = '';
 
   protected isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
@@ -31,6 +31,7 @@ export abstract class FormPlayerBaseService {
   constructor(
     public formPlayerApiService: FormPlayerApiService,
     private screenServiceBase: ScreenService,
+    private loggerBase: LoggerService
   ) {}
 
   abstract navigate(navigation: Navigation, formPlayerNavigation: FormPlayerNavigation): void;
@@ -39,21 +40,13 @@ export abstract class FormPlayerBaseService {
    * Обработка ответа сервера
    * @param response - ответ сервера на запрос
    */
-  processResponse(response: FormPlayerApiResponse): void {
-    if (this.hasError(response)) {
-      this.sendDataError(response);
-    } else {
-      this.sendDataSuccess(response);
-      // reset view by scrolling to top
-      window.scroll(0,0);
-    }
-  };
+  abstract processResponse(response: FormPlayerApiResponse): void;
 
   /**
    * Возвращает true, если есть ошибки
    * @param response - ответ сервера
    */
-  hasError(response: FormPlayerApiResponse) {
+  protected hasError(response: FormPlayerApiResponse) {
     return this.hasRequestErrors(response as FormPlayerApiErrorResponse)
       || this.hasBusinessErrors(response as FormPlayerApiSuccessResponse);
   }
@@ -62,7 +55,7 @@ export abstract class FormPlayerBaseService {
    * Возвращает true, если есть ошибки в ответе на запрос
    * @param response - ответ сервера
    */
-  hasRequestErrors(response: FormPlayerApiErrorResponse): boolean {
+  private hasRequestErrors(response: FormPlayerApiErrorResponse): boolean {
     const errors = response?.status;
     return errors === FormPlayerApiErrorStatuses.badRequest;
   }
@@ -71,12 +64,12 @@ export abstract class FormPlayerBaseService {
    * Возвращает true, если есть ошибки в ответе с DTO секцией ошибок
    * @param response - ответ сервера
    */
-  hasBusinessErrors(response: FormPlayerApiSuccessResponse): boolean {
+  private hasBusinessErrors(response: FormPlayerApiSuccessResponse): boolean {
     const errors = response?.scenarioDto?.errors;
     return errors && !!Object.keys(errors).length;
   }
 
-  updateRequest(navigation: Navigation): void {
+  protected updateRequest(navigation: Navigation): void {
     const navigationPayload = navigation?.payload;
     const passedStore = navigation?.options?.store;
 
@@ -84,47 +77,60 @@ export abstract class FormPlayerBaseService {
       this._store = passedStore;
     }
 
-    console.log(`updateRequest ${this.logSuffix}`);
-    console.log(navigationPayload);
+    this.loggerBase.log([
+      `updateRequest ${this.logSuffix}`,
+      navigationPayload
+    ]);
     if (this.isEmptyNavigationPayload(navigationPayload)) {
-      this._store.scenarioDto.currentValue = {};
-      const componentId = this._store.scenarioDto.display.components[0].id;
-      this._store.scenarioDto.currentValue[componentId] = {
-        value: '',
-        visited: true
-      };
+      this.setDefaultCurrentValue();
     } else {
       this._store.scenarioDto.currentValue = navigationPayload;
     }
   }
 
-  isEmptyNavigationPayload(navigationPayload) {
+  private setDefaultCurrentValue(): void {
+    this._store.scenarioDto.currentValue = {};
+    const componentId = this._store.scenarioDto.display.components[0].id;
+    this._store.scenarioDto.currentValue[componentId] = {
+      value: '',
+      visited: true
+    };
+  }
+
+  private isEmptyNavigationPayload(navigationPayload): boolean {
     return !(navigationPayload && Object.keys(navigationPayload).length);
   }
 
-  sendDataSuccess(response): void {
-    console.log(`----- SET DATA ${this.logSuffix}---------`);
-    console.log('request', this._store);
+  protected sendDataSuccess(response): void {
+    this.loggerBase.log([
+      'request',
+      this._store
+    ], `----- SET DATA ${this.logSuffix}---------`);
     this.initResponse(response);
   }
 
-  sendDataError(response: FormPlayerApiResponse): void {
+  protected sendDataError(response: FormPlayerApiResponse): void {
     const error = response as FormPlayerApiErrorResponse;
     const businessError = response as FormPlayerApiSuccessResponse;
 
-    console.error(`----- ERROR DATA ${this.logSuffix}---------`);
+    const groupLogName = `----- ERROR DATA ${this.logSuffix}---------`;
+
     if (error.status) {
-      console.error(error);
+      this.loggerBase.error([
+        error
+      ], groupLogName);
     } else {
       // NOTICE: passing business errors to components layers, do not change this logic!
-      console.error(businessError.scenarioDto?.errors);
+      this.loggerBase.error([
+        businessError.scenarioDto?.errors
+      ], groupLogName);
       this.initResponse(businessError);
     }
 
     this.updateLoading(false);
   }
 
-  initResponse(response: FormPlayerApiSuccessResponse): void {
+  private initResponse(response: FormPlayerApiSuccessResponse): void {
     if (!response) {
       this.handleInvalidResponse();
       return;
@@ -134,19 +140,22 @@ export abstract class FormPlayerBaseService {
     const scenarioDto = response.scenarioDto;
 
     this.initScreenStore(scenarioDto);
-    this.updateScreenType(scenarioDto);
     this.updatePlayerLoaded(true);
 
-    // TODO: move it to log service
-    console.log(`----- GET DATA ${this.logSuffix}---------`);
-    console.log('componentId:', scenarioDto.display.components[0].id);
-    console.log('componentType:', scenarioDto.display.components[0].type);
-    console.log('initResponse:', response);
+    this.loggerBase.log([
+      'componentId:',
+      scenarioDto.display.components[0].id,
+      'componentType:',
+      scenarioDto.display.components[0].type,
+      'initResponse:',
+      response
+    ], `----- GET DATA ${this.logSuffix}---------`);
   }
 
-  handleInvalidResponse() {
-    console.error(`----- ERROR DATA ${this.logSuffix}---------`);
-    console.error('Invalid Response');
+  private handleInvalidResponse(): void {
+    this.loggerBase.error([
+      'Invalid Response'
+    ], `----- ERROR DATA ${this.logSuffix}---------`);
   }
 
   /**
@@ -154,16 +163,6 @@ export abstract class FormPlayerBaseService {
    */
   get store(): FormPlayerApiSuccessResponse {
     return this._store;
-  }
-
-  /**
-   * Обновляем тип экрана
-   * @param scenarioDto - сведения о сценарии
-   * @private
-   */
-  protected updateScreenType(scenarioDto: ScenarioDto): void {
-    const { display } = scenarioDto;
-    this.screenType = display.type;
   }
 
   /**

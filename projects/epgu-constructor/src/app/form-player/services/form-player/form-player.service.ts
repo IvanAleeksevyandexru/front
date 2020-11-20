@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { ScreenService } from '../../../screen/screen.service';
 import { COMPONENT_DATA_KEY } from '../../../shared/constants/form-player';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import {
-  CheckOrderApiResponse,
+  CheckOrderApiResponse, FormPlayerApiResponse,
 } from '../form-player-api/form-player-api.types';
 import { UtilsService } from '../../../shared/services/utils/utils.service';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
 import { Location } from '@angular/common';
+import { WINDOW } from '../../../core/providers/window.provider';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -21,9 +23,11 @@ export class FormPlayerService extends FormPlayerBaseService {
   constructor(
     public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
-    private location: Location
+    private location: Location,
+    @Inject(WINDOW) private window: Window,
+    private logger: LoggerService
   ) {
-    super(formPlayerApiService, screenService);
+    super(formPlayerApiService, screenService, logger);
   }
 
   public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
@@ -65,7 +69,7 @@ export class FormPlayerService extends FormPlayerBaseService {
    * Получает и устанавливает данные для заявления для id услуги
    * @param orderId - идентификатор черновика
    */
-  getOrderData(orderId?: string) {
+  getOrderData(orderId: string) {
     this.formPlayerApiService.getServiceData(orderId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
@@ -100,6 +104,19 @@ export class FormPlayerService extends FormPlayerBaseService {
   }
 
   /**
+   * Обработка ответа сервера
+   * @param response - ответ сервера на запрос
+   */
+  processResponse(response: FormPlayerApiResponse): void {
+    if (this.hasError(response)) {
+      this.sendDataError(response);
+    } else {
+      this.sendDataSuccess(response);
+      this.resetViewByChangeScreen();
+    }
+  };
+
+  /**
    * Проверяет нужно ли нам достать ранее сохранённые данные
    * для подмены экрана на тот на котором остановились
    * @private
@@ -114,5 +131,13 @@ export class FormPlayerService extends FormPlayerBaseService {
    */
   private isHaveOrderDataInLocalStorage(): boolean {
     return !!localStorage.getItem(COMPONENT_DATA_KEY);
+  }
+
+  /**
+   * Скролим в верх страницы при переключения скрина
+   * @private
+   */
+  private resetViewByChangeScreen() {
+    this.window.scroll(0,0);
   }
 }
