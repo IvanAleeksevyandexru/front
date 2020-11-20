@@ -538,4 +538,11 @@ describe('FormPlayerService', () => {
       expect(logger.error).toBeCalled();
     });
   });
+
+  describe('get store()',() => {
+    it('should return store', () => {
+      const store = service.store;
+      expect(store).toBe(service['_store']);
+    });
+  });
 });
