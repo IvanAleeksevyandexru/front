@@ -491,4 +491,43 @@ describe('FormPlayerService', () => {
       expect(service['updateLoading']).toBeCalledWith(false);
     });
   });
+
+  describe('initResponse()',() => {
+    it('should call handleInvalidResponse when empty response', () => {
+      spyOn<any>(service, 'handleInvalidResponse').and.callThrough();
+      service['initResponse'](null);
+      expect(service['handleInvalidResponse']).toBeCalled();
+    });
+
+    it('should set store from response', () => {
+      const newResponse = JSON.parse(JSON.stringify(response));
+      spyOn<any>(service, 'initResponse').and.callThrough();
+      service['initResponse'](newResponse);
+      expect(service['_store']).toBe(newResponse);
+    });
+
+    it('should call initScreenStore with scenarioDto param', () => {
+      spyOn<any>(service, 'initScreenStore').and.callThrough();
+      service['initResponse'](response);
+      expect(service['initScreenStore']).toBeCalledWith(response.scenarioDto);
+    });
+
+    it('should call updateScreenType with scenarioDto param', () => {
+      spyOn<any>(service, 'updateScreenType').and.callThrough();
+      service['initResponse'](response);
+      expect(service['updateScreenType']).toBeCalledWith(response.scenarioDto);
+    });
+
+    it('should call updatePlayerLoaded with true param', () => {
+      spyOn<any>(service, 'updatePlayerLoaded').and.callThrough();
+      service['initResponse'](response);
+      expect(service['updatePlayerLoaded']).toBeCalledWith(true);
+    });
+
+    it('should call log of loggerService', () => {
+      spyOn<any>(logger, 'log').and.callThrough();
+      service['initResponse'](response);
+      expect(logger.log).toBeCalled();
+    });
+  });
 });
