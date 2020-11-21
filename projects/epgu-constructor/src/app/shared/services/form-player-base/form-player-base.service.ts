@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenService } from '../../../screen/screen.service';
 import {
@@ -8,6 +8,8 @@ import {
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerNavigation, Navigation } from '../../../form-player/form-player.types';
 import { LoggerService } from '../../../core/services/logger/logger.service';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 
 
 /**
@@ -17,6 +19,9 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
  */
 @Injectable()
 export abstract class FormPlayerBaseService {
+  protected formPlayerApiService: FormPlayerApiService;
+  protected screenServiceBase: ScreenService;
+  protected loggerBase: LoggerService;
   protected _store: FormPlayerApiSuccessResponse;
   protected playerLoaded = false;
   protected isLoading = false;
@@ -29,10 +34,12 @@ export abstract class FormPlayerBaseService {
   public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
 
   constructor(
-    public formPlayerApiService: FormPlayerApiService,
-    private screenServiceBase: ScreenService,
-    private loggerBase: LoggerService
-  ) {}
+    public injector: Injector
+  ) {
+    this.formPlayerApiService = this.injector.get(FormPlayerApiService);
+    this.screenServiceBase = this.injector.get(ScreenService);
+    this.loggerBase = this.injector.get(LoggerService);
+  }
 
   abstract navigate(navigation: Navigation, formPlayerNavigation: FormPlayerNavigation): void;
 
