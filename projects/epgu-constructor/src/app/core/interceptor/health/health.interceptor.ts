@@ -62,7 +62,10 @@ export class HealthInterceptor implements HttpInterceptor {
 
           if (validationStatus) {
             const { scenarioDto } = result;
-            this.configParams = { id: scenarioDto.display.id, name: scenarioDto.display.name };
+            this.configParams = { 
+              id: scenarioDto.display.id, 
+              name: this.utils.cyrillicToLatin(scenarioDto.display.name),
+            };
           }
 
           if (this.configParams !== null) {
@@ -80,6 +83,8 @@ export class HealthInterceptor implements HttpInterceptor {
             this.configParams['errorMessage'] = error.message;
   
             this.health.measureEnd(serviceName, 1, this.configParams);
+          } else {
+            this.health.measureEnd(serviceName, 0, this.configParams);
           }
         }
         return throwError(error);
