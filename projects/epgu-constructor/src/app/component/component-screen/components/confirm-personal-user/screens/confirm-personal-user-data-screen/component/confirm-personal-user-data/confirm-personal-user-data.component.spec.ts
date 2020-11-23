@@ -9,6 +9,9 @@ import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ActionType } from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ActionDirective } from '../../../../../../../../shared/directives/action/action.directive';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
+import { SharedModule } from 'projects/epgu-constructor/src/app/shared/shared.module';
+import { SafePipe } from 'projects/epgu-constructor/src/app/core/pipes/safe/safe.pipe';
+import { FieldListComponent } from 'projects/epgu-constructor/src/app/shared/components/field-list/field-list.component';
 
 
 describe('ConfirmPersonalUserDataComponent', () => {
@@ -32,7 +35,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
       ]
     },
     type: '',
-    value: '',
+    value: '{}',
     label: '',
     id: ''
   };
@@ -45,14 +48,20 @@ describe('ConfirmPersonalUserDataComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConfirmPersonalUserDataComponent, ToJsonPipe, ActionDirective],
+      declarations: [
+        ConfirmPersonalUserDataComponent,
+        ToJsonPipe,
+        ActionDirective,
+        FieldListComponent,
+        SafePipe,
+      ],
       providers: [
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
