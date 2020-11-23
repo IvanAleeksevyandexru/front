@@ -62,6 +62,7 @@ export class TimeSlotsComponent implements OnInit {
   public monthsYears: ListItem[] = [];
   public timeSlots: SlotInterface[] = [];
   public dialogButtons = [];
+  public isExistsSlots = true;
   public currentSlot: any;
   public currentMonth: ListItem;
   public blockMobileKeyboard = false;
@@ -124,6 +125,23 @@ export class TimeSlotsComponent implements OnInit {
       days += 1;
       output[week].push({ number: date.date(), date: date.toDate() });
     }
+  }
+
+  /**
+   * Проверяет есть ли в текущем месяце пустые слоты
+   * Если да, to this.isExistsSlots = true
+   * Функция вызывается при каждой регенерации календаря
+   */
+  public checkExistenceSlots() {
+    let isExistsSlots = false;
+    this.weeks.forEach((week) => {
+      week.forEach((day) => {
+        if (!this.currentService.isDateLocked(day.date)) {
+          isExistsSlots = true;
+        }
+      });
+    });
+    this.isExistsSlots = isExistsSlots;
   }
 
   public isToday(date: Date) {
@@ -192,6 +210,7 @@ export class TimeSlotsComponent implements OnInit {
     this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
     this.activeYearNumber = parseInt(activeYear, 10);
     this.renderSingleMonthGrid(this.weeks);
+    this.checkExistenceSlots();
   }
 
   public clickSubmit() {
@@ -304,6 +323,8 @@ export class TimeSlotsComponent implements OnInit {
         }
 
         this.inProgress = false;
+
+        this.checkExistenceSlots();
       },
       () => {
         this.errorMessage = this.currentService.getErrorMessage();
