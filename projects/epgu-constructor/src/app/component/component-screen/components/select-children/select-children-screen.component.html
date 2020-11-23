@@ -23,7 +23,6 @@
                 [formControlName]="item.controlId"
                 (changed)="handleSelect($event, idx)"
                 [items]="itemsToSelect"
-                [disabled]="isNewId(item[isNewRef])"
               ></lib-dropdown>
             </div>
             <section class="card__content" *ngIf="isNewId(item[isNewRef])">
