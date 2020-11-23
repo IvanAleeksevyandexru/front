@@ -419,7 +419,7 @@ export class FileUploadItemComponent implements OnDestroy {
     }, []);
   }
 
-  handleError(action: ErrorActions, file?: File): void {
+  handleError(action: ErrorActions, file?: Partial<File>): void {
     const errorHandler = {};
     // eslint-disable-next-line prettier/prettier
     errorHandler[ErrorActions.addMaxAmount] = `Максимальное число файлов - ${this.data.maxFileCount}`;
@@ -486,7 +486,7 @@ export class FileUploadItemComponent implements OnDestroy {
           takeUntil(this.ngUnsubscribe$),
           catchError((e: any) => {
             this.filesInUploading -= 1;
-            this.handleError(ErrorActions.addDeletionErr);
+            this.handleError(ErrorActions.addDeletionErr, { name: file.fileName });
             return throwError(e);
           }),
         )
@@ -554,7 +554,7 @@ export class FileUploadItemComponent implements OnDestroy {
       .pipe(
         takeUntil(this.ngUnsubscribe$),
         catchError((e: any) => {
-          this.handleError(ErrorActions.addDownloadErr);
+          this.handleError(ErrorActions.addDownloadErr, { name: file.fileName });
           return throwError(e);
         }),
       )

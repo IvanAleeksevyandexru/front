@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DisplayDto, FormPlayerApiSuccessResponse } from '../form-player-api/form-player-api.types';
+import { ComponentDtoAction, DisplayDto, FormPlayerApiSuccessResponse } from '../form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { Gender } from '../../../shared/types/gender';
 
@@ -14,7 +14,15 @@ export class FormPlayerServiceStub {
       cycledFields: [],
       finishedAndCurrentScreens: [],
       display: {
-        components: [],
+        components: [{
+          attrs: {},
+          id: '123',
+          label: 'some label',
+          type: 'some type',
+          value: 'some value',
+          required: false,
+          visited: false
+        }],
         header: 'some header',
         label: 'some label',
         id: '123',
@@ -47,4 +55,6 @@ export class FormPlayerServiceStub {
   sendDataError(): void {}
 
   initResponse(): void {}
+
+  store(): FormPlayerApiSuccessResponse { return this.response; }
 }

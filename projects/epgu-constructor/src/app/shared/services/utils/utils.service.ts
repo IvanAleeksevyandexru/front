@@ -157,7 +157,7 @@ export class UtilsService {
     let preparedArray = this.sliceArrayFromRight(splittedUrl, 3);
 
     preparedArray = numRegex.test(preparedArray[0]) ? this.sliceArrayFromRight(preparedArray, 3, false) : preparedArray;
-    preparedArray = preparedArray.map(urlPath => numRegex.test(urlPath) ? `orderId${urlPath}` : urlPath);
+    preparedArray = preparedArray.map(urlPath => numRegex.test(urlPath) ? '' : urlPath);
 
     const serviceName = preparedArray.join('-');
 

@@ -26,6 +26,7 @@ export enum CustomScreenComponentTypes {
   SnilsInput = 'SnilsInput',
   CityInput = 'CityInput',
   DocInput = 'DocInput',
+  FieldList = 'FieldList',
 }
 
 export type CustomListDropDowns = Array<Partial<ListItem>>;
@@ -71,7 +72,7 @@ export type CustomComponentDropDownItem = {
  * @property dictionaryType - dictionary name for request {@see getDictionary}
  */
 export interface CustomComponentAttr {
-  [key:string]:any;
+  [key:string]: any;
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType: string;
   labelAttr: string;
