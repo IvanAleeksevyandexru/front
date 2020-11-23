@@ -76,6 +76,14 @@
     color: $color-text-helper;
   }
 
+  .text--center{
+    text-align: center;
+  }
+
+  .text--right{
+    text-align: right;
+  }
+
   sub {
     font-size: $font-xs;
     line-height: 16px;

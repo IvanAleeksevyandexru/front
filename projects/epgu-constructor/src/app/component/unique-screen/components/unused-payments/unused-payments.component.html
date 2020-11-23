@@ -2,6 +2,7 @@
 <!--  <h3 *ngIf="paymentUIN">Использована оплата по УИН {{paymentUIN}}</h3>-->
 <!--</div>-->
 <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
+
 <epgu-constructor-screen-container>
   <div class="inner">
     <div *ngIf="data?.name" class="head">
@@ -11,8 +12,7 @@
   </div>
   <div class="radio-list" *ngIf="(paymentsList$ | async) as paymentsData; else emptyList">
     <epgu-constructor-radio-tax
-
-      (selected)="tax = $event"
+      (selected)="radioSelect($event)"
       [data]="paymentsData"></epgu-constructor-radio-tax>
       <lib-button
         class="btn__submit"
@@ -22,12 +22,10 @@
       </lib-button>
   </div>
   <ng-template #emptyList>
-    <div class="radio-list-empty">
+    <div class="text--center">
       У вас нет ранее оплаченных пошлин для использования. Выберите другой вид оплаты
     </div>
   </ng-template>
-
-
 </epgu-constructor-screen-container>
 
 

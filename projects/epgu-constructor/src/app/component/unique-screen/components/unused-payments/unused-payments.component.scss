@@ -2,12 +2,8 @@
 
 
 .unused-payments__description {
- @include typ-plain-text;
+  @include typ-plain-text;
   margin: 0 0 24px;
-}
-
-.radio-list-empty{
-  text-align: center;
 }
 
 .btn__submit {
