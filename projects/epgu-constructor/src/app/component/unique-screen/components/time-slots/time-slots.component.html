@@ -49,7 +49,7 @@
           </div>
         </div>
 
-        <div class="time-slots-empty" *ngIf="!timeSlots.length">
+        <div class="time-slots-empty" *ngIf="!isExistsSlots">
           <h4>В этом месяце всё занято</h4>
           <epgu-constructor-helper-text size="lg">
             Выберите другой, чтобы забронировать время

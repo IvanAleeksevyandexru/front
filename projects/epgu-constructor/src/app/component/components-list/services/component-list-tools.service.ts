@@ -40,7 +40,7 @@ export class ComponentListToolsService {
   ): CustomListStatusElements {
     const valueEquals: boolean = typeof componentVal === 'string' || typeof componentVal === 'boolean'
       ? reference.val === componentVal
-      : reference.val === componentVal.id;
+      : reference.val === componentVal?.id;
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id
     );
@@ -49,7 +49,7 @@ export class ComponentListToolsService {
       this.prevValues[dependentComponent.id] = valueControl.value;
       valueControl.patchValue('');
       valueControl.markAsUntouched();
-      control.disable();
+      control.disable({ onlySelf: true });
     };
     const patchToPrevValueAndEnable = (control: AbstractControl): void => {
       const isFindAndValue: boolean =
@@ -58,7 +58,7 @@ export class ComponentListToolsService {
         control.get('value').patchValue(this.prevValues[dependentComponent.id]);
       }
 
-      control.enable();
+      control.enable({ onlySelf: true });
     };
     const isDependentDisabled: boolean = dependentComponent.attrs?.disabled;
 
