@@ -61,12 +61,14 @@ export interface DictionaryYMapItem extends DictionaryItem {
   expanded: boolean;
 }
 
+export interface  DictionaryValue {
+  asString: string,
+}
+
 export interface DictionarySimpleFilter {
   attributeName: string,
   condition: 'EQUALS' | 'CONTAINS',
-  value: {
-    asString: string,
-  }
+  value: DictionaryValue
 }
 export interface DictionarySubFilter {
   simple: DictionarySimpleFilter,
