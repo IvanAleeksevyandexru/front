@@ -380,12 +380,14 @@ export class FileUploadItemComponent implements OnDestroy {
 
     return files.map((file: File) => {
       const terabyteFiles = this.files$$.value;
-      const { type, lastModified } = file;
+      const { type, lastModified, name } = file;
       let fileToAction = new File([file], file.name, {
         type,
         lastModified,
       });
-      let uniqFileName = `${uuidv4()}.${fileToAction.name.split('.').pop() || 'jpeg'}`;
+      let uniqFileName = `${name.split('.')[0]}_${uuidv4()}.${
+        fileToAction.name.split('.').pop() || 'jpeg'
+      }`;
 
       const fileToUpload = new TerraUploadedFile({
         fileName: uniqFileName,
