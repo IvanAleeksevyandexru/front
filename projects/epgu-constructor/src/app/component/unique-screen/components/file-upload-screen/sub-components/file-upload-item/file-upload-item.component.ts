@@ -324,8 +324,6 @@ export class FileUploadItemComponent implements OnDestroy {
     )[0];
     this.listIsUploadingNow = false;
 
-    console.log(terabyteFiles, fileToUpload, file);
-
     this.subs.push(
       this.terabyteService
         .uploadFile(fileToUpload.getParamsForUploadFileOptions(), file)
@@ -361,7 +359,10 @@ export class FileUploadItemComponent implements OnDestroy {
       return of();
     }
 
-    this.listIsUploadingNow = true;
+    if (files.length > 0) {
+      this.listIsUploadingNow = true;
+    }
+
     const compressedFiles = this.compressImages(files, isPhoto);
 
     return merge(...compressedFiles).pipe(
@@ -374,6 +375,19 @@ export class FileUploadItemComponent implements OnDestroy {
     return `${photoBaseName}_${this.uploadedCameraPhotoNumber + 1}.${photoType}`;
   }
 
+  getUniqName(name: string): string {
+    return `${name.split('.')[0]}_${uuidv4()}.${name.split('.').pop() || 'jpeg'}`;
+  }
+
+  createCustomFile(file: File, fileName: string): File {
+    const { type, lastModified } = file;
+
+    return new File([file], fileName, {
+      type,
+      lastModified,
+    });
+  }
+
   compressImages(files: File[], isPhoto?: boolean): Array<Observable<any>> {
     const compressedImageOptions: CompressionOptions = {
       maxSizeMB: getSizeInMB(maxImgSizeInBytes),
@@ -382,14 +396,8 @@ export class FileUploadItemComponent implements OnDestroy {
 
     return files.map((file: File) => {
       const terabyteFiles = this.files$$.value;
-      const { type, lastModified, name } = file;
-      let fileToAction = new File([file], file.name, {
-        type,
-        lastModified,
-      });
-      let uniqFileName = `${name.split('.')[0]}_${uuidv4()}.${
-        file.name.split('.').pop() || 'jpeg'
-      }`;
+      let fileToAction = this.createCustomFile(file, file.name);
+      let uniqFileName = this.getUniqName(file.name);
 
       const fileToUpload = new TerraUploadedFile({
         fileName: isPhoto ? this.getPhotoName(fileToAction) : uniqFileName,
@@ -404,10 +412,7 @@ export class FileUploadItemComponent implements OnDestroy {
           uniqFileName = this.getPhotoName(fileToAction);
         }
 
-        fileToAction = new File([fileToAction], uniqFileName, {
-          type,
-          lastModified,
-        });
+        fileToAction = this.createCustomFile(fileToAction, uniqFileName);
 
         return from(
           this.compressionService.imageCompression(fileToAction, compressedImageOptions),
@@ -440,6 +445,7 @@ export class FileUploadItemComponent implements OnDestroy {
         acc.push(file);
       } else {
         this.handleError(ErrorActions.addInvalidType, file);
+        this.listIsUploadingNow = false;
       }
       return acc;
     }, []);
