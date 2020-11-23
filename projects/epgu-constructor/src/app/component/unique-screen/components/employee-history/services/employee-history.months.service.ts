@@ -31,7 +31,6 @@ export class EmployeeHistoryMonthsService {
 
   getUncheckedPeriods(): EmployeeHistoryUncheckedPeriod[] {
     const periods: Array<Array<EmployeeHistoryAvailableDates>> = [];
-    const result: Array<EmployeeHistoryUncheckedPeriod> = [];
     let periodIndex = 0;
 
     periods[periodIndex] = [];
@@ -47,28 +46,20 @@ export class EmployeeHistoryMonthsService {
       }
     }
 
-    periods.forEach((period) => {
-      if (period.length) {
-        const convertedDates: Array<Moment> =
-          period.map((stringDate: EmployeeHistoryAvailableDates) => this.getConvertedDates(stringDate));
+    const getPeriod = (type: 'min' | 'max', convertedDates: Array<Moment>): string => {
+      const formatString = 'MMMM YYYY';
+      return moment[type](convertedDates).format(formatString);
+    };
 
-        const getPeriod = (type: 'min' | 'max'): string => {
-          const formatString = 'MMMM YYYY';
+    return periods.filter(period => period.length).map((period: EmployeeHistoryAvailableDates[]) => {
+      const convertedDates: Array<Moment> =
+        period.map((stringDate: EmployeeHistoryAvailableDates) => this.getConvertedDates(stringDate));
 
-          if (type === 'max') {
-            return moment.max(convertedDates).format(formatString);
-          }
-
-          return moment.min(convertedDates).format(formatString);
-        };
-
-        result.push({
-          from: getPeriod('min'),
-          to: getPeriod('max')
-        });
-      }
+      return {
+        from: getPeriod('min', convertedDates),
+        to: getPeriod('max', convertedDates)
+      };
     });
-    return result;
   }
 
   private getAvailableMonths(
@@ -134,8 +125,14 @@ export class EmployeeHistoryMonthsService {
 
   }
 
+  /**
+   *
+   * @param stringDate
+   * @private
+   * @example: getConvertedDates({ date: '05/2020'}) => moment(05/01/2020)
+   */
   private getConvertedDates(stringDate: EmployeeHistoryAvailableDates): Moment {
-    const c = stringDate.date.split('/');
-    return moment(`${c[0]}/01/${c[1]}`);
+    const arrParsedDate: string[] = stringDate.date.split('/');
+    return moment(`${arrParsedDate[0]}/01/${arrParsedDate[1]}`);
   }
 }
