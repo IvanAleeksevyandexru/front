@@ -25,7 +25,6 @@ export class HealthInterceptor implements HttpInterceptor {
   constructor(private health: HealthService, private utils: UtilsService) {}
 
   private configParams: ConfigParams | null = null;
-  private 
 
   /**
    * Returns a boolean value for exceptions
