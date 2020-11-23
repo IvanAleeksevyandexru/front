@@ -6,7 +6,7 @@
     class="screen-body"
     [ngClass]="screenService.displayCssClass$ | async"
   >
-    <div [class.info__head--hidden]="!(screenService.header$ | async).length">
+    <div *ngIf="screenService.header$ | async">
       <epgu-constructor-page-name class="info__head">{{
         screenService.header$ | async
       }}</epgu-constructor-page-name>
