@@ -1,4 +1,4 @@
-@import "../../../../../../styles/core";
+@import '../../../../../../styles/core';
 
 .req-modal {
   //&::ng-deep .conf-modal {
@@ -30,7 +30,7 @@
     display: flex;
     margin: 24px 0 32px 0;
     justify-content: space-evenly;
-    color: $color-blue-bayoux;
+    color: $color-text-helper;
 
     @include typ-plain-small;
 

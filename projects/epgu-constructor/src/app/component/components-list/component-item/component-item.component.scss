@@ -7,7 +7,7 @@
   &__hint {
     @include first-letter-uppercase();
     margin: 4px 4px 0 0;
-    color: $color-blue-bayoux;
+    color: $color-text-helper;
     @include typ-plain-small();
   }
 

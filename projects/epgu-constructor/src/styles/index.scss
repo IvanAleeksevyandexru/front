@@ -27,6 +27,7 @@
   h5,
   h6 {
     margin: 0;
+    word-wrap: break-word;
   }
 
   h1 {
@@ -128,6 +129,8 @@
     }
   }
 
+  /* Utility classes */
+
   .text-color {
     &--white {
       color: $color-white;
@@ -197,7 +200,6 @@
     }
   }
 
-  /* Utility classes */
   .block {
     &--with-icon {
       display: flex;
@@ -224,6 +226,12 @@
 
     @include tablets-up {
       box-sizing: content-box;
+    }
+  }
+
+  .title {
+    &--header {
+      margin-bottom: 16px;
     }
   }
 }

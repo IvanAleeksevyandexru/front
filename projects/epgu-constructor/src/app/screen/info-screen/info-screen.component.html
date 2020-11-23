@@ -6,11 +6,13 @@
     class="screen-body"
     [ngClass]="screenService.displayCssClass$ | async"
   >
-    <epgu-constructor-page-name class="info__head">{{
-      screenService.header$ | async
-    }}</epgu-constructor-page-name>
+    <div *ngIf="screenService.header$ | async">
+      <epgu-constructor-page-name class="info__head">{{
+        screenService.header$ | async
+      }}</epgu-constructor-page-name>
 
-    <hr class="divider" />
+      <hr class="divider" />
+    </div>
 
     <epgu-constructor-info-screen-body [data]="screenService.component">
     </epgu-constructor-info-screen-body>
@@ -26,10 +28,9 @@
       </lib-button>
     </div>
 
-    <div class="info__submit">
+    <div class="info__submit" *ngIf="screenService.submitLabel$ | async">
       <lib-button
         class="btn__submit"
-        *ngIf="screenService.submitLabel$ | async"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
         [disabled]="screenService.isLoading$ | async"
