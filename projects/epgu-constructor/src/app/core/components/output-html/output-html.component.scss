@@ -12,6 +12,14 @@
     }
   }
 
+  & img {
+    max-width: 200px;
+    margin-bottom: 24px;
+    @include tablets-down {
+      max-width: 66%;
+    }
+  }
+
   ol {
     counter-reset: number;
   }
