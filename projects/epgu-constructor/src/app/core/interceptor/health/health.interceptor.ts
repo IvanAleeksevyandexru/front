@@ -15,11 +15,17 @@ interface ConfigParams {
   errorMessage?: string;
 }
 
+enum RequestStatus {
+  Successed = 0,
+  Failed = 1,
+}
+
 @Injectable()
 export class HealthInterceptor implements HttpInterceptor {
   constructor(private health: HealthService, private utils: UtilsService) {}
 
   private configParams: ConfigParams | null = null;
+  private 
 
   /**
    * Returns a boolean value for exceptions
@@ -73,7 +79,7 @@ export class HealthInterceptor implements HttpInterceptor {
             successRequestPayload = { id, name };
           }
 
-          this.health.measureEnd(serviceName, 0, successRequestPayload);
+          this.health.measureEnd(serviceName, RequestStatus.Successed, successRequestPayload);
         }
       }),
       catchError(error => {
@@ -82,9 +88,9 @@ export class HealthInterceptor implements HttpInterceptor {
             this.configParams['error'] = error.status;
             this.configParams['errorMessage'] = error.message;
   
-            this.health.measureEnd(serviceName, 1, this.configParams);
+            this.health.measureEnd(serviceName, RequestStatus.Failed, this.configParams);
           } else {
-            this.health.measureEnd(serviceName, 0, this.configParams);
+            this.health.measureEnd(serviceName, RequestStatus.Successed, this.configParams);
           }
         }
         return throwError(error);
