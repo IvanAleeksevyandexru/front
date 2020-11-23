@@ -44,10 +44,8 @@ export class DateRangeService {
   clearDate(id: string, attrs: any) {
     if (!attrs?.limit) return;
     let componentId = attrs.to ?? attrs.from;
-    // this.rangeMap.set(componentId, { max: null, min: null });
-    // this.rangeMap.set(id, { max: null, min: null });
-    this.rangeMap.delete(componentId);
-    this.rangeMap.delete(id);
+    this.rangeMap.set(componentId, { max: null, min: null });
+    this.rangeMap.set(id, { max: null, min: null });
   }
   getMinDate(componentData) {
     return this.calcDateRange(componentData.attrs.ref, componentData.id).min;
