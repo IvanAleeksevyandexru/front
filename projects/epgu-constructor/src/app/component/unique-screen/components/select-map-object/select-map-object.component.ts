@@ -59,6 +59,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private componentValue: any;
   private screenStore: ScreenStore;
+  private needToAutoFocus = false; // Флаг из атрибутов для авто центровки ближайшего объекта к центру
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
@@ -96,6 +97,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initComponentAttrs(): void {
     this.selectMapObjectService.componentAttrs = this.data.attrs;
+    this.needToAutoFocus = this.data.attrs.autoMapFocus;
     this.componentValue = JSON.parse(this.data?.value || '{}');
     this.screenStore = this.screenService.getStore();
   }
@@ -109,7 +111,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
         this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
-      } else {
+      } else if (this.needToAutoFocus) {
         this.selectClosestMapObject();
       }
     }
