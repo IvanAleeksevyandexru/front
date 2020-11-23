@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { Moment } from 'moment';
 import { CustomComponent } from '../../../component/components-list/components-list.types';
 
+interface TranslitAlphabet {
+  [propName: string]: string;
+}
+
 @Injectable()
 export class UtilsService {
   // TODO: add shared utils
@@ -146,174 +150,55 @@ export class UtilsService {
    * Converts cyrillic to latin
    * @param str 
    */
-  public cyrillicToLatin(str: string): string {
-    const cyrillic = [
-      'А',
-      'Б',
-      'В',
-      'Г',
-      'Д',
-      'Ђ',
-      'Е',
-      'Ё',
-      'Ж',
-      'З',
-      'И',
-      'Й',
-      'Ј',
-      'К',
-      'Л',
-      'Љ',
-      'М',
-      'Н',
-      'Њ',
-      'О',
-      'П',
-      'Р',
-      'С',
-      'Т',
-      'Ћ',
-      'У',
-      'Ф',
-      'Х',
-      'Ц',
-      'Ч',
-      'Џ',
-      'Ш',
-      'Щ',
-      'Ъ',
-      'Ы',
-      'Ь',
-      'Э',
-      'Ю',
-      'Я',
-      'а',
-      'б',
-      'в',
-      'г',
-      'д',
-      'ђ',
-      'е',
-      'ё',
-      'ж',
-      'з',
-      'и',
-      'й',
-      'ј',
-      'к',
-      'л',
-      'љ',
-      'м',
-      'н',
-      'њ',
-      'о',
-      'п',
-      'р',
-      'с',
-      'т',
-      'ћ',
-      'у',
-      'ф',
-      'х',
-      'ц',
-      'ч',
-      'џ',
-      'ш',
-      'щ',
-      'ъ',
-      'ы',
-      'ь',
-      'э',
-      'ю',
-      'я',
-    ];
-    const latin = [
-      'A',
-      'B',
-      'V',
-      'G',
-      'D',
-      'Đ',
-      'E',
-      'Ë',
-      'Ž',
-      'Z',
-      'I',
-      'J',
-      'J',
-      'K',
-      'L',
-      'Lj',
-      'M',
-      'N',
-      'Nj',
-      'O',
-      'P',
-      'R',
-      'S',
-      'T',
-      'Ć',
-      'U',
-      'F',
-      'H',
-      'C',
-      'Č',
-      'Dž',
-      'Š',
-      'Ŝ',
-      'ʺ',
-      'Y',
-      'ʹ',
-      'È',
-      'Û',
-      'Â',
-      'a',
-      'b',
-      'v',
-      'g',
-      'd',
-      'đ',
-      'e',
-      'ë',
-      'ž',
-      'z',
-      'i',
-      'j',
-      'j',
-      'k',
-      'l',
-      'lj',
-      'm',
-      'n',
-      'nj',
-      'o',
-      'p',
-      'r',
-      's',
-      't',
-      'ć',
-      'u',
-      'f',
-      'h',
-      'c',
-      'č',
-      'dž',
-      'š',
-      'ŝ',
-      'ʺ',
-      'y',
-      'ʹ',
-      'è',
-      'û',
-      'â',
-    ];
+  public cyrillicToLatin(word: string): string {
+    /*eslint quote-props: ["error", "always"]*/
+    const letters = {
+      'а': 'a',
+      'б': 'b',
+      'в': 'v',
+      'г': 'g',
+      'д': 'd',
+      'е': 'e',
+      'ё': 'e',
+      'ж': 'zh',
+      'з': 'z',
+      'и': 'i',
+      'й': 'i',
+      'к': 'k',
+      'л': 'l',
+      'м': 'm',
+      'н': 'n',
+      'о': 'o',
+      'п': 'p',
+      'р': 'r',
+      'с': 's',
+      'т': 't',
+      'у': 'u',
+      'ф': 'f',
+      'х': 'kh',
+      'ч': 'ch',
+      'ц': 'ts',
+      'щ': 'shch',
+      'ш': 'sh',
+      'ъ': 'ie',
+      'ы': 'y',
+      'э': 'e',
+      'ю': 'iu',
+      'я': 'ia',
+      'ь': ''
+    } as TranslitAlphabet;
+    let newStr = '';
     
-    return str.split('').map((char) => {
-      const index = cyrillic.indexOf(char);
-      if (!~index)
-        return char;
-      return latin[index];
-    }).join('');
+    for (const char of word) {
+      const isUpperCase = char === char.toUpperCase();
+      const translitChar = letters[char.toLowerCase()];
+      if (translitChar === undefined) {
+        newStr += char;
+      } else {
+        newStr += isUpperCase ? translitChar.toUpperCase() : translitChar;
+      }
+    }
+    return newStr;
   }
 
   /**
