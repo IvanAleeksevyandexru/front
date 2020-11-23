@@ -9,8 +9,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { LoadService } from 'epgu-lib';
-import { EMPTY, fromEvent } from 'rxjs';
-import { debounceTime, mergeMap, takeUntil } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+import { debounceTime, filter, mergeMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../core/config/config.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
@@ -55,14 +55,8 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.serviceDataService.init(this.service);
 
     this.loadService.loaded
-      .pipe(
-        mergeMap((loaded: boolean) => {
-          if (loaded) {
-            return this.formPlayerConfigApiService.getFormPlayerConfig();
-          }
-          return EMPTY;
-        }),
-      )
+      .pipe(filter((loaded: boolean) => loaded))
+      .pipe(mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((config) => {
         this.configService.config = config;
