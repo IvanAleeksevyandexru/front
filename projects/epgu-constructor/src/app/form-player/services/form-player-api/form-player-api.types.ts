@@ -1,7 +1,7 @@
 import { ScreenTypes } from '../../../screen/screen.types';
+import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
-import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer
@@ -149,6 +149,7 @@ export enum ActionType {
   nextStepModal = 'nextStepModal',
   prevStep = 'prevStep',
   nextStep = 'nextStep',
+  skipStep = 'skipStep',
   redirectToLK = 'redirectToLK',
   profileEdit = 'profileEdit',
   home = 'home',
@@ -156,6 +157,7 @@ export enum ActionType {
 
 export enum DTOActionAction {
   noAddressAndSubmit= 'noAddressAndSubmit',
+  skipStep= 'skipStep',
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editEmail = 'service/actions/editUserEmail',
   goBackToMainScenario = 'goBackToMainScenario'

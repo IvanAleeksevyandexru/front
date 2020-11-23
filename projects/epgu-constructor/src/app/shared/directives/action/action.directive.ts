@@ -46,6 +46,9 @@ export class ActionDirective {
       case ActionType.nextStepModal:
         this.navigateModal('nextStep');
         break;
+      case ActionType.skipStep:
+        this.navigate('skipStep');
+        break;
       case ActionType.prevStep:
         this.navigate('prevStep');
         break;
@@ -114,15 +117,7 @@ export class ActionDirective {
   }
 
   private getComponentStateValueForNavigate (actionName: DTOActionAction) {
-    if (actionName === DTOActionAction.noAddressAndSubmit) {
-      // TODO HARDCODE который не может исправить backend, по хорошему нам нужно отсылать название action(-a)
-      return JSON.stringify({
-        regDate: this.datePipe.transform(Date.now(), 'dd.MM.yyyy'),
-        regAddr: '',
-      });
-    } else {
-      return this.action.value;
-    }
+    return this.action.value;
   }
 
   private downloadAction(): void {
