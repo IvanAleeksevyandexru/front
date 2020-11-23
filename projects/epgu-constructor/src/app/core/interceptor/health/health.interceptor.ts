@@ -15,6 +15,11 @@ interface ConfigParams {
   errorMessage?: string;
 }
 
+enum RequestStatus {
+  Successed = 0,
+  Failed = 1,
+}
+
 @Injectable()
 export class HealthInterceptor implements HttpInterceptor {
   constructor(private health: HealthService, private utils: UtilsService) {}
@@ -62,7 +67,10 @@ export class HealthInterceptor implements HttpInterceptor {
 
           if (validationStatus) {
             const { scenarioDto } = result;
-            this.configParams = { id: scenarioDto.display.id, name: scenarioDto.display.name };
+            this.configParams = { 
+              id: scenarioDto.display.id, 
+              name: this.utils.cyrillicToLatin(scenarioDto.display.name),
+            };
           }
 
           if (this.configParams !== null) {
@@ -70,7 +78,7 @@ export class HealthInterceptor implements HttpInterceptor {
             successRequestPayload = { id, name };
           }
 
-          this.health.measureEnd(serviceName, 0, successRequestPayload);
+          this.health.measureEnd(serviceName, RequestStatus.Successed, successRequestPayload);
         }
       }),
       catchError(error => {
@@ -79,7 +87,9 @@ export class HealthInterceptor implements HttpInterceptor {
             this.configParams['error'] = error.status;
             this.configParams['errorMessage'] = error.message;
   
-            this.health.measureEnd(serviceName, 1, this.configParams);
+            this.health.measureEnd(serviceName, RequestStatus.Failed, this.configParams);
+          } else {
+            this.health.measureEnd(serviceName, RequestStatus.Successed, this.configParams);
           }
         }
         return throwError(error);
