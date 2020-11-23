@@ -14,6 +14,15 @@ import {
   removeItemFromArrByIndex,
 } from './repeatable-fields.constant';
 import { CustomComponent } from '../../../components-list/components-list.types';
+import { Answer } from '../../../../shared/types/answer';
+
+type Changes = {
+  [key: string]: {
+    isValid: boolean;
+    valid: boolean;
+    value: string;
+  };
+};
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
@@ -29,9 +38,9 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   /**
    * Словарь для хранения массива компонентов
    */
-  screens: { [key: string]: any };
+  screens: { [key: string]: CustomComponent[] };
   propData; // TODO указать тип
-  cache: { [key: string]: any } = {};
+  cache: Answer;
 
   @Input() isLoading: boolean;
   @Input() set data(data) {
@@ -87,7 +96,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     }
   }
 
-  changeComponentList(changes: { [key: string]: any }, index: number) {
+  changeComponentList(changes: Changes, index: number) {
     const state = this.getState();
     this.componentValidation[index] = Object.values(changes).every((item) => item.isValid);
     this.isValid = this.componentValidation.every((valid: boolean) => valid);
@@ -108,7 +117,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     this.saveState(state);
   }
 
-  getState(): { [key: string]: any } {
+  getState(): { value: string } {
     return JSON.parse(this.currentAnswersService.state);
   }
   saveState(state) {
@@ -128,9 +137,9 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
         const index: number = Object.keys(this.screens).length;
         this.screens[index] = this.screens[index].map((component: CustomComponent) => {
           if (component.id === componentId) {
-            return { ...component, value };
+            return { ...component, value: value as string };
           }
-          return { ...component };
+          return { ...component } as CustomComponent;
         });
       });
     });

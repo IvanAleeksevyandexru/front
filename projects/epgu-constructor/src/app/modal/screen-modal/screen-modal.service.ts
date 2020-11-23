@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
   DTOActionAction,
@@ -6,7 +6,6 @@ import {
   FormPlayerApiSuccessResponse
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
-import { ScreenService } from '../../screen/screen.service';
 import { FormPlayerNavigation, Navigation } from '../../form-player/form-player.types';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerBaseService } from '../../shared/services/form-player-base/form-player-base.service';
@@ -23,11 +22,11 @@ export class ScreenModalService extends FormPlayerBaseService {
   public isInternalScenarioFinish$: Observable<boolean> = this.isInternalScenarioFinishSub.asObservable();
 
   constructor(
+    public injector: Injector,
     public formPlayerService: FormPlayerService,
     public formPlayerApiService: FormPlayerApiService,
-    private screenService: ScreenService
   ) {
-    super(formPlayerApiService, screenService);
+    super(injector);
     this.logSuffix = 'MODAL';
   }
 
