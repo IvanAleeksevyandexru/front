@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
 import {
   FileResponseToBackendUploadsItem,
