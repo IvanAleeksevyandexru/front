@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { v4 as uuidv4 } from 'uuid';
 import {
   FileResponseToBackendUploadsItem,
   FileUploadItem,
@@ -165,15 +166,6 @@ export class FileUploadItemComponent implements OnDestroy {
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = (error) => reject(error);
-    });
-  }
-
-  private generateUniqName(): string {
-    /* eslint no-bitwise: ["error", { "allow": ["&", "|"] }] */
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      const r = (Math.random() * 16) | 0;
-      const v = c === 'x' ? r : (r & 0x3) | 0x8;
-      return v.toString(16);
     });
   }
 
@@ -388,11 +380,12 @@ export class FileUploadItemComponent implements OnDestroy {
 
     return files.map((file: File) => {
       const terabyteFiles = this.files$$.value;
-      let uniqFileName = this.generateUniqName();
+      const { type, lastModified } = file;
       let fileToAction = new File([file], file.name, {
-        type: file.type,
-        lastModified: file.lastModified,
+        type,
+        lastModified,
       });
+      let uniqFileName = `${uuidv4()}.${fileToAction.name.split('.').pop() || 'jpeg'}`;
 
       const fileToUpload = new TerraUploadedFile({
         fileName: uniqFileName,
@@ -409,8 +402,8 @@ export class FileUploadItemComponent implements OnDestroy {
         }
 
         fileToAction = new File([fileToAction], uniqFileName, {
-          type: fileToAction.type,
-          lastModified: fileToAction.lastModified,
+          type,
+          lastModified,
         });
 
         return from(

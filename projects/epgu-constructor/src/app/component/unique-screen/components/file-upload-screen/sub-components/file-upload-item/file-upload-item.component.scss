@@ -3,6 +3,9 @@
 @import '../../../../../../../styles/core/breakpoint';
 @import '../../../../../../../styles/components/rubles';
 
+$color-active-item: #1d5deb;
+$color-default-item: #d1d5df;
+
 .info {
   font-size: 14px;
   line-height: 20px;
@@ -49,18 +52,6 @@ input[type="file"] {
   margin-bottom: 24px;
 }
 
-@-webkit-keyframes rotation {
-  from {-webkit-transform: rotate(0deg);}
-  to {-webkit-transform: rotate(359deg);}
-}
-@-moz-keyframes rotation {
-  from {-moz-transform: rotate(0deg);}
-  to {-moz-transform: rotate(359deg);}
-}
-@-o-keyframes rotation {
-  from {-o-transform: rotate(0deg);}
-  to {-o-transform: rotate(359deg);}
-}
 @keyframes rotation {
   from {transform: rotate(0deg);}
   to {transform: rotate(359deg);}
@@ -73,15 +64,12 @@ input[type="file"] {
   margin-right: 12px;
 
   &.loading {
-    -webkit-animation: rotation .6s infinite linear;
-    -moz-animation: rotation .6s infinite linear;
-    -o-animation: rotation .6s infinite linear;
-    animation: rotation .6s infinite linear;
-    border-left:4px solid #D1D5DF;
-    border-right:4px solid #D1D5DF;
-    border-bottom:4px solid #D1D5DF;
-    border-top:4px solid #1D5DEB;
-    border-radius:100%;
+    animation: rotation 0.6s infinite linear;
+    border-left: 4px solid $color-default-item;
+    border-right: 4px solid$color-default-item;
+    border-bottom: 4px solid $color-default-item;
+    border-top: 4px solid $color-active-item;
+    border-radius: 100%;
   }
 
   &.uploaded {
