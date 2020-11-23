@@ -318,7 +318,6 @@ export class FileUploadItemComponent implements OnDestroy {
     this.filesInUploading += 1;
 
     const terabyteFiles = this.files$$.value;
-
     const fileToUpload = terabyteFiles.filter(
       (terabyteFile) => terabyteFile.fileName === file.name,
     )[0];
