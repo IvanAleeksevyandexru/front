@@ -324,6 +324,8 @@ export class FileUploadItemComponent implements OnDestroy {
     )[0];
     this.listIsUploadingNow = false;
 
+    console.log(terabyteFiles, fileToUpload, file);
+
     this.subs.push(
       this.terabyteService
         .uploadFile(fileToUpload.getParamsForUploadFileOptions(), file)
@@ -386,11 +388,11 @@ export class FileUploadItemComponent implements OnDestroy {
         lastModified,
       });
       let uniqFileName = `${name.split('.')[0]}_${uuidv4()}.${
-        fileToAction.name.split('.').pop() || 'jpeg'
+        file.name.split('.').pop() || 'jpeg'
       }`;
 
       const fileToUpload = new TerraUploadedFile({
-        fileName: uniqFileName,
+        fileName: isPhoto ? this.getPhotoName(fileToAction) : uniqFileName,
         objectId: this.objectId,
         objectTypeId: UPLOAD_OBJECT_TYPE,
         mnemonic: this.getMnemonic(),
@@ -399,7 +401,6 @@ export class FileUploadItemComponent implements OnDestroy {
       terabyteFiles.push(fileToUpload);
       if (this.compressionService.isValidImageType(fileToAction)) {
         if (isPhoto) {
-          compressedImageOptions.customFileName = this.getPhotoName(fileToAction);
           uniqFileName = this.getPhotoName(fileToAction);
         }
 
