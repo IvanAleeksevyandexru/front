@@ -246,8 +246,8 @@ export class SelectChildrenScreenComponent implements OnInit {
     });
   }
 
-  isNewId(itemId: string): boolean {
-    return itemId === this.NEW_ID;
+  isNewId(itemId: string = 'false'): boolean {
+    return JSON.parse(itemId);
   }
 
   isMoreThanOneChild(): boolean {
