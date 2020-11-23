@@ -109,7 +109,7 @@
 
   .divider {
     border: 0;
-    background: $color-devider;
+    background: $color-divider;
     height: 1px;
   }
 
@@ -147,8 +147,8 @@
     &--input {
       color: $color-input;
     }
-    &--devider {
-      color: $color-devider;
+    &--divider {
+      color: $color-divider;
     }
     &--error-highlight {
       color: $color-error-highlight;
