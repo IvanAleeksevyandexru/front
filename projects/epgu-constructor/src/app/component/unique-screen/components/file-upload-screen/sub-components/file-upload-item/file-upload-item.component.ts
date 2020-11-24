@@ -423,6 +423,9 @@ export class FileUploadItemComponent implements OnDestroy {
           }),
         );
       }
+
+      fileToAction = this.createCustomFile(fileToAction, uniqFileName);
+
       return of(fileToAction);
     });
   }
