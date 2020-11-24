@@ -40,6 +40,7 @@ export interface TemporaryRegistrationFields {
 }
 
 export enum FieldNames {
-  regDate = 'regDate',
+  regFrom = 'regFrom',
+  regTo = 'regTo',
   regAddr = 'regAddr',
 }

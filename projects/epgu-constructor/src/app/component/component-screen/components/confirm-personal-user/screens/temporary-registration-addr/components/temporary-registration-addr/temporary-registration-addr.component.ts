@@ -99,8 +99,11 @@ export class TemporaryRegistrationAddrComponent implements OnInit {
     if (fieldName === FieldNames.regAddr) {
       return data?.regAddr?.fullAddress || null;
     }
-    if (fieldName === FieldNames.regDate) {
-      return data?.regDate ? new Date(data?.regDate) : null;
+    if (fieldName === FieldNames.regFrom) {
+      return data?.regFrom ? new Date(data?.regFrom) : null;
+    }
+    if (fieldName === FieldNames.regTo) {
+      return data?.regTo ? new Date(data?.regTo) : null;
     }
     return null;
   }
