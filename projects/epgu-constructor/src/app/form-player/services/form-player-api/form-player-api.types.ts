@@ -147,6 +147,7 @@ export enum ActionType {
   download = 'download',
   prevStepModal = 'prevStepModal',
   nextStepModal = 'nextStepModal',
+  modalRedirectTo = 'modalRedirectTo',
   prevStep = 'prevStep',
   nextStep = 'nextStep',
   skipStep = 'skipStep',
@@ -156,8 +157,9 @@ export enum ActionType {
 }
 
 export enum DTOActionAction {
-  noAddressAndSubmit= 'noAddressAndSubmit',
-  skipStep= 'skipStep',
+  noAddressAndSubmit = 'noAddressAndSubmit',
+  skipStep = 'skipStep',
+  reject = 'reject',
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editEmail = 'service/actions/editUserEmail',
   goBackToMainScenario = 'goBackToMainScenario'
