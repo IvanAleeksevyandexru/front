@@ -21,13 +21,8 @@ export class CustomScreenComponent extends ScreenBase {
     super(injector);
   }
 
-  nextStep(payload?: NavigationPayload): void {
-    this.navigationService.nextStep.next({ payload });
-  }
-
-  nextScreen(): void {
-    const data = this.dataToSend;
-    this.nextStep(data);
+  nextStep(): void {
+    this.navigationService.nextStep.next({ payload: this.dataToSend });
   }
 
   /**
