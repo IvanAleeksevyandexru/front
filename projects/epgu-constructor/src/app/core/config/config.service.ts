@@ -27,7 +27,7 @@ export class ConfigService implements Config {
 
   public isLoaded$ = this.isLoadedSubject.asObservable();
 
-  constructor (private loadService: LoadService) {
+  constructor(private loadService: LoadService) {
     // TODO отписаться
     this.loadService.loaded.subscribe(() => {
       this.initCore();
