@@ -8,6 +8,7 @@ import {
   EmployeeHistoryDataSource,
   EmployeeHistoryModel,
   EmployeeHistoryServerModel,
+  EmployeeHistoryUncheckedPeriod,
 } from './employee-history.types';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
@@ -84,6 +85,11 @@ export class EmployeeHistoryComponent implements OnInit {
   get textTransformType(): TextTransform {
     const component = this.display?.components[0] as EmployeeHistoryComponentInterface;
     return component?.attrs?.fstuc;
+  }
+
+  getPeriod(period: EmployeeHistoryUncheckedPeriod): string {
+    const isPeriodEqul: boolean = period.from === period.to;
+    return isPeriodEqul ? period.from : `${period.from} — ${period.to}`;
   }
 
   private initData(): void {
