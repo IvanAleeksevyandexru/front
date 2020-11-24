@@ -16,7 +16,7 @@
   <div class="screen-footer">
       <lib-button
         [showLoader]="screenService.isLoading$ | async"
-        (click)="nextScreen()"
+        (click)="nextStep()"
         class="btn__submit"
         [disabled]="(screenService.isLoading$ | async) || !isValid"
       >
