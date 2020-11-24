@@ -13,8 +13,11 @@
 
   <div class="doc-input__group">
     <div class="doc-input__group-item doc-input__series">
-      <epgu-constructor-label [tips]="fields['series']?.attrs?.labelHint"
-                              for="series">{{ fields['series'].label }}</epgu-constructor-label>
+      <epgu-constructor-label
+        [tips]="fields['series']?.attrs?.labelHint"
+        [label]="fields['series'].label"
+        for="series"
+      ></epgu-constructor-label>
       <lib-standard-masked-input
         epgu-constructor-trim
         epgu-constructor-text-transform
@@ -30,8 +33,11 @@
       ></lib-standard-masked-input>
     </div>
     <div class="doc-input__group-item doc-input__number">
-      <epgu-constructor-label [tips]="fields['number']?.attrs?.labelHint"
-                              for="number">{{ fields['number'].label }}</epgu-constructor-label>
+      <epgu-constructor-label
+        [tips]="fields['number']?.attrs?.labelHint"
+        [label]="fields['number'].label"
+        for="number"
+      ></epgu-constructor-label>
       <lib-standard-masked-input
         epgu-constructor-trim
         epgu-constructor-text-transform
@@ -47,8 +53,11 @@
       ></lib-standard-masked-input>
     </div>
     <div class="doc-input__group-item doc-input__date">
-      <epgu-constructor-label [tips]="fields['date']?.attrs?.labelHint"
-                              for="date">{{ fields['date'].label }}</epgu-constructor-label>
+      <epgu-constructor-label
+        [tips]="fields['date']?.attrs?.labelHint"
+        [label]="fields['date'].label"
+        for="date"
+      ></epgu-constructor-label>
       <lib-date-picker
         id="date"
         align="left"
@@ -68,8 +77,11 @@
   </epgu-constructor-helper-text>
 
   <div class="doc-input__emmiter">
-    <epgu-constructor-label [tips]="fields['emitter']?.attrs?.labelHint"
-                            for="emitter">{{ fields['emitter'].label }}</epgu-constructor-label>
+    <epgu-constructor-label
+      [tips]="fields['emitter']?.attrs?.labelHint"
+      [label]="fields['emitter'].label"
+      for="emitter"
+    ></epgu-constructor-label>
     <epgu-constructor-input-error *ngIf="form.get('emitter').invalid && form.get('emitter').touched">
       {{form.get('emitter').errors.msg}}
     </epgu-constructor-input-error>

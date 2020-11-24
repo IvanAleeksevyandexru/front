@@ -1,10 +1,9 @@
 <epgu-constructor-label
   [isTextHelper]="data.value?.attrs?.isTextHelper"
   [tips]="data.value?.attrs?.labelHint"
+  [label]="data.value?.label"
   *ngIf="!disableLabel"
->
-  {{ data.value?.label }}
-</epgu-constructor-label>
+></epgu-constructor-label>
 <div class="form__error" *ngIf="!disableError">
   <small *ngIf="data.get('value')?.invalid && data.get('value').touched">
     {{ data.get('value')?.getError('msg') }}
