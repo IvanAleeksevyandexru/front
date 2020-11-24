@@ -27,6 +27,7 @@ export interface ConfirmUserDataAdaptiveField {
 export interface ConfirmUserDataFieldsState {
   groupName: string;
   fields: Array<ConfirmUserDataAdaptiveField>;
+  needDivider?: boolean;
 }
 
 export interface ConfirmUserDataState {

@@ -11,7 +11,7 @@
 .head {
   @include tablets-down {
     padding: 10px 0;
-    border: 1px solid $color-devider;
+    border: 1px solid $color-divider;
     border-left: none;
     border-right: none;
   }
