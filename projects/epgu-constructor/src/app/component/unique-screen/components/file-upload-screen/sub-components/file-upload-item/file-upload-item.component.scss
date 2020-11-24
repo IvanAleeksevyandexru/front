@@ -3,6 +3,9 @@
 @import '../../../../../../../styles/core/breakpoint';
 @import '../../../../../../../styles/components/rubles';
 
+$color-active-item: $color-active-item;
+$color-default-item: $color-bg-disabled;
+
 .info {
   font-size: 14px;
   line-height: 20px;
