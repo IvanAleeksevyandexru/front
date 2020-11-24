@@ -10,17 +10,47 @@
       [clarifications]="screenService.component?.attrs?.clarifications"
     >
     </epgu-constructor-output-html>
+    <ng-container *ngIf="rejectAction">
+      <ng-content *ngTemplateOutlet="actionAsLongBtn"></ng-content>
+    </ng-container>
   </div>
 
-  <div class="screen-footer quiz__answers">
+  <div class="screen-footer">
+    <ng-container *ngIf="!rejectAction">
+      <ng-content *ngTemplateOutlet="actionAsLongBtn"></ng-content>
+    </ng-container>
+    <ng-container *ngIf="rejectAction">
+      <ng-content *ngTemplateOutlet="footerActionAndSubmit"></ng-content>
+    </ng-container>
+  </div>
+</epgu-constructor-screen-container>
+
+
+<ng-template #actionAsLongBtn>
+  <div class="quiz__answers">
     <ng-container *ngFor="let action of screenService.component?.attrs?.actions">
       <epgu-constructor-answer-button
-        *ngIf="!action.hidden"
-        class="quiz__answer"
-        (click)="answerChoose(action)"
         [data]="action"
+        class="quiz__answer"
+        *ngIf="showActionAsLongBtn(action)"
+        (click)="answerChoose(action)"
       >
       </epgu-constructor-answer-button>
     </ng-container>
   </div>
-</epgu-constructor-screen-container>
+</ng-template>
+
+<ng-template #footerActionAndSubmit>
+  <lib-button
+    color="white"
+    [action]="rejectAction"
+    epgu-constructor-action>
+    {{ rejectAction.label }}
+  </lib-button>
+  <lib-button
+    [showLoader]="screenService.isLoading$ | async"
+    (click)="nextStep()"
+    class="btn__submit">
+    {{ this.screenService.submitLabel$ | async }}
+  </lib-button>
+</ng-template>
