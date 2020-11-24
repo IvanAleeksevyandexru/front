@@ -41,4 +41,9 @@ export interface EmployeeHistoryAvailableDates {
   checked: boolean;
 }
 
+export interface EmployeeHistoryUncheckedPeriod {
+  from: string;
+  to: string
+}
+
 export type EmployeeType = 'employed' | 'unemployed' | 'military' | 'student';
