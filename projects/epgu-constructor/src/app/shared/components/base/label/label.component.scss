@@ -1,10 +1,12 @@
 @import '../../../../../styles/core';
 
 :host {
-  display: block;
+  display: flex;
+  align-items: center;
   margin: 0 0 4px;
 }
-.label {
+
+.label-text {
   display: block;
   text-align: left;
   color: $color-summer-night;
@@ -13,9 +15,9 @@
   &::first-letter {
     text-transform: uppercase;
   }
+}
 
-  &--text-helper-color {
-    color: $color-text-helper;
-    @include typ-plain-text;
-  }
+.label-tip {
+  margin-left: 10px;
+  line-height: 0;
 }

@@ -1,7 +1,10 @@
 <form [formGroup]="redAddrForm" class="form">
   <div class="item" *ngFor="let field of data?.attrs?.fields">
-    <epgu-constructor-label [tips]="field?.attrs?.labelHint"
-                            [attr.for]="field.fieldName">{{ field.label }}</epgu-constructor-label>
+    <epgu-constructor-label
+      [tips]="field?.attrs?.labelHint"
+      [attr.for]="field.fieldName"
+      [label]="field.label"
+    ></epgu-constructor-label>
 
     <ng-container [ngSwitch]="field.fieldName">
       <lib-dadata-widget

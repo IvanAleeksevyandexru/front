@@ -29,7 +29,10 @@
       </div>
       <div class="employee-history__date">
         <div>
-          <epgu-constructor-label for="from">Начало (месяц, год)</epgu-constructor-label>
+          <epgu-constructor-label
+            label="Начало (месяц, год)"
+            for="from"
+          ></epgu-constructor-label>
           <lib-month-picker
             [id]="i + '_minDate'"
             [formControl]="generation.get('from')"
@@ -44,7 +47,10 @@
 
         <div>
           <ng-container *ngIf="!generation.get('checkboxToDate').value">
-            <epgu-constructor-label for="to">Окончание (месяц, год)</epgu-constructor-label>
+            <epgu-constructor-label
+              label="Окончание (месяц, год)"
+              for="to"
+            ></epgu-constructor-label>
             <lib-month-picker
               [id]="i + '_maxDate'"
               [formControl]="generation.get('to')"
@@ -67,7 +73,10 @@
       </div>
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.position as position">
-        <epgu-constructor-label for="position">{{ position }}</epgu-constructor-label>
+        <epgu-constructor-label
+          [label]="position"
+          for="position"
+        ></epgu-constructor-label>
         <lib-plain-input
           epgu-constructor-trim
           epgu-constructor-text-transform
@@ -85,7 +94,10 @@
       </div>
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.place as place">
-        <epgu-constructor-label for="place">{{ place }}</epgu-constructor-label>
+        <epgu-constructor-label
+          [label]="place"
+          for="place"
+        ></epgu-constructor-label>
         <lib-plain-input
           epgu-constructor-trim
           epgu-constructor-text-transform
@@ -103,7 +115,10 @@
       </div>
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.address as address">
-        <epgu-constructor-label [for]="'address'">{{ address }}</epgu-constructor-label>
+        <epgu-constructor-label
+          [label]="address"
+          [for]="'address'"
+        ></epgu-constructor-label>
         <lib-plain-input
           epgu-constructor-trim
           epgu-constructor-text-transform
@@ -119,6 +134,19 @@
       <epgu-constructor-clone-button (click)="employeeFormService.newGeneration()"
         >Добавить данные</epgu-constructor-clone-button
       >
+    </section>
+    <section
+      *ngIf="monthsService.getUncheckedPeriods().length"
+      class="employee-history__progress">
+      <div class="employee-history__progress__notification">
+        <div class="employee-history__progress__icon"></div>
+        <div class="employee-history__progress__msg">Не заполнены периоды</div>
+      </div>
+      <div class="employee-history__progress__periods">
+        <div *ngFor="let period of monthsService.getUncheckedPeriods()">
+          <span>{{ getPeriod(period) }}</span>
+        </div>
+      </div>
     </section>
     <section
       *ngIf="(monthsService.isMonthComplete$ | async) && employeeFormService.employeeHistoryForm.valid"

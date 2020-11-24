@@ -1,7 +1,10 @@
 <div class="form__name">Паспорт РФ</div>
 <form [formGroup]="passportForm" class="form__inputs">
   <div class="inputs__field" *ngFor="let field of attrs.fields">
-    <epgu-constructor-label [attr.for]="field.fieldName">{{ field.label }}</epgu-constructor-label>
+    <epgu-constructor-label
+      [label]="field.label"
+      [attr.for]="field.fieldName"
+    ></epgu-constructor-label>
     <lib-standard-masked-input
       epgu-constructor-trim
       epgu-constructor-text-transform
