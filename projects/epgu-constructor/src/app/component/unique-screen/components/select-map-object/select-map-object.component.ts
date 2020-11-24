@@ -10,9 +10,9 @@ import {
   NgZone,
   OnDestroy,
 } from '@angular/core';
-import { filter, reduce, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { merge, Observable, of } from 'rxjs';
-import { HelperService, YaMapService } from 'epgu-lib';
+import { YaMapService } from 'epgu-lib';
 
 import { ConfigService } from '../../../../core/config/config.service';
 import { SelectMapObjectService } from './select-map-object.service';
@@ -31,12 +31,13 @@ import { ModalService } from '../../../../modal/modal.service';
 import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
-  providers: [UnsubscribeService],
+  providers: [UnsubscribeService, SelectMapObjectService],
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() data: ComponentBase;
@@ -54,9 +55,11 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public mapIsLoaded = false;
   public scrollConfig = { ressScrollX: true, wheelPropagation: false };
   public isMobile: boolean;
+  public isSearchTitleVisible = true;
 
   private componentValue: any;
   private screenStore: ScreenStore;
+  private needToAutoFocus = false; // Флаг из атрибутов для авто центровки ближайшего объекта к центру
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
@@ -68,8 +71,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
     private zone: NgZone,
+    private deviceDetector: DeviceDetectorService,
   ) {
-    this.isMobile = HelperService.isMobile();
+    this.isMobile = this.deviceDetector.isMobile;
   }
 
   ngOnInit(): void {
@@ -93,6 +97,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initComponentAttrs(): void {
     this.selectMapObjectService.componentAttrs = this.data.attrs;
+    this.needToAutoFocus = this.data.attrs.autoMapFocus;
     this.componentValue = JSON.parse(this.data?.value || '{}');
     this.screenStore = this.screenService.getStore();
   }
@@ -106,7 +111,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
         this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
-      } else {
+      } else if (this.needToAutoFocus) {
         this.selectClosestMapObject();
       }
     }
@@ -127,6 +132,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.selectedValue
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: any) => {
+        this.isSearchTitleVisible = !value || !this.isMobile;
         this.selectedValue = value;
         this.cdr.detectChanges();
       });
@@ -168,8 +174,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         bottom: 'auto',
         left: 'auto',
       },
-      size: HelperService.isMobile() ? 'small' : 'large',
+      size: this.isMobile ? 'small' : 'large',
     });
+    this.yaMapService.map.options.set('minZoom', 4);
     this.yaMapService.map.copyrights.togglePromo();
   }
 
@@ -290,6 +297,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private nextStep(): void {
     this.zone.run(() => {
       const answer = { ...this.selectedValue, children: null };
+      answer.regOkato = this.componentValue?.regOkato;
       this.nextStepEvent.emit(JSON.stringify(answer));
     });
   }
@@ -334,7 +342,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return this.dictionaryApiService
       .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
       .pipe(
-        filter((response) => {
+        map((response) => {
           const hasAttributeValues = () =>
             response.items.every((item) =>
               this.screenService.component.attrs.checkedParametersGIBDD.every(
@@ -342,9 +350,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
               ),
             );
 
-          return response.error.code !== 0 || !response.items.length || !hasAttributeValues();
+          return !!response.items.length && hasAttributeValues();
         }),
-        switchMap(() => {
+        switchMap((hasPayment) => {
+          if (hasPayment) {
+            return of(true);
+          }
+
           const { GIBDDpaymentError } = this.screenService.component.attrs;
 
           return this.modalService.openModal(ConfirmationModalComponent, {

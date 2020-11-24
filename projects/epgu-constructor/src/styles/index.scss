@@ -27,6 +27,7 @@
   h5,
   h6 {
     margin: 0;
+    word-wrap: break-word;
   }
 
   h1 {
@@ -76,6 +77,14 @@
     color: $color-text-helper;
   }
 
+  .text--center{
+    text-align: center;
+  }
+
+  .text--right{
+    text-align: right;
+  }
+
   sub {
     font-size: $font-xs;
     line-height: 16px;
@@ -88,7 +97,12 @@
 
   button {
     font-family: inherit;
-    border:none;
+    /**
+     Предпочтительно не использовать это свойство, оно перезатирает стиль компонента кнопки epgu-lib,
+     из за чего уменьшается высота кнопки. Если необходимо добавить это свойство, то следует исключить
+     его применение как минимум к кнопкам epgu-lib
+     */
+    // border:none;
   }
 
   strike {
@@ -122,6 +136,8 @@
       }
     }
   }
+
+  /* Utility classes */
 
   .text-color {
     &--white {
@@ -192,6 +208,22 @@
     }
   }
 
+  .block {
+    &--with-icon {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      & > img {
+        flex: 0 0 auto;
+        max-width: 25px;
+        margin-right: 17px;
+        @include phones-down {
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+
   .container {
     width: 100%;
     max-width: 592px;
@@ -202,6 +234,12 @@
 
     @include tablets-up {
       box-sizing: content-box;
+    }
+  }
+
+  .title {
+    &--header {
+      margin-bottom: 16px;
     }
   }
 }

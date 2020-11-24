@@ -1,7 +1,7 @@
 import { ScreenTypes } from '../../../screen/screen.types';
+import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
-import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer
@@ -42,7 +42,7 @@ export interface ComponentDto {
 export interface ComponentDtoAction {
   label: string;
   value: string;
-  action: string;
+  action: DTOActionAction;
   type?: ActionType;
   hidden?: boolean;
   disabled?: boolean;
@@ -147,13 +147,21 @@ export enum ActionType {
   download = 'download',
   prevStepModal = 'prevStepModal',
   nextStepModal = 'nextStepModal',
+  modalRedirectTo = 'modalRedirectTo',
   prevStep = 'prevStep',
   nextStep = 'nextStep',
+  skipStep = 'skipStep',
   redirectToLK = 'redirectToLK',
   profileEdit = 'profileEdit',
   home = 'home',
+}
+
+export enum DTOActionAction {
+  skipStep = 'skipStep',
+  reject = 'reject',
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editEmail = 'service/actions/editUserEmail',
+  goBackToMainScenario = 'goBackToMainScenario'
 }
 
 export interface CheckOrderApiResponse {

@@ -17,7 +17,7 @@
 
 .label-helper {
   @include typ-plain-text;
-  color: rgba($color-summer-night, 0.5);
+  color: $color-text-helper;
   &:first-letter {
     text-transform: capitalize;
   }

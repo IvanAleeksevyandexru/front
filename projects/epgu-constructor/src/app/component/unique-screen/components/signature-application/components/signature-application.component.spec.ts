@@ -63,6 +63,7 @@ xdescribe('SignatureApplicationComponent', () => {
           OutputHtmlComponent,
           SafePipe,
           ImgPrefixerPipe,
+          DeviceDetectorService,
         ],
         providers: [
           NavigationService,

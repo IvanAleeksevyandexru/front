@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { HelperService } from 'epgu-lib';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { ConfirmationModal } from '../confirmation-modal.interface';
 import { ConfirmationModalBaseButton } from './confirmation-modal-base.interface';
 
@@ -21,8 +21,8 @@ export class ConfirmationModalBaseComponent {
   public isMobile: boolean;
   public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
 
-  constructor() {
-    this.isMobile = HelperService.isMobile();
+  constructor(private deviceDetector: DeviceDetectorService) {
+    this.isMobile = this.deviceDetector.isMobile;
   }
 
   closeModal() {

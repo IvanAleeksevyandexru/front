@@ -2,6 +2,47 @@ import { Injectable } from '@angular/core';
 import { Moment } from 'moment';
 import { CustomComponent } from '../../../component/components-list/components-list.types';
 
+interface TranslitAlphabet {
+  [propName: string]: string;
+}
+
+/*eslint quote-props: ["error", "always"]*/
+const LETTERS = {
+  'а': 'a',
+  'б': 'b',
+  'в': 'v',
+  'г': 'g',
+  'д': 'd',
+  'е': 'e',
+  'ё': 'e',
+  'ж': 'zh',
+  'з': 'z',
+  'и': 'i',
+  'й': 'i',
+  'к': 'k',
+  'л': 'l',
+  'м': 'm',
+  'н': 'n',
+  'о': 'o',
+  'п': 'p',
+  'р': 'r',
+  'с': 's',
+  'т': 't',
+  'у': 'u',
+  'ф': 'f',
+  'х': 'kh',
+  'ч': 'ch',
+  'ц': 'ts',
+  'щ': 'shch',
+  'ш': 'sh',
+  'ъ': 'ie',
+  'ы': 'y',
+  'э': 'e',
+  'ю': 'iu',
+  'я': 'ia',
+  'ь': ''
+} as TranslitAlphabet;
+
 @Injectable()
 export class UtilsService {
   // TODO: add shared utils
@@ -138,6 +179,29 @@ export class UtilsService {
     return splitByDirLocation;
   }
 
+  private sliceArrayFromRight(arr: any[], from: number, includeFirst: boolean = true) {
+    return arr.slice(Math.max(arr.length - from, includeFirst ? 0 : 1));
+  }
+
+  /**
+   * Converts cyrillic to latin
+   * @param str 
+   */
+  public cyrillicToLatin(word: string): string {
+    let newStr = '';
+    
+    for (const char of word) {
+      const isUpperCase = char === char.toUpperCase();
+      const translitChar = LETTERS[char.toLowerCase()];
+      if (translitChar === undefined) {
+        newStr += char;
+      } else {
+        newStr += isUpperCase ? translitChar.toUpperCase() : translitChar;
+      }
+    }
+    return newStr;
+  }
+
   /**
    * Returns modified service name in camelCase format
    * Example:
@@ -147,7 +211,15 @@ export class UtilsService {
    * @param url 
    */
   public getServiceName(url: string): string {
-    const serviceName = this.getSplittedUrl(url).slice(-1)[0];
+    const numRegex = /^\d+$/;
+    const splittedUrl = this.getSplittedUrl(url);
+
+    let preparedArray = this.sliceArrayFromRight(splittedUrl, 3);
+
+    preparedArray = numRegex.test(preparedArray[0]) ? this.sliceArrayFromRight(preparedArray, 3, false) : preparedArray;
+    preparedArray = preparedArray.map(urlPath => numRegex.test(urlPath) ? '' : urlPath);
+
+    const serviceName = preparedArray.join('-');
 
     return `${serviceName.replace(/(?:^_-\w|[A-Z]|\b\w)/g, (word, index) => {
       return index === 0 ? word.toLowerCase() : word.toUpperCase();

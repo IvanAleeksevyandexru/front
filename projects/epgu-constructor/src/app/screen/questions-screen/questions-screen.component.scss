@@ -1,41 +1,45 @@
-@import "../../../styles/core";
+@import '../../../styles/core';
 
 :host {
   display: flex;
   flex-direction: column;
 }
 
+.quiz {
+  &__content {
+    @include tablets-up {
+      margin-bottom: 32px;
+    }
+  }
 
-.quiz__content {
-  @include tablets-up {
-    margin-bottom: 32px;
+  &__head {
+    margin-bottom: 16px;
+    &:only-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__answers {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch !important; // в какой то момент стили компонента переопределяют то что навешенно сверху.
+    margin-left: 0;
+    margin-right: 0;
+    @include tablets-up {
+      margin-top: 0;
+    }
+  }
+
+  &__answer {
+    @include tablets-up {
+      margin: 0 0 24px 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 
-.quiz__head {
-  margin-bottom: 16px;
-  &:only-child {
-    margin-bottom: 0;
-  }
+.screen-body .quiz__answers {
+  margin-top: 16px;
 }
-
-.quiz__answers {
-  flex-direction: column;
-  align-items: stretch !important; // в какой то момент стили компонента переопределяют то что навешенно сверху.
-  margin-left: 0;
-  margin-right: 0;
-  @include tablets-up {
-    margin-top: 0;
-  }
-}
-
-.quiz__answer {
-
-  @include tablets-up {
-    margin: 0 0 24px 0;
-  }
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-

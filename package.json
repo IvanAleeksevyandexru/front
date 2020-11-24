@@ -1,6 +1,6 @@
 {
   "name": "epgu-form-frontend",
-  "version": "0.5.0",
+  "version": "0.6.1",
   "scripts": {
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "ng": "ng",
@@ -8,7 +8,7 @@
     "start:stage": "ng serve --configuration staging",
     "start:backend": "java -jar fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api --draft-client.enabled=false",
     "start:config": "json-server --watch form-player-config.json --routes form-player-config-routes.json",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "lib:build": "ng build epgu-constructor --prod",
     "lib:watch": "ng build epgu-constructor --watch",
     "lib:test": "ng test epgu-constructor",

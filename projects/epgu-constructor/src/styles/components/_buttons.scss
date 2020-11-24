@@ -1,7 +1,7 @@
-@import "../core/functions";
-@import "../core/variables";
-@import "../core/palettes";
-@import "../core/typography";
+@import '../core/functions';
+@import '../core/variables';
+@import '../core/palettes';
+@import '../core/typography';
 
 .btn {
   border-radius: 4px;
@@ -13,41 +13,21 @@
 }
 
 .btn--transparent {
- @include btn--transparent();
+  @include btn--transparent();
 }
 
 .btn--primary {
   @include btn--primary();
 }
 
-.btn--clone {
-  &:focus {
-    outline: 0;
-  }
-
-  border: $border-sm dashed $color-active-item !important;
-  box-sizing: border-box;
-  border-radius: $border-round;
-  padding: $screen-pad-p;
-  width: 100%;
-  @include typ-plain-text();
-
-  @include tablets-down() {
-    padding: 16px;
-    @include typ-plain-small();
-  }
-}
-
 .cross-btn {
   position: absolute;
-  right: 8px;
-  top: 8px;
+  right: 39px;
+  top: 36px;
   width: 20px;
   height: 20px;
-  opacity: 0.3;
 
   &:hover {
-    opacity: 1;
     cursor: pointer;
   }
 
@@ -55,10 +35,10 @@
   &:after {
     position: absolute;
     left: 10px;
-    content: " ";
+    content: ' ';
     height: 20px;
     width: 2px;
-    background-color: $color-black;
+    background-color: $color-gosblue;
   }
 
   &:before {

@@ -1,7 +1,11 @@
 <div class="widget">
   <div class="widget__form widget-form">
     <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
-    <span class="widget-form__title" [innerHTML]="data.label | safe: 'html'"></span>
+    <span
+      *ngIf="isSearchTitleVisible"
+      class="widget-form__title"
+      [innerHTML]="data.label | safe: 'html'"
+    ></span>
     <div class="widget-form__input">
       <lib-lookup
         [searchCaseSensitive]="false"
@@ -37,19 +41,20 @@
         (click)="expandObject(mapObject)"
         class="map-object"
       >
-        <h6 class="map-object__header">{{ mapObject.title }}</h6>
+        <h5 class="map-object__header">{{ mapObject.title }}</h5>
         <ng-container *ngIf="mapObject.expanded">
           <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
             <span class="map-object__label">{{ itemContent.label }}: </span>
             <span class="PGU-AttrsValue">{{ itemContent.value }}</span>
           </div>
-          <a
-            *ngIf="data.attrs.showExtraInfoLink"
-            (click)="showModalFromTemplate('detailsTemplate', mapObject)"
-            href="javascript:void(0)"
-            class="details-link"
-          >Узнать подробнее
-          </a>
+<!--          Скрыто в рамках задачи EPGUCORE-41464-->
+<!--          <a-->
+<!--            *ngIf="data.attrs.showExtraInfoLink"-->
+<!--            (click)="showModalFromTemplate('detailsTemplate', mapObject)"-->
+<!--            href="javascript:void(0)"-->
+<!--            class="details-link"-->
+<!--          >Узнать подробнее-->
+<!--          </a>-->
           <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">
             На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы
             <a
@@ -59,7 +64,12 @@
             >ознакомиться</a
             >
           </div>
-          <lib-button [disabled]="!mapObject.agreement" width="wide" (click)="selectObject()"
+          <lib-button
+            [showLoader]="screenService.isLoading$ | async"
+            [disabled]="!mapObject.agreement"
+            (click)="selectObject()"
+            class="btn__submit"
+            width="wide"
           >Выбрать
           </lib-button>
         </ng-container>
@@ -68,6 +78,7 @@
   </div>
 </div>
 
+<!--В данное модальное окно информацию должен предоставлять сервис который пока что не работает / не существует-->
 <ng-template #detailsTemplate>
   <h3>ЗАГС Кутузовский</h3>
   <hr />

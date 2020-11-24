@@ -1,4 +1,5 @@
 import { DictionaryOptions } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { Observable } from 'rxjs';
 
 /**
  * Информация о нужном платеже
@@ -6,20 +7,20 @@ import { DictionaryOptions } from '../../../shared/services/dictionary-api/dicti
 export interface PaymentInfoInterface {
   codeOrg: string;
   paymentPurpose: string;
-  recipientAccountNumberTOFK: any;
-  recipientAccountNumberTaxAuthority: any;
-  recipientBankAccountNumber: any;
+  recipientAccountNumberTOFK: number;
+  recipientAccountNumberTaxAuthority: number;
+  recipientBankAccountNumber: number;
   recipientBankBIK: string;
   recipientBankName: string;
-  recipientBankSWIFT: any;
+  recipientBankSWIFT: string;
   recipientINN: string;
   recipientKBK: string;
   recipientKPP: string;
-  recipientNameFK: any;
+  recipientNameFK: string;
   recipientOKTMO: string;
   recipientPaymentAccount: string;
-  recipientTOFK: any;
-  recipientTaxAuthorityName: any;
+  recipientTOFK: string;
+  recipientTaxAuthorityName: string;
   recipientTitle: string;
   sum: string;
 }
@@ -52,15 +53,17 @@ export interface PaymentDictionaryOptionsInterface extends DictionaryOptions {
   filter: {
     union: {
       unionKind: string;
-      subs: SubPaymentDictionaryInterface[];
+      subs: SubPaymentDictionaryOptionInterface[];
     };
   };
 }
 
+
+
 /**
  * Интерфейс для части опции запроса на создание оплаты
  */
-export interface SubPaymentDictionaryInterface {
+export interface SubPaymentDictionaryOptionInterface {
   simple: {
     attributeName: string;
     condition: string;
@@ -158,6 +161,16 @@ export interface BillsInfoResponse{
   }
 }
 
+/**
+ * Интерфейс филтра опции оплаты
+ */
+export interface IFilterRegItems{
+  value: string
+}
+
+/**
+ * Интерфейс ошибки оплаты
+ */
 export interface HttpPaymentError{
   code: number,
   message: string

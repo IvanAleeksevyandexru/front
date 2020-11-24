@@ -62,6 +62,7 @@ export class TimeSlotsComponent implements OnInit {
   public monthsYears: ListItem[] = [];
   public timeSlots: SlotInterface[] = [];
   public dialogButtons = [];
+  public isExistsSlots = true;
   public currentSlot: any;
   public currentMonth: ListItem;
   public blockMobileKeyboard = false;
@@ -124,6 +125,23 @@ export class TimeSlotsComponent implements OnInit {
       days += 1;
       output[week].push({ number: date.date(), date: date.toDate() });
     }
+  }
+
+  /**
+   * Проверяет есть ли в текущем месяце пустые слоты
+   * Если да, to this.isExistsSlots = true
+   * Функция вызывается при каждой регенерации календаря
+   */
+  public checkExistenceSlots() {
+    let isExistsSlots = false;
+    this.weeks.forEach((week) => {
+      week.forEach((day) => {
+        if (!this.currentService.isDateLocked(day.date)) {
+          isExistsSlots = true;
+        }
+      });
+    });
+    this.isExistsSlots = isExistsSlots;
   }
 
   public isToday(date: Date) {
@@ -192,6 +210,7 @@ export class TimeSlotsComponent implements OnInit {
     this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
     this.activeYearNumber = parseInt(activeYear, 10);
     this.renderSingleMonthGrid(this.weeks);
+    this.checkExistenceSlots();
   }
 
   public clickSubmit() {
@@ -288,9 +307,11 @@ export class TimeSlotsComponent implements OnInit {
           for (let i = 0; i < availableMonths.length; i += 1) {
             this.monthsYears.push(this.getMonthsListItem(availableMonths[i]));
           }
-          this.currentMonth = this.monthsYears.find(
-            (item) => item.id === `${this.activeYearNumber}-${this.activeMonthNumber + 1}`,
+          const monthListId = this.generateMonthListId(
+            this.activeYearNumber,
+            this.activeMonthNumber,
           );
+          this.currentMonth = this.monthsYears.find((item) => item.id === monthListId);
           this.fixedMonth = this.monthsYears.length < 2;
           this.renderSingleMonthGrid(this.weeks);
 
@@ -302,6 +323,8 @@ export class TimeSlotsComponent implements OnInit {
         }
 
         this.inProgress = false;
+
+        this.checkExistenceSlots();
       },
       () => {
         this.errorMessage = this.currentService.getErrorMessage();
@@ -309,6 +332,33 @@ export class TimeSlotsComponent implements OnInit {
         this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
       },
     );
+  }
+
+  /**
+   * Генерирует ID совместимый с ID ListItem
+   * @example
+   * this.generateMonthListId(2020, 0) // 2020-01
+   * this.generateMonthListId(2020, 1) // 2020-02
+   * this.generateMonthListId(2020, 11) // 2020-12
+   * @param year
+   * @param month
+   * @private
+   */
+  private generateMonthListId(year: number, month: number): string {
+    const monthWithZero = this.getMonthWithZero(month);
+    return `${year}-${monthWithZero}`;
+  }
+
+  /**
+   * Преобразует номер месяца в формат с ведущим нулем
+   * @example
+   * this.getMonthWithZero(0) // "01"
+   * this.getMonthWithZero(1) // "02"
+   * this.getMonthWithZero(10) // "11"
+   * @param month от 0 до 11
+   */
+  private getMonthWithZero(month: number): string {
+    return String(`00${month + 1}`).slice(-2);
   }
 
   private getMonthsListItem(monthYear: string) {

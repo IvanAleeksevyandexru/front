@@ -116,9 +116,22 @@
       </div>
     </section>
     <section class="employee-history__newGeneration">
-      <button class="btn btn--transparent btn--clone"
-              (click)="employeeFormService.newGeneration()"
-      >Добавить данные</button>
+      <epgu-constructor-clone-button (click)="employeeFormService.newGeneration()"
+        >Добавить данные</epgu-constructor-clone-button
+      >
+    </section>
+    <section
+      *ngIf="monthsService.getUncheckedPeriods().length"
+      class="employee-history__progress">
+      <div class="employee-history__progress__notification">
+        <div class="employee-history__progress__icon"></div>
+        <div class="employee-history__progress__msg">Не заполнены периоды</div>
+      </div>
+      <div class="employee-history__progress__periods">
+        <div *ngFor="let period of monthsService.getUncheckedPeriods()">
+          <span>{{ getPeriod(period) }}</span>
+        </div>
+      </div>
     </section>
     <section
       *ngIf="(monthsService.isMonthComplete$ | async) && employeeFormService.employeeHistoryForm.valid"

@@ -1,5 +1,4 @@
 <epgu-constructor-screen-container>
-
   <div class="screen-body">
     <epgu-constructor-page-name>{{ propData.header }}</epgu-constructor-page-name>
 
@@ -17,15 +16,15 @@
           class="cmp-group__item"
           [components]="screens[screenKey]"
           [errors]="screenService.getStore().errors"
-          (changes)="changeComponentList($event, i)">
-
+          (changes)="changeComponentList($event, i)"
+        >
         </epgu-constructor-components-list>
       </epgu-constructor-screen-pad>
     </div>
 
-    <button [disabled]="!isScreensAvailable()" class="btn btn--transparent btn--clone" (click)="duplicateScreen()">
-      Добавить данные
-    </button>
+    <epgu-constructor-clone-button [disabled]="!isScreensAvailable()" (click)="duplicateScreen()"
+      >Добавить данные</epgu-constructor-clone-button
+    >
   </div>
 
   <div class="screen-footer">

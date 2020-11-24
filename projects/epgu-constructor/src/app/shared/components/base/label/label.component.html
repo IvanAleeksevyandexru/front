@@ -1,5 +1,8 @@
-<label class="label" [for]="for">
-  <ng-content></ng-content>
-  <span *ngIf="required"> * </span>
-  <lib-question-help-tip *ngIf="tips">{{ tips | titlecase }}</lib-question-help-tip>
+<label class="label" [class.helper-text]="isTextHelper" [attr.for]="for">
+  <span class="label-text">
+    <ng-content></ng-content>
+  </span>
+  <lib-question-help-tip
+    class="label-tip"
+    *ngIf="tips">{{ tips | titlecase }}</lib-question-help-tip>
 </label>

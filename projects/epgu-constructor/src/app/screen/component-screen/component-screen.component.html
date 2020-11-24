@@ -1,5 +1,4 @@
 <epgu-constructor-screen-container>
-
   <div class="screen-body">
     <div *ngIf="screenService.header$ | async as header" class="head">
       <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
@@ -7,16 +6,15 @@
 
     <epgu-constructor-screen-pad class="body">
       <ng-container [ngSwitch]="screenService.componentType$ | async">
-        <epgu-constructor-confirm-personal-user-address-screen
+        <epgu-constructor-confirm-personal-user-address
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
           [data]="screenService.component"
-          [applicantAnswers]="screenService.applicantAnswers"
-          (actionSelect)="nextStep($event)"
-        ></epgu-constructor-confirm-personal-user-address-screen>
+        ></epgu-constructor-confirm-personal-user-address>
 
         <epgu-constructor-confirm-personal-user-data
           *ngSwitchCase="isUserData()"
-          [data]="screenService.component">
+          [data]="screenService.component"
+        >
         </epgu-constructor-confirm-personal-user-data>
 
         <epgu-constructor-confirm-personal-user-phone-email
@@ -26,13 +24,12 @@
         >
         </epgu-constructor-confirm-personal-user-phone-email>
 
-        <epgu-constructor-temporary-registration-addr-screen
+        <epgu-constructor-temporary-registration-addr
           *ngSwitchCase="screenComponentName.registrationAddr"
-          (actionSelect)="nextStep()"
           [data]="screenService.component"
-          [errors]="screenService.componentErrors"
+          [error]="screenService.componentError"
         >
-        </epgu-constructor-temporary-registration-addr-screen>
+        </epgu-constructor-temporary-registration-addr>
 
         <epgu-constructor-add-passport
           *ngSwitchCase="screenComponentName.passportLookup"
@@ -58,51 +55,62 @@
           [data]="screenService.component"
           (nextStepEvent)="nextStep()"
         ></epgu-constructor-select-children-screen>
+
+        <epgu-constructor-field-list
+          [data]="screenService.component"
+          *ngSwitchCase="screenComponentName.fieldList"
+        >
+        </epgu-constructor-field-list>
       </ng-container>
     </epgu-constructor-screen-pad>
   </div>
 
-    <div class="screen-footer">
-      <ng-container
-        *ngIf="(screenService.componentType$ | async) === screenComponentName.divorceConsent"
-      >
-        <lib-button
-          *ngFor="let action of screenService.actions$ | async"
-          epgu-constructor-action
-          [action]="action"
-          class="footer__btn-action"
-          color="white"
-        >
-          <div class="secondary-font">
-            {{ action.label }}
-          </div>
-        </lib-button>
-      </ng-container>
+  <div class="screen-footer">
+    <ng-container *ngIf="isShowActionBtn">
+      <ng-container *ngTemplateOutlet="actionBtns"></ng-container>
+    </ng-container>
 
-      <lib-button
-        *ngIf="componentSetting.displayContinueBtn && (screenService.isShown$ | async)"
-        [showLoader]="screenService.isLoading$ | async"
-        (click)="nextStep()"
-        class="btn__submit"
-        [disabled]="!currentAnswersService.isValid || (screenService.isLoading$ | async)"
-      >
-        <div class="secondary-font">
-          {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
-        </div>
-      </lib-button>
+    <ng-container *ngIf="componentSetting.displayContinueBtn">
+      <ng-container *ngTemplateOutlet="displayContinueBtn"></ng-container>
+    </ng-container>
 
-      <div *ngIf="componentSetting.displayWarningAnswers" class="footer__warning-answers">
-        <epgu-constructor-answer-button
-          (click)="nextStep()"
-          [data]="{ label: 'Всё равно продолжить' }"
-        >
-        </epgu-constructor-answer-button>
-        <epgu-constructor-answer-button
-          class="footer__answer-btn"
-          (click)="goToHomePage()"
-          [data]="{ label: 'Вернуться в личный кабинет' }"
-        >
-        </epgu-constructor-answer-button>
-      </div>
+    <div *ngIf="componentSetting.displayWarningAnswers" class="footer__warning-answers">
+      <ng-container *ngTemplateOutlet="displayWarningAnswersBtn"></ng-container>
     </div>
+  </div>
 </epgu-constructor-screen-container>
+
+<ng-template #actionBtns>
+  <lib-button
+    *ngFor="let action of screenService.actions$ | async"
+    epgu-constructor-action
+    [action]="action"
+    color="white"
+  >
+    <div>{{ action.label }}</div>
+  </lib-button>
+</ng-template>
+
+<ng-template #displayContinueBtn>
+  <lib-button
+    [showLoader]="screenService.isLoading$ | async"
+    (click)="nextStep()"
+    class="btn__submit"
+    [disabled]="!currentAnswersService.isValid || (screenService.isLoading$ | async)"
+  >
+    <div class="secondary-font">
+      {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
+    </div>
+  </lib-button>
+</ng-template>
+
+<ng-template #displayWarningAnswersBtn>
+  <epgu-constructor-answer-button (click)="nextStep()" [data]="{ label: 'Всё равно продолжить' }">
+  </epgu-constructor-answer-button>
+  <epgu-constructor-answer-button
+    class="footer__answer-btn"
+    (click)="goToHomePage()"
+    [data]="{ label: 'Вернуться в личный кабинет' }"
+  >
+  </epgu-constructor-answer-button>
+</ng-template>

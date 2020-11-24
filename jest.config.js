@@ -41,4 +41,9 @@ module.exports = {
       },
     }
   },
+  testEnvironmentOptions: {
+    beforeParse (window) {
+      window.scroll = () => { };
+    }
+  },
 };

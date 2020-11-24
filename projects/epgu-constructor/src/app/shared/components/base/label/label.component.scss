@@ -1,15 +1,23 @@
 @import '../../../../../styles/core';
 
 :host {
-  display: block;
+  display: flex;
+  align-items: center;
   margin: 0 0 4px;
 }
-.label {
+
+.label-text {
   display: block;
   text-align: left;
   color: $color-summer-night;
+  @include typ-plain-small;
 
   &::first-letter {
     text-transform: uppercase;
   }
+}
+
+.label-tip {
+  margin-left: 10px;
+  line-height: 0;
 }

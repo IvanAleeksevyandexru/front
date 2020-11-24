@@ -3,9 +3,8 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ScreenService } from '../../../screen/screen.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { Answer } from '../../types/answer';
 import {
-  ActionApiResponse, ActionDTO,
+  ActionApiResponse, ActionDTO, DTOActionAction,
   ActionType,
   ComponentDtoAction
 } from '../../../form-player/services/form-player-api/form-player-api.types';
@@ -13,6 +12,8 @@ import { FormPlayerApiService } from '../../../form-player/services/form-player-
 import { UtilsService } from '../../services/utils/utils.service';
 import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
+import { ComponentStateForNavigate } from './action.interface';
+import { DatePipe } from '@angular/common';
 
 
 @Directive({
@@ -31,6 +32,7 @@ export class ActionDirective {
     private navService: NavigationService,
     private navModalService: NavigationModalService,
     private utilsService: UtilsService,
+    private datePipe: DatePipe
   ) {}
 
   private switchAction(): void {
@@ -43,6 +45,9 @@ export class ActionDirective {
         break;
       case ActionType.nextStepModal:
         this.navigateModal('nextStep');
+        break;
+      case ActionType.skipStep:
+        this.navigate('skipStep');
         break;
       case ActionType.prevStep:
         this.navigate('prevStep');
@@ -102,15 +107,17 @@ export class ActionDirective {
     }
   }
 
-  private getComponentStateForNavigate(): {
-    [key: string]: Answer;
-  } {
+  private getComponentStateForNavigate(): ComponentStateForNavigate {
     return {
       [this.screenService.component.id]: {
         visited: true,
-        value: this.action.value,
+        value: this.getComponentStateValueForNavigate(this.action.action),
       },
     };
+  }
+
+  private getComponentStateValueForNavigate (actionName: DTOActionAction) {
+    return this.action.value;
   }
 
   private downloadAction(): void {

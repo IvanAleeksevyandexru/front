@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HelperService } from 'epgu-lib';
 
 @Component({
   template: '',
@@ -23,6 +24,9 @@ export class ModalBaseComponent {
   }
 
   closeModal(value?: any): void {
+    if (HelperService.isTouchDevice()) {
+      document.body.style.overflow = null;
+    }
     this.detachView(value || this.modalResult.value);
   }
 }

@@ -1,6 +1,6 @@
 import { NavigationPayload } from '../form-player/form-player.types';
 import { Answer } from '../shared/types/answer';
-import { ScenarioDto } from '../form-player/services/form-player-api/form-player-api.types';
+import { ComponentDto, DisplayDto, ScenarioDto } from '../form-player/services/form-player-api/form-player-api.types';
 
 /**
  * Интерфейс для базового компонента
@@ -11,8 +11,8 @@ export interface ComponentBase {
   label: string;
   type: string;
   value: string;
-  required?: boolean
-  visited?: boolean
+  required?: boolean;
+  visited?: boolean;
   hint?: string;
 }
 
@@ -20,7 +20,16 @@ export interface CachedAnswers {
   [key: string]: Answer
 }
 
-export interface ScreenStore extends Partial<ScenarioDto>{ }
+export interface ScreenStoreComponentDtoI extends ComponentDto {
+  presetValue?: string;
+}
+export interface ScreenStoreDisplayDtoI extends DisplayDto {
+  components: Array<ScreenStoreComponentDtoI>;
+}
+
+export interface ScreenStore extends Partial<ScenarioDto> {
+  display?: ScreenStoreDisplayDtoI;
+}
 
 export interface Screen {
   prevStep: (data?: NavigationPayload) => void,

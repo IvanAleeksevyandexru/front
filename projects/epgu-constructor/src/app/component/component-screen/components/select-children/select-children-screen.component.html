@@ -5,8 +5,8 @@
         <div class="card__wrapper">
           <div class="card__header">
             <div class="card__title">Ребенок {{ idx + 1 }}</div>
-            <div class="card__close">
-              <button (click)="removeChild(item)" class="button-close">
+            <div class="card__close" *ngIf="isMoreThanOneChild()">
+              <button (click)="removeChild(idx)" class="button-close">
                 <div class="icon-close"></div>
               </button>
             </div>
@@ -20,18 +20,16 @@
             <div class="card__select">
               <lib-dropdown
                 [id]="idx"
-                [formControlName]="item"
-                (changed)="handleSelect($event, item)"
+                [formControlName]="item.controlId"
+                (changed)="handleSelect($event, idx)"
                 [items]="itemsToSelect"
               ></lib-dropdown>
             </div>
-            <section
-              class="card__content"
-              *ngIf="selectedItems[item] && selectedItems[item][isNewRef]"
-            >
+            <section class="card__content" *ngIf="isNewId(item[isNewRef])">
               <epgu-constructor-components-list
-                (changes)="updateChild($event, item)"
-                [components]="screenService.component?.attrs?.components"
+                (changes)="updateChild($event, item, idx)"
+                (emitFormStatus)="updateItemValidationStatus($event, item?.controlId)"
+                [components]="itemsComponents[idx]"
                 [errors]="screenService.getStore().errors"
               >
               </epgu-constructor-components-list>
@@ -42,7 +40,12 @@
     </div>
 
     <div class="select-children-screen__action">
-      <lib-button width="wide" color="white" (click)="addMoreChild()">
+      <lib-button
+        width="wide"
+        color="white"
+        (click)="addMoreChild()"
+        [disabled]="isScreensAvailable()"
+      >
         <label>Добавить ребенка</label>
       </lib-button>
     </div>
