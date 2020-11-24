@@ -31,6 +31,7 @@
   }
 
   &__answer {
+    margin: 0 0 16px 0;
     @include tablets-up {
       margin: 0 0 24px 0;
     }
