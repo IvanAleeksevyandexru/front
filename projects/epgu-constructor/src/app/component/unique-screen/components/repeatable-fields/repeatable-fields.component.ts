@@ -6,6 +6,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
@@ -41,8 +42,12 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   screens: { [key: string]: CustomComponent[] };
   propData; // TODO указать тип
   cache: Answer;
+  addSectionLabel$ = this.screenService.componentLabel$.pipe(
+    map((label) => {
+      return label || 'Добавить данные';
+    }),
+  );
 
-  @Input() isLoading: boolean;
   @Input() set data(data) {
     this.cache = this.screenService.getStore().cachedAnswers[this.screenService.component.id];
     this.initVariable();
