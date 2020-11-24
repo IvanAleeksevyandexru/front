@@ -157,7 +157,6 @@ export enum ActionType {
 }
 
 export enum DTOActionAction {
-  noAddressAndSubmit = 'noAddressAndSubmit',
   skipStep = 'skipStep',
   reject = 'reject',
   editPhoneNumber = 'service/actions/editPhoneNumber',
