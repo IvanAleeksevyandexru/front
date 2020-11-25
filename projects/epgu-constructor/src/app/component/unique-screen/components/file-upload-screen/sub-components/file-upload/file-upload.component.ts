@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FileResponseToBackendUploadsItem,
   FileResponseToBackendWithRelatedUploads,
@@ -6,13 +6,14 @@ import {
   FileUploadItem,
   FileUploadItemTypes,
 } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
+import { FileUploadService } from '../file-upload.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
 })
-export class FileUploadComponent {
+export class FileUploadComponent implements OnInit {
   fileUploadItemTypes = FileUploadItemTypes;
   private attrs: FileUploadAttributes;
   @Input() objectId: string;
@@ -39,6 +40,13 @@ export class FileUploadComponent {
   } = { files: [], errors: [] };
   @Output() newValueSet: EventEmitter<object> = new EventEmitter<object>();
   @Output() newRelatedValueSet: EventEmitter<any> = new EventEmitter<any>();
+
+  constructor(private fileUploadService: FileUploadService) {}
+
+  ngOnInit(): void {
+    this.fileUploadService.setMaxFilesAmount(this.attrs.maxFileCount);
+    this.fileUploadService.setMaxFilesSize(this.attrs.maxSize);
+  }
 
   /**
    * Заполняем значения по умолчанию для возврата на сервер
