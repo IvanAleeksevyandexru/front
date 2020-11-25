@@ -25,17 +25,25 @@ export interface TimerValueInterface {
 }
 
 interface TimerAttrValue{
-  label?: string,
-  type: string,
-  value: string
+  label?: string;
+  type: string;
+  value: string;
 }
 
 /**
  * Секция сведения о заголовка исходя из вмерени
  */
 export interface TimerLabelSection{
-  label: string,
-  fromTime: number
+  label: string;
+  fromTime: number;
+}
+
+/**
+ * Интерфейс для кнопки таймера с последующим переходом
+ */
+export interface TimerComponentDtoAction extends ComponentDtoAction{
+  fromTime?: number;
+  toTime?: number;
 }
 
 /**
@@ -43,7 +51,8 @@ export interface TimerLabelSection{
  */
 interface TimerRules{
   warningColorFromTime: number,
-  labels: TimerLabelSection[]
+  labels: TimerLabelSection[],
+  actions: TimerComponentDtoAction[],
 }
 
 /**
@@ -56,7 +65,6 @@ export interface TimerComponentBase extends ComponentBase{
     ceremonyType?: TimerAttrValue,
     time: TimerAttrValue,
     timerRules: TimerRules,
-    actions: ComponentDtoAction[],
     timer: {
       start: TimerAttrValue,
       finish: TimerAttrValue

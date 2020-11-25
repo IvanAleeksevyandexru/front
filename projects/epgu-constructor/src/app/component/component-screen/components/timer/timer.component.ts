@@ -4,6 +4,7 @@ import { timer } from 'rxjs';
 import { takeUntil, takeWhile, tap } from 'rxjs/operators';
 import {
   TimerComponentBase,
+  TimerComponentDtoAction,
   TimerInterface,
   TimerLabelSection,
   TimerValueInterface,
@@ -11,7 +12,6 @@ import {
 import { createTimer, isWarning } from './timer.helper';
 import { ScreenService } from '../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { ComponentDtoAction } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-timer',
@@ -25,15 +25,21 @@ export class TimerComponent {
   private componentBase: TimerComponentBase;
   @Input() set data(componentBase: TimerComponentBase) {
     this.componentBase = componentBase;
-    this.actionButtons = componentBase.attrs?.actions ? componentBase.attrs.actions : [];
+    this.hasLabels = this.data.attrs?.timerRules?.labels?.length > 0;
+    this.hasButtons = this.data.attrs?.timerRules?.actions?.length > 0;
 
     this.timer = createTimer(
       this.getStartDate(),
-      this.getFinishDate(),
+      this.getStartDate() + 120 * 1000,
+      // this.getFinishDate(),
       this.componentBase.attrs?.timerRules?.warningColorFromTime,
     );
-    if (this.data.attrs?.timerRules?.labels?.length) {
+    if (this.hasLabels) {
       this.sortLabelsByTime();
+    }
+    if (this.hasButtons) {
+      this.prepareActionsButtons();
+      this.setActionsButtons();
     }
     this.startTimer();
   }
@@ -42,9 +48,11 @@ export class TimerComponent {
   }
   label: string;
   timer: TimerInterface;
-  actionButtons: ComponentDtoAction[] = [];
+  actionButtons: TimerComponentDtoAction[] = [];
 
-  private secondInMiliSeconds = 1000;
+  private hasLabels = false;
+  private hasButtons = false;
+  private oneSecond = 1000;
 
   constructor(private ngUnsubscribe$: UnsubscribeService, public screenService: ScreenService) {}
 
@@ -52,9 +60,9 @@ export class TimerComponent {
    * Стартует работу таймера
    */
   startTimer() {
-    timer(this.timer.start - Date.now(), this.secondInMiliSeconds)
+    timer(this.timer.start - Date.now(), this.oneSecond)
       .pipe(
-        takeWhile(() => this.timer.time - this.secondInMiliSeconds >= -this.secondInMiliSeconds),
+        takeWhile(() => this.timer.time - this.oneSecond >= -this.oneSecond),
         takeUntil(this.ngUnsubscribe$),
         tap(() => this.startTimerHandler()),
       )
@@ -65,18 +73,48 @@ export class TimerComponent {
    * Обработка таймера
    */
   startTimerHandler() {
-    const time = this.timer.time - this.secondInMiliSeconds;
+    const time = this.timer.time - this.oneSecond;
     this.timer.isWarning = isWarning(
       time,
       this.timer.finish,
       this.data.attrs?.timerRules?.warningColorFromTime,
     );
-    this.timer.isFinish = time <= 1000;
+    this.timer.isFinish = time <= this.oneSecond;
     this.timer.time = time;
     this.label = this.componentBase.label;
-    if (this.data.attrs?.timerRules?.labels?.length) {
-      this.data.attrs.timerRules.labels.forEach((timerRule) => this.setLabelFromRule(timerRule));
+    if (this.hasLabels) {
+      this.data.attrs.timerRules.labels.forEach((timerRule: TimerLabelSection) =>
+        this.setLabelFromRule(timerRule),
+      );
     }
+    if (this.hasButtons) {
+      this.setActionsButtons();
+    }
+  }
+
+  /**
+   * Устанавливает кнопки которые будут отображаться
+   * @private
+   */
+  private setActionsButtons() {
+    this.actionButtons = [];
+    this.data.attrs.timerRules.actions.forEach((timerRule: TimerComponentDtoAction) =>
+      this.setButtonFromRule(timerRule),
+    );
+  }
+
+  /**
+   * Подготавливает кнопки смотря обязательные поля
+   * @private
+   */
+  private prepareActionsButtons() {
+    this.data.attrs.timerRules.actions = this.data.attrs.timerRules.actions.map((button) => {
+      if (button.fromTime === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        button.fromTime = 0;
+      }
+      return button;
+    });
   }
 
   /**
@@ -101,8 +139,31 @@ export class TimerComponent {
    * @private
    */
   private setLabelFromRule(timerRule: TimerLabelSection) {
-    if (this.timer.time <= timerRule.fromTime * 1000) {
+    if (timerRule.fromTime && this.timer.time <= timerRule.fromTime * this.oneSecond) {
       this.label = timerRule.label;
+    } else if (this.timer.isFinish) {
+      this.label = timerRule.label;
+    }
+  }
+
+  /**
+   * Устанавливает кнопку в зависимости от оставшетаймере
+   * @private времени
+   * @param timerButton - кнопка для отображения в
+   */
+  private setButtonFromRule(timerButton: TimerComponentDtoAction) {
+    const { time } = this.timer;
+    if (timerButton.fromTime && timerButton.toTime) {
+      if (
+        time <= timerButton.fromTime * this.oneSecond &&
+        time >= timerButton.toTime * this.oneSecond
+      ) {
+        this.actionButtons.push(timerButton);
+      }
+    } else if (timerButton.fromTime && time <= timerButton.fromTime * this.oneSecond) {
+      this.actionButtons.push(timerButton);
+    } else if (this.timer.isFinish) {
+      this.actionButtons.push(timerButton);
     }
   }
 
