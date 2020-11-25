@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/for
 import { ListItem } from 'epgu-lib';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import * as moment_ from 'moment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { distinctUntilChanged, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
@@ -26,6 +26,8 @@ import { AddressHelperService, DadataSuggestionsAddressForLookup } from './addre
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
 import { ValidationService } from './validation.service';
+import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 const moment = moment_;
 
@@ -42,6 +44,7 @@ export class ComponentListFormService {
   private indexesByIds: Record<string, number> = {};
   private cachedAttrsComponents: Record<string, { base: CustomComponentAttr; last: string }> = {};
   private lastChangedComponent: [CustomListFormGroup, CustomListFormGroup];
+  private errors: ScenarioErrorsDto;
 
   get shownElements(): CustomListStatusElements {
     return this._shownElements;
@@ -60,9 +63,11 @@ export class ComponentListFormService {
     private toolsService: ComponentListToolsService,
     private addressHelperService: AddressHelperService,
     private repository: ComponentListRepositoryService,
+    private logger: LoggerService,
   ) {}
 
   create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
+    this.errors = errors;
     this.toolsService.createStatusElements(components, this.shownElements);
 
     this._form = new FormArray(
@@ -167,17 +172,31 @@ export class ComponentListFormService {
     return String(value).match(params);
   }
   private relationMinDate(value: string, params: string) {
-    return moment(value).isSameOrAfter(moment(params, 'DD.MM.YYYY'));
+    return moment(value).isSameOrAfter(moment(params, DATE_STRING_DOT_FORMAT));
   }
   private relationMaxDate(value: string, params: any) {
-    return moment(value).isSameOrBefore(moment(params, 'DD.MM.YYYY'));
+    return moment(value).isSameOrBefore(moment(params, DATE_STRING_DOT_FORMAT));
+  }
+
+  private changeValidators(component: CustomComponent, control: AbstractControl) {
+    control.setValidators([
+      this.validationService.customValidator(component),
+      this.validationService.validationBackendError(this.errors[component.id], component),
+    ]);
   }
 
   private relationPatch(component: CustomComponent, patch: any) {
-    const resultPath = { ...component, attrs: { ...component.attrs, ...patch }};
+    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch }};
 
-    console.log('patch component', resultPath);
-    this.form.controls[this.indexesByIds[component.id]].patchValue(resultPath);
+    const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
+
+    control.patchValue(
+      {
+        attrs: { ...component.attrs, ...patch },
+      },
+      { onlySelf: true, emitEvent: false },
+    );
+    this.changeValidators(resultComponent, control.controls.value);
   }
 
   private resetRelation(component: CustomComponent) {
@@ -204,22 +223,28 @@ export class ComponentListFormService {
   }
 
   private relationMapChanges([prev, next]: [CustomListFormGroup, CustomListFormGroup]) {
-    if (!next.attrs?.relationField) {
+    const value = next.value;
+    if (!next.attrs?.relationField || !value) {
       return;
     }
     const { ref, conditions } = next.attrs?.relationField;
     const refComponent = this.form.value[this.indexesByIds[ref]];
-    const value = next.value;
 
     let result;
     for (let condition of conditions) {
       const func = this.mapRelationTypes[condition.type];
       if (!func) {
-        console.error(`Relation condition type: ${condition.type} - not found.`);
+        this.logger.error(
+          [`Relation condition type: ${condition.type} - not found.`],
+          'relationComponent',
+        );
         return;
       }
       if (func(value, condition.value)) {
-        console.log('condition.type used', condition.type, value, condition.value);
+        this.logger.log(
+          [`condition.type used: ${condition.type}, ${value}, ${condition.value}`],
+          'relationComponent',
+        );
         result = condition.result;
         break;
       }
@@ -251,14 +276,9 @@ export class ComponentListFormService {
       form.disable();
     }
 
-    this.watchFormGroup$(form)
-      .pipe(
-        tap(
-          (changes: [CustomListFormGroup, CustomListFormGroup]) =>
-            (this.lastChangedComponent = changes),
-        ),
-      )
-      .subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
+    this.watchFormGroup$(form).subscribe(
+      ([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
+        this.lastChangedComponent = [prev, next];
         this._shownElements = this.toolsService.updateDependents(
           components,
           next,
@@ -299,7 +319,8 @@ export class ComponentListFormService {
             });
         }
         ///////////////////
-      });
+      },
+    );
 
     return form;
   }
