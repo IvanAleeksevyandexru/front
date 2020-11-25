@@ -1,6 +1,7 @@
 import { ComponentBase } from '../../../../../../screen/screen.types';
 import { TextTransform } from '../../../../../../shared/types/textTransform';
 import { RelativeDate } from 'epgu-lib';
+import { DurationInputArg2 } from 'moment';
 
 export interface TemporaryRegistrationComponent extends ComponentBase {
   attrs: TemporaryRegistrationComponentAttrs;
@@ -20,7 +21,8 @@ export interface TemporaryRegistrationComponentAttrs {
  */
 export interface TemporaryRegistrationHints {
   label: string;
-  timestamp: number
+  amount: number;
+  unit: DurationInputArg2;
 }
 
 /**
