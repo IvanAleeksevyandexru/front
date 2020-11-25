@@ -17,7 +17,8 @@ export interface TemporaryRegistrationComponentAttrs {
 
 /**
  * @property {string}label - some title
- * @property {number}timestamp - время которое прибавляется к текущей дате
+ * @property {number}amount - число которое прибавляется к текущей дате
+ * @property {DurationInputArg2}unit - тип времени день, год и т.д
  */
 export interface TemporaryRegistrationHints {
   label: string;
