@@ -27,6 +27,7 @@
   h5,
   h6 {
     margin: 0;
+    word-wrap: break-word;
   }
 
   h1 {
@@ -74,6 +75,14 @@
   .helper-text {
     @include typ-plain-small;
     color: $color-text-helper;
+  }
+
+  .text--center{
+    text-align: center;
+  }
+
+  .text--right{
+    text-align: right;
   }
 
   sub {
@@ -127,6 +136,8 @@
       }
     }
   }
+
+  /* Utility classes */
 
   .text-color {
     &--white {
@@ -197,6 +208,22 @@
     }
   }
 
+  .block {
+    &--with-icon {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      & > img {
+        flex: 0 0 auto;
+        max-width: 25px;
+        margin-right: 17px;
+        @include phones-down {
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+
   .container {
     width: 100%;
     max-width: 592px;
@@ -207,6 +234,12 @@
 
     @include tablets-up {
       box-sizing: content-box;
+    }
+  }
+
+  .title {
+    &--header {
+      margin-bottom: 16px;
     }
   }
 }

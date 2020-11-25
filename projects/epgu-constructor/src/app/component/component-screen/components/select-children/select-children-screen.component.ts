@@ -94,7 +94,7 @@ export class SelectChildrenScreenComponent implements OnInit {
         const childId = isNew ? this.NEW_ID : child[this.idRef];
         // По ID получаем ребенка для подстановки в formControl
         const childFromList = this.itemsToSelect.find((item) => item[this.idRef] === childId);
-        this.addMoreChild(childFromList, child);
+        this.addMoreChild(childFromList, isNew ? child : {});
         this.handleSelect(child, index);
       });
     } else {
@@ -246,8 +246,8 @@ export class SelectChildrenScreenComponent implements OnInit {
     });
   }
 
-  isNewId(itemId: string): boolean {
-    return itemId === this.NEW_ID;
+  isNewId(itemId: string = 'false'): boolean {
+    return JSON.parse(itemId);
   }
 
   isMoreThanOneChild(): boolean {

@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
@@ -6,7 +6,11 @@ import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confi
 import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../modal/modal.service';
 import { ScreenBase } from '../screenBase';
-import { QuestionsComponentActions } from './questions-screen.types';
+import {
+  ActionType,
+  ComponentDtoAction,
+  DTOActionAction,
+} from '../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -14,36 +18,44 @@ import { QuestionsComponentActions } from './questions-screen.types';
   styleUrls: ['./questions-screen.component.scss'],
   providers: [UnsubscribeService],
 })
-export class QuestionsScreenComponent extends ScreenBase {
+export class QuestionsScreenComponent extends ScreenBase implements OnInit {
+  rejectAction: ComponentDtoAction;
   constructor(public injector: Injector, private modalService: ModalService) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    this.subscribeToComponent();
+  }
+
+  subscribeToComponent() {
+    this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
+      this.rejectAction = this.getRejectAction(component?.attrs?.actions);
+    });
   }
 
   nextStep(payload?: NavigationPayload): void {
     this.navigationService.nextStep.next({ payload });
   }
 
-  answerChoose(action: QuestionsComponentActions): void {
-    const { disabled, type, value } = action;
-
-    if (disabled) {
+  answerChoose(action: ComponentDtoAction): any {
+    if (action.disabled) {
       return;
     }
-
-    if (type === 'modalRedirectTo') {
+    if (action.type === ActionType.modalRedirectTo) {
       this.showModalRedirectTo(action);
       return;
     }
+    this.nextStep(this.getPayload(action));
+  }
 
-    const data: NavigationPayload = {};
-
-    const componentId = this.screenService.component.id;
-    data[componentId] = {
-      visited: true,
-      value: value || '',
+  getPayload(action: ComponentDtoAction) {
+    return {
+      [this.screenService.component.id]: {
+        visited: true,
+        value: action.value || '',
+      },
     };
-
-    this.nextStep(data);
   }
 
   showModalRedirectTo(action) {
@@ -75,5 +87,17 @@ export class QuestionsScreenComponent extends ScreenBase {
         window.location.href = result;
       }
     });
+  }
+
+  showActionAsLongBtn(action: ComponentDtoAction): boolean {
+    return !(action.hidden || this.isRejectAction(action));
+  }
+
+  getRejectAction(actions: Array<ComponentDtoAction> = []) {
+    return actions.find((action) => this.isRejectAction(action));
+  }
+
+  isRejectAction(action: ComponentDtoAction): boolean {
+    return action.action === DTOActionAction.reject;
   }
 }

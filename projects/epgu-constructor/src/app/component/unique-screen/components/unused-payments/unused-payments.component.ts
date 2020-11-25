@@ -92,8 +92,15 @@ export class UnusedPaymentsComponent implements OnInit {
     this.usePaymentsListData();
   };
 
-  public ngOnInit() {
-    console.log(this.data);
+  /**
+   * Выбор радиокнопки
+   * @param $event - событие выбора
+   */
+  radioSelect($event) {
+    this.tax = $event;
+  }
+
+  ngOnInit() {
     const { orderId } = this.screenService.getStore();
     this.orderId = orderId;
     this.listPaymentsService

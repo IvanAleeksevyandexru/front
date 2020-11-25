@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { QuestionsComponentActions } from '../../../screen/questions-screen/questions-screen.types';
+import { ComponentDtoAction } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-long-button',
@@ -7,6 +7,6 @@ import { QuestionsComponentActions } from '../../../screen/questions-screen/ques
   styleUrls: ['./long-button.component.scss'],
 })
 export class LongButtonComponent {
-  @Input() data: QuestionsComponentActions;
+  @Input() data: ComponentDtoAction;
   @Input() disabled: boolean;
 }

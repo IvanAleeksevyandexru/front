@@ -28,7 +28,6 @@
   ></epgu-constructor-employee-history>
   <epgu-constructor-repeatable-fields
     *ngSwitchCase="uniqueComponentName.repeatableFields"
-    [isLoading]="screenService.isLoading$ | async"
     [data]="screenService.display"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-repeatable-fields>

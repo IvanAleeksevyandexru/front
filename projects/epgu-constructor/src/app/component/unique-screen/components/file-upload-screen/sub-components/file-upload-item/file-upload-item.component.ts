@@ -9,6 +9,8 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { v4 as uuidv4 } from 'uuid';
 import {
   FileResponseToBackendUploadsItem,
   FileUploadItem,
@@ -313,19 +315,15 @@ export class FileUploadItemComponent implements OnDestroy {
    * @param file - file object to upload
    * @private
    */
-  private async sendFile(file: File) {
+  private sendFile(file: File) {
     this.filesInUploading += 1;
 
-    const files = this.files$$.value;
+    const terabyteFiles = this.files$$.value;
+    const fileToUpload = terabyteFiles.filter(
+      (terabyteFile) => terabyteFile.fileName === file.name,
+    )[0];
+    this.listIsUploadingNow = false;
 
-    const fileToUpload = new TerraUploadedFile({
-      fileName: file.name,
-      objectId: this.objectId,
-      objectTypeId: UPLOAD_OBJECT_TYPE,
-      mnemonic: this.getMnemonic(),
-    });
-
-    files.push(fileToUpload);
     this.subs.push(
       this.terabyteService
         .uploadFile(fileToUpload.getParamsForUploadFileOptions(), file)
@@ -361,6 +359,10 @@ export class FileUploadItemComponent implements OnDestroy {
       return of();
     }
 
+    if (files.length > 0) {
+      this.listIsUploadingNow = true;
+    }
+
     const compressedFiles = this.compressImages(files, isPhoto);
 
     return merge(...compressedFiles).pipe(
@@ -373,6 +375,19 @@ export class FileUploadItemComponent implements OnDestroy {
     return `${photoBaseName}_${this.uploadedCameraPhotoNumber + 1}.${photoType}`;
   }
 
+  getUniqName(name: string): string {
+    return `${name.split('.')[0]}_${uuidv4()}.${name.split('.').pop() || 'jpeg'}`;
+  }
+
+  createCustomFile(file: File, fileName: string): File {
+    const { type, lastModified } = file;
+
+    return new File([file], fileName, {
+      type,
+      lastModified,
+    });
+  }
+
   compressImages(files: File[], isPhoto?: boolean): Array<Observable<any>> {
     const compressedImageOptions: CompressionOptions = {
       maxSizeMB: getSizeInMB(maxImgSizeInBytes),
@@ -380,19 +395,38 @@ export class FileUploadItemComponent implements OnDestroy {
     };
 
     return files.map((file: File) => {
-      if (this.compressionService.isValidImageType(file)) {
+      const terabyteFiles = this.files$$.value;
+      let fileToAction = this.createCustomFile(file, file.name);
+      let uniqFileName = this.getUniqName(file.name);
+
+      const fileToUpload = new TerraUploadedFile({
+        fileName: isPhoto ? this.getPhotoName(fileToAction) : uniqFileName,
+        objectId: this.objectId,
+        objectTypeId: UPLOAD_OBJECT_TYPE,
+        mnemonic: this.getMnemonic(),
+      });
+
+      terabyteFiles.push(fileToUpload);
+      if (this.compressionService.isValidImageType(fileToAction)) {
         if (isPhoto) {
-          compressedImageOptions.customFileName = this.getPhotoName(file);
+          uniqFileName = this.getPhotoName(fileToAction);
         }
 
-        return from(this.compressionService.imageCompression(file, compressedImageOptions)).pipe(
+        fileToAction = this.createCustomFile(fileToAction, uniqFileName);
+
+        return from(
+          this.compressionService.imageCompression(fileToAction, compressedImageOptions),
+        ).pipe(
           catchError(() => {
-            this.handleError(ErrorActions.addInvalidFile, file);
+            this.handleError(ErrorActions.addInvalidFile, fileToAction);
             return of();
           }),
         );
       }
-      return of(file);
+
+      fileToAction = this.createCustomFile(fileToAction, uniqFileName);
+
+      return of(fileToAction);
     });
   }
 
@@ -414,6 +448,7 @@ export class FileUploadItemComponent implements OnDestroy {
         acc.push(file);
       } else {
         this.handleError(ErrorActions.addInvalidType, file);
+        this.listIsUploadingNow = false;
       }
       return acc;
     }, []);

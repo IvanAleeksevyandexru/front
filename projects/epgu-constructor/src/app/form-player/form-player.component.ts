@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { LoadService } from 'epgu-lib';
 import { fromEvent } from 'rxjs';
-import { debounceTime, mergeMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, mergeMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../core/config/config.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
@@ -52,12 +52,12 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.checkProps();
     this.serviceDataService.init(this.service);
 
     this.loadService.loaded
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(filter((loaded: boolean) => loaded))
       .pipe(mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()))
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((config) => {
         this.configService.config = config;
       });
@@ -85,7 +85,8 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+    this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((loaded) => {
+      if (!loaded) return;
       const { orderId, invited, canStartNew } = this.serviceDataService;
       if (orderId) {
         this.handleOrder(orderId, invited, canStartNew);
