@@ -30,8 +30,7 @@ export class TimerComponent {
 
     this.timer = createTimer(
       this.getStartDate(),
-      this.getStartDate() + 120 * 1000,
-      // this.getFinishDate(),
+      this.getFinishDate(),
       this.componentBase.attrs?.timerRules?.warningColorFromTime,
     );
     if (this.hasLabels) {
