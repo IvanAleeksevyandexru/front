@@ -120,7 +120,7 @@ export class FileUploadItemComponent implements OnDestroy {
   })
   cameraInput: ElementRef;
   get isButtonsDisabled() {
-    return this.listIsUploadingNow || this.filesInUploading > 0;
+    return this.listIsUploadingNow || this.filesInUploading || this.filesInCompression;
   }
 
   private subs: Subscription[] = [];
@@ -128,6 +128,7 @@ export class FileUploadItemComponent implements OnDestroy {
 
   listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
+  filesInCompression = 0; // Количество файлов, проходящих через компрессию
   files$$ = new BehaviorSubject<TerraUploadedFile[]>([]); // Список уже загруженных файлов
   files$ = this.files$$
     .asObservable()
@@ -359,10 +360,6 @@ export class FileUploadItemComponent implements OnDestroy {
       return of();
     }
 
-    if (files.length > 0) {
-      this.listIsUploadingNow = true;
-    }
-
     const compressedFiles = this.compressImages(files, isPhoto);
 
     return merge(...compressedFiles).pipe(
@@ -389,6 +386,8 @@ export class FileUploadItemComponent implements OnDestroy {
   }
 
   compressImages(files: File[], isPhoto?: boolean): Array<Observable<any>> {
+    this.filesInCompression += files.length;
+
     const compressedImageOptions: CompressionOptions = {
       maxSizeMB: getSizeInMB(maxImgSizeInBytes),
       deepChecking: true,
@@ -406,7 +405,7 @@ export class FileUploadItemComponent implements OnDestroy {
         mnemonic: this.getMnemonic(),
       });
 
-      terabyteFiles.push(fileToUpload);
+      this.files$$.next([fileToUpload, ...terabyteFiles]);
       if (this.compressionService.isValidImageType(fileToAction)) {
         if (isPhoto) {
           uniqFileName = this.getPhotoName(fileToAction);
@@ -419,6 +418,8 @@ export class FileUploadItemComponent implements OnDestroy {
         ).pipe(
           catchError(() => {
             this.handleError(ErrorActions.addInvalidFile, fileToAction);
+            this.filesInCompression -= 1;
+            this.removeFileFromStore(fileToUpload);
             return of();
           }),
         );
@@ -436,8 +437,10 @@ export class FileUploadItemComponent implements OnDestroy {
 
     if (isSizeValid) {
       this.uploadedFilesSize = newSize;
+      this.filesInCompression -= 1;
     } else {
       this.handleError(ErrorActions.addMaxSize);
+      this.filesInCompression = 0;
     }
     return isSizeValid;
   }
@@ -448,7 +451,6 @@ export class FileUploadItemComponent implements OnDestroy {
         acc.push(file);
       } else {
         this.handleError(ErrorActions.addInvalidType, file);
-        this.listIsUploadingNow = false;
       }
       return acc;
     }, []);
