@@ -4,15 +4,15 @@ import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 
 export interface ApplicantAnswersDto {
-  [key: string]: Answer
+  [key: string]: Answer;
 }
 
 export interface CachedAnswersDto {
-  [key: string]: Answer
+  [key: string]: Answer;
 }
 
 export interface CurrentValueDto {
-  [key: string]: Answer
+  [key: string]: Answer;
 }
 
 /**
@@ -28,15 +28,15 @@ export interface CurrentValueDto {
  */
 export interface ComponentDto {
   attrs: {
-    [key: string]: any,
-    actions?: Array<ComponentDtoAction>
+    [key: string]: any;
+    actions?: Array<ComponentDtoAction>;
   };
   id: string;
   label: string;
   type: string;
   value: string;
-  required?: boolean
-  visited?: boolean
+  required?: boolean;
+  visited?: boolean;
 }
 
 export interface ComponentDtoAction {
@@ -52,7 +52,7 @@ export interface ComponentDtoAction {
 
 export interface DisplaySubjHead {
   text: string;
-  clarifications: Clarifications
+  clarifications: Clarifications;
 }
 
 /**
@@ -77,15 +77,15 @@ export interface DisplayDto {
   submitLabel: string;
   type: ScreenTypes;
   terminal: boolean;
-  isSocialButtonsHidden?: boolean
+  isSocialButtonsHidden?: boolean;
 }
 
 export interface CurrentCycledFieldsDto {
-  [key: string]: string
+  [key: string]: string;
 }
 
 export interface ScenarioErrorsDto {
-  [key: string]: string
+  [key: string]: string;
 }
 
 /**
@@ -128,11 +128,11 @@ export interface ScenarioDto {
  */
 export interface FormPlayerApiSuccessResponse {
   scenarioDto: ScenarioDto;
-  isInternalScenario?: boolean
+  isInternalScenario?: boolean;
 }
 
 export enum FormPlayerApiErrorStatuses {
-  badRequest = 'BAD_REQUEST'
+  badRequest = 'BAD_REQUEST',
 }
 
 export interface FormPlayerApiErrorResponse {
@@ -161,7 +161,7 @@ export enum DTOActionAction {
   reject = 'reject',
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editEmail = 'service/actions/editUserEmail',
-  goBackToMainScenario = 'goBackToMainScenario'
+  goBackToMainScenario = 'goBackToMainScenario',
 }
 
 export interface CheckOrderApiResponse {

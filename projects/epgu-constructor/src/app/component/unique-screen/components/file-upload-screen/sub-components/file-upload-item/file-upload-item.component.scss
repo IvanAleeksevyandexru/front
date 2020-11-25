@@ -3,9 +3,6 @@
 @import '../../../../../../../styles/core/breakpoint';
 @import '../../../../../../../styles/components/rubles';
 
-$color-active-item: #1d5deb;
-$color-default-item: #d1d5df;
-
 .info {
   font-size: 14px;
   line-height: 20px;
@@ -33,7 +30,7 @@ $color-default-item: #d1d5df;
   margin-bottom: 24px;
 }
 
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 
@@ -53,8 +50,12 @@ input[type="file"] {
 }
 
 @keyframes rotation {
-  from {transform: rotate(0deg);}
-  to {transform: rotate(359deg);}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }
 
 .file__icon {
@@ -65,7 +66,7 @@ input[type="file"] {
 
   &.loading {
     animation: rotation 0.6s infinite linear;
-    border: 4px solid $color-default-item;
+    border: 4px solid $color-bg-disabled;
     border-top-color: $color-active-item;
     border-radius: 100%;
   }
@@ -158,4 +159,3 @@ input[type="file"] {
 }
 
 @include rubles('.info__text', '../../../../../../../assets/img/ruble.svg');
-

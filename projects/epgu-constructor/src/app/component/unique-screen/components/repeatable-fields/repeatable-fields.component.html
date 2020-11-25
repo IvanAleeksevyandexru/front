@@ -23,16 +23,16 @@
     </div>
 
     <epgu-constructor-clone-button [disabled]="!isScreensAvailable()" (click)="duplicateScreen()"
-      >Добавить данные</epgu-constructor-clone-button
+      >{{ addSectionLabel$ | async }}</epgu-constructor-clone-button
     >
   </div>
 
   <div class="screen-footer">
     <lib-button
-      [showLoader]="isLoading"
+      [showLoader]="screenService.isLoading$ | async"
       (click)="nextScreen()"
       class="btn__submit"
-      [disabled]="isLoading || !isValid"
+      [disabled]="(screenService.isLoading$ | async) || !isValid"
     >
       {{ propData.submitLabel || 'Далее' }}
     </lib-button>
