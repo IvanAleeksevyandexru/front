@@ -1,35 +1,40 @@
 import {
   Component,
-  OnInit,
+  ElementRef,
   EventEmitter,
+  OnDestroy,
+  OnInit,
   Output,
   ViewChild,
-  OnDestroy,
-  ElementRef,
 } from '@angular/core';
 import { fromEvent, of, Subject, Subscription } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
+import { catchError, switchMap } from 'rxjs/operators';
+import { ConfigService } from '../../../../core/config/config.service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
-import { ComponentBase } from '../../../../screen/screen.types';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../../../modal/modal.service';
-import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
-import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
-import { minSize, uploadPhotoElemId } from './upload-and-edit-photo.constant';
-import { ImgSubject } from './upload-and-edit-photo.model';
-import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
-import { WebcamService } from '../../services/webcam/webcam.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ComponentBase } from '../../../../screen/screen.types';
 import {
   isCloseAndSaveWebcamEvent,
   WebcamEvent,
 } from '../../../../shared/components/webcam-shoot/webcamevents';
+import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
+import { WebcamService } from '../../services/webcam/webcam.service';
 import { CompressionService } from './compression/compression.service';
-import { ConfigService } from '../../../../core/config/config.service';
-import { ScreenService } from '../../../../screen/screen.service';
+import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
+import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';
-import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
+import {
+  minSize,
+  printImgPx,
+  recommendedDPI,
+  uploadPhotoElemId,
+} from './upload-and-edit-photo.constant';
+import { ImgSubject } from './upload-and-edit-photo.model';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',
@@ -175,6 +180,11 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   validateImage(): void {
     const imageType = (this.fileName || '').split('.').pop();
     const { width, height, src } = this.imageValidator;
+    const isDPIValid = (): boolean => {
+      const scaleFactor = printImgPx.height / height;
+      const scaledDPI = recommendedDPI / scaleFactor;
+      return scaledDPI > recommendedDPI;
+    };
 
     const isTypeValid = this.allowedImgTypes.some(
       (allowedType) => allowedType.toLowerCase() === imageType.toLowerCase(),
@@ -183,12 +193,12 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       (width >= minSize.width && height >= minSize.height) ||
       (width >= minSize.height && height >= minSize.width);
 
-    if (isTypeValid && isSizeValid) {
+    if (isTypeValid && isSizeValid && isDPIValid()) {
       this.imgSubject.next({ imageObjectUrl: src });
       return;
     }
 
-    const imageErrors = this.getImageError(isSizeValid, isTypeValid, width, height);
+    const imageErrors = this.getImageError(isSizeValid, isTypeValid, isDPIValid(), width, height);
 
     if (this.previousImageObjectUrl) {
       this.imgSubject.next({ imageObjectUrl: this.previousImageObjectUrl, imageErrors });
@@ -200,6 +210,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   getImageError(
     isSizeValid: boolean,
     isTypeValid: boolean,
+    isDPIValid: boolean,
     width: number,
     height: number,
   ): string[][] {
@@ -209,6 +220,9 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     }
     if (!isSizeValid && width && height) {
       imageErrors.push(['size']);
+    }
+    if (!isDPIValid) {
+      imageErrors.push(['dpi']);
     }
     if (!imageErrors.length) {
       imageErrors.push(['common']);
