@@ -56,13 +56,21 @@
 <!--          >Узнать подробнее-->
 <!--          </a>-->
           <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">
-            На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы
+            На данной площадке действуют
             <a
               href="javascript:void(0)"
               (click)="showModalFromTemplate('informationTemplate', mapObject)"
               class="information-link"
-            >ознакомиться</a
             >
+              дополнительные условия
+            </a>
+            оказания услуг.
+            <a
+              href="javascript:void(0)"
+              (click)="showModalFromTemplate('informationTemplate', mapObject)"
+              class="information-link"
+            >
+              Ознакомиться и подтвердить согласие</a>.
           </div>
           <lib-button
             [showLoader]="screenService.isLoading$ | async"
