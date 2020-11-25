@@ -27,5 +27,5 @@ export class ScreenServiceStub extends ScreenContent {
 
   private loadValueFromCachedAnswer(): void {}
 
-  public getStore() {}
+  public getStore() { return { cachedAnswers: [] }; }
 }

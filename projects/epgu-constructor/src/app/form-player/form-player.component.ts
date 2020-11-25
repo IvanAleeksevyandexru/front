@@ -86,7 +86,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((loaded) => {
-      if (loaded) return;
+      if (!loaded) return;
       const { orderId, invited, canStartNew } = this.serviceDataService;
       if (orderId) {
         this.handleOrder(orderId, invited, canStartNew);
