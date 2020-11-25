@@ -550,6 +550,11 @@ export class FileUploadItemComponent implements OnDestroy {
     }
   }
 
+  resetFileInputState(htmlInput: HTMLInputElement) {
+    // eslint-disable-next-line no-param-reassign
+    htmlInput.value = null;
+  }
+
   /**
    * Обновляет данные о файлах, которые были загружены
    */
