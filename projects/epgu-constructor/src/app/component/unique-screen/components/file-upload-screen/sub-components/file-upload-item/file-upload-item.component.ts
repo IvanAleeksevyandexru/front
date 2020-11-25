@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -64,7 +63,7 @@ const maxImgSizeInBytes = 525288;
   styleUrls: ['./file-upload-item.component.scss'],
   providers: [UnsubscribeService],
 })
-export class FileUploadItemComponent implements OnDestroy, OnInit {
+export class FileUploadItemComponent implements OnDestroy {
   private loadData: FileUploadItem;
   isMobile: boolean;
   uploadedFilesAmount = 0;
