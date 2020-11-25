@@ -1,3 +1,9 @@
-.form-player {
+@import '../../../projects/epgu-constructor/src/styles/core';
+
+:host {
+  @include flex-container();
   margin-bottom: 40px;
+  @include tablets-down {
+    margin-bottom: 0;
+  }
 }

@@ -1,8 +1,7 @@
 @import '../../../styles/core';
 
 :host {
-  display: flex;
-  flex-direction: column;
+  @include flex-container();
 }
 
 .quiz {
@@ -34,9 +33,6 @@
     margin: 0 0 16px 0;
     @include tablets-up {
       margin: 0 0 24px 0;
-    }
-    &:last-child {
-      margin-bottom: 0;
     }
   }
 }
