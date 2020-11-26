@@ -1,10 +1,13 @@
 import { RepeatableFieldsComponent } from './repeatable-fields.component';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA, Inject } from '@angular/core';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ScreenTypes } from '../../../../screen/screen.types';
+import { of } from 'rxjs';
+import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
+import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 
 describe('RepeatableFieldsComponent', () => {
   let component: RepeatableFieldsComponent;
@@ -65,11 +68,11 @@ describe('RepeatableFieldsComponent', () => {
       providers: [
         CurrentAnswersService,
         ChangeDetectorRef,
-        { provide: ScreenService, useClass: ScreenServiceStub }
+        { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     })
     .compileComponents();
-    screenService = Inject(ScreenService);
+    screenService = TestBed.inject(ScreenService);
   }));
 
   beforeEach(() => {
@@ -80,7 +83,22 @@ describe('RepeatableFieldsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('addSectionLabel$', () => {
+    it('should return custom label when component has label', done => {
+      const label = 'Some custom label';
+      screenService.componentLabel = label;
+      component.addSectionLabel$.subscribe(resultLabel => {
+        expect(resultLabel).toBe(label);
+        done();
+      });
+    });
+
+    it('should return default label when component hasn\'t label', done => {
+      const label = 'Добавить данные';
+      component.addSectionLabel$.subscribe(resultLabel => {
+        expect(resultLabel).toBe(label);
+        done();
+      });
+    });
   });
 });
