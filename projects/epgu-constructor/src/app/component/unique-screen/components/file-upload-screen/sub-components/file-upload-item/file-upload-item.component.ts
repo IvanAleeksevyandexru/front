@@ -457,9 +457,13 @@ export class FileUploadItemComponent implements OnDestroy {
   handleError(action: ErrorActions, file?: Partial<File>): void {
     const errorHandler = {};
     // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxAmount] = `Максимальное число файлов - ${this.data.maxFileCount}`;
+    errorHandler[
+      ErrorActions.addMaxAmount
+    ] = `Максимальное число файлов - ${this.data.maxFileCount}`;
     // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxSize] = `Размер файлов превышает ${getSizeInMB(this.data.maxSize)} МБ`;
+    errorHandler[ErrorActions.addMaxSize] = `Размер файлов превышает ${getSizeInMB(
+      this.data.maxSize,
+    )} МБ`;
     errorHandler[ErrorActions.addInvalidType] = `Недопустимый тип файла "${file?.name}"`;
     errorHandler[ErrorActions.addInvalidFile] = `Ошибка загрузки файла "${file?.name}"`;
     errorHandler[ErrorActions.addDownloadErr] = `Не удалось скачать файл "${file?.name}"`;
