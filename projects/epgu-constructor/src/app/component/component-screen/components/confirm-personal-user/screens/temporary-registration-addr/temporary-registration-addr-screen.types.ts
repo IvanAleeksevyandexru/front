@@ -1,6 +1,7 @@
 import { ComponentBase } from '../../../../../../screen/screen.types';
 import { TextTransform } from '../../../../../../shared/types/textTransform';
 import { RelativeDate } from 'epgu-lib';
+import { DurationInputArg2 } from 'moment';
 
 export interface TemporaryRegistrationComponent extends ComponentBase {
   attrs: TemporaryRegistrationComponentAttrs;
@@ -16,11 +17,13 @@ export interface TemporaryRegistrationComponentAttrs {
 
 /**
  * @property {string}label - some title
- * @property {number}timestamp - время которое прибавляется к текущей дате
+ * @property {number}amount - число которое прибавляется к текущей дате
+ * @property {DurationInputArg2}unit - тип времени день, год и т.д
  */
 export interface TemporaryRegistrationHints {
   label: string;
-  timestamp: number
+  amount: number;
+  unit: DurationInputArg2;
 }
 
 /**
@@ -40,6 +43,7 @@ export interface TemporaryRegistrationFields {
 }
 
 export enum FieldNames {
-  regDate = 'regDate',
+  regFrom = 'regFrom',
+  regTo = 'regTo',
   regAddr = 'regAddr',
 }

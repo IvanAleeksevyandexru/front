@@ -39,6 +39,7 @@ export class SelectChildrenScreenComponent implements OnInit {
   firstNameRef: string;
   idRef: string;
   isNewRef: string;
+  passportRef: string;
   defaultAvailable = 20;
 
   constructor(
@@ -62,6 +63,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.firstNameRef = this.getRefFromComponent('firstName');
     this.isNewRef = this.getRefFromComponent('isNew');
     this.idRef = this.getRefFromComponent('id');
+    this.passportRef = this.getRefFromComponent('rfPasportSeries');
     this.itemsToSelect = this.getItemsToSelect(itemsList);
   }
 
@@ -154,6 +156,10 @@ export class SelectChildrenScreenComponent implements OnInit {
       delete childToSend.controlId;
       delete childToSend.id;
       delete childToSend.text;
+      delete childToSend.hidden;
+      if (!childToSend[this.isNewRef]) {
+        delete childToSend[this.passportRef];
+      }
       return childToSend;
     });
     this.currentAnswersService.state = itemsToSend;

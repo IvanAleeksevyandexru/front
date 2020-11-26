@@ -1,0 +1,5 @@
+@import '../../../projects/epgu-constructor/src/styles/core';
+
+:host {
+  @include flex-container();
+}
