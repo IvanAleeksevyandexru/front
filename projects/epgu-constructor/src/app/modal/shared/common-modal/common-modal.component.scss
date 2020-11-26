@@ -2,9 +2,8 @@
 
 // TODO Избавиться от ng-deep
 :host::ng-deep {
-  .conf-modal {
-    display: flex;
-    flex-direction: column;
+  & .conf-modal {
+    @include flex-container();
     @include modal-body();
     width: 634px;
     max-height: 90vh;
@@ -55,10 +54,9 @@
     }
 
     &__body {
+      @include flex-container();
       margin-top: 24px;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
     }
 
     &__text {
@@ -77,6 +75,10 @@
       margin-top: 24px;
       justify-content: center;
       flex: 1;
+      @include tablets-down {
+        margin-top: auto;
+        padding-top: 24px;
+      }
     }
 
     &__button {

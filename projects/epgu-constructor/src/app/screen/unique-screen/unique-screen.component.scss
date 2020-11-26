@@ -1,3 +1,9 @@
+@import '../../../styles/core/index';
+
+:host {
+  @include flex-container();
+}
+
 .inner {
   height: 100%;
 }

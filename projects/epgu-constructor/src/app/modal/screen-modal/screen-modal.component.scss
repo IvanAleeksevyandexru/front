@@ -1,4 +1,4 @@
-@import "../../../styles/core/index";
+@import '../../../styles/core/index';
 
 $my: 96px;
 $pyConfModal: 64px;
@@ -94,7 +94,7 @@ $controlHeight: 55px;
 
       @include tablets-down {
         flex-direction: column;
-
+        justify-content: flex-end;
         & > *:not(:last-child) {
           margin-right: 0;
           margin-bottom: 20px;
@@ -104,12 +104,14 @@ $controlHeight: 55px;
 
     &__button {
       @include tablets-down {
-        width: 100%
+        width: 100%;
       }
     }
   }
 
   .ps-content {
+    @include flex-container();
+    height: 100%;
     padding-right: 5px; // fix overlapping content by scroll
     padding-bottom: 2px; // hack for avoid overlapping of buttons
 
@@ -133,5 +135,3 @@ $controlHeight: 55px;
     }
   }
 }
-
-
