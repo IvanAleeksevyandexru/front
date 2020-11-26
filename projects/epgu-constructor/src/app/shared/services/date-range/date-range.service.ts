@@ -4,6 +4,7 @@ import * as moment_ from 'moment';
 import { ComponentListFormService } from '../../../component/components-list/services/component-list-form.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { Attrs, DateRange, Ref, Range } from './date-range.models';
+import { Moment } from 'moment';
 
 const moment = moment_;
 
@@ -88,26 +89,24 @@ export class DateRangeService {
     }
 
     const date = moment(refDate);
+    [range.min, range.max] = this.chooseOperation(refParams, date);
 
-    const operations = {
-      '<'() {
+    return range;
+  }
+
+  private chooseOperation(refParams: Ref, date: Moment): Array<Date> {
+    switch (refParams.condition) {
+      case '<':
         return [
           date.subtract(refParams.val, refParams.period).toDate(),
           date.subtract(1, 'days').toDate(),
         ];
-      },
-      '<='() {
+      case '<=':
         return [date.subtract(refParams.val, refParams.period).toDate(), date.toDate()];
-      },
-      '>'() {
+      case '>':
         return [date.add(1, 'days').toDate(), date.add(refParams.val, refParams.period).toDate()];
-      },
-      '>='() {
+      case '>=':
         return [date.toDate(), date.add(refParams.val, refParams.period).toDate()];
-      },
-    };
-    [range.min, range.max] = operations[refParams.condition]();
-
-    return range;
+    }
   }
 }
