@@ -87,9 +87,15 @@
   min-width: 100%;
   min-height: 100%;
   background: rgba($color-summer-night, 0.62);
-  transition: background .25s;
+  transition: background 0.25s;
   z-index: $modal-z-index;
   backdrop-filter: blur(8px);
+}
+
+@mixin flex-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
 
 // Миксин для установки высоты контента для модалок чтоб на таблетках и мобилке кнопки были внизу

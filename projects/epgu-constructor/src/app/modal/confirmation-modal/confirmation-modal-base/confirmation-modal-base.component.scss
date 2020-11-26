@@ -9,9 +9,8 @@ $minModalHeight: 293px;
 
 // TODO Избавиться от ng-deep
 :host::ng-deep {
-  .conf-modal {
-    display: flex;
-    flex-direction: column;
+  & .conf-modal {
+    @include flex-container();
     @include modal-body();
     width: 100%;
     height: 100%;
@@ -69,8 +68,8 @@ $minModalHeight: 293px;
     }
 
     &__content {
+      @include flex-container();
       overflow-y: auto;
-
       .text {
         padding-right: 15px;
       }
@@ -83,12 +82,9 @@ $minModalHeight: 293px;
     }
 
     &__body {
+      @include flex-container();
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-
       @include rubles('.conf-modal__body', '../../../../../../assets/img/ruble.svg');
-
       &.preview .text {
         padding: 0;
       }
@@ -99,14 +95,14 @@ $minModalHeight: 293px;
       margin-top: 26px;
       justify-content: center;
       flex: 1;
-
       & > *:not(:last-child) {
         margin-right: 20px;
       }
-
       @include tablets-down {
         flex-direction: column;
-
+        justify-content: flex-end;
+        margin-top: auto;
+        padding-top: 24px;
         & > *:not(:last-child) {
           margin-right: 0;
           margin-bottom: 20px;
@@ -122,6 +118,8 @@ $minModalHeight: 293px;
   }
 
   .ps-content {
+    @include flex-container();
+    height: 100%;
     padding-right: 5px; // fix overlapping content by scroll
     padding-bottom: 2px; // hack for avoid overlapping of buttons
 
