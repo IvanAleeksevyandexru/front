@@ -47,7 +47,12 @@ export interface CustomListDictionary {
 }
 
 export interface CustomListStatusElements {
-  [key: string]: boolean;
+  [key: string]: CustomStatusElement;
+}
+
+export interface CustomStatusElement {
+  isShown: boolean;
+  relation: CustomComponentRefRelation;
 }
 
 export interface CustomListGenericData<T> {
@@ -124,6 +129,7 @@ export enum CustomComponentRefRelation {
   displayOn = 'displayOn',
   disabled = 'disabled',
   calc = 'calc',
+  displayOff = 'displayOff',
 }
 
 export enum CustomComponentValidationConditions {
@@ -136,9 +142,9 @@ export enum CustomComponentValidationConditions {
  * @property relation - тип зависимости
  */
 export interface CustomComponentRef {
-  relatedRel: string,
-  val: string,
-  relation: CustomComponentRefRelation
+  relatedRel: string;
+  val: string | Array<string> | boolean;
+  relation: CustomComponentRefRelation;
 }
 
 export interface CustomListFormGroup {
