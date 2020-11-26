@@ -27,6 +27,7 @@ export enum CustomScreenComponentTypes {
   CityInput = 'CityInput',
   DocInput = 'DocInput',
   FieldList = 'FieldList',
+  Timer = 'Timer',
 }
 
 export type CustomListDropDowns = Array<Partial<ListItem>>;
