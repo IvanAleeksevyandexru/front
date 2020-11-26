@@ -2,8 +2,4 @@
 
 :host {
   @include flex-container();
-  margin-bottom: 40px;
-  @include tablets-down {
-    margin-bottom: 0;
-  }
 }
