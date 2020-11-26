@@ -2,15 +2,20 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { startWith, takeUntil } from 'rxjs/operators';
+import * as moment_ from 'moment';
+
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import {
   FieldNames,
   TemporaryRegistrationComponent,
+  TemporaryRegistrationHints,
 } from '../../temporary-registration-addr-screen.types';
 import { DateValidator } from './date-validator';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
+
+const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-temporary-registration-addr',
@@ -51,9 +56,9 @@ export class TemporaryRegistrationAddrComponent implements OnInit {
     this.redAddrForm = this.fb.group(controls);
   }
 
-  hintClick(timestamp: number) {
-    const currentDayTimestamp = new Date().getTime();
-    this.redAddrForm.patchValue({ regDate: new Date(currentDayTimestamp + timestamp) });
+  hintClick({ amount, unit }: TemporaryRegistrationHints) {
+    const regDate = moment().add(amount, unit).toDate();
+    this.redAddrForm.patchValue({ regDate });
   }
 
   private getValidatorsForField(field): ValidatorFn[] {
@@ -99,8 +104,11 @@ export class TemporaryRegistrationAddrComponent implements OnInit {
     if (fieldName === FieldNames.regAddr) {
       return data?.regAddr?.fullAddress || null;
     }
-    if (fieldName === FieldNames.regDate) {
-      return data?.regDate ? new Date(data?.regDate) : null;
+    if (fieldName === FieldNames.regFrom) {
+      return data?.regFrom ? new Date(data?.regFrom) : null;
+    }
+    if (fieldName === FieldNames.regTo) {
+      return data?.regTo ? new Date(data?.regTo) : null;
     }
     return null;
   }

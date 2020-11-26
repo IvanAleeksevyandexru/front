@@ -5,13 +5,13 @@ import { Observable } from 'rxjs';
 import { TerraUploadedFile } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { ConfigService } from '../../../core/config/config.service';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import * as FileSaver from 'file-saver';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
  */
 @Injectable()
 export class TerraByteApiService {
-
   constructor(
     private http: HttpClient,
     private config: ConfigService,
@@ -40,8 +40,7 @@ export class TerraByteApiService {
    *
    * @param relativePath - относительный путь от API для запросов
    */
-  private getTerabyteApiUrl = (relativePath): string =>
-      this.config.fileUploadApiUrl + relativePath;
+  private getTerabyteApiUrl = (relativePath): string => this.config.fileUploadApiUrl + relativePath;
 
   /**
    * Возращает опции запроса
@@ -49,7 +48,7 @@ export class TerraByteApiService {
    */
   private getServerRequestOptions(additionalOptions: object = {}): object {
     let options = {
-      withCredentials: true
+      withCredentials: true,
     };
     options = { ...additionalOptions, ...options };
     return options;
@@ -59,7 +58,7 @@ export class TerraByteApiService {
    * Возвращает список файлов, для определённого объекта
    * @param objectId - идентификатор объекта
    */
-  getListByObjectId(objectId: string): Observable<any>  {
+  getListByObjectId(objectId: string): Observable<any> {
     return this.http.get(this.getTerabyteApiUrl(`/${objectId}`), this.getServerRequestOptions());
   }
 
@@ -67,9 +66,14 @@ export class TerraByteApiService {
    * Возвращает информацию по файлу
    * @param options - параметры для получения файла
    */
-  getFileInfo(options: TerraFileOptions): Observable<any>  {
+  getFileInfo(options: TerraFileOptions): Observable<any> {
     // eslint-disable-next-line max-len
-    return this.http.get(this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`), this.getServerRequestOptions());
+    return this.http.get(
+      this.getTerabyteApiUrl(
+        `/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`,
+      ),
+      this.getServerRequestOptions(),
+    );
   }
 
   /**
@@ -79,16 +83,20 @@ export class TerraByteApiService {
    */
   uploadFile(options: TerraUploadFileOptions, file: File | Blob): Observable<any> {
     const formData = new FormData();
-    if (file instanceof File){
+    if (file instanceof File) {
       formData.append('file', file, file.name);
     } else {
       formData.append('file', file);
     }
-    Object.keys(options).forEach(k => {
+    Object.keys(options).forEach((k) => {
       formData.append(k, options[k]);
     });
 
-    return this.http.post(this.getTerabyteApiUrl('/upload'), formData, this.getServerRequestOptions());
+    return this.http.post(
+      this.getTerabyteApiUrl('/upload'),
+      formData,
+      this.getServerRequestOptions(),
+    );
   }
 
   /**
@@ -101,16 +109,20 @@ export class TerraByteApiService {
     return this.http.delete(this.getTerabyteApiUrl(url), this.getServerRequestOptions());
   }
 
-
   /**
    * Запрос на загрузку уже существующего
    * @param options - данные о файле
    */
   downloadFile(options: TerraFileOptions): Observable<any> {
     // eslint-disable-next-line max-len
-    return this.http.get(this.getTerabyteApiUrl(`/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`), this.getServerRequestOptions({
-      responseType: 'blob'
-    }));
+    return this.http.get(
+      this.getTerabyteApiUrl(
+        `/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`,
+      ),
+      this.getServerRequestOptions({
+        responseType: 'blob',
+      }),
+    );
   }
 
   /**
@@ -119,17 +131,6 @@ export class TerraByteApiService {
    * @param file - файл для загрузки
    */
   pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile) {
-    const reader = new FileReader();
-
-    reader.onerror = (e) => console.error(e);
-    reader.onloadend = () => {
-      const replaceDataRegex = /^data:[^;]*;/;
-      let url = reader.result;
-      url = this.deviceDetectorService.isChromeIOS() ? url : url.toString().replace(replaceDataRegex, 'data:attachment/file;');
-      // @ts-ignore
-      location = url;
-    };
-
-    reader.readAsDataURL(data);
+    FileSaver.saveAs(data, file.fileName);
   }
 }

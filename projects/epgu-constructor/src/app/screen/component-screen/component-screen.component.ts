@@ -1,10 +1,10 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
+import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../current-answers.service';
-import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
 import { ScreenBase } from '../screenBase';
+import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -121,6 +121,7 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
       ComponentScreenComponentTypes.registrationAddr,
       ComponentScreenComponentTypes.confirmPersonalUserRegAddr,
       ComponentScreenComponentTypes.divorceConsent,
+      ComponentScreenComponentTypes.fieldList,
     ].includes(type);
   }
 }

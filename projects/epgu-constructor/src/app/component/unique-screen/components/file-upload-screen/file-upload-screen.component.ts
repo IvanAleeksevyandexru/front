@@ -7,6 +7,7 @@ import {
   FileUploadEmitValueForComponent,
   FileUploadItem,
 } from '../../../../shared/services/terra-byte-api/terra-byte-api.types';
+import { TerraUploadedFile } from './sub-components/file-upload-item/data';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',
@@ -71,20 +72,34 @@ export class FileUploadScreenComponent {
   }
 
   /**
-   * Возвращает true если документы в массиве загружены
-   * @param uploads - массив сведений о файлов
+   * Возвращает true если у каждого загрузчика есть хотя бы один загруженный файл
+   * @param uploaders - массив загрузчиков с файлами
    * @private
    */
-  private isAllFilesUploaded(uploads: FileUploadEmitValue[]): boolean {
-    const allUploads = uploads?.length;
-    const uploadsWithFiles = uploads?.filter((fileUploadsInfo) => {
+  private isEveryUploaderHasFile(uploaders: FileUploadEmitValue[]): boolean {
+    const totalUploaders = uploaders?.length;
+    const uploadersWithFiles = uploaders?.filter((fileUploaderInfo: FileUploadEmitValue) => {
       // Если это зависимые подэлементы для загрузки
-      return fileUploadsInfo.relatedUploads
-        ? this.isAllFilesUploaded(fileUploadsInfo.relatedUploads.uploads)
-        : fileUploadsInfo?.value.filter((file) => file.uploaded).length > 0;
+      return fileUploaderInfo.relatedUploads
+        ? this.isEveryUploaderHasFile(fileUploaderInfo.relatedUploads.uploads)
+        : fileUploaderInfo?.value.filter((file: TerraUploadedFile) => file.uploaded).length > 0;
     }).length;
 
-    return allUploads === uploadsWithFiles;
+    return totalUploaders === uploadersWithFiles;
+  }
+
+  /**
+   * Возвращает true если все документы загружены
+   * @param uploaders - массив загрузчиков с файлами
+   * @private
+   */
+  isAllFilesUploaded(uploaders: FileUploadEmitValue[]): boolean {
+    for (let uploaderIndex = 0; uploaderIndex < uploaders.length; uploaderIndex += 1) {
+      if (!uploaders[uploaderIndex].value.every((file: TerraUploadedFile) => file.uploaded)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -114,7 +129,15 @@ export class FileUploadScreenComponent {
         return resultValue;
       });
     }
-    this.disabled = !this.isAllFilesUploaded(this.value.uploads);
+    /**
+     * Блокируем кнопку если:
+     * 1. Не в каждом загрузчике есть файл
+     * И
+     * 2. Если не все файлы загрузились на терабайт
+     */
+    this.disabled = !(
+      this.isEveryUploaderHasFile(this.value.uploads) && this.isAllFilesUploaded(this.value.uploads)
+    );
   }
 
   /**
