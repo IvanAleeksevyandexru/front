@@ -36,16 +36,14 @@
     margin-right: -$footer-item-mx;
   }
   & > * {
-    margin-top: $footer-mt;
     width: 100%;
+    margin-bottom: $footer-mb;
     @include tablets-up {
       width: auto;
+      margin-top: $footer-mt;
       margin-left: $footer-item-mx;
       margin-right: $footer-item-mx;
     }
-  }
-  & > .btn__submit {
-    margin-bottom: $footer-mb;
   }
   & > .social-share {
     max-width: 335px;
