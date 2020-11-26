@@ -11,6 +11,7 @@ const EXCEPTIONS = ['lib-assets'];
 interface ConfigParams {
   id: string; 
   name: string; 
+  orderId?: number;
   error?: string; 
   errorMessage?: string;
 }
@@ -70,6 +71,7 @@ export class HealthInterceptor implements HttpInterceptor {
             this.configParams = { 
               id: scenarioDto.display.id, 
               name: this.utils.cyrillicToLatin(scenarioDto.display.name),
+              orderId: scenarioDto.orderId,
             };
           }
 

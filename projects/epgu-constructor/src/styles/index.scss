@@ -6,9 +6,10 @@
 // stylelint-disable
 
 .epgu-form-player {
-  display: block;
+  @include flex-container();
   color: $color-summer-night;
   font-family: $font-main;
+  height: 100%;
 
   img {
     max-width: 100%;
@@ -77,11 +78,11 @@
     color: $color-text-helper;
   }
 
-  .text--center{
+  .text--center {
     text-align: center;
   }
 
-  .text--right{
+  .text--right {
     text-align: right;
   }
 

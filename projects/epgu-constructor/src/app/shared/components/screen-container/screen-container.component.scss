@@ -1,17 +1,13 @@
 @import 'src/styles/core';
 
 :host {
-  display: flex;
-  flex-direction: column;
+  @include flex-container();
   width: 100%;
-  @include tablets-down {
-    min-height: inherit;
-  }
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
+  @include flex-container();
+  flex-grow: 0;
   @include tablets-down {
     flex-grow: 1;
   }
@@ -28,6 +24,7 @@
 :host::ng-deep .screen-footer {
   $footer-item-mx: 16px;
   $footer-mt: 24px;
+  $footer-mb: 24px;
 
   display: flex;
   align-items: center;
@@ -39,10 +36,11 @@
     margin-right: -$footer-item-mx;
   }
   & > * {
-    margin-top: $footer-item-mx;
     width: 100%;
+    margin-bottom: $footer-mb;
     @include tablets-up {
       width: auto;
+      margin-top: $footer-mt;
       margin-left: $footer-item-mx;
       margin-right: $footer-item-mx;
     }

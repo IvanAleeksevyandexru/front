@@ -1,12 +1,6 @@
 @import '../../../../../../styles/core';
 
 .req-modal {
-  //&::ng-deep .conf-modal {
-  //  @include tablets-up {
-  //    max-height: 600px;
-  //  }
-  //}
-
   &__warning {
     margin: 24px 0 32px 0;
   }

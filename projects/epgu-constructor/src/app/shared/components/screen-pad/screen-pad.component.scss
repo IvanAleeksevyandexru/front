@@ -1,7 +1,7 @@
-@import "src/styles/core";
+@import 'src/styles/core';
 
 :host {
-  display: block;
+  @include flex-container();
   background: $color-white;
   padding: $screen-pad-p;
   border-radius: $border-xl;
@@ -12,6 +12,3 @@
     @include shadow-main();
   }
 }
-
-
-

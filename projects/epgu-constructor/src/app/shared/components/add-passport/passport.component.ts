@@ -40,6 +40,7 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
   @Output() valueChangedEvent = new EventEmitter();
 
   public passportForm: FormGroup;
+  public fieldsNames: Array<string> = [];
 
   touchedUnfocused = ValidationShowOn.TOUCHED_UNFOCUSED;
 
@@ -53,6 +54,7 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
   initFormGroup(): void {
     const controls = {};
     this.attrs.fields.forEach((field) => {
+      this.fieldsNames.push(field.fieldName);
       controls[field.fieldName] = this.fb.control(null, this.getValidatorsForField(field));
     });
     this.passportForm = this.fb.group(controls);
@@ -89,9 +91,15 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
   public onTouched: () => void = () => {};
 
   writeValue(val: any): void {
-    if (val) {
-      this.passportForm.setValue(val, { emitEvent: false });
-    }
+    const isValidValue = (value, fieldName) => {
+      return typeof value === 'object' && value !== null && value[fieldName];
+    };
+
+    this.fieldsNames.forEach((fieldName: string) => {
+      if (isValidValue(val, fieldName)) {
+        this.passportForm.controls[fieldName].setValue(val[fieldName], { emitEvent: false });
+      }
+    });
   }
 
   registerOnChange(fn: any): void {
