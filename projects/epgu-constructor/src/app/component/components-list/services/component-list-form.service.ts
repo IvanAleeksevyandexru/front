@@ -133,7 +133,7 @@ export class ComponentListFormService {
       let { value, type } = val;
       const isValid = disabled || valid;
 
-      if (this.shownElements[val.id]) {
+      if (this.shownElements[val.id].isShown) {
         if (type === CustomScreenComponentTypes.DateInput) {
           value = moment(value).toISOString(true); // NOTICE: обработка даты и "правильное" приведение к ISO-строке
         }
