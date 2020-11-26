@@ -29,12 +29,14 @@ import { ConfigService } from '../../../../../../core/config/config.service';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../../../modal/confirmation-modal/confirmation-modal.interface';
-import { FileUploadService } from '../file-upload.service';
+import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
 
 enum ErrorActions {
   clear = 'clear',
   addMaxSize = 'maxSize',
   addMaxAmount = 'maxAmount',
+  addMaxTotalAmount = 'maxTotalAmount',
+  addMaxTotalSize = 'maxTotalSize',
   addInvalidType = 'invalidType',
   addInvalidFile = 'invalidFile',
   addDownloadErr = 'addDownloadErr',
@@ -341,8 +343,17 @@ export class FileUploadItemComponent implements OnDestroy {
     this.handleError(ErrorActions.clear);
     const files = isPhoto ? Array.from(filesToUpload) : this.filterValidFiles(filesToUpload);
 
-    if (!this.fileUploadService.checkFilesAmount(files.length).isValid) {
-      this.handleError(ErrorActions.addMaxAmount);
+    const {
+      isValid: isAmountValid,
+      reason: amountFailedReason,
+    } = this.fileUploadService.checkFilesAmount(files.length, this.loadData.uploadId);
+
+    if (!isAmountValid) {
+      if (amountFailedReason === CheckFailedReasons.total) {
+        this.handleError(ErrorActions.addMaxTotalAmount);
+      } else if (amountFailedReason === CheckFailedReasons.uploaderRestriction) {
+        this.handleError(ErrorActions.addMaxAmount);
+      }
       return of();
     }
 
@@ -418,12 +429,20 @@ export class FileUploadItemComponent implements OnDestroy {
   }
 
   validateAndHandleFilesSize(file: File): boolean {
-    const isSizeValid = this.fileUploadService.checkFilesSize(file.size).isValid;
+    const {
+      isValid: isSizeValid,
+      reason: failedSizeReason,
+    } = this.fileUploadService.checkFilesSize(file.size, this.loadData.uploadId);
 
     if (isSizeValid) {
-      this.fileUploadService.updateFilesSize(file.size);
+      this.fileUploadService.updateFilesSize(file.size, this.loadData.uploadId);
     } else {
-      this.handleError(ErrorActions.addMaxSize);
+      if (failedSizeReason === CheckFailedReasons.total) {
+        this.handleError(ErrorActions.addMaxTotalSize);
+      }
+      if (failedSizeReason === CheckFailedReasons.uploaderRestriction) {
+        this.handleError(ErrorActions.addMaxSize);
+      }
     }
     return isSizeValid;
   }
@@ -443,9 +462,13 @@ export class FileUploadItemComponent implements OnDestroy {
   handleError(action: ErrorActions, file?: Partial<File>): void {
     const errorHandler = {};
     // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxAmount] = `Максимальное количество всех файлов - ${this.data.maxFileCount}`;
+    errorHandler[ErrorActions.addMaxTotalAmount] = `Максимальное количество всех файлов - ${this.data.maxFileCount}`;
     // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxSize] = `Размер всех файлов превышает ${getSizeInMB(this.data.maxSize)} МБ`;
+    errorHandler[ErrorActions.addMaxTotalSize] = `Размер всех файлов превышает ${getSizeInMB(this.data.maxSize)} МБ`;
+    // eslint-disable-next-line prettier/prettier
+    errorHandler[ErrorActions.addMaxAmount] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
+    // eslint-disable-next-line prettier/prettier
+    errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(this.data.maxSize)} МБ`;
     errorHandler[ErrorActions.addInvalidType] = `Недопустимый тип файла "${file?.name}"`;
     errorHandler[ErrorActions.addInvalidFile] = `Ошибка загрузки файла "${file?.name}"`;
     errorHandler[ErrorActions.addDownloadErr] = `Не удалось скачать файл "${file?.name}"`;
@@ -527,11 +550,11 @@ export class FileUploadItemComponent implements OnDestroy {
 
   updateUploadingInfo(fileInfo: TerraUploadedFile, isDeleted?: boolean) {
     if (isDeleted) {
-      this.fileUploadService.updateFilesAmount(-1);
-      this.fileUploadService.updateFilesSize(-fileInfo.fileSize);
+      this.fileUploadService.updateFilesAmount(-1, this.loadData.uploadId);
+      this.fileUploadService.updateFilesSize(-fileInfo.fileSize, this.loadData.uploadId);
     } else {
-      this.fileUploadService.updateFilesAmount(1);
-      this.fileUploadService.updateFilesSize(fileInfo.fileSize);
+      this.fileUploadService.updateFilesAmount(1, this.loadData.uploadId);
+      this.fileUploadService.updateFilesSize(fileInfo.fileSize, this.loadData.uploadId);
     }
   }
 

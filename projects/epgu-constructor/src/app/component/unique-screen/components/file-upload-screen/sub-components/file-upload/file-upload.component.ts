@@ -6,7 +6,7 @@ import {
   FileUploadItem,
   FileUploadItemTypes,
 } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
-import { FileUploadService } from '../file-upload.service';
+import { FileUploadService, Uploaders } from '../file-upload.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload',
@@ -44,10 +44,25 @@ export class FileUploadComponent implements OnInit {
   constructor(private fileUploadService: FileUploadService) {}
 
   ngOnInit(): void {
-    this.fileUploadService.setMaxFilesAmount(this.attrs.maxFileCount);
-    this.fileUploadService.setMaxFilesSize(this.attrs.maxSize);
+    this.setUploadersRestrictions();
   }
 
+  setUploadersRestrictions(): void {
+    this.setUploadersMaxSizeAndAmount(Uploaders.total, this.attrs.maxSize, this.attrs.maxFileCount);
+
+    this.attrs.uploads?.forEach(({ uploadId, maxFileCount, maxSize }: FileUploadItem) =>
+      this.setUploadersMaxSizeAndAmount(uploadId, maxSize, maxFileCount),
+    );
+  }
+
+  setUploadersMaxSizeAndAmount(uploader: string, maxSize: number, maxAmount: number): void {
+    if (maxSize) {
+      this.fileUploadService.setMaxFilesSize(maxSize, uploader);
+    }
+    if (maxAmount) {
+      this.fileUploadService.setMaxFilesAmount(maxAmount, uploader);
+    }
+  }
   /**
    * Заполняем значения по умолчанию для возврата на сервер
    * @private
