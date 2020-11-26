@@ -160,7 +160,7 @@ export class ComponentListFormService {
           ],
         ],
       },
-      { updateOn: this.isPlainInput(component) ? 'blur' : 'change' },
+      { updateOn: this.isBlurValidation(component) ? 'blur' : 'change' },
     );
 
     if (component.attrs?.hidden) {
@@ -223,13 +223,7 @@ export class ComponentListFormService {
     );
   }
 
-  private isPlainInput(component: CustomComponent): boolean {
-    const isStringInput = [
-      CustomScreenComponentTypes.StringInput,
-      CustomScreenComponentTypes.NewEmailInput,
-    ].includes(component.type);
-    const hasMask = !component.attrs.mask;
-
-    return isStringInput && hasMask;
+  private isBlurValidation(component: CustomComponent): boolean {
+    return component.attrs?.updateOnValidation && component.attrs?.updateOnValidation === 'blur';
   }
 }

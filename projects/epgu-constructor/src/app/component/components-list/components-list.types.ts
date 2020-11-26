@@ -80,6 +80,7 @@ export interface CustomComponentAttr {
   ref: Array<any>;
   validation: Array<CustomComponentAttrValidation>;
   requiredAttrs?: Array<string>;
+  updateOnValidation?: 'blur' | 'change';
   supportedValues?: Array<SupportedValue>;
 }
 
