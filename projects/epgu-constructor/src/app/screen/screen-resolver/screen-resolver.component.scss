@@ -1,11 +1,5 @@
-@import "../../../styles/core/index";
+@import '../../../styles/core/index';
 
-
-@include tablets-down {
-  :host, :host::ng-deep > * {
-    min-height: inherit;
-  }
-  :host {
-    display: block;
-  }
+:host {
+  @include flex-container();
 }
