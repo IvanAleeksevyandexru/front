@@ -13,24 +13,6 @@ export interface TimerInterface {
 }
 
 /**
- * Интерфейс
- */
-export interface TimerValueInterface {
-  time: string;
-  timer?: {
-    start: string;
-    finish: string;
-    warningColorFromTime: number;
-  };
-}
-
-interface TimerAttrValue{
-  label?: string;
-  type: string;
-  value: string;
-}
-
-/**
  * Секция сведения о заголовка исходя из вмерени
  */
 export interface TimerLabelSection{
@@ -50,9 +32,10 @@ export interface TimerComponentDtoAction extends ComponentDtoAction{
  * Правила для таймера
  */
 interface TimerRules{
-  warningColorFromTime: number,
-  labels: TimerLabelSection[],
-  actions: TimerComponentDtoAction[],
+  hideTimerFrom?: number,
+  warningColorFromTime?: number,
+  labels?: TimerLabelSection[],
+  actions?: TimerComponentDtoAction[],
 }
 
 /**
@@ -60,15 +43,14 @@ interface TimerRules{
  */
 export interface TimerComponentBase extends ComponentBase{
   attrs: {
-    place?: TimerAttrValue,
-    address?: TimerAttrValue,
-    ceremonyType?: TimerAttrValue,
-    time: TimerAttrValue,
+    startTime: string,
+    expirationTime: string,
     timerRules: TimerRules,
-    timer: {
-      start: TimerAttrValue,
-      finish: TimerAttrValue
-    },
+    refs: {
+      timeStartRef: string;
+      timeFinishRef: string;
+      visitTimeRef: string;
+    }
     [key: string]: any
   };
 }

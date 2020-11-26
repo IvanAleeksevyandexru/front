@@ -14,6 +14,7 @@
   </div>
 
   <div class="progress__value-wrapper"
+       *ngIf="showTimer"
        [class.warning]="timer.isWarning"
        [class.finish]="timer.isFinish">
     <div class="progress__value">{{ timer.time | timer }}</div>

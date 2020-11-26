@@ -7,7 +7,6 @@ import {
   TimerComponentDtoAction,
   TimerInterface,
   TimerLabelSection,
-  TimerValueInterface,
 } from './timer.interface';
 import { createTimer, isWarning } from './timer.helper';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -21,7 +20,6 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
 export class TimerComponent {
   @Output() nextStepEvent = new EventEmitter<string>();
 
-  @Input() value: TimerValueInterface;
   private componentBase: TimerComponentBase;
   @Input() set data(componentBase: TimerComponentBase) {
     this.componentBase = componentBase;
@@ -47,6 +45,7 @@ export class TimerComponent {
   }
   label: string;
   timer: TimerInterface;
+  showTimer = true;
   actionButtons: TimerComponentDtoAction[] = [];
 
   private hasLabels = false;
@@ -88,6 +87,21 @@ export class TimerComponent {
     }
     if (this.hasButtons) {
       this.setActionsButtons();
+    }
+    if (this.data?.attrs?.timerRules?.hideTimerFrom !== undefined) {
+      this.checkHideTimer();
+    }
+  }
+
+  /**
+   * Проверяет нужно ли прятать таймер
+   * @private
+   */
+  private checkHideTimer() {
+    if (!this.data.attrs.timerRules.hideTimerFrom && this.timer.isFinish) {
+      this.showTimer = false;
+    } else {
+      this.showTimer = this.timer.time > this.data.attrs.timerRules.hideTimerFrom * this.oneSecond;
     }
   }
 
@@ -171,7 +185,7 @@ export class TimerComponent {
    * @private
    */
   private getStartDate(): number {
-    return new Date(this.value.timer.start).getTime();
+    return new Date(this.data.attrs.startTime).getTime();
   }
 
   /**
@@ -179,7 +193,7 @@ export class TimerComponent {
    * @private
    */
   private getFinishDate(): number {
-    return new Date(this.value.timer.finish).getTime();
+    return new Date(this.data.attrs.expirationTime).getTime();
   }
 
   nextStep(): void {
