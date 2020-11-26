@@ -166,10 +166,12 @@ export class ComponentListToolsService {
       }
     };
 
+    if (!isUndefined(component.attrs?.defaultValue)) {
+      return parseValue(component.attrs?.defaultValue);
+    }
+
     if (typeof component.value === 'string') {
       return parseValue(component.value);
-    } else if (!isUndefined(component.attrs?.defaultValue)) {
-      return parseValue(component.attrs?.defaultValue);
     } else {
       return component.value;
     }
