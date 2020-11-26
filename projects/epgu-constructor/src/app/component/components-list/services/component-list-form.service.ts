@@ -15,7 +15,7 @@ import {
   CustomComponentValidationConditions, CustomListDictionaries, CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements,
-  CustomScreenComponentTypes
+  CustomScreenComponentTypes, UpdateOn
 } from '../components-list.types';
 import { isDropDown } from '../tools/custom-screen-tools';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
@@ -160,7 +160,7 @@ export class ComponentListFormService {
           ],
         ],
       },
-      { updateOn: this.isBlurValidation(component) ? 'blur' : 'change' },
+      { updateOn: this.updateOnValidation(component) },
     );
 
     if (component.attrs?.hidden) {
@@ -223,7 +223,7 @@ export class ComponentListFormService {
     );
   }
 
-  private isBlurValidation(component: CustomComponent): boolean {
-    return component.attrs?.updateOnValidation && component.attrs?.updateOnValidation === 'blur';
+  private updateOnValidation(component: CustomComponent): UpdateOn {
+    return component.attrs?.updateOnValidation || 'change';
   }
 }
