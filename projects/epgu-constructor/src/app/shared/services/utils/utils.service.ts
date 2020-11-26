@@ -51,6 +51,7 @@ export class UtilsService {
    * Получает данные JSON из LocalStorage по ключу
    * @param key - ключ хранилища
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static getLocalStorageJSON(key: string): any | null {
     return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
   }
@@ -60,6 +61,7 @@ export class UtilsService {
    * @param key - ключ хранилища
    * @param data - данные для сохранения
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static setLocalStorageJSON(key: string, data: any) {
     localStorage.setItem(key, JSON.stringify(data));
   }
@@ -97,7 +99,7 @@ export class UtilsService {
    * Получает куку с нужным именем
    * @param name - имя куки
    */
-  static getCookie(name) {
+  static getCookie(name: string) {
     const nameEQ = name + '=';
     const ca = document.cookie.split(';');
     for (let i = 0; i < ca.length; i++) {
@@ -112,7 +114,7 @@ export class UtilsService {
    * Удаляет куку с нужным именем
    * @param name - имя куки
    */
-  static removeCookie(name) {
+  static removeCookie(name: string) {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
 
@@ -123,6 +125,7 @@ export class UtilsService {
    * @param defaultValue значение по умолчанию в случае не нахождения свойства
    * @example getObjectProperty({a: {b: {c: 3}}}), 'a.b.c');
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static getObjectProperty(obj: any, path: string, defaultValue: any = undefined): any {
     const travel = (regexp) =>
       String.prototype.split
@@ -170,7 +173,7 @@ export class UtilsService {
   }
   /**
    * Returns url separated by subdirectories and query parameters
-   * @param url 
+   * @param url
    */
   public getSplittedUrl(url: string): string[] {
     const splitByQueryParam = url.split('?');
@@ -179,17 +182,18 @@ export class UtilsService {
     return splitByDirLocation;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private sliceArrayFromRight(arr: any[], from: number, includeFirst: boolean = true) {
     return arr.slice(Math.max(arr.length - from, includeFirst ? 0 : 1));
   }
 
   /**
    * Converts cyrillic to latin
-   * @param str 
+   * @param str
    */
   public cyrillicToLatin(word: string): string {
     let newStr = '';
-    
+
     for (const char of word) {
       const isUpperCase = char === char.toUpperCase();
       const translitChar = LETTERS[char.toLowerCase()];
@@ -208,7 +212,7 @@ export class UtilsService {
    * https://www.gosuslugi.ru/600101/1/form-item -> form-item -> formItemService
    * https://www.gosuslugi.ru/600101/1/form_item -> form_item -> formItemService
    * https://www.gosuslugi.ru/600101/1/form -> form -> formService
-   * @param url 
+   * @param url
    */
   public getServiceName(url: string): string {
     const numRegex = /^\d+$/;
@@ -229,7 +233,7 @@ export class UtilsService {
 
   /**
    * Returns a boolean value if url is an instance of a string type
-   * @param url 
+   * @param url
    */
   public isValidHttpUrl(url: string | undefined): boolean {
     return url && typeof url === 'string';

@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggerService } from '../../../core/services/logger/logger.service';
-import { FormPlayerNavigation, Navigation } from '../../../form-player/form-player.types';
+import { FormPlayerNavigation, Navigation, NavigationPayload } from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import {
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
@@ -102,11 +102,11 @@ export abstract class FormPlayerBaseService {
     };
   }
 
-  private isEmptyNavigationPayload(navigationPayload): boolean {
+  private isEmptyNavigationPayload(navigationPayload: NavigationPayload): boolean {
     return !(navigationPayload && Object.keys(navigationPayload).length);
   }
 
-  protected sendDataSuccess(response): void {
+  protected sendDataSuccess(response: FormPlayerApiSuccessResponse): void {
     this.loggerBase.log([
       'request',
       this._store
@@ -141,6 +141,7 @@ export abstract class FormPlayerBaseService {
       return;
     }
 
+    this._store = response;
     this._store = response;
     const scenarioDto = response.scenarioDto;
 

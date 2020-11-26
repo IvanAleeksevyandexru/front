@@ -16,14 +16,14 @@ export class CurrencyTransformDirective {
     }
   }
   @HostListener('input', ['$event.target'])
-  onInput(target) {
+  onInput(target: HTMLInputElement) {
     if (this.currency) {
       target.value = target.value.replace(/[^\d]/g, '') || '0';
     }
   }
 
   @HostListener('change', ['$event.target'])
-  onBlur(target) {
+  onBlur(target: HTMLInputElement) {
     if (this.currency) {
       let price = target.value || '0';
       if (!Number.isNaN(+price)) {

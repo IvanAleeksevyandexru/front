@@ -7,7 +7,8 @@
  * @property {string}tx -
  */
 export interface DictionaryOptions {
-  filter?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filter?: any; // TODO
   treeFiltering?: string;
   pageNum?: number;
   pageSize?: string | number;
@@ -17,8 +18,8 @@ export interface DictionaryOptions {
 }
 
 export interface DictionaryResponse {
-  error: DictionaryResponseError
-  fieldErrors: Array<any>;
+  error: DictionaryResponseError;
+  fieldErrors: Array<string>;
   items: Array<DictionaryItem>;
   total: number;
 }
@@ -42,9 +43,11 @@ export interface DictionaryResponseError {
  * @property {string}value - example: RUS
  */
 export interface DictionaryItem {
-  attributeValues: {[key: string]: any};
-  attributes: Array<any>;
-  children: Array<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  attributeValues: {[key: string]: any}; // TODO
+  attributes: Array<string | boolean>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  children: Array<any>; // TODO
   isLeaf: boolean;
   parentValue: null;
   title: string;
@@ -56,93 +59,93 @@ export interface DictionaryYMapItem extends DictionaryItem {
   baloonContent: Object;
   id: string;
   idForMap: number;
-  fullListItems;
+  // fullListItems;
   agreement: boolean;
   expanded: boolean;
 }
 
 export interface  DictionaryValue {
-  asString: string,
+  asString: string;
 }
 
 export interface DictionarySimpleFilter {
-  attributeName: string,
-  condition: 'EQUALS' | 'CONTAINS',
-  value: DictionaryValue
+  attributeName: string;
+  condition: 'EQUALS' | 'CONTAINS';
+  value: DictionaryValue;
 }
 export interface DictionarySubFilter {
-  simple: DictionarySimpleFilter,
+  simple: DictionarySimpleFilter;
 }
 
 export interface DictionaryFilters {
   filter: {
     union?:
     {
-      unionKind: 'AND' | 'OR',
-      subs: Array<DictionarySubFilter>,
+      unionKind: 'AND' | 'OR';
+      subs: Array<DictionarySubFilter>;
     }
-    pageNum?: number,
-    pageSize?: string,
-    parentRefItemValue?: string,
-    selectAttributes?: Array<string>,
-    treeFiltering?: 'ONELEVEL',
-    tx?: string
-    withCredentials?: boolean
+    pageNum?: number;
+    pageSize?: string;
+    parentRefItemValue?: string;
+    selectAttributes?: Array<string>;
+    treeFiltering?: 'ONELEVEL';
+    tx?: string;
+    withCredentials?: boolean;
   }
 }
 
 export interface DadataSuggestionsAddress {
-  address: string,
-  code: string,
-  level: number,
+  address: string;
+  code: string;
+  level: number;
 }
 
 export interface DadataSuggestions {
-  addresses: Array<DadataSuggestionsAddress>,
-  error: DictionaryResponseError,
+  addresses: Array<DadataSuggestionsAddress>;
+  error: DictionaryResponseError;
 }
 
 export interface DadataSuggestionsAnswer {
-  normalized: any,
-  suggestions: DadataSuggestions,
-  userSelectedRegion: string,
+  normalized: string;
+  suggestions: DadataSuggestions;
+  userSelectedRegion: string;
 }
 
 export interface DadataNormalizeAddressElement {
-  data: string,
-  elmCode: string,
-  fiasCode: string,
-  kladrCode: string,
-  level: number,
-  levelType: string,
-  numericFiasCode: string,
-  oktmoCode: string,
-  shortType: string,
-  type: string,
+  data: string;
+  elmCode: string;
+  fiasCode: string;
+  kladrCode: string;
+  level: number;
+  levelType: string;
+  numericFiasCode: string;
+  oktmoCode: string;
+  shortType: string;
+  type: string;
 }
 
 export interface DadataNormalizeAddress {
-  elements: Array<DadataNormalizeAddressElement>,
-  fiasCode: string,
-  fullAddress: string,
-  numericFiasCode: string,
-  postIndex: string,
+  elements: Array<DadataNormalizeAddressElement>;
+  fiasCode: string;
+  fullAddress: string;
+  numericFiasCode: string;
+  postIndex: string;
 }
 
 export interface DadataNormalizeAnswer {
-  address: DadataNormalizeAddress,
-  dadataQc: string,
-  dadataQcComplete: string,
-  dadataQcHouse: string,
-  error: DictionaryResponseError
-  fiasLevel: string,
-  geo_lat: string,
-  geo_lon: string,
-  okato: string,
-  oktmo: string,
-  postalBox: string,
-  postalCode: string,
-  regionKladrId: string,
-  tax_office: string,
-  unparsedParts: string,
+  address: DadataNormalizeAddress;
+  dadataQc: string;
+  dadataQcComplete: string;
+  dadataQcHouse: string;
+  error: DictionaryResponseError;
+  fiasLevel: string;
+  geo_lat: string;
+  geo_lon: string;
+  okato: string;
+  oktmo: string;
+  postalBox: string;
+  postalCode: string;
+  regionKladrId: string;
+  tax_office: string;
+  unparsedParts: string;
 }

@@ -3,23 +3,26 @@ import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class DictionaryApiServiceStub {
-  post(): Observable<any> {
+  post(): Observable<{}> {
     return of({});
   }
 
-  getDictionary(): Observable<any> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getDictionary(): Observable<{items: any[]}> {
     return of({
       items: []
     });
   }
 
-  getMvdDictionary(): Observable<any> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getMvdDictionary(): Observable<{ items: any[]}> {
     return of({
       items: []
     });
   }
 
-  getSelectMapDictionary(): Observable<any> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getSelectMapDictionary(): Observable<{ items: any[]}> {
     return of({
       items: []
     });

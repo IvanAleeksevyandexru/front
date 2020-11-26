@@ -121,7 +121,7 @@ export class ConfigService implements Config {
     return domain.lastIndexOf('/') === domain.length - 1 ? domain.substring(0, domain.length - 1) : domain;
   }
 
-  initCore(config: Config = {} as any) {
+  initCore(config: Config = {} as Config) {
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;

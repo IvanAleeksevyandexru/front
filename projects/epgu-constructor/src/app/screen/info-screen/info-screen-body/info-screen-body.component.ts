@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ConfigService } from '../../../core/config/config.service';
+import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-info-screen-body',
@@ -7,7 +8,7 @@ import { ConfigService } from '../../../core/config/config.service';
   styleUrls: ['./info-screen-body.component.scss'],
 })
 export class InfoScreenBodyComponent {
-  @Input() data: any;
+  @Input() data: ComponentDto;
 
   constructor(public config: ConfigService) {}
 }

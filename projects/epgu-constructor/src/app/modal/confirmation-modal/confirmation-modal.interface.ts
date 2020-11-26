@@ -15,7 +15,7 @@ export interface ConfirmationModal {
     loader?: boolean;
     handler?: Function;
     closeModal: boolean;
-    value?: any;
+    value?: string | boolean;
   }[];
   clarifications?: object;
   isShortModal?: boolean;

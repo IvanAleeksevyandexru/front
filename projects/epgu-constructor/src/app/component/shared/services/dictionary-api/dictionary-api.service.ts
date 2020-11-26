@@ -36,7 +36,7 @@ export class DictionaryApiService {
     return this.post(path, options);
   }
 
-  private post(path: string, options): Observable<DictionaryResponse> {
+  private post(path: string, options: DictionaryOptions): Observable<DictionaryResponse> {
     return this.http.post<DictionaryResponse>(path, {
       filter: options.filter,
       treeFiltering: options.treeFiltering || 'ONELEVEL',
@@ -52,7 +52,7 @@ export class DictionaryApiService {
 
   public getDadataSuggestions(qString: string, params?: { [key: string]: string }): Observable<DadataSuggestionsAnswer> {
     const path = `${this.config.externalApiUrl}/dadata/suggestions`;
-    return this.http.get<any>(path, {
+    return this.http.get<DadataSuggestionsAnswer>(path, {
       params: {
         q: qString,
         ...params,
@@ -62,7 +62,7 @@ export class DictionaryApiService {
 
   public getDadataNormalize(qString: string): Observable<DadataNormalizeAnswer> {
     const path = `${this.config.externalApiUrl}/dadata/normalize`;
-    return this.http.get<any>(path, {
+    return this.http.get<DadataNormalizeAnswer>(path, {
       params: {
         q: qString,
       }

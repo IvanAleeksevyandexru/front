@@ -17,7 +17,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 export class UnusedPaymentsComponent implements OnInit {
   // @Input() orderId: string;
   @Input() data: DisplayDto;
-  @Output() nextStepEvent = new EventEmitter<any>();
+  @Output() nextStepEvent = new EventEmitter<string>();
 
   orderId: string;
   private paymentsList: BehaviorSubject<UnusedPaymentInterface[]> = new BehaviorSubject([]);
@@ -47,7 +47,7 @@ export class UnusedPaymentsComponent implements OnInit {
   /**
    * Переход к следующему экрану
    */
-  private nextStep(data: any): void {
+  private nextStep(data: string): void {
     this.nextStepEvent.emit(data);
   }
 
@@ -96,7 +96,7 @@ export class UnusedPaymentsComponent implements OnInit {
    * Выбор радиокнопки
    * @param $event - событие выбора
    */
-  radioSelect($event) {
+  radioSelect($event: UnusedPaymentInterface) {
     this.tax = $event;
   }
 

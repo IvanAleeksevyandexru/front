@@ -1,4 +1,5 @@
 import { IFilterRegItems, PaymentDictionaryOptionsInterface, SubPaymentDictionaryOptionInterface } from './payment.types';
+import { PaymentsAttrs } from './abstractpayment.component';
 
 /**
  * Интерфейс для части опции запроса на создание оплаты
@@ -47,7 +48,7 @@ const getPaymentRequestOptionsFilter = (subs: SubPaymentDictionaryOptionInterfac
  * @constructor
  */
 // eslint-disable-next-line max-len
-export const getPaymentRequestOptions = (filterReg: IFilterRegItems, attrs: any): PaymentDictionaryOptionsInterface => {
+export const getPaymentRequestOptions = (filterReg: IFilterRegItems, attrs: PaymentsAttrs): PaymentDictionaryOptionsInterface => {
   return {
     ...getPaymentRequestOptionsFilter([
       getPaymentSimpleRequestOption('FiasCode', filterReg.value.substring(0, 3)),

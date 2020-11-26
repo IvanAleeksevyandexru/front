@@ -3,7 +3,10 @@ import * as moment_ from 'moment';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenBase } from '../screenBase';
-import { CustomComponentValidationConditions } from '../../component/components-list/components-list.types';
+import {
+  CustomComponentOutputData,
+  CustomComponentValidationConditions,
+} from '../../component/components-list/components-list.types';
 
 const moment = moment_;
 
@@ -29,12 +32,12 @@ export class CustomScreenComponent extends ScreenBase {
    * Форматиркем данные перед отправкой
    * @param changes - данные на отправку
    */
-  getFormattedData(changes) {
+  getFormattedData(changes: CustomComponentOutputData) {
     const stateData = this.getPrepareResponseData(changes);
     return stateData;
   }
 
-  changeComponentsList(changes: { [key: string]: any }): void {
+  changeComponentsList(changes: CustomComponentOutputData): void {
     const notAtLeastOne = Object.values(changes).filter(
       (item) => item.condition !== CustomComponentValidationConditions.atLeastOne,
     );
@@ -60,7 +63,7 @@ export class CustomScreenComponent extends ScreenBase {
    * @param date - дата для проверки
    * @private
    */
-  private isValidDate(date): boolean {
+  private isValidDate(date: string): boolean {
     return new Date(date).toString() !== 'Invalid Date';
   }
 
@@ -69,7 +72,7 @@ export class CustomScreenComponent extends ScreenBase {
    * @param data - данные для пребразования
    * @private
    */
-  private getPrepareResponseData(data = {}) {
+  private getPrepareResponseData(data: CustomComponentOutputData = {}) {
     return Object.keys(data).reduce((acc, key) => {
       let value = '';
       const dataValue = data[key].value;

@@ -9,7 +9,7 @@ import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
 })
 export class CounterDirective implements OnChanges{
 
-  private counter$ = new Subject<any>();
+  private counter$ = new Subject<{ count: number; interval: number}>();
 
   @Input('epgu-constructor-counter') counter: number;
   @Input() interval: number;
@@ -18,7 +18,7 @@ export class CounterDirective implements OnChanges{
   constructor(private ngUnsubscribe$: UnsubscribeService,) {
 
     this.counter$.pipe(
-      switchMap((options: any) => {
+      switchMap((options) => {
           return timer(0, options.interval).pipe(
             take(options.count),
             tap(() => this.value.emit(--options.count))

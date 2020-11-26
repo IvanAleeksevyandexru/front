@@ -25,19 +25,22 @@ export class ErrorsInterceptorService implements HttpInterceptor {
     private modalService: ModalService,
   ) { }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError(err => this.handleResponseError(err)),
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private showModal(params: ConfirmationModal): Observable<any> {
     return this.modalService.openModal(ConfirmationModalComponent,
       params,
     );
   }
 
-  private handleResponseError(error): Observable<HttpEvent<any>> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private handleResponseError(error: any): Observable<HttpEvent<any>> {
     if (error.status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).subscribe((result) => {
         result === 'login' ? window.location.reload() : window.location.href = '/';

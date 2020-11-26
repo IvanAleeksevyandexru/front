@@ -7,8 +7,11 @@ import * as uuid from 'uuid';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
+  BookTimeSlotReq,
   SmevSlotInterface,
   SmevSlotsMapInterface,
+  TimeSlot,
+  TimeSlotReq,
   TimeSlotValueInterface,
   ZagsDepartmentInterface
 } from './time-slots.types';
@@ -72,11 +75,11 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     return this.availableMonths;
   }
 
-  getAvailableSlots(selectedDay: Date): Observable<any[]> {
+  getAvailableSlots(selectedDay: Date): Observable<SmevSlotInterface[]> {
     return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
   }
 
-  getBookedSlot(): any {
+  getBookedSlot(): SmevSlotInterface {
     return this.bookedSlot;
   }
 
@@ -88,7 +91,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     return this.activeYearNumber;
   }
 
-  init(data: TimeSlotValueInterface): Observable<any> {
+  init(data: TimeSlotValueInterface): Observable<void> {
 
     if (this.changed(data) || this.errorMessage) {
       this.slotsMap = {};
@@ -140,7 +143,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     return changed;
   }
 
-  private getSlotsRequest() {
+  private getSlotsRequest(): TimeSlotReq {
     // TODO HARDCODE, возможно, стоит перенести в json
     return {
       organizationId: [this.department.attributeValues.CODE],
@@ -157,7 +160,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     };
   }
 
-  private getBookRequest(selectedSlot: SmevSlotInterface) {
+  private getBookRequest(selectedSlot: SmevSlotInterface): BookTimeSlotReq {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
@@ -202,7 +205,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     };
   }
 
-  private initSlotsMap(slots: any[]): void {
+  private initSlotsMap(slots: TimeSlot[]): void {
     slots.forEach((slot) => {
       const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {

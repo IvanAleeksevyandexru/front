@@ -1,5 +1,6 @@
 import { ComponentBase } from '../../../../../../screen/screen.types';
 import { TextTransform } from '../../../../../../shared/types/textTransform';
+import { ComponentDtoAction } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { RelativeDate } from 'epgu-lib';
 import { DurationInputArg2 } from 'moment';
 
@@ -8,10 +9,10 @@ export interface TemporaryRegistrationComponent extends ComponentBase {
 }
 
 export interface TemporaryRegistrationComponentAttrs {
-  hints: Array<TemporaryRegistrationHints>,
-  fields: Array<TemporaryRegistrationFields>,
-  actions: Array<any>,
-  fstuc?: TextTransform
+  hints: Array<TemporaryRegistrationHints>;
+  fields: Array<TemporaryRegistrationFields>;
+  actions: Array<ComponentDtoAction>;
+  fstuc?: TextTransform;
 }
 
 

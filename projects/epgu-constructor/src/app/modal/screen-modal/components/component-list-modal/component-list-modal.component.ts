@@ -5,6 +5,7 @@ import { Navigation, NavigationPayload } from '../../../../form-player/form-play
 import { ScreenService } from '../../../../screen/screen.service';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { ScreenModalService } from '../../screen-modal.service';
+import { CustomComponentOutputData } from '../../../../component/components-list/components-list.types';
 
 const moment = moment_;
 
@@ -41,12 +42,12 @@ export class ComponentListModalComponent {
    * Форматиркем данные перед отправкой
    * @param changes - данные на отправку
    */
-  getFormattedData(changes) {
+  getFormattedData(changes: CustomComponentOutputData) {
     const stateData = this.getPrepareResponseData(changes);
     return stateData;
   }
 
-  changeComponentsList(changes: { [key: string]: any }): void {
+  changeComponentsList(changes: CustomComponentOutputData): void {
     this.isValid = Object.values(changes).every((item) => item.isValid);
     this.dataToSend = this.getFormattedData(changes);
   }
@@ -56,7 +57,7 @@ export class ComponentListModalComponent {
    * @param date - дата для проверки
    * @private
    */
-  private isValidDate(date): boolean {
+  private isValidDate(date: string): boolean {
     return new Date(date).toString() !== 'Invalid Date';
   }
 
@@ -65,7 +66,7 @@ export class ComponentListModalComponent {
    * @param data - данные для пребразования
    * @private
    */
-  private getPrepareResponseData(data = {}) {
+  private getPrepareResponseData(data: CustomComponentOutputData = {}) {
     return Object.keys(data).reduce((acc, key) => {
       let value = '';
       const dataValue = data[key].value;
