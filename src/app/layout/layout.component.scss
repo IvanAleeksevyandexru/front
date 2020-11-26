@@ -1,11 +1,26 @@
 @import "../../../projects/epgu-constructor/src/styles/core";
 
-.page-container {
-  background-color: #FAFCFF;
-}
+.portal-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
-app-footer {
-  @include tablets-down {
-    display: none;
+  .page-container {
+    background-color: #FAFCFF;
+    display: flex;
+    flex: 1 0 auto;
+
+    .portal-select-player {
+      width: 100%;
+      min-height: 100%;
+    }
+  }
+
+  app-footer {
+    height: 112px;
+
+    @include tablets-down {
+      display: none;
+    }
   }
 }
