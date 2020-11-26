@@ -88,7 +88,7 @@ export class AbstractPaymentComponent implements OnDestroy {
     if (value) {
       const { billNumber, billId, amount, billName, billDate, payCode } = value;
       this.uin = billNumber;
-      this.sum = PaymentService.transformSumForPenny(amount);
+      this.sum = amount;
       this.paymentPurpose = billName;
       this.billId = billId;
       this.billDate = moment(billDate).format(DATE_STRING_DOT_FORMAT);

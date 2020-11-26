@@ -49,7 +49,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   );
 
   @Input() set data(data) {
-    this.cache = this.screenService.getStore().cachedAnswers[this.screenService.component.id];
+    this.cache = this.getCache();
     this.initVariable();
     this.propData = data;
 
@@ -148,5 +148,9 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
         });
       });
     });
+  }
+
+  private getCache(): Answer {
+    return this.screenService.getStore().cachedAnswers[this.screenService.component.id];
   }
 }

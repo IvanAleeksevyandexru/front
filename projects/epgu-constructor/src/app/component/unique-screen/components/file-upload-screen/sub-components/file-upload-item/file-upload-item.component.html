@@ -19,6 +19,7 @@
   <input #fileUploadInput
          type="file"
          [attr.accept]="getAcceptTypes()"
+         (click)="resetFileInputState(fileUploadInput)"
          (change)="updateSelectedFilesInfoAndSend($event.target.files)"
          multiple/>
   <input #cameraInput
