@@ -1,7 +1,11 @@
-<header>
-  <app-header></app-header>
-</header>
-<div class="page-container">
-  <ng-content></ng-content>
+<div class="portal-root">
+  <header>
+    <app-header></app-header>
+  </header>
+  <div class="page-container">
+    <div class="portal-select-player">
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <app-footer></app-footer>
 </div>
-<app-footer></app-footer>
