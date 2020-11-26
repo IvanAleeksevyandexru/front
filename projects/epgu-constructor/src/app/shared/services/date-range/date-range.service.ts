@@ -5,6 +5,7 @@ import { ComponentListFormService } from '../../../component/components-list/ser
 import { ScreenService } from '../../../screen/screen.service';
 import { Attrs, DateRange, Ref, Range } from './date-range.models';
 import { Moment } from 'moment';
+import { CustomComponent } from '../../../component/components-list/components-list.types';
 
 const moment = moment_;
 
@@ -55,11 +56,11 @@ export class DateRangeService {
     this.rangeMap.set(id, { max: null, min: null });
   }
 
-  getMinDate(componentData): Date {
+  getMinDate(componentData: CustomComponent): Date {
     return this.calcDateRange(componentData.attrs.ref, componentData.id).min;
   }
 
-  getMaxDate(componentData): Date {
+  getMaxDate(componentData: CustomComponent): Date {
     return this.calcDateRange(componentData.attrs.ref, componentData.id).max;
   }
 
