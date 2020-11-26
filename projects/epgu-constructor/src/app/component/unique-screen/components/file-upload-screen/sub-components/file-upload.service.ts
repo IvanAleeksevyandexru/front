@@ -16,7 +16,6 @@ export enum Uploaders {
 
 export enum CheckFailedReasons {
   total = 'There is more value than total',
-  undefined = 'Uploader does not exist',
   uploaderRestriction = 'Uploader value is more/less than max/zero',
 }
 
@@ -28,6 +27,14 @@ export class FileUploadService {
   private uploadedFilesAmount: UploadersRestriction = {};
   private maxFilesAmount: UploadersRestriction = {};
   private maxFilesSize: UploadersRestriction = {};
+
+  getMaxTotalFilesAmount(): number {
+    return this.totalMaxFilesAmount;
+  }
+
+  getMaxTotalFilesSize(): number {
+    return this.totalMaxFilesSize;
+  }
 
   setMaxFilesAmount(value: number, uploader: string): void {
     if (value < 0 && !uploader) {
@@ -89,10 +96,6 @@ export class FileUploadService {
     : { isValid: boolean, reason?: CheckFailedReasons } {
 
     const { totalMax, maxUploadersRes, currentUploadersRes } = options;
-
-    if (!this.uploadedFilesAmount.hasOwnProperty(uploader)) {
-      return { isValid: false, reason: CheckFailedReasons.undefined };
-    }
 
     if (totalMax) {
       const currentTotal = Object.values(currentUploadersRes)

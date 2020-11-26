@@ -446,6 +446,7 @@ export class FileUploadItemComponent implements OnDestroy {
         this.handleError(ErrorActions.addMaxSize);
       }
       this.filesInCompression = 0;
+      this.removeFileFromStore(file);
     }
     return isSizeValid;
   }
@@ -463,10 +464,14 @@ export class FileUploadItemComponent implements OnDestroy {
 
   handleError(action: ErrorActions, file?: Partial<File>): void {
     const errorHandler = {};
-    // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxTotalAmount] = `Максимальное количество всех файлов - ${this.data.maxFileCount}`;
-    // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxTotalSize] = `Размер всех файлов превышает ${getSizeInMB(this.data.maxSize)} МБ`;
+    errorHandler[
+      ErrorActions.addMaxTotalAmount
+    ] = `Максимальное количество всех файлов - ${this.fileUploadService.getMaxTotalFilesAmount()}`;
+
+    errorHandler[ErrorActions.addMaxTotalSize] = `Размер всех файлов превышает ${getSizeInMB(
+      this.fileUploadService.getMaxTotalFilesSize(),
+    )} МБ`;
+
     // eslint-disable-next-line prettier/prettier
     errorHandler[ErrorActions.addMaxAmount] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
     // eslint-disable-next-line prettier/prettier
@@ -511,9 +516,13 @@ export class FileUploadItemComponent implements OnDestroy {
       .toLowerCase();
   }
 
-  removeFileFromStore(file: TerraUploadedFile) {
+  removeFileFromStore(file: TerraUploadedFile | File) {
     let files = this.files$$.value;
-    files = files.filter((f) => f.mnemonic !== file.mnemonic);
+    if (file instanceof File) {
+      files = files.filter((terabyteFile) => terabyteFile.fileName !== file.name);
+    } else {
+      files = files.filter((f) => f.mnemonic !== file.mnemonic);
+    }
     this.files$$.next(files);
   }
 
