@@ -4,6 +4,8 @@ import * as moment_ from 'moment';
 import { ComponentListFormService } from '../../../component/components-list/services/component-list-form.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { Attrs, DateRange, Ref, Range } from './date-range.models';
+import { Moment } from 'moment';
+import { CustomComponent } from '../../../component/components-list/components-list.types';
 
 const moment = moment_;
 
@@ -11,6 +13,7 @@ const moment = moment_;
 export class DateRangeService {
   rangeMap = new Map<string, Range>();
 
+  //TODO: убрать formService, обновление control делать вместе вызова метода
   constructor(public screenService: ScreenService, public formService: ComponentListFormService) {}
 
   /**
@@ -54,11 +57,11 @@ export class DateRangeService {
     this.rangeMap.set(id, { max: null, min: null });
   }
 
-  getMinDate(componentData): Date {
+  getMinDate(componentData: CustomComponent): Date {
     return this.calcDateRange(componentData.attrs.ref, componentData.id).min;
   }
 
-  getMaxDate(componentData): Date {
+  getMaxDate(componentData: CustomComponent): Date {
     return this.calcDateRange(componentData.attrs.ref, componentData.id).max;
   }
 
@@ -80,6 +83,7 @@ export class DateRangeService {
     const formControl = this.formService.form.controls.find(
       (control) => control.value.id === refParams.relatedDate,
     );
+
     const refDate =
       this.screenService.applicantAnswers[refParams.relatedDate]?.value || formControl.value.value;
 
@@ -88,26 +92,24 @@ export class DateRangeService {
     }
 
     const date = moment(refDate);
+    [range.min, range.max] = this.chooseOperation(refParams, date);
 
-    const operations = {
-      '<'() {
+    return range;
+  }
+
+  private chooseOperation(refParams: Ref, date: Moment): Array<Date> {
+    switch (refParams.condition) {
+      case '<':
         return [
           date.subtract(refParams.val, refParams.period).toDate(),
           date.subtract(1, 'days').toDate(),
         ];
-      },
-      '<='() {
+      case '<=':
         return [date.subtract(refParams.val, refParams.period).toDate(), date.toDate()];
-      },
-      '>'() {
+      case '>':
         return [date.add(1, 'days').toDate(), date.add(refParams.val, refParams.period).toDate()];
-      },
-      '>='() {
+      case '>=':
         return [date.toDate(), date.add(refParams.val, refParams.period).toDate()];
-      },
-    };
-    [range.min, range.max] = operations[refParams.condition]();
-
-    return range;
+    }
   }
 }

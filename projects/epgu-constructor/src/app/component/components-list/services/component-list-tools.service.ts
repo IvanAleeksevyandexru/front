@@ -21,6 +21,7 @@ export class ComponentListToolsService {
     CustomScreenComponentTypes.Dictionary,
     CustomScreenComponentTypes.AddressInput,
     CustomScreenComponentTypes.CityInput,
+    CustomScreenComponentTypes.PassportLookup,
   ];
 
   private readonly availableComponentTypesToAddressParse = [
@@ -38,9 +39,6 @@ export class ComponentListToolsService {
     form: FormArray,
     shownElements: CustomListStatusElements,
   ): CustomListStatusElements {
-    const valueEquals: boolean = typeof componentVal === 'string' || typeof componentVal === 'boolean'
-      ? reference.val === componentVal
-      : reference.val === componentVal?.id;
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id
     );
@@ -61,14 +59,23 @@ export class ComponentListToolsService {
       control.enable({ onlySelf: true });
     };
     const isDependentDisabled: boolean = dependentComponent.attrs?.disabled;
+    const element = shownElements[dependentComponent.id];
 
     if (reference.relation === CustomComponentRefRelation.displayOn) {
-      shownElements[dependentComponent.id] = valueEquals;
-      dependentControl.markAsUntouched();
+      const isDisplayOff = element.relation === CustomComponentRefRelation.displayOff;
+
+      if ((isDisplayOff && element.isShown === true) || !isDisplayOff) {
+        shownElements[dependentComponent.id]= {
+          relation: CustomComponentRefRelation.displayOn,
+          isShown: this.isValueEquals(reference.val, componentVal),
+        };
+        dependentControl.markAsUntouched();
+      }
+
     }
 
     if (reference.relation === CustomComponentRefRelation.disabled) {
-      if (valueEquals) {
+      if (this.isValueEquals(reference.val, componentVal)) {
         patchToNullAndDisable(dependentControl);
       } else {
         patchToPrevValueAndEnable(dependentControl);
@@ -83,6 +90,18 @@ export class ComponentListToolsService {
       dependentControl.get('value').patchValue(
         this.calculateValueFromRelation(calcRelation, components, form)
       );
+    }
+
+    if (reference.relation === CustomComponentRefRelation.displayOff) {
+      const isDisplayOn = element.relation === CustomComponentRefRelation.displayOn;
+
+      if ((isDisplayOn && element.isShown === true) || !isDisplayOn) {
+        shownElements[dependentComponent.id]= {
+          relation: CustomComponentRefRelation.displayOff,
+          isShown: !this.isValueEquals(reference.val, componentVal),
+        };
+        dependentControl.markAsUntouched();
+      }
     }
 
     if (isDependentDisabled) {
@@ -133,10 +152,13 @@ export class ComponentListToolsService {
     shownElements: CustomListStatusElements
   ): CustomListStatusElements {
     components.forEach((component: CustomComponent) => {
-      shownElements[component.id] = !this.hasRelation(
-        component,
-        CustomComponentRefRelation.displayOn,
-      );
+      shownElements[component.id] = {
+        relation: CustomComponentRefRelation.displayOn,
+        isShown: !this.hasRelation(
+          component,
+          CustomComponentRefRelation.displayOn,
+        )
+      };
     });
 
     return shownElements;
@@ -144,7 +166,7 @@ export class ComponentListToolsService {
 
   convertedValue(component: CustomComponent): any {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
-    const parseValue = (value: any): any => {
+    const parseValue = (value): any => {
       if (isDateAndValue) {
         return new Date(value);
       } else if (this.isAddress(component.type)) {
@@ -166,12 +188,10 @@ export class ComponentListToolsService {
       }
     };
 
-    if (!isUndefined(component.attrs?.defaultValue)) {
-      return parseValue(component.attrs?.defaultValue);
-    }
-
-    if (typeof component.value === 'string') {
+    if (typeof component.value === 'string' && component.value.length) {
       return parseValue(component.value);
+    } else if (!isUndefined(component.attrs?.defaultValue)) {
+      return parseValue(component.attrs?.defaultValue);
     } else {
       return component.value;
     }
@@ -214,7 +234,7 @@ export class ComponentListToolsService {
    * @example {val: '{add16} + {add17} / 100'} => 50 + 150 / 100
    */
   private calculateValueFromRelation(itemRef: CustomComponentRef, components: CustomComponent[], form: FormArray): Function | string {
-    let str = itemRef.val;
+    let str = itemRef.val as String;
     const lettersAnNumberItemRegExp = /\{\w+\}/gm;
     const matches = str.match(lettersAnNumberItemRegExp);
     const componentKeys = Array.isArray(matches) ? [...matches] : [];
@@ -245,5 +265,22 @@ export class ComponentListToolsService {
     // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
     return Function(`'use strict'; return (Math.round(${formula}))`)();
   }
+
+  /**
+   * Сравнивает значание в зависимости от типа
+   * @param value - value из зависимого компонета
+   * @param componentVal - value из компонета
+   */
+  private isValueEquals (value: string | Array<string> | boolean, componentVal: { id?: string }): boolean {
+    if (['string', 'boolean'].includes(typeof componentVal)) {
+      return value === componentVal;
+    }
+
+    if (Array.isArray(value)) {
+      return value.some((values) => values === componentVal?.id);
+    }
+
+    return value === componentVal?.id;
+  };
 
 }

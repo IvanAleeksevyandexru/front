@@ -1,11 +1,10 @@
 <form class="form">
   <div *ngFor="let componentData of formService.form.controls; let idx = index;"
        class="form__item"
-       [class.form__item--half]="isHalfWidthItem(componentData)"
   >
     <ng-container
       [ngSwitch]="componentData.value?.type"
-      *ngIf="formService.shownElements[componentData.value?.id]">
+      *ngIf="formService.shownElements[componentData.value?.id]?.isShown">
 
       <ng-container *ngSwitchCase="componentType.LabelSection">
         <ng-container *ngTemplateOutlet="formOutputHtml; context: { $implicit: { class: 'label', value: componentData.value } }">
@@ -18,7 +17,8 @@
       </ng-container>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.NewEmailInput"
-                                       [data]="componentData">
+                                       [data]="componentData"
+                                       [isHalfWidthItem]="isHalfWidthItem(componentData)">
         <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
       </epgu-constructor-component-item>
 
@@ -114,7 +114,8 @@
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.DateInput"
-                                       [data]="componentData">
+                                       [data]="componentData"
+                                       [isHalfWidthItem]="isHalfWidthItem(componentData)">
         <lib-date-picker
           (dateSelected)="dateRangeService.changeDate($event, componentData.value?.attrs, componentData.value?.id)"
           (cleared)="dateRangeService.clearDate(componentData.value?.id, componentData.value?.attrs)"
@@ -157,7 +158,8 @@
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.PhoneNumberChangeInput"
-                                       [data]="componentData">
+                                       [data]="componentData"
+                                       [isHalfWidthItem]="isHalfWidthItem(componentData)">
           <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
       </epgu-constructor-component-item>
 

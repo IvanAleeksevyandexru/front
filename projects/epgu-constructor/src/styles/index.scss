@@ -11,6 +11,10 @@
   font-family: $font-main;
   height: 100%;
 
+  & .loader {
+    margin: auto;
+  }
+
   img {
     max-width: 100%;
   }
@@ -119,7 +123,7 @@
 
   .divider {
     border: 0;
-    background: $color-devider;
+    background: $color-divider;
     height: 1px;
   }
 
@@ -159,8 +163,8 @@
     &--input {
       color: $color-input;
     }
-    &--devider {
-      color: $color-devider;
+    &--divider {
+      color: $color-divider;
     }
     &--error-highlight {
       color: $color-error-highlight;
@@ -214,14 +218,21 @@
       display: flex;
       align-items: flex-start;
       justify-content: flex-start;
+      margin-top: 16px;
       & > img {
         flex: 0 0 auto;
         max-width: 25px;
         margin-right: 17px;
+        margin-bottom: 0;
         @include phones-down {
           margin-top: 4px;
         }
       }
+    }
+    &--content-centered {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 

@@ -1,15 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ScreenService } from '../../../screen/screen.service';
+import { LoggerService } from '../../../core/services/logger/logger.service';
+import { FormPlayerNavigation, Navigation } from '../../../form-player/form-player.types';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import {
   FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
   FormPlayerApiSuccessResponse, ScenarioDto
 } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
-import { FormPlayerNavigation, Navigation } from '../../../form-player/form-player.types';
-import { LoggerService } from '../../../core/services/logger/logger.service';
-import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { ScreenService } from '../../../screen/screen.service';
 
 
 /**

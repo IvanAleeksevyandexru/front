@@ -42,9 +42,9 @@
 }
 
 .progress__value{
+  @include typ-h2;
   display: inline-block;
   position: relative;
-  @include typ-h2;
   color: $color-gosblue;
   letter-spacing: 6px;
   padding-left: 12px;

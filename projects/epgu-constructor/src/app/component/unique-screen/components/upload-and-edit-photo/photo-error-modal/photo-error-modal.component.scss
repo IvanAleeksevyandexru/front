@@ -23,7 +23,7 @@
     &__header {
       padding-bottom: 22px;
       margin: 0 32px;
-      border-bottom: 1px solid $color-devider;
+      border-bottom: 1px solid $color-divider;
 
       @include phones-down {
         margin:0 24px;
