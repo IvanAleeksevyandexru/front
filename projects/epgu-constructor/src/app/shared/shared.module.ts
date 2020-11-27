@@ -49,6 +49,7 @@ const COMPONENTS = [
   RadioTaxComponent,
   CloneButtonComponent,
   FieldListComponent,
+  ConstructorMaskedInputComponent,
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe];
@@ -68,7 +69,7 @@ const DIRECTIVES = [
  * TODO: Разбить модуль, создать core домен для общих штук, оставить только специфик шарабл кейсы
  */
 @NgModule({
-  declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES, ConstructorMaskedInputComponent],
+  declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   providers: [
     CachedAnswersService,
     TerraByteApiService,
@@ -76,7 +77,7 @@ const DIRECTIVES = [
     UtilsService,
     DateRangeService,
   ],
-  exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES, ConstructorMaskedInputComponent],
+  exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   imports: [WebcamModule, CoreModule],
   entryComponents: [
     WebcamShootComponent,
