@@ -14,7 +14,6 @@ export class ComponentItemComponent {
   @Input() disableLabel = false;
   @Input() disableError = false;
   @Input() disableHint = false;
-  @Input() isHalfWidthItem = false;
 
   readonly componentType = CustomScreenComponentTypes;
 
