@@ -5,9 +5,7 @@
 }
 
 .label{
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 24px;
+  @include typ-h6;
   color: $color-black;
   max-width: 278px;
   margin-left: auto;
@@ -46,9 +44,7 @@
 .progress__value{
   display: inline-block;
   position: relative;
-  font-weight: bold;
-  font-size: 32px;
-  line-height: 40px;
+  @include typ-h2;
   color: $color-gosblue;
   letter-spacing: 6px;
   padding-left: 12px;
