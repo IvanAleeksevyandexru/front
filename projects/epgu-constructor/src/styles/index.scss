@@ -218,10 +218,12 @@
       display: flex;
       align-items: flex-start;
       justify-content: flex-start;
+      margin-top: 16px;
       & > img {
         flex: 0 0 auto;
         max-width: 25px;
         margin-right: 17px;
+        margin-bottom: 0;
         @include phones-down {
           margin-top: 4px;
         }
