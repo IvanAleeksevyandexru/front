@@ -10,7 +10,7 @@ import {
   CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements,
-  CustomScreenComponentTypes,
+  CustomScreenComponentTypes
 } from '../components-list.types';
 
 @Injectable()
@@ -187,12 +187,10 @@ export class ComponentListToolsService {
       }
     };
 
-    if (!isUndefined(component.attrs?.defaultValue)) {
-      return parseValue(component.attrs?.defaultValue);
-    }
-
-    if (typeof component.value === 'string') {
+    if (typeof component.value === 'string' && component.value.length) {
       return parseValue(component.value);
+    } else if (!isUndefined(component.attrs?.defaultValue)) {
+      return parseValue(component.attrs?.defaultValue);
     } else {
       return component.value;
     }
