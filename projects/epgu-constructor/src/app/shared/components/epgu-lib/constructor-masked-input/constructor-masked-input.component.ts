@@ -10,7 +10,6 @@ import { TextTransform } from '../../../types/textTransform';
 })
 export class ConstructorMaskedInputComponent {
   @Input() control: FormControl;
-  @Input() controlName: string;
   @Input() validationShowOn: ValidationShowOn;
   @Input() textTransformType: TextTransform;
   @Input() readonly: boolean;
@@ -18,7 +17,7 @@ export class ConstructorMaskedInputComponent {
   @Input() showMaskAsPlaceholder: boolean;
   @Input() clearable: boolean;
   @Input() invalid: boolean;
-  @Input() mask: Array<string>;
+  @Input() mask: Array<string | RegExp>;
   @Input() name: string;
   @Input() id: string;
   @Input() placeholder: string;

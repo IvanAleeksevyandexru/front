@@ -238,7 +238,7 @@
   <epgu-constructor-masked-input *ngIf="data.value?.attrs?.mask"
     [validationShowOn]="validationShowOn"
     [readonly]="data.value?.attrs?.readonly"
-    [mask]="data.value?.attrs?.mask"
+    [mask]="data.value?.attrs?.mask | maskHandle"
     [textTransformType]="data.value?.attrs?.fstuc"
     [clearable]="true"
     [name]="data.value?.id"

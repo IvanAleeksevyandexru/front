@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConstructorMaskedInputComponent } from './constructor-masked-input.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('ConstructorMaskedInputComponent', () => {
   let component: ConstructorMaskedInputComponent;
@@ -8,7 +9,8 @@ describe('ConstructorMaskedInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConstructorMaskedInputComponent ]
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [ ConstructorMaskedInputComponent ],
     })
     .compileComponents();
   });
