@@ -3,14 +3,19 @@ import * as moment_ from 'moment';
 
 const moment = moment_;
 
+
+/**
+ * Преобразовывает переданное время в формат HH:mm:ss
+ */
 @Pipe({
   name: 'timer',
 })
 export class TimerPipe implements PipeTransform {
   transform(value: number, ...args: unknown[]): string {
-    const seconds = moment.duration(value).seconds();
-    const minutes = moment.duration(value).minutes();
-    const hours = Math.trunc(moment.duration(value).asHours());
+    const duration = moment.duration(value);
+    const seconds = duration.seconds();
+    const minutes = duration.minutes();
+    const hours = Math.trunc(duration.asHours());
 
     return `${this.getFormatTime(hours)}:${this.getFormatTime(minutes)}:${this.getFormatTime(
       seconds,
