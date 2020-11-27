@@ -48,7 +48,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     public loadService: LoadService,
     private modalService: ModalService,
     private zone: NgZone,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {
