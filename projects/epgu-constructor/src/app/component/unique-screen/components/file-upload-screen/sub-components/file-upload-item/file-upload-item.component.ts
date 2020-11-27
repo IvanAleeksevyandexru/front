@@ -28,29 +28,20 @@ import {
 import { ConfigService } from '../../../../../../core/config/config.service';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../../../modal/confirmation-modal/confirmation-modal.interface';
+import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
 
 enum ErrorActions {
   clear = 'clear',
   addMaxSize = 'maxSize',
   addMaxAmount = 'maxAmount',
+  addMaxTotalAmount = 'maxTotalAmount',
+  addMaxTotalSize = 'maxTotalSize',
   addInvalidType = 'invalidType',
   addInvalidFile = 'invalidFile',
   addDownloadErr = 'addDownloadErr',
   addUploadErr = 'addUploadErr',
   addDeletionErr = 'addDeletionErr',
-}
-
-interface ModalParams {
-  text: string;
-  title: string;
-  showCloseButton: boolean;
-  showCrossButton: boolean;
-  preview: boolean;
-  buttons: Array<{
-    label: string;
-    closeModal: boolean;
-    handler: () => any;
-  }>;
 }
 
 const photoBaseName = 'Снимок';
@@ -66,8 +57,6 @@ const maxImgSizeInBytes = 525288;
 export class FileUploadItemComponent implements OnDestroy {
   private loadData: FileUploadItem;
   isMobile: boolean;
-  uploadedFilesAmount = 0;
-  uploadedFilesSize = 0;
   uploadedCameraPhotoNumber = 0;
 
   @Input() objectId: string;
@@ -152,6 +141,7 @@ export class FileUploadItemComponent implements OnDestroy {
     private deviceDetectorService: DeviceDetectorService,
     private compressionService: CompressionService,
     private ngUnsubscribe$: UnsubscribeService,
+    private fileUploadService: FileUploadService,
     public config: ConfigService,
     public modal: ModalService,
   ) {
@@ -175,7 +165,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * Opens a modal window with the specified parameters
    * @param modalParams
    */
-  private openModal(modalParams: ModalParams): void {
+  private openModal(modalParams: ConfirmationModal): void {
     this.modal.openModal(ConfirmationModalComponent, modalParams);
   }
 
@@ -353,10 +343,18 @@ export class FileUploadItemComponent implements OnDestroy {
   private prepareFilesToUpload(filesToUpload: FileList, isPhoto?: boolean): Observable<File> {
     this.handleError(ErrorActions.clear);
     const files = isPhoto ? Array.from(filesToUpload) : this.filterValidFiles(filesToUpload);
-    const filesLength = files.length + this.uploadedFilesAmount;
 
-    if (filesLength > this.data.maxFileCount) {
-      this.handleError(ErrorActions.addMaxAmount);
+    const {
+      isValid: isAmountValid,
+      reason: amountFailedReason,
+    } = this.fileUploadService.checkFilesAmount(files.length, this.loadData.uploadId);
+
+    if (!isAmountValid) {
+      if (amountFailedReason === CheckFailedReasons.total) {
+        this.handleError(ErrorActions.addMaxTotalAmount);
+      } else if (amountFailedReason === CheckFailedReasons.uploaderRestriction) {
+        this.handleError(ErrorActions.addMaxAmount);
+      }
       return of();
     }
 
@@ -432,15 +430,23 @@ export class FileUploadItemComponent implements OnDestroy {
   }
 
   validateAndHandleFilesSize(file: File): boolean {
-    const newSize = this.uploadedFilesSize + file.size;
-    const isSizeValid = newSize < this.data.maxSize;
+    const {
+      isValid: isSizeValid,
+      reason: failedSizeReason,
+    } = this.fileUploadService.checkFilesSize(file.size, this.loadData.uploadId);
 
     if (isSizeValid) {
-      this.uploadedFilesSize = newSize;
+      this.fileUploadService.updateFilesSize(file.size, this.loadData.uploadId);
       this.filesInCompression -= 1;
     } else {
-      this.handleError(ErrorActions.addMaxSize);
+      if (failedSizeReason === CheckFailedReasons.total) {
+        this.handleError(ErrorActions.addMaxTotalSize);
+      }
+      if (failedSizeReason === CheckFailedReasons.uploaderRestriction) {
+        this.handleError(ErrorActions.addMaxSize);
+      }
       this.filesInCompression = 0;
+      this.removeFileFromStore(file);
     }
     return isSizeValid;
   }
@@ -458,14 +464,18 @@ export class FileUploadItemComponent implements OnDestroy {
 
   handleError(action: ErrorActions, file?: Partial<File>): void {
     const errorHandler = {};
-    // eslint-disable-next-line prettier/prettier
     errorHandler[
-      ErrorActions.addMaxAmount
-    ] = `Максимальное число файлов - ${this.data.maxFileCount}`;
-    // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxSize] = `Размер файлов превышает ${getSizeInMB(
-      this.data.maxSize,
+      ErrorActions.addMaxTotalAmount
+    ] = `Максимальное количество всех файлов - ${this.fileUploadService.getMaxTotalFilesAmount()}`;
+
+    errorHandler[ErrorActions.addMaxTotalSize] = `Размер всех файлов превышает ${getSizeInMB(
+      this.fileUploadService.getMaxTotalFilesSize(),
     )} МБ`;
+
+    // eslint-disable-next-line prettier/prettier
+    errorHandler[ErrorActions.addMaxAmount] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
+    // eslint-disable-next-line prettier/prettier
+    errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(this.data.maxSize)} МБ`;
     errorHandler[ErrorActions.addInvalidType] = `Недопустимый тип файла "${file?.name}"`;
     errorHandler[ErrorActions.addInvalidFile] = `Ошибка загрузки файла "${file?.name}"`;
     errorHandler[ErrorActions.addDownloadErr] = `Не удалось скачать файл "${file?.name}"`;
@@ -506,9 +516,13 @@ export class FileUploadItemComponent implements OnDestroy {
       .toLowerCase();
   }
 
-  removeFileFromStore(file: TerraUploadedFile) {
+  removeFileFromStore(file: TerraUploadedFile | File) {
     let files = this.files$$.value;
-    files = files.filter((f) => f.mnemonic !== file.mnemonic);
+    if (file instanceof File) {
+      files = files.filter((terabyteFile) => terabyteFile.fileName !== file.name);
+    } else {
+      files = files.filter((f) => f.mnemonic !== file.mnemonic);
+    }
     this.files$$.next(files);
   }
 
@@ -547,12 +561,11 @@ export class FileUploadItemComponent implements OnDestroy {
 
   updateUploadingInfo(fileInfo: TerraUploadedFile, isDeleted?: boolean) {
     if (isDeleted) {
-      this.uploadedFilesAmount -= 1;
-      this.uploadedFilesSize =
-        this.uploadedFilesSize < fileInfo.fileSize ? 0 : this.uploadedFilesSize - fileInfo.fileSize;
+      this.fileUploadService.updateFilesAmount(-1, this.loadData.uploadId);
+      this.fileUploadService.updateFilesSize(-fileInfo.fileSize, this.loadData.uploadId);
     } else {
-      this.uploadedFilesAmount += 1;
-      this.uploadedFilesSize += fileInfo.fileSize;
+      this.fileUploadService.updateFilesAmount(1, this.loadData.uploadId);
+      this.fileUploadService.updateFilesSize(fileInfo.fileSize, this.loadData.uploadId);
     }
   }
 
