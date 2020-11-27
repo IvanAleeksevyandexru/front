@@ -166,7 +166,7 @@ export class ComponentListToolsService {
 
   convertedValue(component: CustomComponent): any {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
-    const parseValue = (value: any): any => {
+    const parseValue = (value): any => {
       if (isDateAndValue) {
         return new Date(value);
       } else if (this.isAddress(component.type)) {
