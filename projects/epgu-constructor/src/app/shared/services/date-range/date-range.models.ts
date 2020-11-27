@@ -11,8 +11,9 @@ export interface Ref extends CustomComponentRef{
   relatedDate: string;
   val: string;
   period: DurationInputArg2;
-  condition: string;
+  condition: Operation;
 }
 
 export type DateRange = Date | null;
 export type Range = { min: DateRange, max: DateRange };
+export type Operation = '<' | '<=' | '>' | '>=';
