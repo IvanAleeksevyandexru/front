@@ -42,7 +42,7 @@
         [id]="field.fieldName"
         [validationShowOn]="validationShowOn"
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
-        [formControlName]="field.fieldName"
+        [control]="redAddrForm.get(field.fieldName)"
         *ngSwitchDefault
       ></epgu-constructor-constructor-plain-input>
     </ng-container>

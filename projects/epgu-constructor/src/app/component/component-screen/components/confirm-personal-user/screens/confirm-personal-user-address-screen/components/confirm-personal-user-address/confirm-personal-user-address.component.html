@@ -49,13 +49,15 @@
       [hint]="field?.hint"
     >
 
-      <epgu-constructor-constructor-plain-input
+      <lib-plain-input
+        epgu-constructor-trim
+        epgu-constructor-text-transform
         [textTransformType]="textTransformType"
         [(ngModel)]="valueParsed[field.fieldName]"
         [name]="field.fieldName"
         class="content content__input"
       >
-      </epgu-constructor-constructor-plain-input>
+      </lib-plain-input>
 
     </epgu-constructor-address-item>
   </ng-container>

@@ -71,7 +71,7 @@
         <epgu-constructor-constructor-plain-input
           [textTransformType]="textTransformType"
           [name]="i + '_position'"
-          [formControl]="generation.get('position')"
+          [control]="generation.get('position')"
           [invalid]="generation.get('position').invalid"
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>
@@ -87,7 +87,7 @@
         <epgu-constructor-constructor-plain-input
           [textTransformType]="textTransformType"
           [name]="i + '_place'"
-          [formControl]="generation.get('place')"
+          [control]="generation.get('place')"
           [invalid]="generation.get('place').invalid"
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>
@@ -103,7 +103,7 @@
         <epgu-constructor-constructor-plain-input
           [textTransformType]="textTransformType"
           [name]="i + '_address'"
-          [formControl]="generation.get('address')"
+          [control]="generation.get('address')"
           [invalid]="generation.get('address').invalid"
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>
