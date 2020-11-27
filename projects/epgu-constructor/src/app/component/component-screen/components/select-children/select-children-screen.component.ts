@@ -50,9 +50,11 @@ export class SelectChildrenScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.initVariables();
-    this.selectChildrenForm.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.updateCurrentAnswerServiceValidation());
+    this.selectChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() =>
+      setTimeout(() => {
+        this.updateCurrentAnswerServiceValidation();
+      }),
+    );
 
     this.initStartValues();
   }
