@@ -10,7 +10,7 @@ import {
   CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements,
-  CustomScreenComponentTypes,
+  CustomScreenComponentTypes
 } from '../components-list.types';
 
 @Injectable()
@@ -165,7 +165,7 @@ export class ComponentListToolsService {
 
   convertedValue(component: CustomComponent): any {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
-    const parseValue = (value: any): any => {
+    const parseValue = (value): any => {
       if (isDateAndValue) {
         return new Date(value);
       } else if (this.isAddress(component.type)) {
@@ -187,12 +187,10 @@ export class ComponentListToolsService {
       }
     };
 
-    if (!isUndefined(component.attrs?.defaultValue)) {
-      return parseValue(component.attrs?.defaultValue);
-    }
-
-    if (typeof component.value === 'string') {
+    if (typeof component.value === 'string' && component.value.length) {
       return parseValue(component.value);
+    } else if (!isUndefined(component.attrs?.defaultValue)) {
+      return parseValue(component.attrs?.defaultValue);
     } else {
       return component.value;
     }
