@@ -1,8 +1,8 @@
 import { ListItem } from 'epgu-lib';
-import { DictionaryItem, DictionaryResponse } from '../shared/services/dictionary-api/dictionary-api.types';
-import { ComponentBase } from '../../screen/screen.types';
 import { DisplayDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentBase } from '../../screen/screen.types';
 import { TextTransform } from '../../shared/types/textTransform';
+import { DictionaryItem, DictionaryResponse } from '../shared/services/dictionary-api/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -127,9 +127,9 @@ export interface CustomComponentOutputData {
  */
 export enum CustomComponentRefRelation {
   displayOn = 'displayOn',
+  displayOff = 'displayOff',
   disabled = 'disabled',
   calc = 'calc',
-  displayOff = 'displayOff',
 }
 
 export enum CustomComponentValidationConditions {
