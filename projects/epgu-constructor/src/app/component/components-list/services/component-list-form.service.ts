@@ -20,6 +20,7 @@ import {
   CustomListStatusElements,
   CustomScreenComponentTypes,
   CustomComponentAttr,
+  UpdateOn
 } from '../components-list.types';
 import { isDropDown } from '../tools/custom-screen-tools';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
@@ -157,7 +158,7 @@ export class ComponentListFormService {
       let { value, type } = val;
       const isValid = disabled || valid;
 
-      if (this.shownElements[val.id]) {
+      if (this.shownElements[val.id].isShown) {
         if (type === CustomScreenComponentTypes.DateInput) {
           value = moment(value).toISOString(true); // NOTICE: обработка даты и "правильное" приведение к ISO-строке
         }
@@ -269,7 +270,7 @@ export class ComponentListFormService {
           ],
         ],
       },
-      { updateOn: this.isPlainInput(component) ? 'blur' : 'change' },
+      { updateOn: this.updateOnValidation(component) },
     );
 
     if (component.attrs?.hidden) {
@@ -333,13 +334,7 @@ export class ComponentListFormService {
     );
   }
 
-  private isPlainInput(component: CustomComponent): boolean {
-    const isStringInput = [
-      CustomScreenComponentTypes.StringInput,
-      CustomScreenComponentTypes.NewEmailInput,
-    ].includes(component.type);
-    const hasMask = !component.attrs.mask;
-
-    return isStringInput && hasMask;
+  private updateOnValidation(component: CustomComponent): UpdateOn {
+    return component.attrs?.updateOnValidation || 'change';
   }
 }

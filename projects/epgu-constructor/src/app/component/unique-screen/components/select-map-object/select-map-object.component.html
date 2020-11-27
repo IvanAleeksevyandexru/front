@@ -25,7 +25,7 @@
     [enterpriseYandexMapsEnabled]="true"
     [yandexMapsApiKey]="config.yandexMapsApiKey"
     [center]="mapCenter"
-    [redraw]="true"
+    [redraw]="mapIsLoaded"
     [controls]="mapControls"
   >
   </lib-map>
@@ -47,22 +47,31 @@
             <span class="map-object__label">{{ itemContent.label }}: </span>
             <span class="PGU-AttrsValue">{{ itemContent.value }}</span>
           </div>
-<!--          Скрыто в рамках задачи EPGUCORE-41464-->
-<!--          <a-->
-<!--            *ngIf="data.attrs.showExtraInfoLink"-->
-<!--            (click)="showModalFromTemplate('detailsTemplate', mapObject)"-->
-<!--            href="javascript:void(0)"-->
-<!--            class="details-link"-->
-<!--          >Узнать подробнее-->
-<!--          </a>-->
+          <!--          Скрыто в рамках задачи EPGUCORE-41464-->
+          <!--          <a-->
+          <!--            *ngIf="data.attrs.showExtraInfoLink"-->
+          <!--            (click)="showModalFromTemplate('detailsTemplate', mapObject)"-->
+          <!--            href="javascript:void(0)"-->
+          <!--            class="details-link"-->
+          <!--          >Узнать подробнее-->
+          <!--          </a>-->
           <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">
-            На данной площадке действуют дополнительные условия оказания услуг нажмите чтобы
+            На данной площадке действуют
             <a
               href="javascript:void(0)"
               (click)="showModalFromTemplate('informationTemplate', mapObject)"
               class="information-link"
-            >ознакомиться</a
             >
+              дополнительные условия
+            </a>
+            оказания услуг.
+            <a
+              href="javascript:void(0)"
+              (click)="showModalFromTemplate('informationTemplate', mapObject)"
+              class="information-link"
+            >
+              Ознакомиться и подтвердить согласие</a
+            >.
           </div>
           <lib-button
             [showLoader]="screenService.isLoading$ | async"
@@ -70,7 +79,7 @@
             (click)="selectObject()"
             class="btn__submit"
             width="wide"
-          >Выбрать
+            >Выбрать
           </lib-button>
         </ng-container>
       </div>

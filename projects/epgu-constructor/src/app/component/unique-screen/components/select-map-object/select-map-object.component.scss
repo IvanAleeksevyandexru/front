@@ -1,4 +1,4 @@
-@import "../../../../../styles/core";
+@import '../../../../../styles/core';
 
 $crossBtnRightPadding: 42px;
 
@@ -20,7 +20,6 @@ hr {
   &__normal {
     padding-bottom: 24px;
   }
-
 }
 
 .modal-img {
@@ -40,9 +39,9 @@ hr {
 
 .widget {
   position: relative;
-  height: calc(100vh - 216px);
+  height: 100%;
   width: 100%;
-
+  overflow: hidden;
   &__form {
     position: absolute;
     top: 20px;
@@ -53,6 +52,10 @@ hr {
     padding: 32px;
     border-radius: $border-round;
     box-shadow: 0 24px 48px rgba($color-shadow, 0.4);
+  }
+  ::ng-deep #map {
+    width: 100%;
+    position: absolute;
   }
 }
 
@@ -102,7 +105,6 @@ hr {
 }
 
 ::ng-deep {
-
   .map-baloon {
     display: inline-block;
     padding: 24px;
@@ -110,7 +112,7 @@ hr {
     position: relative;
     background-color: $color-white;
     border-radius: $border-round;
-    font-family: "Lato", sans-serif;
+    font-family: 'Lato', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -136,7 +138,7 @@ hr {
       &:after {
         position: absolute;
         left: 15px;
-        content: " ";
+        content: ' ';
         height: 33px;
         width: 2px;
         background-color: $color-mine-shaft;
@@ -195,80 +197,65 @@ hr {
   }
 
   .page-container {
-    padding-bottom: 0!important;
+    padding-bottom: 0 !important;
   }
 }
 
- @include desktops-down {
-   .widget {
-     height: calc(100vh - 104px); // TODO что это за число 104px?
-     overflow: hidden;
-   }
+:host {
+  @include flex-container();
+}
 
-   .widget__form {
-     position: static;
-     width: auto;
-     padding: 0 0 12px 0;
-   }
+@include desktops-down {
+  .widget__form {
+    position: static;
+    width: auto;
+    padding: 0 0 12px 0;
+  }
 
-   .widget-form__title {
-     display: block;
-     margin-bottom: -12px;
-     margin-left: 12px;
-   }
+  .widget-form__title {
+    display: block;
+    margin-left: 12px;
+    margin-right: 12px;
+  }
 
-   .widget-form__input {
-     padding: 0 12px;
-   }
+  .widget-form__input {
+    padding: 0 12px;
+  }
 
-   .cross-btn {
-     position: relative;
-     left: calc(100% - 44px); // TODO что это за цифро 44px?
-   }
+  .cross-btn {
+    position: relative;
+    left: calc(100% - 44px); // TODO что это за цифро 44px?
+  }
 
-   .map-objects-list {
-     height: auto;
-     left: 0;
-     top: initial;
-     width: 100%;
-     bottom: 0;
-     max-height: calc(100vh - 250px);
-     overflow-y: auto;
-     position: fixed;
-   }
+  .map-objects-list {
+    height: auto;
+    left: 0;
+    top: initial;
+    width: 100%;
+    bottom: 0;
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+    position: fixed;
+  }
 
-   .nav::ng-deep {
-     .container {
-       padding: 0 16px;
-       margin: 0;
-     }
+  .nav::ng-deep {
+    .container {
+      padding: 0 16px;
+      margin: 0;
+    }
 
-     margin-bottom: 12px;
-   }
+    margin-bottom: 12px;
+  }
 
-   ::ng-deep {
-     app-footer {
-       display: none;
-     }
-   }
+  ::ng-deep {
+    app-footer {
+      display: none;
+    }
+  }
 
-   .map-object {
-     &__header-close {
-       color: $color-gosblue;
-     }
-   }
- }
-
- @include tablets-down() {
-   .widget {
-     height: calc(100vh - 104px); // TODO что это за число 104px?
-     overflow: hidden;
-   }
- }
-
-@include phones-down() {
-  .widget {
-    height: calc(100vh - 44px); // TODO что это за число 44px?
-    overflow: hidden;
+  .map-object {
+    &__header-close {
+      color: $color-gosblue;
+    }
   }
 }

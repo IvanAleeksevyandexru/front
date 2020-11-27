@@ -1,6 +1,6 @@
 {
   "name": "epgu-form-frontend",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "scripts": {
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "ng": "ng",
@@ -55,10 +55,12 @@
     "@angular/router": "10.1.1",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
+    "@types/file-saver": "^2.0.1",
     "@types/uuid": "8.3.0",
     "angular-resize-event": "^2.0.0",
     "angular2-text-mask": "9.0.0",
-    "epgu-lib": "0.0.707",
+    "epgu-lib": "0.0.735",
+    "file-saver": "^2.0.5",
     "ics": "^2.24.0",
     "moment": "2.24.0",
     "ngx-cookie-service": "10.0.1",

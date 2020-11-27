@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ScreenStore } from './screen.types';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenContent } from './screen-content';
 
 @Injectable()
@@ -27,5 +27,5 @@ export class ScreenServiceStub extends ScreenContent {
 
   private loadValueFromCachedAnswer(): void {}
 
-  public getStore() {}
+  public getStore() { return { cachedAnswers: [] }; }
 }

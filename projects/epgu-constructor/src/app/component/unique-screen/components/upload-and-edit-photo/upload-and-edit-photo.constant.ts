@@ -5,8 +5,14 @@ const minCropSize = {
 
 const minSize = {
   width: 413,
-  height: 531,
+  height: 532,
 };
+
+const mmInInch = 25.4;
+const recommendedDPI = 300;
+const printGuideInInch = { width: 35 / mmInInch, height: 45 / mmInInch }; /* рамка в дюймах, переведнная из мм (размер для печати) */
+// Вычисляем рекомендуемые размеры изображения в пикселях при рекомендованном DPI
+const printImgPx = { width: printGuideInInch.width * recommendedDPI, height: printGuideInInch.height * recommendedDPI };
 
 const imageErrorText = {
   fileType: {
@@ -18,6 +24,11 @@ const imageErrorText = {
     title: 'Маленькое разрешение',
     text: 'Загрузите фото побольше. Например, от',
     textRules: `${minSize.width}x${minSize.height} px.`,
+  },
+  dpi: {
+    title: 'Недостаточное разрешение (DPI)',
+    text: 'Убедитесь, что у загружаемого фото минимум',
+    textRules: '300 DPI.',
   },
   common: {
     title: 'Ошибка загрузки',
@@ -31,6 +42,6 @@ enum uploadPhotoElemId {
   howToTakePhoto = 'howtotakephoto',
 }
 
-export { imageErrorText, minCropSize, uploadPhotoElemId, minSize };
+export { imageErrorText, minCropSize, uploadPhotoElemId, minSize, mmInInch, printGuideInInch, recommendedDPI, printImgPx };
 
 

@@ -30,7 +30,7 @@
   margin-bottom: 24px;
 }
 
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 
@@ -50,8 +50,12 @@ input[type="file"] {
 }
 
 @keyframes rotation {
-  from {transform: rotate(0deg);}
-  to {transform: rotate(359deg);}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }
 
 .file__icon {
@@ -155,4 +159,3 @@ input[type="file"] {
 }
 
 @include rubles('.info__text', '../../../../../../../assets/img/ruble.svg');
-

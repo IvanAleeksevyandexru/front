@@ -61,7 +61,7 @@
   <div
     class="item__hint"
     *ngFor="let hint of data?.attrs?.hints"
-    (click)="hintClick(hint.timestamp)"
+    (click)="hintClick(hint)"
   >
     {{ hint.label }}
   </div>

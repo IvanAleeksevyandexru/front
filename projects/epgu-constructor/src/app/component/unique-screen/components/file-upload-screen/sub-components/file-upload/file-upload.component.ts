@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FileResponseToBackendUploadsItem,
   FileResponseToBackendWithRelatedUploads,
@@ -6,13 +6,14 @@ import {
   FileUploadItem,
   FileUploadItemTypes,
 } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
+import { FileUploadService, Uploaders } from '../file-upload.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
 })
-export class FileUploadComponent {
+export class FileUploadComponent implements OnInit {
   fileUploadItemTypes = FileUploadItemTypes;
   private attrs: FileUploadAttributes;
   @Input() objectId: string;
@@ -40,6 +41,28 @@ export class FileUploadComponent {
   @Output() newValueSet: EventEmitter<object> = new EventEmitter<object>();
   @Output() newRelatedValueSet: EventEmitter<any> = new EventEmitter<any>();
 
+  constructor(private fileUploadService: FileUploadService) {}
+
+  ngOnInit(): void {
+    this.setUploadersRestrictions();
+  }
+
+  setUploadersRestrictions(): void {
+    this.setUploadersMaxSizeAndAmount(Uploaders.total, this.attrs.maxSize, this.attrs.maxFileCount);
+
+    this.attrs.uploads?.forEach(({ uploadId, maxFileCount, maxSize }: FileUploadItem) =>
+      this.setUploadersMaxSizeAndAmount(uploadId, maxSize, maxFileCount),
+    );
+  }
+
+  setUploadersMaxSizeAndAmount(uploader: string, maxSize: number, maxAmount: number): void {
+    if (maxSize) {
+      this.fileUploadService.setMaxFilesSize(maxSize, uploader);
+    }
+    if (maxAmount) {
+      this.fileUploadService.setMaxFilesAmount(maxAmount, uploader);
+    }
+  }
   /**
    * Заполняем значения по умолчанию для возврата на сервер
    * @private

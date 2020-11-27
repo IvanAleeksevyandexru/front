@@ -1,10 +1,17 @@
-@import "../../../projects/epgu-constructor/src/styles/core";
+@import '../../../projects/epgu-constructor/src/styles/core';
 
-.page-container {
-  background-color: #FAFCFF;
+:host {
+  @include flex-container();
+  height: 100vh;
 }
 
-app-footer {
+.container {
+  @include flex-container();
+  background-color: #fafcff;
+}
+
+.footer {
+  margin-top: auto;
   @include tablets-down {
     display: none;
   }

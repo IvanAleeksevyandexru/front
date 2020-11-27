@@ -88,7 +88,7 @@ export class AbstractPaymentComponent implements OnDestroy {
     if (value) {
       const { billNumber, billId, amount, billName, billDate, payCode } = value;
       this.uin = billNumber;
-      this.sum = PaymentService.transformSumForPenny(amount);
+      this.sum = amount;
       this.paymentPurpose = billName;
       this.billId = billId;
       this.billDate = moment(billDate).format(DATE_STRING_DOT_FORMAT);
@@ -240,9 +240,8 @@ export class AbstractPaymentComponent implements OnDestroy {
   /**
    * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
    * @param info - информация о выставленном счете
-   * @param oldGetInfoType - использовать старые функции получения информации о счете?
    */
-  private getBillsInfoByUINSuccess(info: BillsInfoResponse, oldGetInfoType = false) {
+  private getBillsInfoByUINSuccess(info: BillsInfoResponse) {
     if (info.error?.code) {
       this.getBillsInfoByUINErrorsFromSuccess(info);
     }
@@ -254,19 +253,17 @@ export class AbstractPaymentComponent implements OnDestroy {
       this.nextStep();
     }
 
-    if (oldGetInfoType) {
-      // Ищем сведения по скидке, цене и начислению
-      this.validDiscountDate = getDiscountDate(bill);
-      this.sumWithoutDiscount = getDiscountPrice(bill);
-      this.docInfo = getDocInfo(bill);
+    // Ищем сведения по скидке, цене и начислению
+    this.validDiscountDate = getDiscountDate(bill);
+    this.sumWithoutDiscount = getDiscountPrice(bill);
+    this.docInfo = getDocInfo(bill);
 
-      if (bill?.comment?.length) {
-        this.paymentPurpose = bill.comment;
-      }
-
-      this.sum = String(bill.amount);
-      this.billId = bill.billId;
+    if (bill?.comment?.length) {
+      this.paymentPurpose = bill.comment;
     }
+
+    this.sum = String(bill.amount);
+    this.billId = bill.billId;
     this.inLoading = false;
   }
 

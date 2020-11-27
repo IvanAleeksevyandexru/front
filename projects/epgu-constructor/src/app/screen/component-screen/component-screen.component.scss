@@ -1,5 +1,8 @@
-@import "../../../styles/core";
+@import '../../../styles/core';
 
+:host {
+  @include flex-container();
+}
 
 .body {
   display: flex;
@@ -22,4 +25,3 @@
     margin-top: 24px;
   }
 }
-
