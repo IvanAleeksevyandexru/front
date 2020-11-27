@@ -2,18 +2,16 @@
 <form [formGroup]="passportForm" class="form__inputs">
   <div class="inputs__field" *ngFor="let field of attrs.fields">
     <epgu-constructor-label [for]="field.fieldName">{{ field.label }}</epgu-constructor-label>
-    <lib-standard-masked-input
-      epgu-constructor-trim
-      epgu-constructor-text-transform
+    <epgu-constructor-masked-input
       [id]="field.fieldName"
       [textTransformType]="attrs.fstuc"
       [validationShowOn]="touchedUnfocused"
       [invalid]="passportForm.controls[field.fieldName].invalid"
-      [formControlName]="field.fieldName"
-      [mask]="field.mask | maskHandle"
+      [controlName]="field.fieldName"
+      [mask]="field.mask"
       [showMaskAsPlaceholder]="!field.placeholder"
       [placeholder]="field.placeholder"
       [showConstantMaskSymbols]="true"
-    ></lib-standard-masked-input>
+    ></epgu-constructor-masked-input>
   </div>
 </form>
