@@ -4,6 +4,7 @@ import { SharedModule } from '../../../../../../shared/shared.module';
 import { CoreModule } from '../../../../../../core/core.module';
 import { DatePipe } from '@angular/common';
 import { AddressItemComponent } from './components/address-item/address-item.component';
+import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { AddressItemComponent } from './components/address-item/address-item.com
   imports: [
     CoreModule,
     SharedModule,
+    ConstructorPlainInputModule,
   ],
   providers: [DatePipe]
 })

@@ -9,6 +9,7 @@ import { DictionaryApiService } from '../shared/services/dictionary-api/dictiona
 import { CoreModule } from '../../core/core.module';
 import { ComponentItemComponent } from './component-item/component-item.component';
 import { DocInputComponent } from './doc-input/doc-input.component';
+import { ConstructorPlainInputModule } from '../../shared/components/constructor-plain-input/constructor-plain-input.module';
 
 const COMPONENTS = [
   ComponentsListComponent,
@@ -26,6 +27,7 @@ const COMPONENTS = [
   imports: [
     CoreModule,
     SharedModule,
+    ConstructorPlainInputModule,
   ],
   providers: [
     ValidationService,
