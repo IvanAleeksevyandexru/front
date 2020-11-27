@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomScreenComponent check snapshot 1`] = `
+<epgu-constructor-custom-screen
+  injector={[Function Injector_]}
+  navigationService={[Function Object]}
+  ngUnsubscribe$={[Function UnsubscribeService]}
+  screenService={[Function ScreenService]}
+>
+  <epgu-constructor-screen-container>
+    <div
+      class="screen-body"
+    >
+      <epgu-constructor-page-name>
+        
+      </epgu-constructor-page-name>
+      <epgu-constructor-screen-pad
+        class="body"
+      >
+        <epgu-constructor-components-list />
+      </epgu-constructor-screen-pad>
+    </div>
+    <div
+      class="screen-footer"
+    >
+      <lib-button
+        class="btn__submit"
+      >
+         
+      </lib-button>
+    </div>
+  </epgu-constructor-screen-container>
+</epgu-constructor-custom-screen>
+`;
