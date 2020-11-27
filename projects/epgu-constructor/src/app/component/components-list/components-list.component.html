@@ -5,7 +5,7 @@
   >
     <ng-container
       [ngSwitch]="componentData.value?.type"
-      *ngIf="formService.shownElements[componentData.value?.id]">
+      *ngIf="formService.shownElements[componentData.value?.id]?.isShown">
 
       <ng-container *ngSwitchCase="componentType.LabelSection">
         <ng-container *ngTemplateOutlet="formOutputHtml; context: { $implicit: { class: 'label', value: componentData.value } }">

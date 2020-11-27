@@ -4,6 +4,7 @@ import { FileUploadComponent } from './file-upload.component';
 import { FileUploadAttributes } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { MockComponent } from 'ng-mocks';
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
+import { FileUploadService } from '../file-upload.service';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -25,7 +26,7 @@ describe('FileUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FileUploadComponent, FileUploadItemComponentMock ],
-      providers: []
+      providers: [FileUploadService],
     })
     .compileComponents();
   }));

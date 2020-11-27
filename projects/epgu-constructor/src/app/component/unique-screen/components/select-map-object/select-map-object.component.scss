@@ -41,7 +41,7 @@ hr {
   position: relative;
   height: 100%;
   width: 100%;
-
+  overflow: hidden;
   &__form {
     position: absolute;
     top: 20px;
@@ -53,10 +53,8 @@ hr {
     border-radius: $border-round;
     box-shadow: 0 24px 48px rgba($color-shadow, 0.4);
   }
-
   ::ng-deep #map {
     width: 100%;
-    height: 100%;
     position: absolute;
   }
 }
@@ -208,10 +206,6 @@ hr {
 }
 
 @include desktops-down {
-  .widget {
-    overflow: hidden;
-  }
-
   .widget__form {
     position: static;
     width: auto;
@@ -221,6 +215,7 @@ hr {
   .widget-form__title {
     display: block;
     margin-left: 12px;
+    margin-right: 12px;
   }
 
   .widget-form__input {
@@ -262,17 +257,5 @@ hr {
     &__header-close {
       color: $color-gosblue;
     }
-  }
-}
-
-@include tablets-down() {
-  .widget {
-    overflow: hidden;
-  }
-}
-
-@include phones-down() {
-  .widget {
-    overflow: hidden;
   }
 }
