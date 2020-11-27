@@ -1,10 +1,22 @@
 {
   "default-config": {
+    "dictionaryUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/nsi/v1/dictionary",
+    "externalApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/nsi/v1",
+    "timeSlotApiUrl": "https://dev-l11.pgu2-pub.test.gosuslugi.ru/mock/api/lk/v1/equeue/agg",
+    "listPaymentsApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/lk/v1/orders/listpaymentsinfo",
+    "uinApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/lk/v1/paygate/uin",
+    "billsApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/pay/v1/bills",
+    "invitationUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/lk/v1",
     "brakRouteNumber": "45382000",
     "divorceRouteNumber": "45382000",
     "gibddRouteNumber": "46000000000",
+    "yandexMapsApiKey": "9e8e2fc4-5970-4ca6-95c5-3e620095e8e3",
+    "lkUrl": "https://pgu-uat-betalk.test.gosuslugi.ru",
+    "paymentUrl": "https://oplata.gosuslugi.ru",
+    "fileUploadApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files",
+    "production": true,
     "mocks": [],
-    "mockUrl": "https://dev-l11.pgu2-pub.test.gosuslugi.ru/mock/api"
+    "mockUrl": "https://pgu-uat-fed.test.gosuslugi.ru/mock/api"
   },
   "core": {
     "config": {

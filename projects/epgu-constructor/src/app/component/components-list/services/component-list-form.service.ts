@@ -4,24 +4,31 @@ import { ListItem } from 'epgu-lib';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import * as moment_ from 'moment';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, pairwise, startWith, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { isEqualObj } from '../../../shared/constants/uttils';
 import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
 import {
-  CustomComponent, CustomComponentAttrValidation,
+  CustomComponent,
+  CustomComponentAttrValidation,
   CustomComponentOutputData,
-  CustomComponentValidationConditions, CustomListDictionaries, CustomListDropDowns,
+  CustomComponentValidationConditions,
+  CustomListDictionaries,
+  CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements,
-  CustomScreenComponentTypes, UpdateOn
+  CustomScreenComponentTypes,
+  CustomComponentAttr,
+  UpdateOn
 } from '../components-list.types';
 import { isDropDown } from '../tools/custom-screen-tools';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
 import { ValidationService } from './validation.service';
+import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 const moment = moment_;
 
@@ -30,6 +37,15 @@ export class ComponentListFormService {
   private _form = new FormArray([]);
   private _shownElements: CustomListStatusElements = {};
   private _changes = new EventEmitter<CustomComponentOutputData>();
+  private mapRelationTypes = {
+    RegExp: this.relationRegExp.bind(this),
+    MinDate: this.relationMinDate.bind(this),
+    MaxDate: this.relationMaxDate.bind(this),
+  };
+  private indexesByIds: Record<string, number> = {};
+  private cachedAttrsComponents: Record<string, { base: CustomComponentAttr; last: string }> = {};
+  private lastChangedComponent: [CustomListFormGroup, CustomListFormGroup];
+  private errors: ScenarioErrorsDto;
 
   get shownElements(): CustomListStatusElements {
     return this._shownElements;
@@ -48,15 +64,18 @@ export class ComponentListFormService {
     private toolsService: ComponentListToolsService,
     private addressHelperService: AddressHelperService,
     private repository: ComponentListRepositoryService,
+    private logger: LoggerService,
   ) {}
 
   create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
+    this.errors = errors;
     this.toolsService.createStatusElements(components, this.shownElements);
 
     this._form = new FormArray(
-      components.map((component: CustomComponent) =>
-        this.createGroup(component, components, errors[component.id]),
-      ),
+      components.map((component: CustomComponent, index) => {
+        this.indexesByIds[component.id] = index;
+        return this.createGroup(component, components, errors[component.id]);
+      }),
     );
 
     components.forEach((component: CustomComponent) => {
@@ -71,7 +90,9 @@ export class ComponentListFormService {
       );
     });
 
-    this.watchFormArray$().subscribe(() => this.emmitChanges());
+    this.watchFormArray$()
+      .pipe(tap(() => this.relationMapChanges(this.lastChangedComponent)))
+      .subscribe(() => this.emmitChanges());
     this.emmitChanges();
   }
 
@@ -125,11 +146,15 @@ export class ComponentListFormService {
   private getPreparedStateForSending(): any {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
       const { disabled, valid } = this.form.get([key, 'value']);
-      const isLeastOneCondition: boolean = this.form.get([key, 'attrs']).value.validation?.some(
-        (validation: CustomComponentAttrValidation) =>
-          validation.condition === CustomComponentValidationConditions.atLeastOne);
-      const condition: CustomComponentValidationConditions | null =
-        isLeastOneCondition ? CustomComponentValidationConditions.atLeastOne : null;
+      const isLeastOneCondition: boolean = this.form
+        .get([key, 'attrs'])
+        .value.validation?.some(
+          (validation: CustomComponentAttrValidation) =>
+            validation.condition === CustomComponentValidationConditions.atLeastOne,
+        );
+      const condition: CustomComponentValidationConditions | null = isLeastOneCondition
+        ? CustomComponentValidationConditions.atLeastOne
+        : null;
       let { value, type } = val;
       const isValid = disabled || valid;
 
@@ -142,6 +167,91 @@ export class ComponentListFormService {
 
       return acc;
     }, {});
+  }
+
+  private relationRegExp(value: string, params: any) {
+    return String(value).match(params);
+  }
+  private relationMinDate(value: string, params: string) {
+    return moment(value).isSameOrAfter(moment(params, DATE_STRING_DOT_FORMAT));
+  }
+  private relationMaxDate(value: string, params: any) {
+    return moment(value).isSameOrBefore(moment(params, DATE_STRING_DOT_FORMAT));
+  }
+
+  private changeValidators(component: CustomComponent, control: AbstractControl) {
+    control.setValidators([
+      this.validationService.customValidator(component),
+      this.validationService.validationBackendError(this.errors[component.id], component),
+    ]);
+  }
+
+  private relationPatch(component: CustomComponent, patch: any) {
+    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch }};
+
+    const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
+
+    control.patchValue(
+      {
+        attrs: { ...component.attrs, ...patch },
+      },
+      { onlySelf: true, emitEvent: false },
+    );
+    this.changeValidators(resultComponent, control.controls.value);
+  }
+
+  private resetRelation(component: CustomComponent) {
+    return this.relationPatch(component, this.cachedAttrsComponents[component.id].base);
+  }
+
+  private setRelationResult(component: CustomComponent, result?: CustomComponentAttr) {
+    if (!result) {
+      if (this.cachedAttrsComponents[component.id]) {
+        this.resetRelation(component);
+      }
+      return;
+    }
+    if (!this.cachedAttrsComponents[component.id]) {
+      this.cachedAttrsComponents[component.id] = { base: component.attrs, last: '' };
+    }
+
+    const stringResult = JSON.stringify(result);
+    if (this.cachedAttrsComponents[component.id].last !== stringResult) {
+      component.attrs = this.cachedAttrsComponents[component.id].base;
+      this.relationPatch(component, result.attrs);
+      this.cachedAttrsComponents[component.id].last = stringResult;
+    }
+  }
+
+  private relationMapChanges([prev, next]: [CustomListFormGroup, CustomListFormGroup]) {
+    const value = next.value;
+    if (!next.attrs?.relationField || !value) {
+      return;
+    }
+    const { ref, conditions } = next.attrs?.relationField;
+    const refComponent = this.form.value[this.indexesByIds[ref]];
+
+    let result;
+    for (let condition of conditions) {
+      const func = this.mapRelationTypes[condition.type];
+      if (!func) {
+        this.logger.error(
+          [`Relation condition type: ${condition.type} - not found.`],
+          'relationComponent',
+        );
+        return;
+      }
+      if (func(value, condition.value)) {
+        this.logger.log(
+          [`condition.type used: ${condition.type}, ${value}, ${condition.value}`],
+          'relationComponent',
+        );
+        result = condition.result;
+        break;
+      }
+    }
+
+    this.setRelationResult(refComponent, result);
   }
 
   private createGroup(
@@ -169,6 +279,7 @@ export class ComponentListFormService {
 
     this.watchFormGroup$(form).subscribe(
       ([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
+        this.lastChangedComponent = [prev, next];
         this._shownElements = this.toolsService.updateDependents(
           components,
           next,

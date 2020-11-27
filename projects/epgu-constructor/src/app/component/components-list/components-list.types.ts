@@ -88,6 +88,7 @@ export interface CustomComponentAttr {
   requiredAttrs?: Array<string>;
   updateOnValidation?: UpdateOn;
   supportedValues?: Array<SupportedValue>;
+  relation?: {ref: string, conditions: RelationCondition[]}
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
@@ -159,6 +160,12 @@ export interface CustomListFormGroup {
 
 export interface CustomDisplay extends DisplayDto {
   components: Array<CustomComponent>;
+}
+
+export interface RelationCondition {
+  type: 'RegExp' | 'MinDate' | 'MaxDate';
+  value: any;
+  result: CustomComponentAttr;
 }
 
 export interface CustomComponent extends ComponentBase {

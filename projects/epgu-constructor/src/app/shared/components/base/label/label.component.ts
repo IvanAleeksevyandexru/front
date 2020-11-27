@@ -10,6 +10,7 @@ export class LabelComponent implements OnInit {
   @Input() required: boolean;
   @Input() tips: string;
   @Input() isTextHelper: boolean;
+  @Input() label: string;
 
   ngOnInit(): void {}
 }

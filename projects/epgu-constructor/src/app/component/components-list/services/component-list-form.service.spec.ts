@@ -10,6 +10,7 @@ import { DictionaryApiService } from '../../shared/services/dictionary-api/dicti
 // eslint-disable-next-line max-len
 import { DictionaryApiServiceStub } from 'projects/epgu-constructor/src/app/component/shared/services/dictionary-api/dictionary-api.service.stub';
 import { ComponentListRepositoryService } from './component-list-repository.service';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 describe('ComponentListFormService', () => {
   let service: ComponentListFormService;
@@ -24,6 +25,7 @@ describe('ComponentListFormService', () => {
         ComponentListToolsService,
         AddressHelperService,
         ComponentListRepositoryService,
+        LoggerService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
       ],
     });
