@@ -13,6 +13,7 @@ const moment = moment_;
 export class DateRangeService {
   rangeMap = new Map<string, Range>();
 
+  //TODO: убрать formService, обновление control делать вместе вызова метода
   constructor(public screenService: ScreenService, public formService: ComponentListFormService) {}
 
   /**
@@ -82,6 +83,7 @@ export class DateRangeService {
     const formControl = this.formService.form.controls.find(
       (control) => control.value.id === refParams.relatedDate,
     );
+
     const refDate =
       this.screenService.applicantAnswers[refParams.relatedDate]?.value || formControl.value.value;
 
