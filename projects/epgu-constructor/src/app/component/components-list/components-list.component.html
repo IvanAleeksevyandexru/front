@@ -114,7 +114,8 @@
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.DateInput"
-                                       [data]="componentData">
+                                       [data]="componentData"
+                                       [isHalfWidthItem]="isHalfWidthItem(componentData)">
         <lib-date-picker
           (dateSelected)="dateRangeService.changeDate($event, componentData.value?.attrs, componentData.value?.id)"
           (cleared)="dateRangeService.clearDate(componentData.value?.id, componentData.value?.attrs)"
