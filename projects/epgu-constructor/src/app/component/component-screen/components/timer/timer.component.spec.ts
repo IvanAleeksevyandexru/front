@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimerComponent } from './timer.component';
 import { TimerPipe } from './pipes/timer.pipe';
 
-describe('TimerComponent', () => {
+xdescribe('TimerComponent', () => {
   let component: TimerComponent;
   let fixture: ComponentFixture<TimerComponent>;
   const timer = {
