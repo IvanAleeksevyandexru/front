@@ -68,15 +68,13 @@
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.position as position">
         <epgu-constructor-label for="position">{{ position }}</epgu-constructor-label>
-        <lib-plain-input
-          epgu-constructor-trim
-          epgu-constructor-text-transform
+        <epgu-constructor-constructor-plain-input
           [textTransformType]="textTransformType"
           [name]="i + '_position'"
           [formControl]="generation.get('position')"
           [invalid]="generation.get('position').invalid"
           [validationShowOn]="validationShowOn"
-        ></lib-plain-input>
+        ></epgu-constructor-constructor-plain-input>
         <epgu-constructor-helper-text
           *ngIf="availableControlsOfType(generation.get('type').value)?.positionHint as positionHint"
         >
@@ -86,15 +84,13 @@
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.place as place">
         <epgu-constructor-label for="place">{{ place }}</epgu-constructor-label>
-        <lib-plain-input
-          epgu-constructor-trim
-          epgu-constructor-text-transform
+        <epgu-constructor-constructor-plain-input
           [textTransformType]="textTransformType"
           [name]="i + '_place'"
           [formControl]="generation.get('place')"
           [invalid]="generation.get('place').invalid"
           [validationShowOn]="validationShowOn"
-        ></lib-plain-input>
+        ></epgu-constructor-constructor-plain-input>
         <epgu-constructor-helper-text
           *ngIf="availableControlsOfType(generation.get('type').value)?.placeHint as placeHint"
         >
@@ -104,15 +100,13 @@
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.address as address">
         <epgu-constructor-label [for]="'address'">{{ address }}</epgu-constructor-label>
-        <lib-plain-input
-          epgu-constructor-trim
-          epgu-constructor-text-transform
+        <epgu-constructor-constructor-plain-input
           [textTransformType]="textTransformType"
           [name]="i + '_address'"
           [formControl]="generation.get('address')"
           [invalid]="generation.get('address').invalid"
           [validationShowOn]="validationShowOn"
-        ></lib-plain-input>
+        ></epgu-constructor-constructor-plain-input>
       </div>
     </section>
     <section class="employee-history__newGeneration">

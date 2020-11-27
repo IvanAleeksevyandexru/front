@@ -30,6 +30,7 @@ import { RadioTaxComponent } from './components/radio-tax/radio-tax.component';
 import { DateRangeService } from './services/date-range/date-range.service';
 import { CloneButtonComponent } from './components/clone-button/clone-button.component';
 import { FieldListComponent } from './components/field-list/field-list.component';
+import { ConstructorPlainInputComponent } from './components/constructor-plain-input/constructor-plain-input.component';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -48,6 +49,7 @@ const COMPONENTS = [
   RadioTaxComponent,
   CloneButtonComponent,
   FieldListComponent,
+  ConstructorPlainInputComponent,
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe];

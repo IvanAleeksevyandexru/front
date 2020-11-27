@@ -22,14 +22,14 @@
 
   <div class="form">
     <div class="form__group" #codeGroup>
-      <lib-plain-input *ngFor="let control of codeFormArray.controls"
+      <epgu-constructor-constructor-plain-input *ngFor="let control of codeFormArray.controls"
                        class="form__item"
                        [class.form__item--has-error]="screenService.componentError$ | async"
                        [class.form__item--has-value]="control.value.codeValue"
                        maxlength="1"
                        type="number"
                        [formControl]="control.get('codeValue')">
-      </lib-plain-input>
+      </epgu-constructor-constructor-plain-input>
     </div>
 
     <div class="form__error" *ngIf="screenService.componentError$ | async as error">{{error}}</div>

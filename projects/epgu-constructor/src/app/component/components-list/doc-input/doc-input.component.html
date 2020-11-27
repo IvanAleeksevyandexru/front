@@ -77,15 +77,13 @@
     <epgu-constructor-input-error *ngIf="form.get('emitter').invalid && form.get('emitter').touched">
       {{form.get('emitter').errors.msg}}
     </epgu-constructor-input-error>
-    <lib-plain-input
-      epgu-constructor-trim
-      epgu-constructor-text-transform
+    <epgu-constructor-constructor-plain-input
       [textTransformType]="fields['emitter']?.attrs?.fstuc"
       id="emitter"
       [formControl]="form.get('emitter')"
       [invalid]="isValidationShown('emitter')"
       [validationShowOn]="validationShowOn"
-    ></lib-plain-input>
+    ></epgu-constructor-constructor-plain-input>
   </div>
   <epgu-constructor-helper-text
     *ngIf="fields['emitter']?.hint && isValidationShown('emitter')"
