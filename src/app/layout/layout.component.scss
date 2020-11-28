@@ -5,8 +5,10 @@
   height: 100vh;
 }
 
-.container {
-  @include flex-container();
+.main {
+  display: flex;
+  flex: 1 0 auto;
+  justify-content: center;
   background-color: #fafcff;
 }
 
