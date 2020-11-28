@@ -3,7 +3,6 @@ import * as moment_ from 'moment';
 
 const moment = moment_;
 
-
 /**
  * Преобразовывает переданное время в формат HH:mm:ss
  */

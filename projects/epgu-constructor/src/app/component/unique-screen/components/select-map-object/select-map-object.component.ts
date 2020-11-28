@@ -52,7 +52,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public provider = { search: this.providerSearch() };
   public selectedValue: any;
   public mapIsLoaded = false;
-  public scrollConfig = { ressScrollX: true, wheelPropagation: false };
+  public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   public isMobile: boolean;
   public isSearchTitleVisible = true;
 
