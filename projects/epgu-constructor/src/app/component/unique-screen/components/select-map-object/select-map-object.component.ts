@@ -1,37 +1,36 @@
 import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
   AfterViewInit,
   ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
   NgZone,
   OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
 } from '@angular/core';
-import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
-import { merge, Observable, of } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
-
+import { merge, Observable, of } from 'rxjs';
+import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
-import { SelectMapObjectService } from './select-map-object.service';
-import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { IGeoCoordsResponse, IdictionaryFilter } from './select-map-object.interface';
-import { UtilsService } from '../../../../shared/services/utils/utils.service';
-import { DictionaryUtilities } from '../../../../shared/services/dictionary/dictionary-utilities-service';
-import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { ModalService } from '../../../../modal/modal.service';
+import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
 import { ScreenService } from '../../../../screen/screen.service';
+import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
+import { DictionaryUtilities } from '../../../../shared/services/dictionary/dictionary-utilities-service';
+import { UtilsService } from '../../../../shared/services/utils/utils.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import {
   DictionaryOptions,
   DictionaryYMapItem,
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
-import { ModalService } from '../../../../modal/modal.service';
-import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
-import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
-import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
+import { SelectMapObjectService } from './select-map-object.service';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -53,7 +52,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public provider = { search: this.providerSearch() };
   public selectedValue: any;
   public mapIsLoaded = false;
-  public scrollConfig = { ressScrollX: true, wheelPropagation: false };
+  public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   public isMobile: boolean;
   public isSearchTitleVisible = true;
 
@@ -67,7 +66,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private yaMapService: YaMapService,
     private dictionaryApiService: DictionaryApiService,
     private ngUnsubscribe$: UnsubscribeService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
     private zone: NgZone,
@@ -159,6 +158,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       (coords: IGeoCoordsResponse) => {
         this.handleFilledCoordinate(coords);
         this.mapIsLoaded = true;
+        this.yaMapService.map.container.fitToViewport(); // TODO: временное решение для принудительной перерисовки карты
         this.initSelectedValue();
         this.cdr.detectChanges();
       },

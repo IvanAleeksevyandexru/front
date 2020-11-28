@@ -58,7 +58,7 @@ $minModalHeight: 293px;
     }
 
     &__header {
-      border-bottom: 1px solid $color-devider;
+      border-bottom: 1px solid $color-divider;
       padding-bottom: 24px;
       margin-bottom: 16px;
 
@@ -69,7 +69,6 @@ $minModalHeight: 293px;
 
     &__content {
       @include flex-container();
-      overflow-y: auto;
       .text {
         padding-right: 15px;
       }

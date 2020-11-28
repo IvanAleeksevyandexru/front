@@ -1,8 +1,8 @@
 import { ListItem } from 'epgu-lib';
-import { DictionaryItem, DictionaryResponse } from '../shared/services/dictionary-api/dictionary-api.types';
-import { ComponentBase } from '../../screen/screen.types';
 import { DisplayDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentBase } from '../../screen/screen.types';
 import { TextTransform } from '../../shared/types/textTransform';
+import { DictionaryItem, DictionaryResponse } from '../shared/services/dictionary-api/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -27,6 +27,7 @@ export enum CustomScreenComponentTypes {
   CityInput = 'CityInput',
   DocInput = 'DocInput',
   FieldList = 'FieldList',
+  Timer = 'Timer',
 }
 
 export type CustomListDropDowns = Array<Partial<ListItem>>;
@@ -47,7 +48,12 @@ export interface CustomListDictionary {
 }
 
 export interface CustomListStatusElements {
-  [key: string]: boolean;
+  [key: string]: CustomStatusElement;
+}
+
+export interface CustomStatusElement {
+  isShown: boolean;
+  relation: CustomComponentRefRelation;
 }
 
 export interface CustomListGenericData<T> {
@@ -80,8 +86,12 @@ export interface CustomComponentAttr {
   ref: Array<any>;
   validation: Array<CustomComponentAttrValidation>;
   requiredAttrs?: Array<string>;
+  updateOnValidation?: UpdateOn;
   supportedValues?: Array<SupportedValue>;
+  relation?: {ref: string, conditions: RelationCondition[]}
 }
+
+export type UpdateOn = 'blur' | 'change' | 'submit';
 
 export interface CustomComponentAttrValidation {
   type: string;
@@ -119,6 +129,7 @@ export interface CustomComponentOutputData {
  */
 export enum CustomComponentRefRelation {
   displayOn = 'displayOn',
+  displayOff = 'displayOff',
   disabled = 'disabled',
   calc = 'calc',
 }
@@ -133,9 +144,9 @@ export enum CustomComponentValidationConditions {
  * @property relation - тип зависимости
  */
 export interface CustomComponentRef {
-  relatedRel: string,
-  val: string,
-  relation: CustomComponentRefRelation
+  relatedRel: string;
+  val: string | Array<string> | boolean;
+  relation: CustomComponentRefRelation;
 }
 
 export interface CustomListFormGroup {
@@ -149,6 +160,12 @@ export interface CustomListFormGroup {
 
 export interface CustomDisplay extends DisplayDto {
   components: Array<CustomComponent>;
+}
+
+export interface RelationCondition {
+  type: 'RegExp' | 'MinDate' | 'MaxDate';
+  value: any;
+  result: CustomComponentAttr;
 }
 
 export interface CustomComponent extends ComponentBase {

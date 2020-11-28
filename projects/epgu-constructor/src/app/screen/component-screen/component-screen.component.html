@@ -61,6 +61,11 @@
           *ngSwitchCase="screenComponentName.fieldList"
         >
         </epgu-constructor-field-list>
+        <epgu-constructor-timer
+          *ngSwitchCase="screenComponentName.timer"
+          [data]="screenService.component"
+          (nextStepEvent)="nextStep($event)">
+        </epgu-constructor-timer>
       </ng-container>
     </epgu-constructor-screen-pad>
   </div>

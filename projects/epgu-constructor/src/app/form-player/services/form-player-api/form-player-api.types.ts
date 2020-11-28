@@ -47,7 +47,7 @@ export interface ComponentDtoAction {
   hidden?: boolean;
   disabled?: boolean;
   applicantType?: string;
-  color?: string;
+  color?: 'white' | 'trasparent' | '';
 }
 
 export interface DisplaySubjHead {
@@ -142,6 +142,12 @@ export interface FormPlayerApiErrorResponse {
 }
 
 export type FormPlayerApiResponse = FormPlayerApiSuccessResponse | FormPlayerApiErrorResponse;
+
+export enum ButtonType {
+  anchor = 'anchor',
+  search = 'search',
+  button = 'button'
+}
 
 export enum ActionType {
   download = 'download',
