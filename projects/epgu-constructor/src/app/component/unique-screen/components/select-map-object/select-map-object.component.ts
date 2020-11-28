@@ -158,7 +158,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       (coords: IGeoCoordsResponse) => {
         this.handleFilledCoordinate(coords);
         this.mapIsLoaded = true;
-        this.yaMapService.map.container.fitToViewport(); // TODO: временное решение для принудительной перерисовки карты
         this.initSelectedValue();
         this.cdr.detectChanges();
       },

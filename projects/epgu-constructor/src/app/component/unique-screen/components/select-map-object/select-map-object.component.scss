@@ -202,7 +202,8 @@ hr {
 }
 
 :host {
-  @include flex-container();
+  display: block;
+  height: 100%;
 }
 
 @include desktops-down {

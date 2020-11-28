@@ -34,6 +34,25 @@
   }
 }
 
+.btn {
+  &__submit {
+    margin-right: 32px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    @include tablets-down {
+      margin-right: 0;
+      margin-top: 16px;
+
+      &:first-child {
+        margin-top: 32px;
+      }
+    }
+  }
+}
+
 .divider {
   margin: 0 0 24px;
 }
