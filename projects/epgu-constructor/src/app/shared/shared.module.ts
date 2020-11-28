@@ -30,7 +30,7 @@ import { RadioTaxComponent } from './components/radio-tax/radio-tax.component';
 import { DateRangeService } from './services/date-range/date-range.service';
 import { CloneButtonComponent } from './components/clone-button/clone-button.component';
 import { FieldListComponent } from './components/field-list/field-list.component';
-import { ConstructorMaskedInputComponent } from './components/epgu-lib/constructor-masked-input/constructor-masked-input.component';
+import { MaskedInputModule } from './components/epgu-lib/constructor-masked-input/masked-input.module';
 
 const COMPONENTS = [
   PageNameComponent,
@@ -49,7 +49,6 @@ const COMPONENTS = [
   RadioTaxComponent,
   CloneButtonComponent,
   FieldListComponent,
-  ConstructorMaskedInputComponent,
 ];
 
 const PIPES = [ToJsonPipe, MaskHandlePipe];
@@ -78,7 +77,7 @@ const DIRECTIVES = [
     DateRangeService,
   ],
   exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  imports: [WebcamModule, CoreModule],
+  imports: [WebcamModule, CoreModule, MaskedInputModule],
   entryComponents: [
     WebcamShootComponent,
   ],
