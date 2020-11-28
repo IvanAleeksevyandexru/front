@@ -20,8 +20,8 @@
     {{ hint }}
   </span>
   <epgu-constructor-helper-text
-    *ngIf="!data.value?.required && data.value?.type !== componentType.CheckBox"
+    *ngIf="isHelperTextVisible"
   >
-    {{ customUnRecLabel() }}
+    {{ customUnRecLabel }}
   </epgu-constructor-helper-text>
 </div>
