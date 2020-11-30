@@ -24,15 +24,31 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    @include tablets-down {
+      margin-top: auto;
+    }
   }
 
   &__action {
     margin-top: 24px;
-    @include tablets-up {
-      margin: 24px 8px 0;
+  }
+}
+
+.btn {
+  &__submit {
+    margin-right: 32px;
+
+    &:last-child {
+      margin-right: 0;
     }
-    @include phones-down {
-      margin-top: 32px;
+
+    @include tablets-down {
+      margin-right: 0;
+      margin-top: 16px;
+
+      &:first-child {
+        margin-top: 32px;
+      }
     }
   }
 }

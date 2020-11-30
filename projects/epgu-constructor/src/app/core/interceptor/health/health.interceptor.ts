@@ -25,7 +25,7 @@ enum RequestStatus {
 export class HealthInterceptor implements HttpInterceptor {
   constructor(private health: HealthService, private utils: UtilsService) {}
 
-  private configParams: ConfigParams | null = null;
+  private configParams: ConfigParams = {} as ConfigParams;
 
   /**
    * Returns a boolean value for exceptions
@@ -50,6 +50,10 @@ export class HealthInterceptor implements HttpInterceptor {
     return dto && dto.scenarioDto && dto.scenarioDto.display; 
   }
 
+  private isDefined<T>(value: T | undefined | null): value is T {
+    return (value as T) !== undefined && (value as T) !== null;
+  };
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let serviceName = '';
 
@@ -68,6 +72,7 @@ export class HealthInterceptor implements HttpInterceptor {
 
           if (validationStatus) {
             const { scenarioDto } = result;
+
             this.configParams = { 
               id: scenarioDto.display.id, 
               name: this.utils.cyrillicToLatin(scenarioDto.display.name),
@@ -75,9 +80,12 @@ export class HealthInterceptor implements HttpInterceptor {
             };
           }
 
-          if (this.configParams !== null) {
-            const { id, name } = this.configParams;
-            successRequestPayload = { id, name };
+          if (!(Object.keys(this.configParams).length === 0)) {
+            const { id, name, orderId } = this.configParams;
+            successRequestPayload = { id, name, orderId };
+            successRequestPayload = Object.entries(successRequestPayload).reduce(
+              (a, [k,v]) => (!this.isDefined(v) ? a : (a[k] = v, a)), {}
+            );
           }
 
           this.health.measureEnd(serviceName, RequestStatus.Successed, successRequestPayload);

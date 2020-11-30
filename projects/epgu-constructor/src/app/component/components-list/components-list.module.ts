@@ -9,6 +9,7 @@ import { DictionaryApiService } from '../shared/services/dictionary-api/dictiona
 import { CoreModule } from '../../core/core.module';
 import { ComponentItemComponent } from './component-item/component-item.component';
 import { DocInputComponent } from './doc-input/doc-input.component';
+import { TimerModule } from '../component-screen/components/timer/timer.module';
 import { ConstructorPlainInputModule } from '../../shared/components/constructor-plain-input/constructor-plain-input.module';
 
 const COMPONENTS = [
@@ -24,11 +25,12 @@ const COMPONENTS = [
   exports: [
     ...COMPONENTS
   ],
-  imports: [
-    CoreModule,
-    SharedModule,
-    ConstructorPlainInputModule,
-  ],
+    imports: [
+        CoreModule,
+        SharedModule,
+        TimerModule,
+        ConstructorPlainInputModule,
+    ],
   providers: [
     ValidationService,
     AddressHelperService,

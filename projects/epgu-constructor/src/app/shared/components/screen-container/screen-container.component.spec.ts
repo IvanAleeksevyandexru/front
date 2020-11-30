@@ -4,6 +4,8 @@ import { ScreenContainerComponent } from './screen-container.component';
 import { SharedModule } from '../../shared.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { HealthService } from 'epgu-lib';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ScreenContainerComponent', () => {
   let component: ScreenContainerComponent;
@@ -11,8 +13,9 @@ describe('ScreenContainerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule],
+      imports: [SharedModule, RouterTestingModule],
       providers: [
+        HealthService,
         { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     })

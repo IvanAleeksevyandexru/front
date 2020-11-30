@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { CustomScreenComponentTypes } from '../components-list.types';
@@ -8,16 +8,34 @@ import { CustomScreenComponentTypes } from '../components-list.types';
   templateUrl: './component-item.component.html',
   styleUrls: ['./component-item.component.scss'],
 })
-export class ComponentItemComponent {
+export class ComponentItemComponent implements OnInit {
   @Input() data: AbstractControl;
 
   @Input() disableLabel = false;
   @Input() disableError = false;
   @Input() disableHint = false;
+  @Input() isHalfWidthItem = false;
 
   readonly componentType = CustomScreenComponentTypes;
+  public isHelperTextVisible = false;
+  public customUnRecLabel: string;
 
-  customUnRecLabel() {
-    return this.data.value?.attrs?.customUnrecLabel || OPTIONAL_FIELD;
+  ngOnInit(): void {
+    this.setHelperTextVisibility();
+    this.setCustomUnRecLabel();
+  }
+
+  private setHelperTextVisibility(): void {
+    const isNotCheckBox = this.data.value?.type !== this.componentType.CheckBox;
+    const isNotRequired = !this.data.value?.required;
+    this.isHelperTextVisible =
+      (isNotRequired && isNotCheckBox) || this.data.value?.attrs?.labelHint;
+  }
+
+  private setCustomUnRecLabel(): void {
+    this.customUnRecLabel =
+      this.data.value?.attrs?.customUnrecLabel ||
+      this.data.value?.attrs?.labelHint ||
+      OPTIONAL_FIELD;
   }
 }

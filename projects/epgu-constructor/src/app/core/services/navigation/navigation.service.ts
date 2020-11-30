@@ -11,16 +11,7 @@ import { DeviceDetectorService } from '../device-detector/device-detector.servic
  */
 @Injectable()
 export class NavigationService {
-
   isWebView: boolean;
-
-  constructor(
-    private smuEventsService: SmuEventsService,
-    private deviceDetector: DeviceDetectorService,
-    private configService: ConfigService
-  ) {
-    this.isWebView = this.deviceDetector.isWebView;
-  }
 
   // TODO для nextStep.next добавить обёртку, next(),
   //  что бы удобней было обращаться к этому методу
@@ -32,6 +23,14 @@ export class NavigationService {
 
   skipStep = new Subject<Navigation>();
   skipStep$ = this.skipStep.asObservable();
+
+  constructor(
+    private smuEventsService: SmuEventsService,
+    private deviceDetector: DeviceDetectorService,
+    private configService: ConfigService
+  ) {
+    this.isWebView = this.deviceDetector.isWebView;
+  }
 
   redirectToProfileEdit(): void {
     if (this.isWebView) {

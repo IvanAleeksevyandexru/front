@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ComponentBase, ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
-import { CurrentAnswersService } from './current-answers.service';
-import { ScreenContent } from './screen-content';
+import { take } from 'rxjs/operators';
 import { CustomScreenComponentTypes } from '../component/components-list/components-list.types';
 import { ComponentDto } from '../form-player/services/form-player-api/form-player-api.types';
+import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 import { UtilsService } from '../shared/services/utils/utils.service';
+import { CurrentAnswersService } from './current-answers.service';
+import { ScreenContent } from './screen-content';
+import { ComponentBase, ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -16,6 +17,7 @@ export class ScreenService extends ScreenContent {
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
 
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
+  public isFirstLoading$: Observable<boolean> = this.isLoadingSubject.asObservable().pipe(take(3));
 
   constructor(
     private currentAnswersService: CurrentAnswersService,

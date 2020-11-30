@@ -4,6 +4,8 @@ import { ComponentItemComponent } from './component-item.component';
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
 import { formattedError } from '@angular/compiler';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HealthService } from 'epgu-lib';
 
 describe('ComponentItemComponent', () => {
   let component: ComponentItemComponent;
@@ -26,7 +28,8 @@ describe('ComponentItemComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ ComponentItemComponent ],
-      imports: [SharedModule]
+      imports: [SharedModule, RouterTestingModule],
+      providers: [HealthService]
     })
     .compileComponents();
     fb = TestBed.inject(FormBuilder);

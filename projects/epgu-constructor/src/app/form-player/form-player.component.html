@@ -1,4 +1,9 @@
-<ng-container *ngIf="(formPlayerService.playerLoaded$ | async) && (configService.isLoaded$ | async)">
+<div class="loader" *ngIf="screenService.isFirstLoading$ | async">
+  <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+</div>
+<ng-container
+  *ngIf="(formPlayerService.playerLoaded$ | async) && (configService.isLoaded$ | async)"
+>
   <epgu-constructor-screen-resolver></epgu-constructor-screen-resolver>
 </ng-container>
 <epgu-constructor-screen-modal></epgu-constructor-screen-modal>
