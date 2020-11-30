@@ -30,7 +30,6 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: auto;
   @include tablets-up {
     margin-left: -$footer-item-mx;
     margin-right: -$footer-item-mx;
@@ -49,4 +48,8 @@
     max-width: 335px;
     width: 100%;
   }
+}
+
+.screen-footer-to-bottom :host::ng-deep .screen-footer {
+  margin-top: auto;
 }
