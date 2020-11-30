@@ -51,6 +51,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public mapControls = [];
   public provider = { search: this.providerSearch() };
   public selectedValue: any;
+  public showMap = false;
   public mapIsLoaded = false;
   public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   public isMobile: boolean;
@@ -81,6 +82,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngAfterViewInit(): void {
+    this.showMap = true;
     this.selectMapObjectService.templates.detailsTemplate = this.detailsTemplate;
     this.selectMapObjectService.templates.informationTemplate = this.informationTemplate;
   }

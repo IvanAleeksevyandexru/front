@@ -188,11 +188,6 @@
         <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item *ngSwitchCase="componentType.PersonInnInput"
-                                       [data]="componentData">
-        <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
-      </epgu-constructor-component-item>
-
       <epgu-constructor-timer [data]="componentData.value" *ngSwitchCase="componentType.Timer">
       </epgu-constructor-timer>
 
