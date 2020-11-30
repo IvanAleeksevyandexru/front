@@ -11,6 +11,8 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { SharedModule } from '../../../../shared/shared.module';
 import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HealthService } from 'epgu-lib';
 
 
 describe('PaymentTypeSelectorComponent', () => {
@@ -50,8 +52,9 @@ describe('PaymentTypeSelectorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PaymentTypeSelectorComponent],
-      imports: [SharedModule, ModalModule, CoreModule],
+      imports: [SharedModule, ModalModule, CoreModule, RouterTestingModule],
       providers: [
+        HealthService,
         DatePipe,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
