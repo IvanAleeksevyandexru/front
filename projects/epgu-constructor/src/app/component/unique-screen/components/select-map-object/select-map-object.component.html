@@ -21,6 +21,7 @@
     </div>
   </div>
   <lib-map
+    *ngIf="showMap"
     [externalMode]="!config.staticDomainAssetsPath"
     [enterpriseYandexMapsEnabled]="true"
     [yandexMapsApiKey]="config.yandexMapsApiKey"
