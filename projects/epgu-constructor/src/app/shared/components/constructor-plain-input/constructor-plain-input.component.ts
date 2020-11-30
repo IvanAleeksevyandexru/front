@@ -12,11 +12,13 @@ import { TextTransform } from '../../types/textTransform';
 export class ConstructorPlainInputComponent {
   @Input() control: FormControl;
   @Input() validationShowOn: ValidationShowOn;
-  @Input() textTransformType: TextTransform;
-  @Input() readonly: boolean;
-  @Input() invalid: boolean;
-  @Input() name: string;
-  @Input() id: string;
-  @Input() placeholder: string;
-  @Input() price: boolean;
+  @Input() textTransformType?: TextTransform;
+  @Input() readOnly?: boolean;
+  @Input() invalid?: boolean;
+  @Input() name?: string;
+  @Input() id?: string;
+  @Input() placeholder?: string;
+  @Input() price?: boolean;
+  @Input() maxlength?: number;
+  @Input() type?: string;
 }

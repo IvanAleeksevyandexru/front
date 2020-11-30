@@ -9,6 +9,8 @@ import { TemporaryRegistrationComponent } from '../../temporary-registration-add
 import { TemporaryRegistrationAddrComponent } from './temporary-registration-addr.component';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
+// eslint-disable-next-line max-len
+import { ConstructorPlainInputModule } from '../../../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 
 
 describe('TemporaryRegistrationAddrComponent', () => {
@@ -30,7 +32,7 @@ describe('TemporaryRegistrationAddrComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      imports: [FormsModule, ReactiveFormsModule],
+      imports: [FormsModule, ReactiveFormsModule, ConstructorPlainInputModule],
       declarations: [ TemporaryRegistrationAddrComponent ],
       providers: [
         UnsubscribeService,
