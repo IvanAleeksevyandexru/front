@@ -29,7 +29,10 @@
       </div>
       <div class="employee-history__date">
         <div>
-          <epgu-constructor-label for="from">Начало (месяц, год)</epgu-constructor-label>
+          <epgu-constructor-label
+            label="Начало (месяц, год)"
+            for="from"
+          ></epgu-constructor-label>
           <lib-month-picker
             [id]="i + '_minDate'"
             [formControl]="generation.get('from')"
@@ -44,7 +47,10 @@
 
         <div>
           <ng-container *ngIf="!generation.get('checkboxToDate').value">
-            <epgu-constructor-label for="to">Окончание (месяц, год)</epgu-constructor-label>
+            <epgu-constructor-label
+              label="Окончание (месяц, год)"
+              for="to"
+            ></epgu-constructor-label>
             <lib-month-picker
               [id]="i + '_maxDate'"
               [formControl]="generation.get('to')"
@@ -67,8 +73,13 @@
       </div>
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.position as position">
-        <epgu-constructor-label for="position">{{ position }}</epgu-constructor-label>
+        <epgu-constructor-label
+          [label]="position"
+          for="position"
+        ></epgu-constructor-label>
         <epgu-constructor-constructor-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_position'"
           [control]="generation.get('position')"
@@ -83,8 +94,13 @@
       </div>
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.place as place">
-        <epgu-constructor-label for="place">{{ place }}</epgu-constructor-label>
+        <epgu-constructor-label
+          [label]="place"
+          for="place"
+        ></epgu-constructor-label>
         <epgu-constructor-constructor-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_place'"
           [control]="generation.get('place')"
@@ -99,8 +115,13 @@
       </div>
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.address as address">
-        <epgu-constructor-label [for]="'address'">{{ address }}</epgu-constructor-label>
+        <epgu-constructor-label
+          [label]="address"
+          [for]="'address'"
+        ></epgu-constructor-label>
         <epgu-constructor-constructor-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_address'"
           [control]="generation.get('address')"

@@ -1,9 +1,9 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import {
   ConfirmUserDataFieldsState,
   ConfirmUserDataState,
 } from '../../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
+import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-field-list',
@@ -11,9 +11,9 @@ import {
   styleUrls: ['./field-list.component.scss'],
 })
 export class FieldListComponent implements OnChanges {
-  preparedData: Array<ConfirmUserDataFieldsState> = [];
+  public preparedData: Array<ConfirmUserDataFieldsState> = [];
 
-  @Input() data: AbstractControl;
+  @Input() data: ComponentDto;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
