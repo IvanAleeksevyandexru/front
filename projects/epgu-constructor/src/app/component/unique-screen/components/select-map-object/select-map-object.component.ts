@@ -295,8 +295,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private nextStep(): void {
     this.zone.run(() => {
-      const answer = { ...this.selectedValue, children: null };
-      answer.regOkato = this.componentValue?.regOkato;
+      const answer = {
+        ...this.selectedValue,
+        children: null,
+        regOkato: this.componentValue?.regOkato,
+        okato: this.componentValue?.okato,
+      };
       this.nextStepEvent.emit(JSON.stringify(answer));
     });
   }
