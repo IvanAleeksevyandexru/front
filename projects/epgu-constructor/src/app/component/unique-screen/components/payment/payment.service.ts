@@ -116,8 +116,11 @@ export class PaymentService {
    */
   getReturnUrl(): string {
     const slashInEndRex = /\/$/;
-    const host = location.href.replace(slashInEndRex,'');
-    return encodeURIComponent(`${host}?getLastScreen=1`);
+    const href = location.href.replace(slashInEndRex,'');
+    const haveQuestion = href.includes('?');
+    const glueParam = haveQuestion ? '&' : '?';
+    const historyParam = 'getLastScreen=1';
+    return href.includes(historyParam) ? href : encodeURIComponent(`${href}${glueParam}getLastScreen=1`);
   }
 
   /**
