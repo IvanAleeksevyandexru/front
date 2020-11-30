@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { EpguLibModule } from 'epgu-lib';
+import { EpguLibModule, HealthService } from 'epgu-lib';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { SharedModule } from '../../shared.module';
 import { PassportComponent } from './passport.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PassportComponent', () => {
   let component: PassportComponent;
@@ -11,9 +12,9 @@ describe('PassportComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ EpguLibModule, FormsModule, SharedModule ],
+      imports: [ EpguLibModule, FormsModule, SharedModule, RouterTestingModule ],
       declarations: [],
-      providers: [UnsubscribeService],
+      providers: [UnsubscribeService, HealthService],
     })
     .compileComponents();
   }));
