@@ -7,7 +7,6 @@ import { ConfigService } from '../../../../core/config/config.service';
 
 interface PaymentTypeSelectorInterface {
   actions: Array<ComponentDtoAction>;
-  applicantType: string;
   body: string;
   header: string;
   subHeader: string;
@@ -24,6 +23,7 @@ export class PaymentTypeSelectorComponent {
   paymentTypeSelector: PaymentTypeSelectorInterface;
   isErrorTemplate: boolean;
   success = 'SUCCESS';
+  applicantType: string = this.screenService.component.attrs.applicantType;
 
   constructor(private screenService: ScreenService, public config: ConfigService) {
     this.paymentTypeSelector = this.screenService.component.attrs.states[
@@ -33,7 +33,7 @@ export class PaymentTypeSelectorComponent {
   }
 
   showBtn(applicantType: string): boolean {
-    if (this.paymentTypeSelector.applicantType === applicantType) {
+    if (this.applicantType === applicantType) {
       return true;
     }
 
