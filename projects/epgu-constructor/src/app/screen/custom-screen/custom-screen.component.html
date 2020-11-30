@@ -15,6 +15,7 @@
 
   <div class="screen-footer">
       <lib-button
+        *ngIf="screenService.submitLabel$ | async"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"
         class="btn__submit"
