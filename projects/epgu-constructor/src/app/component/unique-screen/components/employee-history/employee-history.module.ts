@@ -5,12 +5,14 @@ import { EmployeeHistoryDatasourceService } from './services/employee-history.da
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 import { CoreModule } from '../../../../core/core.module';
+import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 
 @NgModule({
   declarations: [EmployeeHistoryComponent],
   imports: [
     CoreModule,
     SharedModule,
+    ConstructorPlainInputModule,
   ],
   exports: [
     EmployeeHistoryComponent

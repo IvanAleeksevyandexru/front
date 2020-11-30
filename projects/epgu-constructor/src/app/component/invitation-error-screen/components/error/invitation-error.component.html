@@ -7,14 +7,14 @@
       <p class="invitation__message">{{ data.label }}</p>
       <form class="form">
         <div class="form__item">
-          <lib-plain-input
+          <epgu-constructor-constructor-plain-input
             id="email"
             type="email"
-            [formControl]="email"
+            [control]="email"
             placeholder="Email"
             [invalid]="email.invalid && email.touched"
             [validationShowOn]="validationShowOn"
-          ></lib-plain-input>
+          ></epgu-constructor-constructor-plain-input>
           <div class="form__error">
             <small *ngIf="email.invalid && email.touched">
               {{ email.getError('msg') }}

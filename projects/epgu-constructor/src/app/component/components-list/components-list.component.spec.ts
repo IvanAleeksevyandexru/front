@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DictionaryApiServiceStub } from '../shared/services/dictionary-api/dictionary-api.service.stub';
 import { ConfigServiceStub } from '../../core/config/config.service.stub';
 import { ComponentListFormService } from './services/component-list-form.service';
+import { ConstructorPlainInputModule } from '../../shared/components/constructor-plain-input/constructor-plain-input.module';
 
 
 xdescribe('ComponentsListComponent', () => {
@@ -28,6 +29,7 @@ xdescribe('ComponentsListComponent', () => {
         HttpClientTestingModule,
         FormsModule,
         ReactiveFormsModule,
+        ConstructorPlainInputModule,
       ]
     });
 
