@@ -40,6 +40,7 @@ export interface TemporaryRegistrationFields {
   minDate?: Date | RelativeDate | string;
   maxDate?: Date | RelativeDate | string;
   attrs?: {labelHint?: string};
+  validationShowOn?: string;
 }
 
 export enum FieldNames {

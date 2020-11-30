@@ -14,7 +14,7 @@
         [hideHouseCheckbox]="true"
         [externalApiUrl]="config.externalApiUrl + '/'"
         [id]="field.fieldName"
-        [validationShowOn]="validationShowOn"
+        [validationShowOn]="field.validationShowOn || validationShowOn"
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
         [formControlName]="field.fieldName"
         clearable="true"
