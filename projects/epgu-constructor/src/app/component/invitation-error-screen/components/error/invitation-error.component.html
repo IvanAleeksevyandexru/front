@@ -33,7 +33,9 @@
         </div>
         <ng-template #errorMessage>
           <div class="info">
-            <img class="info__img" src="{{ config.staticDomainAssetsPath }}/assets/img/server-error.svg" alt="" />
+            <div class="info__img-wrapper">
+              <img class="info__img" src="{{ imgErrorSrc }}" alt="" />
+            </div>
             <div class="info__text">При получении реквизитов оплаты пошлины произошла ошибка.</div>
             <div class="info__text">
               Попробуйте зайти на страницу позже. Если ошибка не исчезнет,

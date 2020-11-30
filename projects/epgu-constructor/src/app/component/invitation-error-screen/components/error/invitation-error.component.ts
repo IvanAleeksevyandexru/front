@@ -26,6 +26,7 @@ export class InvitationErrorComponent implements OnInit {
   public validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   public emailSent = false;
   public success = false;
+  public imgErrorSrc = '';
   private requestOptions = { withCredentials: true };
 
   constructor(
@@ -36,6 +37,8 @@ export class InvitationErrorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.imgErrorSrc =
+      this.data.attrs.src || `${this.config.staticDomainAssetsPath}/assets/img/server-error.svg`;
     this.email.setValidators(this.validationService.customValidator(this.data));
   }
 
