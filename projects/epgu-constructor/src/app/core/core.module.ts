@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EpguLibModule, SmuEventsService } from 'epgu-lib';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -15,6 +15,7 @@ import { ErrorsInterceptorService } from './interceptor/errors/errors.intercepto
 import { initApp } from './initializers/app.initializer';
 import { CookieService } from 'ngx-cookie-service';
 import { HealthInterceptor } from './interceptor/health/health.interceptor';
+import { GlobalErrorHandler } from './services/global-error/global-error.service';
 import { WINDOW_PROVIDERS } from './providers/window.provider';
 import { LoggerService } from './services/logger/logger.service';
 
@@ -61,6 +62,10 @@ const PIPES = [
     NavigationModalService,
     SmuEventsService,
     LoggerService,
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HealthInterceptor,

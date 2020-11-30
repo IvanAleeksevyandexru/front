@@ -10,6 +10,8 @@ import { SelectChildrenScreenComponent } from './select-children-screen.componen
 import { SharedModule } from '../../../../shared/shared.module';
 import { ComponentsListModule } from '../../../components-list/components-list.module';
 import { CoreModule } from '../../../../core/core.module';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HealthService } from 'epgu-lib';
 
 describe('SelectChildrenScreenComponent', () => {
   let component: SelectChildrenScreenComponent;
@@ -35,11 +37,13 @@ describe('SelectChildrenScreenComponent', () => {
         SharedModule,
         ReactiveFormsModule,
         ComponentsListModule,
+        RouterTestingModule
       ],
       providers: [
         CurrentAnswersService,
         UnsubscribeService,
         ScreenService,
+        HealthService
       ],
     })
     .compileComponents();
