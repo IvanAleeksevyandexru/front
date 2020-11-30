@@ -231,17 +231,16 @@
 </ng-template>
 
 <ng-template #plainInput let-data>
-  <lib-plain-input
+  <epgu-constructor-constructor-plain-input
     [epgu-constructor-currency-transform]="data.value?.attrs?.price"
-    epgu-constructor-trim
-    epgu-constructor-text-transform
     [textTransformType]="data.value?.attrs?.fstuc"
     [invalid]="data.get('value').invalid && data.get('value').touched"
     [name]="data.value?.id"
-    [formControl]="data.get('value')"
+    [control]="data.get('value')"
     [validationShowOn]="validationShowOn"
     [readOnly]="data.value?.attrs?.readonly"
-  ></lib-plain-input>
+    [placeholder]="data.value?.attrs?.placeholder"
+  ></epgu-constructor-constructor-plain-input>
 </ng-template>
 
 <ng-template #maskedInput let-data>

@@ -7,29 +7,30 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
-import {
-  FileResponseToBackendUploadsItem,
-  FileUploadItem,
-  Clarifications,
-  TerabyteListItem,
-} from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
-import { TerraByteApiService } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.service';
-import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
+import { ConfigService } from '../../../../../../core/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../../../../../modal/confirmation-modal/confirmation-modal.interface';
+import { ModalService } from '../../../../../../modal/modal.service';
+import { TerraByteApiService } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.service';
+import {
+  Clarifications,
+  FileResponseToBackendUploadsItem,
+  FileUploadItem,
+  TerabyteListItem,
+} from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
 import {
   CompressionOptions,
   CompressionService,
 } from '../../../upload-and-edit-photo/compression/compression.service';
-import { ConfigService } from '../../../../../../core/config/config.service';
-import { ModalService } from '../../../../../../modal/modal.service';
-import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
+import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 
 enum ErrorActions {
   clear = 'clear',
@@ -377,7 +378,7 @@ export class FileUploadItemComponent implements OnDestroy {
   createCustomFile(file: File, fileName: string): File {
     const { type, lastModified } = file;
 
-    return new File([file], fileName, {
+    return new FilePonyfill([file], fileName, {
       type,
       lastModified,
     });

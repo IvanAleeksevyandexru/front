@@ -77,15 +77,15 @@
           [label]="position"
           for="position"
         ></epgu-constructor-label>
-        <lib-plain-input
+        <epgu-constructor-constructor-plain-input
           epgu-constructor-trim
           epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_position'"
-          [formControl]="generation.get('position')"
+          [control]="generation.get('position')"
           [invalid]="generation.get('position').invalid"
           [validationShowOn]="validationShowOn"
-        ></lib-plain-input>
+        ></epgu-constructor-constructor-plain-input>
         <epgu-constructor-helper-text
           *ngIf="availableControlsOfType(generation.get('type').value)?.positionHint as positionHint"
         >
@@ -98,15 +98,15 @@
           [label]="place"
           for="place"
         ></epgu-constructor-label>
-        <lib-plain-input
+        <epgu-constructor-constructor-plain-input
           epgu-constructor-trim
           epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_place'"
-          [formControl]="generation.get('place')"
+          [control]="generation.get('place')"
           [invalid]="generation.get('place').invalid"
           [validationShowOn]="validationShowOn"
-        ></lib-plain-input>
+        ></epgu-constructor-constructor-plain-input>
         <epgu-constructor-helper-text
           *ngIf="availableControlsOfType(generation.get('type').value)?.placeHint as placeHint"
         >
@@ -119,15 +119,15 @@
           [label]="address"
           [for]="'address'"
         ></epgu-constructor-label>
-        <lib-plain-input
+        <epgu-constructor-constructor-plain-input
           epgu-constructor-trim
           epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_address'"
-          [formControl]="generation.get('address')"
+          [control]="generation.get('address')"
           [invalid]="generation.get('address').invalid"
           [validationShowOn]="validationShowOn"
-        ></lib-plain-input>
+        ></epgu-constructor-constructor-plain-input>
       </div>
     </section>
     <section class="employee-history__newGeneration">

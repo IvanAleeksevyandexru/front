@@ -67,6 +67,25 @@ export class ComponentListRepositoryService {
         component,
         data: { ...dictionary },
       })),
+      map((dictionary) => {
+        // TODO: удалить когда будет реализована фильтрация справочника на строне RTlabs
+        if (component.attrs.filter) {
+          const items = dictionary.data.items.filter((data) =>
+            component.attrs.filter.value.includes(data[component.attrs.filter.key]),
+          );
+          const data: DictionaryResponse = {
+            ...dictionary.data,
+            items,
+          };
+
+          return {
+            component,
+            data,
+          };
+        }
+
+        return dictionary;
+      }),
     );
   }
 
