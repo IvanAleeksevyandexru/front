@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
 import { SharedModule } from '../../shared.module';
@@ -14,7 +15,7 @@ describe('ConstructorPlainInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorPlainInputComponent],
-      imports: [CoreModule, SharedModule],
+      imports: [CoreModule, SharedModule, RouterTestingModule],
     }).compileComponents();
   });
 
@@ -28,6 +29,8 @@ describe('ConstructorPlainInputComponent', () => {
     component.invalid = true;
     component.validationShowOn = ValidationShowOn.TOUCHED;
     component.textTransformType = TextTransform.ALL;
+    component.type = 'number';
+    component.maxlength = 2;
     fixture.detectChanges();
   });
 
