@@ -1,6 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../core/config/config.service.stub';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -32,7 +34,7 @@ describe('TemporaryRegistrationAddrComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      imports: [FormsModule, ReactiveFormsModule, ConstructorPlainInputModule],
+      imports: [FormsModule, ReactiveFormsModule, ConstructorPlainInputModule, RouterTestingModule],
       declarations: [ TemporaryRegistrationAddrComponent ],
       providers: [
         UnsubscribeService,
