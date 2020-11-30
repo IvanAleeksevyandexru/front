@@ -48,15 +48,14 @@
   }
 
   ol li {
-    padding-left: 16px;
+    padding-left: 24px;
     position: relative;
 
     &::before {
       counter-increment: number;
-      content: counter(number) '\a0';
+      content: counter(number) '.';
       color: $color-blu-digitale;
-      padding-right: 6px;
-      font-weight: $fw-semi-bold;
+      font-weight: $fw-bold;
       position: absolute;
       left: 0;
     }
