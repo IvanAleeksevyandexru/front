@@ -82,7 +82,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngAfterViewInit(): void {
-    this.showMap = true;
+    setTimeout(() => {
+      this.showMap = true;
+    });
     this.selectMapObjectService.templates.detailsTemplate = this.detailsTemplate;
     this.selectMapObjectService.templates.informationTemplate = this.informationTemplate;
   }
