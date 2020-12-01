@@ -1,15 +1,15 @@
-import { ComponentBase } from '../../../../../../screen/screen.types';
-import { TextTransform } from '../../../../../../shared/types/textTransform';
 import { RelativeDate } from 'epgu-lib';
 import { DurationInputArg2 } from 'moment';
+import { ComponentBase } from '../../../../../../screen/screen.types';
+import { TextTransform } from '../../../../../../shared/types/textTransform';
 
-export interface TemporaryRegistrationComponent extends ComponentBase {
-  attrs: TemporaryRegistrationComponentAttrs;
+export interface IRegistrationAddrComponent extends ComponentBase {
+  attrs: RegistrationAddrComponentAttrs;
 }
 
-export interface TemporaryRegistrationComponentAttrs {
-  hints: Array<TemporaryRegistrationHints>,
-  fields: Array<TemporaryRegistrationFields>,
+export interface RegistrationAddrComponentAttrs {
+  hints: Array<RegistrationAddrHints>,
+  fields: Array<RegistrationAddrFields>,
   actions: Array<any>,
   fstuc?: TextTransform
 }
@@ -20,7 +20,7 @@ export interface TemporaryRegistrationComponentAttrs {
  * @property {number}amount - число которое прибавляется к текущей дате
  * @property {DurationInputArg2}unit - тип времени день, год и т.д
  */
-export interface TemporaryRegistrationHints {
+export interface RegistrationAddrHints {
   label: string;
   amount: number;
   unit: DurationInputArg2;
@@ -31,7 +31,7 @@ export interface TemporaryRegistrationHints {
  * @property {string}label -
  * @property {"input"}type -
  */
-export interface TemporaryRegistrationFields {
+export interface RegistrationAddrFields {
   fieldName: FieldNames;
   label: string;
   type: 'input'|'date';
@@ -47,5 +47,6 @@ export interface TemporaryRegistrationFields {
 export enum FieldNames {
   regFrom = 'regFrom',
   regTo = 'regTo',
+  regDate = 'regDate',
   regAddr = 'regAddr',
 }

@@ -71,15 +71,14 @@ export class ScreenService extends ScreenContent {
       .forEach(item => {
         const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(item); // TODO костыль от backend(-a);
         const hasPresetTypeRef = item.attrs?.preset?.type === 'REF';
+        const cachedValue = shouldBeTakenFromTheCache && this.cachedAnswersService
+          .getCachedValueById(this.screenStore.cachedAnswers, item.id);
 
-        if (hasPresetTypeRef && shouldBeTakenFromTheCache) {
+        if (hasPresetTypeRef && shouldBeTakenFromTheCache && !cachedValue) {
           const component = this.getPresetValue(item);
           components.push(component);
           return;
         }
-
-        const cachedValue = shouldBeTakenFromTheCache && this.cachedAnswersService
-          .getCachedValueById(this.screenStore.cachedAnswers, item.id);
         item.presetValue = item.value;
         const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value, item.type) } : item;
         components.push(component);
@@ -118,14 +117,18 @@ export class ScreenService extends ScreenContent {
 
   /**
    * Возвращает данные из cachedAnswers, если в JSON есть preset.type = REF
+   * TODO нужно утащить на backend (HARDCODE from backend)
    */
   private getPresetValue(item: ComponentDto): ComponentDto {
     const [id, path] = item.attrs.preset.value.split(/\.(.+)/);
-    const cachedValue = this.cachedAnswersService
-      .getCachedValueById(this.screenStore.cachedAnswers, id) || '{}';
-    const value = UtilsService.getObjectProperty(JSON.parse(cachedValue), path, item.value);
-
-    return { ...item, value };
+    const cachedValue = JSON.parse(this.cachedAnswersService
+      .getCachedValueById(this.screenStore.cachedAnswers, id) || '{}');
+    const value = UtilsService.getObjectProperty(cachedValue, path, item.value);
+    if (typeof value === 'object') {
+      return { ...item, value: JSON.stringify(value) };
+    } else {
+      return { ...item, value };
+    }
   }
 
   public getCompFromDisplay(componentId: string): ScreenStoreComponentDtoI {
