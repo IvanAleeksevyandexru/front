@@ -3,29 +3,28 @@ import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms'
 import { DadataResult, ValidationShowOn } from 'epgu-lib';
 import { startWith, takeUntil } from 'rxjs/operators';
 import * as moment_ from 'moment';
-
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../../../../../screen/screen.service';
+import { DateValidator } from './date-validator';
 import {
   FieldNames,
-  TemporaryRegistrationComponent,
-  TemporaryRegistrationFields,
-  TemporaryRegistrationHints,
-} from '../../temporary-registration-addr-screen.types';
-import { DateValidator } from './date-validator';
-import { ScreenService } from '../../../../../../../../screen/screen.service';
+  IRegistrationAddrComponent,
+  RegistrationAddrFields,
+  RegistrationAddrHints,
+} from '../../registration-addr-screen.types';
 
 const moment = moment_;
 
 @Component({
-  selector: 'epgu-constructor-temporary-registration-addr',
-  templateUrl: './temporary-registration-addr.component.html',
-  styleUrls: ['./temporary-registration-addr.component.scss'],
+  selector: 'epgu-constructor-registration-addr',
+  templateUrl: './registration-addr.component.html',
+  styleUrls: ['./registration-addr.component.scss'],
   providers: [UnsubscribeService],
 })
-export class TemporaryRegistrationAddrComponent implements OnInit {
-  @Input() data: TemporaryRegistrationComponent;
+export class RegistrationAddrComponent implements OnInit {
+  @Input() data: IRegistrationAddrComponent;
   @Input() error: string;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   redAddrForm: FormGroup;
@@ -39,8 +38,10 @@ export class TemporaryRegistrationAddrComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initFormGroup();
-    this.subscribeToFormChanges();
+    this.screenService.display$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.initFormGroup();
+      this.subscribeToFormChanges();
+    });
   }
 
   initFormGroup(): void {
@@ -57,12 +58,12 @@ export class TemporaryRegistrationAddrComponent implements OnInit {
     this.redAddrForm = this.fb.group(controls);
   }
 
-  hintClick({ amount, unit }: TemporaryRegistrationHints) {
+  hintClick({ amount, unit }: RegistrationAddrHints) {
     const regDate = moment().add(amount, unit).toDate();
     this.redAddrForm.patchValue({ regDate });
   }
 
-  private getValidatorsForField(field: TemporaryRegistrationFields): ValidatorFn[] {
+  private getValidatorsForField(field: RegistrationAddrFields): ValidatorFn[] {
     const regExp = field?.regexp || null;
     const isRequired = this.data.required;
     const isDateType = field?.type === 'date';
@@ -108,11 +109,12 @@ export class TemporaryRegistrationAddrComponent implements OnInit {
     if (fieldName === FieldNames.regAddr) {
       return data?.regAddr?.fullAddress || null;
     }
-    if (fieldName === FieldNames.regFrom) {
-      return data?.regFrom ? new Date(data?.regFrom) : null;
-    }
-    if (fieldName === FieldNames.regTo) {
-      return data?.regTo ? new Date(data?.regTo) : null;
+    if (
+      fieldName === FieldNames.regFrom ||
+      fieldName === FieldNames.regTo ||
+      fieldName === FieldNames.regDate
+    ) {
+      return data[fieldName] ? new Date(data[fieldName]) : null;
     }
     return null;
   }

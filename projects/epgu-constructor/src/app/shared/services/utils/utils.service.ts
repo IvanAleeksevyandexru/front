@@ -127,6 +127,8 @@ export class UtilsService {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static getObjectProperty(obj: any, path: string, defaultValue: any = undefined): any {
+    if (!path) return obj;
+
     const travel = (regexp) =>
       String.prototype.split
         .call(path, regexp)

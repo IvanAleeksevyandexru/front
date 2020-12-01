@@ -142,7 +142,6 @@ export abstract class FormPlayerBaseService {
     }
 
     this._store = response;
-    this._store = response;
     const scenarioDto = response.scenarioDto;
 
     this.initScreenStore(scenarioDto);
