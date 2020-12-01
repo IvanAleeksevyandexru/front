@@ -12,7 +12,7 @@ import { ScreenBase } from '../screenBase';
 })
 export class InvitationErrorScreenComponent extends ScreenBase {
   typeComponent = InvitationErrorScreenComponentTypes;
-  scenarioDto = this.screenService.getStore();
+  applicantAnswers = this.screenService.applicantAnswers;
 
   constructor(public injector: Injector) {
     super(injector);

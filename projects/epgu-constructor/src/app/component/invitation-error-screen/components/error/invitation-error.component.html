@@ -1,60 +1,66 @@
-<epgu-constructor-screen-container>
-  <div class="screen-body">
-    <div *ngIf="!emailSent else result">
-      <div class="invitation__img">
-        <img src="{{ config.staticDomainAssetsPath }}/assets/img/screens/s11.png" />
+<epgu-constructor-screen-container class="invitation">
+  <epgu-constructor-screen-pad class="screen-body">
+    <div *ngIf="!emailSent; else result">
+      <div class="invitation__img-wrapper">
+        <img src="{{ data.attrs.imgSrc }}" alt="" />
       </div>
-      <p class="invitation__message">{{ data.label }}</p>
+
+      <epgu-constructor-page-name class="invitation__head">{{ header }}</epgu-constructor-page-name>
+
+      <epgu-constructor-output-html
+        class="invitation__label"
+        [html]="data.label"
+      ></epgu-constructor-output-html>
+
       <form class="form">
         <div class="form__item">
-          <epgu-constructor-constructor-plain-input
-            id="email"
-            type="email"
-            [control]="email"
-            placeholder="Email"
-            [invalid]="email.invalid && email.touched"
-            [validationShowOn]="validationShowOn"
-          ></epgu-constructor-constructor-plain-input>
+          <epgu-constructor-label [label]="data.attrs.label"></epgu-constructor-label>
+
           <div class="form__error">
             <small *ngIf="email.invalid && email.touched">
               {{ email.getError('msg') }}
             </small>
           </div>
+
+          <epgu-constructor-constructor-plain-input
+            id="email"
+            type="email"
+            placeholder="Email"
+            [control]="email"
+            [invalid]="email.invalid && email.touched"
+            [validationShowOn]="validationShowOn"
+          ></epgu-constructor-constructor-plain-input>
+
+          <epgu-constructor-helper-text>{{ data.attrs.helperText }}</epgu-constructor-helper-text>
         </div>
       </form>
-      <p class="invitation__info">
-        На указанный адрес электронной почты придет ссылка для регистрации на портале Госуслуг
-      </p>
     </div>
-    <ng-template #result>
-        <div *ngIf="success else errorMessage" class="invitation__img">
-          <img src="{{ config.staticDomainAssetsPath }}/assets/img/screens/s11.png" />
-          <p>Емейл был успешно отправлен.</p>
+    <div class="invitation__footer">
+      <lib-button *ngIf="!emailSent" (click)="sendEmail()" [disabled]="!email.valid">{{
+        data.attrs.sendEmailLabel
+      }}</lib-button>
+      <lib-button *ngIf="emailSent" (click)="redirectToLK()">
+        {{ data.attrs.redirectLabel }}
+      </lib-button>
+    </div>
+  </epgu-constructor-screen-pad>
+
+  <ng-template #result>
+    <div *ngIf="success; else errorMessage">
+      <div class="invitation__img-wrapper">
+        <img src="{{ data.attrs.success.imgSrc }}" alt="" />
+      </div>
+      <epgu-constructor-output-html [html]="data.attrs.success.label">
+      </epgu-constructor-output-html>
+    </div>
+    <ng-template #errorMessage>
+      <div class="info">
+        <div class="invitation__img-wrapper">
+          <img class="info__img" src="{{ data.attrs.error.imgSrc }}" alt="" />
         </div>
-        <ng-template #errorMessage>
-          <div class="info">
-            <div class="info__img-wrapper">
-              <img class="info__img" src="{{ imgErrorSrc }}" alt="" />
-            </div>
-            <div class="info__text">При получении реквизитов оплаты пошлины произошла ошибка.</div>
-            <div class="info__text">
-              Попробуйте зайти на страницу позже. Если ошибка не исчезнет,
-              <a href="https://www.gosuslugi.ru/help" target="_blank">сообщите нам о ней</a>
-            </div>
-          </div>
-        </ng-template>
+        <epgu-constructor-output-html [html]="data.attrs.error.label">
+        </epgu-constructor-output-html>
+      </div>
     </ng-template>
-  </div>
-  <div class="screen-footer">
-    <lib-button
-      *ngIf="!emailSent"
-      (click)="sendEmail()"
-      [disabled]="!email.valid"
-    >Отправить приглашение</lib-button>
-    <lib-button
-      *ngIf="emailSent"
-     (click)="redirectToLK()">
-      Вернуться в личный кабинет
-    </lib-button>
-  </div>
+  </ng-template>
 </epgu-constructor-screen-container>

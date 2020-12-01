@@ -1,13 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-/* eslint-disable import/no-extraneous-dependencies */
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
+
 import { finalize, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
 import { ValidationService } from '../../../components-list/services/validation.service';
-import { ScenarioDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ApplicantAnswersDto,
+  ComponentDto,
+} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+
+interface Data extends ComponentDto {
+  attrs: {
+    imgSrc: string;
+    error: { imgSrc: string; label: string };
+    success: { imgSrc: string; label: string };
+    ref: string;
+    helperText: string;
+    label: string;
+    sendEmailLabel: string;
+    redirectLabel: string;
+  };
+}
 
 @Component({
   selector: 'epgu-constructor-invitation-error',
@@ -16,8 +32,10 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
   providers: [UnsubscribeService],
 })
 export class InvitationErrorComponent implements OnInit {
-  @Input() data: any;
-  @Input() scenarioDto: ScenarioDto;
+  @Input() data: Data;
+  @Input() applicantAnswers: ApplicantAnswersDto;
+  @Input() orderId: string;
+  @Input() header: string;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
   public email: FormControl = new FormControl('', {
     validators: Validators.required,
@@ -26,7 +44,6 @@ export class InvitationErrorComponent implements OnInit {
   public validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   public emailSent = false;
   public success = false;
-  public imgErrorSrc = '';
   private requestOptions = { withCredentials: true };
 
   constructor(
@@ -37,14 +54,12 @@ export class InvitationErrorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.imgErrorSrc =
-      this.data.attrs.src || `${this.config.staticDomainAssetsPath}/assets/img/server-error.svg`;
-    this.email.setValidators(this.validationService.customValidator(this.data));
+    this.email.setValidators(this.validationService.customValidator(this.data as any));
   }
 
   sendEmail(): void {
     const ref: any = this.data.attrs?.ref;
-    const value = this.scenarioDto.applicantAnswers[ref]?.value;
+    const value = this.applicantAnswers[ref]?.value;
     if (!value) {
       this.emailSent = true;
       return;
@@ -60,7 +75,7 @@ export class InvitationErrorComponent implements OnInit {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/lk/v1`
       : `${this.config.invitationUrl}`;
-    const path = `${urlPrefix}/orders/${this.scenarioDto.orderId}/invitations/inviteToSign/send`;
+    const path = `${urlPrefix}/orders/${this.orderId}/invitations/inviteToSign/send`;
     this.http
       .post(path, userData, this.requestOptions)
       .pipe(

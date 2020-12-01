@@ -2,5 +2,7 @@
   *ngIf="(screenService.componentType$ | async) === typeComponent.invitationError"
   (nextStepEvent)="nextStep($event)"
   [data]="screenService.component"
-  [scenarioDto]="scenarioDto"
+  [applicantAnswers]="applicantAnswers"
+  [orderId]="screenService.orderId"
+  [header]="this.screenService.header"
 ></epgu-constructor-invitation-error>
