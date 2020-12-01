@@ -25,7 +25,6 @@
   </div>
 </epgu-constructor-screen-container>
 
-
 <ng-template #actionAsLongBtn>
   <div class="quiz__answers">
     <ng-container *ngFor="let action of screenService.component?.attrs?.actions">
@@ -41,16 +40,15 @@
 </ng-template>
 
 <ng-template #footerActionAndSubmit>
-  <lib-button
-    color="white"
-    [action]="rejectAction"
-    epgu-constructor-action>
+  <lib-button color="white" [action]="rejectAction" epgu-constructor-action>
     {{ rejectAction.label }}
   </lib-button>
   <lib-button
+    *ngIf="submitLabel"
     [showLoader]="screenService.isLoading$ | async"
-    (click)="nextStep()"
-    class="btn__submit">
-    {{ this.screenService.submitLabel$ | async }}
+    (click)="answerChoose({ value: submitLabel })"
+    class="btn__submit"
+  >
+    {{ submitLabel }}
   </lib-button>
 </ng-template>
