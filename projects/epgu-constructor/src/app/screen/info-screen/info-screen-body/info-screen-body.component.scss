@@ -7,6 +7,11 @@
 
 @include rubles('.info__text', '../../../../../assets/img/ruble.svg');
 
-.info__img-wrapper {
-  text-align: center;
+.info {
+  &__img-wrapper {
+    text-align: center;
+  }
+  &__img {
+    max-width: 200px;
+  }
 }
