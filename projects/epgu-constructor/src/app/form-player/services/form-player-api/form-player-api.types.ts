@@ -121,6 +121,7 @@ export interface ScenarioDto {
   isInternalScenario?: boolean;
   serviceId?: string;
   currentUrl?: string;
+  newContactId?: string;
 }
 
 /**
@@ -170,6 +171,7 @@ export enum DTOActionAction {
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editEmail = 'service/actions/editUserEmail',
   goBackToMainScenario = 'goBackToMainScenario',
+  resendEmailConfirmation = 'service/actions/resendEmailConfirmation',
 }
 
 export interface CheckOrderApiResponse {
