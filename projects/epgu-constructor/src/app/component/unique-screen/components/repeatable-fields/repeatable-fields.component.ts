@@ -14,8 +14,12 @@ import {
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
 } from './repeatable-fields.constant';
-import { CustomComponent } from '../../../components-list/components-list.types';
+import {
+  CustomComponentOutputData,
+  CustomComponent,
+} from '../../../components-list/components-list.types';
 import { Answer } from '../../../../shared/types/answer';
+import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 type Changes = {
   [key: string]: {
@@ -40,7 +44,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
    * Словарь для хранения массива компонентов
    */
   screens: { [key: string]: CustomComponent[] };
-  propData; // TODO указать тип
+  propData: DisplayDto;
   cache: Answer;
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     map((label) => {
@@ -48,7 +52,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     }),
   );
 
-  @Input() set data(data) {
+  @Input() set data(data: DisplayDto) {
     this.cache = this.getCache();
     this.initVariable();
     this.propData = data;
@@ -83,7 +87,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   private initVariable() {
     this.screens = {};
     this.componentId = 0;
-    this.saveState([]);
+    this.saveState({ value: null });
   }
 
   isScreensAvailable(): boolean {
@@ -101,7 +105,8 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     }
   }
 
-  changeComponentList(changes: Changes, index: number) {
+  // TODO
+  changeComponentList(changes: CustomComponentOutputData, index: number) {
     const state = this.getState();
     this.componentValidation[index] = Object.values(changes).every((item) => item.isValid);
     this.isValid = this.componentValidation.every((valid: boolean) => valid);
@@ -125,7 +130,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   getState(): { value: string } {
     return JSON.parse(this.currentAnswersService.state);
   }
-  saveState(state) {
+  saveState(state: { value: string }) {
     this.currentAnswersService.state = JSON.stringify(state);
   }
 

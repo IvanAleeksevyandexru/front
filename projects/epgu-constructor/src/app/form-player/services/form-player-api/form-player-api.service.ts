@@ -98,7 +98,11 @@ export class FormPlayerApiService {
     return { userId, token };
   }
 
-  private getNavigatePath(data, options: NavigationOptions, formPlayerNavigation: FormPlayerNavigation): string {
+  private getNavigatePath(
+    data: FormPlayerApiSuccessResponse,
+    options: NavigationOptions,
+    formPlayerNavigation: FormPlayerNavigation
+  ): string {
     const { serviceId } = this.serviceDataService;
     let path = this.apiUrl;
     if (options.url) {
@@ -110,7 +114,7 @@ export class FormPlayerApiService {
     return path;
   }
 
-  private post<T>(path: string, body): Observable<T> {
+  private post<T>(path: string, body: Object): Observable<T> {
     return this.http.post<T>(path, body, {
       withCredentials: false
     });

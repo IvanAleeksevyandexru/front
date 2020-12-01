@@ -194,7 +194,7 @@
       <epgu-constructor-component-item *ngSwitchCase="componentType.PassportLookup"
                                        [data]="componentData">
         <epgu-constructor-passport
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [attrs]="componentData.value?.attrs"
         >
         </epgu-constructor-passport>

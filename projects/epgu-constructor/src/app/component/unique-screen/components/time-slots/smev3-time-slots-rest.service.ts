@@ -3,9 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../../../core/config/config.service';
 import { Observable } from 'rxjs';
 import {
+  BookTimeSlotReq,
   CancelSlotResponseInterface,
   SmevBookResponseInterface,
-  SmevSlotsResponseInterface
+  SmevSlotsResponseInterface,
+  TimeSlotReq,
 } from './time-slots.types';
 
 @Injectable()
@@ -17,17 +19,17 @@ export class Smev3TimeSlotsRestService {
     private config: ConfigService
   ) {}
 
-  public getTimeSlots(requestBody): Observable<SmevSlotsResponseInterface> {
+  public getTimeSlots(requestBody: TimeSlotReq): Observable<SmevSlotsResponseInterface> {
     const path = `${this.urlPrefix}/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody, { withCredentials: true });
   }
 
-  public bookTimeSlot(requestBody): Observable<SmevBookResponseInterface> {
+  public bookTimeSlot(requestBody: BookTimeSlotReq): Observable<SmevBookResponseInterface> {
     const path = `${this.urlPrefix}/book?srcSystem=BETA`;
     return this.http.post<SmevBookResponseInterface>(path, requestBody, { withCredentials: true });
   }
 
-  public cancelSlot(requestBody): Observable<CancelSlotResponseInterface> {
+  public cancelSlot(requestBody: { eserviceId: string; bookId: string }): Observable<CancelSlotResponseInterface> {
     const path = `${this.urlPrefix}/cancel`;
     return this.http.post<CancelSlotResponseInterface>(path, requestBody, { withCredentials: true });
   }

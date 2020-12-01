@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { Navigation } from '../../../form-player/form-player.types';
 import { SmuEventsService } from 'epgu-lib';
 import { ConfigService } from '../../config/config.service';
-import { MobilViewEvents } from '../../../shared/constants/redirect-event';
+import { MobilViewEvents, OPTIONS_FEED_MV, OPTIONS_FEED_EXIT } from '../../../shared/constants/redirect-event';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 
 /**
@@ -56,7 +56,7 @@ export class NavigationService {
     }
   }
 
-  private navigateInsideWebView(options: any) {
+  private navigateInsideWebView(options: typeof OPTIONS_FEED_MV | typeof OPTIONS_FEED_EXIT) {
     this.smuEventsService.notify(options);
   }
 }

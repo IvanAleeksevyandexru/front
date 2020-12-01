@@ -71,7 +71,7 @@ export class FileUploadItemComponent implements OnDestroy {
       .getListByObjectId(this.objectId)
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        catchError((e: any) => {
+        catchError((e) => {
           this.listIsUploadingNow = false;
           return throwError(e);
         }),
@@ -94,7 +94,7 @@ export class FileUploadItemComponent implements OnDestroy {
     return this.loadData;
   }
   @Input() prefixForMnemonic: string;
-  @Input() refData: any = null;
+  @Input() refData: FileUploadItem[] = null;
 
   @Output() newValueSet: EventEmitter<FileResponseToBackendUploadsItem> = new EventEmitter<
     FileResponseToBackendUploadsItem
@@ -321,7 +321,7 @@ export class FileUploadItemComponent implements OnDestroy {
         .uploadFile(fileToUpload.getParamsForUploadFileOptions(), file)
         .pipe(
           takeUntil(this.ngUnsubscribe$),
-          catchError((e: any) => {
+          catchError((e) => {
             this.handleError(ErrorActions.addUploadErr, file);
             this.updateFileInfoFromServer(fileToUpload, false);
             return throwError(e);
@@ -384,7 +384,7 @@ export class FileUploadItemComponent implements OnDestroy {
     });
   }
 
-  compressImages(files: File[], isPhoto?: boolean): Array<Observable<any>> {
+  compressImages(files: File[], isPhoto?: boolean): Array<Observable<unknown>> {
     this.filesInCompression += files.length;
 
     const compressedImageOptions: CompressionOptions = {
@@ -540,7 +540,7 @@ export class FileUploadItemComponent implements OnDestroy {
         .deleteFile(file.getParamsForFileOptions())
         .pipe(
           takeUntil(this.ngUnsubscribe$),
-          catchError((e: any) => {
+          catchError((e) => {
             this.filesInUploading -= 1;
             this.handleError(ErrorActions.addDeletionErr, { name: file.fileName });
             return throwError(e);
@@ -613,7 +613,7 @@ export class FileUploadItemComponent implements OnDestroy {
       .downloadFile(file.getParamsForFileOptions())
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        catchError((e: any) => {
+        catchError((e) => {
           this.handleError(ErrorActions.addDownloadErr, { name: file.fileName });
           return throwError(e);
         }),

@@ -42,7 +42,7 @@ export class ComponentListRepositoryService {
     private toolsService: ComponentListToolsService,
   ) {}
 
-  loadReferenceData$(components: Array<CustomComponent>): Observable<any> {
+  loadReferenceData$(components: Array<CustomComponent>): Observable<CustomListReferenceData[]> {
     const data: Array<Observable<CustomListReferenceData>> = [];
     components.forEach((component: CustomComponent) => {
       if (isDropDown(component.type)) {
@@ -60,7 +60,7 @@ export class ComponentListRepositoryService {
     );
   }
 
-  getDictionaries$(dictionaryType: string, component: CustomComponent, options: DictionaryOptions,)
+  getDictionaries$(dictionaryType: string, component: CustomComponent, options: DictionaryOptions)
     : Observable<CustomListGenericData<DictionaryResponse>> {
     return this.dictionaryApiService.getDictionary(dictionaryType, options).pipe(
       map((dictionary: DictionaryResponse) => ({

@@ -109,11 +109,12 @@ export class ScreenContent {
     this._componentType.next(val);
   }
   public componentType$ = this._componentType.asObservable();
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _componentValue = new BehaviorSubject<{[key: string]: any} | string>(null);
   public get componentValue() {
     return this._componentValue.getValue();
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public set componentValue(val: {[key: string]: any} | string ) {
     this._componentValue.next(val);
   }
@@ -183,7 +184,14 @@ export class ScreenContent {
   public applicantAnswers$ = this._applicantAnswers.asObservable();
 
   updateScreenContent(screenStore: ScreenStore) {
-    const { display = {} as any, orderId, gender, errors = {} as any, currentCycledFields, applicantAnswers } = screenStore;
+    const {
+      errors = {} as ScenarioErrorsDto,
+      display = {} as DisplayDto,
+      orderId,
+      gender,
+      currentCycledFields,
+      applicantAnswers
+    } = screenStore;
     const { header, subHeader, submitLabel, type, components = [], terminal, cssClass } = display;
     const firstComponent = components[0];
     this.display = display;

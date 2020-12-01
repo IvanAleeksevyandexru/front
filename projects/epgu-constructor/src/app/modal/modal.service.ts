@@ -22,6 +22,7 @@ export class ModalService {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public openModal<T, K = any>(modalComponent: Type<any>, modalParameters?: K): Observable<T> {
     if (HelperService.isTouchDevice()) {
       document.body.style.overflow = 'hidden';
@@ -41,7 +42,7 @@ export class ModalService {
     this.appRef.attachView(componentRef.hostView);
     componentRef.changeDetectorRef.detectChanges();
 
-    componentRef.instance['detachView'] = (data: any) => {
+    componentRef.instance['detachView'] = (data) => {
       this.appRef.detachView(componentRef.hostView);
       modalResult.next(data);
     };

@@ -14,6 +14,10 @@ import {
 import { ValidationShowOn } from 'epgu-lib';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+// eslint-disable-next-line import/named
+import { PassportAttr, PassportFields } from './passport.interface';
+
+type PassportFormFields = { rfPasportNumber: string; rfPasportSeries: string };
 
 @Component({
   selector: 'epgu-constructor-passport',
@@ -36,7 +40,7 @@ import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscri
   ],
 })
 export class PassportComponent implements OnInit, ControlValueAccessor, Validator {
-  @Input() attrs: { [key: string]: any };
+  @Input() attrs: PassportAttr;
   @Output() valueChangedEvent = new EventEmitter();
 
   public passportForm: FormGroup;
@@ -60,7 +64,7 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
     this.passportForm = this.fb.group(controls);
   }
 
-  getValidatorsForField(field): ValidatorFn[] {
+  getValidatorsForField(field: PassportFields): ValidatorFn[] {
     const validators = [Validators.required];
 
     if (field.maxlength) {
@@ -90,7 +94,7 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
 
   public onTouched: () => void = () => {};
 
-  writeValue(val: any): void {
+  writeValue(val: PassportFormFields): void {
     const isValidValue = (value, fieldName) => {
       return typeof value === 'object' && value !== null && value[fieldName];
     };
@@ -102,10 +106,12 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   registerOnChange(fn: any): void {
     this.passportForm.valueChanges.subscribe(fn);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }

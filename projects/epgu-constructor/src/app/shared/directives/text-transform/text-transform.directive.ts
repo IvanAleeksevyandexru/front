@@ -11,11 +11,11 @@ export class TextTransformDirective {
     [TextTransform.UPPERCASE]: this.allToUpperCase,
   };
   private prevValue: string;
-  private prevSelection: Array<number>;
+  private prevSelection: [number, number];
   @Input() textTransformType: TextTransform;
 
   @HostListener('input', ['$event.target'])
-  onInput(target) {
+  onInput(target: HTMLInputElement) {
     if (!this.transforms[this.textTransformType]) {
       return;
     }
@@ -24,9 +24,10 @@ export class TextTransformDirective {
       target.setSelectionRange(...this.prevSelection);
       return;
     }
-    const selection = [target.selectionStart, target.selectionEnd];
+    const selection: [number, number] = [target.selectionStart, target.selectionEnd];
     target.value = this.transforms[this.textTransformType].call(this, target.value);
     target.setSelectionRange(...selection);
+
 
     // Сохраняет предыдущее значение и позицию курсора
     this.prevValue = target.value;
