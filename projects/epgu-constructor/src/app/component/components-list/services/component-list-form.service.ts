@@ -119,7 +119,7 @@ export class ComponentListFormService {
 
   watchFormArray$(): Observable<Array<CustomListFormGroup>> {
     return this.form.valueChanges.pipe(
-      distinctUntilChanged((prev, next) => isEqualObj<any>(prev, next)),
+      distinctUntilChanged((prev, next) => isEqualObj<boolean | number | string | object>(prev, next)),
       takeUntil(this.unsubscribeService),
     );
   }
@@ -143,7 +143,7 @@ export class ComponentListFormService {
     return this.addressHelperService.provider;
   }
 
-  private getPreparedStateForSending(): any {
+  private getPreparedStateForSending(): CustomComponentOutputData {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
       const { disabled, valid } = this.form.get([key, 'value']);
       const isLeastOneCondition: boolean = this.form
@@ -169,13 +169,13 @@ export class ComponentListFormService {
     }, {});
   }
 
-  private relationRegExp(value: string, params: any) {
+  private relationRegExp(value: string, params: RegExp) {
     return String(value).match(params);
   }
   private relationMinDate(value: string, params: string) {
     return moment(value).isSameOrAfter(moment(params, DATE_STRING_DOT_FORMAT));
   }
-  private relationMaxDate(value: string, params: any) {
+  private relationMaxDate(value: string, params: string) {
     return moment(value).isSameOrBefore(moment(params, DATE_STRING_DOT_FORMAT));
   }
 
@@ -186,7 +186,7 @@ export class ComponentListFormService {
     ]);
   }
 
-  private relationPatch(component: CustomComponent, patch: any) {
+  private relationPatch(component: CustomComponent, patch: object) {
     const resultComponent = { ...component, attrs: { ...component.attrs, ...patch }};
 
     const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
@@ -295,7 +295,7 @@ export class ComponentListFormService {
             (control: AbstractControl) => control.value?.id === next.id,
           );
 
-          const options: any = {
+          const options = {
             filter: {
               simple: {
                 attributeName: 'Id_Mark',

@@ -10,7 +10,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { YaMapService } from 'epgu-lib';
+import { YaMapService, LookupComponent } from 'epgu-lib';
 import { merge, Observable, of } from 'rxjs';
 import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
@@ -21,16 +21,21 @@ import { ModalService } from '../../../../modal/modal.service';
 import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
-import { DictionaryUtilities } from '../../../../shared/services/dictionary/dictionary-utilities-service';
 import { UtilsService } from '../../../../shared/services/utils/utils.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import {
+  ComponentValue,
+  DictionaryUtilities,
+} from '../../../../shared/services/dictionary/dictionary-utilities-service';
+import {
   DictionaryOptions,
+  DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapObjectService } from './select-map-object.service';
+import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -40,8 +45,8 @@ import { SelectMapObjectService } from './select-map-object.service';
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() data: ComponentBase;
-  @Input() applicantAnswers: { [key: string]: any };
-  @Output() nextStepEvent = new EventEmitter<any>();
+  @Input() applicantAnswers: ApplicantAnswersDto;
+  @Output() nextStepEvent = new EventEmitter<string>();
 
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
   @ViewChild('informationTemplate', { static: false }) informationTemplate;
@@ -50,14 +55,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public mapCenter: Array<number>;
   public mapControls = [];
   public provider = { search: this.providerSearch() };
-  public selectedValue: any;
+  public selectedValue;
   public showMap = false;
   public mapIsLoaded = false;
   public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   public isMobile: boolean;
   public isSearchTitleVisible = true;
 
-  private componentValue: any;
+  private componentValue: ComponentValue;
   private screenStore: ScreenStore;
   private needToAutoFocus = false; // Флаг из атрибутов для авто центровки ближайшего объекта к центру
 
@@ -82,7 +87,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngAfterViewInit(): void {
-    this.showMap = true;
+    setTimeout(() => {
+      this.showMap = true;
+    });
     this.selectMapObjectService.templates.detailsTemplate = this.detailsTemplate;
     this.selectMapObjectService.templates.informationTemplate = this.informationTemplate;
   }
@@ -132,7 +139,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private subscribeToEmmitNextStepData() {
     this.selectMapObjectService.selectedValue
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((value: any) => {
+      .subscribe((value) => {
         this.isSearchTitleVisible = !value || !this.isMobile;
         this.selectedValue = value;
         this.cdr.detectChanges();
@@ -167,6 +174,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private setMapOpstions() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.selectMapObjectService.ymaps = (window as any).ymaps;
     this.yaMapService.map.controls.add('zoomControl', {
       position: {
@@ -209,7 +217,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     const { geo_lon, geo_lat, center } = this.componentValue;
     const moscowCenter = [37.64, 55.76]; // Москва
     const geoCode = geo_lon && geo_lat ? [geo_lon, geo_lat] : null;
-    this.mapCenter = geoCode || center || moscowCenter;
+    this.mapCenter = (geoCode || center || moscowCenter) as number[]; // TODO fix as
   }
 
   /**
@@ -218,11 +226,11 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * затем заполняем полученный справочник этими координтами и кладем в сервис
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  private fillCoords(dictionaryFilters) {
+  private fillCoords(dictionaryFilters: Array<IdictionaryFilter>) {
     return this.dictionaryApiService
       .getSelectMapDictionary(this.getDictionaryType(), this.getOptions(dictionaryFilters))
       .pipe(
-        switchMap((dictionary: any) => {
+        switchMap((dictionary: DictionaryResponseForYMap) => {
           this.selectMapObjectService.dictionary = dictionary;
           // Параллелим получение геоточек на 4 запроса
           const items = [...dictionary.items];
@@ -262,13 +270,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return this.selectMapObjectService.componentAttrs.dictionaryType;
   }
 
-  // TODO Сделать интерфейс для mapObject
-  private selectMapObject(mapObject) {
+  private selectMapObject(mapObject: DictionaryYMapItem) {
     if (!mapObject) return;
     this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
   }
 
-  public lookupChanged(mapObject, lookup) {
+  public lookupChanged(mapObject: DictionaryYMapItem, lookup: LookupComponent) {
     this.selectMapObject(mapObject);
     lookup.clearInput();
   }
@@ -312,7 +319,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * @param templateName имя шаблона из this.templates
    * @param item контекст балуна
    */
-  public showModalFromTemplate(templateName, item) {
+  public showModalFromTemplate(templateName: string, item: DictionaryYMapItem) {
     this.modalService.openModal(CommonModalComponent, {
       modalTemplateRef: this[templateName],
       item,

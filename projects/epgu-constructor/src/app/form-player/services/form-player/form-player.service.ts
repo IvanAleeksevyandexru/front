@@ -5,13 +5,12 @@ import { ScreenService } from '../../../screen/screen.service';
 import { COMPONENT_DATA_KEY } from '../../../shared/constants/form-player';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import {
-  CheckOrderApiResponse, FormPlayerApiResponse,
+  CheckOrderApiResponse, FormPlayerApiResponse, FormPlayerApiSuccessResponse,
 } from '../form-player-api/form-player-api.types';
 import { UtilsService } from '../../../shared/services/utils/utils.service';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
 import { Location } from '@angular/common';
 import { WINDOW } from '../../../core/providers/window.provider';
-import { LoggerService } from '../../../core/services/logger/logger.service';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -111,7 +110,7 @@ export class FormPlayerService extends FormPlayerBaseService {
     if (this.hasError(response)) {
       this.sendDataError(response);
     } else {
-      this.sendDataSuccess(response);
+      this.sendDataSuccess(response as FormPlayerApiSuccessResponse);
       this.resetViewByChangeScreen();
     }
   };

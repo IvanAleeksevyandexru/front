@@ -57,7 +57,7 @@ export class EmployeeHistoryFormService {
 
     if (generationData) {
       for(const [key , value] of Object.entries(generationData)) {
-        let convertedValue: any = value;
+        let convertedValue = value;
         if (['from', 'to'].includes(key)) {
           convertedValue = new MonthYear(value?.month, value?.year);
         }

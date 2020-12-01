@@ -32,5 +32,5 @@ export interface ConfirmUserDataFieldsState {
 
 export interface ConfirmUserDataState {
   states: ConfirmUserDataFieldsState[];
-  storedValues: { [key: string]: any };
+  storedValues: { [key: string]: string | boolean | object };
 }

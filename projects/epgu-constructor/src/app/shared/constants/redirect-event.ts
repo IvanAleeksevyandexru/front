@@ -2,7 +2,7 @@
  * Опции для перенаправления на страницу со списком отправленных
  * заявлений в MobileView (для новая версия приложения - native)
  */
-const OPTIONS_FEED_MV = {
+export const OPTIONS_FEED_MV = {
   eventType: 'open_screen',
   eventParams: [{ key: 'screen', value: 'Feed' }] // реализовано в новой версии, в нативном МП
 };
@@ -19,7 +19,7 @@ const OPTIONS_FEED_MV = {
 //   ]
 // };
 
-const OPTIONS_FEED_EXIT = {
+export const OPTIONS_FEED_EXIT = {
   eventType: 'exit',
   eventParams: []
 };

@@ -1,28 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { CheckOrderApiResponse } from './form-player-api.types';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class FormPlayerApiServiceStub {
 
-  public checkIfOrderExist(): Observable<any> {
+  public checkIfOrderExist(): Observable<{}> {
     return of({});
   }
 
-  public getInviteServiceData(): Observable<any> {
+  public getInviteServiceData(): Observable<{}> {
     return of({});
   }
 
-  public getServiceData(): Observable<any> {
+  public getServiceData(): Observable<{}> {
     return of({});
   }
 
-  public navigate(): Observable<any> {
+  public navigate(): Observable<{}> {
     return of({});
   }
 
-  public sendAction(): Observable<any> {
+  public sendAction(): Observable<{}> {
     return of({});
   }
 

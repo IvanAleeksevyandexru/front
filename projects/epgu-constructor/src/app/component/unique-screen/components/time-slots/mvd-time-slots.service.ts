@@ -5,10 +5,14 @@ import * as uuid from 'uuid';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import {
+  BookTimeSlotReq,
   MvdDepartmentInterface,
   SlotInterface,
+  SmevSlotInterface,
   SmevSlotsMapInterface,
-  TimeSlotValueInterface
+  TimeSlot,
+  TimeSlotReq,
+  TimeSlotValueInterface,
 } from './time-slots.types';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 
@@ -65,11 +69,11 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     return this.availableMonths;
   }
 
-  getAvailableSlots(selectedDay: Date): Observable<any[]> {
+  getAvailableSlots(selectedDay: Date): Observable<SmevSlotInterface[]> {
     return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
   }
 
-  getBookedSlot(): any {
+  getBookedSlot(): SlotInterface {
     return this.bookedSlot;
   }
 
@@ -81,7 +85,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     return this.activeYearNumber;
   }
 
-  init(data: TimeSlotValueInterface): Observable<any> {
+  init(data: TimeSlotValueInterface): Observable<void> {
 
     if (this.changed(data) || this.errorMessage) {
       this.slotsMap = {};
@@ -134,7 +138,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     return changed;
   }
 
-  private getSlotsRequest() {
+  private getSlotsRequest(): TimeSlotReq {
     // TODO HARDCODE, возможно, стоит перенести в json
     return {
       organizationId: [this.department.value],
@@ -145,7 +149,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     };
   }
 
-  private getBookRequest(selectedSlot: SlotInterface) {
+  private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
@@ -169,7 +173,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     };
   }
 
-  private initSlotsMap(slots: any[]): void {
+  private initSlotsMap(slots: TimeSlot[]): void {
     slots.forEach((slot) => {
       const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
