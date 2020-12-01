@@ -87,7 +87,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   private initVariable() {
     this.screens = {};
     this.componentId = 0;
-    this.saveState({ value: null });
+    this.saveState([]);
   }
 
   isScreensAvailable(): boolean {
@@ -127,10 +127,10 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     this.saveState(state);
   }
 
-  getState(): { value: string } {
+  getState(): Array<{ [key: string]: { value: string } }> {
     return JSON.parse(this.currentAnswersService.state);
   }
-  saveState(state: { value: string }) {
+  saveState(state: Array<{ [key: string]: { value: string } }>) {
     this.currentAnswersService.state = JSON.stringify(state);
   }
 
