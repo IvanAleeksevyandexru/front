@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
 import { interval } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../core/config/config.service';
-import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
-import { ScreenService } from '../../../../../screen/screen.service';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
+import { ScreenService } from '../../../../../screen/screen.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-email',
@@ -18,29 +17,27 @@ export class ConfirmEmailComponent {
   timer: number;
   isTimerShow = true;
 
-  // <-- constant
-  count = 59;
-  countInterval = 1000;
+  count = 59; // 59 секунд
+  countInterval = 1000; // 1 секунда
 
   constructor(
     public screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
-    private navService: NavigationService,
     private navModalService: NavigationModalService,
     public config: ConfigService,
   ) {
     interval(5000)
-      .pipe(takeUntil(ngUnsubscribe$))
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
         this.navModalService.next({ payload: this.getComponentState() });
       });
   }
 
-  sendPostAgain() {
+  resendEmailConfirmation() {
     const options: NavigationOptions = {
-      url: 'service/actions/resendEmailConfirmation', // TODO вынести куда нибудь
+      url: 'service/actions/resendEmailConfirmation',
     };
-    this.navService.nextStep.next({ options });
+    this.navModalService.next({ options });
     this.isTimerShow = true;
   }
 
