@@ -3,5 +3,5 @@ export interface ConfirmationModalBaseButton {
   color?: string;
   loader?: boolean;
   handler?: Function;
-  value?: any;
+  value?: string;
 }

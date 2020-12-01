@@ -2,15 +2,15 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
-import { ModalService } from '../../modal/modal.service';
-import { ScreenBase } from '../screenBase';
 import {
   ActionType,
   ComponentDtoAction,
   DTOActionAction,
 } from '../../form-player/services/form-player-api/form-player-api.types';
+import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
+import { ModalService } from '../../modal/modal.service';
+import { ScreenBase } from '../screenBase';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -20,12 +20,19 @@ import {
 })
 export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   rejectAction: ComponentDtoAction;
+  submitLabel: string;
+
   constructor(public injector: Injector, private modalService: ModalService) {
     super(injector);
   }
 
   ngOnInit(): void {
     this.subscribeToComponent();
+    this.screenService.submitLabel$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((label: string) => {
+        this.submitLabel = label;
+      });
   }
 
   subscribeToComponent() {
@@ -38,7 +45,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.navigationService.nextStep.next({ payload });
   }
 
-  answerChoose(action: ComponentDtoAction): any {
+  answerChoose(action: ComponentDtoAction) {
     if (action.disabled) {
       return;
     }
@@ -58,7 +65,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     };
   }
 
-  showModalRedirectTo(action) {
+  showModalRedirectTo(action: ComponentDtoAction) {
     const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
       ConfirmationModalComponent,
       {

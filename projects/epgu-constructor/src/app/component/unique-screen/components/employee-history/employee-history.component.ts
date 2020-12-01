@@ -48,7 +48,7 @@ export class EmployeeHistoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const displayAttrs: { [key: string]: any } = this.display?.components[0]?.attrs;
+    const displayAttrs = this.display?.components[0]?.attrs;
     this.monthsService.years = displayAttrs?.years;
     this.monthsService.isNonStop = displayAttrs?.nonStop;
     this.monthsService.initSettings();
@@ -93,9 +93,7 @@ export class EmployeeHistoryComponent implements OnInit {
   }
 
   private initData(): void {
-    const componentValue: any = this.screenService.getComponentData(
-      this.screenService.component?.value,
-    );
+    const componentValue = this.screenService.getComponentData(this.screenService.component?.value);
 
     this.employeeFormService.clearHistoryForm();
 

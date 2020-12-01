@@ -6,8 +6,12 @@ import { ValidationShowOn } from 'epgu-lib';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
 import { ValidationService } from '../../../components-list/services/validation.service';
-import { ScenarioDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentDto,
+  ScenarioDto,
+} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { CustomComponent } from '../../../components-list/components-list.types';
 
 @Component({
   selector: 'epgu-constructor-invitation-error',
@@ -16,7 +20,7 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
   providers: [UnsubscribeService],
 })
 export class InvitationErrorComponent implements OnInit {
-  @Input() data: any;
+  @Input() data: ComponentDto;
   @Input() scenarioDto: ScenarioDto;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
   public email: FormControl = new FormControl('', {
@@ -36,11 +40,11 @@ export class InvitationErrorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.email.setValidators(this.validationService.customValidator(this.data));
+    this.email.setValidators(this.validationService.customValidator(this.data as CustomComponent)); // TODO fix ComponentDto and ComponentBase
   }
 
   sendEmail(): void {
-    const ref: any = this.data.attrs?.ref;
+    const ref = this.data.attrs?.ref;
     const value = this.scenarioDto.applicantAnswers[ref]?.value;
     if (!value) {
       this.emailSent = true;

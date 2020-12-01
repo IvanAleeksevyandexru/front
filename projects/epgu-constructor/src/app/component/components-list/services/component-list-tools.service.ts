@@ -29,12 +29,12 @@ export class ComponentListToolsService {
     CustomScreenComponentTypes.CityInput,
   ];
 
-  private prevValues: { [key: string]: any } = {};
+  private prevValues: { [key: string]: string | number } = {};
 
   updateStatusElements(
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
-    componentVal: any,
+    componentVal: { [key: string]: string },
     components: Array<CustomComponent>,
     form: FormArray,
     shownElements: CustomListStatusElements,
@@ -112,7 +112,7 @@ export class ComponentListToolsService {
   }
 
   hasRelation(component: CustomComponent,relation: CustomComponentRefRelation): boolean {
-    return component.attrs?.ref?.some((o: any) => o.relation === relation);
+    return component.attrs?.ref?.some((o) => o.relation === relation);
   }
 
   updateDependents(
@@ -164,9 +164,9 @@ export class ComponentListToolsService {
     return shownElements;
   }
 
-  convertedValue(component: CustomComponent): any {
+  convertedValue(component: CustomComponent) {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
-    const parseValue = (value): any => {
+    const parseValue = (value) => {
       if (isDateAndValue) {
         return new Date(value);
       } else if (this.isAddress(component.type)) {
@@ -234,7 +234,7 @@ export class ComponentListToolsService {
    * @example {val: '{add16} + {add17} / 100'} => 50 + 150 / 100
    */
   private calculateValueFromRelation(itemRef: CustomComponentRef, components: CustomComponent[], form: FormArray): Function | string {
-    let str = itemRef.val as String;
+    let str = itemRef.val as string;
     const lettersAnNumberItemRegExp = /\{\w+\}/gm;
     const matches = str.match(lettersAnNumberItemRegExp);
     const componentKeys = Array.isArray(matches) ? [...matches] : [];
@@ -261,7 +261,7 @@ export class ComponentListToolsService {
    * Возвращает откалькулируемую функцию по формуле
    * @param formula - формула для расчета
    */
-  private getCalcFieldValue(formula) {
+  private getCalcFieldValue(formula: string) {
     // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
     return Function(`'use strict'; return (Math.round(${formula}))`)();
   }

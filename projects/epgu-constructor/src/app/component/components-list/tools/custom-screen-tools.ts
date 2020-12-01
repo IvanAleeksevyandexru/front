@@ -1,5 +1,5 @@
 import { ListItem } from 'epgu-lib';
-import { DictionaryItem } from '../../shared/services/dictionary-api/dictionary-api.types';
+import { DictionaryItem, DictionaryResponse } from '../../shared/services/dictionary-api/dictionary-api.types';
 import {
   CustomComponent,
   CustomListDictionary,
@@ -26,10 +26,10 @@ export function getCustomScreenDictionaryFirstState(): CustomListDictionary {
     loadEnd: false,
     paginationLoading: true,
     page: 0,
-    data: {} as any,
+    data: {} as DictionaryResponse,
     list: [],
-    origin: {} as any,
-    selectedItem: {} as any,
+    origin: {} as CustomComponent,
+    selectedItem: {} as DictionaryItem,
   };
 }
 
@@ -80,6 +80,8 @@ export const isHaveNeededValue = (
   relation: CustomComponentRefRelation,
 ): boolean => {
   if (item.relation === relation) {
+    // TODO разобраться с типами ComponentBase ( value: string )
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const stateRelatedRelValue: any = components.find(
       (c: CustomComponent) => c.id === item.relatedRel,
     )?.value;

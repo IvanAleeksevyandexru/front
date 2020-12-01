@@ -33,7 +33,7 @@ export class CompressionService {
     'BAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AABEIAAEAAgMBEQACEQEDEQH/x' +
     'ABKAAEAAAAAAAAAAAAAAAAAAAALEAEAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAA' +
     'AAAAAEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/8H//2Q==';
-    const testImageFile = await this.getFilefromDataUrl(testImageURL, 'image.jpg', Date.now());
+    const testImageFile: File | Blob = await this.getFilefromDataUrl(testImageURL, 'image.jpg', Date.now());
     const testImageCanvas = (await this.drawFileInCanvas(testImageFile))[1];
     const testImageFile2 = await this.canvasToFile(
       testImageCanvas, testImageFile['type'],
@@ -157,7 +157,7 @@ export class CompressionService {
   * @returns {Promise<File | Blob>}
   */
   private async canvasToFile(
-    canvas: any,
+    canvas: HTMLCanvasElement | OffscreenCanvas,
     fileType: string, fileName: string,
     fileLastModified: number,
     quality: number = 1
@@ -168,7 +168,7 @@ export class CompressionService {
       file['name'] = fileName;
       file['lastModified'] = fileLastModified;
     } else {
-      const dataUrl = canvas.toDataURL(fileType, quality);
+      const dataUrl = (canvas as HTMLCanvasElement).toDataURL(fileType, quality);
       file = await this.getFilefromDataUrl(dataUrl, fileName, fileLastModified);
     }
     return file;
