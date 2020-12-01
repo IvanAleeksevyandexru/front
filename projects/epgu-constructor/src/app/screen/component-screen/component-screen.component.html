@@ -24,12 +24,12 @@
         >
         </epgu-constructor-confirm-personal-user-phone-email>
 
-        <epgu-constructor-temporary-registration-addr
+        <epgu-constructor-registration-addr
           *ngSwitchCase="screenComponentName.registrationAddr"
           [data]="screenService.component"
           [error]="screenService.componentError"
         >
-        </epgu-constructor-temporary-registration-addr>
+        </epgu-constructor-registration-addr>
 
         <epgu-constructor-add-passport
           *ngSwitchCase="screenComponentName.passportLookup"
@@ -64,7 +64,8 @@
         <epgu-constructor-timer
           *ngSwitchCase="screenComponentName.timer"
           [data]="screenService.component"
-          (nextStepEvent)="nextStep($event)">
+          (nextStepEvent)="nextStep($event)"
+        >
         </epgu-constructor-timer>
       </ng-container>
     </epgu-constructor-screen-pad>
