@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
+
 import { TextTransform } from '../../../types/textTransform';
 
 @Component({
@@ -21,4 +22,12 @@ export class ConstructorMaskedInputComponent {
   @Input() name: string;
   @Input() id: string;
   @Input() placeholder: string;
+
+  public onChange($event: Event): void {
+    if (this.control.updateOn === 'blur') {
+      const input = $event.target as HTMLInputElement;
+      this.control.setValue(input.value);
+      this.control.updateValueAndValidity();
+    }
+  }
 }
