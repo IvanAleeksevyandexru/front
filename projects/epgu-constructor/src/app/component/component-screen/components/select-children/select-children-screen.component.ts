@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ListItem } from 'epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
@@ -8,6 +7,7 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
+import { CustomComponentOutputData } from '../../../components-list/components-list.types';
 
 enum ItemStatus {
   invalid = 'INVALID',
@@ -17,7 +17,9 @@ enum ItemStatus {
 interface ChildI {
   id?: number | string;
   text?: string;
-  [key: string]: any;
+  controlId?: string;
+  hidden?: boolean;
+  [key: string]: string | number | boolean;
 }
 
 @Component({
@@ -31,9 +33,8 @@ export class SelectChildrenScreenComponent implements OnInit {
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
   NEW_ID = 'new';
-  valueParsed: any;
-  itemsToSelect: Array<ListItem>; // Дети для выпадающего списка
-  items: Array<any> = []; // Выбранные дети
+  itemsToSelect: Array<ChildI>; // Дети для выпадающего списка
+  items: Array<ChildI> = []; // Выбранные дети
   itemsComponents = []; // Компоненты для кастомных детей
   selectChildrenForm = new FormGroup({});
   firstNameRef: string;
@@ -69,7 +70,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.itemsToSelect = this.getItemsToSelect(itemsList);
   }
 
-  private getItemsToSelect(itemsList) {
+  private getItemsToSelect(itemsList: Array<{ [key: string]: string }>) {
     return itemsList
       .map((child) => {
         return {
@@ -110,7 +111,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.currentAnswersService.isValid = this.selectChildrenForm.valid && !!this.items.length;
   }
 
-  updateItemValidationStatus(status: ItemStatus, itemId): void {
+  updateItemValidationStatus(status: ItemStatus, itemId: string): void {
     const error = status === ItemStatus.valid ? null : { invalidForm: true };
     this.selectChildrenForm.get(itemId).setErrors(error);
     this.updateCurrentAnswerServiceValidation();
@@ -127,9 +128,9 @@ export class SelectChildrenScreenComponent implements OnInit {
    */
   addNewChild(index: number): void {
     const id = uuid.v4();
-    const newChild: any = {
+    const newChild = {
       ...this.screenService.component?.attrs?.components?.reduce(
-        (accum, value: any) => ({
+        (accum, value) => ({
           ...accum,
           [value.id]: '',
         }),
@@ -152,7 +153,7 @@ export class SelectChildrenScreenComponent implements OnInit {
   /**
    * Сохраняем данные для отправки, удаляя лишние поля
    */
-  passDataToSend(items): void {
+  passDataToSend(items: ChildI[]): void {
     const itemsToSend = items.map((child) => {
       const childToSend = { ...child };
       delete childToSend.controlId;
@@ -174,7 +175,7 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param item сам ребенок
    * @param index индекс массива детей
    */
-  updateChild(childData, item, index): void {
+  updateChild(childData: CustomComponentOutputData, item: ChildI, index: number): void {
     const formattedChildData = Object.keys(childData).reduce(
       (accum, key) => ({
         ...accum,
@@ -211,7 +212,7 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param event объект-ребенок
    * @param index индекс массива детей
    */
-  handleSelect(event, index?: number): void {
+  handleSelect(event: ChildI, index?: number): void {
     Object.assign(this.items[index], event);
     if (event[this.idRef] === this.NEW_ID) {
       this.addNewChild(index);
@@ -237,7 +238,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     });
   }
 
-  private addFormControl(id, value = null): void {
+  private addFormControl(id: string, value: ChildI = null): void {
     this.selectChildrenForm.addControl(id, new FormControl(value, [Validators.required]));
   }
 
@@ -245,7 +246,7 @@ export class SelectChildrenScreenComponent implements OnInit {
    * метод формирует и возвращает массив компонентов кастомного ребенка
    * @param child - сохраненный ранее ребенок. Используется для заполнения полей
    */
-  private prepareItemComponents(child = {}) {
+  private prepareItemComponents(child: ChildI = {}) {
     return this.screenService.component?.attrs?.components.map((component) => {
       return {
         ...component,

@@ -51,6 +51,8 @@ export interface TimerComponentBase extends ComponentBase{
       timeFinishRef: string;
       visitTimeRef: string;
     }
+    // TODO
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any
   };
 }

@@ -8,6 +8,8 @@ import { ComponentBase } from '../../../../screen/screen.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { Subject } from 'rxjs';
 import { WebcamService } from '../../services/webcam/webcam.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HealthService } from 'epgu-lib';
 
 class МockScreenService {
   header = '';
@@ -47,9 +49,10 @@ describe('UploadAndEditPhotoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ UploadAndEditPhotoModule ],
+      imports: [ UploadAndEditPhotoModule, RouterTestingModule ],
       providers: [
         TerraByteApiService,
+        HealthService,
         ConfigService,
         WebcamService,
         { provide: ScreenService, useClass: МockScreenService },

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TerraFileOptions, TerraUploadFileOptions } from './terra-byte-api.types';
+import { TerabyteListItem, TerraFileOptions, TerraUploadFileOptions, UploadedFile } from './terra-byte-api.types';
 import { Observable } from 'rxjs';
 import { TerraUploadedFile } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { ConfigService } from '../../../core/config/config.service';
-import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import * as FileSaver from 'file-saver';
 
 /**
@@ -14,8 +13,7 @@ import * as FileSaver from 'file-saver';
 export class TerraByteApiService {
   constructor(
     private http: HttpClient,
-    private config: ConfigService,
-    private deviceDetectorService: DeviceDetectorService,
+    private config: ConfigService
   ) {}
 
   /**
@@ -58,17 +56,17 @@ export class TerraByteApiService {
    * Возвращает список файлов, для определённого объекта
    * @param objectId - идентификатор объекта
    */
-  getListByObjectId(objectId: string): Observable<any> {
-    return this.http.get(this.getTerabyteApiUrl(`/${objectId}`), this.getServerRequestOptions());
+  getListByObjectId(objectId: string): Observable<TerabyteListItem[]> {
+    return this.http.get<TerabyteListItem[]>(this.getTerabyteApiUrl(`/${objectId}`), this.getServerRequestOptions());
   }
 
   /**
    * Возвращает информацию по файлу
    * @param options - параметры для получения файла
    */
-  getFileInfo(options: TerraFileOptions): Observable<any> {
+  getFileInfo(options: TerraFileOptions): Observable<TerabyteListItem> {
     // eslint-disable-next-line max-len
-    return this.http.get(
+    return this.http.get<TerabyteListItem>(
       this.getTerabyteApiUrl(
         `/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`,
       ),
@@ -81,7 +79,7 @@ export class TerraByteApiService {
    * @param options - опции для отправки файла
    * @param file - данные файла
    */
-  uploadFile(options: TerraUploadFileOptions, file: File | Blob): Observable<any> {
+  uploadFile(options: TerraUploadFileOptions, file: File | Blob): Observable<void> {
     const formData = new FormData();
     if (file instanceof File) {
       formData.append('file', file, file.name);
@@ -92,7 +90,7 @@ export class TerraByteApiService {
       formData.append(k, options[k]);
     });
 
-    return this.http.post(
+    return this.http.post<void>(
       this.getTerabyteApiUrl('/upload'),
       formData,
       this.getServerRequestOptions(),
@@ -103,19 +101,19 @@ export class TerraByteApiService {
    * Запрос на удаление файла
    * @param options - данные о файле
    */
-  deleteFile(options: TerraFileOptions): Observable<any> {
+  deleteFile(options: TerraFileOptions): Observable<TerraUploadedFile> {
     const url = `/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`;
     // eslint-disable-next-line max-len
-    return this.http.delete(this.getTerabyteApiUrl(url), this.getServerRequestOptions());
+    return this.http.delete<TerraUploadedFile>(this.getTerabyteApiUrl(url), this.getServerRequestOptions());
   }
 
   /**
    * Запрос на загрузку уже существующего
    * @param options - данные о файле
    */
-  downloadFile(options: TerraFileOptions): Observable<any> {
+  downloadFile(options: TerraFileOptions): Observable<Blob> {
     // eslint-disable-next-line max-len
-    return this.http.get(
+    return this.http.get<Blob>(
       this.getTerabyteApiUrl(
         `/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`,
       ),

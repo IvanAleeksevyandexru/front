@@ -13,6 +13,14 @@ module.exports = {
     '@typescript-eslint/semi': ['error'],
     'no-empty-function': ['error', { "allow": ["constructors"] }],
     'object-curly-spacing': ["error", "always", {"objectsInObjects": false}],
+    '@typescript-eslint/no-explicit-any': ["error", { "ignoreRestArgs": false }],
+    '@typescript-eslint/typedef': [
+      "error",
+      {
+        "arrowParameter": false,
+        "memberVariableDeclaration": false
+      }
+    ]
   },
   overrides: [
     // Add this rules, if you use inline templates inside *.component.ts files
@@ -50,6 +58,13 @@ module.exports = {
       files: ['*.stub.ts'],
       rules: {
         'no-empty-function': "off"
+      }
+    },
+    {
+      files: ['*.spec.ts'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/typedef': 'off'
       }
     }
   ],

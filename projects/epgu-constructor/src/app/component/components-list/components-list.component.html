@@ -188,18 +188,13 @@
         <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item *ngSwitchCase="componentType.PersonInnInput"
-                                       [data]="componentData">
-        <ng-container *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"></ng-container>
-      </epgu-constructor-component-item>
-
       <epgu-constructor-timer [data]="componentData.value" *ngSwitchCase="componentType.Timer">
       </epgu-constructor-timer>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.PassportLookup"
                                        [data]="componentData">
         <epgu-constructor-passport
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [attrs]="componentData.value?.attrs"
         >
         </epgu-constructor-passport>
@@ -231,17 +226,16 @@
 </ng-template>
 
 <ng-template #plainInput let-data>
-  <lib-plain-input
+  <epgu-constructor-constructor-plain-input
     [epgu-constructor-currency-transform]="data.value?.attrs?.price"
-    epgu-constructor-trim
-    epgu-constructor-text-transform
     [textTransformType]="data.value?.attrs?.fstuc"
     [invalid]="data.get('value').invalid && data.get('value').touched"
     [name]="data.value?.id"
-    [formControl]="data.get('value')"
+    [control]="data.get('value')"
     [validationShowOn]="validationShowOn"
     [readOnly]="data.value?.attrs?.readonly"
-  ></lib-plain-input>
+    [placeholder]="data.value?.attrs?.placeholder"
+  ></epgu-constructor-constructor-plain-input>
 </ng-template>
 
 <ng-template #maskedInput let-data>

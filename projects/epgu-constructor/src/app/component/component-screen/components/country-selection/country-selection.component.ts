@@ -7,6 +7,8 @@ import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirma
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
 import { ComponentScreenComponent } from '../../../../screen/component-screen/component-screen.component';
+import { DictionaryItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { ComponentBase } from '../../../../screen/screen.types';
 
 interface WarningMessages {
   [countryType: number]: string;
@@ -30,7 +32,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
   selectedCountry: Country;
   helperText: string;
 
-  @Input() data: any;
+  @Input() data: ComponentBase;
   form: FormGroup;
 
   @Output() changeComponentSettings = new EventEmitter();
@@ -81,7 +83,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
     //   .addEventListener('click', this.showModal);
   }
 
-  mapToListItemModel(dictionary): void {
+  mapToListItemModel(dictionary: DictionaryItem[]): void {
     this.listItemDictionary = dictionary.map((item) => ({
       id: item.value,
       text: item.title,
@@ -89,7 +91,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
     }));
   }
 
-  selectCountry(country): void {
+  selectCountry(country: Country): void {
     this.selectedCountry = country;
     const hasWarning = country.countryType !== '1';
     this.changeComponentSettings.emit({

@@ -38,8 +38,9 @@ export class FileUploadComponent implements OnInit {
     files: FileResponseToBackendUploadsItem[]; // Здесь будет храниться значение на передачу
     errors: string[];
   } = { files: [], errors: [] };
-  @Output() newValueSet: EventEmitter<object> = new EventEmitter<object>();
-  @Output() newRelatedValueSet: EventEmitter<any> = new EventEmitter<any>();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  @Output() newValueSet = new EventEmitter<any>();
+  @Output() newRelatedValueSet = new EventEmitter<FileResponseToBackendWithRelatedUploads>();
 
   constructor(private fileUploadService: FileUploadService) {}
 
@@ -93,6 +94,7 @@ export class FileUploadComponent implements OnInit {
    * @param refBlock - блок ответов связанного компонента
    * @private
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getRefSubLabels(attrs: FileUploadAttributes, refBlock: any): string | null {
     const subLabel = [];
     const isArrData = Array.isArray(refBlock);

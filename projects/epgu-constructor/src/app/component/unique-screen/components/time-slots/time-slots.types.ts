@@ -53,6 +53,19 @@ export interface GibddDepartmentInterface {
   };
 }
 
+export type TimeSlot = {
+  slotId: string;
+  serviceId: string;
+  organizationId: string;
+  areaId: string;
+  visitTime: number;
+  visitTimeStr: string;
+  visitTimeISO: string;
+  queueNumber: number;
+  duration: number;
+  attributes: [];
+};
+
 export interface SmevBookResponseInterface {
   bookId: string;
   esiaId: string;
@@ -60,18 +73,7 @@ export interface SmevBookResponseInterface {
     statusCode: number;
     statusMessage: string;
   };
-  timeSlot: {
-    slotId: string;
-    serviceId: string;
-    organizationId: string;
-    areaId: string;
-    visitTime: number;
-    visitTimeStr: string;
-    visitTimeISO: string;
-    queueNumber;
-    duration;
-    attributes: [];
-  };
+  timeSlot: TimeSlot;
   error: ErrorInterface;
   timeStart: Date;
   timeFinish: Date;
@@ -81,27 +83,14 @@ export interface CancelSlotResponseInterface {
   bookId: string;
   error: ErrorInterface;
   esiaId: string;
-  status: { 
+  status: {
     statusCode: number,
     statusMessage: string;
   }
 }
 
 export interface SmevSlotsResponseInterface {
-  slots: [
-    {
-      slotId: string;
-      serviceId: string;
-      organizationId: string;
-      areaId: string;
-      visitTime: number;
-      visitTimeStr: string;
-      visitTimeISO: string;
-      queueNumber;
-      duration;
-      attributes: [];
-    }
-  ];
+  slots: TimeSlot[];
   error: ErrorInterface;
 }
 
@@ -119,3 +108,38 @@ export enum TimeSlotsServiceTypes {
   'GIBDD' = 'GIBDD',
   'MVD' = 'MVD',
 }
+
+export interface TimeSlotReq {
+  organizationId?: string[] | string;
+  caseNumber?: string;
+  serviceId?: string[];
+  eserviceId?: string;
+  attributes?: { name: string; value: string; }[];
+  routeNumber?: string;
+  serviceCode?: string;
+
+}
+
+// TODO разнести на brak/mvd etc
+export interface BookTimeSlotReq {
+  preliminaryReservation?: string;
+  address?: string;
+  orgName?: string;
+  routeNumber?: string;
+  serviceCode?: string;
+  subject?: string;
+  params?: { name: string; value: string; }[];
+  eserviceId?: string; // TODO eserviceId?????
+  bookId?: string;
+  organizationId?: string[] | string;
+  calendarName?: string;
+  areaId?: string[];
+  selectedHallTitle?: string;
+  parentOrderId?: string;
+  preliminaryReservationPeriod?: string;
+  attributes?: { name?: string; value?: string; }[];
+  slotId?: string[];
+  serviceId?:string[];
+  caseNumber?: string;
+}
+

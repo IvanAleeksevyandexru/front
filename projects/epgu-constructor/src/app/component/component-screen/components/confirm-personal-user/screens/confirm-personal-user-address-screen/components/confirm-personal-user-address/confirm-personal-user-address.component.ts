@@ -32,7 +32,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   @ViewChild('dataForm', { static: false }) dataForm;
 
   @Input() data: ConfirmAddressInterface;
-  valueParsed: any = {};
+  valueParsed: { [key: string]: string | Date } = {};
 
   constructor(
     public config: ConfigService,
@@ -74,7 +74,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
       .subscribe((change) => this.formChangesHandler(change));
   }
 
-  private formChangesHandler(change): void {
+  private formChangesHandler(change: { [key: string]: string | Date }): void {
     this.valueParsed = { ...this.valueParsed, ...change };
     this.emmitData();
   }

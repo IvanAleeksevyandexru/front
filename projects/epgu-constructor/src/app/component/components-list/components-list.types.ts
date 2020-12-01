@@ -3,6 +3,7 @@ import { DisplayDto } from '../../form-player/services/form-player-api/form-play
 import { ComponentBase } from '../../screen/screen.types';
 import { TextTransform } from '../../shared/types/textTransform';
 import { DictionaryItem, DictionaryResponse } from '../shared/services/dictionary-api/dictionary-api.types';
+import { Ref } from '../../shared/services/date-range/date-range.models';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -33,7 +34,7 @@ export enum CustomScreenComponentTypes {
 export type CustomListDropDowns = Array<Partial<ListItem>>;
 export type CustomListDictionaries = Array<CustomListDictionary>;
 export type CustomListReferenceData = CustomListGenericData<CustomListDropDowns | DictionaryResponse>;
-export type CustomComponentState = { [key: string]: CustomComponentStateItem };
+// export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
 export interface CustomListDictionary {
   loading: boolean,
@@ -78,12 +79,18 @@ export type CustomComponentDropDownItem = {
  * @property dictionaryType - dictionary name for request {@see getDictionary}
  */
 export interface CustomComponentAttr {
+  // TODO разобраться с типами
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key:string]: any;
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType: string;
   labelAttr: string;
-  fields: Array<any>;
-  ref: Array<any>;
+  fields: Array<{
+    fieldName?: string;
+    label?: string;
+    type?: string;
+  }>;
+  ref: Array<CustomComponentRef & Ref>; //TODO разобраться с типами
   validation: Array<CustomComponentAttrValidation>;
   requiredAttrs?: Array<string>;
   updateOnValidation?: UpdateOn;
@@ -102,25 +109,13 @@ export interface CustomComponentAttrValidation {
   errorMsg: string;
 }
 
-/**
- * @property valid - валидность
- * @property errorMessage - сообщение для ощибки
- * @property value - текущее значение
- */
-export interface CustomComponentStateItem {
-  valid: boolean;
-  isShown: boolean;
-  disabled?: boolean;
-  errorMessage: string;
-  value: any;
-  selectedItem?: any;
-  component: CustomComponent
-}
-
 export interface CustomComponentOutputData {
   [key: string]: {
     value: string;
-    valid: boolean
+    valid: boolean;
+    isValid?: boolean;
+    disabled?: boolean;
+    condition?: string;
   }
 }
 
@@ -155,7 +150,8 @@ export interface CustomListFormGroup {
   label: string;
   required: boolean;
   type: CustomScreenComponentTypes;
-  value: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: any; // TODO придумать что делать с интерфейсами для формгрупп
 }
 
 export interface CustomDisplay extends DisplayDto {
@@ -164,7 +160,7 @@ export interface CustomDisplay extends DisplayDto {
 
 export interface RelationCondition {
   type: 'RegExp' | 'MinDate' | 'MaxDate';
-  value: any;
+  value: string;
   result: CustomComponentAttr;
 }
 

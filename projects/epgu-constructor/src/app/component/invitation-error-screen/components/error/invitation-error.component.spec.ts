@@ -8,6 +8,7 @@ import { ConfigService } from '../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
 import { ImgPrefixerPipe } from '../../../../core/pipes/img-prefixer/img-prefixer.pipe';
 import { InvitationErrorComponent } from './invitation-error.component';
+import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 
 
 xdescribe('InvitationErrorComponent', () => {
@@ -22,7 +23,7 @@ xdescribe('InvitationErrorComponent', () => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [InvitationErrorComponent, ImgPrefixerPipe],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, ConstructorPlainInputModule],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         ValidationService,

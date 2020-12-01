@@ -28,6 +28,7 @@ export interface CurrentValueDto {
  */
 export interface ComponentDto {
   attrs: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
     actions?: Array<ComponentDtoAction>;
   };
@@ -48,6 +49,7 @@ export interface ComponentDtoAction {
   disabled?: boolean;
   applicantType?: string;
   color?: 'white' | 'trasparent' | '';
+  link?: string;
 }
 
 export interface DisplaySubjHead {
@@ -71,7 +73,7 @@ export interface DisplayDto {
   header: string;
   subHeader?: DisplaySubjHead;
   label?: string;
-  displayCssClass?: string;
+  cssClass?: string;
   id: string;
   name: string;
   submitLabel: string;
@@ -182,6 +184,6 @@ export interface ActionDTO<T = {}> {
 }
 
 export interface ActionApiResponse<T> {
-  errorList: { [key: string]: any }[];
+  errorList: { [key: string]: string }[];
   responseData: { value: T; type: string };
 }

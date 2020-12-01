@@ -12,24 +12,24 @@ import {
 })
 export class DragAndDropDirective {
   @HostBinding('class.file-over') fileOver: boolean;
-  @Output() fileDropped = new EventEmitter<any>();
+  @Output() fileDropped = new EventEmitter<FileList>();
 
   // Dragover listener
-  @HostListener('dragover', ['$event']) onDragOver(evt) {
+  @HostListener('dragover', ['$event']) onDragOver(evt: DragEvent) {
     evt.preventDefault();
     evt.stopPropagation();
     this.fileOver = true;
   }
 
   // Dragleave listener
-  @HostListener('dragleave', ['$event']) public onDragLeave(evt) {
+  @HostListener('dragleave', ['$event']) public onDragLeave(evt: DragEvent) {
     evt.preventDefault();
     evt.stopPropagation();
     this.fileOver = false;
   }
 
   // Drop listener
-  @HostListener('drop', ['$event']) public ondrop(evt) {
+  @HostListener('drop', ['$event']) public ondrop(evt: DragEvent) {
     evt.preventDefault();
     evt.stopPropagation();
     this.fileOver = false;

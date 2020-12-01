@@ -14,9 +14,10 @@
         [hideHouseCheckbox]="true"
         [externalApiUrl]="config.externalApiUrl + '/'"
         [id]="field.fieldName"
-        [validationShowOn]="validationShowOn"
+        [validationShowOn]="field.validationShowOn || validationShowOn"
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
         [formControlName]="field.fieldName"
+        [disabled]="field.disabled"
         clearable="true"
       >
       </lib-dadata-widget>
@@ -39,16 +40,14 @@
       >
       </lib-date-picker>
 
-      <lib-plain-input
-        epgu-constructor-trim
-        epgu-constructor-text-transform
+      <epgu-constructor-constructor-plain-input
         [textTransformType]="data?.attrs?.fstuc"
         [id]="field.fieldName"
         [validationShowOn]="validationShowOn"
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
-        [formControlName]="field.fieldName"
+        [control]="redAddrForm.get(field.fieldName)"
         *ngSwitchDefault
-      ></lib-plain-input>
+      ></epgu-constructor-constructor-plain-input>
     </ng-container>
   </div>
   <div class="error">

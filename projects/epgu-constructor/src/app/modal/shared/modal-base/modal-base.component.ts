@@ -8,7 +8,7 @@ import { HelperService } from 'epgu-lib';
 export class ModalBaseComponent {
   detachView: Function;
 
-  modalResult = new BehaviorSubject<any>(null);
+  modalResult = new BehaviorSubject(null);
 
   @HostListener('document:keydown', ['$event']) onKeydownComponent(event: KeyboardEvent): void {
     if (event.key === 'Escape' || event.key === 'Esc') {
@@ -23,6 +23,7 @@ export class ModalBaseComponent {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   closeModal(value?: any): void {
     if (HelperService.isTouchDevice()) {
       document.body.style.overflow = null;

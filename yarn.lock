@@ -1100,6 +1100,14 @@
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
 
+"@babel/runtime-corejs3@^7.9.0":
+  version "7.12.5"
+  resolved "http://npm.gosuslugi.local/@babel%2fruntime-corejs3/-/runtime-corejs3-7.12.5.tgz#ffee91da0eb4c6dae080774e94ba606368e414f4"
+  integrity sha512-roGr54CsTmNPPzZoCP1AmDXuBoNao7tnSA83TXTwt+UK5QVyh1DIJnrgYRPWKCF2flqZQXwa7Yr8v7VmLzF0YQ==
+  dependencies:
+    core-js-pure "^3.0.0"
+    regenerator-runtime "^0.13.4"
+
 "@babel/runtime@7.9.6":
   version "7.9.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.9.6.tgz#a9102eb5cadedf3f31d08a9ecf294af7827ea29f"
@@ -1574,6 +1582,21 @@
   integrity sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==
   dependencies:
     defer-to-connect "^1.0.1"
+
+"@tanker/file-ponyfill@^2.6.3":
+  version "2.6.3"
+  resolved "http://npm.gosuslugi.local/@tanker%2ffile-ponyfill/-/file-ponyfill-2.6.3.tgz#4ccf21ea505f7fb3610cfb06683aacdf8f15c2ea"
+  integrity sha512-ALEE9Cuh6w6pvWevq02LFi3x0BWPTijtHAjHDi6Da+vff1YSFaC1TQc3EX+fL0GwP36sj/+0ZWQ2RW9wAWP8eA==
+  dependencies:
+    "@babel/runtime-corejs3" "^7.9.0"
+    "@tanker/global-this" "2.6.3"
+
+"@tanker/global-this@2.6.3":
+  version "2.6.3"
+  resolved "http://npm.gosuslugi.local/@tanker%2fglobal-this/-/global-this-2.6.3.tgz#e163ea798b4918bb4ce202294674f05b02459161"
+  integrity sha512-+a0SStP6HUNb4fEYRQdSCbQpiau1LGScyRyngN6kUO2fulhg6TOs2mr9F1os23tp9hIELBy4lubMhxV7NhAMQQ==
+  dependencies:
+    "@babel/runtime-corejs3" "^7.9.0"
 
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
   version "7.0.9"
@@ -4114,6 +4137,11 @@ core-js-compat@^3.6.2:
     browserslist "^4.8.5"
     semver "7.0.0"
 
+core-js-pure@^3.0.0:
+  version "3.8.0"
+  resolved "http://npm.gosuslugi.local/core-js-pure/-/core-js-pure-3.8.0.tgz#4cdd2eca37d49cda206b66e26204818dba77884a"
+  integrity sha512-fRjhg3NeouotRoIV0L1FdchA6CK7ZD+lyINyMoz19SyV+ROpC4noS1xItWHFtwZdlqfMfVPJEyEGdfri2bD1pA==
+
 core-js@3.2.1:
   version "3.2.1"
   resolved "http://npm.gosuslugi.local/core-js/-/core-js-3.2.1.tgz#cd41f38534da6cc59f7db050fe67307de9868b09"
@@ -5067,10 +5095,10 @@ env-variable@0.0.x:
   resolved "http://npm.gosuslugi.local/env-variable/-/env-variable-0.0.6.tgz#74ab20b3786c545b62b4a4813ab8cf22726c9808"
   integrity sha512-bHz59NlBbtS0NhftmR8+ExBEekE7br0e01jw+kk0NDro7TtZzBYZ5ScGPs3OmwnpyfHTHOtr1Y6uedCdrIldtg==
 
-epgu-lib@0.0.735:
-  version "0.0.735"
-  resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.735.tgz#3e1f4fb36ea1f383b231c0309416c5d8abd5de1c"
-  integrity sha512-hGxXKNXDN+fh64Da0NvaS3/YEIb+Kej0DH2GH3XmQkb16nL8ClppYNtao7i75IDpz+Dhj/4WnNTAvK6iYEJOPQ==
+epgu-lib@0.0.745:
+  version "0.0.745"
+  resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.745.tgz#8c70cfd98ddbf0eff6be0d4a5ea74a93da9016ea"
+  integrity sha512-eKg04MlFgr/3v7SPYw/uEHI9sgbq9cyZq8js2hWrxQhMZQRSq7Rp327tOzgSEsxrM5ptk6FixaOP67xmYSMqyg==
   dependencies:
     "@angular/animations" "10.1.1"
     "@angular/cdk" "10.2.0"

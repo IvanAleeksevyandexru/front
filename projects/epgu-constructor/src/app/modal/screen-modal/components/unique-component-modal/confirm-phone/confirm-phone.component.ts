@@ -58,7 +58,7 @@ export class ConfirmPhoneComponent implements OnInit {
     this.isTimerShow = true;
   }
 
-  enterCode(code: any) {
+  enterCode(code: string) {
     if (String(code).length === this.codeLength) {
       this.navModalService.next({ payload: this.getComponentState(code) });
     }
@@ -68,7 +68,7 @@ export class ConfirmPhoneComponent implements OnInit {
     this.navModalService.prev({});
   }
 
-  getComponentState(code: any): NavigationPayload {
+  getComponentState(code: string | number): NavigationPayload {
     return {
       [this.screenService.component.id]: {
         visited: true,
@@ -97,7 +97,7 @@ export class ConfirmPhoneComponent implements OnInit {
       codeFormGroup.valueChanges
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe((next: CodeFormGroup) => {
-          const code: any = this.codeFormArray
+          const code = this.codeFormArray
             .getRawValue()
             .map((elem: CodeFormGroup) => elem.codeValue)
             .join('');

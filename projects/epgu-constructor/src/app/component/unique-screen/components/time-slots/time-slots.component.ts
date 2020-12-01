@@ -31,7 +31,7 @@ const moment = moment_;
 export class TimeSlotsComponent implements OnInit {
   @Input() isLoading: boolean;
   @Input() data: DisplayDto;
-  @Output() nextStepEvent = new EventEmitter<any>();
+  @Output() nextStepEvent = new EventEmitter();
 
   public date: Date = null;
   public label: string;
@@ -63,7 +63,7 @@ export class TimeSlotsComponent implements OnInit {
   public timeSlots: SlotInterface[] = [];
   public dialogButtons = [];
   public isExistsSlots = true;
-  public currentSlot: any;
+  public currentSlot: SlotInterface;
   public currentMonth: ListItem;
   public blockMobileKeyboard = false;
   public fixedMonth = false;
@@ -94,6 +94,8 @@ export class TimeSlotsComponent implements OnInit {
     this.timeSlotServices.MVD = mvdTimeSlotsService;
   }
 
+  // TODO
+  // eslint-disable-next-line @typescript-eslint/typedef
   private renderSingleMonthGrid(output) {
     output.splice(0, output.length); // in-place clear
     const firstDayOfMonth = moment()
@@ -176,13 +178,13 @@ export class TimeSlotsComponent implements OnInit {
     this.showTimeSlots(date);
   }
 
-  public chooseTimeSlot(slot) {
+  public chooseTimeSlot(slot: SlotInterface) {
     this.currentSlot = slot;
     this.currentAnswersService.state = slot;
   }
 
-  public isSlotSelected(slot) {
-    return this.currentSlot && this.currentSlot.slotTime === slot.slotTime;
+  public isSlotSelected({ slotTime }: SlotInterface) {
+    return this.currentSlot && this.currentSlot.slotTime === slotTime;
   }
 
   public showTimeSlots(date: Date) {
@@ -204,9 +206,9 @@ export class TimeSlotsComponent implements OnInit {
     );
   }
 
-  public monthChanged(ev) {
+  public monthChanged(ev: ListItem) {
     const { id } = ev;
-    const [activeYear, activeMonth] = id.split('-');
+    const [activeYear, activeMonth] = (id as string).split('-');
     this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
     this.activeYearNumber = parseInt(activeYear, 10);
     this.renderSingleMonthGrid(this.weeks);
@@ -263,7 +265,7 @@ export class TimeSlotsComponent implements OnInit {
       });
   }
 
-  showModal(params) {
+  showModal(params: ConfirmationModal) {
     return this.modalService.openModal(ConfirmationModalComponent, {
       ...params,
     });
@@ -375,7 +377,7 @@ export class TimeSlotsComponent implements OnInit {
     return !this.currentAnswersService.isValid || this.inProgress || !this.isBookSlotSelected();
   }
 
-  isBookSlotSelected(): boolean {
+  isBookSlotSelected(): string {
     return this.currentSlot?.slotId;
   }
 

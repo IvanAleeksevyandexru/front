@@ -57,7 +57,7 @@ export class EmployeeHistoryFormService {
 
     if (generationData) {
       for(const [key , value] of Object.entries(generationData)) {
-        let convertedValue: any = value;
+        let convertedValue = value;
         if (['from', 'to'].includes(key)) {
           convertedValue = new MonthYear(value?.month, value?.year);
         }
@@ -77,16 +77,14 @@ export class EmployeeHistoryFormService {
       const toDateValue: MonthYear = form.get('to').value;
       const fromDate: moment_.Moment = moment().year(date.year).month(date.month);
       const toDate: moment_.Moment = toDateValue ? moment().year(toDateValue.year).month(toDateValue.month) : moment();
-      const minDate = moment().subtract(this.monthsService.years, 'years');
-      const diffDate: number = fromDate.diff(minDate);
-      const minDateTo: MonthYear = diffDate < 0 ? MonthYear.fromDate(minDate.toDate()) : date;
 
       if (fromDate.diff(toDate) > 0) {
         form.get('to').setErrors({ error: EmployeeHostoryErrors.FailedDateTo });
       } else {
         form.get('to').setErrors(null);
       }
-      form.get('minDateTo').patchValue(minDateTo);
+
+      form.get('minDateTo').patchValue(date);
     });
 
     form.get('checkboxToDate').valueChanges
@@ -109,7 +107,17 @@ export class EmployeeHistoryFormService {
         filter(([fromDate, toDate]) => toDate),
         takeUntil(this.unsubscribeService),
       )
-      .subscribe(() => {
+      .subscribe(([fromDate, toDateValue]) => {
+        const toDate: moment_.Moment = moment().year(toDateValue.year).month(toDateValue.month);
+
+        const minDate = moment().subtract(this.monthsService.years, 'years');
+
+        if (toDate.diff(minDate) < 0) {
+          form.get('to').setErrors({ error: EmployeeHostoryErrors.FailedPeriod });
+        } else {
+          form.get('to').setErrors(null);
+        }
+
         this.monthsService.updateAvailableMonths(this.employeeHistoryForm.getRawValue());
       });
   }

@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import {
   CustomComponent,
   CustomComponentAttrValidation,
-  CustomComponentValidationConditions,
   CustomScreenComponentTypes
 } from '../components-list.types';
-import { AbstractControl, FormArray, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { REQUIRED_FIELD, InvalidControlMsg } from '../../../shared/constants/helper-texts';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 
@@ -50,7 +49,7 @@ export class ValidationService {
     };
   }
 
-  private isValid(component, value): boolean {
+  private isValid(component: CustomComponent, value: string): boolean {
     switch (component.type) {
       case CustomScreenComponentTypes.OgrnInput:
         return checkOgrn(value);

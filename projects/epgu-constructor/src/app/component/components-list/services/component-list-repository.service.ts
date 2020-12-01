@@ -42,7 +42,7 @@ export class ComponentListRepositoryService {
     private toolsService: ComponentListToolsService,
   ) {}
 
-  loadReferenceData$(components: Array<CustomComponent>): Observable<any> {
+  loadReferenceData$(components: Array<CustomComponent>): Observable<CustomListReferenceData[]> {
     const data: Array<Observable<CustomListReferenceData>> = [];
     components.forEach((component: CustomComponent) => {
       if (isDropDown(component.type)) {
@@ -60,13 +60,32 @@ export class ComponentListRepositoryService {
     );
   }
 
-  getDictionaries$(dictionaryType: string, component: CustomComponent, options: DictionaryOptions,)
+  getDictionaries$(dictionaryType: string, component: CustomComponent, options: DictionaryOptions)
     : Observable<CustomListGenericData<DictionaryResponse>> {
     return this.dictionaryApiService.getDictionary(dictionaryType, options).pipe(
       map((dictionary: DictionaryResponse) => ({
         component,
         data: { ...dictionary },
       })),
+      map((dictionary) => {
+        // TODO: удалить когда будет реализована фильтрация справочника на строне RTlabs
+        if (component.attrs.filter) {
+          const items = dictionary.data.items.filter((data) =>
+            component.attrs.filter.value.includes(data[component.attrs.filter.key]),
+          );
+          const data: DictionaryResponse = {
+            ...dictionary.data,
+            items,
+          };
+
+          return {
+            component,
+            data,
+          };
+        }
+
+        return dictionary;
+      }),
     );
   }
 

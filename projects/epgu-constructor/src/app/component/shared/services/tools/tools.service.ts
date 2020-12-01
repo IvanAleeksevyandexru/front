@@ -5,7 +5,7 @@ export class ToolsService {
 
   constructor() { }
 
-  public getFormattedCycledValues(changes: any, currentCycledFields: any, cycledValues: any) {
+  public getFormattedCycledValues(changes: object | string, currentCycledFields: object, cycledValues: object) {
     const stateData = {};
     let changesPrepared = {};
 

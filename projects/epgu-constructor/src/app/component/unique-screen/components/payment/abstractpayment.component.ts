@@ -2,12 +2,14 @@ import { Component, EventEmitter, Injector, Input, OnDestroy, Output } from '@an
 import * as moment_ from 'moment';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { PaymentService } from './payment.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ConfigService } from '../../../../core/config/config.service';
+// eslint-disable-next-line import/no-cycle
 import { PaymentStatus } from './payment.constants';
+// eslint-disable-next-line import/no-cycle
+import { PaymentService } from './payment.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import {
@@ -26,6 +28,12 @@ import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
 
 const ALREADY_PAY_ERROR = 23;
 const moment = moment_;
+
+export interface PaymentsAttrs {
+  nsi: string;
+  dictItemCode: string;
+  ref: { fiasCode: string };
+}
 
 @Component({
   template: '',
@@ -121,10 +129,11 @@ export class AbstractPaymentComponent implements OnDestroy {
     }
 
     // Если УИН явно не передан
+    // TODO разобраться с типами ComponentBaseAttrs (as PaymentsAttrs)
     this.paymentService
-      .loadPaymentInfo(this.data.attrs)
+      .loadPaymentInfo(this.data.attrs as PaymentsAttrs)
       .pipe(
-        catchError((err: any) => {
+        catchError((err) => {
           return throwError(err);
         }),
         switchMap((attributeValues: PaymentInfoInterface) =>
@@ -132,7 +141,6 @@ export class AbstractPaymentComponent implements OnDestroy {
         ),
         takeUntil(this.ngUnsubscribe$),
       )
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       .subscribe(
         (res) => this.setPaymentStatusFromSuccessRequest(res),
         (error) => this.setPaymentStatusFromErrorRequest(error),
@@ -143,6 +151,7 @@ export class AbstractPaymentComponent implements OnDestroy {
    * Возвращает объект значений из переданных данных
    * @private
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getDataFromValue(): any {
     const { value } = this.data;
     if (value) {
@@ -160,7 +169,7 @@ export class AbstractPaymentComponent implements OnDestroy {
     this.paymentPurpose = attributeValues.paymentPurpose;
     this.status = PaymentStatus.SUCCESS;
     return this.paymentService.getUinByOrderId(this.orderId, this.payCode, attributeValues).pipe(
-      catchError((err: any) => {
+      catchError((err) => {
         return throwError(err);
       }),
     );
@@ -170,6 +179,8 @@ export class AbstractPaymentComponent implements OnDestroy {
    * Устанавливает статус оплаты из успешного запроса
    * @param value - УИН
    */
+  // TODO
+  // eslint-disable-next-line @typescript-eslint/typedef
   private setPaymentStatusFromSuccessRequest({ value }) {
     if (!value.includes('PRIOR')) {
       // eslint-disable-next-line no-param-reassign
@@ -275,7 +286,7 @@ export class AbstractPaymentComponent implements OnDestroy {
     this.paymentService
       .getPaymentStatusByUIN(this.orderId, this.payCode)
       .pipe(
-        catchError((err: any) => {
+        catchError((err) => {
           return throwError(err);
         }),
       )
@@ -304,6 +315,7 @@ export class AbstractPaymentComponent implements OnDestroy {
    * Устанавливает статус оплаты из не успешного запроса
    * @param error - сведения об ошибке на запрос
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private setPaymentStatusFromErrorRequest(error: any) {
     this.setInfoLoadedState();
     if (error.status === 500) {
