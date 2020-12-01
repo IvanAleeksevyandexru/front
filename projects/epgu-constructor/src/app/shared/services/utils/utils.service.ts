@@ -124,6 +124,8 @@ export class UtilsService {
    * @example getObjectProperty({a: {b: {c: 3}}}), 'a.b.c');
    */
   static getObjectProperty(obj: any, path: string, defaultValue: any = undefined): any {
+    if (!path) return obj;
+
     const travel = (regexp) =>
       String.prototype.split
         .call(path, regexp)
