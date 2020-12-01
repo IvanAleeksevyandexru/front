@@ -3,7 +3,7 @@
  * которые нужно переключать при клике на родителя;
  * @return - true - если клементы был переключен иначе false;
  */
-export function getHiddenBlock(el: HTMLElement, id: number): HTMLElement {
+export function getHiddenBlock(el: HTMLElement, id: string): HTMLElement {
   const selector = `[data-hidden-id=${id}]`;
   return el.querySelector(selector);
 }
