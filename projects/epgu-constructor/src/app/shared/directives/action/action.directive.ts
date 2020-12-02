@@ -4,17 +4,17 @@ import { filter } from 'rxjs/operators';
 import { ScreenService } from '../../../screen/screen.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import {
-  ActionApiResponse, ActionDTO, DTOActionAction,
+  ActionApiResponse,
+  ActionDTO,
+  DTOActionAction,
   ActionType,
-  ComponentDtoAction
+  ComponentDtoAction,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { ComponentStateForNavigate } from './action.interface';
-import { DatePipe } from '@angular/common';
-
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -32,7 +32,6 @@ export class ActionDirective {
     private navService: NavigationService,
     private navModalService: NavigationModalService,
     private utilsService: UtilsService,
-    private datePipe: DatePipe
   ) {}
 
   private switchAction(): void {
@@ -80,7 +79,14 @@ export class ActionDirective {
 
   navigateModal(stepType: string): void {
     const navigation = this.prepareNavigationData();
-    this.navModalService[stepType].next(navigation);
+    switch (stepType) {
+      case 'prevStep':
+        this.navModalService.prev(navigation);
+        break;
+      case 'nextStep':
+        this.navModalService.next(navigation);
+        break;
+    }
   }
 
   private prepareNavigationData(): Navigation {
@@ -116,7 +122,7 @@ export class ActionDirective {
     };
   }
 
-  private getComponentStateValueForNavigate (actionName: DTOActionAction) {
+  private getComponentStateValueForNavigate(actionName: DTOActionAction) {
     return this.action.value;
   }
 
