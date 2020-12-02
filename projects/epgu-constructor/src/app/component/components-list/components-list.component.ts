@@ -73,7 +73,7 @@ export class ComponentsListComponent implements OnChanges {
     }
   }
 
-  subscribeOnFormStatusChanging(): void {
+  private subscribeOnFormStatusChanging(): void {
     if (this.emitFormStatus.observers.length) {
       this.emitFormStatus.emit(this.formService.form.status);
       this.formService.form.statusChanges

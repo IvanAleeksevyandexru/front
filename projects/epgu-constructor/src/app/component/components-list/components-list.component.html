@@ -85,7 +85,7 @@
       <epgu-constructor-component-item *ngSwitchCase="componentType.RadioInput"
                                        [data]="componentData"
                                        [hidden]="componentData.value?.attrs?.hidden">
-        <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio__inline' : 'form__radio__block'">
+        <div class="form__radio" [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio--inline' : 'form__radio--block'">
           <lib-radio
             *ngFor="let item of componentData.value?.attrs?.supportedValues"
             [name]="componentData.value.id"
@@ -239,20 +239,17 @@
 </ng-template>
 
 <ng-template #maskedInput let-data>
-  <lib-standard-masked-input
-    *ngIf="data.value?.attrs?.mask"
-    epgu-constructor-text-transform
+  <epgu-constructor-masked-input *ngIf="data.value?.attrs?.mask"
+    [validationShowOn]="validationShowOn"
+    [readonly]="data.value?.attrs?.readonly"
+    [mask]="data.value?.attrs?.mask | maskHandle"
     [textTransformType]="data.value?.attrs?.fstuc"
     [clearable]="true"
-    [mask]="data.value?.attrs?.mask | maskHandle"
     [name]="data.value?.id"
     [showMaskAsPlaceholder]="!data.value?.attrs?.placeholder"
-    [placeholder]="data.value?.attrs?.placeholder"
     [showConstantMaskSymbols]="true"
-    [formControl]="data.get('value')"
+    [placeholder]="data.value?.attrs?.placeholder"
+    [control]="data.get('value')"
     [invalid]="data.get('value').invalid && data.get('value').touched"
-    [validationShowOn]="validationShowOn"
-    [readOnly]="data.value?.attrs?.readonly"
-  >
-  </lib-standard-masked-input>
+  ></epgu-constructor-masked-input>
 </ng-template>

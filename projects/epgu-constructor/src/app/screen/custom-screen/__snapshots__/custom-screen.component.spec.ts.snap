@@ -5,7 +5,7 @@ exports[`CustomScreenComponent check snapshot 1`] = `
   injector={[Function Injector_]}
   navigationService={[Function Object]}
   ngUnsubscribe$={[Function UnsubscribeService]}
-  screenService={[Function ScreenService]}
+  screenService={[Function ScreenServiceStub]}
 >
   <epgu-constructor-screen-container>
     <div
@@ -23,11 +23,7 @@ exports[`CustomScreenComponent check snapshot 1`] = `
     <div
       class="screen-footer"
     >
-      <lib-button
-        class="btn__submit"
-      >
-         
-      </lib-button>
+      
     </div>
   </epgu-constructor-screen-container>
 </epgu-constructor-custom-screen>

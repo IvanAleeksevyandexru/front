@@ -6,6 +6,7 @@ import { ComponentBase } from '../../../../screen/screen.types';
 import { AddPassportComponent } from './add-passport.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
+import { PassportModule } from '../../../../shared/components/add-passport/passport.module';
 
 
 describe('AddPassportComponent', () => {
@@ -23,7 +24,7 @@ describe('AddPassportComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AddPassportComponent],
-      imports: [SharedModule, RouterTestingModule],
+      imports: [SharedModule, RouterTestingModule, PassportModule],
       providers: [CurrentAnswersService, ToolsService, HealthService],
     })
     .compileComponents();

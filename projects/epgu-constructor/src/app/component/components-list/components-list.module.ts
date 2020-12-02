@@ -11,6 +11,8 @@ import { ComponentItemComponent } from './component-item/component-item.componen
 import { DocInputComponent } from './doc-input/doc-input.component';
 import { TimerModule } from '../component-screen/components/timer/timer.module';
 import { ConstructorPlainInputModule } from '../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { ConstructorMaskedInputModule } from '../../shared/components/epgu-lib/constructor-masked-input/constructor-masked-input.module';
+import { PassportModule } from '../../shared/components/add-passport/passport.module';
 
 const COMPONENTS = [
   ComponentsListComponent,
@@ -25,12 +27,14 @@ const COMPONENTS = [
   exports: [
     ...COMPONENTS
   ],
-    imports: [
-        CoreModule,
-        SharedModule,
-        TimerModule,
-        ConstructorPlainInputModule,
-    ],
+  imports: [
+    CoreModule,
+    SharedModule,
+    TimerModule,
+    ConstructorPlainInputModule,
+    ConstructorMaskedInputModule,
+    PassportModule,
+  ],
   providers: [
     ValidationService,
     AddressHelperService,

@@ -14,6 +14,7 @@ import { CustomScreenComponent } from './custom-screen.component';
 import { Subject } from 'rxjs';
 import { Navigation } from '../../form-player/form-player.types';
 import { CustomComponentValidationConditions } from '../../component/components-list/components-list.types';
+import { ScreenServiceStub } from '../screen.service.stub';
 
 const moment = moment_;
 
@@ -54,7 +55,7 @@ describe('CustomScreenComponent', () => {
         MockComponent(ScreenContainerComponent),
       ],
       providers: [
-        { provide: ScreenService, useValue: MockService(ScreenService) },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useValue: navigationServiceMock },
         { provide: UnsubscribeService, useValue: MockService(UnsubscribeService) },
       ]
@@ -84,9 +85,10 @@ describe('CustomScreenComponent', () => {
   describe('navigation cases', () => {
     it('onClick lib button should call nextScreen()', () => {
       spyOn(component, 'nextStep').and.callThrough();
+      screenService.submitLabel = 'next';
+      fixture.detectChanges();
       const libButton = fixture.debugElement.nativeElement.querySelector('.btn__submit');
       libButton.click();
-      fixture.detectChanges();
       expect(component.nextStep).toHaveBeenCalled();
     });
 
