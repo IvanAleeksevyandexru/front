@@ -91,7 +91,7 @@
     *ngFor="let action of screenService.actions$ | async"
     epgu-constructor-action
     [action]="action"
-    color="white"
+    [color]="action.color"
   >
     <div>{{ action.label }}</div>
   </lib-button>
@@ -99,6 +99,7 @@
 
 <ng-template #displayContinueBtn>
   <lib-button
+    *ngIf="screenService.submitLabel$ | async"
     [showLoader]="screenService.isLoading$ | async"
     (click)="nextStep()"
     class="btn__submit"
