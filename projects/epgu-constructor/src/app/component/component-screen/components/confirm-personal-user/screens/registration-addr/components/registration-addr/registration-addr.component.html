@@ -18,7 +18,7 @@
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
         [formControlName]="field.fieldName"
         [disabled]="field.disabled"
-        clearable="true"
+        [clearable]="true"
       >
       </lib-dadata-widget>
 
@@ -36,7 +36,7 @@
         [id]="field.fieldName"
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
         [formControlName]="field.fieldName"
-        clearable="true"
+        [clearable]="true"
       >
       </lib-date-picker>
 
@@ -45,7 +45,7 @@
         [id]="field.fieldName"
         [validationShowOn]="validationShowOn"
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
-        [control]="redAddrForm.get(field.fieldName)"
+        [control]="$any(redAddrForm.get(field.fieldName))"
         *ngSwitchDefault
       ></epgu-constructor-constructor-plain-input>
     </ng-container>

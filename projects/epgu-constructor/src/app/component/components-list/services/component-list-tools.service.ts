@@ -12,6 +12,7 @@ import {
   CustomListStatusElements,
   CustomScreenComponentTypes
 } from '../components-list.types';
+import { ListItem } from 'epgu-lib';
 
 @Injectable()
 export class ComponentListToolsService {
@@ -197,7 +198,7 @@ export class ComponentListToolsService {
     }
   }
 
-  adaptiveDropDown(items: CustomComponentDropDownItemList): CustomListDropDowns {
+  adaptiveDropDown(items: CustomComponentDropDownItemList): Partial<ListItem>[] {
     return items.map((item: CustomComponentDropDownItem, index: number) => {
       const itemText = item.label || item.title;
       const itemCode = item.code || item?.value || `${itemText}-${index}`;

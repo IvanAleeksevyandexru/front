@@ -11,7 +11,7 @@ export interface ConfirmationModal {
   }[];
   buttons?: {
     label: string;
-    color?: string;
+    color?: '' | 'white' | 'transparent';
     loader?: boolean;
     handler?: Function;
     closeModal: boolean;

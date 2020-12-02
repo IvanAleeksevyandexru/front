@@ -20,13 +20,13 @@
          type="file"
          [attr.accept]="getAcceptTypes()"
          (click)="resetFileInputState(fileUploadInput)"
-         (change)="updateSelectedFilesInfoAndSend($event.target.files)"
+         (change)="updateSelectedFilesInfoAndSend($any($event.target).files)"
          multiple/>
   <input #cameraInput
          type="file"
          capture="environment"
          accept="image/*"
-         (change)="updateSelectedFilesInfoAndSend($event.target.files, true)">
+         (change)="updateSelectedFilesInfoAndSend($any($event.target).files, true)">
   <div *ngIf="(files$$ | async) as files"
        class="files">
     <div *ngFor="let file of files"
@@ -60,7 +60,7 @@
   <div class="fileupload__buttons">
     <lib-button
       *ngIf="this.isMobile"
-      [disabled]="isButtonsDisabled"
+      [disabled]="!!isButtonsDisabled"
       [color]="'white'"
       (click)="openCamera()"
       class="fileupload__button"
@@ -71,7 +71,7 @@
       Фото
     </lib-button>
     <lib-button
-      [disabled]="isButtonsDisabled"
+      [disabled]="!!isButtonsDisabled"
       [color]="'white'"
       (click)="selectFilesEvent()"
       class="fileupload__button"

@@ -31,9 +31,9 @@ export enum CustomScreenComponentTypes {
   Timer = 'Timer',
 }
 
-export type CustomListDropDowns = Array<Partial<ListItem>>;
-export type CustomListDictionaries = Array<CustomListDictionary>;
-export type CustomListReferenceData = CustomListGenericData<CustomListDropDowns | DictionaryResponse>;
+export type CustomListDropDowns = Array<{ [key: string]: Partial<ListItem>[] }>;
+export type CustomListDictionaries = Array<{ [key:string]: CustomListDictionaries[] }>;
+export type CustomListReferenceData = CustomListGenericData<Partial<ListItem>[] | DictionaryResponse>;
 // export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
 export interface CustomListDictionary {

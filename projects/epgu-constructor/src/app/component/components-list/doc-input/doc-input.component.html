@@ -21,7 +21,7 @@
       <epgu-constructor-masked-input
         [textTransformType]="fields['series']?.attrs?.fstuc"
         id="series"
-        [control]="form.get([seriesNumDateGroup, 'series'])"
+        [control]="$any(form.get([seriesNumDateGroup, 'series']))"
         [mask]="fields['series']?.attrs?.mask | maskHandle"
         [showMaskAsPlaceholder]="!fields['series']?.placeholder"
         [placeholder]="fields['series']?.placeholder"
@@ -39,7 +39,7 @@
       <epgu-constructor-masked-input
         [textTransformType]="fields['number']?.attrs?.fstuc"
         id="number"
-        [control]="form.get([seriesNumDateGroup, 'number'])"
+        [control]="$any(form.get([seriesNumDateGroup, 'number']))"
         [mask]="fields['number']?.attrs?.mask | maskHandle"
         [showMaskAsPlaceholder]="!fields['number']?.placeholder"
         [placeholder]="fields['number']?.placeholder"
@@ -57,7 +57,7 @@
       <lib-date-picker
         id="date"
         align="left"
-        [formControl]="form.get([seriesNumDateGroup, 'date'])"
+        [formControl]="$any(form.get([seriesNumDateGroup, 'date']))"
         [minDate]="fields['date']?.attrs?.minDate || '-120y'"
         [maxDate]="fields['date']?.attrs?.maxDate || 'today'"
         (blur)="markControlAsDirty([seriesNumDateGroup, 'date'])"
@@ -84,7 +84,7 @@
     <epgu-constructor-constructor-plain-input
       [textTransformType]="fields['emitter']?.attrs?.fstuc"
       id="emitter"
-      [control]="form.get('emitter')"
+      [control]="$any(form.get('emitter'))"
       [invalid]="isValidationShown('emitter')"
       [validationShowOn]="validationShowOn"
     ></epgu-constructor-constructor-plain-input>

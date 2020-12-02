@@ -280,7 +280,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     lookup.clearInput();
   }
 
-  public providerSearch(): Function {
+  public providerSearch() {
     return (searchString) => {
       this.selectMapObjectService.searchMapObject(searchString);
       return of(

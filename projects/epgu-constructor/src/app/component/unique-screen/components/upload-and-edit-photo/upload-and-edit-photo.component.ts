@@ -238,6 +238,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       .toLowerCase();
   }
 
+  // TODO сделать перегрузку метода чтобы избавиться от any в шаблоне
   onFileSelected(fileList: FileList, fileInput?: HTMLInputElement): void {
     if (fileList?.length && !this.isModalOpened) {
       this.setFile(fileList[0]);

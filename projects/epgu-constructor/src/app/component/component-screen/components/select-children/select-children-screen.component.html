@@ -13,7 +13,7 @@
           </div>
           <div class="card__content">
             <div>
-              <epgu-constructor-label [for]="idx" label="Выберите ребенка из вашего профиля">
+              <epgu-constructor-label [attr.for]="idx" label="Выберите ребенка из вашего профиля">
 
               </epgu-constructor-label>
             </div>
@@ -25,7 +25,7 @@
                 [items]="itemsToSelect"
               ></lib-dropdown>
             </div>
-            <section class="card__content" *ngIf="isNewId(item[isNewRef])">
+            <section class="card__content" *ngIf="isNewId($any(item[isNewRef]))">
               <epgu-constructor-components-list
                 (changes)="updateChild($event, item, idx)"
                 (emitFormStatus)="updateItemValidationStatus($event, item?.controlId)"

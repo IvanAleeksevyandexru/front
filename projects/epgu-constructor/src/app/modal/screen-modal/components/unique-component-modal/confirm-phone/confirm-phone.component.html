@@ -26,9 +26,9 @@
                        class="form__item"
                        [class.form__item--has-error]="screenService.componentError$ | async"
                        [class.form__item--has-value]="control.value.codeValue"
-                       maxlength="1"
+                       [maxlength]="1"
                        type="number"
-                       [control]="control.get('codeValue')">
+                       [control]="$any(control.get('codeValue'))">
       </epgu-constructor-constructor-plain-input>
     </div>
 

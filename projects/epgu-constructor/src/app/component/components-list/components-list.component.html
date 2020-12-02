@@ -45,7 +45,7 @@
           [items]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
           [validationShowOn]="validationShowOn"
           [disabled]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list?.length === 1"
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [clearable]="true"
           class="cs__select cs-select">
         </lib-dropdown>
@@ -56,7 +56,7 @@
         <lib-lookup
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [queryMinSymbolsCount]="0"
           [searchCaseSensitive]="false"
           [fixedItems]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
@@ -74,7 +74,7 @@
             *ngFor="let item of componentData.value?.attrs?.supportedValues"
             [name]="componentData.value.id"
             [labelText]="item.label"
-            [formControl]="componentData.get('value')"
+            [formControl]="$any(componentData.get('value'))"
             [value]="item.value">
           </lib-radio>
         </div>
@@ -88,7 +88,7 @@
         <div [ngClass]="componentData.value?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'">
           <lib-checkbox
             [checkboxId]="componentData.value?.id"
-            [formControl]="componentData.get('value')"
+            [formControl]="$any(componentData.get('value'))"
             [disabled]="componentData.value?.disabled"
             [labelText]="componentData.value?.label"
             [required]="componentData.value?.required"
@@ -106,7 +106,7 @@
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [name]="componentData.value?.id"
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [readOnly]="componentData.value?.attrs?.readonly"
           [minDate]="dateRangeService.getMinDate(componentData.value) || componentData.value?.attrs?.minDate  || '-120y'"
           [maxDate]="dateRangeService.getMaxDate(componentData.value) || componentData.value?.attrs?.maxDate || '+50y'"
@@ -123,7 +123,7 @@
           [validationShowOn]="validationShowOn"
           [hideHouseCheckbox]="true"
           [externalApiUrl]="configService.externalApiUrl + '/'"
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [hideLevels]="componentData.value?.attrs?.hideLevels"
         >
         </lib-dadata-widget>
@@ -134,7 +134,7 @@
         <lib-lookup
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [itemsProvider]="formService.addressHelperServiceProvider()"
           [clearable]="true"
         >
@@ -187,7 +187,7 @@
       <epgu-constructor-doc-input [data]="componentData" *ngSwitchCase="componentType.DocInput">
       </epgu-constructor-doc-input>
       <epgu-constructor-field-list
-        [data]="componentData.get('value')"
+        [data]="$any(componentData.get('value'))"
         *ngSwitchCase="componentType.FieldList"
       >
       </epgu-constructor-field-list>
@@ -242,10 +242,10 @@
   <div *ngIf="dropDowns$ | async as dropDowns">
     <lib-dropdown
       [invalid]="data.get('value').invalid && data.get('value').touched"
-      [items]="dropDowns[data.value?.id]"
+      [items]="dropDowns[data?.value?.id]"
       [disabled]="dropDowns[data.value?.id]?.length === 1"
       [validationShowOn]="validationShowOn"
-      [formControl]="data.get('value')"
+      [formControl]="$any(data.get('value'))"
       [clearable]="true"
       class="cs__select cs-select">
     </lib-dropdown>

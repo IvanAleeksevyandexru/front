@@ -7,7 +7,7 @@
       [objectId]="screenService.orderId$ | async"
       [applicantAnswers]="applicantAnswers"
       [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
-      [attributes]="data.attrs"
+      [attributes]="$any(data.attrs)"
       (newValueSet)="handleNewValueSet($event)"
     >
     </epgu-constructor-file-upload>

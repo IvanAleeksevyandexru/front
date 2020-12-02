@@ -6,7 +6,7 @@ import { ComponentDtoAction } from '../../../form-player/services/form-player-ap
   template: `<button [disabled]="data?.disabled || disabled"><ng-content></ng-content></button>`,
   styleUrls: ['./long-button.component.scss'],
 })
-export class LongButtonComponent {
-  @Input() data: ComponentDtoAction;
+export class LongButtonComponent<T extends ComponentDtoAction> {
+  @Input() data: Partial<T>;
   @Input() disabled: boolean;
 }
