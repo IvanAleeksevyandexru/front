@@ -10,7 +10,7 @@
       <lib-dadata-widget
         *ngSwitchCase="'regAddr'"
         [simpleMode]="true"
-        [hideLevels]="field?.hideLevels || []"
+        [hideLevels]="data?.attrs?.hideLevels || []"
         [hideHouseCheckbox]="true"
         [externalApiUrl]="config.externalApiUrl + '/'"
         [id]="field.fieldName"
@@ -57,11 +57,7 @@
 
 <div class="item hint-wrapper">
   <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
-  <div
-    class="item__hint"
-    *ngFor="let hint of data?.attrs?.hints"
-    (click)="hintClick(hint)"
-  >
+  <div class="item__hint" *ngFor="let hint of data?.attrs?.hints" (click)="hintClick(hint)">
     {{ hint.label }}
   </div>
 </div>
