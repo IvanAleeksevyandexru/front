@@ -22,10 +22,17 @@ export interface ConfirmUserDataField {
 export interface ConfirmUserDataAdaptiveField {
   label: string;
   value: string;
+  class?: {
+    value?: string;
+    label?: string;
+    field?: string;
+  }
 }
 
 export interface ConfirmUserDataFieldsState {
   groupName: string;
+  groupNameClass?: string;
+  groupNameTitleClass?: string;
   fields: Array<ConfirmUserDataAdaptiveField>;
   needDivider?: boolean;
 }
