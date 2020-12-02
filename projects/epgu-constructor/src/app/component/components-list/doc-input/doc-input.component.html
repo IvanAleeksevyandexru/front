@@ -18,19 +18,17 @@
         [label]="fields['series'].label"
         for="series"
       ></epgu-constructor-label>
-      <lib-standard-masked-input
-        epgu-constructor-trim
-        epgu-constructor-text-transform
+      <epgu-constructor-masked-input
         [textTransformType]="fields['series']?.attrs?.fstuc"
         id="series"
-        [formControl]="form.get([seriesNumDateGroup, 'series'])"
+        [control]="form.get([seriesNumDateGroup, 'series'])"
         [mask]="fields['series']?.attrs?.mask | maskHandle"
         [showMaskAsPlaceholder]="!fields['series']?.placeholder"
         [placeholder]="fields['series']?.placeholder"
         [showConstantMaskSymbols]="true"
         [invalid]="isValidationShown([seriesNumDateGroup, 'series'])"
         [validationShowOn]="validationShowOn"
-      ></lib-standard-masked-input>
+      ></epgu-constructor-masked-input>
     </div>
     <div class="doc-input__group-item doc-input__number">
       <epgu-constructor-label
@@ -38,19 +36,17 @@
         [label]="fields['number'].label"
         for="number"
       ></epgu-constructor-label>
-      <lib-standard-masked-input
-        epgu-constructor-trim
-        epgu-constructor-text-transform
+      <epgu-constructor-masked-input
         [textTransformType]="fields['number']?.attrs?.fstuc"
         id="number"
-        [formControl]="form.get([seriesNumDateGroup, 'number'])"
+        [control]="form.get([seriesNumDateGroup, 'number'])"
         [mask]="fields['number']?.attrs?.mask | maskHandle"
         [showMaskAsPlaceholder]="!fields['number']?.placeholder"
         [placeholder]="fields['number']?.placeholder"
         [showConstantMaskSymbols]="true"
         [invalid]="isValidationShown([seriesNumDateGroup, 'number'])"
         [validationShowOn]="validationShowOn"
-      ></lib-standard-masked-input>
+      ></epgu-constructor-masked-input>
     </div>
     <div class="doc-input__group-item doc-input__date">
       <epgu-constructor-label
