@@ -120,7 +120,7 @@ export class FormPlayerService extends FormPlayerBaseService {
    * для подмены экрана на тот на котором остановились
    * @private
    */
-  private isNeedToShowLastScreen(): boolean {
+  isNeedToShowLastScreen(): boolean {
     return this.location.path(true).includes('getLastScreen=') && this.isHaveOrderDataInLocalStorage();
   }
 
