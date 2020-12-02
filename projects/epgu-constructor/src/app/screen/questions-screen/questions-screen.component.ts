@@ -45,7 +45,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.navigationService.nextStep.next({ payload });
   }
 
-  answerChoose(action: ComponentDtoAction) {
+  answerChoose(action: Partial<ComponentDtoAction>) {
     if (action.disabled) {
       return;
     }
@@ -56,7 +56,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.nextStep(this.getPayload(action));
   }
 
-  getPayload(action: ComponentDtoAction) {
+  getPayload(action: Partial<ComponentDtoAction>) {
     return {
       [this.screenService.component.id]: {
         visited: true,
@@ -65,7 +65,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     };
   }
 
-  showModalRedirectTo(action: ComponentDtoAction) {
+  showModalRedirectTo(action: Partial<ComponentDtoAction>) {
     const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
       ConfirmationModalComponent,
       {

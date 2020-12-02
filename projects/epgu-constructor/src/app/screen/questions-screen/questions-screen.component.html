@@ -43,6 +43,7 @@
   <lib-button color="white" [action]="rejectAction" epgu-constructor-action>
     {{ rejectAction.label }}
   </lib-button>
+  <!--TODO - answerChoose({ value: submitLabel }) [ref EPGUCORE-42623]-->
   <lib-button
     *ngIf="submitLabel"
     [showLoader]="screenService.isLoading$ | async"

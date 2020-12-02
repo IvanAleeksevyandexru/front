@@ -30,28 +30,12 @@
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.DropDown"
                                        [data]="componentData">
-        <lib-dropdown
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="(dropDowns$ | async)[componentData.value?.id]"
-          [disabled]="(dropDowns$ | async)[componentData.value?.id]?.length === 1"
-          [validationShowOn]="validationShowOn"
-          [formControl]="componentData.get('value')"
-          [clearable]="true"
-          class="cs__select cs-select">
-        </lib-dropdown>
+        <ng-container *ngTemplateOutlet="dropDowns; context: { $implicit: componentData }"></ng-container>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.MvdGiac"
                                        [data]="componentData">
-        <lib-dropdown
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="(dropDowns$ | async)[componentData.value?.id]"
-          [disabled]="(dropDowns$ | async)[componentData.value?.id].length === 1"
-          [validationShowOn]="validationShowOn"
-          [formControl]="componentData.get('value')"
-          [clearable]="true"
-          class="cs__select cs-select">
-        </lib-dropdown>
+        <ng-container *ngTemplateOutlet="dropDowns; context: { $implicit: componentData }"></ng-container>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.Dictionary"
@@ -252,4 +236,18 @@
     [control]="data.get('value')"
     [invalid]="data.get('value').invalid && data.get('value').touched"
   ></epgu-constructor-masked-input>
+</ng-template>
+
+<ng-template #dropDowns let-data>
+  <div *ngIf="dropDowns$ | async as dropDowns">
+    <lib-dropdown
+      [invalid]="data.get('value').invalid && data.get('value').touched"
+      [items]="dropDowns[data.value?.id]"
+      [disabled]="dropDowns[data.value?.id]?.length === 1"
+      [validationShowOn]="validationShowOn"
+      [formControl]="data.get('value')"
+      [clearable]="true"
+      class="cs__select cs-select">
+    </lib-dropdown>
+  </div>
 </ng-template>
