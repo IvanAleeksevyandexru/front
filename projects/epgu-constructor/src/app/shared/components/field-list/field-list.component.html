@@ -1,26 +1,24 @@
-<div class="data">
+<div class="data" [ngClass]="style.list">
   <ng-container *ngFor="let groupItem of preparedData">
-    <div
-      class="data__group data-group"
-      [ngClass]="[groupItem.groupNameClass, groupItem.needDivider ? 'group-divider' : '']"
-    >
+    <div class="data__group data-group" [ngClass]="[style.groupName]">
       <div class="flex-row">
         <div
           [innerHTML]="groupItem?.groupName | safe: 'html'"
-          [ngClass]="groupItem.groupNameTitleClass"
+          [ngClass]="style.groupNameTitle"
           class="data-group__title"
         ></div>
       </div>
       <div class="data-group__items">
         <div
           class="data__item data-item"
-          [ngClass]="field.class.field"
+          [ngClass]="style.field"
           *ngFor="let field of groupItem.fields"
         >
-          <div class="data-item__label" [ngClass]="field.class.label">{{ field.label }}</div>
-          <div class="data-item__value" [ngClass]="field.class.value">{{ field.value }}</div>
+          <div class="data-item__label" [ngClass]="style.label">{{ field.label }}</div>
+          <div class="data-item__value" [ngClass]="style.value">{{ field.value }}</div>
         </div>
       </div>
     </div>
+    <div *ngIf="groupItem.needDivider" [ngClass]="['group-divider', style.divider]"></div>
   </ng-container>
 </div>
