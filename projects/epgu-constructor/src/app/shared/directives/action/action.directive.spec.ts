@@ -2,20 +2,98 @@ import { inject, TestBed, ComponentFixture } from '@angular/core/testing';
 
 import { ActionDirective } from './action.directive';
 
-import { ActionTestComponent } from './action-test.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
-import { FormPlayerApiServiceStub } from './stubs/form-player-api.service.stub';
+
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { NavigationServiceStub } from './stubs/navigation.service.stub';
+import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
-import { NavigationModalServiceStub } from './stubs/navigation-modal.service.stub';
-import { UtilsServiceStub } from './stubs/utils.service.stub';
+import { NavigationModalServiceStub } from '../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { UtilsService } from '../../services/utils/utils.service';
 import { By } from '@angular/platform-browser';
-import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ActionApiResponse,
+  ActionType,
+  ComponentDto,
+  ComponentDtoAction,
+  DTOActionAction,
+} from '../../../form-player/services/form-player-api/form-player-api.types';
+import { Observable, of } from 'rxjs';
+import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
+import { UtilsServiceStub } from '../../services/utils/utils.service.stub';
+
+@Component({
+  selector: 'epgu-constructor-action-test',
+  template: `
+    <button class="download" epgu-constructor-action [action]="downloadAction"></button>
+    <button class="prevStepModal" epgu-constructor-action [action]="prevStepModalAction"></button>
+    <button class="nextStepModal" epgu-constructor-action [action]="nextStepModalAction"></button>
+    <button class="skipStep" epgu-constructor-action [action]="skipStepAction"></button>
+    <button class="prevStep" epgu-constructor-action [action]="prevStepAction"></button>
+    <button class="nextStep" epgu-constructor-action [action]="nextStepAction"></button>
+    <button class="redirectToLK" epgu-constructor-action [action]="redirectToLKAction"></button>
+    <button class="profileEdit" epgu-constructor-action [action]="profileEditAction"></button>
+    <button class="home" epgu-constructor-action [action]="homeAction"></button>
+  `,
+})
+export class ActionTestComponent {
+  downloadAction: ComponentDtoAction = {
+    label: '',
+    value: '',
+    action: DTOActionAction.editPhoneNumber,
+    type: ActionType.download,
+  };
+  prevStepModalAction: ComponentDtoAction = {
+    label: '',
+    value: '',
+    action: DTOActionAction.editPhoneNumber,
+    type: ActionType.prevStepModal,
+  };
+  nextStepModalAction: ComponentDtoAction = {
+    label: '',
+    value: '',
+    action: DTOActionAction.editPhoneNumber,
+    type: ActionType.nextStepModal,
+  };
+  skipStepAction: ComponentDtoAction = {
+    label: '',
+    value: '',
+    action: DTOActionAction.editPhoneNumber,
+    type: ActionType.skipStep,
+  };
+  prevStepAction: ComponentDtoAction = {
+    label: '',
+    value: '',
+    action: DTOActionAction.editPhoneNumber,
+    type: ActionType.prevStep,
+  };
+  nextStepAction: ComponentDtoAction = {
+    label: '',
+    value: '',
+    action: DTOActionAction.editPhoneNumber,
+    type: ActionType.nextStep,
+  };
+  redirectToLKAction: ComponentDtoAction = {
+    label: '',
+    value: '',
+    action: DTOActionAction.editPhoneNumber,
+    type: ActionType.redirectToLK,
+  };
+  profileEditAction: ComponentDtoAction = {
+    label: '',
+    value: '',
+    action: DTOActionAction.editPhoneNumber,
+    type: ActionType.profileEdit,
+  };
+  homeAction: ComponentDtoAction = {
+    label: '',
+    value: '',
+    action: DTOActionAction.editPhoneNumber,
+    type: ActionType.home,
+  };
+}
 
 const mockComponent: ComponentDto = {
   attrs: {},
@@ -24,6 +102,11 @@ const mockComponent: ComponentDto = {
   id: '12',
   value: '',
 };
+
+const sendActionMock = of({
+  errorList: [],
+  responseData: { value: 'value', type: 'type' },
+}) as Observable<ActionApiResponse<string>>;
 
 describe('ActionDirective', () => {
   let fixture: ComponentFixture<ActionTestComponent>;
@@ -55,100 +138,88 @@ describe('ActionDirective', () => {
         navigationModalService = TestBed.inject(NavigationModalService);
         utilsService = TestBed.inject(UtilsService);
         jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
+        jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
       });
   });
-
-  it('should create an instance', inject(
-    [FormPlayerApiService, ScreenService, NavigationService, NavigationModalService, UtilsService],
-    (
-      formPlayerApiService: FormPlayerApiService,
-      screenService: ScreenService,
-      navigationService: NavigationService,
-      navigationModalService: NavigationModalService,
-      utilsService: UtilsService,
-    ) => {
-      const directive = new ActionDirective(
-        formPlayerApiService,
-        screenService,
-        navigationService,
-        navigationModalService,
-        utilsService,
-      );
-      expect(directive).toBeTruthy();
-    },
-  ));
 
   it('test directive - download action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.download')).nativeElement;
     fixture.detectChanges();
-    const spy = jest.spyOn(utilsService, 'downloadFile');
+    spyOn(utilsService, 'downloadFile').and.callThrough();
     button.click();
-    expect(spy).toHaveBeenCalled();
-    spy.mockRestore();
+
+    expect(utilsService.downloadFile).toHaveBeenCalled();
   });
 
   it('test directive - prevStepModal Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.prevStepModal')).nativeElement;
     fixture.detectChanges();
-    const spy = jest.spyOn(navigationModalService, 'prev');
+    spyOn(navigationModalService, 'prev').and.callThrough();
     button.click();
-    expect(spy).toHaveBeenCalled();
-    spy.mockRestore();
+
+    expect(navigationModalService.prev).toHaveBeenCalled();
   });
+
   it('test directive - nextStepModal Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.nextStepModal')).nativeElement;
     fixture.detectChanges();
-    const spy = jest.spyOn(navigationModalService, 'next');
+    spyOn(navigationModalService, 'next').and.callThrough();
     button.click();
-    expect(spy).toHaveBeenCalled();
-    spy.mockRestore();
+
+    expect(navigationModalService.next).toHaveBeenCalled();
   });
+
   it('test directive - skipStep Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.skipStep')).nativeElement;
     fixture.detectChanges();
-    const spy = jest.spyOn(navigationService.skipStep, 'next');
+    spyOn(navigationService.skipStep, 'next').and.callThrough();
     button.click();
-    expect(spy).toHaveBeenCalled();
-    spy.mockRestore();
+
+    expect(navigationService.skipStep.next).toHaveBeenCalled();
   });
+
   it('test directive - nextStep Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.nextStep')).nativeElement;
     fixture.detectChanges();
-    const spy = jest.spyOn(navigationService.nextStep, 'next');
+    spyOn(navigationService.nextStep, 'next').and.callThrough();
     button.click();
-    expect(spy).toHaveBeenCalled();
-    spy.mockRestore();
+
+    expect(navigationService.nextStep.next).toHaveBeenCalled();
   });
+
   it('test directive - prevStep Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.prevStep')).nativeElement;
     fixture.detectChanges();
-    const spy = jest.spyOn(navigationService.prevStep, 'next');
+    spyOn(navigationService.prevStep, 'next').and.callThrough();
     button.click();
-    expect(spy).toHaveBeenCalled();
-    spy.mockRestore();
+
+    expect(navigationService.prevStep.next).toHaveBeenCalled();
   });
+
   it('test directive - redirectToLK Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.redirectToLK')).nativeElement;
     fixture.detectChanges();
-    const spy = jest.spyOn(navigationService, 'redirectToLK');
+    spyOn(navigationService, 'redirectToLK').and.callThrough();
     button.click();
-    expect(spy).toHaveBeenCalled();
-    spy.mockRestore();
+
+    expect(navigationService.redirectToLK).toHaveBeenCalled();
   });
+
   it('test directive - profileEdit Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.profileEdit')).nativeElement;
     fixture.detectChanges();
-    const spy = jest.spyOn(navigationService, 'redirectToProfileEdit');
+    spyOn(navigationService, 'redirectToProfileEdit').and.callThrough();
     button.click();
-    expect(spy).toHaveBeenCalled();
-    spy.mockRestore();
+
+    expect(navigationService.redirectToProfileEdit).toHaveBeenCalled();
   });
+
   it('test directive - home Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.home')).nativeElement;
     fixture.detectChanges();
-    const spy = jest.spyOn(navigationService, 'redirectToHome');
+    spyOn(navigationService, 'redirectToHome').and.callThrough();
     button.click();
-    expect(spy).toHaveBeenCalled();
-    spy.mockRestore();
+
+    expect(navigationService.redirectToHome).toHaveBeenCalled();
   });
 });
