@@ -15,7 +15,7 @@ export interface Service {
   orderId?: string;
   invited?: boolean;
   canStartNew?: boolean;
-  apiResponse?: string;
+  initState?: string;
 }
 
 /**

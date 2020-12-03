@@ -6,5 +6,5 @@ export interface AppConfig {
   orderId?: string;
   invited?: boolean;
   canStartNew?: boolean;
-  apiResponse?: string;
+  initState?: string;
 }

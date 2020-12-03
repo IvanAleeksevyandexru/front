@@ -91,7 +91,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((loaded) => {
       if (!loaded) return;
       const { orderId, invited, canStartNew } = this.serviceDataService;
-      if (this.service.apiResponse) {
+      if (this.service.initState) {
         this.startScenarioFromProps();
       } else if (orderId) {
         this.handleOrder(orderId, invited, canStartNew);
@@ -122,8 +122,8 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   startScenarioFromProps() {
-    const store = JSON.parse(this.service.apiResponse) as FormPlayerApiSuccessResponse;
-    this.loggerService.log(['Запуск плеера из предустановленого состояния', store]);
+    const store = JSON.parse(this.service.initState) as FormPlayerApiSuccessResponse;
+    this.loggerService.log(['initState', store], 'Запуск плеера из предустановленого состояния');
     this.formPlayerService.store = store;
     const navigationPayload = store.scenarioDto.currentValue;
     this.formPlayerService.navigate({ payload: navigationPayload }, FormPlayerNavigation.NEXT);

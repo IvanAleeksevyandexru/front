@@ -13,7 +13,7 @@ const initValues: AppConfig = {
   orderId: environment.orderId,
   invited: false,
   canStartNew: true,
-  apiResponse: null,
+  initState: null,
 }
 
 @Injectable()
