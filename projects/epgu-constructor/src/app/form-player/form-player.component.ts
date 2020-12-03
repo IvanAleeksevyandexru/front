@@ -23,6 +23,8 @@ import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
+import { FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
+import { LoggerService } from '../core/services/logger/logger.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -49,6 +51,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     private modalService: ModalService,
     private zone: NgZone,
     public screenService: ScreenService,
+    private loggerService: LoggerService,
   ) {}
 
   ngOnInit(): void {
@@ -88,7 +91,9 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((loaded) => {
       if (!loaded) return;
       const { orderId, invited, canStartNew } = this.serviceDataService;
-      if (orderId) {
+      if (this.service.apiResponse) {
+        this.startScenarioFromProps();
+      } else if (orderId) {
         this.handleOrder(orderId, invited, canStartNew);
       } else {
         this.getOrderIdFromApi();
@@ -114,6 +119,14 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     const headerHeight = document.querySelector('header').scrollHeight;
     const viewPortHeight = window.innerHeight;
     this.minHeight = viewPortHeight - headerHeight - bottomIndent;
+  }
+
+  startScenarioFromProps() {
+    const store = JSON.parse(this.service.apiResponse) as FormPlayerApiSuccessResponse;
+    this.loggerService.log(['Запуск плеера из предустановленого состояния', store]);
+    this.formPlayerService.store = store;
+    const navigationPayload = store.scenarioDto.currentValue;
+    this.formPlayerService.navigate({ payload: navigationPayload }, FormPlayerNavigation.NEXT);
   }
 
   getOrderIdFromApi() {
