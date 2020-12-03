@@ -18,6 +18,8 @@ import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.ser
 import { ModalContainerComponent } from '../modal/shared/modal-container/modal-container.component';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { ComponentsListComponent } from '../component/components-list/components-list.component';
+import { LoggerService } from '../core/services/logger/logger.service';
+import { LoggerServiceStub } from '../core/services/logger/logger.service.stub';
 
 export const epguLibModule = EpguLibModule.forRoot();
 
@@ -56,6 +58,7 @@ xdescribe('FormPlayerComponent', () => {
         UnsubscribeService,
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: LoadService, useClass: LoadServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
       ]
     }).compileComponents();
     formPlayerService = TestBed.inject(FormPlayerService);
