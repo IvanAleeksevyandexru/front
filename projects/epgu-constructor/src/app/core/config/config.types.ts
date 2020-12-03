@@ -20,6 +20,7 @@ export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
  * @property {string}staticDomainAssetsPath - путь до статики
  * @property {MockApi[]}mocks - массив апи для которых будет использваван mockUrl
  * @property {string}mockUrl - url до mockApi
+ * @property {boolean}disableUnderConstructionMode - отключить underConstruction режим, для отладки прохода сценариев
  */
 export interface Config {
   dictionaryUrl: string;
@@ -39,6 +40,7 @@ export interface Config {
   staticDomainAssetsPath: string;
   mocks?: MockApi[];
   mockUrl?: string;
+  disableUnderConstructionMode?: boolean;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';
