@@ -1,5 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { ConfigService } from '../../core/config/config.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import {
@@ -22,7 +23,11 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   rejectAction: ComponentDtoAction;
   submitLabel: string;
 
-  constructor(public injector: Injector, private modalService: ModalService) {
+  constructor(
+    public injector: Injector,
+    private modalService: ModalService,
+    private config: ConfigService,
+  ) {
     super(injector);
   }
 
@@ -48,6 +53,13 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   answerChoose(action: ComponentDtoAction) {
     if (action.disabled) {
       return;
+    }
+    if (action.underConstruction && this.config.disableUnderConstructionMode) {
+      // Здесь намеренное мутирование значений для работы форм-плеера с отключенным режимом underConstruction
+      // eslint-disable-next-line no-param-reassign
+      action.type = ActionType.nextStep;
+      // eslint-disable-next-line no-param-reassign
+      action.action = DTOActionAction.getNextStep;
     }
     if (action.type === ActionType.modalRedirectTo) {
       this.showModalRedirectTo(action);

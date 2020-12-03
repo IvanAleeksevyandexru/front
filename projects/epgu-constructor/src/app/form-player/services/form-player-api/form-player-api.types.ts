@@ -50,6 +50,7 @@ export interface ComponentDtoAction {
   applicantType?: string;
   color?: 'white' | 'transparent' | '';
   link?: string;
+  underConstruction?: boolean;
 }
 
 export interface DisplaySubjHead {
@@ -166,6 +167,8 @@ export enum ActionType {
 }
 
 export enum DTOActionAction {
+  getNextStep = 'getNextScreen',
+  getPrevStep = 'getPrevScreen',
   skipStep = 'skipStep',
   reject = 'reject',
   editPhoneNumber = 'service/actions/editPhoneNumber',
