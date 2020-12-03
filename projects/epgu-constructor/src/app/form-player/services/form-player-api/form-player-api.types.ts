@@ -48,7 +48,7 @@ export interface ComponentDtoAction {
   hidden?: boolean;
   disabled?: boolean;
   applicantType?: string;
-  color?: 'white' | 'trasparent' | '';
+  color?: 'white' | 'transparent' | '';
   link?: string;
 }
 
