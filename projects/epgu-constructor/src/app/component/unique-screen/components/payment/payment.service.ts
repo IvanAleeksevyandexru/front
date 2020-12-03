@@ -12,6 +12,7 @@ import {
 import { getPaymentRequestOptions } from './payment.constants';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { PaymentsAttrs } from './abstractpayment.component';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -35,7 +36,7 @@ export class PaymentService {
    * @example
    * '001' => "0,01"
    */
-  static transformSumForPenny(sum): string {
+  static transformSumForPenny(sum: string): string {
     return sum.padEnd(3, '0').replace(/\d{2}$/, ',$&');
   }
 
@@ -43,7 +44,7 @@ export class PaymentService {
    * Загружает данные по оплате с реквизитами
    * @param attrs - объект с аттрибутами компонента
    */
-  loadPaymentInfo(attrs: any): Observable<any> {
+  loadPaymentInfo(attrs: PaymentsAttrs): Observable<PaymentInfoInterface> {
     return this.getDictionaryInfo(attrs);
   }
 
@@ -53,6 +54,8 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    * @param attributeValues - дополнительные параметры
    */
+  // TODO
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
     // TODO: Хардкод для локальной отладки подмена суммы оплаты пошлины
     if (location.hostname.includes('test.gosuslugi.ru')) {
@@ -85,7 +88,7 @@ export class PaymentService {
    * @param billId - номер патежа
    * @param orderId - идентификатор заявления
    */
-  getBillsInfoByBillId(billId: number, orderId: string): Observable<any> {
+  getBillsInfoByBillId(billId: number, orderId: string): Observable<BillsInfoResponse> {
     // На случай если сервис лежит, только для теста
     // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
     // return billMockUp.asObservable();
@@ -95,7 +98,7 @@ export class PaymentService {
       : `${this.config.billsApiUrl}bills`;
     // eslint-disable-next-line max-len
     const path = `${urlPrefix}?billIds=${billId}&ci=false`;
-    return this.http.post(path, {}, this.requestOptions);
+    return this.http.post<BillsInfoResponse>(path, {}, this.requestOptions);
   }
 
   /**
@@ -116,8 +119,11 @@ export class PaymentService {
    */
   getReturnUrl(): string {
     const slashInEndRex = /\/$/;
-    const host = location.href.replace(slashInEndRex,'');
-    return encodeURIComponent(`${host}?getLastScreen=1`);
+    const href = location.href.replace(slashInEndRex,'');
+    const haveQuestion = href.includes('?');
+    const glueParam = haveQuestion ? '&' : '?';
+    const historyParam = 'getLastScreen=1';
+    return href.includes(historyParam) ? href : encodeURIComponent(`${href}${glueParam}getLastScreen=1`);
   }
 
   /**
@@ -133,14 +139,14 @@ export class PaymentService {
    * Загружает информацию из справочников для оплаты
    * @param attrs - аттрибуты
    */
-  getDictionaryInfo(attrs: any): Observable<any> {
+  getDictionaryInfo(attrs: PaymentsAttrs): Observable<PaymentInfoInterface> {
     const { nsi } = attrs;
     const dictionaryOptions = this.createPaymentRequestOptions(attrs);
 
     return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
-      map((res: any) => {
-        if (res.error.code === 0) {
-          return res.items[0].attributeValues;
+      map(({ error: { code }, items }) => {
+        if (code === 0) {
+          return items[0].attributeValues as PaymentInfoInterface;
         }
         throw Error();
       }),
@@ -152,7 +158,7 @@ export class PaymentService {
    * @param attrs - аттрибуты компонента
    * TODO: В будущем этот метод надо будет удалть, т.к. для совместимости с получением сведения для услуги брака/разбрака
    */
-  createPaymentRequestOptions(attrs: any): PaymentDictionaryOptionsInterface {
+  createPaymentRequestOptions(attrs: PaymentsAttrs): PaymentDictionaryOptionsInterface {
     const { applicantAnswers } = this.screenService;
     const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, attrs?.ref?.fiasCode?.split('.')));
 
@@ -165,6 +171,8 @@ export class PaymentService {
    * @param path - массив с путём ключей
    * @private
    */
+  // TODO
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getValueFromObjectAsArray(obj_or_result: any, path: string[]): string | null {
     if (path.length){
       const key = path.shift();

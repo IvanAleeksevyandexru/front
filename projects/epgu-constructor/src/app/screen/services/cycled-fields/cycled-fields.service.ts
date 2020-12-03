@@ -8,7 +8,7 @@ import { CurrentCycledFieldsDto } from '../../../form-player/services/form-playe
 @Injectable()
 export class CycledFieldsService {
   private isCycledFields = false;
-  private cycledValues: Array<any>;
+  private cycledValues: Array<CurrentCycledFieldsDto>;
   private currentCycledFields: ScreenStore = {};
   private cycledFieldsKeys = Object.keys(this.currentCycledFields);
 
@@ -32,13 +32,15 @@ export class CycledFieldsService {
     if (this.isCycledFields) {
       const [currentCycledFieldsKey] = this.cycledFieldsKeys;
       let valuePrepared: object = {};
-      let fieldNameRefs: any;
+      let fieldNameRefs;
       if (this.screenService.component.type === UniqueScreenComponentTypes.repeatableFields) {
         fieldNameRefs = this.screenService.component?.attrs?.components.reduce((accum, item) => {
           accum[item.id] = item.attrs.fields[0].fieldName;
           return accum;
         }, {});
         Object.entries(fieldNameRefs).forEach((field) => {
+          // TODO
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const [fieldId, fieldName]: any = field;
           valuePrepared[fieldName] = typeof value === 'string' ? (!!value ? JSON.parse(value)[0][fieldId] : '') : value[fieldId];
         });

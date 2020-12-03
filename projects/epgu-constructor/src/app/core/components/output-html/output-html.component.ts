@@ -32,14 +32,14 @@ export class OutputHtmlComponent implements OnInit {
     }
   }
 
-  private startToShowModal(clarifications = {}, targetElementId: string) {
+  private startToShowModal(clarifications: Clarifications = {}, targetElementId: string) {
     const targetElementModalData = clarifications[targetElementId];
     if (targetElementModalData) {
       this.showModal(targetElementModalData, targetElementId);
     }
   }
 
-  showModal(targetClarification, targetElementId) {
+  showModal(targetClarification: { text?: string }, targetElementId: string) {
     const clarifications = { ...this.clarifications };
     delete clarifications[targetElementId];
     this.modalService.openModal(ConfirmationModalComponent, {

@@ -5,7 +5,11 @@ import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
 import { ConfigService } from '../../../../core/config/config.service';
 import { IGeoCoordsResponse } from './select-map-object.interface';
-import { DictionaryResponseForYMap, DictionaryYMapItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import {
+  DictionaryItem,
+  DictionaryResponseForYMap,
+  DictionaryYMapItem
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { filter } from 'rxjs/operators';
 
 @Injectable()
@@ -15,8 +19,11 @@ export class SelectMapObjectService implements OnDestroy {
   public filteredDictionaryItems = [];
   public selectedValue = new Subject();
   public ymaps;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public templates: { [key: string]: TemplateRef<any> } = {}; // Шаблоны для модалки
-  public componentAttrs: any; // Атрибуты компонента из getNextStep
+  // TODO привести к нормальным интерфейсам ComponentBase и ComponentDto, завести атририбуты для всех сущностей
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public componentAttrs: { [ p: string ]: any }; // Атрибуты компонента из getNextStep
   public mapEvents; // events от карт, устанавливаются при создание балуна
   public mapOpenedBalloonId: number;
 
@@ -29,7 +36,7 @@ export class SelectMapObjectService implements OnDestroy {
     private yaMapService: YaMapService,
     private icons: Icons,
   ) {
-    this.selectedValue.pipe(filter((value) => !value)).subscribe((value: any) => {
+    this.selectedValue.pipe(filter((value) => !value)).subscribe((value) => {
       this.mapOpenedBalloonId = null;
     });
   }
@@ -42,7 +49,7 @@ export class SelectMapObjectService implements OnDestroy {
    * Returns geo coords of physical addresses array
    * @param items
    */
-  public getCoordsByAddress(items) {
+  public getCoordsByAddress(items: Array<DictionaryItem>) {
     const path = `${this.config.externalApiUrl}/address/resolve`;
     return this.http.post<IGeoCoordsResponse>(path, {
       address: items.map(item => item.attributeValues[this.componentAttrs.attributeNameWithAddress]),
@@ -74,7 +81,7 @@ export class SelectMapObjectService implements OnDestroy {
    * prepares and returns collection of objects for yandex map
    * @param items geo objects
    */
-  public prepareFeatureCollection(items) {
+  public prepareFeatureCollection(items: DictionaryYMapItem[]) {
     const res = { type: 'FeatureCollection', features: [] };
     items.forEach((item) => {
       if (item.center) {
@@ -96,7 +103,8 @@ export class SelectMapObjectService implements OnDestroy {
    * place objects on yandex map
    * @param map link to yandex map
    */
-  public placeOjectsOnMap(map) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public placeOjectsOnMap(map: any) {
     const objects = this.prepareFeatureCollection(this.filteredDictionaryItems);
 
     this.objectManager = this.createMapsObjectManager();
@@ -170,9 +178,9 @@ export class SelectMapObjectService implements OnDestroy {
           balloon.style.top = -(balloon.offsetHeight + 15) + 'px';
         },
 
-        onClick: function (e) {
+        onClick: function (e: Event) {
           e.preventDefault();
-          const objectId = e.target.getAttribute('data-objectid');
+          const objectId = (e.target as Element).getAttribute('data-objectid');
           let checkedId = objectId || this.activePlacemark.id.toString();
           if (checkedId) {
             const item = serviceContext.objectManager.objects.getById(checkedId).properties.res;
@@ -180,7 +188,7 @@ export class SelectMapObjectService implements OnDestroy {
           }
         },
 
-        onCloseClick: function (e) {
+        onCloseClick: function (e: Event) {
           e.preventDefault();
           this.events.fire('userclose');
         },
@@ -194,7 +202,8 @@ export class SelectMapObjectService implements OnDestroy {
    * @param coords
    * @param objectId
    */
-  public centeredPlaceMark(coords, objectId) {
+  public centeredPlaceMark(coords: number[], objectId: number) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let serviceContext = this as any;
     let offset = -0.00008;
 
@@ -211,7 +220,7 @@ export class SelectMapObjectService implements OnDestroy {
       }
 
       if (!equal || (equal && serviceContext.mapOpenedBalloonId !== objectId)) {
-        this.yaMapService.map.zoomRange.get([coords[0], coords[1]]).then(function (range) {
+        this.yaMapService.map.zoomRange.get([coords[0], coords[1]]).then((range) => {
           serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset], range[1] - 2);
           // Таймаут нужен что бы балун всегда нормально открывался
           // по непонятным причинам без таймаута балун иногда не открывается
@@ -236,7 +245,7 @@ export class SelectMapObjectService implements OnDestroy {
    * @param attrs map with attributes to extract
    * @param item
    */
-  private getMappedAttrsForBaloon(attrs: Array<{ name: string, label: string }>, item) {
+  private getMappedAttrsForBaloon(attrs: Array<{ name: string, label: string }>, item: DictionaryYMapItem) {
     const res = [];
     attrs.forEach((attr) => {
       let itemValue = item.attributeValues[attr.name];

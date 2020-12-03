@@ -68,9 +68,16 @@ $minModalHeight: 293px;
     }
 
     &__content {
+      overflow: auto;
       @include flex-container();
       .text {
         padding-right: 15px;
+      }
+    }
+
+    .perfect-scrollbar {
+      .conf-modal__content {
+        overflow: initial;
       }
     }
 

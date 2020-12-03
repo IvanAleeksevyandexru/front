@@ -20,7 +20,7 @@ import {
   CustomListStatusElements,
   CustomScreenComponentTypes,
   CustomComponentAttr,
-  UpdateOn
+  UpdateOn,
 } from '../components-list.types';
 import { isDropDown } from '../tools/custom-screen-tools';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
@@ -71,6 +71,9 @@ export class ComponentListFormService {
     this.errors = errors;
     this.toolsService.createStatusElements(components, this.shownElements);
 
+    this.indexesByIds = {};
+    this.cachedAttrsComponents = {};
+    this.lastChangedComponent = null;
     this._form = new FormArray(
       components.map((component: CustomComponent, index) => {
         this.indexesByIds[component.id] = index;
@@ -79,6 +82,7 @@ export class ComponentListFormService {
     );
 
     components.forEach((component: CustomComponent) => {
+      this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);
       this._shownElements = this.toolsService.updateDependents(
         components,
         {
@@ -91,7 +95,7 @@ export class ComponentListFormService {
     });
 
     this.watchFormArray$()
-      .pipe(tap(() => this.relationMapChanges(this.lastChangedComponent)))
+      .pipe(tap(() => this.relationMapChanges(this.lastChangedComponent[1])))
       .subscribe(() => this.emmitChanges());
     this.emmitChanges();
   }
@@ -119,7 +123,9 @@ export class ComponentListFormService {
 
   watchFormArray$(): Observable<Array<CustomListFormGroup>> {
     return this.form.valueChanges.pipe(
-      distinctUntilChanged((prev, next) => isEqualObj<any>(prev, next)),
+      distinctUntilChanged((prev, next) =>
+        isEqualObj<boolean | number | string | object>(prev, next),
+      ),
       takeUntil(this.unsubscribeService),
     );
   }
@@ -143,7 +149,7 @@ export class ComponentListFormService {
     return this.addressHelperService.provider;
   }
 
-  private getPreparedStateForSending(): any {
+  private getPreparedStateForSending(): CustomComponentOutputData {
     return Object.entries(this.form.getRawValue()).reduce((acc, [key, val]) => {
       const { disabled, valid } = this.form.get([key, 'value']);
       const isLeastOneCondition: boolean = this.form
@@ -169,13 +175,13 @@ export class ComponentListFormService {
     }, {});
   }
 
-  private relationRegExp(value: string, params: any) {
+  private relationRegExp(value: string, params: RegExp) {
     return String(value).match(params);
   }
   private relationMinDate(value: string, params: string) {
     return moment(value).isSameOrAfter(moment(params, DATE_STRING_DOT_FORMAT));
   }
-  private relationMaxDate(value: string, params: any) {
+  private relationMaxDate(value: string, params: string) {
     return moment(value).isSameOrBefore(moment(params, DATE_STRING_DOT_FORMAT));
   }
 
@@ -186,7 +192,7 @@ export class ComponentListFormService {
     ]);
   }
 
-  private relationPatch(component: CustomComponent, patch: any) {
+  private relationPatch(component: CustomComponent, patch: object) {
     const resultComponent = { ...component, attrs: { ...component.attrs, ...patch }};
 
     const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
@@ -198,6 +204,7 @@ export class ComponentListFormService {
       { onlySelf: true, emitEvent: false },
     );
     this.changeValidators(resultComponent, control.controls.value);
+    control.updateValueAndValidity();
   }
 
   private resetRelation(component: CustomComponent) {
@@ -223,7 +230,7 @@ export class ComponentListFormService {
     }
   }
 
-  private relationMapChanges([prev, next]: [CustomListFormGroup, CustomListFormGroup]) {
+  private relationMapChanges(next: CustomListFormGroup) {
     const value = next.value;
     if (!next.attrs?.relationField || !value) {
       return;
@@ -295,7 +302,7 @@ export class ComponentListFormService {
             (control: AbstractControl) => control.value?.id === next.id,
           );
 
-          const options: any = {
+          const options = {
             filter: {
               simple: {
                 attributeName: 'Id_Mark',

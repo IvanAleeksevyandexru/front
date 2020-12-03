@@ -66,7 +66,7 @@ export class ScreenModalService extends FormPlayerBaseService {
     if (this.hasError(response)) {
       this.sendDataError(response);
     } else {
-      this.sendDataSuccess(response);
+      this.sendDataSuccess(response as FormPlayerApiSuccessResponse);
       this.processInitStore(response as FormPlayerApiSuccessResponse);
       this.isInternalScenarioFinish();
     }

@@ -10,8 +10,6 @@ import {
 import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../../../core/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -71,7 +69,7 @@ export class FileUploadItemComponent implements OnDestroy {
       .getListByObjectId(this.objectId)
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        catchError((e: any) => {
+        catchError((e) => {
           this.listIsUploadingNow = false;
           return throwError(e);
         }),
@@ -94,7 +92,7 @@ export class FileUploadItemComponent implements OnDestroy {
     return this.loadData;
   }
   @Input() prefixForMnemonic: string;
-  @Input() refData: any = null;
+  @Input() refData: FileUploadItem[] = null;
 
   @Output() newValueSet: EventEmitter<FileResponseToBackendUploadsItem> = new EventEmitter<
     FileResponseToBackendUploadsItem
@@ -321,7 +319,7 @@ export class FileUploadItemComponent implements OnDestroy {
         .uploadFile(fileToUpload.getParamsForUploadFileOptions(), file)
         .pipe(
           takeUntil(this.ngUnsubscribe$),
-          catchError((e: any) => {
+          catchError((e) => {
             this.handleError(ErrorActions.addUploadErr, file);
             this.updateFileInfoFromServer(fileToUpload, false);
             return throwError(e);
@@ -359,20 +357,11 @@ export class FileUploadItemComponent implements OnDestroy {
       return of();
     }
 
-    const compressedFiles = this.compressImages(files, isPhoto);
+    const compressedFiles = this.compressImages(files);
 
     return merge(...compressedFiles).pipe(
       takeWhile((file: File) => this.validateAndHandleFilesSize(file)),
     );
-  }
-
-  getPhotoName(photo: File): string {
-    const photoType = photo.name.split('.').pop() || 'jpeg';
-    return `${photoBaseName}_${this.uploadedCameraPhotoNumber + 1}.${photoType}`;
-  }
-
-  getUniqName(name: string): string {
-    return `${name.split('.')[0]}_${uuidv4()}.${name.split('.').pop() || 'jpeg'}`;
   }
 
   createCustomFile(file: File, fileName: string): File {
@@ -384,7 +373,7 @@ export class FileUploadItemComponent implements OnDestroy {
     });
   }
 
-  compressImages(files: File[], isPhoto?: boolean): Array<Observable<any>> {
+  compressImages(files: File[]): Array<Observable<unknown>> {
     this.filesInCompression += files.length;
 
     const compressedImageOptions: CompressionOptions = {
@@ -395,10 +384,10 @@ export class FileUploadItemComponent implements OnDestroy {
     return files.map((file: File) => {
       const terabyteFiles = this.files$$.value;
       let fileToAction = this.createCustomFile(file, file.name);
-      let uniqFileName = this.getUniqName(file.name);
+      const fileName = file.name;
 
       const fileToUpload = new TerraUploadedFile({
-        fileName: isPhoto ? this.getPhotoName(fileToAction) : uniqFileName,
+        fileName,
         objectId: this.objectId,
         objectTypeId: UPLOAD_OBJECT_TYPE,
         mnemonic: this.getMnemonic(),
@@ -406,11 +395,7 @@ export class FileUploadItemComponent implements OnDestroy {
 
       this.files$$.next([fileToUpload, ...terabyteFiles]);
       if (this.compressionService.isValidImageType(fileToAction)) {
-        if (isPhoto) {
-          uniqFileName = this.getPhotoName(fileToAction);
-        }
-
-        fileToAction = this.createCustomFile(fileToAction, uniqFileName);
+        fileToAction = this.createCustomFile(fileToAction, fileName);
 
         return from(
           this.compressionService.imageCompression(fileToAction, compressedImageOptions),
@@ -424,7 +409,7 @@ export class FileUploadItemComponent implements OnDestroy {
         );
       }
 
-      fileToAction = this.createCustomFile(fileToAction, uniqFileName);
+      fileToAction = this.createCustomFile(fileToAction, fileName);
 
       return of(fileToAction);
     });
@@ -540,7 +525,7 @@ export class FileUploadItemComponent implements OnDestroy {
         .deleteFile(file.getParamsForFileOptions())
         .pipe(
           takeUntil(this.ngUnsubscribe$),
-          catchError((e: any) => {
+          catchError((e) => {
             this.filesInUploading -= 1;
             this.handleError(ErrorActions.addDeletionErr, { name: file.fileName });
             return throwError(e);
@@ -613,7 +598,7 @@ export class FileUploadItemComponent implements OnDestroy {
       .downloadFile(file.getParamsForFileOptions())
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        catchError((e: any) => {
+        catchError((e) => {
           this.handleError(ErrorActions.addDownloadErr, { name: file.fileName });
           return throwError(e);
         }),

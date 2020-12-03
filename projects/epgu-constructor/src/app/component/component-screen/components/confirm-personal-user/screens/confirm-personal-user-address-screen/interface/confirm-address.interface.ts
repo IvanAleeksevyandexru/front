@@ -1,6 +1,6 @@
-import { ComponentScreenComponentTypes } from '../../../../../component-screen-components.types';
-import { TextTransform } from '../../../../../../../shared/types/textTransform';
 import { RelativeDate } from 'epgu-lib';
+import { TextTransform } from '../../../../../../../shared/types/textTransform';
+import { ComponentScreenComponentTypes } from '../../../../../component-screen-components.types';
 
 
 /**
@@ -23,6 +23,7 @@ interface ConfirmAddressInterfaceAttr {
   actions: Array<ConfirmAddressActionsInterface>;
   fields: Array<ConfirmAddressFieldsInterface>;
   fstuc?: TextTransform;
+  hideLevels?: Array<string>;
 }
 
 /**

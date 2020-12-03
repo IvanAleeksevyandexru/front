@@ -106,6 +106,7 @@ export class FileUploadScreenComponent {
    * Принимает новое значение от компонентов и провеяет доступность кнопки далее
    * @param $eventData - данные из компонента
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleNewValueSet($eventData: any) {
     if ($eventData.relatedUploads && this.value?.uploads) {
       this.value.uploads = this.value.uploads.map((value: FileUploadEmitValue) => {

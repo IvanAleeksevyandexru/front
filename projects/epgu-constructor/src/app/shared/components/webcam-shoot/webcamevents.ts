@@ -8,14 +8,14 @@ export class WebcamEventFactory {
    * Close event of window
    * @param data - data to pass with event
    */
-  static closeEvent(data?: any): WebcamEvent {
+  static closeEvent(data?: string): WebcamEvent {
     return new WebcamEvent(WebcamEventAction.CLOSE, data);
   }
   /**
    * Close event of window
    * @param data - data to pass with event
    */
-  static closeAndSaveEvent(data?: any): WebcamEvent {
+  static closeAndSaveEvent(data?: string): WebcamEvent {
     return new WebcamEvent(WebcamEventAction.CLOSE_AND_SAVE, data);
   }
 
@@ -24,7 +24,7 @@ export class WebcamEventFactory {
    * @param action - title of action
    * @param data - data for event
    */
-  static userEvent(action: string, data?: any): WebcamEvent {
+  static userEvent(action: string, data?: string): WebcamEvent {
     return new WebcamEvent(action, data);
   }
 }
@@ -44,7 +44,7 @@ export class WebcamEventAction {
  * События для веб камеры
  */
 export class WebcamEvents {
-  private _events: Subject<any> = new Subject<any>();
+  private _events = new Subject<WebcamEvent>();
   private _events$ = this._events.asObservable();
 
   /**
@@ -58,7 +58,7 @@ export class WebcamEvents {
    * Вызывает событие закрытия окна
    * @param data - данные для передачи
    */
-  close(data?: any) {
+  close(data?: string) {
     this._events.next(WebcamEventFactory.closeEvent(data));
     this._events.complete();
   }
@@ -66,7 +66,7 @@ export class WebcamEvents {
    * Вызывает событие закрытия окна и сохранения данных
    * @param data - данные для передачи
    */
-  closeAndSave(data?: any) {
+  closeAndSave(data?: string) {
     this._events.next(WebcamEventFactory.closeAndSaveEvent(data));
     this._events.complete();
   }
@@ -89,9 +89,9 @@ export class WebcamEvents {
  */
 export class WebcamEvent {
   private _action = '';
-  private _data: any = null;
+  private _data: string = null;
 
-  constructor(action: string, data?: any) {
+  constructor(action: string, data?: string) {
     this._action = action;
     this._data = data;
   }
@@ -114,7 +114,7 @@ export class WebcamEvent {
   /**
    * Получает данные события
    */
-  public get data(): any {
+  public get data(): string {
     return this._data;
   }
 
@@ -122,7 +122,7 @@ export class WebcamEvent {
    * Устанавливает данные события
    * @param data - данные
    */
-  public set data(data: any) {
+  public set data(data: string) {
     this._data = data;
   }
 }

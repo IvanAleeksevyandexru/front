@@ -45,7 +45,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.navigationService.nextStep.next({ payload });
   }
 
-  answerChoose(action: ComponentDtoAction): any {
+  answerChoose(action: ComponentDtoAction) {
     if (action.disabled) {
       return;
     }
@@ -65,7 +65,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     };
   }
 
-  showModalRedirectTo(action) {
+  showModalRedirectTo(action: ComponentDtoAction) {
     const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
       ConfirmationModalComponent,
       {

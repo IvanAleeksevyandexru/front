@@ -1,18 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { ValidationShowOn } from 'epgu-lib';
-import * as moment_ from 'moment';
+import { DadataResult, ValidationShowOn } from 'epgu-lib';
 import { startWith, takeUntil } from 'rxjs/operators';
+import * as moment_ from 'moment';
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
+import { DateValidator } from './date-validator';
 import {
   FieldNames,
   IRegistrationAddrComponent,
+  RegistrationAddrFields,
   RegistrationAddrHints,
 } from '../../registration-addr-screen.types';
-import { DateValidator } from './date-validator';
 
 const moment = moment_;
 
@@ -62,7 +63,7 @@ export class RegistrationAddrComponent implements OnInit {
     this.redAddrForm.patchValue({ regDate });
   }
 
-  private getValidatorsForField(field): ValidatorFn[] {
+  private getValidatorsForField(field: RegistrationAddrFields): ValidatorFn[] {
     const regExp = field?.regexp || null;
     const isRequired = this.data.required;
     const isDateType = field?.type === 'date';
@@ -101,7 +102,10 @@ export class RegistrationAddrComponent implements OnInit {
    * @param fieldName - имя поля
    * @param data строка с JSON объектом
    */
-  private getInitFormValue(data: any, fieldName: FieldNames): string | Date {
+  private getInitFormValue(
+    data: { regAddr: DadataResult; regFrom: string; regTo: string },
+    fieldName: FieldNames,
+  ): string | Date {
     if (fieldName === FieldNames.regAddr) {
       return data?.regAddr?.fullAddress || null;
     }

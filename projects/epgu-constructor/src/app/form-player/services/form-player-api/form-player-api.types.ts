@@ -28,6 +28,7 @@ export interface CurrentValueDto {
  */
 export interface ComponentDto {
   attrs: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
     actions?: Array<ComponentDtoAction>;
   };
@@ -47,7 +48,8 @@ export interface ComponentDtoAction {
   hidden?: boolean;
   disabled?: boolean;
   applicantType?: string;
-  color?: 'white' | 'trasparent' | '';
+  color?: 'white' | 'transparent' | '';
+  link?: string;
 }
 
 export interface DisplaySubjHead {
@@ -71,7 +73,7 @@ export interface DisplayDto {
   header: string;
   subHeader?: DisplaySubjHead;
   label?: string;
-  displayCssClass?: string;
+  cssClass?: string;
   id: string;
   name: string;
   submitLabel: string;
@@ -119,6 +121,7 @@ export interface ScenarioDto {
   isInternalScenario?: boolean;
   serviceId?: string;
   currentUrl?: string;
+  newContactId?: string;
 }
 
 /**
@@ -168,6 +171,7 @@ export enum DTOActionAction {
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editEmail = 'service/actions/editUserEmail',
   goBackToMainScenario = 'goBackToMainScenario',
+  resendEmailConfirmation = 'service/actions/resendEmailConfirmation',
 }
 
 export interface CheckOrderApiResponse {
@@ -182,6 +186,6 @@ export interface ActionDTO<T = {}> {
 }
 
 export interface ActionApiResponse<T> {
-  errorList: { [key: string]: any }[];
+  errorList: { [key: string]: string }[];
   responseData: { value: T; type: string };
 }

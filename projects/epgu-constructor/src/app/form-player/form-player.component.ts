@@ -130,7 +130,9 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean) {
     const shouldShowModal = (): boolean => {
-      return !invited && canStartNew && !!orderId;
+      return (
+        !invited && canStartNew && !!orderId && !this.formPlayerService.isNeedToShowLastScreen()
+      );
     };
 
     if (shouldShowModal()) {

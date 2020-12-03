@@ -6,6 +6,7 @@ import { ComponentDto, DisplayDto, ScenarioDto } from '../form-player/services/f
  * Интерфейс для базового компонента
  */
 export interface ComponentBase {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   attrs: {[key: string]: any};
   id: string;
   label: string;
@@ -17,7 +18,7 @@ export interface ComponentBase {
 }
 
 export interface CachedAnswers {
-  [key: string]: Answer
+  [key: string]: Answer;
 }
 
 export interface ScreenStoreComponentDtoI extends ComponentDto {

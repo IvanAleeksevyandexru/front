@@ -1,5 +1,6 @@
 import { RelativeDate } from 'epgu-lib';
 import { DurationInputArg2 } from 'moment';
+import { ComponentDtoAction } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../../../screen/screen.types';
 import { TextTransform } from '../../../../../../shared/types/textTransform';
 
@@ -8,10 +9,11 @@ export interface IRegistrationAddrComponent extends ComponentBase {
 }
 
 export interface RegistrationAddrComponentAttrs {
-  hints: Array<RegistrationAddrHints>,
-  fields: Array<RegistrationAddrFields>,
-  actions: Array<any>,
-  fstuc?: TextTransform
+  hints: Array<RegistrationAddrHints>;
+  fields: Array<RegistrationAddrFields>;
+  actions: Array<ComponentDtoAction>;
+  fstuc?: TextTransform;
+  hideLevels?: Array<string>;
 }
 
 

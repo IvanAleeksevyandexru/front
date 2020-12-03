@@ -61,7 +61,7 @@
             "sourceMap": {
               "scripts": true,
               "styles": true,
-              "vendor": false
+              "vendor": true
             }
           },
           "configurations": {

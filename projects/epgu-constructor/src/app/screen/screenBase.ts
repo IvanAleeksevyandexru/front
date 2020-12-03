@@ -16,5 +16,5 @@ export abstract class ScreenBase{
     this.screenService = this.injector.get(ScreenService);
   }
 
-  abstract nextStep(data?: NavigationPayload): void;
+  abstract nextStep(data?: NavigationPayload | string): void;
 }
