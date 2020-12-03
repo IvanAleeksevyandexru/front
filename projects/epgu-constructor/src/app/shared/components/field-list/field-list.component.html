@@ -1,10 +1,10 @@
 <div class="data" [ngClass]="style.list">
   <ng-container *ngFor="let groupItem of preparedData">
-    <div class="data__group data-group" [ngClass]="[style.groupName]">
+    <div class="data__group data-group" [ngClass]="[style.group]">
       <div class="flex-row">
         <div
           [innerHTML]="groupItem?.groupName | safe: 'html'"
-          [ngClass]="style.groupNameTitle"
+          [ngClass]="style.groupTitle"
           class="data-group__title"
         ></div>
       </div>

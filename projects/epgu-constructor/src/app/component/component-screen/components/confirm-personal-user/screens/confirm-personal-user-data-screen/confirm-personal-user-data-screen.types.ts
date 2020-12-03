@@ -36,8 +36,8 @@ export interface ConfirmUserDataState {
 }
 
 export interface ConfirmUserDataStyle {
-  groupName: string;
-  groupNameTitle: string;
+  group: string;
+  groupTitle: string;
   value: string;
   label: string;
   field: string;
