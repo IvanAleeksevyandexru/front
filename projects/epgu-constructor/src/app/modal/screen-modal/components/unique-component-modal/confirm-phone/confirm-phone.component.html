@@ -3,7 +3,7 @@
 <div class="confirm-phone">
   <span class="confirm-phone__helper-text">Код придет в СМС на номер</span>
 
-  <ng-container  *ngIf="(screenService.applicantAnswers$ | async)['pd1']?.value as phoneNumber">
+  <ng-container  *ngIf="(screenService.applicantAnswers$ | async)?.pd1?.value as phoneNumber">
     <span class="confirm-phone__number">{{phoneNumber}}</span>
     <button class="confirm-phone__edit-number" (click)="editNumber()">Редактировать</button>
   </ng-container>
