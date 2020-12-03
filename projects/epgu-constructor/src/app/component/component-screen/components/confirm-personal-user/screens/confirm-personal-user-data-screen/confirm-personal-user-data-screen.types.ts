@@ -6,6 +6,7 @@ export interface ConfirmUserData extends ComponentBase {
 export interface ConfirmUserDataAttrs {
   fields: Array<ConfirmUserDataField>;
   actions: Array<ConfirmUserDataActions>;
+  style: ConfirmUserDataStyle;
 }
 
 export interface ConfirmUserDataActions {
