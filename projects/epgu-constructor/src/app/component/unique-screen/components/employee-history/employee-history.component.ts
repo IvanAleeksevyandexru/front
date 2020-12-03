@@ -70,6 +70,7 @@ export class EmployeeHistoryComponent implements OnInit {
     const fromFormatted = { ...from, monthCode: months[from.month] };
     const chosenRole = this.ds.filter((role) => role.type === employee.type);
 
+    delete employeeHistory.error;
     return {
       ...employeeHistory,
       to: toFormatted,
