@@ -27,6 +27,8 @@ export class ModalBaseComponent {
   closeModal(value?: any): void {
     if (HelperService.isTouchDevice()) {
       document.body.style.overflow = null;
+      document.querySelector<HTMLElement>('epgu-constructor-screen-resolver').style.visibility =
+        'visible';
     }
     this.detachView(value || this.modalResult.value);
   }

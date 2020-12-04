@@ -26,6 +26,7 @@ export class ModalService {
   public openModal<T, K = any>(modalComponent: Type<any>, modalParameters?: K): Observable<T> {
     if (HelperService.isTouchDevice()) {
       document.body.style.overflow = 'hidden';
+      document.querySelector<HTMLElement>('epgu-constructor-screen-resolver').style.visibility = 'hidden';
     }
 
     const modalResult = new Subject<T>();
