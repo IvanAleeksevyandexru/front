@@ -52,7 +52,7 @@
 
   <div class="screen-footer" *ngIf="isShown">
     <lib-button [showLoader]="inLoading" (click)="redirectToPayWindow()" class="btn__submit">
-      Оплатить
+      {{ submitLabel || "Оплатить" }}
     </lib-button>
   </div>
 </epgu-constructor-screen-container>
