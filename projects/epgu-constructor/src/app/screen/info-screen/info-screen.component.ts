@@ -5,7 +5,7 @@ import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.ser
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import {
   ComponentDto,
-  ComponentDtoAction,
+  ComponentActionDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenBase } from '../screenBase';
 
@@ -19,7 +19,7 @@ import { ScreenBase } from '../screenBase';
   providers: [UnsubscribeService],
 })
 export class InfoScreenComponent extends ScreenBase implements OnInit {
-  actionButtons: ComponentDtoAction[] = [];
+  actionButtons: ComponentActionDto[] = [];
 
   constructor(public injector: Injector, private cycledFieldsService: CycledFieldsService) {
     super(injector);

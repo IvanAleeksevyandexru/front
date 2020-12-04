@@ -2,6 +2,7 @@ import { ScreenTypes } from '../../../screen/screen.types';
 import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
+import { CustomComponentAttr } from '../../../component/components-list/components-list.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -27,11 +28,7 @@ export interface CurrentValueDto {
  * @property {boolean}visited? - булевый флаг пройдена ли пользователем бизнес-логика данного компонента
  */
 export interface ComponentDto {
-  attrs: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any;
-    actions?: Array<ComponentDtoAction>;
-  };
+  attrs: ComponentAttrsDto;
   id: string;
   label: string;
   type: string;
@@ -40,7 +37,82 @@ export interface ComponentDto {
   visited?: boolean;
 }
 
-export interface ComponentDtoAction {
+export interface ComponentAttrsDto {
+  actions?: Array<ComponentActionDto>;
+  clarifications?: ClarificationsDto;
+  fields?: Array<ComponentFieldDto>;
+  dictionaryType?: Array<string> | string;
+  ref?: Array<ComponentRefDto>;
+  validation?: Array<ComponentValidationDto>;
+  mask?: Array<string>;
+  relationField?: ComponentRelationFieldDto;
+  minDate?: string;
+  maxDate?: string;
+  preset?: ComponentPresetDto;
+  components?: Array<string>;
+  repeatAmount?: number;
+  link?: string;
+  state?: string;
+  states?: ComponentStatesDto;
+  characterMask?: string;
+  codeLength?: number;
+  resendCodeUrl?: string;
+}
+
+export interface ComponentStatesDto {
+ [key: string]: {
+   header: string;
+   body: string;
+   clarifications?: ClarificationsDto;
+   actions?: Array<ComponentActionDto>;
+ }
+}
+
+export interface ComponentPresetDto {
+  type: string;
+  value: string;
+}
+
+export interface ComponentRelationFieldDto {
+  ref: string;
+  conditions: Array<{
+    type: 'RegExp' | 'MinDate' | 'MaxDate';
+    value: string;
+    result: {
+      attrs: ComponentAttrsDto;
+    }
+  }>;
+}
+
+export interface ComponentValidationDto {
+  type: string;
+  value: string;
+  ref: string;
+  dataType: string;
+  condition: string;
+  errorMsg: string;
+}
+
+export interface ComponentRefDto {
+  relatedDate: string;
+  val: string;
+  period: string;
+  condition: string;
+}
+
+export interface ComponentFieldDto {
+  fieldName?: string;
+  label?: string;
+}
+
+export interface ClarificationsDto {
+  [key: string]: {
+    title: string;
+    text: string;
+  }
+}
+
+export interface ComponentActionDto {
   label: string;
   value: string;
   action: DTOActionAction;

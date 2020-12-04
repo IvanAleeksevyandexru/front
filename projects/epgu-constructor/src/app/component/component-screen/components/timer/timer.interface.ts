@@ -1,5 +1,5 @@
 import { ComponentBase } from '../../../../screen/screen.types';
-import { ComponentDtoAction } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 /**
  * Интерфейс таймера
@@ -23,7 +23,7 @@ export interface TimerLabelSection{
 /**
  * Интерфейс для кнопки таймера с последующим переходом
  */
-export interface TimerComponentDtoAction extends ComponentDtoAction{
+export interface TimerComponentDtoAction extends ComponentActionDto{
   fromTime?: number;
   toTime?: number;
 }

@@ -5,7 +5,7 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
 import { NavigationPayload } from '../../../../form-player/form-player.types';
 import {
   ComponentDto,
-  ComponentDtoAction,
+  ComponentActionDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { CycledFieldsService } from '../../../../screen/services/cycled-fields/cycled-fields.service';
@@ -18,7 +18,7 @@ import { ScreenModalService } from '../../screen-modal.service';
   providers: [UnsubscribeService],
 })
 export class InfoComponentModalComponent implements OnInit {
-  actionButtons: ComponentDtoAction[] = [];
+  actionButtons: ComponentActionDto[] = [];
 
   constructor(
     private navModalService: NavigationModalService,
