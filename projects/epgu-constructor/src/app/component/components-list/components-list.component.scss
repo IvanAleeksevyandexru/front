@@ -4,20 +4,17 @@
 @import 'src/styles/core/functions';
 @import 'src/styles/components/rubles';
 
-// test
 .form {
+  @include flex-container();
+  flex-flow: wrap;
+  margin-left: -$screen-pad-small-gap / 2;
+  margin-right: -$screen-pad-small-gap / 2;
   &__item {
+    @include flex-container();
+    justify-content: flex-end;
+    flex: 1 1 100%;
     margin-bottom: $screen-pad-p;
   }
-
-  &__title {
-    font-size: 14px;
-    font-family: $font-main;
-    line-height: 20px;
-    color: $color-summer-night;
-    margin-bottom: 4px;
-  }
-
   &__radio {
     margin-top: $screen-pad-top;
     &--block {

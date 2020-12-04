@@ -1,27 +1,26 @@
-import { Component, EventEmitter, OnChanges, Output, Input, SimpleChanges } from '@angular/core';
-import { ValidationShowOn } from 'epgu-lib';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+import { ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {
-  CustomListDictionaries,
-  CustomComponent,
-  CustomComponentOutputData,
-  CustomScreenComponentTypes,
-  CustomListReferenceData,
-  CustomListDropDowns,
-} from './components-list.types';
-import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
 import { ConfigService } from '../../core/config/config.service';
-import { ComponentListFormService } from './services/component-list-form.service';
-import { ComponentListRepositoryService } from './services/component-list-repository.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScenarioErrorsDto } from '../../form-player/services/form-player-api/form-player-api.types';
-import { UtilsService as utils } from '../../shared/services/utils/utils.service';
+import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
+import { UtilsService as utils } from '../../shared/services/utils/utils.service';
+import {
+  CustomComponent,
+  CustomComponentOutputData,
+  CustomListDictionaries,
+  CustomListDropDowns,
+  CustomListReferenceData,
+  CustomScreenComponentTypes,
+} from './components-list.types';
+import { ComponentListFormService } from './services/component-list-form.service';
+import { ComponentListRepositoryService } from './services/component-list-repository.service';
 
 const halfWidthItemTypes = [
-  CustomScreenComponentTypes.DateInput,
   CustomScreenComponentTypes.NewEmailInput,
   CustomScreenComponentTypes.PhoneNumberChangeInput,
 ];
