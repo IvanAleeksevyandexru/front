@@ -45,10 +45,6 @@
       lib-radio:not(:first-child) {
         margin-left: $screen-pad-gap;
       }
-
-      @include phones-down {
-        display: block;
-      }
     }
   }
 }
