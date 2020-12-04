@@ -51,38 +51,38 @@ export class ConfirmPhoneComponent implements OnInit {
     this.initCodeFormArray();
   }
 
-  sendCodeAgain() {
+  public sendCodeAgain(): void {
     const url = this.screenService.component.attrs.resendCodeUrl;
     const options: NavigationOptions = { url };
     this.navModalService.next({ options });
     this.isTimerShow = true;
   }
 
-  enterCode(code: string) {
+  public enterCode(code: string): void {
     if (String(code).length === this.codeLength) {
       this.navModalService.next({ payload: this.getComponentState(code) });
     }
   }
 
-  editNumber() {
+  public editNumber(): void {
     this.navModalService.prev({});
   }
 
-  getComponentState(code: string | number): NavigationPayload {
+  public timerChange(num: number): void {
+    if (num) {
+      this.timer = num;
+    } else {
+      this.isTimerShow = false;
+    }
+  }
+
+  private getComponentState(code: string | number): NavigationPayload {
     return {
       [this.screenService.component.id]: {
         visited: true,
         value: String(code),
       },
     };
-  }
-
-  timerChange(num: number) {
-    if (num) {
-      this.timer = num;
-    } else {
-      this.isTimerShow = false;
-    }
   }
 
   private initCodeFormArray(): void {
