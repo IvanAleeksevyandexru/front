@@ -22,6 +22,7 @@ export class ConstructorMaskedInputComponent {
   @Input() name: string;
   @Input() id: string;
   @Input() placeholder: string;
+  @Input() isTrim?: boolean;
 
   public onChange($event: Event): void {
     if (this.control.updateOn === 'blur') {

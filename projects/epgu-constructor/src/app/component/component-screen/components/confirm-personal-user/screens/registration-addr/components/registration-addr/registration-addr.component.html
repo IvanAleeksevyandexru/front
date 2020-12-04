@@ -10,7 +10,7 @@
       <lib-dadata-widget
         *ngSwitchCase="'regAddr'"
         [simpleMode]="true"
-        [hideLevels]="field?.hideLevels || []"
+        [hideLevels]="data?.attrs?.hideLevels || []"
         [hideHouseCheckbox]="true"
         [externalApiUrl]="config.externalApiUrl + '/'"
         [id]="field.fieldName"
@@ -36,8 +36,8 @@
         [id]="field.fieldName"
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
         [formControlName]="field.fieldName"
-        [clearable]="true"
-      >
+        [disabled]="field.disabled"
+        [clearable]="true">
       </lib-date-picker>
 
       <epgu-constructor-constructor-plain-input
@@ -46,6 +46,7 @@
         [validationShowOn]="validationShowOn"
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
         [control]="$any(redAddrForm.get(field.fieldName))"
+        [disabled]="field.disabled"
         *ngSwitchDefault
       ></epgu-constructor-constructor-plain-input>
     </ng-container>
@@ -57,11 +58,7 @@
 
 <div class="item hint-wrapper">
   <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
-  <div
-    class="item__hint"
-    *ngFor="let hint of data?.attrs?.hints"
-    (click)="hintClick(hint)"
-  >
+  <div class="item__hint" *ngFor="let hint of data?.attrs?.hints" (click)="hintClick(hint)">
     {{ hint.label }}
   </div>
 </div>

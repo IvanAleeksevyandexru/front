@@ -171,6 +171,13 @@ export abstract class FormPlayerBaseService {
   }
 
   /**
+   * Установит стор
+   */
+  set store(store: FormPlayerApiSuccessResponse) {
+    this._store = store;
+  }
+
+  /**
    * Инициализирует хранилища данных для текущего хранилища данных экрана
    * @param scenarioDto - данные DTO сценария
    * @private
