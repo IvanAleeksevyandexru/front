@@ -29,6 +29,13 @@ export class ModalBaseComponent {
       document.body.style.overflow = null;
       document.querySelector<HTMLElement>('epgu-constructor-screen-resolver').style.visibility =
         'visible';
+      const screenResolver = document.querySelector<HTMLElement>(
+        'epgu-constructor-screen-resolver',
+      );
+
+      if (screenResolver) {
+        screenResolver.style.visibility = 'visible';
+      }
     }
     this.detachView(value || this.modalResult.value);
   }
