@@ -39,7 +39,7 @@ describe('CounterDirective', () => {
         fixture = TestBed.createComponent(TestCounterComponent);
         comp = fixture.componentInstance;
         unsubscribeService = fixture.debugElement.injector.get(UnsubscribeService);
-        clock = jest.useFakeTimers();
+        jest.useFakeTimers();
       });
   });
 
