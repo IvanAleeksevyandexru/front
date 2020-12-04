@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { interval } from 'rxjs';
 
 import { ConfirmEmailComponent } from './confirm-email.component';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -12,11 +11,26 @@ import { ConfigServiceStub } from '../../../../../core/config/config.service.stu
 import { CoreModule } from '../../../../../core/core.module';
 import { SharedModule } from '../../../../../shared/shared.module';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
+import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 
 describe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;
   let fixture: ComponentFixture<ConfirmEmailComponent>;
   let navigationModalService: NavigationModalService;
+  let screenService: ScreenService;
+  const mockData: ComponentDto = {
+    id: '',
+    value: '',
+    type: '',
+    label: '',
+    visited: true,
+    required: true,
+    attrs: {
+      characterMask: [],
+      codeLength: 4,
+      resendCodeUrl: 'url',
+    },
+  };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConfirmEmailComponent],
@@ -28,8 +42,10 @@ describe('ConfirmEmailComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     }).compileComponents();
-
     navigationModalService = TestBed.inject(NavigationModalService);
+    screenService = TestBed.inject(ScreenService);
+    jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockData);
+    jest.useFakeTimers();
   });
 
   beforeEach(() => {
@@ -41,11 +57,11 @@ describe('ConfirmEmailComponent', () => {
     fixture.debugElement.injector.get(NavigationService);
   });
 
-  it('should be call this.navModalService.next() after 5sec', () => {
+  it('should be call this.navModalService.next() after interval', () => {
     const navigationModalServiceNextFn = jest.spyOn(navigationModalService, 'next');
-    interval(5000).subscribe(() => {
-      expect(navigationModalServiceNextFn).toHaveBeenCalled();
-    });
+    jest.runTimersToTime(5000);
+
+    expect(navigationModalServiceNextFn).toHaveBeenCalled();
   });
 
   describe('timerChange()', () => {
