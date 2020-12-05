@@ -1,7 +1,7 @@
 import {
   ApplicantAnswersDto,
   ComponentDto,
-  ComponentActionDto, CurrentCycledFieldsDto,
+  ComponentActionDto,
   DisplayDto, DisplaySubjHead,
   ScenarioErrorsDto
 } from '../form-player/services/form-player-api/form-player-api.types';
@@ -165,15 +165,6 @@ export class ScreenContent {
   }
   public action$ = this._action.asObservable();
 
-  private _currentCycledFields = new BehaviorSubject<CurrentCycledFieldsDto>(null);
-  public get currentCycledFields(): CurrentCycledFieldsDto {
-    return this._currentCycledFields.getValue();
-  }
-  public set currentCycledFields(val: CurrentCycledFieldsDto) {
-    this._currentCycledFields.next(val);
-  }
-  public currentCycledFields$ = this._currentCycledFields.asObservable();
-
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   public get applicantAnswers(): ApplicantAnswersDto {
     return this._applicantAnswers.getValue();
@@ -189,7 +180,6 @@ export class ScreenContent {
       display = {} as DisplayDto,
       orderId,
       gender,
-      currentCycledFields,
       applicantAnswers
     } = screenStore;
     const { header, subHeader, submitLabel, type, components = [], terminal, cssClass } = display;
@@ -211,7 +201,6 @@ export class ScreenContent {
     this.componentValue = this.getComponentData(firstComponent?.value);
     this.actions = firstComponent?.attrs?.actions || [];
     this.action = this.actions[0];
-    this.currentCycledFields = currentCycledFields;
     this.applicantAnswers = applicantAnswers;
   }
 

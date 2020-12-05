@@ -118,8 +118,11 @@ export class SelectChildrenScreenComponent implements OnInit {
   }
 
   getRefFromComponent(refName: string): string {
-    return (this.screenService.component?.attrs?.components || []).find((item) =>
-      item?.attrs?.fields?.find((field) => field.fieldName === refName),
+    return (this.screenService.component?.attrs?.components || []).find(
+      (item) =>
+        // @ts-ignore
+        item?.attrs?.fields?.find((field) => field.fieldName === refName), // TODO: WTF? типы не сходяться, прояснить кейс
+      // @ts-ignore
     )?.id;
   }
 
@@ -132,7 +135,8 @@ export class SelectChildrenScreenComponent implements OnInit {
       ...this.screenService.component?.attrs?.components?.reduce(
         (accum, value) => ({
           ...accum,
-          [value.id]: '',
+          // @ts-ignore
+          [value.id]: '', // TODO: WTF? типы не сходяться, прояснить кейс
         }),
         {},
       ),
@@ -249,7 +253,8 @@ export class SelectChildrenScreenComponent implements OnInit {
   private prepareItemComponents(child: ChildI = {}) {
     return this.screenService.component?.attrs?.components.map((component) => {
       return {
-        ...component,
+        // @ts-ignore
+        ...component, // TODO: WTF? типы не сходяться, прояснить кейс
         value: child[component.id],
       };
     });

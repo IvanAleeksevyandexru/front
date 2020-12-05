@@ -1,7 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { NavigationPayload } from '../../form-player/form-player.types';
-import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import {
   ComponentDto,
@@ -21,15 +19,11 @@ import { ScreenBase } from '../screenBase';
 export class InfoScreenComponent extends ScreenBase implements OnInit {
   actionButtons: ComponentActionDto[] = [];
 
-  constructor(public injector: Injector, private cycledFieldsService: CycledFieldsService) {
+  constructor(public injector: Injector) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.cycledFieldsService.initCycledFields(this.screenService.currentCycledFields);
-    });
-
     this.screenService.component$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((component) => this.setActionButtons(component));
@@ -40,11 +34,6 @@ export class InfoScreenComponent extends ScreenBase implements OnInit {
   }
 
   nextStep(): void {
-    const navigation = { payload: this.getComponentState() };
-    this.navigationService.nextStep.next(navigation);
-  }
-
-  getComponentState(): NavigationPayload {
-    return this.cycledFieldsService.dataTransform();
+    this.navigationService.nextStep.next({});
   }
 }

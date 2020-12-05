@@ -16,6 +16,8 @@ export interface CurrentValueDto {
   [key: string]: Answer;
 }
 
+export type colorDto = 'white' | 'transparent' | '';
+
 /**
  * @property {Array<object>}attrs - объект с дополнительной информацией
  * (например для select элементов могут приходить словари)
@@ -41,8 +43,8 @@ export interface ComponentAttrsDto {
   actions?: Array<ComponentActionDto>;
   clarifications?: ClarificationsDto;
   fields?: Array<ComponentFieldDto>;
-  dictionaryType?: Array<string> | string;
-  ref?: Array<ComponentRefDto>;
+  dictionaryType?: Array<string> | string; //TODO: прояснить почему либо массив объектов либо строка
+  ref?: Array<ComponentRefDto> | string; //TODO: прояснить почему либо массив объектов либо строка
   validation?: Array<ComponentValidationDto>;
   mask?: Array<string>;
   relationField?: ComponentRelationFieldDto;
@@ -54,17 +56,78 @@ export interface ComponentAttrsDto {
   link?: string;
   state?: string;
   states?: ComponentStatesDto;
-  characterMask?: string;
-  codeLength?: number;
-  resendCodeUrl?: string;
+  characterMask?: string; //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
+  codeLength?: number; //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
+  resendCodeUrl?: string; //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
+  isNeedToCheckGIBDDPayment?: boolean;
+  dictionaryGIBDD?: string;
+  checkedParametersGIBDD?: Array<string>;
+  GIBDDpaymentError?: ComponentGIBDDpaymentErrorDto;
+  attributeNameWithAddress?: string;
+  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  baloonContent?: Array<ComponentBaloonContentDto>;
+  addressString?: ComponentAddressStringDto;
+  value?: string;
+  visited?: boolean;
+  years?: number;
+  nonStop?: boolean;
+  restrictions?: ComponentRestrictionsDto;
+  applicantType?: string;
+  image?: ComponentImageDto;
+}
+
+export interface ComponentImageDto {
+  src: string;
+  alt: string;
+}
+
+export interface ComponentRestrictionsDto {
+  minDate: [number, string];
+  maxDate: [number, string];
+}
+
+export interface ComponentAddressStringDto {
+  type: string;
+  value: string;
+}
+
+export interface ComponentBaloonContentDto {
+  name: string;
+  label: string;
+}
+
+export interface ComponentDictionaryFilterDto {
+  attributeName: string;
+  condition: ComponentDictionaryFilterCondition;
+  value: string;
+  valueType: string;
+}
+
+export enum ComponentDictionaryFilterCondition {
+  EMPTY = '',
+  EQUALS = 'EQUALS',
+  CONTAINS = 'CONTAINS',
+}
+
+export interface ComponentGIBDDpaymentErrorDto {
+  text: string;
+  title: string;
+  buttons: Array<{
+    label: string;
+    closeModal: boolean;
+    color?: colorDto;
+    value?: boolean;
+  }>;
 }
 
 export interface ComponentStatesDto {
  [key: string]: {
-   header: string;
+   actions: Array<ComponentActionDto>;
    body: string;
-   clarifications?: ClarificationsDto;
-   actions?: Array<ComponentActionDto>;
+   header: string;
+   subHeader: string;
+   clarifications: ClarificationsDto;
+   srcImg?: string;
  }
 }
 
@@ -120,7 +183,7 @@ export interface ComponentActionDto {
   hidden?: boolean;
   disabled?: boolean;
   applicantType?: string;
-  color?: 'white' | 'transparent' | '';
+  color?: colorDto;
   link?: string;
 }
 
@@ -154,10 +217,6 @@ export interface DisplayDto {
   isSocialButtonsHidden?: boolean;
 }
 
-export interface CurrentCycledFieldsDto {
-  [key: string]: string;
-}
-
 export interface ScenarioErrorsDto {
   [key: string]: string;
 }
@@ -178,11 +237,9 @@ export interface ScenarioErrorsDto {
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
-  currentCycledFields: CurrentCycledFieldsDto;
   currentScenarioId: string;
   cachedAnswers: CachedAnswersDto;
   currentValue: CurrentValueDto;
-  cycledFields: Array<object>; // looks lice it unused property
   display: DisplayDto;
   errors: ScenarioErrorsDto;
   gender: Gender;

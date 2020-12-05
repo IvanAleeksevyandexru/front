@@ -10,8 +10,6 @@ export class FormPlayerServiceStub {
       cachedAnswers: {},
       currentScenarioId: '1',
       currentValue: {},
-      currentCycledFields: {},
-      cycledFields: [],
       finishedAndCurrentScreens: [],
       display: {
         components: [{
