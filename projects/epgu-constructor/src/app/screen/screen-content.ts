@@ -8,6 +8,9 @@ import {
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { BehaviorSubject } from 'rxjs';
 import { Gender } from '../shared/types/gender';
+import { SignatureApplicationData } from '../component/unique-screen/components/signature-application/models/application.interface';
+
+type ComponentValue = string | number | SignatureApplicationData;
 
 export class ScreenContent {
 
@@ -109,13 +112,12 @@ export class ScreenContent {
     this._componentType.next(val);
   }
   public componentType$ = this._componentType.asObservable();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _componentValue = new BehaviorSubject<{[key: string]: any} | string>(null);
+
+  private _componentValue = new BehaviorSubject<ComponentValue>(null);
   public get componentValue() {
     return this._componentValue.getValue();
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public set componentValue(val: {[key: string]: any} | string ) {
+  public set componentValue(val: ComponentValue ) {
     this._componentValue.next(val);
   }
   public componentValue$ = this._componentValue.asObservable();

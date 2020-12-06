@@ -80,9 +80,7 @@ export const isHaveNeededValue = (
   relation: CustomComponentRefRelation,
 ): boolean => {
   if (item.relation === relation) {
-    const stateRelatedRelValue = components.find(
-      c => c.id === item.relatedRel,
-    )?.value;
+    const stateRelatedRelValue = components.find(c => c.id === item.relatedRel)?.value;
 
     if (likeDictionary(component.type) || isDropDown(component.type)) {
       // @ts-ignore
