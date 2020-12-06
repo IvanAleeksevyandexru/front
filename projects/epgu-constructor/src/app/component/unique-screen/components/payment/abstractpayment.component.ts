@@ -15,6 +15,7 @@ import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import {
   BillInfoResponse,
   BillsInfoResponse,
+  HttpPaymentError,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
 } from './payment.types';
@@ -323,8 +324,7 @@ export class AbstractPaymentComponent implements OnDestroy {
    * Устанавливает статус оплаты из не успешного запроса
    * @param error - сведения об ошибке на запрос
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private setPaymentStatusFromErrorRequest(error: any) {
+  private setPaymentStatusFromErrorRequest(error: HttpPaymentError) {
     this.setInfoLoadedState();
     if (error.status === 500) {
       this.status = PaymentStatus.ERROR;
