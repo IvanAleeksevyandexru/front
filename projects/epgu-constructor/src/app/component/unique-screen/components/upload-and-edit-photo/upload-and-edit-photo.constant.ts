@@ -1,5 +1,3 @@
-import { ImgResolution } from '@alyle/ui/image-cropper';
-
 const minCropSize = {
   width: 306,
   height: 306 * (45/35),
