@@ -1,4 +1,5 @@
 import { ComponentBase } from '../../../../../../screen/screen.types';
+import { DTOActionAction } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 export interface ConfirmUserData extends ComponentBase {
   attrs: ConfirmUserDataAttrs;
@@ -11,7 +12,7 @@ export interface ConfirmUserDataAttrs {
 export interface ConfirmUserDataActions {
   label: string;
   value: string;
-  action: string;
+  action: DTOActionAction;
 }
 
 export interface ConfirmUserDataField {

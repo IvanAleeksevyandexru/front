@@ -3,6 +3,11 @@ import { Clarifications } from '../../../shared/services/terra-byte-api/terra-by
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { CustomComponentAttr } from '../../../component/components-list/components-list.types';
+import {
+  TimerComponentDtoAction,
+  TimerLabelSection
+} from '../../../component/component-screen/components/timer/timer.interface';
+import { TextTransform } from '../../../shared/types/textTransform';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -32,9 +37,9 @@ export type colorDto = 'white' | 'transparent' | '';
 export interface ComponentDto {
   attrs: ComponentAttrsDto;
   id: string;
-  label: string;
+  label?: string;
   type: string;
-  value: string;
+  value?: string;
   required?: boolean;
   visited?: boolean;
 }
@@ -44,7 +49,7 @@ export interface ComponentAttrsDto {
   clarifications?: ClarificationsDto;
   fields?: Array<ComponentFieldDto>;
   dictionaryType?: Array<string> | string; //TODO: прояснить почему либо массив объектов либо строка
-  ref?: Array<ComponentRefDto> | string; //TODO: прояснить почему либо массив объектов либо строка
+  ref?: Array<ComponentRefDto> | string | { fiasCode: string }; //TODO: прояснить почему либо массив объектов либо строка
   validation?: Array<ComponentValidationDto>;
   mask?: Array<string>;
   relationField?: ComponentRelationFieldDto;
@@ -83,6 +88,38 @@ export interface ComponentAttrsDto {
   defaultValue?: boolean;
   filter?: ComponentFilterDto;
   defaultIndex?: number;
+  startTime?: string;
+  expirationTime?: string;
+  timerRules?: TimerRulesDto;
+  refs?: RefsTimeDto;
+  autoMapFocus?: boolean; //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
+  selectedValue?: string;
+  fstuc?: TextTransform;
+  payCode?: number;
+  nsi?: string;
+  dictItemCode?: string;
+  uploadedFile?: ComponentUploadedFileDto;
+}
+
+export interface ComponentUploadedFileDto {
+  fileType: string[];
+  mnemonic: string;
+  name: string;
+  objectType: number;
+  objectId: string;
+}
+
+export interface RefsTimeDto {
+  timeStartRef: string;
+  timeFinishRef: string;
+  visitTimeRef: string;
+}
+
+export interface TimerRulesDto {
+  hideTimerFrom?: number,
+  warningColorFromTime?: number,
+  labels?: TimerLabelSection[],
+  actions?: TimerComponentDtoAction[],
 }
 
 export interface ComponentFilterDto {
@@ -186,6 +223,7 @@ export interface ClarificationsDto {
   [key: string]: {
     title: string;
     text: string;
+    setting?: {}
   }
 }
 
