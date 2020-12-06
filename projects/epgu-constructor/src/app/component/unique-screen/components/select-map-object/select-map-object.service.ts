@@ -109,8 +109,7 @@ export class SelectMapObjectService implements OnDestroy {
    * place objects on yandex map
    * @param map link to yandex map
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public placeOjectsOnMap(map: any) {
+  public placeOjectsOnMap(map: YaMapService['map']) {
     const objects = this.prepareFeatureCollection(this.filteredDictionaryItems);
 
     this.objectManager = this.createMapsObjectManager();
