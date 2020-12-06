@@ -38,11 +38,13 @@ export class LoggerService {
     return isDevMode() || !!localStorage.getItem(KEY_SHOW_LOG);
   }
 
-  private showMessage(message: string): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private showMessage(message: any): void {
     console.log(message);
   }
 
-  private showError(message: string): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private showError(message: any): void {
     console.error(message);
   }
 
