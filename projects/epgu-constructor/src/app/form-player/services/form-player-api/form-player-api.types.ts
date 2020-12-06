@@ -51,7 +51,7 @@ export interface ComponentAttrsDto {
   minDate?: string;
   maxDate?: string;
   preset?: ComponentPresetDto;
-  components?: Array<string>;
+  components?: Array<ComponentDto>;
   repeatAmount?: number;
   link?: string;
   state?: string;
@@ -74,6 +74,7 @@ export interface ComponentAttrsDto {
   restrictions?: ComponentRestrictionsDto;
   applicantType?: string;
   image?: ComponentImageDto;
+  labelAttr?: string;
 }
 
 export interface ComponentImageDto {

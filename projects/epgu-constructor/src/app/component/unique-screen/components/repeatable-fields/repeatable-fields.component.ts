@@ -97,8 +97,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   duplicateScreen() {
     if (this.isScreensAvailable()) {
       const id = this.getNewId();
-      // @ts-ignore
-      this.screens[id] = this.propData.components[0].attrs.components; // TODO: WTF? типы не сходяться, прояснить кейс
+      this.screens[id] = this.propData.components[0].attrs.components as CustomComponent[];
     }
   }
 
