@@ -75,6 +75,19 @@ export interface ComponentAttrsDto {
   applicantType?: string;
   image?: ComponentImageDto;
   labelAttr?: string;
+  russia?: boolean;
+  ussr?: boolean;
+  accuracy?: boolean;
+  disabled?: boolean;
+  hidden?: boolean;
+  defaultValue?: boolean;
+  filter?: ComponentFilterDto;
+  defaultIndex?: number;
+}
+
+export interface ComponentFilterDto {
+  key: string;
+  value: Array<string>;
 }
 
 export interface ComponentImageDto {
