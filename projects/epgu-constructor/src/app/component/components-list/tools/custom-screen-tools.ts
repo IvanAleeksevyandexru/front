@@ -80,14 +80,13 @@ export const isHaveNeededValue = (
   relation: CustomComponentRefRelation,
 ): boolean => {
   if (item.relation === relation) {
-    // TODO разобраться с типами ComponentBase ( value: string )
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const stateRelatedRelValue: any = components.find(
-      (c: CustomComponent) => c.id === item.relatedRel,
+    const stateRelatedRelValue = components.find(
+      c => c.id === item.relatedRel,
     )?.value;
 
     if (likeDictionary(component.type) || isDropDown(component.type)) {
-      return stateRelatedRelValue.id === item.val;
+      // @ts-ignore
+      return stateRelatedRelValue.id === item.val; // TODO разобраться с типами почему у stateRelatedRelValue есть id
     } else {
       return stateRelatedRelValue === item.val;
     }
