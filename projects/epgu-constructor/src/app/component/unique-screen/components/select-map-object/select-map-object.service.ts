@@ -12,12 +12,14 @@ import {
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { filter } from 'rxjs/operators';
 import {
-  ComponentBaloonContentDto
+  ComponentBaloonContentDto, ComponentDictionaryFilterDto
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
   baloonContent: Array<ComponentBaloonContentDto>;
+  dictionaryType: string;
+  dictionaryFilter: Array<ComponentDictionaryFilterDto>;
 }
 
 @Injectable()

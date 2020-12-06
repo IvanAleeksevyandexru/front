@@ -155,11 +155,7 @@ export interface ComponentDictionaryFilterDto {
   valueType: string;
 }
 
-export enum ComponentDictionaryFilterCondition {
-  EMPTY = '',
-  EQUALS = 'EQUALS',
-  CONTAINS = 'CONTAINS',
-}
+export type ComponentDictionaryFilterCondition = 'EQUALS' |'CONTAINS';
 
 export interface ComponentGIBDDpaymentErrorDto {
   text: string;
