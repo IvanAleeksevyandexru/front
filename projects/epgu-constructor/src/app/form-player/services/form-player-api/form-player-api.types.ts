@@ -80,6 +80,7 @@ export interface ComponentAttrsDto {
   applicantType?: string;
   image?: ComponentImageDto;
   labelAttr?: string;
+  labelHint?: string;
   russia?: boolean;
   ussr?: boolean;
   accuracy?: boolean;
