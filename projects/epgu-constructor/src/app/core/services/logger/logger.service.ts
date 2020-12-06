@@ -1,16 +1,11 @@
 import { Injectable, isDevMode } from '@angular/core';
-import {
-  FormPlayerApiResponse,
-  ScenarioErrorsDto
-} from '../../../form-player/services/form-player-api/form-player-api.types';
-import { NavigationPayload } from '../../../form-player/form-player.types';
 
 export const KEY_SHOW_LOG = 'SHOW_LOG';
-export type LoggerMessageTypes = string | FormPlayerApiResponse | ScenarioErrorsDto | NavigationPayload;
 
 @Injectable()
 export class LoggerService {
-  log(messages: Array<LoggerMessageTypes>, groupName: string = null): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  log(messages: Array<any>, groupName: string = null): void {
     if(this.isShowLog()) {
       if (groupName) {
         this.openGroup(groupName);
@@ -24,7 +19,8 @@ export class LoggerService {
     }
   }
 
-  error(messages: Array<LoggerMessageTypes>, groupName: string = null): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error(messages: Array<any>, groupName: string = null): void {
     if(this.isShowLog()) {
       if (groupName) {
         this.openGroup(groupName);
