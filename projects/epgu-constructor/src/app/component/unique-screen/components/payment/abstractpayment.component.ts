@@ -35,6 +35,15 @@ export interface PaymentsAttrs {
   ref: { fiasCode: string };
 }
 
+export interface PaymentInfoValue {
+  billNumber: string;
+  billId: number;
+  amount: string;
+  billName: string;
+  billDate: string;
+  payCode: number;
+}
+
 @Component({
   template: '',
 })
@@ -91,7 +100,7 @@ export class AbstractPaymentComponent implements OnDestroy {
    */
   protected loadPaymentInfo() {
     this.orderId = this.screenService.orderId;
-    const value = this.getDataFromValue();
+    const value = this.getDataFromValue<PaymentInfoValue>();
 
     if (value) {
       const { billNumber, billId, amount, billName, billDate, payCode } = value;
@@ -151,11 +160,10 @@ export class AbstractPaymentComponent implements OnDestroy {
    * Возвращает объект значений из переданных данных
    * @private
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private getDataFromValue(): any {
+  private getDataFromValue<T>(): T {
     const { value } = this.data;
     if (value) {
-      return typeof value === 'object' ? value : JSON.parse(value);
+      return typeof value === 'object' ? value : (JSON.parse(value) as T);
     }
     return null;
   }
