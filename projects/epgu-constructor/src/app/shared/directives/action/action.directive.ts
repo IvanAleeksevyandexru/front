@@ -6,7 +6,7 @@ import { NavigationService } from '../../../core/services/navigation/navigation.
 import {
   ActionApiResponse, ActionDTO, DTOActionAction,
   ActionType,
-  ComponentDtoAction
+  ComponentActionDto
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -20,7 +20,7 @@ import { DatePipe } from '@angular/common';
   selector: '[epgu-constructor-action]',
 })
 export class ActionDirective {
-  @Input() action: ComponentDtoAction;
+  @Input() action: ComponentActionDto;
 
   @HostListener('click') onClick() {
     this.switchAction();

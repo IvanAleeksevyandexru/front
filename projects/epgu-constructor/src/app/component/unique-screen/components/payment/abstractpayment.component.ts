@@ -15,6 +15,7 @@ import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import {
   BillInfoResponse,
   BillsInfoResponse,
+  HttpPaymentError,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
 } from './payment.types';
@@ -33,6 +34,15 @@ export interface PaymentsAttrs {
   nsi: string;
   dictItemCode: string;
   ref: { fiasCode: string };
+}
+
+export interface PaymentInfoValue {
+  billNumber: string;
+  billId: number;
+  amount: string;
+  billName: string;
+  billDate: string;
+  payCode: number;
 }
 
 @Component({
@@ -91,7 +101,7 @@ export class AbstractPaymentComponent implements OnDestroy {
    */
   protected loadPaymentInfo() {
     this.orderId = this.screenService.orderId;
-    const value = this.getDataFromValue();
+    const value = this.getDataFromValue<PaymentInfoValue>();
 
     if (value) {
       const { billNumber, billId, amount, billName, billDate, payCode } = value;
@@ -151,11 +161,10 @@ export class AbstractPaymentComponent implements OnDestroy {
    * Возвращает объект значений из переданных данных
    * @private
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private getDataFromValue(): any {
+  private getDataFromValue<T>(): T {
     const { value } = this.data;
     if (value) {
-      return typeof value === 'object' ? value : JSON.parse(value);
+      return typeof value === 'object' ? value : (JSON.parse(value) as T);
     }
     return null;
   }
@@ -315,8 +324,7 @@ export class AbstractPaymentComponent implements OnDestroy {
    * Устанавливает статус оплаты из не успешного запроса
    * @param error - сведения об ошибке на запрос
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private setPaymentStatusFromErrorRequest(error: any) {
+  private setPaymentStatusFromErrorRequest(error: HttpPaymentError) {
     this.setInfoLoadedState();
     if (error.status === 500) {
       this.status = PaymentStatus.ERROR;

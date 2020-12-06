@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { ComponentDtoAction } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentActionDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
-interface IData extends ComponentDtoAction {
+interface IData extends ComponentActionDto {
   hint: string;
 }
 @Component({

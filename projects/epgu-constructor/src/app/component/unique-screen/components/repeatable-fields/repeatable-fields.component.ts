@@ -36,7 +36,7 @@ type Changes = {
 })
 export class RepeatableFieldsComponent implements AfterViewChecked {
   objectKeys = Object.keys;
-  componentId;
+  componentId: number;
   isValid: boolean;
   componentValidation: Array<boolean> = [];
 
@@ -67,11 +67,6 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   }
   @Output() nextStepEvent = new EventEmitter();
 
-  /**
-   * Генерирует уникальный идентификатор массива компонентов для {@link screens}
-   */
-  // eslint-disable-next-line
-  getId = () => (this.componentId += 1);
   trackByFunction = (index, item) => item;
 
   constructor(
@@ -101,8 +96,14 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
 
   duplicateScreen() {
     if (this.isScreensAvailable()) {
-      this.screens[this.getId()] = this.propData.components[0].attrs.components;
+      const id = this.getNewId();
+      this.screens[id] = this.propData.components[0].attrs.components as CustomComponent[];
     }
+  }
+
+  private getNewId(): string {
+    this.componentId += 1;
+    return this.componentId.toString();
   }
 
   // TODO
