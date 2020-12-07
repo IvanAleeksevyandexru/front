@@ -42,10 +42,10 @@ export class ComponentListToolsService {
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id
     );
-    const patchToNullAndDisable = (control: AbstractControl): void => {
+    const patchValueAndDisable = (control: AbstractControl, defaultValue?: string | boolean): void => {
       const valueControl: AbstractControl = control.get('value');
       this.prevValues[dependentComponent.id] = valueControl.value;
-      valueControl.patchValue('');
+      valueControl.patchValue(defaultValue || '');
       valueControl.markAsUntouched();
       control.disable({ onlySelf: true });
     };
@@ -76,7 +76,7 @@ export class ComponentListToolsService {
 
     if (reference.relation === CustomComponentRefRelation.disabled) {
       if (this.isValueEquals(reference.val, componentVal)) {
-        patchToNullAndDisable(dependentControl);
+        patchValueAndDisable(dependentControl, reference.defaultValue);
       } else {
         patchToPrevValueAndEnable(dependentControl);
       }
