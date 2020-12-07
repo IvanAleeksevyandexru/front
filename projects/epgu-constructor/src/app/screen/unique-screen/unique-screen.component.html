@@ -52,12 +52,14 @@
     *ngSwitchCase="uniqueComponentName.paymentScr"
     [header]="screenService.header"
     [data]="screenService.component"
+    [submitLabel]="screenService.submitLabel"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-payment>
   <epgu-constructor-bill-info
     *ngSwitchCase="uniqueComponentName.billInfo"
     [header]="screenService.header"
     [data]="screenService.component"
+    [submitLabel]="screenService.submitLabel"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-bill-info>
   <epgu-constructor-upload-and-edit-photo

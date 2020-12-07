@@ -24,6 +24,7 @@ export class ConfigService implements Config {
   private _staticDomainAssetsPath: string;
   private _mocks: MockApi[];
   private _mockUrl: string;
+  private _disableUnderConstructionMode: boolean;
 
   public isLoaded$ = this.isLoadedSubject.asObservable();
 
@@ -112,6 +113,10 @@ export class ConfigService implements Config {
     return this._mockUrl;
   }
 
+  get disableUnderConstructionMode(): boolean {
+    return this._disableUnderConstructionMode;
+  }
+
   private getStaticDomainCfg(): string {
     const domain = this.loadService.config.staticDomain;
 
@@ -145,6 +150,7 @@ export class ConfigService implements Config {
     this._gibddRouteNumber = config.gibddRouteNumber;
     this._mocks = config.mocks || [];
     this._mockUrl = config.mockUrl || '';
+    this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

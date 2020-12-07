@@ -16,7 +16,8 @@
     "fileUploadApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files",
     "production": true,
     "mocks": [],
-    "mockUrl": "https://pgu-uat-fed.test.gosuslugi.ru/mock/api"
+    "mockUrl": "https://pgu-uat-fed.test.gosuslugi.ru/mock/api",
+    "disableUnderConstructionMode": false
   },
   "core": {
     "config": {
