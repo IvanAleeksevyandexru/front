@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { InfoComponentModalComponent } from './info-component-modal.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
@@ -9,6 +8,11 @@ import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { componentDtoSample1 } from '../../../../testing/data-sample/component-dto';
 import { componentDtoActionSample1 } from '../../../../testing/data-sample/component-dto-action';
+import { MockComponent, MockDirective } from 'ng-mocks';
+import { ButtonComponent } from 'epgu-lib';
+import { ActionDirective } from '../../../../shared/directives/action/action.directive';
+import { InfoScreenBodyComponent } from '../../../../screen/info-screen/info-screen-body/info-screen-body.component';
+import { By } from '@angular/platform-browser';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -20,13 +24,17 @@ describe('InfoComponentModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [InfoComponentModalComponent],
+      declarations: [
+        InfoComponentModalComponent,
+        MockComponent(ButtonComponent),
+        MockComponent(InfoScreenBodyComponent),
+        MockDirective(ActionDirective),
+      ],
       providers: [
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
     }).compileComponents();
   });
 
@@ -58,55 +66,53 @@ describe('InfoComponentModalComponent', () => {
   });
 
   it('should render epgu-constructor-info-screen-body', () => {
-    const el = fixture.nativeElement.querySelector('epgu-constructor-info-screen-body');
+    const el = fixture.debugElement.query(By.css('epgu-constructor-info-screen-body'));
 
     expect(el).toBeTruthy();
 
-    expect(el.data).toBeNull();
+    expect(el.componentInstance.data).toBeNull();
 
     screenService.component = componentDtoSample1;
     fixture.detectChanges();
 
-    expect(el.data).toBe(componentDtoSample1);
+    expect(el.componentInstance.data).toBe(componentDtoSample1);
   });
 
   it('should render lib-button[epgu-constructor-action]', () => {
-    let buttons = fixture.nativeElement.querySelectorAll('lib-button[epgu-constructor-action]');
+    let buttons = fixture.debugElement.queryAll(By.css('lib-button[epgu-constructor-action]'));
 
     expect(buttons.length).toBe(0);
 
     component.actionButtons = [componentDtoActionSample1];
     fixture.detectChanges();
 
-    buttons = fixture.nativeElement.querySelectorAll('lib-button[epgu-constructor-action]');
+    buttons = fixture.debugElement.queryAll(By.css('lib-button[epgu-constructor-action]'));
     expect(buttons.length).toBe(1);
 
-    expect(buttons[0].action).toBe(componentDtoActionSample1);
-    expect(buttons[0].innerHTML.trim()).toBe(componentDtoActionSample1.label);
+    expect(buttons[0].injector.get(ActionDirective).action).toBe(componentDtoActionSample1);
+    expect(buttons[0].nativeElement.innerHTML.trim()).toBe(componentDtoActionSample1.label);
   });
 
   it('should render [data-testid="info-submit-button"] lib-button', () => {
-    let button = fixture.nativeElement.querySelector(
-      'lib-button[data-testid="info-submit-button"]',
-    );
+    let button = fixture.debugElement.query(By.css('lib-button[data-testid="info-submit-button"]'));
     expect(button).toBeNull();
 
     screenService.submitLabel = 'submitLabel1';
     fixture.detectChanges();
 
-    button = fixture.nativeElement.querySelector('lib-button[data-testid="info-submit-button"]');
+    button = fixture.debugElement.query(By.css('lib-button[data-testid="info-submit-button"]'));
     expect(button).toBeTruthy();
 
-    expect(button.innerHTML.trim()).toBe(screenService.submitLabel);
+    expect(button.nativeElement.innerHTML.trim()).toBe(screenService.submitLabel);
 
-    expect(button.showLoader).toBeFalsy();
-    expect(button.disabled).toBeFalsy();
+    expect(button.componentInstance.showLoader).toBeFalsy();
+    expect(button.componentInstance.disabled).toBeFalsy();
 
     screenService.isLoadingSubject$.next(true);
     fixture.detectChanges();
 
-    expect(button.showLoader).toBeTruthy();
-    expect(button.disabled).toBeTruthy();
+    expect(button.componentInstance.showLoader).toBeTruthy();
+    expect(button.componentInstance.disabled).toBeTruthy();
   });
 
   it('should call navModalService.next() on [data-testid="info-submit-button"] lib-button click', () => {
