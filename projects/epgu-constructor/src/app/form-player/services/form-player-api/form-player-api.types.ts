@@ -8,6 +8,7 @@ import {
   TimerLabelSection
 } from '../../../component/component-screen/components/timer/timer.interface';
 import { TextTransform } from '../../../shared/types/textTransform';
+import { DictionaryOptions } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -100,6 +101,7 @@ export interface ComponentAttrsDto {
   nsi?: string;
   dictItemCode?: string;
   uploadedFile?: ComponentUploadedFileDto;
+  dictionaryOptions?: DictionaryOptions;
 }
 
 export interface ComponentUploadedFileDto {

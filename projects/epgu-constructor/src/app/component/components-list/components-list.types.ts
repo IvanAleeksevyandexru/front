@@ -7,7 +7,7 @@ import {
 import { ComponentBase } from '../../screen/screen.types';
 import { Ref } from '../../shared/services/date-range/date-range.models';
 import { TextTransform } from '../../shared/types/textTransform';
-import { DictionaryItem, DictionaryResponse } from '../shared/services/dictionary-api/dictionary-api.types';
+import { DictionaryItem, DictionaryResponse, DictionaryOptions } from '../shared/services/dictionary-api/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -106,6 +106,7 @@ export interface CustomComponentAttr {
   defaultIndex?: number;
   relationField?: ComponentRelationFieldDto;
   attrs?: CustomComponentAttr; // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
+  dictionaryOptions?: DictionaryOptions;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';

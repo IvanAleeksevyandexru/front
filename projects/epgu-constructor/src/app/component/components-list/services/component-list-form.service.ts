@@ -204,7 +204,7 @@ export class ComponentListFormService {
       { onlySelf: true, emitEvent: false },
     );
     this.changeValidators(resultComponent, control.controls.value);
-    control.updateValueAndValidity();
+    control.get('value').updateValueAndValidity();
   }
 
   private resetRelation(component: CustomComponent) {

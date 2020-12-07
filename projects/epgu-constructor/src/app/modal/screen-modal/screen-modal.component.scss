@@ -86,8 +86,7 @@ $controlHeight: 55px;
       display: flex;
       margin-top: 26px;
       justify-content: center;
-      flex: 1 1 0; // для ie прописаны все 3 значения
-
+      flex: 1 1 auto;
       & > *:not(:last-child) {
         margin-right: 20px;
       }
