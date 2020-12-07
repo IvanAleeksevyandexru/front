@@ -152,6 +152,7 @@ export interface CustomComponentRef {
   relatedRel: string;
   val: string | Array<string> | boolean;
   relation: CustomComponentRefRelation;
+  defaultValue: string | boolean;
 }
 
 export interface CustomListFormGroup {
