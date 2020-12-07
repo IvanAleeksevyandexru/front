@@ -35,7 +35,6 @@ export class TimerComponent {
       this.sortLabelsByTime();
     }
     if (this.hasButtons) {
-      this.prepareActionsButtons();
       this.setActionsButtons();
     }
     this.startTimer();
@@ -117,20 +116,6 @@ export class TimerComponent {
   }
 
   /**
-   * Подготавливает кнопки смотря обязательные поля
-   * @private
-   */
-  private prepareActionsButtons() {
-    this.data.attrs.timerRules.actions = this.data.attrs.timerRules.actions.map((button) => {
-      if (button.fromTime === undefined) {
-        // eslint-disable-next-line no-param-reassign
-        button.fromTime = 0;
-      }
-      return button;
-    });
-  }
-
-  /**
    * Сортирует правила показа заголовков в зависимости от правил препримения времени. От большего к меньшему
    * @private
    */
@@ -166,14 +151,15 @@ export class TimerComponent {
    */
   private setButtonFromRule(timerButton: TimerComponentDtoAction) {
     const { time } = this.timer;
-    if (timerButton.fromTime && timerButton.toTime) {
-      if (
-        time <= timerButton.fromTime * this.oneSecond &&
-        time >= timerButton.toTime * this.oneSecond
-      ) {
+    const { fromTime } = timerButton;
+    const { toTime } = timerButton;
+    if (fromTime === undefined && toTime === undefined) {
+      this.actionButtons.push(timerButton);
+    } else if (fromTime && toTime) {
+      if (time <= fromTime * this.oneSecond && time >= toTime * this.oneSecond) {
         this.actionButtons.push(timerButton);
       }
-    } else if (timerButton.fromTime && time <= timerButton.fromTime * this.oneSecond) {
+    } else if (fromTime && time <= fromTime * this.oneSecond) {
       this.actionButtons.push(timerButton);
     } else if (this.timer.isFinish) {
       this.actionButtons.push(timerButton);
