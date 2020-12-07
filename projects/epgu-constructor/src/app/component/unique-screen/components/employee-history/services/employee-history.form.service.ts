@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   EmployeeType,
-  EmployeeHistoryModel, EmployeeHistoryDataSource
+  EmployeeHistoryModel,
+  EmployeeHistoryDataSource,
 } from '../employee-history.types';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { MonthYear } from 'epgu-lib';
@@ -44,6 +45,7 @@ export class EmployeeHistoryFormService {
       type: [null, Validators.required],
       from: [null, Validators.required],
       to: [null, Validators.required],
+      error: [null, []],
       position: [null],
       place: [null],
       address: [null],
@@ -56,7 +58,7 @@ export class EmployeeHistoryFormService {
     this.newGenerationWatch(form);
 
     if (generationData) {
-      for(const [key , value] of Object.entries(generationData)) {
+      for (const [key, value] of Object.entries(generationData)) {
         let convertedValue = value;
         if (['from', 'to'].includes(key)) {
           convertedValue = new MonthYear(value?.month, value?.year);
@@ -73,60 +75,72 @@ export class EmployeeHistoryFormService {
   }
 
   private newGenerationWatch(form: FormGroup): void {
-    form.get('from').valueChanges.pipe(takeUntil(this.unsubscribeService)).subscribe((date: MonthYear) => {
-      const toDateValue: MonthYear = form.get('to').value;
-      const fromDate: moment_.Moment = moment().year(date.year).month(date.month);
-      const toDate: moment_.Moment = toDateValue ? moment().year(toDateValue.year).month(toDateValue.month) : moment();
+    form
+      .get('from')
+      .valueChanges.pipe(takeUntil(this.unsubscribeService))
+      .subscribe((date: MonthYear) => {
+        form.get('minDateTo').patchValue(date);
+      });
 
-      if (fromDate.diff(toDate) > 0) {
-        form.get('to').setErrors({ error: EmployeeHostoryErrors.FailedDateTo });
-      } else {
-        form.get('to').setErrors(null);
-      }
-
-      form.get('minDateTo').patchValue(date);
-    });
-
-    form.get('checkboxToDate').valueChanges
-      .pipe(
+    form
+      .get('checkboxToDate')
+      .valueChanges.pipe(
         filter((checked: boolean) => checked),
         takeUntil(this.unsubscribeService),
-      ).subscribe(() => {
-      form.get('to').patchValue(MonthYear.fromDate(new Date()));
-    });
+      )
+      .subscribe(() => {
+        form.get('to').patchValue(MonthYear.fromDate(new Date()));
+      });
 
-    form.get('type').valueChanges.pipe(takeUntil(this.unsubscribeService)).subscribe((type: EmployeeType) => {
-      this.setValidatorsByDataSource(
-        this.ds.getDataSourceByGender().find((e: EmployeeHistoryDataSource) => e.type === type),
-        form
-      );
-    });
+    form
+      .get('type')
+      .valueChanges.pipe(takeUntil(this.unsubscribeService))
+      .subscribe((type: EmployeeType) => {
+        this.setValidatorsByDataSource(
+          this.ds.getDataSourceByGender().find((e: EmployeeHistoryDataSource) => e.type === type),
+          form,
+        );
+      });
 
     combineLatest(form.get('from').valueChanges, form.get('to').valueChanges)
       .pipe(
+        tap(([fromDateValue, toDateValue]) => this.checkDates(form, fromDateValue, toDateValue)),
         filter(([fromDate, toDate]) => toDate),
         takeUntil(this.unsubscribeService),
       )
-      .subscribe(([fromDate, toDateValue]) => {
-        const toDate: moment_.Moment = moment().year(toDateValue.year).month(toDateValue.month);
-
-        const minDate = moment().subtract(this.monthsService.years, 'years');
-
-        if (toDate.diff(minDate) < 0) {
-          form.get('to').setErrors({ error: EmployeeHostoryErrors.FailedPeriod });
-        } else {
-          form.get('to').setErrors(null);
-        }
-
+      .subscribe(([fromDateValue, toDateValue]) => {
         this.monthsService.updateAvailableMonths(this.employeeHistoryForm.getRawValue());
       });
+  }
+
+  private checkDates(form: FormGroup, fromDateValue?: MonthYear, toDateValue?: MonthYear) {
+    if (toDateValue) {
+      const toDate: moment_.Moment = moment().year(toDateValue.year).month(toDateValue.month);
+      const minDate = moment().subtract(this.monthsService.years, 'years');
+      if (fromDateValue) {
+        const fromDate: moment_.Moment = moment()
+          .year(fromDateValue.year)
+          .month(fromDateValue.month);
+        if (fromDate.diff(toDate) > 0) {
+          form.get('error').setErrors({ error: EmployeeHostoryErrors.FailedDateTo });
+          return;
+        } else {
+          form.get('error').setErrors(null);
+        }
+      }
+      if (toDate.diff(minDate) < 0) {
+        form.get('error').setErrors({ error: EmployeeHostoryErrors.FailedPeriod });
+      } else {
+        form.get('error').setErrors(null);
+      }
+    }
   }
 
   private setValidatorsByDataSource(ds: EmployeeHistoryDataSource, form: FormGroup): void {
     // Список контролов, на которых не нужно вешать валидаторы
     const missedControls = ['type', 'label', 'positionHint', 'placeHint'];
 
-    for(const [key, value] of Object.entries(ds)) {
+    for (const [key, value] of Object.entries(ds)) {
       if (!missedControls.includes(key)) {
         if (value) {
           form.get(String(key)).setValidators(Validators.required);

@@ -85,6 +85,7 @@ export class AbstractPaymentComponent implements OnDestroy {
   get data() {
     return this.attrData;
   }
+  @Input() submitLabel: string;
   @Output() nextStepEvent = new EventEmitter<void>();
 
   constructor(public injector: Injector) {
