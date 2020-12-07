@@ -9,9 +9,8 @@ export class ScreenServiceStub extends ScreenContent {
   private isLoading = false;
   private isShown = true; // Показываем или нет кнопку
 
-  private isLoadingSubject: BehaviorSubject<boolean>;
-
-  public isLoading$: Observable<boolean>;
+  public isLoadingSubject$ = new BehaviorSubject<boolean>(false);
+  public isLoading$: Observable<boolean> = this.isLoadingSubject$.asObservable();
 
   public get componentValue(): string {
     return '';
@@ -27,5 +26,7 @@ export class ScreenServiceStub extends ScreenContent {
 
   private loadValueFromCachedAnswer(): void {}
 
-  public getStore() { return { cachedAnswers: [] }; }
+  public getStore() {
+    return { cachedAnswers: [] };
+  }
 }
