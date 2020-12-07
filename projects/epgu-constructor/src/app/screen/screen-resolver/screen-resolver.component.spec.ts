@@ -39,10 +39,6 @@ describe('ScreenResolverComponent', () => {
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('screenComponent property', () => {
     it('should be undefined by default', () => {
       expect(component.screenComponent).toBeUndefined();
