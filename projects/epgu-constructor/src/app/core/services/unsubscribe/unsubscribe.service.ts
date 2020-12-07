@@ -10,7 +10,6 @@ export class UnsubscribeService extends Observable<void> implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('destroy');
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
