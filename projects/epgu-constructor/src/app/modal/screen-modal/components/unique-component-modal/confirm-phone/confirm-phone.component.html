@@ -24,7 +24,7 @@
     <div class="form__group" #codeGroup>
       <epgu-constructor-constructor-plain-input *ngFor="let control of codeFormArray.controls"
                        class="form__item"
-                       [class.form__item--has-error]="screenService.componentError$ | async"
+                       [class.form__item--has-error]="(screenService.componentError$ | async) && control.value.codeValue"
                        [class.form__item--has-value]="control.value.codeValue"
                        maxlength="1"
                        type="number"
