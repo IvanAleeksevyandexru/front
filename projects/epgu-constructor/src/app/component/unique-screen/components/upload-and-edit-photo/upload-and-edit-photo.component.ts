@@ -159,9 +159,15 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       .add(fromEvent(this.imageValidator, 'error').subscribe(() => this.validateImage()));
   }
 
-  getRequestData(): { mnemonic: string; name: string; objectType: number; objectId: string } {
+  getRequestData(): {
+    mnemonic: string;
+    name: string;
+    objectType: number;
+    objectId: string;
+    mimeType: string;
+  } {
     const { mnemonic = null, name = null, objectType = 2 } = this.data?.attrs?.uploadedFile;
-    return { mnemonic, name, objectType, objectId: this.orderId };
+    return { mnemonic, name, objectType, objectId: this.orderId, mimeType: 'image/jpeg' };
   }
 
   checkImagePresence(): void {
