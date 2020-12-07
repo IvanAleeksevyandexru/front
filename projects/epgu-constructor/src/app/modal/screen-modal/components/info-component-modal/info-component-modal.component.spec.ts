@@ -6,11 +6,8 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { ScreenModalService } from '../../screen-modal.service';
 import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
-import { CycledFieldsService } from '../../../../screen/services/cycled-fields/cycled-fields.service';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
-import { CycledFieldsServiceStub } from '../../../../screen/services/cycled-fields/cycled-fields.service.stub';
 import { componentDtoSample1 } from '../../../../testing/data-sample/component-dto';
-import { navigationPayloadSample1 } from '../../../../testing/data-sample/navigation-payload';
 import { componentDtoActionSample1 } from '../../../../testing/data-sample/component-dto-action';
 
 describe('InfoComponentModalComponent', () => {
@@ -20,7 +17,6 @@ describe('InfoComponentModalComponent', () => {
   let navigationModalService: NavigationModalServiceStub;
   let screenModalService: ScreenModalServiceStub;
   let screenService: ScreenServiceStub;
-  let cycledFieldsService: CycledFieldsServiceStub;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -29,7 +25,6 @@ describe('InfoComponentModalComponent', () => {
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: CycledFieldsService, useClass: CycledFieldsServiceStub },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
     }).compileComponents();
@@ -45,9 +40,6 @@ describe('InfoComponentModalComponent', () => {
     ) as unknown) as NavigationModalServiceStub;
     screenModalService = (TestBed.inject(ScreenModalService) as unknown) as ScreenModalServiceStub;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
-    cycledFieldsService = (TestBed.inject(
-      CycledFieldsService,
-    ) as unknown) as CycledFieldsServiceStub;
   });
 
   it('should create', () => {
@@ -126,14 +118,11 @@ describe('InfoComponentModalComponent', () => {
     );
 
     const nextSpy = spyOn(navigationModalService, 'next').and.callThrough();
-    spyOn(cycledFieldsService, 'dataTransform').and.returnValue(navigationPayloadSample1);
 
     button.click();
 
     expect(nextSpy).toBeCalledTimes(1);
-    expect(nextSpy).toBeCalledWith({
-      payload: navigationPayloadSample1,
-    });
+    expect(nextSpy).toBeCalledWith({});
   });
 
   describe('prevStep() method', () => {
@@ -150,14 +139,11 @@ describe('InfoComponentModalComponent', () => {
   describe('nextStep() method', () => {
     it('should call navModalService.next()', () => {
       const nextSpy = spyOn(navigationModalService, 'next').and.callThrough();
-      spyOn(cycledFieldsService, 'dataTransform').and.returnValue(navigationPayloadSample1);
 
       component.nextStep();
 
       expect(nextSpy).toBeCalledTimes(1);
-      expect(nextSpy).toBeCalledWith({
-        payload: navigationPayloadSample1,
-      });
+      expect(nextSpy).toBeCalledWith({});
     });
   });
 });
