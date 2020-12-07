@@ -3,5 +3,5 @@ export interface ConfirmationModalBaseButton {
   color?: '' | 'white' | 'transparent';
   loader?: boolean;
   handler?: Function;
-  value?: string | boolean;
+  value?: string; // TODO переделать на OK и CANCEL actions
 }

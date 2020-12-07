@@ -36,8 +36,8 @@ export enum CustomScreenComponentTypes {
 }
 
 export type CustomListDropDowns = Array<{ [key: string]: Partial<ListItem>[] }>;
-export type CustomListDictionaries = Array<{ [key:string]: CustomListDictionaries[] }>;
-export type CustomListReferenceData = CustomListGenericData<Partial<ListItem>[] | DictionaryResponse>;
+export type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;
+export type CustomListReferenceData = CustomListGenericData< Partial<ListItem>[] | DictionaryResponse >;
 // export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
 export interface CustomListDictionary {

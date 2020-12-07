@@ -108,7 +108,7 @@ export class FileUploadItemComponent implements OnDestroy {
   })
   cameraInput: ElementRef;
   get isButtonsDisabled() {
-    return this.listIsUploadingNow || this.filesInUploading || this.filesInCompression;
+    return Boolean(this.listIsUploadingNow || this.filesInUploading || this.filesInCompression);
   }
 
   private subs: Subscription[] = [];

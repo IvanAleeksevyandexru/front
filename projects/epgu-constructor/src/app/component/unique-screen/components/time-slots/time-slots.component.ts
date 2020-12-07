@@ -250,7 +250,7 @@ export class TimeSlotsComponent implements OnInit {
       {
         label: 'Попробовать ещё раз',
         closeModal: true,
-        value: true,
+        value: 'ok',
       },
     ];
     this.errorModalResultSub.unsubscribe();

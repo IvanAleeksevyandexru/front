@@ -60,7 +60,7 @@
   <div class="fileupload__buttons">
     <lib-button
       *ngIf="this.isMobile"
-      [disabled]="!!isButtonsDisabled"
+      [disabled]="isButtonsDisabled"
       [color]="'white'"
       (click)="openCamera()"
       class="fileupload__button"
@@ -71,7 +71,7 @@
       Фото
     </lib-button>
     <lib-button
-      [disabled]="!!isButtonsDisabled"
+      [disabled]="isButtonsDisabled"
       [color]="'white'"
       (click)="selectFilesEvent()"
       class="fileupload__button"

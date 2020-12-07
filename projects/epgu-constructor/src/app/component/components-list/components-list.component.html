@@ -69,7 +69,7 @@
           [disabled]="
             (dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list?.length === 1
           "
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [clearable]="true"
           class="cs__select cs-select"
         >
@@ -83,7 +83,7 @@
           [formControl]="$any(componentData.get('value'))"
           [queryMinSymbolsCount]="0"
           [searchCaseSensitive]="false"
-          [fixedItems]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
+          [fixedItems]="(dictionaries$ | async)[getDictKeyByComp(componentData?.value)]?.list"
           [virtualScroll]="true"
           [clearable]="true"
         >
@@ -105,7 +105,7 @@
             *ngFor="let item of componentData.value?.attrs?.supportedValues"
             [name]="componentData.value.id"
             [labelText]="item.label"
-            [formControl]="componentData.get('value')"
+            [formControl]="$any(componentData.get('value'))"
             [value]="item.value"
           >
           </lib-radio>
@@ -329,8 +329,8 @@
   <div *ngIf="dropDowns$ | async as dropDowns">
     <lib-dropdown
       [invalid]="data.get('value').invalid && data.get('value').touched"
-      [items]="dropDowns[data?.value?.id]"
-      [disabled]="dropDowns[data.value?.id]?.length === 1"
+      [items]="$any(dropDowns[data?.value?.id])"
+      [disabled]="$any(dropDowns[data.value?.id])?.length === 1"
       [validationShowOn]="validationShowOn"
       [formControl]="$any(data.get('value'))"
       [clearable]="true"

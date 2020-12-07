@@ -173,7 +173,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
           {
             label: 'Продолжить',
             closeModal: true,
-            value: true,
+            value: 'ok',
           },
         ],
         isShortModal: true,

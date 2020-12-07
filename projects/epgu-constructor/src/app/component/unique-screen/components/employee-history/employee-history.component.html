@@ -53,7 +53,7 @@
             ></epgu-constructor-label>
             <lib-month-picker
               [id]="i + '_maxDate'"
-              [formControl]="generation.get('to')"
+              [formControl]="$any(generation.get('to'))"
               [minMonth]="monthsService.minDateFrom"
               [maxMonth]="monthsService.maxDate"
               [invalid]="generation.get('to').invalid"
@@ -124,7 +124,7 @@
           epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_address'"
-          [control]="generation.get('address')"
+          [control]="$any(generation.get('address'))"
           [invalid]="generation.get('address').invalid"
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>
