@@ -11,7 +11,6 @@ import { FormPlayerApiService } from '../../form-player/services/form-player-api
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../core/config/config.service';
 import { ServiceDataService } from '../../form-player/services/service-data/service-data.service';
-import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../core/services/device-detector/device-detector.service.stub';
 
@@ -56,7 +55,6 @@ describe('InfoScreenComponent', () => {
         FormPlayerApiService,
         ConfigService,
         ServiceDataService,
-        CycledFieldsService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ]
     })

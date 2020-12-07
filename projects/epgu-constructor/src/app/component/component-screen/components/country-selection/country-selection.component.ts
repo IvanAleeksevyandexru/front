@@ -1,5 +1,4 @@
 import { Component, Input, EventEmitter, OnInit, Output, AfterViewInit } from '@angular/core';
-// @ts-ignore
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalService } from '../../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
@@ -69,7 +68,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.dictionaryApiService
-      .getDictionary(this.data.attrs.dictionaryType)
+      .getDictionary(this.data.attrs.dictionaryType as string) // TODO: прояснить почему либо массив объектов либо строка
       .subscribe((dictionary) => {
         this.mapToListItemModel(dictionary.items);
       });

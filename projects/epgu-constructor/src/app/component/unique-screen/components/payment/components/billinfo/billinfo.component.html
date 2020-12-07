@@ -4,9 +4,7 @@
 
     <div class="payment" [class.inloading]="inLoading">
       <div class="info">
-        <div class="info__text">
-          После подачи заявления квитанцию на оплату можно скачать из личного кабинета
-        </div>
+        <div class="info__text" *ngIf="data.label?.length" [innerHTML]="data.label"></div>
         <div class="info__title">
           Наименование платежа
         </div>
@@ -38,7 +36,7 @@
   </div>
 
   <div class="screen-footer">
-    <div class="footer" *ngIf="isShown">
+    <div class="footer">
       <div class="footer__item">
         <lib-button type="anchor" [link]="getBillLink" color="white" target="_blank" class="btn">
           Скачать квитанцию
@@ -46,7 +44,7 @@
       </div>
       <div class="footer__item">
         <lib-button (click)="nextStep()" class="btn__submit">
-          Далее
+          {{ submitLabel || "Далее" }}
         </lib-button>
       </div>
     </div>

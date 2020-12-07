@@ -33,7 +33,7 @@ export class ConfirmEmailComponent {
       });
   }
 
-  resendEmailConfirmation() {
+  public resendEmailConfirmation(): void {
     const options: NavigationOptions = {
       url: 'service/actions/resendEmailConfirmation',
     };
@@ -41,20 +41,20 @@ export class ConfirmEmailComponent {
     this.isTimerShow = true;
   }
 
-  getComponentState(): NavigationPayload {
+  public timerChange(num: number): void {
+    if (num) {
+      this.timer = num;
+    } else {
+      this.isTimerShow = false;
+    }
+  }
+
+  private getComponentState(): NavigationPayload {
     return {
       [this.screenService.component.id]: {
         visited: true,
         value: String(this.screenService.componentValue),
       },
     };
-  }
-
-  timerChange(num: number) {
-    if (num) {
-      this.timer = num;
-    } else {
-      this.isTimerShow = false;
-    }
   }
 }

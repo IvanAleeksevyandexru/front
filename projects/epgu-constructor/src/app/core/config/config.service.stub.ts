@@ -20,6 +20,7 @@ export class ConfigServiceStub implements Config {
   _staticDomainAssetsPath = '';
   _mocks = [];
   _mockUrl = '';
+  _disableUnderConstructionMode = false;
 
   get billsApiUrl(): string {
     return this._billsApiUrl;
@@ -89,6 +90,10 @@ export class ConfigServiceStub implements Config {
     return this._mockUrl;
   }
 
+  get disableUnderConstructionMode(): boolean {
+    return this._disableUnderConstructionMode;
+  }
+
   set config(config: Config) {
     this._billsApiUrl = config.billsApiUrl;
     this._dictionaryUrl = config.dictionaryUrl;
@@ -107,5 +112,6 @@ export class ConfigServiceStub implements Config {
     this._staticDomainAssetsPath = '';
     this._mocks = config.mocks;
     this._mockUrl = config.mockUrl;
+    this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
   }
 }

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
 import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentDtoAction } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { Clarifications } from '../../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { ConfigService } from '../../../../core/config/config.service';
 
 interface PaymentTypeSelectorInterface {
-  actions: Array<ComponentDtoAction>;
+  actions: Array<ComponentActionDto>;
   body: string;
   header: string;
   subHeader: string;

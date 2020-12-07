@@ -60,7 +60,7 @@
     "@types/uuid": "8.3.0",
     "angular-resize-event": "^2.0.0",
     "angular2-text-mask": "9.0.0",
-    "epgu-lib": "0.0.745",
+    "epgu-lib": "0.0.755",
     "file-saver": "^2.0.5",
     "ics": "^2.24.0",
     "moment": "2.24.0",

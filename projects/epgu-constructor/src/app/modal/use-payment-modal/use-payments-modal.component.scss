@@ -89,7 +89,7 @@
     display: flex;
     margin-top: 26px;
     justify-content: center;
-    flex: 1;
+    flex: 1 1 0; // для ie прописаны все 3 значения
 
     & > * {
       margin-right: 20px;

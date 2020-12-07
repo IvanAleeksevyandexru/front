@@ -54,9 +54,8 @@
     }
 
     &__body {
-      @include flex-container();
       margin-top: 24px;
-      overflow: hidden;
+      overflow: auto; // для отработки скрола в модалке в моб
     }
 
     &__text {
@@ -74,7 +73,8 @@
       display: flex;
       margin-top: 24px;
       justify-content: center;
-      flex: 1;
+      // для ie прописаны все 3 значения
+      flex: 1 1 0;
       @include tablets-down {
         margin-top: auto;
         padding-top: 24px;
