@@ -315,7 +315,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         ? this.terabyteService.deleteFile(requestData).pipe(catchError(() => of(null)))
         : of(null);
     const compressFile = () => {
-      const blobFile = TerraByteApiService.base64toBlob(this.croppedImageUrl, 'image/jpeg');
+      const blobFile = TerraByteApiService.base64toBlob(this.croppedImageUrl);
       return fromPromise(this.compressionService.imageCompression(blobFile, { maxSizeMB: 5 }));
     };
     const uploadFile = (file: Blob | File) => {
