@@ -35,6 +35,7 @@
         [minDate]="field.minDate ? field.minDate : '-50y'"
         [maxDate]="field.maxDate ? field.maxDate : 'today'"
         [(ngModel)]="valueParsed[field.fieldName]"
+        [clearable]="true"
       >
       </lib-date-picker>
     </epgu-constructor-address-item>
