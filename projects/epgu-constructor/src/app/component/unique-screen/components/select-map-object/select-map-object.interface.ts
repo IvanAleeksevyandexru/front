@@ -1,3 +1,5 @@
+import { ComponentDictionaryFilterCondition } from '../../../../form-player/services/form-player-api/form-player-api.types';
+
 export interface IGeoCoords {
   address: string;
   latitude: number;
@@ -11,7 +13,7 @@ export interface IGeoCoordsResponse {
 
 export interface IdictionaryFilter {
   attributeName: string;
-  condition: 'EQUALS' | 'CONTAINS';
+  condition: ComponentDictionaryFilterCondition;
   value: string;
   valueType: string;
 }

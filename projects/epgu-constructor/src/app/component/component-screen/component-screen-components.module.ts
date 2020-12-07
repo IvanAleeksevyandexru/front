@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CoreModule } from '../../core/core.module';
 import { SharedModule } from '../../shared/shared.module';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
-import { ToolsService } from '../shared/services/tools/tools.service';
 import { AddPassportModule } from './components/add-passport/add-passport.module';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressScreenModule } from './components/confirm-personal-user/screens/confirm-personal-user-address-screen/confirm-personal-user-address-screen.module';
@@ -41,7 +40,6 @@ const COMPONENTS = [
     AddPassportModule,
   ],
   providers: [
-    ToolsService,
     DictionaryApiService
   ]
 })

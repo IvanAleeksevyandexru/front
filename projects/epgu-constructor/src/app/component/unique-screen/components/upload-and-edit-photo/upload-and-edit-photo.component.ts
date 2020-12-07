@@ -11,6 +11,7 @@ import { fromEvent, of, Subject, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { catchError, switchMap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
+
 import { ConfigService } from '../../../../core/config/config.service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
@@ -315,7 +316,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         ? this.terabyteService.deleteFile(requestData).pipe(catchError(() => of(null)))
         : of(null);
     const compressFile = () => {
-      const blobFile = TerraByteApiService.base64toBlob(this.croppedImageUrl, 'image');
+      const blobFile = TerraByteApiService.base64toBlob(this.croppedImageUrl, 'image/jpeg');
       return fromPromise(this.compressionService.imageCompression(blobFile, { maxSizeMB: 5 }));
     };
     const uploadFile = (file: Blob | File) => {

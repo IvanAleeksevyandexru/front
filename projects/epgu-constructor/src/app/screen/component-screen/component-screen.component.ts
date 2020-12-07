@@ -4,7 +4,6 @@ import { ComponentScreenComponentTypes } from '../../component/component-screen/
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenBase } from '../screenBase';
-import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 
 interface ComponentSetting {
   displayContinueBtn: boolean;
@@ -29,21 +28,11 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
   };
   componentData = null;
 
-  constructor(
-    public currentAnswersService: CurrentAnswersService,
-    private cycledFieldsService: CycledFieldsService,
-    public injector: Injector,
-  ) {
+  constructor(public currentAnswersService: CurrentAnswersService, public injector: Injector) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this.screenService.currentCycledFields$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((currentCycledFields) => {
-        this.cycledFieldsService.initCycledFields(currentCycledFields);
-      });
-
     this.screenService.componentType$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((type) => this.calcIsShowActionBtn(type as ComponentScreenComponentTypes));
@@ -60,14 +49,13 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
       value = this.currentAnswersService.state;
     }
 
+    const payload = {};
+    payload[this.screenService.component.id] = { visited: true, value };
+
     if (action === 'skipStep') {
-      this.navigationService.skipStep.next({
-        payload: { ...this.cycledFieldsService.dataTransform(value) },
-      });
+      this.navigationService.skipStep.next({ payload });
     } else {
-      this.navigationService.nextStep.next({
-        payload: { ...this.cycledFieldsService.dataTransform(value) },
-      });
+      this.navigationService.nextStep.next({ payload });
     }
   }
 

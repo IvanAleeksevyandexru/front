@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ComponentDtoAction, DisplayDto, FormPlayerApiSuccessResponse } from '../form-player-api/form-player-api.types';
+import { ComponentActionDto, DisplayDto, FormPlayerApiSuccessResponse } from '../form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { Gender } from '../../../shared/types/gender';
 
@@ -10,8 +10,6 @@ export class FormPlayerServiceStub {
       cachedAnswers: {},
       currentScenarioId: '1',
       currentValue: {},
-      currentCycledFields: {},
-      cycledFields: [],
       finishedAndCurrentScreens: [],
       display: {
         components: [{

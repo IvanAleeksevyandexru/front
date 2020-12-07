@@ -225,7 +225,7 @@ export class ComponentListFormService {
     const stringResult = JSON.stringify(result);
     if (this.cachedAttrsComponents[component.id].last !== stringResult) {
       component.attrs = this.cachedAttrsComponents[component.id].base;
-      this.relationPatch(component, result.attrs);
+      this.relationPatch(component, result.attrs); // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
       this.cachedAttrsComponents[component.id].last = stringResult;
     }
   }

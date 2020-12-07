@@ -1,9 +1,13 @@
 import { ListItem } from 'epgu-lib';
-import { DisplayDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentFilterDto,
+  ComponentRelationFieldDto,
+  DisplayDto
+} from '../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../screen/screen.types';
+import { Ref } from '../../shared/services/date-range/date-range.models';
 import { TextTransform } from '../../shared/types/textTransform';
 import { DictionaryItem, DictionaryResponse } from '../shared/services/dictionary-api/dictionary-api.types';
-import { Ref } from '../../shared/services/date-range/date-range.models';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -79,9 +83,6 @@ export type CustomComponentDropDownItem = {
  * @property dictionaryType - dictionary name for request {@see getDictionary}
  */
 export interface CustomComponentAttr {
-  // TODO разобраться с типами
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key:string]: any;
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType: string;
   labelAttr: string;
@@ -96,6 +97,15 @@ export interface CustomComponentAttr {
   updateOnValidation?: UpdateOn;
   supportedValues?: Array<SupportedValue>;
   relation?: {ref: string, conditions: RelationCondition[]}
+  russia?: boolean;
+  ussr?: boolean;
+  disabled?: boolean;
+  hidden?: boolean;
+  defaultValue?: boolean;
+  filter?: ComponentFilterDto;
+  defaultIndex?: number;
+  relationField?: ComponentRelationFieldDto;
+  attrs?: CustomComponentAttr; // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';

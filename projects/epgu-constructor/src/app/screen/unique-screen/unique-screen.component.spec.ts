@@ -2,7 +2,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfigService } from '../../core/config/config.service';
 import { ConfigServiceStub } from '../../core/config/config.service.stub';
-import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
@@ -48,7 +47,6 @@ describe('UniqueScreenComponent', () => {
         UnsubscribeService,
         CachedAnswersService,
         CurrentAnswersService,
-        CycledFieldsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ]

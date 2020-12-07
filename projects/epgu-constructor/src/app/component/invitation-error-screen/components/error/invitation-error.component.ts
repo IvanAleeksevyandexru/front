@@ -45,7 +45,7 @@ export class InvitationErrorComponent implements OnInit {
   }
 
   sendEmail(): void {
-    const ref = this.data.attrs?.ref;
+    const ref = this.data.attrs?.ref as string; // TODO: выяснить почему ref может быть массивом либо строкой
     const value = this.scenarioDto.applicantAnswers[ref]?.value;
     if (!value) {
       this.emailSent = true;

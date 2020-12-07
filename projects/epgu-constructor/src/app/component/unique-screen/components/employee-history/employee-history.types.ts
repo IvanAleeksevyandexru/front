@@ -17,10 +17,10 @@ interface EmployeeHistoryDate {
 }
 
 interface EmployeeHistoryBaseModel {
-  type: EmployeeType,
-  position: string,
-  place: string,
-  address: string,
+  type: EmployeeType;
+  position: string;
+  place: string;
+  address: string;
   checkboxToDate?: boolean;
 }
 
@@ -31,9 +31,10 @@ export interface EmployeeHistoryServerModel extends EmployeeHistoryBaseModel {
 }
 
 export interface EmployeeHistoryModel extends EmployeeHistoryBaseModel {
-  from: MonthYear,
-  to: MonthYear,
+  from: MonthYear;
+  to: MonthYear;
   minDateTo?: MonthYear;
+  error?: string;
 }
 
 export interface EmployeeHistoryAvailableDates {
@@ -43,7 +44,7 @@ export interface EmployeeHistoryAvailableDates {
 
 export interface EmployeeHistoryUncheckedPeriod {
   from: string;
-  to: string
+  to: string;
 }
 
 export type EmployeeType = 'employed' | 'unemployed' | 'military' | 'student';

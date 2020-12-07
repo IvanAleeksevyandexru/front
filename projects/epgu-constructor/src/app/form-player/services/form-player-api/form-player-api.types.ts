@@ -2,6 +2,12 @@ import { ScreenTypes } from '../../../screen/screen.types';
 import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
+import { CustomComponentAttr } from '../../../component/components-list/components-list.types';
+import {
+  TimerComponentDtoAction,
+  TimerLabelSection
+} from '../../../component/component-screen/components/timer/timer.interface';
+import { TextTransform } from '../../../shared/types/textTransform';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -15,6 +21,8 @@ export interface CurrentValueDto {
   [key: string]: Answer;
 }
 
+export type colorDto = 'white' | 'transparent' | '';
+
 /**
  * @property {Array<object>}attrs - объект с дополнительной информацией
  * (например для select элементов могут приходить словари)
@@ -27,20 +35,196 @@ export interface CurrentValueDto {
  * @property {boolean}visited? - булевый флаг пройдена ли пользователем бизнес-логика данного компонента
  */
 export interface ComponentDto {
-  attrs: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any;
-    actions?: Array<ComponentDtoAction>;
-  };
+  attrs: ComponentAttrsDto;
   id: string;
-  label: string;
+  label?: string;
   type: string;
-  value: string;
+  value?: string;
   required?: boolean;
   visited?: boolean;
 }
 
-export interface ComponentDtoAction {
+export interface ComponentAttrsDto {
+  actions?: Array<ComponentActionDto>;
+  clarifications?: ClarificationsDto;
+  fields?: Array<ComponentFieldDto>;
+  dictionaryType?: Array<string> | string; //TODO: прояснить почему либо массив объектов либо строка
+  ref?: Array<ComponentRefDto> | string | { fiasCode: string }; //TODO: прояснить почему либо массив объектов либо строка
+  validation?: Array<ComponentValidationDto>;
+  mask?: Array<string>;
+  relationField?: ComponentRelationFieldDto;
+  minDate?: string;
+  maxDate?: string;
+  preset?: ComponentPresetDto;
+  components?: Array<ComponentDto>;
+  repeatAmount?: number;
+  link?: string;
+  state?: string;
+  states?: ComponentStatesDto;
+  characterMask?: string; //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
+  codeLength?: number; //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
+  resendCodeUrl?: string; //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
+  isNeedToCheckGIBDDPayment?: boolean;
+  dictionaryGIBDD?: string;
+  checkedParametersGIBDD?: Array<string>;
+  GIBDDpaymentError?: ComponentGIBDDpaymentErrorDto;
+  attributeNameWithAddress?: string;
+  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  baloonContent?: Array<ComponentBaloonContentDto>;
+  addressString?: ComponentAddressStringDto;
+  value?: string;
+  visited?: boolean;
+  years?: number;
+  nonStop?: boolean;
+  restrictions?: ComponentRestrictionsDto;
+  applicantType?: string;
+  image?: ComponentImageDto;
+  labelAttr?: string;
+  labelHint?: string;
+  russia?: boolean;
+  ussr?: boolean;
+  accuracy?: boolean;
+  disabled?: boolean;
+  hidden?: boolean;
+  defaultValue?: boolean;
+  filter?: ComponentFilterDto;
+  defaultIndex?: number;
+  startTime?: string;
+  expirationTime?: string;
+  timerRules?: TimerRulesDto;
+  refs?: RefsTimeDto;
+  autoMapFocus?: boolean; //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
+  selectedValue?: string;
+  fstuc?: TextTransform;
+  payCode?: number;
+  nsi?: string;
+  dictItemCode?: string;
+  uploadedFile?: ComponentUploadedFileDto;
+}
+
+export interface ComponentUploadedFileDto {
+  fileType: string[];
+  mnemonic: string;
+  name: string;
+  objectType: number;
+  objectId: string;
+}
+
+export interface RefsTimeDto {
+  timeStartRef: string;
+  timeFinishRef: string;
+  visitTimeRef: string;
+}
+
+export interface TimerRulesDto {
+  hideTimerFrom?: number,
+  warningColorFromTime?: number,
+  labels?: TimerLabelSection[],
+  actions?: TimerComponentDtoAction[],
+}
+
+export interface ComponentFilterDto {
+  key: string;
+  value: Array<string>;
+}
+
+export interface ComponentImageDto {
+  src: string;
+  alt: string;
+}
+
+export interface ComponentRestrictionsDto {
+  minDate: [number, string];
+  maxDate: [number, string];
+}
+
+export interface ComponentAddressStringDto {
+  type: string;
+  value: string;
+}
+
+export interface ComponentBaloonContentDto {
+  name: string;
+  label: string;
+}
+
+export interface ComponentDictionaryFilterDto {
+  attributeName: string;
+  condition: ComponentDictionaryFilterCondition;
+  value: string;
+  valueType: string;
+}
+
+export type ComponentDictionaryFilterCondition = 'EQUALS' |'CONTAINS';
+
+export interface ComponentGIBDDpaymentErrorDto {
+  text: string;
+  title: string;
+  buttons: Array<{
+    label: string;
+    closeModal: boolean;
+    color?: colorDto;
+    value?: boolean;
+  }>;
+}
+
+export interface ComponentStatesDto {
+ [key: string]: {
+   actions: Array<ComponentActionDto>;
+   body: string;
+   header: string;
+   subHeader: string;
+   clarifications: ClarificationsDto;
+   srcImg?: string;
+ }
+}
+
+export interface ComponentPresetDto {
+  type: string;
+  value: string;
+}
+
+export interface ComponentRelationFieldDto {
+  ref: string;
+  conditions: Array<{
+    type: 'RegExp' | 'MinDate' | 'MaxDate';
+    value: string;
+    result: {
+      attrs: ComponentAttrsDto;
+    }
+  }>;
+}
+
+export interface ComponentValidationDto {
+  type: string;
+  value: string;
+  ref: string;
+  dataType: string;
+  condition: string;
+  errorMsg: string;
+}
+
+export interface ComponentRefDto {
+  relatedDate: string;
+  val: string;
+  period: string;
+  condition: string;
+}
+
+export interface ComponentFieldDto {
+  fieldName?: string;
+  label?: string;
+}
+
+export interface ClarificationsDto {
+  [key: string]: {
+    title: string;
+    text: string;
+    setting?: {}
+  }
+}
+
+export interface ComponentActionDto {
   label: string;
   value: string;
   action: DTOActionAction;
@@ -48,8 +232,9 @@ export interface ComponentDtoAction {
   hidden?: boolean;
   disabled?: boolean;
   applicantType?: string;
-  color?: 'white' | 'transparent' | '';
+  color?: colorDto;
   link?: string;
+  underConstruction?: boolean;
 }
 
 export interface DisplaySubjHead {
@@ -82,10 +267,6 @@ export interface DisplayDto {
   isSocialButtonsHidden?: boolean;
 }
 
-export interface CurrentCycledFieldsDto {
-  [key: string]: string;
-}
-
 export interface ScenarioErrorsDto {
   [key: string]: string;
 }
@@ -106,11 +287,9 @@ export interface ScenarioErrorsDto {
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
-  currentCycledFields: CurrentCycledFieldsDto;
   currentScenarioId: string;
   cachedAnswers: CachedAnswersDto;
   currentValue: CurrentValueDto;
-  cycledFields: Array<object>; // looks lice it unused property
   display: DisplayDto;
   errors: ScenarioErrorsDto;
   gender: Gender;
@@ -166,6 +345,8 @@ export enum ActionType {
 }
 
 export enum DTOActionAction {
+  getNextStep = 'getNextScreen',
+  getPrevStep = 'getPrevScreen',
   skipStep = 'skipStep',
   reject = 'reject',
   editPhoneNumber = 'service/actions/editPhoneNumber',

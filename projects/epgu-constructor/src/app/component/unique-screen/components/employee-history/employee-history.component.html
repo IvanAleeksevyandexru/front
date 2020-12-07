@@ -22,7 +22,7 @@
       </div>
       <div
         class="employee-history__error-date"
-        *ngIf="generation.get('to').getError('error') as error"
+        *ngIf="generation.get('error').getError('error') as error"
       >
         <span>Укажите дату</span>
         <div>{{ error }}</div>
@@ -53,8 +53,8 @@
             ></epgu-constructor-label>
             <lib-month-picker
               [id]="i + '_maxDate'"
-              [formControl]="$any(generation.get('to'))"
-              [minMonth]="generation.get('minDateTo').value || monthsService.minDateTo"
+              [formControl]="generation.get('to')"
+              [minMonth]="monthsService.minDateFrom"
               [maxMonth]="monthsService.maxDate"
               [invalid]="generation.get('to').invalid"
               [validationShowOn]="validationShowOn"

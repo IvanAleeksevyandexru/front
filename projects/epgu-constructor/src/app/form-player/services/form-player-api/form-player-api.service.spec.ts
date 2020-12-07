@@ -19,11 +19,9 @@ xdescribe('FormPlayerApiService', () => {
   let mockData = {
     scenarioDto: {
       applicantAnswers: {},
-      currentCycledFields: {},
       currentScenarioId: '',
       cachedAnswers: {},
       currentValue: {},
-      cycledFields: [],
       display: {
         components: [],
         header: '',
