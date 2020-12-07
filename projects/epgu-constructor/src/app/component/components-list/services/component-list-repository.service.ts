@@ -50,8 +50,9 @@ export class ComponentListRepositoryService {
       }
 
       if (likeDictionary(component.type)) {
-        const { dictionaryType } = component.attrs;
-        data.push(this.getDictionaries$(dictionaryType, component, { pageNum: 0 }));
+        const { dictionaryType, dictionaryOptions } = component.attrs;
+        const options: DictionaryOptions = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
+        data.push(this.getDictionaries$(dictionaryType, component, options));
       }
     });
 
