@@ -6,13 +6,16 @@ import { NavigationModalService } from '../../../../core/services/navigation-mod
 import { ScreenModalService } from '../../screen-modal.service';
 import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
-import { componentDtoSample1 } from '../../../../testing/data-sample/component-dto';
-import { componentDtoActionSample1 } from '../../../../testing/data-sample/component-dto-action';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { ButtonComponent } from 'epgu-lib';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { InfoScreenBodyComponent } from '../../../../screen/info-screen/info-screen-body/info-screen-body.component';
 import { By } from '@angular/platform-browser';
+import {
+  ComponentActionDto,
+  ComponentDto,
+  DTOActionAction,
+} from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -72,10 +75,18 @@ describe('InfoComponentModalComponent', () => {
 
     expect(el.componentInstance.data).toBeNull();
 
-    screenService.component = componentDtoSample1;
+    const componentDtoSample: ComponentDto = {
+      attrs: {},
+      id: 'id1',
+      label: 'label1',
+      type: 'type1',
+      value: 'value1',
+    };
+
+    screenService.component = componentDtoSample;
     fixture.detectChanges();
 
-    expect(el.componentInstance.data).toBe(componentDtoSample1);
+    expect(el.componentInstance.data).toBe(componentDtoSample);
   });
 
   it('should render lib-button[epgu-constructor-action]', () => {
@@ -83,14 +94,20 @@ describe('InfoComponentModalComponent', () => {
 
     expect(buttons.length).toBe(0);
 
-    component.actionButtons = [componentDtoActionSample1];
+    const componentDtoActionSample: ComponentActionDto = {
+      label: 'label1',
+      value: 'value1',
+      action: DTOActionAction.editEmail,
+    };
+
+    component.actionButtons = [componentDtoActionSample];
     fixture.detectChanges();
 
     buttons = fixture.debugElement.queryAll(By.css('lib-button[epgu-constructor-action]'));
     expect(buttons.length).toBe(1);
 
-    expect(buttons[0].injector.get(ActionDirective).action).toBe(componentDtoActionSample1);
-    expect(buttons[0].nativeElement.innerHTML.trim()).toBe(componentDtoActionSample1.label);
+    expect(buttons[0].injector.get(ActionDirective).action).toBe(componentDtoActionSample);
+    expect(buttons[0].nativeElement.innerHTML.trim()).toBe(componentDtoActionSample.label);
   });
 
   it('should render [data-testid="info-submit-button"] lib-button', () => {
