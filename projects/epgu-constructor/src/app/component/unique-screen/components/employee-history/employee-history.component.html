@@ -124,7 +124,7 @@
           epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_address'"
-          [control]="$any(generation.get('address'))"
+          [control]="generation.get('address')"
           [invalid]="generation.get('address').invalid"
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>
