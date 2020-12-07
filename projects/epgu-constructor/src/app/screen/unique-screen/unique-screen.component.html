@@ -57,9 +57,9 @@
   ></epgu-constructor-payment>
   <epgu-constructor-bill-info
     *ngSwitchCase="uniqueComponentName.billInfo"
-    [header]="screenService.header"
-    [data]="screenService.component"
-    [submitLabel]="screenService.submitLabel"
+    [header]="screenService.header$ | async"
+    [data]="screenService.component$ | async"
+    [submitLabel]="screenService.submitLabel$ | async"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-bill-info>
   <epgu-constructor-upload-and-edit-photo
