@@ -100,7 +100,7 @@ export interface CustomComponentAttr {
   updateOnValidation?: UpdateOn;
   supportedValues?: Array<SupportedValue>;
   relation?: {ref: string, conditions: RelationCondition[]};
-  dictionaryOptions: DictionaryOptions;
+  dictionaryOptions?: DictionaryOptions;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
