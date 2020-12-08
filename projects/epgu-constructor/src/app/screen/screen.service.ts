@@ -22,6 +22,7 @@ export class ScreenService extends ScreenContent {
   constructor(
     private currentAnswersService: CurrentAnswersService,
     private cachedAnswersService: CachedAnswersService,
+    private utils: UtilsService,
   ) {
     super();
   }
@@ -98,8 +99,9 @@ export class ScreenService extends ScreenContent {
     if (componentType === CustomScreenComponentTypes.SnilsInput) {
       return JSON.parse(cachedValue).snils;
     }
-    const isPresetParseable = preset.substr(0, 1) === '{';
-    if (isPresetParseable) {
+    const isPresetParseable = this.utils.hasJsonStructure(preset);
+    const isCachedValueParseable = this.utils.hasJsonStructure(cachedValue);
+    if (isPresetParseable && isCachedValueParseable) {
       return JSON.stringify({
         ...JSON.parse(preset),
         ...JSON.parse(cachedValue),

@@ -13,9 +13,15 @@
     @include flex-container();
     justify-content: flex-end;
     flex: 1 1 100%;
-    margin-bottom: $screen-pad-p;
     margin-left: $screen-pad-small-gap / 2;
     margin-right: $screen-pad-small-gap / 2;
+    max-width: 100%;
+    & > * {
+      margin-bottom: $screen-pad-p;
+    }
+  }
+  &::ng-deep .form__half {
+    max-width: 50%;
   }
   &__radio {
     margin-top: $screen-pad-top;

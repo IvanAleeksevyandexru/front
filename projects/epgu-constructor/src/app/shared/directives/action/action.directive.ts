@@ -1,19 +1,18 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ScreenService } from '../../../screen/screen.service';
+import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
+import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import {
   ActionApiResponse,
   ActionDTO,
-  DTOActionAction,
   ActionType,
-  ComponentActionDto
+  ComponentActionDto, DTOActionAction
 } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { ScreenService } from '../../../screen/screen.service';
 import { UtilsService } from '../../services/utils/utils.service';
-import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
-import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { ComponentStateForNavigate } from './action.interface';
 
 @Directive({
@@ -21,8 +20,9 @@ import { ComponentStateForNavigate } from './action.interface';
 })
 export class ActionDirective {
   @Input() action: ComponentActionDto;
+  @Input() componentId: string;
 
-  @HostListener('click') onClick() {
+  @HostListener('click',['$event']) onClick() {
     this.switchAction();
   }
 
@@ -34,7 +34,7 @@ export class ActionDirective {
     private utilsService: UtilsService,
   ) {}
 
-  private switchAction(): void {
+  private switchAction(componentId?: string): void {
     switch (this.action.type) {
       case ActionType.download:
         this.downloadAction();
@@ -114,8 +114,9 @@ export class ActionDirective {
   }
 
   private getComponentStateForNavigate(): ComponentStateForNavigate {
+    const componentId = this.componentId || this.screenService.component.id;
     return {
-      [this.screenService.component.id]: {
+      [componentId]: {
         visited: true,
         value: this.getComponentStateValueForNavigate(this.action.action),
       },
