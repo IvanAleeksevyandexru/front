@@ -111,7 +111,7 @@
             *ngFor="let item of componentData.value?.attrs?.supportedValues"
             [name]="componentData.value.id"
             [labelText]="item.label"
-            [formControl]="componentData.get('value')"
+            [formControl]="$any(componentData.get('value'))"
             [value]="item.value"
           >
           </lib-radio>

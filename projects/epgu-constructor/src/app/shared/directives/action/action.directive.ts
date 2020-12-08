@@ -22,7 +22,7 @@ export class ActionDirective {
   @Input() action: ComponentActionDto;
   @Input() componentId: string;
 
-  @HostListener('click',['$event']) onClick() {
+  @HostListener('click') onClick() {
     this.switchAction();
   }
 

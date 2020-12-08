@@ -21,5 +21,5 @@ export class ConstructorPlainInputComponent {
   @Input() maxlength?: number;
   @Input() type?: string;
   @Input() disabled?: boolean;
-  @Input() pattern?: string | RegExp;
+  @Input() pattern?: string;
 }
