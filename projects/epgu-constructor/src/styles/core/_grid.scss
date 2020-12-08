@@ -114,10 +114,10 @@
     }
   }
   &-12 {
-    max-width: calc(100% - #{$screen-pad-small-gap}) !important;
+    max-width: 100% !important;
     &-sm {
       @include phones-down {
-        max-width: calc(100% - #{$screen-pad-small-gap}) !important;
+        max-width: 100% !important;
       }
     }
     &-offset {

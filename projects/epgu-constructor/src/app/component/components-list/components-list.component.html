@@ -1,7 +1,9 @@
 <form class="form">
   <div
     *ngFor="let componentData of formService.form.controls; let idx = index"
-    class="form__item {{ componentData.value?.attrs?.grid }}"
+    class="form__item {{
+      componentData.value?.attrs?.grid ? componentData.value?.attrs?.grid : ''
+    }}"
   >
     <ng-container
       [ngSwitch]="componentData.value?.type"

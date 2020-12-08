@@ -15,7 +15,9 @@
     flex: 1 1 100%;
     max-width: 100%;
     & > * {
-      margin-bottom: $screen-pad-p;
+      &:not(:last-child) {
+        margin-bottom: $screen-pad-p;
+      }
     }
   }
   &__radio {
