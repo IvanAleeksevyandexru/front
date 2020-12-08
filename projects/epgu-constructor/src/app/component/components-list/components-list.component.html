@@ -1,8 +1,9 @@
 <form class="form">
   <div
     *ngFor="let componentData of formService.form.controls; let idx = index"
-    class="form__item"
-    [class]="componentData.value?.attrs?.grid"
+    class="form__item {{
+      componentData.value?.attrs?.grid ? componentData.value?.attrs?.grid : ''
+    }}"
   >
     <ng-container
       [ngSwitch]="componentData.value?.type"
@@ -48,14 +49,19 @@
         ></ng-container>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item *ngSwitchCase="componentType.DropDown"
-                                       [data]="componentData">
-        <ng-container *ngTemplateOutlet="dropDowns; context: { $implicit: componentData }"></ng-container>
+      <epgu-constructor-component-item
+        *ngSwitchCase="componentType.DropDown"
+        [data]="componentData"
+      >
+        <ng-container
+          *ngTemplateOutlet="dropDowns; context: { $implicit: componentData }"
+        ></ng-container>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item *ngSwitchCase="componentType.MvdGiac"
-                                       [data]="componentData">
-        <ng-container *ngTemplateOutlet="dropDowns; context: { $implicit: componentData }"></ng-container>
+      <epgu-constructor-component-item *ngSwitchCase="componentType.MvdGiac" [data]="componentData">
+        <ng-container
+          *ngTemplateOutlet="dropDowns; context: { $implicit: componentData }"
+        ></ng-container>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item
@@ -334,7 +340,8 @@
       [validationShowOn]="validationShowOn"
       [formControl]="$any(data.get('value'))"
       [clearable]="true"
-      class="cs__select cs-select">
+      class="cs__select cs-select"
+    >
     </lib-dropdown>
   </div>
 </ng-template>
