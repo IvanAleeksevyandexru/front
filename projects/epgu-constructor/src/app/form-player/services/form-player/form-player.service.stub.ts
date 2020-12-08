@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ComponentActionDto, DisplayDto, FormPlayerApiSuccessResponse } from '../form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { Gender } from '../../../shared/types/gender';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class FormPlayerServiceStub {
@@ -54,5 +55,11 @@ export class FormPlayerServiceStub {
 
   initResponse(): void {}
 
+  initData(): void {}
+
   store(): FormPlayerApiSuccessResponse { return this.response; }
+
+  checkIfOrderExist(): Observable<{}> {
+    return of({});
+  }
 }

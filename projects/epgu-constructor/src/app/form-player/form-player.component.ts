@@ -60,86 +60,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((loaded) => {
-      if (!loaded) return;
-      const { orderId, invited, canStartNew } = this.serviceDataService;
-      if (this.service.initState) {
-        this.startScenarioFromProps();
-      } else if (orderId) {
-        this.handleOrder(orderId, invited, canStartNew);
-      } else {
-        this.getOrderIdFromApi();
-      }
-    });
+    this.startPlayer();
   }
 
   ngOnChanges(): void {
-    this.checkProps();
     this.serviceDataService.init(this.service);
-  }
-
-  startScenarioFromProps() {
-    const store = JSON.parse(this.service.initState) as FormPlayerApiSuccessResponse;
-    this.loggerService.log(['initState', store], 'Запуск плеера из предустановленого состояния');
-    this.formPlayerService.store = store;
-    const navigationPayload = store.scenarioDto.currentValue;
-    this.formPlayerService.navigate({ payload: navigationPayload }, FormPlayerNavigation.NEXT);
-  }
-
-  getOrderIdFromApi() {
-    this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
-      const invited = checkOrderApiResponse.isInviteScenario;
-      const { canStartNew } = checkOrderApiResponse;
-      const orderId = checkOrderApiResponse.scenarioDto?.orderId;
-      this.serviceDataService.invited = invited;
-      this.serviceDataService.orderId = orderId;
-      this.serviceDataService.canStartNew = canStartNew;
-      this.handleOrder(orderId, invited, canStartNew);
-    });
-  }
-
-  handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean) {
-    const shouldShowModal = (): boolean => {
-      return (
-        !invited && canStartNew && !!orderId && !this.formPlayerService.isNeedToShowLastScreen()
-      );
-    };
-
-    if (shouldShowModal()) {
-      this.showModal();
-    } else {
-      this.formPlayerService.initData(orderId, invited);
-    }
-  }
-
-  showModal() {
-    const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
-      ConfirmationModalComponent,
-      {
-        text: `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
-        <h4 style="text-align: center">У вас есть черновик заявления</h4>
-        <p class="helper-text" style="text-align: center; margin-top: 8px;">Продолжить его заполнение?</p></div>`,
-        showCloseButton: false,
-        showCrossButton: true,
-        buttons: [
-          {
-            label: 'Начать заново',
-            color: 'white',
-            closeModal: true,
-          },
-          {
-            label: 'Продолжить',
-            closeModal: true,
-            value: 'ok',
-          },
-        ],
-        isShortModal: true,
-      },
-    );
-    modalResult$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((result) => {
-      const orderId = result ? this.serviceDataService.orderId : null;
-      this.formPlayerService.initData(orderId, false);
-    });
   }
 
   private initFormPlayerConfig(): void {
@@ -172,6 +97,84 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
+  private startPlayer(): void {
+    this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((loaded) => {
+      if (!loaded) return;
+      const { orderId, invited, canStartNew } = this.serviceDataService;
+      if (this.service.initState) {
+        this.startScenarioFromProps();
+      } else if (orderId) {
+        this.handleOrder(orderId, invited, canStartNew);
+      } else {
+        this.getOrderIdFromApi();
+      }
+    });
+  }
+
+  private startScenarioFromProps(): void {
+    const store = JSON.parse(this.service.initState) as FormPlayerApiSuccessResponse;
+    this.loggerService.log(['initState', store], 'Запуск плеера из предустановленого состояния');
+    this.formPlayerService.store = store;
+    const navigationPayload = store.scenarioDto.currentValue;
+    this.formPlayerService.navigate({ payload: navigationPayload }, FormPlayerNavigation.NEXT);
+  }
+
+  private getOrderIdFromApi(): void {
+    this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
+      const invited = checkOrderApiResponse.isInviteScenario;
+      const { canStartNew } = checkOrderApiResponse;
+      const orderId = checkOrderApiResponse.scenarioDto?.orderId;
+      this.serviceDataService.invited = invited;
+      this.serviceDataService.orderId = orderId;
+      this.serviceDataService.canStartNew = canStartNew;
+      this.handleOrder(orderId, invited, canStartNew);
+    });
+  }
+
+  private handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean): void {
+    const shouldShowModal = (): boolean => {
+      return (
+        !invited && canStartNew && !!orderId && !this.formPlayerService.isNeedToShowLastScreen()
+      );
+    };
+
+    if (shouldShowModal()) {
+      this.showModal();
+    } else {
+      this.formPlayerService.initData(orderId, invited);
+    }
+  }
+
+  private showModal(): void {
+    const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
+      ConfirmationModalComponent,
+      {
+        text: `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
+        <h4 style="text-align: center">У вас есть черновик заявления</h4>
+        <p class="helper-text" style="text-align: center; margin-top: 8px;">Продолжить его заполнение?</p></div>`,
+        showCloseButton: false,
+        showCrossButton: true,
+        buttons: [
+          {
+            label: 'Начать заново',
+            color: 'white',
+            closeModal: true,
+          },
+          {
+            label: 'Продолжить',
+            closeModal: true,
+            value: 'ok',
+          },
+        ],
+        isShortModal: true,
+      },
+    );
+    modalResult$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((result) => {
+      const orderId = result ? this.serviceDataService.orderId : null;
+      this.formPlayerService.initData(orderId, false);
+    });
+  }
+
   private nextStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.NEXT);
   }
@@ -182,19 +185,5 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private skipStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.SKIP);
-  }
-
-  private checkProps(): void {
-    console.group('----- Init props ---------');
-    console.log('service', this.service);
-    console.groupEnd();
-    const { invited, orderId } = this.serviceDataService;
-    if (!this.serviceDataService) {
-      throw Error('Need to set Service for epgu form player');
-    }
-
-    if (invited && !orderId) {
-      throw Error('Should set orderId when invited');
-    }
   }
 }
