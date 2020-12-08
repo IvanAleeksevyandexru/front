@@ -58,7 +58,7 @@ export class PaymentService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
     // TODO: Хардкод для локальной отладки подмена суммы оплаты пошлины
-    if (location.hostname.includes('test.gosuslugi.ru')) {
+    if (location.hostname.includes('local.test.gosuslugi.ru')) {
       attributeValues.sum = '200';
     }
 
