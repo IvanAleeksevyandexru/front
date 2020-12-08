@@ -13,7 +13,9 @@
     @include flex-container();
     justify-content: flex-end;
     flex: 1 1 100%;
-    margin-bottom: $screen-pad-p;
+    & > * {
+      margin-bottom: $screen-pad-p;
+    }
   }
   &__radio {
     margin-top: $screen-pad-top;
