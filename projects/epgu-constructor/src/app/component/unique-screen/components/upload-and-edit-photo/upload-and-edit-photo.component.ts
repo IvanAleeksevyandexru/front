@@ -20,10 +20,7 @@ import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirma
 import { ModalService } from '../../../../modal/modal.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
-import {
-  isCloseAndSaveWebcamEvent,
-  WebcamEvent,
-} from '../../../../shared/components/webcam-shoot/webcamevents';
+
 import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../services/webcam/webcam.service';
 import { CompressionService } from './compression/compression.service';
@@ -45,6 +42,10 @@ import { ImgSubject } from './upload-and-edit-photo.model';
 })
 export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   @ViewChild('hiddenFileInput') fileInput: ElementRef;
+  @ViewChild('cameraInput', {
+    static: true,
+  })
+  cameraInput: ElementRef;
 
   @Output() nextStepEvent = new EventEmitter();
 
@@ -101,6 +102,12 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         this.isWebcamAvailable = isAvailable;
       });
     }
+  }
+  /**
+   * Открытие камеры для получения изображения и последующей загрузки
+   */
+  openCamera() {
+    this.cameraInput.nativeElement.click();
   }
 
   ngOnDestroy(): void {
@@ -240,9 +247,9 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   }
 
   // TODO сделать перегрузку метода чтобы избавиться от any в шаблоне
-  onFileSelected(fileList: FileList, fileInput?: HTMLInputElement): void {
+  onFileSelected(fileList: FileList, fileInput?: HTMLInputElement, isPhoto: boolean = false): void {
     if (fileList?.length && !this.isModalOpened) {
-      this.setFile(fileList[0]);
+      this.setFile(fileList[0], isPhoto);
     }
     if (fileInput) {
       // eslint-disable-next-line no-param-reassign
@@ -260,19 +267,13 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.imageValidator.src = imageUrl;
   }
 
-  setFile(file: File): void {
-    this.fileName = file.name;
+  setFile(file: File, isPhoto: boolean): void {
+    if (isPhoto) {
+      this.fileName = `Фото_${uuidv4()}.jpg`;
+    } else {
+      this.fileName = file.name;
+    }
     this.blobToDataURL(file, (url: string) => this.validateImageEvent(url));
-  }
-
-  takePhoto(): void {
-    this.webcamService.open().events.subscribe((event: WebcamEvent) => {
-      if (isCloseAndSaveWebcamEvent(event)) {
-        this.fileName = `Фото_${uuidv4()}.jpg`;
-        this.imgSubject.next({ imageObjectUrl: event.data });
-      }
-      this.webcamService.close();
-    });
   }
 
   changeCroppedPhoto(): void {

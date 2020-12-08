@@ -4,6 +4,12 @@
     <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
     <div class="photo"
          [ngClass]="{ 'photo--flex-column': croppedImageUrl }">
+      <input #cameraInput
+             type="file"
+             capture="user"
+             accept="image/*"
+             style="display: none"
+             (change)="onFileSelected($any($event.target).files, cameraInput, true)">
       <input #hiddenFileInput
              style="display: none"
              [attr.accept]="getAcceptTypes()"
@@ -32,9 +38,9 @@
                class="photo__uploading-text photo__uploading-text_mt-68">
               Выберите файл или сделайте фото
             </p>
-            <button *ngIf="!isDesktop && isWebcamAvailable"
+            <button *ngIf="!isDesktop"
                     class="photo__uploading-button"
-                    (click)="takePhoto()">
+                    (click)="openCamera()">
               <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"/>
               Сделать фото
             </button>
