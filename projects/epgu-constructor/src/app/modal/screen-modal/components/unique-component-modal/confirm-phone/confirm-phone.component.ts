@@ -85,6 +85,10 @@ export class ConfirmPhoneComponent implements OnInit {
     }
   }
 
+  isItemHasError(codeValue: string) {
+    return this.screenService.componentError && codeValue;
+  }
+
   private initCodeFormArray(): void {
     for (let i = 0; i < this.codeLength; i += 1) {
       const codeFormGroup: FormGroup = this.fb.group({
