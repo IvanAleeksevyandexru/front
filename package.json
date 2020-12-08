@@ -61,6 +61,7 @@
     "@types/uuid": "8.3.0",
     "angular-resize-event": "^2.0.0",
     "angular2-text-mask": "9.0.0",
+    "classlist.js": "^1.1.20150312",
     "core-js": "^3.8.1",
     "epgu-lib": "0.0.755",
     "file-saver": "^2.0.5",
@@ -74,6 +75,7 @@
     "rxjs": "6.5.3",
     "tslib": "2.0.0",
     "uuid": "8.3.0",
+    "web-animations-js": "^2.3.2",
     "zone.js": "0.10.2"
   },
   "devDependencies": {
