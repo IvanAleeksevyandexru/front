@@ -9,8 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { LoadService } from 'epgu-lib';
-import { fromEvent } from 'rxjs';
-import { debounceTime, filter, mergeMap, takeUntil } from 'rxjs/operators';
+import { filter, mergeMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../core/config/config.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
@@ -34,7 +33,6 @@ import { LoggerService } from '../core/services/logger/logger.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
-  @HostBinding('style.minHeight.px') minHeight: number;
   @HostBinding('class.epgu-form-player') class = true;
   @HostBinding('attr.test-screen-id') screenId: string;
   @Input() service: Service;
@@ -56,35 +54,9 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit(): void {
     this.serviceDataService.init(this.service);
-
-    this.loadService.loaded
-      .pipe(filter((loaded: boolean) => loaded))
-      .pipe(mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()))
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((config) => {
-        this.configService.config = config;
-      });
-
-    this.navService.nextStep$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NavigationPayload) => this.nextStep(data));
-
-    this.navService.prevStep$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NavigationPayload) => this.prevStep(data));
-
-    this.navService.skipStep$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NavigationPayload) => this.skipStep(data));
-
-    if (this.deviceDetector.isMobile) {
-      this.calculateHeight();
-      this.subscribeToScroll();
-    }
-
-    this.screenService.display$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((display) => {
-      this.screenId = display?.id;
-    });
+    this.initFormPlayerConfig();
+    this.initNavigation();
+    this.initSettingOfScreenIdToAttr();
   }
 
   ngAfterViewInit() {
@@ -104,21 +76,6 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges(): void {
     this.checkProps();
     this.serviceDataService.init(this.service);
-  }
-
-  subscribeToScroll() {
-    this.zone.runOutsideAngular(() => {
-      fromEvent(window, 'resize')
-        .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
-        .subscribe(() => this.zone.run(() => this.calculateHeight()));
-    });
-  }
-
-  calculateHeight(): void {
-    const bottomIndent = 20; // отступ от нижней части экрана
-    const headerHeight = document.querySelector('header').scrollHeight;
-    const viewPortHeight = window.innerHeight;
-    this.minHeight = viewPortHeight - headerHeight - bottomIndent;
   }
 
   startScenarioFromProps() {
@@ -185,19 +142,49 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-  nextStep(navigation?: Navigation) {
+  private initFormPlayerConfig(): void {
+    this.loadService.loaded
+      .pipe(filter((loaded: boolean) => loaded))
+      .pipe(mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()))
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((config) => {
+        this.configService.config = config;
+      });
+  }
+
+  private initNavigation(): void {
+    this.navService.nextStep$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((data: NavigationPayload) => this.nextStep(data));
+
+    this.navService.prevStep$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((data: NavigationPayload) => this.prevStep(data));
+
+    this.navService.skipStep$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((data: NavigationPayload) => this.skipStep(data));
+  }
+
+  private initSettingOfScreenIdToAttr(): void {
+    this.screenService.display$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((display) => {
+      this.screenId = display?.id;
+    });
+  }
+
+  private nextStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.NEXT);
   }
 
-  prevStep(navigation?: Navigation) {
+  private prevStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.PREV);
   }
 
-  skipStep(navigation?: Navigation) {
+  private skipStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.SKIP);
   }
 
-  checkProps() {
+  private checkProps(): void {
     console.group('----- Init props ---------');
     console.log('service', this.service);
     console.groupEnd();
