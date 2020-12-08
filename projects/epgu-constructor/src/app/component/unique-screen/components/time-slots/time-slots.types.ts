@@ -2,15 +2,12 @@ export interface SlotInterface {
   slotId: string;
   slotTime: Date;
   timezone: string;
-}
-
-export interface SmevSlotInterface extends SlotInterface {
-  areaId: string;
+  areaId?: string;
 }
 
 export interface SmevSlotsMapInterface {
   [key: number]: { [
-      key: number]: { [key: number]: SmevSlotInterface[] }
+      key: number]: { [key: number]: SlotInterface[] }
   }
 }
 
