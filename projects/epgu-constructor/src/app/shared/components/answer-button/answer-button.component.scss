@@ -1,5 +1,5 @@
-@import "src/styles/core/palettes";
-@import "src/styles/core/functions";
+@import 'src/styles/core/palettes';
+@import 'src/styles/core/functions';
 
 :host {
   display: block;
@@ -7,17 +7,23 @@
 }
 
 .answer-btn {
-
   &__icon {
     flex-shrink: 0;
     margin-left: 10px;
   }
 
   &__hint {
-    // ToDo убрать, как доработают компонент epgu-lib
     lib-question-help-tip {
       display: flex;
     }
     margin-left: auto;
+  }
+}
+
+.icon-loading {
+  position: absolute;
+  right: $screen-pad-p;
+  @include phones-down {
+    right: $screen-pad-small-gap;
   }
 }
