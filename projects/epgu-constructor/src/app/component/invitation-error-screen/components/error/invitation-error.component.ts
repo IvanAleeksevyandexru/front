@@ -12,6 +12,7 @@ import {
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CustomComponent } from '../../../components-list/components-list.types';
+import { NavigationPayload } from '../../../../form-player/form-player.types';
 
 @Component({
   selector: 'epgu-constructor-invitation-error',
@@ -22,7 +23,7 @@ import { CustomComponent } from '../../../components-list/components-list.types'
 export class InvitationErrorComponent implements OnInit {
   @Input() data: ComponentDto;
   @Input() scenarioDto: ScenarioDto;
-  @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
+  @Output() nextStepEvent = new EventEmitter<NavigationPayload>();
   public email: FormControl = new FormControl('', {
     validators: Validators.required,
   });

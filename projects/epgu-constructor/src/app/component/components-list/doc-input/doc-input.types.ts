@@ -1,5 +1,6 @@
 import { AbstractControl } from '@angular/forms';
 import { CustomComponentAttrValidation } from '../components-list.types';
+import { TextTransform } from '../../../shared/types/textTransform';
 
 interface DocInputControl extends Partial<AbstractControl> {
   value: DocInputComponentData;
@@ -29,7 +30,7 @@ interface DocInputField {
     maxDate?: string;
     minDate?: string;
     accuracy?: string;
-    fstuc?: string;
+    fstuc?: TextTransform;
   };
 }
 

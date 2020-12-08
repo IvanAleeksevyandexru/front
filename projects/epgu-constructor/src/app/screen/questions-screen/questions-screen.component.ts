@@ -68,6 +68,13 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.nextStep(this.getPayload(action));
   }
 
+  onSubmitClick(submitPayload: { value: string }): void {
+    const componentId = this.screenService.component.id;
+    const payload = {};
+    payload[componentId] = { ...submitPayload, visited: true };
+    this.nextStep(payload);
+  }
+
   getPayload(action: ComponentActionDto) {
     return {
       [this.screenService.component.id]: {

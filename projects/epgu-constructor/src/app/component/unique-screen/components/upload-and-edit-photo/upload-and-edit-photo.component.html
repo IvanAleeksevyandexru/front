@@ -8,7 +8,7 @@
              style="display: none"
              [attr.accept]="getAcceptTypes()"
              type="file"
-             (change)="onFileSelected($event.target.files, hiddenFileInput)">
+             (change)="onFileSelected($any($event.target).files, hiddenFileInput)">
       <div class="photo__uploading-container"
            [ngClass]="{ 'photo__uploading-container-mobile': !isDesktop }">
         <img *ngIf="croppedImageUrl"

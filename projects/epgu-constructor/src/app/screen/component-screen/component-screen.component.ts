@@ -41,7 +41,7 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
   /**
    * Переход на следующую страницу и передача данных
    */
-  nextStep(action: string): void {
+  nextStep(action?: string): void {
     let value: string;
     if (typeof this.currentAnswersService.state === 'object') {
       value = JSON.stringify(this.currentAnswersService.state);

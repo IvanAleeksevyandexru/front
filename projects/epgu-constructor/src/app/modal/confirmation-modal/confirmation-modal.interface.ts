@@ -11,11 +11,11 @@ export interface ConfirmationModal {
   }[];
   buttons?: {
     label: string;
-    color?: string;
+    color?: '' | 'white' | 'transparent';
     loader?: boolean;
     handler?: Function;
     closeModal: boolean;
-    value?: string | boolean;
+    value?: string;
   }[];
   clarifications?: object;
   isShortModal?: boolean;

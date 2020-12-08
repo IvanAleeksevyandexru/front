@@ -20,13 +20,13 @@
          type="file"
          [attr.accept]="getAcceptTypes()"
          (click)="resetFileInputState(fileUploadInput)"
-         (change)="updateSelectedFilesInfoAndSend($event.target.files)"
+         (change)="updateSelectedFilesInfoAndSend($any($event.target).files)"
          multiple/>
   <input #cameraInput
          type="file"
          capture="environment"
          accept="image/*"
-         (change)="updateSelectedFilesInfoAndSend($event.target.files, true)">
+         (change)="updateSelectedFilesInfoAndSend($any($event.target).files, true)">
   <div *ngIf="(files$$ | async) as files"
        class="files">
     <div *ngFor="let file of files"

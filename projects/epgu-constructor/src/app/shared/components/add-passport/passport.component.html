@@ -10,7 +10,7 @@
       [textTransformType]="attrs.fstuc"
       [validationShowOn]="touchedUnfocused"
       [invalid]="passportForm.controls[field.fieldName].invalid"
-      [control]="passportForm.controls[field.fieldName]"
+      [control]="$any(passportForm.controls[field.fieldName])"
       [mask]="field.mask | maskHandle"
       [showMaskAsPlaceholder]="!field.placeholder"
       [placeholder]="field.placeholder"

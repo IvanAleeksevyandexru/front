@@ -40,8 +40,8 @@ export interface FileResponseToBackendWithRelatedUploads {
  * Интерфейс для аттрибутов файла на загрузку из JSON
  */
 export interface FileUploadAttributes {
-  clarifications: Array<Clarifications>;
-  uploads: FileUploadItem[],
+  clarifications: Clarifications;
+  uploads: FileUploadItem[];
   uploadId?: string;
   idAttrs?: string[];
   relatedUploads?: FileUploadAttributes[];
