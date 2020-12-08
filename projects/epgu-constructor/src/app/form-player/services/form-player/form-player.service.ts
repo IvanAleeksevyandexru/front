@@ -56,7 +56,7 @@ export class FormPlayerService extends FormPlayerBaseService {
    * Получает и устанавливает данные для заявления для id услуги по приглашению
    * @param orderId - идентификатор черновика
    */
-  getInviteOrderData(orderId: string) {
+  getInviteOrderData(orderId: string): void {
     this.formPlayerApiService.getInviteServiceData(orderId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
@@ -68,7 +68,7 @@ export class FormPlayerService extends FormPlayerBaseService {
    * Получает и устанавливает данные для заявления для id услуги
    * @param orderId - идентификатор черновика
    */
-  getOrderData(orderId: string) {
+  getOrderData(orderId: string): void {
     this.formPlayerApiService.getServiceData(orderId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
@@ -136,7 +136,7 @@ export class FormPlayerService extends FormPlayerBaseService {
    * Скролим в верх страницы при переключения скрина
    * @private
    */
-  private resetViewByChangeScreen() {
+  private resetViewByChangeScreen(): void {
     this.window.scroll(0,0);
   }
 }

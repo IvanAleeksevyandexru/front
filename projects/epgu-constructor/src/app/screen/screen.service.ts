@@ -59,7 +59,7 @@ export class ScreenService extends ScreenContent {
    * Инициализирует начальное состояние ответа компонента
    * @private
    */
-  private initComponentStateService() {
+  private initComponentStateService(): void {
     this.currentAnswersService.state = '';
     this.currentAnswersService.isValid = true;
   }
@@ -93,8 +93,9 @@ export class ScreenService extends ScreenContent {
    * Метод объединяет preset значение и ответ из кэша
    * @param cachedValue - кэш ответов из cachedAnswersService
    * @param preset - preset значения из display.components[].value
+   * @param componentType
    */
-  private mergePresetCacheValue(cachedValue: string, preset: string, componentType: string ) {
+  private mergePresetCacheValue(cachedValue: string, preset: string, componentType: string ): string {
     if (componentType === CustomScreenComponentTypes.SnilsInput) {
       return JSON.parse(cachedValue).snils;
     }
@@ -136,7 +137,7 @@ export class ScreenService extends ScreenContent {
     return component;
   }
 
-  public getCompValueFromCachedAnswers(componentId: string) {
+  public getCompValueFromCachedAnswers(componentId: string): string {
     const cachedAnswers = this.getStore().cachedAnswers;
     return cachedAnswers && cachedAnswers[componentId]?.value;
   }

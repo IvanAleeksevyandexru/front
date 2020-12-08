@@ -87,7 +87,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((loaded) => {
       if (!loaded) return;
       const { orderId, invited, canStartNew } = this.serviceDataService;
@@ -106,7 +106,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.serviceDataService.init(this.service);
   }
 
-  subscribeToScroll() {
+  subscribeToScroll(): void {
     this.zone.runOutsideAngular(() => {
       fromEvent(window, 'resize')
         .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
@@ -121,7 +121,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.minHeight = viewPortHeight - headerHeight - bottomIndent;
   }
 
-  startScenarioFromProps() {
+  startScenarioFromProps(): void {
     const store = JSON.parse(this.service.initState) as FormPlayerApiSuccessResponse;
     this.loggerService.log(['initState', store], 'Запуск плеера из предустановленого состояния');
     this.formPlayerService.store = store;
@@ -129,7 +129,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.formPlayerService.navigate({ payload: navigationPayload }, FormPlayerNavigation.NEXT);
   }
 
-  getOrderIdFromApi() {
+  getOrderIdFromApi(): void {
     this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
       const invited = checkOrderApiResponse.isInviteScenario;
       const { canStartNew } = checkOrderApiResponse;
@@ -141,7 +141,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-  handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean) {
+  handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean): void {
     const shouldShowModal = (): boolean => {
       return (
         !invited && canStartNew && !!orderId && !this.formPlayerService.isNeedToShowLastScreen()
@@ -155,7 +155,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  showModal() {
+  showModal(): void {
     const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
       ConfirmationModalComponent,
       {
@@ -185,19 +185,19 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-  nextStep(navigation?: Navigation) {
+  nextStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.NEXT);
   }
 
-  prevStep(navigation?: Navigation) {
+  prevStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.PREV);
   }
 
-  skipStep(navigation?: Navigation) {
+  skipStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.SKIP);
   }
 
-  checkProps() {
+  checkProps(): void {
     console.group('----- Init props ---------');
     console.log('service', this.service);
     console.groupEnd();

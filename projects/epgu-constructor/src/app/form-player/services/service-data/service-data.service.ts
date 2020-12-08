@@ -41,7 +41,7 @@ export class ServiceDataService implements Service {
     this._canStartNew = canStartNew;
   }
 
-  init(service: Service) {
+  init(service: Service): void {
     this._serviceId = service.serviceId;
     this._targetId = service.targetId;
     this.orderId = service.orderId;

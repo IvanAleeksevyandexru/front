@@ -27,7 +27,7 @@ export class DeviceDetectorService {
   /**
    * Инициализирует типы устройства с которого смотрим
    */
-  initState() {
+  initState(): void {
     const { deviceType = localStorage.getItem(LOCAL_STORAGE_PLATFORM_TYPE) } = this.loadService.attributes;
     this.isMobile  = deviceType === LoadServiceDeviceType.mob;
     this.isTablet  = deviceType === LoadServiceDeviceType.tab;
@@ -39,7 +39,7 @@ export class DeviceDetectorService {
   /**
    * Возвращает IOS в браузере Chrome это или нет
    */
-  isChromeIOS() {
+  isChromeIOS(): boolean {
     return /CriOS\/[\d]+/.test(navigator.userAgent);
   }
 }

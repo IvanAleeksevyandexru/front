@@ -113,7 +113,7 @@ export class EmployeeHistoryFormService {
       });
   }
 
-  private checkDates(form: FormGroup, fromDateValue?: MonthYear, toDateValue?: MonthYear) {
+  private checkDates(form: FormGroup, fromDateValue?: MonthYear, toDateValue?: MonthYear): void {
     if (toDateValue) {
       const toDate: moment_.Moment = moment().year(toDateValue.year).month(toDateValue.month);
       const minDate = moment().subtract(this.monthsService.years, 'years');

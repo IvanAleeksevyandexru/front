@@ -28,7 +28,7 @@ export class CounterDirective implements OnChanges {
       .subscribe();
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.counter$.next({ count: this.counter, interval: this.interval });
   }
 }

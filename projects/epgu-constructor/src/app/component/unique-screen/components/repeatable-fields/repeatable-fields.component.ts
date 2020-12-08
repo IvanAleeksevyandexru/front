@@ -67,7 +67,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   }
   @Output() nextStepEvent = new EventEmitter();
 
-  trackByFunction = (index, item) => item;
+  trackByFunction = (index, item): string => item;
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -75,11 +75,11 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     private cdr: ChangeDetectorRef,
   ) {}
 
-  ngAfterViewChecked() {
+  ngAfterViewChecked(): void {
     this.cdr.detectChanges();
   }
 
-  private initVariable() {
+  private initVariable(): void {
     this.screens = {};
     this.componentId = 0;
     this.saveState([]);
@@ -94,7 +94,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     );
   }
 
-  duplicateScreen() {
+  duplicateScreen(): void {
     if (this.isScreensAvailable()) {
       const id = this.getNewId();
       this.screens[id] = this.propData.components[0].attrs.components as CustomComponent[];
@@ -107,7 +107,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   }
 
   // TODO
-  changeComponentList(changes: CustomComponentOutputData, index: number) {
+  changeComponentList(changes: CustomComponentOutputData, index: number): void {
     const state = this.getState();
     this.componentValidation[index] = Object.values(changes).every((item) => item.isValid);
     this.isValid = this.componentValidation.every((valid: boolean) => valid);
@@ -115,11 +115,11 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     this.saveState(state);
   }
 
-  nextScreen() {
+  nextScreen(): void {
     this.nextStepEvent.emit(this.currentAnswersService.state);
   }
 
-  removeItem(key: string, index: number) {
+  removeItem(key: string, index: number): void {
     delete this.screens[key];
     let state = this.getState();
     state = removeItemFromArrByIndex(state, index);
@@ -131,7 +131,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   getState(): Array<{ [key: string]: { value: string } }> {
     return JSON.parse(this.currentAnswersService.state);
   }
-  saveState(state: Array<{ [key: string]: { value: string } }>) {
+  saveState(state: Array<{ [key: string]: { value: string } }>): void {
     this.currentAnswersService.state = JSON.stringify(state);
   }
 

@@ -7,7 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { fromEvent, of, Subject, Subscription } from 'rxjs';
+import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { catchError, switchMap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
@@ -37,6 +37,7 @@ import {
   uploadPhotoElemId,
 } from './upload-and-edit-photo.constant';
 import { ImgSubject } from './upload-and-edit-photo.model';
+import { TerraUploadedFile } from '../file-upload-screen/sub-components/file-upload-item/data';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',
@@ -107,14 +108,14 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  setHowPhotoModalParams() {
+  setHowPhotoModalParams(): void {
     this.howPhotoModalParameters = {
       text: this.data?.attrs?.clarifications[uploadPhotoElemId.howToTakePhoto]?.text || '',
       elemEventHandlers: [
         {
           elemId: uploadPhotoElemId.requirements,
           event: 'click',
-          handler() {
+          handler(): void {
             this.modalResult.next(uploadPhotoElemId.requirements);
             this.closeModal();
           },
@@ -170,7 +171,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     if (requestData.mnemonic && requestData.name) {
       this.terabyteService.downloadFile(requestData).subscribe((file: Blob | File) => {
         // @ts-ignore
-        const setImageUrl = (imageUrl: string) => {
+        const setImageUrl = (imageUrl: string): void => {
           this.croppedImageUrl = imageUrl;
           this.previousImageObjectUrl = imageUrl;
         };
@@ -250,9 +251,9 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     }
   }
 
-  blobToDataURL(file: Blob | File, callback: Function) {
+  blobToDataURL(file: Blob | File, callback: Function): void {
     const fileReader = new FileReader();
-    fileReader.onload = (e) => callback(e.target.result.toString());
+    fileReader.onload = (e): Function => callback(e.target.result.toString());
     fileReader.readAsDataURL(file);
   }
 
@@ -311,15 +312,15 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   nextStep(): void {
     let requestData = this.getRequestData();
 
-    const deletePrevImage = (fileName: string) =>
+    const deletePrevImage = (fileName: string): Observable<TerraUploadedFile> =>
       fileName
         ? this.terabyteService.deleteFile(requestData).pipe(catchError(() => of(null)))
         : of(null);
-    const compressFile = () => {
+    const compressFile = (): Observable<Blob | File> => {
       const blobFile = TerraByteApiService.base64toBlob(this.croppedImageUrl);
       return fromPromise(this.compressionService.imageCompression(blobFile, { maxSizeMB: 5 }));
     };
-    const uploadFile = (file: Blob | File) => {
+    const uploadFile = (file: Blob | File): Observable<void> => {
       const fileName = this.fileName.split('.');
       fileName[fileName.length - 1] = 'jpg';
       requestData = { ...requestData, name: fileName.join('.') };

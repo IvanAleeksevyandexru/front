@@ -25,11 +25,11 @@ export class ComponentListModalComponent {
     public screenModalService: ScreenModalService,
   ) {}
 
-  nextStep(navigation?: Navigation) {
+  nextStep(navigation?: Navigation): void {
     this.navModalService.next(navigation);
   }
 
-  prevStep(navigation?: Navigation) {
+  prevStep(navigation?: Navigation): void {
     this.navModalService.prev(navigation);
   }
 

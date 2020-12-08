@@ -45,7 +45,7 @@ export class WebcamService {
   /**
    * Закрывает окно вебкамеры
    */
-  close() {
+  close(): void {
     this.containerRef.destroy();
   }
 

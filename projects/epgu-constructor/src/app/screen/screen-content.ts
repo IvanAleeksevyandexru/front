@@ -15,7 +15,7 @@ type ComponentValue = string | number | SignatureApplicationData;
 export class ScreenContent {
 
   private _display = new BehaviorSubject<DisplayDto>(null);
-  public get display() {
+  public get display(): DisplayDto {
     return this._display.getValue();
   }
   public set display(val: DisplayDto) {
@@ -24,7 +24,7 @@ export class ScreenContent {
   public display$ = this._display.asObservable();
 
   private _header = new BehaviorSubject<string>(null);
-  public get header() {
+  public get header(): string {
     return this._header.getValue();
   }
   public set header(val: string) {
@@ -33,7 +33,7 @@ export class ScreenContent {
   public header$ = this._header.asObservable();
 
   private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
-  public get subHeader() {
+  public get subHeader(): DisplaySubjHead {
     return this._subHeader.getValue();
   }
   public set subHeader(val: DisplaySubjHead) {
@@ -42,7 +42,7 @@ export class ScreenContent {
   public subHeader$ = this._subHeader.asObservable();
 
   private _submitLabel = new BehaviorSubject<string>(null);
-  public get submitLabel() {
+  public get submitLabel(): string {
     return this._submitLabel.getValue();
   }
   public set submitLabel(val: string) {
@@ -51,7 +51,7 @@ export class ScreenContent {
   public submitLabel$ = this._submitLabel.asObservable();
 
   private _gender = new BehaviorSubject<Gender>(null);
-  public get gender() {
+  public get gender(): Gender {
     return this._gender.getValue();
   }
   public set gender(val: Gender) {
@@ -60,7 +60,7 @@ export class ScreenContent {
   public gender$ = this._gender.asObservable();
 
   private _terminal = new BehaviorSubject<boolean>(null);
-  public get terminal() {
+  public get terminal(): boolean {
     return this._terminal.getValue();
   }
   public set terminal(val: boolean) {
@@ -69,7 +69,7 @@ export class ScreenContent {
   public terminal$ = this._terminal.asObservable();
 
   private _displayCssClass = new BehaviorSubject<string>(null);
-  public get displayCssClass() {
+  public get displayCssClass(): string {
     return this._displayCssClass.getValue();
   }
   public set displayCssClass(val: string) {
@@ -78,7 +78,7 @@ export class ScreenContent {
   public displayCssClass$ = this._displayCssClass.asObservable();
 
   private _screenType = new BehaviorSubject<ScreenTypes>(null);
-  public get screenType() {
+  public get screenType(): ScreenTypes {
     return this._screenType.getValue();
   }
   public set screenType(val: ScreenTypes) {
@@ -87,7 +87,7 @@ export class ScreenContent {
   public screenType$ = this._screenType.asObservable();
 
   private _orderId = new BehaviorSubject<string>(null);
-  public get orderId() {
+  public get orderId(): string {
     return this._orderId.getValue();
   }
   public set orderId(val: string) {
@@ -96,7 +96,7 @@ export class ScreenContent {
   public orderId$ = this._orderId.asObservable();
 
   private _component = new BehaviorSubject<ComponentDto>(null);
-  public get component() {
+  public get component(): ComponentDto {
     return this._component.getValue();
   }
   public set component(val: ComponentDto) {
@@ -105,7 +105,7 @@ export class ScreenContent {
   public component$ = this._component.asObservable();
 
   private _componentType = new BehaviorSubject<string>(null);
-  public get componentType() {
+  public get componentType(): string {
     return this._componentType.getValue();
   }
   public set componentType(val: string) {
@@ -114,7 +114,7 @@ export class ScreenContent {
   public componentType$ = this._componentType.asObservable();
 
   private _componentValue = new BehaviorSubject<ComponentValue>(null);
-  public get componentValue() {
+  public get componentValue(): ComponentValue {
     return this._componentValue.getValue();
   }
   public set componentValue(val: ComponentValue ) {
@@ -123,7 +123,7 @@ export class ScreenContent {
   public componentValue$ = this._componentValue.asObservable();
 
   private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
-  public get componentErrors() {
+  public get componentErrors(): ScenarioErrorsDto {
     return this._componentErrors.getValue();
   }
   public set componentErrors(val: ScenarioErrorsDto) {
@@ -132,7 +132,7 @@ export class ScreenContent {
   public componentErrors$ = this._componentErrors.asObservable();
 
   private _componentError = new BehaviorSubject<string>(null);
-  public get componentError() {
+  public get componentError(): string {
     return this._componentError.getValue();
   }
   public set componentError(val: string) {
@@ -141,7 +141,7 @@ export class ScreenContent {
   public componentError$ = this._componentError.asObservable();
 
   private _componentLabel = new BehaviorSubject<string>(null);
-  public get componentLabel() {
+  public get componentLabel(): string {
     return this._componentLabel.getValue();
   }
   public set componentLabel(val: string) {
@@ -150,7 +150,7 @@ export class ScreenContent {
   public componentLabel$ = this._componentLabel.asObservable();
 
   private _actions = new BehaviorSubject<Array<ComponentActionDto>>(null);
-  public get actions() {
+  public get actions(): Array<ComponentActionDto> {
     return this._actions.getValue();
   }
   public set actions(val: Array<ComponentActionDto>) {
@@ -159,7 +159,7 @@ export class ScreenContent {
   public actions$ = this._actions.asObservable();
 
   private _action = new BehaviorSubject<ComponentActionDto>(null);
-  public get action() {
+  public get action(): ComponentActionDto {
     return this._action.getValue();
   }
   public set action(val: ComponentActionDto) {
@@ -176,7 +176,7 @@ export class ScreenContent {
   }
   public applicantAnswers$ = this._applicantAnswers.asObservable();
 
-  updateScreenContent(screenStore: ScreenStore) {
+  updateScreenContent(screenStore: ScreenStore): void {
     const {
       errors = {} as ScenarioErrorsDto,
       display = {} as DisplayDto,

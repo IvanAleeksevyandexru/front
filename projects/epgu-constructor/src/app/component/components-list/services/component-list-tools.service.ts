@@ -7,7 +7,6 @@ import {
   CustomComponentDropDownItemList,
   CustomComponentRef,
   CustomComponentRefRelation,
-  CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes
@@ -207,7 +206,7 @@ export class ComponentListToolsService {
         text: itemText,
         unselectable: !!item.disable,
         originalItem: item,
-        compare: () => false,
+        compare: (): boolean => false,
       };
     });
   }
@@ -262,7 +261,7 @@ export class ComponentListToolsService {
    * Возвращает откалькулируемую функцию по формуле
    * @param formula - формула для расчета
    */
-  private getCalcFieldValue(formula: string) {
+  private getCalcFieldValue(formula: string): Function {
     // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
     return Function(`'use strict'; return (Math.round(${formula}))`)();
   }

@@ -56,7 +56,7 @@ export class EmployeeHistoryComponent implements OnInit {
     this.initData();
   }
 
-  getNextScreen() {
+  getNextScreen(): void {
     const employeeHistoryBeforeSend: Array<EmployeeHistoryServerModel> = this.employeeFormService.employeeHistoryForm
       .getRawValue()
       .map((employee: EmployeeHistoryModel) => this.formatToServerModel(employee));

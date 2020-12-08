@@ -22,7 +22,7 @@ import { ComponentStateForNavigate } from './action.interface';
 export class ActionDirective {
   @Input() action: ComponentActionDto;
 
-  @HostListener('click') onClick() {
+  @HostListener('click') onClick(): void {
     this.switchAction();
   }
 

@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } fro
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
@@ -96,7 +96,7 @@ export class TimeSlotsComponent implements OnInit {
 
   // TODO
   // eslint-disable-next-line @typescript-eslint/typedef
-  private renderSingleMonthGrid(output) {
+  private renderSingleMonthGrid(output): void {
     output.splice(0, output.length); // in-place clear
     const firstDayOfMonth = moment()
       .year(this.activeYearNumber)
@@ -134,7 +134,7 @@ export class TimeSlotsComponent implements OnInit {
    * Если да, to this.isExistsSlots = true
    * Функция вызывается при каждой регенерации календаря
    */
-  public checkExistenceSlots() {
+  public checkExistenceSlots(): void {
     let isExistsSlots = false;
     this.weeks.forEach((week) => {
       week.forEach((day) => {
@@ -146,23 +146,23 @@ export class TimeSlotsComponent implements OnInit {
     this.isExistsSlots = isExistsSlots;
   }
 
-  public isToday(date: Date) {
+  public isToday(date: Date): boolean {
     return date && moment().isSame(moment(date), 'day');
   }
 
-  public isHoliday(date: Date) {
+  public isHoliday(date: Date): boolean {
     return date && [6, 7].includes(moment(date).isoWeekday());
   }
 
-  public isSelected(date: Date) {
+  public isSelected(date: Date): boolean {
     return date && moment(date).isSame(this.date, 'day');
   }
 
-  public isDateOutOfMonth(date: Date) {
+  public isDateOutOfMonth(date: Date): boolean {
     return date && moment(date).month() !== this.activeMonthNumber;
   }
 
-  public isDateLocked(date: Date) {
+  public isDateLocked(date: Date): boolean {
     return (
       this.isDateOutOfMonth(date) ||
       this.currentService.isDateLocked(date) ||
@@ -170,7 +170,7 @@ export class TimeSlotsComponent implements OnInit {
     );
   }
 
-  public selectDate(date: Date) {
+  public selectDate(date: Date): void {
     if (this.isDateLocked(date) || this.isDateOutOfMonth(date)) {
       return;
     }
@@ -178,16 +178,16 @@ export class TimeSlotsComponent implements OnInit {
     this.showTimeSlots(date);
   }
 
-  public chooseTimeSlot(slot: SlotInterface) {
+  public chooseTimeSlot(slot: SlotInterface): void {
     this.currentSlot = slot;
     this.currentAnswersService.state = slot;
   }
 
-  public isSlotSelected({ slotTime }: SlotInterface) {
+  public isSlotSelected({ slotTime }: SlotInterface): boolean {
     return this.currentSlot && this.currentSlot.slotTime === slotTime;
   }
 
-  public showTimeSlots(date: Date) {
+  public showTimeSlots(date: Date): void {
     this.currentSlot = null;
     this.currentService.getAvailableSlots(date).subscribe(
       (timeSlots) => {
@@ -206,7 +206,7 @@ export class TimeSlotsComponent implements OnInit {
     );
   }
 
-  public monthChanged(ev: ListItem) {
+  public monthChanged(ev: ListItem): void {
     const { id } = ev;
     const [activeYear, activeMonth] = (id as string).split('-');
     this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
@@ -215,7 +215,7 @@ export class TimeSlotsComponent implements OnInit {
     this.checkExistenceSlots();
   }
 
-  public clickSubmit() {
+  public clickSubmit(): void {
     if (this.bookedSlot) {
       this.showModal(this.confirmModalParameters);
     } else {
@@ -223,7 +223,7 @@ export class TimeSlotsComponent implements OnInit {
     }
   }
 
-  public bookTimeSlot() {
+  public bookTimeSlot(): void {
     this.inProgress = true;
     this.currentService.checkBooking(this.currentSlot).subscribe(
       (response) => {
@@ -243,7 +243,7 @@ export class TimeSlotsComponent implements OnInit {
     );
   }
 
-  showError(errorMessage: string) {
+  showError(errorMessage: string): void {
     const params = this.constants.errorModal;
     params.text = errorMessage;
     params.buttons = [
@@ -265,13 +265,13 @@ export class TimeSlotsComponent implements OnInit {
       });
   }
 
-  showModal(params: ConfirmationModal) {
+  showModal(params: ConfirmationModal): Observable<string> {
     return this.modalService.openModal(ConfirmationModalComponent, {
       ...params,
     });
   }
 
-  initCalendar() {
+  initCalendar(): void {
     const initDate = new Date();
     this.activeMonthNumber = initDate.getMonth();
     this.activeYearNumber = initDate.getFullYear();
@@ -363,7 +363,7 @@ export class TimeSlotsComponent implements OnInit {
     return String(`00${month + 1}`).slice(-2);
   }
 
-  private getMonthsListItem(monthYear: string) {
+  private getMonthsListItem(monthYear: string): ListItem {
     const [activeYear, activeMonth] = monthYear.split('-');
     const monthNumber = parseInt(activeMonth, 10) - 1;
     const yearNumber = parseInt(activeYear, 10);
@@ -385,14 +385,14 @@ export class TimeSlotsComponent implements OnInit {
     return !this.errorMessage;
   }
 
-  private checkDateRestrictions(date: Date) {
+  private checkDateRestrictions(date: Date): boolean {
     let isInvalid = false;
     const today = moment().startOf('day');
     const restrictions = this.screenService.component?.attrs?.restrictions || {};
     // Объект с функциями проверки дат на заданные ограничения
     const checks = {
-      minDate: (amount, type) => moment(date).isBefore(today.clone().add(amount, type)),
-      maxDate: (amount, type) => moment(date).isAfter(today.clone().add(amount, type)),
+      minDate: (amount, type): boolean => moment(date).isBefore(today.clone().add(amount, type)),
+      maxDate: (amount, type): boolean => moment(date).isAfter(today.clone().add(amount, type)),
     };
     // Перебираем все ключи restrictions из attrs до первого "плохого"
     // пример: "minDate": [30, "d"],

@@ -130,7 +130,7 @@ export class ComponentListFormService {
     );
   }
 
-  async emmitChanges() {
+  async emmitChanges(): Promise<void> {
     const components = this.form.getRawValue();
     for (const component of components) {
       if (component?.type === CustomScreenComponentTypes.CityInput && component?.value) {
@@ -175,24 +175,24 @@ export class ComponentListFormService {
     }, {});
   }
 
-  private relationRegExp(value: string, params: RegExp) {
+  private relationRegExp(value: string, params: RegExp): Array<string> {
     return String(value).match(params);
   }
-  private relationMinDate(value: string, params: string) {
+  private relationMinDate(value: string, params: string): boolean {
     return moment(value).isSameOrAfter(moment(params, DATE_STRING_DOT_FORMAT));
   }
-  private relationMaxDate(value: string, params: string) {
+  private relationMaxDate(value: string, params: string): boolean {
     return moment(value).isSameOrBefore(moment(params, DATE_STRING_DOT_FORMAT));
   }
 
-  private changeValidators(component: CustomComponent, control: AbstractControl) {
+  private changeValidators(component: CustomComponent, control: AbstractControl): void {
     control.setValidators([
       this.validationService.customValidator(component),
       this.validationService.validationBackendError(this.errors[component.id], component),
     ]);
   }
 
-  private relationPatch(component: CustomComponent, patch: object) {
+  private relationPatch(component: CustomComponent, patch: object): void {
     const resultComponent = { ...component, attrs: { ...component.attrs, ...patch }};
 
     const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
@@ -207,11 +207,11 @@ export class ComponentListFormService {
     control.get('value').updateValueAndValidity();
   }
 
-  private resetRelation(component: CustomComponent) {
+  private resetRelation(component: CustomComponent): void {
     return this.relationPatch(component, this.cachedAttrsComponents[component.id].base);
   }
 
-  private setRelationResult(component: CustomComponent, result?: CustomComponentAttr) {
+  private setRelationResult(component: CustomComponent, result?: CustomComponentAttr): void {
     if (!result) {
       if (this.cachedAttrsComponents[component.id]) {
         this.resetRelation(component);
@@ -230,7 +230,7 @@ export class ComponentListFormService {
     }
   }
 
-  private relationMapChanges(next: CustomListFormGroup) {
+  private relationMapChanges(next: CustomListFormGroup): void {
     const value = next.value;
     if (!next.attrs?.relationField || !value) {
       return;

@@ -20,7 +20,7 @@ export class CurrentAnswersService {
     this._state = val;
   }
 
-  get isValid () {
+  get isValid (): boolean {
     return this._isValid;
   }
   set isValid (val: boolean) {

@@ -43,7 +43,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     private currentAnswersService: CurrentAnswersService,
   ) {}
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.data?.currentValue) {
       this.currentAnswersService.state = changes.data.currentValue.value;
       this.setState(changes.data.currentValue.value);
@@ -121,9 +121,9 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
   }
 
   public isFormValid(): boolean {
-    const hasValue = () => Object.values(this.dataForm.form.value).every((value) => value);
-    const isValid = () => (this.data.required ? hasValue() : true);
-    const isFormInited = () => this.dataForm?.form?.value;
+    const hasValue = (): boolean => Object.values(this.dataForm.form.value).every((value) => value);
+    const isValid = (): boolean => (this.data.required ? hasValue() : true);
+    const isFormInited = (): { [key: string]: string | Date } => this.dataForm?.form?.value;
 
     return isFormInited() && isValid();
   }

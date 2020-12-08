@@ -31,7 +31,7 @@ export class InfoComponentModalComponent implements OnInit {
       .subscribe((component) => this.setActionButtons(component));
   }
 
-  setActionButtons(component: ComponentDto) {
+  setActionButtons(component: ComponentDto): void {
     this.actionButtons = component?.attrs?.actions || [];
   }
 

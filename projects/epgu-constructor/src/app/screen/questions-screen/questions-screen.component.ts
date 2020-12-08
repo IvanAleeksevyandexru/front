@@ -12,6 +12,7 @@ import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confi
 import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../modal/modal.service';
 import { ScreenBase } from '../screenBase';
+import { Answer } from '../../shared/types/answer';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -40,7 +41,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       });
   }
 
-  subscribeToComponent() {
+  subscribeToComponent(): void {
     this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
       this.rejectAction = this.getRejectAction(component?.attrs?.actions);
     });
@@ -50,7 +51,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.navigationService.nextStep.next({ payload });
   }
 
-  answerChoose(action: ComponentActionDto) {
+  answerChoose(action: ComponentActionDto): void {
     if (action.disabled) {
       return;
     }
@@ -75,7 +76,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.nextStep(payload);
   }
 
-  getPayload(action: ComponentActionDto) {
+  getPayload(action: ComponentActionDto): { [key: string]: Answer } {
     return {
       [this.screenService.component.id]: {
         visited: true,
@@ -84,7 +85,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     };
   }
 
-  showModalRedirectTo(action: ComponentActionDto) {
+  showModalRedirectTo(action: ComponentActionDto): void {
     const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
       ConfirmationModalComponent,
       {
@@ -119,7 +120,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     return !(action.hidden || this.isRejectAction(action));
   }
 
-  getRejectAction(actions: Array<ComponentActionDto> = []) {
+  getRejectAction(actions: Array<ComponentActionDto> = []): ComponentActionDto {
     return actions.find((action) => this.isRejectAction(action));
   }
 
