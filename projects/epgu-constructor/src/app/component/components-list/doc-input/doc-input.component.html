@@ -1,12 +1,14 @@
 <section class="doc-input">
-  <div *ngIf="this.data.value.label && isValidationShown(seriesNumDateGroup)"
-       class="doc-input__title">
+  <div
+    *ngIf="this.data.value.label && isValidationShown(seriesNumDateGroup)"
+    class="doc-input__title"
+  >
     <span>{{ this.data.value.label }}</span>
   </div>
   <div class="form__error">
-    <epgu-constructor-input-error *ngFor="let fieldName of fieldsNames | slice:0:-1">
+    <epgu-constructor-input-error *ngFor="let fieldName of fieldsNames | slice: 0:-1">
       <span *ngIf="isValidationShown([seriesNumDateGroup, fieldName])">
-        {{fields[fieldName].label}}: {{form.get([seriesNumDateGroup, fieldName]).errors.msg}}
+        {{ fields[fieldName].label }}: {{ form.get([seriesNumDateGroup, fieldName]).errors.msg }}
       </span>
     </epgu-constructor-input-error>
   </div>
@@ -63,12 +65,14 @@
         (blur)="markControlAsDirty([seriesNumDateGroup, 'date'])"
         [invalid]="isValidationShown([seriesNumDateGroup, 'date'])"
         [validationShowOn]="validationShowOn"
+        [clearable]="true"
       ></lib-date-picker>
     </div>
   </div>
   <epgu-constructor-helper-text
     *ngIf="fields['hint']?.label && isValidationShown(seriesNumDateGroup)"
-    class="doc-input__hint">
+    class="doc-input__hint"
+  >
     {{ fields['hint']?.label }}
   </epgu-constructor-helper-text>
 
@@ -78,8 +82,10 @@
       [label]="fields['emitter'].label"
       for="emitter"
     ></epgu-constructor-label>
-    <epgu-constructor-input-error *ngIf="form.get('emitter').invalid && form.get('emitter').touched">
-      {{form.get('emitter').errors.msg}}
+    <epgu-constructor-input-error
+      *ngIf="form.get('emitter').invalid && form.get('emitter').touched"
+    >
+      {{ form.get('emitter').errors.msg }}
     </epgu-constructor-input-error>
     <epgu-constructor-constructor-plain-input
       [textTransformType]="fields['emitter']?.attrs?.fstuc"
@@ -91,7 +97,8 @@
   </div>
   <epgu-constructor-helper-text
     *ngIf="fields['emitter']?.hint && isValidationShown('emitter')"
-    class="doc-input__hint">
+    class="doc-input__hint"
+  >
     {{ fields['emitter']?.hint }}
   </epgu-constructor-helper-text>
 </section>

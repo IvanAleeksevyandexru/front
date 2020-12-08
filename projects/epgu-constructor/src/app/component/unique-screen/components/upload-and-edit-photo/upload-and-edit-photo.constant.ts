@@ -1,6 +1,7 @@
 const minCropSize = {
   width: 306,
   height: 306 * (45/35),
+  type: 'image/jpeg',
   output: {
     width: 413,
     height: 413 * (45/35),

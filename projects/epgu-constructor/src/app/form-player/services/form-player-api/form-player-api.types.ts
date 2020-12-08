@@ -8,6 +8,7 @@ import {
   TimerLabelSection
 } from '../../../component/component-screen/components/timer/timer.interface';
 import { TextTransform } from '../../../shared/types/textTransform';
+import { DictionaryOptions } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -101,6 +102,7 @@ export interface ComponentAttrsDto {
   dictItemCode?: string;
   uploadedFile?: ComponentUploadedFileDto;
   validateMessage?: string;  //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
+  dictionaryOptions?: DictionaryOptions;
 }
 
 export interface ComponentUploadedFileDto {

@@ -1,4 +1,4 @@
-@import "../../../styles/core";
+@import '../../../styles/core';
 
 .payments-modal {
   display: flex;
@@ -89,8 +89,7 @@
     display: flex;
     margin-top: 26px;
     justify-content: center;
-    flex: 1 1 0; // для ie прописаны все 3 значения
-
+    flex: 1 1 auto;
     & > * {
       margin-right: 20px;
     }

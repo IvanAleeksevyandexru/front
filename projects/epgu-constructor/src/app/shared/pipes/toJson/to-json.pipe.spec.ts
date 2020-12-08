@@ -1,8 +1,13 @@
 import { ToJsonPipe } from './to-json.pipe';
 
 describe('ToJsonPipe', () => {
-  it('create an instance', () => {
-    const pipe = new ToJsonPipe();
-    expect(pipe).toBeTruthy();
+  let pipe: ToJsonPipe;
+
+  beforeEach(() => {
+    pipe = new ToJsonPipe();
+  });
+
+  it('test transform', () => {
+    expect(pipe.transform('{"test":"test"}', 'test')).toBe('test');
   });
 });
