@@ -1,16 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
 import { timer } from 'rxjs';
 import { takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { createTimer, isWarning } from './timer.helper';
 import {
   TimerComponentBase,
   TimerComponentDtoAction,
   TimerInterface,
   TimerLabelSection,
 } from './timer.interface';
-import { createTimer, isWarning } from './timer.helper';
-import { ScreenService } from '../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-timer',
@@ -20,7 +19,7 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
 export class TimerComponent {
   @Output() nextStepEvent = new EventEmitter<string>();
 
-  private componentBase: TimerComponentBase;
+  public componentBase: TimerComponentBase;
   @Input() set data(componentBase: TimerComponentBase) {
     this.componentBase = componentBase;
     this.hasLabels = this.data.attrs?.timerRules?.labels?.length > 0;

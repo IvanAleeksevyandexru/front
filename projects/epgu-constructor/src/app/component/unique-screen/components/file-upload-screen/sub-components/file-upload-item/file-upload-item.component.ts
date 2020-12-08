@@ -313,6 +313,7 @@ export class FileUploadItemComponent implements OnDestroy {
       (terabyteFile) => terabyteFile.fileName === file.name,
     )[0];
     this.listIsUploadingNow = false;
+    fileToUpload.mimeType = file.type;
 
     this.subs.push(
       this.terabyteService
@@ -459,9 +460,13 @@ export class FileUploadItemComponent implements OnDestroy {
     )} МБ`;
 
     // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxAmount] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
+    errorHandler[
+      ErrorActions.addMaxAmount
+    ] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
     // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(this.data.maxSize)} МБ`;
+    errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(
+      this.data.maxSize,
+    )} МБ`;
     errorHandler[ErrorActions.addInvalidType] = `Недопустимый тип файла "${file?.name}"`;
     errorHandler[ErrorActions.addInvalidFile] = `Ошибка загрузки файла "${file?.name}"`;
     errorHandler[ErrorActions.addDownloadErr] = `Не удалось скачать файл "${file?.name}"`;

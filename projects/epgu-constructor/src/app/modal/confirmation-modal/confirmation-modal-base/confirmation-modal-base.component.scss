@@ -15,6 +15,10 @@ $minModalHeight: 293px;
     width: 100%;
     height: 100%;
     padding: 32px;
+
+    @include phones-down {
+      padding-bottom: 0;
+    }
     @include tablets-up {
       max-height: calc(100vh - #{$my * 2});
       min-height: #{$minModalHeight};
@@ -116,6 +120,9 @@ $minModalHeight: 293px;
     }
 
     &__button {
+      @include phones-down {
+        margin-bottom: 32px;
+      }
       @include tablets-down {
         width: 100%;
       }

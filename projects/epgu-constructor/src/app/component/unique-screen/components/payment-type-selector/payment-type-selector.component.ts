@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
-
-import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { Clarifications } from '../../../../shared/services/terra-byte-api/terra-byte-api.types';
+import { Component, DoCheck, Input } from '@angular/core';
 import { ConfigService } from '../../../../core/config/config.service';
+import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentBase } from '../../../../screen/screen.types';
+import { Clarifications } from '../../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 interface PaymentTypeSelectorInterface {
   actions: Array<ComponentActionDto>;
@@ -19,17 +18,20 @@ interface PaymentTypeSelectorInterface {
   templateUrl: './payment-type-selector.component.html',
   styleUrls: ['./payment-type-selector.component.scss'],
 })
-export class PaymentTypeSelectorComponent {
+export class PaymentTypeSelectorComponent implements DoCheck {
+  @Input() data: ComponentBase;
+
   paymentTypeSelector: PaymentTypeSelectorInterface;
   isErrorTemplate: boolean;
   success = 'SUCCESS';
-  applicantType: string = this.screenService.component.attrs.applicantType;
+  applicantType: string;
 
-  constructor(private screenService: ScreenService, public config: ConfigService) {
-    this.paymentTypeSelector = this.screenService.component.attrs.states[
-      this.screenService.component.attrs.state
-    ];
-    this.isErrorTemplate = this.screenService.component.attrs.state !== this.success;
+  constructor(public config: ConfigService) {}
+
+  ngDoCheck(): void {
+    this.paymentTypeSelector = this.data.attrs.states[this.data.attrs.state];
+    this.isErrorTemplate = this.data.attrs.state !== this.success;
+    this.applicantType = this.data.attrs.applicantType;
   }
 
   showBtn(applicantType: string): boolean {
