@@ -21,4 +21,6 @@ export class ConstructorPlainInputComponent {
   @Input() price?: boolean;
   @Input() maxlength?: number;
   @Input() type?: string;
+  @Input() disabled?: boolean;
+  @Input() pattern?: string | RegExp;
 }

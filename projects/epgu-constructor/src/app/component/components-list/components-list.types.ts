@@ -2,7 +2,11 @@ import { ListItem } from 'epgu-lib';
 import { DisplayDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../screen/screen.types';
 import { TextTransform } from '../../shared/types/textTransform';
-import { DictionaryItem, DictionaryResponse } from '../shared/services/dictionary-api/dictionary-api.types';
+import {
+  DictionaryItem,
+  DictionaryOptions,
+  DictionaryResponse
+} from '../shared/services/dictionary-api/dictionary-api.types';
 import { Ref } from '../../shared/services/date-range/date-range.models';
 
 export enum CustomScreenComponentTypes {
@@ -95,7 +99,8 @@ export interface CustomComponentAttr {
   requiredAttrs?: Array<string>;
   updateOnValidation?: UpdateOn;
   supportedValues?: Array<SupportedValue>;
-  relation?: {ref: string, conditions: RelationCondition[]}
+  relation?: {ref: string, conditions: RelationCondition[]};
+  dictionaryOptions?: DictionaryOptions;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';

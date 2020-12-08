@@ -159,9 +159,15 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       .add(fromEvent(this.imageValidator, 'error').subscribe(() => this.validateImage()));
   }
 
-  getRequestData(): { mnemonic: string; name: string; objectType: number; objectId: string } {
+  getRequestData(): {
+    mnemonic: string;
+    name: string;
+    objectType: number;
+    objectId: string;
+    mimeType: string;
+  } {
     const { mnemonic = null, name = null, objectType = 2 } = this.data?.attrs?.uploadedFile;
-    return { mnemonic, name, objectType, objectId: this.orderId };
+    return { mnemonic, name, objectType, objectId: this.orderId, mimeType: 'image/jpeg' };
   }
 
   checkImagePresence(): void {
@@ -267,7 +273,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   takePhoto(): void {
     this.webcamService.open().events.subscribe((event: WebcamEvent) => {
       if (isCloseAndSaveWebcamEvent(event)) {
-        this.fileName = `Фото_${uuidv4()}`;
+        this.fileName = `Фото_${uuidv4()}.jpg`;
         this.imgSubject.next({ imageObjectUrl: event.data });
       }
       this.webcamService.close();
@@ -319,7 +325,9 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       return fromPromise(this.compressionService.imageCompression(blobFile, { maxSizeMB: 5 }));
     };
     const uploadFile = (file: Blob | File) => {
-      requestData = { ...requestData, name: this.fileName };
+      const fileName = this.fileName.split('.');
+      fileName[fileName.length - 1] = 'jpg';
+      requestData = { ...requestData, name: fileName.join('.') };
       return this.terabyteService.uploadFile(requestData, file);
     };
 
