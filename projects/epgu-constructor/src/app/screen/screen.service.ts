@@ -139,7 +139,7 @@ export class ScreenService extends ScreenContent {
   public getCompValueFromCachedAnswers(componentId?: string) {
     const cachedAnswers = this.getStore().cachedAnswers;
     if (!componentId) {
-      componentId = this.screenStore.display?.components[0].id;
+      componentId = this.component?.id;
     }
     return cachedAnswers && cachedAnswers[componentId]?.value;
   }
