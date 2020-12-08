@@ -65,7 +65,7 @@ Library-build:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
   script:
-    - yarn lib:build
+    - yarn lib:build:ivy && yarn lib:build
   only:
     - merge_requests
     - master
@@ -143,7 +143,7 @@ Build:
 #     - merge_requests
 #     - master
 #     - stage
-# 
+#
 # Deploy to review env:
 #   stage: deploy
 #   except:
@@ -165,7 +165,7 @@ Build:
 #     - merge_requests
 #     - master
 #     - stage
-# 
+#
 # Drop review env:
 #   stage: deploy
 #   except:
@@ -186,4 +186,4 @@ Build:
 #   only:
 #     - merge_requests
 #     - master
-#     - stage# 
+#     - stage#
