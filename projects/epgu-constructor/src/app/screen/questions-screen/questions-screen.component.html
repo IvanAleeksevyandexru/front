@@ -46,7 +46,7 @@
   <lib-button
     *ngIf="submitLabel"
     [showLoader]="screenService.isLoading$ | async"
-    (click)="answerChoose({ value: submitLabel })"
+    (click)="onSubmitClick({ value: submitLabel })"
     class="btn__submit"
   >
     {{ submitLabel }}

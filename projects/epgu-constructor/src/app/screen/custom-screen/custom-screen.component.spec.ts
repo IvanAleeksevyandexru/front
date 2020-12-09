@@ -15,17 +15,13 @@ import { Subject } from 'rxjs';
 import { Navigation } from '../../form-player/form-player.types';
 import { CustomComponentValidationConditions } from '../../component/components-list/components-list.types';
 import { ScreenServiceStub } from '../screen.service.stub';
+import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 
 const moment = moment_;
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
   let fixture: ComponentFixture<CustomScreenComponent>;
-
-  const navigationServiceMock = {
-    nextStep: new Subject<Navigation>(),
-  };
-
   let screenService: ScreenService;
   let unsubscribeService: UnsubscribeService;
   let navigationService: NavigationService;
@@ -56,7 +52,7 @@ describe('CustomScreenComponent', () => {
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: NavigationService, useValue: navigationServiceMock },
+        { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: UnsubscribeService, useValue: MockService(UnsubscribeService) },
       ]
     });
@@ -92,11 +88,11 @@ describe('CustomScreenComponent', () => {
       expect(component.nextStep).toHaveBeenCalled();
     });
 
-    it('nextScreen() should call next of nextStep subject from navigationService', () => {
+    it('nextScreen() should call next of navigationService', () => {
       component.dataToSend = { any: { visited: true, value: '' }};
-      spyOn(navigationService.nextStep, 'next');
+      spyOn(navigationService, 'next').and.callThrough();
       component.nextStep();
-      expect(navigationService.nextStep.next).toHaveBeenCalled();
+      expect(navigationService.next).toHaveBeenCalled();
     });
   });
 

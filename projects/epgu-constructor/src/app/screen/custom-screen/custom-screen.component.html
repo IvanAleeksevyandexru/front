@@ -5,7 +5,7 @@
 
     <epgu-constructor-screen-pad class="body">
       <epgu-constructor-components-list
-        [components]="(screenService.display$ | async)?.components"
+        [components]="$any((screenService.display$ | async)?.components)"
         [errors]="screenService.componentErrors$ | async"
         (changes)="changeComponentsList($event)">
 

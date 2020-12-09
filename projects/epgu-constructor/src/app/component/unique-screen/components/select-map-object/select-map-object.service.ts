@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, TemplateRef } from '@angular/core';
+import { Injectable, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
@@ -11,6 +11,16 @@ import {
   DictionaryYMapItem
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { filter } from 'rxjs/operators';
+import {
+  ComponentBaloonContentDto, ComponentDictionaryFilterDto
+} from '../../../../form-player/services/form-player-api/form-player-api.types';
+
+export interface SelectMapComponentAttrs {
+  attributeNameWithAddress: string;
+  baloonContent: Array<ComponentBaloonContentDto>;
+  dictionaryType: string;
+  dictionaryFilter: Array<ComponentDictionaryFilterDto>;
+}
 
 @Injectable()
 export class SelectMapObjectService implements OnDestroy {
@@ -19,16 +29,15 @@ export class SelectMapObjectService implements OnDestroy {
   public filteredDictionaryItems = [];
   public selectedValue = new Subject();
   public ymaps;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public templates: { [key: string]: TemplateRef<any> } = {}; // Шаблоны для модалки
-  // TODO привести к нормальным интерфейсам ComponentBase и ComponentDto, завести атририбуты для всех сущностей
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public componentAttrs: { [ p: string ]: any }; // Атрибуты компонента из getNextStep
+  public templates: { [key: string]: TemplateRef<ViewChild> } = {}; // Шаблоны для модалки
+  public componentAttrs: SelectMapComponentAttrs; // Атрибуты компонента из getNextStep
   public mapEvents; // events от карт, устанавливаются при создание балуна
   public mapOpenedBalloonId: number;
 
   private objectManager;
   private activePlacemarkId;
+  private __mapStateCenter: Array<number>;
+  private preventBoundsChangeBalloon = false;
 
   constructor(
     private http: HttpClient,
@@ -103,8 +112,7 @@ export class SelectMapObjectService implements OnDestroy {
    * place objects on yandex map
    * @param map link to yandex map
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public placeOjectsOnMap(map: any) {
+  public placeOjectsOnMap(map: YaMapService['map']) {
     const objects = this.prepareFeatureCollection(this.filteredDictionaryItems);
 
     this.objectManager = this.createMapsObjectManager();
@@ -203,8 +211,7 @@ export class SelectMapObjectService implements OnDestroy {
    * @param objectId
    */
   public centeredPlaceMark(coords: number[], objectId: number) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let serviceContext = this as any;
+    let serviceContext = this;
     let offset = -0.00008;
 
     this.activePlacemarkId = objectId;

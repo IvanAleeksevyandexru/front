@@ -22,6 +22,7 @@
     <div class="info__submit">
       <lib-button
         class="btn__submit"
+        data-testid="info-submit-button"
         *ngIf="screenService.submitLabel$ | async"
         [showLoader]="screenService.isLoading$ | async"
         (click)="nextStep()"

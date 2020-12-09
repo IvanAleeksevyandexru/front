@@ -17,7 +17,7 @@ export class NavigationComponent implements OnInit {
     if (this.isFirstScreen()) {
       this.navService.redirectToHome();
     } else {
-      this.navService.prevStep.next();
+      this.navService.prev();
       // Если нужно будет передавать данные, то лучше
       // складировать состояние в какое-то харнилище, а при навигации
       // отправлять их или найди коммит который создал этот комменатрий

@@ -11,14 +11,15 @@ import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../../../shared/constants/dates';
 import { TextTransform } from '../../../../../../../../shared/types/textTransform';
 import {
   ConfirmAddressFieldName,
+  ConfirmAddressFieldsInterface,
   ConfirmAddressInterface,
 } from '../../interface/confirm-address.interface';
-import { ScreenService } from '../../../../../../../../screen/screen.service';
-import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 
 const moment = moment_;
 
@@ -59,13 +60,27 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     if (preset) {
       const localValueParsed = JSON.parse(preset);
       if (localValueParsed?.regDate) {
-        this.valueParsed.regDate = this.getDate(localValueParsed.regDate);
+        const isPresetable = this.isPresetable(
+          this.data.attrs?.fields?.find((field) => field.fieldName === 'regDate'),
+        );
+        if (isPresetable) {
+          this.valueParsed.regDate = this.getDate(localValueParsed.regDate);
+        }
       }
 
       if (localValueParsed?.regAddr) {
-        this.valueParsed.regAddr = this.getAddress(localValueParsed.regAddr);
+        const isPresetable = this.isPresetable(
+          this.data.attrs?.fields?.find((field) => field.fieldName === 'regAddr'),
+        );
+        if (isPresetable) {
+          this.valueParsed.regAddr = this.getAddress(localValueParsed.regAddr);
+        }
       }
     }
+  }
+
+  private isPresetable(field?: ConfirmAddressFieldsInterface): boolean {
+    return !field?.nonPresetable;
   }
 
   private subscribeFormChanges(): void {

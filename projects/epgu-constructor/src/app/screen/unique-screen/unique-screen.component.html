@@ -1,45 +1,45 @@
 <ng-container [ngSwitch]="screenService.componentType$ | async">
   <epgu-constructor-unused-payments
     *ngSwitchCase="uniqueComponentName.unusedPayments"
-    [data]="screenService.display"
+    [data]="screenService.display$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-unused-payments>
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
-    [data]="screenService.component"
-    [applicantAnswers]="screenService.applicantAnswers"
+    [data]="screenService.component$ | async"
+    [applicantAnswers]="screenService.applicantAnswers$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-select-map-object>
   <epgu-constructor-file-upload-screen
     *ngSwitchCase="uniqueComponentName.fileUploadComponent"
     [isLoading]="screenService.isLoading$ | async"
-    [applicantAnswers]="screenService.applicantAnswers"
-    [header]="screenService.header"
-    [submitLabel]="screenService.submitLabel"
-    [data]="screenService.component"
+    [applicantAnswers]="screenService.applicantAnswers$ | async"
+    [header]="screenService.header$ | async"
+    [submitLabel]="screenService.submitLabel$ | async"
+    [data]="screenService.component$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-file-upload-screen>
   <epgu-constructor-employee-history
     *ngSwitchCase="uniqueComponentName.employeeHistory"
-    [header]="screenService.header"
-    [gender]="screenService.gender"
-    [display]="screenService.display"
+    [header]="screenService.header$ | async"
+    [gender]="screenService.gender$ | async"
+    [display]="screenService.display$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-employee-history>
   <epgu-constructor-repeatable-fields
     *ngSwitchCase="uniqueComponentName.repeatableFields"
-    [data]="screenService.display"
+    [data]="screenService.display$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-repeatable-fields>
   <epgu-constructor-time-slots
     *ngSwitchCase="uniqueComponentName.timeSlot"
-    [data]="screenService.display"
+    [data]="screenService.display$ | async"
     [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextDataForStep($event)">
   </epgu-constructor-time-slots>
   <epgu-constructor-car-info
     *ngSwitchCase="uniqueComponentName.carInfo"
-    [display]="screenService.display"
+    [display]="screenService.display$ | async"
     [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-car-info>
@@ -50,14 +50,16 @@
   </epgu-constructor-signature-application>
   <epgu-constructor-payment
     *ngSwitchCase="uniqueComponentName.paymentScr"
-    [header]="screenService.header"
-    [data]="screenService.component"
+    [header]="screenService.header$ | async"
+    [data]="screenService.component$ | async"
+    [submitLabel]="screenService.submitLabel$ | async"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-payment>
   <epgu-constructor-bill-info
     *ngSwitchCase="uniqueComponentName.billInfo"
-    [header]="screenService.header"
-    [data]="screenService.component"
+    [header]="screenService.header$ | async"
+    [data]="screenService.component$ | async"
+    [submitLabel]="screenService.submitLabel$ | async"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-bill-info>
   <epgu-constructor-upload-and-edit-photo
@@ -65,6 +67,7 @@
     (nextStepEvent)="nextDataForStep($event)">
   </epgu-constructor-upload-and-edit-photo>
   <epgu-constructor-payment-type-selector
-    *ngSwitchCase="uniqueComponentName.paymentTypeSelector">
+    *ngSwitchCase="uniqueComponentName.paymentTypeSelector"
+    [data]="screenService.component$ | async">
   </epgu-constructor-payment-type-selector>
 </ng-container>

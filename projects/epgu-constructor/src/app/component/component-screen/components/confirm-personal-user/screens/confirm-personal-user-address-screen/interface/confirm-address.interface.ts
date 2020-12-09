@@ -1,6 +1,6 @@
-import { ComponentScreenComponentTypes } from '../../../../../component-screen-components.types';
-import { TextTransform } from '../../../../../../../shared/types/textTransform';
 import { RelativeDate } from 'epgu-lib';
+import { TextTransform } from '../../../../../../../shared/types/textTransform';
+import { ComponentScreenComponentTypes } from '../../../../../component-screen-components.types';
 
 
 /**
@@ -23,6 +23,7 @@ interface ConfirmAddressInterfaceAttr {
   actions: Array<ConfirmAddressActionsInterface>;
   fields: Array<ConfirmAddressFieldsInterface>;
   fstuc?: TextTransform;
+  hideLevels?: Array<string>;
 }
 
 /**
@@ -42,11 +43,12 @@ export type ConfirmAddressFieldName = 'regAddr' | 'regFrom' | 'regTo' | 'regDate
  * @property {string}fieldName - field id
  * @property {string}label - field name
  */
-interface ConfirmAddressFieldsInterface {
+export interface ConfirmAddressFieldsInterface {
   fieldName: ConfirmAddressFieldName;
   label: 'адрес';
   minDate?: Date | RelativeDate | string;
   maxDate?: Date | RelativeDate | string;
   attrs?: { labelHint?: string };
   hint?: string;
+  nonPresetable?: boolean;
 }

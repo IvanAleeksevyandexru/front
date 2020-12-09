@@ -9,8 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { LoadService } from 'epgu-lib';
-import { fromEvent } from 'rxjs';
-import { debounceTime, filter, mergeMap, takeUntil } from 'rxjs/operators';
+import { filter, mergeMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../core/config/config.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
@@ -23,6 +22,8 @@ import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
+import { FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
+import { LoggerService } from '../core/services/logger/logger.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -32,7 +33,6 @@ import { ServiceDataService } from './services/service-data/service-data.service
   encapsulation: ViewEncapsulation.None,
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
-  @HostBinding('style.minHeight.px') minHeight: number;
   @HostBinding('class.epgu-form-player') class = true;
   @HostBinding('attr.test-screen-id') screenId: string;
   @Input() service: Service;
@@ -49,11 +49,25 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     private modalService: ModalService,
     private zone: NgZone,
     public screenService: ScreenService,
+    private loggerService: LoggerService,
   ) {}
 
   ngOnInit(): void {
     this.serviceDataService.init(this.service);
+    this.initFormPlayerConfig();
+    this.initNavigation();
+    this.initSettingOfScreenIdToAttr();
+  }
 
+  ngAfterViewInit() {
+    this.startPlayer();
+  }
+
+  ngOnChanges(): void {
+    this.serviceDataService.init(this.service);
+  }
+
+  private initFormPlayerConfig(): void {
     this.loadService.loaded
       .pipe(filter((loaded: boolean) => loaded))
       .pipe(mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()))
@@ -61,7 +75,9 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       .subscribe((config) => {
         this.configService.config = config;
       });
+  }
 
+  private initNavigation(): void {
     this.navService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.nextStep(data));
@@ -73,22 +89,21 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.navService.skipStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: NavigationPayload) => this.skipStep(data));
+  }
 
-    if (this.deviceDetector.isMobile) {
-      this.calculateHeight();
-      this.subscribeToScroll();
-    }
-
+  private initSettingOfScreenIdToAttr(): void {
     this.screenService.display$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((display) => {
       this.screenId = display?.id;
     });
   }
 
-  ngAfterViewInit() {
+  private startPlayer(): void {
     this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((loaded) => {
       if (!loaded) return;
       const { orderId, invited, canStartNew } = this.serviceDataService;
-      if (orderId) {
+      if (this.service.initState) {
+        this.startScenarioFromProps();
+      } else if (orderId) {
         this.handleOrder(orderId, invited, canStartNew);
       } else {
         this.getOrderIdFromApi();
@@ -96,27 +111,15 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-  ngOnChanges(): void {
-    this.checkProps();
-    this.serviceDataService.init(this.service);
+  private startScenarioFromProps(): void {
+    const store = JSON.parse(this.service.initState) as FormPlayerApiSuccessResponse;
+    this.loggerService.log(['initState', store], 'Запуск плеера из предустановленого состояния');
+    this.formPlayerService.store = store;
+    const navigationPayload = store.scenarioDto.currentValue;
+    this.formPlayerService.navigate({ payload: navigationPayload }, FormPlayerNavigation.NEXT);
   }
 
-  subscribeToScroll() {
-    this.zone.runOutsideAngular(() => {
-      fromEvent(window, 'resize')
-        .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
-        .subscribe(() => this.zone.run(() => this.calculateHeight()));
-    });
-  }
-
-  calculateHeight(): void {
-    const bottomIndent = 20; // отступ от нижней части экрана
-    const headerHeight = document.querySelector('header').scrollHeight;
-    const viewPortHeight = window.innerHeight;
-    this.minHeight = viewPortHeight - headerHeight - bottomIndent;
-  }
-
-  getOrderIdFromApi() {
+  private getOrderIdFromApi(): void {
     this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
       const invited = checkOrderApiResponse.isInviteScenario;
       const { canStartNew } = checkOrderApiResponse;
@@ -128,7 +131,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-  handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean) {
+  private handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean): void {
     const shouldShowModal = (): boolean => {
       return (
         !invited && canStartNew && !!orderId && !this.formPlayerService.isNeedToShowLastScreen()
@@ -142,7 +145,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  showModal() {
+  private showModal(): void {
     const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
       ConfirmationModalComponent,
       {
@@ -160,7 +163,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
           {
             label: 'Продолжить',
             closeModal: true,
-            value: true,
+            value: 'ok',
           },
         ],
         isShortModal: true,
@@ -172,29 +175,15 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-  nextStep(navigation?: Navigation) {
+  private nextStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.NEXT);
   }
 
-  prevStep(navigation?: Navigation) {
+  private prevStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.PREV);
   }
 
-  skipStep(navigation?: Navigation) {
+  private skipStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.SKIP);
-  }
-
-  checkProps() {
-    console.group('----- Init props ---------');
-    console.log('service', this.service);
-    console.groupEnd();
-    const { invited, orderId } = this.serviceDataService;
-    if (!this.serviceDataService) {
-      throw Error('Need to set Service for epgu form player');
-    }
-
-    if (invited && !orderId) {
-      throw Error('Should set orderId when invited');
-    }
   }
 }

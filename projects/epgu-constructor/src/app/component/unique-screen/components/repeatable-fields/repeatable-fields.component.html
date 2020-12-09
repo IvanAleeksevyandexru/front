@@ -14,7 +14,7 @@
         ></div>
         <epgu-constructor-components-list
           class="cmp-group__item"
-          [components]="screens[screenKey]"
+          [components]="$any(screens[screenKey])"
           [errors]="screenService.getStore().errors"
           (changes)="changeComponentList($event, i)"
         >

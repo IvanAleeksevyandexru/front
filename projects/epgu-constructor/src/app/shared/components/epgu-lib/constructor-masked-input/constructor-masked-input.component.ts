@@ -18,10 +18,11 @@ export class ConstructorMaskedInputComponent {
   @Input() showMaskAsPlaceholder: boolean;
   @Input() clearable: boolean;
   @Input() invalid: boolean;
-  @Input() mask: Array<string | RegExp>;
+  @Input() mask: Array<string> | Array<string | RegExp>;
   @Input() name: string;
   @Input() id: string;
   @Input() placeholder: string;
+  @Input() isTrim?: boolean;
 
   public onChange($event: Event): void {
     if (this.control.updateOn === 'blur') {

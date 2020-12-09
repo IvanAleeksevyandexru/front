@@ -30,7 +30,11 @@
     [controls]="mapControls"
   >
   </lib-map>
-  <div *ngIf="selectedValue" class="map-objects-list">
+  <div
+    *ngIf="selectedValue"
+    class="map-objects-list"
+    [ngClass]="{ 'fixed-height': selectedValue && selectedValue.children.length > 1 && !isMobile}"
+  >
     <perfect-scrollbar *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
       <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
     </perfect-scrollbar>
@@ -49,15 +53,7 @@
             <span class="PGU-AttrsValue">{{ itemContent.value }}</span>
           </div>
           <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">
-            На данной площадке действуют
-            <a
-              href="javascript:void(0)"
-              (click)="showModalFromTemplate('informationTemplate', mapObject)"
-              class="information-link"
-            >
-              дополнительные условия
-            </a>
-            оказания услуг.
+            На данной площадке действуют дополнительные условия оказания услуг.
             <a
               href="javascript:void(0)"
               (click)="showModalFromTemplate('informationTemplate', mapObject)"

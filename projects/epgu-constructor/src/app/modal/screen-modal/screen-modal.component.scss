@@ -75,8 +75,6 @@ $controlHeight: 55px;
     }
 
     &__content {
-      overflow-y: auto;
-
       .text {
         padding-right: 15px;
       }
@@ -86,8 +84,7 @@ $controlHeight: 55px;
       display: flex;
       margin-top: 26px;
       justify-content: center;
-      flex: 1;
-
+      flex: 1 1 auto;
       & > *:not(:last-child) {
         margin-right: 20px;
       }
@@ -110,7 +107,7 @@ $controlHeight: 55px;
   }
 
   .ps-content {
-    @include flex-container();
+    display: block;
     height: 100%;
     padding-right: 5px; // fix overlapping content by scroll
     padding-bottom: 2px; // hack for avoid overlapping of buttons

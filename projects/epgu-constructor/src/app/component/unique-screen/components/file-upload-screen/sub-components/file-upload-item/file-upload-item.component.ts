@@ -10,8 +10,6 @@ import {
 import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../../../core/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -94,7 +92,7 @@ export class FileUploadItemComponent implements OnDestroy {
     return this.loadData;
   }
   @Input() prefixForMnemonic: string;
-  @Input() refData: FileUploadItem[] = null;
+  @Input() refData: string = null;
 
   @Output() newValueSet: EventEmitter<FileResponseToBackendUploadsItem> = new EventEmitter<
     FileResponseToBackendUploadsItem
@@ -110,7 +108,7 @@ export class FileUploadItemComponent implements OnDestroy {
   })
   cameraInput: ElementRef;
   get isButtonsDisabled() {
-    return this.listIsUploadingNow || this.filesInUploading || this.filesInCompression;
+    return Boolean(this.listIsUploadingNow || this.filesInUploading || this.filesInCompression);
   }
 
   private subs: Subscription[] = [];
@@ -315,6 +313,7 @@ export class FileUploadItemComponent implements OnDestroy {
       (terabyteFile) => terabyteFile.fileName === file.name,
     )[0];
     this.listIsUploadingNow = false;
+    fileToUpload.mimeType = file.type;
 
     this.subs.push(
       this.terabyteService
@@ -359,20 +358,11 @@ export class FileUploadItemComponent implements OnDestroy {
       return of();
     }
 
-    const compressedFiles = this.compressImages(files, isPhoto);
+    const compressedFiles = this.compressImages(files);
 
     return merge(...compressedFiles).pipe(
       takeWhile((file: File) => this.validateAndHandleFilesSize(file)),
     );
-  }
-
-  getPhotoName(photo: File): string {
-    const photoType = photo.name.split('.').pop() || 'jpeg';
-    return `${photoBaseName}_${this.uploadedCameraPhotoNumber + 1}.${photoType}`;
-  }
-
-  getUniqName(name: string): string {
-    return `${name.split('.')[0]}_${uuidv4()}.${name.split('.').pop() || 'jpeg'}`;
   }
 
   createCustomFile(file: File, fileName: string): File {
@@ -384,7 +374,7 @@ export class FileUploadItemComponent implements OnDestroy {
     });
   }
 
-  compressImages(files: File[], isPhoto?: boolean): Array<Observable<unknown>> {
+  compressImages(files: File[]): Array<Observable<unknown>> {
     this.filesInCompression += files.length;
 
     const compressedImageOptions: CompressionOptions = {
@@ -395,10 +385,10 @@ export class FileUploadItemComponent implements OnDestroy {
     return files.map((file: File) => {
       const terabyteFiles = this.files$$.value;
       let fileToAction = this.createCustomFile(file, file.name);
-      let uniqFileName = this.getUniqName(file.name);
+      const fileName = file.name;
 
       const fileToUpload = new TerraUploadedFile({
-        fileName: isPhoto ? this.getPhotoName(fileToAction) : uniqFileName,
+        fileName,
         objectId: this.objectId,
         objectTypeId: UPLOAD_OBJECT_TYPE,
         mnemonic: this.getMnemonic(),
@@ -406,11 +396,7 @@ export class FileUploadItemComponent implements OnDestroy {
 
       this.files$$.next([fileToUpload, ...terabyteFiles]);
       if (this.compressionService.isValidImageType(fileToAction)) {
-        if (isPhoto) {
-          uniqFileName = this.getPhotoName(fileToAction);
-        }
-
-        fileToAction = this.createCustomFile(fileToAction, uniqFileName);
+        fileToAction = this.createCustomFile(fileToAction, fileName);
 
         return from(
           this.compressionService.imageCompression(fileToAction, compressedImageOptions),
@@ -424,7 +410,7 @@ export class FileUploadItemComponent implements OnDestroy {
         );
       }
 
-      fileToAction = this.createCustomFile(fileToAction, uniqFileName);
+      fileToAction = this.createCustomFile(fileToAction, fileName);
 
       return of(fileToAction);
     });
@@ -474,9 +460,13 @@ export class FileUploadItemComponent implements OnDestroy {
     )} МБ`;
 
     // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxAmount] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
+    errorHandler[
+      ErrorActions.addMaxAmount
+    ] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
     // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(this.data.maxSize)} МБ`;
+    errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(
+      this.data.maxSize,
+    )} МБ`;
     errorHandler[ErrorActions.addInvalidType] = `Недопустимый тип файла "${file?.name}"`;
     errorHandler[ErrorActions.addInvalidFile] = `Ошибка загрузки файла "${file?.name}"`;
     errorHandler[ErrorActions.addDownloadErr] = `Не удалось скачать файл "${file?.name}"`;
@@ -607,6 +597,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * Запрос на скачивание файла и отдачу пользователю
    * @param file - объект файла
    */
+  // TODO избавиться от any в шаблоне
   downloadFile(file: TerraUploadedFile) {
     this.handleError(ErrorActions.clear);
     const subs: Subscription = this.terabyteService

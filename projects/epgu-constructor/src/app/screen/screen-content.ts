@@ -1,13 +1,16 @@
 import {
   ApplicantAnswersDto,
   ComponentDto,
-  ComponentDtoAction, CurrentCycledFieldsDto,
+  ComponentActionDto,
   DisplayDto, DisplaySubjHead,
   ScenarioErrorsDto
 } from '../form-player/services/form-player-api/form-player-api.types';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { BehaviorSubject } from 'rxjs';
 import { Gender } from '../shared/types/gender';
+import { SignatureApplicationData } from '../component/unique-screen/components/signature-application/models/application.interface';
+
+type ComponentValue = string | number | SignatureApplicationData;
 
 export class ScreenContent {
 
@@ -109,13 +112,12 @@ export class ScreenContent {
     this._componentType.next(val);
   }
   public componentType$ = this._componentType.asObservable();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _componentValue = new BehaviorSubject<{[key: string]: any} | string>(null);
+
+  private _componentValue = new BehaviorSubject<ComponentValue>(null);
   public get componentValue() {
     return this._componentValue.getValue();
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public set componentValue(val: {[key: string]: any} | string ) {
+  public set componentValue(val: ComponentValue ) {
     this._componentValue.next(val);
   }
   public componentValue$ = this._componentValue.asObservable();
@@ -147,32 +149,23 @@ export class ScreenContent {
   }
   public componentLabel$ = this._componentLabel.asObservable();
 
-  private _actions = new BehaviorSubject<Array<ComponentDtoAction>>(null);
+  private _actions = new BehaviorSubject<Array<ComponentActionDto>>(null);
   public get actions() {
     return this._actions.getValue();
   }
-  public set actions(val: Array<ComponentDtoAction>) {
+  public set actions(val: Array<ComponentActionDto>) {
     this._actions.next(val);
   }
   public actions$ = this._actions.asObservable();
 
-  private _action = new BehaviorSubject<ComponentDtoAction>(null);
+  private _action = new BehaviorSubject<ComponentActionDto>(null);
   public get action() {
     return this._action.getValue();
   }
-  public set action(val: ComponentDtoAction) {
+  public set action(val: ComponentActionDto) {
     this._action.next(val);
   }
   public action$ = this._action.asObservable();
-
-  private _currentCycledFields = new BehaviorSubject<CurrentCycledFieldsDto>(null);
-  public get currentCycledFields(): CurrentCycledFieldsDto {
-    return this._currentCycledFields.getValue();
-  }
-  public set currentCycledFields(val: CurrentCycledFieldsDto) {
-    this._currentCycledFields.next(val);
-  }
-  public currentCycledFields$ = this._currentCycledFields.asObservable();
 
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   public get applicantAnswers(): ApplicantAnswersDto {
@@ -189,7 +182,6 @@ export class ScreenContent {
       display = {} as DisplayDto,
       orderId,
       gender,
-      currentCycledFields,
       applicantAnswers
     } = screenStore;
     const { header, subHeader, submitLabel, type, components = [], terminal, cssClass } = display;
@@ -211,7 +203,6 @@ export class ScreenContent {
     this.componentValue = this.getComponentData(firstComponent?.value);
     this.actions = firstComponent?.attrs?.actions || [];
     this.action = this.actions[0];
-    this.currentCycledFields = currentCycledFields;
     this.applicantAnswers = applicantAnswers;
   }
 

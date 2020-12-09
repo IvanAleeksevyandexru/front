@@ -10,17 +10,16 @@
       [tips]="field?.attrs?.labelHint"
       [hint]="field?.hint"
     >
-
       <lib-dadata-widget
         [simpleMode]="true"
+        [hideLevels]="data?.attrs?.hideLevels || []"
         [hideHouseCheckbox]="true"
         [name]="field.fieldName"
         [externalApiUrl]="config.externalApiUrl + '/'"
-        [initValue]="valueParsed[field.fieldName]"
+        [initValue]="$any(valueParsed[field.fieldName])"
         [(ngModel)]="valueParsed[field.fieldName]"
       >
       </lib-dadata-widget>
-
     </epgu-constructor-address-item>
 
     <epgu-constructor-address-item
@@ -29,7 +28,6 @@
       [label]="field.label"
       [hint]="field?.hint"
     >
-
       <lib-date-picker
         class="item--date"
         [name]="field.fieldName"
@@ -37,9 +35,9 @@
         [minDate]="field.minDate ? field.minDate : '-50y'"
         [maxDate]="field.maxDate ? field.maxDate : 'today'"
         [(ngModel)]="valueParsed[field.fieldName]"
+        [clearable]="true"
       >
       </lib-date-picker>
-
     </epgu-constructor-address-item>
 
     <epgu-constructor-address-item
@@ -48,7 +46,6 @@
       [label]="field.label"
       [hint]="field?.hint"
     >
-
       <lib-plain-input
         epgu-constructor-trim
         epgu-constructor-text-transform
@@ -58,7 +55,6 @@
         class="content content__input"
       >
       </lib-plain-input>
-
     </epgu-constructor-address-item>
   </ng-container>
   <div class="error" *ngIf="(screenService.componentError$ | async) && !isFormValid()">

@@ -172,6 +172,7 @@ export interface IFilterRegItems{
  * Интерфейс ошибки оплаты
  */
 export interface HttpPaymentError{
-  code: number,
-  message: string
+  code: number;
+  message: string;
+  status: number;
 }

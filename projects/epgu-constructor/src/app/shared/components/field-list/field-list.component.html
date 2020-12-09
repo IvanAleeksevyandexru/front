@@ -14,8 +14,16 @@
           [ngClass]="style.field"
           *ngFor="let field of groupItem.fields"
         >
-          <div class="data-item__label" [ngClass]="style.label">{{ field.label }}</div>
-          <div class="data-item__value" [ngClass]="style.value">{{ field.value }}</div>
+          <div
+            [innerHTML]="field?.label | safe: 'html'"
+            class="data-item__label"
+            [ngClass]="style.label"
+          ></div>
+          <div
+            [innerHTML]="field?.value | safe: 'html'"
+            class="data-item__value"
+            [ngClass]="style.value"
+          ></div>
         </div>
       </div>
     </div>

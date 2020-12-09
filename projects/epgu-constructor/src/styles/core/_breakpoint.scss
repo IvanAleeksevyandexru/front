@@ -7,7 +7,6 @@ $screen-lg-min: 992px;
 $screen-xl-max: 1199.98px;
 $screen-xl-min: 1200px;
 
-
 // <----------- START breakpoint up
 // Extra small devices (portrait phones, less than 576px)
 // No media query for `xs` since this is the default in Bootstrap
@@ -40,7 +39,6 @@ $screen-xl-min: 1200px;
 }
 
 // <----------- END
-
 
 // <----------- START breakpoint down
 @mixin phones-down() {
@@ -76,7 +74,6 @@ $screen-xl-min: 1200px;
 
 // <----------- END
 
-
 // <----------- START breakpoint only
 @mixin portrait-phones-only() {
   // Extra small devices (portrait phones, less than 576px)
@@ -86,7 +83,6 @@ $screen-xl-min: 1200px;
 }
 
 @mixin landscape-phones-only() {
-
   // Small devices (landscape phones, 576px and up)
   @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
     @content;
@@ -113,6 +109,3 @@ $screen-xl-min: 1200px;
     @content;
   }
 }
-
-
-

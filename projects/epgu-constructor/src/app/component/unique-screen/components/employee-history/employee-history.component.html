@@ -14,7 +14,7 @@
         <div>
           <lib-radio *ngFor="let role of ds"
                      [name]="i + '_generationType'"
-                     [formControl]="generation.get('type')"
+                     [formControl]="$any(generation.get('type'))"
                      [labelText]="role.label"
                      [value]="role.type"
           ></lib-radio>
@@ -22,7 +22,7 @@
       </div>
       <div
         class="employee-history__error-date"
-        *ngIf="generation.get('to').getError('error') as error"
+        *ngIf="generation.get('error').getError('error') as error"
       >
         <span>Укажите дату</span>
         <div>{{ error }}</div>
@@ -35,7 +35,7 @@
           ></epgu-constructor-label>
           <lib-month-picker
             [id]="i + '_minDate'"
-            [formControl]="generation.get('from')"
+            [formControl]="$any(generation.get('from'))"
             [minMonth]="monthsService.minDateFrom"
             [maxMonth]="monthsService.maxDate"
             [invalid]="generation.get('from').invalid"
@@ -53,8 +53,8 @@
             ></epgu-constructor-label>
             <lib-month-picker
               [id]="i + '_maxDate'"
-              [formControl]="generation.get('to')"
-              [minMonth]="generation.get('minDateTo').value || monthsService.minDateTo"
+              [formControl]="$any(generation.get('to'))"
+              [minMonth]="monthsService.minDateFrom"
               [maxMonth]="monthsService.maxDate"
               [invalid]="generation.get('to').invalid"
               [validationShowOn]="validationShowOn"
@@ -67,7 +67,7 @@
       <div class="employee-history__input">
         <lib-checkbox
           [id]="i + '_checkboxToDate'"
-          [formControl]="generation.get('checkboxToDate')"
+          [formControl]="$any(generation.get('checkboxToDate'))"
           labelText="По настоящее время"
         ></lib-checkbox>
       </div>
@@ -82,7 +82,7 @@
           epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_position'"
-          [control]="generation.get('position')"
+          [control]="$any(generation.get('position'))"
           [invalid]="generation.get('position').invalid"
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>
@@ -103,7 +103,7 @@
           epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_place'"
-          [control]="generation.get('place')"
+          [control]="$any(generation.get('place'))"
           [invalid]="generation.get('place').invalid"
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>
@@ -124,7 +124,7 @@
           epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_address'"
-          [control]="generation.get('address')"
+          [control]="$any(generation.get('address'))"
           [invalid]="generation.get('address').invalid"
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>

@@ -23,6 +23,7 @@
         class="info__action btn__submit"
         epgu-constructor-action
         [action]="action"
+        [color]="action.color"
       >
         {{ action.label }}
       </lib-button>
@@ -43,8 +44,8 @@
   <div class="screen-footer">
     <lib-social-share
       class="social-share"
-      isNewDesign="true"
-      isNewDesignDisabled="true"
+      [isNewDesign]="true"
+      [isNewDesignDisabled]="true"
     ></lib-social-share>
   </div>
 </epgu-constructor-screen-container>

@@ -1,9 +1,15 @@
 import { ListItem } from 'epgu-lib';
-import { DisplayDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentFilterDto,
+  ComponentRelationFieldDto,
+  DisplayDto
+} from '../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../screen/screen.types';
-import { TextTransform } from '../../shared/types/textTransform';
-import { DictionaryItem, DictionaryResponse } from '../shared/services/dictionary-api/dictionary-api.types';
 import { Ref } from '../../shared/services/date-range/date-range.models';
+import { TextTransform } from '../../shared/types/textTransform';
+import {
+  DictionaryItem, DictionaryOptions, DictionaryResponse
+} from '../shared/services/dictionary-api/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -31,9 +37,9 @@ export enum CustomScreenComponentTypes {
   Timer = 'Timer',
 }
 
-export type CustomListDropDowns = Array<Partial<ListItem>>;
-export type CustomListDictionaries = Array<CustomListDictionary>;
-export type CustomListReferenceData = CustomListGenericData<CustomListDropDowns | DictionaryResponse>;
+export type CustomListDropDowns = Array<{ [key: string]: Partial<ListItem>[] }>;
+export type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;
+export type CustomListReferenceData = CustomListGenericData< Partial<ListItem>[] | DictionaryResponse >;
 // export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
 export interface CustomListDictionary {
@@ -79,9 +85,6 @@ export type CustomComponentDropDownItem = {
  * @property dictionaryType - dictionary name for request {@see getDictionary}
  */
 export interface CustomComponentAttr {
-  // TODO разобраться с типами
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key:string]: any;
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType: string;
   labelAttr: string;
@@ -96,6 +99,17 @@ export interface CustomComponentAttr {
   updateOnValidation?: UpdateOn;
   supportedValues?: Array<SupportedValue>;
   relation?: {ref: string, conditions: RelationCondition[]}
+  russia?: boolean;
+  ussr?: boolean;
+  disabled?: boolean;
+  hidden?: boolean;
+  defaultValue?: boolean;
+  filter?: ComponentFilterDto;
+  defaultIndex?: number;
+  relationField?: ComponentRelationFieldDto;
+  attrs?: CustomComponentAttr; // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
+  dictionaryOptions?: DictionaryOptions;
+  grid?: string;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
@@ -142,6 +156,7 @@ export interface CustomComponentRef {
   relatedRel: string;
   val: string | Array<string> | boolean;
   relation: CustomComponentRefRelation;
+  defaultValue: string | boolean;
 }
 
 export interface CustomListFormGroup {

@@ -12,16 +12,14 @@
     {{ data.get('value')?.getError('serverError') }}
   </small>
 </div>
-<div [class.form__half]="isHalfWidthItem">
+<div>
   <ng-content></ng-content>
 </div>
 <div class="form__info" *ngIf="!disableHint">
   <span *ngIf="data.value?.attrs?.hint as hint" class="form__hint">
     {{ hint }}
   </span>
-  <epgu-constructor-helper-text
-    *ngIf="isHelperTextVisible"
-  >
+  <epgu-constructor-helper-text *ngIf="isHelperTextVisible">
     {{ customUnRecLabel }}
   </epgu-constructor-helper-text>
 </div>

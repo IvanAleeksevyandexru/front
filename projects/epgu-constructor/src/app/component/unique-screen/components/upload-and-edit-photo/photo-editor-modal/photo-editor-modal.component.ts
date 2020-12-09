@@ -5,12 +5,7 @@ import { Subject } from 'rxjs';
 import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
 import { ImageErrorText, NewSizeEvent } from '../upload-and-edit-photo.model';
 import { imageErrorText, minCropSize } from '../upload-and-edit-photo.constant';
-import {
-  aspectRatio,
-  hintSetting,
-  photoMaskSrc,
-  showErrorTime,
-} from './photo-editor-modal.constant';
+import { hintSetting, photoMaskSrc, showErrorTime } from './photo-editor-modal.constant';
 import { ConfigService } from '../../../../../core/config/config.service';
 
 @Component({
@@ -80,15 +75,9 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
     this.cropper.zoomOut();
   }
 
-  setCropperSize(newSize: NewSizeEvent): void {
+  setCropperSize(): void {
     this.isPhoneSize = matchMedia('(max-width: 576px)').matches;
-    this.cropConfig = this.isPhoneSize
-      ? { width: newSize.newWidth, height: newSize.newWidth * aspectRatio }
-      : minCropSize;
-
-    this.maskSrc = `${this.config.staticDomainAssetsPath}/${
-      this.isPhoneSize ? photoMaskSrc.phone : photoMaskSrc.desktop
-    }`;
+    this.maskSrc = `${this.config.staticDomainAssetsPath}/${photoMaskSrc.desktop}`;
   }
 
   fitImageToCropArea(): void {
@@ -99,7 +88,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
 
   onResized(newSize: NewSizeEvent): void {
     if (newSize.newWidth !== newSize.oldWidth) {
-      this.setCropperSize(newSize);
+      this.setCropperSize();
     }
     if (this.cropper.isLoaded) {
       this.fitImageToCropArea();

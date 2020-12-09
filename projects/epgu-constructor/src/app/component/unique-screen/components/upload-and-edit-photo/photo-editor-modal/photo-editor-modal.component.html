@@ -16,7 +16,8 @@
              (resized)="onResized($event)">
           <div class="photo-editor__cropper"
                [style.width.px]="cropConfig.width"
-               [style.height.px]="cropConfig.height">
+               [style.height.px]="cropConfig.height"
+               [class.mobile]="isPhoneSize">
             <ly-img-cropper #cropper
                             class="photo-editor__cropper-lib"
                             [config]="cropConfig"
