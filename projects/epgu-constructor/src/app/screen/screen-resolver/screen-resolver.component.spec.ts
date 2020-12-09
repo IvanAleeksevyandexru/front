@@ -13,6 +13,10 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 })
 class TestComponent {}
 
+Object.defineProperty(SCREEN_COMPONENTS, 'TEST', {
+  value: TestComponent,
+});
+
 describe('ScreenResolverComponent', () => {
   let component: ScreenResolverComponent;
   let fixture: ComponentFixture<ScreenResolverComponent>;
@@ -34,15 +38,14 @@ describe('ScreenResolverComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ScreenResolverComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
 
+    // Нужно установить screenService.screenType до инициализации компонента,
+    // иначе компонент выбросит исключение в ngOnInit
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
-  });
+    // @ts-ignore
+    screenService.screenType = 'TEST';
 
-  describe('screenComponent property', () => {
-    it('should be undefined by default', () => {
-      expect(component.screenComponent).toBeUndefined();
-    });
+    fixture.detectChanges();
   });
 
   it('should render screenComponent', () => {
@@ -54,12 +57,6 @@ describe('ScreenResolverComponent', () => {
 
   it('should set screen component on screen type change', () => {
     const setScreenComponentSpy = spyOn(component, 'setScreenComponent');
-
-    component.ngOnInit();
-
-    expect(setScreenComponentSpy).toBeCalledTimes(1);
-    expect(setScreenComponentSpy).toBeCalledWith(null);
-    setScreenComponentSpy.calls.reset();
 
     screenService.screenType = ScreenTypes.COMPONENT;
     expect(setScreenComponentSpy).toBeCalledTimes(1);
