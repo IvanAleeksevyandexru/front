@@ -101,12 +101,13 @@ export class ActionDirective {
   }
 
   private getOptions(): NavigationOptions {
-    const isService = () => this.action.action.includes('service');
-    const isLastPageInInternalScenario = () => this.action.action.includes('goBackToMainScenario');
+    const { action } = this.action;
+    const isService = action.includes('service');
+    const isLastPageInInternalScenario = action.includes('goBackToMainScenario');
 
-    if (isService()) {
-      return { url: this.action.action };
-    } else if (isLastPageInInternalScenario()) {
+    if (isService) {
+      return { url: action };
+    } else if (isLastPageInInternalScenario) {
       return { isInternalScenarioFinish: true };
     } else {
       return {};
@@ -117,13 +118,9 @@ export class ActionDirective {
     return {
       [this.screenService.component.id]: {
         visited: true,
-        value: this.getComponentStateValueForNavigate(this.action.action),
+        value: this.action.value,
       },
     };
-  }
-
-  private getComponentStateValueForNavigate(actionName: DTOActionAction) {
-    return this.action.value;
   }
 
   private downloadAction(): void {
