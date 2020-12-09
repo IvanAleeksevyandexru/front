@@ -1,5 +1,6 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { configureTestSuite } from 'ng-bullet';
 import { LoadService } from 'epgu-lib';
 import { MockComponent } from 'ng-mocks';
 import { LoadServiceStub } from '../core/config/load-service-stub';
@@ -28,11 +29,15 @@ import { ScreenServiceStub } from '../screen/screen.service.stub';
 import { EpguLibModuleInited } from '../core/core.module';
 import { ServiceDataServiceStub } from './services/service-data/service-data.service.stub';
 import { Service } from './form-player.types';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
+import { Config } from '../core/config/config.types';
 
 
 describe('FormPlayerComponent', () => {
   let formPlayerService: FormPlayerService;
+  let formPlayerConfigApiService: FormPlayerConfigApiService;
+  let loadService: LoadService;
+  let configService: ConfigService;
   let serviceDataService: ServiceDataService;
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
@@ -42,7 +47,7 @@ describe('FormPlayerComponent', () => {
     targetId: '-10000100'
   };
 
-  beforeEach(waitForAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
@@ -68,9 +73,16 @@ describe('FormPlayerComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     }).compileComponents();
+
+  });
+
+  beforeEach(() => {
     formPlayerService = TestBed.inject(FormPlayerService);
     serviceDataService = TestBed.inject(ServiceDataService);
-  }));
+    formPlayerConfigApiService = TestBed.inject(FormPlayerConfigApiService);
+    loadService = TestBed.inject(LoadService);
+    configService = TestBed.inject(ConfigService);
+  });
 
   describe('ngOnInit()', () => {
     it('should call init method of serviceDataService with service param', () => {
@@ -135,6 +147,43 @@ describe('FormPlayerComponent', () => {
       spyOn(serviceDataService, 'init').and.callThrough();
       component.ngOnChanges();
       expect(serviceDataService.init).toBeCalledWith(serviceDataMock);
+    });
+  });
+
+  describe('initFormPlayerConfig()', () => {
+    it('shouldn\'t call getFormPlayerConfig method of formPlayerConfigApiService when loadService not loaded', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      loadService.loaded = new BehaviorSubject(false);
+      spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
+      component['initFormPlayerConfig']();
+      expect(formPlayerConfigApiService.getFormPlayerConfig).not.toBeCalled();
+    });
+
+    it('should call getFormPlayerConfig method of formPlayerConfigApiService when loadService has loaded', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      loadService.loaded = new BehaviorSubject(true);
+      spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
+      component['initFormPlayerConfig']();
+      expect(formPlayerConfigApiService.getFormPlayerConfig).toBeCalled();
+    });
+
+    it('should set form player config', () => {
+      const config = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      loadService.loaded = new BehaviorSubject(true);
+      spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.returnValue(of(config));
+      const setterSpy = jest.spyOn(configService, 'config', 'set');
+      component['initFormPlayerConfig']();
+      expect(setterSpy).toBeCalled();
     });
   });
 

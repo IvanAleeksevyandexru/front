@@ -4,12 +4,18 @@ import { Navigation } from '../../../form-player/form-player.types';
 
 @Injectable()
 export class NavigationServiceStub {
-  nextStep = new Subject<Navigation>();
+  private nextStep = new Subject<Navigation>();
   nextStep$ = this.nextStep.asObservable();
-  prevStep = new Subject<Navigation>();
+  private prevStep = new Subject<Navigation>();
   prevStep$ = this.prevStep.asObservable();
-  skipStep = new Subject<Navigation>();
+  private skipStep = new Subject<Navigation>();
   skipStep$ = this.skipStep.asObservable();
+
+  next(): void {}
+
+  prev(): void {}
+
+  skip(): void {}
 
   redirectToLK(): void {}
 

@@ -13,15 +13,13 @@ import { DeviceDetectorService } from '../device-detector/device-detector.servic
 export class NavigationService {
   isWebView: boolean;
 
-  // TODO для nextStep.next добавить обёртку, next(),
-  //  что бы удобней было обращаться к этому методу
-  nextStep = new Subject<Navigation>();
+  private nextStep = new Subject<Navigation>();
   nextStep$ = this.nextStep.asObservable();
 
-  prevStep = new Subject<Navigation>();
+  private prevStep = new Subject<Navigation>();
   prevStep$ = this.prevStep.asObservable();
 
-  skipStep = new Subject<Navigation>();
+  private skipStep = new Subject<Navigation>();
   skipStep$ = this.skipStep.asObservable();
 
   constructor(
@@ -30,6 +28,18 @@ export class NavigationService {
     private configService: ConfigService
   ) {
     this.isWebView = this.deviceDetector.isWebView;
+  }
+
+  next(navigation?: Navigation): void {
+    this.nextStep.next(navigation);
+  }
+
+  prev(navigation?: Navigation): void {
+    this.prevStep.next(navigation);
+  }
+
+  skip(navigation?: Navigation): void {
+    this.skipStep.next(navigation);
   }
 
   redirectToProfileEdit(): void {

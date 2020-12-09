@@ -25,7 +25,7 @@ export class CustomScreenComponent extends ScreenBase {
   }
 
   nextStep(): void {
-    this.navigationService.nextStep.next({ payload: this.dataToSend });
+    this.navigationService.next({ payload: this.dataToSend });
   }
 
   /**

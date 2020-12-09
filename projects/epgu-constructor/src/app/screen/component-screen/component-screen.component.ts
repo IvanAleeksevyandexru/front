@@ -53,9 +53,9 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
     payload[this.screenService.component.id] = { visited: true, value };
 
     if (action === 'skipStep') {
-      this.navigationService.skipStep.next({ payload });
+      this.navigationService.skip({ payload });
     } else {
-      this.navigationService.nextStep.next({ payload });
+      this.navigationService.next({ payload });
     }
   }
 
