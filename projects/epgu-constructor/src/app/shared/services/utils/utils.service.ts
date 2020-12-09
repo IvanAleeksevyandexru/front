@@ -131,7 +131,8 @@ export class UtilsService {
   static getObjectProperty(obj: any, path: string, defaultValue: any = undefined): any {
     if (!path) return obj;
 
-    const travel = (regexp) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const travel = (regexp): any =>
       String.prototype.split
         .call(path, regexp)
         .filter(Boolean)
@@ -186,8 +187,7 @@ export class UtilsService {
     return splitByDirLocation;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private sliceArrayFromRight(arr: any[], from: number, includeFirst: boolean = true) {
+  private sliceArrayFromRight(arr: string[], from: number, includeFirst: boolean = true): string[] {
     return arr.slice(Math.max(arr.length - from, includeFirst ? 0 : 1));
   }
 

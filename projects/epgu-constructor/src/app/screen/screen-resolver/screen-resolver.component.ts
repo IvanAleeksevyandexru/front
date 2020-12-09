@@ -34,7 +34,7 @@ export class ScreenResolverComponent implements OnInit {
     return SCREEN_COMPONENTS[screenType];
   }
 
-  private handleScreenComponentError(screenType: ScreenTypes): void {
+  private handleScreenComponentError(screenType: ScreenTypes): never {
     // TODO: need to find a better way for handling this error, maybe show it on UI
     throw new Error(`We cant find screen component for this screen type: ${screenType}`);
   }

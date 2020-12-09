@@ -42,9 +42,8 @@ export class ComponentListModalComponent {
    * Форматиркем данные перед отправкой
    * @param changes - данные на отправку
    */
-  getFormattedData(changes: CustomComponentOutputData) {
-    const stateData = this.getPrepareResponseData(changes);
-    return stateData;
+  getFormattedData(changes: CustomComponentOutputData): NavigationPayload {
+    return this.getPrepareResponseData(changes);
   }
 
   changeComponentsList(changes: CustomComponentOutputData): void {
@@ -66,8 +65,8 @@ export class ComponentListModalComponent {
    * @param data - данные для пребразования
    * @private
    */
-  private getPrepareResponseData(data: CustomComponentOutputData = {}) {
-    return Object.keys(data).reduce((acc, key) => {
+  private getPrepareResponseData(data: CustomComponentOutputData = {}): NavigationPayload {
+    return Object.keys(data).reduce<NavigationPayload>((acc, key) => {
       let value = '';
       const dataValue = data[key].value;
 

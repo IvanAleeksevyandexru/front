@@ -49,7 +49,8 @@ export class ModalService {
     this.appRef.attachView(componentRef.hostView);
     componentRef.changeDetectorRef.detectChanges();
 
-    componentRef.instance['detachView'] = (data) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    componentRef.instance['detachView'] = (data): any => {
       this.appRef.detachView(componentRef.hostView);
       modalResult.next(data);
     };

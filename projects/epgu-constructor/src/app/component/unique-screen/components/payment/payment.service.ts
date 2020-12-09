@@ -54,9 +54,7 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    * @param attributeValues - дополнительные параметры
    */
-  // TODO
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
+  getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<{ value: string }> {
     // TODO: Хардкод для локальной отладки подмена суммы оплаты пошлины
     if (location.hostname.includes('test.gosuslugi.ru')) {
       attributeValues.sum = '200';
@@ -66,7 +64,7 @@ export class PaymentService {
       ? `${this.config.mockUrl}/lk/v1/paygate/uin`
       : this.config.uinApiUrl;
     const path = `${urlPrefix}/${code}?orderId=${orderId}`;
-    return this.http.post(path, attributeValues, this.requestOptions);
+    return this.http.post<{ value: string }>(path, attributeValues, this.requestOptions);
   }
 
   /**

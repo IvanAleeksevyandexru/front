@@ -8,9 +8,9 @@ import {
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { BehaviorSubject } from 'rxjs';
 import { Gender } from '../shared/types/gender';
-import { SignatureApplicationData } from '../component/unique-screen/components/signature-application/models/application.interface';
 
-type ComponentValue = string | number | SignatureApplicationData;
+type ComponentValueGeneric<T> =  T;
+type ComponentValue = string | number | ComponentValueGeneric<unknown>;
 
 export class ScreenContent {
 
@@ -206,7 +206,7 @@ export class ScreenContent {
     this.applicantAnswers = applicantAnswers;
   }
 
-  getComponentData(str: string) {
+  getComponentData(str: string): ComponentValue {
     try {
       return JSON.parse(str);
     } catch (e) {

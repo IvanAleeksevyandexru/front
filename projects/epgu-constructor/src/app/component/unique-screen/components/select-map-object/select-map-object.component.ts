@@ -128,7 +128,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   /**
    * Получаем выбранный ЗАГС из applicantAnswers по пути из attrs.selectedValue
    */
-  private getSelectedValue() {
+  private getSelectedValue(): { [key: string]: string } {
     const selectedValue = UtilsService.getObjectProperty(
       this.applicantAnswers,
       this.data?.attrs.selectedValue,

@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
 import { ConfigService } from '../../../../core/config/config.service';
-import { IGeoCoordsResponse } from './select-map-object.interface';
+import { IGeoCoordsResponse, IFeatureCollection } from './select-map-object.interface';
 import {
   DictionaryItem,
   DictionaryResponseForYMap,
@@ -90,7 +90,7 @@ export class SelectMapObjectService implements OnDestroy {
    * prepares and returns collection of objects for yandex map
    * @param items geo objects
    */
-  public prepareFeatureCollection(items: DictionaryYMapItem[]) {
+  public prepareFeatureCollection(items: DictionaryYMapItem[]): IFeatureCollection {
     const res = { type: 'FeatureCollection', features: [] };
     items.forEach((item) => {
       if (item.center) {
@@ -127,6 +127,8 @@ export class SelectMapObjectService implements OnDestroy {
   /**
    * returns yandex ObjectManager to work with map's objects
    */
+  // TODO нет в epgu-lib интерфейсов
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   private createMapsObjectManager() {
     const OMSettings = {
       clusterize: !0,
@@ -161,6 +163,8 @@ export class SelectMapObjectService implements OnDestroy {
     return objectManager;
   }
 
+  // TODO нет в epgu-lib интерфейсов
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   private getCustomBalloonContentLayout() {
     if (typeof this.ymaps.templateLayoutFactory == 'undefined') {
       return;

@@ -164,9 +164,12 @@ export class ComponentListToolsService {
     return shownElements;
   }
 
-  convertedValue(component: CustomComponent) {
+  // TODO по возможности придумать как избавиться тут от any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  convertedValue(component: CustomComponent): any {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
-    const parseValue = (value) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const parseValue = (value): any => {
       if (isDateAndValue) {
         return new Date(value);
       } else if (this.isAddress(component.type)) {

@@ -97,9 +97,8 @@ export class EmployeeHistoryComponent implements OnInit {
     const componentValue = this.screenService.getComponentData(this.screenService.component?.value);
 
     this.employeeFormService.clearHistoryForm();
-
     if (componentValue) {
-      const generations: Array<EmployeeHistoryModel> = componentValue;
+      const generations = componentValue as EmployeeHistoryModel[];
 
       generations.forEach((generation: EmployeeHistoryModel) => {
         this.employeeFormService.newGeneration(generation);

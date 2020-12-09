@@ -175,7 +175,9 @@ export class AbstractPaymentComponent implements OnDestroy {
    * @param attributeValues - аттрибуты для запроса платежного документа
    * @private
    */
-  private getRequestForUinByOrder(attributeValues: PaymentInfoInterface) {
+  private getRequestForUinByOrder(
+    attributeValues: PaymentInfoInterface,
+  ): Observable<{ value: string }> {
     this.paymentPurpose = attributeValues.paymentPurpose;
     this.status = PaymentStatus.SUCCESS;
     return this.paymentService.getUinByOrderId(this.orderId, this.payCode, attributeValues).pipe(
@@ -187,16 +189,14 @@ export class AbstractPaymentComponent implements OnDestroy {
 
   /**
    * Устанавливает статус оплаты из успешного запроса
-   * @param value - УИН
+   * @param data - УИН
    */
-  // TODO
-  // eslint-disable-next-line @typescript-eslint/typedef
-  private setPaymentStatusFromSuccessRequest({ value }): void {
-    if (!value.includes('PRIOR')) {
-      // eslint-disable-next-line no-param-reassign
-      value = `PRIOR${value}`;
+  private setPaymentStatusFromSuccessRequest(data: { value: string }): void {
+    let { value: uin } = data;
+    if (!uin.includes('PRIOR')) {
+      uin = `PRIOR${uin}`;
     }
-    this.uin = value;
+    this.uin = uin;
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
       .pipe(
