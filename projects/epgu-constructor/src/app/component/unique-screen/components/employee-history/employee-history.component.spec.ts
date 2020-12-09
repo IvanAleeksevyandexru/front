@@ -14,6 +14,7 @@ import { Gender } from '../../../../shared/types/gender';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { ConstructorMonthPickerModule } from '../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
 
 xdescribe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;
@@ -36,6 +37,7 @@ xdescribe('EmployeeHistoryComponent', () => {
         ReactiveFormsModule,
         EpguLibModule,
         ConstructorPlainInputModule,
+        ConstructorMonthPickerModule,
       ],
       declarations: [
         EmployeeHistoryComponent,
