@@ -30,12 +30,14 @@ import { EpguLibModuleInited } from '../core/core.module';
 import { ServiceDataServiceStub } from './services/service-data/service-data.service.stub';
 import { Service } from './form-player.types';
 import { BehaviorSubject, of } from 'rxjs';
+import { Config } from '../core/config/config.types';
 
 
 describe('FormPlayerComponent', () => {
   let formPlayerService: FormPlayerService;
   let formPlayerConfigApiService: FormPlayerConfigApiService;
   let loadService: LoadService;
+  let configService: ConfigService;
   let serviceDataService: ServiceDataService;
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
@@ -79,6 +81,7 @@ describe('FormPlayerComponent', () => {
     serviceDataService = TestBed.inject(ServiceDataService);
     formPlayerConfigApiService = TestBed.inject(FormPlayerConfigApiService);
     loadService = TestBed.inject(LoadService);
+    configService = TestBed.inject(ConfigService);
   });
 
   describe('ngOnInit()', () => {
@@ -168,6 +171,19 @@ describe('FormPlayerComponent', () => {
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
       component['initFormPlayerConfig']();
       expect(formPlayerConfigApiService.getFormPlayerConfig).toBeCalled();
+    });
+
+    it('should set form player config', () => {
+      const config = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      loadService.loaded = new BehaviorSubject(true);
+      spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.returnValue(of(config));
+      const setterSpy = jest.spyOn(configService, 'config', 'set');
+      component['initFormPlayerConfig']();
+      expect(setterSpy).toBeCalled();
     });
   });
 
