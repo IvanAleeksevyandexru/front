@@ -42,4 +42,11 @@ export class DeviceDetectorService {
   isChromeIOS() {
     return /CriOS\/[\d]+/.test(navigator.userAgent);
   }
+
+  /**
+   * Возвращает Android в браузере Mi это или нет
+   */
+  isMiAndroid() {
+    return /XiaoMi\/+/.test(navigator.userAgent);
+  }
 }
