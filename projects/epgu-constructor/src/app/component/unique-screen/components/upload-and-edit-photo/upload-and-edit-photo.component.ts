@@ -266,7 +266,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   }
 
   setFile(file: File): void {
-    this.fileName = file.name;
+    this.fileName = this.fixFileName(file);
     this.blobToDataURL(file, (url: string) => this.validateImageEvent(url));
   }
 
@@ -278,6 +278,19 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       }
       this.webcamService.close();
     });
+  }
+
+  /**
+   * Для браузера Mi фиксит ошибку с двумя точками в названии файла.
+   * @param file
+   */
+  fixFileName(file: File): string {
+    if (this.deviceDetector.isMiAndroid()) {
+      const extension = file.name.split('.').pop();
+      return file.name.replace(`..${extension}`, `.${extension}`);
+    }
+
+    return file.name;
   }
 
   changeCroppedPhoto(): void {
