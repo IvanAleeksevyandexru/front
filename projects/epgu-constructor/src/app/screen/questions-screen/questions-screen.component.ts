@@ -31,9 +31,6 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     private config: ConfigService,
   ) {
     super(injector);
-    this.screenService.isLoading$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((isLoading) => {
-      this.isLoading = isLoading;
-    });
   }
 
   ngOnInit(): void {
@@ -48,6 +45,9 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   subscribeToComponent() {
     this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
       this.rejectAction = this.getRejectAction(component?.attrs?.actions);
+    });
+    this.screenService.isLoading$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((isLoading) => {
+      this.isLoading = isLoading;
     });
   }
 

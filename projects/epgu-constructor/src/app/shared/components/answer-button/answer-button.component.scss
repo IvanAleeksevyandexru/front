@@ -22,8 +22,8 @@
 
 .icon-loading {
   position: absolute;
-  right: $screen-pad-p;
+  right: 17px;
   @include phones-down {
-    right: $screen-pad-small-gap;
+    right: 13px;
   }
 }
