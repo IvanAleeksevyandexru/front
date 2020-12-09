@@ -12,7 +12,7 @@
     {{ data.get('value')?.getError('serverError') }}
   </small>
 </div>
-<div [class.form__half]="isHalfWidthItem">
+<div>
   <ng-content></ng-content>
 </div>
 <div class="form__info" *ngIf="!disableHint">

@@ -5,7 +5,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { NavigationPayload } from '../../form-player/form-player.types';
 import {
   ActionType,
-  ComponentDtoAction,
+  ComponentActionDto,
   DTOActionAction,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
@@ -20,7 +20,7 @@ import { ScreenBase } from '../screenBase';
   providers: [UnsubscribeService],
 })
 export class QuestionsScreenComponent extends ScreenBase implements OnInit {
-  rejectAction: ComponentDtoAction;
+  rejectAction: ComponentActionDto;
   submitLabel: string;
 
   constructor(
@@ -47,10 +47,10 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   }
 
   nextStep(payload?: NavigationPayload): void {
-    this.navigationService.nextStep.next({ payload });
+    this.navigationService.next({ payload });
   }
 
-  answerChoose(action: ComponentDtoAction) {
+  answerChoose(action: ComponentActionDto) {
     if (action.disabled) {
       return;
     }
@@ -68,7 +68,14 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.nextStep(this.getPayload(action));
   }
 
-  getPayload(action: ComponentDtoAction) {
+  onSubmitClick(submitPayload: { value: string }): void {
+    const componentId = this.screenService.component.id;
+    const payload = {};
+    payload[componentId] = { ...submitPayload, visited: true };
+    this.nextStep(payload);
+  }
+
+  getPayload(action: ComponentActionDto) {
     return {
       [this.screenService.component.id]: {
         visited: true,
@@ -77,7 +84,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     };
   }
 
-  showModalRedirectTo(action: ComponentDtoAction) {
+  showModalRedirectTo(action: ComponentActionDto) {
     const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
       ConfirmationModalComponent,
       {
@@ -108,15 +115,15 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     });
   }
 
-  showActionAsLongBtn(action: ComponentDtoAction): boolean {
+  showActionAsLongBtn(action: ComponentActionDto): boolean {
     return !(action.hidden || this.isRejectAction(action));
   }
 
-  getRejectAction(actions: Array<ComponentDtoAction> = []) {
+  getRejectAction(actions: Array<ComponentActionDto> = []) {
     return actions.find((action) => this.isRejectAction(action));
   }
 
-  isRejectAction(action: ComponentDtoAction): boolean {
+  isRejectAction(action: ComponentActionDto): boolean {
     return action.action === DTOActionAction.reject;
   }
 }

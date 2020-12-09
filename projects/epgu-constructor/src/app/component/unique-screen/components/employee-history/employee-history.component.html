@@ -14,7 +14,7 @@
         <div>
           <lib-radio *ngFor="let role of ds"
                      [name]="i + '_generationType'"
-                     [formControl]="generation.get('type')"
+                     [formControl]="$any(generation.get('type'))"
                      [labelText]="role.label"
                      [value]="role.type"
           ></lib-radio>
@@ -67,7 +67,7 @@
       <div class="employee-history__input">
         <lib-checkbox
           [id]="i + '_checkboxToDate'"
-          [formControl]="generation.get('checkboxToDate')"
+          [formControl]="$any(generation.get('checkboxToDate'))"
           labelText="По настоящее время"
         ></lib-checkbox>
       </div>
@@ -80,7 +80,7 @@
         <epgu-constructor-constructor-plain-input
           [textTransformType]="textTransformType"
           [name]="i + '_position'"
-          [control]="generation.get('position')"
+          [control]="$any(generation.get('position'))"
           [invalid]="generation.get('position').invalid"
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>
@@ -99,7 +99,7 @@
         <epgu-constructor-constructor-plain-input
           [textTransformType]="textTransformType"
           [name]="i + '_place'"
-          [control]="generation.get('place')"
+          [control]="$any(generation.get('place'))"
           [invalid]="generation.get('place').invalid"
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>
@@ -116,11 +116,9 @@
           [for]="'address'"
         ></epgu-constructor-label>
         <epgu-constructor-constructor-plain-input
-          epgu-constructor-trim
-          epgu-constructor-text-transform
           [textTransformType]="textTransformType"
           [name]="i + '_address'"
-          [control]="generation.get('address')"
+          [control]="$any(generation.get('address'))"
           [invalid]="generation.get('address').invalid"
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>

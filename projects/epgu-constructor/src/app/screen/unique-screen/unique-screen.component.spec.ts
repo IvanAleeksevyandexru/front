@@ -11,7 +11,6 @@ import { UtilsService } from '../../shared/services/utils/utils.service';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
-import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { UniqueScreenComponent } from './unique-screen.component';
 
 describe('UniqueScreenComponent', () => {
@@ -49,7 +48,6 @@ describe('UniqueScreenComponent', () => {
         UnsubscribeService,
         CachedAnswersService,
         CurrentAnswersService,
-        CycledFieldsService,
         UtilsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },

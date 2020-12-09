@@ -1,5 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ToolsService } from '../../../shared/services/tools/tools.service';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { SharedModule } from '../../../../shared/shared.module';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ComponentBase } from '../../../../screen/screen.types';
@@ -21,11 +20,11 @@ describe('AddPassportComponent', () => {
     visited: false,
   };
 
-  beforeEach(async(() => {
+  beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AddPassportComponent],
       imports: [SharedModule, RouterTestingModule, PassportModule],
-      providers: [CurrentAnswersService, ToolsService, HealthService],
+      providers: [CurrentAnswersService, HealthService],
     })
     .compileComponents();
   }));

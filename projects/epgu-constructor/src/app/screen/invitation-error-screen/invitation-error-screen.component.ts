@@ -19,6 +19,6 @@ export class InvitationErrorScreenComponent extends ScreenBase {
   }
 
   nextStep(payload?: NavigationPayload): void {
-    this.navigationService.nextStep.next({ payload });
+    this.navigationService.next({ payload });
   }
 }

@@ -12,6 +12,7 @@ import {
   CustomListStatusElements,
   CustomScreenComponentTypes
 } from '../components-list.types';
+import { ListItem } from 'epgu-lib';
 
 @Injectable()
 export class ComponentListToolsService {
@@ -42,10 +43,10 @@ export class ComponentListToolsService {
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id
     );
-    const patchToNullAndDisable = (control: AbstractControl): void => {
+    const patchValueAndDisable = (control: AbstractControl, defaultValue?: string | boolean): void => {
       const valueControl: AbstractControl = control.get('value');
       this.prevValues[dependentComponent.id] = valueControl.value;
-      valueControl.patchValue('');
+      valueControl.patchValue(defaultValue || '');
       valueControl.markAsUntouched();
       control.disable({ onlySelf: true });
     };
@@ -76,7 +77,7 @@ export class ComponentListToolsService {
 
     if (reference.relation === CustomComponentRefRelation.disabled) {
       if (this.isValueEquals(reference.val, componentVal)) {
-        patchToNullAndDisable(dependentControl);
+        patchValueAndDisable(dependentControl, reference.defaultValue);
       } else {
         patchToPrevValueAndEnable(dependentControl);
       }
@@ -197,7 +198,7 @@ export class ComponentListToolsService {
     }
   }
 
-  adaptiveDropDown(items: CustomComponentDropDownItemList): CustomListDropDowns {
+  adaptiveDropDown(items: CustomComponentDropDownItemList): Partial<ListItem>[] {
     return items.map((item: CustomComponentDropDownItem, index: number) => {
       const itemText = item.label || item.title;
       const itemCode = item.code || item?.value || `${itemText}-${index}`;

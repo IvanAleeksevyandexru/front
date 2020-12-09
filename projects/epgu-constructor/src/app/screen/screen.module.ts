@@ -17,7 +17,6 @@ import { InvitationErrorScreenComponent } from './invitation-error-screen/invita
 import { ScreenResolverComponent } from './screen-resolver/screen-resolver.component';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenService } from './screen.service';
-import { CycledFieldsService } from './services/cycled-fields/cycled-fields.service';
 import { CoreModule } from '../core/core.module';
 import { ModalModule } from '../modal/modal.module';
 
@@ -43,7 +42,6 @@ import { ModalModule } from '../modal/modal.module';
   providers: [
     ScreenService,
     CurrentAnswersService,
-    CycledFieldsService
   ],
   exports: [
     ScreenResolverComponent

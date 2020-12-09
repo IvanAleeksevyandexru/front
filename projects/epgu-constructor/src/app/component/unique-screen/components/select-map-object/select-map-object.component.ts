@@ -10,7 +10,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { YaMapService, LookupComponent } from 'epgu-lib';
+import { YaMapService, LookupComponent, ListItem } from 'epgu-lib';
 import { merge, Observable, of } from 'rxjs';
 import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
@@ -34,7 +34,7 @@ import {
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
-import { SelectMapObjectService } from './select-map-object.service';
+import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
 import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
@@ -104,7 +104,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private initComponentAttrs(): void {
-    this.selectMapObjectService.componentAttrs = this.data.attrs;
+    this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
     this.needToAutoFocus = this.data.attrs.autoMapFocus;
     this.componentValue = JSON.parse(this.data?.value || '{}');
     this.screenStore = this.screenService.getStore();
@@ -266,7 +266,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     };
   }
 
-  private getDictionaryType() {
+  private getDictionaryType(): string {
     return this.selectMapObjectService.componentAttrs.dictionaryType;
   }
 
@@ -280,7 +280,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     lookup.clearInput();
   }
 
-  public providerSearch(): Function {
+  public providerSearch(): (val: string) => Observable<Partial<ListItem>[]> {
     return (searchString) => {
       this.selectMapObjectService.searchMapObject(searchString);
       return of(

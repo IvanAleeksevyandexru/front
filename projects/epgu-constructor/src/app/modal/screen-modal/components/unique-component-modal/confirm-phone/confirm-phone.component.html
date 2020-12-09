@@ -3,7 +3,7 @@
 <div class="confirm-phone">
   <span class="confirm-phone__helper-text">Код придет в СМС на номер</span>
 
-  <ng-container  *ngIf="(screenService.applicantAnswers$ | async)['pd1']?.value as phoneNumber">
+  <ng-container  *ngIf="(screenService.applicantAnswers$ | async)?.pd1?.value as phoneNumber">
     <span class="confirm-phone__number">{{phoneNumber}}</span>
     <button class="confirm-phone__edit-number" (click)="editNumber()">Редактировать</button>
   </ng-container>
@@ -30,7 +30,7 @@
                        [maxlength]="1"
                        type="text"
                        pattern="\d*"
-                       [control]="control.get('codeValue')">
+                       [control]="$any(control.get('codeValue'))">
       </epgu-constructor-constructor-plain-input>
     </div>
 

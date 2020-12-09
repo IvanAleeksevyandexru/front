@@ -1,27 +1,21 @@
 import { NavigationPayload } from '../form-player/form-player.types';
 import { Answer } from '../shared/types/answer';
-import { ComponentDto, DisplayDto, ScenarioDto } from '../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentDto,
+  DisplayDto,
+  ScenarioDto
+} from '../form-player/services/form-player-api/form-player-api.types';
 
 /**
  * Интерфейс для базового компонента
  */
-export interface ComponentBase {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  attrs: {[key: string]: any};
-  id: string;
-  label: string;
-  type: string;
-  value: string;
-  required?: boolean;
-  visited?: boolean;
-  hint?: string;
-}
+export interface ComponentBase extends ComponentDto {}
 
 export interface CachedAnswers {
   [key: string]: Answer;
 }
 
-export interface ScreenStoreComponentDtoI extends ComponentDto {
+export interface ScreenStoreComponentDtoI extends ComponentBase {
   presetValue?: string;
 }
 export interface ScreenStoreDisplayDtoI extends DisplayDto {

@@ -1,8 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
-import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { ScreenBase } from '../screenBase';
 
@@ -16,22 +14,20 @@ export class UniqueScreenComponent extends ScreenBase implements OnInit {
   // <-- constant
   uniqueComponentName = UniqueScreenComponentTypes;
 
-  constructor(public injector: Injector, private cycledFieldsService: CycledFieldsService) {
+  constructor(public injector: Injector) {
     super(injector);
   }
 
-  ngOnInit(): void {
-    this.screenService.currentCycledFields$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.cycledFieldsService.initCycledFields(this.screenService.currentCycledFields);
-    });
-  }
+  ngOnInit(): void {}
 
   /**
    * Переход на следущий экран с передачей данных
    * @param value - данные для передачи
    */
   nextDataForStep(value?: string): void {
-    this.nextStep(this.cycledFieldsService.dataTransform(value));
+    const payload = {};
+    payload[this.screenService.component.id] = { visited: true, value };
+    this.nextStep(payload);
   }
 
   /**
@@ -39,6 +35,6 @@ export class UniqueScreenComponent extends ScreenBase implements OnInit {
    * @param payload - данные
    */
   nextStep(payload?: NavigationPayload): void {
-    this.navigationService.nextStep.next({ payload });
+    this.navigationService.next({ payload });
   }
 }

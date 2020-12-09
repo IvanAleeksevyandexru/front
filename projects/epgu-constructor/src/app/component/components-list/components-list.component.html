@@ -53,29 +53,15 @@
         *ngSwitchCase="componentType.DropDown"
         [data]="componentData"
       >
-        <lib-dropdown
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="(dropDowns$ | async)[componentData.value?.id]"
-          [disabled]="(dropDowns$ | async)[componentData.value?.id]?.length === 1"
-          [validationShowOn]="validationShowOn"
-          [formControl]="componentData.get('value')"
-          [clearable]="true"
-          class="cs__select cs-select"
-        >
-        </lib-dropdown>
+        <ng-container
+          *ngTemplateOutlet="dropDowns; context: { $implicit: componentData }"
+        ></ng-container>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.MvdGiac" [data]="componentData">
-        <lib-dropdown
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="(dropDowns$ | async)[componentData.value?.id]"
-          [disabled]="(dropDowns$ | async)[componentData.value?.id].length === 1"
-          [validationShowOn]="validationShowOn"
-          [formControl]="componentData.get('value')"
-          [clearable]="true"
-          class="cs__select cs-select"
-        >
-        </lib-dropdown>
+        <ng-container
+          *ngTemplateOutlet="dropDowns; context: { $implicit: componentData }"
+        ></ng-container>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item
@@ -89,7 +75,7 @@
           [disabled]="
             (dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list?.length === 1
           "
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [clearable]="true"
           class="cs__select cs-select"
         >
@@ -100,10 +86,10 @@
         <lib-lookup
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [queryMinSymbolsCount]="0"
           [searchCaseSensitive]="false"
-          [fixedItems]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
+          [fixedItems]="(dictionaries$ | async)[getDictKeyByComp(componentData?.value)]?.list"
           [virtualScroll]="true"
           [clearable]="true"
         >
@@ -125,7 +111,7 @@
             *ngFor="let item of componentData.value?.attrs?.supportedValues"
             [name]="componentData.value.id"
             [labelText]="item.label"
-            [formControl]="componentData.get('value')"
+            [formControl]="$any(componentData.get('value'))"
             [value]="item.value"
           >
           </lib-radio>
@@ -144,7 +130,7 @@
         >
           <lib-checkbox
             [checkboxId]="componentData.value?.id"
-            [formControl]="componentData.get('value')"
+            [formControl]="$any(componentData.get('value'))"
             [disabled]="componentData.value?.disabled"
             [labelText]="componentData.value?.label"
             [required]="componentData.value?.required"
@@ -167,7 +153,7 @@
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [name]="componentData.value?.id"
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [readOnly]="componentData.value?.attrs?.readonly"
           [minDate]="
             dateRangeService.getMinDate(componentData.value) ||
@@ -206,7 +192,7 @@
         <lib-lookup
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
-          [formControl]="componentData.get('value')"
+          [formControl]="$any(componentData.get('value'))"
           [itemsProvider]="formService.addressHelperServiceProvider()"
           [clearable]="true"
         >
@@ -285,7 +271,7 @@
       <epgu-constructor-doc-input [data]="componentData" *ngSwitchCase="componentType.DocInput">
       </epgu-constructor-doc-input>
       <epgu-constructor-field-list
-        [data]="componentData.get('value')"
+        [data]="$any(componentData.get('value'))"
         *ngSwitchCase="componentType.FieldList"
       >
       </epgu-constructor-field-list>
@@ -342,4 +328,19 @@
     [invalid]="data.get('value').invalid && data.get('value').touched"
     [isTrim]="false"
   ></epgu-constructor-masked-input>
+</ng-template>
+
+<ng-template #dropDowns let-data>
+  <div *ngIf="dropDowns$ | async as dropDowns">
+    <lib-dropdown
+      [invalid]="data.get('value').invalid && data.get('value').touched"
+      [items]="$any(dropDowns[data?.value?.id])"
+      [disabled]="$any(dropDowns[data.value?.id])?.length === 1"
+      [validationShowOn]="validationShowOn"
+      [formControl]="$any(data.get('value'))"
+      [clearable]="true"
+      class="cs__select cs-select"
+    >
+    </lib-dropdown>
+  </div>
 </ng-template>

@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-
 import { TextTransform } from '../../types/textTransform';
 
 @Component({
@@ -22,5 +21,5 @@ export class ConstructorPlainInputComponent {
   @Input() maxlength?: number;
   @Input() type?: string;
   @Input() disabled?: boolean;
-  @Input() pattern?: string | RegExp;
+  @Input() pattern?: string;
 }

@@ -11,7 +11,7 @@ import { GibddTimeSlotsService } from './gibdd-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { ModalService } from '../../../../modal/modal.service';
 import { TimeSlotsConstants } from './time-slots.constants';
-import { SlotInterface } from './time-slots.types';
+import { SlotInterface, SmevBookResponseInterface } from './time-slots.types';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
@@ -75,6 +75,7 @@ export class TimeSlotsComponent implements OnInit {
   private timeSlotServices: { [key: string]: TimeSlotsServiceInterface } = {};
   private currentService: TimeSlotsServiceInterface;
   private errorModalResultSub = new Subscription();
+  private cachedAnswer: SmevBookResponseInterface;
 
   constructor(
     private changeDetection: ChangeDetectorRef,
@@ -183,8 +184,8 @@ export class TimeSlotsComponent implements OnInit {
     this.currentAnswersService.state = slot;
   }
 
-  public isSlotSelected({ slotTime }: SlotInterface) {
-    return this.currentSlot && this.currentSlot.slotTime === slotTime;
+  public isSlotSelected({ slotId }: SlotInterface) {
+    return this.currentSlot && this.currentSlot.slotId === slotId;
   }
 
   public showTimeSlots(date: Date) {
@@ -215,9 +216,22 @@ export class TimeSlotsComponent implements OnInit {
     this.checkExistenceSlots();
   }
 
+  /**
+   * Отправка формы.
+   *  Если есть забуканный слот
+   *
+   *      и значение не менялось то передаем ответ из cachedAnswers.
+   *      и значение менялось, то модалка для подтверждения
+   *
+   *  Иначе, букаем слот
+   */
   public clickSubmit() {
     if (this.bookedSlot) {
-      this.showModal(this.confirmModalParameters);
+      if (this.isCachedValueChanged()) {
+        this.showModal(this.confirmModalParameters);
+      } else {
+        this.nextStepEvent.emit(JSON.stringify(this.cachedAnswer));
+      }
     } else {
       this.bookTimeSlot();
     }
@@ -250,7 +264,7 @@ export class TimeSlotsComponent implements OnInit {
       {
         label: 'Попробовать ещё раз',
         closeModal: true,
-        value: true,
+        value: 'ok',
       },
     ];
     this.errorModalResultSub.unsubscribe();
@@ -282,12 +296,19 @@ export class TimeSlotsComponent implements OnInit {
     if (this.screenService.component) {
       this.loadTimeSlots();
     }
+
+    const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
+    if (cachedAnswer) {
+      this.cachedAnswer = JSON.parse(cachedAnswer);
+    }
   }
 
   private loadTimeSlots(): void {
     this.inProgress = true;
     this.label = this.screenService.component?.label;
     const value = JSON.parse(this.screenService.component?.value);
+    const { timeSlot } = value;
+
     this.initCalendar();
     this.currentService = this.timeSlotServices[value.timeSlotType];
     this.currentService.init(value).subscribe(
@@ -318,6 +339,16 @@ export class TimeSlotsComponent implements OnInit {
           this.renderSingleMonthGrid(this.weeks);
 
           this.bookedSlot = this.currentService.getBookedSlot();
+          if (!this.bookedSlot && timeSlot) {
+            this.bookedSlot = {
+              slotId: timeSlot.slotId,
+              slotTime: new Date(timeSlot.visitTimeISO),
+              timezone: timeSlot.visitTimeISO.substr(-6),
+              areaId: timeSlot.areaId,
+            };
+            this.currentService.setBookedSlot(this.bookedSlot);
+            this.currentService.bookId = this.cachedAnswer.bookId;
+          }
           if (this.bookedSlot) {
             this.selectDate(this.bookedSlot.slotTime);
             this.chooseTimeSlot(this.bookedSlot);
@@ -402,5 +433,10 @@ export class TimeSlotsComponent implements OnInit {
       return isInvalid;
     });
     return isInvalid;
+  }
+
+  private isCachedValueChanged(): boolean {
+    const slotIdFromAnswer = this.cachedAnswer?.timeSlot.slotId;
+    return slotIdFromAnswer !== this.currentSlot.slotId;
   }
 }

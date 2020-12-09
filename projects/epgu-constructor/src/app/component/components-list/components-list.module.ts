@@ -4,7 +4,6 @@ import { ValidationService } from './services/validation.service';
 import { AddressHelperService } from './services/address-helper.service';
 import { ComponentListToolsService } from './services/component-list-tools.service';
 import { ComponentsListComponent } from './components-list.component';
-import { ToolsService } from '../shared/services/tools/tools.service';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 import { CoreModule } from '../../core/core.module';
 import { ComponentItemComponent } from './component-item/component-item.component';
@@ -41,7 +40,6 @@ const COMPONENTS = [
     ValidationService,
     AddressHelperService,
     ComponentListToolsService,
-    ToolsService,
     DictionaryApiService
   ]
 })

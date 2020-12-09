@@ -92,7 +92,7 @@ export class FileUploadItemComponent implements OnDestroy {
     return this.loadData;
   }
   @Input() prefixForMnemonic: string;
-  @Input() refData: FileUploadItem[] = null;
+  @Input() refData: string = null;
 
   @Output() newValueSet: EventEmitter<FileResponseToBackendUploadsItem> = new EventEmitter<
     FileResponseToBackendUploadsItem
@@ -108,7 +108,7 @@ export class FileUploadItemComponent implements OnDestroy {
   })
   cameraInput: ElementRef;
   get isButtonsDisabled() {
-    return this.listIsUploadingNow || this.filesInUploading || this.filesInCompression;
+    return Boolean(this.listIsUploadingNow || this.filesInUploading || this.filesInCompression);
   }
 
   private subs: Subscription[] = [];
@@ -597,6 +597,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * Запрос на скачивание файла и отдачу пользователю
    * @param file - объект файла
    */
+  // TODO избавиться от any в шаблоне
   downloadFile(file: TerraUploadedFile) {
     this.handleError(ErrorActions.clear);
     const subs: Subscription = this.terabyteService

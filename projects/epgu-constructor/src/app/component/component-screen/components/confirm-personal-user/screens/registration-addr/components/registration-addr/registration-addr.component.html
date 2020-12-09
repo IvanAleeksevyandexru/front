@@ -34,8 +34,8 @@
         [id]="field.fieldName"
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
         [formControlName]="field.fieldName"
-        clearable="true"
-      >
+        [disabled]="field.disabled"
+        [clearable]="true">
       </lib-date-picker>
 
       <epgu-constructor-constructor-plain-input
@@ -43,7 +43,8 @@
         [id]="field.fieldName"
         [validationShowOn]="validationShowOn"
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
-        [control]="redAddrForm.get(field.fieldName)"
+        [control]="$any(redAddrForm.get(field.fieldName))"
+        [disabled]="field.disabled"
         *ngSwitchDefault
       ></epgu-constructor-constructor-plain-input>
     </ng-container>

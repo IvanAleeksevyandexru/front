@@ -92,7 +92,7 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
       });
   }
 
-  public onTouched: () => void = () => {};
+  public onTouched: Function = () => {};
 
   writeValue(val: PassportFormFields): void {
     const isValidValue = (value, fieldName) => {
@@ -106,13 +106,11 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: () => void): void {
     this.passportForm.valueChanges.subscribe(fn);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: Function): void {
     this.onTouched = fn;
   }
 

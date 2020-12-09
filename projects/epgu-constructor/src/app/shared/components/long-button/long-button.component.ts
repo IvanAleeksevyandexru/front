@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ComponentDtoAction } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentActionDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-long-button',
@@ -7,6 +7,6 @@ import { ComponentDtoAction } from '../../../form-player/services/form-player-ap
   styleUrls: ['./long-button.component.scss'],
 })
 export class LongButtonComponent {
-  @Input() data: ComponentDtoAction;
+  @Input() data: Partial<ComponentActionDto>;
   @Input() disabled: boolean;
 }

@@ -13,7 +13,6 @@ import { UtilsService } from '../../shared/services/utils/utils.service';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenStore, ScreenTypes } from '../screen.types';
-import { CycledFieldsService } from '../services/cycled-fields/cycled-fields.service';
 import { InfoScreenComponent } from './info-screen.component';
 
 
@@ -57,7 +56,6 @@ describe('InfoScreenComponent', () => {
         FormPlayerApiService,
         ConfigService,
         ServiceDataService,
-        CycledFieldsService,
         UtilsService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ]

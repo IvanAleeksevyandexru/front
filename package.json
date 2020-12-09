@@ -1,6 +1,6 @@
 {
   "name": "epgu-form-frontend",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "scripts": {
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "ng": "ng",
@@ -10,6 +10,7 @@
     "start:config": "json-server --watch form-player-config.json --routes form-player-config-routes.json",
     "build": "ng build --configuration production",
     "lib:build": "ng build epgu-constructor --prod",
+    "lib:build:ivy": "ng build epgu-constructor",
     "lib:watch": "ng build epgu-constructor --watch",
     "lib:test": "ng test epgu-constructor",
     "lib:lint": "ng lint epgu-constructor",
@@ -20,7 +21,7 @@
     "test": "jest --ci",
     "test:dev": "jest --runInBand --watch -o",
     "test:coverage": "jest --ci --coverage --no-cache --reporters=default --reporters=jest-junit --coverageDirectory=coverage/jest",
-    "ci": "yarn lint && yarn stylelint && yarn test && yarn lib:build && yarn build",
+    "ci": "yarn lint && yarn stylelint && yarn test && yarn lib:build:ivy && yarn lib:build && yarn build",
     "release": "standard-version",
     "generate-lib-version-ts": "node scripts/version.js",
     "e2e": "ng e2e"
@@ -60,6 +61,8 @@
     "@types/uuid": "8.3.0",
     "angular-resize-event": "^2.0.0",
     "angular2-text-mask": "9.0.0",
+    "classlist.js": "^1.1.20150312",
+    "core-js": "^3.8.1",
     "epgu-lib": "0.0.778",
     "file-saver": "^2.0.5",
     "ics": "^2.24.0",
@@ -72,6 +75,7 @@
     "rxjs": "6.5.3",
     "tslib": "2.0.0",
     "uuid": "8.3.0",
+    "web-animations-js": "^2.3.2",
     "zone.js": "0.10.2"
   },
   "devDependencies": {
@@ -101,7 +105,7 @@
     "jest-preset-angular": "^8.3.1",
     "json-server": "^0.16.2",
     "lint-staged": "10.2.11",
-    "ng-bullet": "1.0.3",
+    "ng-bullet": "^1.0.3",
     "ng-mocks": "10.1.2",
     "ng-packagr": "10.0.0",
     "prettier": "2.0.5",

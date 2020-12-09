@@ -18,6 +18,7 @@ import { map, tap } from 'rxjs/operators';
 import { DictionaryApiService } from '../../shared/services/dictionary-api/dictionary-api.service';
 import { ComponentListToolsService } from './component-list-tools.service';
 import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
+import { ListItem } from 'epgu-lib';
 
 @Injectable()
 export class ComponentListRepositoryService {
@@ -90,7 +91,7 @@ export class ComponentListRepositoryService {
     );
   }
 
-  getDropDowns$(component: CustomComponent): Observable<CustomListGenericData<CustomListDropDowns>> {
+  getDropDowns$(component: CustomComponent): Observable<CustomListGenericData< Partial<ListItem>[]> > {
     return of({
       component,
       data: this.toolsService.adaptiveDropDown(component.attrs.dictionaryList),
@@ -100,7 +101,7 @@ export class ComponentListRepositoryService {
   initDataAfterLoading(references: Array<CustomListReferenceData>): void {
     references.forEach((reference: CustomListReferenceData) => {
       if (isDropDown(reference.component.type)) {
-        this.initDropDown(reference as CustomListGenericData<CustomListDropDowns>);
+        this.initDropDown(reference as CustomListGenericData<Partial<ListItem>[]>);
       }
 
       if (likeDictionary(reference.component.type)) {
@@ -110,7 +111,7 @@ export class ComponentListRepositoryService {
   }
 
   initDictionary(reference: CustomListGenericData<DictionaryResponse>): void {
-    const dictionaries: CustomListDictionaries = this.dictionaries;
+    const dictionaries = this.dictionaries;
     const { dictionaryType } = reference.component.attrs;
     const id = utils.getDictKeyByComp(reference.component);
 
@@ -128,8 +129,8 @@ export class ComponentListRepositoryService {
     this.dictionaries$.next(dictionaries);
   }
 
-  initDropDown(reference: CustomListGenericData<CustomListDropDowns>): void {
-    const dropDowns: CustomListDropDowns = this.dropDowns$.getValue();
+  initDropDown(reference: CustomListGenericData<Partial<ListItem>[]>): void {
+    const dropDowns = this.dropDowns$.getValue();
     dropDowns[reference.component.id] = reference.data;
 
     this.dropDowns$.next(dropDowns);

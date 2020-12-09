@@ -138,8 +138,11 @@ export class ScreenService extends ScreenContent {
     return component;
   }
 
-  public getCompValueFromCachedAnswers(componentId: string) {
+  public getCompValueFromCachedAnswers(componentId?: string) {
     const cachedAnswers = this.getStore().cachedAnswers;
+    if (!componentId) {
+      componentId = this.component?.id;
+    }
     return cachedAnswers && cachedAnswers[componentId]?.value;
   }
 }
