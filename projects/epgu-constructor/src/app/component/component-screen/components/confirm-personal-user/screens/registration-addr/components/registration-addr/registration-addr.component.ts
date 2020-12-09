@@ -51,7 +51,7 @@ export class RegistrationAddrComponent implements OnInit {
     this.data?.attrs?.fields.forEach((field) => {
       const formControlValue = this.getInitFormValue(initData, field.fieldName);
       controls[field.fieldName] = this.fb.control(
-        formControlValue,
+        { value: formControlValue, disabled: field.disabled },
         this.getValidatorsForField(field),
       );
     });

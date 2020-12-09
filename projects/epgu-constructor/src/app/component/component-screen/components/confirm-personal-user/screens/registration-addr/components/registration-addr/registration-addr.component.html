@@ -7,7 +7,7 @@
     ></epgu-constructor-label>
 
     <ng-container [ngSwitch]="field.fieldName">
-      <lib-dadata-widget
+      <epgu-constructor-constructor-dadata-widget
         *ngSwitchCase="'regAddr'"
         [simpleMode]="true"
         [hideLevels]="data?.attrs?.hideLevels || []"
@@ -15,12 +15,10 @@
         [externalApiUrl]="config.externalApiUrl + '/'"
         [id]="field.fieldName"
         [validationShowOn]="field.validationShowOn || validationShowOn"
-        [invalid]="redAddrForm.controls[field.fieldName].invalid"
-        [formControlName]="field.fieldName"
-        [disabled]="field.disabled"
-        [clearable]="true"
-      >
-      </lib-dadata-widget>
+        [invalid]="redAddrForm.get(field.fieldName).invalid"
+        [control]="redAddrForm.get(field.fieldName)"
+        [clearable]="true">
+      </epgu-constructor-constructor-dadata-widget>
 
       <lib-date-picker
         *ngSwitchCase="

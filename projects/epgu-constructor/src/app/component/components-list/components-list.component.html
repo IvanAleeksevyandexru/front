@@ -188,16 +188,15 @@
         *ngSwitchCase="componentType.AddressInput"
         [data]="componentData"
       >
-        <lib-dadata-widget
+        <epgu-constructor-constructor-dadata-widget
           [simpleMode]="true"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [hideHouseCheckbox]="true"
           [externalApiUrl]="configService.externalApiUrl + '/'"
-          [formControl]="componentData.get('value')"
-          [hideLevels]="componentData.value?.attrs?.hideLevels"
-        >
-        </lib-dadata-widget>
+          [control]="componentData.get('value')"
+          [hideLevels]="componentData.value?.attrs?.hideLevels">
+        </epgu-constructor-constructor-dadata-widget>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item

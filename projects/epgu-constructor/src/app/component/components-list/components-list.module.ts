@@ -13,6 +13,7 @@ import { TimerModule } from '../component-screen/components/timer/timer.module';
 import { ConstructorPlainInputModule } from '../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ConstructorMaskedInputModule } from '../../shared/components/epgu-lib/constructor-masked-input/constructor-masked-input.module';
 import { PassportModule } from '../../shared/components/add-passport/passport.module';
+import { ConstructorDadataWidgetModule } from '../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 
 const COMPONENTS = [
   ComponentsListComponent,
@@ -34,6 +35,7 @@ const COMPONENTS = [
     ConstructorPlainInputModule,
     ConstructorMaskedInputModule,
     PassportModule,
+    ConstructorDadataWidgetModule,
   ],
   providers: [
     ValidationService,

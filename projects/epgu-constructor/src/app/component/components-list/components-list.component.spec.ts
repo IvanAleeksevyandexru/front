@@ -10,6 +10,7 @@ import { DictionaryApiServiceStub } from '../shared/services/dictionary-api/dict
 import { ConfigServiceStub } from '../../core/config/config.service.stub';
 import { ComponentListFormService } from './services/component-list-form.service';
 import { ConstructorPlainInputModule } from '../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { ConstructorDadataWidgetModule } from '../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 
 
 xdescribe('ComponentsListComponent', () => {
@@ -30,6 +31,7 @@ xdescribe('ComponentsListComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         ConstructorPlainInputModule,
+        ConstructorDadataWidgetModule
       ]
     });
 
