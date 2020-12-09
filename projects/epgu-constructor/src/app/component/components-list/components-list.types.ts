@@ -7,7 +7,9 @@ import {
 import { ComponentBase } from '../../screen/screen.types';
 import { Ref } from '../../shared/services/date-range/date-range.models';
 import { TextTransform } from '../../shared/types/textTransform';
-import { DictionaryItem, DictionaryResponse, DictionaryOptions } from '../shared/services/dictionary-api/dictionary-api.types';
+import {
+  DictionaryItem, DictionaryOptions, DictionaryResponse
+} from '../shared/services/dictionary-api/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -35,9 +37,9 @@ export enum CustomScreenComponentTypes {
   Timer = 'Timer',
 }
 
-export type CustomListDropDowns = Array<Partial<ListItem>>;
-export type CustomListDictionaries = Array<CustomListDictionary>;
-export type CustomListReferenceData = CustomListGenericData<CustomListDropDowns | DictionaryResponse>;
+export type CustomListDropDowns = Array<{ [key: string]: Partial<ListItem>[] }>;
+export type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;
+export type CustomListReferenceData = CustomListGenericData< Partial<ListItem>[] | DictionaryResponse >;
 // export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
 export interface CustomListDictionary {
@@ -107,6 +109,7 @@ export interface CustomComponentAttr {
   relationField?: ComponentRelationFieldDto;
   attrs?: CustomComponentAttr; // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
   dictionaryOptions?: DictionaryOptions;
+  grid?: string;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Service } from '../../form-player.types';
 
 @Injectable()
-export class ServiceDataService implements Service {
+export class ServiceDataServiceStub implements Service {
   private _serviceId: string;
   private _orderId: string;
   private _targetId: string;
@@ -41,27 +41,5 @@ export class ServiceDataService implements Service {
     this._canStartNew = canStartNew;
   }
 
-  init(service: Service) {
-    this.checkProps(service);
-    this._serviceId = service.serviceId;
-    this._targetId = service.targetId;
-    this.orderId = service.orderId;
-    this.invited = service.invited;
-    this.canStartNew = service.canStartNew ?? true;
-  }
-
-  private checkProps(service: Service): void {
-    console.group('----- Init props ---------');
-    console.log('service', service);
-    console.groupEnd();
-
-    if (!service) {
-      throw Error('Need to set Service for epgu form player');
-    }
-
-    const { invited, orderId } = service;
-    if (invited && !orderId) {
-      throw Error('Should set orderId when invited');
-    }
-  }
+  init(): void {}
 }

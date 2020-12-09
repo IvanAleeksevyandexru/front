@@ -7,6 +7,6 @@ import { ComponentActionDto } from '../../../form-player/services/form-player-ap
   styleUrls: ['./long-button.component.scss'],
 })
 export class LongButtonComponent {
-  @Input() data: ComponentActionDto;
+  @Input() data: Partial<ComponentActionDto>;
   @Input() disabled: boolean;
 }

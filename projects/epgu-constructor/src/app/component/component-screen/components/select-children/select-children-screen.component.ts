@@ -19,6 +19,7 @@ interface ChildI {
   text?: string;
   controlId?: string;
   hidden?: boolean;
+  isNewRef?: string;
   [key: string]: string | number | boolean;
 }
 

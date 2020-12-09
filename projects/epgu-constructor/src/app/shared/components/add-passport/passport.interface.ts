@@ -9,7 +9,7 @@ export interface PassportAttr {
 export type PassportFieldName = 'rfPasportSeries' | 'rfPasportNumber';
 
 export interface PassportFields {
-  mask: Array<string | RegExp> | Array<string>;
+  mask: Array<string>;
   fieldName: PassportFieldName;
   label: string;
   type: 'input';

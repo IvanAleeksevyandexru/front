@@ -47,7 +47,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   }
 
   nextStep(payload?: NavigationPayload): void {
-    this.navigationService.nextStep.next({ payload });
+    this.navigationService.next({ payload });
   }
 
   answerChoose(action: ComponentActionDto) {
@@ -66,6 +66,13 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       return;
     }
     this.nextStep(this.getPayload(action));
+  }
+
+  onSubmitClick(submitPayload: { value: string }): void {
+    const componentId = this.screenService.component.id;
+    const payload = {};
+    payload[componentId] = { ...submitPayload, visited: true };
+    this.nextStep(payload);
   }
 
   getPayload(action: ComponentActionDto) {

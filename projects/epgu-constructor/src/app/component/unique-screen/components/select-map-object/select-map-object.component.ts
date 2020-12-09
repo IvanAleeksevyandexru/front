@@ -10,7 +10,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { YaMapService, LookupComponent } from 'epgu-lib';
+import { YaMapService, LookupComponent, ListItem } from 'epgu-lib';
 import { merge, Observable, of } from 'rxjs';
 import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
@@ -280,7 +280,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     lookup.clearInput();
   }
 
-  public providerSearch(): Function {
+  public providerSearch(): (val: string) => Observable<Partial<ListItem>[]> {
     return (searchString) => {
       this.selectMapObjectService.searchMapObject(searchString);
       return of(

@@ -35,6 +35,6 @@ export class UniqueScreenComponent extends ScreenBase implements OnInit {
    * @param payload - данные
    */
   nextStep(payload?: NavigationPayload): void {
-    this.navigationService.nextStep.next({ payload });
+    this.navigationService.next({ payload });
   }
 }

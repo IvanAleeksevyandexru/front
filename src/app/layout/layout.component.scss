@@ -3,6 +3,7 @@
 :host {
   @include flex-container();
   height: 100vh;
+  max-height: -webkit-fill-available;
 }
 
 .main {

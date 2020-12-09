@@ -8,12 +8,12 @@
       <ng-container [ngSwitch]="screenService.componentType$ | async">
         <epgu-constructor-confirm-personal-user-address
           *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
-          [data]="screenService.component"
+          [data]="$any(screenService.component)"
         ></epgu-constructor-confirm-personal-user-address>
 
         <epgu-constructor-confirm-personal-user-data
           *ngSwitchCase="isUserData()"
-          [data]="screenService.component"
+          [data]="$any(screenService.component)"
         >
         </epgu-constructor-confirm-personal-user-data>
 
@@ -26,7 +26,7 @@
 
         <epgu-constructor-registration-addr
           *ngSwitchCase="screenComponentName.registrationAddr"
-          [data]="screenService.component"
+          [data]="$any(screenService.component)"
           [error]="screenService.componentError"
         >
         </epgu-constructor-registration-addr>
@@ -63,7 +63,7 @@
         </epgu-constructor-field-list>
         <epgu-constructor-timer
           *ngSwitchCase="screenComponentName.timer"
-          [data]="screenService.component"
+          [data]="$any(screenService.component)"
           (nextStepEvent)="nextStep($event)"
         >
         </epgu-constructor-timer>

@@ -1,5 +1,5 @@
-import { CustomComponentAttr, CustomComponentRef } from '../../../component/components-list/components-list.types';
 import { DurationInputArg2 } from 'moment';
+import { CustomComponentAttr, CustomComponentRef } from '../../../component/components-list/components-list.types';
 
 export interface Attrs extends CustomComponentAttr {
   limit?: string;
@@ -16,4 +16,4 @@ export interface Ref extends CustomComponentRef{
 
 export type DateRange = Date | null;
 export type Range = { min: DateRange, max: DateRange };
-export type Operation = '<' | '<=' | '>' | '>=';
+export type Operation = '<' | '<=' | '>' | '>=' | '<today' | '<=today' | '>today' | '>=today';

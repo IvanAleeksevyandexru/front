@@ -101,6 +101,7 @@ export interface ComponentAttrsDto {
   nsi?: string;
   dictItemCode?: string;
   uploadedFile?: ComponentUploadedFileDto;
+  validateMessage?: string;  //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
   dictionaryOptions?: DictionaryOptions;
 }
 
@@ -237,6 +238,7 @@ export interface ComponentActionDto {
   color?: colorDto;
   link?: string;
   underConstruction?: boolean;
+  hint?: string;
 }
 
 export interface DisplaySubjHead {

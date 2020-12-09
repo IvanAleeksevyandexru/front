@@ -53,10 +53,6 @@ describe('InfoComponentModalComponent', () => {
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should set container element min height', () => {
     const containerEl = fixture.nativeElement.querySelector(':scope > *');
 

@@ -16,7 +16,7 @@
         [hideHouseCheckbox]="true"
         [name]="field.fieldName"
         [externalApiUrl]="config.externalApiUrl + '/'"
-        [initValue]="valueParsed[field.fieldName]"
+        [initValue]="$any(valueParsed[field.fieldName])"
         [(ngModel)]="valueParsed[field.fieldName]"
       >
       </lib-dadata-widget>

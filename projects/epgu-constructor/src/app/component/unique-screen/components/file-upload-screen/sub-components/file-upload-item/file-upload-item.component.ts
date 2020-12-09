@@ -92,7 +92,7 @@ export class FileUploadItemComponent implements OnDestroy {
     return this.loadData;
   }
   @Input() prefixForMnemonic: string;
-  @Input() refData: FileUploadItem[] = null;
+  @Input() refData: string = null;
 
   @Output() newValueSet: EventEmitter<FileResponseToBackendUploadsItem> = new EventEmitter<
     FileResponseToBackendUploadsItem
@@ -108,7 +108,7 @@ export class FileUploadItemComponent implements OnDestroy {
   })
   cameraInput: ElementRef;
   get isButtonsDisabled() {
-    return this.listIsUploadingNow || this.filesInUploading || this.filesInCompression;
+    return Boolean(this.listIsUploadingNow || this.filesInUploading || this.filesInCompression);
   }
 
   private subs: Subscription[] = [];
@@ -313,6 +313,7 @@ export class FileUploadItemComponent implements OnDestroy {
       (terabyteFile) => terabyteFile.fileName === file.name,
     )[0];
     this.listIsUploadingNow = false;
+    fileToUpload.mimeType = file.type;
 
     this.subs.push(
       this.terabyteService
@@ -459,9 +460,13 @@ export class FileUploadItemComponent implements OnDestroy {
     )} МБ`;
 
     // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxAmount] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
+    errorHandler[
+      ErrorActions.addMaxAmount
+    ] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
     // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(this.data.maxSize)} МБ`;
+    errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(
+      this.data.maxSize,
+    )} МБ`;
     errorHandler[ErrorActions.addInvalidType] = `Недопустимый тип файла "${file?.name}"`;
     errorHandler[ErrorActions.addInvalidFile] = `Ошибка загрузки файла "${file?.name}"`;
     errorHandler[ErrorActions.addDownloadErr] = `Не удалось скачать файл "${file?.name}"`;
@@ -592,6 +597,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * Запрос на скачивание файла и отдачу пользователю
    * @param file - объект файла
    */
+  // TODO избавиться от any в шаблоне
   downloadFile(file: TerraUploadedFile) {
     this.handleError(ErrorActions.clear);
     const subs: Subscription = this.terabyteService
