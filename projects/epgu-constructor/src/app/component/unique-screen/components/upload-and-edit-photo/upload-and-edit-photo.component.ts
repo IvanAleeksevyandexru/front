@@ -11,7 +11,6 @@ import { fromEvent, of, Subject, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { catchError, switchMap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-
 import { ConfigService } from '../../../../core/config/config.service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
@@ -190,8 +189,8 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     const { width, height, src } = this.imageValidator;
     const isDPIValid = (): boolean => {
       const scaleFactor = printImgPx.height / height;
-      const scaledDPI = recommendedDPI / scaleFactor;
-      return scaledDPI > recommendedDPI;
+      const scaledDPI = Math.ceil(recommendedDPI / scaleFactor);
+      return scaledDPI >= recommendedDPI;
     };
 
     const isTypeValid = this.allowedImgTypes.some(
