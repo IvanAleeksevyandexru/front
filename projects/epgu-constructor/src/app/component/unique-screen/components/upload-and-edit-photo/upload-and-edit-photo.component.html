@@ -2,8 +2,7 @@
 
   <div class="screen-body">
     <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
-    <div class="photo"
-         [ngClass]="{ 'photo--flex-column': croppedImageUrl }">
+    <div class="photo">
       <input #hiddenFileInput
              style="display: none"
              [attr.accept]="getAcceptTypes()"
