@@ -257,17 +257,18 @@ export interface DisplaySubjHead {
  * @property {ScreenTypes}type - тип компонента
  */
 export interface DisplayDto {
-  components: Array<ComponentDto>;
-  firstScreen?: boolean;
+
+  id: string;
+  name: string;
   header: string;
+  submitLabel: string;
+  components: Array<ComponentDto>;
+  type: ScreenTypes;
+  terminal: boolean;
+  firstScreen?: boolean;
   subHeader?: DisplaySubjHead;
   label?: string;
   cssClass?: string;
-  id: string;
-  name: string;
-  submitLabel: string;
-  type: ScreenTypes;
-  terminal: boolean;
   isSocialButtonsHidden?: boolean;
 }
 

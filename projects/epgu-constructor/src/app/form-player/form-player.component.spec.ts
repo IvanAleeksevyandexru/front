@@ -31,6 +31,7 @@ import { ServiceDataServiceStub } from './services/service-data/service-data.ser
 import { Service } from './form-player.types';
 import { BehaviorSubject, of } from 'rxjs';
 import { Config } from '../core/config/config.types';
+import { ScreenTypes } from '../screen/screen.types';
 
 
 describe('FormPlayerComponent', () => {
@@ -39,6 +40,7 @@ describe('FormPlayerComponent', () => {
   let loadService: LoadService;
   let configService: ConfigService;
   let navService: NavigationService;
+  let screenService: ScreenService;
   let serviceDataService: ServiceDataService;
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
@@ -84,6 +86,7 @@ describe('FormPlayerComponent', () => {
     loadService = TestBed.inject(LoadService);
     configService = TestBed.inject(ConfigService);
     navService = TestBed.inject(NavigationService);
+    screenService = TestBed.inject(ScreenService);
   });
 
   describe('ngOnInit()', () => {
@@ -224,6 +227,39 @@ describe('FormPlayerComponent', () => {
       navService.skip(navigationParam);
       component['initNavigation']();
       expect(component['skipStep']).toBeCalledWith(navigationParam);
+    });
+  });
+
+  describe('initSettingOfScreenIdToAttr()', () => {
+    const display = {
+      id: 's1',
+      name: '',
+      header: '',
+      submitLabel: '',
+      type: ScreenTypes.COMPONENT,
+      terminal: false,
+      components: []
+    };
+
+    it('should set screenId to component param', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      screenService.display = display;
+      component['initSettingOfScreenIdToAttr']();
+      expect(component.screenId).toBe(display.id);
+    });
+
+    it('should attr.test-screen-id be screenId', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      screenService.display = display;
+      component['initSettingOfScreenIdToAttr']();
+      fixture.detectChanges();
+      expect(fixture.debugElement.attributes['test-screen-id']).toBe(display.id);
     });
   });
 
