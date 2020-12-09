@@ -38,6 +38,7 @@ describe('FormPlayerComponent', () => {
   let formPlayerConfigApiService: FormPlayerConfigApiService;
   let loadService: LoadService;
   let configService: ConfigService;
+  let navService: NavigationService;
   let serviceDataService: ServiceDataService;
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
@@ -82,6 +83,7 @@ describe('FormPlayerComponent', () => {
     formPlayerConfigApiService = TestBed.inject(FormPlayerConfigApiService);
     loadService = TestBed.inject(LoadService);
     configService = TestBed.inject(ConfigService);
+    navService = TestBed.inject(NavigationService);
   });
 
   describe('ngOnInit()', () => {
@@ -184,6 +186,44 @@ describe('FormPlayerComponent', () => {
       const setterSpy = jest.spyOn(configService, 'config', 'set');
       component['initFormPlayerConfig']();
       expect(setterSpy).toBeCalled();
+    });
+  });
+
+  describe('initNavigation()', () => {
+    it('should call nextStep with param when push nextStep navigation', () => {
+      const navigationParam = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      spyOn<any>(component, 'nextStep').and.callThrough();
+      navService.next(navigationParam);
+      component['initNavigation']();
+      expect(component['nextStep']).toBeCalledWith(navigationParam);
+    });
+
+    it('should call prevStep with param when push prevStep navigation', () => {
+      const navigationParam = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      spyOn<any>(component, 'prevStep').and.callThrough();
+      navService.prev(navigationParam);
+      component['initNavigation']();
+      expect(component['prevStep']).toBeCalledWith(navigationParam);
+    });
+
+    it('should call skipStep with param when push skipStep navigation', () => {
+      const navigationParam = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      spyOn<any>(component, 'skipStep').and.callThrough();
+      navService.skip(navigationParam);
+      component['initNavigation']();
+      expect(component['skipStep']).toBeCalledWith(navigationParam);
     });
   });
 
