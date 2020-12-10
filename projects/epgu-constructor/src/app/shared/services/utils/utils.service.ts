@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Moment } from 'moment';
 import { CustomComponent } from '../../../component/components-list/components-list.types';
+import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 interface TranslitAlphabet {
   [propName: string]: string;
@@ -194,6 +195,11 @@ export class UtilsService {
    * @param str
    */
   public cyrillicToLatin(word: string): string {
+
+    if (!this.isDefined(word)) {
+      return undefined;
+    }
+
     let newStr = '';
 
     for (const char of word) {
@@ -239,6 +245,24 @@ export class UtilsService {
    */
   public isValidHttpUrl(url: string | undefined): boolean {
     return url && typeof url === 'string';
+  }
+
+  public isValidScenarioDto(dto: { scenarioDto: ScenarioDto }): boolean {
+    return dto && dto.scenarioDto && !!dto.scenarioDto.display;
+  }
+
+  public isDefined<T>(value: T | undefined | null): value is T {
+    return (value as T) !== undefined && (value as T) !== null;
+  };
+
+  public filterIncorrectObjectFields(obj: object): object {
+    return Object.entries(obj).reduce(
+      (a, [k,v]) => (!this.isDefined(v) ? a : (a[k] = v, a)), {}
+    );
+  }
+
+  public isValidOrderId(orderId: number | undefined | string): boolean {
+    return !!orderId;
   }
 
   /**
