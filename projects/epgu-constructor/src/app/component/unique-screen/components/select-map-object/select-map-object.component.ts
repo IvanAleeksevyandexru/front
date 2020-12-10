@@ -56,7 +56,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public mappedDictionaryForLookup;
   public mapCenter: Array<number>;
   public mapControls = [];
-  public provider: LookupProvider<ListElement> = { search: this.providerSearch() };
+  public provider: LookupProvider<Partial<ListElement>> = { search: this.providerSearch() };
   public selectedValue;
   public showMap = false;
   public mapIsLoaded = false;

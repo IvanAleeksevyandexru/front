@@ -24,7 +24,9 @@ export class ConstructorLookupComponent {
   @Input() searchCaseSensitive: boolean;
   @Input() queryMinSymbolsCount: number;
   @Input() fixedItems: Array<ListElement>;
-  @Input() itemsProvider: LookupProvider<ListElement> | LookupPartialProvider<ListElement>;
+  @Input() itemsProvider:
+    | LookupProvider<Partial<ListElement>>
+    | LookupPartialProvider<Partial<ListElement>>;
   @Input() showSuggestion: boolean;
   @Input() showExpandCollapse: boolean;
   @Input() disabled: boolean;
