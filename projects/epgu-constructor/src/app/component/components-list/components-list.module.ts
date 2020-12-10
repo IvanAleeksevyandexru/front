@@ -13,6 +13,7 @@ import { ConstructorPlainInputModule } from '../../shared/components/constructor
 import { ConstructorMaskedInputModule } from '../../shared/components/epgu-lib/constructor-masked-input/constructor-masked-input.module';
 import { PassportModule } from '../../shared/components/add-passport/passport.module';
 import { ConstructorDadataWidgetModule } from '../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
+import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
 
 const COMPONENTS = [
   ComponentsListComponent,
@@ -35,6 +36,7 @@ const COMPONENTS = [
     ConstructorMaskedInputModule,
     PassportModule,
     ConstructorDadataWidgetModule,
+    ConstructorDropdownModule,
   ],
   providers: [
     ValidationService,

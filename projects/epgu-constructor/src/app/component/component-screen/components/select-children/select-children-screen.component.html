@@ -17,12 +17,12 @@
               </epgu-constructor-label>
             </div>
             <div class="card__select">
-              <lib-dropdown
+              <epgu-constructor-constructor-dropdown
                 [id]="idx"
-                [formControlName]="item.controlId"
+                [control]="selectChildrenForm.get(item.controlId)"
                 (changed)="handleSelect($event, idx)"
-                [items]="itemsToSelect"
-              ></lib-dropdown>
+                [items]="$any(itemsToSelect)"
+              ></epgu-constructor-constructor-dropdown>
             </div>
             <section class="card__content" *ngIf="isNewId(item.isNewRef)">
               <epgu-constructor-components-list

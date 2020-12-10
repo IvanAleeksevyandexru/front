@@ -1,5 +1,7 @@
 import { Component, Input, EventEmitter, OnInit, Output, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+
 import { ModalService } from '../../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
@@ -13,9 +15,7 @@ interface WarningMessages {
   [countryType: number]: string;
 }
 
-interface Country {
-  id: string;
-  text: string;
+interface Country extends ListElement {
   countryType: string;
 }
 

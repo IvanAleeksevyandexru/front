@@ -68,18 +68,18 @@
         *ngSwitchCase="componentType.Dictionary"
         [data]="componentData"
       >
-        <lib-dropdown
+        <epgu-constructor-constructor-dropdown
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [items]="(dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list"
           [validationShowOn]="validationShowOn"
           [disabled]="
             (dictionaries$ | async)[getDictKeyByComp(componentData.value)]?.list?.length === 1
           "
-          [formControl]="$any(componentData.get('value'))"
+          [control]="componentData.get('value')"
           [clearable]="true"
           class="cs__select cs-select"
         >
-        </lib-dropdown>
+        </epgu-constructor-constructor-dropdown>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.Lookup" [data]="componentData">
@@ -332,15 +332,15 @@
 
 <ng-template #dropDowns let-data>
   <div *ngIf="dropDowns$ | async as dropDowns">
-    <lib-dropdown
+    <epgu-constructor-constructor-dropdown
       [invalid]="data.get('value').invalid && data.get('value').touched"
       [items]="$any(dropDowns[data?.value?.id])"
       [disabled]="$any(dropDowns[data.value?.id])?.length === 1"
       [validationShowOn]="validationShowOn"
-      [formControl]="$any(data.get('value'))"
+      [control]="data.get('value')"
       [clearable]="true"
       class="cs__select cs-select"
     >
-    </lib-dropdown>
+    </epgu-constructor-constructor-dropdown>
   </div>
 </ng-template>
