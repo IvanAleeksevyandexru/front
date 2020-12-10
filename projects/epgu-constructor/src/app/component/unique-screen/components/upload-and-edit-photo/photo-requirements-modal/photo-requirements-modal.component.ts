@@ -22,12 +22,12 @@ export class PhotoRequirementsModalComponent extends ModalBaseComponent implemen
     this.buttons = [
       {
         label: 'Закрыть',
-        handler: () => this.closeModal(),
+        handler: (): void => this.closeModal(),
       },
     ];
   }
 
-  handleClickOnElemById($event: Event) {
+  handleClickOnElemById($event: Event): void {
     const targetElementId = ($event.target as HTMLElement).id;
     if (targetElementId === uploadPhotoElemId.howToTakePhoto) {
       this.modalResult.next(uploadPhotoElemId.howToTakePhoto);

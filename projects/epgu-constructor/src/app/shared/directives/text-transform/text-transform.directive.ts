@@ -15,7 +15,7 @@ export class TextTransformDirective {
   @Input() textTransformType: TextTransform;
 
   @HostListener('input', ['$event.target'])
-  onInput(target: HTMLInputElement) {
+  onInput(target: HTMLInputElement): void {
     if (!this.transforms[this.textTransformType]) {
       return;
     }

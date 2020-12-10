@@ -95,7 +95,7 @@ export class FileUploadComponent implements OnInit {
    * @private
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private getRefSubLabels(attrs: FileUploadAttributes, refBlock: any): string | null {
+  private getRefSubLabels(attrs: FileUploadAttributes, refBlock: any): string {
     const subLabel = [];
     const isArrData = Array.isArray(refBlock);
 
@@ -113,7 +113,7 @@ export class FileUploadComponent implements OnInit {
    * Возвращает данные по ref параметру из applicantAnswers для формирования дополнительного заголовка
    * @param attrs - аттрибуты блока
    */
-  private getRefValuesForApplicantAnswers(attrs: FileUploadAttributes) {
+  private getRefValuesForApplicantAnswers(attrs: FileUploadAttributes): string {
     const sections = attrs.ref.split('.');
     const key = sections[0];
     const blockKey = sections[1];
@@ -134,7 +134,7 @@ export class FileUploadComponent implements OnInit {
    * Обрабатывает новое значение от формы загрузки
    * @param $eventData - новые значения от формы
    */
-  handleNewValueForItem($eventData: FileResponseToBackendUploadsItem) {
+  handleNewValueForItem($eventData: FileResponseToBackendUploadsItem): void {
     this.value.files.forEach((valueItem: FileResponseToBackendUploadsItem) => {
       if (valueItem.uploadId === $eventData.uploadId) {
         // eslint-disable-next-line no-param-reassign
@@ -158,7 +158,7 @@ export class FileUploadComponent implements OnInit {
    * Обрабатывает новое значение от формы загрузки по связанным документам
    * @param $eventData - новые значения от формы
    */
-  handleNewRelatedValueForItem($eventData: FileResponseToBackendWithRelatedUploads) {
+  handleNewRelatedValueForItem($eventData: FileResponseToBackendWithRelatedUploads): void {
     this.newValueSet.emit({
       uploadId: $eventData.uploadId,
       relatedUploads: {

@@ -9,7 +9,10 @@ import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
   BookTimeSlotReq,
   SlotInterface,
-  SmevSlotsMapInterface, TimeSlot, TimeSlotReq,
+  SmevBookResponseInterface,
+  SmevSlotsMapInterface,
+  TimeSlot,
+  TimeSlotReq,
   TimeSlotValueInterface,
   ZagsDepartmentInterface
 } from './time-slots.types';
@@ -38,10 +41,12 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService
   ) {}
-  checkBooking(selectedSlot: SlotInterface) {
+
+  checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     return this.book(selectedSlot);
   }
-  book(selectedSlot: SlotInterface) {
+
+  book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
         if (response.error) {

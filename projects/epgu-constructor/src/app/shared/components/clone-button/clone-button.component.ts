@@ -9,7 +9,7 @@ export class CloneButtonComponent {
   @Input() disabled?: boolean;
   @Output() clickEvent = new EventEmitter<void>();
 
-  onClick() {
+  onClick(): void {
     this.clickEvent.emit();
   }
 }

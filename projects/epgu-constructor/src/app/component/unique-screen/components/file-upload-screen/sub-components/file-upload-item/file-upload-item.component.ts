@@ -88,7 +88,7 @@ export class FileUploadItemComponent implements OnDestroy {
         }
       });
   }
-  get data() {
+  get data(): FileUploadItem {
     return this.loadData;
   }
   @Input() prefixForMnemonic: string;
@@ -107,7 +107,7 @@ export class FileUploadItemComponent implements OnDestroy {
     static: true,
   })
   cameraInput: ElementRef;
-  get isButtonsDisabled() {
+  get isButtonsDisabled(): boolean {
     return Boolean(this.listIsUploadingNow || this.filesInUploading || this.filesInCompression);
   }
 
@@ -155,8 +155,8 @@ export class FileUploadItemComponent implements OnDestroy {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
+      reader.onload = (): void => resolve(reader.result as string);
+      reader.onerror = (error): void => reject(error);
     });
   }
 
@@ -173,7 +173,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * Do not use for the "Get a criminal record" service
    * @param file
    */
-  private async openPreviewModal(file: File) {
+  private async openPreviewModal(file: File): Promise<void> {
     const src = await this.fileToBase64(file);
 
     this.openModal({
@@ -188,7 +188,7 @@ export class FileUploadItemComponent implements OnDestroy {
         {
           label: 'Использовать',
           closeModal: true,
-          handler: () => this.sendFile(file),
+          handler: (): void => this.sendFile(file),
         },
       ],
     });
@@ -254,7 +254,7 @@ export class FileUploadItemComponent implements OnDestroy {
     uploadedFile: TerraUploadedFile,
     fileSize: number,
     uploaded: boolean,
-  ) {
+  ): void {
     const files = this.files$$.value;
     files.forEach((f: TerraUploadedFile) => {
       if (f.mnemonic === uploadedFile.mnemonic) {
@@ -274,7 +274,10 @@ export class FileUploadItemComponent implements OnDestroy {
    * @param uploaded - признак что файл загружен
    * @private
    */
-  private updateFileInfoFromServer(uploadedFile: TerraUploadedFile, uploaded: boolean = true) {
+  private updateFileInfoFromServer(
+    uploadedFile: TerraUploadedFile,
+    uploaded: boolean = true,
+  ): void {
     this.filesInUploading -= 1;
 
     if (uploaded) {
@@ -291,7 +294,7 @@ export class FileUploadItemComponent implements OnDestroy {
     }
   }
 
-  updateUploadedCameraPhotosInfo(addPhoto: boolean, fileName: string) {
+  updateUploadedCameraPhotosInfo(addPhoto: boolean, fileName: string): void {
     if (!fileName?.includes(photoBaseName)) {
       return;
     }
@@ -305,7 +308,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * @param file - file object to upload
    * @private
    */
-  private sendFile(file: File) {
+  private sendFile(file: File): void {
     this.filesInUploading += 1;
 
     const terabyteFiles = this.files$$.value;
@@ -507,7 +510,7 @@ export class FileUploadItemComponent implements OnDestroy {
       .toLowerCase();
   }
 
-  removeFileFromStore(file: TerraUploadedFile | File) {
+  removeFileFromStore(file: TerraUploadedFile | File): void {
     let files = this.files$$.value;
     if (file instanceof File) {
       files = files.filter((terabyteFile) => terabyteFile.fileName !== file.name);
@@ -521,7 +524,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * Удаление файла из стека
    * @param file - объект файла на удаление
    */
-  deleteFile(file: TerraUploadedFile) {
+  deleteFile(file: TerraUploadedFile): void {
     this.handleError(ErrorActions.clear);
 
     if (file.uploaded) {
@@ -550,7 +553,7 @@ export class FileUploadItemComponent implements OnDestroy {
     this.uploadInput.nativeElement.value = '';
   }
 
-  updateUploadingInfo(fileInfo: TerraUploadedFile, isDeleted?: boolean) {
+  updateUploadingInfo(fileInfo: TerraUploadedFile, isDeleted?: boolean): void {
     if (isDeleted) {
       this.fileUploadService.updateFilesAmount(-1, this.loadData.uploadId);
       this.fileUploadService.updateFilesSize(-fileInfo.fileSize, this.loadData.uploadId);
@@ -560,7 +563,7 @@ export class FileUploadItemComponent implements OnDestroy {
     }
   }
 
-  resetFileInputState(htmlInput: HTMLInputElement) {
+  resetFileInputState(htmlInput: HTMLInputElement): void {
     // eslint-disable-next-line no-param-reassign
     htmlInput.value = null;
   }
@@ -568,7 +571,7 @@ export class FileUploadItemComponent implements OnDestroy {
   /**
    * Обновляет данные о файлах, которые были загружены
    */
-  updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean) {
+  updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean): void {
     this.prepareFilesToUpload(fileList, isPhoto).subscribe((file: File) => this.sendFile(file));
   }
 
@@ -582,14 +585,14 @@ export class FileUploadItemComponent implements OnDestroy {
   /**
    * Загрузка файлов на сервер террабайта через стандартный выбор
    */
-  selectFilesEvent() {
+  selectFilesEvent(): void {
     this.uploadInput.nativeElement.click();
   }
 
   /**
    * Открытие камеры для получения изображения и последующей загрузки
    */
-  openCamera() {
+  openCamera(): void {
     this.cameraInput.nativeElement.click();
   }
 
@@ -598,7 +601,7 @@ export class FileUploadItemComponent implements OnDestroy {
    * @param file - объект файла
    */
   // TODO избавиться от any в шаблоне
-  downloadFile(file: TerraUploadedFile) {
+  downloadFile(file: TerraUploadedFile): void {
     this.handleError(ErrorActions.clear);
     const subs: Subscription = this.terabyteService
       .downloadFile(file.getParamsForFileOptions())

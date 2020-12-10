@@ -55,7 +55,7 @@ export class TimerComponent {
   /**
    * Стартует работу таймера
    */
-  startTimer() {
+  startTimer(): void {
     timer(this.timer.start - Date.now(), this.oneSecond)
       .pipe(
         takeWhile(() => this.timer.time - this.oneSecond >= -this.oneSecond),
@@ -68,7 +68,7 @@ export class TimerComponent {
   /**
    * Обработка таймера
    */
-  startTimerHandler() {
+  startTimerHandler(): void {
     const time = this.timer.time - this.oneSecond;
     this.timer.isWarning = isWarning(
       time,
@@ -95,7 +95,7 @@ export class TimerComponent {
    * Проверяет нужно ли прятать таймер
    * @private
    */
-  private checkHideTimer() {
+  private checkHideTimer(): void {
     if (!this.data.attrs.timerRules.hideTimerFrom && this.timer.isFinish) {
       this.showTimer = false;
     } else {
@@ -107,7 +107,7 @@ export class TimerComponent {
    * Устанавливает кнопки которые будут отображаться
    * @private
    */
-  private setActionsButtons() {
+  private setActionsButtons(): void {
     this.actionButtons = [];
     this.data.attrs.timerRules.actions.forEach((timerRule: TimerComponentDtoAction) =>
       this.setButtonFromRule(timerRule),
@@ -118,7 +118,7 @@ export class TimerComponent {
    * Сортирует правила показа заголовков в зависимости от правил препримения времени. От большего к меньшему
    * @private
    */
-  private sortLabelsByTime() {
+  private sortLabelsByTime(): void {
     this.data.attrs.timerRules.labels = this.data.attrs.timerRules.labels.sort((a, b) => {
       if (a.fromTime > b.fromTime) {
         return -1;
@@ -135,7 +135,7 @@ export class TimerComponent {
    * @param timerRule - правило применения заголовка
    * @private
    */
-  private setLabelFromRule(timerRule: TimerLabelSection) {
+  private setLabelFromRule(timerRule: TimerLabelSection): void {
     if (timerRule.fromTime && this.timer.time <= timerRule.fromTime * this.oneSecond) {
       this.label = timerRule.label;
     } else if (this.timer.isFinish) {
@@ -148,7 +148,7 @@ export class TimerComponent {
    * @private времени
    * @param timerButton - кнопка для отображения в
    */
-  private setButtonFromRule(timerButton: TimerComponentDtoAction) {
+  private setButtonFromRule(timerButton: TimerComponentDtoAction): void {
     const { time } = this.timer;
     const { fromTime } = timerButton;
     const { toTime } = timerButton;

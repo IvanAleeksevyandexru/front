@@ -19,7 +19,7 @@ export class AddPassportComponent implements OnInit {
     return this.data?.attrs?.fstuc;
   }
 
-  onPassportDataChange(data: ComponentBase) {
+  onPassportDataChange(data: ComponentBase): void {
     this.currentAnswersService.state = data;
   }
 }

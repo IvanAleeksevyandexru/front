@@ -136,7 +136,7 @@ export class TerraByteApiService {
    * @param data - Blob данные для скачивания
    * @param file - файл для загрузки
    */
-  pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile) {
+  pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile): void {
     let resultBlob = data;
 
     if (file.mimeType) {

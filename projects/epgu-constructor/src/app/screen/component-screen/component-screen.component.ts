@@ -104,7 +104,7 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
     return hasType ? type : false;
   }
 
-  calcIsShowActionBtn(type: ComponentScreenComponentTypes) {
+  calcIsShowActionBtn(type: ComponentScreenComponentTypes): void {
     this.isShowActionBtn = [
       ComponentScreenComponentTypes.registrationAddr,
       ComponentScreenComponentTypes.confirmPersonalUserRegAddr,

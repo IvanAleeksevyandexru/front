@@ -80,7 +80,7 @@ export class InvitationErrorComponent implements OnInit {
         },
       );
   }
-  redirectToLK() {
+  redirectToLK(): void {
     window.location.href = this.config.lkUrl;
   }
 }

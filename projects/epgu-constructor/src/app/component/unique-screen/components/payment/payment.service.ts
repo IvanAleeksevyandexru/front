@@ -54,14 +54,12 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    * @param attributeValues - дополнительные параметры
    */
-  // TODO
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
+  getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<{ value: string }> {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/lk/v1/paygate/uin`
       : this.config.uinApiUrl;
     const path = `${urlPrefix}/${code}?orderId=${orderId}`;
-    return this.http.post(path, attributeValues, this.requestOptions);
+    return this.http.post<{ value: string }>(path, attributeValues, this.requestOptions);
   }
 
   /**
