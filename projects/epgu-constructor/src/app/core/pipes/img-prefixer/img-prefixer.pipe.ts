@@ -2,11 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ConfigService } from '../../config/config.service';
 
 @Pipe({
-  name: 'imgPrefixer'
+  name: 'imgPrefixer',
 })
 export class ImgPrefixerPipe implements PipeTransform {
-
-  constructor(private config: ConfigService) { }
+  constructor(private config: ConfigService) {}
 
   transform(value: string = ''): string {
     const replacer = (match, quoteSymbol, staticDomainPrefix?) => {
@@ -20,5 +19,4 @@ export class ImgPrefixerPipe implements PipeTransform {
 
     return value.replace(regExp, replacer);
   }
-
 }

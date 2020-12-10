@@ -1,45 +1,58 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { OutputHtmlComponent } from './output-html.component';
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenTypes } from '../../../screen/screen.types';
 import { ModalService } from '../../../modal/modal.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { ImgPrefixerPipe } from '../../pipes/img-prefixer/img-prefixer.pipe';
+import { SafePipe } from '../../pipes/safe/safe.pipe';
+import { ConfigService } from '../../config/config.service';
+import { ConfigServiceStub } from '../../config/config.service.stub';
 
-xdescribe('OutputHtmlComponent', () => {
-  let component: OutputHtmlComponent;
+describe('OutputHtmlComponent', () => {
   let fixture: ComponentFixture<OutputHtmlComponent>;
-  let screenService: ScreenService;
-  const screenDataMock = {
-    componentData: {
-      components: [],
-      header: '',
-      id: '',
-      name: '',
-      submitLabel: '',
-      type: ScreenTypes.QUESTION
-    }
-  };
+  let comp: OutputHtmlComponent;
+  let modalService: ModalService;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [OutputHtmlComponent],
-      providers: [
-        ScreenService,
-        { provide: ModalService, useClass: ModalServiceStub }
-      ]
-    })
-      .compileComponents();
-    screenService = TestBed.inject(ScreenService);
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        declarations: [ImgPrefixerPipe, SafePipe, OutputHtmlComponent],
+        providers: [
+          { provide: ConfigService, useClass: ConfigServiceStub },
+          { provide: ModalService, useClass: ModalServiceStub },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(OutputHtmlComponent);
+          comp = fixture.componentInstance;
+          modalService = TestBed.inject(ModalService);
+        });
+    }),
+  );
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(OutputHtmlComponent);
-    component = fixture.componentInstance;
+  it('test not hidden html', () => {
+    comp.html = '<span id="test"></span>';
+    comp.clarifications = { test: {}};
     fixture.detectChanges();
+    const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
+    spyOn(modalService, 'openModal').and.callThrough();
+    div.querySelector('span').click();
+    fixture.detectChanges();
+    expect(modalService.openModal).toHaveBeenCalled();
   });
 
-  it('nothing', () => {
-    expect(true).toBeTruthy();
+  it('test hidden html', () => {
+    comp.html = '<span data-hidden-id="test" id="test"></span>';
+    comp.clarifications = { test: {}};
+    fixture.detectChanges();
+    const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
+    spyOn(modalService, 'openModal').and.callThrough();
+    div.querySelector('span').click();
+    fixture.detectChanges();
+    expect(modalService.openModal).toHaveBeenCalledTimes(0);
   });
 });

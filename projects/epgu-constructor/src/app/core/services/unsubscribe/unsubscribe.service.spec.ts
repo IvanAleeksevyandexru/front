@@ -7,12 +7,13 @@ describe('UnsubscribeService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UnsubscribeService]
+      providers: [UnsubscribeService],
     });
     service = TestBed.inject(UnsubscribeService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it('test destroy', () => {
+    service.ngOnDestroy();
+    expect(service.ngUnsubscribe$.isStopped).toBe(true);
   });
 });

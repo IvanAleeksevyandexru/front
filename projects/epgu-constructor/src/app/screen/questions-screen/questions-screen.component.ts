@@ -22,6 +22,8 @@ import { ScreenBase } from '../screenBase';
 export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   rejectAction: ComponentActionDto;
   submitLabel: string;
+  isLoading: boolean;
+  selectedAnswer: string;
 
   constructor(
     public injector: Injector,
@@ -44,6 +46,9 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
       this.rejectAction = this.getRejectAction(component?.attrs?.actions);
     });
+    this.screenService.isLoading$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((isLoading) => {
+      this.isLoading = isLoading;
+    });
   }
 
   nextStep(payload?: NavigationPayload): void {
@@ -51,7 +56,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   }
 
   answerChoose(action: ComponentActionDto) {
-    if (action.disabled) {
+    if (action.disabled || this.isLoading) {
       return;
     }
     if (action.underConstruction && this.config.disableUnderConstructionMode) {
@@ -65,6 +70,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       this.showModalRedirectTo(action);
       return;
     }
+    this.selectedAnswer = action.value;
     this.nextStep(this.getPayload(action));
   }
 
