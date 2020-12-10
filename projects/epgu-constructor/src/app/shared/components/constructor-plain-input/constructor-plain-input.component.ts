@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { TextTransform } from '../../types/textTransform';
@@ -22,4 +22,9 @@ export class ConstructorPlainInputComponent {
   @Input() type?: string;
   @Input() disabled?: boolean;
   @Input() pattern?: string;
+  @Output() public blurEvent = new EventEmitter();
+
+  onBlur() {
+    this.blurEvent.emit();
+  }
 }

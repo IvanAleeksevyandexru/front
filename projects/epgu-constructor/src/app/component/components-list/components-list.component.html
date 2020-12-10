@@ -307,6 +307,7 @@
     [invalid]="data.get('value').invalid && data.get('value').touched"
     [name]="data.value?.id"
     [control]="data.get('value')"
+    (blurEvent)="validateOnBlur(data.get('value'), data.value)"
     [validationShowOn]="validationShowOn"
     [readOnly]="data.value?.attrs?.readonly"
     [placeholder]="data.value?.attrs?.placeholder"
@@ -326,6 +327,7 @@
     [showConstantMaskSymbols]="true"
     [placeholder]="data.value?.attrs?.placeholder"
     [control]="data.get('value')"
+    (blurEvent)="validateOnBlur(data.get('value'), data.value)"
     [invalid]="data.get('value').invalid && data.get('value').touched"
     [isTrim]="false"
   ></epgu-constructor-masked-input>
