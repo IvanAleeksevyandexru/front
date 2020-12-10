@@ -21,6 +21,7 @@ import { of } from 'rxjs';
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
   let fixture: ComponentFixture<PaymentTypeSelectorComponent>;
+  let screenService: ScreenService;
   const mockComponent: ComponentDto = {
     attrs: {
       applicantType: 'success',
@@ -67,9 +68,10 @@ describe('PaymentTypeSelectorComponent', () => {
   });
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
+    screenService.component$ = of(mockComponent);
     fixture = TestBed.createComponent(PaymentTypeSelectorComponent);
     component = fixture.componentInstance;
-    component.data$ = of(mockComponent);
     fixture.detectChanges();
   });
 

@@ -127,6 +127,7 @@ describe('RepeatableFieldsComponent', () => {
         ],
       }).compileComponents();
       screenService = TestBed.inject(ScreenService);
+      screenService.display$ = of(displayMock);
     }),
   );
 
@@ -134,7 +135,6 @@ describe('RepeatableFieldsComponent', () => {
     fixture = TestBed.createComponent(RepeatableFieldsComponent);
     component = fixture.componentInstance;
     spyOn<any>(component, 'getCache').and.returnValue({});
-    component.data$ = of(displayMock);
     fixture.detectChanges();
   });
 
