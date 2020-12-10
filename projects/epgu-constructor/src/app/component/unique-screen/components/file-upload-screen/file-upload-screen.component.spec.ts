@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentBase } from '../../../../screen/screen.types';
+import { of } from 'rxjs';
 
 // TODO: Need to refactoring component
 xdescribe('FileUploadScreenComponent', () => {
@@ -15,9 +16,9 @@ xdescribe('FileUploadScreenComponent', () => {
           label: '',
           fileType: 'txt',
           maxFileCount: '1',
-          maxSize: '42'
-        }
-      ]
+          maxSize: '42',
+        },
+      ],
     },
     id: '',
     label: '',
@@ -27,19 +28,18 @@ xdescribe('FileUploadScreenComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [ FileUploadScreenComponent ],
-      providers: []
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      declarations: [FileUploadScreenComponent],
+      providers: [],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FileUploadScreenComponent);
     component = fixture.componentInstance;
-    component.data = mockData;
-    component.header = '';
-    component.submitLabel = '';
+    component.data$ = of(mockData);
+    component.header$ = of('');
+    component.submitLabel$ = of('');
     fixture.detectChanges();
   });
 

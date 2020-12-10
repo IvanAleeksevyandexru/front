@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
+import { combineLatest, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { Gender } from '../../../../shared/types/gender';
 import { ComponentBase } from '../../../../screen/screen.types';
@@ -29,10 +31,21 @@ export interface EmployeeHistoryComponentInterface extends ComponentBase {
   styleUrls: ['./employee-history.component.scss'],
   providers: [UnsubscribeService],
 })
-export class EmployeeHistoryComponent implements OnInit {
-  @Input() display: DisplayDto;
-  @Input() header: string;
-  @Input() gender: Gender;
+export class EmployeeHistoryComponent {
+  display$: Observable<DisplayDto> = this.screenService.display$;
+  header$: Observable<string> = this.screenService.header$;
+  gender$: Observable<Gender> = this.screenService.gender$;
+
+  init$: Observable<[DisplayDto, Gender]> = combineLatest([this.display$, this.gender$]).pipe(
+    tap(([display, gender]) => {
+      const displayAttrs = display?.components[0]?.attrs;
+      this.monthsService.years = displayAttrs?.years;
+      this.monthsService.isNonStop = displayAttrs?.nonStop;
+      this.monthsService.initSettings();
+      this.ds = this.datasourceService.getDataSourceByGender(gender);
+      this.initData();
+    }),
+  );
 
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
@@ -47,13 +60,9 @@ export class EmployeeHistoryComponent implements OnInit {
     private screenService: ScreenService,
   ) {}
 
-  ngOnInit(): void {
-    const displayAttrs = this.display?.components[0]?.attrs;
-    this.monthsService.years = displayAttrs?.years;
-    this.monthsService.isNonStop = displayAttrs?.nonStop;
-    this.monthsService.initSettings();
-    this.ds = this.datasourceService.getDataSourceByGender(this.gender);
-    this.initData();
+  textTransformType(display: DisplayDto): TextTransform {
+    const component = display?.components[0] as EmployeeHistoryComponentInterface;
+    return component?.attrs?.fstuc;
   }
 
   getNextScreen() {
@@ -81,11 +90,6 @@ export class EmployeeHistoryComponent implements OnInit {
 
   availableControlsOfType(type: string): EmployeeHistoryDataSource {
     return this.ds.find((e: EmployeeHistoryDataSource) => String(e.type) === String(type));
-  }
-
-  get textTransformType(): TextTransform {
-    const component = this.display?.components[0] as EmployeeHistoryComponentInterface;
-    return component?.attrs?.fstuc;
   }
 
   getPeriod(period: EmployeeHistoryUncheckedPeriod): string {

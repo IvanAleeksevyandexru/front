@@ -3,10 +3,10 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Input,
   Output,
 } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
@@ -51,20 +51,23 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
       return label || 'Добавить данные';
     }),
   );
+  data$: Observable<DisplayDto> = this.screenService.display$;
+  init$: Observable<DisplayDto> = this.data$.pipe(
+    tap((data: DisplayDto) => {
+      this.cache = this.getCache();
+      this.initVariable();
+      this.propData = data;
 
-  @Input() set data(data: DisplayDto) {
-    this.cache = this.getCache();
-    this.initVariable();
-    this.propData = data;
+      const isCached = Object.keys(this.cache || {}).length;
 
-    const isCached = Object.keys(this.cache || {}).length;
+      if (isCached) {
+        this.duplicateScreenAndPatch();
+      } else {
+        this.duplicateScreen();
+      }
+    }),
+  );
 
-    if (isCached) {
-      this.duplicateScreenAndPatch();
-    } else {
-      this.duplicateScreen();
-    }
-  }
   @Output() nextStepEvent = new EventEmitter();
 
   trackByFunction = (index, item) => item;

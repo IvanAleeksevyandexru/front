@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Input,
   NgZone,
   OnDestroy,
   OnInit,
@@ -11,7 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { YaMapService, LookupComponent, ListItem } from 'epgu-lib';
-import { merge, Observable, of } from 'rxjs';
+import { combineLatest, merge, Observable, of } from 'rxjs';
 import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
@@ -35,7 +34,10 @@ import {
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
-import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ApplicantAnswersDto,
+  ComponentDto,
+} from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -44,8 +46,9 @@ import { ApplicantAnswersDto } from '../../../../form-player/services/form-playe
   providers: [UnsubscribeService, SelectMapObjectService],
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() data: ComponentBase;
-  @Input() applicantAnswers: ApplicantAnswersDto;
+  data: ComponentBase;
+  applicantAnswers: ApplicantAnswersDto;
+
   @Output() nextStepEvent = new EventEmitter<string>();
 
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
@@ -82,8 +85,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnInit(): void {
-    this.initVariable();
-    this.subscribeToEmmitNextStepData();
+    combineLatest([this.screenService.component$, this.screenService.applicantAnswers$])
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(([data, applicantAnswers]: [ComponentDto, ApplicantAnswersDto]) => {
+        this.applicantAnswers = applicantAnswers;
+        this.data = data;
+        this.initVariable();
+        this.subscribeToEmmitNextStepData();
+      });
   }
 
   ngAfterViewInit(): void {

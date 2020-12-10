@@ -1,46 +1,30 @@
 <ng-container [ngSwitch]="screenService.componentType$ | async">
   <epgu-constructor-unused-payments
     *ngSwitchCase="uniqueComponentName.unusedPayments"
-    [data]="screenService.display$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-unused-payments>
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
-    [data]="screenService.component$ | async"
-    [applicantAnswers]="screenService.applicantAnswers$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-select-map-object>
   <epgu-constructor-file-upload-screen
     *ngSwitchCase="uniqueComponentName.fileUploadComponent"
-    [isLoading]="screenService.isLoading$ | async"
-    [applicantAnswers]="screenService.applicantAnswers$ | async"
-    [header]="screenService.header$ | async"
-    [submitLabel]="screenService.submitLabel$ | async"
-    [data]="screenService.component$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-file-upload-screen>
   <epgu-constructor-employee-history
     *ngSwitchCase="uniqueComponentName.employeeHistory"
-    [header]="screenService.header$ | async"
-    [gender]="screenService.gender$ | async"
-    [display]="screenService.display$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-employee-history>
   <epgu-constructor-repeatable-fields
     *ngSwitchCase="uniqueComponentName.repeatableFields"
-    [data]="screenService.display$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-repeatable-fields>
   <epgu-constructor-time-slots
     *ngSwitchCase="uniqueComponentName.timeSlot"
-    [data]="screenService.display$ | async"
-    [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextDataForStep($event)">
   </epgu-constructor-time-slots>
   <epgu-constructor-car-info
     *ngSwitchCase="uniqueComponentName.carInfo"
-    [display]="screenService.display$ | async"
-    [isLoading]="screenService.isLoading$ | async"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-car-info>
 
@@ -67,7 +51,6 @@
     (nextStepEvent)="nextDataForStep($event)">
   </epgu-constructor-upload-and-edit-photo>
   <epgu-constructor-payment-type-selector
-    *ngSwitchCase="uniqueComponentName.paymentTypeSelector"
-    [data]="screenService.component$ | async">
+    *ngSwitchCase="uniqueComponentName.paymentTypeSelector">
   </epgu-constructor-payment-type-selector>
 </ng-container>

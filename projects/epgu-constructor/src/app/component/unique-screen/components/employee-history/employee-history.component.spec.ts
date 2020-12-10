@@ -14,6 +14,7 @@ import { Gender } from '../../../../shared/types/gender';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { of } from 'rxjs';
 
 xdescribe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;
@@ -32,11 +33,7 @@ xdescribe('EmployeeHistoryComponent', () => {
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        EpguLibModule,
-        ConstructorPlainInputModule,
-      ],
+      imports: [ReactiveFormsModule, EpguLibModule, ConstructorPlainInputModule],
       declarations: [
         EmployeeHistoryComponent,
         PageNameComponent,
@@ -49,9 +46,8 @@ xdescribe('EmployeeHistoryComponent', () => {
         UnsubscribeService,
         EmployeeHistoryDatasourceService,
         EmployeeHistoryMonthsService,
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -62,13 +58,12 @@ xdescribe('EmployeeHistoryComponent', () => {
     fixture.debugElement.injector.get(EmployeeHistoryMonthsService);
 
     component = fixture.componentInstance;
-    component.display = mockDisplay;
-    component.header = '';
-    component.gender = Gender.male;
+    component.display$ = of(mockDisplay);
+    component.header$ = of('');
+    component.gender$ = of(Gender.male);
     // spyOn(formService, 'createEmployeeForm')
     fixture.detectChanges();
   });
-
 
   it('nothing', () => {
     expect(true).toBeTruthy();

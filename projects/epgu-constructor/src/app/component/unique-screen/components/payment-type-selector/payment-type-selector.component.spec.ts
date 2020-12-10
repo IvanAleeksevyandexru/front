@@ -16,6 +16,7 @@ import { ConfigService } from '../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { of } from 'rxjs';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -68,7 +69,7 @@ describe('PaymentTypeSelectorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentTypeSelectorComponent);
     component = fixture.componentInstance;
-    component.data = mockComponent;
+    component.data$ = of(mockComponent);
     fixture.detectChanges();
   });
 

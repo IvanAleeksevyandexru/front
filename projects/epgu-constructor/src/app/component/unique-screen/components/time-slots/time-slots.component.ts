@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
@@ -29,8 +29,8 @@ const moment = moment_;
   providers: [UnsubscribeService],
 })
 export class TimeSlotsComponent implements OnInit {
-  @Input() isLoading: boolean;
-  @Input() data: DisplayDto;
+  isLoading$: Observable<boolean> = this.screenService.isLoading$;
+  data$: Observable<DisplayDto> = this.screenService.display$;
   @Output() nextStepEvent = new EventEmitter();
 
   public date: Date = null;

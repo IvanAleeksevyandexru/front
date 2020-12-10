@@ -1,25 +1,42 @@
-<epgu-constructor-screen-container>
+<ng-container
+*ngTemplateOutlet="contentComponent; context: {isLoading: isLoading$ | async,
+                                               header: header$ | async,
+                                               applicantAnswers: applicantAnswers$ | async,
+                                               submitLabel: submitLabel$ | async,
+                                               data: data$ | async}"
+></ng-container>
 
-  <div class="screen-body">
-    <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
+<ng-template #contentComponent
+             let-isLoading="isLoading"
+             let-header="header"
+             let-applicantAnswers="applicantAnswers"
+             let-submitLabel="submitLabel"
+             let-data="data">
+  <epgu-constructor-screen-container>
 
-    <epgu-constructor-file-upload
-      [objectId]="screenService.orderId$ | async"
-      [applicantAnswers]="applicantAnswers"
-      [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
-      [attributes]="$any(data.attrs)"
-      (newValueSet)="handleNewValueSet($event)"
-    >
-    </epgu-constructor-file-upload>
-  </div>
+    <div class="screen-body">
+      <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
 
-  <div class="screen-footer">
-    <lib-button
-      [showLoader]="isLoading"
-      [disabled]="disabled"
-      (click)="nextScreen()"
-      class="btn__submit">
-      {{ submitLabel || "Продолжить" }}
-    </lib-button>
-  </div>
-</epgu-constructor-screen-container>
+      <epgu-constructor-file-upload
+        [objectId]="screenService.orderId$ | async"
+        [applicantAnswers]="applicantAnswers"
+        [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
+        [attributes]="$any(data.attrs)"
+        (newValueSet)="handleNewValueSet($event)"
+      >
+      </epgu-constructor-file-upload>
+    </div>
+
+    <div class="screen-footer">
+      <lib-button
+        [showLoader]="isLoading"
+        [disabled]="disabled"
+        (click)="nextScreen()"
+        class="btn__submit">
+        {{ submitLabel || "Продолжить" }}
+      </lib-button>
+    </div>
+  </epgu-constructor-screen-container>
+</ng-template>
+
+
