@@ -86,7 +86,7 @@
         <epgu-constructor-constructor-lookup
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
-          [formControl]="$any(componentData.get('value'))"
+          [control]="$any(componentData.get('value'))"
           [queryMinSymbolsCount]="0"
           [searchCaseSensitive]="false"
           [fixedItems]="(dictionaries$ | async)[getDictKeyByComp(componentData?.value)]?.list"
@@ -128,14 +128,14 @@
             componentData.value?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'
           "
         >
-          <lib-checkbox
+          <epgu-constructor-constructor-checkbox
             [checkboxId]="componentData.value?.id"
-            [formControl]="$any(componentData.get('value'))"
+            [control]="componentData.get('value')"
             [disabled]="componentData.value?.disabled"
             [labelText]="componentData.value?.label"
             [required]="componentData.value?.required"
           >
-          </lib-checkbox>
+          </epgu-constructor-constructor-checkbox>
         </div>
       </epgu-constructor-component-item>
 
@@ -192,7 +192,7 @@
         <epgu-constructor-constructor-lookup
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
-          [formControl]="$any(componentData.get('value'))"
+          [control]="$any(componentData.get('value'))"
           [itemsProvider]="formService.addressHelperServiceProvider()"
           [clearable]="true"
         >

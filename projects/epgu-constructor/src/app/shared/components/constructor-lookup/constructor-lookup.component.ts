@@ -1,11 +1,10 @@
-import { Component, ContentChild, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AbstractControl, FormControl } from '@angular/forms';
 import {
   ListElement,
   LookupPartialProvider,
   LookupProvider,
 } from 'epgu-lib/lib/models/dropdown.model';
-
-import { AbstractControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
 import { LookupComponent } from 'epgu-lib';
 
@@ -14,11 +13,11 @@ import { LookupComponent } from 'epgu-lib';
   templateUrl: './constructor-lookup.component.html',
 })
 export class ConstructorLookupComponent {
-  @ContentChild(LookupComponent, { static: false })
+  @ViewChild('lookupComponent', { static: false })
   lookupComponent: LookupComponent;
 
   @Input() id: string | number;
-  @Input() control: AbstractControl;
+  @Input() control: AbstractControl = new FormControl();
   @Input() invalid: boolean;
   @Input() validationShowOn: ValidationShowOn | string | boolean;
   @Input() clearable: boolean;
@@ -30,8 +29,6 @@ export class ConstructorLookupComponent {
   @Input() showSuggestion: boolean;
   @Input() showExpandCollapse: boolean;
   @Input() disabled: boolean;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Output() changed = new EventEmitter<ListElement>();
 
   public onChanged(item: ListElement): void {

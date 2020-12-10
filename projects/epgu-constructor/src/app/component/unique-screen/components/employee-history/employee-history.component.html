@@ -65,11 +65,11 @@
         </div>
       </div>
       <div class="employee-history__input">
-        <lib-checkbox
+        <epgu-constructor-constructor-checkbox
           [id]="i + '_checkboxToDate'"
-          [formControl]="$any(generation.get('checkboxToDate'))"
+          [control]="generation.get('checkboxToDate')"
           labelText="По настоящее время"
-        ></lib-checkbox>
+        ></epgu-constructor-constructor-checkbox>
       </div>
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.position as position">

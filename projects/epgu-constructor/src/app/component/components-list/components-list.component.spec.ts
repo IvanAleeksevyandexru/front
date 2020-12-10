@@ -13,6 +13,7 @@ import { ConstructorPlainInputModule } from '../../shared/components/constructor
 import { ConstructorDadataWidgetModule } from '../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { ConstructorLookupModule } from '../../shared/components/constructor-lookup/constructor-lookup.module';
+import { ConstructorCheckboxModule } from '../../shared/components/constructor-checkbox/constructor-checkbox.module';
 
 
 xdescribe('ComponentsListComponent', () => {
@@ -35,7 +36,8 @@ xdescribe('ComponentsListComponent', () => {
         ConstructorPlainInputModule,
         ConstructorDadataWidgetModule,
         ConstructorDropdownModule,
-        ConstructorLookupModule
+        ConstructorLookupModule,
+        ConstructorCheckboxModule
       ]
     });
 
