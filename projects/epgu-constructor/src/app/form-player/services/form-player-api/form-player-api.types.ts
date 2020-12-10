@@ -178,7 +178,7 @@ export enum DTOActionAction {
 }
 
 export interface CheckOrderApiResponse {
-  scenarioDto: ScenarioDto;
+  orderId: string;
   isInviteScenario: boolean;
   canStartNew: boolean;
 }
