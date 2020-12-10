@@ -6,6 +6,7 @@ import {
   DictionaryValue
 } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
 import { ListItem } from 'epgu-lib';
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
 export type ComponentValue = {
   [key: string]: string | number
@@ -78,7 +79,7 @@ export class DictionaryUtilities {
    * Мапим словарь в ListItem для компонента EPGU отвечающий за список
    * @param items массив элементов словаря
    */
-  public static adaptDictionaryToListItem(items: Array<DictionaryItem>): Array<Partial<ListItem>> {
+  public static adaptDictionaryToListItem(items: Array<DictionaryItem>): Array<ListElement> {
     return items.map((item) => ({
       originalItem: item,
       id: item.value,

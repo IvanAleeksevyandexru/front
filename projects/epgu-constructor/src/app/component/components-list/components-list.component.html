@@ -83,7 +83,7 @@
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.Lookup" [data]="componentData">
-        <lib-lookup
+        <epgu-constructor-constructor-lookup
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [formControl]="$any(componentData.get('value'))"
@@ -93,7 +93,7 @@
           [virtualScroll]="true"
           [clearable]="true"
         >
-        </lib-lookup>
+        </epgu-constructor-constructor-lookup>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item
@@ -189,14 +189,14 @@
         *ngSwitchCase="componentType.CityInput"
         [data]="componentData"
       >
-        <lib-lookup
+        <epgu-constructor-constructor-lookup
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [formControl]="$any(componentData.get('value'))"
           [itemsProvider]="formService.addressHelperServiceProvider()"
           [clearable]="true"
         >
-        </lib-lookup>
+        </epgu-constructor-constructor-lookup>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item

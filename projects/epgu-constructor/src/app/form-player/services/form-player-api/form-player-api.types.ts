@@ -269,6 +269,7 @@ export interface DisplayDto {
   type: ScreenTypes;
   terminal: boolean;
   isSocialButtonsHidden?: boolean;
+  displayCssClass?: string;
 }
 
 export interface ScenarioErrorsDto {
