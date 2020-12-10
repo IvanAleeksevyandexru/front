@@ -8,7 +8,6 @@ import { AbstractControl } from '@angular/forms';
 export class ConstructorCheckboxComponent {
   @Input() checkboxId: string;
   @Input() control: AbstractControl;
-  @Input() disabled: boolean;
   @Input() labelText: string;
   @Input() required: boolean;
 }

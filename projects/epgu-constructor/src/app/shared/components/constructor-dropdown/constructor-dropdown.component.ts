@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
+import { ValidationShowOn } from 'epgu-lib';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
 @Component({

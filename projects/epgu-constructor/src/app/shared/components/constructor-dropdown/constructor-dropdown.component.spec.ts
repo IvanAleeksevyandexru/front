@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
+import { ValidationShowOn } from 'epgu-lib';
 
 import { ConstructorDropdownComponent } from './constructor-dropdown.component';
 import { CoreModule } from '../../../core/core.module';

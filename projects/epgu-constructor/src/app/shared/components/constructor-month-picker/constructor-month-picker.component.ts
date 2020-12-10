@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { MonthYear } from 'epgu-lib/lib/models/date-time.model';
-import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
-import { Align } from 'epgu-lib';
+import { Align, MonthYear, ValidationShowOn } from 'epgu-lib';
 
 @Component({
   selector: 'epgu-constructor-constructor-month-picker',

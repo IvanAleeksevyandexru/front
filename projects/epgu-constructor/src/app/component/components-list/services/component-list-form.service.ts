@@ -270,7 +270,7 @@ export class ComponentListFormService {
       {
         ...component,
         value: [
-          this.toolsService.convertedValue(component),
+          { value: this.toolsService.convertedValue(component), disabled: component.attrs.disabled },
           [
             this.validationService.customValidator(component),
             this.validationService.validationBackendError(errorMsg, component),

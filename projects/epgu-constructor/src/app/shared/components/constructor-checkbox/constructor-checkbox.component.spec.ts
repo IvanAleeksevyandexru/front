@@ -21,7 +21,6 @@ describe('ConstructorCheckboxComponent', () => {
     component = fixture.componentInstance;
     component.checkboxId = '123';
     component.control = new FormControl();
-    component.disabled = false;
     component.labelText = '';
     component.required = true;
     fixture.detectChanges();

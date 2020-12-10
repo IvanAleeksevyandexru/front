@@ -5,8 +5,7 @@ import {
   LookupPartialProvider,
   LookupProvider,
 } from 'epgu-lib/lib/models/dropdown.model';
-import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
-import { LookupComponent } from 'epgu-lib';
+import { LookupComponent, ValidationShowOn } from 'epgu-lib';
 
 @Component({
   selector: 'epgu-constructor-constructor-lookup',

@@ -7,7 +7,6 @@ import { TextTransform } from '../../../types/textTransform';
 @Component({
   selector: 'epgu-constructor-masked-input',
   templateUrl: './constructor-masked-input.component.html',
-  styleUrls: ['./constructor-masked-input.component.scss'],
 })
 export class ConstructorMaskedInputComponent {
   @Input() control: FormControl;
