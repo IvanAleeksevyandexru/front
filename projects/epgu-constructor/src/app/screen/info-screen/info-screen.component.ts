@@ -34,6 +34,6 @@ export class InfoScreenComponent extends ScreenBase implements OnInit {
   }
 
   nextStep(): void {
-    this.navigationService.nextStep.next({});
+    this.navigationService.next({});
   }
 }

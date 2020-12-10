@@ -9,7 +9,6 @@ import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ActionType } from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ActionDirective } from '../../../../../../../../shared/directives/action/action.directive';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
-import { SharedModule } from 'projects/epgu-constructor/src/app/shared/shared.module';
 import { SafePipe } from 'projects/epgu-constructor/src/app/core/pipes/safe/safe.pipe';
 import { FieldListComponent } from 'projects/epgu-constructor/src/app/shared/components/field-list/field-list.component';
 
@@ -32,7 +31,16 @@ describe('ConfirmPersonalUserDataComponent', () => {
           fieldName: 'birthDate',
           label: 'Birthday Date'
         }
-      ]
+      ],
+      style: {
+        divider: '',
+        list: '',
+        field: '',
+        group: '',
+        groupTitle: '',
+        label: '',
+        value: ''
+      }
     },
     type: '',
     value: '{}',

@@ -9,7 +9,6 @@ import {
   MvdDepartmentInterface,
   SlotInterface,
   SmevBookResponseInterface,
-  SmevSlotInterface,
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
@@ -29,7 +28,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
 
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
-  private bookId;
+  public bookId;
   private errorMessage;
 
   constructor(
@@ -72,12 +71,16 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     return this.availableMonths;
   }
 
-  getAvailableSlots(selectedDay: Date): Observable<SmevSlotInterface[]> {
+  getAvailableSlots(selectedDay: Date): Observable<SlotInterface[]> {
     return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
   }
 
   getBookedSlot(): SlotInterface {
     return this.bookedSlot;
+  }
+
+  setBookedSlot(bookedSlot: SlotInterface): void {
+    this.bookedSlot = bookedSlot;
   }
 
   getCurrentMonth(): number {

@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { ScreenService } from '../../../../../screen/screen.service';
+import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
-import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
+import { ScreenService } from '../../../../../screen/screen.service';
 
 interface CodeFormGroup {
   codeMask: Array<RegExp>;
@@ -83,6 +83,10 @@ export class ConfirmPhoneComponent implements OnInit {
         value: String(code),
       },
     };
+  }
+
+  isItemHasError(codeValue: string): Boolean {
+    return Boolean(this.screenService.componentError && codeValue);
   }
 
   private initCodeFormArray(): void {

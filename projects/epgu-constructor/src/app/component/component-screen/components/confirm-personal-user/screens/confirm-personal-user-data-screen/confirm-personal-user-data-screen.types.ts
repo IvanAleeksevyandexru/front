@@ -7,6 +7,7 @@ export interface ConfirmUserData extends ComponentBase {
 export interface ConfirmUserDataAttrs {
   fields: Array<ConfirmUserDataField>;
   actions: Array<ConfirmUserDataActions>;
+  style: ConfirmUserDataStyle;
 }
 
 export interface ConfirmUserDataActions {
@@ -35,3 +36,15 @@ export interface ConfirmUserDataState {
   states: ConfirmUserDataFieldsState[];
   storedValues: { [key: string]: string | boolean | object };
 }
+
+export interface ConfirmUserDataStyle {
+  group: string;
+  groupTitle: string;
+  value: string;
+  label: string;
+  field: string;
+  list: string;
+  divider: string;
+}
+
+

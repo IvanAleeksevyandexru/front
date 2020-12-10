@@ -2,10 +2,10 @@
 
 .col {
   &-1 {
-    max-width: calc(8.33% - #{$screen-pad-small-gap});
+    max-width: calc(8.33% - #{$screen-pad-small-gap}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(8.33% - #{$screen-pad-small-gap});
+        max-width: calc(8.33% - #{$screen-pad-small-gap}) !important;
       }
     }
     &-offset {
@@ -18,10 +18,10 @@
     }
   }
   &-2 {
-    max-width: calc(16.66% - #{$screen-pad-small-gap});
+    max-width: calc(16.66% - #{$screen-pad-small-gap}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(16.66% - #{$screen-pad-small-gap});
+        max-width: calc(16.66% - #{$screen-pad-small-gap}) !important;
       }
     }
     &-offset {
@@ -34,10 +34,10 @@
     }
   }
   &-3 {
-    max-width: calc(25% - #{$screen-pad-small-gap});
+    max-width: calc(25% - #{$screen-pad-small-gap}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(25% - #{$screen-pad-small-gap});
+        max-width: calc(25% - #{$screen-pad-small-gap}) !important;
       }
     }
     &-offset {
@@ -50,10 +50,10 @@
     }
   }
   &-4 {
-    max-width: calc(33.33% - #{$screen-pad-small-gap});
+    max-width: calc(33.33% - #{$screen-pad-small-gap}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(33.33% - #{$screen-pad-small-gap});
+        max-width: calc(33.33% - #{$screen-pad-small-gap}) !important;
       }
     }
     &-offset {
@@ -66,10 +66,10 @@
     }
   }
   &-6 {
-    max-width: calc(50% - #{$screen-pad-small-gap});
+    max-width: calc(50% - #{$screen-pad-small-gap}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(50% - #{$screen-pad-small-gap});
+        max-width: calc(50% - #{$screen-pad-small-gap}) !important;
       }
     }
     &-offset {
@@ -82,10 +82,10 @@
     }
   }
   &-8 {
-    max-width: calc(66.66% - #{$screen-pad-small-gap});
+    max-width: calc(66.66% - #{$screen-pad-small-gap}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(66.66% - #{$screen-pad-small-gap});
+        max-width: calc(66.66% - #{$screen-pad-small-gap}) !important;
       }
     }
     &-offset {
@@ -98,10 +98,10 @@
     }
   }
   &-10 {
-    max-width: calc(83.33% - #{$screen-pad-small-gap});
+    max-width: calc(83.33% - #{$screen-pad-small-gap}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(83.33% - #{$screen-pad-small-gap});
+        max-width: calc(83.33% - #{$screen-pad-small-gap}) !important;
       }
     }
     &-offset {
@@ -114,10 +114,10 @@
     }
   }
   &-12 {
-    max-width: calc(100% - #{$screen-pad-small-gap});
+    max-width: 100% !important;
     &-sm {
       @include phones-down {
-        max-width: calc(100% - #{$screen-pad-small-gap});
+        max-width: 100% !important;
       }
     }
     &-offset {

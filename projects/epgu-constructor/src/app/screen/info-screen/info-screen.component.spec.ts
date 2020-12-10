@@ -1,18 +1,19 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { InfoScreenComponent } from './info-screen.component';
-import { ScreenService } from '../screen.service';
-import { ScreenStore, ScreenTypes } from '../screen.types';
-import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
-import { CurrentAnswersService } from '../current-answers.service';
-import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../core/config/config.service';
-import { ServiceDataService } from '../../form-player/services/service-data/service-data.service';
 import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../core/services/device-detector/device-detector.service.stub';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
+import { ServiceDataService } from '../../form-player/services/service-data/service-data.service';
+import { CachedAnswersService } from '../../shared/services/applicant-answers/cached-answers.service';
+import { UtilsService } from '../../shared/services/utils/utils.service';
+import { CurrentAnswersService } from '../current-answers.service';
+import { ScreenService } from '../screen.service';
+import { ScreenStore, ScreenTypes } from '../screen.types';
+import { InfoScreenComponent } from './info-screen.component';
 
 
 describe('InfoScreenComponent', () => {
@@ -55,6 +56,7 @@ describe('InfoScreenComponent', () => {
         FormPlayerApiService,
         ConfigService,
         ServiceDataService,
+        UtilsService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ]
     })

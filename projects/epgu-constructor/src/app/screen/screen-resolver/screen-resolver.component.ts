@@ -18,6 +18,8 @@ export class ScreenResolverComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((screenType) => {
+      // @todo. this.setScreenComponent выбрасывает исключение, если screenType не задан при инициализации компонента
+      // возможно здесь следует добавить фильтрацию на не NULL
       this.setScreenComponent(screenType);
     });
   }

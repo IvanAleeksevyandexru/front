@@ -79,8 +79,8 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     }
   }
 
-  private isPresetable(field: ConfirmAddressFieldsInterface): boolean {
-    return !field.nonPresetable;
+  private isPresetable(field?: ConfirmAddressFieldsInterface): boolean {
+    return !field?.nonPresetable;
   }
 
   private subscribeFormChanges(): void {

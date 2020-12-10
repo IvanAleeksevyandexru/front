@@ -41,7 +41,7 @@ export class UnusedPaymentsComponent implements OnInit {
   };
 
   public cancelUsePayment = (): void => {
-    this.navigationService.prevStep.next();
+    this.navigationService.prev();
   };
 
   /**
@@ -77,11 +77,7 @@ export class UnusedPaymentsComponent implements OnInit {
   getListPaymentsInfoSuccess = (data): void => {
     if (data.length) {
       this.paymentsList.next(data);
-      // this.paymentsList = data;
-      // this.showModal();
     } else {
-      // TODO: должно заменить вызов usePaymentsListData, когда будет работать rest api
-      // this.navigationService.prevStep.next();
       this.usePaymentsListData();
     }
   };

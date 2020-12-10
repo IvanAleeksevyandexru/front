@@ -10,7 +10,6 @@ import {
   GibddDepartmentInterface,
   SlotInterface,
   SmevBookResponseInterface,
-  SmevSlotInterface,
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
@@ -33,7 +32,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   private slotsMap: SmevSlotsMapInterface;
 
   private bookedSlot: SlotInterface;
-  private bookId;
+  public bookId;
 
   private errorMessage;
 
@@ -99,12 +98,16 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     return this.availableMonths;
   }
 
-  getAvailableSlots(selectedDay: Date): Observable<SmevSlotInterface[]> {
+  getAvailableSlots(selectedDay: Date): Observable<SlotInterface[]> {
     return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
   }
 
   getBookedSlot(): SlotInterface {
     return this.bookedSlot;
+  }
+
+  setBookedSlot(bookedSlot: SlotInterface): void {
+    this.bookedSlot = bookedSlot;
   }
 
   getCurrentMonth(): number {
@@ -242,7 +245,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
         slotId: slot.slotId,
         areaId: slot.areaId,
         slotTime: slotDate,
-        timezone: slot.visitTimeISO.substring(slot.visitTimeISO.length - 6)
+        timezone: slot.visitTimeISO.substr(-6),
       });
     });
   }

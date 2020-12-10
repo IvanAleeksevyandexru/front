@@ -1,13 +1,13 @@
 import {
   TerraFileOptions,
   TerraUploadFileOptions,
-  UploadedFile
+  UploadedFile,
 } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
 
 /**
  * Класс подгруженного файла
  */
-export class TerraUploadedFile implements UploadedFile{
+export class TerraUploadedFile implements UploadedFile {
   fileName = '';
   objectId = '';
   objectTypeId = 0;
@@ -15,6 +15,7 @@ export class TerraUploadedFile implements UploadedFile{
   fileSize = 0;
   uploaded = false;
   hasError = false;
+  mimeType?: string;
 
   constructor(props: object = {}) {
     Object.keys(props).forEach((key) => {
@@ -31,6 +32,7 @@ export class TerraUploadedFile implements UploadedFile{
       objectId: this.objectId,
       objectType: this.objectTypeId,
       mnemonic: this.mnemonic,
+      mimeType: this.mimeType,
     } as TerraUploadFileOptions;
   }
 
@@ -42,6 +44,7 @@ export class TerraUploadedFile implements UploadedFile{
       objectId: this.objectId,
       objectType: this.objectTypeId,
       mnemonic: this.mnemonic,
+      mimeType: this.mimeType,
     } as TerraFileOptions;
   }
 
@@ -68,10 +71,12 @@ export const BYTES_IN_KB = 1024;
  * Возвращает размер в килобайтах из байт
  * @param bytes - байты для перевода
  */
-export const getSizeInKB = (bytes): number => Math.round(((bytes / BYTES_IN_KB) + Number.EPSILON) * 100) / 100;
+export const getSizeInKB = (bytes): number =>
+  Math.round((bytes / BYTES_IN_KB + Number.EPSILON) * 100) / 100;
 
 /**
  * Возвращает размер в мегабайтах из байт
  * @param bytes - байты для перевода
  */
-export const getSizeInMB = (bytes): number => Math.round(((bytes / BYTES_IN_KB / BYTES_IN_KB) + Number.EPSILON) * 100) / 100;
+export const getSizeInMB = (bytes): number =>
+  Math.round((bytes / BYTES_IN_KB / BYTES_IN_KB + Number.EPSILON) * 100) / 100;

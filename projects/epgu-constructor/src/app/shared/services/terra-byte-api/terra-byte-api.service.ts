@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TerabyteListItem, TerraFileOptions, TerraUploadFileOptions, UploadedFile } from './terra-byte-api.types';
+import {
+  TerabyteListItem,
+  TerraFileOptions,
+  TerraUploadFileOptions,
+  UploadedFile,
+} from './terra-byte-api.types';
 import { Observable } from 'rxjs';
 import { TerraUploadedFile } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { ConfigService } from '../../../core/config/config.service';
@@ -11,10 +16,7 @@ import * as FileSaver from 'file-saver';
  */
 @Injectable()
 export class TerraByteApiService {
-  constructor(
-    private http: HttpClient,
-    private config: ConfigService
-  ) {}
+  constructor(private http: HttpClient, private config: ConfigService) {}
 
   /**
    * Переводит base64 картинку в Blob
@@ -57,7 +59,10 @@ export class TerraByteApiService {
    * @param objectId - идентификатор объекта
    */
   getListByObjectId(objectId: string): Observable<TerabyteListItem[]> {
-    return this.http.get<TerabyteListItem[]>(this.getTerabyteApiUrl(`/${objectId}`), this.getServerRequestOptions());
+    return this.http.get<TerabyteListItem[]>(
+      this.getTerabyteApiUrl(`/${objectId}`),
+      this.getServerRequestOptions(),
+    );
   }
 
   /**
@@ -104,7 +109,10 @@ export class TerraByteApiService {
   deleteFile(options: TerraFileOptions): Observable<TerraUploadedFile> {
     const url = `/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`;
     // eslint-disable-next-line max-len
-    return this.http.delete<TerraUploadedFile>(this.getTerabyteApiUrl(url), this.getServerRequestOptions());
+    return this.http.delete<TerraUploadedFile>(
+      this.getTerabyteApiUrl(url),
+      this.getServerRequestOptions(),
+    );
   }
 
   /**
@@ -129,6 +137,12 @@ export class TerraByteApiService {
    * @param file - файл для загрузки
    */
   pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile): void {
-    FileSaver.saveAs(data, file.fileName);
+    let resultBlob = data;
+
+    if (file.mimeType) {
+      resultBlob = resultBlob.slice(0, resultBlob.size, file.mimeType);
+    }
+
+    FileSaver.saveAs(resultBlob, file.fileName);
   }
 }

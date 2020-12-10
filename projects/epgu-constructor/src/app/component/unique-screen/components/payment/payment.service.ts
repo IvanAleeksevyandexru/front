@@ -55,11 +55,6 @@ export class PaymentService {
    * @param attributeValues - дополнительные параметры
    */
   getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<{ value: string }> {
-    // TODO: Хардкод для локальной отладки подмена суммы оплаты пошлины
-    if (location.hostname.includes('test.gosuslugi.ru')) {
-      attributeValues.sum = '200';
-    }
-
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/lk/v1/paygate/uin`
       : this.config.uinApiUrl;

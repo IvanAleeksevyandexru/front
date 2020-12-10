@@ -262,4 +262,16 @@ export class UtilsService {
       window.URL.revokeObjectURL(url);
     }, 200);
   }
+
+  public hasJsonStructure(string: string): boolean {
+    if (typeof string !== 'string') return false;
+    try {
+        const result = JSON.parse(string);
+        const type = Object.prototype.toString.call(result);
+        return type === '[object Object]'
+            || type === '[object Array]';
+    } catch (err) {
+        return false;
+    }
+}
 }
