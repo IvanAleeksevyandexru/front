@@ -66,16 +66,19 @@
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item *ngSwitchCase="componentType.MvdGiac" [data]="componentData">
-        <lib-dropdown
+        <lib-lookup
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="(dropDowns$ | async)[componentData.value?.id]"
+          [fixedItems]="(dropDowns$ | async)[componentData.value?.id]"
           [disabled]="(dropDowns$ | async)[componentData.value?.id].length === 1"
           [validationShowOn]="validationShowOn"
           [formControl]="componentData.get('value')"
           [clearable]="true"
-          class="cs__select cs-select"
+          [queryMinSymbolsCount]="0"
+          [searchCaseSensitive]="false"
+
+          [virtualScroll]="true"
         >
-        </lib-dropdown>
+        </lib-lookup>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item
