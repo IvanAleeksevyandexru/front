@@ -28,11 +28,11 @@ import { ScreenService } from '../screen/screen.service';
 import { ScreenServiceStub } from '../screen/screen.service.stub';
 import { EpguLibModuleInited } from '../core/core.module';
 import { ServiceDataServiceStub } from './services/service-data/service-data.service.stub';
-import { Service } from './form-player.types';
-import { BehaviorSubject, of } from 'rxjs';
-import { Config } from '../core/config/config.types';
+import { FormPlayerNavigation, Service } from './form-player.types';
+import { of } from 'rxjs';
 import { ScreenTypes } from '../screen/screen.types';
 
+const responseDto = new FormPlayerServiceStub()._store;
 
 describe('FormPlayerComponent', () => {
   let formPlayerService: FormPlayerService;
@@ -41,6 +41,7 @@ describe('FormPlayerComponent', () => {
   let configService: ConfigService;
   let navService: NavigationService;
   let screenService: ScreenService;
+  let loggerService: LoggerService;
   let serviceDataService: ServiceDataService;
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
@@ -87,6 +88,7 @@ describe('FormPlayerComponent', () => {
     configService = TestBed.inject(ConfigService);
     navService = TestBed.inject(NavigationService);
     screenService = TestBed.inject(ScreenService);
+    loggerService = TestBed.inject(LoggerService);
   });
 
   describe('ngOnInit()', () => {
@@ -161,7 +163,7 @@ describe('FormPlayerComponent', () => {
       const component = fixture.componentInstance;
       component.service = serviceDataMock;
       fixture.detectChanges();
-      loadService.loaded = new BehaviorSubject(false);
+      loadService.loaded.next(false);
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
       component['initFormPlayerConfig']();
       expect(formPlayerConfigApiService.getFormPlayerConfig).not.toBeCalled();
@@ -172,7 +174,7 @@ describe('FormPlayerComponent', () => {
       const component = fixture.componentInstance;
       component.service = serviceDataMock;
       fixture.detectChanges();
-      loadService.loaded = new BehaviorSubject(true);
+      loadService.loaded.next(true);
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
       component['initFormPlayerConfig']();
       expect(formPlayerConfigApiService.getFormPlayerConfig).toBeCalled();
@@ -184,7 +186,7 @@ describe('FormPlayerComponent', () => {
       const component = fixture.componentInstance;
       component.service = serviceDataMock;
       fixture.detectChanges();
-      loadService.loaded = new BehaviorSubject(true);
+      loadService.loaded.next(true);
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.returnValue(of(config));
       const setterSpy = jest.spyOn(configService, 'config', 'set');
       component['initFormPlayerConfig']();
@@ -260,6 +262,101 @@ describe('FormPlayerComponent', () => {
       component['initSettingOfScreenIdToAttr']();
       fixture.detectChanges();
       expect(fixture.debugElement.attributes['test-screen-id']).toBe(display.id);
+    });
+  });
+
+
+  describe('startPlayer()', () => {
+    it('shouldn\'t trigger any start cases', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      loadService.loaded.next(false);
+      spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
+      component['startPlayer']();
+      expect(component['startScenarioFromProps']).not.toBeCalled();
+      expect(component['handleOrder']).not.toBeCalled();
+      expect(component['getOrderIdFromApi']).not.toBeCalled();
+    });
+
+    it('should call startScenarioFromProps case', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, initState: '{}' };
+      fixture.detectChanges();
+      loadService.loaded.next(true);
+      spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
+      component['startPlayer']();
+      expect(component['startScenarioFromProps']).toBeCalled();
+      expect(component['handleOrder']).not.toBeCalled();
+      expect(component['getOrderIdFromApi']).not.toBeCalled();
+    });
+
+    it('should call handleOrder case', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, orderId: '2145' };
+      fixture.detectChanges();
+      loadService.loaded.next(true);
+      spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
+      component['startPlayer']();
+      expect(component['startScenarioFromProps']).not.toBeCalled();
+      expect(component['handleOrder']).toBeCalled();
+      expect(component['getOrderIdFromApi']).not.toBeCalled();
+    });
+
+    it('should call getOrderIdFromApi case', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock };
+      fixture.detectChanges();
+      loadService.loaded.next(true);
+      spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
+      component['startPlayer']();
+      expect(component['startScenarioFromProps']).not.toBeCalled();
+      expect(component['getOrderIdFromApi']).toBeCalled();
+    });
+  });
+
+  describe('startScenarioFromProps()', () => {
+    it('should call log of loggerService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, initState: JSON.stringify(responseDto) };
+      fixture.detectChanges();
+      spyOn(loggerService, 'log').and.callThrough();
+      component['startScenarioFromProps']();
+      expect(loggerService.log).toBeCalled();
+    });
+
+    it('should set store to formPlayerService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, initState: JSON.stringify(responseDto) };
+      fixture.detectChanges();
+      const setterSpy = jest.spyOn(formPlayerService, 'store', 'set');
+      component['startScenarioFromProps']();
+      expect(setterSpy).toBeCalledWith(responseDto);
+    });
+
+    it('should call navigate of formPlayerService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, initState: JSON.stringify(responseDto) };
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'navigate').and.callThrough();
+      component['startScenarioFromProps']();
+      const payload = responseDto.scenarioDto.currentValue;
+      expect(formPlayerService.navigate).toBeCalledWith({ payload }, FormPlayerNavigation.NEXT);
     });
   });
 

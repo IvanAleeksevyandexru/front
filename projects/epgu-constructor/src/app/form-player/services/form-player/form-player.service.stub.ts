@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class FormPlayerServiceStub {
-  response: FormPlayerApiSuccessResponse = { scenarioDto: {
+  _store: FormPlayerApiSuccessResponse = { scenarioDto: {
       applicantAnswers: {},
       cachedAnswers: {},
       currentScenarioId: '1',
@@ -38,14 +38,15 @@ export class FormPlayerServiceStub {
     }};
   componentId: string;
   componentType: string;
-  componentData: DisplayDto;
   isLoading = false;
 
-  getData(): void {}
+  get store(): FormPlayerApiSuccessResponse {
+    return this._store;
+  }
 
-  nextStep(): void {}
-
-  prevStep(): void {}
+  set store(store: FormPlayerApiSuccessResponse) {
+    this._store = store;
+  }
 
   updateRequest(): void {}
 
@@ -57,7 +58,7 @@ export class FormPlayerServiceStub {
 
   initData(): void {}
 
-  store(): FormPlayerApiSuccessResponse { return this.response; }
+  navigate(): void {}
 
   checkIfOrderExist(): Observable<{}> {
     return of({});

@@ -13,7 +13,7 @@ import { of, throwError } from 'rxjs';
 import { FormPlayerNavigation, Navigation } from '../../form-player/form-player.types';
 import { FormPlayerApiErrorStatuses } from '../../form-player/services/form-player-api/form-player-api.types';
 
-const response = new FormPlayerServiceStub().response;
+const response = new FormPlayerServiceStub()._store;
 
 describe('ScreenModalService', () => {
   let service: ScreenModalService;

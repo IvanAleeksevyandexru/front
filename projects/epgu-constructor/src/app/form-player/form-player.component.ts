@@ -37,6 +37,8 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('attr.test-screen-id') screenId: string;
   @Input() service: Service;
 
+  isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
+
   constructor(
     private deviceDetector: DeviceDetectorService,
     private serviceDataService: ServiceDataService,
@@ -68,8 +70,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private initFormPlayerConfig(): void {
-    this.loadService.loaded
-      .pipe(filter((loaded: boolean) => loaded))
+    this.isCoreConfigLoaded$
       .pipe(mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((config) => {
@@ -98,10 +99,9 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private startPlayer(): void {
-    this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((loaded) => {
-      if (!loaded) return;
-      const { orderId, invited, canStartNew } = this.serviceDataService;
-      if (this.service.initState) {
+    this.isCoreConfigLoaded$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      const { orderId, invited, canStartNew, initState } = this.service;
+      if (initState) {
         this.startScenarioFromProps();
       } else if (orderId) {
         this.handleOrder(orderId, invited, canStartNew);
@@ -115,8 +115,8 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     const store = JSON.parse(this.service.initState) as FormPlayerApiSuccessResponse;
     this.loggerService.log(['initState', store], 'Запуск плеера из предустановленого состояния');
     this.formPlayerService.store = store;
-    const navigationPayload = store.scenarioDto.currentValue;
-    this.formPlayerService.navigate({ payload: navigationPayload }, FormPlayerNavigation.NEXT);
+    const payload = store.scenarioDto.currentValue;
+    this.formPlayerService.navigate({ payload }, FormPlayerNavigation.NEXT);
   }
 
   private getOrderIdFromApi(): void {
