@@ -3,10 +3,13 @@ import { ComponentActionDto } from '../../../form-player/services/form-player-ap
 
 @Component({
   selector: 'epgu-constructor-long-button',
-  template: `<button [disabled]="data?.disabled || disabled"><ng-content></ng-content></button>`,
+  template: `<button [class.loading]="isLoading" [disabled]="data?.disabled || disabled">
+    <ng-content></ng-content>
+  </button>`,
   styleUrls: ['./long-button.component.scss'],
 })
 export class LongButtonComponent {
   @Input() data: Partial<ComponentActionDto>;
   @Input() disabled: boolean;
+  @Input() isLoading: boolean;
 }

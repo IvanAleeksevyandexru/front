@@ -9,6 +9,8 @@ import {
 } from '../../../component/component-screen/components/timer/timer.interface';
 import { TextTransform } from '../../../shared/types/textTransform';
 import { DictionaryOptions } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
+// eslint-disable-next-line max-len
+import { ConfirmUserDataStyle } from '../../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -103,6 +105,7 @@ export interface ComponentAttrsDto {
   uploadedFile?: ComponentUploadedFileDto;
   validateMessage?: string;  //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
   dictionaryOptions?: DictionaryOptions;
+  style?: ConfirmUserDataStyle;
 }
 
 export interface ComponentUploadedFileDto {

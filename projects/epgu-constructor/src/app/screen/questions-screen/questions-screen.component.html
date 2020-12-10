@@ -31,6 +31,7 @@
       <epgu-constructor-answer-button
         [data]="action"
         class="quiz__answer"
+        [selectedValue]="selectedAnswer"
         *ngIf="showActionAsLongBtn(action)"
         (click)="answerChoose(action)"
       >

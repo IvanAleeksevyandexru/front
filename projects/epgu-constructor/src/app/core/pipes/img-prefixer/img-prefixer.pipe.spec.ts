@@ -5,18 +5,21 @@ import { LoadService } from 'epgu-lib';
 import { LoadServiceStub } from '../../config/load-service-stub';
 
 describe('ImgPrefixerPipe', () => {
+  let pipe: ImgPrefixerPipe;
+  let configService: ConfigService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ConfigService,
-        { provide: LoadService, useClass: LoadServiceStub }
-      ]
+      providers: [ConfigService, { provide: LoadService, useClass: LoadServiceStub }],
     });
+
+    configService = TestBed.get(ConfigService);
+    pipe = new ImgPrefixerPipe(configService);
   });
 
-  it('create an instance', () => {
-    const configService: ConfigService = TestBed.get(ConfigService);
-    const pipe = new ImgPrefixerPipe(configService);
-    expect(pipe).toBeTruthy();
+  it('check inject link', () => {
+    configService['_staticDomainAssetsPath'] = 'test';
+    expect(pipe.transform('src=\'{staticDomainAssetsPath}\'')).toBe('src=\'test\'');
+    expect(pipe.transform('src="{staticDomainAssetsPath}"')).toBe('src="test"');
+    expect(pipe.transform('src="{staticDomainAssetsPath}/123"')).toBe('src="test/123"');
   });
 });
