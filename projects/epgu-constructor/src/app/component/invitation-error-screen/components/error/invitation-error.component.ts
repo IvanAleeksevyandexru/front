@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-
 import { finalize, takeUntil } from 'rxjs/operators';
+
 import { ConfigService } from '../../../../core/config/config.service';
 import { ValidationService } from '../../../components-list/services/validation.service';
 import {
@@ -18,7 +18,7 @@ interface Data extends ComponentDto {
     imgSrc: string;
     error: { imgSrc: string; label: string };
     success: { imgSrc: string; label: string };
-    ref: string;
+    ref?: string;
     helperText: string;
     label: string;
     sendEmailLabel: string;
@@ -37,7 +37,7 @@ export class InvitationErrorComponent implements OnInit {
   @Input() applicantAnswers: ApplicantAnswersDto;
   @Input() orderId: string;
   @Input() header: string;
-  @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
+  @Output() nextStepEvent = new EventEmitter<string>();
   public email: FormControl = new FormControl('', {
     validators: Validators.required,
   });
@@ -96,6 +96,7 @@ export class InvitationErrorComponent implements OnInit {
         },
       );
   }
+
   redirectToLK() {
     window.location.href = this.config.lkUrl;
   }
