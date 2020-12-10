@@ -35,12 +35,12 @@ export class UnusedPaymentsComponent implements OnInit {
     private listPaymentsService: UnusedPaymentsService,
   ) {}
 
-  public usePayment = (uin: string) => {
+  public usePayment = (uin: string): void => {
     this.paymentUIN = uin;
     this.nextStep(JSON.stringify({ reusePaymentUin: this.paymentUIN }));
   };
 
-  public cancelUsePayment = () => {
+  public cancelUsePayment = (): void => {
     this.navigationService.prev();
   };
 
@@ -51,13 +51,13 @@ export class UnusedPaymentsComponent implements OnInit {
     this.nextStepEvent.emit(data);
   }
 
-  next() {
+  next(): void {
     if (this.tax) {
       this.nextStep(JSON.stringify({ reusePaymentUin: this.tax.uin }));
     }
   }
 
-  usePaymentsListData() {
+  usePaymentsListData(): void {
     const value = JSON.parse(this.data.components[0].value);
     if (value.length) {
       this.paymentsList.next(value);
@@ -66,7 +66,7 @@ export class UnusedPaymentsComponent implements OnInit {
     }
   }
 
-  showModal() {
+  showModal(): void {
     this.modalService.openModal(UsePaymentsModalComponent, {
       paymentsList: this.paymentsList.getValue(),
       usePaymentHandler: this.usePayment,
@@ -74,7 +74,7 @@ export class UnusedPaymentsComponent implements OnInit {
     });
   }
 
-  getListPaymentsInfoSuccess = (data) => {
+  getListPaymentsInfoSuccess = (data): void => {
     if (data.length) {
       this.paymentsList.next(data);
     } else {
@@ -82,7 +82,7 @@ export class UnusedPaymentsComponent implements OnInit {
     }
   };
 
-  getListPaymentsInfoError = (error) => {
+  getListPaymentsInfoError = (error): void => {
     // eslint-disable-next-line no-console
     console.log('Error', error);
     this.usePaymentsListData();
@@ -92,11 +92,11 @@ export class UnusedPaymentsComponent implements OnInit {
    * Выбор радиокнопки
    * @param $event - событие выбора
    */
-  radioSelect($event: UnusedPaymentInterface) {
+  radioSelect($event: UnusedPaymentInterface): void {
     this.tax = $event;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     const { orderId } = this.screenService.getStore();
     this.orderId = orderId;
     this.listPaymentsService

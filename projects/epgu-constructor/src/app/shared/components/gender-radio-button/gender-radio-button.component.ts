@@ -30,7 +30,7 @@ export class GenderRadioButtonComponent implements ControlValueAccessor {
 
   innerValue: string | number | boolean;
 
-  writeValue(value: string | number | boolean) {
+  writeValue(value: string | number | boolean): void {
     this.innerValue = value || GenderOrder.male;
   }
 
@@ -42,7 +42,7 @@ export class GenderRadioButtonComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  change(gender: { value: string }) {
+  change(gender: { value: string }): void {
     this.innerValue = gender.value;
     if (this.onChange) {
       this.onChange(gender.value);

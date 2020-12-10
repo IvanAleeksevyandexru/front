@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ComponentBase } from './screen.types';
-import { SlotInterface } from '../component/unique-screen/components/time-slots/time-slots.types';
 
 @Injectable()
 export class CurrentAnswersService {
@@ -10,7 +8,8 @@ export class CurrentAnswersService {
   private _state: any;
   private _isValid: boolean;
 
-  get state () {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get state (): any {
     return this._state;
   }
 
@@ -20,7 +19,7 @@ export class CurrentAnswersService {
     this._state = val;
   }
 
-  get isValid () {
+  get isValid (): boolean {
     return this._isValid;
   }
   set isValid (val: boolean) {

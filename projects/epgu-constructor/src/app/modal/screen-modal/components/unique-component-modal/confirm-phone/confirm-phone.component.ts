@@ -85,8 +85,8 @@ export class ConfirmPhoneComponent implements OnInit {
     };
   }
 
-  isItemHasError(codeValue: string) {
-    return this.screenService.componentError && codeValue;
+  isItemHasError(codeValue: string): Boolean {
+    return Boolean(this.screenService.componentError && codeValue);
   }
 
   private initCodeFormArray(): void {

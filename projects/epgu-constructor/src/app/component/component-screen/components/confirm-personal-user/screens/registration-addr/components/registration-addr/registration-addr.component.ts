@@ -58,7 +58,7 @@ export class RegistrationAddrComponent implements OnInit {
     this.redAddrForm = this.fb.group(controls);
   }
 
-  hintClick({ amount, unit }: RegistrationAddrHints) {
+  hintClick({ amount, unit }: RegistrationAddrHints): void {
     const regDate = moment().add(amount, unit).toDate();
     this.redAddrForm.patchValue({ regDate });
   }

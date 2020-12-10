@@ -24,7 +24,7 @@ export class ScreenResolverComponent implements OnInit {
     });
   }
 
-  setScreenComponent(screenType: ScreenTypes) {
+  setScreenComponent(screenType: ScreenTypes): void {
     this.screenComponent = this.getScreenComponentByType(screenType);
 
     if (!this.screenComponent) {
@@ -32,11 +32,11 @@ export class ScreenResolverComponent implements OnInit {
     }
   }
 
-  getScreenComponentByType(screenType: ScreenTypes) {
+  getScreenComponentByType(screenType: ScreenTypes): ScreenComponent {
     return SCREEN_COMPONENTS[screenType];
   }
 
-  private handleScreenComponentError(screenType: ScreenTypes) {
+  private handleScreenComponentError(screenType: ScreenTypes): never {
     // TODO: need to find a better way for handling this error, maybe show it on UI
     throw new Error(`We cant find screen component for this screen type: ${screenType}`);
   }

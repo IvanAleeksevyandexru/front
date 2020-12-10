@@ -67,10 +67,10 @@ export class DictionaryUtilities {
    */
   private static getValueForFilter(componentValue: ComponentValue, screenStore: ScreenStore, dFilter: IdictionaryFilter): DictionaryValue {
     const filterTypes = {
-      value: (dFilter) => JSON.parse(dFilter.value),
-      preset: (dFilter) => ({ asString: componentValue[dFilter.value] }),
-      root: (dFilter) => ({ asString: screenStore[dFilter.value] }),
-      ref: (dFilter) => ({ asString: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value) }),
+      value: (dFilter): DictionaryValue => JSON.parse(dFilter.value),
+      preset: (dFilter): DictionaryValue => ({ asString: componentValue[dFilter.value] as string }),
+      root: (dFilter): DictionaryValue => ({ asString: screenStore[dFilter.value] }),
+      ref: (dFilter): DictionaryValue => ({ asString: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value) }),
     };
     return filterTypes[dFilter.valueType](dFilter);
   }

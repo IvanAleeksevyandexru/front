@@ -76,7 +76,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
     this.updateHelperText();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     // document
     //   .getElementsByClassName('country-apostil__minsk-convention-link')[0]
     //   .addEventListener('click', this.showModal);
@@ -104,14 +104,14 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
     this.helperText = this.data.required ? '' : OPTIONAL_FIELD;
   }
 
-  clickToInnerHTML($event: MouseEvent) {
+  clickToInnerHTML($event: MouseEvent): void {
     const targetElementClass = ($event.target as HTMLElement).classList[0];
     if (targetElementClass === 'country-apostil__minsk-convention-link') {
       this.showModal();
     }
   }
 
-  showModal() {
+  showModal(): void {
     this.modalService.openModal(ConfirmationModalComponent, {
       ...this.modalParameters,
     });

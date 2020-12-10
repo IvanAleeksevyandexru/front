@@ -83,7 +83,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
       .subscribe((data: NavigationPayload) => this.prevStep(data));
   }
 
-  updateHeaderHeight() {
+  updateHeaderHeight(): void {
     const elem = this.headerBlock?.nativeElement;
     const extraSpace = 2; // допуск для избежаний появления скролла
     const marginBottom = 16;
@@ -91,7 +91,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
     this.screenModalService.updateMinContentHeight(headerHeight);
   }
 
-  nextStep(navigation?: Navigation) {
+  nextStep(navigation?: Navigation): void {
     if (navigation?.options?.isInternalScenarioFinish) {
       this.closeModal();
       return;
@@ -100,7 +100,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
     this.screenModalService.navigate(navigation, FormPlayerNavigation.NEXT);
   }
 
-  prevStep(navigation?: Navigation) {
+  prevStep(navigation?: Navigation): void {
     if (navigation?.options?.isInternalScenarioFinish) {
       this.closeModal();
       return;
@@ -109,7 +109,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
     this.screenModalService.navigate(navigation, FormPlayerNavigation.PREV);
   }
 
-  switchNavigationToFormPlayer() {
+  switchNavigationToFormPlayer(): void {
     this.navService.prev({ options: { store: this.screenModalService.initStore } });
   }
 

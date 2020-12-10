@@ -25,7 +25,7 @@ export class ConfirmationModalBaseComponent {
     this.isMobile = this.deviceDetector.isMobile;
   }
 
-  closeModal() {
+  closeModal(): void {
     this.closeModalChange.emit();
   }
 }

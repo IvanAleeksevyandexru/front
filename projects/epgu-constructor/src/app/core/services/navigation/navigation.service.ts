@@ -70,7 +70,7 @@ export class NavigationService {
     }
   }
 
-  private navigateInsideWebView(options: typeof OPTIONS_FEED_MV | typeof OPTIONS_FEED_EXIT) {
+  private navigateInsideWebView(options: typeof OPTIONS_FEED_MV | typeof OPTIONS_FEED_EXIT): void {
     this.smuEventsService.notify(options);
   }
 }

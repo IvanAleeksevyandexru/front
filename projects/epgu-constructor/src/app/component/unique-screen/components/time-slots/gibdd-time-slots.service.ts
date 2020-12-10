@@ -9,6 +9,7 @@ import {
   BookTimeSlotReq,
   GibddDepartmentInterface,
   SlotInterface,
+  SmevBookResponseInterface,
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
@@ -40,7 +41,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     private config: ConfigService,
   ) {}
 
-  checkBooking(selectedSlot: SlotInterface) {
+  checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface>{
     if (this.bookedSlot) {
       return this.smev3TimeSlotsRestService.cancelSlot(
         { eserviceId: '10000070732', bookId: this.bookId })
@@ -64,7 +65,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     return this.book(selectedSlot);
   }
 
-  book(selectedSlot: SlotInterface) {
+  book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     this.errorMessage = undefined;
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
@@ -118,7 +119,6 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   init(data: TimeSlotValueInterface): Observable<void> {
-
     if (this.changed(data) || this.errorMessage) {
       this.slotsMap = {};
       this.availableMonths = [];

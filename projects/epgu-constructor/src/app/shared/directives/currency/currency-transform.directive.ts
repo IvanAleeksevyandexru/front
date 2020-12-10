@@ -7,23 +7,24 @@ import { Directive, HostListener, Input } from '@angular/core';
 export class CurrencyTransformDirective {
   @Input('epgu-constructor-currency-transform') currency: boolean;
 
-  constructor(private currencyPipe: CurrencyPipe) {
-  }
+  constructor(private currencyPipe: CurrencyPipe) {}
+
   @HostListener('keypress', ['$event'])
-  onKeyPress(event: KeyboardEvent) {
+  onKeyPress(event: KeyboardEvent): boolean {
     if (this.currency) {
       return event.key != ' ' && (event.key >= '0' && event.key <= '9');
     }
   }
+
   @HostListener('input', ['$event.target'])
-  onInput(target: HTMLInputElement) {
+  onInput(target: HTMLInputElement): void {
     if (this.currency) {
       target.value = target.value.replace(/[^\d]/g, '') || '0';
     }
   }
 
   @HostListener('change', ['$event.target'])
-  onBlur(target: HTMLInputElement) {
+  onBlur(target: HTMLInputElement): void {
     if (this.currency) {
       let price = target.value || '0';
       if (!Number.isNaN(+price)) {

@@ -1,10 +1,10 @@
 import { Injectable, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
 import { ConfigService } from '../../../../core/config/config.service';
-import { IGeoCoordsResponse } from './select-map-object.interface';
+import { IGeoCoordsResponse, IFeatureCollection } from './select-map-object.interface';
 import {
   DictionaryItem,
   DictionaryResponseForYMap,
@@ -58,7 +58,7 @@ export class SelectMapObjectService implements OnDestroy {
    * Returns geo coords of physical addresses array
    * @param items
    */
-  public getCoordsByAddress(items: Array<DictionaryItem>) {
+  public getCoordsByAddress(items: Array<DictionaryItem>): Observable<IGeoCoordsResponse> {
     const path = `${this.config.externalApiUrl}/address/resolve`;
     return this.http.post<IGeoCoordsResponse>(path, {
       address: items.map(item => item.attributeValues[this.componentAttrs.attributeNameWithAddress]),
@@ -70,7 +70,7 @@ export class SelectMapObjectService implements OnDestroy {
    * @param dictionary
    * @param coords
    */
-  public fillDictionaryItemsWithCoords(coords: IGeoCoordsResponse) {
+  public fillDictionaryItemsWithCoords(coords: IGeoCoordsResponse): void {
     const hashMap = {};
     coords.coords.forEach(coord => {
       hashMap[coord.address] = { latitude: coord.latitude, longitude: coord.longitude };
@@ -90,7 +90,7 @@ export class SelectMapObjectService implements OnDestroy {
    * prepares and returns collection of objects for yandex map
    * @param items geo objects
    */
-  public prepareFeatureCollection(items: DictionaryYMapItem[]) {
+  public prepareFeatureCollection(items: DictionaryYMapItem[]): IFeatureCollection {
     const res = { type: 'FeatureCollection', features: [] };
     items.forEach((item) => {
       if (item.center) {
@@ -112,7 +112,7 @@ export class SelectMapObjectService implements OnDestroy {
    * place objects on yandex map
    * @param map link to yandex map
    */
-  public placeOjectsOnMap(map: YaMapService['map']) {
+  public placeOjectsOnMap(map: YaMapService['map']): void {
     const objects = this.prepareFeatureCollection(this.filteredDictionaryItems);
 
     this.objectManager = this.createMapsObjectManager();
@@ -127,6 +127,8 @@ export class SelectMapObjectService implements OnDestroy {
   /**
    * returns yandex ObjectManager to work with map's objects
    */
+  // TODO нет в epgu-lib интерфейсов
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   private createMapsObjectManager() {
     const OMSettings = {
       clusterize: !0,
@@ -161,6 +163,8 @@ export class SelectMapObjectService implements OnDestroy {
     return objectManager;
   }
 
+  // TODO нет в epgu-lib интерфейсов
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   private getCustomBalloonContentLayout() {
     if (typeof this.ymaps.templateLayoutFactory == 'undefined') {
       return;
@@ -210,7 +214,7 @@ export class SelectMapObjectService implements OnDestroy {
    * @param coords
    * @param objectId
    */
-  public centeredPlaceMark(coords: number[], objectId: number) {
+  public centeredPlaceMark(coords: number[], objectId: number): void {
     let serviceContext = this;
     let offset = -0.00008;
 
@@ -252,7 +256,10 @@ export class SelectMapObjectService implements OnDestroy {
    * @param attrs map with attributes to extract
    * @param item
    */
-  private getMappedAttrsForBaloon(attrs: Array<{ name: string, label: string }>, item: DictionaryYMapItem) {
+  private getMappedAttrsForBaloon(
+    attrs: Array<{ name: string, label: string }>,
+    item: DictionaryYMapItem
+  ): Array<{ name: string, label: string }> {
     const res = [];
     attrs.forEach((attr) => {
       let itemValue = item.attributeValues[attr.name];
@@ -268,7 +275,7 @@ export class SelectMapObjectService implements OnDestroy {
    * filter geo items by searchString and redraw map
    * @param searchString
    */
-  public searchMapObject(searchString: string) {
+  public searchMapObject(searchString: string): void {
     const searchStringLower = searchString.toLowerCase();
     this.filteredDictionaryItems = this.dictionary?.items.filter((item) => {
       const address = (item.attributeValues[this.componentAttrs.attributeNameWithAddress])?.toLowerCase();
@@ -282,7 +289,7 @@ export class SelectMapObjectService implements OnDestroy {
     return this.filteredDictionaryItems.find((object) => object.value === value);
   }
 
-  public centeredPlaceMarkByObjectValue(value: string) {
+  public centeredPlaceMarkByObjectValue(value: string): void {
     const valueFromDict = this.findObjectByValue(value);
     if (valueFromDict?.center) {
       this.centeredPlaceMark(valueFromDict.center, valueFromDict.idForMap);
@@ -293,12 +300,12 @@ export class SelectMapObjectService implements OnDestroy {
    * Заполняет словарь в сервисе полученными координатами
    * @param coords массив гео координат для объектов
    */
-  public saveCoords(coords: IGeoCoordsResponse) {
+  public saveCoords(coords: IGeoCoordsResponse): void {
     this.fillDictionaryItemsWithCoords(coords);
     this.normalizeDictionaryForMap(this.dictionary);
   }
 
-  public closeBalloon() {
+  public closeBalloon(): void {
     this.selectedValue.next(null);
     this.mapEvents.fire('userclose');
   }

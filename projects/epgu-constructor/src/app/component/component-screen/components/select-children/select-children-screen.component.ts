@@ -10,6 +10,7 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { CustomComponentOutputData } from '../../../components-list/components-list.types';
+import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 enum ItemStatus {
   invalid = 'INVALID',
@@ -59,7 +60,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.initStartValues();
   }
 
-  initVariables() {
+  initVariables(): void {
     const component = this.screenService.getCompFromDisplay(this.data.id);
     const itemsList = component ? JSON.parse(component.presetValue) : [];
     this.firstNameRef = this.getRefFromComponent('firstName');
@@ -69,9 +70,9 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.itemsToSelect = this.getItemsToSelect(itemsList);
   }
 
-  private getItemsToSelect(itemsList: Array<{ [key: string]: string }>) {
+  private getItemsToSelect(itemsList: Array<{ [key: string]: string }>): ChildI[] {
     return itemsList
-      .map((child) => {
+      .map<ChildI>((child) => {
         return {
           ...child,
           id: child[this.idRef],
@@ -81,7 +82,7 @@ export class SelectChildrenScreenComponent implements OnInit {
       .concat(this.getChildForAddChildren(this.idRef));
   }
 
-  private getChildForAddChildren(prop: string) {
+  private getChildForAddChildren(prop: string): ChildI {
     return {
       id: this.NEW_ID,
       text: 'Добавить нового ребенка',
@@ -245,11 +246,11 @@ export class SelectChildrenScreenComponent implements OnInit {
    * метод формирует и возвращает массив компонентов кастомного ребенка
    * @param child - сохраненный ранее ребенок. Используется для заполнения полей
    */
-  private prepareItemComponents(child: ChildI = {}) {
+  private prepareItemComponents(child: ChildI = {}): Array<ComponentDto> {
     return this.screenService.component?.attrs?.components.map((component) => {
       return {
         ...component,
-        value: child[component.id],
+        value: <string>child[component.id],
       };
     });
   }

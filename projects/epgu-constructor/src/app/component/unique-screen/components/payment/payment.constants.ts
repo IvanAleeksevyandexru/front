@@ -29,7 +29,10 @@ const requestPageSize = 258; //Сколько сведений на одной �
  * @param subs - массив опций фильтра
  * @param unionKind - тип объединения фильтров
  */
-const getPaymentRequestOptionsFilter = (subs: SubPaymentDictionaryOptionInterface[], unionKind: string = 'AND') => {
+const getPaymentRequestOptionsFilter = (
+  subs: SubPaymentDictionaryOptionInterface[],
+  unionKind: string = 'AND'
+): PaymentDictionaryOptionsInterface => {
   return {
     pageSize: requestPageSize,
     filter: {

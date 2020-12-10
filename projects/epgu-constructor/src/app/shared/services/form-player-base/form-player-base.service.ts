@@ -51,7 +51,7 @@ export abstract class FormPlayerBaseService {
    * Возвращает true, если есть ошибки
    * @param response - ответ сервера
    */
-  protected hasError(response: FormPlayerApiResponse) {
+  protected hasError(response: FormPlayerApiResponse): boolean {
     return this.hasRequestErrors(response as FormPlayerApiErrorResponse)
       || this.hasBusinessErrors(response as FormPlayerApiSuccessResponse);
   }
