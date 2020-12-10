@@ -101,7 +101,7 @@
         <epgu-constructor-constructor-plain-input
           epgu-constructor-trim
           epgu-constructor-text-transform
-          [textTransformType]="textTransformType"
+          [textTransformType]="textTransformType(data[0])"
           [name]="i + '_place'"
           [control]="$any(generation.get('place'))"
           [invalid]="generation.get('place').invalid"
@@ -122,7 +122,7 @@
         <epgu-constructor-constructor-plain-input
           epgu-constructor-trim
           epgu-constructor-text-transform
-          [textTransformType]="textTransformType"
+          [textTransformType]="textTransformType(data[0])"
           [name]="i + '_address'"
           [control]="$any(generation.get('address'))"
           [invalid]="generation.get('address').invalid"
