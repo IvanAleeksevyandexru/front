@@ -3,7 +3,11 @@ import { Subject } from 'rxjs';
 import { Navigation } from '../../../form-player/form-player.types';
 import { SmuEventsService } from 'epgu-lib';
 import { ConfigService } from '../../config/config.service';
-import { MobilViewEvents, OPTIONS_FEED_MV, OPTIONS_FEED_EXIT } from '../../../shared/constants/redirect-event';
+import {
+  MobilViewEvents,
+  OPTIONS_FEED_MV,
+  OPTIONS_FEED_EXIT,
+} from '../../../shared/constants/redirect-event';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 
 /**
@@ -25,7 +29,7 @@ export class NavigationService {
   constructor(
     private smuEventsService: SmuEventsService,
     private deviceDetector: DeviceDetectorService,
-    private configService: ConfigService
+    private configService: ConfigService,
   ) {
     this.isWebView = this.deviceDetector.isWebView;
   }
@@ -54,7 +58,7 @@ export class NavigationService {
     if (this.isWebView) {
       this.navigateInsideWebView(MobilViewEvents.feed);
     } else {
-      window.location.href = `${this.configService.lkUrl}/orders/all `;
+      window.location.href = `${this.configService.lkUrl}/orders/all`;
     }
   }
 
