@@ -7,8 +7,6 @@ import { CoreModule } from '../../../core/core.module';
 @NgModule({
   declarations: [ConstructorMonthPickerComponent],
   imports: [CommonModule, CoreModule],
-  exports: [
-    ConstructorMonthPickerComponent
-  ]
+  exports: [ConstructorMonthPickerComponent],
 })
 export class ConstructorMonthPickerModule {}
