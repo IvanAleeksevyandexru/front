@@ -51,14 +51,14 @@ export class RegistrationAddrComponent implements OnInit {
     this.data?.attrs?.fields.forEach((field) => {
       const formControlValue = this.getInitFormValue(initData, field.fieldName);
       controls[field.fieldName] = this.fb.control(
-        formControlValue,
+        { value: formControlValue, disabled: field.disabled },
         this.getValidatorsForField(field),
       );
     });
     this.redAddrForm = this.fb.group(controls);
   }
 
-  hintClick({ amount, unit }: RegistrationAddrHints) {
+  hintClick({ amount, unit }: RegistrationAddrHints): void {
     const regDate = moment().add(amount, unit).toDate();
     this.redAddrForm.patchValue({ regDate });
   }

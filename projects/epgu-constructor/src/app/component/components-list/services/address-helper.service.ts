@@ -20,7 +20,10 @@ export class AddressHelperService {
 
   // Провайдер поиска для передачи в lib-lookup
   // с функцией поиска для lib-lookup. Сам поиск осуществляется за счет suggestions дадаты
-  public provider = { search: (searchString) => searchString ? this.getCitySuggestions(searchString) : of([]) };
+  public provider = {
+    search: (searchString): Observable<DadataSuggestionsAddressForLookup[]> =>
+      searchString ? this.getCitySuggestions(searchString) : of([])
+  };
 
   /**
    * Получение городов из suggestions дадаты для lib-lookup. Добавляет к suggestions атрибуты id и text
@@ -46,7 +49,7 @@ export class AddressHelperService {
    * "Наращивает" адресс из suggestions дадаты данными из normalize
    * @param address - объект с адресом из suggestions
    */
-  public async normalizeAddress(address: DadataSuggestionsAddressForLookup) {
+  public async normalizeAddress(address: DadataSuggestionsAddressForLookup): Promise<void> {
     let regionCode = null;
     // Если в address объект, значит уже нормализовано
     const isNormalized = typeof address.address === 'object';
@@ -59,7 +62,7 @@ export class AddressHelperService {
       const regionKladrId = normalAddress.address.elements.slice(-1)[0].kladrCode;
       regionCode = regionKladrId.toString().substring(0,2);
     }
-    
+
     Object.assign(address, normalAddress, { regionCode });
   }
 }

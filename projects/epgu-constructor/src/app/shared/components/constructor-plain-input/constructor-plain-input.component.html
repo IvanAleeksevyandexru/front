@@ -12,6 +12,6 @@
   [placeholder]="placeholder"
   [maxlength]="maxlength"
   [type]="type"
-  [disabled]="disabled"
   [pattern]="pattern"
+  (blur)="onBlur()"
 ></lib-plain-input>

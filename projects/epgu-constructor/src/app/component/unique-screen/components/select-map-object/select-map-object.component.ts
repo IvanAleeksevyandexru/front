@@ -9,7 +9,8 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { YaMapService, LookupComponent, ListItem } from 'epgu-lib';
+import { YaMapService } from 'epgu-lib';
+import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { combineLatest, merge, Observable, of } from 'rxjs';
 import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
@@ -38,6 +39,7 @@ import {
   ApplicantAnswersDto,
   ComponentDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ConstructorLookupComponent } from '../../../../shared/components/constructor-lookup/constructor-lookup.component';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -57,7 +59,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public mappedDictionaryForLookup;
   public mapCenter: Array<number>;
   public mapControls = [];
-  public provider = { search: this.providerSearch() };
+  public provider: LookupProvider<Partial<ListElement>> = { search: this.providerSearch() };
   public selectedValue;
   public showMap = false;
   public mapIsLoaded = false;
@@ -107,7 +109,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.clearMapVariables();
   }
 
-  private initVariable() {
+  private initVariable(): void {
     this.initComponentAttrs();
     this.controlsLogicInit();
   }
@@ -119,7 +121,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.screenStore = this.screenService.getStore();
   }
 
-  private initSelectedValue() {
+  private initSelectedValue(): void {
     if (this.data?.value && this.data?.value !== '{}') {
       const mapObject = JSON.parse(this.data?.value);
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
@@ -137,7 +139,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   /**
    * Получаем выбранный ЗАГС из applicantAnswers по пути из attrs.selectedValue
    */
-  private getSelectedValue() {
+  private getSelectedValue(): { [key: string]: string } {
     const selectedValue = UtilsService.getObjectProperty(
       this.applicantAnswers,
       this.data?.attrs.selectedValue,
@@ -145,7 +147,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return JSON.parse(selectedValue);
   }
 
-  private subscribeToEmmitNextStepData() {
+  private subscribeToEmmitNextStepData(): void {
     this.selectMapObjectService.selectedValue
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value) => {
@@ -155,7 +157,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       });
   }
 
-  private controlsLogicInit() {
+  private controlsLogicInit(): void {
     this.yaMapService.mapSubject
       .pipe(
         filter((yMap) => yMap),
@@ -170,7 +172,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   /**
    * Инициализация карты - попытка определения центра, получение и расстановка точек на карте
    */
-  private initMap() {
+  private initMap(): void {
     this.setMapOpstions();
     this.fillCoords(this.selectMapObjectService.componentAttrs.dictionaryFilter).subscribe(
       (coords: IGeoCoordsResponse) => {
@@ -182,7 +184,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     );
   }
 
-  private setMapOpstions() {
+  private setMapOpstions(): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.selectMapObjectService.ymaps = (window as any).ymaps;
     this.yaMapService.map.controls.add('zoomControl', {
@@ -202,26 +204,26 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Обработка полученных координат - сохранение в массиве сервиса, расстановка на карте
    * @param coords ответ с бэка с координатами точек
    */
-  private handleFilledCoordinate(coords: IGeoCoordsResponse) {
+  private handleFilledCoordinate(coords: IGeoCoordsResponse): void {
     this.selectMapObjectService.saveCoords(coords);
     this.selectMapObjectService.placeOjectsOnMap(this.yaMapService.map);
     this.tryInitSelectedObject();
   }
 
-  private tryInitSelectedObject() {
+  private tryInitSelectedObject(): void {
     if (this.selectedValue) {
       this.selectMapObject(this.getSelectedObject());
     }
   }
 
-  private getSelectedObject() {
+  private getSelectedObject(): DictionaryYMapItem {
     return this.selectMapObjectService.findObjectByValue(this.selectedValue.value);
   }
 
   /**
    * Функция инициализирует центр карты
    */
-  private initMapCenter() {
+  private initMapCenter(): void {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const { geo_lon, geo_lat, center } = this.componentValue;
     const moscowCenter = [37.64, 55.76]; // Москва
@@ -235,7 +237,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * затем заполняем полученный справочник этими координтами и кладем в сервис
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  private fillCoords(dictionaryFilters: Array<IdictionaryFilter>) {
+  private fillCoords(dictionaryFilters: Array<IdictionaryFilter>): Observable<IGeoCoordsResponse> {
     return this.dictionaryApiService
       .getSelectMapDictionary(this.getDictionaryType(), this.getOptions(dictionaryFilters))
       .pipe(
@@ -279,18 +281,18 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return this.selectMapObjectService.componentAttrs.dictionaryType;
   }
 
-  private selectMapObject(mapObject: DictionaryYMapItem) {
+  private selectMapObject(mapObject: DictionaryYMapItem): void {
     if (!mapObject) return;
     this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
   }
 
-  public lookupChanged(mapObject: DictionaryYMapItem, lookup: LookupComponent) {
+  public lookupChanged(mapObject: DictionaryYMapItem, lookup: ConstructorLookupComponent): void {
     this.selectMapObject(mapObject);
     lookup.clearInput();
   }
 
-  public providerSearch(): (val: string) => Observable<Partial<ListItem>[]> {
-    return (searchString) => {
+  public providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
+    return (searchString): Observable<Partial<ListElement>[]> => {
       this.selectMapObjectService.searchMapObject(searchString);
       return of(
         DictionaryUtilities.adaptDictionaryToListItem(
@@ -300,7 +302,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     };
   }
 
-  public selectObject() {
+  public selectObject(): void {
     if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
       this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code)
         .pipe(takeUntil(this.ngUnsubscribe$))
@@ -328,7 +330,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * @param templateName имя шаблона из this.templates
    * @param item контекст балуна
    */
-  public showModalFromTemplate(templateName: string, item: DictionaryYMapItem) {
+  public showModalFromTemplate(templateName: string, item: DictionaryYMapItem): void {
     this.modalService.openModal(CommonModalComponent, {
       modalTemplateRef: this[templateName],
       item,
@@ -346,7 +348,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     });
   }
 
-  private clearMapVariables() {
+  private clearMapVariables(): void {
     // Необходимо очистить behaviorSubject чтобы при следующей подписке он не стрельнул 2 раза (текущее значение и новое при создание карты)
     this.yaMapService.mapSubject.next(null);
     // Очищаем id выбранной ранее точки чтобы при возврате на карту он был пуст.
@@ -364,7 +366,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
       .pipe(
         map((response) => {
-          const hasAttributeValues = () =>
+          const hasAttributeValues = (): boolean =>
             response.items.every((item) =>
               this.screenService.component.attrs.checkedParametersGIBDD.every(
                 (param) => item.attributeValues[param],
@@ -395,7 +397,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   /**
    * Метод ищет и выбирает среди всех объектов ближайший к this.mapCenter
    */
-  private selectClosestMapObject() {
+  private selectClosestMapObject(): void {
     let minDistance = 9999999;
     let chosenMapObject;
     this.selectMapObjectService.filteredDictionaryItems.forEach((mapObj) => {

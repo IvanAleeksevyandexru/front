@@ -20,7 +20,8 @@ module.exports = {
         "arrowParameter": false,
         "memberVariableDeclaration": false
       }
-    ]
+    ],
+    "@typescript-eslint/explicit-function-return-type": ["error"]
   },
   overrides: [
     // Add this rules, if you use inline templates inside *.component.ts files
@@ -61,10 +62,11 @@ module.exports = {
       }
     },
     {
-      files: ['*.spec.ts'],
+      files: ['*.spec.ts', '*.stub.ts'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/typedef': 'off'
+        '@typescript-eslint/typedef': 'off',
+        "@typescript-eslint/explicit-function-return-type": 'off'
       }
     }
   ],

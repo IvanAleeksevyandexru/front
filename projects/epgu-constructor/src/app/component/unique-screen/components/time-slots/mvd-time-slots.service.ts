@@ -1,19 +1,20 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TimeSlotsServiceInterface } from './time-slots.interface';
-import * as uuid from 'uuid';
+import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import * as uuid from 'uuid';
+import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
+import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
   BookTimeSlotReq,
   MvdDepartmentInterface,
   SlotInterface,
+  SmevBookResponseInterface,
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
-  TimeSlotValueInterface,
+  TimeSlotValueInterface
 } from './time-slots.types';
-import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 
 @Injectable()
 export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
@@ -34,10 +35,12 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     private http: HttpClient,
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService
   ) {}
-  checkBooking(selectedSlot: SlotInterface) {
+
+  checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     return this.book(selectedSlot);
   }
-  book(selectedSlot: SlotInterface) {
+
+  book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     this.errorMessage = undefined;
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {

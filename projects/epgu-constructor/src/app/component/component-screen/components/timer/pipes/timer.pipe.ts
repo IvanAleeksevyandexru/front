@@ -21,7 +21,7 @@ export class TimerPipe implements PipeTransform {
     )}`;
   }
 
-  getFormatTime(time: number) {
+  getFormatTime(time: number): string {
     return `${time > 9 ? '' : 0}${time}`;
   }
 }

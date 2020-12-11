@@ -7,7 +7,7 @@ import { CachedAnswersService } from '../shared/services/applicant-answers/cache
 import { UtilsService } from '../shared/services/utils/utils.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
-import { ComponentBase, ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
+import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -60,13 +60,13 @@ export class ScreenService extends ScreenContent {
    * Инициализирует начальное состояние ответа компонента
    * @private
    */
-  private initComponentStateService() {
+  private initComponentStateService(): void {
     this.currentAnswersService.state = '';
     this.currentAnswersService.isValid = true;
   }
 
   private loadValueFromCachedAnswer(): void {
-    const components: Array<ComponentBase> = [];
+    const components: Array<ComponentDto> = [];
 
     this.screenStore.display.components
       .forEach(item => {
@@ -94,8 +94,9 @@ export class ScreenService extends ScreenContent {
    * Метод объединяет preset значение и ответ из кэша
    * @param cachedValue - кэш ответов из cachedAnswersService
    * @param preset - preset значения из display.components[].value
+   * @param componentType
    */
-  private mergePresetCacheValue(cachedValue: string, preset: string, componentType: string ) {
+  private mergePresetCacheValue(cachedValue: string, preset: string, componentType: string ): string {
     if (componentType === CustomScreenComponentTypes.SnilsInput) {
       return JSON.parse(cachedValue).snils;
     }
@@ -138,7 +139,7 @@ export class ScreenService extends ScreenContent {
     return component;
   }
 
-  public getCompValueFromCachedAnswers(componentId?: string) {
+  public getCompValueFromCachedAnswers(componentId?: string): string {
     const cachedAnswers = this.getStore().cachedAnswers;
     if (!componentId) {
       componentId = this.component?.id;

@@ -33,16 +33,16 @@
             label="Начало (месяц, год)"
             for="from"
           ></epgu-constructor-label>
-          <lib-month-picker
+          <epgu-constructor-constructor-month-picker
             [id]="i + '_minDate'"
-            [formControl]="$any(generation.get('from'))"
+            [control]="generation.get('from')"
             [minMonth]="monthsService.minDateFrom"
             [maxMonth]="monthsService.maxDate"
             [invalid]="generation.get('from').invalid"
             [validationShowOn]="validationShowOn"
             [hideTillNowAvailable]="true"
             align="left"
-          ></lib-month-picker>
+          ></epgu-constructor-constructor-month-picker>
         </div>
 
         <div>
@@ -51,25 +51,25 @@
               label="Окончание (месяц, год)"
               for="to"
             ></epgu-constructor-label>
-            <lib-month-picker
+            <epgu-constructor-constructor-month-picker
               [id]="i + '_maxDate'"
-              [formControl]="$any(generation.get('to'))"
+              [control]="generation.get('to')"
               [minMonth]="monthsService.minDateFrom"
               [maxMonth]="monthsService.maxDate"
               [invalid]="generation.get('to').invalid"
               [validationShowOn]="validationShowOn"
               [hideTillNowAvailable]="true"
               align="right"
-            ></lib-month-picker>
+            ></epgu-constructor-constructor-month-picker>
           </ng-container>
         </div>
       </div>
       <div class="employee-history__input">
-        <lib-checkbox
+        <epgu-constructor-constructor-checkbox
           [id]="i + '_checkboxToDate'"
-          [formControl]="$any(generation.get('checkboxToDate'))"
+          [control]="generation.get('checkboxToDate')"
           labelText="По настоящее время"
-        ></lib-checkbox>
+        ></epgu-constructor-constructor-checkbox>
       </div>
       <div class="employee-history__input"
            *ngIf="availableControlsOfType(generation.get('type').value)?.position as position">

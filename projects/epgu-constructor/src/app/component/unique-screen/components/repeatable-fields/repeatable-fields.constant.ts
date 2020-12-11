@@ -1,6 +1,6 @@
 import { CustomComponentOutputData } from '../../../components-list/components-list.types';
 
-export const removeItemFromArrByIndex = (arr,index) => arr.filter((_, i) => i !== index);
+export const removeItemFromArrByIndex = (arr,index): {[key: string]: {value: string}}[] => arr.filter((_, i) => i !== index);
 
 export function prepareDataToSendForRepeatableFieldsComponent(
   changes: CustomComponentOutputData): {[key: string]: {value: string}} {

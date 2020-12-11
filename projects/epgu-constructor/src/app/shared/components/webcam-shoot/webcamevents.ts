@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 /**
  * Менеджер по управлению события
@@ -50,7 +50,7 @@ export class WebcamEvents {
   /**
    * Возвращает список событий
    */
-  public get events() {
+  public get events(): Observable<WebcamEvent> {
     return this._events$;
   }
 
@@ -58,7 +58,7 @@ export class WebcamEvents {
    * Вызывает событие закрытия окна
    * @param data - данные для передачи
    */
-  close(data?: string) {
+  close(data?: string): void {
     this._events.next(WebcamEventFactory.closeEvent(data));
     this._events.complete();
   }
@@ -66,7 +66,7 @@ export class WebcamEvents {
    * Вызывает событие закрытия окна и сохранения данных
    * @param data - данные для передачи
    */
-  closeAndSave(data?: string) {
+  closeAndSave(data?: string): void {
     this._events.next(WebcamEventFactory.closeAndSaveEvent(data));
     this._events.complete();
   }
@@ -76,7 +76,7 @@ export class WebcamEvents {
    * @param event - modal event
    * @param complete - complete event? (close window)
    */
-  public push(event: WebcamEvent, complete?: boolean) {
+  public push(event: WebcamEvent, complete?: boolean): void {
     this._events.next(event);
     if (complete) {
       this._events.complete();
@@ -128,7 +128,7 @@ export class WebcamEvent {
 }
 
 
-export const isCloseWebcamEvent = (event: WebcamEvent) =>
+export const isCloseWebcamEvent = (event: WebcamEvent): boolean =>
   event.action === WebcamEventAction.CLOSE;
-export const isCloseAndSaveWebcamEvent = (event: WebcamEvent) =>
+export const isCloseAndSaveWebcamEvent = (event: WebcamEvent): boolean =>
   event.action === WebcamEventAction.CLOSE_AND_SAVE;

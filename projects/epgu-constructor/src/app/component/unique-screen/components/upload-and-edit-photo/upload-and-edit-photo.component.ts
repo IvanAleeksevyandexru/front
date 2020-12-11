@@ -7,22 +7,21 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { fromEvent, of, Subject, Subscription } from 'rxjs';
+import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { catchError, switchMap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-
 import { ConfigService } from '../../../../core/config/config.service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../../../modal/modal.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentBase } from '../../../../screen/screen.types';
-
 import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../services/webcam/webcam.service';
+import { TerraUploadedFile } from '../file-upload-screen/sub-components/file-upload-item/data';
 import { CompressionService } from './compression/compression.service';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
@@ -49,7 +48,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
 
   @Output() nextStepEvent = new EventEmitter();
 
-  data: ComponentBase;
+  data: ComponentDto;
   header: string;
   orderId: string;
 
@@ -84,7 +83,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     public config: ConfigService,
   ) {
     this.header = screenService.header;
-    this.data = { ...screenService.display.components[0] };
+    this.data = { ...screenService.component };
     this.orderId = screenService.orderId;
   }
 
@@ -106,7 +105,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   /**
    * Открытие камеры для получения изображения и последующей загрузки
    */
-  openCamera() {
+  openCamera(): void {
     this.cameraInput.nativeElement.click();
   }
 
@@ -114,14 +113,14 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  setHowPhotoModalParams() {
+  setHowPhotoModalParams(): void {
     this.howPhotoModalParameters = {
       text: this.data?.attrs?.clarifications[uploadPhotoElemId.howToTakePhoto]?.text || '',
       elemEventHandlers: [
         {
           elemId: uploadPhotoElemId.requirements,
           event: 'click',
-          handler() {
+          handler(): void {
             this.modalResult.next(uploadPhotoElemId.requirements);
             this.closeModal();
           },
@@ -183,7 +182,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     if (requestData.mnemonic && requestData.name) {
       this.terabyteService.downloadFile(requestData).subscribe((file: Blob | File) => {
         // @ts-ignore
-        const setImageUrl = (imageUrl: string) => {
+        const setImageUrl = (imageUrl: string): void => {
           this.croppedImageUrl = imageUrl;
           this.previousImageObjectUrl = imageUrl;
         };
@@ -197,8 +196,8 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     const { width, height, src } = this.imageValidator;
     const isDPIValid = (): boolean => {
       const scaleFactor = printImgPx.height / height;
-      const scaledDPI = recommendedDPI / scaleFactor;
-      return scaledDPI > recommendedDPI;
+      const scaledDPI = Math.ceil(recommendedDPI / scaleFactor);
+      return scaledDPI >= recommendedDPI;
     };
 
     const isTypeValid = this.allowedImgTypes.some(
@@ -263,9 +262,9 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     }
   }
 
-  blobToDataURL(file: Blob | File, callback: Function) {
+  blobToDataURL(file: Blob | File, callback: Function): void {
     const fileReader = new FileReader();
-    fileReader.onload = (e) => callback(e.target.result.toString());
+    fileReader.onload = (e): Function => callback(e.target.result.toString());
     fileReader.readAsDataURL(file);
   }
 
@@ -277,9 +276,22 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     if (isPhoto) {
       this.fileName = `Фото_${uuidv4()}.jpg`;
     } else {
-      this.fileName = file.name;
+      this.fileName = this.fixFileName(file);
     }
     this.blobToDataURL(file, (url: string) => this.validateImageEvent(url));
+  }
+
+  /**
+   * Для браузера Mi фиксит ошибку с двумя точками в названии файла.
+   * @param file
+   */
+  fixFileName(file: File): string {
+    if (this.deviceDetector.isMiAndroid()) {
+      const extension = file.name.split('.').pop();
+      return file.name.replace(`..${extension}`, `.${extension}`);
+    }
+
+    return file.name;
   }
 
   changeCroppedPhoto(): void {
@@ -318,15 +330,15 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   nextStep(): void {
     let requestData = this.getRequestData();
 
-    const deletePrevImage = (fileName: string) =>
+    const deletePrevImage = (fileName: string): Observable<TerraUploadedFile> =>
       fileName
         ? this.terabyteService.deleteFile(requestData).pipe(catchError(() => of(null)))
         : of(null);
-    const compressFile = () => {
+    const compressFile = (): Observable<Blob | File> => {
       const blobFile = TerraByteApiService.base64toBlob(this.croppedImageUrl);
       return fromPromise(this.compressionService.imageCompression(blobFile, { maxSizeMB: 5 }));
     };
-    const uploadFile = (file: Blob | File) => {
+    const uploadFile = (file: Blob | File): Observable<void> => {
       const fileName = this.fileName.split('.');
       fileName[fileName.length - 1] = 'jpg';
       requestData = { ...requestData, name: fileName.join('.') };

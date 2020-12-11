@@ -1,16 +1,15 @@
-import { ScreenTypes } from '../../../screen/screen.types';
-import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
-import { Answer } from '../../../shared/types/answer';
-import { Gender } from '../../../shared/types/gender';
-import { CustomComponentAttr } from '../../../component/components-list/components-list.types';
+// eslint-disable-next-line max-len
+import { ConfirmUserDataStyle } from '../../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import {
   TimerComponentDtoAction,
   TimerLabelSection
 } from '../../../component/component-screen/components/timer/timer.interface';
-import { TextTransform } from '../../../shared/types/textTransform';
 import { DictionaryOptions } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
-// eslint-disable-next-line max-len
-import { ConfirmUserDataStyle } from '../../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
+import { ScreenTypes } from '../../../screen/screen.types';
+import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
+import { Answer } from '../../../shared/types/answer';
+import { Gender } from '../../../shared/types/gender';
+import { TextTransform } from '../../../shared/types/textTransform';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -106,6 +105,13 @@ export interface ComponentAttrsDto {
   validateMessage?: string;  //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
   dictionaryOptions?: DictionaryOptions;
   style?: ConfirmUserDataStyle;
+  imgSrc?: string;
+  error?: { imgSrc: string; label: string };
+  success?: { imgSrc: string; label: string };
+  helperText?: string;
+  label?: string;
+  sendEmailLabel?: string;
+  redirectLabel?: string;
 }
 
 export interface ComponentUploadedFileDto {
@@ -272,6 +278,7 @@ export interface DisplayDto {
   type: ScreenTypes;
   terminal: boolean;
   isSocialButtonsHidden?: boolean;
+  displayCssClass?: string;
 }
 
 export interface ScenarioErrorsDto {
@@ -302,6 +309,7 @@ export interface ScenarioDto {
   gender: Gender;
   finishedAndCurrentScreens: string[];
   orderId: string;
+  callBackOrderId?: string;
   token: string;
   userId: string;
   isInternalScenario?: boolean;
@@ -363,7 +371,7 @@ export enum DTOActionAction {
 }
 
 export interface CheckOrderApiResponse {
-  scenarioDto: ScenarioDto;
+  orderId: string;
   isInviteScenario: boolean;
   canStartNew: boolean;
 }

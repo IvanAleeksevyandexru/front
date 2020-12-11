@@ -13,12 +13,12 @@ export class UsePaymentsModalComponent extends ModalBaseComponent {
   usePaymentHandler: Function;
   skipPaymentHandler: Function;
 
-  public clickUsePayment(uin: string) {
+  public clickUsePayment(uin: string): void {
     this.closeModal();
     this.usePaymentHandler(uin);
   }
 
-  public clickPayLater() {
+  public clickPayLater(): void {
     this.closeModal();
     this.skipPaymentHandler();
   }

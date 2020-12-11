@@ -65,7 +65,7 @@ export class EmployeeHistoryComponent {
     return component?.attrs?.fstuc;
   }
 
-  getNextScreen() {
+  getNextScreen(): void {
     const employeeHistoryBeforeSend: Array<EmployeeHistoryServerModel> = this.employeeFormService.employeeHistoryForm
       .getRawValue()
       .map((employee: EmployeeHistoryModel) => this.formatToServerModel(employee));
@@ -101,9 +101,8 @@ export class EmployeeHistoryComponent {
     const componentValue = this.screenService.getComponentData(this.screenService.component?.value);
 
     this.employeeFormService.clearHistoryForm();
-
     if (componentValue) {
-      const generations: Array<EmployeeHistoryModel> = componentValue;
+      const generations = componentValue as EmployeeHistoryModel[];
 
       generations.forEach((generation: EmployeeHistoryModel) => {
         this.employeeFormService.newGeneration(generation);

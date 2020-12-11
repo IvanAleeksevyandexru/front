@@ -6,6 +6,7 @@ import {
   DictionaryValue
 } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
 import { ListItem } from 'epgu-lib';
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
 export type ComponentValue = {
   [key: string]: string | number
@@ -66,10 +67,10 @@ export class DictionaryUtilities {
    */
   private static getValueForFilter(componentValue: ComponentValue, screenStore: ScreenStore, dFilter: IdictionaryFilter): DictionaryValue {
     const filterTypes = {
-      value: (dFilter) => JSON.parse(dFilter.value),
-      preset: (dFilter) => ({ asString: componentValue[dFilter.value] }),
-      root: (dFilter) => ({ asString: screenStore[dFilter.value] }),
-      ref: (dFilter) => ({ asString: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value) }),
+      value: (dFilter): DictionaryValue => JSON.parse(dFilter.value),
+      preset: (dFilter): DictionaryValue => ({ asString: componentValue[dFilter.value] as string }),
+      root: (dFilter): DictionaryValue => ({ asString: screenStore[dFilter.value] }),
+      ref: (dFilter): DictionaryValue => ({ asString: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value) }),
     };
     return filterTypes[dFilter.valueType](dFilter);
   }
@@ -78,7 +79,7 @@ export class DictionaryUtilities {
    * Мапим словарь в ListItem для компонента EPGU отвечающий за список
    * @param items массив элементов словаря
    */
-  public static adaptDictionaryToListItem(items: Array<DictionaryItem>): Array<Partial<ListItem>> {
+  public static adaptDictionaryToListItem(items: Array<DictionaryItem>): Array<ListElement> {
     return items.map((item) => ({
       originalItem: item,
       id: item.value,

@@ -38,12 +38,12 @@ export class UnusedPaymentsComponent implements OnInit {
     private listPaymentsService: UnusedPaymentsService,
   ) {}
 
-  public usePayment = (uin: string) => {
+  public usePayment = (uin: string): void => {
     this.paymentUIN = uin;
     this.nextStep(JSON.stringify({ reusePaymentUin: this.paymentUIN }));
   };
 
-  public cancelUsePayment = () => {
+  public cancelUsePayment = (): void => {
     this.navigationService.prev();
   };
 
@@ -54,13 +54,13 @@ export class UnusedPaymentsComponent implements OnInit {
     this.nextStepEvent.emit(data);
   }
 
-  next() {
+  next(): void {
     if (this.tax) {
       this.nextStep(JSON.stringify({ reusePaymentUin: this.tax.uin }));
     }
   }
 
-  usePaymentsListData(data: DisplayDto) {
+  usePaymentsListData(data: DisplayDto): void {
     const value = JSON.parse(data.components[0].value);
     if (value.length) {
       this.paymentsList.next(value);
@@ -69,7 +69,7 @@ export class UnusedPaymentsComponent implements OnInit {
     }
   }
 
-  showModal() {
+  showModal(): void {
     this.modalService.openModal(UsePaymentsModalComponent, {
       paymentsList: this.paymentsList.getValue(),
       usePaymentHandler: this.usePayment,
@@ -77,7 +77,10 @@ export class UnusedPaymentsComponent implements OnInit {
     });
   }
 
-  getListPaymentsInfoSuccess = ([data, serviceData]: [UnusedPaymentInterface[], DisplayDto]) => {
+  getListPaymentsInfoSuccess = ([data, serviceData]: [
+    UnusedPaymentInterface[],
+    DisplayDto,
+  ]): void => {
     if (data.length) {
       this.paymentsList.next(data);
     } else {
@@ -85,7 +88,7 @@ export class UnusedPaymentsComponent implements OnInit {
     }
   };
 
-  getListPaymentsInfoError = ([error, data]: [HttpErrorResponse, DisplayDto]) => {
+  getListPaymentsInfoError = ([error, data]: [HttpErrorResponse, DisplayDto]): void => {
     // eslint-disable-next-line no-console
     console.log('Error', error);
     this.usePaymentsListData(data);
@@ -95,11 +98,11 @@ export class UnusedPaymentsComponent implements OnInit {
    * Выбор радиокнопки
    * @param $event - событие выбора
    */
-  radioSelect($event: UnusedPaymentInterface) {
+  radioSelect($event: UnusedPaymentInterface): void {
     this.tax = $event;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.listPaymentsService
       .getListPaymentsInfo({ orderId: this.orderId })
       .pipe(

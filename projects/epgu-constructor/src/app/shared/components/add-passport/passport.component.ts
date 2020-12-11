@@ -95,7 +95,7 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
   public onTouched: Function = () => {};
 
   writeValue(val: PassportFormFields): void {
-    const isValidValue = (value, fieldName) => {
+    const isValidValue = (value, fieldName): boolean => {
       return typeof value === 'object' && value !== null && value[fieldName];
     };
 

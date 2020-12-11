@@ -15,6 +15,8 @@ import { EmployeeHistoryMonthsService } from './services/employee-history.months
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { of } from 'rxjs';
+import { ConstructorMonthPickerModule } from '../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
+import { ConstructorCheckboxModule } from '../../../../shared/components/constructor-checkbox/constructor-checkbox.module';
 
 xdescribe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;
@@ -33,7 +35,14 @@ xdescribe('EmployeeHistoryComponent', () => {
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, EpguLibModule, ConstructorPlainInputModule],
+      imports: [
+        ReactiveFormsModule,
+        EpguLibModule,
+        ConstructorPlainInputModule,
+        ConstructorMonthPickerModule,
+        ConstructorCheckboxModule,
+      ],
+
       declarations: [
         EmployeeHistoryComponent,
         PageNameComponent,

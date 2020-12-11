@@ -1,42 +1,99 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfigService } from '../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../core/config/config.service.stub';
 import { InfoScreenBodyComponent } from './info-screen-body.component';
+import { MockComponent } from 'ng-mocks';
+import { OutputHtmlComponent } from '../../../core/components/output-html/output-html.component';
+import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { By } from '@angular/platform-browser';
+
+const mockDataWithAttrs: ComponentDto = {
+  id: 'id1',
+  type: 'type1',
+  attrs: {
+    image: {
+      src: 'http://example.com/some-image',
+      alt: 'some alt',
+    },
+    clarifications: {
+      any: {
+        title: 'clarifications-title',
+        text: 'clarifications-text',
+      },
+    },
+  },
+  label: 'label1',
+};
+
+const emptyMockData: ComponentDto = {
+  id: 'id1',
+  type: 'type1',
+  attrs: {},
+  label: 'label1',
+};
 
 describe('InfoScreenBodyComponent', () => {
   let component: InfoScreenBodyComponent;
   let fixture: ComponentFixture<InfoScreenBodyComponent>;
-  const mockData = {
-    attrs: {
-      image: {
-        src: 'some src',
-        alt: 'some alt'
-      }
-    },
-    clarifications: '',
-    label: ''
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InfoScreenBodyComponent],
-      providers: [
-        { provide:  ConfigService, useClass: ConfigServiceStub },
-      ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-    })
-    .compileComponents();
+      declarations: [InfoScreenBodyComponent, MockComponent(OutputHtmlComponent)],
+      providers: [{ provide: ConfigService, useClass: ConfigServiceStub }],
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoScreenBodyComponent);
     component = fixture.componentInstance;
-    component.data = mockData;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(true).toBeTruthy();
+  describe('data property', () => {
+    it('should be undefined by default', () => {
+      expect(component.data).toBeUndefined();
+    });
+  });
+
+  it('should render img', () => {
+    let img = fixture.nativeElement.querySelector('img');
+    expect(img).toBeNull();
+
+    component.data = emptyMockData;
+    fixture.detectChanges();
+
+    img = fixture.nativeElement.querySelector('img');
+    expect(img).toBeNull();
+
+    component.data = mockDataWithAttrs;
+    fixture.detectChanges();
+
+    img = fixture.nativeElement.querySelector('img');
+    expect(img).toBeTruthy();
+
+    expect(img.src).toBe(mockDataWithAttrs.attrs.image.src);
+    expect(img.alt).toBe(mockDataWithAttrs.attrs.image.alt);
+  });
+
+  it('should render epgu-constructor-output-html', () => {
+    const selector = 'epgu-constructor-output-html';
+
+    let debugEl = fixture.debugElement.query(By.css(selector));
+    expect(debugEl).toBeNull();
+
+    component.data = emptyMockData;
+    fixture.detectChanges();
+
+    debugEl = fixture.debugElement.query(By.css(selector));
+    expect(debugEl).toBeTruthy();
+
+    expect(debugEl.componentInstance.html).toBe(mockDataWithAttrs.label);
+    expect(debugEl.componentInstance.clarifications).toBeUndefined();
+
+    component.data = mockDataWithAttrs;
+    fixture.detectChanges();
+
+    expect(debugEl.componentInstance.html).toBe(mockDataWithAttrs.label);
+    expect(debugEl.componentInstance.clarifications).toBe(mockDataWithAttrs.attrs.clarifications);
   });
 });

@@ -108,7 +108,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Получает информацию для оплате
    * @private
    */
-  protected loadPaymentInfo() {
+  protected loadPaymentInfo(): void {
     this.orderId = this.screenService.orderId;
     const value = this.getDataFromValue<PaymentInfoValue>();
 
@@ -141,7 +141,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Загружает информацию платеже старым способом
    * @private
    */
-  private loadPaymentInfoOldType() {
+  private loadPaymentInfoOldType(): void {
     const { payCode } = this.data.attrs;
     if (payCode) {
       this.payCode = payCode;
@@ -183,7 +183,9 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * @param attributeValues - аттрибуты для запроса платежного документа
    * @private
    */
-  private getRequestForUinByOrder(attributeValues: PaymentInfoInterface) {
+  private getRequestForUinByOrder(
+    attributeValues: PaymentInfoInterface,
+  ): Observable<{ value: string }> {
     this.paymentPurpose = attributeValues.paymentPurpose;
     this.status = PaymentStatus.SUCCESS;
     return this.paymentService.getUinByOrderId(this.orderId, this.payCode, attributeValues).pipe(
@@ -195,16 +197,14 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
 
   /**
    * Устанавливает статус оплаты из успешного запроса
-   * @param value - УИН
+   * @param data - УИН
    */
-  // TODO
-  // eslint-disable-next-line @typescript-eslint/typedef
-  private setPaymentStatusFromSuccessRequest({ value }) {
-    if (!value.includes('PRIOR')) {
-      // eslint-disable-next-line no-param-reassign
-      value = `PRIOR${value}`;
+  private setPaymentStatusFromSuccessRequest(data: { value: string }): void {
+    let { value: uin } = data;
+    if (!uin.includes('PRIOR')) {
+      uin = `PRIOR${uin}`;
     }
-    this.uin = value;
+    this.uin = uin;
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
       .pipe(
@@ -226,7 +226,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Устанавливает статус, что уже информация подгружена
    * @private
    */
-  private setInfoLoadedState() {
+  private setInfoLoadedState(): void {
     this.inLoading = false;
     this.isShown = false;
   }
@@ -236,7 +236,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * @param info
    * @private
    */
-  private getBillsInfoByUINErrorsFromSuccess(info: BillsInfoResponse) {
+  private getBillsInfoByUINErrorsFromSuccess(info: BillsInfoResponse): void {
     // Если ошибка, что уже оплачено
     if (info.error.code === ALREADY_PAY_ERROR) {
       this.setInfoLoadedState();
@@ -251,7 +251,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
    * @param info - информация о выставленном счете
    */
-  private getBillsInfoByBillIdSuccess(info: BillsInfoResponse) {
+  private getBillsInfoByBillIdSuccess(info: BillsInfoResponse): void {
     if (info.error?.code) {
       this.getBillsInfoByUINErrorsFromSuccess(info);
     }
@@ -270,7 +270,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
    * @param info - информация о выставленном счете
    */
-  private getBillsInfoByUINSuccess(info: BillsInfoResponse) {
+  private getBillsInfoByUINSuccess(info: BillsInfoResponse): void {
     if (info.error?.code) {
       this.getBillsInfoByUINErrorsFromSuccess(info);
     }
@@ -300,7 +300,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Получаем статус оплачено или нет по УИН
    * @private
    */
-  private getPaymentStatusByUIN() {
+  private getPaymentStatusByUIN(): void {
     this.paymentService
       .getPaymentStatusByUIN(this.orderId, this.payCode)
       .pipe(
@@ -318,7 +318,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * @param response - ответ сервера
    * @private
    */
-  private getPaymentStatusByUINSuccess(response: PaymentInfoForPaidStatusData) {
+  private getPaymentStatusByUINSuccess(response: PaymentInfoForPaidStatusData): void {
     if (response.data) {
       this.isPaid = Boolean(response?.data[this.billPosition]?.paid);
     }
@@ -333,7 +333,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Устанавливает статус оплаты из не успешного запроса
    * @param error - сведения об ошибке на запрос
    */
-  private setPaymentStatusFromErrorRequest(error: HttpPaymentError) {
+  private setPaymentStatusFromErrorRequest(error: HttpPaymentError): Observable<never> {
     this.setInfoLoadedState();
     if (error.status === 500) {
       this.status = PaymentStatus.ERROR;
@@ -353,7 +353,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   /**
    * Переход к экрану оплаты
    */
-  redirectToPayWindow() {
+  redirectToPayWindow(): void {
     this.inLoading = true;
     const data = { scenarioDto: this.screenService.getStore() };
     UtilsService.setLocalStorageJSON(COMPONENT_DATA_KEY, data);
@@ -361,7 +361,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     window.location.href = this.paymentService.getPaymentLink(this.billId);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     clearInterval(this.payStatusInterval);
   }
 }

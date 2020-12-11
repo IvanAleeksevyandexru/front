@@ -12,6 +12,8 @@ import { ScreenServiceStub } from '../../../../../../../../screen/screen.service
 import { ConstructorPlainInputModule } from '../../../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { IRegistrationAddrComponent } from '../../registration-addr-screen.types';
 import { RegistrationAddrComponent } from './registration-addr.component';
+// eslint-disable-next-line max-len
+import { ConstructorDadataWidgetModule } from '../../../../../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 
 
 
@@ -34,7 +36,7 @@ describe('RegistrationAddrComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      imports: [FormsModule, ReactiveFormsModule, ConstructorPlainInputModule, RouterTestingModule],
+      imports: [FormsModule, ReactiveFormsModule, ConstructorPlainInputModule, RouterTestingModule, ConstructorDadataWidgetModule],
       declarations: [ RegistrationAddrComponent ],
       providers: [
         UnsubscribeService,

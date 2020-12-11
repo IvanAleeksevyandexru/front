@@ -5,6 +5,7 @@ import { SharedModule } from '../../../../shared/shared.module';
 import { SelectChildrenScreenComponent } from './select-children-screen.component';
 import { ComponentsListModule } from '../../../components-list/components-list.module';
 import { CoreModule } from '../../../../core/core.module';
+import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 
 const COMPONENTS = [ SelectChildrenScreenComponent ];
 
@@ -13,7 +14,8 @@ const COMPONENTS = [ SelectChildrenScreenComponent ];
   imports: [
     CoreModule,
     SharedModule,
-    ComponentsListModule
+    ComponentsListModule,
+    ConstructorDropdownModule
   ],
   exports: [ ...COMPONENTS ],
   providers: [

@@ -1,5 +1,7 @@
 import { Component, Input, EventEmitter, OnInit, Output, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+
 import { ModalService } from '../../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
@@ -13,9 +15,7 @@ interface WarningMessages {
   [countryType: number]: string;
 }
 
-interface Country {
-  id: string;
-  text: string;
+interface Country extends ListElement {
   countryType: string;
 }
 
@@ -76,7 +76,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
     this.updateHelperText();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     // document
     //   .getElementsByClassName('country-apostil__minsk-convention-link')[0]
     //   .addEventListener('click', this.showModal);
@@ -104,14 +104,14 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
     this.helperText = this.data.required ? '' : OPTIONAL_FIELD;
   }
 
-  clickToInnerHTML($event: MouseEvent) {
+  clickToInnerHTML($event: MouseEvent): void {
     const targetElementClass = ($event.target as HTMLElement).classList[0];
     if (targetElementClass === 'country-apostil__minsk-convention-link') {
       this.showModal();
     }
   }
 
-  showModal() {
+  showModal(): void {
     this.modalService.openModal(ConfirmationModalComponent, {
       ...this.modalParameters,
     });

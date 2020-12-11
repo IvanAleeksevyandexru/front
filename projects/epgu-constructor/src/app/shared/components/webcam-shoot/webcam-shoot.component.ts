@@ -24,14 +24,14 @@ export class WebcamShootComponent {
   /**
    * Закрытие окна
    */
-  close() {
+  close(): void {
     this.webcamEvents.close();
   }
 
   /**
    * Закрытие окна и сохранение снимка
    */
-  makeShot() {
+  makeShot(): void {
     this.trigger.next();
   }
 

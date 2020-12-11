@@ -102,6 +102,7 @@
     *ngIf="screenService.submitLabel$ | async"
     [showLoader]="screenService.isLoading$ | async"
     (click)="nextStep()"
+    data-testid="display-continue-btn"
     class="btn__submit"
     [disabled]="!currentAnswersService.isValid || (screenService.isLoading$ | async)"
   >

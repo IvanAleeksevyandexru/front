@@ -1,6 +1,8 @@
-  <epgu-constructor-invitation-error
+<epgu-constructor-invitation-error
   *ngIf="(screenService.componentType$ | async) === typeComponent.invitationError"
   (nextStepEvent)="nextStep($event)"
-  [data]="screenService.component"
-  [scenarioDto]="$any(scenarioDto)"
+  [data]="screenService.component$ | async"
+  [applicantAnswers]="screenService.applicantAnswers$ | async"
+  [orderId]="screenService.orderId$ | async"
+  [header]="this.screenService.header$ | async"
 ></epgu-constructor-invitation-error>

@@ -8,13 +8,13 @@ import { NavigationService } from '../../../core/services/navigation/navigation.
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnInit {
-  isFirstScreen = () => this.screenService.display.firstScreen;
   constructor(private navService: NavigationService, private screenService: ScreenService) {}
 
   ngOnInit(): void {}
 
-  clickGoBack() {
-    if (this.isFirstScreen()) {
+  clickGoBack(): void {
+    const { firstScreen } = this.screenService.display;
+    if (firstScreen) {
       this.navService.redirectToHome();
     } else {
       this.navService.prev();

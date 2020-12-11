@@ -31,7 +31,7 @@ export enum FormPlayerNavigation {
  * Данные для отправки и навигации
  */
 export interface NavigationPayload {
-  [key: string]: Answer
+  [key: string]: Answer;
 }
 
 /**
@@ -39,12 +39,12 @@ export interface NavigationPayload {
  * @property {string}url - адресс на который нужно стучатся (иногда в actions приходит url)
  */
 export interface NavigationOptions {
-  isInternalScenarioFinish?: boolean
+  isInternalScenarioFinish?: boolean;
   url?: string;
   store?: FormPlayerApiSuccessResponse;
 }
 
 export interface Navigation {
-  payload?: NavigationPayload,
-  options?: NavigationOptions
+  payload?: NavigationPayload;
+  options?: NavigationOptions;
 }

@@ -8,7 +8,7 @@ export class ImgPrefixerPipe implements PipeTransform {
   constructor(private config: ConfigService) {}
 
   transform(value: string = ''): string {
-    const replacer = (match, quoteSymbol, staticDomainPrefix?) => {
+    const replacer = (match, quoteSymbol, staticDomainPrefix?): string => {
       if (staticDomainPrefix) {
         return `src=${quoteSymbol}${this.config.staticDomainAssetsPath || ''}`;
       }

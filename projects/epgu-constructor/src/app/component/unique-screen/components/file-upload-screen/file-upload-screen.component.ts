@@ -62,7 +62,7 @@ export class FileUploadScreenComponent {
    * Собираем максимальное число файлов из всех форм
    * @private
    */
-  private collectMaxFilesNumber(uploads: FileUploadItem[]) {
+  private collectMaxFilesNumber(uploads: FileUploadItem[]): void {
     uploads.forEach((upload) => {
       if (upload?.maxFileCount) {
         this.allMaxFiles += upload.maxFileCount;
@@ -109,7 +109,7 @@ export class FileUploadScreenComponent {
    * @param $eventData - данные из компонента
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleNewValueSet($eventData: any) {
+  handleNewValueSet($eventData: any): void {
     if ($eventData.relatedUploads && this.value?.uploads) {
       this.value.uploads = this.value.uploads.map((value: FileUploadEmitValue) => {
         if ($eventData.uploadId === value.uploadId) {
@@ -146,7 +146,7 @@ export class FileUploadScreenComponent {
   /**
    * Переход на следующий экран с отправкой данных
    */
-  nextScreen() {
+  nextScreen(): void {
     this.nextStepEvent.emit(JSON.stringify(this.value));
   }
 }

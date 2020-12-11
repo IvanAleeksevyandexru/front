@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import { PaymentsAttrs } from './abstractpayment.component';
+import { getPaymentRequestOptions } from './payment.constants';
 import {
   BillsInfoResponse,
   PaymentDictionaryOptionsInterface,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface
 } from './payment.types';
-import { getPaymentRequestOptions } from './payment.constants';
-import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import { ScreenService } from '../../../../screen/screen.service';
-import { PaymentsAttrs } from './abstractpayment.component';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -54,14 +54,12 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    * @param attributeValues - дополнительные параметры
    */
-  // TODO
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<any> {
+  getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<{ value: string }> {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/lk/v1/paygate/uin`
       : this.config.uinApiUrl;
     const path = `${urlPrefix}/${code}?orderId=${orderId}`;
-    return this.http.post(path, attributeValues, this.requestOptions);
+    return this.http.post<{ value: string }>(path, attributeValues, this.requestOptions);
   }
 
   /**
