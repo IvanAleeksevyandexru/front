@@ -3,9 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentItemComponent } from './component-item.component';
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
-import { formattedError } from '@angular/compiler';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
+
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
 describe('ComponentItemComponent', () => {
   let component: ComponentItemComponent;
@@ -29,7 +31,10 @@ describe('ComponentItemComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ ComponentItemComponent ],
       imports: [SharedModule, RouterTestingModule],
-      providers: [HealthService]
+      providers: [
+        HealthService, 
+        { provide: ScreenService, useClass: ScreenServiceStub },      
+      ]
     })
     .compileComponents();
     fb = TestBed.inject(FormBuilder);

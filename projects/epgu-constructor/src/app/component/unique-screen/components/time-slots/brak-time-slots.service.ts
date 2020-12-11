@@ -4,6 +4,7 @@ import * as moment_ from 'moment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
+import { ConfigService } from '../../../../core/config/config.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
@@ -16,7 +17,6 @@ import {
   TimeSlotValueInterface,
   ZagsDepartmentInterface
 } from './time-slots.types';
-import { ConfigService } from '../../../../core/config/config.service';
 
 const moment = moment_;
 

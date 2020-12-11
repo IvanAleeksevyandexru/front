@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import { PaymentsAttrs } from './abstractpayment.component';
+import { getPaymentRequestOptions } from './payment.constants';
 import {
   BillsInfoResponse,
   PaymentDictionaryOptionsInterface,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface
 } from './payment.types';
-import { getPaymentRequestOptions } from './payment.constants';
-import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import { ScreenService } from '../../../../screen/screen.service';
-import { PaymentsAttrs } from './abstractpayment.component';
 
 /**
  * Сервис для оплаты услуг пользователем

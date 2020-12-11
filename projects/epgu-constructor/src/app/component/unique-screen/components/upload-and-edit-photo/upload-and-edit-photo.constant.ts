@@ -10,7 +10,7 @@ const minCropSize = {
 
 const minSize = {
   width: 413,
-  height: 532,
+  height: 531,
 };
 
 const mmInInch = 25.4;
