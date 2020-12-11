@@ -49,6 +49,7 @@
     [showLoader]="screenService.isLoading$ | async"
     (click)="onSubmitClick({ value: submitLabel })"
     class="btn__submit"
+    data-testid="submit-btn"
   >
     {{ submitLabel }}
   </lib-button>

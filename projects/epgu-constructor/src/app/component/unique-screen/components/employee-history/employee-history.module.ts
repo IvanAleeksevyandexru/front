@@ -6,6 +6,8 @@ import { EmployeeHistoryFormService } from './services/employee-history.form.ser
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 import { CoreModule } from '../../../../core/core.module';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { ConstructorMonthPickerModule } from '../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
+import { ConstructorCheckboxModule } from '../../../../shared/components/constructor-checkbox/constructor-checkbox.module';
 
 @NgModule({
   declarations: [EmployeeHistoryComponent],
@@ -13,6 +15,8 @@ import { ConstructorPlainInputModule } from '../../../../shared/components/const
     CoreModule,
     SharedModule,
     ConstructorPlainInputModule,
+    ConstructorMonthPickerModule,
+    ConstructorCheckboxModule,
   ],
   exports: [
     EmployeeHistoryComponent

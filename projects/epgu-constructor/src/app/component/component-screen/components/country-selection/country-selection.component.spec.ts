@@ -7,6 +7,7 @@ import { DictionaryApiServiceStub } from '../../../shared/services/dictionary-ap
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
+import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 
 // TODO: Need to refactoring component
 xdescribe('CountrySelectionComponent', () => {
@@ -22,7 +23,7 @@ xdescribe('CountrySelectionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, ConstructorDropdownModule],
       declarations: [ CountrySelectionComponent ],
       providers: [
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
