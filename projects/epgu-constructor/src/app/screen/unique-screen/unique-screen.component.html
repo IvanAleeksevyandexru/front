@@ -53,7 +53,7 @@
     [header]="screenService.header$ | async"
     [data]="screenService.component$ | async"
     [submitLabel]="screenService.submitLabel$ | async"
-    (nextStepEvent)="nextDataForStep()"
+    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-payment>
   <epgu-constructor-bill-info
     *ngSwitchCase="uniqueComponentName.billInfo"
