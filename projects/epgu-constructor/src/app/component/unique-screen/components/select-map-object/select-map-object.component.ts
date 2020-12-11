@@ -10,7 +10,8 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { YaMapService, LookupComponent, ListItem } from 'epgu-lib';
+import { YaMapService } from 'epgu-lib';
+import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { merge, Observable, of } from 'rxjs';
 import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
@@ -36,6 +37,7 @@ import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
 import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ConstructorLookupComponent } from '../../../../shared/components/constructor-lookup/constructor-lookup.component';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -54,7 +56,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public mappedDictionaryForLookup;
   public mapCenter: Array<number>;
   public mapControls = [];
-  public provider = { search: this.providerSearch() };
+  public provider: LookupProvider<Partial<ListElement>> = { search: this.providerSearch() };
   public selectedValue;
   public showMap = false;
   public mapIsLoaded = false;
@@ -275,13 +277,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
   }
 
-  public lookupChanged(mapObject: DictionaryYMapItem, lookup: LookupComponent): void {
+  public lookupChanged(mapObject: DictionaryYMapItem, lookup: ConstructorLookupComponent): void {
     this.selectMapObject(mapObject);
     lookup.clearInput();
   }
 
-  public providerSearch(): (val: string) => Observable<Partial<ListItem>[]> {
-    return (searchString): Observable<Partial<ListItem>[]> => {
+  public providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
+    return (searchString): Observable<Partial<ListElement>[]> => {
       this.selectMapObjectService.searchMapObject(searchString);
       return of(
         DictionaryUtilities.adaptDictionaryToListItem(

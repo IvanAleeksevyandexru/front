@@ -12,6 +12,10 @@ import { TimerModule } from '../component-screen/components/timer/timer.module';
 import { ConstructorPlainInputModule } from '../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ConstructorMaskedInputModule } from '../../shared/components/epgu-lib/constructor-masked-input/constructor-masked-input.module';
 import { PassportModule } from '../../shared/components/add-passport/passport.module';
+import { ConstructorDadataWidgetModule } from '../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
+import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { ConstructorLookupModule } from '../../shared/components/constructor-lookup/constructor-lookup.module';
+import { ConstructorCheckboxModule } from '../../shared/components/constructor-checkbox/constructor-checkbox.module';
 
 const COMPONENTS = [
   ComponentsListComponent,
@@ -33,6 +37,10 @@ const COMPONENTS = [
     ConstructorPlainInputModule,
     ConstructorMaskedInputModule,
     PassportModule,
+    ConstructorDadataWidgetModule,
+    ConstructorDropdownModule,
+    ConstructorLookupModule,
+    ConstructorCheckboxModule,
   ],
   providers: [
     ValidationService,

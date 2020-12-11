@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
+
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -15,13 +17,9 @@ enum ItemStatus {
   valid = 'VALID',
 }
 
-interface ChildI {
-  id?: number | string;
-  text?: string;
+interface ChildI extends Partial<ListElement> {
   controlId?: string;
-  hidden?: boolean;
   isNewRef?: string;
-  [key: string]: string | number | boolean;
 }
 
 @Component({

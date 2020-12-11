@@ -273,6 +273,7 @@ export interface DisplayDto {
   label?: string;
   cssClass?: string;
   isSocialButtonsHidden?: boolean;
+  displayCssClass?: string;
 }
 
 export interface ScenarioErrorsDto {

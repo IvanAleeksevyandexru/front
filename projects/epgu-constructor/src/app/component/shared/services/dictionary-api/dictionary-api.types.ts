@@ -1,3 +1,5 @@
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+
 /**
  * @property {string}[treeFiltering='ONELEVEL'] -
  * @property {number}[pageNum=1] -
@@ -42,7 +44,7 @@ export interface DictionaryResponseError {
  * @property {string}title - text, that can show user example: РОССИЯ
  * @property {string}value - example: RUS
  */
-export interface DictionaryItem {
+export interface DictionaryItem extends ListElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   attributeValues: {[key: string]: any}; // TODO
   attributes: Array<string | boolean>;

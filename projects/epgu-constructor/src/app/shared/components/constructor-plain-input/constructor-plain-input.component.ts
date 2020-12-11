@@ -6,7 +6,6 @@ import { TextTransform } from '../../types/textTransform';
 @Component({
   selector: 'epgu-constructor-constructor-plain-input',
   templateUrl: './constructor-plain-input.component.html',
-  styleUrls: ['./constructor-plain-input.component.scss'],
 })
 export class ConstructorPlainInputComponent {
   @Input() control: FormControl;
@@ -20,11 +19,10 @@ export class ConstructorPlainInputComponent {
   @Input() price?: boolean;
   @Input() maxlength?: number;
   @Input() type?: string;
-  @Input() disabled?: boolean;
   @Input() pattern?: string;
   @Output() public blurEvent = new EventEmitter();
 
-  onBlur() {
+  onBlur(): void {
     this.blurEvent.emit();
   }
 }

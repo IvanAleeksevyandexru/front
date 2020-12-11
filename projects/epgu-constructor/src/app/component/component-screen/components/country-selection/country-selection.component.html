@@ -1,12 +1,12 @@
 <form [formGroup]="form">
   <epgu-constructor-label [tips]="data?.attrs?.labelHint" [label]="data.label"></epgu-constructor-label>
-  <lib-dropdown
-    formControlName="countryDropdown"
+  <epgu-constructor-constructor-dropdown
+    [control]="form.get('countryDropdown')"
     [placeholder]="placeholder"
     [items]="listItemDictionary"
     (changed)="selectCountry($event)"
     [localSearch]="true">
-  </lib-dropdown>
+  </epgu-constructor-constructor-dropdown>
   <epgu-constructor-helper-text *ngIf="helperText">{{ helperText }}</epgu-constructor-helper-text>
   <div *ngIf="selectedCountry && selectedCountry.countryType !== '1'"
        class="country-apostil__warning">

@@ -43,6 +43,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       });
   }
 
+  // @todo. метод похож на приватный
   subscribeToComponent(): void {
     this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
       this.rejectAction = this.getRejectAction(component?.attrs?.actions);
@@ -82,6 +83,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.nextStep(payload);
   }
 
+  // @todo. метод похож на приватный
   getPayload(action: ComponentActionDto): { [key: string]: Answer } {
     return {
       [this.screenService.component.id]: {
@@ -126,10 +128,12 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     return !(action.hidden || this.isRejectAction(action));
   }
 
+  // @todo. метод похож на приватный
   getRejectAction(actions: Array<ComponentActionDto> = []): ComponentActionDto {
     return actions.find((action) => this.isRejectAction(action));
   }
 
+  // @todo. метод похож на приватный
   isRejectAction(action: ComponentActionDto): boolean {
     return action.action === DTOActionAction.reject;
   }
