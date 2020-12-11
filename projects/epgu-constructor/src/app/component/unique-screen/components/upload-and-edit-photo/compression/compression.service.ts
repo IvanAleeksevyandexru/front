@@ -56,8 +56,8 @@ export class CompressionService {
   private getDataUrlFromFile(file: File | Blob): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (e) => reject(e);
+      reader.onload = (): void => resolve(reader.result as string);
+      reader.onerror = (e): void => reject(e);
       reader.readAsDataURL(file);
     });
   }
@@ -92,8 +92,8 @@ export class CompressionService {
   private loadImage(src: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
       const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = (e) => reject(e);
+      img.onload = (): void => resolve(img);
+      img.onerror = (e): void => reject(e);
       img.src = src;
     });
   }
@@ -108,7 +108,7 @@ export class CompressionService {
     return canvas;
   }
 
-  private async createImageBitmap(data: Blob | ImageData) {
+  private async createImageBitmap(data: Blob | ImageData): Promise<void | HTMLImageElement> {
     return new Promise((resolve, reject) => {
       let dataURL;
       if (data instanceof Blob) {
@@ -182,7 +182,7 @@ export class CompressionService {
   private getExifOrientation(file: File | Blob): Promise<number> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = (e): void => {
         const view = new DataView(e.target.result as ArrayBuffer);
         if (view.getUint16(0, false) != 0xFFD8) {
           return resolve(-2);
@@ -215,7 +215,7 @@ export class CompressionService {
         }
         return resolve(-1);
       };
-      reader.onerror = (e) => reject(e);
+      reader.onerror = (e): void => reject(e);
       reader.readAsArrayBuffer(file);
     });
   }
@@ -347,11 +347,11 @@ export class CompressionService {
       const objUrl = URL.createObjectURL(file);
       let img = new Image();
 
-      img.onload = () => {
+      img.onload = (): void => {
         URL.revokeObjectURL(objUrl);
         return resolve(true);
       };
-      img.onerror = (e) => {
+      img.onerror = (e): void => {
         URL.revokeObjectURL(objUrl);
         return reject(false);
       };

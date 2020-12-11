@@ -6,7 +6,7 @@ import { Directive, HostListener, Input } from '@angular/core';
 export class TrimDirective {
   @Input() isTrim = true;
   @HostListener('focusout', ['$event.target'])
-  onFocusOut(target: HTMLInputElement) {
+  onFocusOut(target: HTMLInputElement): void {
     if (this.isTrim){
       let value = this.removeNonAlphabeticOrNumeralSymbolsFromBeginning(target.value);
       value = this.removeExtraSpacesBetweenWords(value);

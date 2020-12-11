@@ -19,6 +19,7 @@ import {
 } from './components-list.types';
 import { ComponentListFormService } from './services/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
+import { ValidationService } from './services/validation.service';
 
 const halfWidthItemTypes = [
   CustomScreenComponentTypes.NewEmailInput,
@@ -58,6 +59,7 @@ export class ComponentsListComponent implements OnChanges {
     public dateRangeService: DateRangeService,
     private repository: ComponentListRepositoryService,
     private unsubscribeService: UnsubscribeService,
+    private validationService: ValidationService,
   ) {
     this.changes = this.formService.changes;
   }
@@ -79,6 +81,13 @@ export class ComponentsListComponent implements OnChanges {
         .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
         .subscribe((formStatus) => this.emitFormStatus.emit(formStatus));
     }
+  }
+
+  public validateOnBlur(control: AbstractControl, component: CustomComponent): void {
+    const onBlurValidatorFns = this.validationService.customAsyncValidator(component, 'blur');
+    control.setAsyncValidators(onBlurValidatorFns);
+    control.updateValueAndValidity();
+    control.clearAsyncValidators();
   }
 
   public getDictKeyByComp(component: CustomComponent): string {

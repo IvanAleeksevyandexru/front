@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { ConfirmationModal } from './confirmation-modal.interface';
 import { ModalService } from '../modal.service';
@@ -32,7 +33,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     super();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // By default show cross button if title has been passed
     if (this.showCrossButton === undefined) {
       this.showCrossButton = Boolean(this.title);
@@ -53,7 +54,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
         return {
           elemId: id,
           event: 'click',
-          handler: () =>
+          handler: (): Observable<void> =>
             this.modalService.openModal(ConfirmationModalComponent, {
               ...data,
               clarifications,
@@ -81,7 +82,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
 
   setCustomButtons(): void {
     this.buttons.forEach(({ handler, closeModal, value }, index) => {
-      this.buttons[index].handler = () => {
+      this.buttons[index].handler = (): void => {
         if (handler) {
           handler();
         }

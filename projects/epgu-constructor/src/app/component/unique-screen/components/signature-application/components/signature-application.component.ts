@@ -18,11 +18,12 @@ export class SignatureApplicationComponent implements OnInit {
 
   isMobile = this.deviceDetector.isMobile;
 
-  get data() {
+  get data(): SignatureApplicationData {
     return this.screenService.componentValue as SignatureApplicationData;
   }
 
-  @HostListener('click', ['$event']) onClick($event: Event) {
+  @HostListener('click', ['$event'])
+  onClick($event: Event): void {
     const { id } = $event.target as HTMLElement;
     if (id === 'linkToLK') {
       $event.preventDefault();

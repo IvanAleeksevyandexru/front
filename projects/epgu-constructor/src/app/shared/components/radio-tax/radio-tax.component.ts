@@ -13,7 +13,7 @@ export class RadioTaxComponent implements OnInit {
 
   selectedItem: UnusedPaymentInterface;
 
-  select(index: number) {
+  select(index: number): void {
     this.selectedItem = this.data[index];
     this.selected.emit(this.selectedItem);
   }

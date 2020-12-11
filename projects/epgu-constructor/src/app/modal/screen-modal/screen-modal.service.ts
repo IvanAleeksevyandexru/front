@@ -62,7 +62,7 @@ export class ScreenModalService extends FormPlayerBaseService {
     );
   }
 
-  processResponse(response: FormPlayerApiResponse) {
+  processResponse(response: FormPlayerApiResponse): void {
     if (this.hasError(response)) {
       this.sendDataError(response);
     } else {
@@ -72,20 +72,20 @@ export class ScreenModalService extends FormPlayerBaseService {
     }
   }
 
-  processInitStore(response: FormPlayerApiSuccessResponse) {
+  processInitStore(response: FormPlayerApiSuccessResponse): void {
     if(!this._initStore) {
       this._initStore = response;
     }
   }
 
-  isInternalScenarioFinish () {
-    const isGoBackAction = ({ action }) => action === DTOActionAction.goBackToMainScenario;
+  isInternalScenarioFinish(): void {
+    const isGoBackAction = ({ action }): boolean => action === DTOActionAction.goBackToMainScenario;
     const actions = this._store.scenarioDto?.display?.components[0]?.attrs?.actions || [];
     const isInternalScenarioFinish = actions.some(isGoBackAction);
     this.isInternalScenarioFinishSub.next(isInternalScenarioFinish);
   }
 
-  getVerticalPaddings() {
+  getVerticalPaddings(): number {
     const screenModal = document.querySelector('.screen-modal');
 
     if (!screenModal) {
@@ -95,14 +95,14 @@ export class ScreenModalService extends FormPlayerBaseService {
     const style = window.getComputedStyle(screenModal, null);
     const paddingTop = style.getPropertyValue('padding-top');
     const paddingBottom = style.getPropertyValue('padding-bottom');
-    const parsePadding = (value) => {
+    const parsePadding = (value): number => {
       return parseInt(value.replace(/[^0-9\.]+/g,''));
     };
 
     return parsePadding(paddingTop) + parsePadding(paddingBottom);
   }
 
-  updateMinContentHeight(headerHeight: number) {
+  updateMinContentHeight(headerHeight: number): void {
     if(window.innerWidth <= 768) {
       this.minContentHeight = window.innerHeight - headerHeight - this.getVerticalPaddings();
     } else {

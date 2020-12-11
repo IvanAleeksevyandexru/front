@@ -15,7 +15,7 @@ function adaptiveDictionaryItemToListItem(item: DictionaryItem): Partial<ListIte
     formatted: '',
     // 'hidden': false,
     originalItem: item,
-    compare: () => false,
+    compare: (): boolean => false,
   };
 }
 
@@ -120,13 +120,13 @@ export function getNormalizeDataCustomScreenDictionary(
  * Проверяет есть ли связь с типом калькуляция и если есть возвращает её
  * @param item - объект с информацией о связи
  */
-export const findCalcRelation = (item: CustomComponentRef) => item.relation === CustomComponentRefRelation.calc;
+export const findCalcRelation = (item: CustomComponentRef): boolean => item.relation === CustomComponentRefRelation.calc;
 
 /**
  * Возвращает найденую связь компонента с типом калькуляция
  * @param checkComponent - компонент для проверки
  */
-export const getCalcRelation = (checkComponent: CustomComponent) => checkComponent.attrs.ref.find(findCalcRelation);
+export const getCalcRelation = (checkComponent: CustomComponent): CustomComponentRef => checkComponent.attrs.ref.find(findCalcRelation);
 
 
 

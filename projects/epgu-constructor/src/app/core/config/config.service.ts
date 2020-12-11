@@ -35,7 +35,7 @@ export class ConfigService implements Config {
     });
   }
 
-  checkConfig(config: Config) {
+  checkConfig(config: Config): void {
     if (!config) {
       throw Error('Please set config at FormPlayerModule.forRoot()');
     }
@@ -126,7 +126,7 @@ export class ConfigService implements Config {
     return domain.lastIndexOf('/') === domain.length - 1 ? domain.substring(0, domain.length - 1) : domain;
   }
 
-  initCore(config: Config = {} as Config) {
+  initCore(config: Config = {} as Config): void {
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;

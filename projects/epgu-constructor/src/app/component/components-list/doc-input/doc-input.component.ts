@@ -150,7 +150,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     });
   }
 
-  markControlAsDirty(control: string | string[]) {
+  markControlAsDirty(control: string | string[]): void {
     this.form.get(control).markAsDirty();
   }
 
@@ -190,21 +190,21 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     pattern?: string;
     msg: string;
   }): ValidatorFn {
-    return (control: FormControl) => {
+    return (control: FormControl): Function => {
       const validationHandler = this.getValidationHandler()[config.validationType];
       return validationHandler(control, config);
     };
   }
 
   getValidationHandler(): { [key: string]: Function } {
-    const regExp = (control, config) => {
+    const regExp = (control, config): { msg: string } => {
       if (control.value && !control.value.match(config.pattern)) {
         return { msg: config.msg };
       }
       return null;
     };
 
-    const required = (control, config) => {
+    const required = (control, config): { msg: string } => {
       if (!control.value) {
         return { msg: config.msg };
       }

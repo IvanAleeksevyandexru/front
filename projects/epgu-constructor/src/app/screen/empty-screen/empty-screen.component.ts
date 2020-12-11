@@ -23,8 +23,8 @@ export class EmptyScreenComponent {
   get redirectLink(): string {
     const { applicantAnswers } = this.screenService;
     const ref = this.screenService.component?.attrs?.ref as string; // TODO: выяснить почему ref может быть массивом либо строкой
-    const linkFromRef = () => applicantAnswers[ref]?.value;
-    const linkFromComponent = () => this.screenService.component?.attrs?.link;
+    const linkFromRef = (): string => applicantAnswers[ref]?.value;
+    const linkFromComponent = (): string => this.screenService.component?.attrs?.link;
 
     return ref ? linkFromRef() : linkFromComponent();
   }

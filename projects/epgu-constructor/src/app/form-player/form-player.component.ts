@@ -61,7 +61,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.initSettingOfScreenIdToAttr();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.startPlayer();
   }
 

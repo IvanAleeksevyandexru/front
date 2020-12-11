@@ -62,7 +62,7 @@ export class UtilsService {
    * @param data - данные для сохранения
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static setLocalStorageJSON(key: string, data: any) {
+  static setLocalStorageJSON(key: string, data: any): void {
     localStorage.setItem(key, JSON.stringify(data));
   }
 
@@ -70,7 +70,7 @@ export class UtilsService {
    * Удаляет из хранилища Local Storage по ключу
    * @param key
    */
-  static deleteFromLocalStorage(key: string) {
+  static deleteFromLocalStorage(key: string): void {
     localStorage.removeItem(key);
   }
 
@@ -81,7 +81,7 @@ export class UtilsService {
    * @param days - количество дней на установку
    * @param domain - домен, к которому записывается кука
    */
-  static setCookie(name: string, value: string | number, days: number, domain: string = '') {
+  static setCookie(name: string, value: string | number, days: number, domain: string = ''): void {
     let expires = '';
     if (days) {
       const date = new Date();
@@ -99,13 +99,15 @@ export class UtilsService {
    * Получает куку с нужным именем
    * @param name - имя куки
    */
-  static getCookie(name: string) {
+  static getCookie(name: string): string {
     const nameEQ = name + '=';
     const ca = document.cookie.split(';');
     for (let i = 0; i < ca.length; i++) {
       let c = ca[i];
       while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      if (c.indexOf(nameEQ) == 0) {
+        return c.substring(nameEQ.length, c.length);
+      }
     }
     return null;
   }
@@ -114,7 +116,7 @@ export class UtilsService {
    * Удаляет куку с нужным именем
    * @param name - имя куки
    */
-  static removeCookie(name: string) {
+  static removeCookie(name: string): void {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
 
@@ -129,7 +131,8 @@ export class UtilsService {
   static getObjectProperty(obj: any, path: string, defaultValue: any = undefined): any {
     if (!path) return obj;
 
-    const travel = (regexp) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const travel = (regexp): any =>
       String.prototype.split
         .call(path, regexp)
         .filter(Boolean)
@@ -184,8 +187,7 @@ export class UtilsService {
     return splitByDirLocation;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private sliceArrayFromRight(arr: any[], from: number, includeFirst: boolean = true) {
+  private sliceArrayFromRight(arr: string[], from: number, includeFirst: boolean = true): string[] {
     return arr.slice(Math.max(arr.length - from, includeFirst ? 0 : 1));
   }
 
