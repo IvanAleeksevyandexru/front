@@ -1,8 +1,11 @@
-import { Component, DoCheck, Input } from '@angular/core';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
 import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { Clarifications } from '../../../../shared/services/terra-byte-api/terra-byte-api.types';
+import { ScreenService } from '../../../../screen/screen.service';
 
 interface PaymentTypeSelectorInterface {
   actions: Array<ComponentActionDto>;
@@ -13,32 +16,35 @@ interface PaymentTypeSelectorInterface {
   srcImg?: string;
 }
 
+interface PaymentTypeSelectorContext {
+  paymentTypeSelector: PaymentTypeSelectorInterface;
+  isErrorTemplate: boolean;
+  applicantType: string;
+}
+
 @Component({
   selector: 'epgu-constructor-payment-type-selector',
   templateUrl: './payment-type-selector.component.html',
   styleUrls: ['./payment-type-selector.component.scss'],
 })
-export class PaymentTypeSelectorComponent implements DoCheck {
-  @Input() data: ComponentBase;
+export class PaymentTypeSelectorComponent {
+  data$ = this.screenService.component$;
 
-  paymentTypeSelector: PaymentTypeSelectorInterface;
-  isErrorTemplate: boolean;
+  init$: Observable<PaymentTypeSelectorContext> = this.data$.pipe(
+    map((data: ComponentBase) => {
+      return {
+        paymentTypeSelector: data.attrs.states[data.attrs.state],
+        isErrorTemplate: data.attrs.state !== this.success,
+        applicantType: data.attrs.applicantType,
+      };
+    }),
+  );
+
   success = 'SUCCESS';
-  applicantType: string;
 
-  constructor(public config: ConfigService) {}
+  constructor(public config: ConfigService, public screenService: ScreenService) {}
 
-  ngDoCheck(): void {
-    this.paymentTypeSelector = this.data.attrs.states[this.data.attrs.state];
-    this.isErrorTemplate = this.data.attrs.state !== this.success;
-    this.applicantType = this.data.attrs.applicantType;
-  }
-
-  showBtn(applicantType: string): boolean {
-    if (this.applicantType === applicantType) {
-      return true;
-    }
-
-    return !applicantType;
+  showBtn(applicantType: string, action: ComponentActionDto): boolean {
+    return applicantType === action.applicantType;
   }
 }
