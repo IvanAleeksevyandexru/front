@@ -96,7 +96,7 @@ describe('UniqueScreenComponent', () => {
   beforeEach(() => {
     initComponent();
 
-    navigationService = TestBed.inject(NavigationService) as NavigationServiceStub;
+    navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
   });
 
@@ -138,7 +138,7 @@ describe('UniqueScreenComponent', () => {
 
   describe('nextStep() method', () => {
     it('should call navigationService.nextStep.next()', () => {
-      const nextStepSpy = spyOn(navigationService.nextStep, 'next');
+      const nextStepSpy = spyOn(navigationService, 'next');
 
       component.nextStep();
 

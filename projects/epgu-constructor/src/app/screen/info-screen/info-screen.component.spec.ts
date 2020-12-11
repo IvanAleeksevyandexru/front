@@ -71,7 +71,7 @@ describe('InfoScreenComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    navigationService = TestBed.inject(NavigationService) as NavigationServiceStub;
+    navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
   });
 
@@ -115,7 +115,7 @@ describe('InfoScreenComponent', () => {
 
   describe('nextStep() method', () => {
     it('should call navigationService.nextStep.next()', () => {
-      const nextStepSpy = spyOn(navigationService.nextStep, 'next');
+      const nextStepSpy = spyOn(navigationService, 'next');
 
       component.nextStep();
 

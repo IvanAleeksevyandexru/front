@@ -10,8 +10,7 @@ import { ScreenService } from '../screen.service';
 import { ScreenTypes } from '../screen.types';
 import { ComponentsListComponent } from '../../component/components-list/components-list.component';
 import { CustomScreenComponent } from './custom-screen.component';
-import { Subject } from 'rxjs';
-import { Navigation, NavigationPayload } from '../../form-player/form-player.types';
+import { NavigationPayload } from '../../form-player/form-player.types';
 import {
   CustomComponentOutputData,
   CustomComponentValidationConditions,
@@ -53,7 +52,7 @@ describe('CustomScreenComponent', () => {
     fixture.detectChanges();
 
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
-    navigationService = TestBed.inject(NavigationService) as NavigationServiceStub;
+    navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
   });
 
   it('check snapshot', () => {
@@ -74,7 +73,7 @@ describe('CustomScreenComponent', () => {
 
   describe('nextStep() method', () => {
     it('should call navigationService.nextStep.next()', () => {
-      const nextStepSpy = spyOn(navigationService.nextStep, 'next');
+      const nextStepSpy = spyOn(navigationService, 'next');
 
       component.nextStep();
 
