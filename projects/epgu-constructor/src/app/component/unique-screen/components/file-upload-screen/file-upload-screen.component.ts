@@ -37,9 +37,10 @@ export class FileUploadScreenComponent {
 
   submitLabel$: Observable<string> = this.screenService.submitLabel$;
 
-  header$: Observable<string> = combineLatest([this.data$, this.screenService.header$]).pipe(
-    map(([data, header]: [ComponentBase, string]) => header || data.label),
-  );
+  header$: Observable<string> = combineLatest([
+    this.screenService.component$,
+    this.screenService.header$,
+  ]).pipe(map(([data, header]: [ComponentBase, string]) => header || data.label));
 
   @Output() nextStepEvent = new EventEmitter();
 

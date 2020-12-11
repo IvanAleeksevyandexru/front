@@ -1,9 +1,11 @@
+
 <ng-container
 *ngTemplateOutlet="contentComponent; context: {isLoading: isLoading$ | async,
                                                header: header$ | async,
                                                applicantAnswers: applicantAnswers$ | async,
                                                submitLabel: submitLabel$ | async,
-                                               data: data$ | async}"
+                                               data: data$ | async
+                                               }"
 ></ng-container>
 
 <ng-template #contentComponent
@@ -21,7 +23,7 @@
         [objectId]="screenService.orderId$ | async"
         [applicantAnswers]="applicantAnswers"
         [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
-        [attributes]="$any(data.attrs)"
+        [attributes]="$any(data).attrs"
         (newValueSet)="handleNewValueSet($event)"
       >
       </epgu-constructor-file-upload>

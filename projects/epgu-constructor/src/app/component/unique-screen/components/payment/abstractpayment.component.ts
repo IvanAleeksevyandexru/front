@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Injector, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Injector, OnDestroy, OnInit, Output } from '@angular/core';
 import * as moment_ from 'moment';
-import { catchError, switchMap, takeUntil } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { catchError, switchMap, takeUntil, map, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 import { ScreenService } from '../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -48,7 +48,7 @@ export interface PaymentInfoValue {
 @Component({
   template: '',
 })
-export class AbstractPaymentComponent implements OnDestroy {
+export class AbstractPaymentComponent implements OnDestroy, OnInit {
   public paymentStatus = PaymentStatus;
   public paymentPurpose = '';
   public uin = ''; // Уникальный идентификатор платежа
@@ -73,19 +73,23 @@ export class AbstractPaymentComponent implements OnDestroy {
   public ngUnsubscribe$: UnsubscribeService;
   public config: ConfigService;
 
-  @Input() header = 'Оплата госпошлины'; // Заголовок
-  protected attrData: ComponentBase;
-  @Input()
-  set data(data: ComponentBase) {
-    this.isPaid = false;
-    this.inLoading = true;
-    this.attrData = data;
-    this.loadPaymentInfo();
-  }
-  get data() {
-    return this.attrData;
-  }
-  @Input() submitLabel: string;
+  header$: Observable<string> = this.screenService.header$.pipe(
+    map((header) => header ?? 'Оплата госпошлины'),
+  );
+
+  data: ComponentBase;
+
+  init$: Observable<ComponentBase> = this.screenService.component$.pipe(
+    tap((data: ComponentBase) => {
+      this.isPaid = false;
+      this.inLoading = true;
+      this.data = data;
+      this.loadPaymentInfo();
+    }),
+  );
+
+  submitLabel$: Observable<string> = this.screenService.submitLabel$;
+
   @Output() nextStepEvent = new EventEmitter<void>();
 
   constructor(public injector: Injector) {
@@ -94,6 +98,10 @@ export class AbstractPaymentComponent implements OnDestroy {
     this.currentAnswersService = this.injector.get(CurrentAnswersService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.config = this.injector.get(ConfigService);
+  }
+
+  ngOnInit(): void {
+    this.init$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
   }
 
   /**

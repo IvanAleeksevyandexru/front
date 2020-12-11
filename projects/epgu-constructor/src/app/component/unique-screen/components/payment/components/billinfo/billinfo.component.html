@@ -1,6 +1,6 @@
 <epgu-constructor-screen-container>
   <div class="screen-body">
-    <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
+    <epgu-constructor-page-name *ngIf="(header$ | async) as header">{{ header }}</epgu-constructor-page-name>
 
     <div class="payment" [class.inloading]="inLoading">
       <div class="info">
@@ -44,7 +44,7 @@
       </div>
       <div class="footer__item">
         <lib-button (click)="nextStep()" class="btn__submit">
-          {{ submitLabel || "Далее" }}
+          {{ (submitLabel$ | async) || "Далее" }}
         </lib-button>
       </div>
     </div>

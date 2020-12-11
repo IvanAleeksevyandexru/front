@@ -27,23 +27,16 @@
     *ngSwitchCase="uniqueComponentName.carInfo"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-car-info>
-
   <epgu-constructor-signature-application
     *ngSwitchCase="uniqueComponentName.signatureApplication"
     (nextStepEvent)="nextDataForStep($event)">
   </epgu-constructor-signature-application>
   <epgu-constructor-payment
     *ngSwitchCase="uniqueComponentName.paymentScr"
-    [header]="screenService.header$ | async"
-    [data]="screenService.component$ | async"
-    [submitLabel]="screenService.submitLabel$ | async"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-payment>
   <epgu-constructor-bill-info
     *ngSwitchCase="uniqueComponentName.billInfo"
-    [header]="screenService.header$ | async"
-    [data]="screenService.component$ | async"
-    [submitLabel]="screenService.submitLabel$ | async"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-bill-info>
   <epgu-constructor-upload-and-edit-photo

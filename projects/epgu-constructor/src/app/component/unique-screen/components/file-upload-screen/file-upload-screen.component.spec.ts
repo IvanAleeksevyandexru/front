@@ -3,6 +3,9 @@ import { FileUploadScreenComponent } from './file-upload-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { of } from 'rxjs';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 // TODO: Need to refactoring component
 xdescribe('FileUploadScreenComponent', () => {
@@ -24,22 +27,25 @@ xdescribe('FileUploadScreenComponent', () => {
     label: '',
     type: '',
     value: '',
-  };
+  } as ComponentBase;
+  let screenService: ScreenService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [FileUploadScreenComponent],
-      providers: [],
+      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
     }).compileComponents();
+    screenService = TestBed.inject(ScreenService);
   }));
 
   beforeEach(() => {
+    screenService.component$ = of(mockData);
+    screenService.header$ = of('');
+    screenService.submitLabel$ = of('');
     fixture = TestBed.createComponent(FileUploadScreenComponent);
     component = fixture.componentInstance;
-    component.data$ = of(mockData);
-    component.header$ = of('');
-    component.submitLabel$ = of('');
+    Z;
     fixture.detectChanges();
   });
 
