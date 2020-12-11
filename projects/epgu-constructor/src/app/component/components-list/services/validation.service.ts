@@ -19,7 +19,7 @@ export class ValidationService {
     CustomScreenComponentTypes.HtmlString,
   ];
 
-  private getError(validations: Array<CustomComponentAttrValidation>, control: AbstractControl) {
+  private getError(validations: Array<CustomComponentAttrValidation>, control: AbstractControl): CustomComponentAttrValidation {
     return validations.find(({ value, type }) =>
       type === 'RegExp' && control.value && !new RegExp(value).test(control.value)
     );
@@ -27,7 +27,10 @@ export class ValidationService {
 
   customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
-    const validations = componentValidations.filter(validationRule => validationRule.updateOn === 'change');
+    const validations = componentValidations && componentValidations.filter(validationRule =>
+      validationRule.updateOn === 'change' ||
+      typeof validationRule.updateOn === 'undefined'
+    );
 
     return (control: AbstractControl): ValidationErrors => {
       if (this.typesWithoutValidation.includes(component.type)) {
