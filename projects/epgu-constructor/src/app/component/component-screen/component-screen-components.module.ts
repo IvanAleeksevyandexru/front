@@ -13,6 +13,7 @@ import { ConfirmPersonalUserPhoneEmailModule } from './components/confirm-person
 import { RegistrationAddrScreenModule } from './components/confirm-personal-user/screens/registration-addr/registration-addr-screen.module';
 import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
 import { SelectChildrenScreenModule } from './components/select-children/select-children-screen.module';
+import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
 
 const COMPONENTS = [
   CountrySelectionComponent,
@@ -29,6 +30,7 @@ const COMPONENTS = [
     SelectChildrenScreenModule,
     RegistrationAddrScreenModule,
     AddPassportModule,
+    ConstructorDropdownModule,
   ],
   exports: [
     ...COMPONENTS,

@@ -12,6 +12,7 @@ import { ComponentsListModule } from '../../../components-list/components-list.m
 import { CoreModule } from '../../../../core/core.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
+import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 
 describe('SelectChildrenScreenComponent', () => {
   let component: SelectChildrenScreenComponent;
@@ -37,7 +38,8 @@ describe('SelectChildrenScreenComponent', () => {
         SharedModule,
         ReactiveFormsModule,
         ComponentsListModule,
-        RouterTestingModule
+        RouterTestingModule,
+        ConstructorDropdownModule,
       ],
       providers: [
         CurrentAnswersService,

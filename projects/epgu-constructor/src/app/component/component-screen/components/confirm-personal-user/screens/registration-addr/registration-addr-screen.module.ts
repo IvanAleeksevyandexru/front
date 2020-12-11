@@ -3,6 +3,8 @@ import { CoreModule } from '../../../../../../core/core.module';
 import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { SharedModule } from '../../../../../../shared/shared.module';
 import { RegistrationAddrComponent } from './components/registration-addr/registration-addr.component';
+// eslint-disable-next-line max-len
+import { ConstructorDadataWidgetModule } from '../../../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 
 @NgModule({
   declarations: [RegistrationAddrComponent,],
@@ -11,6 +13,7 @@ import { RegistrationAddrComponent } from './components/registration-addr/regist
     CoreModule,
     SharedModule,
     ConstructorPlainInputModule,
+    ConstructorDadataWidgetModule,
   ]
 })
 export class RegistrationAddrScreenModule { }
