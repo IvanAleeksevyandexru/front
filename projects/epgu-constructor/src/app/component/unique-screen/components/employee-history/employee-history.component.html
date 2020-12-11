@@ -1,7 +1,7 @@
-<epgu-constructor-screen-container class="employee-history">
+<epgu-constructor-screen-container class="employee-history" *ngIf="(init$ | async) as data">
 
   <div class="screen-body">
-    <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
+    <epgu-constructor-page-name *ngIf="(header$ | async) as header">{{ header }}</epgu-constructor-page-name>
     <section
       class="employee-history__generation"
       *ngFor="let generation of employeeFormService.employeeHistoryForm.controls; let i = index">
@@ -78,7 +78,9 @@
           for="position"
         ></epgu-constructor-label>
         <epgu-constructor-constructor-plain-input
-          [textTransformType]="textTransformType"
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType(data[0])"
           [name]="i + '_position'"
           [control]="$any(generation.get('position'))"
           [invalid]="generation.get('position').invalid"
@@ -97,7 +99,9 @@
           for="place"
         ></epgu-constructor-label>
         <epgu-constructor-constructor-plain-input
-          [textTransformType]="textTransformType"
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType(data[0])"
           [name]="i + '_place'"
           [control]="$any(generation.get('place'))"
           [invalid]="generation.get('place').invalid"
@@ -116,7 +120,9 @@
           [for]="'address'"
         ></epgu-constructor-label>
         <epgu-constructor-constructor-plain-input
-          [textTransformType]="textTransformType"
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="textTransformType(data[0])"
           [name]="i + '_address'"
           [control]="$any(generation.get('address'))"
           [invalid]="generation.get('address').invalid"
@@ -158,7 +164,7 @@
       [disabled]="(monthsService.isMonthComplete$ | async) === false || employeeFormService.employeeHistoryForm.invalid"
       class="btn__submit"
     >
-        {{ display?.submitLabel || 'Продолжить' }}
+        {{ data[0]?.submitLabel || 'Продолжить' }}
     </lib-button>
   </div>
 </epgu-constructor-screen-container>

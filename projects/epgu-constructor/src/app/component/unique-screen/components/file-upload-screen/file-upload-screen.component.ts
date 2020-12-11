@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { Observable, combineLatest } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -8,6 +10,7 @@ import {
   FileUploadItem,
 } from '../../../../shared/services/terra-byte-api/terra-byte-api.types';
 import { TerraUploadedFile } from './sub-components/file-upload-item/data';
+import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',
@@ -15,31 +18,30 @@ import { TerraUploadedFile } from './sub-components/file-upload-item/data';
   styleUrls: ['./file-upload-screen.component.scss'],
 })
 export class FileUploadScreenComponent {
-  @Input() isLoading: boolean;
-  @Input() applicantAnswers: object;
-  private head: string;
-  @Input() set header(header: string) {
-    this.head = header;
-  }
-  get header(): string {
-    return this.head ? this.head : this.data.label;
-  }
-  private info: ComponentBase;
-  @Input() set data(data: ComponentBase) {
-    this.info = data;
-    this.allMaxFiles = 0;
-    // @ts-ignore
-    const { attrs: { uploads } = {} } = data;
-    this.collectMaxFilesNumber(uploads);
-    this.value = {
-      id: data.id,
-      type: UniqueScreenComponentTypes.fileUploadComponent,
-    };
-  }
-  get data(): ComponentBase {
-    return this.info;
-  }
-  @Input() submitLabel: string;
+  isLoading$: Observable<boolean> = this.screenService.isLoading$;
+
+  data$: Observable<ComponentBase> = this.screenService.component$.pipe(
+    tap((data: ComponentBase) => {
+      this.allMaxFiles = 0;
+      // @ts-ignore
+      const { attrs: { uploads } = {} } = data;
+      this.collectMaxFilesNumber(uploads);
+      this.value = {
+        id: data.id,
+        type: UniqueScreenComponentTypes.fileUploadComponent,
+      };
+    }),
+  );
+
+  applicantAnswers$: Observable<ApplicantAnswersDto> = this.screenService.applicantAnswers$;
+
+  submitLabel$: Observable<string> = this.screenService.submitLabel$;
+
+  header$: Observable<string> = combineLatest([
+    this.screenService.component$,
+    this.screenService.header$,
+  ]).pipe(map(([data, header]: [ComponentBase, string]) => header || data.label));
+
   @Output() nextStepEvent = new EventEmitter();
 
   disabled = true;

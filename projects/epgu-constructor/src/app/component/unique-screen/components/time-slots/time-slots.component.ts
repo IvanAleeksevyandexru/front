@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { Observable, Subscription } from 'rxjs';
@@ -29,8 +29,8 @@ const moment = moment_;
   providers: [UnsubscribeService],
 })
 export class TimeSlotsComponent implements OnInit {
-  @Input() isLoading: boolean;
-  @Input() data: DisplayDto;
+  isLoading$: Observable<boolean> = this.screenService.isLoading$;
+  data$: Observable<DisplayDto> = this.screenService.display$;
   @Output() nextStepEvent = new EventEmitter();
 
   public date: Date = null;
