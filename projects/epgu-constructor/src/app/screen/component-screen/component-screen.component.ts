@@ -5,7 +5,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenBase } from '../screenBase';
 
-interface ComponentSetting {
+export interface ComponentSetting {
   displayContinueBtn: boolean;
   displayWarningAnswers: boolean;
 }
@@ -71,7 +71,7 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
    * Смена настроек компонента
    * @param settings - настройки компонента
    */
-  changeComponentSettings(settings: ComponentSetting): void {
+  changeComponentSettings(settings: Partial<ComponentSetting>): void {
     this.componentSetting = { ...this.componentSetting, ...settings };
   }
 

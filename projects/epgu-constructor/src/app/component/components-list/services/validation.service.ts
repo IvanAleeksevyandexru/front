@@ -6,28 +6,33 @@ import { InvalidControlMsg, REQUIRED_FIELD } from '../../../shared/constants/hel
 import {
   CustomComponent,
   CustomComponentAttrValidation,
-  CustomScreenComponentTypes
+  CustomScreenComponentTypes,
 } from '../components-list.types';
 
 @Injectable()
 export class ValidationService {
-
-  constructor() { }
+  constructor() {}
 
   private readonly typesWithoutValidation: Array<CustomScreenComponentTypes> = [
     CustomScreenComponentTypes.LabelSection,
     CustomScreenComponentTypes.HtmlString,
   ];
 
-  private getError(validations: Array<CustomComponentAttrValidation>, control: AbstractControl) {
-    return validations.find(({ value, type }) =>
-      type === 'RegExp' && control.value && !new RegExp(value).test(control.value)
+  private getError(
+    validations: Array<CustomComponentAttrValidation>,
+    control: AbstractControl,
+  ): CustomComponentAttrValidation | undefined {
+    return validations.find(
+      ({ value, type }) =>
+        type === 'RegExp' && control.value && !new RegExp(value).test(control.value),
     );
-  };
+  }
 
   customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
-    const validations = componentValidations.filter(validationRule => validationRule.updateOn === 'change');
+    const validations = componentValidations.filter(
+      (validationRule) => validationRule.updateOn === 'change',
+    );
 
     return (control: AbstractControl): ValidationErrors => {
       if (this.typesWithoutValidation.includes(component.type)) {
@@ -41,20 +46,26 @@ export class ValidationService {
         if (error) {
           return this.validationErrorMsg(error.errorMsg);
         }
-        customMessage = validations.find((validator: CustomComponentAttrValidation) => validator.type === 'validation-fn');
+        customMessage = validations.find(
+          (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
+        );
       }
 
       if (!control.value) {
         return null;
       }
 
-      return this.isValid(component, control.value) ? null : this.validationErrorMsg(customMessage?.errorMsg);
+      return this.isValid(component, control.value)
+        ? null
+        : this.validationErrorMsg(customMessage?.errorMsg);
     };
   }
 
   customAsyncValidator(component: CustomComponent, asyncValudationType: string): AsyncValidatorFn {
     const componentValidations = component.attrs?.validation;
-    const onBlurValidations = componentValidations.filter(validationRule => validationRule.updateOn === 'blur');
+    const onBlurValidations = componentValidations.filter(
+      (validationRule) => validationRule.updateOn === 'blur',
+    );
 
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       if (component.required && !control.value) {
@@ -68,14 +79,18 @@ export class ValidationService {
         if (error) {
           return of(this.validationErrorMsg(error.errorMsg));
         }
-        customMessage = onBlurValidations.find((validator: CustomComponentAttrValidation) => validator.type === 'validation-fn');
+        customMessage = onBlurValidations.find(
+          (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
+        );
       }
 
       if (!control.value) {
         return of(null);
       }
 
-      return this.isValid(component, control.value) ? of(null) : of(this.validationErrorMsg(customMessage?.errorMsg));
+      return this.isValid(component, control.value)
+        ? of(null)
+        : of(this.validationErrorMsg(customMessage?.errorMsg));
     };
   }
 
@@ -90,7 +105,8 @@ export class ValidationService {
       case CustomScreenComponentTypes.PersonInnInput:
       case CustomScreenComponentTypes.LegalInnInput:
         return checkINN(value);
-      default: return true;
+      default:
+        return true;
     }
   }
 
