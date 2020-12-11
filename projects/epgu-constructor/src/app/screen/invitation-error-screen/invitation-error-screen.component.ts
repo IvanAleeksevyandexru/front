@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
+import { InvitationErrorScreenComponentTypes } from '../../component/invitation-error-screen/invitation-error-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import { InvitationErrorScreenComponentTypes } from '../../component/invitation-error-screen/invitation-error-screen-components.types';
 import { ScreenBase } from '../screenBase';
 
 @Component({
@@ -12,7 +12,6 @@ import { ScreenBase } from '../screenBase';
 })
 export class InvitationErrorScreenComponent extends ScreenBase {
   typeComponent = InvitationErrorScreenComponentTypes;
-  scenarioDto = this.screenService.getStore();
 
   constructor(public injector: Injector) {
     super(injector);

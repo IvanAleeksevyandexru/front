@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TimeSlotsServiceInterface } from './time-slots.interface';
-import * as uuid from 'uuid';
+import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import * as uuid from 'uuid';
+import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
+import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
   BookTimeSlotReq,
   MvdDepartmentInterface,
@@ -12,9 +13,8 @@ import {
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
-  TimeSlotValueInterface,
+  TimeSlotValueInterface
 } from './time-slots.types';
-import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 
 @Injectable()
 export class MvdTimeSlotsService implements TimeSlotsServiceInterface {

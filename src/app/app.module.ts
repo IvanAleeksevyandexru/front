@@ -14,6 +14,7 @@ import { FpContainerComponent } from './fp-container/fp-container.component';
 import { LayoutModule } from './layout/layout.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { environment } from '../environments/environment';
+import '@angular/common/locales/global/ru';
 
 @NgModule({
   declarations: [
