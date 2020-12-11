@@ -24,7 +24,7 @@ export class ConstructorPlainInputComponent {
   @Input() pattern?: string;
   @Output() public blurEvent = new EventEmitter();
 
-  onBlur() {
+  onBlur(): void {
     this.blurEvent.emit();
   }
 }

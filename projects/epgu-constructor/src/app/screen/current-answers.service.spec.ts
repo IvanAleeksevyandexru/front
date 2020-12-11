@@ -7,12 +7,28 @@ describe('CurrentAnswersService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CurrentAnswersService]
+      providers: [CurrentAnswersService],
     });
     service = TestBed.inject(CurrentAnswersService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it('should get and set state property', () => {
+    expect(service.state).toBeUndefined();
+
+    service.state = 'foo';
+    expect(service.state).toBe('foo');
+
+    service.state = 'bar';
+    expect(service.state).toBe('bar');
+  });
+
+  it('should get and set isValid property', () => {
+    expect(service.isValid).toBeUndefined();
+
+    service.isValid = true;
+    expect(service.isValid).toBe(true);
+
+    service.isValid = false;
+    expect(service.isValid).toBe(false);
   });
 });

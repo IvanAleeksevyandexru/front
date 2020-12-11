@@ -4,7 +4,7 @@ import { ScreenService } from '../screen.service';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 
 /**
- * Это тезнический компонент для организации каких-то действий не требующийх отображения данных.
+ * Это технический компонент для организации каких-то действий не требующийх отображения данных.
  * @example сервер может прислать ссылку на которую нужно сделать редирект
  */
 @Component({
