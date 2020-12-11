@@ -6,6 +6,7 @@ import { CachedAnswersService } from '../shared/services/applicant-answers/cache
 import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
 import { ScreenStore, ScreenTypes } from './screen.types';
+import { UtilsService } from '../shared/services/utils/utils.service';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: '653920',
@@ -71,7 +72,7 @@ describe('ScreenService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ScreenService, CachedAnswersService, CurrentAnswersService],
+      providers: [ScreenService, CachedAnswersService, CurrentAnswersService, UtilsService],
     });
     screenService = TestBed.inject(ScreenService);
 
