@@ -11,7 +11,7 @@ import { GibddTimeSlotsService } from './gibdd-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { ModalService } from '../../../../modal/modal.service';
 import { TimeSlotsConstants } from './time-slots.constants';
-import { SlotInterface } from './time-slots.types';
+import { SlotInterface, SmevBookResponseInterface } from './time-slots.types';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
@@ -75,6 +75,7 @@ export class TimeSlotsComponent implements OnInit {
   private timeSlotServices: { [key: string]: TimeSlotsServiceInterface } = {};
   private currentService: TimeSlotsServiceInterface;
   private errorModalResultSub = new Subscription();
+  private cachedAnswer: SmevBookResponseInterface;
 
   constructor(
     private changeDetection: ChangeDetectorRef,
@@ -183,8 +184,8 @@ export class TimeSlotsComponent implements OnInit {
     this.currentAnswersService.state = slot;
   }
 
-  public isSlotSelected({ slotTime }: SlotInterface) {
-    return this.currentSlot && this.currentSlot.slotTime === slotTime;
+  public isSlotSelected({ slotId }: SlotInterface): boolean {
+    return this.currentSlot && this.currentSlot.slotId === slotId;
   }
 
   public showTimeSlots(date: Date) {
@@ -215,9 +216,22 @@ export class TimeSlotsComponent implements OnInit {
     this.checkExistenceSlots();
   }
 
-  public clickSubmit() {
+  /**
+   * Отправка формы.
+   *  Если есть забуканный слот
+   *
+   *      и значение не менялось то передаем ответ из cachedAnswers.
+   *      и значение менялось, то модалка для подтверждения
+   *
+   *  Иначе, букаем слот
+   */
+  public clickSubmit(): void {
     if (this.bookedSlot) {
-      this.showModal(this.confirmModalParameters);
+      if (this.isCachedValueChanged()) {
+        this.showModal(this.confirmModalParameters);
+      } else {
+        this.nextStepEvent.emit(JSON.stringify(this.cachedAnswer));
+      }
     } else {
       this.bookTimeSlot();
     }
@@ -271,16 +285,14 @@ export class TimeSlotsComponent implements OnInit {
     });
   }
 
-  initCalendar() {
-    const initDate = new Date();
-    this.activeMonthNumber = initDate.getMonth();
-    this.activeYearNumber = initDate.getFullYear();
-    this.renderSingleMonthGrid(this.weeks);
-  }
-
   ngOnInit(): void {
     if (this.screenService.component) {
       this.loadTimeSlots();
+    }
+
+    const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
+    if (cachedAnswer) {
+      this.cachedAnswer = JSON.parse(cachedAnswer);
     }
   }
 
@@ -288,7 +300,8 @@ export class TimeSlotsComponent implements OnInit {
     this.inProgress = true;
     this.label = this.screenService.component?.label;
     const value = JSON.parse(this.screenService.component?.value);
-    this.initCalendar();
+    const { timeSlot } = value;
+
     this.currentService = this.timeSlotServices[value.timeSlotType];
     this.currentService.init(value).subscribe(
       () => {
@@ -301,23 +314,25 @@ export class TimeSlotsComponent implements OnInit {
           this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
         } else {
           this.errorMessage = undefined;
-          this.monthsYears = [];
           this.activeMonthNumber = this.currentService.getCurrentMonth();
           this.activeYearNumber = this.currentService.getCurrentYear();
 
-          const availableMonths = this.currentService.getAvailableMonths();
-          for (let i = 0; i < availableMonths.length; i += 1) {
-            this.monthsYears.push(this.getMonthsListItem(availableMonths[i]));
-          }
-          const monthListId = this.generateMonthListId(
-            this.activeYearNumber,
-            this.activeMonthNumber,
-          );
-          this.currentMonth = this.monthsYears.find((item) => item.id === monthListId);
+          this.fillMonthsYears();
+          this.currentMonth = this.monthsYears[0] as ListItem;
           this.fixedMonth = this.monthsYears.length < 2;
-          this.renderSingleMonthGrid(this.weeks);
+          this.monthChanged(this.currentMonth);
 
           this.bookedSlot = this.currentService.getBookedSlot();
+          if (!this.bookedSlot && timeSlot) {
+            this.bookedSlot = {
+              slotId: timeSlot.slotId,
+              slotTime: new Date(timeSlot.visitTimeISO),
+              timezone: timeSlot.visitTimeISO.substr(-6),
+              areaId: timeSlot.areaId,
+            };
+            this.currentService.setBookedSlot(this.bookedSlot);
+            this.currentService.bookId = this.cachedAnswer.bookId;
+          }
           if (this.bookedSlot) {
             this.selectDate(this.bookedSlot.slotTime);
             this.chooseTimeSlot(this.bookedSlot);
@@ -385,9 +400,18 @@ export class TimeSlotsComponent implements OnInit {
     return !this.errorMessage;
   }
 
-  private checkDateRestrictions(date: Date) {
+  /**
+   * Проверяет дату по ограничениям на валидность
+   * @param {Date} date дата для валидации
+   * @param startType тип обрезания даты, например, до начала дня ('day'), до начала месяца ('month')
+   * @returns {boolean} false - дата прошла проверки. true - дата инвалидна
+   */
+  private checkDateRestrictions(
+    date: Date,
+    startType: moment_.unitOfTime.StartOf = 'day',
+  ): boolean {
     let isInvalid = false;
-    const today = moment().startOf('day');
+    const today = moment().startOf(startType);
     const restrictions = this.screenService.component?.attrs?.restrictions || {};
     // Объект с функциями проверки дат на заданные ограничения
     const checks = {
@@ -402,5 +426,21 @@ export class TimeSlotsComponent implements OnInit {
       return isInvalid;
     });
     return isInvalid;
+  }
+
+  private isCachedValueChanged(): boolean {
+    const slotIdFromAnswer = this.cachedAnswer?.timeSlot.slotId;
+    return slotIdFromAnswer !== this.currentSlot.slotId;
+  }
+
+  private fillMonthsYears(): void {
+    this.monthsYears = [];
+    const availableMonths = this.currentService.getAvailableMonths();
+    availableMonths.sort((date1: string, date2: string): number => {
+      return new Date(date1) > new Date(date2) ? 1 : -1;
+    });
+    for (let i = 0; i < availableMonths.length; i += 1) {
+      this.monthsYears.push(this.getMonthsListItem(availableMonths[i]));
+    }
   }
 }

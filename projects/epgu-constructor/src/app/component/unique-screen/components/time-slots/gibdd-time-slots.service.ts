@@ -9,7 +9,7 @@ import {
   BookTimeSlotReq,
   GibddDepartmentInterface,
   SlotInterface,
-  SmevSlotInterface,
+  SmevBookResponseInterface,
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
@@ -32,7 +32,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   private slotsMap: SmevSlotsMapInterface;
 
   private bookedSlot: SlotInterface;
-  private bookId;
+  public bookId;
 
   private errorMessage;
 
@@ -41,7 +41,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     private config: ConfigService,
   ) {}
 
-  checkBooking(selectedSlot: SlotInterface) {
+  checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     if (this.bookedSlot) {
       return this.smev3TimeSlotsRestService.cancelSlot(
         { eserviceId: '10000070732', bookId: this.bookId })
@@ -65,7 +65,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     return this.book(selectedSlot);
   }
 
-  book(selectedSlot: SlotInterface) {
+  book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     this.errorMessage = undefined;
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
@@ -98,12 +98,16 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     return this.availableMonths;
   }
 
-  getAvailableSlots(selectedDay: Date): Observable<SmevSlotInterface[]> {
+  getAvailableSlots(selectedDay: Date): Observable<SlotInterface[]> {
     return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
   }
 
   getBookedSlot(): SlotInterface {
     return this.bookedSlot;
+  }
+
+  setBookedSlot(bookedSlot: SlotInterface): void {
+    this.bookedSlot = bookedSlot;
   }
 
   getCurrentMonth(): number {
@@ -242,7 +246,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
         slotId: slot.slotId,
         areaId: slot.areaId,
         slotTime: slotDate,
-        timezone: slot.visitTimeISO.substring(slot.visitTimeISO.length - 6)
+        timezone: slot.visitTimeISO.substr(-6),
       });
     });
   }

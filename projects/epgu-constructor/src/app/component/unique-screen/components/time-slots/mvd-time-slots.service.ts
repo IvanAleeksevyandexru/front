@@ -8,7 +8,7 @@ import {
   BookTimeSlotReq,
   MvdDepartmentInterface,
   SlotInterface,
-  SmevSlotInterface,
+  SmevBookResponseInterface,
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
@@ -28,17 +28,17 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
 
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
-  private bookId;
+  public bookId;
   private errorMessage;
 
   constructor(
     private http: HttpClient,
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService
   ) {}
-  checkBooking(selectedSlot: SlotInterface) {
+  checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     return this.book(selectedSlot);
   }
-  book(selectedSlot: SlotInterface) {
+  book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     this.errorMessage = undefined;
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
@@ -69,12 +69,16 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     return this.availableMonths;
   }
 
-  getAvailableSlots(selectedDay: Date): Observable<SmevSlotInterface[]> {
+  getAvailableSlots(selectedDay: Date): Observable<SlotInterface[]> {
     return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
   }
 
   getBookedSlot(): SlotInterface {
     return this.bookedSlot;
+  }
+
+  setBookedSlot(bookedSlot: SlotInterface): void {
+    this.bookedSlot = bookedSlot;
   }
 
   getCurrentMonth(): number {

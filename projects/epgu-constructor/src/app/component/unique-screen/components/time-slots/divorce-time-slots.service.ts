@@ -8,7 +8,8 @@ import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
   BookTimeSlotReq,
-  SmevSlotInterface,
+  SlotInterface,
+  SmevBookResponseInterface,
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
@@ -30,8 +31,8 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   availableMonths: string[];
 
   private slotsMap: SmevSlotsMapInterface;
-  private bookedSlot: SmevSlotInterface;
-  private bookId;
+  private bookedSlot: SlotInterface;
+  public bookId;
   private errorMessage;
 
   constructor(
@@ -39,10 +40,10 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
   ) {}
-  checkBooking(selectedSlot: SmevSlotInterface) {
+  checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     return this.book(selectedSlot);
   }
-  book(selectedSlot: SmevSlotInterface) {
+  book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     this.errorMessage = undefined;
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap(response => {
@@ -75,12 +76,16 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     return this.availableMonths;
   }
 
-  getAvailableSlots(selectedDay: Date): Observable<SmevSlotInterface[]> {
+  getAvailableSlots(selectedDay: Date): Observable<SlotInterface[]> {
     return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
   }
 
-  getBookedSlot(): SmevSlotInterface {
+  getBookedSlot(): SlotInterface {
     return this.bookedSlot;
+  }
+
+  setBookedSlot(bookedSlot: SlotInterface): void {
+    this.bookedSlot = bookedSlot;
   }
 
   getCurrentMonth(): number {
@@ -160,7 +165,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     };
   }
 
-  private getBookRequest(selectedSlot: SmevSlotInterface): BookTimeSlotReq {
+  private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
