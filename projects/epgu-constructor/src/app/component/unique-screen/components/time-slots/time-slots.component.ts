@@ -184,7 +184,7 @@ export class TimeSlotsComponent implements OnInit {
     this.currentAnswersService.state = slot;
   }
 
-  public isSlotSelected({ slotId }: SlotInterface) {
+  public isSlotSelected({ slotId }: SlotInterface): boolean {
     return this.currentSlot && this.currentSlot.slotId === slotId;
   }
 
@@ -225,7 +225,7 @@ export class TimeSlotsComponent implements OnInit {
    *
    *  Иначе, букаем слот
    */
-  public clickSubmit() {
+  public clickSubmit(): void {
     if (this.bookedSlot) {
       if (this.isCachedValueChanged()) {
         this.showModal(this.confirmModalParameters);
@@ -436,7 +436,7 @@ export class TimeSlotsComponent implements OnInit {
   private fillMonthsYears(): void {
     this.monthsYears = [];
     const availableMonths = this.currentService.getAvailableMonths();
-    availableMonths.sort((date1, date2) => {
+    availableMonths.sort((date1: string, date2: string): number => {
       return new Date(date1) > new Date(date2) ? 1 : -1;
     });
     for (let i = 0; i < availableMonths.length; i += 1) {
