@@ -3,6 +3,7 @@ import * as moment_ from 'moment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
+import { ConfigService } from '../../../../core/config/config.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
@@ -13,9 +14,8 @@ import {
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
-  TimeSlotValueInterface,
+  TimeSlotValueInterface
 } from './time-slots.types';
-import { ConfigService } from '../../../../core/config/config.service';
 
 const moment = moment_;
 
@@ -41,7 +41,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     private config: ConfigService,
   ) {}
 
-  checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface>{
+  checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     if (this.bookedSlot) {
       return this.smev3TimeSlotsRestService.cancelSlot(
         { eserviceId: '10000070732', bookId: this.bookId })

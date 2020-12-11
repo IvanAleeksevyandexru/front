@@ -11,18 +11,17 @@ import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { catchError, switchMap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-
 import { ConfigService } from '../../../../core/config/config.service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../../../modal/modal.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentBase } from '../../../../screen/screen.types';
-
 import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../services/webcam/webcam.service';
+import { TerraUploadedFile } from '../file-upload-screen/sub-components/file-upload-item/data';
 import { CompressionService } from './compression/compression.service';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
@@ -34,7 +33,6 @@ import {
   uploadPhotoElemId,
 } from './upload-and-edit-photo.constant';
 import { ImgSubject } from './upload-and-edit-photo.model';
-import { TerraUploadedFile } from '../file-upload-screen/sub-components/file-upload-item/data';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',
@@ -50,7 +48,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
 
   @Output() nextStepEvent = new EventEmitter();
 
-  data: ComponentBase;
+  data: ComponentDto;
   header: string;
   orderId: string;
 
@@ -85,7 +83,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     public config: ConfigService,
   ) {
     this.header = screenService.header;
-    this.data = { ...screenService.display.components[0] };
+    this.data = { ...screenService.component };
     this.orderId = screenService.orderId;
   }
 
@@ -198,8 +196,8 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     const { width, height, src } = this.imageValidator;
     const isDPIValid = (): boolean => {
       const scaleFactor = printImgPx.height / height;
-      const scaledDPI = recommendedDPI / scaleFactor;
-      return scaledDPI > recommendedDPI;
+      const scaledDPI = Math.ceil(recommendedDPI / scaleFactor);
+      return scaledDPI >= recommendedDPI;
     };
 
     const isTypeValid = this.allowedImgTypes.some(
@@ -278,9 +276,22 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     if (isPhoto) {
       this.fileName = `Фото_${uuidv4()}.jpg`;
     } else {
-      this.fileName = file.name;
+      this.fileName = this.fixFileName(file);
     }
     this.blobToDataURL(file, (url: string) => this.validateImageEvent(url));
+  }
+
+  /**
+   * Для браузера Mi фиксит ошибку с двумя точками в названии файла.
+   * @param file
+   */
+  fixFileName(file: File): string {
+    if (this.deviceDetector.isMiAndroid()) {
+      const extension = file.name.split('.').pop();
+      return file.name.replace(`..${extension}`, `.${extension}`);
+    }
+
+    return file.name;
   }
 
   changeCroppedPhoto(): void {

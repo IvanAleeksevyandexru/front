@@ -1,10 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ValidationShowOn } from 'epgu-lib';
-
-import { ConstructorDropdownComponent } from './constructor-dropdown.component';
 import { CoreModule } from '../../../core/core.module';
-import { FormControl } from '@angular/forms';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { UtilsService } from '../../services/utils/utils.service';
+import { UtilsServiceStub } from '../../services/utils/utils.service.stub';
+import { ConstructorDropdownComponent } from './constructor-dropdown.component';
+
 
 describe('ConstructorDropdownComponent', () => {
   let component: ConstructorDropdownComponent;
@@ -14,6 +18,7 @@ describe('ConstructorDropdownComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorDropdownComponent],
       imports: [CoreModule, RouterTestingModule],
+      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }, { provide: UtilsService, useClass: UtilsServiceStub }],
     }).compileComponents();
   });
 

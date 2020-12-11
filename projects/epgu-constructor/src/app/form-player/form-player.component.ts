@@ -12,6 +12,7 @@ import { LoadService } from 'epgu-lib';
 import { filter, mergeMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../core/config/config.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
+import { LoggerService } from '../core/services/logger/logger.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirmation-modal.component';
@@ -19,11 +20,10 @@ import { ConfirmationModal } from '../modal/confirmation-modal/confirmation-moda
 import { ModalService } from '../modal/modal.service';
 import { ScreenService } from '../screen/screen.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
+import { FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
-import { FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
-import { LoggerService } from '../core/services/logger/logger.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -121,9 +121,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private getOrderIdFromApi(): void {
     this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
-      const invited = checkOrderApiResponse.isInviteScenario;
-      const { canStartNew } = checkOrderApiResponse;
-      const orderId = checkOrderApiResponse.scenarioDto?.orderId;
+      const { isInviteScenario: invited, canStartNew, orderId } = checkOrderApiResponse;
       this.serviceDataService.invited = invited;
       this.serviceDataService.orderId = orderId;
       this.serviceDataService.canStartNew = canStartNew;

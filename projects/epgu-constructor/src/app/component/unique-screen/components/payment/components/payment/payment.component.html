@@ -1,7 +1,7 @@
 <epgu-constructor-screen-container>
 
   <div class="screen-body">
-    <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
+    <epgu-constructor-page-name *ngIf="(header$ | async) as header">{{ header }}</epgu-constructor-page-name>
 
     <div class="payment" [class.inloading]="inLoading" [ngSwitch]="status">
       <div class="info" *ngSwitchCase="paymentStatus.SUCCESS">
@@ -52,7 +52,7 @@
 
   <div class="screen-footer" *ngIf="isShown">
     <lib-button [showLoader]="inLoading" (click)="redirectToPayWindow()" class="btn__submit">
-      {{ submitLabel || "Оплатить" }}
+      {{ (submitLabel$ | async) || "Оплатить" }}
     </lib-button>
   </div>
 </epgu-constructor-screen-container>

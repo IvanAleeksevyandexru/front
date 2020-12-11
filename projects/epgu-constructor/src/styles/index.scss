@@ -122,9 +122,8 @@
   }
 
   .divider {
-    border: 0;
     background: $color-divider;
-    height: 1px;
+    border-top: 1px solid $color-divider;
   }
 
   .btn__submit {

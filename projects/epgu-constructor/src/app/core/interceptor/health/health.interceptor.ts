@@ -12,7 +12,6 @@ import { tap, catchError } from 'rxjs/operators';
 
 import { HealthService } from 'epgu-lib';
 import { UtilsService } from '../../../shared/services/utils/utils.service';
-import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 const EXCEPTIONS = ['lib-assets'];
 
@@ -55,14 +54,6 @@ export class HealthInterceptor implements HttpInterceptor {
     return this.utils.isValidHttpUrl(payload['url']) && !this.exceptionsValidator(payload['url']);
   }
 
-  private isValidScenarioDto(dto: { scenarioDto: ScenarioDto }): boolean {
-    return dto && dto.scenarioDto && !!dto.scenarioDto.display;
-  }
-
-  private isDefined<T>(value: T | undefined | null): value is T {
-    return (value as T) !== undefined && (value as T) !== null;
-  };
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let serviceName = '';
@@ -78,7 +69,7 @@ export class HealthInterceptor implements HttpInterceptor {
       tap((response: HttpResponse<any>) => {
         if (this.isValid(response)) {
           const result = response.body;
-          const validationStatus = this.isValidScenarioDto(result);
+          const validationStatus = this.utils.isValidScenarioDto(result);
           let successRequestPayload = null;
 
           if (validationStatus) {
@@ -87,16 +78,14 @@ export class HealthInterceptor implements HttpInterceptor {
             this.configParams = {
               id: scenarioDto.display.id,
               name: this.utils.cyrillicToLatin(scenarioDto.display.name),
-              orderId: scenarioDto.orderId,
+              orderId: this.utils.isValidOrderId(scenarioDto.orderId) ? scenarioDto.orderId : result.callBackOrderId,
             };
           }
 
           if (!(Object.keys(this.configParams).length === 0)) {
             const { id, name, orderId } = this.configParams;
             successRequestPayload = { id, name, orderId };
-            successRequestPayload = Object.entries(successRequestPayload).reduce(
-              (a, [k,v]) => (!this.isDefined(v) ? a : (a[k] = v, a)), {}
-            );
+            successRequestPayload = this.utils.filterIncorrectObjectFields(successRequestPayload) as ConfigParams;
           }
 
           this.health.measureEnd(serviceName, RequestStatus.Successed, successRequestPayload);
