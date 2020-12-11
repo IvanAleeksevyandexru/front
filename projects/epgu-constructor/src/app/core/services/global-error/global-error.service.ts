@@ -19,12 +19,14 @@ interface ErrorParams {
   orderId: string;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class GlobalErrorHandler implements ErrorHandler {
   constructor(
     private health: HealthService, 
     public screenService: ScreenService, 
-    private utils: UtilsService
+    private utils: UtilsService,
   ) {}
 
   private isValidOrderId(store: ScreenStore): boolean {

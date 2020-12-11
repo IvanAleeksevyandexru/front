@@ -8,6 +8,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { PassportModule } from '../../../../shared/components/add-passport/passport.module';
 
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -25,7 +27,12 @@ describe('AddPassportComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AddPassportComponent],
       imports: [SharedModule, RouterTestingModule, PassportModule],
-      providers: [CurrentAnswersService, ToolsService, HealthService],
+      providers: [
+        CurrentAnswersService, 
+        ToolsService, 
+        HealthService,
+        { provide: ScreenService, useClass: ScreenServiceStub },      
+      ],
     })
     .compileComponents();
   }));

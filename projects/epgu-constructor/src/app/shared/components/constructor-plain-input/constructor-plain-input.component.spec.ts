@@ -8,6 +8,9 @@ import { SharedModule } from '../../shared.module';
 import { CoreModule } from '../../../core/core.module';
 import { TextTransform } from '../../types/textTransform';
 
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+
 describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;
   let fixture: ComponentFixture<ConstructorPlainInputComponent>;
@@ -16,6 +19,9 @@ describe('ConstructorPlainInputComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorPlainInputComponent],
       imports: [CoreModule, SharedModule, RouterTestingModule],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },      
+      ],
     }).compileComponents();
   });
 
