@@ -114,7 +114,7 @@ describe('InfoScreenComponent', () => {
   });
 
   describe('nextStep() method', () => {
-    it('should call navigationService.nextStep.next()', () => {
+    it('should call navigationService.next()', () => {
       const nextStepSpy = spyOn(navigationService, 'next');
 
       component.nextStep();

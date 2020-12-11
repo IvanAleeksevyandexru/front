@@ -100,7 +100,7 @@ describe('ComponentScreenComponent', () => {
     fixture.detectChanges();
 
     currentAnswersService = TestBed.inject(CurrentAnswersService);
-    navigationService = TestBed.inject(NavigationService) as NavigationServiceStub;
+    navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
   });
 
@@ -152,8 +152,8 @@ describe('ComponentScreenComponent', () => {
     const stateJson = JSON.stringify(stateObj);
 
     beforeEach(() => {
-      skipStepSpy = spyOn(navigationService.skipStep, 'next');
-      nextStepSpy = spyOn(navigationService.nextStep, 'next');
+      skipStepSpy = spyOn(navigationService, 'skip');
+      nextStepSpy = spyOn(navigationService, 'next');
 
       screenService.component = {
         attrs: {},
@@ -163,14 +163,14 @@ describe('ComponentScreenComponent', () => {
       currentAnswersService.state = stateObj;
     });
 
-    it('should call navigationService.skipStep.next() if action === "skipStep"', () => {
+    it('should call navigationService.skip() if action === "skipStep"', () => {
       component.nextStep('skipStep');
 
       expect(skipStepSpy).toBeCalledTimes(1);
       expect(nextStepSpy).not.toBeCalled();
     });
 
-    it('should call navigationService.nextStep.next() if action !== "skipStep"', () => {
+    it('should call navigationService.next() if action !== "skipStep"', () => {
       component.nextStep();
 
       expect(skipStepSpy).not.toBeCalled();
@@ -183,7 +183,7 @@ describe('ComponentScreenComponent', () => {
       expect(nextStepSpy).toBeCalledTimes(1);
     });
 
-    it('should call navigationService.nextStep.next with payload object', () => {
+    it('should call navigationService.next with payload object', () => {
       screenService.component = {
         attrs: {},
         id: 'id1',
