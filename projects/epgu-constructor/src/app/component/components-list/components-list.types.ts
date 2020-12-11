@@ -121,6 +121,7 @@ export interface CustomComponentAttrValidation {
   condition: string;
   dataType: string;
   errorMsg: string;
+  updateOn?: UpdateOn;
 }
 
 export interface CustomComponentOutputData {
