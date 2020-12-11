@@ -49,12 +49,12 @@
         ></ng-container>
       </epgu-constructor-component-item>
 
-      <ng-container *ngIf="dropDowns$ | async as dropDowns">
         <epgu-constructor-component-item
           *ngSwitchCase="componentType.DropDown"
           [data]="componentData"
         >
           <lib-dropdown
+            *ngIf="dropDowns$ | async as dropDowns"
             [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
             [items]="dropDowns[componentData.value?.id]"
             [disabled]="dropDowns[componentData.value?.id]?.length === 1"
@@ -68,6 +68,7 @@
 
         <epgu-constructor-component-item *ngSwitchCase="componentType.MvdGiac" [data]="componentData">
           <lib-lookup
+            *ngIf="dropDowns$ | async as dropDowns"
             [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
             [fixedItems]="dropDowns[componentData.value?.id]"
             [disabled]="dropDowns[componentData.value?.id].length === 1"
@@ -80,14 +81,14 @@
           >
           </lib-lookup>
         </epgu-constructor-component-item>
-      </ng-container>
 
-      <ng-container *ngIf="dictionaries$ | async as dictionaries">
+      <ng-container>
         <epgu-constructor-component-item
           *ngSwitchCase="componentType.Dictionary"
           [data]="componentData"
         >
           <lib-dropdown
+            *ngIf="dictionaries$ | async as dictionaries"
             [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
             [items]="dictionaries[getDictKeyByComp(componentData.value)]?.list"
             [validationShowOn]="validationShowOn"
@@ -101,6 +102,7 @@
 
         <epgu-constructor-component-item *ngSwitchCase="componentType.Lookup" [data]="componentData">
           <lib-lookup
+            *ngIf="dictionaries$ | async as dictionaries"
             [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
             [validationShowOn]="validationShowOn"
             [formControl]="componentData.get('value')"
