@@ -68,7 +68,7 @@
 
         <epgu-constructor-component-item *ngSwitchCase="componentType.MvdGiac" [data]="componentData">
           <lib-lookup
-            [invalid]="componsentData.get('value').invalid && componentData.get('value').touched"
+            [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
             [fixedItems]="dropDowns[componentData.value?.id]"
             [disabled]="dropDowns[componentData.value?.id].length === 1"
             [validationShowOn]="validationShowOn"
