@@ -5,6 +5,7 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
 import { UsePaymentsModalModule } from './use-payment-modal/use-payments-modal.module';
 import { SharedModalModule } from './shared/shared-modal.module';
 import { ScreenModalModule } from './screen-modal/screen-modal.module';
+import { ContinueOrderModalService } from './continue-order-modal/continue-order-modal.service';
 
 
 /**
@@ -13,6 +14,7 @@ import { ScreenModalModule } from './screen-modal/screen-modal.module';
 @NgModule({
   providers: [
     ModalService,
+    ContinueOrderModalService,
   ],
   imports: [
     CoreModule,
