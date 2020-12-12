@@ -109,25 +109,6 @@ describe('FormPlayerApiService', () => {
     }));
   });
 
-  describe('getInviteServiceData()', () => {
-    it('should call http with post method', fakeAsync(() => {
-      service.getInviteServiceData(orderId).subscribe(response => expect(response).toBe(responseMock));
-      const req = http.expectOne(`${apiUrl}/invitation/${serviceId}/getService`);
-      expect(req.request.method).toBe('POST');
-      req.flush(responseMock);
-      tick();
-    }));
-
-    it('should call http post with withCredentials equal false', fakeAsync(() => {
-      service.getInviteServiceData(orderId).subscribe(response => expect(response).toBe(responseMock));
-      const req = http.expectOne(`${apiUrl}/invitation/${serviceId}/getService`);
-      const withCredentials = req.request.withCredentials;
-      expect(withCredentials).toBe(false);
-      req.flush(responseMock);
-      tick();
-    }));
-  });
-
   describe('getServiceData()', () => {
     it('should call http with post method', fakeAsync(() => {
       service.getServiceData().subscribe(response => expect(response).toBe(responseMock));

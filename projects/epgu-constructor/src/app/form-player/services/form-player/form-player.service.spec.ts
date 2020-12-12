@@ -138,52 +138,11 @@ describe('FormPlayerService', () => {
       expect(service['loadDataFromLocalStorage']).toHaveBeenCalled();
     });
 
-    it('should call getInviteOrderData with orderId when isNeedToShowLastScreen return false and has invited case', () => {
-      spyOn<any>(service, 'isNeedToShowLastScreen').and.returnValue(false);
-      spyOn<any>(service, 'getInviteOrderData').and.callThrough();
-      service.initData(orderId, true);
-      expect(service['getInviteOrderData']).toHaveBeenCalledWith(orderId);
-    });
-
     it('should call getOrderData with orderId when isNeedToShowLastScreen return false and hasn\'t invited case', () => {
       spyOn<any>(service, 'isNeedToShowLastScreen').and.returnValue(false);
       spyOn<any>(service, 'getOrderData').and.callThrough();
-      service.initData(orderId, false);
+      service.initData(orderId);
       expect(service['getOrderData']).toHaveBeenCalledWith(orderId);
-    });
-  });
-
-  describe('getInviteOrderData()',() => {
-    it('should call getInviteServiceData of formPlayerApiService when call getInviteOrderData', () => {
-      spyOn(formPlayerApiService, 'getInviteServiceData').and.callThrough();
-      service.getInviteOrderData(orderId);
-      expect(formPlayerApiService.getInviteServiceData).toHaveBeenCalled();
-    });
-
-    it('should call processResponse with response when call getInviteOrderData with success response case', () => {
-      spyOn(formPlayerApiService, 'getInviteServiceData').and.returnValue(of(response));
-      spyOn<any>(service, 'processResponse').and.callThrough();
-      service.getInviteOrderData(orderId);
-      expect(service.processResponse).toHaveBeenCalledWith(response);
-    });
-
-    it('should call sendDataError with error response when call getInviteOrderData with error response case', () => {
-      const errorResponse = {
-        message: 'oops... i did it again',
-        description: 'a-e-e-e-e-e...',
-        status: 500
-      };
-      spyOn(formPlayerApiService, 'getInviteServiceData').and.returnValue(throwError(errorResponse));
-      spyOn<any>(service, 'sendDataError').and.callThrough();
-      service.getInviteOrderData(orderId);
-      expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
-    });
-
-    it('should call updateLoading with false param when call getInviteOrderData', () => {
-      spyOn(formPlayerApiService, 'getInviteServiceData').and.returnValue(of(response));
-      spyOn<any>(service, 'getInviteOrderData').and.callThrough();
-      service.getInviteOrderData(orderId);
-      expect(service['getInviteOrderData']).toHaveBeenCalled();
     });
   });
 
