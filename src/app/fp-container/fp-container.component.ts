@@ -16,7 +16,7 @@ export class FpContainerComponent implements OnInit {
 
   ngOnInit() {
     this.appService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((config) => {
-      this.service = {
+      const service = {
         serviceId: config.serviceId,
         targetId: config.targetId,
         orderId: config.orderId,
@@ -24,6 +24,17 @@ export class FpContainerComponent implements OnInit {
         canStartNew: config.canStartNew,
         initState: config.initState,
       };
+
+      if (typeof config.invited === 'string' && config.invited === '') {
+        delete service.invited;
+      }
+
+      if (typeof config.canStartNew === 'string' && config.canStartNew === '') {
+        delete service.canStartNew;
+      }
+
+      console.log(this.service);
+      this.service = service;
     });
   }
 }
