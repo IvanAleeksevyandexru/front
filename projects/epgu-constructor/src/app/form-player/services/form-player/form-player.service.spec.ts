@@ -63,6 +63,15 @@ describe('FormPlayerService', () => {
     });
   });
 
+  describe('getOrderStatus()',() => {
+    it('should call getOrderStatus of formPlayerApiService when call ', () => {
+      const orderId = '1234';
+      spyOn(formPlayerApiService, 'getOrderStatus').and.callThrough();
+      service.getOrderStatus(orderId);
+      expect(formPlayerApiService.getOrderStatus).toHaveBeenCalledWith(orderId);
+    });
+  });
+
   describe('isNeedToShowLastScreen()',() => {
     it('should return true', () => {
       location.go('/some-page', 'getLastScreen=true');

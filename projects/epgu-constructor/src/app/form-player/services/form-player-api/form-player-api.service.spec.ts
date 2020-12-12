@@ -1,15 +1,16 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { CookieService } from 'ngx-cookie-service';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
 import { ServiceDataService } from '../service-data/service-data.service';
 import { Gender } from '../../../shared/types/gender';
 import { ScreenTypes } from '../../../screen/screen.types';
+import { ServiceDataServiceStub } from '../service-data/service-data.service.stub';
 
 
-xdescribe('FormPlayerApiService', () => {
+describe('FormPlayerApiService', () => {
   let service: FormPlayerApiService;
+  let serviceDataService: ServiceDataService;
   let http: HttpTestingController;
   let apiUrl = '/api';
   let serviceId = 'local';
@@ -57,20 +58,61 @@ xdescribe('FormPlayerApiService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
-        ServiceDataService,
-        CookieService
+        { provide: ServiceDataService, useClass: ServiceDataServiceStub }
       ]
     });
     service = TestBed.inject(FormPlayerApiService);
+    serviceDataService = TestBed.inject(ServiceDataService);
+    serviceDataService['_targetId'] = targetId;
+    serviceDataService['_orderId'] = orderId;
+    serviceDataService['_serviceId'] = serviceId;
     http = TestBed.inject(HttpTestingController);
   }));
 
   afterEach(waitForAsync(() => http.verify()));
 
+  describe('checkIfOrderExist()', () => {
+    it('should call http with post method', fakeAsync(() => {
+      service.checkIfOrderExist().subscribe(response => expect(response).toBe(responseMock));
+      const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/checkIfOrderIdExists`);
+      expect(req.request.method).toBe('POST');
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should call with body', fakeAsync(() => {
+      service.checkIfOrderExist().subscribe(response => expect(response).toBe(responseMock));
+      const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/checkIfOrderIdExists`);
+      const body = req.request.body;
+      expect(body).toEqual({ targetId });
+      req.flush(responseMock);
+      tick();
+    }));
+  });
+
+  describe('getOrderStatus()', () => {
+    it('should call http with post method', fakeAsync(() => {
+      service.getOrderStatus(orderId).subscribe(response => expect(response).toBe(responseMock));
+      const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getOrderStatus`);
+      expect(req.request.method).toBe('POST');
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should call with body', fakeAsync(() => {
+      service.getOrderStatus(orderId).subscribe(response => expect(response).toBe(responseMock));
+      const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getOrderStatus`);
+      const body = req.request.body;
+      expect(body).toEqual({ targetId, orderId });
+      req.flush(responseMock);
+      tick();
+    }));
+  });
+
   describe('getInviteServiceData()', () => {
     it('should call http with post method', fakeAsync(() => {
       service.getInviteServiceData(orderId).subscribe(response => expect(response).toBe(responseMock));
-      const req = http.expectOne(`${apiUrl}/invite/service/${serviceId}/scenario`);
+      const req = http.expectOne(`${apiUrl}/invitation/${serviceId}/getService`);
       expect(req.request.method).toBe('POST');
       req.flush(responseMock);
       tick();
@@ -78,7 +120,7 @@ xdescribe('FormPlayerApiService', () => {
 
     it('should call http post with withCredentials equal false', fakeAsync(() => {
       service.getInviteServiceData(orderId).subscribe(response => expect(response).toBe(responseMock));
-      const req = http.expectOne(`${apiUrl}/invite/service/${serviceId}/scenario`);
+      const req = http.expectOne(`${apiUrl}/invitation/${serviceId}/getService`);
       const withCredentials = req.request.withCredentials;
       expect(withCredentials).toBe(false);
       req.flush(responseMock);
@@ -99,7 +141,7 @@ xdescribe('FormPlayerApiService', () => {
       service.getServiceData().subscribe(response => expect(response).toBe(responseMock));
       const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getService`);
       const body = req.request.body;
-      expect(body).toEqual({ targetId, token: '', userId: '' });
+      expect(body).toEqual({ targetId });
       req.flush(responseMock);
       tick();
     }));
@@ -108,7 +150,7 @@ xdescribe('FormPlayerApiService', () => {
       service.getServiceData(orderId).subscribe(response => expect(response).toBe(responseMock));
       const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getService`);
       const body = req.request.body;
-      expect(body).toEqual({ targetId, orderId, token: '', userId: '' });
+      expect(body).toEqual({ targetId, orderId });
       req.flush(responseMock);
       tick();
     }));
