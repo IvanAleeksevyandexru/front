@@ -64,6 +64,10 @@ export class FormPlayerServiceStub {
     return of({});
   }
 
+  getOrderStatus(): Observable<{}> {
+    return of({});
+  }
+
   isNeedToShowLastScreen(): boolean {
     return false;
   }
