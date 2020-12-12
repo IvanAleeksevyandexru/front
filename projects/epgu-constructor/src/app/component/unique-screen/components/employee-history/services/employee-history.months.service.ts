@@ -17,7 +17,7 @@ export class EmployeeHistoryMonthsService {
   maxDate: MonthYear;
   minDateFrom: MonthYear;
   minDateTo: MonthYear;
-  availableMonths: EmployeeHistoryAvailableDates[];
+  availableMonths: EmployeeHistoryAvailableDates[] = [];
   isNonStop: boolean;
   isMonthComplete$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -133,6 +133,6 @@ export class EmployeeHistoryMonthsService {
    */
   private getConvertedDates(stringDate: EmployeeHistoryAvailableDates): Moment {
     const arrParsedDate: string[] = stringDate.date.split('/');
-    return moment(`${arrParsedDate[0]}/01/${arrParsedDate[1]}`);
+    return moment(`${arrParsedDate[0]}/01/${arrParsedDate[1]}`, 'DD/MM/YYYY');
   }
 }
