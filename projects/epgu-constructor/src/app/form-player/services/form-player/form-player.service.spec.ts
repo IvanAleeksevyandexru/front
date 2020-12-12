@@ -18,7 +18,7 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
-const response = new FormPlayerServiceStub().response;
+const response = new FormPlayerServiceStub()._store;
 
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
