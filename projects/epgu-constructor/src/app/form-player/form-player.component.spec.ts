@@ -360,4 +360,55 @@ describe('FormPlayerComponent', () => {
     });
   });
 
+  describe('getOrderIdFromApi()', () => {
+    const checkIfOrderExistResult = {
+      orderId: '123456',
+      isInviteScenario: false,
+      canStartNew: true
+    };
+
+    beforeEach(() => {
+      spyOn(formPlayerService, 'checkIfOrderExist').and.returnValue(of(checkIfOrderExistResult));
+    });
+
+    it('should call invited of serviceDataService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      const spySetter = jest.spyOn(serviceDataService, 'invited', 'set');
+      component['getOrderIdFromApi']();
+      expect(spySetter).toBeCalledWith(checkIfOrderExistResult.isInviteScenario);
+    });
+
+    it('should call orderId of serviceDataService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      const spySetter = jest.spyOn(serviceDataService, 'orderId', 'set');
+      component['getOrderIdFromApi']();
+      expect(spySetter).toBeCalledWith(checkIfOrderExistResult.orderId);
+    });
+
+    it('should call canStartNew of serviceDataService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      const spySetter = jest.spyOn(serviceDataService, 'canStartNew', 'set');
+      component['getOrderIdFromApi']();
+      expect(spySetter).toBeCalledWith(checkIfOrderExistResult.canStartNew);
+    });
+
+    it('should call handleOrder', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      component['getOrderIdFromApi']();
+      expect(component['handleOrder']).toBeCalledWith(
+        checkIfOrderExistResult.orderId,
+        checkIfOrderExistResult.isInviteScenario,
+        checkIfOrderExistResult.canStartNew
+      );
+    });
+  });
 });
