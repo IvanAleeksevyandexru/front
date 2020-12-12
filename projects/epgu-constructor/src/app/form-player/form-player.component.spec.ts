@@ -22,8 +22,6 @@ import { FormPlayerConfigApiServiceStub } from './services/form-player-config-ap
 import { NavigationServiceStub } from '../core/services/navigation/navigation.service.stub';
 import { ConfigService } from '../core/config/config.service';
 import { ConfigServiceStub } from '../core/config/config.service.stub';
-import { ModalService } from '../modal/modal.service';
-import { ModalServiceStub } from '../modal/modal.service.stub';
 import { ScreenService } from '../screen/screen.service';
 import { ScreenServiceStub } from '../screen/screen.service.stub';
 import { EpguLibModuleInited } from '../core/core.module';
@@ -31,6 +29,8 @@ import { ServiceDataServiceStub } from './services/service-data/service-data.ser
 import { FormPlayerNavigation, Service } from './form-player.types';
 import { of } from 'rxjs';
 import { ScreenTypes } from '../screen/screen.types';
+import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
+import { ContinueOrderModalServiceStub } from '../modal/continue-order-modal/continue-order-modal.service.stub';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -42,6 +42,7 @@ describe('FormPlayerComponent', () => {
   let navService: NavigationService;
   let screenService: ScreenService;
   let loggerService: LoggerService;
+  let continueOrderModalService: ContinueOrderModalService;
   let serviceDataService: ServiceDataService;
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
@@ -73,7 +74,7 @@ describe('FormPlayerComponent', () => {
         { provide: FormPlayerConfigApiService, useClass: FormPlayerConfigApiServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ContinueOrderModalService, useClass: ContinueOrderModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     }).compileComponents();
@@ -89,6 +90,7 @@ describe('FormPlayerComponent', () => {
     navService = TestBed.inject(NavigationService);
     screenService = TestBed.inject(ScreenService);
     loggerService = TestBed.inject(LoggerService);
+    continueOrderModalService = TestBed.inject(ContinueOrderModalService);
   });
 
   describe('ngOnInit()', () => {
@@ -495,6 +497,39 @@ describe('FormPlayerComponent', () => {
       spyOn(formPlayerService, 'isNeedToShowLastScreen').and.returnValue(true);
       const shouldShowContinueOrderModal = component['shouldShowContinueOrderModal'](orderId, invited, false);
       expect(shouldShowContinueOrderModal).toBe(false);
+    });
+  });
+
+  describe('showContinueOrderModal()', () => {
+    it('should call openModal of continueOrderModalService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(continueOrderModalService, 'openModal').and.callThrough();
+      component['showContinueOrderModal']();
+      expect(continueOrderModalService.openModal).toBeCalled();
+    });
+
+    it('should call initData of formPlayerService with orderId', () => {
+      const orderId = '1234';
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(continueOrderModalService, 'openModal').and.returnValue(of(true));
+      serviceDataService.orderId = orderId;
+      spyOn(formPlayerService, 'initData').and.callThrough();
+      component['showContinueOrderModal']();
+      expect(formPlayerService.initData).toBeCalledWith(orderId, false);
+    });
+
+    it('should call initData of formPlayerService without orderId', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(continueOrderModalService, 'openModal').and.returnValue(of(false));
+      spyOn(formPlayerService, 'initData').and.callThrough();
+      component['showContinueOrderModal']();
+      expect(formPlayerService.initData).toBeCalledWith(null, false);
     });
   });
 });

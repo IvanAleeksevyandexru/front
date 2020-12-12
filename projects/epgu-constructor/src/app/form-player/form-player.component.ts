@@ -15,15 +15,13 @@ import { DeviceDetectorService } from '../core/services/device-detector/device-d
 import { LoggerService } from '../core/services/logger/logger.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
-import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../modal/confirmation-modal/confirmation-modal.interface';
-import { ModalService } from '../modal/modal.service';
 import { ScreenService } from '../screen/screen.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
 import { FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
+import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -48,7 +46,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     private ngUnsubscribe$: UnsubscribeService,
     public configService: ConfigService,
     public loadService: LoadService,
-    private modalService: ModalService,
+    public continueOrderModalService: ContinueOrderModalService,
     private zone: NgZone,
     public screenService: ScreenService,
     private loggerService: LoggerService,
@@ -146,33 +144,13 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private showContinueOrderModal(): void {
-    const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
-      ConfirmationModalComponent,
-      {
-        text: `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
-        <h4 style="text-align: center">У вас есть черновик заявления</h4>
-        <p class="helper-text" style="text-align: center; margin-top: 8px;">Продолжить его заполнение?</p></div>`,
-        showCloseButton: false,
-        showCrossButton: true,
-        buttons: [
-          {
-            label: 'Начать заново',
-            color: 'white',
-            closeModal: true,
-          },
-          {
-            label: 'Продолжить',
-            closeModal: true,
-            value: 'ok',
-          },
-        ],
-        isShortModal: true,
-      },
-    );
-    modalResult$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((result) => {
-      const orderId = result ? this.serviceDataService.orderId : null;
-      this.formPlayerService.initData(orderId, false);
-    });
+    this.continueOrderModalService
+      .openModal()
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((result) => {
+        const orderId = result ? this.serviceDataService.orderId : null;
+        this.formPlayerService.initData(orderId, false);
+      });
   }
 
   private nextStep(navigation?: Navigation): void {
