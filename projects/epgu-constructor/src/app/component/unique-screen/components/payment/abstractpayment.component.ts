@@ -24,7 +24,7 @@ import {
   getDiscountPrice,
   getDocInfo,
 } from './components/payment/payment.component.functions';
-import { UtilsService } from '../../../../shared/services/utils/utils.service';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
 
 const ALREADY_PAY_ERROR = 23;

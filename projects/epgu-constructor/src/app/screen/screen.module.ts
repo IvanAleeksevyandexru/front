@@ -19,14 +19,13 @@ import { CurrentAnswersService } from './current-answers.service';
 import { ScreenService } from './screen.service';
 import { CoreModule } from '../core/core.module';
 import { ModalModule } from '../modal/modal.module';
+import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
 
 /**
  * Домен скринов. Здесь храниться всё что связанно со скринами и их обязками.
  */
 @NgModule({
-  declarations: [
-    ScreenResolverComponent
-  ],
+  declarations: [ScreenResolverComponent],
   imports: [
     CoreModule,
     ComponentScreenModule,
@@ -39,13 +38,8 @@ import { ModalModule } from '../modal/modal.module';
     InfoScreenModule,
     ModalModule,
   ],
-  providers: [
-    ScreenService,
-    CurrentAnswersService,
-  ],
-  exports: [
-    ScreenResolverComponent
-  ],
+  providers: [ScreenService, CachedAnswersService, CurrentAnswersService],
+  exports: [ScreenResolverComponent],
   entryComponents: [
     InfoScreenComponent,
     QuestionsScreenComponent,
@@ -55,7 +49,7 @@ import { ModalModule } from '../modal/modal.module';
     InvitationErrorScreenComponent,
     EmptyScreenComponent,
     ScreenResolverComponent,
-  ]
+  ],
 })
 export class ScreenModule {
   static rootEntry = ScreenResolverComponent;

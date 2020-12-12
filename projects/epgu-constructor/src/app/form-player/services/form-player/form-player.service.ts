@@ -5,9 +5,11 @@ import { ScreenService } from '../../../screen/screen.service';
 import { COMPONENT_DATA_KEY } from '../../../shared/constants/form-player';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import {
-  CheckOrderApiResponse, FormPlayerApiResponse, FormPlayerApiSuccessResponse,
+  CheckOrderApiResponse,
+  FormPlayerApiResponse,
+  FormPlayerApiSuccessResponse,
 } from '../form-player-api/form-player-api.types';
-import { UtilsService } from '../../../shared/services/utils/utils.service';
+import { UtilsService } from '../../../core/services/utils/utils.service';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
 import { Location } from '@angular/common';
 import { WINDOW } from '../../../core/providers/window.provider';
@@ -60,7 +62,7 @@ export class FormPlayerService extends FormPlayerBaseService {
     this.formPlayerApiService.getInviteServiceData(orderId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
-      () => this.updateLoading(false)
+      () => this.updateLoading(false),
     );
   }
 
@@ -72,10 +74,9 @@ export class FormPlayerService extends FormPlayerBaseService {
     this.formPlayerApiService.getServiceData(orderId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),
-      () => this.updateLoading(false)
+      () => this.updateLoading(false),
     );
   }
-
 
   /**
    * Достаёт данные из localStorage для текущего экрана
@@ -87,19 +88,20 @@ export class FormPlayerService extends FormPlayerBaseService {
     UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
   }
 
-
   navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation): void {
     this.updateLoading(true);
     this.updateRequest(navigation);
-    this.formPlayerApiService.navigate(this._store, navigation.options, formPlayerNavigation).subscribe(
-      (response) => {
-        this.processResponse(response);
-      },
-      (error) => {
-        this.sendDataError(error);
-      },
-      () => this.updateLoading(false)
-    );
+    this.formPlayerApiService
+      .navigate(this._store, navigation.options, formPlayerNavigation)
+      .subscribe(
+        (response) => {
+          this.processResponse(response);
+        },
+        (error) => {
+          this.sendDataError(error);
+        },
+        () => this.updateLoading(false),
+      );
   }
 
   /**
@@ -113,7 +115,7 @@ export class FormPlayerService extends FormPlayerBaseService {
       this.sendDataSuccess(response as FormPlayerApiSuccessResponse);
       this.resetViewByChangeScreen();
     }
-  };
+  }
 
   /**
    * Проверяет нужно ли нам достать ранее сохранённые данные
@@ -121,7 +123,9 @@ export class FormPlayerService extends FormPlayerBaseService {
    * @private
    */
   isNeedToShowLastScreen(): boolean {
-    return this.location.path(true).includes('getLastScreen=') && this.isHaveOrderDataInLocalStorage();
+    return (
+      this.location.path(true).includes('getLastScreen=') && this.isHaveOrderDataInLocalStorage()
+    );
   }
 
   /**
@@ -137,6 +141,6 @@ export class FormPlayerService extends FormPlayerBaseService {
    * @private
    */
   private resetViewByChangeScreen(): void {
-    this.window.scroll(0,0);
+    this.window.scroll(0, 0);
   }
 }

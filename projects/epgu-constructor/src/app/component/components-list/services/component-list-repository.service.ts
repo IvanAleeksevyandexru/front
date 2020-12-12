@@ -13,16 +13,18 @@ import {
   isDropDown,
   likeDictionary,
 } from '../tools/custom-screen-tools';
-import { DictionaryOptions, DictionaryResponse } from '../../shared/services/dictionary-api/dictionary-api.types';
+import {
+  DictionaryOptions,
+  DictionaryResponse,
+} from '../../shared/services/dictionary-api/dictionary-api.types';
 import { map, tap } from 'rxjs/operators';
 import { DictionaryApiService } from '../../shared/services/dictionary-api/dictionary-api.service';
 import { ComponentListToolsService } from './component-list-tools.service';
-import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
+import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { ListItem } from 'epgu-lib';
 
 @Injectable()
 export class ComponentListRepositoryService {
-
   private _dropDowns$ = new BehaviorSubject<CustomListDropDowns>([]);
   private _dictionaries$ = new BehaviorSubject<CustomListDictionaries>([]);
 
@@ -58,12 +60,15 @@ export class ComponentListRepositoryService {
     });
 
     return forkJoin(data).pipe(
-      tap((reference: Array<CustomListReferenceData>) => this.initDataAfterLoading(reference))
+      tap((reference: Array<CustomListReferenceData>) => this.initDataAfterLoading(reference)),
     );
   }
 
-  getDictionaries$(dictionaryType: string, component: CustomComponent, options: DictionaryOptions)
-    : Observable<CustomListGenericData<DictionaryResponse>> {
+  getDictionaries$(
+    dictionaryType: string,
+    component: CustomComponent,
+    options: DictionaryOptions,
+  ): Observable<CustomListGenericData<DictionaryResponse>> {
     return this.dictionaryApiService.getDictionary(dictionaryType, options).pipe(
       map((dictionary: DictionaryResponse) => ({
         component,
@@ -91,7 +96,9 @@ export class ComponentListRepositoryService {
     );
   }
 
-  getDropDowns$(component: CustomComponent): Observable<CustomListGenericData< Partial<ListItem>[]> > {
+  getDropDowns$(
+    component: CustomComponent,
+  ): Observable<CustomListGenericData<Partial<ListItem>[]>> {
     return of({
       component,
       data: this.toolsService.adaptiveDropDown(component.attrs.dictionaryList),
