@@ -45,14 +45,6 @@ export class FormPlayerApiService {
     return this.post<CheckOrderApiResponse>(path, body);
   }
 
-  public getInviteServiceData(orderId: string): Observable<FormPlayerApiResponse> {
-    const { targetId, serviceId } = this.serviceDataService;
-    const path = `${this.apiUrl}/invitation/${serviceId}/getService`;
-    const body = { targetId, orderId };
-
-    return this.post<FormPlayerApiResponse>(path, body);
-  }
-
   public getServiceData(orderId?: string): Observable<FormPlayerApiResponse> {
     const { serviceId, targetId } = this.serviceDataService;
     const path = `${this.apiUrl}/service/${serviceId}/scenario/getService`;
