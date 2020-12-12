@@ -10,6 +10,7 @@ import { LabelComponent } from '../../../shared/components/base/label/label.comp
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { CoreModule } from '../../../core/core.module';
 
 describe('ComponentItemComponent', () => {
   let component: ComponentItemComponent;
@@ -32,7 +33,7 @@ describe('ComponentItemComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ComponentItemComponent, LabelComponent, HelperTextComponent],
-      imports: [RouterTestingModule, WebcamShootModule],
+      imports: [CoreModule, RouterTestingModule, WebcamShootModule],
       providers: [HealthService, { provide: ScreenService, useClass: ScreenServiceStub }],
     }).compileComponents();
     fb = TestBed.inject(FormBuilder);

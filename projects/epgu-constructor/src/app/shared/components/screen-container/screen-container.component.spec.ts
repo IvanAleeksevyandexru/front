@@ -6,6 +6,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { HealthService } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NavigationModule } from '../navigation/navigation.module';
+import { CoreModule } from '../../../core/core.module';
 
 describe('ScreenContainerComponent', () => {
   let component: ScreenContainerComponent;
@@ -14,7 +15,7 @@ describe('ScreenContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule, NavigationModule],
+        imports: [CoreModule, RouterTestingModule, NavigationModule],
         declarations: [ScreenContainerComponent],
         providers: [HealthService, { provide: ScreenService, useClass: ScreenServiceStub }],
       }).compileComponents();
