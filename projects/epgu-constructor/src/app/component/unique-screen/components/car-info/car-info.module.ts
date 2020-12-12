@@ -7,6 +7,9 @@ import { CarInfoDatePipe } from './pipes/car-date-format.pipe';
 import { CarInfoOwnerPipe } from './pipes/car-owner-type.pipe';
 import { CarInfoAccidentsPipe } from './pipes/car-accidents.pipe';
 import { CoreModule } from '../../../../core/core.module';
+import { BaseModule } from '../../../../shared/components/base/base.module';
+import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
+import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 
 const COMPONENTS = [
   CarInfoComponent,
@@ -22,9 +25,6 @@ const COMPONENTS = [
   declarations: [...COMPONENTS],
   providers: [],
   exports: [...COMPONENTS],
-  imports: [
-    CoreModule,
-    SharedModule,
-  ]
+  imports: [CoreModule, SharedModule, BaseModule, ScreenContainerModule, ScreenPadModule],
 })
-export class CarInfoModule { }
+export class CarInfoModule {}

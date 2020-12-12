@@ -6,21 +6,14 @@ import { SelectChildrenScreenComponent } from './select-children-screen.componen
 import { ComponentsListModule } from '../../../components-list/components-list.module';
 import { CoreModule } from '../../../../core/core.module';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { BaseModule } from '../../../../shared/components/base/base.module';
 
-const COMPONENTS = [ SelectChildrenScreenComponent ];
+const COMPONENTS = [SelectChildrenScreenComponent];
 
 @NgModule({
-  declarations: [ ...COMPONENTS ],
-  imports: [
-    CoreModule,
-    SharedModule,
-    ComponentsListModule,
-    ConstructorDropdownModule
-  ],
-  exports: [ ...COMPONENTS ],
-  providers: [
-    ScreenService,
-    CachedAnswersService,
-  ]
+  declarations: [...COMPONENTS],
+  imports: [CoreModule, SharedModule, ComponentsListModule, ConstructorDropdownModule, BaseModule],
+  exports: [...COMPONENTS],
+  providers: [ScreenService, CachedAnswersService],
 })
-export class SelectChildrenScreenModule { }
+export class SelectChildrenScreenModule {}

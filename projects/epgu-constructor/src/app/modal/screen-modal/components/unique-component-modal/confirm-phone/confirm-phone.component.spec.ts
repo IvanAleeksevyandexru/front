@@ -14,6 +14,8 @@ import {
   ApplicantAnswersDto,
   ComponentDto,
 } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ConstructorPlainInputComponent } from '../../../../../shared/components/constructor-plain-input/constructor-plain-input.component';
+import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 
 describe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
@@ -40,7 +42,7 @@ describe('ConfirmPhoneComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ConfirmPhoneComponent],
+      declarations: [ConfirmPhoneComponent, CounterDirective],
       imports: [ConstructorPlainInputModule, SharedModule, CoreModule, RouterTestingModule],
       providers: [
         UnsubscribeService,

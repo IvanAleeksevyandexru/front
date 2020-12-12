@@ -7,6 +7,9 @@ import { ConstructorPlainInputComponent } from './constructor-plain-input.compon
 import { SharedModule } from '../../shared.module';
 import { CoreModule } from '../../../core/core.module';
 import { TextTransform } from '../../types/textTransform';
+import { TrimModule } from '../../directives/trim/trim.module';
+import { TextTransformModule } from '../../directives/text-transform/text-transform.module';
+import { CurrencyModule } from '../../directives/currency/currency.module';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -18,9 +21,16 @@ describe('ConstructorPlainInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorPlainInputComponent],
-      imports: [CoreModule, SharedModule, RouterTestingModule],
+      imports: [
+        CoreModule,
+        SharedModule,
+        RouterTestingModule,
+        TrimModule,
+        TextTransformModule,
+        CurrencyModule,
+      ],
       providers: [
-        { provide: ScreenService, useClass: ScreenServiceStub },      
+        { provide: ScreenService, useClass: ScreenServiceStub },
       ],
     }).compileComponents();
   });

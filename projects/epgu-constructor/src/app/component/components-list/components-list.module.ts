@@ -16,20 +16,17 @@ import { ConstructorDadataWidgetModule } from '../../shared/components/construct
 import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { ConstructorLookupModule } from '../../shared/components/constructor-lookup/constructor-lookup.module';
 import { ConstructorCheckboxModule } from '../../shared/components/constructor-checkbox/constructor-checkbox.module';
+import { BaseModule } from '../../shared/components/base/base.module';
+import { InputErrorModule } from '../../shared/components/input-error/input-error.module';
+import { FieldListModule } from '../../shared/components/field-list/field-list.module';
+import { MaskHandleModule } from '../../shared/pipes/mask-handle/mask-handle.module';
+import { CurrencyModule } from '../../shared/directives/currency/currency.module';
 
-const COMPONENTS = [
-  ComponentsListComponent,
-  ComponentItemComponent,
-  DocInputComponent,
-];
+const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent];
 
 @NgModule({
-  declarations: [
-    ...COMPONENTS,
-  ],
-  exports: [
-    ...COMPONENTS
-  ],
+  declarations: [...COMPONENTS],
+  exports: [...COMPONENTS],
   imports: [
     CoreModule,
     SharedModule,
@@ -41,12 +38,17 @@ const COMPONENTS = [
     ConstructorDropdownModule,
     ConstructorLookupModule,
     ConstructorCheckboxModule,
+    BaseModule,
+    InputErrorModule,
+    FieldListModule,
+    MaskHandleModule,
+    CurrencyModule,
   ],
   providers: [
     ValidationService,
     AddressHelperService,
     ComponentListToolsService,
-    DictionaryApiService
-  ]
+    DictionaryApiService,
+  ],
 })
-export class ComponentsListModule { }
+export class ComponentsListModule {}

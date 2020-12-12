@@ -14,10 +14,9 @@ import { RegistrationAddrScreenModule } from './components/confirm-personal-user
 import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
 import { SelectChildrenScreenModule } from './components/select-children/select-children-screen.module';
 import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { BaseModule } from '../../shared/components/base/base.module';
 
-const COMPONENTS = [
-  CountrySelectionComponent,
-];
+const COMPONENTS = [CountrySelectionComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
@@ -31,6 +30,7 @@ const COMPONENTS = [
     RegistrationAddrScreenModule,
     AddPassportModule,
     ConstructorDropdownModule,
+    BaseModule,
   ],
   exports: [
     ...COMPONENTS,
@@ -41,8 +41,6 @@ const COMPONENTS = [
     RegistrationAddrScreenModule,
     AddPassportModule,
   ],
-  providers: [
-    DictionaryApiService
-  ]
+  providers: [DictionaryApiService],
 })
 export class ComponentScreenComponentsModule {}

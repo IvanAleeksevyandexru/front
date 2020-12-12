@@ -7,6 +7,8 @@ import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscri
 import { SharedModule } from '../../shared.module';
 import { PassportComponent } from './passport.component';
 import { ConstructorMaskedInputModule } from '../epgu-lib/constructor-masked-input/constructor-masked-input.module';
+import { BaseModule } from '../base/base.module';
+import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -15,24 +17,33 @@ describe('PassportComponent', () => {
   let component: PassportComponent;
   let fixture: ComponentFixture<PassportComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [ EpguLibModule, FormsModule, SharedModule, RouterTestingModule, ConstructorMaskedInputModule ],
-      declarations: [PassportComponent],
-      providers: [
-        UnsubscribeService, 
-        HealthService, 
-        { provide: ScreenService, useClass: ScreenServiceStub },
-      ],
-    })
-    .compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          EpguLibModule,
+          FormsModule,
+          SharedModule,
+          RouterTestingModule,
+          ConstructorMaskedInputModule,
+          BaseModule,
+          MaskHandleModule,
+        ],
+        declarations: [PassportComponent],
+        providers: [
+          UnsubscribeService,
+          HealthService,
+          { provide: ScreenService, useClass: ScreenServiceStub },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PassportComponent);
     component = fixture.componentInstance;
     component.attrs = {
-      fields: []
+      fields: [],
     };
     fixture.detectChanges();
   });

@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { LyImageCropperModule } from '@alyle/ui/image-cropper';
-import { LyTheme2,
-  StyleRenderer,
-  LY_THEME,
-  LY_THEME_NAME,
-} from '@alyle/ui';
+import { LyTheme2, StyleRenderer, LY_THEME, LY_THEME_NAME } from '@alyle/ui';
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { SliderComponent } from './slider/slider.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
@@ -16,7 +12,10 @@ import { CompressionService } from './compression/compression.service';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';
 import { CoreModule } from '../../../../core/core.module';
 import { ModalModule } from '../../../../modal/modal.module';
-
+import { BaseModule } from '../../../../shared/components/base/base.module';
+import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
+import { DragAndDropModule } from '../../../../shared/directives/drag-and-drop/drag-and-drop.module';
+import { WebcamShootModule } from '../../../../shared/components/webcam-shoot/webcam-shoot.module';
 
 @NgModule({
   entryComponents: [
@@ -35,20 +34,22 @@ import { ModalModule } from '../../../../modal/modal.module';
     CoreModule,
     ModalModule,
     SharedModule,
+    WebcamShootModule,
     LyImageCropperModule,
     AngularResizedEventModule,
+    BaseModule,
+    ScreenContainerModule,
+    DragAndDropModule,
   ],
-  exports: [
-    UploadAndEditPhotoComponent,
-  ],
+  exports: [UploadAndEditPhotoComponent],
   providers: [
     CompressionService,
-    [ LyTheme2 ],
-    [ StyleRenderer ],
+    [LyTheme2],
+    [StyleRenderer],
     // Theme that will be applied to this module
     { provide: LY_THEME_NAME, useValue: 'minima-light' },
     { provide: LY_THEME, useClass: MinimaLight, multi: true }, // name: `minima-light`
     { provide: LY_THEME, useClass: MinimaDark, multi: true },
-  ]
+  ],
 })
-export class UploadAndEditPhotoModule { }
+export class UploadAndEditPhotoModule {}

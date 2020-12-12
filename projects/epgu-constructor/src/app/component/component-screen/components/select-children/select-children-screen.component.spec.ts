@@ -13,6 +13,7 @@ import { CoreModule } from '../../../../core/core.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { BaseModule } from '../../../../shared/components/base/base.module';
 
 describe('SelectChildrenScreenComponent', () => {
   let component: SelectChildrenScreenComponent;
@@ -29,26 +30,18 @@ describe('SelectChildrenScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        SelectChildrenScreenComponent,
-        NavigationComponentMock,
-      ],
+      declarations: [SelectChildrenScreenComponent, NavigationComponentMock],
       imports: [
         CoreModule,
         SharedModule,
+        BaseModule,
         ReactiveFormsModule,
         ComponentsListModule,
         RouterTestingModule,
         ConstructorDropdownModule,
       ],
-      providers: [
-        CurrentAnswersService,
-        UnsubscribeService,
-        ScreenService,
-        HealthService
-      ],
-    })
-    .compileComponents();
+      providers: [CurrentAnswersService, UnsubscribeService, ScreenService, HealthService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

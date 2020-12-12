@@ -2,7 +2,7 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../core/config/config.service.stub';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
-import { ToJsonPipe } from '../../../../../../../../shared/pipes/toJson/to-json.pipe';
+import { ToJsonPipe } from '../../../../../../../../shared/pipes/to-json/to-json.pipe';
 import { ConfirmUserData } from '../../confirm-personal-user-data-screen.types';
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
@@ -11,7 +11,6 @@ import { ActionDirective } from '../../../../../../../../shared/directives/actio
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
 import { SafePipe } from 'projects/epgu-constructor/src/app/core/pipes/safe/safe.pipe';
 import { FieldListComponent } from 'projects/epgu-constructor/src/app/shared/components/field-list/field-list.component';
-
 
 describe('ConfirmPersonalUserDataComponent', () => {
   let component: ConfirmPersonalUserDataComponent;
@@ -23,14 +22,14 @@ describe('ConfirmPersonalUserDataComponent', () => {
         {
           label: '',
           value: '',
-          action: ''
-        }
+          action: '',
+        },
       ],
       fields: [
         {
           fieldName: 'birthDate',
-          label: 'Birthday Date'
-        }
+          label: 'Birthday Date',
+        },
       ],
       style: {
         divider: '',
@@ -39,38 +38,39 @@ describe('ConfirmPersonalUserDataComponent', () => {
         group: '',
         groupTitle: '',
         label: '',
-        value: ''
-      }
+        value: '',
+      },
     },
     type: '',
     value: '{}',
     label: '',
-    id: ''
+    id: '',
   };
   const actionMock = {
     label: '',
     value: '',
     action: '',
-    type: ActionType.nextStep
+    type: ActionType.nextStep,
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ConfirmPersonalUserDataComponent,
-        ToJsonPipe,
-        ActionDirective,
-        FieldListComponent,
-        SafePipe,
-      ],
-      providers: [
-        CurrentAnswersService,
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
-      ],
-    })
-      .compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          ConfirmPersonalUserDataComponent,
+          ToJsonPipe,
+          ActionDirective,
+          FieldListComponent,
+          SafePipe,
+        ],
+        providers: [
+          CurrentAnswersService,
+          { provide: ConfigService, useClass: ConfigServiceStub },
+          { provide: ScreenService, useClass: ScreenServiceStub },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmPersonalUserDataComponent);
