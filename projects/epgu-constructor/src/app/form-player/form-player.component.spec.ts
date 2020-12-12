@@ -22,22 +22,27 @@ import { FormPlayerConfigApiServiceStub } from './services/form-player-config-ap
 import { NavigationServiceStub } from '../core/services/navigation/navigation.service.stub';
 import { ConfigService } from '../core/config/config.service';
 import { ConfigServiceStub } from '../core/config/config.service.stub';
-import { ModalService } from '../modal/modal.service';
-import { ModalServiceStub } from '../modal/modal.service.stub';
 import { ScreenService } from '../screen/screen.service';
 import { ScreenServiceStub } from '../screen/screen.service.stub';
 import { EpguLibModuleInited } from '../core/core.module';
 import { ServiceDataServiceStub } from './services/service-data/service-data.service.stub';
-import { Service } from './form-player.types';
-import { BehaviorSubject, of } from 'rxjs';
-import { Config } from '../core/config/config.types';
+import { FormPlayerNavigation, Service } from './form-player.types';
+import { of } from 'rxjs';
+import { ScreenTypes } from '../screen/screen.types';
+import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
+import { ContinueOrderModalServiceStub } from '../modal/continue-order-modal/continue-order-modal.service.stub';
 
+const responseDto = new FormPlayerServiceStub()._store;
 
 describe('FormPlayerComponent', () => {
   let formPlayerService: FormPlayerService;
   let formPlayerConfigApiService: FormPlayerConfigApiService;
   let loadService: LoadService;
   let configService: ConfigService;
+  let navService: NavigationService;
+  let screenService: ScreenService;
+  let loggerService: LoggerService;
+  let continueOrderModalService: ContinueOrderModalService;
   let serviceDataService: ServiceDataService;
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
@@ -69,7 +74,7 @@ describe('FormPlayerComponent', () => {
         { provide: FormPlayerConfigApiService, useClass: FormPlayerConfigApiServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ContinueOrderModalService, useClass: ContinueOrderModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     }).compileComponents();
@@ -82,6 +87,10 @@ describe('FormPlayerComponent', () => {
     formPlayerConfigApiService = TestBed.inject(FormPlayerConfigApiService);
     loadService = TestBed.inject(LoadService);
     configService = TestBed.inject(ConfigService);
+    navService = TestBed.inject(NavigationService);
+    screenService = TestBed.inject(ScreenService);
+    loggerService = TestBed.inject(LoggerService);
+    continueOrderModalService = TestBed.inject(ContinueOrderModalService);
   });
 
   describe('ngOnInit()', () => {
@@ -156,7 +165,7 @@ describe('FormPlayerComponent', () => {
       const component = fixture.componentInstance;
       component.service = serviceDataMock;
       fixture.detectChanges();
-      loadService.loaded = new BehaviorSubject(false);
+      loadService.loaded.next(false);
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
       component['initFormPlayerConfig']();
       expect(formPlayerConfigApiService.getFormPlayerConfig).not.toBeCalled();
@@ -167,7 +176,7 @@ describe('FormPlayerComponent', () => {
       const component = fixture.componentInstance;
       component.service = serviceDataMock;
       fixture.detectChanges();
-      loadService.loaded = new BehaviorSubject(true);
+      loadService.loaded.next(true);
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
       component['initFormPlayerConfig']();
       expect(formPlayerConfigApiService.getFormPlayerConfig).toBeCalled();
@@ -179,7 +188,7 @@ describe('FormPlayerComponent', () => {
       const component = fixture.componentInstance;
       component.service = serviceDataMock;
       fixture.detectChanges();
-      loadService.loaded = new BehaviorSubject(true);
+      loadService.loaded.next(true);
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.returnValue(of(config));
       const setterSpy = jest.spyOn(configService, 'config', 'set');
       component['initFormPlayerConfig']();
@@ -187,4 +196,376 @@ describe('FormPlayerComponent', () => {
     });
   });
 
+  describe('initNavigation()', () => {
+    it('should call nextStep with param when push nextStep navigation', () => {
+      const navigationParam = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      spyOn<any>(component, 'nextStep').and.callThrough();
+      navService.next(navigationParam);
+      component['initNavigation']();
+      expect(component['nextStep']).toBeCalledWith(navigationParam);
+    });
+
+    it('should call prevStep with param when push prevStep navigation', () => {
+      const navigationParam = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      spyOn<any>(component, 'prevStep').and.callThrough();
+      navService.prev(navigationParam);
+      component['initNavigation']();
+      expect(component['prevStep']).toBeCalledWith(navigationParam);
+    });
+
+    it('should call skipStep with param when push skipStep navigation', () => {
+      const navigationParam = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      spyOn<any>(component, 'skipStep').and.callThrough();
+      navService.skip(navigationParam);
+      component['initNavigation']();
+      expect(component['skipStep']).toBeCalledWith(navigationParam);
+    });
+  });
+
+  describe('initSettingOfScreenIdToAttr()', () => {
+    const display = {
+      id: 's1',
+      name: '',
+      header: '',
+      submitLabel: '',
+      type: ScreenTypes.COMPONENT,
+      terminal: false,
+      components: []
+    };
+
+    it('should set screenId to component param', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      screenService.display = display;
+      component['initSettingOfScreenIdToAttr']();
+      expect(component.screenId).toBe(display.id);
+    });
+
+    it('should attr.test-screen-id be screenId', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      screenService.display = display;
+      component['initSettingOfScreenIdToAttr']();
+      fixture.detectChanges();
+      expect(fixture.debugElement.attributes['test-screen-id']).toBe(display.id);
+    });
+  });
+
+
+  describe('startPlayer()', () => {
+    it('shouldn\'t trigger any start cases', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      loadService.loaded.next(false);
+      spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
+      component['startPlayer']();
+      expect(component['startScenarioFromProps']).not.toBeCalled();
+      expect(component['handleOrder']).not.toBeCalled();
+      expect(component['getOrderIdFromApi']).not.toBeCalled();
+    });
+
+    it('should call startScenarioFromProps case', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, initState: '{}' };
+      fixture.detectChanges();
+      loadService.loaded.next(true);
+      spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
+      component['startPlayer']();
+      expect(component['startScenarioFromProps']).toBeCalled();
+      expect(component['handleOrder']).not.toBeCalled();
+      expect(component['getOrderIdFromApi']).not.toBeCalled();
+    });
+
+    it('should call handleOrder case', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, orderId: '2145' };
+      fixture.detectChanges();
+      loadService.loaded.next(true);
+      spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
+      component['startPlayer']();
+      expect(component['startScenarioFromProps']).not.toBeCalled();
+      expect(component['handleOrder']).toBeCalled();
+      expect(component['getOrderIdFromApi']).not.toBeCalled();
+    });
+
+    it('should call getOrderIdFromApi case', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock };
+      fixture.detectChanges();
+      loadService.loaded.next(true);
+      spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
+      component['startPlayer']();
+      expect(component['startScenarioFromProps']).not.toBeCalled();
+      expect(component['getOrderIdFromApi']).toBeCalled();
+    });
+  });
+
+  describe('startScenarioFromProps()', () => {
+    it('should call log of loggerService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, initState: JSON.stringify(responseDto) };
+      fixture.detectChanges();
+      spyOn(loggerService, 'log').and.callThrough();
+      component['startScenarioFromProps']();
+      expect(loggerService.log).toBeCalled();
+    });
+
+    it('should set store to formPlayerService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, initState: JSON.stringify(responseDto) };
+      fixture.detectChanges();
+      const setterSpy = jest.spyOn(formPlayerService, 'store', 'set');
+      component['startScenarioFromProps']();
+      expect(setterSpy).toBeCalledWith(responseDto);
+    });
+
+    it('should call navigate of formPlayerService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, initState: JSON.stringify(responseDto) };
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'navigate').and.callThrough();
+      component['startScenarioFromProps']();
+      const payload = responseDto.scenarioDto.currentValue;
+      expect(formPlayerService.navigate).toBeCalledWith({ payload }, FormPlayerNavigation.NEXT);
+    });
+  });
+
+  describe('getOrderIdFromApi()', () => {
+    const checkIfOrderExistResult = {
+      orderId: '123456',
+      isInviteScenario: false,
+      canStartNew: true
+    };
+
+    beforeEach(() => {
+      spyOn(formPlayerService, 'checkIfOrderExist').and.returnValue(of(checkIfOrderExistResult));
+    });
+
+    it('should call invited of serviceDataService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      const spySetter = jest.spyOn(serviceDataService, 'invited', 'set');
+      component['getOrderIdFromApi']();
+      expect(spySetter).toBeCalledWith(checkIfOrderExistResult.isInviteScenario);
+    });
+
+    it('should call orderId of serviceDataService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      const spySetter = jest.spyOn(serviceDataService, 'orderId', 'set');
+      component['getOrderIdFromApi']();
+      expect(spySetter).toBeCalledWith(checkIfOrderExistResult.orderId);
+    });
+
+    it('should call canStartNew of serviceDataService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      const spySetter = jest.spyOn(serviceDataService, 'canStartNew', 'set');
+      component['getOrderIdFromApi']();
+      expect(spySetter).toBeCalledWith(checkIfOrderExistResult.canStartNew);
+    });
+
+    it('should call handleOrder', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      component['getOrderIdFromApi']();
+      expect(component['handleOrder']).toBeCalledWith(
+        checkIfOrderExistResult.orderId,
+        checkIfOrderExistResult.isInviteScenario,
+        checkIfOrderExistResult.canStartNew
+      );
+    });
+  });
+
+  describe('handleOrder()', () => {
+    const orderId = '1234';
+    const invited = false;
+    const canStartNew = true;
+
+    it('should call shouldShowContinueOrderModal', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn<any>(component, 'shouldShowContinueOrderModal').and.callThrough();
+      component['handleOrder'](orderId, invited, canStartNew);
+      expect(component['shouldShowContinueOrderModal']).toBeCalledWith(orderId, invited, canStartNew);
+    });
+
+    it('should call showContinueOrderModal when shouldShowContinueOrderModal return true', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn<any>(component, 'shouldShowContinueOrderModal').and.returnValue(true);
+      spyOn<any>(component, 'showContinueOrderModal').and.callThrough();
+      component['handleOrder'](orderId, invited, canStartNew);
+      expect(component['showContinueOrderModal']).toBeCalled();
+    });
+
+    it('should call initData of formPlayerService when shouldShowContinueOrderModal return false', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn<any>(component, 'shouldShowContinueOrderModal').and.returnValue(false);
+      spyOn(formPlayerService, 'initData').and.callThrough();
+      component['handleOrder'](orderId, invited, canStartNew);
+      expect(formPlayerService.initData).toBeCalledWith(orderId, invited);
+    });
+  });
+
+  describe('shouldShowContinueOrderModal()', () => {
+    const orderId = '1234';
+    const invited = false;
+    const canStartNew = true;
+
+    it('should return true if not invited, canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'isNeedToShowLastScreen').and.returnValue(false);
+      const shouldShowContinueOrderModal = component['shouldShowContinueOrderModal'](orderId, invited, canStartNew);
+      expect(shouldShowContinueOrderModal).toBe(true);
+    });
+
+    it('should return false if not invited, canStartNew, not empty orderId, isNeedToShowLastScreen', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'isNeedToShowLastScreen').and.returnValue(true);
+      const shouldShowContinueOrderModal = component['shouldShowContinueOrderModal'](orderId, invited, canStartNew);
+      expect(shouldShowContinueOrderModal).toBe(false);
+    });
+
+    it('should return false if not invited, canStartNew, empty orderId, not isNeedToShowLastScreen', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'isNeedToShowLastScreen').and.returnValue(true);
+      const shouldShowContinueOrderModal = component['shouldShowContinueOrderModal'](null, invited, canStartNew);
+      expect(shouldShowContinueOrderModal).toBe(false);
+    });
+
+    it('should return false if invited, canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'isNeedToShowLastScreen').and.returnValue(true);
+      const shouldShowContinueOrderModal = component['shouldShowContinueOrderModal'](orderId, true, canStartNew);
+      expect(shouldShowContinueOrderModal).toBe(false);
+    });
+
+    it('should return false if not invited, not canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'isNeedToShowLastScreen').and.returnValue(true);
+      const shouldShowContinueOrderModal = component['shouldShowContinueOrderModal'](orderId, invited, false);
+      expect(shouldShowContinueOrderModal).toBe(false);
+    });
+  });
+
+  describe('showContinueOrderModal()', () => {
+    it('should call openModal of continueOrderModalService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(continueOrderModalService, 'openModal').and.callThrough();
+      component['showContinueOrderModal']();
+      expect(continueOrderModalService.openModal).toBeCalled();
+    });
+
+    it('should call initData of formPlayerService with orderId', () => {
+      const orderId = '1234';
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(continueOrderModalService, 'openModal').and.returnValue(of(true));
+      serviceDataService.orderId = orderId;
+      spyOn(formPlayerService, 'initData').and.callThrough();
+      component['showContinueOrderModal']();
+      expect(formPlayerService.initData).toBeCalledWith(orderId, false);
+    });
+
+    it('should call initData of formPlayerService without orderId', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(continueOrderModalService, 'openModal').and.returnValue(of(false));
+      spyOn(formPlayerService, 'initData').and.callThrough();
+      component['showContinueOrderModal']();
+      expect(formPlayerService.initData).toBeCalledWith(null, false);
+    });
+  });
+
+  describe('nextStep()', () => {
+    it('should call navigate of formPlayerService with next param', () => {
+      const navigation = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'navigate').and.callThrough();
+      component['nextStep'](navigation);
+      expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.NEXT);
+    });
+  });
+
+  describe('prevStep()', () => {
+    it('should call navigate of formPlayerService with prev param', () => {
+      const navigation = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'navigate').and.callThrough();
+      component['prevStep'](navigation);
+      expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.PREV);
+    });
+  });
+
+  describe('skipStep()', () => {
+    it('should call navigate of formPlayerService with skip param', () => {
+      const navigation = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'navigate').and.callThrough();
+      component['skipStep'](navigation);
+      expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.SKIP);
+    });
+  });
 });

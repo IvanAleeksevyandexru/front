@@ -11,11 +11,17 @@ export class NavigationServiceStub {
   private skipStep = new Subject<Navigation>();
   skipStep$ = this.skipStep.asObservable();
 
-  next(): void {}
+  next(navigation?: Navigation): void {
+    this.nextStep.next(navigation);
+  }
 
-  prev(): void {}
+  prev(navigation?: Navigation): void {
+    this.prevStep.next(navigation);
+  }
 
-  skip(): void {}
+  skip(navigation?: Navigation): void {
+    this.skipStep.next(navigation);
+  }
 
   redirectToLK(): void {}
 
