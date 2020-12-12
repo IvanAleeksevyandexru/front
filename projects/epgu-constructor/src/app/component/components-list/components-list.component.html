@@ -114,6 +114,7 @@
             [fixedItems]="dictionaries[getDictKeyByComp(componentData.value)]?.list"
             [virtualScroll]="true"
             [clearable]="true"
+            [required]="componentData.value?.required"
           >
           </lib-lookup>
         </epgu-constructor-component-item>
