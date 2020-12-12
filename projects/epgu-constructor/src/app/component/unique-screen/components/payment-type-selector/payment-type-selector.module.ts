@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EpguLibModule } from 'epgu-lib';
 
-import { SharedModule } from '../../../../shared/shared.module';
 import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
 import { CoreModule } from '../../../../core/core.module';
 import { BaseModule } from '../../../../shared/components/base/base.module';
@@ -16,7 +15,6 @@ import { ActionModule } from '../../../../shared/directives/action/action.module
   exports: [PaymentTypeSelectorComponent],
   imports: [
     CommonModule,
-    SharedModule,
     EpguLibModule,
     CoreModule,
     BaseModule,

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../../../shared/shared.module';
 import { EmployeeHistoryComponent } from './employee-history.component';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
@@ -16,7 +15,6 @@ import { CloneButtonModule } from '../../../../shared/components/clone-button/cl
   declarations: [EmployeeHistoryComponent],
   imports: [
     CoreModule,
-    SharedModule,
     ConstructorPlainInputModule,
     ConstructorMonthPickerModule,
     ConstructorCheckboxModule,

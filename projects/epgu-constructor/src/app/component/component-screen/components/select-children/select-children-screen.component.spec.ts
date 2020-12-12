@@ -7,7 +7,6 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { SelectChildrenScreenComponent } from './select-children-screen.component';
-import { SharedModule } from '../../../../shared/shared.module';
 import { ComponentsListModule } from '../../../components-list/components-list.module';
 import { CoreModule } from '../../../../core/core.module';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -34,7 +33,6 @@ describe('SelectChildrenScreenComponent', () => {
       declarations: [SelectChildrenScreenComponent, NavigationComponentMock],
       imports: [
         CoreModule,
-        SharedModule,
         BaseModule,
         ReactiveFormsModule,
         ComponentsListModule,

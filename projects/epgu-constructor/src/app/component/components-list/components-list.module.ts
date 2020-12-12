@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared/shared.module';
 import { ValidationService } from './services/validation.service';
 import { AddressHelperService } from './services/address-helper.service';
 import { ComponentListToolsService } from './services/component-list-tools.service';
@@ -29,7 +28,6 @@ const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputCom
   exports: [...COMPONENTS],
   imports: [
     CoreModule,
-    SharedModule,
     TimerModule,
     ConstructorPlainInputModule,
     ConstructorMaskedInputModule,

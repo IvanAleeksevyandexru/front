@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../../../../../shared/shared.module';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
 import { CoreModule } from '../../../../../../core/core.module';
 import { ActionModule } from '../../../../../../shared/directives/action/action.module';
@@ -7,6 +6,6 @@ import { ActionModule } from '../../../../../../shared/directives/action/action.
 @NgModule({
   declarations: [ConfirmPersonalUserPhoneEmailComponent],
   exports: [ConfirmPersonalUserPhoneEmailComponent],
-  imports: [CoreModule, SharedModule, ActionModule],
+  imports: [CoreModule, ActionModule],
 })
 export class ConfirmPersonalUserPhoneEmailModule {}

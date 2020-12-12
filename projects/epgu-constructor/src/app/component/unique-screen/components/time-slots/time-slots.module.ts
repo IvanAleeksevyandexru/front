@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { TimeSlotsComponent } from './time-slots.component';
-import { SharedModule } from '../../../../shared/shared.module';
 import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { DivorceTimeSlotsService } from './divorce-time-slots.service';
 import { GibddTimeSlotsService } from './gibdd-time-slots.service';
@@ -25,6 +24,6 @@ const COMPONENTS = [TimeSlotsComponent];
     MvdTimeSlotsService,
     Smev3TimeSlotsRestService,
   ],
-  imports: [CoreModule, SharedModule, BaseModule, ScreenContainerModule, ScreenPadModule],
+  imports: [CoreModule, BaseModule, ScreenContainerModule, ScreenPadModule],
 })
 export class TimeSlotsModule {}

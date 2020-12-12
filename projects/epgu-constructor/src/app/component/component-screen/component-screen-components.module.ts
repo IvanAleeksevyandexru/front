@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CoreModule } from '../../core/core.module';
-import { SharedModule } from '../../shared/shared.module';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 import { AddPassportModule } from './components/add-passport/add-passport.module';
 // eslint-disable-next-line max-len
@@ -22,7 +21,6 @@ const COMPONENTS = [CountrySelectionComponent];
   declarations: [...COMPONENTS],
   imports: [
     CoreModule,
-    SharedModule,
     ConfirmPersonalUserPhoneEmailModule,
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserDataScreenModule,

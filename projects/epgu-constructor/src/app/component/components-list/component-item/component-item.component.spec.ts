@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ComponentItemComponent } from './component-item.component';
 import { AbstractControl, FormBuilder } from '@angular/forms';
-import { SharedModule } from '../../../shared/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { WebcamShootModule } from '../../../shared/components/webcam-shoot/webcam-shoot.module';
@@ -33,11 +32,8 @@ describe('ComponentItemComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ComponentItemComponent, LabelComponent, HelperTextComponent],
-      imports: [SharedModule, RouterTestingModule, WebcamShootModule],
-      providers: [
-        HealthService,
-        { provide: ScreenService, useClass: ScreenServiceStub },
-      ],
+      imports: [RouterTestingModule, WebcamShootModule],
+      providers: [HealthService, { provide: ScreenService, useClass: ScreenServiceStub }],
     }).compileComponents();
     fb = TestBed.inject(FormBuilder);
   });

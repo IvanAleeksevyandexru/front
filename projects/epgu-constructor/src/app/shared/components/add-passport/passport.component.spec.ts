@@ -4,7 +4,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EpguLibModule, HealthService } from 'epgu-lib';
 
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { SharedModule } from '../../shared.module';
 import { PassportComponent } from './passport.component';
 import { ConstructorMaskedInputModule } from '../epgu-lib/constructor-masked-input/constructor-masked-input.module';
 import { BaseModule } from '../base/base.module';
@@ -23,7 +22,6 @@ describe('PassportComponent', () => {
         imports: [
           EpguLibModule,
           FormsModule,
-          SharedModule,
           RouterTestingModule,
           ConstructorMaskedInputModule,
           BaseModule,

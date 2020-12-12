@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../../../shared/shared.module';
 import { CarInfoComponent } from './components/car-info-screen/car-info.component';
 import { CarInfoLegalPipe } from './pipes/car-info.pipe';
 import { CarInfoStatusPipe } from './pipes/car-status.pipe';
@@ -25,6 +24,6 @@ const COMPONENTS = [
   declarations: [...COMPONENTS],
   providers: [],
   exports: [...COMPONENTS],
-  imports: [CoreModule, SharedModule, BaseModule, ScreenContainerModule, ScreenPadModule],
+  imports: [CoreModule, BaseModule, ScreenContainerModule, ScreenPadModule],
 })
 export class CarInfoModule {}

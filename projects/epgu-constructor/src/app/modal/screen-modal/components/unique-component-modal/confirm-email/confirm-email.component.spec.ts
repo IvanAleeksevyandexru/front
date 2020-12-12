@@ -9,7 +9,6 @@ import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { ConfigService } from '../../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/config/config.service.stub';
 import { CoreModule } from '../../../../../core/core.module';
-import { SharedModule } from '../../../../../shared/shared.module';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
@@ -35,7 +34,7 @@ describe('ConfirmEmailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConfirmEmailComponent, CounterDirective],
-      imports: [CoreModule, SharedModule, RouterTestingModule],
+      imports: [CoreModule, RouterTestingModule],
       providers: [
         UnsubscribeService,
         NavigationService,

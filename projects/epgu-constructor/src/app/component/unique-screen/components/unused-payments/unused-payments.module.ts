@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../../../shared/shared.module';
 import { UnusedPaymentsComponent } from './unused-payments.component';
 import { UnusedPaymentsService } from './unused-payments.service';
 import { CoreModule } from '../../../../core/core.module';
@@ -14,13 +13,6 @@ const COMPONENTS = [UnusedPaymentsComponent];
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   providers: [UnusedPaymentsService],
-  imports: [
-    CoreModule,
-    SharedModule,
-    BaseModule,
-    ScreenContainerModule,
-    NavigationModule,
-    RadioTaxModule,
-  ],
+  imports: [CoreModule, BaseModule, ScreenContainerModule, NavigationModule, RadioTaxModule],
 })
 export class UnusedPaymentsModule {}

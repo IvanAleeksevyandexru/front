@@ -10,7 +10,6 @@ import { FormPlayerApiService } from '../../../../form-player/services/form-play
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalModule } from '../../../../modal/modal.module';
-import { SharedModule } from '../../../../shared/shared.module';
 import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
 import { ConfigService } from '../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
@@ -59,7 +58,6 @@ describe('PaymentTypeSelectorComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [PaymentTypeSelectorComponent],
       imports: [
-        SharedModule,
         ModalModule,
         CoreModule,
         RouterTestingModule,

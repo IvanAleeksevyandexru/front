@@ -4,7 +4,6 @@ import { ValidationShowOn } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
-import { SharedModule } from '../../shared.module';
 import { CoreModule } from '../../../core/core.module';
 import { TextTransform } from '../../types/textTransform';
 import { TrimModule } from '../../directives/trim/trim.module';
@@ -21,17 +20,8 @@ describe('ConstructorPlainInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorPlainInputComponent],
-      imports: [
-        CoreModule,
-        SharedModule,
-        RouterTestingModule,
-        TrimModule,
-        TextTransformModule,
-        CurrencyModule,
-      ],
-      providers: [
-        { provide: ScreenService, useClass: ScreenServiceStub },
-      ],
+      imports: [CoreModule, RouterTestingModule, TrimModule, TextTransformModule, CurrencyModule],
+      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
     }).compileComponents();
   });
 

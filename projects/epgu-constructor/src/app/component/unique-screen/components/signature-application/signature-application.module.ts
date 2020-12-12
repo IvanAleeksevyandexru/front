@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../../../shared/shared.module';
 import { SignatureApplicationComponent } from './components/signature-application.component';
 import { CoreModule } from '../../../../core/core.module';
 import { BaseModule } from '../../../../shared/components/base/base.module';
@@ -11,6 +10,6 @@ const COMPONENTS = [SignatureApplicationComponent];
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   providers: [],
-  imports: [CoreModule, SharedModule, BaseModule, ScreenContainerModule],
+  imports: [CoreModule, BaseModule, ScreenContainerModule],
 })
 export class SignatureApplicationModule {}

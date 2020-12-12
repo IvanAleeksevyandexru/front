@@ -5,7 +5,6 @@ import { QuestionsScreenModule } from './questions-screen/questions-screen.modul
 import { EmptyScreenModule } from './empty-screen/empty-screen.module';
 import { CustomScreenModule } from './custom-screen/custom-screen.module';
 import { ComponentScreenModule } from './component-screen/component-screen.module';
-import { SharedModule } from '../shared/shared.module';
 import { InfoScreenModule } from './info-screen/info-screen.module';
 import { InfoScreenComponent } from './info-screen/info-screen.component';
 import { QuestionsScreenComponent } from './questions-screen/questions-screen.component';
@@ -34,7 +33,6 @@ import { CachedAnswersService } from '../shared/services/applicant-answers/cache
     QuestionsScreenModule,
     UniqueScreenModule,
     InvitationErrorScreenModule,
-    SharedModule,
     InfoScreenModule,
     ModalModule,
   ],

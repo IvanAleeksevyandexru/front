@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared/shared.module';
 import { RepeatableFieldsComponent } from './components/repeatable-fields/repeatable-fields.component';
 import { FileUploadModule } from './components/file-upload-screen/file-upload.module';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
@@ -32,7 +31,6 @@ const COMPONENTS = [RepeatableFieldsComponent];
   imports: [
     CoreModule,
     WebcamShootModule,
-    SharedModule,
     ModalModule,
     FileUploadModule,
     SelectMapObjectModule,

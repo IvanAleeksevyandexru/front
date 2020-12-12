@@ -1,7 +1,6 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ScreenContainerComponent } from './screen-container.component';
-import { SharedModule } from '../../shared.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { HealthService } from 'epgu-lib';
@@ -15,7 +14,7 @@ describe('ScreenContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [SharedModule, RouterTestingModule, NavigationModule],
+        imports: [RouterTestingModule, NavigationModule],
         declarations: [ScreenContainerComponent],
         providers: [HealthService, { provide: ScreenService, useClass: ScreenServiceStub }],
       }).compileComponents();

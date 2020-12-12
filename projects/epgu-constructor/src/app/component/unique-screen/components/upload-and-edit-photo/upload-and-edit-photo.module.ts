@@ -6,7 +6,6 @@ import { SliderComponent } from './slider/slider.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { UploadAndEditPhotoComponent } from './upload-and-edit-photo.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-modal.component';
-import { SharedModule } from '../../../../shared/shared.module';
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
 import { CompressionService } from './compression/compression.service';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';
@@ -33,7 +32,6 @@ import { WebcamShootModule } from '../../../../shared/components/webcam-shoot/we
   imports: [
     CoreModule,
     ModalModule,
-    SharedModule,
     WebcamShootModule,
     LyImageCropperModule,
     AngularResizedEventModule,
