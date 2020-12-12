@@ -73,22 +73,11 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   public ngUnsubscribe$: UnsubscribeService;
   public config: ConfigService;
 
-  header$: Observable<string> = this.screenService.header$.pipe(
-    map((header) => header ?? 'Оплата госпошлины'),
-  );
-
   data: ComponentBase;
 
-  init$: Observable<ComponentBase> = this.screenService.component$.pipe(
-    tap((data: ComponentBase) => {
-      this.isPaid = false;
-      this.inLoading = true;
-      this.data = data;
-      this.loadPaymentInfo();
-    }),
-  );
-
-  submitLabel$: Observable<string> = this.screenService.submitLabel$;
+  header$: Observable<string>;
+  init$: Observable<ComponentBase>;
+  submitLabel$: Observable<string>;
 
   @Output() nextStepEvent = new EventEmitter<void>();
 
@@ -98,6 +87,16 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     this.currentAnswersService = this.injector.get(CurrentAnswersService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.config = this.injector.get(ConfigService);
+    this.header$ = this.screenService.header$.pipe(map((header) => header ?? 'Оплата госпошлины'));
+    this.init$ = this.screenService.component$.pipe(
+      tap((data: ComponentBase) => {
+        this.isPaid = false;
+        this.inLoading = true;
+        this.data = data;
+        this.loadPaymentInfo();
+      }),
+    );
+    this.submitLabel$ = this.screenService.submitLabel$;
   }
 
   ngOnInit(): void {
