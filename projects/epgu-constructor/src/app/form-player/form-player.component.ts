@@ -17,7 +17,10 @@ import { NavigationService } from '../core/services/navigation/navigation.servic
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../screen/screen.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
-import { FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
+import {
+  CheckOrderApiResponse,
+  FormPlayerApiSuccessResponse,
+} from './services/form-player-api/form-player-api.types';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
@@ -101,12 +104,18 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       const { orderId, invited, canStartNew, initState } = this.service;
       if (initState) {
         this.startScenarioFromProps();
-      } else if (orderId) {
+      } else if (this.hasOrderStatus(orderId, invited, canStartNew)) {
         this.handleOrder(orderId, invited, canStartNew);
+      } else if (orderId) {
+        this.getOrderStatus();
       } else {
         this.getOrderIdFromApi();
       }
     });
+  }
+
+  private hasOrderStatus(orderId?: string, invited?: boolean, canStartNew?: boolean): boolean {
+    return orderId && (typeof invited === 'boolean' || typeof canStartNew === 'boolean');
   }
 
   private startScenarioFromProps(): void {
@@ -117,14 +126,26 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.formPlayerService.navigate({ payload }, FormPlayerNavigation.NEXT);
   }
 
+  private getOrderStatus(): void {
+    this.formPlayerService
+      .getOrderStatus(this.service.orderId)
+      .subscribe((checkOrderApiResponse) => {
+        this.handleOrderDataResponse(checkOrderApiResponse);
+      });
+  }
+
   private getOrderIdFromApi(): void {
     this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
-      const { isInviteScenario: invited, canStartNew, orderId } = checkOrderApiResponse;
-      this.serviceDataService.invited = invited;
-      this.serviceDataService.orderId = orderId;
-      this.serviceDataService.canStartNew = canStartNew;
-      this.handleOrder(orderId, invited, canStartNew);
+      this.handleOrderDataResponse(checkOrderApiResponse);
     });
+  }
+
+  private handleOrderDataResponse(checkOrderApiResponse: CheckOrderApiResponse): void {
+    const { isInviteScenario: invited, canStartNew, orderId } = checkOrderApiResponse;
+    this.serviceDataService.invited = invited;
+    this.serviceDataService.orderId = orderId;
+    this.serviceDataService.canStartNew = canStartNew;
+    this.handleOrder(orderId, invited, canStartNew);
   }
 
   private handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean): void {

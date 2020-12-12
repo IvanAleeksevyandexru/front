@@ -277,10 +277,12 @@ describe('FormPlayerComponent', () => {
       loadService.loaded.next(false);
       spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
       spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderStatus').and.callThrough();
       spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
       component['startPlayer']();
       expect(component['startScenarioFromProps']).not.toBeCalled();
       expect(component['handleOrder']).not.toBeCalled();
+      expect(component['getOrderStatus']).not.toBeCalled();
       expect(component['getOrderIdFromApi']).not.toBeCalled();
     });
 
@@ -292,14 +294,52 @@ describe('FormPlayerComponent', () => {
       loadService.loaded.next(true);
       spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
       spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderStatus').and.callThrough();
       spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
       component['startPlayer']();
       expect(component['startScenarioFromProps']).toBeCalled();
       expect(component['handleOrder']).not.toBeCalled();
+      expect(component['getOrderStatus']).not.toBeCalled();
+      expect(component['getOrderIdFromApi']).not.toBeCalled();
+    });
+
+    it('should call hasOrderStatus case', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, orderId: '2145', canStartNew: true, invited: false };
+      fixture.detectChanges();
+      loadService.loaded.next(true);
+      spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderStatus').and.callThrough();
+      spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
+      spyOn<any>(component, 'hasOrderStatus').and.callThrough();
+      component['startPlayer']();
+      expect(component['startScenarioFromProps']).not.toBeCalled();
+      expect(component['hasOrderStatus']).toBeCalled();
+      expect(component['handleOrder']).toBeCalled();
+      expect(component['getOrderStatus']).not.toBeCalled();
       expect(component['getOrderIdFromApi']).not.toBeCalled();
     });
 
     it('should call handleOrder case', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, orderId: '2145', canStartNew: true, invited: false };
+      fixture.detectChanges();
+      loadService.loaded.next(true);
+      spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
+      spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderStatus').and.callThrough();
+      spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
+      component['startPlayer']();
+      expect(component['startScenarioFromProps']).not.toBeCalled();
+      expect(component['handleOrder']).toBeCalled();
+      expect(component['getOrderStatus']).not.toBeCalled();
+      expect(component['getOrderIdFromApi']).not.toBeCalled();
+    });
+
+    it('should call getOrderStatus case', () => {
       const fixture = TestBed.createComponent(FormPlayerComponent);
       const component = fixture.componentInstance;
       component.service = { ...serviceDataMock, orderId: '2145' };
@@ -307,10 +347,11 @@ describe('FormPlayerComponent', () => {
       loadService.loaded.next(true);
       spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
       spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderStatus').and.callThrough();
       spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
       component['startPlayer']();
       expect(component['startScenarioFromProps']).not.toBeCalled();
-      expect(component['handleOrder']).toBeCalled();
+      expect(component['getOrderStatus']).toBeCalled();
       expect(component['getOrderIdFromApi']).not.toBeCalled();
     });
 
@@ -322,10 +363,45 @@ describe('FormPlayerComponent', () => {
       loadService.loaded.next(true);
       spyOn<any>(component, 'startScenarioFromProps').and.callThrough();
       spyOn<any>(component, 'handleOrder').and.callThrough();
+      spyOn<any>(component, 'getOrderStatus').and.callThrough();
       spyOn<any>(component, 'getOrderIdFromApi').and.callThrough();
       component['startPlayer']();
       expect(component['startScenarioFromProps']).not.toBeCalled();
+      expect(component['getOrderStatus']).not.toBeCalled();
       expect(component['getOrderIdFromApi']).toBeCalled();
+    });
+  });
+
+  describe('hasOrderStatus()', () => {
+    it('should return true if has orderId and some of invited or canStartNew', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      const orderId = '2145';
+      const canStartNew = true;
+      const invited = false;
+      fixture.detectChanges();
+      const hasOrderStatus = component['hasOrderStatus'](orderId, invited, canStartNew);
+      expect(hasOrderStatus).toBe(true);
+    });
+
+    it('should return true if has orderId and some of invited or canStartNew', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      const orderId = '2145';
+      fixture.detectChanges();
+      const hasOrderStatus = component['hasOrderStatus'](orderId);
+      expect(hasOrderStatus).toBe(false);
+    });
+
+    it('should return true if has orderId and some of invited or canStartNew with false state', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      const orderId = '2145';
+      const canStartNew = false;
+      const invited = false;
+      fixture.detectChanges();
+      const hasOrderStatus = component['hasOrderStatus'](orderId, invited, canStartNew);
+      expect(hasOrderStatus).toBe(true);
     });
   });
 
@@ -362,6 +438,28 @@ describe('FormPlayerComponent', () => {
     });
   });
 
+  describe('getOrderStatus()', () => {
+    const checkIfOrderExistResult = {
+      orderId: '123456',
+      isInviteScenario: false,
+      canStartNew: true
+    };
+
+    beforeEach(() => {
+      spyOn(formPlayerService, 'getOrderStatus').and.returnValue(of(checkIfOrderExistResult));
+    });
+
+    it('should call invited of serviceDataService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, orderId: '123456' };
+      fixture.detectChanges();
+      spyOn<any>(component, 'handleOrderDataResponse');
+      component['getOrderStatus']();
+      expect(component['handleOrderDataResponse']).toBeCalledWith(checkIfOrderExistResult);
+    });
+  });
+
   describe('getOrderIdFromApi()', () => {
     const checkIfOrderExistResult = {
       orderId: '123456',
@@ -377,8 +475,25 @@ describe('FormPlayerComponent', () => {
       const fixture = TestBed.createComponent(FormPlayerComponent);
       const component = fixture.componentInstance;
       fixture.detectChanges();
-      const spySetter = jest.spyOn(serviceDataService, 'invited', 'set');
+      spyOn<any>(component, 'handleOrderDataResponse');
       component['getOrderIdFromApi']();
+      expect(component['handleOrderDataResponse']).toBeCalledWith(checkIfOrderExistResult);
+    });
+  });
+
+  describe('handleOrderDataResponse()', () => {
+    const checkIfOrderExistResult = {
+      orderId: '123456',
+      isInviteScenario: false,
+      canStartNew: true
+    };
+
+    it('should call invited of serviceDataService', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      const spySetter = jest.spyOn(serviceDataService, 'invited', 'set');
+      component['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(spySetter).toBeCalledWith(checkIfOrderExistResult.isInviteScenario);
     });
 
@@ -387,7 +502,7 @@ describe('FormPlayerComponent', () => {
       const component = fixture.componentInstance;
       fixture.detectChanges();
       const spySetter = jest.spyOn(serviceDataService, 'orderId', 'set');
-      component['getOrderIdFromApi']();
+      component['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(spySetter).toBeCalledWith(checkIfOrderExistResult.orderId);
     });
 
@@ -396,7 +511,7 @@ describe('FormPlayerComponent', () => {
       const component = fixture.componentInstance;
       fixture.detectChanges();
       const spySetter = jest.spyOn(serviceDataService, 'canStartNew', 'set');
-      component['getOrderIdFromApi']();
+      component['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(spySetter).toBeCalledWith(checkIfOrderExistResult.canStartNew);
     });
 
@@ -405,7 +520,7 @@ describe('FormPlayerComponent', () => {
       const component = fixture.componentInstance;
       fixture.detectChanges();
       spyOn<any>(component, 'handleOrder').and.callThrough();
-      component['getOrderIdFromApi']();
+      component['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(component['handleOrder']).toBeCalledWith(
         checkIfOrderExistResult.orderId,
         checkIfOrderExistResult.isInviteScenario,
