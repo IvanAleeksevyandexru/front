@@ -63,4 +63,8 @@ export class FormPlayerServiceStub {
   checkIfOrderExist(): Observable<{}> {
     return of({});
   }
+
+  isNeedToShowLastScreen(): boolean {
+    return false;
+  }
 }

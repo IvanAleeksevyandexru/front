@@ -411,4 +411,90 @@ describe('FormPlayerComponent', () => {
       );
     });
   });
+
+  describe('handleOrder()', () => {
+    const orderId = '1234';
+    const invited = false;
+    const canStartNew = true;
+
+    it('should call shouldShowContinueOrderModal', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn<any>(component, 'shouldShowContinueOrderModal').and.callThrough();
+      component['handleOrder'](orderId, invited, canStartNew);
+      expect(component['shouldShowContinueOrderModal']).toBeCalledWith(orderId, invited, canStartNew);
+    });
+
+    it('should call showContinueOrderModal when shouldShowContinueOrderModal return true', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn<any>(component, 'shouldShowContinueOrderModal').and.returnValue(true);
+      spyOn<any>(component, 'showContinueOrderModal').and.callThrough();
+      component['handleOrder'](orderId, invited, canStartNew);
+      expect(component['showContinueOrderModal']).toBeCalled();
+    });
+
+    it('should call initData of formPlayerService when shouldShowContinueOrderModal return false', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn<any>(component, 'shouldShowContinueOrderModal').and.returnValue(false);
+      spyOn(formPlayerService, 'initData').and.callThrough();
+      component['handleOrder'](orderId, invited, canStartNew);
+      expect(formPlayerService.initData).toBeCalledWith(orderId, invited);
+    });
+  });
+
+  describe('shouldShowContinueOrderModal()', () => {
+    const orderId = '1234';
+    const invited = false;
+    const canStartNew = true;
+
+    it('should return true if not invited, canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'isNeedToShowLastScreen').and.returnValue(false);
+      const shouldShowContinueOrderModal = component['shouldShowContinueOrderModal'](orderId, invited, canStartNew);
+      expect(shouldShowContinueOrderModal).toBe(true);
+    });
+
+    it('should return false if not invited, canStartNew, not empty orderId, isNeedToShowLastScreen', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'isNeedToShowLastScreen').and.returnValue(true);
+      const shouldShowContinueOrderModal = component['shouldShowContinueOrderModal'](orderId, invited, canStartNew);
+      expect(shouldShowContinueOrderModal).toBe(false);
+    });
+
+    it('should return false if not invited, canStartNew, empty orderId, not isNeedToShowLastScreen', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'isNeedToShowLastScreen').and.returnValue(true);
+      const shouldShowContinueOrderModal = component['shouldShowContinueOrderModal'](null, invited, canStartNew);
+      expect(shouldShowContinueOrderModal).toBe(false);
+    });
+
+    it('should return false if invited, canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'isNeedToShowLastScreen').and.returnValue(true);
+      const shouldShowContinueOrderModal = component['shouldShowContinueOrderModal'](orderId, true, canStartNew);
+      expect(shouldShowContinueOrderModal).toBe(false);
+    });
+
+    it('should return false if not invited, not canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'isNeedToShowLastScreen').and.returnValue(true);
+      const shouldShowContinueOrderModal = component['shouldShowContinueOrderModal'](orderId, invited, false);
+      expect(shouldShowContinueOrderModal).toBe(false);
+    });
+  });
 });

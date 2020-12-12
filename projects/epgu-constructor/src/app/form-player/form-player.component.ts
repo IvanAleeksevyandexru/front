@@ -130,20 +130,22 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean): void {
-    const shouldShowModal = (): boolean => {
-      return (
-        !invited && canStartNew && !!orderId && !this.formPlayerService.isNeedToShowLastScreen()
-      );
-    };
-
-    if (shouldShowModal()) {
-      this.showModal();
+    if (this.shouldShowContinueOrderModal(orderId, invited, canStartNew)) {
+      this.showContinueOrderModal();
     } else {
       this.formPlayerService.initData(orderId, invited);
     }
   }
 
-  private showModal(): void {
+  private shouldShowContinueOrderModal(
+    orderId?: string,
+    invited?: boolean,
+    canStartNew?: boolean,
+  ): boolean {
+    return !invited && canStartNew && !!orderId && !this.formPlayerService.isNeedToShowLastScreen();
+  }
+
+  private showContinueOrderModal(): void {
     const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
       ConfirmationModalComponent,
       {
