@@ -532,4 +532,40 @@ describe('FormPlayerComponent', () => {
       expect(formPlayerService.initData).toBeCalledWith(null, false);
     });
   });
+
+  describe('nextStep()', () => {
+    it('should call navigate of formPlayerService with next param', () => {
+      const navigation = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'navigate').and.callThrough();
+      component['nextStep'](navigation);
+      expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.NEXT);
+    });
+  });
+
+  describe('prevStep()', () => {
+    it('should call navigate of formPlayerService with prev param', () => {
+      const navigation = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'navigate').and.callThrough();
+      component['prevStep'](navigation);
+      expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.PREV);
+    });
+  });
+
+  describe('skipStep()', () => {
+    it('should call navigate of formPlayerService with skip param', () => {
+      const navigation = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+      spyOn(formPlayerService, 'navigate').and.callThrough();
+      component['skipStep'](navigation);
+      expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.SKIP);
+    });
+  });
 });
