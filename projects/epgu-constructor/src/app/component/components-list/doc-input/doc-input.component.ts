@@ -146,8 +146,8 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   getFormFieldValidators(fieldName: string): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
 
-    if (this.fields[fieldName].attrs.validation) {
-      this.fields[fieldName].attrs.validation.forEach((validationItem) => {
+    if (this.fields[fieldName]?.attrs?.validation) {
+      this.fields[fieldName]?.attrs?.validation.forEach((validationItem) => {
         validators.push(
           this.getCustomValidator({
             validationType: validationItem.type,
@@ -158,7 +158,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
       });
     }
 
-    if (this.fields[fieldName].required) {
+    if (this.fields[fieldName]?.required) {
       validators.push(
         this.getCustomValidator({
           validationType: ValidatorTypes.Required,
