@@ -80,6 +80,14 @@ describe('ValidationService', () => {
       control.setValue('123афы№%$');
       expect(customValidator(control)).toEqual({ msg: 'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры' });
     });
+
+    it('should return proper error for required control value', () => {
+      const customValidator = service.customValidator(mockComponent);
+      const control = new FormControl('input');
+      control.setValue('');
+      control.markAsTouched();
+      expect(customValidator(control)).toEqual({ msg: 'Обязательно для заполнения' });
+    });
   });
 
   describe('customValidator', () => {
@@ -99,17 +107,6 @@ describe('ValidationService', () => {
       control.setValue('фыждлоекa');
       customAsyncValidator(control).subscribe(obj => {
         expect(obj).toEqual({ msg: 'Поле должно содержать хотя бы одну цифру' });
-        done();
-      });
-    });
-
-    it('should return proper error for control empty value', (done) => {
-      const customAsyncValidator = service.customAsyncValidator(mockComponent, 'blur');
-      const control = new FormControl('input');
-      control.setValue('');
-      control.markAsTouched();
-      customAsyncValidator(control).subscribe(obj => {
-        expect(obj).toEqual({ msg: 'Обязательно для заполнения' });
         done();
       });
     });
