@@ -7,7 +7,7 @@ import { CachedAnswersService } from '../shared/services/applicant-answers/cache
 import { UtilsService } from '../shared/services/utils/utils.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
-import { ComponentBase, ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
+import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -66,7 +66,7 @@ export class ScreenService extends ScreenContent {
   }
 
   private loadValueFromCachedAnswer(): void {
-    const components: Array<ComponentBase> = [];
+    const components: Array<ComponentDto> = [];
 
     this.screenStore.display.components
       .forEach(item => {

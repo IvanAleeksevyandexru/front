@@ -33,6 +33,10 @@ export class FormPlayerService extends FormPlayerBaseService {
     return this.formPlayerApiService.checkIfOrderExist();
   }
 
+  public getOrderStatus(orderId: string): Observable<CheckOrderApiResponse> {
+    return this.formPlayerApiService.getOrderStatus(orderId);
+  }
+
   /**
    * Инициализирует данные для показа, смотрим откуда брать данные
    * @param orderId - id заявления
@@ -44,24 +48,8 @@ export class FormPlayerService extends FormPlayerBaseService {
     if (this.isNeedToShowLastScreen()) {
       this.loadDataFromLocalStorage();
     } else {
-      if (invited) {
-        this.getInviteOrderData(orderId);
-      } else {
-        this.getOrderData(orderId);
-      }
+      this.getOrderData(orderId);
     }
-  }
-
-  /**
-   * Получает и устанавливает данные для заявления для id услуги по приглашению
-   * @param orderId - идентификатор черновика
-   */
-  getInviteOrderData(orderId: string): void {
-    this.formPlayerApiService.getInviteServiceData(orderId).subscribe(
-      (response) => this.processResponse(response),
-      (error) => this.sendDataError(error),
-      () => this.updateLoading(false)
-    );
   }
 
   /**

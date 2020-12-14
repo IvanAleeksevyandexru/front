@@ -8,6 +8,9 @@ import { SharedModule } from '../../shared.module';
 import { PassportComponent } from './passport.component';
 import { ConstructorMaskedInputModule } from '../epgu-lib/constructor-masked-input/constructor-masked-input.module';
 
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+
 describe('PassportComponent', () => {
   let component: PassportComponent;
   let fixture: ComponentFixture<PassportComponent>;
@@ -16,7 +19,11 @@ describe('PassportComponent', () => {
     TestBed.configureTestingModule({
       imports: [ EpguLibModule, FormsModule, SharedModule, RouterTestingModule, ConstructorMaskedInputModule ],
       declarations: [PassportComponent],
-      providers: [UnsubscribeService, HealthService],
+      providers: [
+        UnsubscribeService, 
+        HealthService, 
+        { provide: ScreenService, useClass: ScreenServiceStub },
+      ],
     })
     .compileComponents();
   }));

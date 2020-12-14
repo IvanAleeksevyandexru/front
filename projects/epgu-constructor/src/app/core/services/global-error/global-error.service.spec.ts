@@ -1,9 +1,14 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-
 import { HealthService } from 'epgu-lib';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { CachedAnswersService } from '../../../shared/services/applicant-answers/cached-answers.service';
+import { UtilsService } from '../../../shared/services/utils/utils.service';
 import { GlobalErrorHandler } from './global-error.service';
 import { HealthServiceStub } from './health.service.stub';
-import { HttpErrorResponse } from '@angular/common/http';
+
 
 describe('GlobalErrorHandler', () => {
   let globalError: GlobalErrorHandler;
@@ -11,7 +16,14 @@ describe('GlobalErrorHandler', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GlobalErrorHandler, { provide: HealthService, useClass: HealthServiceStub }],
+      providers: [
+        GlobalErrorHandler,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        CurrentAnswersService,
+        CachedAnswersService,
+        UtilsService,
+        { provide: HealthService, useClass: HealthServiceStub },
+      ],
     });
     healthService = TestBed.inject(HealthService);
     globalError = TestBed.inject(GlobalErrorHandler);

@@ -1,6 +1,6 @@
 @import 'breakpoint';
 
-.col {
+.grid-col {
   &-1 {
     max-width: calc(8.33% - #{$screen-pad-small-gap}) !important;
     &-sm {

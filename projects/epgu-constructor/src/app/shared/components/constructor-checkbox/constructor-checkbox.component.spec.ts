@@ -1,9 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FormControl } from '@angular/forms';
-
+import { RouterTestingModule } from '@angular/router/testing';
 import { CoreModule } from '../../../core/core.module';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { UtilsService } from '../../services/utils/utils.service';
+import { UtilsServiceStub } from '../../services/utils/utils.service.stub';
 import { ConstructorCheckboxComponent } from './constructor-checkbox.component';
+
 
 describe('ConstructorCheckboxComponent', () => {
   let component: ConstructorCheckboxComponent;
@@ -13,6 +18,11 @@ describe('ConstructorCheckboxComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorCheckboxComponent],
       imports: [CoreModule, RouterTestingModule],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: UtilsService, useClass: UtilsServiceStub },
+        CurrentAnswersService
+      ],
     }).compileComponents();
   });
 

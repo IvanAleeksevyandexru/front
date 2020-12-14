@@ -3,7 +3,7 @@
 <!--</div>-->
 <epgu-constructor-navigation class="nav"></epgu-constructor-navigation>
 
-<epgu-constructor-screen-container>
+<epgu-constructor-screen-container *ngIf="(data$ | async) as data">
   <div class="inner">
     <div *ngIf="data?.name" class="head">
       <epgu-constructor-page-name>{{ data.name }}</epgu-constructor-page-name>
