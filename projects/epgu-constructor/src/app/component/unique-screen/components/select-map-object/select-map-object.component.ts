@@ -87,13 +87,17 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnInit(): void {
+    let isInit = false;
     combineLatest([this.screenService.component$, this.screenService.applicantAnswers$])
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([data, applicantAnswers]: [ComponentDto, ApplicantAnswersDto]) => {
         this.applicantAnswers = applicantAnswers;
         this.data = data;
-        this.initVariable();
-        this.subscribeToEmmitNextStepData();
+        if (!isInit) {
+          isInit = true;
+          this.initVariable();
+          this.subscribeToEmmitNextStepData();
+        }
       });
   }
 
