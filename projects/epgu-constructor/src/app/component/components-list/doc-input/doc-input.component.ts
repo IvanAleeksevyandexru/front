@@ -100,7 +100,11 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   }
 
   private getParsedComponentValues(): DocInputFields {
-    const componentValues: DocInputFields = JSON.parse(this.data.value.value || '{}');
+    const componentValues =
+      typeof this.data.value.value === 'object'
+        ? this.data.value.value
+        : JSON.parse(this.data.value.value || '{}');
+
     return {
       ...componentValues,
       date: componentValues.date ? new Date(componentValues.date) : null,
