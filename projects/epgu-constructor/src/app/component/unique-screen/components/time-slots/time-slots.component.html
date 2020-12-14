@@ -1,4 +1,4 @@
-<epgu-constructor-screen-container>
+<epgu-constructor-screen-container *ngIf="(data$ | async) as data">
 
   <div class="screen-body">
     <epgu-constructor-page-name *ngIf="data?.header">{{ data.header }}</epgu-constructor-page-name>
@@ -61,7 +61,7 @@
 
   <div class="screen-footer">
     <lib-button
-      [showLoader]="isLoading || inProgress"
+      [showLoader]="(isLoading$ | async) || inProgress"
       (click)="clickSubmit()"
       class="btn__submit"
       [disabled]="buttonDisabled()"

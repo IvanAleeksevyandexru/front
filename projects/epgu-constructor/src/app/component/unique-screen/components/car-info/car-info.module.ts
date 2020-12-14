@@ -9,6 +9,7 @@ import { CoreModule } from '../../../../core/core.module';
 import { BaseModule } from '../../../../shared/components/base/base.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenService } from '../../../../screen/screen.service';
 
 const COMPONENTS = [
   CarInfoComponent,
@@ -22,7 +23,7 @@ const COMPONENTS = [
 
 @NgModule({
   declarations: [...COMPONENTS],
-  providers: [],
+  providers: [ScreenService],
   exports: [...COMPONENTS],
   imports: [CoreModule, BaseModule, ScreenContainerModule, ScreenPadModule],
 })

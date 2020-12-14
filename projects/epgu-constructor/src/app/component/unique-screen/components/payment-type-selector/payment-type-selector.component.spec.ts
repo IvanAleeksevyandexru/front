@@ -15,6 +15,7 @@ import { ConfigService } from '../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { of } from 'rxjs';
 import { BaseModule } from '../../../../shared/components/base/base.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
@@ -24,6 +25,7 @@ import { ActionModule } from '../../../../shared/directives/action/action.module
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
   let fixture: ComponentFixture<PaymentTypeSelectorComponent>;
+  let screenService: ScreenService;
   const mockComponent: ComponentDto = {
     attrs: {
       applicantType: 'success',
@@ -79,9 +81,10 @@ describe('PaymentTypeSelectorComponent', () => {
   });
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
+    screenService.component$ = of(mockComponent);
     fixture = TestBed.createComponent(PaymentTypeSelectorComponent);
     component = fixture.componentInstance;
-    component.data = mockComponent;
     fixture.detectChanges();
   });
 

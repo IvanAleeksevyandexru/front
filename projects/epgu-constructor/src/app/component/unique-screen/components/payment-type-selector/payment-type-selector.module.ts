@@ -9,10 +9,12 @@ import { ScreenContainerModule } from '../../../../shared/components/screen-cont
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { AnswerButtonModule } from '../../../../shared/components/answer-button/answer-button.module';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
+import { ScreenService } from '../../../../screen/screen.service';
 
 @NgModule({
   declarations: [PaymentTypeSelectorComponent],
   exports: [PaymentTypeSelectorComponent],
+  providers: [ScreenService],
   imports: [
     CommonModule,
     EpguLibModule,
