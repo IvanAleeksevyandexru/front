@@ -5,7 +5,6 @@ import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
-import { SharedModule } from '../shared/shared.module';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { CookieService } from 'ngx-cookie-service';
 import { ScreenModule } from '../screen/screen.module';
@@ -16,15 +15,8 @@ import { ModalModule } from '../modal/modal.module';
  * Домен форм плеера. Здесь храняться всё что связано с форм плеером, его интеграцие с форм плеер апи.
  */
 @NgModule({
-  declarations: [
-    FormPlayerComponent,
-  ],
-  imports: [
-    ScreenModule,
-    CoreModule,
-    SharedModule,
-    ModalModule,
-  ],
+  declarations: [FormPlayerComponent],
+  imports: [ScreenModule, CoreModule, ModalModule],
   providers: [
     FormPlayerConfigApiService,
     FormPlayerService,
@@ -34,11 +26,7 @@ import { ModalModule } from '../modal/modal.module';
     ConfigService,
     ServiceDataService,
   ],
-  exports: [
-    FormPlayerComponent,
-  ],
-  entryComponents: [
-    FormPlayerComponent,
-  ]
+  exports: [FormPlayerComponent],
+  entryComponents: [FormPlayerComponent],
 })
 export class FormPlayerModule {}

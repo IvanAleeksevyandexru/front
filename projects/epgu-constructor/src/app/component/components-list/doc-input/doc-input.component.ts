@@ -1,26 +1,17 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { ValidationShowOn } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
-import { ValidationShowOn } from 'epgu-lib';
-
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-
+import { ComponentListFormService } from '../services/component-list-form.service';
 import {
   DocInputControl,
   DocInputField,
   DocInputFields,
   DocInputFormFields,
 } from './doc-input.types';
-import { ComponentListFormService } from '../services/component-list-form.service';
 
 const moment = moment_;
 
@@ -132,15 +123,9 @@ export class DocInputComponent implements OnInit, AfterViewInit {
       const validators = this.getFormFieldValidators(fieldName);
 
       if (Object.prototype.hasOwnProperty.call(seriesNumDate, fieldName)) {
-        seriesNumDate[fieldName] = new FormControl(componentValues[fieldName], [
-          Validators.required,
-          ...validators,
-        ]);
+        seriesNumDate[fieldName] = new FormControl(componentValues[fieldName], [...validators]);
       } else {
-        emitter[fieldName] = new FormControl(componentValues[fieldName], [
-          Validators.required,
-          ...validators,
-        ]);
+        emitter[fieldName] = new FormControl(componentValues[fieldName], [...validators]);
       }
     });
 

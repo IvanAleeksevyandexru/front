@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-import { NavigationPayload } from 'projects/epgu-constructor/src/app/form-player/form-player.types';
 import { finalize, takeUntil } from 'rxjs/operators';
+import { NavigationPayload } from '../../../../form-player/form-player.types';
 import { ConfigService } from '../../../../core/config/config.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import {

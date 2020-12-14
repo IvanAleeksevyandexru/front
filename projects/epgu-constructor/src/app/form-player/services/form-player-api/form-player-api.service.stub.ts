@@ -8,6 +8,10 @@ export class FormPlayerApiServiceStub {
     return of({});
   }
 
+  public getOrderStatus(): Observable<{}> {
+    return of({});
+  }
+
   public getInviteServiceData(): Observable<{}> {
     return of({});
   }

@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { BehaviorSubject, combineLatest, Observable, of, throwError } from 'rxjs';
+import { catchError, concatMap, filter, tap } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../modal/modal.service';
 import { UsePaymentsModalComponent } from '../../../../modal/use-payment-modal/use-payments-modal.component';
@@ -16,10 +17,12 @@ import { ScreenService } from '../../../../screen/screen.service';
 })
 export class UnusedPaymentsComponent implements OnInit {
   // @Input() orderId: string;
-  @Input() data: DisplayDto;
+  // @Input() data: DisplayDto;
   @Output() nextStepEvent = new EventEmitter<string>();
 
-  orderId: string;
+  data$: Observable<DisplayDto> = this.screenService.display$;
+
+  orderId: string = this.screenService.getStore().orderId;
   private paymentsList: BehaviorSubject<UnusedPaymentInterface[]> = new BehaviorSubject([]);
   paymentsList$ = this.paymentsList.pipe(filter((v) => v.length > 0));
   paymentUIN: string;
@@ -57,8 +60,8 @@ export class UnusedPaymentsComponent implements OnInit {
     }
   }
 
-  usePaymentsListData(): void {
-    const value = JSON.parse(this.data.components[0].value);
+  usePaymentsListData(data: DisplayDto): void {
+    const value = JSON.parse(data.components[0].value);
     if (value.length) {
       this.paymentsList.next(value);
       // this.paymentsList = value;
@@ -74,18 +77,21 @@ export class UnusedPaymentsComponent implements OnInit {
     });
   }
 
-  getListPaymentsInfoSuccess = (data): void => {
+  getListPaymentsInfoSuccess = ([data, serviceData]: [
+    UnusedPaymentInterface[],
+    DisplayDto,
+  ]): void => {
     if (data.length) {
       this.paymentsList.next(data);
     } else {
-      this.usePaymentsListData();
+      this.usePaymentsListData(serviceData);
     }
   };
 
-  getListPaymentsInfoError = (error): void => {
+  getListPaymentsInfoError = ([error, data]: [HttpErrorResponse, DisplayDto]): void => {
     // eslint-disable-next-line no-console
     console.log('Error', error);
-    this.usePaymentsListData();
+    this.usePaymentsListData(data);
   };
 
   /**
@@ -97,10 +103,17 @@ export class UnusedPaymentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const { orderId } = this.screenService.getStore();
-    this.orderId = orderId;
     this.listPaymentsService
       .getListPaymentsInfo({ orderId: this.orderId })
-      .subscribe(this.getListPaymentsInfoSuccess, this.getListPaymentsInfoError);
+      .pipe(
+        catchError((err) => {
+          return combineLatest([of(err), this.data$]).pipe(
+            tap(this.getListPaymentsInfoError),
+            concatMap(() => throwError(err)),
+          );
+        }),
+        concatMap((data) => combineLatest([of(data), this.data$])),
+      )
+      .subscribe(this.getListPaymentsInfoSuccess);
   }
 }

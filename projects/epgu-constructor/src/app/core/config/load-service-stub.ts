@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 
 export class LoadServiceStub {
   public config = {
@@ -7,5 +7,5 @@ export class LoadServiceStub {
   public attributes = {
     deviceType: 'dev'
   };
-  public loaded = of(true);
+  public loaded = new BehaviorSubject(false);
 }

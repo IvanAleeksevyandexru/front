@@ -15,15 +15,16 @@ import { DeviceDetectorService } from '../core/services/device-detector/device-d
 import { LoggerService } from '../core/services/logger/logger.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
-import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../modal/confirmation-modal/confirmation-modal.interface';
-import { ModalService } from '../modal/modal.service';
 import { ScreenService } from '../screen/screen.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
-import { FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
+import {
+  CheckOrderApiResponse,
+  FormPlayerApiSuccessResponse,
+} from './services/form-player-api/form-player-api.types';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
+import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -37,6 +38,8 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('attr.test-screen-id') screenId: string;
   @Input() service: Service;
 
+  isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
+
   constructor(
     private deviceDetector: DeviceDetectorService,
     private serviceDataService: ServiceDataService,
@@ -46,7 +49,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     private ngUnsubscribe$: UnsubscribeService,
     public configService: ConfigService,
     public loadService: LoadService,
-    private modalService: ModalService,
+    public continueOrderModalService: ContinueOrderModalService,
     private zone: NgZone,
     public screenService: ScreenService,
     private loggerService: LoggerService,
@@ -68,8 +71,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private initFormPlayerConfig(): void {
-    this.loadService.loaded
-      .pipe(filter((loaded: boolean) => loaded))
+    this.isCoreConfigLoaded$
       .pipe(mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((config) => {
@@ -98,79 +100,78 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private startPlayer(): void {
-    this.loadService.loaded.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((loaded) => {
-      if (!loaded) return;
-      const { orderId, invited, canStartNew } = this.serviceDataService;
-      if (this.service.initState) {
+    this.isCoreConfigLoaded$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      const { orderId, invited, canStartNew, initState } = this.service;
+      if (initState) {
         this.startScenarioFromProps();
-      } else if (orderId) {
+      } else if (this.hasOrderStatus(orderId, invited, canStartNew)) {
         this.handleOrder(orderId, invited, canStartNew);
+      } else if (orderId) {
+        this.getOrderStatus();
       } else {
         this.getOrderIdFromApi();
       }
     });
   }
 
+  private hasOrderStatus(orderId?: string, invited?: boolean, canStartNew?: boolean): boolean {
+    return orderId && (typeof invited === 'boolean' || typeof canStartNew === 'boolean');
+  }
+
   private startScenarioFromProps(): void {
     const store = JSON.parse(this.service.initState) as FormPlayerApiSuccessResponse;
     this.loggerService.log(['initState', store], 'Запуск плеера из предустановленого состояния');
     this.formPlayerService.store = store;
-    const navigationPayload = store.scenarioDto.currentValue;
-    this.formPlayerService.navigate({ payload: navigationPayload }, FormPlayerNavigation.NEXT);
+    const payload = store.scenarioDto.currentValue;
+    this.formPlayerService.navigate({ payload }, FormPlayerNavigation.NEXT);
+  }
+
+  private getOrderStatus(): void {
+    this.formPlayerService
+      .getOrderStatus(this.service.orderId)
+      .subscribe((checkOrderApiResponse) => {
+        this.handleOrderDataResponse(checkOrderApiResponse);
+      });
   }
 
   private getOrderIdFromApi(): void {
     this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
-      const { isInviteScenario: invited, canStartNew, orderId } = checkOrderApiResponse;
-      this.serviceDataService.invited = invited;
-      this.serviceDataService.orderId = orderId;
-      this.serviceDataService.canStartNew = canStartNew;
-      this.handleOrder(orderId, invited, canStartNew);
+      this.handleOrderDataResponse(checkOrderApiResponse);
     });
   }
 
-  private handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean): void {
-    const shouldShowModal = (): boolean => {
-      return (
-        !invited && canStartNew && !!orderId && !this.formPlayerService.isNeedToShowLastScreen()
-      );
-    };
+  private handleOrderDataResponse(checkOrderApiResponse: CheckOrderApiResponse): void {
+    const { isInviteScenario: invited, canStartNew, orderId } = checkOrderApiResponse;
+    this.serviceDataService.invited = invited;
+    this.serviceDataService.orderId = orderId;
+    this.serviceDataService.canStartNew = canStartNew;
+    this.handleOrder(orderId, invited, canStartNew);
+  }
 
-    if (shouldShowModal()) {
-      this.showModal();
+  private handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean): void {
+    if (this.shouldShowContinueOrderModal(orderId, invited, canStartNew)) {
+      this.showContinueOrderModal();
     } else {
       this.formPlayerService.initData(orderId, invited);
     }
   }
 
-  private showModal(): void {
-    const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
-      ConfirmationModalComponent,
-      {
-        text: `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
-        <h4 style="text-align: center">У вас есть черновик заявления</h4>
-        <p class="helper-text" style="text-align: center; margin-top: 8px;">Продолжить его заполнение?</p></div>`,
-        showCloseButton: false,
-        showCrossButton: true,
-        buttons: [
-          {
-            label: 'Начать заново',
-            color: 'white',
-            closeModal: true,
-          },
-          {
-            label: 'Продолжить',
-            closeModal: true,
-            value: 'ok',
-          },
-        ],
-        isShortModal: true,
-      },
-    );
-    modalResult$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((result) => {
-      const orderId = result ? this.serviceDataService.orderId : null;
-      this.formPlayerService.initData(orderId, false);
-    });
+  private shouldShowContinueOrderModal(
+    orderId?: string,
+    invited?: boolean,
+    canStartNew?: boolean,
+  ): boolean {
+    return !invited && canStartNew && !!orderId && !this.formPlayerService.isNeedToShowLastScreen();
+  }
+
+  private showContinueOrderModal(): void {
+    this.continueOrderModalService
+      .openModal()
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((result) => {
+        const orderId = result ? this.serviceDataService.orderId : null;
+        this.formPlayerService.initData(orderId, false);
+      });
   }
 
   private nextStep(navigation?: Navigation): void {

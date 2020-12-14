@@ -9,10 +9,11 @@ import {
   ActionApiResponse,
   ActionDTO,
   ActionType,
-  ComponentActionDto, DTOActionAction
+  ComponentActionDto,
+  DTOActionAction,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
-import { UtilsService } from '../../services/utils/utils.service';
+import { UtilsService } from '../../../core/services/utils/utils.service';
 import { ComponentStateForNavigate } from './action.interface';
 
 @Directive({

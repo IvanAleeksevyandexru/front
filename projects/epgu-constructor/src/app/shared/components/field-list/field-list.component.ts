@@ -6,6 +6,16 @@ import {
 } from '../../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
+const defaultStyle: ConfirmUserDataStyle = {
+  group: 'mb-16',
+  groupTitle: 'mb-16',
+  value: '',
+  label: 'mb-4',
+  field: 'mb-16',
+  list: '',
+  divider: 'mb-32',
+};
+
 @Component({
   selector: 'epgu-constructor-field-list',
   templateUrl: './field-list.component.html',
@@ -18,7 +28,7 @@ export class FieldListComponent implements OnInit, OnChanges {
   public style: ConfirmUserDataStyle;
 
   ngOnInit(): void {
-    this.style = this.data.attrs.style;
+    this.style = this.data.attrs?.style || defaultStyle;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

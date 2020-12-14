@@ -1,15 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UtilsService } from '../../../../shared/services/utils/utils.service';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
 
 describe('WebcamService', () => {
   let service: UtilsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        UtilsService
-      ]
+      providers: [UtilsService],
     });
     service = TestBed.inject(UtilsService);
   });

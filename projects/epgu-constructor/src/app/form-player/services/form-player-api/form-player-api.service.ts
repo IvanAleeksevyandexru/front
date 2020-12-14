@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { ServiceDataService } from '../service-data/service-data.service';
 import { LoadService } from 'epgu-lib';
@@ -13,8 +12,6 @@ import {
 } from './form-player-api.types';
 import { FormPlayerNavigation, NavigationOptions } from '../../form-player.types';
 
-type CookieSession = { userId: string, token: string };
-
 export const apiUrlDefault = '/api';
 
 @Injectable()
@@ -24,7 +21,6 @@ export class FormPlayerApiService {
   constructor(
     private http: HttpClient,
     private serviceDataService: ServiceDataService,
-    private cookieService: CookieService,
     private loadService: LoadService
   ) {
     this.loadService.loaded.subscribe(() => {
@@ -35,27 +31,24 @@ export class FormPlayerApiService {
 
   public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
     const { serviceId, targetId } = this.serviceDataService;
-    const { userId, token } = this.getSessionFromCookie();
-    const body = { targetId, userId, token };
+    const body = { targetId };
     const path = `${this.apiUrl}/service/${serviceId}/scenario/checkIfOrderIdExists`;
 
     return this.post<CheckOrderApiResponse>(path, body);
   }
 
-  public getInviteServiceData(orderId: string): Observable<FormPlayerApiResponse> {
-    const { targetId, serviceId } = this.serviceDataService;
-    const { userId, token } = this.getSessionFromCookie();
-    const path = `${this.apiUrl}/invitation/${serviceId}/getService`;
-    const body = { targetId, userId, token, orderId };
+  public getOrderStatus(orderId: string): Observable<CheckOrderApiResponse> {
+    const { serviceId, targetId } = this.serviceDataService;
+    const body = { targetId, orderId };
+    const path = `${this.apiUrl}/service/${serviceId}/scenario/getOrderStatus`;
 
-    return this.post<FormPlayerApiResponse>(path, body);
+    return this.post<CheckOrderApiResponse>(path, body);
   }
 
   public getServiceData(orderId?: string): Observable<FormPlayerApiResponse> {
     const { serviceId, targetId } = this.serviceDataService;
-    const { userId, token } = this.getSessionFromCookie();
     const path = `${this.apiUrl}/service/${serviceId}/scenario/getService`;
-    const body = { targetId, userId, token };
+    const body = { targetId };
 
     if(orderId) {
       body['orderId'] = orderId;
@@ -73,11 +66,7 @@ export class FormPlayerApiService {
     options: NavigationOptions = {},
     formPlayerNavigation: FormPlayerNavigation
   ): Observable<FormPlayerApiResponse> {
-    let path = this.getNavigatePath(data, options, formPlayerNavigation);
-    const { userId, token } = this.getSessionFromCookie();
-
-    data.scenarioDto.userId = userId;
-    data.scenarioDto.token = token;
+    let path = this.getNavigatePath(data, options, formPlayerNavigation);;
     data.scenarioDto.currentUrl = location.href;
 
     if (options.isInternalScenarioFinish) {
@@ -89,13 +78,6 @@ export class FormPlayerApiService {
     };
 
     return this.post<FormPlayerApiResponse>(path, body);
-  }
-
-  // TODO: remove when backend team delete session from ScenarioDto
-  private getSessionFromCookie(): CookieSession {
-    const userId = this.cookieService.get('u') || '';
-    const token = this.cookieService.get('acc_t') || '';
-    return { userId, token };
   }
 
   private getNavigatePath(

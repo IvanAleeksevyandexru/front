@@ -6,7 +6,7 @@ import { CachedAnswersService } from '../shared/services/applicant-answers/cache
 import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
 import { ScreenStore, ScreenTypes } from './screen.types';
-import { UtilsService } from '../shared/services/utils/utils.service';
+import { UtilsService } from '../core/services/utils/utils.service';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: '653920',

@@ -5,10 +5,9 @@ import { ValidationShowOn } from 'epgu-lib';
 import { CoreModule } from '../../../core/core.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { UtilsService } from '../../services/utils/utils.service';
-import { UtilsServiceStub } from '../../services/utils/utils.service.stub';
+import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConstructorDadataWidgetComponent } from './constructor-dadata-widget.component';
-
 
 describe('ConstructorDadataWidgetComponent', () => {
   let component: ConstructorDadataWidgetComponent;

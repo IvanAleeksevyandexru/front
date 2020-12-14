@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Injector, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Injector, OnDestroy, OnInit, Output } from '@angular/core';
 import * as moment_ from 'moment';
-import { catchError, switchMap, takeUntil } from 'rxjs/operators';
+import { catchError, switchMap, takeUntil, map, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { ScreenService } from '../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -24,7 +24,7 @@ import {
   getDiscountPrice,
   getDocInfo,
 } from './components/payment/payment.component.functions';
-import { UtilsService } from '../../../../shared/services/utils/utils.service';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
 
 const ALREADY_PAY_ERROR = 23;
@@ -48,7 +48,7 @@ export interface PaymentInfoValue {
 @Component({
   template: '',
 })
-export class AbstractPaymentComponent implements OnDestroy {
+export class AbstractPaymentComponent implements OnDestroy, OnInit {
   public paymentStatus = PaymentStatus;
   public paymentPurpose = '';
   public uin = ''; // Уникальный идентификатор платежа
@@ -73,19 +73,12 @@ export class AbstractPaymentComponent implements OnDestroy {
   public ngUnsubscribe$: UnsubscribeService;
   public config: ConfigService;
 
-  @Input() header = 'Оплата госпошлины'; // Заголовок
-  protected attrData: ComponentBase;
-  @Input()
-  set data(data: ComponentBase) {
-    this.isPaid = false;
-    this.inLoading = true;
-    this.attrData = data;
-    this.loadPaymentInfo();
-  }
-  get data(): ComponentBase {
-    return this.attrData;
-  }
-  @Input() submitLabel: string;
+  data: ComponentBase;
+
+  header$: Observable<string>;
+  init$: Observable<ComponentBase>;
+  submitLabel$: Observable<string>;
+
   @Output() nextStepEvent = new EventEmitter<string>();
 
   constructor(public injector: Injector) {
@@ -94,6 +87,20 @@ export class AbstractPaymentComponent implements OnDestroy {
     this.currentAnswersService = this.injector.get(CurrentAnswersService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.config = this.injector.get(ConfigService);
+    this.header$ = this.screenService.header$.pipe(map((header) => header ?? 'Оплата госпошлины'));
+    this.init$ = this.screenService.component$.pipe(
+      tap((data: ComponentBase) => {
+        this.isPaid = false;
+        this.inLoading = true;
+        this.data = data;
+        this.loadPaymentInfo();
+      }),
+    );
+    this.submitLabel$ = this.screenService.submitLabel$;
+  }
+
+  ngOnInit(): void {
+    this.init$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
   }
 
   /**
