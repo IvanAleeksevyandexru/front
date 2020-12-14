@@ -104,4 +104,8 @@ export class ComponentsListComponent implements OnChanges {
     this.unsubscribeService.ngUnsubscribe$.next();
     this.unsubscribeService.ngUnsubscribe$.complete();
   }
+
+  public emmitChanges(): void {
+    this.formService.emmitChanges();
+  }
 }

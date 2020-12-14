@@ -23,8 +23,13 @@ export class ConstructorPlainInputComponent {
   @Input() pattern?: string;
   @Input() component?: CustomComponent;
   @Output() public blurEvent = new EventEmitter();
+  @Output() public emmitChangesEvent = new EventEmitter<void>();
 
   onBlur(): void {
     this.blurEvent.emit();
+  }
+
+  onEmmitChanges(): void {
+    this.emmitChangesEvent.emit();
   }
 }

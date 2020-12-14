@@ -333,7 +333,8 @@
     [validationShowOn]="validationShowOn"
     [readOnly]="data.value?.attrs?.readonly"
     [placeholder]="data.value?.attrs?.placeholder"
-    [component]="data.get('value').value"
+    [component]="data.value"
+    (emmitChangesEvent)="emmitChanges()"
   ></epgu-constructor-constructor-plain-input>
 </ng-template>
 
@@ -352,7 +353,8 @@
     [control]="data.get('value')"
     [invalid]="data.get('value').invalid && data.get('value').touched"
     [isTrim]="false"
-    [component]="data.get('value').value"
+    [component]="data.value"
+    (emmitChangesEvent)="emmitChanges()"
   ></epgu-constructor-masked-input>
 </ng-template>
 

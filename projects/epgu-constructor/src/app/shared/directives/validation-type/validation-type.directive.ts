@@ -1,4 +1,4 @@
-import { Directive, HostListener, Input } from '@angular/core';
+import { Directive, HostListener, Input, Output, EventEmitter } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 import { CustomComponent } from '../../../component/components-list/components-list.types';
@@ -9,6 +9,7 @@ import { ValidationService } from '../../services/validation/validation.service'
 })
 export class ValidationTypeDirective {
   @Input() component: CustomComponent;
+  @Output() emmitChangesEvent = new EventEmitter<void>();
   @HostListener('blur')
   blur(): void {
     console.log(this.component);
@@ -24,5 +25,6 @@ export class ValidationTypeDirective {
     this.control.control.setAsyncValidators(onBlurValidatorFns);
     this.control.control.updateValueAndValidity();
     this.control.control.clearAsyncValidators();
+    this.emmitChangesEvent.emit();
   }
 }
