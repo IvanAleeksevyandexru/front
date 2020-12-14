@@ -8,8 +8,9 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ConfigService } from '../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
 import { CoreModule } from '../../../../core/core.module';
-import { SharedModule } from '../../../../shared/shared.module';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { ActionDirective } from '../../../../shared/directives/action/action.directive';
+import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
 
 describe('TimerComponent', () => {
   let component: TimerComponent;
@@ -24,17 +25,15 @@ describe('TimerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        TimerComponent,
-        TimerPipe
-      ],
+      declarations: [TimerComponent, TimerPipe, ActionDirective],
       providers: [
         UnsubscribeService,
         ScreenService,
         CurrentAnswersService,
-        { provide: ConfigService, useClass: ConfigServiceStub }
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        CachedAnswersService,
       ],
-      imports: [MockModule(CoreModule), MockModule(SharedModule)]
+      imports: [MockModule(CoreModule)],
     }).compileComponents();
   });
 

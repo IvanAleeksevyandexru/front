@@ -4,14 +4,14 @@ import {
   HttpInterceptor,
   HttpRequest,
   HttpErrorResponse,
-  HttpResponse
+  HttpResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
 import { HealthService } from 'epgu-lib';
-import { UtilsService } from '../../../shared/services/utils/utils.service';
+import { UtilsService } from '../../services/utils/utils.service';
 
 const EXCEPTIONS = ['lib-assets'];
 
@@ -40,7 +40,7 @@ export class HealthInterceptor implements HttpInterceptor {
    */
   private exceptionsValidator(url: string): boolean {
     const splitByDirLocation = this.utils.getSplittedUrl(url);
-    const exceptValidationStatus = splitByDirLocation.some(name => EXCEPTIONS.includes(name));
+    const exceptValidationStatus = splitByDirLocation.some((name) => EXCEPTIONS.includes(name));
 
     return exceptValidationStatus;
   }
@@ -78,20 +78,24 @@ export class HealthInterceptor implements HttpInterceptor {
             this.configParams = {
               id: scenarioDto.display.id,
               name: this.utils.cyrillicToLatin(scenarioDto.display.name),
-              orderId: this.utils.isValidOrderId(scenarioDto.orderId) ? scenarioDto.orderId : result.callBackOrderId,
+              orderId: this.utils.isValidOrderId(scenarioDto.orderId)
+                ? scenarioDto.orderId
+                : result.callBackOrderId,
             };
           }
 
           if (!(Object.keys(this.configParams).length === 0)) {
             const { id, name, orderId } = this.configParams;
             successRequestPayload = { id, name, orderId };
-            successRequestPayload = this.utils.filterIncorrectObjectFields(successRequestPayload) as ConfigParams;
+            successRequestPayload = this.utils.filterIncorrectObjectFields(
+              successRequestPayload,
+            ) as ConfigParams;
           }
 
           this.health.measureEnd(serviceName, RequestStatus.Successed, successRequestPayload);
         }
       }),
-      catchError(error => {
+      catchError((error) => {
         if (this.isValid(error)) {
           if (error.status !== 404) {
             this.configParams['error'] = error.status;
@@ -103,7 +107,7 @@ export class HealthInterceptor implements HttpInterceptor {
           }
         }
         return throwError(error);
-      })
+      }),
     );
   }
 }

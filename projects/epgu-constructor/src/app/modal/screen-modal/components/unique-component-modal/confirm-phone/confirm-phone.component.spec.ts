@@ -8,12 +8,12 @@ import { NavigationService } from '../../../../../core/services/navigation/navig
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { ConstructorPlainInputModule } from '../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
-import { SharedModule } from '../../../../../shared/shared.module';
 import { CoreModule } from '../../../../../core/core.module';
 import {
   ApplicantAnswersDto,
   ComponentDto,
 } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 
 describe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
@@ -40,8 +40,8 @@ describe('ConfirmPhoneComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ConfirmPhoneComponent],
-      imports: [ConstructorPlainInputModule, SharedModule, CoreModule, RouterTestingModule],
+      declarations: [ConfirmPhoneComponent, CounterDirective],
+      imports: [ConstructorPlainInputModule, CoreModule, RouterTestingModule],
       providers: [
         UnsubscribeService,
         NavigationService,
