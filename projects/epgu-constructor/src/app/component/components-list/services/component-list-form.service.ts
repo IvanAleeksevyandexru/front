@@ -26,7 +26,7 @@ import { isDropDown } from '../tools/custom-screen-tools';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
 import { ComponentListRepositoryService } from './component-list-repository.service';
 import { ComponentListToolsService } from './component-list-tools.service';
-import { ValidationService } from './validation.service';
+import { ValidationService } from '../../../shared/services/validation/validation.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ComponentListFormService } from './component-list-form.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ValidationService } from './validation.service';
+import { ValidationService } from '../../../shared/services/validation/validation.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentListToolsService } from './component-list-tools.service';
 import { AddressHelperService } from './address-helper.service';

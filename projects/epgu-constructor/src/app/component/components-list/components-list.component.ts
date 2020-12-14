@@ -19,7 +19,7 @@ import {
 } from './components-list.types';
 import { ComponentListFormService } from './services/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository.service';
-import { ValidationService } from './services/validation.service';
+import { ValidationService } from '../../shared/services/validation/validation.service';
 
 const halfWidthItemTypes = [
   CustomScreenComponentTypes.NewEmailInput,

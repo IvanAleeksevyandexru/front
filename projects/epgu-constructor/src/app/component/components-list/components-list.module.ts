@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { ValidationService } from './services/validation.service';
+import { ValidationService } from '../../shared/services/validation/validation.service';
 import { AddressHelperService } from './services/address-helper.service';
 import { ComponentListToolsService } from './services/component-list-tools.service';
 import { ComponentsListComponent } from './components-list.component';

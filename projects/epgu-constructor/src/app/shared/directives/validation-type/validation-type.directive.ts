@@ -2,7 +2,7 @@ import { Directive, HostListener, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 import { CustomComponent } from '../../../component/components-list/components-list.types';
-import { ValidationService } from '../../../component/components-list/services/validation.service';
+import { ValidationService } from '../../services/validation/validation.service';
 
 @Directive({
   selector: '[epgu-constructor-validation-type]',
