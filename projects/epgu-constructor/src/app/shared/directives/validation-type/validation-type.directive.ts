@@ -12,7 +12,9 @@ export class ValidationTypeDirective {
   @HostListener('blur')
   blur(): void {
     console.log(this.component);
-    this.validateOnBlur();
+    if (this.component.attrs.validation) {
+      this.validateOnBlur();
+    }
   }
 
   constructor(private validationService: ValidationService, private control: NgControl) {}

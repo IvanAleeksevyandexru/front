@@ -58,7 +58,7 @@ export class ValidationService {
     };
   }
 
-  customAsyncValidator(component: CustomComponent, asyncValudationType: string): AsyncValidatorFn {
+  customAsyncValidator(component: CustomComponent, asyncValidationType: string): AsyncValidatorFn {
     const componentValidations = component.attrs?.validation;
     const onBlurValidations = componentValidations.filter(
       (validationRule) => validationRule.updateOn === 'blur',
@@ -71,7 +71,7 @@ export class ValidationService {
 
       let customMessage;
 
-      if (asyncValudationType === 'blur' && onBlurValidations?.length) {
+      if (asyncValidationType === 'blur' && onBlurValidations?.length) {
         const error = this.getError(onBlurValidations, control);
         if (error) {
           return of(this.validationErrorMsg(error.errorMsg));
