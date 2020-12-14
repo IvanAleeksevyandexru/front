@@ -1,6 +1,7 @@
 <lib-standard-masked-input
   epgu-constructor-trim
   epgu-constructor-text-transform
+  epgu-constructor-validation-type
   [isTrim]="isTrim"
   [textTransformType]="textTransformType"
   [clearable]="clearable"
@@ -15,4 +16,5 @@
   [validationShowOn]="validationShowOn"
   [readOnly]="readonly"
   (change)="onChange($event)"
+  [component]="component"
 ></lib-standard-masked-input>

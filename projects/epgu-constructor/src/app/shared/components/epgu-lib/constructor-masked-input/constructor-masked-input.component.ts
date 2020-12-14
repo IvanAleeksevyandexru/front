@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 
 import { TextTransform } from '../../../types/textTransform';
+import { CustomComponent } from '../../../../component/components-list/components-list.types';
 
 @Component({
   selector: 'epgu-constructor-masked-input',
@@ -22,6 +23,7 @@ export class ConstructorMaskedInputComponent {
   @Input() id: string;
   @Input() placeholder: string;
   @Input() isTrim?: boolean;
+  @Input() component?: CustomComponent;
 
   public onChange($event: Event): void {
     if (this.control.updateOn === 'blur') {

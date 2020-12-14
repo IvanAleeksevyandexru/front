@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { TextTransform } from '../../types/textTransform';
+import { CustomComponent } from '../../../component/components-list/components-list.types';
 
 @Component({
   selector: 'epgu-constructor-constructor-plain-input',
@@ -20,6 +21,7 @@ export class ConstructorPlainInputComponent {
   @Input() maxlength?: number;
   @Input() type?: string;
   @Input() pattern?: string;
+  @Input() component?: CustomComponent;
   @Output() public blurEvent = new EventEmitter();
 
   onBlur(): void {
