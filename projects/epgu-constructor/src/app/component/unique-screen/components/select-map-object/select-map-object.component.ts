@@ -86,7 +86,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private initData$ = combineLatest([
     this.screenService.component$,
     this.screenService.applicantAnswers$,
-  ]).pipe(takeUntil(this.ngUnsubscribe$));
+  ]);
 
   ngOnInit(): void {
     this.initData$
