@@ -4,7 +4,7 @@ import { take } from 'rxjs/operators';
 import { CustomScreenComponentTypes } from '../component/components-list/components-list.types';
 import { ComponentDto } from '../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
-import { UtilsService } from '../shared/services/utils/utils.service';
+import { UtilsService } from '../core/services/utils/utils.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
@@ -68,22 +68,24 @@ export class ScreenService extends ScreenContent {
   private loadValueFromCachedAnswer(): void {
     const components: Array<ComponentDto> = [];
 
-    this.screenStore.display.components
-      .forEach(item => {
-        const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(item); // TODO костыль от backend(-a);
-        const hasPresetTypeRef = item.attrs?.preset?.type === 'REF';
-        const cachedValue = shouldBeTakenFromTheCache && this.cachedAnswersService
-          .getCachedValueById(this.screenStore.cachedAnswers, item.id);
+    this.screenStore.display.components.forEach((item) => {
+      const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(item); // TODO костыль от backend(-a);
+      const hasPresetTypeRef = item.attrs?.preset?.type === 'REF';
+      const cachedValue =
+        shouldBeTakenFromTheCache &&
+        this.cachedAnswersService.getCachedValueById(this.screenStore.cachedAnswers, item.id);
 
-        if (hasPresetTypeRef && shouldBeTakenFromTheCache && !cachedValue) {
-          const component = this.getPresetValue(item);
-          components.push(component);
-          return;
-        }
-        item.presetValue = item.value;
-        const component = cachedValue ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value, item.type) } : item;
+      if (hasPresetTypeRef && shouldBeTakenFromTheCache && !cachedValue) {
+        const component = this.getPresetValue(item);
         components.push(component);
-      });
+        return;
+      }
+      item.presetValue = item.value;
+      const component = cachedValue
+        ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value, item.type) }
+        : item;
+      components.push(component);
+    });
 
     if (components.length) {
       this.screenStore.display = { ...this.screenStore.display, components };
@@ -96,7 +98,11 @@ export class ScreenService extends ScreenContent {
    * @param preset - preset значения из display.components[].value
    * @param componentType
    */
-  private mergePresetCacheValue(cachedValue: string, preset: string, componentType: string ): string {
+  private mergePresetCacheValue(
+    cachedValue: string,
+    preset: string,
+    componentType: string,
+  ): string {
     if (componentType === CustomScreenComponentTypes.SnilsInput) {
       return JSON.parse(cachedValue).snils;
     }
@@ -124,8 +130,9 @@ export class ScreenService extends ScreenContent {
    */
   private getPresetValue(item: ComponentDto): ComponentDto {
     const [id, path] = item.attrs.preset.value.split(/\.(.+)/);
-    const cachedValue = JSON.parse(this.cachedAnswersService
-      .getCachedValueById(this.screenStore.cachedAnswers, id) || '{}');
+    const cachedValue = JSON.parse(
+      this.cachedAnswersService.getCachedValueById(this.screenStore.cachedAnswers, id) || '{}',
+    );
     const value = UtilsService.getObjectProperty(cachedValue, path, item.value);
     if (typeof value === 'object') {
       return { ...item, value: JSON.stringify(value) };

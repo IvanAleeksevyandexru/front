@@ -15,7 +15,7 @@ import { ConfigServiceStub } from '../../../../../core/config/config.service.stu
 import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/core/pipes/img-prefixer/img-prefixer.pipe';
 import { SafePipe } from '../../../../../core/pipes/safe/safe.pipe';
 import { SignatureApplicationData } from '../models/application.interface';
-import { UtilsService } from '../../../../../shared/services/utils/utils.service';
+import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import {
   ApplicantAnswersDto,
   ComponentDto,

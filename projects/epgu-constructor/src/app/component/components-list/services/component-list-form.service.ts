@@ -8,7 +8,7 @@ import { distinctUntilChanged, pairwise, startWith, takeUntil, tap } from 'rxjs/
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { isEqualObj } from '../../../shared/constants/uttils';
-import { UtilsService as utils } from '../../../shared/services/utils/utils.service';
+import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import {
   CustomComponent,
   CustomComponentAttrValidation,
@@ -270,7 +270,10 @@ export class ComponentListFormService {
       {
         ...component,
         value: [
-          { value: this.toolsService.convertedValue(component), disabled: component.attrs.disabled },
+          {
+            value: this.toolsService.convertedValue(component),
+            disabled: component.attrs.disabled,
+          },
           [
             this.validationService.customValidator(component),
             this.validationService.validationBackendError(errorMsg, component),

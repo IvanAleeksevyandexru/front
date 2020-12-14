@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared/shared.module';
 import { RepeatableFieldsComponent } from './components/repeatable-fields/repeatable-fields.component';
 import { FileUploadModule } from './components/file-upload-screen/file-upload.module';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
@@ -18,17 +17,20 @@ import { ModalModule } from '../../modal/modal.module';
 import { CoreModule } from '../../core/core.module';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { PaymentTypeSelectorModule } from './components/payment-type-selector/payment-type-selector.module';
+import { BaseModule } from '../../shared/components/base/base.module';
+import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
+import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
+import { CloneButtonModule } from '../../shared/components/clone-button/clone-button.module';
+import { WebcamShootModule } from '../../shared/components/webcam-shoot/webcam-shoot.module';
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
 const COMPONENTS = [RepeatableFieldsComponent];
 
 @NgModule({
-  declarations: [
-    ...COMPONENTS,
-  ],
+  declarations: [...COMPONENTS],
   imports: [
     CoreModule,
-    SharedModule,
+    WebcamShootModule,
     ModalModule,
     FileUploadModule,
     SelectMapObjectModule,
@@ -42,6 +44,10 @@ const COMPONENTS = [RepeatableFieldsComponent];
     UploadAndEditPhotoModule,
     ComponentsListModule,
     PaymentTypeSelectorModule,
+    BaseModule,
+    ScreenContainerModule,
+    ScreenPadModule,
+    CloneButtonModule,
   ],
   exports: [
     ...COMPONENTS,
@@ -57,10 +63,6 @@ const COMPONENTS = [RepeatableFieldsComponent];
     SignatureApplicationModule,
     PaymentTypeSelectorModule,
   ],
-  providers: [
-    WebcamService,
-    DictionaryApiService,
-    UnsubscribeService
-  ]
+  providers: [WebcamService, DictionaryApiService, UnsubscribeService],
 })
 export class UniqueScreenComponentsModule {}

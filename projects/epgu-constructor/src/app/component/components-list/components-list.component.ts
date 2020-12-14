@@ -8,7 +8,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ScenarioErrorsDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
-import { UtilsService as utils } from '../../shared/services/utils/utils.service';
+import { UtilsService as utils } from '../../core/services/utils/utils.service';
 import {
   CustomComponent,
   CustomComponentOutputData,
