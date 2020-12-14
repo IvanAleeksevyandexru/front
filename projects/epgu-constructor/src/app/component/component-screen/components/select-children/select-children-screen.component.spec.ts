@@ -13,6 +13,7 @@ import { CoreModule } from '../../../../core/core.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { of } from 'rxjs';
 
 describe('SelectChildrenScreenComponent', () => {
   let component: SelectChildrenScreenComponent;
@@ -57,7 +58,7 @@ describe('SelectChildrenScreenComponent', () => {
     fixture.debugElement.injector.get(UnsubscribeService);
     fixture.debugElement.injector.get(ScreenService);
     component = fixture.componentInstance;
-    component.data = mockData;
+    component.data$ = of(mockData);
     fixture.detectChanges();
   });
 

@@ -2,13 +2,14 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  Input,
   OnChanges,
+  OnInit,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
@@ -29,10 +30,13 @@ const moment = moment_;
   styleUrls: ['./confirm-personal-user-address.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterViewInit {
+export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterViewInit, OnInit {
   @ViewChild('dataForm', { static: false }) dataForm;
 
-  @Input() data: ConfirmAddressInterface;
+  data$: Observable<ConfirmAddressInterface> = this.screenService.component$ as Observable<
+    ConfirmAddressInterface
+  >;
+  data: ConfirmAddressInterface;
   valueParsed: { [key: string]: string | Date } = {};
 
   constructor(
@@ -42,6 +46,12 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     private changeDetection: ChangeDetectorRef,
     private currentAnswersService: CurrentAnswersService,
   ) {}
+
+  ngOnInit(): void {
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+      this.data = data;
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data?.currentValue) {
@@ -61,7 +71,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
       const localValueParsed = JSON.parse(preset);
       if (localValueParsed?.regDate) {
         const isPresetable = this.isPresetable(
-          this.data.attrs?.fields?.find((field) => field.fieldName === 'regDate'),
+          this.data?.attrs?.fields?.find((field) => field.fieldName === 'regDate'),
         );
         if (isPresetable) {
           this.valueParsed.regDate = this.getDate(localValueParsed.regDate);
@@ -70,7 +80,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
       if (localValueParsed?.regAddr) {
         const isPresetable = this.isPresetable(
-          this.data.attrs?.fields?.find((field) => field.fieldName === 'regAddr'),
+          this.data?.attrs?.fields?.find((field) => field.fieldName === 'regAddr'),
         );
         if (isPresetable) {
           this.valueParsed.regAddr = this.getAddress(localValueParsed.regAddr);
@@ -122,7 +132,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   public isFormValid(): boolean {
     const hasValue = (): boolean => Object.values(this.dataForm.form.value).every((value) => value);
-    const isValid = (): boolean => (this.data.required ? hasValue() : true);
+    const isValid = (): boolean => (this?.data?.required ? hasValue() : true);
     const isFormInited = (): { [key: string]: string | Date } => this.dataForm?.form?.value;
 
     return isFormInited() && isValid();

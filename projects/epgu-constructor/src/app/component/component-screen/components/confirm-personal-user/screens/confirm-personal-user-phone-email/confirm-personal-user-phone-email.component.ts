@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ConfigService } from '../../../../../../core/config/config.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -12,9 +13,7 @@ import { DTOActionAction } from '../../../../../../form-player/services/form-pla
   styleUrls: ['./confirm-personal-user-phone-email.component.scss'],
 })
 export class ConfirmPersonalUserPhoneEmailComponent implements OnChanges {
-  @Input() data: ComponentBase;
-  @Input() errors: object;
-
+  data$: Observable<ComponentBase> = this.screenService.component$;
   isEditContactAction: boolean;
   componentScreenComponentTypes = ComponentScreenComponentTypes;
 

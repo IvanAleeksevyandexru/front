@@ -11,6 +11,7 @@ import { ActionDirective } from '../../../../../../../../shared/directives/actio
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
 import { SafePipe } from 'projects/epgu-constructor/src/app/core/pipes/safe/safe.pipe';
 import { FieldListComponent } from 'projects/epgu-constructor/src/app/shared/components/field-list/field-list.component';
+import { of } from 'rxjs';
 
 
 describe('ConfirmPersonalUserDataComponent', () => {
@@ -76,7 +77,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
     fixture = TestBed.createComponent(ConfirmPersonalUserDataComponent);
     component = fixture.componentInstance;
     screenService = TestBed.inject(ScreenService);
-    component.data = mockData;
+    component.data$ = of(mockData);
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock);
 
     fixture.detectChanges();

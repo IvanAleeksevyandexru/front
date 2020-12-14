@@ -6,6 +6,7 @@ import { AddPassportComponent } from './add-passport.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { PassportModule } from '../../../../shared/components/add-passport/passport.module';
+import { of } from 'rxjs';
 
 
 describe('AddPassportComponent', () => {
@@ -32,7 +33,7 @@ describe('AddPassportComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddPassportComponent);
     component = fixture.componentInstance;
-    component.data = mockData;
+    component.data$ = of(mockData);
     fixture.detectChanges();
   });
 

@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DadataResult, ValidationShowOn } from 'epgu-lib';
 import { startWith, takeUntil } from 'rxjs/operators';
 import * as moment_ from 'moment';
+import { combineLatest, Observable } from 'rxjs';
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
@@ -24,8 +25,12 @@ const moment = moment_;
   providers: [UnsubscribeService],
 })
 export class RegistrationAddrComponent implements OnInit {
-  @Input() data: IRegistrationAddrComponent;
-  @Input() error: string;
+  data$: Observable<IRegistrationAddrComponent> = this.screenService.component$ as Observable<
+    IRegistrationAddrComponent
+  >;
+  required: boolean;
+
+  error$: Observable<string> = this.screenService.componentError$;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   redAddrForm: FormGroup;
 
@@ -38,17 +43,20 @@ export class RegistrationAddrComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.screenService.display$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.initFormGroup();
-      this.subscribeToFormChanges();
-    });
+    combineLatest([this.data$, this.screenService.display$])
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(([data]) => {
+        this.required = data.required;
+        this.initFormGroup(data);
+        this.subscribeToFormChanges(data);
+      });
   }
 
-  initFormGroup(): void {
+  initFormGroup(data: IRegistrationAddrComponent): void {
     const controls = {};
-    const initData = JSON.parse(this.data?.value || '{}');
+    const initData = JSON.parse(data?.value || '{}');
 
-    this.data?.attrs?.fields.forEach((field) => {
+    data?.attrs?.fields.forEach((field) => {
       const formControlValue = this.getInitFormValue(initData, field.fieldName);
       controls[field.fieldName] = this.fb.control(
         { value: formControlValue, disabled: field.disabled },
@@ -65,7 +73,7 @@ export class RegistrationAddrComponent implements OnInit {
 
   private getValidatorsForField(field: RegistrationAddrFields): ValidatorFn[] {
     const regExp = field?.regexp || null;
-    const isRequired = this.data.required;
+    const isRequired = this.required;
     const isDateType = field?.type === 'date';
     const validators: Array<ValidatorFn> = [];
     if (regExp) {
@@ -83,11 +91,11 @@ export class RegistrationAddrComponent implements OnInit {
     return validators;
   }
 
-  private subscribeToFormChanges(): void {
+  private subscribeToFormChanges(data: IRegistrationAddrComponent): void {
     this.redAddrForm.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$), startWith(this.redAddrForm.value))
       .subscribe((changes) => {
-        delete this.screenService.componentErrors[this.data.id];
+        delete this.screenService.componentErrors[data.id];
         if (this.redAddrForm.invalid) {
           this.currentAnswersService.isValid = false;
         } else {
