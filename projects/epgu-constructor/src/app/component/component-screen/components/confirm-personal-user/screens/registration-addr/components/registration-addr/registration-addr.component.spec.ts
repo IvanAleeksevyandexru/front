@@ -14,6 +14,7 @@ import { IRegistrationAddrComponent } from '../../registration-addr-screen.types
 import { RegistrationAddrComponent } from './registration-addr.component';
 // eslint-disable-next-line max-len
 import { ConstructorDadataWidgetModule } from '../../../../../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
+import { of } from 'rxjs';
 
 
 
@@ -52,7 +53,7 @@ describe('RegistrationAddrComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RegistrationAddrComponent);
     component = fixture.componentInstance;
-    component.data = mockData;
+    component.data$ = of(mockData);
     fixture.detectChanges();
   });
 

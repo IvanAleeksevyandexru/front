@@ -10,6 +10,7 @@ import { ComponentBase } from '../../../../../../screen/screen.types';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
 import { ActionType } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { of } from 'rxjs';
 
 
 xdescribe('ConfirmPersonalUserPhoneEmailComponent', () => {
@@ -51,7 +52,7 @@ xdescribe('ConfirmPersonalUserPhoneEmailComponent', () => {
     fixture = TestBed.createComponent(ConfirmPersonalUserPhoneEmailComponent);
     component = fixture.componentInstance;
     screenService = TestBed.inject(ScreenService);
-    component.data = mockData;
+    component.data$ = of(mockData);
     fixture.detectChanges();
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock);
   });

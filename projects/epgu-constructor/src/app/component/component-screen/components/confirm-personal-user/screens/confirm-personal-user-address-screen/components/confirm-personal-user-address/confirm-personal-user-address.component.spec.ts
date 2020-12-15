@@ -10,6 +10,7 @@ import { ConfirmAddressInterface } from '../../interface/confirm-address.interfa
 import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
+import { of } from 'rxjs';
 
 
 
@@ -46,7 +47,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmPersonalUserAddressComponent);
     component = fixture.componentInstance;
-    component.data = mockData;
+    component.data$ = of(mockData);
     fixture.detectChanges();
   });
 
