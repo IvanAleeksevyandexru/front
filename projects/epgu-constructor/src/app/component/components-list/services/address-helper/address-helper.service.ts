@@ -1,28 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { filter, pluck, concatMap, reduce } from 'rxjs/operators';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import { DadataSuggestions, DadataSuggestionsAddress } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import {
+  DadataSuggestions,
+  DadataSuggestionsAddress,
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 export interface DadataSuggestionsAddressForLookup extends DadataSuggestionsAddress {
-  id: string,
-  text: string,
+  id: string;
+  text: string;
 }
 
 interface objectWithSuggestions {
-  suggestions: DadataSuggestions
+  suggestions: DadataSuggestions;
 }
 
 @Injectable()
 export class AddressHelperService {
-
-  constructor(private dictionaryApiService: DictionaryApiService) { }
+  constructor(private dictionaryApiService: DictionaryApiService) {}
 
   // Провайдер поиска для передачи в lib-lookup
   // с функцией поиска для lib-lookup. Сам поиск осуществляется за счет suggestions дадаты
   public provider = {
     search: (searchString): Observable<DadataSuggestionsAddressForLookup[]> =>
-      searchString ? this.getCitySuggestions(searchString) : of([])
+      searchString ? this.getCitySuggestions(searchString) : of([]),
   };
 
   /**
@@ -30,19 +32,25 @@ export class AddressHelperService {
    * @param qString - строка для поиска
    */
   public getCitySuggestions(qString: string): Observable<Array<DadataSuggestionsAddressForLookup>> {
-    return this.dictionaryApiService.getDadataSuggestions(qString, { isCity: 'true' })
-      .pipe(
-        map(({ suggestions }: objectWithSuggestions) => {
-          return suggestions.addresses
-            .map((address) => {
-              return {
-                ...address,
-                id: address.code,
-                text: address.address,
-              };
-            });
-        }),
-      );
+    return this.dictionaryApiService.getDadataSuggestions(qString, { isCity: 'true' }).pipe(
+      pluck('suggestions', 'addresses'),
+      concatMap((addresses: Array<DadataSuggestionsAddress>) => {
+        return from(addresses);
+      }),
+      //TODO: Временное ограничение для EPGUCORE-43916
+      filter(({ address }: DadataSuggestionsAddress) => {
+        const test: string = address.toLowerCase();
+        return test.indexOf('москва') !== -1 || test.indexOf('московская обл') !== -1;
+      }),
+      reduce((acc: DadataSuggestionsAddressForLookup[], value: DadataSuggestionsAddress) => {
+        acc.push({
+          ...value,
+          id: value.code,
+          text: value.address,
+        } as DadataSuggestionsAddressForLookup);
+        return acc;
+      }, [] as DadataSuggestionsAddressForLookup[]),
+    );
   }
 
   /**
@@ -56,11 +64,13 @@ export class AddressHelperService {
     if (isNormalized) {
       return;
     }
-    const normalAddress = await this.dictionaryApiService.getDadataNormalize(address.address).toPromise();
+    const normalAddress = await this.dictionaryApiService
+      .getDadataNormalize(address.address)
+      .toPromise();
 
     if (normalAddress.address && normalAddress.address.elements) {
       const regionKladrId = normalAddress.address.elements.slice(-1)[0].kladrCode;
-      regionCode = regionKladrId.toString().substring(0,2);
+      regionCode = regionKladrId.toString().substring(0, 2);
     }
 
     Object.assign(address, normalAddress, { regionCode });
