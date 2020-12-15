@@ -37,16 +37,7 @@
         </div>
       </div>
     </div>
-
-    <div class="select-children-screen__action">
-      <lib-button
-        width="wide"
-        color="white"
-        (click)="addMoreChild()"
-        [disabled]="isScreensAvailable()"
-      >
-        <label>Добавить ребенка</label>
-      </lib-button>
-    </div>
+    <epgu-constructor-clone-button [disabled]="isScreensAvailable()" (click)="addMoreChild()"
+    >{{ addSectionLabel$ | async }}</epgu-constructor-clone-button>
   </form>
 </section>
