@@ -167,7 +167,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     const {
       serviceId,
       eserviceId,
-      brakRouteNumber: routeNumber,
+      routeNumber,
     } = this.config.timeSlots.brak;
 
     return {
@@ -201,7 +201,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       eserviceId,
       calendarName,
       preliminaryReservationPeriod,
-      brakRouteNumber: routeNumber,
+      routeNumber,
     } = this.config.timeSlots.brak;
 
     return {

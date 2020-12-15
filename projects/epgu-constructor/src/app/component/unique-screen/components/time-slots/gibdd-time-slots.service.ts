@@ -174,7 +174,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     const {
       serviceId,
       eserviceId,
-      gibddRouteNumber: routeNumber,
+      routeNumber,
     } = this.config.timeSlots.gibdd;
 
     return {
@@ -208,7 +208,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
       eserviceId,
       calendarName,
       preliminaryReservationPeriod,
-      gibddRouteNumber: routeNumber,
+      routeNumber,
     } = this.config.timeSlots.gibdd;
 
     return {

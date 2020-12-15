@@ -29,7 +29,7 @@
         "serviceId": "10000593393",
         "eserviceId": "10000070732",
         "preliminaryReservationPeriod": "240",
-        "gibddRouteNumber": "46000000000"
+        "routeNumber": "46000000000"
       },
       "divorce": {
         "subject": "Регистрация расторжения брака",
@@ -38,7 +38,7 @@
         "serviceId": "ЗагсРазводФорма12-1",
         "eserviceId": "10000057526",
         "preliminaryReservationPeriod": "1440",
-        "divorceRouteNumber": "45382000"
+        "routeNumber": "45382000"
       },
       "brak": {
         "subject": "Регистрация заключения брака",
@@ -47,7 +47,7 @@
         "serviceId": "ЗагсБрак",
         "eserviceId": "10000057526",
         "preliminaryReservationPeriod": "1440",
-        "brakRouteNumber": "45382000"
+        "routeNumber": "45382000"
       }
     },
     "disableUnderConstructionMode": false

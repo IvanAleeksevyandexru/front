@@ -154,7 +154,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     const {
       serviceId,
       eserviceId,
-      divorceRouteNumber: routeNumber,
+      routeNumber,
     } = this.config.timeSlots.divorce;
 
     return {
@@ -179,7 +179,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       eserviceId,
       calendarName,
       preliminaryReservationPeriod,
-      divorceRouteNumber: routeNumber,
+      routeNumber,
     } = this.config.timeSlots.divorce;
 
     return {

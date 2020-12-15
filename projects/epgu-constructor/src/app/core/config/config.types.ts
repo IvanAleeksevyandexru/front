@@ -3,39 +3,14 @@
  */
 export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
 export type TimeSlotsApi = {
-  mvd?: {
-    subject: string,
-    calendarName: string,
+  [key: string]: {
+    subject?: string,
+    calendarName?: string,
     serviceCode: string,
     serviceId: string,
     eserviceId: string,
-  },
-  gibdd?: {
-    subject: string,
-    calendarName: string,
-    serviceCode: string,
-    serviceId: string,
-    eserviceId: string,
-    preliminaryReservationPeriod: string,
-    gibddRouteNumber: string;
-  },
-  divorce?: {
-    subject: string,
-    calendarName: string,
-    serviceCode: string,
-    serviceId: string,
-    eserviceId: string,
-    preliminaryReservationPeriod: string,
-    divorceRouteNumber: string,
-  },
-  brak?: {
-    subject: string,
-    calendarName: string,
-    serviceCode: string,
-    serviceId: string,
-    eserviceId: string,
-    preliminaryReservationPeriod: string,
-    brakRouteNumber: string,
+    preliminaryReservationPeriod?: string,
+    routeNumber: string,
   }
 };
 
