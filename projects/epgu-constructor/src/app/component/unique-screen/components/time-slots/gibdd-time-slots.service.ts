@@ -171,13 +171,18 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getSlotsRequest(): TimeSlotReq {
-    // TODO HARDCODE, возможно, стоит перенести в json
+    const {
+      serviceId,
+      eserviceId,
+      gibddRouteNumber: routeNumber,
+    } = this.config.timeSlots.gibdd;
+
     return {
       organizationId: [this.department.attributeValues.code],
       caseNumber: this.orderId,
-      serviceId: ['10000593393'],
-      eserviceId: '10000070732',
-      routeNumber: this.config.gibddRouteNumber,
+      serviceId: [serviceId],
+      eserviceId,
+      routeNumber,
       attributes: [
         {
           name: 'organizationId',
@@ -185,7 +190,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
         },
         {
           name: 'serviceId',
-          value: '10000593393'
+          value: serviceId
         }
       ]
     };
@@ -195,30 +200,41 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
+
+    const {
+      serviceCode,
+      serviceId,
+      subject,
+      eserviceId,
+      calendarName,
+      preliminaryReservationPeriod,
+      gibddRouteNumber: routeNumber,
+    } = this.config.timeSlots.gibdd;
+
     return {
       preliminaryReservation: 'true',
       address: this.department.attributeValues.address,
       orgName: this.department.title,
-      routeNumber: this.config.gibddRouteNumber,
-      serviceCode: '-10001970000',
-      subject: 'Запись на прием',
-      eserviceId: '10000070732',
+      routeNumber,
+      serviceCode,
+      subject,
+      eserviceId,
       bookId: this.bookId,
       organizationId: this.department.attributeValues.code,
-      calendarName: 'Запись на прием',
+      calendarName,
       parentOrderId: this.orderId,
-      preliminaryReservationPeriod: '240',
+      preliminaryReservationPeriod,
       attributes: [
         {
           name: 'serviceId',
-          value: '10000593393'
+          value: serviceId
         }
       ],
       slotId: [
         selectedSlot.slotId
       ],
       serviceId: [
-        '10000593393'
+        serviceId
       ]
     };
   }

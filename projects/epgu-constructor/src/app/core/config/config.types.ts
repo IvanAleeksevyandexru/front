@@ -2,6 +2,42 @@
  * Перечень поддерживаемых моков
  */
 export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
+export type TimeSlotsApi = {
+  mvd?: {
+    subject: string,
+    calendarName: string,
+    serviceCode: string,
+    serviceId: string,
+    eserviceId: string,
+  },
+  gibdd?: {
+    subject: string,
+    calendarName: string,
+    serviceCode: string,
+    serviceId: string,
+    eserviceId: string,
+    preliminaryReservationPeriod: string,
+    gibddRouteNumber: string;
+  },
+  divorce?: {
+    subject: string,
+    calendarName: string,
+    serviceCode: string,
+    serviceId: string,
+    eserviceId: string,
+    preliminaryReservationPeriod: string,
+    divorceRouteNumber: string,
+  },
+  brak?: {
+    subject: string,
+    calendarName: string,
+    serviceCode: string,
+    serviceId: string,
+    eserviceId: string,
+    preliminaryReservationPeriod: string,
+    brakRouteNumber: string,
+  }
+};
 
 /**
  * @property {string}dictionaryUrl - url до сервиса словарей, как правило apiHostName/api/nsi/v1/dictionary
@@ -14,12 +50,10 @@ export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
  * @property {string}lkUrl - url до личного кабинета, как правило hostName/info
  * @property {string}invitationUrl - url приглашения по емейл
  * @property {string}yandexMapsApiKey - токен для яндекс карт
- * @property {string}brakRouteNumber - идентификатор для слотов по браку
- * @property {string}divorceRouteNumber - идентификатор для слотов по разводу
- * @property {string}gibddRouteNumber - идентификатор для слотов по ГИБДД
  * @property {string}staticDomainAssetsPath - путь до статики
  * @property {MockApi[]}mocks - массив апи для которых будет использваван mockUrl
  * @property {string}mockUrl - url до mockApi
+ * @property {TimeSlotsApi}timeSlots - настройки для time-slot в разных услугах
  * @property {boolean}disableUnderConstructionMode - отключить underConstruction режим, для отладки прохода сценариев
  */
 export interface Config {
@@ -34,12 +68,10 @@ export interface Config {
   lkUrl: string;
   yandexMapsApiKey: string;
   invitationUrl: string;
-  brakRouteNumber: string;
-  divorceRouteNumber: string;
-  gibddRouteNumber: string;
   staticDomainAssetsPath: string;
   mocks?: MockApi[];
   mockUrl?: string;
+  timeSlots?: TimeSlotsApi;
   disableUnderConstructionMode?: boolean;
 }
 
