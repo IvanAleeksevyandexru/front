@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import * as moment_ from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -30,15 +22,15 @@ const moment = moment_;
   styleUrls: ['./confirm-personal-user-address.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterViewInit, OnInit {
+export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnInit {
   @ViewChild('dataForm', { static: false }) dataForm;
 
   data$: Observable<ConfirmAddressInterface> = this.screenService.component$ as Observable<
     ConfirmAddressInterface
   >;
-  data: ConfirmAddressInterface;
   valueParsed: { [key: string]: string | Date } = {};
-
+  textTransformType: TextTransform;
+  isRequired: boolean;
   constructor(
     public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
@@ -49,14 +41,16 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
-      this.data = data;
+      this.textTransformType = data?.attrs?.fstuc;
+      this.isRequired = data.required;
+      this.updateValue(data);
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.data?.currentValue) {
-      this.currentAnswersService.state = changes.data.currentValue.value;
-      this.setState(changes.data.currentValue.value);
+  updateValue(data: ConfirmAddressInterface): void {
+    if (data.value) {
+      this.currentAnswersService.state = data.value;
+      this.setState(data);
       this.emmitData();
     }
   }
@@ -66,25 +60,23 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     this.changeDetection.detectChanges();
   }
 
-  setState(preset: string): void {
-    if (preset) {
-      const localValueParsed = JSON.parse(preset);
-      if (localValueParsed?.regDate) {
-        const isPresetable = this.isPresetable(
-          this.data?.attrs?.fields?.find((field) => field.fieldName === 'regDate'),
-        );
-        if (isPresetable) {
-          this.valueParsed.regDate = this.getDate(localValueParsed.regDate);
-        }
+  setState(data: ConfirmAddressInterface): void {
+    const localValueParsed = JSON.parse(data.value);
+    if (localValueParsed?.regDate) {
+      const isPresetable = this.isPresetable(
+        data?.attrs?.fields?.find((field) => field.fieldName === 'regDate'),
+      );
+      if (isPresetable) {
+        this.valueParsed.regDate = this.getDate(localValueParsed.regDate);
       }
+    }
 
-      if (localValueParsed?.regAddr) {
-        const isPresetable = this.isPresetable(
-          this.data?.attrs?.fields?.find((field) => field.fieldName === 'regAddr'),
-        );
-        if (isPresetable) {
-          this.valueParsed.regAddr = this.getAddress(localValueParsed.regAddr);
-        }
+    if (localValueParsed?.regAddr) {
+      const isPresetable = this.isPresetable(
+        data?.attrs?.fields?.find((field) => field.fieldName === 'regAddr'),
+      );
+      if (isPresetable) {
+        this.valueParsed.regAddr = this.getAddress(localValueParsed.regAddr);
       }
     }
   }
@@ -117,10 +109,6 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
     return JSON.stringify(dataToSend);
   }
 
-  get textTransformType(): TextTransform {
-    return this.data?.attrs?.fstuc;
-  }
-
   private getDate(regDate: string): Date {
     const date = moment(regDate, DATE_STRING_DOT_FORMAT);
     return date.isValid() ? date.toDate() : moment().toDate();
@@ -132,7 +120,7 @@ export class ConfirmPersonalUserAddressComponent implements OnChanges, AfterView
 
   public isFormValid(): boolean {
     const hasValue = (): boolean => Object.values(this.dataForm.form.value).every((value) => value);
-    const isValid = (): boolean => (this?.data?.required ? hasValue() : true);
+    const isValid = (): boolean => (this.isRequired ? hasValue() : true);
     const isFormInited = (): { [key: string]: string | Date } => this.dataForm?.form?.value;
 
     return isFormInited() && isValid();

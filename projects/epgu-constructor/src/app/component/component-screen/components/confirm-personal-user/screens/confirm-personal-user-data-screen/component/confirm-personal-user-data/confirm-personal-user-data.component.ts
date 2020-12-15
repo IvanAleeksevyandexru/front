@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -14,11 +14,10 @@ import { UnsubscribeService } from '../../../../../../../../core/services/unsubs
   templateUrl: './confirm-personal-user-data.component.html',
   styleUrls: ['./confirm-personal-user-data.component.scss'],
 })
-export class ConfirmPersonalUserDataComponent implements OnChanges, OnInit {
+export class ConfirmPersonalUserDataComponent implements OnInit {
   // <-- variable
   actionType = ActionType;
   data$: Observable<ConfirmUserData> = this.screenService.component$ as Observable<ConfirmUserData>;
-  data: ConfirmUserData;
 
   constructor(
     public config: ConfigService,
@@ -29,13 +28,13 @@ export class ConfirmPersonalUserDataComponent implements OnChanges, OnInit {
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
-      this.data = data;
+      this.updateValue(data.value);
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes?.data?.currentValue) {
-      this.currentAnswersService.state = this.data.value;
+  updateValue(value: string): void {
+    if (value) {
+      this.currentAnswersService.state = value;
     }
   }
 }

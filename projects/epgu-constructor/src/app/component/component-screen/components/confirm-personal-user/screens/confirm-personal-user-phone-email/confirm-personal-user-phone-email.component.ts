@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../core/config/config.service';
@@ -14,9 +14,8 @@ import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/
   templateUrl: './confirm-personal-user-phone-email.component.html',
   styleUrls: ['./confirm-personal-user-phone-email.component.scss'],
 })
-export class ConfirmPersonalUserPhoneEmailComponent implements OnChanges, OnInit {
+export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
   data$: Observable<ComponentBase> = this.screenService.component$;
-  data: ComponentBase;
   isEditContactAction: boolean;
   componentScreenComponentTypes = ComponentScreenComponentTypes;
 
@@ -29,16 +28,15 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnChanges, OnInit
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
-      this.data = data;
       this.isEditContactAction = this.getIsEditContactAction();
+      this.updateValue(data?.value);
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { value } = changes.data.currentValue;
+  updateValue(value: string): void {
     if (value) {
       this.currentAnswersService.isValid = true;
-      this.currentAnswersService.state = this.data?.value;
+      this.currentAnswersService.state = value;
     } else {
       this.currentAnswersService.isValid = false;
     }
