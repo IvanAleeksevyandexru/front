@@ -430,7 +430,7 @@ describe('UniqueScreenComponent', () => {
       debugEl.triggerEventHandler('nextStepEvent', 'any');
 
       expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith(); // ignore argument from nextStepEvent()
+      expect(nextDataForStepSpy).toBeCalledWith('any'); // ignore argument from nextStepEvent()
     });
   });
 

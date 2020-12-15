@@ -99,6 +99,7 @@ export interface ComponentAttrsDto {
   selectedValue?: string;
   fstuc?: TextTransform;
   payCode?: number;
+  goNextAfterUIN?: boolean;
   nsi?: string;
   dictItemCode?: string;
   uploadedFile?: ComponentUploadedFileDto;
