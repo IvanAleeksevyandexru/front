@@ -42,14 +42,14 @@ export class AddressHelperService {
         const test: string = address.toLowerCase();
         return test.indexOf('москва') !== -1 || test.indexOf('московская обл') !== -1;
       }),
-      reduce((acc: DadataSuggestionsAddressForLookup[], value: DadataSuggestionsAddress) => {
+      reduce<DadataSuggestionsAddress, DadataSuggestionsAddressForLookup[]>((acc, value) => {
         acc.push({
           ...value,
           id: value.code,
           text: value.address,
-        } as DadataSuggestionsAddressForLookup);
+        });
         return acc;
-      }, [] as DadataSuggestionsAddressForLookup[]),
+      }, []),
     );
   }
 
