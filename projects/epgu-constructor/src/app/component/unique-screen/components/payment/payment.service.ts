@@ -125,8 +125,7 @@ export class PaymentService {
    * @param billId - уникальный идентификатор патежа
    */
   getPaymentLink(billId: number): string {
-    let domain = this.config.paymentUrl;
-    domain = domain.replace(/\/+$/g, '');
+    let domain = this.config.paymentUrl.replace(/\/+$/g, '');
     return `${domain}/?billIds=${billId}&returnUrl=${this.getReturnUrl()}&subscribe=true`;
   }
 
