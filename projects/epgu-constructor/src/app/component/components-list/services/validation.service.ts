@@ -36,6 +36,10 @@ export class ValidationService {
         return null;
       }
 
+      if (component.required && !control.value) {
+        return this.validationErrorMsg(control.touched ? REQUIRED_FIELD : '');
+      }
+
       let customMessage;
 
       if (validations?.length) {
@@ -65,10 +69,6 @@ export class ValidationService {
     );
 
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      if (component.required && !control.value) {
-        return of(this.validationErrorMsg(control.touched ? REQUIRED_FIELD : ''));
-      }
-
       let customMessage;
 
       if (asyncValudationType === 'blur' && onBlurValidations?.length) {

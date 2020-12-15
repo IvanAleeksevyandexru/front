@@ -88,6 +88,7 @@ export class ComponentsListComponent implements OnChanges {
     control.setAsyncValidators(onBlurValidatorFns);
     control.updateValueAndValidity();
     control.clearAsyncValidators();
+    this.formService.emmitChanges();
   }
 
   public getDictKeyByComp(component: CustomComponent): string {
