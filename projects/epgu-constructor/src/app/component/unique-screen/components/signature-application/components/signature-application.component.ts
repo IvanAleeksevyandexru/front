@@ -2,7 +2,7 @@ import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@a
 
 import { ConfigService } from '../../../../../core/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { UtilsService } from '../../../../../shared/services/utils/utils.service';
+import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../../shared/constants/form-player';
 import { SignatureApplicationData } from '../models/application.interface';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';

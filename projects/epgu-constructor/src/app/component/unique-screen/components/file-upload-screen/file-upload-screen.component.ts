@@ -8,7 +8,7 @@ import {
   FileUploadEmitValue,
   FileUploadEmitValueForComponent,
   FileUploadItem,
-} from '../../../../shared/services/terra-byte-api/terra-byte-api.types';
+} from '../../services/terra-byte-api/terra-byte-api.types';
 import { TerraUploadedFile } from './sub-components/file-upload-item/data';
 import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 

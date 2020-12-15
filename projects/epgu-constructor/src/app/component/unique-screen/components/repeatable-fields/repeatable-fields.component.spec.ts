@@ -6,7 +6,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ScreenTypes } from '../../../../screen/screen.types';
 import { of } from 'rxjs';
-import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 

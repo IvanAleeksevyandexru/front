@@ -10,13 +10,17 @@ import { FormPlayerApiService } from '../../../../form-player/services/form-play
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalModule } from '../../../../modal/modal.module';
-import { SharedModule } from '../../../../shared/shared.module';
 import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
 import { ConfigService } from '../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { of } from 'rxjs';
+import { BaseModule } from '../../../../shared/components/base/base.module';
+import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
+import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { AnswerButtonModule } from '../../../../shared/components/answer-button/answer-button.module';
+import { ActionModule } from '../../../../shared/directives/action/action.module';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -55,7 +59,16 @@ describe('PaymentTypeSelectorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PaymentTypeSelectorComponent],
-      imports: [SharedModule, ModalModule, CoreModule, RouterTestingModule],
+      imports: [
+        ModalModule,
+        CoreModule,
+        RouterTestingModule,
+        BaseModule,
+        ScreenContainerModule,
+        ScreenPadModule,
+        AnswerButtonModule,
+        ActionModule,
+      ],
       providers: [
         HealthService,
         DatePipe,

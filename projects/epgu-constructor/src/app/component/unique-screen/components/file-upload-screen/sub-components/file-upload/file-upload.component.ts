@@ -5,7 +5,7 @@ import {
   FileUploadAttributes,
   FileUploadItem,
   FileUploadItemTypes,
-} from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
+} from '../../../../services/terra-byte-api/terra-byte-api.types';
 import { FileUploadService, Uploaders } from '../file-upload.service';
 
 @Component({

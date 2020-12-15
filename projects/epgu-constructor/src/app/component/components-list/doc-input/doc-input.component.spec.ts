@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DocInputComponent } from './doc-input.component';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { SharedModule } from '../../../shared/shared.module';
 import { ComponentsListModule } from '../components-list.module';
 
 xdescribe('DocInputComponent', () => {
@@ -21,9 +20,8 @@ xdescribe('DocInputComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [UnsubscribeService],
-      imports: [ComponentsListModule, SharedModule],
-    })
-    .compileComponents();
+      imports: [ComponentsListModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

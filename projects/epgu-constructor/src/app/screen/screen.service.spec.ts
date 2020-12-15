@@ -2,11 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { merge as _merge } from 'lodash';
 import { ScreenService } from './screen.service';
 import { CurrentAnswersService } from './current-answers.service';
-import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
+import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
 import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
 import { ScreenStore, ScreenTypes } from './screen.types';
-import { UtilsService } from '../shared/services/utils/utils.service';
+import { UtilsService } from '../core/services/utils/utils.service';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: '653920',

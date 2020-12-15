@@ -11,7 +11,7 @@ import { NavigationService } from '../../../core/services/navigation/navigation.
 import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationModalServiceStub } from '../../../core/services/navigation-modal/navigation-modal.service.stub';
-import { UtilsService } from '../../services/utils/utils.service';
+import { UtilsService } from '../../../core/services/utils/utils.service';
 import { By } from '@angular/platform-browser';
 import {
   ActionApiResponse,
@@ -22,7 +22,7 @@ import {
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { Observable, of } from 'rxjs';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { UtilsServiceStub } from '../../services/utils/utils.service.stub';
+import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 
 @Component({
   selector: 'epgu-constructor-action-test',

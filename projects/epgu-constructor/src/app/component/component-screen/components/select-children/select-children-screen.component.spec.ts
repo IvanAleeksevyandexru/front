@@ -7,12 +7,13 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { SelectChildrenScreenComponent } from './select-children-screen.component';
-import { SharedModule } from '../../../../shared/shared.module';
 import { ComponentsListModule } from '../../../components-list/components-list.module';
 import { CoreModule } from '../../../../core/core.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { BaseModule } from '../../../../shared/components/base/base.module';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { of } from 'rxjs';
 
 describe('SelectChildrenScreenComponent', () => {
@@ -30,13 +31,10 @@ describe('SelectChildrenScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        SelectChildrenScreenComponent,
-        NavigationComponentMock,
-      ],
+      declarations: [SelectChildrenScreenComponent, NavigationComponentMock],
       imports: [
         CoreModule,
-        SharedModule,
+        BaseModule,
         ReactiveFormsModule,
         ComponentsListModule,
         RouterTestingModule,
@@ -44,12 +42,12 @@ describe('SelectChildrenScreenComponent', () => {
       ],
       providers: [
         CurrentAnswersService,
+        CachedAnswersService,
         UnsubscribeService,
         ScreenService,
-        HealthService
+        HealthService,
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

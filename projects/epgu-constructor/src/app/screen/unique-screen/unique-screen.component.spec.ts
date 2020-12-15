@@ -4,7 +4,7 @@ import { ScreenService } from '../screen.service';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { ScreenServiceStub } from '../screen.service.stub';
-import { MockComponents, MockProvider, ngMocks } from 'ng-mocks';
+import { MockComponents } from 'ng-mocks';
 import { UnusedPaymentsComponent } from '../../component/unique-screen/components/unused-payments/unused-payments.component';
 import { SelectMapObjectComponent } from '../../component/unique-screen/components/select-map-object/select-map-object.component';
 import { FileUploadScreenComponent } from '../../component/unique-screen/components/file-upload-screen/file-upload-screen.component';
@@ -22,14 +22,12 @@ import { UploadAndEditPhotoComponent } from '../../component/unique-screen/compo
 import { PaymentTypeSelectorComponent } from '../../component/unique-screen/components/payment-type-selector/payment-type-selector.component';
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
 import {
-  ApplicantAnswersDto,
   ComponentDto,
   DisplayDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { By } from '@angular/platform-browser';
 import { ScreenTypes } from '../screen.types';
-import { Gender } from '../../shared/types/gender';
 import { of } from 'rxjs';
 
 const componentDtoSample: ComponentDto = {
@@ -46,13 +44,6 @@ const displayDtoSample: DisplayDto = {
   submitLabel: 'submitLabel1',
   type: ScreenTypes.CUSTOM,
   terminal: true,
-};
-
-const applicantAnswersDtoSample: ApplicantAnswersDto = {
-  foo: {
-    visited: true,
-    value: 'bar',
-  },
 };
 
 describe('UniqueScreenComponent', () => {
@@ -89,9 +80,6 @@ describe('UniqueScreenComponent', () => {
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        // MockProvider(ScreenService, {
-        //   display$: () => of(displayDtoSample),
-        // }),
       ],
     }).compileComponents();
   });
@@ -183,20 +171,6 @@ describe('UniqueScreenComponent', () => {
       expect(debugEl).toBeTruthy();
     });
 
-    // it('data property should be equal to screenService.display', (done) => {
-    //   screenService.componentType = UniqueScreenComponentTypes.unusedPayments;
-    //
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //   fixture.detectChanges();
-    //   console.log(screenService.display$, debugEl.componentInstance.data$);
-    //   // debugEl.componentInstance.data$.subscribe((data) => {
-    //   //   expect(data).toBe(displayDtoSample);
-    //   //   done();
-    //   // });
-    // });
-
     it('should call nextDataForStep() on epgu-constructor-unused-payments nextStepEvent() event', () => {
       screenService.componentType = UniqueScreenComponentTypes.unusedPayments;
       fixture.detectChanges();
@@ -227,34 +201,6 @@ describe('UniqueScreenComponent', () => {
 
       expect(debugEl).toBeTruthy();
     });
-
-    // it('data property should be equal to screenService.component', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.mapService;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.data).toBeNull();
-    //
-    //   screenService.component = componentDtoSample;
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.data).toBe(componentDtoSample);
-    // });
-
-    // it('applicantAnswers property should be equal to screenService.applicantAnswers', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.mapService;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.applicantAnswers).toBeNull();
-    //
-    //   screenService.applicantAnswers = applicantAnswersDtoSample;
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.applicantAnswers).toBe(applicantAnswersDtoSample);
-    // });
 
     it('should call nextDataForStep() on epgu-constructor-select-map-object nextStepEvent() event', () => {
       screenService.componentType = UniqueScreenComponentTypes.mapService;
@@ -287,76 +233,6 @@ describe('UniqueScreenComponent', () => {
       expect(debugEl).toBeTruthy();
     });
 
-    // it('isLoading property should be equal to screenService.isLoading', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.fileUploadComponent;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.isLoading).toBeFalsy();
-    //
-    //   screenService.isLoadingSubject$.next(true);
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.isLoading).toBeTruthy();
-    // });
-
-    // it('applicantAnswers property should be equal to screenService.applicantAnswers', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.fileUploadComponent;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.applicantAnswers).toBeNull();
-    //
-    //   screenService.applicantAnswers = applicantAnswersDtoSample;
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.applicantAnswers).toBe(applicantAnswersDtoSample);
-    // });
-
-    // it('header property should be equal to screenService.header', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.fileUploadComponent;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.header).toBeNull();
-    //
-    //   screenService.header = 'any';
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.header).toBe('any');
-    // });
-
-    // it('submitLabel property should be equal to screenService.submitLabel', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.fileUploadComponent;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.submitLabel).toBeNull();
-    //
-    //   screenService.submitLabel = 'any';
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.submitLabel).toBe('any');
-    // });
-
-    // it('data property should be equal to screenService.component', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.fileUploadComponent;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.data).toBeNull();
-    //
-    //   screenService.component = componentDtoSample;
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.data).toBe(componentDtoSample);
-    // });
-
     it('should call nextDataForStep() on epgu-constructor-file-upload-screen nextStepEvent() event', () => {
       screenService.componentType = UniqueScreenComponentTypes.fileUploadComponent;
       fixture.detectChanges();
@@ -387,48 +263,6 @@ describe('UniqueScreenComponent', () => {
 
       expect(debugEl).toBeTruthy();
     });
-
-    // it('header property should be equal to screenService.header', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.employeeHistory;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.header).toBeNull();
-    //
-    //   screenService.header = 'any';
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.header).toBe('any');
-    // });
-
-    // it('gender property should be equal to screenService.gender', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.employeeHistory;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.gender).toBeNull();
-    //
-    //   screenService.gender = Gender.male;
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.gender).toBe(Gender.male);
-    // });
-    //
-    // it('display property should be equal to screenService.display', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.employeeHistory;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.display).toBeNull();
-    //
-    //   screenService.display = displayDtoSample;
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.display).toBe(displayDtoSample);
-    // });
 
     it('should call nextDataForStep() on epgu-constructor-employee-history nextStepEvent() event', () => {
       screenService.componentType = UniqueScreenComponentTypes.employeeHistory;
@@ -461,20 +295,6 @@ describe('UniqueScreenComponent', () => {
       expect(debugEl).toBeTruthy();
     });
 
-    // it('data property should be equal to screenService.display', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.repeatableFields;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.data).toBeNull();
-    //
-    //   screenService.display = displayDtoSample;
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.data).toBe(displayDtoSample);
-    // });
-
     it('should call nextDataForStep() on epgu-constructor-repeatable-fields nextStepEvent() event', () => {
       screenService.componentType = UniqueScreenComponentTypes.repeatableFields;
       fixture.detectChanges();
@@ -506,34 +326,6 @@ describe('UniqueScreenComponent', () => {
       expect(debugEl).toBeTruthy();
     });
 
-    // it('data property should be equal to screenService.display', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.timeSlot;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.data).toBeNull();
-    //
-    //   screenService.display = displayDtoSample;
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.data).toBe(displayDtoSample);
-    // });
-    //
-    // it('isLoading property should be equal to screenService.isLoading', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.timeSlot;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.isLoading).toBeFalsy();
-    //
-    //   screenService.isLoadingSubject$.next(true);
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.isLoading).toBeTruthy();
-    // });
-
     it('should call nextDataForStep() on epgu-constructor-time-slots nextStepEvent() event', () => {
       screenService.componentType = UniqueScreenComponentTypes.timeSlot;
       fixture.detectChanges();
@@ -564,34 +356,6 @@ describe('UniqueScreenComponent', () => {
 
       expect(debugEl).toBeTruthy();
     });
-
-    // it('display property should be equal to screenService.display', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.carInfo;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.display).toBeNull();
-    //
-    //   screenService.display = displayDtoSample;
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.display).toBe(displayDtoSample);
-    // });
-    //
-    // it('isLoading property should be equal to screenService.isLoading', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.carInfo;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.isLoading).toBeFalsy();
-    //
-    //   screenService.isLoadingSubject$.next(true);
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.isLoading).toBeTruthy();
-    // });
 
     it('should call nextDataForStep() on epgu-constructor-car-info nextStepEvent() event', () => {
       screenService.componentType = UniqueScreenComponentTypes.carInfo;
@@ -655,48 +419,6 @@ describe('UniqueScreenComponent', () => {
       expect(debugEl).toBeTruthy();
     });
 
-    // it('header property should be equal to screenService.header', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.paymentScr;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.header).toBeNull();
-    //
-    //   screenService.header = 'any';
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.header).toBe('any');
-    // });
-    //
-    // it('data property should be equal to screenService.component', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.paymentScr;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.data).toBeNull();
-    //
-    //   screenService.component = componentDtoSample;
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.data).toBe(componentDtoSample);
-    // });
-    //
-    // it('submitLabel property should be equal to screenService.submitLabel', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.paymentScr;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.submitLabel).toBeNull();
-    //
-    //   screenService.submitLabel = 'any';
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.submitLabel).toBe('any');
-    // });
-
     it('should call nextDataForStep() on epgu-constructor-payment nextStepEvent() event', () => {
       screenService.componentType = UniqueScreenComponentTypes.paymentScr;
       fixture.detectChanges();
@@ -708,7 +430,7 @@ describe('UniqueScreenComponent', () => {
       debugEl.triggerEventHandler('nextStepEvent', 'any');
 
       expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith(); // ignore argument from nextStepEvent()
+      expect(nextDataForStepSpy).toBeCalledWith('any'); // ignore argument from nextStepEvent()
     });
   });
 
@@ -727,48 +449,6 @@ describe('UniqueScreenComponent', () => {
 
       expect(debugEl).toBeTruthy();
     });
-
-    // it('header property should be equal to screenService.header', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.billInfo;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.header).toBeNull();
-    //
-    //   screenService.header = 'any';
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.header).toBe('any');
-    // });
-    //
-    // it('data property should be equal to screenService.component', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.billInfo;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.data).toBeNull();
-    //
-    //   screenService.component = componentDtoSample;
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.data).toBe(componentDtoSample);
-    // });
-    //
-    // it('submitLabel property should be equal to screenService.submitLabel', () => {
-    //   screenService.componentType = UniqueScreenComponentTypes.billInfo;
-    //   fixture.detectChanges();
-    //
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.submitLabel).toBeNull();
-    //
-    //   screenService.submitLabel$ = of('any');
-    //   fixture.detectChanges();
-    //
-    //   expect(debugEl.componentInstance.submitLabel).toBe('any');
-    // });
 
     it('should call nextDataForStep() on epgu-constructor-bill-info nextStepEvent() event', () => {
       screenService.componentType = UniqueScreenComponentTypes.billInfo;

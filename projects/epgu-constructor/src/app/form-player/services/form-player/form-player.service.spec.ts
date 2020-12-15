@@ -4,7 +4,7 @@ import { FormPlayerService } from './form-player.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
-import { CachedAnswersService } from '../../../shared/services/applicant-answers/cached-answers.service';
+import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ServiceDataService } from '../service-data/service-data.service';
 import { Location } from '@angular/common';
