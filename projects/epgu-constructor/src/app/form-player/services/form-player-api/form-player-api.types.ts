@@ -6,7 +6,7 @@ import {
 } from '../../../component/component-screen/components/timer/timer.interface';
 import { DictionaryOptions } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
-import { Clarifications } from '../../../shared/services/terra-byte-api/terra-byte-api.types';
+import { Clarifications } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';

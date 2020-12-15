@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
 import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../screen/screen.types';
-import { Clarifications } from '../../../../shared/services/terra-byte-api/terra-byte-api.types';
+import { Clarifications } from '../../services/terra-byte-api/terra-byte-api.types';
 import { ScreenService } from '../../../../screen/screen.service';
 
 interface PaymentTypeSelectorInterface {
