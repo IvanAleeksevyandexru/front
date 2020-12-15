@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
 import { Observable, of, throwError } from 'rxjs';
@@ -37,7 +36,6 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   private errorMessage;
 
   constructor(
-    private http: HttpClient,
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService
   ) {}

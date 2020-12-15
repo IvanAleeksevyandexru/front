@@ -1315,7 +1315,7 @@
   dependencies:
     find-up "^5.0.0"
 
-"@commitlint/types@^11.0.0":
+"@commitlint/types@11.0.0", "@commitlint/types@^11.0.0":
   version "11.0.0"
   resolved "http://npm.gosuslugi.local/@commitlint%2ftypes/-/types-11.0.0.tgz#719cf05fcc1abb6533610a2e0f5dd1e61eac14fe"
   integrity sha512-VoNqai1vR5anRF5Tuh/+SWDFk7xi7oMwHrHrbm1BprYXjB2RJsWLhUrStMssDxEl5lW/z3EUdg8RvH/IUBccSQ==
@@ -3875,6 +3875,13 @@ commander@^5.0.0, commander@^5.1.0:
   version "5.1.0"
   resolved "http://npm.gosuslugi.local/commander/-/commander-5.1.0.tgz#46abbd1652f8e059bddaef99bbdcb2ad9cf179ae"
   integrity sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==
+
+commitlint-plugin-function-rules@^1.1.20:
+  version "1.1.20"
+  resolved "http://npm.gosuslugi.local/commitlint-plugin-function-rules/-/commitlint-plugin-function-rules-1.1.20.tgz#1843d6c2992fffea7d2dbbb06947e3d8fd61b7ce"
+  integrity sha512-uaWdKa1OI4s0upk0g/sCX2SOgggo+3FCQk7omZxfm0caMj0NgbgEcYulcslFhHRYLc/FjhJfnL2cxPXEldRFWQ==
+  dependencies:
+    "@commitlint/types" "11.0.0"
 
 commondir@^1.0.1:
   version "1.0.1"
