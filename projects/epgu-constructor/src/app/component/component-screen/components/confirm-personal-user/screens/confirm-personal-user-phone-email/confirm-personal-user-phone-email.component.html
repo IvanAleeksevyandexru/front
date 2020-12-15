@@ -1,4 +1,4 @@
-<div class="label-helper">{{ data.label }}</div>
+<div class="label-helper">{{ (data$ | async).label }}</div>
 
 <div class="error" *ngIf="screenService.componentError">
   {{ screenService.componentError }}
@@ -6,9 +6,9 @@
 
 <div class="item">
   {{
-  data.type === componentScreenComponentTypes.confirmPersonalUserPhone
-    ? (data.value | formatPhone)
-    : data.value
+  (data$ | async).type === componentScreenComponentTypes.confirmPersonalUserPhone
+    ? ((data$ | async).value | formatPhone)
+    : (data$ | async).value
   }}
 </div>
 

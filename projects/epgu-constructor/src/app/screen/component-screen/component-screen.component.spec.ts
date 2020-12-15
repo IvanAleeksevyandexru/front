@@ -373,13 +373,6 @@ describe('ComponentScreenComponent', () => {
 
     debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.data).toBeNull();
-
-    screenService.component = componentDtoSample;
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.data).toBe(componentDtoSample);
   });
 
   it('should render epgu-constructor-confirm-personal-user-data', () => {
@@ -395,13 +388,6 @@ describe('ComponentScreenComponent', () => {
 
     debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.data).toBeNull();
-
-    screenService.component = componentDtoSample;
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.data).toBe(componentDtoSample);
   });
 
   it('should render epgu-constructor-confirm-personal-user-phone-email', () => {
@@ -417,19 +403,6 @@ describe('ComponentScreenComponent', () => {
 
     debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.data).toBeNull();
-    expect(debugEl.componentInstance.errors).toBeNull();
-
-    screenService.component = componentDtoSample;
-    const errorsSample: ScenarioErrorsDto = {
-      foo: 'bar',
-    };
-    screenService.componentErrors = errorsSample;
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.data).toBe(componentDtoSample);
-    expect(debugEl.componentInstance.errors).toBe(errorsSample);
   });
 
   it('should render epgu-constructor-registration-addr', () => {
@@ -445,16 +418,6 @@ describe('ComponentScreenComponent', () => {
 
     debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.data).toBeNull();
-    expect(debugEl.componentInstance.error).toBeNull();
-
-    screenService.component = componentDtoSample;
-    screenService.componentError = 'foo';
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.data).toBe(componentDtoSample);
-    expect(debugEl.componentInstance.error).toBe('foo');
   });
 
   it('should render epgu-constructor-add-passport', () => {
@@ -470,13 +433,6 @@ describe('ComponentScreenComponent', () => {
 
     debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.data).toBeNull();
-
-    screenService.component = componentDtoSample;
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.data).toBe(componentDtoSample);
   });
 
   it('should render epgu-constructor-country-selection', () => {
@@ -492,13 +448,6 @@ describe('ComponentScreenComponent', () => {
 
     debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.data).toBeNull();
-
-    screenService.component = componentDtoSample;
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.data).toBe(componentDtoSample);
   });
 
   it('should call changeComponentSettings() on epgu-constructor-country-selection changeComponentSettings() event', () => {
@@ -552,13 +501,6 @@ describe('ComponentScreenComponent', () => {
 
     debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.data).toBeNull();
-
-    screenService.component = componentDtoSample;
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.data).toBe(componentDtoSample);
   });
 
   it('should call nextStep() on epgu-constructor-select-children-screen (childrenListUnder14) nextStepEvent() event', () => {
@@ -591,13 +533,6 @@ describe('ComponentScreenComponent', () => {
 
     debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.data).toBeNull();
-
-    screenService.component = componentDtoSample;
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.data).toBe(componentDtoSample);
   });
 
   it('should call nextStep() on epgu-constructor-select-children-screen (childrenListAbove14) nextStepEvent() event', () => {

@@ -1,5 +1,5 @@
 <form [formGroup]="redAddrForm" class="form">
-  <div class="item" *ngFor="let field of data?.attrs?.fields">
+  <div class="item" *ngFor="let field of (data$ | async)?.attrs?.fields">
     <epgu-constructor-label
       [tips]="field?.attrs?.labelHint"
       [attr.for]="field.fieldName"
@@ -10,7 +10,7 @@
       <epgu-constructor-constructor-dadata-widget
         *ngSwitchCase="'regAddr'"
         [simpleMode]="true"
-        [hideLevels]="data?.attrs?.hideLevels || []"
+        [hideLevels]="(data$ | async)?.attrs?.hideLevels || []"
         [hideHouseCheckbox]="true"
         [externalApiUrl]="config.externalApiUrl + '/'"
         [id]="field.fieldName"
@@ -39,7 +39,7 @@
       </lib-date-picker>
 
       <epgu-constructor-constructor-plain-input
-        [textTransformType]="data?.attrs?.fstuc"
+        [textTransformType]="(data$ | async)?.attrs?.fstuc"
         [id]="field.fieldName"
         [validationShowOn]="validationShowOn"
         [invalid]="redAddrForm.controls[field.fieldName].invalid"
@@ -49,13 +49,13 @@
     </ng-container>
   </div>
   <div class="error">
-    <small>{{ error }}</small>
+    <small>{{ error$ | async }}</small>
   </div>
 </form>
 
 <div class="item hint-wrapper">
   <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
-  <div class="item__hint" *ngFor="let hint of data?.attrs?.hints" (click)="hintClick(hint)">
+  <div class="item__hint" *ngFor="let hint of (data$ | async)?.attrs?.hints" (click)="hintClick(hint)">
     {{ hint.label }}
   </div>
 </div>
