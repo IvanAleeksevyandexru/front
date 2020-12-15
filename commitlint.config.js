@@ -4,7 +4,7 @@ module.exports = {
   },
   parserPreset: {
     parserOpts: {
-      headerPattern: /^(feat|fix|perf|test|BREAKING CHANGE):.*\[REF-(\d{3,}|N\\A)\] \S+ \S+ \S+ \S+ \S+/,
+      headerPattern: /^(feat|fix|refactor|docs|ci|style|chore|test|BREAKING CHANGE):.*\[EPGUCORE-(\d{5,}|N\\A)\] \S+ \S+ \S+ \S+ \S+/,
       headerCorrespondence: ['type', 'scope', 'subject']
     }
   }
