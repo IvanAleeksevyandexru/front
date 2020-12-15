@@ -29,6 +29,7 @@
   "private": true,
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged --relative",
       "pre-push": "yarn ci"
     }
@@ -88,6 +89,8 @@
     "@angular-eslint/template-parser": "0.0.1-alpha.32",
     "@angular/cli": "10.1.0",
     "@angular/compiler-cli": "10.1.1",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
     "@types/jest": "26.0.10",
     "@types/node": "12.11.1",
     "@typescript-eslint/eslint-plugin": "2.31.0",
