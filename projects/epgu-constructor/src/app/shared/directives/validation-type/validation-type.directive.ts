@@ -12,7 +12,6 @@ export class ValidationTypeDirective {
   @Output() emmitChangesEvent = new EventEmitter<void>();
   @HostListener('blur')
   blur(): void {
-    console.log(this.component);
     if (this.component.attrs.validation) {
       this.validateOnBlur();
     }
