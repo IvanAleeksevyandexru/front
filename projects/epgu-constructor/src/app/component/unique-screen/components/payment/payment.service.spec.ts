@@ -6,8 +6,8 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
-import { UtilsService } from '../../../../shared/services/utils/utils.service';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { PaymentService } from './payment.service';
 
@@ -27,8 +27,8 @@ describe('PaymentService', () => {
         DictionaryApiService,
         ScreenService,
         UtilsService,
-        { provide: ConfigService, useClass: ConfigServiceStub }
-      ]
+        { provide: ConfigService, useClass: ConfigServiceStub },
+      ],
     });
     service = TestBed.inject(PaymentService);
     http = TestBed.inject(HttpTestingController);

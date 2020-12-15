@@ -5,7 +5,7 @@ import { ValidationShowOn } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { ComponentListFormService } from '../services/component-list-form.service';
+import { ComponentListFormService } from '../services/component-list-form/component-list-form.service';
 import {
   DocInputControl,
   DocInputField,

@@ -33,7 +33,7 @@
   </epgu-constructor-signature-application>
   <epgu-constructor-payment
     *ngSwitchCase="uniqueComponentName.paymentScr"
-    (nextStepEvent)="nextDataForStep()"
+    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-payment>
   <epgu-constructor-bill-info
     *ngSwitchCase="uniqueComponentName.billInfo"

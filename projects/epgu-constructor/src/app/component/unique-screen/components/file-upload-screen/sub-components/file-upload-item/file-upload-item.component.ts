@@ -16,13 +16,13 @@ import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../../../../../modal/modal.service';
-import { TerraByteApiService } from '../../../../../../shared/services/terra-byte-api/terra-byte-api.service';
+import { TerraByteApiService } from '../../../../services/terra-byte-api/terra-byte-api.service';
 import {
   Clarifications,
   FileResponseToBackendUploadsItem,
   FileUploadItem,
   TerabyteListItem,
-} from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
+} from '../../../../services/terra-byte-api/terra-byte-api.types';
 import {
   CompressionOptions,
   CompressionService,

@@ -5,10 +5,9 @@ import { CoreModule } from '../../../core/core.module';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { UtilsService } from '../../services/utils/utils.service';
-import { UtilsServiceStub } from '../../services/utils/utils.service.stub';
+import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConstructorCheckboxComponent } from './constructor-checkbox.component';
-
 
 describe('ConstructorCheckboxComponent', () => {
   let component: ConstructorCheckboxComponent;
@@ -21,7 +20,7 @@ describe('ConstructorCheckboxComponent', () => {
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
-        CurrentAnswersService
+        CurrentAnswersService,
       ],
     }).compileComponents();
   });

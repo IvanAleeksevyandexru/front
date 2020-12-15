@@ -19,7 +19,7 @@ import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../../../modal/modal.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { TerraByteApiService } from '../../../../shared/services/terra-byte-api/terra-byte-api.service';
+import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../services/webcam/webcam.service';
 import { TerraUploadedFile } from '../file-upload-screen/sub-components/file-upload-item/data';
 import { CompressionService } from './compression/compression.service';

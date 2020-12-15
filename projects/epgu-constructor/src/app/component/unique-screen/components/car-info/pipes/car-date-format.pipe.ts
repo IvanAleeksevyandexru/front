@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as moment_ from 'moment';
-import { UtilsService } from '../../../../../shared/services/utils/utils.service';
+import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { TenureDates } from '../models/car-info.interface';
 
 const moment = moment_;
@@ -8,11 +8,11 @@ type Type = 'DIFF' | 'FORMAT';
 
 @Pipe({ name: 'carInfoDate' })
 export class CarInfoDatePipe implements PipeTransform {
-  constructor (private utils: UtilsService) {}
+  constructor(private utils: UtilsService) {}
 
   transform(value: TenureDates, type: Type = 'FORMAT'): string {
     const { from, to } = value;
-    const fromDate =  moment(new Date(from));
+    const fromDate = moment(new Date(from));
     const toDate = moment(new Date(to));
 
     if (type === 'DIFF') {
@@ -26,6 +26,9 @@ export class CarInfoDatePipe implements PipeTransform {
       }
     }
 
-    return `(${this.utils.formatDate(fromDate, 'DD.MM.YYYY')} -  ${this.utils.formatDate(toDate, 'DD.MM.YYYY')})`;
+    return `(${this.utils.formatDate(fromDate, 'DD.MM.YYYY')} -  ${this.utils.formatDate(
+      toDate,
+      'DD.MM.YYYY',
+    )})`;
   }
 }

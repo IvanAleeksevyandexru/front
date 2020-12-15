@@ -4,11 +4,10 @@ import { HealthService } from 'epgu-lib';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { CachedAnswersService } from '../../../shared/services/applicant-answers/cached-answers.service';
-import { UtilsService } from '../../../shared/services/utils/utils.service';
+import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
+import { UtilsService } from '../utils/utils.service';
 import { GlobalErrorHandler } from './global-error.service';
 import { HealthServiceStub } from './health.service.stub';
-
 
 describe('GlobalErrorHandler', () => {
   let globalError: GlobalErrorHandler;

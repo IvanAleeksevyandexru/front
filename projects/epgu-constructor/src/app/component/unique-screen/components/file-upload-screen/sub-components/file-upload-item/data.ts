@@ -2,7 +2,7 @@ import {
   TerraFileOptions,
   TerraUploadFileOptions,
   UploadedFile,
-} from '../../../../../../shared/services/terra-byte-api/terra-byte-api.types';
+} from '../../../../services/terra-byte-api/terra-byte-api.types';
 
 /**
  * Класс подгруженного файла

@@ -18,33 +18,25 @@ import { HealthInterceptor } from './interceptor/health/health.interceptor';
 import { GlobalErrorHandler } from './services/global-error/global-error.service';
 import { WINDOW_PROVIDERS } from './providers/window.provider';
 import { LoggerService } from './services/logger/logger.service';
+import { UtilsService } from './services/utils/utils.service';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
-const COMPONENTS = [
-  OutputHtmlComponent
-];
+const COMPONENTS = [OutputHtmlComponent];
 
-const PIPES = [
-  ImgPrefixerPipe,
-  SafePipe
-];
-
+const PIPES = [ImgPrefixerPipe, SafePipe];
 
 /**
  * Домен ядра. Здесь храниться всё что необходимо во всех слоях.
  */
 @NgModule({
-  declarations: [
-    ...COMPONENTS,
-    ...PIPES
-  ],
+  declarations: [...COMPONENTS, ...PIPES],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     EpguLibModuleInited,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
   ],
   exports: [
     CommonModule,
@@ -53,7 +45,7 @@ const PIPES = [
     EpguLibModule,
     PerfectScrollbarModule,
     ...COMPONENTS,
-    ...PIPES
+    ...PIPES,
   ],
   providers: [
     ConfigService,
@@ -62,6 +54,7 @@ const PIPES = [
     NavigationModalService,
     SmuEventsService,
     LoggerService,
+    UtilsService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
@@ -80,9 +73,9 @@ const PIPES = [
       provide: APP_INITIALIZER,
       useFactory: initApp,
       deps: [SmuEventsService, CookieService],
-      multi: true
+      multi: true,
     },
-    WINDOW_PROVIDERS
-  ]
+    WINDOW_PROVIDERS,
+  ],
 })
 export class CoreModule {}
