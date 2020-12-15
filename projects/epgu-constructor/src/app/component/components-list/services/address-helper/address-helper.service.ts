@@ -68,7 +68,7 @@ export class AddressHelperService {
       .getDadataNormalize(address.address)
       .toPromise();
 
-    if (normalAddress.address && normalAddress.address.elements) {
+    if (normalAddress?.address?.elements) {
       const regionKladrId = normalAddress.address.elements.slice(-1)[0].kladrCode;
       regionCode = regionKladrId.toString().substring(0, 2);
     }
