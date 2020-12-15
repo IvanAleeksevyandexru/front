@@ -1,5 +1,5 @@
 <form [formGroup]="form">
-  <epgu-constructor-label [tips]="data?.attrs?.labelHint" [label]="data.label"></epgu-constructor-label>
+  <epgu-constructor-label [tips]="(data$ | async)?.attrs?.labelHint" [label]="(data$ | async).label"></epgu-constructor-label>
   <epgu-constructor-constructor-dropdown
     [control]="form.get('countryDropdown')"
     [placeholder]="placeholder"

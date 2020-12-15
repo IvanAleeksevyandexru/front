@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, takeUntil } from 'rxjs/operators';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
 
+import { Observable } from 'rxjs';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -29,7 +30,6 @@ interface ChildI extends Partial<ListElement> {
   providers: [UnsubscribeService],
 })
 export class SelectChildrenScreenComponent implements OnInit {
-  @Input() data: ComponentBase;
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
 
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
@@ -38,6 +38,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     }),
   );
 
+  data$: Observable<ComponentBase> = this.screenService.component$;
   NEW_ID = 'new';
   itemsToSelect: Array<ChildI>; // Дети для выпадающего списка
   items: Array<ChildI> = []; // Выбранные дети
@@ -56,18 +57,20 @@ export class SelectChildrenScreenComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initVariables();
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+      this.initVariables(data.id);
+      this.initStartValues(data.id);
+    });
+
     this.selectChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() =>
       setTimeout(() => {
         this.updateCurrentAnswerServiceValidation();
       }),
     );
-
-    this.initStartValues();
   }
 
-  initVariables(): void {
-    const component = this.screenService.getCompFromDisplay(this.data.id);
+  initVariables(id: string): void {
+    const component = this.screenService.getCompFromDisplay(id);
     const itemsList = component ? JSON.parse(component.presetValue) : [];
     this.firstNameRef = this.getRefFromComponent('firstName');
     this.isNewRef = this.getRefFromComponent('isNew');
@@ -96,8 +99,8 @@ export class SelectChildrenScreenComponent implements OnInit {
     };
   }
 
-  initStartValues(): void {
-    const cachedValue = this.screenService.getCompValueFromCachedAnswers(this.data.id);
+  initStartValues(id: string): void {
+    const cachedValue = this.screenService.getCompValueFromCachedAnswers(id);
     if (cachedValue) {
       const children = JSON.parse(cachedValue);
       children.forEach((child, index) => {
