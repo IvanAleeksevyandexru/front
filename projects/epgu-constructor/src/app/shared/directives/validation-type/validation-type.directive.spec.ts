@@ -1,6 +1,6 @@
 import { ValidationTypeDirective } from './validation-type.directive';
 import { Component, Input } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FormBuilder, FormControl, FormGroup, NgControl } from '@angular/forms';
 
@@ -60,37 +60,41 @@ describe('ValidationTypeDirective', () => {
   let fixture: ComponentFixture<MockComponent>;
   let service: ValidationService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [MockComponent],
-        imports: [ValidationTypeModule, RouterTestingModule, CoreModule],
-        providers: [
-          ValidationService,
-          NgControl,
-          { provide: ScreenService, useClass: ScreenServiceStub },
-        ],
-      });
-      service = TestBed.inject(ValidationService);
-      fixture = TestBed.createComponent(MockComponent);
-      component = fixture.componentInstance;
-      component.componentMockData = componentMockData;
-      fixture.detectChanges();
-    }),
-  );
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [MockComponent],
+      imports: [ValidationTypeModule, RouterTestingModule, CoreModule],
+      providers: [
+        ValidationService,
+        NgControl,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+      ],
+    });
+    service = TestBed.inject(ValidationService);
+    fixture = TestBed.createComponent(MockComponent);
+    component = fixture.componentInstance;
+    component.componentMockData = componentMockData;
+    fixture.detectChanges();
+  });
 
-  it('should create an instance', () => {
-    // const input = fixture.debugElement.query(By.css('#test'));
-    // const inputNative: HTMLInputElement = input.nativeElement;
-    //
-    // input.triggerEventHandler('blur', { target: inputNative });
-    // fixture.detectChanges();
-    //
-    // jest.spyOn(service, 'customAsyncValidator');
-    // service.customAsyncValidator(componentMockData, 'blur');
-    // const fn = jest.spyOn(service, 'customAsyncValidator');
-    // expect(service.customAsyncValidator).toHaveBeenCalled();
+  it('should be call customAsyncValidator()', () => {
+    const spy = jest.spyOn(service, 'customAsyncValidator');
+    const input = fixture.debugElement.query(By.css('#test'));
+    const inputNative: HTMLInputElement = input.nativeElement;
 
-    expect(component).toBeTruthy();
+    input.triggerEventHandler('blur', { target: inputNative });
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should be not call customAsyncValidator()', () => {
+    component.componentMockData.attrs = {};
+    const spy = jest.spyOn(service, 'customAsyncValidator');
+    const input = fixture.debugElement.query(By.css('#test'));
+    const inputNative: HTMLInputElement = input.nativeElement;
+
+    input.triggerEventHandler('blur', { target: inputNative });
+    fixture.detectChanges();
+    expect(spy).toBeCalledTimes(0);
   });
 });
