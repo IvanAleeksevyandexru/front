@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
-import { isUndefined, toBoolean } from '../../../shared/constants/uttils';
+import { isUndefined, toBoolean } from '../../../../shared/constants/uttils';
 import {
   CustomComponent,
   CustomComponentDropDownItem,
@@ -10,7 +10,7 @@ import {
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes
-} from '../components-list.types';
+} from '../../components-list.types';
 import { ListItem } from 'epgu-lib';
 
 @Injectable()

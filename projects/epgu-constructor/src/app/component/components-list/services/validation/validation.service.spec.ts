@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { CustomComponent, CustomScreenComponentTypes } from '../components-list.types';
-import { ComponentListToolsService } from './component-list-tools.service';
+import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
+import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
 import { ValidationService } from './validation.service';
 
 describe('ValidationService', () => {

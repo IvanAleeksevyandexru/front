@@ -5,22 +5,22 @@ import {
   CustomListDropDowns,
   CustomListGenericData,
   CustomListReferenceData,
-} from '../components-list.types';
+} from '../../components-list.types';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import {
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
   isDropDown,
   likeDictionary,
-} from '../tools/custom-screen-tools';
+} from '../../tools/custom-screen-tools';
 import {
   DictionaryOptions,
   DictionaryResponse,
-} from '../../shared/services/dictionary-api/dictionary-api.types';
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { map, tap } from 'rxjs/operators';
-import { DictionaryApiService } from '../../shared/services/dictionary-api/dictionary-api.service';
-import { ComponentListToolsService } from './component-list-tools.service';
-import { UtilsService as utils } from '../../../core/services/utils/utils.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
+import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
 import { ListItem } from 'epgu-lib';
 
 @Injectable()

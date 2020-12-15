@@ -10,7 +10,7 @@ import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
 import { CoreModule } from '../../../../core/core.module';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 
 describe('TimerComponent', () => {
   let component: TimerComponent;

@@ -23,10 +23,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import {
-  ComponentValue,
-  DictionaryUtilities,
-} from '../../../../shared/services/dictionary/dictionary-utilities-service';
+import { ComponentValue, DictionaryUtilities } from './dictionary-utilities';
 import {
   DictionaryOptions,
   DictionaryResponseForYMap,

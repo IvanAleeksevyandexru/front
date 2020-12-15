@@ -7,7 +7,7 @@ import { ConfigService } from '../../core/config/config.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScenarioErrorsDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
-import { DateRangeService } from '../../shared/services/date-range/date-range.service';
+import { DateRangeService } from './services/date-range/date-range.service';
 import { UtilsService as utils } from '../../core/services/utils/utils.service';
 import {
   CustomComponent,
@@ -17,9 +17,9 @@ import {
   CustomListReferenceData,
   CustomScreenComponentTypes,
 } from './components-list.types';
-import { ComponentListFormService } from './services/component-list-form.service';
-import { ComponentListRepositoryService } from './services/component-list-repository.service';
-import { ValidationService } from './services/validation.service';
+import { ComponentListFormService } from './services/component-list-form/component-list-form.service';
+import { ComponentListRepositoryService } from './services/component-list-repository/component-list-repository.service';
+import { ValidationService } from './services/validation/validation.service';
 
 const halfWidthItemTypes = [
   CustomScreenComponentTypes.NewEmailInput,

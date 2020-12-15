@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
-import { InvalidControlMsg, REQUIRED_FIELD } from '../../../shared/constants/helper-texts';
+import { InvalidControlMsg, REQUIRED_FIELD } from '../../../../shared/constants/helper-texts';
 import {
   CustomComponent,
   CustomComponentAttrValidation,
   CustomScreenComponentTypes,
-} from '../components-list.types';
+} from '../../components-list.types';
 
 @Injectable()
 export class ValidationService {

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { ValidationService } from './services/validation.service';
-import { AddressHelperService } from './services/address-helper.service';
-import { ComponentListToolsService } from './services/component-list-tools.service';
+import { ValidationService } from './services/validation/validation.service';
+import { AddressHelperService } from './services/address-helper/address-helper.service';
+import { ComponentListToolsService } from './services/component-list-tools/component-list-tools.service';
 import { ComponentsListComponent } from './components-list.component';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 import { CoreModule } from '../../core/core.module';

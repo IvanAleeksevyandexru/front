@@ -13,7 +13,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { BaseModule } from '../../../../shared/components/base/base.module';
-import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 
 describe('SelectChildrenScreenComponent', () => {
   let component: SelectChildrenScreenComponent;

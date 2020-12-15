@@ -18,7 +18,7 @@ import { CurrentAnswersService } from './current-answers.service';
 import { ScreenService } from './screen.service';
 import { CoreModule } from '../core/core.module';
 import { ModalModule } from '../modal/modal.module';
-import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
+import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
 
 /**
  * Домен скринов. Здесь храниться всё что связанно со скринами и их обязками.
