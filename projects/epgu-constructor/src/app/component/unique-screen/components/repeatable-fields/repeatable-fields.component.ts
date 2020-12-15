@@ -5,7 +5,7 @@ import {
   EventEmitter,
   Output,
 } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -15,19 +15,12 @@ import {
   removeItemFromArrByIndex,
 } from './repeatable-fields.constant';
 import {
-  CustomComponentOutputData,
   CustomComponent,
+  CustomComponentOutputData,
 } from '../../../components-list/components-list.types';
 import { Answer } from '../../../../shared/types/answer';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-
-type Changes = {
-  [key: string]: {
-    isValid: boolean;
-    valid: boolean;
-    value: string;
-  };
-};
+import { ScreenTypes } from '../../../../screen/screen.types';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
@@ -47,14 +40,14 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   propData: DisplayDto;
   cache: Answer;
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
-    map((label) => {
-      return label || 'Добавить данные';
-    }),
+    map((label) => label || 'Добавить данные'),
   );
   data$: Observable<DisplayDto> = this.screenService.display$;
   init$: Observable<DisplayDto> = this.data$.pipe(
+    filter((data) => data.type === ScreenTypes.UNIQUE),
     tap((data: DisplayDto) => {
-      this.cache = this.getCache();
+      const { id } = data.components[0];
+      this.cache = this.getCache(id);
       this.initVariable();
       this.propData = data;
 
@@ -139,12 +132,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   }
 
   private duplicateScreenAndPatch(): void {
-    let cache;
-    try {
-      cache = JSON.parse(this.cache.value);
-    } catch (e) {
-      cache = {};
-    }
+    const cache = JSON.parse(this.cache.value || '{}');
     Object.keys(cache).forEach((key: string) => {
       this.duplicateScreen();
       Object.entries(cache[key]).forEach(([componentId, value]) => {
@@ -153,13 +141,13 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
           if (component.id === componentId) {
             return { ...component, value: value as string };
           }
-          return { ...component } as CustomComponent;
+          return { ...component };
         });
       });
     });
   }
 
-  private getCache(): Answer {
-    return this.screenService.getStore().cachedAnswers[this.screenService.component.id];
+  private getCache(id: string): Answer {
+    return this.screenService.cachedAnswers[id];
   }
 }

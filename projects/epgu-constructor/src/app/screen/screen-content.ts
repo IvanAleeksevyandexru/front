@@ -3,7 +3,7 @@ import {
   ComponentDto,
   ComponentActionDto,
   DisplayDto, DisplaySubjHead,
-  ScenarioErrorsDto
+  ScenarioErrorsDto, CachedAnswersDto
 } from '../form-player/services/form-player-api/form-player-api.types';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { BehaviorSubject } from 'rxjs';
@@ -176,13 +176,23 @@ export class ScreenContent {
   }
   public applicantAnswers$ = this._applicantAnswers.asObservable();
 
+  private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
+  public get cachedAnswers(): CachedAnswersDto {
+    return this._cachedAnswers.getValue();
+  }
+  public set cachedAnswers(val: CachedAnswersDto) {
+    this._cachedAnswers.next(val);
+  }
+  public cachedAnswers$ = this._cachedAnswers.asObservable();
+
   updateScreenContent(screenStore: ScreenStore): void {
     const {
       errors = {} as ScenarioErrorsDto,
       display = {} as DisplayDto,
       orderId,
       gender,
-      applicantAnswers
+      applicantAnswers,
+      cachedAnswers
     } = screenStore;
     const { header, subHeader, submitLabel, type, components = [], terminal, cssClass } = display;
     const firstComponent = components[0];
@@ -204,6 +214,7 @@ export class ScreenContent {
     this.actions = firstComponent?.attrs?.actions || [];
     this.action = this.actions[0];
     this.applicantAnswers = applicantAnswers;
+    this.cachedAnswers = cachedAnswers;
   }
 
   getComponentData(str: string): ComponentValue {
