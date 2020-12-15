@@ -45,6 +45,10 @@ export class PaymentTypeSelectorComponent {
   constructor(public config: ConfigService, public screenService: ScreenService) {}
 
   showBtn(applicantType: string, action: ComponentActionDto): boolean {
-    return applicantType === action.applicantType;
+    if (applicantType === action.applicantType) {
+      return true;
+    }
+
+    return !action.applicantType;
   }
 }
