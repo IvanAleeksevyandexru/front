@@ -18,9 +18,9 @@ import {
   CustomComponent,
   CustomComponentOutputData,
 } from '../../../components-list/components-list.types';
-import { Answer } from '../../../../shared/types/answer';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../../screen/screen.types';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
@@ -38,7 +38,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
    */
   screens: { [key: string]: CustomComponent[] };
   propData: DisplayDto;
-  cache: Answer;
+  cache: string;
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     map((label) => label || 'Добавить данные'),
   );
@@ -47,7 +47,10 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     filter((data) => data.type === ScreenTypes.UNIQUE),
     tap((data: DisplayDto) => {
       const { id } = data.components[0];
-      this.cache = this.getCache(id);
+      this.cache = this.cachedAnswersService.getCachedValueById(
+        this.screenService.cachedAnswers,
+        id,
+      );
       this.initVariable();
       this.propData = data;
 
@@ -69,6 +72,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
     private cdr: ChangeDetectorRef,
+    private cachedAnswersService: CachedAnswersService,
   ) {}
 
   ngAfterViewChecked(): void {
@@ -132,7 +136,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   }
 
   private duplicateScreenAndPatch(): void {
-    const cache = JSON.parse(this.cache.value || '{}');
+    const cache = JSON.parse(this.cache || '{}');
     Object.keys(cache).forEach((key: string) => {
       this.duplicateScreen();
       Object.entries(cache[key]).forEach(([componentId, value]) => {
@@ -145,9 +149,5 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
         });
       });
     });
-  }
-
-  private getCache(id: string): Answer {
-    return this.screenService.cachedAnswers[id];
   }
 }
