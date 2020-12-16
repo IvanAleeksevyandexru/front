@@ -1,4 +1,7 @@
-<epgu-constructor-screen-container *ngIf="(data$ | async) as data">
+<epgu-constructor-screen-container *ngIf="(data$ | async) as data"
+                                   [show-nav]="(screenService.terminal$ | async) === false"
+                                   [class.screen-container-mt]="screenService.terminal$ | async"
+>
 
   <div class="screen-body">
     <epgu-constructor-page-name *ngIf="data?.header">{{ data.header }}</epgu-constructor-page-name>

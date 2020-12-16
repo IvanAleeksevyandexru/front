@@ -1,5 +1,6 @@
-<epgu-constructor-screen-container [show-nav]="!isMobile">
-
+<epgu-constructor-screen-container [show-nav]="!isMobile && (screenService.terminal$ | async) === false"
+                                   [class.screen-container-mt]="screenService.terminal$ | async"
+>
   <div class="screen-body">
     <epgu-constructor-page-name>{{ screenService.header }}</epgu-constructor-page-name>
     <div class="application" *ngIf="isMobile; else desktopTemplate">

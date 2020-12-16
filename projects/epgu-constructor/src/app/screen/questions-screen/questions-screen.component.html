@@ -1,4 +1,7 @@
-<epgu-constructor-screen-container>
+<epgu-constructor-screen-container
+  [show-nav]="(screenService.terminal$ | async) === false"
+  [class.screen-container-mt]="screenService.terminal$ | async"
+>
   <div class="screen-body quiz__content">
     <epgu-constructor-page-name class="quiz__head">
       {{ screenService.header$ | async }}

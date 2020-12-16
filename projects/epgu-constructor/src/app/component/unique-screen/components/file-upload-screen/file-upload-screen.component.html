@@ -14,7 +14,10 @@
              let-applicantAnswers="applicantAnswers"
              let-submitLabel="submitLabel"
              let-data="data">
-  <epgu-constructor-screen-container>
+  <epgu-constructor-screen-container
+    [show-nav]="(screenService.terminal$ | async) === false"
+    [class.screen-container-mt]="screenService.terminal$ | async"
+  >
 
     <div class="screen-body">
       <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>

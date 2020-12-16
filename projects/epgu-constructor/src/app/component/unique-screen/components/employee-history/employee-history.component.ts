@@ -57,7 +57,7 @@ export class EmployeeHistoryComponent {
     private unsubscribeService: UnsubscribeService,
     private datasourceService: EmployeeHistoryDatasourceService,
     public monthsService: EmployeeHistoryMonthsService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
   ) {}
 
   textTransformType(display: DisplayDto): TextTransform {

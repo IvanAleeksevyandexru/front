@@ -24,7 +24,7 @@ export class CarInfoComponent {
 
   @Output() nextStepEvent = new EventEmitter<string>();
 
-  constructor(private screenService: ScreenService) {}
+  constructor(public screenService: ScreenService) {}
 
   nextStep(carInfo: CarInfoValues): void {
     this.nextStepEvent.emit(JSON.stringify(carInfo));
