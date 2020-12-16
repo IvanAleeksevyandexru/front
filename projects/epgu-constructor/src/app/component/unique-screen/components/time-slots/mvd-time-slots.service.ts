@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from 'projects/epgu-constructor/src/app/core/config/config.service';
+import { ConfigService } from '../../../../core/config/config.service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
