@@ -20,7 +20,6 @@ import {
 } from '../../../components-list/components-list.types';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../../screen/screen.types';
-import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
@@ -38,7 +37,6 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
    */
   screens: { [key: string]: CustomComponent[] };
   propData: DisplayDto;
-  cache: string;
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     map((label) => label || 'Добавить данные'),
   );
@@ -46,21 +44,10 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   init$: Observable<DisplayDto> = this.data$.pipe(
     filter((data) => data.type === ScreenTypes.UNIQUE),
     tap((data: DisplayDto) => {
-      const { id } = data.components[0];
-      this.cache = this.cachedAnswersService.getCachedValueById(
-        this.screenService.cachedAnswers,
-        id,
-      );
       this.initVariable();
       this.propData = data;
 
-      const isCached = Object.keys(this.cache || {}).length;
-
-      if (isCached) {
-        this.duplicateScreenAndPatch();
-      } else {
-        this.duplicateScreen();
-      }
+      this.duplicateScreen();
     }),
   );
 
@@ -72,7 +59,6 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
     private cdr: ChangeDetectorRef,
-    private cachedAnswersService: CachedAnswersService,
   ) {}
 
   ngAfterViewChecked(): void {
@@ -94,10 +80,15 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     );
   }
 
-  duplicateScreen(): void {
-    if (this.isScreensAvailable()) {
-      const id = this.getNewId();
-      this.screens[id] = this.propData.components[0].attrs.components as CustomComponent[];
+  duplicateScreen(isNew?: boolean): void {
+    // TODO переделать
+    const isScreensAvailable = this.isScreensAvailable();
+    if (isScreensAvailable && isNew) {
+      this.setNewScreen(this.propData.components[0].attrs.components as CustomComponent[]);
+    } else if (isScreensAvailable) {
+      this.propData.components[0].attrs.repeatableComponents.forEach((component) => {
+        this.setNewScreen((component as unknown) as CustomComponent[]);
+      });
     }
   }
 
@@ -135,19 +126,8 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     this.currentAnswersService.state = JSON.stringify(state);
   }
 
-  private duplicateScreenAndPatch(): void {
-    const cache = JSON.parse(this.cache || '{}');
-    Object.keys(cache).forEach((key: string) => {
-      this.duplicateScreen();
-      Object.entries(cache[key]).forEach(([componentId, value]) => {
-        const index: number = Object.keys(this.screens).length;
-        this.screens[index] = this.screens[index].map((component: CustomComponent) => {
-          if (component.id === componentId) {
-            return { ...component, value: value as string };
-          }
-          return { ...component };
-        });
-      });
-    });
+  private setNewScreen(components: CustomComponent[]): void {
+    const id = this.getNewId();
+    this.screens[id] = components;
   }
 }

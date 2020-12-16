@@ -22,7 +22,7 @@
       </epgu-constructor-screen-pad>
     </div>
 
-    <epgu-constructor-clone-button [disabled]="!isScreensAvailable()" (click)="duplicateScreen()"
+    <epgu-constructor-clone-button [disabled]="!isScreensAvailable()" (click)="duplicateScreen(true)"
       >{{ addSectionLabel$ | async }}</epgu-constructor-clone-button
     >
   </div>
