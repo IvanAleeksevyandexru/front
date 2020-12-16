@@ -5,7 +5,7 @@ import { ValidationShowOn } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { ComponentListFormService } from '../services/component-list-form.service';
+import { ComponentListFormService } from '../services/component-list-form/component-list-form.service';
 import {
   DocInputControl,
   DocInputField,
@@ -100,7 +100,11 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   }
 
   private getParsedComponentValues(): DocInputFields {
-    const componentValues: DocInputFields = JSON.parse(this.data.value.value || '{}');
+    const componentValues =
+      typeof this.data.value.value === 'object'
+        ? this.data.value.value
+        : JSON.parse(this.data.value.value || '{}');
+
     return {
       ...componentValues,
       date: componentValues.date ? new Date(componentValues.date) : null,
@@ -146,8 +150,8 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   getFormFieldValidators(fieldName: string): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
 
-    if (this.fields[fieldName].attrs.validation) {
-      this.fields[fieldName].attrs.validation.forEach((validationItem) => {
+    if (this.fields[fieldName]?.attrs?.validation) {
+      this.fields[fieldName]?.attrs?.validation.forEach((validationItem) => {
         validators.push(
           this.getCustomValidator({
             validationType: validationItem.type,
@@ -158,7 +162,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
       });
     }
 
-    if (this.fields[fieldName].required) {
+    if (this.fields[fieldName]?.required) {
       validators.push(
         this.getCustomValidator({
           validationType: ValidatorTypes.Required,

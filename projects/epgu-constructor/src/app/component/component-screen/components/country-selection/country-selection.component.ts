@@ -1,7 +1,9 @@
-import { Component, Input, EventEmitter, OnInit, Output, AfterViewInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ModalService } from '../../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
@@ -10,6 +12,8 @@ import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
 import { ComponentScreenComponent } from '../../../../screen/component-screen/component-screen.component';
 import { DictionaryItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { ComponentBase } from '../../../../screen/screen.types';
+import { ScreenService } from '../../../../screen/screen.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 
 interface WarningMessages {
   [countryType: number]: string;
@@ -25,15 +29,14 @@ interface Country extends ListElement {
   styleUrls: ['./country-selection.component.scss'],
 })
 export class CountrySelectionComponent implements OnInit, AfterViewInit {
+  data$: Observable<ComponentBase> = this.screenService.component$;
   listItemDictionary: Country[];
   placeholder = 'Выберите страну';
   screenComponentName = ComponentScreenComponent;
   selectedCountry: Country;
   helperText: string;
-
-  @Input() data: ComponentBase;
   form: FormGroup;
-
+  required: boolean;
   @Output() changeComponentSettings = new EventEmitter();
   @Output() changeComponentData = new EventEmitter();
 
@@ -64,14 +67,20 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
   constructor(
     private dictionaryApiService: DictionaryApiService,
     private modalService: ModalService,
+    private screenService: ScreenService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
   ngOnInit(): void {
-    this.dictionaryApiService
-      .getDictionary(this.data.attrs.dictionaryType as string) // TODO: прояснить почему либо массив объектов либо строка
-      .subscribe((dictionary) => {
-        this.mapToListItemModel(dictionary.items);
-      });
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+      this.required = data.required;
+      this.dictionaryApiService
+        .getDictionary(data.attrs.dictionaryType as string) // TODO: прояснить почему либо массив объектов либо строка
+        .subscribe((dictionary) => {
+          this.mapToListItemModel(dictionary.items);
+        });
+    });
+
     this.form.addControl('countryDropdown', new FormControl('', [Validators.required]));
     this.updateHelperText();
   }
@@ -101,7 +110,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
   }
 
   updateHelperText(): void {
-    this.helperText = this.data.required ? '' : OPTIONAL_FIELD;
+    this.helperText = this.required ? '' : OPTIONAL_FIELD;
   }
 
   clickToInnerHTML($event: MouseEvent): void {

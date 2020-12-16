@@ -1,11 +1,10 @@
-import { IdictionaryFilter } from '../../../component/unique-screen/components/select-map-object/select-map-object.interface';
-import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
+import { IdictionaryFilter } from './select-map-object.interface';
+import { CachedAnswers, ScreenStore } from '../../../../screen/screen.types';
 import {
   DictionaryFilters,
   DictionaryItem,
   DictionaryValue
-} from '../../../component/shared/services/dictionary-api/dictionary-api.types';
-import { ListItem } from 'epgu-lib';
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
 export type ComponentValue = {

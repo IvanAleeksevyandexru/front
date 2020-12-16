@@ -6,12 +6,12 @@ import { DateRangeService } from './date-range.service';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
-} from '../../../component/components-list/components-list.types';
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { ComponentListFormService } from '../../../component/components-list/services/component-list-form.service';
-import { ComponentListFormServiceStub } from '../../../component/components-list/services/component-list-form.service.stub';
-import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+} from '../../components-list.types';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { ComponentListFormService } from '../component-list-form/component-list-form.service';
+import { ComponentListFormServiceStub } from '../component-list-form/component-list-form.service.stub';
+import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { Attrs } from './date-range.models';
 
 const moment = moment_;

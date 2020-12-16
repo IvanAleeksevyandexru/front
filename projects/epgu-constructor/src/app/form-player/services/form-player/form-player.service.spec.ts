@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-
 import { FormPlayerService } from './form-player.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
-import { CachedAnswersService } from '../../../shared/services/applicant-answers/cached-answers.service';
+import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ServiceDataService } from '../service-data/service-data.service';
 import { Location } from '@angular/common';
@@ -18,8 +17,16 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
-const response = new FormPlayerServiceStub()._store;
+declare global {
+  namespace NodeJS {
+    interface Global {
+      window: Window;
+    }
+  }
+}
 
+
+const response = new FormPlayerServiceStub()._store;
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
   let screenService: ScreenService;
@@ -28,8 +35,8 @@ describe('FormPlayerService', () => {
   let location: Location;
   let orderId: string;
   let navigation: Navigation;
-
   beforeEach(() => {
+    global.window.scroll = jest.fn();
     TestBed.configureTestingModule({
       providers: [
         FormPlayerService,

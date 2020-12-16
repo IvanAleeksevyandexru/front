@@ -79,7 +79,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   init$: Observable<ComponentBase>;
   submitLabel$: Observable<string>;
 
-  @Output() nextStepEvent = new EventEmitter<void>();
+  @Output() nextStepEvent = new EventEmitter<string>();
 
   constructor(public injector: Injector) {
     this.paymentService = this.injector.get(PaymentService);
@@ -204,6 +204,12 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       uin = `PRIOR${uin}`;
     }
     this.uin = uin;
+    // Если нужно перескочить оплату для случая просто необходимости создания УИН (брак/разбрак)
+    if (this.data.attrs?.goNextAfterUIN) {
+      this.isShown = false;
+      this.nextStep();
+      return;
+    }
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
       .pipe(
@@ -346,7 +352,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Переход к следующему экрану
    */
   nextStep(): void {
-    this.nextStepEvent.emit();
+    this.nextStepEvent.emit(this.uin);
   }
 
   /**

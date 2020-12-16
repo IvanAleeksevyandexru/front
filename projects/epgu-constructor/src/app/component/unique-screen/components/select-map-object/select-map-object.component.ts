@@ -12,7 +12,7 @@ import {
 import { YaMapService } from 'epgu-lib';
 import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { combineLatest, merge, Observable, of } from 'rxjs';
-import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, map, reduce, switchMap, takeUntil, take } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -23,10 +23,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import {
-  ComponentValue,
-  DictionaryUtilities,
-} from '../../../../shared/services/dictionary/dictionary-utilities-service';
+import { ComponentValue, DictionaryUtilities } from './dictionary-utilities';
 import {
   DictionaryOptions,
   DictionaryResponseForYMap,
@@ -35,10 +32,7 @@ import {
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
-import {
-  ApplicantAnswersDto,
-  ComponentDto,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConstructorLookupComponent } from '../../../../shared/components/constructor-lookup/constructor-lookup.component';
 
 @Component({
@@ -86,12 +80,17 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.isMobile = this.deviceDetector.isMobile;
   }
 
+  private initData$ = combineLatest([
+    this.screenService.component$,
+    this.screenService.applicantAnswers$,
+  ]);
+
   ngOnInit(): void {
-    combineLatest([this.screenService.component$, this.screenService.applicantAnswers$])
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(([data, applicantAnswers]: [ComponentDto, ApplicantAnswersDto]) => {
-        this.applicantAnswers = applicantAnswers;
+    this.initData$
+      .pipe(take(1))
+      .subscribe(([data, applicantAnswers]: [ComponentBase, ApplicantAnswersDto]) => {
         this.data = data;
+        this.applicantAnswers = applicantAnswers;
         this.initVariable();
         this.subscribeToEmmitNextStepData();
       });

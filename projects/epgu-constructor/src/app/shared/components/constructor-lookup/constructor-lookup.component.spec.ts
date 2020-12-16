@@ -7,7 +7,7 @@ import { CoreModule } from '../../../core/core.module';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { CachedAnswersService } from '../../services/applicant-answers/cached-answers.service';
+import { CachedAnswersService } from '../../services/cached-answers/cached-answers.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConstructorLookupComponent } from './constructor-lookup.component';

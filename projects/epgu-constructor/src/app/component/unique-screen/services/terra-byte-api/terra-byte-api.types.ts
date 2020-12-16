@@ -1,4 +1,4 @@
-import { TerraUploadedFile } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { TerraUploadedFile } from '../../components/file-upload-screen/sub-components/file-upload-item/data';
 /**
  * Интерфейс для опций файла, при получении обновлении или удалении
  */

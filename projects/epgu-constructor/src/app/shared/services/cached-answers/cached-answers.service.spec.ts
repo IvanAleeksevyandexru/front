@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { CachedAnswersService } from './cached-answers.service';
 
-describe('ApplicantAnswersService', () => {
+describe('CachedAnswersService', () => {
   let service: CachedAnswersService;
 
   beforeEach(() => {

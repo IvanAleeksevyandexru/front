@@ -15,6 +15,7 @@ import { BaseModule } from '../../../../shared/components/base/base.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { DragAndDropModule } from '../../../../shared/directives/drag-and-drop/drag-and-drop.module';
 import { WebcamShootModule } from '../../../../shared/components/webcam-shoot/webcam-shoot.module';
+import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
 
 @NgModule({
   entryComponents: [
@@ -42,6 +43,7 @@ import { WebcamShootModule } from '../../../../shared/components/webcam-shoot/we
   exports: [UploadAndEditPhotoComponent],
   providers: [
     CompressionService,
+    TerraByteApiService,
     [LyTheme2],
     [StyleRenderer],
     // Theme that will be applied to this module

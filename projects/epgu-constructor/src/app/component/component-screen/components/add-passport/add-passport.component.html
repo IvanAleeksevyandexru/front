@@ -2,7 +2,7 @@
   <div class="add-passport-screen__body">
     <epgu-constructor-passport
       (valueChangedEvent)="onPassportDataChange($event)"
-      [attrs]="$any(data.attrs)"
+      [attrs]="$any((data$ | async).attrs)"
     >
     </epgu-constructor-passport>
   </div>

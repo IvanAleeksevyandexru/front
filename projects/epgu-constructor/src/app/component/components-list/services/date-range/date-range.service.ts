@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
 import { Moment } from 'moment';
-import { CustomComponent } from '../../../component/components-list/components-list.types';
-import { ComponentListFormService } from '../../../component/components-list/services/component-list-form.service';
-import { ScreenService } from '../../../screen/screen.service';
+import { CustomComponent } from '../../components-list.types';
+import { ComponentListFormService } from '../component-list-form/component-list-form.service';
+import { ScreenService } from '../../../../screen/screen.service';
 import { Attrs, DateRange, Range, Ref } from './date-range.models';
 
 

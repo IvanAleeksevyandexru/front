@@ -6,8 +6,9 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { PassportModule } from '../../../../shared/components/add-passport/passport.module';
-import { ComponentListToolsService } from '../../../components-list/services/component-list-tools.service';
+import { ComponentListToolsService } from '../../../components-list/services/component-list-tools/component-list-tools.service';
 import { AddPassportComponent } from './add-passport.component';
+import { of } from 'rxjs';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -37,7 +38,7 @@ describe('AddPassportComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddPassportComponent);
     component = fixture.componentInstance;
-    component.data = mockData;
+    component.data$ = of(mockData);
     fixture.detectChanges();
   });
 

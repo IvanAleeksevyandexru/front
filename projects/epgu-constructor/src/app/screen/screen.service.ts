@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { CustomScreenComponentTypes } from '../component/components-list/components-list.types';
 import { ComponentDto } from '../form-player/services/form-player-api/form-player-api.types';
-import { CachedAnswersService } from '../shared/services/applicant-answers/cached-answers.service';
+import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
 import { UtilsService } from '../core/services/utils/utils.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';

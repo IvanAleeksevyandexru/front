@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ScreenService } from '../../../../screen/screen.service';
-import { CachedAnswersService } from '../../../../shared/services/applicant-answers/cached-answers.service';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { SelectChildrenScreenComponent } from './select-children-screen.component';
 import { ComponentsListModule } from '../../../components-list/components-list.module';
 import { CoreModule } from '../../../../core/core.module';

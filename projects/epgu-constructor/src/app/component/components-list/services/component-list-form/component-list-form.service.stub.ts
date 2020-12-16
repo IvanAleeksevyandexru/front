@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { FormArray } from '@angular/forms';
 
-import { CustomComponentOutputData } from '../components-list.types';
+import { CustomComponentOutputData } from '../../components-list.types';
 
 @Injectable()
 export class ComponentListFormServiceStub {

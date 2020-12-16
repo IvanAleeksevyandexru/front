@@ -5,10 +5,10 @@ import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropd
 import * as moment_ from 'moment';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { isEqualObj } from '../../../shared/constants/uttils';
-import { UtilsService as utils } from '../../../core/services/utils/utils.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { ScenarioErrorsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { isEqualObj } from '../../../../shared/constants/uttils';
+import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
 import {
   CustomComponent,
   CustomComponentAttrValidation,
@@ -21,14 +21,14 @@ import {
   CustomScreenComponentTypes,
   CustomComponentAttr,
   UpdateOn,
-} from '../components-list.types';
-import { isDropDown } from '../tools/custom-screen-tools';
-import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
-import { ComponentListRepositoryService } from './component-list-repository.service';
-import { ComponentListToolsService } from './component-list-tools.service';
-import { ValidationService } from '../../../shared/services/validation/validation.service';
-import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
-import { LoggerService } from '../../../core/services/logger/logger.service';
+} from '../../components-list.types';
+import { isDropDown } from '../../tools/custom-screen-tools';
+import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper/address-helper.service';
+import { ComponentListRepositoryService } from '../component-list-repository/component-list-repository.service';
+import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
+import { ValidationService } from '../../../../shared/services/validation/validation.service';
+import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
 
 const moment = moment_;
 

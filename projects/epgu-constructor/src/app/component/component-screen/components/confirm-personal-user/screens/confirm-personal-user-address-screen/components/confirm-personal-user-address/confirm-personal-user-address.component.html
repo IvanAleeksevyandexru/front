@@ -1,6 +1,6 @@
 <form #dataForm="ngForm">
   <ng-container
-    *ngFor="let field of data?.attrs?.fields; let i = index"
+    *ngFor="let field of (data$ | async)?.attrs?.fields; let i = index"
     [ngSwitch]="field?.fieldName"
   >
     <epgu-constructor-address-item
@@ -12,7 +12,7 @@
     >
       <lib-dadata-widget
         [simpleMode]="true"
-        [hideLevels]="data?.attrs?.hideLevels || []"
+        [hideLevels]="(data$ | async)?.attrs?.hideLevels || []"
         [hideHouseCheckbox]="true"
         [name]="field.fieldName"
         [externalApiUrl]="config.externalApiUrl + '/'"

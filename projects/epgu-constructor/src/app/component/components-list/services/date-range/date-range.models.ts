@@ -1,5 +1,5 @@
 import { DurationInputArg2 } from 'moment';
-import { CustomComponentAttr, CustomComponentRef } from '../../../component/components-list/components-list.types';
+import { CustomComponentAttr, CustomComponentRef } from '../../components-list.types';
 
 export interface Attrs extends CustomComponentAttr {
   limit?: string;
