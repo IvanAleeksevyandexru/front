@@ -113,7 +113,7 @@ export interface ComponentAttrsDto {
   label?: string;
   sendEmailLabel?: string;
   redirectLabel?: string;
-  repeatableComponents?: Array<unknown>;
+  repeatableComponents?: Array<Array<ComponentDto>>;
 }
 
 export interface ComponentUploadedFileDto {

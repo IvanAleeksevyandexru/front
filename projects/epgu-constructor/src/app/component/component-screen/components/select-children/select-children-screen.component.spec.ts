@@ -14,6 +14,7 @@ import { HealthService } from 'epgu-lib';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { BaseModule } from '../../../../shared/components/base/base.module';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
+import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
 
 describe('SelectChildrenScreenComponent', () => {
   let component: SelectChildrenScreenComponent;
@@ -45,6 +46,7 @@ describe('SelectChildrenScreenComponent', () => {
         UnsubscribeService,
         ScreenService,
         HealthService,
+        ValueLoaderService,
       ],
     }).compileComponents();
   });
