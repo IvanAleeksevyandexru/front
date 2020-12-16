@@ -31,6 +31,7 @@ import { of } from 'rxjs';
 import { ScreenTypes } from '../screen/screen.types';
 import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
 import { ContinueOrderModalServiceStub } from '../modal/continue-order-modal/continue-order-modal.service.stub';
+import { By } from '@angular/platform-browser';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -681,6 +682,77 @@ describe('FormPlayerComponent', () => {
       spyOn(formPlayerService, 'navigate').and.callThrough();
       component['skipStep'](navigation);
       expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.SKIP);
+    });
+  });
+
+  describe('render throbber', () => {
+    it('should render throbber', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      screenService.isFirstLoading$ = of(true);
+      fixture.detectChanges();
+      const throbber = fixture.debugElement.query(By.css('lib-throbber-hexagon'));
+      expect(throbber).not.toBeNull();
+    });
+
+    it('should not render throbber', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      screenService.isFirstLoading$ = of(false);
+      fixture.detectChanges();
+      const throbber = fixture.debugElement.query(By.css('lib-throbber-hexagon'));
+      expect(throbber).toBeNull();
+    });
+
+    it('throbber should has big size', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      screenService.isFirstLoading$ = of(true);
+      fixture.detectChanges();
+      const throbber = fixture.debugElement.query(By.css('lib-throbber-hexagon'));
+      expect(throbber.attributes.size).toBe('big');
+    });
+  });
+
+  describe('render screen resolver', () => {
+    it('should not render screen resolver when player not loaded', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      formPlayerService.playerLoaded$ = of(false);
+      configService.isLoaded$ = of(true);
+      fixture.detectChanges();
+      const screenResolver = fixture.debugElement.query(By.css('epgu-constructor-screen-resolver'));
+      expect(screenResolver).toBeNull();
+    });
+
+    it('should not render screen resolver when config not loaded', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      formPlayerService.playerLoaded$ = of(true);
+      configService.isLoaded$ = of(false);
+      fixture.detectChanges();
+      const screenResolver = fixture.debugElement.query(By.css('epgu-constructor-screen-resolver'));
+      expect(screenResolver).toBeNull();
+    });
+
+    it('should render screen resolver when config loaded and player loaded', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      formPlayerService.playerLoaded$ = of(true);
+      configService.isLoaded$ = of(true);
+      fixture.detectChanges();
+      const screenResolver = fixture.debugElement.query(By.css('epgu-constructor-screen-resolver'));
+      expect(screenResolver).not.toBeNull();
+    });
+  });
+
+  describe('render modal', () => {
+    it('should render screen modal', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      fixture.detectChanges();
+      const screenModal = fixture.debugElement.query(By.css('epgu-constructor-screen-modal'));
+      expect(screenModal).not.toBeNull();
+    });
+
+    it('should render modal container', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      fixture.detectChanges();
+      const modalContainer = fixture.debugElement.query(By.css('epgu-constructor-modal-container'));
+      expect(modalContainer).not.toBeNull();
     });
   });
 });
