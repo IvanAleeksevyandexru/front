@@ -28,7 +28,9 @@ export class Smev3TimeSlotsRestService {
     const path = `${this.urlPrefix}/book?srcSystem=BETA`;
     return this.http
       .post<SmevBookResponseInterface>(path, requestBody, { withCredentials: true })
-      .pipe(concatMap((v: SmevBookResponseInterface) => (v?.error ? throwError(v) : of(v))));
+      .pipe(
+        concatMap((book: SmevBookResponseInterface) => (book?.error ? throwError(book) : of(book))),
+      );
   }
 
   public cancelSlot(requestBody: {
