@@ -16,8 +16,11 @@
   </div>
 
   <div class="screen-footer">
-    <ng-container *ngIf="!rejectAction">
+    <ng-container *ngIf="isActionsAsLongBtsShown">
       <ng-content *ngTemplateOutlet="actionAsLongBtn"></ng-content>
+    </ng-container>
+    <ng-container *ngIf="isAnswersAsLongBtsShown">
+      <ng-content *ngTemplateOutlet="answerAsLongBtn"></ng-content>
     </ng-container>
     <ng-container *ngIf="rejectAction">
       <ng-content *ngTemplateOutlet="footerActionAndSubmit"></ng-content>
@@ -25,6 +28,7 @@
   </div>
 </epgu-constructor-screen-container>
 
+<!-- TODO: удалить после переезда на механизм явных answers -->
 <ng-template #actionAsLongBtn>
   <div class="quiz__answers">
     <ng-container *ngFor="let action of screenService.component?.attrs?.actions">
@@ -32,7 +36,7 @@
         [data]="action"
         class="quiz__answer"
         [selectedValue]="selectedAnswer"
-        *ngIf="showActionAsLongBtn(action)"
+        *ngIf="showAnswerAsLongBtn(action)"
         (click)="answerChoose(action)"
       >
       </epgu-constructor-answer-button>
@@ -40,6 +44,22 @@
   </div>
 </ng-template>
 
+<ng-template #answerAsLongBtn>
+  <div class="quiz__answers">
+    <ng-container *ngFor="let answer of screenService.component?.attrs?.answers">
+      <epgu-constructor-answer-button
+        [data]="answer"
+        class="quiz__answer"
+        [selectedValue]="selectedAnswer"
+        *ngIf="showAnswerAsLongBtn(answer)"
+        (click)="answerChoose(answer)"
+      >
+      </epgu-constructor-answer-button>
+    </ng-container>
+  </div>
+</ng-template>
+
+<!-- TODO: переделать на прямой проброс всех actions после переезда на механизм явных answers -->
 <ng-template #footerActionAndSubmit>
   <lib-button color="white" [action]="rejectAction" epgu-constructor-action>
     {{ rejectAction.label }}
