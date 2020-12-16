@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../../../core/config/config.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import {
   BookTimeSlotReq,
   CancelSlotResponseInterface,
@@ -9,15 +9,15 @@ import {
   SmevSlotsResponseInterface,
   TimeSlotReq,
 } from './time-slots.types';
+import { concatMap } from 'rxjs/operators';
 
 @Injectable()
 export class Smev3TimeSlotsRestService {
-  private urlPrefix = this.config.mocks.includes('timeSlot') ? `${this.config.mockUrl}/lk/v1/equeue/agg` : this.config.timeSlotApiUrl;
+  private urlPrefix = this.config.mocks.includes('timeSlot')
+    ? `${this.config.mockUrl}/lk/v1/equeue/agg`
+    : this.config.timeSlotApiUrl;
 
-  constructor(
-    private http: HttpClient,
-    private config: ConfigService
-  ) {}
+  constructor(private http: HttpClient, private config: ConfigService) {}
 
   public getTimeSlots(requestBody: TimeSlotReq): Observable<SmevSlotsResponseInterface> {
     const path = `${this.urlPrefix}/slots`;
@@ -26,11 +26,18 @@ export class Smev3TimeSlotsRestService {
 
   public bookTimeSlot(requestBody: BookTimeSlotReq): Observable<SmevBookResponseInterface> {
     const path = `${this.urlPrefix}/book?srcSystem=BETA`;
-    return this.http.post<SmevBookResponseInterface>(path, requestBody, { withCredentials: true });
+    return this.http
+      .post<SmevBookResponseInterface>(path, requestBody, { withCredentials: true })
+      .pipe(concatMap((v: SmevBookResponseInterface) => (v?.error ? throwError(v) : of(v))));
   }
 
-  public cancelSlot(requestBody: { eserviceId: string; bookId: string }): Observable<CancelSlotResponseInterface> {
+  public cancelSlot(requestBody: {
+    eserviceId: string;
+    bookId: string;
+  }): Observable<CancelSlotResponseInterface> {
     const path = `${this.urlPrefix}/cancel`;
-    return this.http.post<CancelSlotResponseInterface>(path, requestBody, { withCredentials: true });
+    return this.http.post<CancelSlotResponseInterface>(path, requestBody, {
+      withCredentials: true,
+    });
   }
 }
