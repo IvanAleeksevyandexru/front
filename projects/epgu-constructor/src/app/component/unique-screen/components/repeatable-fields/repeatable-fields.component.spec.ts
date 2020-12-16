@@ -7,7 +7,6 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ScreenTypes } from '../../../../screen/screen.types';
-import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 describe('RepeatableFieldsComponent', () => {
@@ -26,6 +25,7 @@ describe('RepeatableFieldsComponent', () => {
         type: 'RepeatableFields',
         label: 'Добавить еще  ФИО',
         attrs: {
+          repeatableComponents: [],
           repeatAmount: '20',
           components: [
             {
@@ -114,7 +114,6 @@ describe('RepeatableFieldsComponent', () => {
   } as DisplayDto;
 
   let screenService: ScreenService;
-  let cachedAnswersService: CachedAnswersService;
 
   beforeEach(
     waitForAsync(() => {
@@ -125,19 +124,16 @@ describe('RepeatableFieldsComponent', () => {
           CurrentAnswersService,
           ChangeDetectorRef,
           { provide: ScreenService, useClass: ScreenServiceStub },
-          CachedAnswersService,
         ],
       }).compileComponents();
       screenService = TestBed.inject(ScreenService);
       screenService.display$ = of(displayMock);
-      cachedAnswersService = TestBed.inject(CachedAnswersService);
     }),
   );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RepeatableFieldsComponent);
     component = fixture.componentInstance;
-    jest.spyOn(cachedAnswersService, 'getCachedValueById').mockReturnValue({} as any);
     fixture.detectChanges();
   });
 
