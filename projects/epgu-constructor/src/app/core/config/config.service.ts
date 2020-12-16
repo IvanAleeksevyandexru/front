@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { LoadService } from 'epgu-lib';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Config, MockApi, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigService implements Config {
+  public get isLoaded$(): Observable<boolean> {
+   return this.isLoadedSubject.asObservable();
+  }
+
   private isLoadedSubject = new BehaviorSubject(false);
   private _isLoaded = false;
   private _billsApiUrl: string;
@@ -23,8 +27,6 @@ export class ConfigService implements Config {
   private _timeSlots?: TimeSlotsApi;
   private _mockUrl: string;
   private _disableUnderConstructionMode: boolean;
-
-  public isLoaded$ = this.isLoadedSubject.asObservable();
 
   constructor(private loadService: LoadService) {
     // TODO отписаться
@@ -107,15 +109,6 @@ export class ConfigService implements Config {
     return this._disableUnderConstructionMode;
   }
 
-  private getStaticDomainCfg(): string {
-    const domain = this.loadService.config.staticDomain;
-
-    if (!domain) {
-      return '';
-    }
-    return domain.lastIndexOf('/') === domain.length - 1 ? domain.substring(0, domain.length - 1) : domain;
-  }
-
   initCore(config: Config = {} as Config): void {
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
@@ -145,5 +138,14 @@ export class ConfigService implements Config {
     console.group('Config');
     console.log({ ...this });
     console.groupEnd();
+  }
+
+  private getStaticDomainCfg(): string {
+    const domain = this.loadService.config.staticDomain;
+
+    if (!domain) {
+      return '';
+    }
+    return domain.lastIndexOf('/') === domain.length - 1 ? domain.substring(0, domain.length - 1) : domain;
   }
 }

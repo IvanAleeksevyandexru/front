@@ -29,13 +29,6 @@ export class GlobalErrorHandler implements ErrorHandler {
     private utils: UtilsService,
   ) {}
 
-  private isValidOrderId(store: ScreenStore): boolean {
-    return !this.utils.isValidOrderId(store.callBackOrderId) &&
-      !this.utils.isValidOrderId(store.orderId)
-      ? false
-      : true;
-  }
-
   handleError(error: Error): void {
     if (!(error instanceof HttpErrorResponse)) {
       const store = this.screenService.getStore();
@@ -47,8 +40,8 @@ export class GlobalErrorHandler implements ErrorHandler {
         orderId: !this.isValidOrderId(store)
           ? undefined
           : this.utils.isValidOrderId(store.orderId)
-          ? store.orderId
-          : store.callBackOrderId,
+            ? store.orderId
+            : store.callBackOrderId,
       };
 
       errorParams = this.utils.filterIncorrectObjectFields(errorParams) as ErrorParams;
@@ -58,5 +51,12 @@ export class GlobalErrorHandler implements ErrorHandler {
 
       console.error(error);
     }
+  }
+
+  private isValidOrderId(store: ScreenStore): boolean {
+    return !this.utils.isValidOrderId(store.callBackOrderId) &&
+      !this.utils.isValidOrderId(store.orderId)
+      ? false
+      : true;
   }
 }

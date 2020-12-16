@@ -51,6 +51,10 @@ export class ConfirmPhoneComponent implements OnInit {
     this.initCodeFormArray();
   }
 
+  isItemHasError(codeValue: string): Boolean {
+    return Boolean(this.screenService.componentError && codeValue);
+  }
+
   public sendCodeAgain(): void {
     const url = this.screenService.component.attrs.resendCodeUrl;
     const options: NavigationOptions = { url };
@@ -83,10 +87,6 @@ export class ConfirmPhoneComponent implements OnInit {
         value: String(code),
       },
     };
-  }
-
-  isItemHasError(codeValue: string): Boolean {
-    return Boolean(this.screenService.componentError && codeValue);
   }
 
   private initCodeFormArray(): void {

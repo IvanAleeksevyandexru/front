@@ -17,9 +17,6 @@ import {
   styleUrls: ['./timer.component.scss'],
 })
 export class TimerComponent {
-  @Output() nextStepEvent = new EventEmitter<string>();
-
-  public componentBase: TimerComponentBase;
   @Input() set data(componentBase: TimerComponentBase) {
     this.componentBase = componentBase;
     this.hasLabels = this.data.attrs?.timerRules?.labels?.length > 0;
@@ -38,6 +35,9 @@ export class TimerComponent {
     }
     this.startTimer();
   }
+  @Output() nextStepEvent = new EventEmitter<string>();
+
+  public componentBase: TimerComponentBase;
   get data(): TimerComponentBase {
     return this.componentBase;
   }
@@ -89,6 +89,10 @@ export class TimerComponent {
     if (this.data?.attrs?.timerRules?.hideTimerFrom !== undefined) {
       this.checkHideTimer();
     }
+  }
+
+  nextStep(): void {
+    this.nextStepEvent.emit(JSON.stringify({ isExpired: this.timer.time === 0 }));
   }
 
   /**
@@ -179,9 +183,5 @@ export class TimerComponent {
    */
   private getFinishDate(): number {
     return new Date(this.data.attrs.expirationTime).getTime();
-  }
-
-  nextStep(): void {
-    this.nextStepEvent.emit(JSON.stringify({ isExpired: this.timer.time === 0 }));
   }
 }

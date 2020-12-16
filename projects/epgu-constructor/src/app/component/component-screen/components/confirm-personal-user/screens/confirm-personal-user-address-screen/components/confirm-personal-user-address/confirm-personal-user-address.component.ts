@@ -24,13 +24,13 @@ const moment = moment_;
 })
 export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnInit {
   @ViewChild('dataForm', { static: false }) dataForm;
-
   data$: Observable<ConfirmAddressInterface> = this.screenService.component$ as Observable<
     ConfirmAddressInterface
   >;
   valueParsed: { [key: string]: string | Date } = {};
   textTransformType: TextTransform;
   isRequired: boolean;
+
   constructor(
     public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
@@ -81,6 +81,26 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     }
   }
 
+  getPreparedDataToSend(): string {
+    const { regDate } = this.valueParsed || {};
+    const dataToSend = { ...this.valueParsed };
+    dataToSend.regDate = dataToSend.regAddr ? moment(regDate).format(DATE_STRING_DOT_FORMAT) : '';
+    return JSON.stringify(dataToSend);
+  }
+
+  public isFormValid(): boolean {
+    const hasValue = (): boolean => Object.values(this.dataForm.form.value).every((value) => value);
+    const isValid = (): boolean => (this.isRequired ? hasValue() : true);
+    const isFormInited = (): { [key: string]: string | Date } => this.dataForm?.form?.value;
+
+    return isFormInited() && isValid();
+  }
+
+  isDate(fieldName: ConfirmAddressFieldName): boolean | ConfirmAddressFieldName {
+    const dateType = ['regFrom', 'regTo', 'regDate'];
+    return dateType.includes(fieldName) ? fieldName : false;
+  }
+
   private isPresetable(field?: ConfirmAddressFieldsInterface): boolean {
     return !field?.nonPresetable;
   }
@@ -102,13 +122,6 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     this.currentAnswersService.isValid = isValid;
   }
 
-  getPreparedDataToSend(): string {
-    const { regDate } = this.valueParsed || {};
-    const dataToSend = { ...this.valueParsed };
-    dataToSend.regDate = dataToSend.regAddr ? moment(regDate).format(DATE_STRING_DOT_FORMAT) : '';
-    return JSON.stringify(dataToSend);
-  }
-
   private getDate(regDate: string): Date {
     const date = moment(regDate, DATE_STRING_DOT_FORMAT);
     return date.isValid() ? date.toDate() : moment().toDate();
@@ -116,18 +129,5 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
 
   private getAddress(regAddr: string | { fullAddress: string }): string {
     return typeof regAddr === 'string' ? regAddr : regAddr.fullAddress;
-  }
-
-  public isFormValid(): boolean {
-    const hasValue = (): boolean => Object.values(this.dataForm.form.value).every((value) => value);
-    const isValid = (): boolean => (this.isRequired ? hasValue() : true);
-    const isFormInited = (): { [key: string]: string | Date } => this.dataForm?.form?.value;
-
-    return isFormInited() && isValid();
-  }
-
-  isDate(fieldName: ConfirmAddressFieldName): boolean | ConfirmAddressFieldName {
-    const dateType = ['regFrom', 'regTo', 'regDate'];
-    return dateType.includes(fieldName) ? fieldName : false;
   }
 }

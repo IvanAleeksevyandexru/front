@@ -11,13 +11,17 @@ import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
+  public get isLoading$(): Observable<boolean> {
+    return this.isLoadingSubject.asObservable();
+  }
+
+  public get isFirstLoading$(): Observable<boolean> {
+    return this.isLoadingSubject.asObservable().pipe(take(3));
+  }
+
   private screenStore: ScreenStore = {};
   private isLoading = false;
-
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
-
-  public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
-  public isFirstLoading$: Observable<boolean> = this.isLoadingSubject.asObservable().pipe(take(3));
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -25,6 +29,26 @@ export class ScreenService extends ScreenContent {
     private utils: UtilsService,
   ) {
     super();
+  }
+
+  /**
+   * Возвращает хранилище данных для экрана
+   */
+  public getStore(): ScreenStore {
+    return this.screenStore;
+  }
+
+  public getCompFromDisplay(componentId: string): ScreenStoreComponentDtoI {
+    const component = this.display?.components.find((comp) => comp.id === componentId);
+    return component;
+  }
+
+  public getCompValueFromCachedAnswers(componentId?: string): string {
+    const cachedAnswers = this.getStore().cachedAnswers;
+    if (!componentId) {
+      componentId = this.component?.id;
+    }
+    return cachedAnswers && cachedAnswers[componentId]?.value;
   }
 
   /**
@@ -118,13 +142,6 @@ export class ScreenService extends ScreenContent {
   }
 
   /**
-   * Возвращает хранилище данных для экрана
-   */
-  public getStore(): ScreenStore {
-    return this.screenStore;
-  }
-
-  /**
    * Возвращает данные из cachedAnswers, если в JSON есть preset.type = REF
    * TODO нужно утащить на backend (HARDCODE from backend)
    */
@@ -139,18 +156,5 @@ export class ScreenService extends ScreenContent {
     } else {
       return { ...item, value };
     }
-  }
-
-  public getCompFromDisplay(componentId: string): ScreenStoreComponentDtoI {
-    const component = this.display?.components.find((comp) => comp.id === componentId);
-    return component;
-  }
-
-  public getCompValueFromCachedAnswers(componentId?: string): string {
-    const cachedAnswers = this.getStore().cachedAnswers;
-    if (!componentId) {
-      componentId = this.component?.id;
-    }
-    return cachedAnswers && cachedAnswers[componentId]?.value;
   }
 }

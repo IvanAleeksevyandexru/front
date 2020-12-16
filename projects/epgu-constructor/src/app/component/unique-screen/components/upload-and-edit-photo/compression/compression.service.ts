@@ -15,6 +15,44 @@ const unsupportedImageTypes = ['TIFF', 'TIF'];
 @Injectable()
 export class CompressionService {
 
+  isValidImageType(file: File | Blob): boolean {
+    const hasImageType = /^image/.test(file?.type);
+
+    const unsupportedTypesRegexp = new RegExp( unsupportedImageTypes.join( '|' ), 'i');
+    const hasSupportedType = !unsupportedTypesRegexp.test(file?.type);
+
+    return hasImageType && hasSupportedType;
+  }
+
+  /**
+   * @param {File} file
+   * @param {Object} options - { maxSizeMB=Number.POSITIVE_INFINITY, maxWidthOrHeight, maxIteration = 10, exifOrientation, fileType }
+   * @param {number} [options.maxSizeMB=Number.POSITIVE_INFINITY]
+   * @param {number} [options.maxWidthOrHeight=undefined]
+   * @param {number} [options.maxIteration=10]
+   * @param {number} [options.exifOrientation]
+   * @param {string} [options.fileType]
+   * @returns {Promise<File | Blob>}
+   */
+  public async imageCompression(file: File | Blob, options: CompressionOptions): Promise<File | Blob> {
+    let compressedFile;
+
+    if (!(file instanceof Blob)) {
+      throw new Error('The file given is not an instance of Blob or File');
+    } else if (!await this.isValidImage(file, options.deepChecking)) {
+      throw new Error('The file given is not a valid image');
+    }
+
+    compressedFile = await this.compress(file, options);
+
+    try {
+      compressedFile['name'] = options?.customFileName || file['name'];
+      compressedFile['lastModified'] = file['lastModified'];
+    } catch (e) {}
+
+    return compressedFile;
+  }
+
   /**
   * @returns {boolean}
   */
@@ -333,15 +371,6 @@ export class CompressionService {
     }
   }
 
-  isValidImageType(file: File | Blob): boolean {
-    const hasImageType = /^image/.test(file?.type);
-
-    const unsupportedTypesRegexp = new RegExp( unsupportedImageTypes.join( '|' ), 'i');
-    const hasSupportedType = !unsupportedTypesRegexp.test(file?.type);
-
-    return hasImageType && hasSupportedType;
-  }
-
   private addImageProcess(file: File | Blob): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const objUrl = URL.createObjectURL(file);
@@ -438,35 +467,6 @@ export class CompressionService {
     this.cleanupCanvasMemory(maxWidthOrHeightFixedCanvas);
     this.cleanupCanvasMemory(orientationFixedCanvas);
     this.cleanupCanvasMemory(origCanvas);
-
-    return compressedFile;
-  }
-
-  /**
-  * @param {File} file
-  * @param {Object} options - { maxSizeMB=Number.POSITIVE_INFINITY, maxWidthOrHeight, maxIteration = 10, exifOrientation, fileType }
-  * @param {number} [options.maxSizeMB=Number.POSITIVE_INFINITY]
-  * @param {number} [options.maxWidthOrHeight=undefined]
-  * @param {number} [options.maxIteration=10]
-  * @param {number} [options.exifOrientation]
-  * @param {string} [options.fileType]
-  * @returns {Promise<File | Blob>}
-  */
-  public async imageCompression(file: File | Blob, options: CompressionOptions): Promise<File | Blob> {
-    let compressedFile;
-
-    if (!(file instanceof Blob)) {
-      throw new Error('The file given is not an instance of Blob or File');
-    } else if (!await this.isValidImage(file, options.deepChecking)) {
-      throw new Error('The file given is not a valid image');
-    }
-
-    compressedFile = await this.compress(file, options);
-
-    try {
-      compressedFile['name'] = options?.customFileName || file['name'];
-      compressedFile['lastModified'] = file['lastModified'];
-    } catch (e) {}
 
     return compressedFile;
   }
