@@ -43,8 +43,8 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
   }
 
   getIsEditContactAction(): boolean {
-    const isEditPhone = this.screenService.action.action === DTOActionAction.editPhoneNumber;
-    const isEditEmail = this.screenService.action.action === DTOActionAction.editEmail;
+    const isEditPhone = this.screenService.action?.action === DTOActionAction.editPhoneNumber;
+    const isEditEmail = this.screenService.action?.action === DTOActionAction.editEmail;
     return isEditPhone || isEditEmail;
   }
 }
