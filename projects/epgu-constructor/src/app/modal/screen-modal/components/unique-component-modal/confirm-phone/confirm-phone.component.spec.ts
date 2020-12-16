@@ -14,6 +14,7 @@ import {
   ComponentDto,
 } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
+import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 
 describe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
@@ -47,6 +48,7 @@ describe('ConfirmPhoneComponent', () => {
         NavigationService,
         NavigationModalService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        ValidationService
       ],
     }).compileComponents();
 
