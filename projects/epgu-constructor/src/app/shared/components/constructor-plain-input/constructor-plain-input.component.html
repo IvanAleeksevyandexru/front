@@ -1,6 +1,7 @@
 <lib-plain-input
   epgu-constructor-trim
   epgu-constructor-text-transform
+  epgu-constructor-validation-type
   [epgu-constructor-currency-transform]="price"
   [textTransformType]="textTransformType"
   [invalid]="invalid"
@@ -14,4 +15,6 @@
   [type]="type"
   [pattern]="pattern"
   (blur)="onBlur()"
+  [component]="component"
+  (emmitChangesEvent)="onEmmitChanges()"
 ></lib-plain-input>

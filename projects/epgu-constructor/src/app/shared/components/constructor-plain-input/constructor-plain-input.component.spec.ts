@@ -12,6 +12,8 @@ import { CurrencyModule } from '../../directives/currency/currency.module';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
+import { ValidationService } from '../../services/validation/validation.service';
 
 describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;
@@ -20,8 +22,15 @@ describe('ConstructorPlainInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorPlainInputComponent],
-      imports: [CoreModule, RouterTestingModule, TrimModule, TextTransformModule, CurrencyModule],
-      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
+      imports: [
+        CoreModule,
+        RouterTestingModule,
+        TrimModule,
+        TextTransformModule,
+        CurrencyModule,
+        ValidationTypeModule,
+      ],
+      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }, ValidationService],
     }).compileComponents();
   });
 

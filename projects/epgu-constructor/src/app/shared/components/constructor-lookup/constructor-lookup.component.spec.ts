@@ -11,6 +11,7 @@ import { CachedAnswersService } from '../../services/cached-answers/cached-answe
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConstructorLookupComponent } from './constructor-lookup.component';
+import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 
 describe('ConstructorLookupComponent', () => {
   let component: ConstructorLookupComponent;
@@ -19,7 +20,7 @@ describe('ConstructorLookupComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorLookupComponent],
-      imports: [CoreModule, RouterTestingModule],
+      imports: [CoreModule, RouterTestingModule, ValidationTypeModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },

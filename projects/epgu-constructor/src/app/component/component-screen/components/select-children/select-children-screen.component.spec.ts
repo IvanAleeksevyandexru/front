@@ -15,6 +15,7 @@ import { ConstructorDropdownModule } from '../../../../shared/components/constru
 import { BaseModule } from '../../../../shared/components/base/base.module';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { of } from 'rxjs';
+import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
 
 describe('SelectChildrenScreenComponent', () => {
   let component: SelectChildrenScreenComponent;
@@ -35,6 +36,7 @@ describe('SelectChildrenScreenComponent', () => {
       imports: [
         CoreModule,
         BaseModule,
+        CloneButtonModule,
         ReactiveFormsModule,
         ComponentsListModule,
         RouterTestingModule,

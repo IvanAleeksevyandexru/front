@@ -19,15 +19,11 @@
   &__form {
     margin-top: 32px;
   }
-  &__action {
-    margin-top: 24px;
-    @include tablets-up {
-      margin: 24px 8px 0;
-    }
-  }
 }
 
 .card {
+  margin-bottom: $screen-pad-p;
+
   &__wrapper {
     padding: 24px;
   }
