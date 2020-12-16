@@ -6,7 +6,7 @@ export type TimeSlotsApi = {
   [key: string]: {
     subject?: string,
     calendarName?: string,
-    serviceCode: string,
+    preliminaryReservation: 'true' | 'false',
     serviceId: string,
     eserviceId: string,
     preliminaryReservationPeriod?: string,
