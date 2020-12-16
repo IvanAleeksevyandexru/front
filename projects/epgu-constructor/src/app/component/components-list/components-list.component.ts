@@ -19,7 +19,6 @@ import {
 } from './components-list.types';
 import { ComponentListFormService } from './services/component-list-form/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository/component-list-repository.service';
-import { ValidationService } from './services/validation/validation.service';
 
 const halfWidthItemTypes = [
   CustomScreenComponentTypes.NewEmailInput,
@@ -58,7 +57,6 @@ export class ComponentsListComponent implements OnChanges {
     public dateRangeService: DateRangeService,
     private repository: ComponentListRepositoryService,
     private unsubscribeService: UnsubscribeService,
-    private validationService: ValidationService,
   ) {
     this.changes = this.formService.changes;
   }
@@ -73,20 +71,16 @@ export class ComponentsListComponent implements OnChanges {
     }
   }
 
-  public validateOnBlur(control: AbstractControl, component: CustomComponent): void {
-    const onBlurValidatorFns = this.validationService.customAsyncValidator(component, 'blur');
-    control.setAsyncValidators(onBlurValidatorFns);
-    control.updateValueAndValidity();
-    control.clearAsyncValidators();
-    this.formService.emmitChanges();
-  }
-
   public getDictKeyByComp(component: CustomComponent): string {
     return utils.getDictKeyByComp(component);
   }
 
   public isHalfWidthItem(componentData: AbstractControl): boolean {
     return halfWidthItemTypes.includes(componentData.value?.type);
+  }
+
+  public emmitChanges(): void {
+    this.formService.emmitChanges();
   }
 
   private loadRepository(components: Array<CustomComponent>): void {
@@ -100,11 +94,6 @@ export class ComponentsListComponent implements OnChanges {
       });
   }
 
-  private unsubscribe(): void {
-    this.unsubscribeService.ngUnsubscribe$.next();
-    this.unsubscribeService.ngUnsubscribe$.complete();
-  }
-
   private subscribeOnFormStatusChanging(): void {
     if (this.emitFormStatus.observers.length) {
       this.emitFormStatus.emit(this.formService.form.status);
@@ -112,5 +101,10 @@ export class ComponentsListComponent implements OnChanges {
         .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
         .subscribe((formStatus) => this.emitFormStatus.emit(formStatus));
     }
+  }
+
+  private unsubscribe(): void {
+    this.unsubscribeService.ngUnsubscribe$.next();
+    this.unsubscribeService.ngUnsubscribe$.complete();
   }
 }
