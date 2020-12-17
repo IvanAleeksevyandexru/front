@@ -147,12 +147,14 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
   private getSlotsRequest(): TimeSlotReq {
     const {
       serviceId,
+      serviceCode,
       eserviceId,
     } = this.config.timeSlots.mvd;
 
     return {
       organizationId: [this.department.value],
       serviceId: [serviceId],
+      serviceCode,
       eserviceId,
       attributes: []
     };
@@ -165,6 +167,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
 
     const {
       serviceId,
+      serviceCode,
       subject,
       eserviceId,
       calendarName,
@@ -174,6 +177,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
       address: this.department.attributeValues.ADDRESS_OUT,
       orgName: this.department.title,
       subject,
+      serviceCode,
       eserviceId,
       bookId: this.bookId,
       organizationId: this.department.value,

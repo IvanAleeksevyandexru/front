@@ -175,6 +175,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     const {
       preliminaryReservation,
       serviceId,
+      serviceCode,
       subject,
       eserviceId,
       calendarName,
@@ -188,6 +189,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       orgName: this.department.attributeValues.FULLNAME,
       routeNumber,
       subject,
+      serviceCode,
       params: [
         {
           name: 'phone',
