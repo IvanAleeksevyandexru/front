@@ -17,6 +17,13 @@ import { ScreenService } from '../../../screen/screen.service';
  */
 @Injectable()
 export abstract class FormPlayerBaseService {
+  public get isLoading$(): Observable<boolean>  {
+    return this.isLoadingSubject.asObservable();
+  }
+  public get playerLoaded$(): Observable<boolean> {
+    return this.playerLoadedSubject.asObservable();
+  }
+
   protected formPlayerApiService: FormPlayerApiService;
   protected screenServiceBase: ScreenService;
   protected loggerBase: LoggerService;
@@ -28,9 +35,6 @@ export abstract class FormPlayerBaseService {
   protected isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   protected playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
 
-  public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
-  public playerLoaded$: Observable<boolean> = this.playerLoadedSubject.asObservable();
-
   constructor(
     public injector: Injector
   ) {
@@ -39,13 +43,19 @@ export abstract class FormPlayerBaseService {
     this.loggerBase = this.injector.get(LoggerService);
   }
 
-  abstract navigate(navigation: Navigation, formPlayerNavigation: FormPlayerNavigation): void;
+  /**
+   * Вернет текущий стор
+   */
+  get store(): FormPlayerApiSuccessResponse {
+    return this._store;
+  }
 
   /**
-   * Обработка ответа сервера
-   * @param response - ответ сервера на запрос
+   * Установит стор
    */
-  abstract processResponse(response: FormPlayerApiResponse): void;
+  set store(store: FormPlayerApiSuccessResponse) {
+    this._store = store;
+  }
 
   /**
    * Возвращает true, если есть ошибки
@@ -54,24 +64,6 @@ export abstract class FormPlayerBaseService {
   protected hasError(response: FormPlayerApiResponse): boolean {
     return this.hasRequestErrors(response as FormPlayerApiErrorResponse)
       || this.hasBusinessErrors(response as FormPlayerApiSuccessResponse);
-  }
-
-  /**
-   * Возвращает true, если есть ошибки в ответе на запрос
-   * @param response - ответ сервера
-   */
-  private hasRequestErrors(response: FormPlayerApiErrorResponse): boolean {
-    const errors = response?.status;
-    return errors === FormPlayerApiErrorStatuses.badRequest;
-  }
-
-  /**
-   * Возвращает true, если есть ошибки в ответе с DTO секцией ошибок
-   * @param response - ответ сервера
-   */
-  private hasBusinessErrors(response: FormPlayerApiSuccessResponse): boolean {
-    const errors = response?.scenarioDto?.errors;
-    return errors && !!Object.keys(errors).length;
   }
 
   protected updateRequest(navigation: Navigation): void {
@@ -91,19 +83,6 @@ export abstract class FormPlayerBaseService {
     } else {
       this._store.scenarioDto.currentValue = navigationPayload;
     }
-  }
-
-  private setDefaultCurrentValue(): void {
-    this._store.scenarioDto.currentValue = {};
-    const componentId = this._store.scenarioDto.display.components[0].id;
-    this._store.scenarioDto.currentValue[componentId] = {
-      value: '',
-      visited: true
-    };
-  }
-
-  private isEmptyNavigationPayload(navigationPayload: NavigationPayload): boolean {
-    return !(navigationPayload && Object.keys(navigationPayload).length);
   }
 
   protected sendDataSuccess(response: FormPlayerApiSuccessResponse): void {
@@ -133,48 +112,6 @@ export abstract class FormPlayerBaseService {
     }
 
     this.updateLoading(false);
-  }
-
-  private initResponse(response: FormPlayerApiSuccessResponse): void {
-    if (!response) {
-      this.handleInvalidResponse();
-      return;
-    }
-
-    this._store = response;
-    const scenarioDto = response.scenarioDto;
-
-    this.initScreenStore(scenarioDto);
-    this.updatePlayerLoaded(true);
-
-    this.loggerBase.log([
-      'componentId:',
-      scenarioDto.display.components[0].id,
-      'componentType:',
-      scenarioDto.display.components[0].type,
-      'initResponse:',
-      response
-    ], `----- GET DATA ${this.logSuffix}---------`);
-  }
-
-  private handleInvalidResponse(): void {
-    this.loggerBase.error([
-      'Invalid Response'
-    ], `----- ERROR DATA ${this.logSuffix}---------`);
-  }
-
-  /**
-   * Вернет текущий стор
-   */
-  get store(): FormPlayerApiSuccessResponse {
-    return this._store;
-  }
-
-  /**
-   * Установит стор
-   */
-  set store(store: FormPlayerApiSuccessResponse) {
-    this._store = store;
   }
 
   /**
@@ -207,4 +144,71 @@ export abstract class FormPlayerBaseService {
     this.playerLoaded = newState;
     this.playerLoadedSubject.next(newState);
   }
+
+  /**
+   * Возвращает true, если есть ошибки в ответе на запрос
+   * @param response - ответ сервера
+   */
+  private hasRequestErrors(response: FormPlayerApiErrorResponse): boolean {
+    const errors = response?.status;
+    return errors === FormPlayerApiErrorStatuses.badRequest;
+  }
+
+  /**
+   * Возвращает true, если есть ошибки в ответе с DTO секцией ошибок
+   * @param response - ответ сервера
+   */
+  private hasBusinessErrors(response: FormPlayerApiSuccessResponse): boolean {
+    const errors = response?.scenarioDto?.errors;
+    return errors && !!Object.keys(errors).length;
+  }
+
+  private setDefaultCurrentValue(): void {
+    this._store.scenarioDto.currentValue = {};
+    const componentId = this._store.scenarioDto.display.components[0].id;
+    this._store.scenarioDto.currentValue[componentId] = {
+      value: '',
+      visited: true
+    };
+  }
+
+  private isEmptyNavigationPayload(navigationPayload: NavigationPayload): boolean {
+    return !(navigationPayload && Object.keys(navigationPayload).length);
+  }
+
+  private initResponse(response: FormPlayerApiSuccessResponse): void {
+    if (!response) {
+      this.handleInvalidResponse();
+      return;
+    }
+
+    this._store = response;
+    const scenarioDto = response.scenarioDto;
+
+    this.initScreenStore(scenarioDto);
+    this.updatePlayerLoaded(true);
+
+    this.loggerBase.log([
+      'componentId:',
+      scenarioDto.display.components[0].id,
+      'componentType:',
+      scenarioDto.display.components[0].type,
+      'initResponse:',
+      response
+    ], `----- GET DATA ${this.logSuffix}---------`);
+  }
+
+  private handleInvalidResponse(): void {
+    this.loggerBase.error([
+      'Invalid Response'
+    ], `----- ERROR DATA ${this.logSuffix}---------`);
+  }
+
+  abstract navigate(navigation: Navigation, formPlayerNavigation: FormPlayerNavigation): void;
+
+  /**
+   * Обработка ответа сервера
+   * @param response - ответ сервера на запрос
+   */
+  abstract processResponse(response: FormPlayerApiResponse): void;
 }

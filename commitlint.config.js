@@ -2,11 +2,10 @@ module.exports = {
   extends: ['@commitlint/config-conventional'],
   plugins: ['commitlint-plugin-function-rules'],
   rules: {
-    'function-rules/header-max-length': [
+    'function-rules/subject-case': [
       2, // level: error
       'always',
       (parsed) => {
-        console.log(parsed)
         if (/\[EPGUCORE-\d{5,}\]+$/.test(parsed.subject)) {
           return [true];
         }

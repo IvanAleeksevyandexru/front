@@ -11,19 +11,10 @@ import {
 
 @Injectable()
 export class ValidationService {
-  constructor() {}
-
   private readonly typesWithoutValidation: Array<CustomScreenComponentTypes> = [
     CustomScreenComponentTypes.LabelSection,
     CustomScreenComponentTypes.HtmlString,
   ];
-
-  private getError(validations: Array<CustomComponentAttrValidation>, control: AbstractControl): CustomComponentAttrValidation {
-    return validations.find(({ value, type }) =>
-      type === 'RegExp' && control.value && !new RegExp(value).test(control.value)
-    );
-  }
-
   customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
     const validations = componentValidations && componentValidations.filter(validationRule =>
@@ -95,6 +86,18 @@ export class ValidationService {
     };
   }
 
+  public validationBackendError(errorMsg: string, component: CustomComponent): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors => {
+      const isErrorValue = component.value !== control.value;
+
+      if (isErrorValue) {
+        return null;
+      } else if (errorMsg) {
+        return { serverError: errorMsg };
+      }
+    };
+  }
+
   private isValid(component: CustomComponent, value: string): boolean {
     switch (component.type) {
       case CustomScreenComponentTypes.OgrnInput:
@@ -115,15 +118,9 @@ export class ValidationService {
     return { msg: error };
   }
 
-  public validationBackendError(errorMsg: string, component: CustomComponent): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors => {
-      const isErrorValue = component.value !== control.value;
-
-      if (isErrorValue) {
-        return null;
-      } else if (errorMsg) {
-        return { serverError: errorMsg };
-      }
-    };
+  private getError(validations: Array<CustomComponentAttrValidation>, control: AbstractControl): CustomComponentAttrValidation {
+    return validations.find(({ value, type }) =>
+      type === 'RegExp' && control.value && !new RegExp(value).test(control.value)
+    );
   }
 }

@@ -29,9 +29,9 @@ const moment = moment_;
   providers: [UnsubscribeService],
 })
 export class TimeSlotsComponent implements OnInit {
+  @Output() nextStepEvent = new EventEmitter();
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<DisplayDto> = this.screenService.display$;
-  @Output() nextStepEvent = new EventEmitter();
 
   public date: Date = null;
   public label: string;
@@ -94,38 +94,14 @@ export class TimeSlotsComponent implements OnInit {
     this.timeSlotServices.MVD = this.mvdTimeSlotsService;
   }
 
-  // TODO
-  // eslint-disable-next-line @typescript-eslint/typedef
-  private renderSingleMonthGrid(output): void {
-    output.splice(0, output.length); // in-place clear
-    const firstDayOfMonth = moment()
-      .year(this.activeYearNumber)
-      .month(this.activeMonthNumber)
-      .startOf('month')
-      .startOf('day');
-    const firstDayOfWeekInMonth = firstDayOfMonth.isoWeekday();
-    const daysInMonth = firstDayOfMonth.daysInMonth();
-    let week = 0;
-    output.push([]);
-    if (firstDayOfWeekInMonth > 1) {
-      for (let i = 1; i < firstDayOfWeekInMonth; i += 1) {
-        const date = moment(firstDayOfMonth).add(i - firstDayOfWeekInMonth, 'day');
-        output[0].push({ number: date.date(), date: date.toDate() });
-      }
+  ngOnInit(): void {
+    if (this.screenService.component) {
+      this.loadTimeSlots();
     }
-    for (let i = 0; i < daysInMonth; i += 1) {
-      if (output[week].length && output[week].length % 7 === 0) {
-        week += 1;
-        output.push([]);
-      }
-      const date = moment(firstDayOfMonth).add(i, 'day');
-      output[week].push({ number: date.date(), date: date.toDate() });
-    }
-    let days = 0;
-    while (output[week].length < 7) {
-      const date = moment(firstDayOfMonth).add(1, 'month').add(days, 'day');
-      days += 1;
-      output[week].push({ number: date.date(), date: date.toDate() });
+
+    const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
+    if (cachedAnswer) {
+      this.cachedAnswer = JSON.parse(cachedAnswer);
     }
   }
 
@@ -284,15 +260,16 @@ export class TimeSlotsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (this.screenService.component) {
-      this.loadTimeSlots();
-    }
+  buttonDisabled(): boolean {
+    return !this.currentAnswersService.isValid || this.inProgress || !this.isBookSlotSelected();
+  }
 
-    const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
-    if (cachedAnswer) {
-      this.cachedAnswer = JSON.parse(cachedAnswer);
-    }
+  isBookSlotSelected(): string {
+    return this.currentSlot?.slotId;
+  }
+
+  calendarAvailable(): boolean {
+    return !this.errorMessage;
   }
 
   private loadTimeSlots(): void {
@@ -358,6 +335,41 @@ export class TimeSlotsComponent implements OnInit {
     );
   }
 
+  // TODO
+  // eslint-disable-next-line @typescript-eslint/typedef
+  private renderSingleMonthGrid(output): void {
+    output.splice(0, output.length); // in-place clear
+    const firstDayOfMonth = moment()
+      .year(this.activeYearNumber)
+      .month(this.activeMonthNumber)
+      .startOf('month')
+      .startOf('day');
+    const firstDayOfWeekInMonth = firstDayOfMonth.isoWeekday();
+    const daysInMonth = firstDayOfMonth.daysInMonth();
+    let week = 0;
+    output.push([]);
+    if (firstDayOfWeekInMonth > 1) {
+      for (let i = 1; i < firstDayOfWeekInMonth; i += 1) {
+        const date = moment(firstDayOfMonth).add(i - firstDayOfWeekInMonth, 'day');
+        output[0].push({ number: date.date(), date: date.toDate() });
+      }
+    }
+    for (let i = 0; i < daysInMonth; i += 1) {
+      if (output[week].length && output[week].length % 7 === 0) {
+        week += 1;
+        output.push([]);
+      }
+      const date = moment(firstDayOfMonth).add(i, 'day');
+      output[week].push({ number: date.date(), date: date.toDate() });
+    }
+    let days = 0;
+    while (output[week].length < 7) {
+      const date = moment(firstDayOfMonth).add(1, 'month').add(days, 'day');
+      days += 1;
+      output[week].push({ number: date.date(), date: date.toDate() });
+    }
+  }
+
   /**
    * Генерирует ID совместимый с ID ListItem
    * @example
@@ -393,18 +405,6 @@ export class TimeSlotsComponent implements OnInit {
       id: `${monthYear}`,
       text: `${this.months[monthNumber]} ${yearNumber}`,
     });
-  }
-
-  buttonDisabled(): boolean {
-    return !this.currentAnswersService.isValid || this.inProgress || !this.isBookSlotSelected();
-  }
-
-  isBookSlotSelected(): string {
-    return this.currentSlot?.slotId;
-  }
-
-  calendarAvailable(): boolean {
-    return !this.errorMessage;
   }
 
   /**

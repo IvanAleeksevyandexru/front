@@ -23,10 +23,6 @@ export class ActionDirective {
   @Input() action: ComponentActionDto;
   @Input() componentId: string;
 
-  @HostListener('click') onClick(): void {
-    this.switchAction();
-  }
-
   constructor(
     private actionApiService: FormPlayerApiService,
     private screenService: ScreenService,
@@ -34,6 +30,27 @@ export class ActionDirective {
     private navModalService: NavigationModalService,
     private utilsService: UtilsService,
   ) {}
+
+  @HostListener('click') onClick(): void {
+    this.switchAction();
+  }
+
+  navigate(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    this.navService[stepType].next(navigation);
+  }
+
+  navigateModal(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    switch (stepType) {
+    case 'prevStep':
+      this.navModalService.prev(navigation);
+      break;
+    case 'nextStep':
+      this.navModalService.next(navigation);
+      break;
+    }
+  }
 
   private switchAction(componentId?: string): void {
     switch (this.action.type) {
@@ -71,23 +88,6 @@ export class ActionDirective {
     const data = this.getActionDTO();
 
     return this.actionApiService.sendAction<T>(this.action.action, data);
-  }
-
-  navigate(stepType: string): void {
-    const navigation = this.prepareNavigationData();
-    this.navService[stepType].next(navigation);
-  }
-
-  navigateModal(stepType: string): void {
-    const navigation = this.prepareNavigationData();
-    switch (stepType) {
-      case 'prevStep':
-        this.navModalService.prev(navigation);
-        break;
-      case 'nextStep':
-        this.navModalService.next(navigation);
-        break;
-    }
   }
 
   private prepareNavigationData(): Navigation {

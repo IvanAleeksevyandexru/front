@@ -68,6 +68,26 @@ export class EmployeeHistoryMonthsService {
       });
   }
 
+  updateAvailableMonths(generation: Array<EmployeeHistoryModel>): void {
+    this.uncheckAvailableMonths();
+
+    generation.forEach((e: EmployeeHistoryModel) => {
+      if (e.from && e.to) {
+        const availableMonths: Array<string> = this.getAvailableMonths(
+          moment().year(e.from.year).month(e.from.month),
+          moment().year(e.to.year).month(e.to.month),
+        ).map((e: EmployeeHistoryAvailableDates) => e.date);
+
+        this.availableMonths = this.availableMonths.map((e: EmployeeHistoryAvailableDates) => ({
+          ...e,
+          checked: availableMonths.includes(e.date) || e.checked,
+        }));
+      }
+    });
+
+    this.checkMonthCompleted();
+  }
+
   private getAvailableMonths(
     fromDate: Moment = moment().subtract(this.years, 'years'),
     toDate: Moment = moment(),
@@ -90,26 +110,6 @@ export class EmployeeHistoryMonthsService {
       ...month,
       checked: false,
     }));
-  }
-
-  updateAvailableMonths(generation: Array<EmployeeHistoryModel>): void {
-    this.uncheckAvailableMonths();
-
-    generation.forEach((e: EmployeeHistoryModel) => {
-      if (e.from && e.to) {
-        const availableMonths: Array<string> = this.getAvailableMonths(
-          moment().year(e.from.year).month(e.from.month),
-          moment().year(e.to.year).month(e.to.month),
-        ).map((e: EmployeeHistoryAvailableDates) => e.date);
-
-        this.availableMonths = this.availableMonths.map((e: EmployeeHistoryAvailableDates) => ({
-          ...e,
-          checked: availableMonths.includes(e.date) || e.checked,
-        }));
-      }
-    });
-
-    this.checkMonthCompleted();
   }
 
   private checkMonthCompleted(): void {

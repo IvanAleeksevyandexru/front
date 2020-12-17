@@ -21,17 +21,16 @@ const moment = moment_;
 
 @Injectable()
 export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
+  public activeMonthNumber: number;
+  public activeYearNumber: number;
+  public bookId;
+
   private department: ZagsDepartmentInterface;
   private solemn: boolean;
   private slotsPeriod;
   private orderId;
-
-  public activeMonthNumber: number;
-  public activeYearNumber: number;
-
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
-  public bookId;
   private errorMessage;
 
   constructor(
@@ -197,6 +196,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     const {
       preliminaryReservation,
       serviceId,
+      serviceCode,
       subject,
       eserviceId,
       calendarName,
@@ -217,6 +217,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
         },
       ],
       eserviceId,
+      serviceCode,
       bookId: this.bookId,
       organizationId: this.department.attributeValues.CODE,
       calendarName,

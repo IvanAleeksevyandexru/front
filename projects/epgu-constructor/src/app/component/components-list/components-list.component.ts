@@ -37,20 +37,19 @@ const halfWidthItemTypes = [
   ],
 })
 export class ComponentsListComponent implements OnChanges {
-  shownElements: { [key: string]: boolean } = {};
-
-  dropDowns$: BehaviorSubject<CustomListDropDowns> = this.repository.dropDowns$;
-  dictionaries$: BehaviorSubject<CustomListDictionaries> = this.repository.dictionaries$;
-
-  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-
-  readonly optionalField = OPTIONAL_FIELD;
-  readonly componentType = CustomScreenComponentTypes;
-
   @Input() components: CustomComponent;
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>;
   @Output() emitFormStatus = new EventEmitter();
+
+  shownElements: { [key: string]: boolean } = {};
+  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+
+  dropDowns$: BehaviorSubject<CustomListDropDowns> = this.repository.dropDowns$;
+  dictionaries$: BehaviorSubject<CustomListDictionaries> = this.repository.dictionaries$;
+
+  readonly optionalField = OPTIONAL_FIELD;
+  readonly componentType = CustomScreenComponentTypes;
 
   constructor(
     public configService: ConfigService,
@@ -72,21 +71,16 @@ export class ComponentsListComponent implements OnChanges {
     }
   }
 
-  private subscribeOnFormStatusChanging(): void {
-    if (this.emitFormStatus.observers.length) {
-      this.emitFormStatus.emit(this.formService.form.status);
-      this.formService.form.statusChanges
-        .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
-        .subscribe((formStatus) => this.emitFormStatus.emit(formStatus));
-    }
-  }
-
   public getDictKeyByComp(component: CustomComponent): string {
     return utils.getDictKeyByComp(component);
   }
 
   public isHalfWidthItem(componentData: AbstractControl): boolean {
     return halfWidthItemTypes.includes(componentData.value?.type);
+  }
+
+  public emmitChanges(): void {
+    this.formService.emmitChanges();
   }
 
   private loadRepository(components: Array<CustomComponent>): void {
@@ -100,12 +94,17 @@ export class ComponentsListComponent implements OnChanges {
       });
   }
 
+  private subscribeOnFormStatusChanging(): void {
+    if (this.emitFormStatus.observers.length) {
+      this.emitFormStatus.emit(this.formService.form.status);
+      this.formService.form.statusChanges
+        .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
+        .subscribe((formStatus) => this.emitFormStatus.emit(formStatus));
+    }
+  }
+
   private unsubscribe(): void {
     this.unsubscribeService.ngUnsubscribe$.next();
     this.unsubscribeService.ngUnsubscribe$.complete();
-  }
-
-  public emmitChanges(): void {
-    this.formService.emmitChanges();
   }
 }

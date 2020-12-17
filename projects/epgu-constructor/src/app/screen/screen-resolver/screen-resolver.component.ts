@@ -1,35 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { Component } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
 import { ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-screen-resolver',
   templateUrl: './screen-resolver.component.html',
   styleUrls: ['./screen-resolver.component.scss'],
-  providers: [UnsubscribeService],
 })
-export class ScreenResolverComponent implements OnInit {
-  screenComponent: ScreenComponent;
+export class ScreenResolverComponent {
+  screenComponent$: Observable<ScreenComponent> = this.screenService.screenType$.pipe(
+    map((screenType) => {
+      return this.setScreenComponent(screenType);
+    }),
+  );
 
-  constructor(private screenService: ScreenService, private ngUnsubscribe$: UnsubscribeService) {}
+  constructor(private screenService: ScreenService) {}
 
-  ngOnInit(): void {
-    this.screenService.screenType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((screenType) => {
-      // @todo. this.setScreenComponent выбрасывает исключение, если screenType не задан при инициализации компонента
-      // возможно здесь следует добавить фильтрацию на не NULL
-      this.setScreenComponent(screenType);
-    });
-  }
+  setScreenComponent(screenType: ScreenTypes): ScreenComponent {
+    const screenComponent = this.getScreenComponentByType(screenType);
 
-  setScreenComponent(screenType: ScreenTypes): void {
-    this.screenComponent = this.getScreenComponentByType(screenType);
-
-    if (!this.screenComponent) {
+    if (!screenComponent) {
       this.handleScreenComponentError(screenType);
     }
+
+    return screenComponent;
   }
 
   getScreenComponentByType(screenType: ScreenTypes): ScreenComponent {
@@ -37,7 +34,6 @@ export class ScreenResolverComponent implements OnInit {
   }
 
   private handleScreenComponentError(screenType: ScreenTypes): never {
-    // TODO: need to find a better way for handling this error, maybe show it on UI
     throw new Error(`We cant find screen component for this screen type: ${screenType}`);
   }
 }
