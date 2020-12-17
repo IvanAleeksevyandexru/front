@@ -195,8 +195,9 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     }
 
     const {
-      serviceCode,
+      preliminaryReservation,
       serviceId,
+      serviceCode,
       subject,
       eserviceId,
       calendarName,
@@ -205,11 +206,10 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     } = this.config.timeSlots.brak;
 
     return {
-      preliminaryReservation: 'true',
+      preliminaryReservation,
       address: this.department.attributeValues.ADDRESS,
       orgName: this.department.attributeValues.FULLNAME,
       routeNumber,
-      serviceCode,
       subject,
       params: [
         {
@@ -218,6 +218,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
         },
       ],
       eserviceId,
+      serviceCode,
       bookId: this.bookId,
       organizationId: this.department.attributeValues.CODE,
       calendarName,

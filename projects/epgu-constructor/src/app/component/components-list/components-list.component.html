@@ -330,10 +330,11 @@
     [invalid]="data.get('value').invalid && data.get('value').touched"
     [name]="data.value?.id"
     [control]="data.get('value')"
-    (blurEvent)="validateOnBlur(data.get('value'), data.value)"
     [validationShowOn]="validationShowOn"
     [readOnly]="data.value?.attrs?.readonly"
     [placeholder]="data.value?.attrs?.placeholder"
+    [component]="data.value"
+    (emmitChangesEvent)="emmitChanges()"
   ></epgu-constructor-constructor-plain-input>
 </ng-template>
 
@@ -350,9 +351,10 @@
     [showConstantMaskSymbols]="true"
     [placeholder]="data.value?.attrs?.placeholder"
     [control]="data.get('value')"
-    (blurEvent)="validateOnBlur(data.get('value'), data.value)"
     [invalid]="data.get('value').invalid && data.get('value').touched"
     [isTrim]="false"
+    [component]="data.value"
+    (emmitChangesEvent)="emmitChanges()"
   ></epgu-constructor-masked-input>
 </ng-template>
 

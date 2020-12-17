@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
+import { SmuEventsService } from 'epgu-lib';
 import { Subject } from 'rxjs';
 import { Navigation } from '../../../form-player/form-player.types';
-import { SmuEventsService } from 'epgu-lib';
-import { ConfigService } from '../../config/config.service';
 import {
   MobilViewEvents,
-  OPTIONS_FEED_MV,
-  OPTIONS_FEED_EXIT,
+
+  OPTIONS_FEED_EXIT, OPTIONS_FEED_MV
 } from '../../../shared/constants/redirect-event';
+import { ConfigService } from '../../config/config.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 
 /**
@@ -68,6 +68,10 @@ export class NavigationService {
     } else {
       window.location.href = '/';
     }
+  }
+
+  redirectTo(url: string): void {
+    window.location.href = url;
   }
 
   private navigateInsideWebView(options: typeof OPTIONS_FEED_MV | typeof OPTIONS_FEED_EXIT): void {

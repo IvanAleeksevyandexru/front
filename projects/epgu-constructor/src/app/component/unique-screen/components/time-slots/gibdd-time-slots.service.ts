@@ -202,8 +202,9 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     }
 
     const {
-      serviceCode,
+      preliminaryReservation,
       serviceId,
+      serviceCode,
       subject,
       eserviceId,
       calendarName,
@@ -212,12 +213,12 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     } = this.config.timeSlots.gibdd;
 
     return {
-      preliminaryReservation: 'true',
+      preliminaryReservation,
       address: this.department.attributeValues.address,
       orgName: this.department.title,
       routeNumber,
-      serviceCode,
       subject,
+      serviceCode,
       eserviceId,
       bookId: this.bookId,
       organizationId: this.department.attributeValues.code,

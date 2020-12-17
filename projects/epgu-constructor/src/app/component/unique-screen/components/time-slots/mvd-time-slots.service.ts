@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from '../../../../core/config/config.service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
+import { ConfigService } from '../../../../core/config/config.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
@@ -146,16 +146,16 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
 
   private getSlotsRequest(): TimeSlotReq {
     const {
-      serviceCode,
       serviceId,
+      serviceCode,
       eserviceId,
     } = this.config.timeSlots.mvd;
 
     return {
       organizationId: [this.department.value],
       serviceId: [serviceId],
-      eserviceId,
       serviceCode,
+      eserviceId,
       attributes: []
     };
   }
@@ -166,8 +166,8 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     }
 
     const {
-      serviceCode,
       serviceId,
+      serviceCode,
       subject,
       eserviceId,
       calendarName,
@@ -176,8 +176,8 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     return {
       address: this.department.attributeValues.ADDRESS_OUT,
       orgName: this.department.title,
-      serviceCode,
       subject,
+      serviceCode,
       eserviceId,
       bookId: this.bookId,
       organizationId: this.department.value,

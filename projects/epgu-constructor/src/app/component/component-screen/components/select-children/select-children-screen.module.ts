@@ -6,12 +6,13 @@ import { ComponentsListModule } from '../../../components-list/components-list.m
 import { CoreModule } from '../../../../core/core.module';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { BaseModule } from '../../../../shared/components/base/base.module';
+import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
 
 const COMPONENTS = [SelectChildrenScreenComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
-  imports: [CoreModule, ComponentsListModule, ConstructorDropdownModule, BaseModule],
+  imports: [CoreModule, ComponentsListModule, ConstructorDropdownModule, BaseModule, CloneButtonModule],
   exports: [...COMPONENTS],
   providers: [ScreenService, CachedAnswersService],
 })

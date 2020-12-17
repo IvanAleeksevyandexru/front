@@ -86,15 +86,15 @@ export type CustomComponentDropDownItem = {
  */
 export interface CustomComponentAttr {
   dictionaryList?: CustomComponentDropDownItemList;
-  dictionaryType: string;
-  labelAttr: string;
-  fields: Array<{
+  dictionaryType?: string;
+  labelAttr?: string;
+  fields?: Array<{
     fieldName?: string;
     label?: string;
     type?: string;
   }>;
-  ref: Array<CustomComponentRef & Ref>; //TODO разобраться с типами
-  validation: Array<CustomComponentAttrValidation>;
+  ref?: Array<CustomComponentRef & Ref>; //TODO разобраться с типами
+  validation?: Array<CustomComponentAttrValidation>;
   requiredAttrs?: Array<string>;
   updateOnValidation?: UpdateOn;
   supportedValues?: Array<SupportedValue>;

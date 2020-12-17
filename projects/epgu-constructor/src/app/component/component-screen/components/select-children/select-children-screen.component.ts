@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
@@ -31,6 +31,12 @@ interface ChildI extends Partial<ListElement> {
 })
 export class SelectChildrenScreenComponent implements OnInit {
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
+
+  addSectionLabel$ = this.screenService.componentLabel$.pipe(
+    map((label) => {
+      return label || 'Добавить ребенка';
+    }),
+  );
 
   data$: Observable<ComponentBase> = this.screenService.component$;
   NEW_ID = 'new';

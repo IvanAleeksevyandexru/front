@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
-import { InvalidControlMsg, REQUIRED_FIELD } from '../../../../shared/constants/helper-texts';
+import { InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
 import {
   CustomComponent,
   CustomComponentAttrValidation,
   CustomScreenComponentTypes,
-} from '../../components-list.types';
+} from '../../../component/components-list/components-list.types';
 
 @Injectable()
 export class ValidationService {
@@ -62,16 +62,20 @@ export class ValidationService {
     };
   }
 
-  customAsyncValidator(component: CustomComponent, asyncValudationType: string): AsyncValidatorFn {
+  customAsyncValidator(component: CustomComponent, asyncValidationType: string): AsyncValidatorFn {
     const componentValidations = component.attrs?.validation;
     const onBlurValidations = componentValidations.filter(
       (validationRule) => validationRule.updateOn === 'blur',
     );
 
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (component.required && !control.value) {
+        return of(this.validationErrorMsg(control.touched ? REQUIRED_FIELD : ''));
+      }
+
       let customMessage;
 
-      if (asyncValudationType === 'blur' && onBlurValidations?.length) {
+      if (asyncValidationType === 'blur' && onBlurValidations?.length) {
         const error = this.getError(onBlurValidations, control);
         if (error) {
           return of(this.validationErrorMsg(error.errorMsg));

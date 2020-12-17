@@ -25,27 +25,30 @@
       "gibdd": {
         "subject": "Запись на прием",
         "calendarName": "Запись на прием",
-        "serviceCode": "-10001970000",
         "serviceId": "10000593393",
+        "serviceCode": "-10001970000",
         "eserviceId": "10000070732",
+        "preliminaryReservation": "true",
         "preliminaryReservationPeriod": "240",
         "routeNumber": "46000000000"
       },
       "divorce": {
         "subject": "Регистрация расторжения брака",
         "calendarName": "на услугу «Регистрация расторжения брака»",
-        "serviceCode": "-100000100821",
         "serviceId": "ЗагсРазводФорма12-1",
+        "serviceCode": "-100000100821",
         "eserviceId": "10000057526",
+        "preliminaryReservation": "true",
         "preliminaryReservationPeriod": "1440",
         "routeNumber": "45382000"
       },
       "brak": {
         "subject": "Регистрация заключения брака",
         "calendarName": "на услугу «Регистрация заключения брака»",
-        "serviceCode": "-100000100821",
         "serviceId": "ЗагсБрак",
+        "serviceCode": "-100000100821",
         "eserviceId": "10000057526",
+        "preliminaryReservation": "true",
         "preliminaryReservationPeriod": "1440",
         "routeNumber": "45382000"
       }

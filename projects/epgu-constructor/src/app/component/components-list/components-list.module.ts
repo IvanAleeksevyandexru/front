@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ValidationService } from './services/validation/validation.service';
+import { ValidationService } from '../../shared/services/validation/validation.service';
 import { AddressHelperService } from './services/address-helper/address-helper.service';
 import { ComponentListToolsService } from './services/component-list-tools/component-list-tools.service';
 import { ComponentsListComponent } from './components-list.component';
