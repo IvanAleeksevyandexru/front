@@ -6,6 +6,7 @@ export const environment = {
   invited: false,
   core: {
     config: {
+      apiUrl: '/api',
       ipshApi: 'https://pgu-dev-fed.test.gosuslugi.ru/api/pay/v1/',
       nsiApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/',
       storageApi: 'https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/',

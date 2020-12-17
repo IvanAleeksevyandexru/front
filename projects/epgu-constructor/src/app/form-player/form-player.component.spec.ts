@@ -172,6 +172,28 @@ describe('FormPlayerComponent', () => {
       expect(formPlayerConfigApiService.getFormPlayerConfig).not.toBeCalled();
     });
 
+    it('shouldn\'t call initCore method of configService when loadService not loaded', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      loadService.loaded.next(false);
+      spyOn(configService, 'initCore').and.callThrough();
+      component['initFormPlayerConfig']();
+      expect(configService.initCore).not.toBeCalled();
+    });
+
+    it('should call initCore method of configService when loadService has loaded', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      loadService.loaded.next(true);
+      spyOn(configService, 'initCore').and.callThrough();
+      component['initFormPlayerConfig']();
+      expect(configService.initCore).toBeCalled();
+    });
+
     it('should call getFormPlayerConfig method of formPlayerConfigApiService when loadService has loaded', () => {
       const fixture = TestBed.createComponent(FormPlayerComponent);
       const component = fixture.componentInstance;
@@ -181,6 +203,17 @@ describe('FormPlayerComponent', () => {
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
       component['initFormPlayerConfig']();
       expect(formPlayerConfigApiService.getFormPlayerConfig).toBeCalled();
+    });
+
+    it('should call getResultConfig method twice when loadService has loaded', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      loadService.loaded.next(true);
+      spyOn<any>(component, 'getResultConfig').and.callThrough();
+      component['initFormPlayerConfig']();
+      expect(component['getResultConfig']).toBeCalledTimes(2);
     });
 
     it('should set form player config', () => {
@@ -194,6 +227,28 @@ describe('FormPlayerComponent', () => {
       const setterSpy = jest.spyOn(configService, 'config', 'set');
       component['initFormPlayerConfig']();
       expect(setterSpy).toBeCalled();
+    });
+  });
+
+  describe('getResultConfig()', () => {
+    it('should return passed config when apiUrl service property is empty', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      spyOn<any>(component, 'nextStep').and.callThrough();
+      const config = component['getResultConfig']();
+      expect(config).toEqual({});
+    });
+
+    it('should return config with apiUrl when apiUrl service property has value', () => {
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = { ...serviceDataMock, apiUrl: '/someApiUrl' };
+      fixture.detectChanges();
+      spyOn<any>(component, 'nextStep').and.callThrough();
+      const config = component['getResultConfig']();
+      expect(config).toEqual({ apiUrl: '/someApiUrl' });
     });
   });
 

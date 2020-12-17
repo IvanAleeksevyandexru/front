@@ -3,6 +3,7 @@ import { Config, MockApi, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
+  _apiUrl = '/api';
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
   _timeSlotApiUrl = '';
@@ -19,6 +20,10 @@ export class ConfigServiceStub implements Config {
   _mockUrl = '';
   _timeSlots = {};
   _disableUnderConstructionMode = false;
+
+  get apiUrl(): string {
+    return this._apiUrl;
+  }
 
   get billsApiUrl(): string {
     return this._billsApiUrl;
@@ -83,6 +88,8 @@ export class ConfigServiceStub implements Config {
   get disableUnderConstructionMode(): boolean {
     return this._disableUnderConstructionMode;
   }
+
+  initCore(): void {}
 
   set config(config: Config) {
     this._billsApiUrl = config.billsApiUrl;
