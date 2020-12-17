@@ -19,6 +19,7 @@ export class ConfigServiceStub implements Config {
   _mockUrl = '';
   _timeSlots = {};
   _disableUnderConstructionMode = false;
+  _addToCalendarUrl = '';
 
   get billsApiUrl(): string {
     return this._billsApiUrl;
@@ -84,6 +85,10 @@ export class ConfigServiceStub implements Config {
     return this._disableUnderConstructionMode;
   }
 
+  get addToCalendarUrl(): string {
+    return this._addToCalendarUrl;
+  }
+
   set config(config: Config) {
     this._billsApiUrl = config.billsApiUrl;
     this._dictionaryUrl = config.dictionaryUrl;
@@ -101,5 +106,6 @@ export class ConfigServiceStub implements Config {
     this._mockUrl = config.mockUrl;
     this._timeSlots = config.timeSlots;
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
+    this._addToCalendarUrl = config.addToCalendarUrl;
   }
 }

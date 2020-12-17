@@ -5,7 +5,7 @@ import {
   EventEmitter,
   Output,
 } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -15,11 +15,11 @@ import {
   removeItemFromArrByIndex,
 } from './repeatable-fields.constant';
 import {
-  CustomComponentOutputData,
   CustomComponent,
+  CustomComponentOutputData,
 } from '../../../components-list/components-list.types';
-import { Answer } from '../../../../shared/types/answer';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenTypes } from '../../../../screen/screen.types';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
@@ -39,26 +39,17 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
    */
   screens: { [key: string]: CustomComponent[] };
   propData: DisplayDto;
-  cache: Answer;
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
-    map((label) => {
-      return label || 'Добавить данные';
-    }),
+    map((label) => label || 'Добавить данные'),
   );
   data$: Observable<DisplayDto> = this.screenService.display$;
   init$: Observable<DisplayDto> = this.data$.pipe(
+    filter((data) => data.type === ScreenTypes.UNIQUE),
     tap((data: DisplayDto) => {
-      this.cache = this.getCache();
       this.initVariable();
       this.propData = data;
 
-      const isCached = Object.keys(this.cache || {}).length;
-
-      if (isCached) {
-        this.duplicateScreenAndPatch();
-      } else {
-        this.duplicateScreen();
-      }
+      this.duplicateScreen();
     }),
   );
 
@@ -83,10 +74,14 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     );
   }
 
-  duplicateScreen(): void {
-    if (this.isScreensAvailable()) {
-      const id = this.getNewId();
-      this.screens[id] = this.propData.components[0].attrs.components as CustomComponent[];
+  duplicateScreen(isNew?: boolean): void {
+    const isScreensAvailable = this.isScreensAvailable();
+    if (isScreensAvailable && isNew) {
+      this.setNewScreen(this.propData.components[0].attrs.components as CustomComponent[]);
+    } else if (isScreensAvailable) {
+      this.propData.components[0].attrs.repeatableComponents.forEach((component) => {
+        this.setNewScreen((component as unknown) as CustomComponent[]);
+      });
     }
   }
 
@@ -120,10 +115,9 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     this.currentAnswersService.state = JSON.stringify(state);
   }
 
-  private initVariable(): void {
-    this.screens = {};
-    this.componentId = 0;
-    this.saveState([]);
+  private setNewScreen(components: CustomComponent[]): void {
+    const id = this.getNewId();
+    this.screens[id] = components;
   }
 
   private getNewId(): string {
@@ -131,28 +125,9 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     return this.componentId.toString();
   }
 
-  private duplicateScreenAndPatch(): void {
-    let cache;
-    try {
-      cache = JSON.parse(this.cache.value);
-    } catch (e) {
-      cache = {};
-    }
-    Object.keys(cache).forEach((key: string) => {
-      this.duplicateScreen();
-      Object.entries(cache[key]).forEach(([componentId, value]) => {
-        const index: number = Object.keys(this.screens).length;
-        this.screens[index] = this.screens[index].map((component: CustomComponent) => {
-          if (component.id === componentId) {
-            return { ...component, value: value as string };
-          }
-          return { ...component } as CustomComponent;
-        });
-      });
-    });
-  }
-
-  private getCache(): Answer {
-    return this.screenService.getStore().cachedAnswers[this.screenService.component.id];
+  private initVariable(): void {
+    this.screens = {};
+    this.componentId = 0;
+    this.saveState([]);
   }
 }

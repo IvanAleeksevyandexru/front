@@ -1,6 +1,7 @@
 import { RepeatableFieldsComponent } from './repeatable-fields.component';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -26,6 +27,7 @@ describe('RepeatableFieldsComponent', () => {
         type: 'RepeatableFields',
         label: 'Добавить еще  ФИО',
         attrs: {
+          repeatableComponents: [],
           repeatAmount: '20',
           components: [
             {
@@ -134,7 +136,6 @@ describe('RepeatableFieldsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RepeatableFieldsComponent);
     component = fixture.componentInstance;
-    spyOn<any>(component, 'getCache').and.returnValue({});
     fixture.detectChanges();
   });
 

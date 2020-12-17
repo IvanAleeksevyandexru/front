@@ -18,14 +18,14 @@
         <epgu-constructor-components-list
           class="cmp-group__item"
           [components]="$any(screens[screenKey])"
-          [errors]="screenService.getStore().errors"
+          [errors]="screenService.componentErrors$ | async"
           (changes)="changeComponentList($event, i)"
         >
         </epgu-constructor-components-list>
       </epgu-constructor-screen-pad>
     </div>
 
-    <epgu-constructor-clone-button [disabled]="!isScreensAvailable()" (click)="duplicateScreen()"
+    <epgu-constructor-clone-button [disabled]="!isScreensAvailable()" (click)="duplicateScreen(true)"
       >{{ addSectionLabel$ | async }}</epgu-constructor-clone-button
     >
   </div>

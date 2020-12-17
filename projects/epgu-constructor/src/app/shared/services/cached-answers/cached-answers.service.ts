@@ -14,12 +14,12 @@ export const componentsNoCache: Array<string> = [
 
 @Injectable()
 export class CachedAnswersService {
-  getCachedValueById(answers: CachedAnswers, id: string): string {
-    return answers[id]?.value;
+  getCachedValueById(answers: CachedAnswers, id: string): string | null{
+    return answers[id]?.value || null;
   }
 
   // TODO нужно утащить на backend (HARDCODE from backend)
-  shouldBeTakenFromTheCache(component: ComponentDto): boolean {
-    return !componentsNoCache.includes(component.type);
+  shouldBeTakenFromTheCache(type: string): boolean {
+    return !componentsNoCache.includes(type);
   }
 }

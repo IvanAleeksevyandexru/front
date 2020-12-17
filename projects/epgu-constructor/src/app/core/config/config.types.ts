@@ -4,15 +4,15 @@
 export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
 export type TimeSlotsApi = {
   [key: string]: {
-    subject?: string,
-    calendarName?: string,
-    preliminaryReservation: 'true' | 'false',
-    serviceId: string,
-    serviceCode?: string,
-    eserviceId: string,
-    preliminaryReservationPeriod?: string,
-    routeNumber: string,
-  }
+    subject?: string;
+    calendarName?: string;
+    preliminaryReservation: 'true' | 'false';
+    serviceId: string;
+    serviceCode?: string;
+    eserviceId: string;
+    preliminaryReservationPeriod?: string;
+    routeNumber: string;
+  };
 };
 
 /**
@@ -49,6 +49,7 @@ export interface Config {
   mockUrl?: string;
   timeSlots?: TimeSlotsApi;
   disableUnderConstructionMode?: boolean;
+  addToCalendarUrl?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';

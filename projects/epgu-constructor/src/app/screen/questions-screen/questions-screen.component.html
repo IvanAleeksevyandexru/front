@@ -28,13 +28,16 @@
     <ng-container *ngIf="rejectAction">
       <ng-content *ngTemplateOutlet="footerActionAndSubmit"></ng-content>
     </ng-container>
+    <ng-container *ngIf="screenActionButtons.length">
+      <ng-container *ngTemplateOutlet="screenActionBtns"></ng-container>
+    </ng-container>
   </div>
 </epgu-constructor-screen-container>
 
 <!-- TODO: удалить после переезда на механизм явных answers -->
 <ng-template #actionAsLongBtn>
   <div class="quiz__answers">
-    <ng-container *ngFor="let action of screenService.component?.attrs?.actions">
+    <ng-container *ngFor="let action of componentActions">
       <epgu-constructor-answer-button
         [data]="action"
         class="quiz__answer"
@@ -49,7 +52,7 @@
 
 <ng-template #answerAsLongBtn>
   <div class="quiz__answers">
-    <ng-container *ngFor="let answer of screenService.component?.attrs?.answers">
+    <ng-container *ngFor="let answer of componentAnswers">
       <epgu-constructor-answer-button
         [data]="answer"
         class="quiz__answer"
@@ -75,5 +78,16 @@
     data-testid="submit-btn"
   >
     {{ submitLabel }}
+  </lib-button>
+</ng-template>
+
+<ng-template #screenActionBtns>
+  <lib-button
+    *ngFor="let action of screenActionButtons"
+    epgu-constructor-action
+    [action]="action"
+    [color]="action.color"
+  >
+    <div>{{ action.label }}</div>
   </lib-button>
 </ng-template>
