@@ -1,27 +1,27 @@
 <epgu-constructor-screen-container>
-
   <div class="screen-body">
-    <epgu-constructor-page-name>{{screenService.header$ | async}}</epgu-constructor-page-name>
+    <epgu-constructor-page-name>{{ screenService.header$ | async }}</epgu-constructor-page-name>
 
     <epgu-constructor-screen-pad class="body">
       <epgu-constructor-components-list
         [components]="$any((screenService.display$ | async)?.components)"
         [errors]="screenService.componentErrors$ | async"
-        (changes)="changeComponentsList($event)">
-
+        (changes)="changeComponentsList($event)"
+      >
       </epgu-constructor-components-list>
     </epgu-constructor-screen-pad>
   </div>
 
   <div class="screen-footer">
-      <lib-button
-        *ngIf="screenService.submitLabel$ | async"
-        [showLoader]="screenService.isLoading$ | async"
-        (click)="nextStep()"
-        class="btn__submit"
-        [disabled]="(screenService.isLoading$ | async) || !isValid"
-      >
-        {{ screenService.submitLabel$ | async }}
-      </lib-button>
-    </div>
+    <!-- TODO: добавить поддержку вывода ScreenActionDto  -->
+    <lib-button
+      *ngIf="screenService.submitLabel$ | async"
+      [showLoader]="screenService.isLoading$ | async"
+      (click)="nextStep()"
+      class="btn__submit"
+      [disabled]="(screenService.isLoading$ | async) || !isValid"
+    >
+      {{ screenService.submitLabel$ | async }}
+    </lib-button>
+  </div>
 </epgu-constructor-screen-container>
