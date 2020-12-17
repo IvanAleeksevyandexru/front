@@ -23,7 +23,7 @@ export class CarInfoComponent {
     map((display: DisplayDto) => JSON.parse(display.components[0].value)),
   );
 
-  constructor(private screenService: ScreenService) {}
+  constructor(public screenService: ScreenService) {}
 
   nextStep(carInfo: CarInfoValues): void {
     this.nextStepEvent.emit(JSON.stringify(carInfo));

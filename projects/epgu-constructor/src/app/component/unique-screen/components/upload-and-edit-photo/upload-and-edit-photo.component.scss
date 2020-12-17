@@ -19,6 +19,7 @@
     background-color: $color-white;
     border-radius: 8px;
     flex-basis: 344px;
+    max-width: 344px; // ie не включает padding в flex-basis
     padding: 32px;
 
     .file-over {

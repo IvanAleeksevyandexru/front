@@ -86,7 +86,7 @@ export class TimeSlotsComponent implements OnInit {
     private currentAnswersService: CurrentAnswersService,
     public constants: TimeSlotsConstants,
     private ngUnsubscribe$: UnsubscribeService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
   ) {
     this.timeSlotServices.BRAK = this.brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = this.divorceTimeSlotsService;

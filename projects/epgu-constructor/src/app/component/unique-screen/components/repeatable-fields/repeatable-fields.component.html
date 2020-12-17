@@ -1,4 +1,7 @@
-<epgu-constructor-screen-container *ngIf="init$ | async">
+<epgu-constructor-screen-container *ngIf="init$ | async"
+                                   [show-nav]="screenService.showNav$ | async"
+                                   [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
   <div class="screen-body">
     <epgu-constructor-page-name>{{ propData.header }}</epgu-constructor-page-name>
 
