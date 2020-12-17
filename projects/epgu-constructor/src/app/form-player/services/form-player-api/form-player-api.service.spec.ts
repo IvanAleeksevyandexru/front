@@ -6,6 +6,8 @@ import { ServiceDataService } from '../service-data/service-data.service';
 import { Gender } from '../../../shared/types/gender';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { ServiceDataServiceStub } from '../service-data/service-data.service.stub';
+import { LocationService } from '../../../core/services/location/location.service';
+import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 
 
 describe('FormPlayerApiService', () => {
@@ -58,6 +60,8 @@ describe('FormPlayerApiService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
+        LocationService,
+        WINDOW_PROVIDERS,
         { provide: ServiceDataService, useClass: ServiceDataServiceStub }
       ]
     });

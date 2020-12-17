@@ -9,6 +9,7 @@ import { SmuEventsService } from 'epgu-lib';
 import { SmuEventsServiceStub } from '../device-detector/smu-events.service.stub';
 import { MobilViewEvents } from '../../../shared/constants/redirect-event';
 import { LocationService } from '../location/location.service';
+import { WINDOW_PROVIDERS } from '../../providers/window.provider';
 
 describe('NavigationService', () => {
   let navigationService: NavigationService;
@@ -22,6 +23,7 @@ describe('NavigationService', () => {
       providers: [
         NavigationService,
         LocationService,
+        WINDOW_PROVIDERS,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: SmuEventsService, useClass: SmuEventsServiceStub },

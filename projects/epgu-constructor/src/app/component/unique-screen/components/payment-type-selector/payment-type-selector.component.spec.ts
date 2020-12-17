@@ -21,6 +21,8 @@ import { ScreenContainerModule } from '../../../../shared/components/screen-cont
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { AnswerButtonModule } from '../../../../shared/components/answer-button/answer-button.module';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
+import { LocationService } from '../../../../core/services/location/location.service';
+import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -72,6 +74,8 @@ describe('PaymentTypeSelectorComponent', () => {
       providers: [
         HealthService,
         DatePipe,
+        LocationService,
+        WINDOW_PROVIDERS,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },

@@ -10,6 +10,8 @@ import { Subject } from 'rxjs';
 import { WebcamService } from '../../services/webcam/webcam.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
+import { LocationService } from '../../../../core/services/location/location.service';
+import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 
 class МockScreenService {
   header = '';
@@ -55,6 +57,8 @@ describe('UploadAndEditPhotoComponent', () => {
         HealthService,
         ConfigService,
         WebcamService,
+        LocationService,
+        WINDOW_PROVIDERS,
         { provide: ScreenService, useClass: МockScreenService },
       ],
     })

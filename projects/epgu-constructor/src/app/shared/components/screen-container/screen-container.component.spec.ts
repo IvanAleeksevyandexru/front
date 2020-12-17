@@ -7,6 +7,8 @@ import { HealthService } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NavigationModule } from '../navigation/navigation.module';
 import { CoreModule } from '../../../core/core.module';
+import { LocationService } from '../../../core/services/location/location.service';
+import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 
 describe('ScreenContainerComponent', () => {
   let component: ScreenContainerComponent;
@@ -17,7 +19,12 @@ describe('ScreenContainerComponent', () => {
       TestBed.configureTestingModule({
         imports: [CoreModule, RouterTestingModule, NavigationModule],
         declarations: [ScreenContainerComponent],
-        providers: [HealthService, { provide: ScreenService, useClass: ScreenServiceStub }],
+        providers: [
+          LocationService,
+          WINDOW_PROVIDERS,
+          HealthService,
+          { provide: ScreenService, useClass: ScreenServiceStub }
+        ],
       }).compileComponents();
     }),
   );
