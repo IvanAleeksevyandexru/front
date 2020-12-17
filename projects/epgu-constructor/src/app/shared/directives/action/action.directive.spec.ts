@@ -23,6 +23,8 @@ import {
 import { Observable, of } from 'rxjs';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
+import { ConfigService } from '../../../core/config/config.service';
+import { ConfigServiceStub } from '../../../core/config/config.service.stub';
 
 @Component({
   selector: 'epgu-constructor-action-test',
@@ -120,6 +122,7 @@ describe('ActionDirective', () => {
     TestBed.configureTestingModule({
       declarations: [ActionDirective, ActionTestComponent],
       providers: [
+        { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
