@@ -64,7 +64,11 @@
 
   <div class="screen-footer">
     <ng-container *ngIf="isShowActionBtn">
-      <ng-container *ngTemplateOutlet="actionBtns"></ng-container>
+      <ng-container *ngTemplateOutlet="componentActionBtns"></ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="screenActionButtons.length">
+      <ng-container *ngTemplateOutlet="screenActionBtns"></ng-container>
     </ng-container>
 
     <ng-container *ngIf="componentSetting.displayContinueBtn">
@@ -77,9 +81,20 @@
   </div>
 </epgu-constructor-screen-container>
 
-<ng-template #actionBtns>
+<ng-template #componentActionBtns>
   <lib-button
-    *ngFor="let action of screenService.actions$ | async"
+    *ngFor="let action of actionButtons"
+    epgu-constructor-action
+    [action]="action"
+    [color]="action.color"
+  >
+    <div>{{ action.label }}</div>
+  </lib-button>
+</ng-template>
+
+<ng-template #screenActionBtns>
+  <lib-button
+    *ngFor="let action of screenActionButtons"
     epgu-constructor-action
     [action]="action"
     [color]="action.color"

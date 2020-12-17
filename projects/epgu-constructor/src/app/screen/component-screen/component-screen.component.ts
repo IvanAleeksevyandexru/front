@@ -2,6 +2,10 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import {
+  ComponentActionDto,
+  ScreenActionDto,
+} from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenBase } from '../screenBase';
 
@@ -20,6 +24,8 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
   // <-- constant
   screenComponentName = ComponentScreenComponentTypes;
   isShowActionBtn = false;
+  actionButtons: ComponentActionDto[] = [];
+  screenActionButtons: ScreenActionDto[] = [];
 
   // <-- variables
   componentSetting: ComponentSetting = {
@@ -36,6 +42,16 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
     this.screenService.componentType$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((type) => this.calcIsShowActionBtn(type as ComponentScreenComponentTypes));
+    this.screenService.actions$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((actions: Array<ComponentActionDto>): void => {
+        this.actionButtons = actions || [];
+      });
+    this.screenService.buttons$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((buttons: Array<ScreenActionDto>) => {
+        this.screenActionButtons = buttons || [];
+      });
   }
 
   /**
