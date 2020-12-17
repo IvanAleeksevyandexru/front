@@ -197,6 +197,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     const {
       preliminaryReservation,
       serviceId,
+      serviceCode,
       subject,
       eserviceId,
       calendarName,
@@ -217,6 +218,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
         },
       ],
       eserviceId,
+      serviceCode,
       bookId: this.bookId,
       organizationId: this.department.attributeValues.CODE,
       calendarName,

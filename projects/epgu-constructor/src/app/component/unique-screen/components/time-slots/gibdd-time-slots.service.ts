@@ -204,6 +204,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     const {
       preliminaryReservation,
       serviceId,
+      serviceCode,
       subject,
       eserviceId,
       calendarName,
@@ -217,6 +218,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
       orgName: this.department.title,
       routeNumber,
       subject,
+      serviceCode,
       eserviceId,
       bookId: this.bookId,
       organizationId: this.department.attributeValues.code,
