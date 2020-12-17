@@ -166,17 +166,17 @@ describe('RepeatableFieldsComponent', () => {
       expect(debugEl).toBeTruthy();
     });
 
-    it('showNav property should be TRUE if screenService.terminal === FALSE, otherwise should be FALSE', () => {
+    it('showNav property should be TRUE if screenService.showNav is TRUE, otherwise should be FALSE', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl.componentInstance.showNav).toBeFalsy();
 
-      screenService.terminal = true;
+      screenService.showNav = false;
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.showNav).toBeFalsy();
 
-      screenService.terminal = false;
+      screenService.showNav = true;
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.showNav).toBeTruthy();

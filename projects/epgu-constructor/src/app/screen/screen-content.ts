@@ -75,6 +75,16 @@ export class ScreenContent {
     return this._terminal.asObservable();
   }
 
+  public get showNav(): boolean {
+    return this._showNav.getValue();
+  }
+  public set showNav(val: boolean) {
+    this._showNav.next(val);
+  }
+  public get showNav$(): Observable<boolean> {
+    return this._showNav.asObservable();
+  }
+
   public get displayCssClass(): string {
     return this._displayCssClass.getValue();
   }
@@ -211,6 +221,7 @@ export class ScreenContent {
   private _submitLabel = new BehaviorSubject<string>(null);
   private _gender = new BehaviorSubject<Gender>(null);
   private _terminal = new BehaviorSubject<boolean>(null);
+  private _showNav = new BehaviorSubject<boolean>(null);
   private _displayCssClass = new BehaviorSubject<string>(null);
   private _screenType = new BehaviorSubject<ScreenTypes>(null);
   private _orderId = new BehaviorSubject<string>(null);
@@ -242,6 +253,7 @@ export class ScreenContent {
     this.screenType = type;
     this.gender = gender;
     this.terminal = terminal;
+    this.showNav = !terminal;
     this.displayCssClass = cssClass;
     this.orderId = orderId;
     this.componentErrors = errors;

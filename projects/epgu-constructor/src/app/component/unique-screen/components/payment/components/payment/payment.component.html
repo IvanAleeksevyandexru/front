@@ -1,6 +1,6 @@
 <epgu-constructor-screen-container
-  [show-nav]="(screenService.terminal$ | async) === false"
-  [class.screen-container-mt]="screenService.terminal$ | async"
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
 
   <div class="screen-body">

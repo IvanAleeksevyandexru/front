@@ -2,8 +2,8 @@
 <!--  <h3 *ngIf="paymentUIN">Использована оплата по УИН {{paymentUIN}}</h3>-->
 <!--</div>-->
 <epgu-constructor-screen-container *ngIf="(data$ | async) as data"
-                                   [show-nav]="(screenService.terminal$ | async) === false"
-                                   [class.screen-container-mt]="screenService.terminal$ | async"
+                                   [show-nav]="screenService.showNav$ | async"
+                                   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
   <div class="inner">
     <div *ngIf="data?.name" class="head">
