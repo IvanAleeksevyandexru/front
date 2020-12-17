@@ -2,7 +2,6 @@ import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
-
 import { CoreModule } from '../../../../core/core.module';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
@@ -15,7 +14,6 @@ import { ConfigService } from '../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { of } from 'rxjs';
 import { BaseModule } from '../../../../shared/components/base/base.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
@@ -82,7 +80,7 @@ describe('PaymentTypeSelectorComponent', () => {
 
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
-    screenService.component$ = of(mockComponent);
+    screenService.component = mockComponent;
     fixture = TestBed.createComponent(PaymentTypeSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

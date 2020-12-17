@@ -4,7 +4,6 @@ import { map, takeUntil } from 'rxjs/operators';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
-
 import { Observable } from 'rxjs';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -77,26 +76,6 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.idRef = this.getRefFromComponent('id');
     this.passportRef = this.getRefFromComponent('rfPasportSeries');
     this.itemsToSelect = this.getItemsToSelect(itemsList);
-  }
-
-  private getItemsToSelect(itemsList: Array<{ [key: string]: string }>): ChildI[] {
-    return itemsList
-      .map<ChildI>((child) => {
-        return {
-          ...child,
-          id: child[this.idRef],
-          text: child[this.firstNameRef],
-        };
-      })
-      .concat(this.getChildForAddChildren(this.idRef));
-  }
-
-  private getChildForAddChildren(prop: string): ChildI {
-    return {
-      id: this.NEW_ID,
-      text: 'Добавить нового ребенка',
-      [prop]: this.NEW_ID,
-    };
   }
 
   initStartValues(id: string): void {
@@ -237,6 +216,14 @@ export class SelectChildrenScreenComponent implements OnInit {
     return screensAmount >= repeatAmount;
   }
 
+  isNewId(itemId: string = 'false'): boolean {
+    return JSON.parse(itemId);
+  }
+
+  isMoreThanOneChild(): boolean {
+    return this.items.length > 1;
+  }
+
   private setHideStateToSelectedItems(): void {
     this.itemsToSelect = this.itemsToSelect.map((child) => {
       // eslint-disable-next-line no-param-reassign
@@ -264,11 +251,23 @@ export class SelectChildrenScreenComponent implements OnInit {
     });
   }
 
-  isNewId(itemId: string = 'false'): boolean {
-    return JSON.parse(itemId);
+  private getItemsToSelect(itemsList: Array<{ [key: string]: string }>): ChildI[] {
+    return itemsList
+      .map<ChildI>((child) => {
+        return {
+          ...child,
+          id: child[this.idRef],
+          text: child[this.firstNameRef],
+        };
+      })
+      .concat(this.getChildForAddChildren(this.idRef));
   }
 
-  isMoreThanOneChild(): boolean {
-    return this.items.length > 1;
+  private getChildForAddChildren(prop: string): ChildI {
+    return {
+      id: this.NEW_ID,
+      text: 'Добавить нового ребенка',
+      [prop]: this.NEW_ID,
+    };
   }
 }

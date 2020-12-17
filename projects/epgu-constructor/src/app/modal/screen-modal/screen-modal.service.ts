@@ -12,14 +12,18 @@ import { FormPlayerBaseService } from '../../shared/services/form-player-base/fo
 
 @Injectable()
 export class ScreenModalService extends FormPlayerBaseService {
+  public get minContentHeight$(): Observable<number> {
+    return this.minContentHeightSubject.asObservable();
+  }
+  public get isInternalScenarioFinish$(): Observable<boolean> {
+    return this.isInternalScenarioFinishSub.asObservable();
+  }
+
   private _initStore: FormPlayerApiSuccessResponse;
   private minContentHeight = 0;
 
   private minContentHeightSubject = new BehaviorSubject<number>(this.minContentHeight);
   private isInternalScenarioFinishSub = new BehaviorSubject<boolean>(false);
-
-  public minContentHeight$: Observable<number> = this.minContentHeightSubject.asObservable();
-  public isInternalScenarioFinish$: Observable<boolean> = this.isInternalScenarioFinishSub.asObservable();
 
   constructor(
     public injector: Injector,

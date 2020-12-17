@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
-
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ModalService } from '../../../../modal/modal.service';
@@ -29,6 +28,8 @@ interface Country extends ListElement {
   styleUrls: ['./country-selection.component.scss'],
 })
 export class CountrySelectionComponent implements OnInit, AfterViewInit {
+  @Output() changeComponentSettings = new EventEmitter();
+  @Output() changeComponentData = new EventEmitter();
   data$: Observable<ComponentBase> = this.screenService.component$;
   listItemDictionary: Country[];
   placeholder = 'Выберите страну';
@@ -37,8 +38,6 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
   helperText: string;
   form: FormGroup;
   required: boolean;
-  @Output() changeComponentSettings = new EventEmitter();
-  @Output() changeComponentData = new EventEmitter();
 
   warningMessages: WarningMessages = {
     2:
