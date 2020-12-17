@@ -115,7 +115,7 @@ export class ConfigService implements Config {
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
     this._fileUploadApiUrl = config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;
     this._lkUrl = config.lkUrl ?? `${this.loadService.config.lkUrl}`;
-    this._paymentUrl = config.paymentUrl ?? `${this.loadService.config.oplataUrl}`;
+    this._paymentUrl = config.paymentUrl ?? `${this.loadService.config.paymentUrl}`;
     this._timeSlotApiUrl = config.timeSlotApiUrl ?? `${this.loadService.config.lkApiUrl}equeue/agg`;
     this._listPaymentsApiUrl = config.listPaymentsApiUrl ?? `${this.loadService.config.lkApiUrl}orders/listpaymentsinfo`;
     this._uinApiUrl = config.uinApiUrl ?? `${this.loadService.config.lkApiUrl}paygate/uin`;

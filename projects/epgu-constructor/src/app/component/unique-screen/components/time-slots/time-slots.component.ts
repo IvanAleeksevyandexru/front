@@ -276,7 +276,8 @@ export class TimeSlotsComponent implements OnInit {
     this.inProgress = true;
     this.label = this.screenService.component?.label;
     const value = JSON.parse(this.screenService.component?.value);
-    const { timeSlot } = value;
+    // waitingTimeExpired - Флаг просрочки бронирования
+    const { timeSlot, waitingTimeExpired } = value;
 
     this.currentService = this.timeSlotServices[value.timeSlotType];
     this.currentService.init(value).subscribe(
@@ -298,17 +299,24 @@ export class TimeSlotsComponent implements OnInit {
           this.fixedMonth = this.monthsYears.length < 2;
           this.monthChanged(this.currentMonth);
 
-          this.bookedSlot = this.currentService.getBookedSlot();
-          if (!this.bookedSlot && timeSlot) {
-            this.bookedSlot = {
-              slotId: timeSlot.slotId,
-              slotTime: new Date(timeSlot.visitTimeISO),
-              timezone: timeSlot.visitTimeISO.substr(-6),
-              areaId: timeSlot.areaId,
-            };
-            this.currentService.setBookedSlot(this.bookedSlot);
-            this.currentService.bookId = this.cachedAnswer.bookId;
+          if (waitingTimeExpired) {
+            this.bookedSlot = null;
+            this.currentService.setBookedSlot(null);
+            this.currentService.bookId = null;
+          } else {
+            this.bookedSlot = this.currentService.getBookedSlot();
+            if (!this.bookedSlot && timeSlot) {
+              this.bookedSlot = {
+                slotId: timeSlot.slotId,
+                slotTime: new Date(timeSlot.visitTimeISO),
+                timezone: timeSlot.visitTimeISO.substr(-6),
+                areaId: timeSlot.areaId,
+              };
+              this.currentService.setBookedSlot(this.bookedSlot);
+              this.currentService.bookId = this.cachedAnswer.bookId;
+            }
           }
+
           if (this.bookedSlot) {
             this.selectDate(this.bookedSlot.slotTime);
             this.chooseTimeSlot(this.bookedSlot);

@@ -1,15 +1,17 @@
+import { BehaviorSubject, Observable } from 'rxjs';
 import {
   ApplicantAnswersDto,
-  ComponentDto,
   ComponentActionDto,
-  DisplayDto, DisplaySubjHead,
+  ComponentAnswerDto,
+  ComponentDto,
+  DisplayDto,
+  DisplaySubjHead,
   ScenarioErrorsDto
 } from '../form-player/services/form-player-api/form-player-api.types';
-import { ScreenStore, ScreenTypes } from './screen.types';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { Gender } from '../shared/types/gender';
+import { ScreenStore, ScreenTypes } from './screen.types';
 
-type ComponentValueGeneric<T> =  T;
+type ComponentValueGeneric<T> = T;
 type ComponentValue = string | number | ComponentValueGeneric<unknown>;
 
 export class ScreenContent {
@@ -183,6 +185,16 @@ export class ScreenContent {
     return this._action.asObservable();
   }
 
+  public get answers(): Array<ComponentAnswerDto> {
+    return this._answers.getValue();
+  }
+  public set answers(val: Array<ComponentAnswerDto>) {
+    this._answers.next(val);
+  }
+  public get answers$(): Observable<ComponentAnswerDto[]> {
+    return this._answers.asObservable();
+  }
+
   public get applicantAnswers(): ApplicantAnswersDto {
     return this._applicantAnswers.getValue();
   }
@@ -210,6 +222,7 @@ export class ScreenContent {
   private _componentLabel = new BehaviorSubject<string>(null);
   private _actions = new BehaviorSubject<Array<ComponentActionDto>>(null);
   private _action = new BehaviorSubject<ComponentActionDto>(null);
+  private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
 
   updateScreenContent(screenStore: ScreenStore): void {
@@ -239,6 +252,7 @@ export class ScreenContent {
     this.componentValue = this.getComponentData(firstComponent?.value);
     this.actions = firstComponent?.attrs?.actions || [];
     this.action = this.actions[0];
+    this.answers = firstComponent?.attrs?.answers || [];
     this.applicantAnswers = applicantAnswers;
   }
 

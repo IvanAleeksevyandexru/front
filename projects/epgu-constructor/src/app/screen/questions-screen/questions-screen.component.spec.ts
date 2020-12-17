@@ -1,30 +1,30 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { ScreenService } from '../screen.service';
-import { QuestionsScreenComponent } from './questions-screen.component';
+import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
-import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { ScreenServiceStub } from '../screen.service.stub';
-import { ModalService } from '../../modal/modal.service';
-import { ModalServiceStub } from '../../modal/modal.service.stub';
-import { ConfigServiceStub } from '../../core/config/config.service.stub';
-import { ConfigService } from '../../core/config/config.service';
 import { MockComponents, MockDirective, MockModule, MockPipe } from 'ng-mocks';
-import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
-import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
 import { OutputHtmlComponent } from '../../core/components/output-html/output-html.component';
-import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
-import { ActionDirective } from '../../shared/directives/action/action.directive';
+import { ConfigService } from '../../core/config/config.service';
+import { ConfigServiceStub } from '../../core/config/config.service.stub';
 import { ImgPrefixerPipe } from '../../core/pipes/img-prefixer/img-prefixer.pipe';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
+import { NavigationPayload } from '../../form-player/form-player.types';
 import {
   ActionType,
   ClarificationsDto,
   ComponentActionDto,
   ComponentDto,
-  DTOActionAction,
+  DTOActionAction
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { NavigationPayload } from '../../form-player/form-player.types';
-import { By } from '@angular/platform-browser';
+import { ModalService } from '../../modal/modal.service';
+import { ModalServiceStub } from '../../modal/modal.service.stub';
+import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
+import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
+import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
+import { ActionDirective } from '../../shared/directives/action/action.directive';
+import { ScreenService } from '../screen.service';
+import { ScreenServiceStub } from '../screen.service.stub';
+import { QuestionsScreenComponent } from './questions-screen.component';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -99,7 +99,7 @@ describe('QuestionsScreenComponent', () => {
   beforeEach(() => {
     initComponent();
 
-    navigationService = TestBed.inject(NavigationService) as NavigationServiceStub;
+    navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     modalService = (TestBed.inject(ScreenService) as unknown) as ModalServiceStub;
     configService = (TestBed.inject(ConfigService) as unknown) as ConfigServiceStub;
@@ -127,7 +127,6 @@ describe('QuestionsScreenComponent', () => {
         id: 'id1',
         type: 'type1',
       };
-
       screenService.component = componentDtoSample;
       fixture.detectChanges();
 
@@ -161,7 +160,7 @@ describe('QuestionsScreenComponent', () => {
 
   describe('answerChoose() method', () => {
     it('should do nothing if action is disabled', () => {
-      const showModalRedirectToSpy = spyOn(component, 'showModalRedirectTo');
+      const showModalRedirectToSpy = spyOn<any>(component, 'showModalRedirectTo');
       const nextStepSpy = spyOn(component, 'nextStep');
 
       const disabledAction: ComponentActionDto = {
@@ -176,7 +175,7 @@ describe('QuestionsScreenComponent', () => {
     });
 
     it('should call showModalRedirectTo() method if action.type is ActionType.modalRedirectTo', () => {
-      const showModalRedirectToSpy = spyOn(component, 'showModalRedirectTo');
+      const showModalRedirectToSpy = spyOn<any>(component, 'showModalRedirectTo');
       const nextStepSpy = spyOn(component, 'nextStep');
 
       const actionWithModalRedirectToActionType: ComponentActionDto = {
@@ -192,7 +191,7 @@ describe('QuestionsScreenComponent', () => {
     });
 
     it('should call nextStep() method if action.type is NOT ActionType.modalRedirectTo', () => {
-      const showModalRedirectToSpy = spyOn(component, 'showModalRedirectTo');
+      const showModalRedirectToSpy = spyOn<any>(component, 'showModalRedirectTo');
       const nextStepSpy = spyOn(component, 'nextStep');
 
       const actionWithDownloadActionType: ComponentActionDto = {
@@ -217,7 +216,7 @@ describe('QuestionsScreenComponent', () => {
     });
 
     it('should mutate action if action.underConstruction && config.disableUnderConstructionMode', () => {
-      const showModalRedirectToSpy = spyOn(component, 'showModalRedirectTo');
+      const showModalRedirectToSpy = spyOn<any>(component, 'showModalRedirectTo');
       const nextStepSpy = spyOn(component, 'nextStep');
 
       const actionUnderConstruction: ComponentActionDto = {
@@ -256,10 +255,10 @@ describe('QuestionsScreenComponent', () => {
     });
   });
 
-  describe('showActionAsLongBtn() method', () => {
+  describe('showAnswerAsLongBtn() method', () => {
     it('should return TRUE if action is NOT hidden and NOT rejected, otherwise FALSE', () => {
       expect(
-        component.showActionAsLongBtn({
+        component.showAnswerAsLongBtn({
           ...componentActionDtoSample1,
           hidden: true,
           action: DTOActionAction.reject,
@@ -267,7 +266,7 @@ describe('QuestionsScreenComponent', () => {
       ).toBeFalsy();
 
       expect(
-        component.showActionAsLongBtn({
+        component.showAnswerAsLongBtn({
           ...componentActionDtoSample1,
           hidden: false,
           action: DTOActionAction.reject,
@@ -275,7 +274,7 @@ describe('QuestionsScreenComponent', () => {
       ).toBeFalsy();
 
       expect(
-        component.showActionAsLongBtn({
+        component.showAnswerAsLongBtn({
           ...componentActionDtoSample1,
           hidden: false,
           action: DTOActionAction.editEmail,
@@ -373,10 +372,10 @@ describe('QuestionsScreenComponent', () => {
     });
   });
 
-  it('should render epgu-constructor-answer-button if showActionAsLongBtn() returns TRUE', () => {
+  it('should render epgu-constructor-answer-button if showAnswerAsLongBtn() returns TRUE', () => {
     const selector = 'epgu-constructor-screen-container epgu-constructor-answer-button';
 
-    const showActionAsLongBtnSpy = spyOn(component, 'showActionAsLongBtn').and.returnValue(true);
+    const showAnswerAsLongBtnSpy = spyOn<any>(component, 'showAnswerAsLongBtn').and.returnValue(true);
 
     let debugElements = fixture.debugElement.queryAll(By.css(selector));
     expect(debugElements.length).toBe(0);
@@ -395,7 +394,7 @@ describe('QuestionsScreenComponent', () => {
     expect(debugElements[1].componentInstance.data).toBe(componentActionDtoSample2);
 
     // allow all actions except componentActionDtoSample1
-    showActionAsLongBtnSpy.and.callFake((action: ComponentActionDto) => {
+    showAnswerAsLongBtnSpy.and.callFake((action: ComponentActionDto) => {
       if (action.label === componentActionDtoSample1.label) {
         return false;
       }
@@ -411,7 +410,7 @@ describe('QuestionsScreenComponent', () => {
   it('should call answerChoose() on epgu-constructor-answer-button click() event', () => {
     const selector = 'epgu-constructor-screen-container epgu-constructor-answer-button';
 
-    spyOn(component, 'showActionAsLongBtn').and.returnValue(true);
+    spyOn<any>(component, 'showAnswerAsLongBtn').and.returnValue(true);
 
     screenService.component = {
       ...componentDtoSample,

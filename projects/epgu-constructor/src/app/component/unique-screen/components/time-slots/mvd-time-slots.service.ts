@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from 'projects/epgu-constructor/src/app/core/config/config.service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
+import { ConfigService } from '../../../../core/config/config.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
@@ -156,7 +156,6 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
 
   private getSlotsRequest(): TimeSlotReq {
     const {
-      serviceCode,
       serviceId,
       eserviceId,
     } = this.config.timeSlots.mvd;
@@ -165,7 +164,6 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
       organizationId: [this.department.value],
       serviceId: [serviceId],
       eserviceId,
-      serviceCode,
       attributes: []
     };
   }
@@ -176,7 +174,6 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     }
 
     const {
-      serviceCode,
       serviceId,
       subject,
       eserviceId,
@@ -186,7 +183,6 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     return {
       address: this.department.attributeValues.ADDRESS_OUT,
       orgName: this.department.title,
-      serviceCode,
       subject,
       eserviceId,
       bookId: this.bookId,
