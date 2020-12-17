@@ -10,14 +10,15 @@ import { ValidationService } from '../../services/validation/validation.service'
 export class ValidationTypeDirective {
   @Input() component: CustomComponent;
   @Output() emmitChangesEvent = new EventEmitter<void>();
+
+  constructor(private validationService: ValidationService, private control: NgControl) {}
+
   @HostListener('blur')
   blur(): void {
     if (this.component.attrs.validation) {
       this.validateOnBlur();
     }
   }
-
-  constructor(private validationService: ValidationService, private control: NgControl) {}
 
   private validateOnBlur(): void {
     const onBlurValidatorFns = this.validationService.customAsyncValidator(this.component, 'blur');

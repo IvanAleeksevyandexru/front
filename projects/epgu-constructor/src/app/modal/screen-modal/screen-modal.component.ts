@@ -22,14 +22,13 @@ import { NavigationService } from '../../core/services/navigation/navigation.ser
   providers: [ScreenService, ScreenModalService], // Нужен отдельный инстанс для ScreenService
 })
 export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
+  @ViewChild('headerBlock', { static: false }) headerBlock;
   showModal = false;
   scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   showCrossButton = true;
   isMobile: boolean;
   isValid: boolean;
   screenTypes = ScreenTypes;
-
-  @ViewChild('headerBlock', { static: false }) headerBlock;
 
   constructor(
     public screenModalService: ScreenModalService,

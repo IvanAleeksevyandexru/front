@@ -18,6 +18,8 @@ import { ApplicantAnswersDto } from '../../../../form-player/services/form-playe
   styleUrls: ['./file-upload-screen.component.scss'],
 })
 export class FileUploadScreenComponent {
+  @Output() nextStepEvent = new EventEmitter();
+
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
 
   data$: Observable<ComponentBase> = this.screenService.component$.pipe(
@@ -42,8 +44,6 @@ export class FileUploadScreenComponent {
     this.screenService.header$,
   ]).pipe(map(([data, header]: [ComponentBase, string]) => header || data.label));
 
-  @Output() nextStepEvent = new EventEmitter();
-
   disabled = true;
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
   private value: FileUploadEmitValueForComponent; // Здесь будет храниться значение на передачу
@@ -56,38 +56,6 @@ export class FileUploadScreenComponent {
    */
   getUploadComponentPrefixForMnemonic(componentData: ComponentBase): string {
     return [componentData.id, 'FileUploadComponent'].join('.');
-  }
-
-  /**
-   * Собираем максимальное число файлов из всех форм
-   * @private
-   */
-  private collectMaxFilesNumber(uploads: FileUploadItem[]): void {
-    uploads.forEach((upload) => {
-      if (upload?.maxFileCount) {
-        this.allMaxFiles += upload.maxFileCount;
-      }
-      if (upload?.relatedUploads?.uploads) {
-        this.collectMaxFilesNumber(upload.relatedUploads.uploads);
-      }
-    });
-  }
-
-  /**
-   * Возвращает true если у каждого загрузчика есть хотя бы один загруженный файл
-   * @param uploaders - массив загрузчиков с файлами
-   * @private
-   */
-  private isEveryUploaderHasFile(uploaders: FileUploadEmitValue[]): boolean {
-    const totalUploaders = uploaders?.length;
-    const uploadersWithFiles = uploaders?.filter((fileUploaderInfo: FileUploadEmitValue) => {
-      // Если это зависимые подэлементы для загрузки
-      return fileUploaderInfo.relatedUploads
-        ? this.isEveryUploaderHasFile(fileUploaderInfo.relatedUploads.uploads)
-        : fileUploaderInfo?.value.filter((file: TerraUploadedFile) => file.uploaded).length > 0;
-    }).length;
-
-    return totalUploaders === uploadersWithFiles;
   }
 
   /**
@@ -148,5 +116,37 @@ export class FileUploadScreenComponent {
    */
   nextScreen(): void {
     this.nextStepEvent.emit(JSON.stringify(this.value));
+  }
+
+  /**
+   * Собираем максимальное число файлов из всех форм
+   * @private
+   */
+  private collectMaxFilesNumber(uploads: FileUploadItem[]): void {
+    uploads.forEach((upload) => {
+      if (upload?.maxFileCount) {
+        this.allMaxFiles += upload.maxFileCount;
+      }
+      if (upload?.relatedUploads?.uploads) {
+        this.collectMaxFilesNumber(upload.relatedUploads.uploads);
+      }
+    });
+  }
+
+  /**
+   * Возвращает true если у каждого загрузчика есть хотя бы один загруженный файл
+   * @param uploaders - массив загрузчиков с файлами
+   * @private
+   */
+  private isEveryUploaderHasFile(uploaders: FileUploadEmitValue[]): boolean {
+    const totalUploaders = uploaders?.length;
+    const uploadersWithFiles = uploaders?.filter((fileUploaderInfo: FileUploadEmitValue) => {
+      // Если это зависимые подэлементы для загрузки
+      return fileUploaderInfo.relatedUploads
+        ? this.isEveryUploaderHasFile(fileUploaderInfo.relatedUploads.uploads)
+        : fileUploaderInfo?.value.filter((file: TerraUploadedFile) => file.uploaded).length > 0;
+    }).length;
+
+    return totalUploaders === uploadersWithFiles;
   }
 }

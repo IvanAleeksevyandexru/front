@@ -3,8 +3,6 @@ import { ConfigService } from '../../../../core/config/config.service';
 
 @Injectable()
 export class Icons {
-  constructor(public config: ConfigService) { }
-
   public readonly red = {
     iconLayout: 'default#image',
     iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/point_red.svg`,
@@ -32,4 +30,6 @@ export class Icons {
     hideIconOnBalloonOpen: false,
     openEmptyBalloon: true
   };
+
+  constructor(public config: ConfigService) { }
 }

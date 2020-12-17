@@ -18,14 +18,14 @@ interface objectWithSuggestions {
 
 @Injectable()
 export class AddressHelperService {
-  constructor(private dictionaryApiService: DictionaryApiService) {}
-
   // Провайдер поиска для передачи в lib-lookup
   // с функцией поиска для lib-lookup. Сам поиск осуществляется за счет suggestions дадаты
   public provider = {
     search: (searchString): Observable<DadataSuggestionsAddressForLookup[]> =>
       searchString ? this.getCitySuggestions(searchString) : of([]),
   };
+
+  constructor(private dictionaryApiService: DictionaryApiService) {}
 
   /**
    * Получение городов из suggestions дадаты для lib-lookup. Добавляет к suggestions атрибуты id и text

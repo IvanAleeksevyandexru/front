@@ -1,13 +1,10 @@
 import { RepeatableFieldsComponent } from './repeatable-fields.component';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA, Inject } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ScreenTypes } from '../../../../screen/screen.types';
-import { of } from 'rxjs';
-import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
-import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 describe('RepeatableFieldsComponent', () => {
@@ -127,7 +124,7 @@ describe('RepeatableFieldsComponent', () => {
         ],
       }).compileComponents();
       screenService = TestBed.inject(ScreenService);
-      screenService.display$ = of(displayMock);
+      screenService.display = displayMock;
     }),
   );
 
