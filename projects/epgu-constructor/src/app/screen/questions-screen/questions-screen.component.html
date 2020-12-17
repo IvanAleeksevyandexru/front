@@ -1,4 +1,7 @@
-<epgu-constructor-screen-container>
+<epgu-constructor-screen-container
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
   <div class="screen-body quiz__content">
     <epgu-constructor-page-name class="quiz__head">
       {{ screenService.header$ | async }}
