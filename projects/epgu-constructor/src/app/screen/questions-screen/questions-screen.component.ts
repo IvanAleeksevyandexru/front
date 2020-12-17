@@ -8,6 +8,7 @@ import {
   ComponentActionDto,
   ComponentAnswerDto,
   DTOActionAction,
+  ScreenActionDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
@@ -28,6 +29,9 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   selectedAnswer: string;
   isActionsAsLongBtsShown: boolean;
   isAnswersAsLongBtsShown: boolean;
+  componentActions: Array<ComponentActionDto>;
+  componentAnswers: Array<ComponentAnswerDto>;
+  screenActionButtons: Array<ScreenActionDto>;
 
   constructor(
     public injector: Injector,
@@ -39,28 +43,12 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
 
   ngOnInit(): void {
     this.subscribeToComponent();
+    this.subscribeToActionButtons();
     this.screenService.submitLabel$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((label: string) => {
         this.submitLabel = label;
       });
-  }
-
-  private subscribeToComponent(): void {
-    /* TODO: после переезда на механизм отдельных answers
-    избавиться от хардкода action-кнопок в шаблоне и передавать массив action-кнопок как есть */
-    this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
-      this.rejectAction = this.getRejectAction(component?.attrs?.actions);
-      this.isActionsAsLongBtsShown = Boolean(
-        !this.rejectAction && this.screenService.component?.attrs?.actions?.length,
-      );
-      this.isAnswersAsLongBtsShown = Boolean(
-        !this.rejectAction && this.screenService.component?.attrs?.answers?.length,
-      );
-    });
-    this.screenService.isLoading$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((isLoading) => {
-      this.isLoading = isLoading;
-    });
   }
 
   nextStep(payload?: NavigationPayload): void {
@@ -86,11 +74,41 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.nextStep(this.getPayload(answer));
   }
 
+  showAnswerAsLongBtn(answer: ComponentAnswerDto | ComponentActionDto): boolean {
+    return !(answer.hidden || this.isRejectAction(answer.action));
+  }
+
   onSubmitClick(submitPayload: { value: string }): void {
     const componentId = this.screenService.component.id;
     const payload = {};
     payload[componentId] = { ...submitPayload, visited: true };
     this.nextStep(payload);
+  }
+
+  private subscribeToComponent(): void {
+    /* TODO: после переезда на механизм отдельных answers
+    избавиться от хардкода action-кнопок в шаблоне и передавать массив action-кнопок как есть */
+    this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
+      const componentAttrs = component?.attrs;
+      this.componentAnswers = componentAttrs?.answers || [];
+      this.componentActions = componentAttrs?.actions || [];
+      this.rejectAction = this.getRejectAction(componentAttrs?.actions);
+      this.isActionsAsLongBtsShown = Boolean(!this.rejectAction && this.componentActions?.length);
+      this.isAnswersAsLongBtsShown = Boolean(!this.rejectAction && this.componentAnswers?.length);
+    });
+    this.screenService.isLoading$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((isLoading: boolean) => {
+        this.isLoading = isLoading;
+      });
+  }
+
+  private subscribeToActionButtons(): void {
+    this.screenService.buttons$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((buttons: Array<ScreenActionDto>) => {
+        this.screenActionButtons = buttons || [];
+      });
   }
 
   private getPayload(answer: ComponentActionDto | ComponentAnswerDto): { [key: string]: Answer } {
@@ -131,10 +149,6 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
         this.navigationService.redirectTo(result);
       }
     });
-  }
-
-  showAnswerAsLongBtn(answer: ComponentAnswerDto | ComponentActionDto): boolean {
-    return !(answer.hidden || this.isRejectAction(answer.action));
   }
 
   private getRejectAction(actions: Array<ComponentActionDto> = []): ComponentActionDto {

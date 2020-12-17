@@ -36,25 +36,6 @@ export class TerraByteApiService {
   }
 
   /**
-   * Возвращает путь API адреса для обращений к сервису TERABYTE
-   *
-   * @param relativePath - относительный путь от API для запросов
-   */
-  private getTerabyteApiUrl = (relativePath): string => this.config.fileUploadApiUrl + relativePath;
-
-  /**
-   * Возращает опции запроса
-   * @private
-   */
-  private getServerRequestOptions(additionalOptions: object = {}): object {
-    let options = {
-      withCredentials: true,
-    };
-    options = { ...additionalOptions, ...options };
-    return options;
-  }
-
-  /**
    * Возвращает список файлов, для определённого объекта
    * @param objectId - идентификатор объекта
    */
@@ -144,5 +125,24 @@ export class TerraByteApiService {
     }
 
     FileSaver.saveAs(resultBlob, file.fileName);
+  }
+
+  /**
+   * Возвращает путь API адреса для обращений к сервису TERABYTE
+   *
+   * @param relativePath - относительный путь от API для запросов
+   */
+  private getTerabyteApiUrl = (relativePath): string => this.config.fileUploadApiUrl + relativePath;
+
+  /**
+   * Возращает опции запроса
+   * @private
+   */
+  private getServerRequestOptions(additionalOptions: object = {}): object {
+    let options = {
+      withCredentials: true,
+    };
+    options = { ...additionalOptions, ...options };
+    return options;
   }
 }

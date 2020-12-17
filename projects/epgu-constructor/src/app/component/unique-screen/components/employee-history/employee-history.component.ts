@@ -32,6 +32,7 @@ export interface EmployeeHistoryComponentInterface extends ComponentBase {
   providers: [UnsubscribeService],
 })
 export class EmployeeHistoryComponent {
+  @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
   display$: Observable<DisplayDto> = this.screenService.display$;
   header$: Observable<string> = this.screenService.header$;
   gender$: Observable<Gender> = this.screenService.gender$;
@@ -47,8 +48,6 @@ export class EmployeeHistoryComponent {
     }),
   );
 
-  @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
-
   ds: Array<EmployeeHistoryDataSource>;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
@@ -57,7 +56,7 @@ export class EmployeeHistoryComponent {
     private unsubscribeService: UnsubscribeService,
     private datasourceService: EmployeeHistoryDatasourceService,
     public monthsService: EmployeeHistoryMonthsService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
   ) {}
 
   textTransformType(display: DisplayDto): TextTransform {

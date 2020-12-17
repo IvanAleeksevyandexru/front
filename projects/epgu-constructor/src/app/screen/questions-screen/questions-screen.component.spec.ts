@@ -14,7 +14,7 @@ import {
   ClarificationsDto,
   ComponentActionDto,
   ComponentDto,
-  DTOActionAction
+  DTOActionAction,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
@@ -283,12 +283,30 @@ describe('QuestionsScreenComponent', () => {
     });
   });
 
-  it('should render epgu-constructor-screen-container', () => {
+  describe('epgu-constructor-screen-container', () => {
     const selector = 'epgu-constructor-screen-container';
 
-    const debugEl = fixture.debugElement.query(By.css(selector));
+    it('should be rendered', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
 
-    expect(debugEl).toBeTruthy();
+      expect(debugEl).toBeTruthy();
+    });
+
+    it('showNav property should be TRUE if screenService.showNav is TRUE, otherwise should be FALSE', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl.componentInstance.showNav).toBeFalsy();
+
+      screenService.showNav = false;
+      fixture.detectChanges();
+
+      expect(debugEl.componentInstance.showNav).toBeFalsy();
+
+      screenService.showNav = true;
+      fixture.detectChanges();
+
+      expect(debugEl.componentInstance.showNav).toBeTruthy();
+    });
   });
 
   it('should render epgu-constructor-page-name', () => {
@@ -375,7 +393,9 @@ describe('QuestionsScreenComponent', () => {
   it('should render epgu-constructor-answer-button if showAnswerAsLongBtn() returns TRUE', () => {
     const selector = 'epgu-constructor-screen-container epgu-constructor-answer-button';
 
-    const showAnswerAsLongBtnSpy = spyOn<any>(component, 'showAnswerAsLongBtn').and.returnValue(true);
+    const showAnswerAsLongBtnSpy = spyOn<any>(component, 'showAnswerAsLongBtn').and.returnValue(
+      true,
+    );
 
     let debugElements = fixture.debugElement.queryAll(By.css(selector));
     expect(debugElements.length).toBe(0);

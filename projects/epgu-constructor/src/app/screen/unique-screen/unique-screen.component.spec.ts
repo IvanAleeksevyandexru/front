@@ -87,8 +87,8 @@ describe('UniqueScreenComponent', () => {
   beforeEach(() => {
     navigationService = TestBed.inject(NavigationService);
     screenService = TestBed.inject(ScreenService);
-    screenService.display$ = of(displayDtoSample);
-    screenService.component$ = of(componentDtoSample);
+    screenService.display = displayDtoSample;
+    screenService.component = componentDtoSample;
     initComponent();
   });
 

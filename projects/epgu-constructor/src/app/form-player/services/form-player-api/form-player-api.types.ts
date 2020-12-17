@@ -126,6 +126,8 @@ export interface ComponentAttrsDto {
   label?: string;
   sendEmailLabel?: string;
   redirectLabel?: string;
+  repeatableComponents?: Array<Array<ComponentDto>>;
+  singleChild?: boolean;
 }
 
 export interface ComponentUploadedFileDto {
@@ -264,6 +266,8 @@ export interface ComponentActionDto {
   hint?: string;
 }
 
+export interface ScreenActionDto extends ComponentActionDto {}
+
 export interface DisplaySubjHead {
   text: string;
   clarifications: Clarifications;
@@ -293,6 +297,7 @@ export interface DisplayDto {
   cssClass?: string;
   isSocialButtonsHidden?: boolean;
   displayCssClass?: string;
+  buttons?: Array<ScreenActionDto>;
 }
 
 export interface ScenarioErrorsDto {

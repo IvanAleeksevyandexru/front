@@ -15,6 +15,7 @@ import {
 import { ScreenService } from '../../../screen/screen.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { ComponentStateForNavigate } from './action.interface';
+import { ConfigService } from '../../../core/config/config.service';
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -23,17 +24,35 @@ export class ActionDirective {
   @Input() action: ComponentActionDto;
   @Input() componentId: string;
 
-  @HostListener('click') onClick(): void {
-    this.switchAction();
-  }
-
   constructor(
     private actionApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private navService: NavigationService,
     private navModalService: NavigationModalService,
     private utilsService: UtilsService,
+    private configService: ConfigService,
   ) {}
+
+  @HostListener('click') onClick(): void {
+    this.switchAction();
+  }
+
+  navigate(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    this.navService[stepType].next(navigation);
+  }
+
+  navigateModal(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    switch (stepType) {
+      case 'prevStep':
+        this.navModalService.prev(navigation);
+        break;
+      case 'nextStep':
+        this.navModalService.next(navigation);
+        break;
+    }
+  }
 
   private switchAction(componentId?: string): void {
     switch (this.action.type) {
@@ -71,23 +90,6 @@ export class ActionDirective {
     const data = this.getActionDTO();
 
     return this.actionApiService.sendAction<T>(this.action.action, data);
-  }
-
-  navigate(stepType: string): void {
-    const navigation = this.prepareNavigationData();
-    this.navService[stepType].next(navigation);
-  }
-
-  navigateModal(stepType: string): void {
-    const navigation = this.prepareNavigationData();
-    switch (stepType) {
-      case 'prevStep':
-        this.navModalService.prev(navigation);
-        break;
-      case 'nextStep':
-        this.navModalService.next(navigation);
-        break;
-    }
   }
 
   private prepareNavigationData(): Navigation {
@@ -135,9 +137,16 @@ export class ActionDirective {
   }
 
   private getActionDTO(): ActionDTO {
-    return {
+    let bodyResult: ActionDTO = {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},
     };
+    if (this.action?.action.indexOf('addToCalendar') !== -1) {
+      bodyResult.scenarioDto = {
+        ...bodyResult.scenarioDto,
+        currentUrl: this.configService.addToCalendarUrl,
+      };
+    }
+    return bodyResult;
   }
 }

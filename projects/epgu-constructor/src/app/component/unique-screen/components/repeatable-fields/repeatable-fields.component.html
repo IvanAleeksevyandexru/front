@@ -1,4 +1,7 @@
-<epgu-constructor-screen-container *ngIf="init$ | async">
+<epgu-constructor-screen-container *ngIf="init$ | async"
+                                   [show-nav]="screenService.showNav$ | async"
+                                   [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
   <div class="screen-body">
     <epgu-constructor-page-name>{{ propData.header }}</epgu-constructor-page-name>
 
@@ -15,14 +18,14 @@
         <epgu-constructor-components-list
           class="cmp-group__item"
           [components]="$any(screens[screenKey])"
-          [errors]="screenService.getStore().errors"
+          [errors]="screenService.componentErrors$ | async"
           (changes)="changeComponentList($event, i)"
         >
         </epgu-constructor-components-list>
       </epgu-constructor-screen-pad>
     </div>
 
-    <epgu-constructor-clone-button [disabled]="!isScreensAvailable()" (click)="duplicateScreen()"
+    <epgu-constructor-clone-button [disabled]="!isScreensAvailable()" (click)="duplicateScreen(true)"
       >{{ addSectionLabel$ | async }}</epgu-constructor-clone-button
     >
   </div>

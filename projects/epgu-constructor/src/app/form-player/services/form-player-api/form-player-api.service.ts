@@ -7,7 +7,7 @@ import {
   ActionDTO,
   CheckOrderApiResponse,
   FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse
+  FormPlayerApiSuccessResponse,
 } from './form-player-api.types';
 import { FormPlayerNavigation, NavigationOptions } from '../../form-player.types';
 import { ConfigService } from '../../../core/config/config.service';
@@ -41,7 +41,7 @@ export class FormPlayerApiService {
     const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/getService`;
     const body = { targetId };
 
-    if(orderId) {
+    if (orderId) {
       body['orderId'] = orderId;
     }
 
@@ -55,9 +55,9 @@ export class FormPlayerApiService {
   public navigate(
     data: FormPlayerApiSuccessResponse,
     options: NavigationOptions = {},
-    formPlayerNavigation: FormPlayerNavigation
+    formPlayerNavigation: FormPlayerNavigation,
   ): Observable<FormPlayerApiResponse> {
-    let path = this.getNavigatePath(data, options, formPlayerNavigation);;
+    let path = this.getNavigatePath(data, options, formPlayerNavigation);
     data.scenarioDto.currentUrl = location.href;
 
     if (options.isInternalScenarioFinish) {
@@ -74,7 +74,7 @@ export class FormPlayerApiService {
   private getNavigatePath(
     data: FormPlayerApiSuccessResponse,
     options: NavigationOptions,
-    formPlayerNavigation: FormPlayerNavigation
+    formPlayerNavigation: FormPlayerNavigation,
   ): string {
     const { serviceId } = this.serviceDataService;
     let path = this.configService.apiUrl;
@@ -89,7 +89,7 @@ export class FormPlayerApiService {
 
   private post<T>(path: string, body: Object): Observable<T> {
     return this.http.post<T>(path, body, {
-      withCredentials: false
+      withCredentials: false,
     });
   }
 }

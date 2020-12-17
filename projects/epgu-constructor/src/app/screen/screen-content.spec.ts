@@ -240,6 +240,27 @@ describe('ScreenContent', () => {
     });
   });
 
+  describe('showNav property', () => {
+    const dataSample = true;
+
+    it('should get and set value', () => {
+      expect(screenContent.showNav).toBeNull();
+
+      screenContent.showNav = dataSample;
+
+      expect(screenContent.showNav).toBe(dataSample);
+    });
+
+    it('set value should emit showNav$ Observable', (done) => {
+      screenContent.showNav = dataSample;
+
+      screenContent.showNav$.subscribe((value) => {
+        expect(value).toBe(dataSample);
+        done();
+      });
+    });
+  });
+
   describe('displayCssClass property', () => {
     const dataSample = 'any';
 
@@ -479,6 +500,7 @@ describe('ScreenContent', () => {
       const submitLabelSpy = jest.spyOn(screenContent, 'submitLabel', 'set');
       const genderSpy = jest.spyOn(screenContent, 'gender', 'set');
       const terminalSpy = jest.spyOn(screenContent, 'terminal', 'set');
+      const showNavSpy = jest.spyOn(screenContent, 'showNav', 'set');
       const displayCssClassSpy = jest.spyOn(screenContent, 'displayCssClass', 'set');
       const screenTypeSpy = jest.spyOn(screenContent, 'screenType', 'set');
       const orderIdSpy = jest.spyOn(screenContent, 'orderId', 'set');
@@ -510,6 +532,9 @@ describe('ScreenContent', () => {
 
       expect(terminalSpy).toBeCalledTimes(1);
       expect(terminalSpy).toBeCalledWith(screenStoreSample.display.terminal);
+
+      expect(showNavSpy).toBeCalledTimes(1);
+      expect(showNavSpy).toBeCalledWith(!screenStoreSample.display.terminal);
 
       expect(displayCssClassSpy).toBeCalledTimes(1);
       expect(displayCssClassSpy).toBeCalledWith(screenStoreSample.display.cssClass);

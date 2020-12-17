@@ -1,4 +1,7 @@
-<epgu-constructor-screen-container>
+<epgu-constructor-screen-container
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
   <div class="screen-body">
     <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
     <div class="photo" [ngClass]="{ 'photo--flex-column': croppedImageUrl }">

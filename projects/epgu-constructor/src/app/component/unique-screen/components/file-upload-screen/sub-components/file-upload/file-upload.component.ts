@@ -14,11 +14,16 @@ import { FileUploadService, Uploaders } from '../file-upload.service';
   styleUrls: ['./file-upload.component.scss'],
 })
 export class FileUploadComponent implements OnInit {
-  fileUploadItemTypes = FileUploadItemTypes;
-  private attrs: FileUploadAttributes;
   @Input() objectId: string;
   @Input() isRelatedUploads = false;
   @Input() applicantAnswers: object;
+  @Input() prefixForMnemonic: string;
+  @Input() uploadId: string = null;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  @Output() newValueSet = new EventEmitter<any>();
+  @Output() newRelatedValueSet = new EventEmitter<FileResponseToBackendWithRelatedUploads>();
+
   @Input()
   set attributes(attrs: FileUploadAttributes) {
     this.attrs = attrs;
@@ -31,16 +36,14 @@ export class FileUploadComponent implements OnInit {
   get attributes(): FileUploadAttributes {
     return this.attrs;
   }
-  @Input() prefixForMnemonic: string;
-  @Input() uploadId: string = null;
+
+  fileUploadItemTypes = FileUploadItemTypes;
   refData: string = null;
+  private attrs: FileUploadAttributes;
   private value: {
     files: FileResponseToBackendUploadsItem[]; // Здесь будет храниться значение на передачу
     errors: string[];
   } = { files: [], errors: [] };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Output() newValueSet = new EventEmitter<any>();
-  @Output() newRelatedValueSet = new EventEmitter<FileResponseToBackendWithRelatedUploads>();
 
   constructor(private fileUploadService: FileUploadService) {}
 
@@ -64,21 +67,6 @@ export class FileUploadComponent implements OnInit {
       this.fileUploadService.setMaxFilesAmount(maxAmount, uploader);
     }
   }
-  /**
-   * Заполняем значения по умолчанию для возврата на сервер
-   * @private
-   */
-  private fillUploadsDefaultValue(): FileResponseToBackendUploadsItem[] {
-    const value: FileResponseToBackendUploadsItem[] = [];
-    this.attrs?.uploads?.forEach((upload: FileUploadItem) => {
-      const newValue: FileResponseToBackendUploadsItem = {
-        uploadId: upload.uploadId,
-        value: [],
-      };
-      value.push(newValue);
-    });
-    return value;
-  }
 
   /**
    * Возвращает префикс для формирования мнемоники
@@ -86,6 +74,43 @@ export class FileUploadComponent implements OnInit {
    */
   getUploadComponentPrefixForMnemonic(ref: string): string {
     return [this.prefixForMnemonic, ref].join('.');
+  }
+
+  /**
+   * Обрабатывает новое значение от формы загрузки
+   * @param $eventData - новые значения от формы
+   */
+  handleNewValueForItem($eventData: FileResponseToBackendUploadsItem): void {
+    this.value.files.forEach((valueItem: FileResponseToBackendUploadsItem) => {
+      if (valueItem.uploadId === $eventData.uploadId) {
+        // eslint-disable-next-line no-param-reassign
+        valueItem.value = $eventData.value;
+      }
+      return valueItem;
+    });
+    this.value.errors = $eventData.errors;
+
+    if (!this.isRelatedUploads) {
+      this.newValueSet.emit(this.value);
+    } else {
+      this.newRelatedValueSet.emit({
+        uploadId: this.uploadId,
+        uploads: this.value.files,
+      } as FileResponseToBackendWithRelatedUploads);
+    }
+  }
+
+  /**
+   * Обрабатывает новое значение от формы загрузки по связанным документам
+   * @param $eventData - новые значения от формы
+   */
+  handleNewRelatedValueForItem($eventData: FileResponseToBackendWithRelatedUploads): void {
+    this.newValueSet.emit({
+      uploadId: $eventData.uploadId,
+      relatedUploads: {
+        uploads: $eventData.uploads,
+      },
+    } as FileResponseToBackendUploadsItem);
   }
 
   /**
@@ -131,39 +156,18 @@ export class FileUploadComponent implements OnInit {
   }
 
   /**
-   * Обрабатывает новое значение от формы загрузки
-   * @param $eventData - новые значения от формы
+   * Заполняем значения по умолчанию для возврата на сервер
+   * @private
    */
-  handleNewValueForItem($eventData: FileResponseToBackendUploadsItem): void {
-    this.value.files.forEach((valueItem: FileResponseToBackendUploadsItem) => {
-      if (valueItem.uploadId === $eventData.uploadId) {
-        // eslint-disable-next-line no-param-reassign
-        valueItem.value = $eventData.value;
-      }
-      return valueItem;
+  private fillUploadsDefaultValue(): FileResponseToBackendUploadsItem[] {
+    const value: FileResponseToBackendUploadsItem[] = [];
+    this.attrs?.uploads?.forEach((upload: FileUploadItem) => {
+      const newValue: FileResponseToBackendUploadsItem = {
+        uploadId: upload.uploadId,
+        value: [],
+      };
+      value.push(newValue);
     });
-    this.value.errors = $eventData.errors;
-
-    if (!this.isRelatedUploads) {
-      this.newValueSet.emit(this.value);
-    } else {
-      this.newRelatedValueSet.emit({
-        uploadId: this.uploadId,
-        uploads: this.value.files,
-      } as FileResponseToBackendWithRelatedUploads);
-    }
-  }
-
-  /**
-   * Обрабатывает новое значение от формы загрузки по связанным документам
-   * @param $eventData - новые значения от формы
-   */
-  handleNewRelatedValueForItem($eventData: FileResponseToBackendWithRelatedUploads): void {
-    this.newValueSet.emit({
-      uploadId: $eventData.uploadId,
-      relatedUploads: {
-        uploads: $eventData.uploads,
-      },
-    } as FileResponseToBackendUploadsItem);
+    return value;
   }
 }

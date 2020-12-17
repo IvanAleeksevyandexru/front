@@ -743,7 +743,8 @@ describe('FormPlayerComponent', () => {
   describe('render throbber', () => {
     it('should render throbber', () => {
       const fixture = TestBed.createComponent(FormPlayerComponent);
-      screenService.isFirstLoading$ = of(true);
+      const component = fixture.componentInstance;
+      component.isFirstLoading$ = of(true);
       fixture.detectChanges();
       const throbber = fixture.debugElement.query(By.css('lib-throbber-hexagon'));
       expect(throbber).not.toBeNull();
@@ -751,7 +752,8 @@ describe('FormPlayerComponent', () => {
 
     it('should not render throbber', () => {
       const fixture = TestBed.createComponent(FormPlayerComponent);
-      screenService.isFirstLoading$ = of(false);
+      const component = fixture.componentInstance;
+      component.isFirstLoading$ = of(false);
       fixture.detectChanges();
       const throbber = fixture.debugElement.query(By.css('lib-throbber-hexagon'));
       expect(throbber).toBeNull();
@@ -759,7 +761,8 @@ describe('FormPlayerComponent', () => {
 
     it('throbber should has big size', () => {
       const fixture = TestBed.createComponent(FormPlayerComponent);
-      screenService.isFirstLoading$ = of(true);
+      const component = fixture.componentInstance;
+      component.isFirstLoading$ = of(true);
       fixture.detectChanges();
       const throbber = fixture.debugElement.query(By.css('lib-throbber-hexagon'));
       expect(throbber.attributes.size).toBe('big');

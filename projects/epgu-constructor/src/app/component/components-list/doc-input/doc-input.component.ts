@@ -99,18 +99,6 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     this.formService.emmitChanges();
   }
 
-  private getParsedComponentValues(): DocInputFields {
-    const componentValues =
-      typeof this.data.value.value === 'object'
-        ? this.data.value.value
-        : JSON.parse(this.data.value.value || '{}');
-
-    return {
-      ...componentValues,
-      date: componentValues.date ? new Date(componentValues.date) : null,
-    };
-  }
-
   addFormGroupControls(): void {
     const componentValues = this.getParsedComponentValues();
 
@@ -201,5 +189,17 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     };
 
     return { [ValidatorTypes.RegExp]: regExp, [ValidatorTypes.Required]: required };
+  }
+
+  private getParsedComponentValues(): DocInputFields {
+    const componentValues =
+      typeof this.data.value.value === 'object'
+        ? this.data.value.value
+        : JSON.parse(this.data.value.value || '{}');
+
+    return {
+      ...componentValues,
+      date: componentValues.date ? new Date(componentValues.date) : null,
+    };
   }
 }
