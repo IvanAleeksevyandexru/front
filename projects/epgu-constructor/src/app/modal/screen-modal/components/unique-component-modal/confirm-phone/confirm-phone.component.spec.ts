@@ -48,7 +48,7 @@ describe('ConfirmPhoneComponent', () => {
         NavigationService,
         NavigationModalService,
         { provide: ScreenService, useClass: ScreenServiceStub },
-        ValidationService
+        ValidationService,
       ],
     }).compileComponents();
 
@@ -88,6 +88,13 @@ describe('ConfirmPhoneComponent', () => {
 
       expect(navigationModalServiceNextFn).not.toHaveBeenCalled();
     });
+    it('check lastCode', () => {
+      component.lastCode = '1234';
+      const navigationModalServiceNextFn = jest.spyOn(navigationModalService, 'next');
+      component.enterCode('1234');
+
+      expect(navigationModalServiceNextFn).not.toHaveBeenCalled();
+    });
   });
 
   describe('timerChange()', () => {
@@ -111,6 +118,24 @@ describe('ConfirmPhoneComponent', () => {
       component.editNumber();
 
       expect(navigationModalServicePrevFn).toHaveBeenCalled();
+    });
+  });
+
+  describe('next focus', () => {
+    it('next focus number for null', () => {
+      const focusToElementFn = jest.spyOn(component, 'focusToElement');
+      const nextIndex = 1;
+      component.codeFormArray.value[nextIndex].codeValue = null;
+      component.focusIndex(nextIndex);
+      expect(focusToElementFn).toHaveBeenCalled();
+    });
+
+    it('not next focus number for not empty', () => {
+      const focusToElementFn = jest.spyOn(component, 'focusToElement');
+      const nextIndex = 1;
+      component.codeFormArray.value[nextIndex].codeValue = '2';
+      component.focusIndex(nextIndex);
+      expect(focusToElementFn).not.toHaveBeenCalled();
     });
   });
 });
