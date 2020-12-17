@@ -69,12 +69,14 @@ describe('ScreenResolverComponent', () => {
   });
 
   describe('setScreenComponent() method', () => {
-    it('should update screenComponent property', () => {
-      component.setScreenComponent(ScreenTypes.EMPTY);
-      expect(component.screenComponent).toBe(SCREEN_COMPONENTS[ScreenTypes.EMPTY]);
+    it('should return EmptyScreenComponent', () => {
+      const screenComponent = component.setScreenComponent(ScreenTypes.EMPTY);
+      expect(screenComponent).toBe(SCREEN_COMPONENTS[ScreenTypes.EMPTY]);
+    });
 
-      component.setScreenComponent(ScreenTypes.INFO);
-      expect(component.screenComponent).toBe(SCREEN_COMPONENTS[ScreenTypes.INFO]);
+    it('should return InfoScreenComponent', () => {
+      const screenComponent = component.setScreenComponent(ScreenTypes.INFO);
+      expect(screenComponent).toBe(SCREEN_COMPONENTS[ScreenTypes.INFO]);
     });
 
     it('should throw ScreenComponentError if is called with unrecognized screen type', () => {
