@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   HostBinding,
   Input,
@@ -32,7 +31,6 @@ import { ContinueOrderModalService } from '../modal/continue-order-modal/continu
   templateUrl: './form-player.component.html',
   styleUrls: ['../../styles/index.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
