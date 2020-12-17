@@ -121,14 +121,17 @@ export class ConfirmPhoneComponent implements OnInit {
     return element.getElementsByTagName('input')[0];
   }
 
-  private focusToElement(element: HTMLElement): void {
+  focusToElement(element: HTMLElement): void {
     setTimeout(() => element.focus(), 0);
   }
 
   private navigateToControl(obj: CodeFormGroup): void {
     const isLastIndex: boolean = this.codeLength - 1 === obj.codeIndexElement;
     const nextIndex: number = isLastIndex ? obj.codeIndexElement : obj.codeIndexElement + 1;
+    this.focusIndex(nextIndex);
+  }
 
+  focusIndex(nextIndex: number): void {
     if (!this.codeFormArray.value[nextIndex]?.codeValue) {
       const input: HTMLElement = this.getInput(
         this.codeGroupElement.nativeElement.children[nextIndex],
