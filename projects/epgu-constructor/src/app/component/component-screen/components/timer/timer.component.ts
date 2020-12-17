@@ -23,6 +23,7 @@ export class TimerComponent {
     this.hasButtons = this.data.attrs?.timerRules?.actions?.length > 0;
 
     this.timer = createTimer(
+      this.getCurrentTime(),
       this.getStartDate(),
       this.getFinishDate(),
       this.componentBase.attrs?.timerRules?.warningColorFromTime,
@@ -56,7 +57,7 @@ export class TimerComponent {
    * Стартует работу таймера
    */
   startTimer(): void {
-    timer(this.timer.start - Date.now(), this.oneSecond)
+    timer(this.timer.start - this.getCurrentTime(), this.oneSecond)
       .pipe(
         takeWhile(() => this.timer.time - this.oneSecond >= -this.oneSecond),
         takeUntil(this.ngUnsubscribe$),
@@ -167,6 +168,16 @@ export class TimerComponent {
     } else if (this.timer.isFinish) {
       this.actionButtons.push(timerButton);
     }
+  }
+
+  /**
+   * Возвращает текущее время в милисекундах
+   * @private
+   */
+  private getCurrentTime(): number {
+    return this.data.attrs?.currentTime
+      ? new Date(this.data.attrs.currentTime).getTime()
+      : Date.now();
   }
 
   /**
