@@ -12,6 +12,7 @@ export class ConfigService implements Config {
   private isLoadedSubject = new BehaviorSubject(false);
   private _isLoaded = false;
   private _billsApiUrl: string;
+  private _apiUrl: string;
   private _dictionaryUrl: string;
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
@@ -29,12 +30,7 @@ export class ConfigService implements Config {
   private _disableUnderConstructionMode: boolean;
   private _addToCalendarUrl: string;
 
-  constructor(private loadService: LoadService) {
-    // TODO отписаться
-    this.loadService.loaded.subscribe(() => {
-      this.initCore();
-    });
-  }
+  constructor(private loadService: LoadService) {}
 
   checkConfig(config: Config): void {
     if (!config) {
@@ -44,6 +40,10 @@ export class ConfigService implements Config {
 
   get isLoaded(): boolean {
     return this._isLoaded;
+  }
+
+  get apiUrl(): string {
+    return this._apiUrl;
   }
 
   get billsApiUrl(): string {
@@ -115,6 +115,7 @@ export class ConfigService implements Config {
   }
 
   initCore(config: Config = {} as Config): void {
+    this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
