@@ -327,12 +327,30 @@ describe('ComponentScreenComponent', () => {
     });
   });
 
-  it('should render epgu-constructor-screen-container', () => {
+  describe('epgu-constructor-screen-container', () => {
     const selector = 'epgu-constructor-screen-container';
 
-    const debugEl = fixture.debugElement.query(By.css(selector));
+    it('should be rendered', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
 
-    expect(debugEl).toBeTruthy();
+      expect(debugEl).toBeTruthy();
+    });
+
+    it('showNav property should be TRUE if screenService.terminal === FALSE, otherwise should be FALSE', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl.componentInstance.showNav).toBeFalsy();
+
+      screenService.terminal = true;
+      fixture.detectChanges();
+
+      expect(debugEl.componentInstance.showNav).toBeFalsy();
+
+      screenService.terminal = false;
+      fixture.detectChanges();
+
+      expect(debugEl.componentInstance.showNav).toBeTruthy();
+    });
   });
 
   it('should render epgu-constructor-page-name if header is not empty', () => {

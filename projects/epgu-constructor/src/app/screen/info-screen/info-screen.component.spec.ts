@@ -133,25 +133,30 @@ describe('InfoScreenComponent', () => {
     expect(setActionButtonsSpy).toBeCalledWith(componentSample);
   });
 
-  it('should render epgu-constructor-screen-container', () => {
+  describe('epgu-constructor-screen-container', () => {
     const selector = 'epgu-constructor-screen-container';
 
-    const debugEl = fixture.debugElement.query(By.css(selector));
+    it('should be rendered', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
 
-    expect(debugEl).toBeTruthy();
+      expect(debugEl).toBeTruthy();
+    });
 
-    // showNav = (screenService.terminal === false)
-    expect(debugEl.componentInstance.showNav).toBeFalsy();
+    it('showNav property should be TRUE if screenService.terminal === FALSE, otherwise should be FALSE', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
 
-    screenService.terminal = true;
-    fixture.detectChanges();
+      expect(debugEl.componentInstance.showNav).toBeFalsy();
 
-    expect(debugEl.componentInstance.showNav).toBeFalsy();
+      screenService.terminal = true;
+      fixture.detectChanges();
 
-    screenService.terminal = false;
-    fixture.detectChanges();
+      expect(debugEl.componentInstance.showNav).toBeFalsy();
 
-    expect(debugEl.componentInstance.showNav).toBeTruthy();
+      screenService.terminal = false;
+      fixture.detectChanges();
+
+      expect(debugEl.componentInstance.showNav).toBeTruthy();
+    });
   });
 
   it('should render epgu-constructor-screen-pad', () => {
