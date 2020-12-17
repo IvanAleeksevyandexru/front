@@ -9,6 +9,7 @@ import {
 } from '../../../shared/constants/redirect-event';
 import { ConfigService } from '../../config/config.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
+import { LocationService } from '../location/location.service';
 
 /**
  * Этот сервис должен быть запровайден только на уровне компанент, не стоит его провайдить через модули.
@@ -30,6 +31,7 @@ export class NavigationService {
     private smuEventsService: SmuEventsService,
     private deviceDetector: DeviceDetectorService,
     private configService: ConfigService,
+    private locationService: LocationService,
   ) {
     this.isWebView = this.deviceDetector.isWebView;
   }
@@ -48,9 +50,9 @@ export class NavigationService {
 
   redirectToProfileEdit(): void {
     if (this.isWebView) {
-      window.location.href = '/profile/user';
+      this.locationService.href('/profile/user');
     } else {
-      window.location.href = `${this.configService.lkUrl}/profile/personal`;
+      this.locationService.href(`${this.configService.lkUrl}/profile/personal`);
     }
   }
 
@@ -58,7 +60,7 @@ export class NavigationService {
     if (this.isWebView) {
       this.navigateInsideWebView(MobilViewEvents.feed);
     } else {
-      window.location.href = `${this.configService.lkUrl}/orders/all`;
+      this.locationService.href(`${this.configService.lkUrl}/orders/all`);
     }
   }
 
@@ -66,7 +68,7 @@ export class NavigationService {
     if (this.isWebView) {
       this.navigateInsideWebView(MobilViewEvents.exit);
     } else {
-      window.location.href = '/';
+      this.locationService.href('/');
     }
   }
 

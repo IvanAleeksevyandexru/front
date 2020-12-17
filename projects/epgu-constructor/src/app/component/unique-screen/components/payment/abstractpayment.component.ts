@@ -26,6 +26,7 @@ import {
 } from './components/payment/payment.component.functions';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
+import { LocationService } from '../../../../core/services/location/location.service';
 
 const ALREADY_PAY_ERROR = 23;
 const moment = moment_;
@@ -64,6 +65,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   private payStatusIntervalLink = null;
   private payStatusInterval = 30;
   private billPosition = 0; // Какой счет брать из списка
+  private locationService: LocationService;
   public billId: number;
   public billDate: string;
   private orderId: string; // Номер заявления
@@ -87,6 +89,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     this.currentAnswersService = this.injector.get(CurrentAnswersService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.config = this.injector.get(ConfigService);
+    this.locationService = this.injector.get(LocationService);
     this.header$ = this.screenService.header$.pipe(map((header) => header ?? 'Оплата госпошлины'));
     this.init$ = this.screenService.component$.pipe(
       tap((data: ComponentBase) => {
@@ -363,7 +366,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     const data = { scenarioDto: this.screenService.getStore() };
     UtilsService.setLocalStorageJSON(COMPONENT_DATA_KEY, data);
     clearInterval(this.payStatusInterval);
-    window.location.href = this.paymentService.getPaymentLink(this.billId);
+    this.locationService.href(this.paymentService.getPaymentLink(this.billId));
   }
 
   ngOnDestroy(): void {

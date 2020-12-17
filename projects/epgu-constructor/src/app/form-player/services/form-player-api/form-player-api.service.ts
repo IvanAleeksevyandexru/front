@@ -11,6 +11,7 @@ import {
   FormPlayerApiSuccessResponse
 } from './form-player-api.types';
 import { FormPlayerNavigation, NavigationOptions } from '../../form-player.types';
+import { LocationService } from '../../../core/services/location/location.service';
 
 export const apiUrlDefault = '/api';
 
@@ -21,7 +22,8 @@ export class FormPlayerApiService {
   constructor(
     private http: HttpClient,
     private serviceDataService: ServiceDataService,
-    private loadService: LoadService
+    private loadService: LoadService,
+    private locationService: LocationService,
   ) {
     this.loadService.loaded.subscribe(() => {
       const coreApiUrl = this.loadService.config.newSfApiUrl;
@@ -66,8 +68,8 @@ export class FormPlayerApiService {
     options: NavigationOptions = {},
     formPlayerNavigation: FormPlayerNavigation
   ): Observable<FormPlayerApiResponse> {
-    let path = this.getNavigatePath(data, options, formPlayerNavigation);;
-    data.scenarioDto.currentUrl = location.href;
+    let path = this.getNavigatePath(data, options, formPlayerNavigation);
+    data.scenarioDto.currentUrl = this.locationService.getHref();
 
     if (options.isInternalScenarioFinish) {
       data.isInternalScenario = false;

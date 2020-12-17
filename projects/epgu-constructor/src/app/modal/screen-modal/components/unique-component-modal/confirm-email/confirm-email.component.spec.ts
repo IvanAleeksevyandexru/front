@@ -12,6 +12,7 @@ import { CoreModule } from '../../../../../core/core.module';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
+import { LocationService } from '../../../../../core/services/location/location.service';
 
 describe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;
@@ -38,6 +39,7 @@ describe('ConfirmEmailComponent', () => {
       providers: [
         UnsubscribeService,
         NavigationService,
+        LocationService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],

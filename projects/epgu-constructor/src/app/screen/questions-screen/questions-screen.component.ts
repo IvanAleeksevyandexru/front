@@ -14,6 +14,7 @@ import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-m
 import { ModalService } from '../../modal/modal.service';
 import { Answer } from '../../shared/types/answer';
 import { ScreenBase } from '../screenBase';
+import { LocationService } from '../../core/services/location/location.service';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -33,6 +34,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     public injector: Injector,
     private modalService: ModalService,
     private config: ConfigService,
+    private locationService: LocationService,
   ) {
     super(injector);
   }
@@ -128,7 +130,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     );
     modalResult$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((result) => {
       if (typeof result === 'string') {
-        this.navigationService.redirectTo(result);
+        this.locationService.href(result);
       }
     });
   }
