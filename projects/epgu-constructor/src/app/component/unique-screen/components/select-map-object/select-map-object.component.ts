@@ -42,14 +42,11 @@ import { ConstructorLookupComponent } from '../../../../shared/components/constr
   providers: [UnsubscribeService, SelectMapObjectService],
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
-  data: ComponentBase;
-  applicantAnswers: ApplicantAnswersDto;
-
   @Output() nextStepEvent = new EventEmitter<string>();
-
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
   @ViewChild('informationTemplate', { static: false }) informationTemplate;
-
+  data: ComponentBase;
+  applicantAnswers: ApplicantAnswersDto;
   public mappedDictionaryForLookup;
   public mapCenter: Array<number>;
   public mapControls = [];
@@ -65,6 +62,11 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private screenStore: ScreenStore;
   private needToAutoFocus = false; // Флаг из атрибутов для авто центровки ближайшего объекта к центру
 
+  private initData$ = combineLatest([
+    this.screenService.component$,
+    this.screenService.applicantAnswers$,
+  ]);
+
   constructor(
     public selectMapObjectService: SelectMapObjectService,
     public config: ConfigService,
@@ -79,11 +81,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
-
-  private initData$ = combineLatest([
-    this.screenService.component$,
-    this.screenService.applicantAnswers$,
-  ]);
 
   ngOnInit(): void {
     this.initData$
@@ -107,6 +104,56 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnDestroy(): void {
     this.clearMapVariables();
+  }
+
+  public lookupChanged(mapObject: DictionaryYMapItem, lookup: ConstructorLookupComponent): void {
+    this.selectMapObject(mapObject);
+    lookup.clearInput();
+  }
+
+  public providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
+    return (searchString): Observable<Partial<ListElement>[]> => {
+      this.selectMapObjectService.searchMapObject(searchString);
+      return of(
+        DictionaryUtilities.adaptDictionaryToListItem(
+          this.selectMapObjectService.filteredDictionaryItems,
+        ),
+      );
+    };
+  }
+
+  public selectObject(): void {
+    if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
+      this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code)
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(() => this.nextStep());
+      return;
+    }
+
+    this.nextStep();
+  }
+
+  /**
+   * Показывает модальное окно на основе шаблона
+   * @param templateName имя шаблона из this.templates
+   * @param item контекст балуна
+   */
+  public showModalFromTemplate(templateName: string, item: DictionaryYMapItem): void {
+    this.modalService.openModal(CommonModalComponent, {
+      modalTemplateRef: this[templateName],
+      item,
+    });
+  }
+
+  /**
+   * Метод раскрывает выбранный зал на панели слева
+   * @param mapObject объект на карте
+   */
+  public expandObject(mapObject: DictionaryYMapItem): void {
+    if (mapObject.expanded) return;
+    this.selectedValue.children = this.selectedValue.children.map((child: DictionaryYMapItem) => {
+      return { ...child, expanded: child.idForMap === mapObject.idForMap };
+    });
   }
 
   private initVariable(): void {
@@ -286,33 +333,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
   }
 
-  public lookupChanged(mapObject: DictionaryYMapItem, lookup: ConstructorLookupComponent): void {
-    this.selectMapObject(mapObject);
-    lookup.clearInput();
-  }
-
-  public providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
-    return (searchString): Observable<Partial<ListElement>[]> => {
-      this.selectMapObjectService.searchMapObject(searchString);
-      return of(
-        DictionaryUtilities.adaptDictionaryToListItem(
-          this.selectMapObjectService.filteredDictionaryItems,
-        ),
-      );
-    };
-  }
-
-  public selectObject(): void {
-    if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
-      this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code)
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(() => this.nextStep());
-      return;
-    }
-
-    this.nextStep();
-  }
-
   private nextStep(): void {
     this.zone.run(() => {
       const answer = {
@@ -322,29 +342,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         okato: this.componentValue?.okato,
       };
       this.nextStepEvent.emit(JSON.stringify(answer));
-    });
-  }
-
-  /**
-   * Показывает модальное окно на основе шаблона
-   * @param templateName имя шаблона из this.templates
-   * @param item контекст балуна
-   */
-  public showModalFromTemplate(templateName: string, item: DictionaryYMapItem): void {
-    this.modalService.openModal(CommonModalComponent, {
-      modalTemplateRef: this[templateName],
-      item,
-    });
-  }
-
-  /**
-   * Метод раскрывает выбранный зал на панели слева
-   * @param mapObject объект на карте
-   */
-  public expandObject(mapObject: DictionaryYMapItem): void {
-    if (mapObject.expanded) return;
-    this.selectedValue.children = this.selectedValue.children.map((child: DictionaryYMapItem) => {
-      return { ...child, expanded: child.idForMap === mapObject.idForMap };
     });
   }
 

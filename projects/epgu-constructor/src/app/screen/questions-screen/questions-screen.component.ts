@@ -48,23 +48,6 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       });
   }
 
-  private subscribeToComponent(): void {
-    /* TODO: после переезда на механизм отдельных answers
-    избавиться от хардкода action-кнопок в шаблоне и передавать массив action-кнопок как есть */
-    this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
-      this.rejectAction = this.getRejectAction(component?.attrs?.actions);
-      this.isActionsAsLongBtsShown = Boolean(
-        !this.rejectAction && this.screenService.component?.attrs?.actions?.length,
-      );
-      this.isAnswersAsLongBtsShown = Boolean(
-        !this.rejectAction && this.screenService.component?.attrs?.answers?.length,
-      );
-    });
-    this.screenService.isLoading$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((isLoading) => {
-      this.isLoading = isLoading;
-    });
-  }
-
   nextStep(payload?: NavigationPayload): void {
     this.navigationService.next({ payload });
   }
@@ -86,6 +69,10 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     }
     this.selectedAnswer = answer.value;
     this.nextStep(this.getPayload(answer));
+  }
+
+  showAnswerAsLongBtn(answer: ComponentAnswerDto | ComponentActionDto): boolean {
+    return !(answer.hidden || this.isRejectAction(answer.action));
   }
 
   onSubmitClick(submitPayload: { value: string }): void {
@@ -135,8 +122,21 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     });
   }
 
-  showAnswerAsLongBtn(answer: ComponentAnswerDto | ComponentActionDto): boolean {
-    return !(answer.hidden || this.isRejectAction(answer.action));
+  private subscribeToComponent(): void {
+    /* TODO: после переезда на механизм отдельных answers
+    избавиться от хардкода action-кнопок в шаблоне и передавать массив action-кнопок как есть */
+    this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
+      this.rejectAction = this.getRejectAction(component?.attrs?.actions);
+      this.isActionsAsLongBtsShown = Boolean(
+        !this.rejectAction && this.screenService.component?.attrs?.actions?.length,
+      );
+      this.isAnswersAsLongBtsShown = Boolean(
+        !this.rejectAction && this.screenService.component?.attrs?.answers?.length,
+      );
+    });
+    this.screenService.isLoading$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((isLoading) => {
+      this.isLoading = isLoading;
+    });
   }
 
   private getRejectAction(actions: Array<ComponentActionDto> = []): ComponentActionDto {

@@ -44,6 +44,18 @@ export class DictionaryUtilities {
   }
 
   /**
+   * Мапим словарь в ListItem для компонента EPGU отвечающий за список
+   * @param items массив элементов словаря
+   */
+  public static adaptDictionaryToListItem(items: Array<DictionaryItem>): Array<ListElement> {
+    return items.map((item) => ({
+      originalItem: item,
+      id: item.value,
+      text: item.title,
+    }));
+  }
+
+  /**
    * Получение значения типа ref из dictionaryFilter (настроечный JSON) из applicantAnswers по пути path
    * @param applicantAnswers ответы с экранов в scenarioDto
    * @param path путь до значения в applicantAnswers (примеp: pd1.value.firstName)
@@ -73,17 +85,4 @@ export class DictionaryUtilities {
     };
     return filterTypes[dFilter.valueType](dFilter);
   }
-
-  /**
-   * Мапим словарь в ListItem для компонента EPGU отвечающий за список
-   * @param items массив элементов словаря
-   */
-  public static adaptDictionaryToListItem(items: Array<DictionaryItem>): Array<ListElement> {
-    return items.map((item) => ({
-      originalItem: item,
-      id: item.value,
-      text: item.title,
-    }));
-  }
-
 }

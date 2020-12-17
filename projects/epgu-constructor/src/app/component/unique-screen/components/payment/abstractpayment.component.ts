@@ -50,6 +50,8 @@ export interface PaymentInfoValue {
   template: '',
 })
 export class AbstractPaymentComponent implements OnDestroy, OnInit {
+  @Output() nextStepEvent = new EventEmitter<string>();
+
   public paymentStatus = PaymentStatus;
   public paymentPurpose = '';
   public uin = ''; // Уникальный идентификатор платежа
@@ -61,14 +63,8 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   public isPaid = false; // Оплачен или нет
   public isShown = true; // Показывать кнопку или нет
   public status: PaymentStatus; // Текущий статус получения данных об оплате
-  private payCode = 1; // Код типа плательщика
-  private payStatusIntervalLink = null;
-  private payStatusInterval = 30;
-  private billPosition = 0; // Какой счет брать из списка
-  private locationService: LocationService;
   public billId: number;
   public billDate: string;
-  private orderId: string; // Номер заявления
   public paymentService: PaymentService;
   public screenService: ScreenService;
   public currentAnswersService: CurrentAnswersService;
@@ -76,12 +72,16 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   public config: ConfigService;
 
   data: ComponentBase;
-
   header$: Observable<string>;
   init$: Observable<ComponentBase>;
   submitLabel$: Observable<string>;
 
-  @Output() nextStepEvent = new EventEmitter<string>();
+  private locationService: LocationService;
+  private payCode = 1; // Код типа плательщика
+  private payStatusIntervalLink = null;
+  private payStatusInterval = 30;
+  private billPosition = 0; // Какой счет брать из списка
+  private orderId: string; // Номер заявления
 
   constructor(public injector: Injector) {
     this.paymentService = this.injector.get(PaymentService);
@@ -104,6 +104,28 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.init$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+  }
+
+  /**
+   * Переход к следующему экрану
+   */
+  nextStep(): void {
+    this.nextStepEvent.emit(this.uin);
+  }
+
+  /**
+   * Переход к экрану оплаты
+   */
+  redirectToPayWindow(): void {
+    this.inLoading = true;
+    const data = { scenarioDto: this.screenService.getStore() };
+    UtilsService.setLocalStorageJSON(COMPONENT_DATA_KEY, data);
+    clearInterval(this.payStatusInterval);
+    this.locationService.href(this.paymentService.getPaymentLink(this.billId));
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.payStatusInterval);
   }
 
   /**
@@ -349,27 +371,5 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       this.status = PaymentStatus.SERVER_ERROR;
     }
     return throwError(error);
-  }
-
-  /**
-   * Переход к следующему экрану
-   */
-  nextStep(): void {
-    this.nextStepEvent.emit(this.uin);
-  }
-
-  /**
-   * Переход к экрану оплаты
-   */
-  redirectToPayWindow(): void {
-    this.inLoading = true;
-    const data = { scenarioDto: this.screenService.getStore() };
-    UtilsService.setLocalStorageJSON(COMPONENT_DATA_KEY, data);
-    clearInterval(this.payStatusInterval);
-    this.locationService.href(this.paymentService.getPaymentLink(this.billId));
-  }
-
-  ngOnDestroy(): void {
-    clearInterval(this.payStatusInterval);
   }
 }

@@ -188,10 +188,6 @@ export class UtilsService {
     return splitByDirLocation;
   }
 
-  private sliceArrayFromRight(arr: string[], from: number, includeFirst: boolean = true): string[] {
-    return arr.slice(Math.max(arr.length - from, includeFirst ? 0 : 1));
-  }
-
   /**
    * Converts cyrillic to latin
    * @param str
@@ -239,7 +235,6 @@ export class UtilsService {
       return index === 0 ? word.toLowerCase() : word.toUpperCase();
     }).replace(/[-_\s]+/g, '')}Service`;
   }
-
 
   /**
    * Returns a boolean value if url is an instance of a string type
@@ -298,4 +293,8 @@ export class UtilsService {
         return false;
     }
 }
+
+  private sliceArrayFromRight(arr: string[], from: number, includeFirst: boolean = true): string[] {
+    return arr.slice(Math.max(arr.length - from, includeFirst ? 0 : 1));
+  }
 }

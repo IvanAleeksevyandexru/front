@@ -23,6 +23,13 @@ export class SignatureApplicationComponent implements OnInit {
     return this.screenService.componentValue as SignatureApplicationData;
   }
 
+  constructor(
+    public config: ConfigService,
+    public screenService: ScreenService,
+    private deviceDetector: DeviceDetectorService,
+    private locationService: LocationService,
+  ) {}
+
   @HostListener('click', ['$event'])
   onClick($event: Event): void {
     const { id } = $event.target as HTMLElement;
@@ -31,13 +38,6 @@ export class SignatureApplicationComponent implements OnInit {
       this.redirectToLK();
     }
   }
-
-  constructor(
-    public config: ConfigService,
-    public screenService: ScreenService,
-    private deviceDetector: DeviceDetectorService,
-    private locationService: LocationService,
-  ) {}
 
   ngOnInit(): void {
     if (this.isSigned()) {

@@ -16,6 +16,16 @@ export class OutputHtmlComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  showModal(targetClarification: { text?: string }, targetElementId: string): void {
+    const clarifications = { ...this.clarifications };
+    delete clarifications[targetElementId];
+    this.modalService.openModal(ConfirmationModalComponent, {
+      ...targetClarification,
+      clarifications,
+      showCrossButton: true,
+    });
+  }
+
   clickToInnerHTML($event: MouseEvent, el: HTMLElement): void {
     const targetElementId = ($event.target as HTMLElement).id;
     if (targetElementId) {
@@ -37,15 +47,5 @@ export class OutputHtmlComponent implements OnInit {
     if (targetElementModalData) {
       this.showModal(targetElementModalData, targetElementId);
     }
-  }
-
-  showModal(targetClarification: { text?: string }, targetElementId: string): void {
-    const clarifications = { ...this.clarifications };
-    delete clarifications[targetElementId];
-    this.modalService.openModal(ConfirmationModalComponent, {
-      ...targetClarification,
-      clarifications,
-      showCrossButton: true,
-    });
   }
 }

@@ -30,29 +30,9 @@ enum RequestStatus {
 
 @Injectable()
 export class HealthInterceptor implements HttpInterceptor {
-  constructor(private health: HealthService, private utils: UtilsService) {}
-
   private configParams: ConfigParams = {} as ConfigParams;
 
-  /**
-   * Returns a boolean value for exceptions
-   * @param url
-   */
-  private exceptionsValidator(url: string): boolean {
-    const splitByDirLocation = this.utils.getSplittedUrl(url);
-    const exceptValidationStatus = splitByDirLocation.some((name) => EXCEPTIONS.includes(name));
-
-    return exceptValidationStatus;
-  }
-
-  /**
-   * Returns a boolean value for validators
-   * @param payload
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private isValid(payload: HttpRequest<any> | HttpEvent<any> | HttpErrorResponse): boolean {
-    return this.utils.isValidHttpUrl(payload['url']) && !this.exceptionsValidator(payload['url']);
-  }
+  constructor(private health: HealthService, private utils: UtilsService) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -109,5 +89,25 @@ export class HealthInterceptor implements HttpInterceptor {
         return throwError(error);
       }),
     );
+  }
+
+  /**
+   * Returns a boolean value for exceptions
+   * @param url
+   */
+  private exceptionsValidator(url: string): boolean {
+    const splitByDirLocation = this.utils.getSplittedUrl(url);
+    const exceptValidationStatus = splitByDirLocation.some((name) => EXCEPTIONS.includes(name));
+
+    return exceptValidationStatus;
+  }
+
+  /**
+   * Returns a boolean value for validators
+   * @param payload
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private isValid(payload: HttpRequest<any> | HttpEvent<any> | HttpErrorResponse): boolean {
+    return this.utils.isValidHttpUrl(payload['url']) && !this.exceptionsValidator(payload['url']);
   }
 }

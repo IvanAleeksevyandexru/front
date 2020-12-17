@@ -9,7 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { LoadService } from 'epgu-lib';
-import { filter, mergeMap, takeUntil } from 'rxjs/operators';
+import { filter, mergeMap, take, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../core/config/config.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { LoggerService } from '../core/services/logger/logger.service';
@@ -39,6 +39,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() service: Service;
 
   isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
+  isFirstLoading$ = this.screenService.isLoading$.pipe(take(3));
 
   constructor(
     private deviceDetector: DeviceDetectorService,

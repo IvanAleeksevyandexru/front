@@ -5,6 +5,7 @@ import { TextTransform } from '../../types/textTransform';
   selector: '[epgu-constructor-text-transform]'
 })
 export class TextTransformDirective {
+  @Input() textTransformType: TextTransform;
   private transforms = {
     [TextTransform.ALL]: this.firstLetterOfEachWordToUpperCase,
     [TextTransform.FIRST]: this.firstLetterToUpperCase,
@@ -12,7 +13,6 @@ export class TextTransformDirective {
   };
   private prevValue: string;
   private prevSelection: [number, number];
-  @Input() textTransformType: TextTransform;
 
   @HostListener('input', ['$event.target'])
   onInput(target: HTMLInputElement): void {
