@@ -13,7 +13,7 @@ import { HealthService } from 'epgu-lib';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 
-class МockScreenService {
+class MockScreenService {
   header = '';
   display = {
     components: [],
@@ -59,7 +59,7 @@ describe('UploadAndEditPhotoComponent', () => {
         WebcamService,
         LocationService,
         WINDOW_PROVIDERS,
-        { provide: ScreenService, useClass: МockScreenService },
+        { provide: ScreenService, useClass: MockScreenService },
       ],
     })
     .compileComponents();
