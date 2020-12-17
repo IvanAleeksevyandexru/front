@@ -27,6 +27,8 @@ import { ScreenTypes } from '../../../../screen/screen.types';
   styleUrls: ['./repeatable-fields.component.scss'],
 })
 export class RepeatableFieldsComponent implements AfterViewChecked {
+  @Output() nextStepEvent = new EventEmitter();
+
   objectKeys = Object.keys;
   componentId: number;
   isValid: boolean;
@@ -51,24 +53,16 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     }),
   );
 
-  @Output() nextStepEvent = new EventEmitter();
-
-  trackByFunction = (index, item): string => item;
-
   constructor(
     private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
     private cdr: ChangeDetectorRef,
   ) {}
 
+  trackByFunction = (index, item): string => item;
+
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();
-  }
-
-  private initVariable(): void {
-    this.screens = {};
-    this.componentId = 0;
-    this.saveState([]);
   }
 
   isScreensAvailable(): boolean {
@@ -81,7 +75,6 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   }
 
   duplicateScreen(isNew?: boolean): void {
-    // TODO переделать
     const isScreensAvailable = this.isScreensAvailable();
     if (isScreensAvailable && isNew) {
       this.setNewScreen(this.propData.components[0].attrs.components as CustomComponent[]);
@@ -90,11 +83,6 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
         this.setNewScreen((component as unknown) as CustomComponent[]);
       });
     }
-  }
-
-  private getNewId(): string {
-    this.componentId += 1;
-    return this.componentId.toString();
   }
 
   // TODO
@@ -122,6 +110,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   getState(): Array<{ [key: string]: { value: string } }> {
     return JSON.parse(this.currentAnswersService.state);
   }
+
   saveState(state: Array<{ [key: string]: { value: string } }>): void {
     this.currentAnswersService.state = JSON.stringify(state);
   }
@@ -129,5 +118,16 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   private setNewScreen(components: CustomComponent[]): void {
     const id = this.getNewId();
     this.screens[id] = components;
+  }
+
+  private getNewId(): string {
+    this.componentId += 1;
+    return this.componentId.toString();
+  }
+
+  private initVariable(): void {
+    this.screens = {};
+    this.componentId = 0;
+    this.saveState([]);
   }
 }

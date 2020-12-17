@@ -18,17 +18,15 @@ import {
 
 @Injectable()
 export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
+  public activeMonthNumber: number;
+  public activeYearNumber: number;
+  public bookId;
+  public availableMonths: string[];
 
   private department: MvdDepartmentInterface;
   private orderId;
-
-  public activeMonthNumber: number;
-  public activeYearNumber: number;
-  availableMonths: string[];
-
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
-  public bookId;
   private errorMessage;
 
   constructor(
@@ -144,6 +142,18 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     return changed;
   }
 
+  initActiveMonth(): void {
+    if (this.availableMonths.length == 0) {
+      const today = new Date();
+      this.activeMonthNumber = today.getMonth();
+      this.activeYearNumber = today.getFullYear();
+    } else {
+      const [activeYearNumber, activeMonthNumber] = this.availableMonths[0].split('-');
+      this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
+      this.activeYearNumber = parseInt(activeYearNumber, 10);
+    }
+  }
+
   private getSlotsRequest(): TimeSlotReq {
     const {
       serviceId,
@@ -218,17 +228,5 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
         timezone: slot.visitTimeISO.substring(slot.visitTimeISO.length - 6)
       });
     });
-  }
-
-  initActiveMonth(): void {
-    if (this.availableMonths.length == 0) {
-      const today = new Date();
-      this.activeMonthNumber = today.getMonth();
-      this.activeYearNumber = today.getFullYear();
-    } else {
-      const [activeYearNumber, activeMonthNumber] = this.availableMonths[0].split('-');
-      this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
-      this.activeYearNumber = parseInt(activeYearNumber, 10);
-    }
   }
 }

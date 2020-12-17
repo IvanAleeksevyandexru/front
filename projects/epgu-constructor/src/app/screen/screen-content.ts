@@ -1,10 +1,13 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import {
   ApplicantAnswersDto,
   ComponentActionDto,
-  ComponentAnswerDto, ComponentDto,
-  DisplayDto, DisplaySubjHead,
-  ScenarioErrorsDto, CachedAnswersDto
+  ComponentAnswerDto,
+  ComponentDto,
+  DisplayDto,
+  DisplaySubjHead,
+  ScenarioErrorsDto,
+  CachedAnswersDto
 } from '../form-player/services/form-player-api/form-player-api.types';
 import { Gender } from '../shared/types/gender';
 import { ScreenStore, ScreenTypes } from './screen.types';
@@ -13,186 +16,227 @@ type ComponentValueGeneric<T> = T;
 type ComponentValue = string | number | ComponentValueGeneric<unknown>;
 
 export class ScreenContent {
-
-  private _display = new BehaviorSubject<DisplayDto>(null);
   public get display(): DisplayDto {
     return this._display.getValue();
   }
   public set display(val: DisplayDto) {
     this._display.next(val);
   }
-  public display$ = this._display.asObservable();
+  public get display$(): Observable<DisplayDto> {
+    return this._display.asObservable();
+  }
 
-  private _header = new BehaviorSubject<string>(null);
   public get header(): string {
     return this._header.getValue();
   }
   public set header(val: string) {
     this._header.next(val);
   }
-  public header$ = this._header.asObservable();
+  public get header$(): Observable<string> {
+    return this._header.asObservable();
+  }
 
-  private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
   public get subHeader(): DisplaySubjHead {
     return this._subHeader.getValue();
   }
   public set subHeader(val: DisplaySubjHead) {
     this._subHeader.next(val);
   }
-  public subHeader$ = this._subHeader.asObservable();
+  public get subHeader$(): Observable<DisplaySubjHead> {
+    return this._subHeader.asObservable();
+  }
 
-  private _submitLabel = new BehaviorSubject<string>(null);
   public get submitLabel(): string {
     return this._submitLabel.getValue();
   }
   public set submitLabel(val: string) {
     this._submitLabel.next(val);
   }
-  public submitLabel$ = this._submitLabel.asObservable();
+  public get submitLabel$(): Observable<string> {
+    return this._submitLabel.asObservable();
+  }
 
-  private _gender = new BehaviorSubject<Gender>(null);
   public get gender(): Gender {
     return this._gender.getValue();
   }
   public set gender(val: Gender) {
     this._gender.next(val);
   }
-  public gender$ = this._gender.asObservable();
+  public get gender$(): Observable<Gender> {
+    return this._gender.asObservable();
+  }
 
-  private _terminal = new BehaviorSubject<boolean>(null);
   public get terminal(): boolean {
     return this._terminal.getValue();
   }
   public set terminal(val: boolean) {
     this._terminal.next(val);
   }
-  public terminal$ = this._terminal.asObservable();
+  public get terminal$(): Observable<boolean> {
+    return this._terminal.asObservable();
+  }
 
-  private _displayCssClass = new BehaviorSubject<string>(null);
   public get displayCssClass(): string {
     return this._displayCssClass.getValue();
   }
   public set displayCssClass(val: string) {
     this._displayCssClass.next(val);
   }
-  public displayCssClass$ = this._displayCssClass.asObservable();
+  public get displayCssClass$(): Observable<string> {
+    return this._displayCssClass.asObservable();
+  }
 
-  private _screenType = new BehaviorSubject<ScreenTypes>(null);
   public get screenType(): ScreenTypes {
     return this._screenType.getValue();
   }
   public set screenType(val: ScreenTypes) {
     this._screenType.next(val);
   }
-  public screenType$ = this._screenType.asObservable();
+  public get screenType$(): Observable<ScreenTypes> {
+    return this._screenType.asObservable();
+  }
 
-  private _orderId = new BehaviorSubject<string>(null);
   public get orderId(): string {
     return this._orderId.getValue();
   }
   public set orderId(val: string) {
     this._orderId.next(val);
   }
-  public orderId$ = this._orderId.asObservable();
+  public get orderId$(): Observable<string> {
+    return this._orderId.asObservable();
+  }
 
-  private _component = new BehaviorSubject<ComponentDto>(null);
   public get component(): ComponentDto {
     return this._component.getValue();
   }
   public set component(val: ComponentDto) {
     this._component.next(val);
   }
-  public component$ = this._component.asObservable();
+  public get component$(): Observable<ComponentDto> {
+    return this._component.asObservable();
+  }
 
-  private _componentType = new BehaviorSubject<string>(null);
   public get componentType(): string {
     return this._componentType.getValue();
   }
   public set componentType(val: string) {
     this._componentType.next(val);
   }
-  public componentType$ = this._componentType.asObservable();
+  public get componentType$(): Observable<string> {
+    return this._componentType.asObservable();
+  }
 
-  private _componentValue = new BehaviorSubject<ComponentValue>(null);
   public get componentValue(): ComponentValue {
     return this._componentValue.getValue();
   }
   public set componentValue(val: ComponentValue ) {
     this._componentValue.next(val);
   }
-  public componentValue$ = this._componentValue.asObservable();
+  public get componentValue$(): Observable<ComponentValue> {
+    return this._componentValue.asObservable();
+  }
 
-  private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
   public get componentErrors(): ScenarioErrorsDto {
     return this._componentErrors.getValue();
   }
   public set componentErrors(val: ScenarioErrorsDto) {
     this._componentErrors.next(val);
   }
-  public componentErrors$ = this._componentErrors.asObservable();
+  public get componentErrors$(): Observable<ScenarioErrorsDto> {
+    return this._componentErrors.asObservable();
+  }
 
-  private _componentError = new BehaviorSubject<string>(null);
   public get componentError(): string {
     return this._componentError.getValue();
   }
   public set componentError(val: string) {
     this._componentError.next(val);
   }
-  public componentError$ = this._componentError.asObservable();
+  public get componentError$(): Observable<string> {
+    return this._componentError.asObservable();
+  }
 
-  private _componentLabel = new BehaviorSubject<string>(null);
   public get componentLabel(): string {
     return this._componentLabel.getValue();
   }
   public set componentLabel(val: string) {
     this._componentLabel.next(val);
   }
-  public componentLabel$ = this._componentLabel.asObservable();
+  public get componentLabel$(): Observable<string> {
+    return this._componentLabel.asObservable();
+  }
 
-  private _actions = new BehaviorSubject<Array<ComponentActionDto>>(null);
   public get actions(): Array<ComponentActionDto> {
     return this._actions.getValue();
   }
   public set actions(val: Array<ComponentActionDto>) {
     this._actions.next(val);
   }
-  public actions$ = this._actions.asObservable();
+  public get actions$(): Observable<ComponentActionDto[]> {
+    return this._actions.asObservable();
+  }
 
-  private _action = new BehaviorSubject<ComponentActionDto>(null);
   public get action(): ComponentActionDto {
     return this._action.getValue();
   }
   public set action(val: ComponentActionDto) {
     this._action.next(val);
   }
-  public action$ = this._action.asObservable();
+  public get action$(): Observable<ComponentActionDto> {
+    return this._action.asObservable();
+  }
 
-  private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
   public get answers(): Array<ComponentAnswerDto> {
     return this._answers.getValue();
   }
   public set answers(val: Array<ComponentAnswerDto>) {
     this._answers.next(val);
   }
-  public answers$ = this._answers.asObservable();
+  public get answers$(): Observable<ComponentAnswerDto[]> {
+    return this._answers.asObservable();
+  }
 
-  private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   public get applicantAnswers(): ApplicantAnswersDto {
     return this._applicantAnswers.getValue();
   }
   public set applicantAnswers(val: ApplicantAnswersDto) {
     this._applicantAnswers.next(val);
   }
-  public applicantAnswers$ = this._applicantAnswers.asObservable();
+  public get applicantAnswers$(): Observable<ApplicantAnswersDto> {
+    return this._applicantAnswers.asObservable();
+  }
 
-  private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
   public get cachedAnswers(): CachedAnswersDto {
     return this._cachedAnswers.getValue();
   }
   public set cachedAnswers(val: CachedAnswersDto) {
     this._cachedAnswers.next(val);
   }
-  public cachedAnswers$ = this._cachedAnswers.asObservable();
+
+  public get cachedAnswers$(): Observable<CachedAnswersDto> {
+    return this._cachedAnswers.asObservable();
+  }
+
+  private _display = new BehaviorSubject<DisplayDto>(null);
+  private _header = new BehaviorSubject<string>(null);
+  private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
+  private _submitLabel = new BehaviorSubject<string>(null);
+  private _gender = new BehaviorSubject<Gender>(null);
+  private _terminal = new BehaviorSubject<boolean>(null);
+  private _displayCssClass = new BehaviorSubject<string>(null);
+  private _screenType = new BehaviorSubject<ScreenTypes>(null);
+  private _orderId = new BehaviorSubject<string>(null);
+  private _component = new BehaviorSubject<ComponentDto>(null);
+  private _componentType = new BehaviorSubject<string>(null);
+  private _componentValue = new BehaviorSubject<ComponentValue>(null);
+  private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
+  private _componentError = new BehaviorSubject<string>(null);
+  private _componentLabel = new BehaviorSubject<string>(null);
+  private _actions = new BehaviorSubject<Array<ComponentActionDto>>(null);
+  private _action = new BehaviorSubject<ComponentActionDto>(null);
+  private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
+  private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
+  private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
 
   updateScreenContent(screenStore: ScreenStore): void {
     const {

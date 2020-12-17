@@ -8,11 +8,11 @@ import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
   providers: [UnsubscribeService],
 })
 export class CounterDirective implements OnChanges {
-  private counter$ = new Subject<{ count: number; interval: number }>();
-
   @Input('epgu-constructor-counter') counter: number;
   @Input() interval: number;
   @Output() value = new EventEmitter<number>();
+
+  private counter$ = new Subject<{ count: number; interval: number }>();
 
   constructor(private ngUnsubscribe$: UnsubscribeService) {
     this.counter$

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { SmuEventsService } from 'epgu-lib';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Navigation } from '../../../form-player/form-player.types';
 import {
   MobilViewEvents,
-
-  OPTIONS_FEED_EXIT, OPTIONS_FEED_MV
+  OPTIONS_FEED_EXIT,
+  OPTIONS_FEED_MV
 } from '../../../shared/constants/redirect-event';
 import { ConfigService } from '../../config/config.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
@@ -16,15 +16,19 @@ import { DeviceDetectorService } from '../device-detector/device-detector.servic
 @Injectable()
 export class NavigationService {
   isWebView: boolean;
+  get nextStep$(): Observable<Navigation> {
+    return this.nextStep.asObservable();
+  }
+  get prevStep$(): Observable<Navigation> {
+    return this.prevStep.asObservable();
+  }
+  get skipStep$(): Observable<Navigation> {
+    return this.skipStep.asObservable();
+  }
 
   private nextStep = new Subject<Navigation>();
-  nextStep$ = this.nextStep.asObservable();
-
   private prevStep = new Subject<Navigation>();
-  prevStep$ = this.prevStep.asObservable();
-
   private skipStep = new Subject<Navigation>();
-  skipStep$ = this.skipStep.asObservable();
 
   constructor(
     private smuEventsService: SmuEventsService,

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { CustomScreenComponentTypes } from '../component/components-list/components-list.types';
 import { ComponentDto } from '../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
 import { UtilsService } from '../core/services/utils/utils.service';
@@ -12,13 +10,13 @@ import { ValueLoaderService } from '../shared/services/value-loader/value-loader
 
 @Injectable()
 export class ScreenService extends ScreenContent {
+  public get isLoading$(): Observable<boolean> {
+    return this.isLoadingSubject.asObservable();
+  }
+
   private screenStore: ScreenStore = {};
   private isLoading = false;
-
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
-
-  public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
-  public isFirstLoading$: Observable<boolean> = this.isLoadingSubject.asObservable().pipe(take(3));
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -27,6 +25,26 @@ export class ScreenService extends ScreenContent {
     private valueLoaderService: ValueLoaderService,
   ) {
     super();
+  }
+
+  /**
+   * Возвращает хранилище данных для экрана
+   */
+  public getStore(): ScreenStore {
+    return this.screenStore;
+  }
+
+  public getCompFromDisplay(componentId: string): ScreenStoreComponentDtoI {
+    const component = this.display?.components.find((comp) => comp.id === componentId);
+    return component;
+  }
+
+  public getCompValueFromCachedAnswers(componentId?: string): string {
+    const cachedAnswers = this.getStore().cachedAnswers;
+    if (!componentId) {
+      componentId = this.component?.id;
+    }
+    return cachedAnswers && cachedAnswers[componentId]?.value;
   }
 
   /**
@@ -78,21 +96,19 @@ export class ScreenService extends ScreenContent {
   }
 
   /**
-   * Возвращает хранилище данных для экрана
+   * Возвращает данные из cachedAnswers, если в JSON есть preset.type = REF
+   * TODO нужно утащить на backend (HARDCODE from backend)
    */
-  public getStore(): ScreenStore {
-    return this.screenStore;
-  }
-
-  public getCompFromDisplay(componentId: string): ScreenStoreComponentDtoI {
-    return this.display?.components.find((comp) => comp.id === componentId);
-  }
-
-  public getCompValueFromCachedAnswers(componentId?: string): string {
-    const cachedAnswers = this.getStore().cachedAnswers;
-    if (!componentId) {
-      componentId = this.component?.id;
+  private getPresetValue(item: ComponentDto): ComponentDto {
+    const [id, path] = item.attrs.preset.value.split(/\.(.+)/);
+    const cachedValue = JSON.parse(
+      this.cachedAnswersService.getCachedValueById(this.screenStore.cachedAnswers, id) || '{}',
+    );
+    const value = UtilsService.getObjectProperty(cachedValue, path, item.value);
+    if (typeof value === 'object') {
+      return { ...item, value: JSON.stringify(value) };
+    } else {
+      return { ...item, value };
     }
-    return cachedAnswers && cachedAnswers[componentId]?.value;
   }
 }

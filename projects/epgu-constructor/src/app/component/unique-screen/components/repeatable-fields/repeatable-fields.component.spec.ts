@@ -1,7 +1,6 @@
 import { RepeatableFieldsComponent } from './repeatable-fields.component';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { of } from 'rxjs';
 
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -127,7 +126,7 @@ describe('RepeatableFieldsComponent', () => {
         ],
       }).compileComponents();
       screenService = TestBed.inject(ScreenService);
-      screenService.display$ = of(displayMock);
+      screenService.display = displayMock;
     }),
   );
 

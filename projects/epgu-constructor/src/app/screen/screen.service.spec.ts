@@ -89,10 +89,6 @@ describe('ScreenService', () => {
     expect(screenService.isLoading$).toBeInstanceOf(Observable);
   });
 
-  it('isFirstLoading$ should be Observable', () => {
-    expect(screenService.isFirstLoading$).toBeInstanceOf(Observable);
-  });
-
   describe('initScreenStore() method', () => {
     it('should set screenStore property', () => {
       const store = makeScreenStoreSample();
