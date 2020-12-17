@@ -6,6 +6,8 @@ import { ServiceDataService } from '../service-data/service-data.service';
 import { Gender } from '../../../shared/types/gender';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { ServiceDataServiceStub } from '../service-data/service-data.service.stub';
+import { ConfigService } from '../../../core/config/config.service';
+import { ConfigServiceStub } from '../../../core/config/config.service.stub';
 
 
 describe('FormPlayerApiService', () => {
@@ -58,7 +60,8 @@ describe('FormPlayerApiService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
-        { provide: ServiceDataService, useClass: ServiceDataServiceStub }
+        { provide: ServiceDataService, useClass: ServiceDataServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
       ]
     });
     service = TestBed.inject(FormPlayerApiService);

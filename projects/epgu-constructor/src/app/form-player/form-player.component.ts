@@ -9,7 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { LoadService } from 'epgu-lib';
-import { filter, mergeMap, take, takeUntil } from 'rxjs/operators';
+import { filter, mergeMap, takeUntil, tap, take } from 'rxjs/operators';
 import { ConfigService } from '../core/config/config.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { LoggerService } from '../core/services/logger/logger.service';
@@ -25,6 +25,7 @@ import { FormPlayerConfigApiService } from './services/form-player-config-api/fo
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
 import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
+import { Config } from '../core/config/config.types';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -73,11 +74,24 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private initFormPlayerConfig(): void {
     this.isCoreConfigLoaded$
-      .pipe(mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()))
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(
+        tap(() => this.configService.initCore(this.getResultConfig())),
+        mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()),
+        takeUntil(this.ngUnsubscribe$),
+      )
       .subscribe((config) => {
-        this.configService.config = config;
+        this.configService.config = this.getResultConfig(config);
       });
+  }
+
+  private getResultConfig(config?: Config): Config {
+    const resultConfig: Config = { ...config };
+
+    if (this.service.apiUrl) {
+      resultConfig.apiUrl = this.service.apiUrl;
+    }
+
+    return resultConfig;
   }
 
   private initNavigation(): void {
