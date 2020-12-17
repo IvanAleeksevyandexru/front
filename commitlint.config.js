@@ -6,7 +6,6 @@ module.exports = {
       2, // level: error
       'always',
       (parsed) => {
-        console.log(parsed)
         if (/\[EPGUCORE-\d{5,}\]+$/.test(parsed.subject)) {
           return [true];
         }
