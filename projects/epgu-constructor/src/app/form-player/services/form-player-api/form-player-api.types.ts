@@ -262,6 +262,9 @@ export interface ComponentActionDto {
   link?: string;
   underConstruction?: boolean;
   hint?: string;
+  attrs?: {
+    stepsBack?: number;
+  }
 }
 
 export interface DisplaySubjHead {

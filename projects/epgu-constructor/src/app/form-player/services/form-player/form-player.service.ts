@@ -80,7 +80,7 @@ export class FormPlayerService extends FormPlayerBaseService {
     this.updateLoading(true);
     this.updateRequest(navigation);
     this.formPlayerApiService
-      .navigate(this._store, navigation.options, formPlayerNavigation)
+      .navigate(this._store, navigation.options, formPlayerNavigation, navigation.params)
       .subscribe(
         (response) => {
           this.processResponse(response);

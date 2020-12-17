@@ -16,10 +16,9 @@
 
     <epgu-constructor-info-screen-body [data]="screenService.component">
     </epgu-constructor-info-screen-body>
-
-    <div class="info__actions" *ngIf="this.actionButtons.length">
+    <div class="info__actions" *ngIf="actionButtons.length">
       <lib-button
-        *ngFor="let action of this.actionButtons"
+        *ngFor="let action of actionButtons"
         class="info__action btn__submit"
         epgu-constructor-action
         [action]="action"

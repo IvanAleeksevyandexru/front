@@ -3,14 +3,13 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
+import { Navigation, NavigationOptions, NavigationParams } from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import {
   ActionApiResponse,
   ActionDTO,
   ActionType,
   ComponentActionDto,
-  DTOActionAction,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
@@ -35,7 +34,7 @@ export class ActionDirective {
     private utilsService: UtilsService,
   ) {}
 
-  private switchAction(componentId?: string): void {
+  private switchAction(): void {
     switch (this.action.type) {
       case ActionType.download:
         this.downloadAction();
@@ -50,7 +49,7 @@ export class ActionDirective {
         this.navigate('skipStep');
         break;
       case ActionType.prevStep:
-        this.navigate('prevStep');
+        this.navigatePrevStep('prevStep');
         break;
       case ActionType.nextStep:
         this.navigate('nextStep');
@@ -78,6 +77,16 @@ export class ActionDirective {
     this.navService[stepType].next(navigation);
   }
 
+  navigatePrevStep(stepType: string): void {
+    const attrs = this.action?.attrs;
+    const stepsBack = attrs?.stepsBack;
+    const navigation = {
+      ...this.prepareNavigationData(),
+      params: stepsBack ? { stepsBack } : {}
+    };
+    this.navService[stepType].next(navigation);
+  }
+
   navigateModal(stepType: string): void {
     const navigation = this.prepareNavigationData();
     switch (stepType) {
@@ -91,14 +100,9 @@ export class ActionDirective {
   }
 
   private prepareNavigationData(): Navigation {
+    const payload = this.getComponentStateForNavigate();
     const options = this.getOptions();
-
-    const navigation: Navigation = {
-      payload: this.getComponentStateForNavigate(),
-      options,
-    };
-
-    return navigation;
+    return { payload, options };
   }
 
   private getOptions(): NavigationOptions {

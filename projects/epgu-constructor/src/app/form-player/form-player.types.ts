@@ -1,5 +1,5 @@
 import { Answer } from '../shared/types/answer';
-import { FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
+import { ComponentActionDto, FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
 
 /**
  * @property serviceId - идентификатор услуги в formPlayerApi
@@ -44,7 +44,10 @@ export interface NavigationOptions {
   store?: FormPlayerApiSuccessResponse;
 }
 
+export type NavigationParams = Pick<ComponentActionDto['attrs'], 'stepsBack'>;
+
 export interface Navigation {
   payload?: NavigationPayload;
   options?: NavigationOptions;
+  params?: NavigationParams;
 }
