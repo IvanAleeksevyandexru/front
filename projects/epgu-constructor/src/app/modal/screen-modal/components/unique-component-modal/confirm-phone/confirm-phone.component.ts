@@ -35,6 +35,7 @@ export class ConfirmPhoneComponent implements OnInit {
 
   characterMask: string;
   codeLength: number;
+  lastCode: string;
 
   constructor(
     public screenService: ScreenService,
@@ -59,7 +60,7 @@ export class ConfirmPhoneComponent implements OnInit {
   }
 
   public enterCode(code: string): void {
-    if (String(code).length === this.codeLength) {
+    if (String(code).length === this.codeLength && this.lastCode !== code) {
       this.navModalService.next({ payload: this.getComponentState(code) });
     }
   }
@@ -111,6 +112,7 @@ export class ConfirmPhoneComponent implements OnInit {
           }
 
           this.enterCode(code);
+          this.lastCode = code;
         });
     }
   }
@@ -119,17 +121,22 @@ export class ConfirmPhoneComponent implements OnInit {
     return element.getElementsByTagName('input')[0];
   }
 
-  private focusToElement(element: HTMLElement): void {
+  focusToElement(element: HTMLElement): void {
     setTimeout(() => element.focus(), 0);
   }
 
   private navigateToControl(obj: CodeFormGroup): void {
     const isLastIndex: boolean = this.codeLength - 1 === obj.codeIndexElement;
     const nextIndex: number = isLastIndex ? obj.codeIndexElement : obj.codeIndexElement + 1;
-    const input: HTMLElement = this.getInput(
-      this.codeGroupElement.nativeElement.children[nextIndex],
-    );
+    this.focusIndex(nextIndex);
+  }
 
-    this.focusToElement(input);
+  focusIndex(nextIndex: number): void {
+    if (!this.codeFormArray.value[nextIndex]?.codeValue) {
+      const input: HTMLElement = this.getInput(
+        this.codeGroupElement.nativeElement.children[nextIndex],
+      );
+      this.focusToElement(input);
+    }
   }
 }
