@@ -78,7 +78,7 @@ export class ValueLoaderService {
         return this.getPresetValue(item, cachedAnswers);
       }
 
-      return this.getComponentWithCaches(item, cachedValue, parentComponent.id, index);
+      return this.getComponentWithCaches(item, cachedValue, item.id, index);
     });
   }
 
