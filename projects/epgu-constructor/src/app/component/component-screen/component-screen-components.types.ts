@@ -15,4 +15,5 @@ export enum ComponentScreenComponentTypes {
   divorceConsent = 'DivorceConsent',
   fieldList = 'FieldList',
   timer = 'Timer',
+  timeSlot = 'TimeSlot',
 }
