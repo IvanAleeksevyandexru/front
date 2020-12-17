@@ -4,7 +4,6 @@ import { ConfigService } from './config.service';
 import { Config } from './config.types';
 import { LoadServiceStub } from './load-service-stub';
 
-
 const configMock: Config = {
   dictionaryUrl: 'dictionaryUrl',
   externalApiUrl: 'externalApiUrl',
@@ -26,7 +25,7 @@ const configMock: Config = {
       calendarName: 'на приём в подразделения МВД РФ',
       serviceId: '10000014784',
       eserviceId: '555666777',
-      serviceCode: '-10000019911'
+      serviceCode: '-10000019911',
     },
     gibdd: {
       subject: 'Запись на прием',
@@ -35,7 +34,7 @@ const configMock: Config = {
       serviceId: '10000593393',
       eserviceId: '10000070732',
       preliminaryReservationPeriod: '240',
-      gibddRouteNumber: '46000000000'
+      gibddRouteNumber: '46000000000',
     },
     divorce: {
       subject: 'Регистрация расторжения брака',
@@ -44,7 +43,7 @@ const configMock: Config = {
       serviceId: 'ЗагсРазводФорма12-1',
       eserviceId: '10000057526',
       preliminaryReservationPeriod: '1440',
-      divorceRouteNumber: '45382000'
+      divorceRouteNumber: '45382000',
     },
     brak: {
       subject: 'Регистрация заключения брака',
@@ -53,10 +52,11 @@ const configMock: Config = {
       serviceId: 'ЗагсБрак',
       eserviceId: '10000057526',
       preliminaryReservationPeriod: '1440',
-      brakRouteNumber: '45382000'
-    }
+      brakRouteNumber: '45382000',
+    },
   },
   disableUnderConstructionMode: true,
+  addToCalendarUrl: 'https://pgu-uat-betalk.test.gosuslugi.ru/',
 };
 
 describe('ConfigService', () => {
@@ -87,6 +87,7 @@ describe('ConfigService', () => {
     expect(service.mockUrl).toBe(configMock.mockUrl);
     expect(service.timeSlots).toBe(configMock.timeSlots);
     expect(service.disableUnderConstructionMode).toBe(configMock.disableUnderConstructionMode);
+    expect(service.addToCalendarUrl).toBe(configMock.addToCalendarUrl);
 
     expect(service.isLoaded).toBe(true);
   });

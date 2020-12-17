@@ -53,7 +53,8 @@
         "routeNumber": "45382000"
       }
     },
-    "disableUnderConstructionMode": false
+    "disableUnderConstructionMode": false,
+    "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/"
   },
   "core": {
     "config": {
