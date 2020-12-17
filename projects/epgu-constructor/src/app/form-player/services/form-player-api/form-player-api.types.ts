@@ -127,6 +127,7 @@ export interface ComponentAttrsDto {
   sendEmailLabel?: string;
   redirectLabel?: string;
   repeatableComponents?: Array<Array<ComponentDto>>;
+  singleChild?: boolean;
 }
 
 export interface ComponentUploadedFileDto {
