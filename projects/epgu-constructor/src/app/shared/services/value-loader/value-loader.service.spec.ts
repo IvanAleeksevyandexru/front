@@ -80,14 +80,16 @@ describe('ValueLoaderService', () => {
       };
       const repeatableComponents = { ...componentMock };
       repeatableComponents.attrs.repeatableComponents = [
-        {
-          id: 'rf1',
-          type: 'StringInput',
-          label: 'Прежняя фамилия',
-          attrs: {},
-          value: 'Ываыавыва',
-          required: true,
-        },
+        [
+          {
+            id: 'rf1',
+            type: 'StringInput',
+            label: 'Прежняя фамилия',
+            attrs: {},
+            value: 'Ываыавыва',
+            required: true,
+          },
+        ],
       ];
 
       const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);
@@ -117,14 +119,16 @@ describe('ValueLoaderService', () => {
       };
       const repeatableComponents = { ...componentMock };
       repeatableComponents.attrs.repeatableComponents = [
-        {
-          id: 'rf1',
-          type: 'StringInput',
-          label: 'Прежняя фамилия',
-          attrs: {},
-          value: '',
-          required: true,
-        },
+        [
+          {
+            id: 'rf1',
+            type: 'StringInput',
+            label: 'Прежняя фамилия',
+            attrs: {},
+            value: '',
+            required: true,
+          },
+        ],
       ];
 
       const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);

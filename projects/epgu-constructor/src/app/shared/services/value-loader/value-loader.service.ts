@@ -78,7 +78,7 @@ export class ValueLoaderService {
         return this.getPresetValue(item, cachedAnswers);
       }
 
-      return this.getComponentWithCaches(item, cachedValue, index);
+      return this.getComponentWithCaches(item, cachedValue, parentComponent.id, index);
     });
   }
 
@@ -94,7 +94,7 @@ export class ValueLoaderService {
     cachedValue: string,
     preset: string,
     componentType: string,
-    componentId: string,
+    componentId?: string,
     parentIndex?: number,
   ): string {
     if (componentType === CustomScreenComponentTypes.SnilsInput) {
@@ -147,6 +147,7 @@ export class ValueLoaderService {
   private getComponentWithCaches(
     item: ComponentDto,
     cachedValue: string,
+    parentId?: string,
     parentIndex?: number,
   ): ComponentDto {
     const component = {
@@ -161,7 +162,7 @@ export class ValueLoaderService {
           cachedValue,
           component.value,
           component.type,
-          item.id,
+          parentId,
           parentIndex,
         ),
       };
