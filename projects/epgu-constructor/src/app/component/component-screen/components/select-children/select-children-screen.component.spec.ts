@@ -16,6 +16,7 @@ import { BaseModule } from '../../../../shared/components/base/base.module';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { of } from 'rxjs';
 import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
+import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
 
 describe('SelectChildrenScreenComponent', () => {
   let component: SelectChildrenScreenComponent;
@@ -48,6 +49,7 @@ describe('SelectChildrenScreenComponent', () => {
         UnsubscribeService,
         ScreenService,
         HealthService,
+        ValueLoaderService,
       ],
     }).compileComponents();
   });

@@ -1,16 +1,16 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { map, takeUntil } from 'rxjs/operators';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+import { Observable } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
-import { Observable } from 'rxjs';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { CustomComponentOutputData } from '../../../components-list/components-list.types';
-import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 enum ItemStatus {
   invalid = 'INVALID',
@@ -48,6 +48,7 @@ export class SelectChildrenScreenComponent implements OnInit {
   isNewRef: string;
   passportRef: string;
   defaultAvailable = 20;
+  isSingleChild: boolean;
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -76,6 +77,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.idRef = this.getRefFromComponent('id');
     this.passportRef = this.getRefFromComponent('rfPasportSeries');
     this.itemsToSelect = this.getItemsToSelect(itemsList);
+    this.isSingleChild = component?.attrs?.singleChild;
   }
 
   initStartValues(id: string): void {
