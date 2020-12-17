@@ -6,7 +6,8 @@ import {
   ComponentDto,
   DisplayDto,
   DisplaySubjHead,
-  ScenarioErrorsDto
+  ScenarioErrorsDto,
+  CachedAnswersDto
 } from '../form-player/services/form-player-api/form-player-api.types';
 import { Gender } from '../shared/types/gender';
 import { ScreenStore, ScreenTypes } from './screen.types';
@@ -205,6 +206,17 @@ export class ScreenContent {
     return this._applicantAnswers.asObservable();
   }
 
+  public get cachedAnswers(): CachedAnswersDto {
+    return this._cachedAnswers.getValue();
+  }
+  public set cachedAnswers(val: CachedAnswersDto) {
+    this._cachedAnswers.next(val);
+  }
+
+  public get cachedAnswers$(): Observable<CachedAnswersDto> {
+    return this._cachedAnswers.asObservable();
+  }
+
   private _display = new BehaviorSubject<DisplayDto>(null);
   private _header = new BehaviorSubject<string>(null);
   private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
@@ -224,6 +236,7 @@ export class ScreenContent {
   private _action = new BehaviorSubject<ComponentActionDto>(null);
   private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
+  private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
 
   updateScreenContent(screenStore: ScreenStore): void {
     const {
@@ -231,7 +244,8 @@ export class ScreenContent {
       display = {} as DisplayDto,
       orderId,
       gender,
-      applicantAnswers
+      applicantAnswers,
+      cachedAnswers
     } = screenStore;
     const { header, subHeader, submitLabel, type, components = [], terminal, cssClass } = display;
     const firstComponent = components[0];
@@ -254,6 +268,7 @@ export class ScreenContent {
     this.action = this.actions[0];
     this.answers = firstComponent?.attrs?.answers || [];
     this.applicantAnswers = applicantAnswers;
+    this.cachedAnswers = cachedAnswers;
   }
 
   getComponentData(str: string): ComponentValue {

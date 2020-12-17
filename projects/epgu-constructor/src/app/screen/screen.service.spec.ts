@@ -7,6 +7,7 @@ import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { UtilsService } from '../core/services/utils/utils.service';
+import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: '653920',
@@ -72,7 +73,7 @@ describe('ScreenService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ScreenService, CachedAnswersService, CurrentAnswersService, UtilsService],
+      providers: [ScreenService, CachedAnswersService, CurrentAnswersService, UtilsService, ValueLoaderService],
     });
     screenService = TestBed.inject(ScreenService);
 

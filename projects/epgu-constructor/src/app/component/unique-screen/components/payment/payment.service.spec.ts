@@ -10,6 +10,7 @@ import { CachedAnswersService } from '../../../../shared/services/cached-answers
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { PaymentService } from './payment.service';
+import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -28,6 +29,7 @@ describe('PaymentService', () => {
         ScreenService,
         UtilsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
+        ValueLoaderService,
       ],
     });
     service = TestBed.inject(PaymentService);
