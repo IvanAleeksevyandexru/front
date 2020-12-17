@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { ComponentActionDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentActionDto,
+  ComponentAnswerDto,
+} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
 
 @Component({
@@ -11,7 +14,7 @@ import { ScreenService } from '../../../screen/screen.service';
   providers: [UnsubscribeService],
 })
 export class AnswerButtonComponent implements OnInit {
-  @Input() data: Partial<ComponentActionDto>;
+  @Input() data: Partial<ComponentActionDto | ComponentAnswerDto>;
   @Input() selectedValue: string;
 
   isLoading: boolean;

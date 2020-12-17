@@ -6,13 +6,14 @@ import { NavigationPayload } from '../../form-player/form-player.types';
 import {
   ActionType,
   ComponentActionDto,
+  ComponentAnswerDto,
   DTOActionAction,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../modal/modal.service';
-import { ScreenBase } from '../screenBase';
 import { Answer } from '../../shared/types/answer';
+import { ScreenBase } from '../screenBase';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -25,6 +26,8 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   submitLabel: string;
   isLoading: boolean;
   selectedAnswer: string;
+  isActionsAsLongBtsShown: boolean;
+  isAnswersAsLongBtsShown: boolean;
 
   constructor(
     public injector: Injector,
@@ -43,10 +46,17 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       });
   }
 
-  // @todo. метод похож на приватный
-  subscribeToComponent(): void {
+  private subscribeToComponent(): void {
+    /* TODO: после переезда на механизм отдельных answers
+    избавиться от хардкода action-кнопок в шаблоне и передавать массив action-кнопок как есть */
     this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
       this.rejectAction = this.getRejectAction(component?.attrs?.actions);
+      this.isActionsAsLongBtsShown = Boolean(
+        !this.rejectAction && this.screenService.component?.attrs?.actions?.length,
+      );
+      this.isAnswersAsLongBtsShown = Boolean(
+        !this.rejectAction && this.screenService.component?.attrs?.answers?.length,
+      );
     });
     this.screenService.isLoading$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((isLoading) => {
       this.isLoading = isLoading;
@@ -57,23 +67,23 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.navigationService.next({ payload });
   }
 
-  answerChoose(action: ComponentActionDto): void {
-    if (action.disabled || this.isLoading) {
+  answerChoose(answer: ComponentActionDto | ComponentAnswerDto): void {
+    if (answer.disabled || this.isLoading) {
       return;
     }
-    if (action.underConstruction && this.config.disableUnderConstructionMode) {
+    if (answer.underConstruction && this.config.disableUnderConstructionMode) {
       // Здесь намеренное мутирование значений для работы форм-плеера с отключенным режимом underConstruction
       // eslint-disable-next-line no-param-reassign
-      action.type = ActionType.nextStep;
+      answer.type = ActionType.nextStep;
       // eslint-disable-next-line no-param-reassign
-      action.action = DTOActionAction.getNextStep;
+      answer.action = DTOActionAction.getNextStep;
     }
-    if (action.type === ActionType.modalRedirectTo) {
-      this.showModalRedirectTo(action);
+    if (answer.type === ActionType.modalRedirectTo) {
+      this.showModalRedirectTo(answer);
       return;
     }
-    this.selectedAnswer = action.value;
-    this.nextStep(this.getPayload(action));
+    this.selectedAnswer = answer.value;
+    this.nextStep(this.getPayload(answer));
   }
 
   onSubmitClick(submitPayload: { value: string }): void {
@@ -83,17 +93,16 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     this.nextStep(payload);
   }
 
-  // @todo. метод похож на приватный
-  getPayload(action: ComponentActionDto): { [key: string]: Answer } {
+  private getPayload(answer: ComponentActionDto | ComponentAnswerDto): { [key: string]: Answer } {
     return {
       [this.screenService.component.id]: {
         visited: true,
-        value: action.value || '',
+        value: answer.value || '',
       },
     };
   }
 
-  showModalRedirectTo(action: ComponentActionDto): void {
+  private showModalRedirectTo(answer: ComponentActionDto | ComponentAnswerDto): void {
     const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
       ConfirmationModalComponent,
       {
@@ -111,7 +120,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
           {
             label: 'Перейти',
             closeModal: true,
-            value: action.link,
+            value: answer.link,
           },
         ],
         isShortModal: true,
@@ -119,22 +128,20 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     );
     modalResult$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((result) => {
       if (typeof result === 'string') {
-        window.location.href = result;
+        this.navigationService.redirectTo(result);
       }
     });
   }
 
-  showActionAsLongBtn(action: ComponentActionDto): boolean {
-    return !(action.hidden || this.isRejectAction(action));
+  showAnswerAsLongBtn(answer: ComponentAnswerDto | ComponentActionDto): boolean {
+    return !(answer.hidden || this.isRejectAction(answer.action));
   }
 
-  // @todo. метод похож на приватный
-  getRejectAction(actions: Array<ComponentActionDto> = []): ComponentActionDto {
-    return actions.find((action) => this.isRejectAction(action));
+  private getRejectAction(actions: Array<ComponentActionDto> = []): ComponentActionDto {
+    return actions.find((action) => this.isRejectAction(action.action));
   }
 
-  // @todo. метод похож на приватный
-  isRejectAction(action: ComponentActionDto): boolean {
-    return action.action === DTOActionAction.reject;
+  private isRejectAction(action: string): boolean {
+    return action === DTOActionAction.reject;
   }
 }

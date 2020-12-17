@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
 import { Observable, of, throwError } from 'rxjs';
@@ -22,7 +21,6 @@ const moment = moment_;
 
 @Injectable()
 export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
-
   private department: ZagsDepartmentInterface;
   private solemn: boolean;
   private slotsPeriod;
@@ -37,9 +35,8 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   private errorMessage;
 
   constructor(
-    private http: HttpClient,
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
-    private config: ConfigService
+    private config: ConfigService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -48,9 +45,11 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
 
   book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
-      tap(response => {
+      tap((response) => {
         if (response.error) {
-          this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
+          this.errorMessage = response.error.errorDetail
+            ? response.error.errorDetail.errorMessage
+            : 'check log';
           console.log(response.error);
         } else {
           this.bookedSlot = selectedSlot;
@@ -59,17 +58,19 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
           response.timeFinish = moment(response.timeStart).add(1440, 'm').toDate();
         }
       }),
-      catchError( error => {
+      catchError((error) => {
         this.errorMessage = error.message;
         return throwError(error);
-      })
+      }),
     );
   }
 
   isDateLocked(date: Date): boolean {
-    return !this.slotsMap[date.getFullYear()]
-      || !this.slotsMap[date.getFullYear()][date.getMonth()]
-      || !this.slotsMap[date.getFullYear()][date.getMonth()][date.getDate()];
+    return (
+      !this.slotsMap[date.getFullYear()] ||
+      !this.slotsMap[date.getFullYear()][date.getMonth()] ||
+      !this.slotsMap[date.getFullYear()][date.getMonth()][date.getDate()]
+    );
   }
 
   getAvailableMonths(): string[] {
@@ -77,7 +78,9 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   getAvailableSlots(selectedDay: Date): Observable<SlotInterface[]> {
-    return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
+    return of(
+      this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()],
+    );
   }
 
   getBookedSlot(): SlotInterface {
@@ -101,19 +104,18 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       this.slotsMap = {};
       this.errorMessage = undefined;
       return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
-        map(response => {
-            if (response.error.errorDetail.errorCode === 0) {
-              this.initSlotsMap(response.slots);
-            } else {
-              const { errorMessage, errorCode } = response.error.errorDetail;
-              this.errorMessage = errorMessage || errorCode;
-            }
+        map((response) => {
+          if (response.error.errorDetail.errorCode === 0) {
+            this.initSlotsMap(response.slots);
+          } else {
+            const { errorMessage, errorCode } = response.error.errorDetail;
+            this.errorMessage = errorMessage || errorCode;
           }
-        ),
-        catchError( error => {
+        }),
+        catchError((error) => {
           this.errorMessage = error.message;
           return throwError(error);
-        })
+        }),
       );
     }
 
@@ -162,22 +164,28 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getSlotsRequest(): TimeSlotReq {
+    const {
+      serviceId,
+      eserviceId,
+      routeNumber,
+    } = this.config.timeSlots.brak;
+
     return {
       organizationId: [this.department.attributeValues.CODE],
       caseNumber: this.orderId,
-      serviceId: ['ЗагсБрак'],
-      eserviceId: '10000057526',
-      routeNumber: this.config.brakRouteNumber,
+      serviceId: [serviceId],
+      eserviceId,
+      routeNumber,
       attributes: [
         {
           name: 'SolemnRegistration',
-          value: this.solemn
+          value: this.solemn,
         },
         {
           name: 'SlotsPeriod',
-          value: this.slotsPeriod
-        }
-      ]
+          value: this.slotsPeriod,
+        },
+      ],
     };
   }
 
@@ -185,37 +193,42 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
-    // TODO HARDCODE, возможно, стоит перенести в json
+
+    const {
+      preliminaryReservation,
+      serviceId,
+      serviceCode,
+      subject,
+      eserviceId,
+      calendarName,
+      preliminaryReservationPeriod,
+      routeNumber,
+    } = this.config.timeSlots.brak;
+
     return {
-      preliminaryReservation: 'true',
+      preliminaryReservation,
       address: this.department.attributeValues.ADDRESS,
       orgName: this.department.attributeValues.FULLNAME,
-      routeNumber: this.config.brakRouteNumber,
-      serviceCode: '-100000100821',
-      subject: 'Регистрация заключения брака',
+      routeNumber,
+      subject,
       params: [
         {
           name: 'phone',
-          value: this.department.attributeValues.PHONE
-        }
+          value: this.department.attributeValues.PHONE,
+        },
       ],
-      eserviceId: '10000057526',
+      eserviceId,
+      serviceCode,
       bookId: this.bookId,
       organizationId: this.department.attributeValues.CODE,
-      calendarName: 'на услугу «Регистрация заключения брака»',
-      areaId: [
-        selectedSlot.slotId
-      ],
+      calendarName,
+      areaId: [selectedSlot.slotId],
       selectedHallTitle: selectedSlot.slotId,
       parentOrderId: this.orderId,
-      preliminaryReservationPeriod: '1440',
+      preliminaryReservationPeriod,
       attributes: [],
-      slotId: [
-        selectedSlot.slotId
-      ],
-      serviceId: [
-        'ЗагсБрак'
-      ]
+      slotId: [selectedSlot.slotId],
+      serviceId: [serviceId],
     };
   }
 
@@ -240,7 +253,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
         slotId: slot.slotId,
         areaId: slot.areaId,
         slotTime: slotDate,
-        timezone: slot.visitTimeISO.substring(slot.visitTimeISO.length - 6)
+        timezone: slot.visitTimeISO.substring(slot.visitTimeISO.length - 6),
       });
     });
   }

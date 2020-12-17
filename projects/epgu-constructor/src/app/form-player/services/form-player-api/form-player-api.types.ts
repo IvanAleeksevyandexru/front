@@ -5,8 +5,8 @@ import {
   TimerLabelSection
 } from '../../../component/component-screen/components/timer/timer.interface';
 import { DictionaryOptions } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
-import { ScreenTypes } from '../../../screen/screen.types';
 import { Clarifications } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
+import { ScreenTypes } from '../../../screen/screen.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
@@ -46,8 +46,21 @@ export interface ComponentDto {
   visited?: boolean;
 }
 
+export interface ComponentAnswerDto {
+  label: string;
+  value: string;
+  type: string;
+  action: string;
+  hidden?: boolean;
+  disabled?: boolean;
+  link?: string;
+  hint?: string;
+  underConstruction?: boolean;
+}
+
 export interface ComponentAttrsDto {
   actions?: Array<ComponentActionDto>;
+  answers?: Array<ComponentAnswerDto>
   clarifications?: ClarificationsDto;
   fields?: Array<ComponentFieldDto>;
   dictionaryType?: Array<string> | string; //TODO: прояснить почему либо массив объектов либо строка
@@ -268,7 +281,6 @@ export interface DisplaySubjHead {
  * @property {ScreenTypes}type - тип компонента
  */
 export interface DisplayDto {
-
   id: string;
   name: string;
   header: string;

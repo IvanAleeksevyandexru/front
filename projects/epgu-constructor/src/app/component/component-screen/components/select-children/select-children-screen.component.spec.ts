@@ -14,6 +14,8 @@ import { HealthService } from 'epgu-lib';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { BaseModule } from '../../../../shared/components/base/base.module';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
+import { of } from 'rxjs';
+import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
 import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
 
 describe('SelectChildrenScreenComponent', () => {
@@ -35,6 +37,7 @@ describe('SelectChildrenScreenComponent', () => {
       imports: [
         CoreModule,
         BaseModule,
+        CloneButtonModule,
         ReactiveFormsModule,
         ComponentsListModule,
         RouterTestingModule,
@@ -57,7 +60,7 @@ describe('SelectChildrenScreenComponent', () => {
     fixture.debugElement.injector.get(UnsubscribeService);
     fixture.debugElement.injector.get(ScreenService);
     component = fixture.componentInstance;
-    component.data = mockData;
+    component.data$ = of(mockData);
     fixture.detectChanges();
   });
 

@@ -151,19 +151,19 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getSlotsRequest(): TimeSlotReq {
-    // TODO HARDCODE, возможно, стоит перенести в json
+    const {
+      serviceId,
+      eserviceId,
+      routeNumber,
+    } = this.config.timeSlots.divorce;
+
     return {
       organizationId: [this.department.attributeValues.CODE],
       caseNumber: this.orderId,
-      serviceId: ['ЗагсРазводФорма12-1'],
-      eserviceId: '10000057526',
-      routeNumber: this.config.divorceRouteNumber,
-      attributes: [
-        // {
-        //   name: 'fiasCode',
-        //   value: this.department.attributeValues.CODE.substring(0, 3)
-        // }
-      ]
+      serviceId: [serviceId],
+      eserviceId,
+      routeNumber,
+      attributes: []
     };
   }
 
@@ -171,43 +171,51 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     if (!this.bookId) {
       this.bookId = uuid.v4();
     }
+
+    const {
+      preliminaryReservation,
+      serviceId,
+      serviceCode,
+      subject,
+      eserviceId,
+      calendarName,
+      preliminaryReservationPeriod,
+      routeNumber,
+    } = this.config.timeSlots.divorce;
+
     return {
-      preliminaryReservation: 'true',
+      preliminaryReservation,
       address: this.department.attributeValues.ADDRESS,
       orgName: this.department.attributeValues.FULLNAME,
-      routeNumber: this.config.divorceRouteNumber,
-      serviceCode: '-100000100821',
-      subject: 'Регистрация расторжения брака',
+      routeNumber,
+      subject,
+      serviceCode,
       params: [
         {
           name: 'phone',
           value: this.department.attributeValues.PHONE
         }
       ],
-      eserviceId: '10000057526',
+      eserviceId,
       bookId: this.bookId,
       organizationId: this.department.attributeValues.CODE,
-      calendarName: 'на услугу «Регистрация расторжения брака»',
+      calendarName,
       areaId: [
         selectedSlot.slotId
       ],
       parentOrderId: this.orderId,
-      preliminaryReservationPeriod: '1440',
+      preliminaryReservationPeriod,
       attributes: [
-        // {
-        //   name: 'fiasCode',
-        //   value: this.department.attributeValues.CODE.substring(0, 3)
-        // },
         {
           name: 'serviceId',
-          value: 'ЗагсРазводФорма12-1'
+          value: serviceId
         }
       ],
       slotId: [
         selectedSlot.slotId
       ],
       serviceId: [
-        'ЗагсРазводФорма12-1'
+        serviceId
       ]
     };
   }

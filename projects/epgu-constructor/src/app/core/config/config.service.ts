@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LoadService } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
-import { Config, MockApi } from './config.types';
+import { Config, MockApi, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigService implements Config {
@@ -14,15 +14,13 @@ export class ConfigService implements Config {
   private _lkUrl: string;
   private _paymentUrl: string;
   private _timeSlotApiUrl: string;
-  private _brakRouteNumber: string;
-  private _divorceRouteNumber: string;
-  private _gibddRouteNumber: string;
   private _listPaymentsApiUrl: string;
   private _uinApiUrl: string;
   private _invitationUrl: string;
   private _yandexMapsApiKey: string;
   private _staticDomainAssetsPath: string;
   private _mocks: MockApi[];
+  private _timeSlots?: TimeSlotsApi;
   private _mockUrl: string;
   private _disableUnderConstructionMode: boolean;
 
@@ -73,18 +71,6 @@ export class ConfigService implements Config {
     return this._timeSlotApiUrl;
   }
 
-  get brakRouteNumber(): string {
-    return this._brakRouteNumber;
-  }
-
-  get divorceRouteNumber(): string {
-    return this._divorceRouteNumber;
-  }
-
-  get gibddRouteNumber(): string {
-    return this._gibddRouteNumber;
-  }
-
   get listPaymentsApiUrl(): string {
     return this._listPaymentsApiUrl;
   }
@@ -113,6 +99,10 @@ export class ConfigService implements Config {
     return this._mockUrl;
   }
 
+  get timeSlots(): TimeSlotsApi {
+    return this._timeSlots;
+  }
+
   get disableUnderConstructionMode(): boolean {
     return this._disableUnderConstructionMode;
   }
@@ -132,7 +122,7 @@ export class ConfigService implements Config {
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
     this._fileUploadApiUrl = config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;
     this._lkUrl = config.lkUrl ?? `${this.loadService.config.lkUrl}`;
-    this._paymentUrl = config.paymentUrl ?? `${this.loadService.config.oplataUrl}`;
+    this._paymentUrl = config.paymentUrl ?? `${this.loadService.config.paymentUrl}`;
     this._timeSlotApiUrl = config.timeSlotApiUrl ?? `${this.loadService.config.lkApiUrl}equeue/agg`;
     this._listPaymentsApiUrl = config.listPaymentsApiUrl ?? `${this.loadService.config.lkApiUrl}orders/listpaymentsinfo`;
     this._uinApiUrl = config.uinApiUrl ?? `${this.loadService.config.lkApiUrl}paygate/uin`;
@@ -145,11 +135,9 @@ export class ConfigService implements Config {
     this.checkConfig(config);
     this.initCore(config);
 
-    this._brakRouteNumber = config.brakRouteNumber;
-    this._divorceRouteNumber = config.divorceRouteNumber;
-    this._gibddRouteNumber = config.gibddRouteNumber;
     this._mocks = config.mocks || [];
     this._mockUrl = config.mockUrl || '';
+    this._timeSlots = config.timeSlots || {};
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);

@@ -4,7 +4,7 @@ import { Moment } from 'moment';
 import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryModel,
-  EmployeeHistoryUncheckedPeriod
+  EmployeeHistoryUncheckedPeriod,
 } from '../employee-history.types';
 import { MonthYear } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
@@ -23,11 +23,14 @@ export class EmployeeHistoryMonthsService {
 
   initSettings(): void {
     this.maxDate = MonthYear.fromDate(moment().endOf('month').toDate());
-    this.minDateFrom = MonthYear.fromDate(moment().subtract(this.years + 60, 'years').toDate());
+    this.minDateFrom = MonthYear.fromDate(
+      moment()
+        .subtract(this.years + 60, 'years')
+        .toDate(),
+    );
     this.minDateTo = this.minDateFrom;
     this.availableMonths = this.getAvailableMonths();
   }
-
 
   getUncheckedPeriods(): EmployeeHistoryUncheckedPeriod[] {
     const periods: Array<Array<EmployeeHistoryAvailableDates>> = [];
@@ -37,7 +40,7 @@ export class EmployeeHistoryMonthsService {
 
     for (let i = 0; i < this.availableMonths.length; i++) {
       if (this.availableMonths[i].checked) {
-        if (!this.availableMonths[i+1]?.checked) {
+        if (!this.availableMonths[i + 1]?.checked) {
           periodIndex++;
           periods[periodIndex] = [];
         }
@@ -51,15 +54,18 @@ export class EmployeeHistoryMonthsService {
       return moment[type](convertedDates).format(formatString);
     };
 
-    return periods.filter(period => period.length).map((period: EmployeeHistoryAvailableDates[]) => {
-      const convertedDates: Array<Moment> =
-        period.map((stringDate: EmployeeHistoryAvailableDates) => this.getConvertedDates(stringDate));
+    return periods
+      .filter((period) => period.length)
+      .map((period: EmployeeHistoryAvailableDates[]) => {
+        const convertedDates: Array<Moment> = period.map(
+          (stringDate: EmployeeHistoryAvailableDates) => this.getConvertedDates(stringDate),
+        );
 
-      return {
-        from: getPeriod('min', convertedDates),
-        to: getPeriod('max', convertedDates)
-      };
-    });
+        return {
+          from: getPeriod('min', convertedDates),
+          to: getPeriod('max', convertedDates),
+        };
+      });
   }
 
   private getAvailableMonths(
@@ -80,9 +86,10 @@ export class EmployeeHistoryMonthsService {
   }
 
   private uncheckAvailableMonths(): void {
-    this.availableMonths = this.availableMonths.map(
-      (month: EmployeeHistoryAvailableDates) => ({ ...month, checked: false })
-    );
+    this.availableMonths = this.availableMonths.map((month: EmployeeHistoryAvailableDates) => ({
+      ...month,
+      checked: false,
+    }));
   }
 
   updateAvailableMonths(generation: Array<EmployeeHistoryModel>): void {
@@ -122,7 +129,6 @@ export class EmployeeHistoryMonthsService {
         this.isMonthComplete$.next(false);
       }
     }
-
   }
 
   /**
@@ -133,6 +139,6 @@ export class EmployeeHistoryMonthsService {
    */
   private getConvertedDates(stringDate: EmployeeHistoryAvailableDates): Moment {
     const arrParsedDate: string[] = stringDate.date.split('/');
-    return moment(`${arrParsedDate[0]}/01/${arrParsedDate[1]}`, 'DD/MM/YYYY');
+    return moment(`${arrParsedDate[0]}/01/${arrParsedDate[1]}`, 'MM/DD/YYYY');
   }
 }

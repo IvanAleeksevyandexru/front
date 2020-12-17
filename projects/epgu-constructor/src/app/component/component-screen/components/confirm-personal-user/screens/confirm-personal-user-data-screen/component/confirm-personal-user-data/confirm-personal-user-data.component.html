@@ -1,4 +1,4 @@
-<epgu-constructor-field-list [data]="data">
+<epgu-constructor-field-list *ngIf="(data$ | async) as data" [data]="data">
 </epgu-constructor-field-list>
 <div class="data-footer" *ngIf="screenService.action.type === actionType.profileEdit">
   <div class="divider"></div>
@@ -7,6 +7,6 @@
       class="btn-edit__icon"
       src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"
     />
-    <span class="btn-edit__text">{{ (screenService.action$ | async).label }}</span>
+    <span class="btn-edit__text" *ngIf="(screenService.action$ | async) as action">{{ action.label }}</span>
   </button>
 </div>

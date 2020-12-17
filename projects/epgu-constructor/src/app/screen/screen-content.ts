@@ -1,15 +1,15 @@
+import { BehaviorSubject } from 'rxjs';
 import {
   ApplicantAnswersDto,
-  ComponentDto,
   ComponentActionDto,
+  ComponentAnswerDto, ComponentDto,
   DisplayDto, DisplaySubjHead,
   ScenarioErrorsDto, CachedAnswersDto
 } from '../form-player/services/form-player-api/form-player-api.types';
-import { ScreenStore, ScreenTypes } from './screen.types';
-import { BehaviorSubject } from 'rxjs';
 import { Gender } from '../shared/types/gender';
+import { ScreenStore, ScreenTypes } from './screen.types';
 
-type ComponentValueGeneric<T> =  T;
+type ComponentValueGeneric<T> = T;
 type ComponentValue = string | number | ComponentValueGeneric<unknown>;
 
 export class ScreenContent {
@@ -167,6 +167,15 @@ export class ScreenContent {
   }
   public action$ = this._action.asObservable();
 
+  private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
+  public get answers(): Array<ComponentAnswerDto> {
+    return this._answers.getValue();
+  }
+  public set answers(val: Array<ComponentAnswerDto>) {
+    this._answers.next(val);
+  }
+  public answers$ = this._answers.asObservable();
+
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   public get applicantAnswers(): ApplicantAnswersDto {
     return this._applicantAnswers.getValue();
@@ -213,6 +222,7 @@ export class ScreenContent {
     this.componentValue = this.getComponentData(firstComponent?.value);
     this.actions = firstComponent?.attrs?.actions || [];
     this.action = this.actions[0];
+    this.answers = firstComponent?.attrs?.answers || [];
     this.applicantAnswers = applicantAnswers;
     this.cachedAnswers = cachedAnswers;
   }
