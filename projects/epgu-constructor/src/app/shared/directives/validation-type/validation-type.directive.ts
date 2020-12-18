@@ -8,14 +8,14 @@ import { ValidationService } from '../../services/validation/validation.service'
   selector: '[epgu-constructor-validation-type]',
 })
 export class ValidationTypeDirective {
-  @Input() component: CustomComponent;
+  @Input() component?: CustomComponent;
   @Output() emmitChangesEvent = new EventEmitter<void>();
 
   constructor(private validationService: ValidationService, private control: NgControl) {}
 
   @HostListener('blur')
   blur(): void {
-    if (this.component.attrs.validation) {
+    if (this.component?.attrs?.validation) {
       this.validateOnBlur();
     }
   }

@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { filter, takeUntil, tap } from 'rxjs/operators';
+import { MonthYear } from 'epgu-lib';
+import { combineLatest } from 'rxjs';
+import * as moment_ from 'moment';
+
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   EmployeeType,
@@ -8,11 +12,10 @@ import {
   EmployeeHistoryDataSource,
 } from '../employee-history.types';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
-import { MonthYear } from 'epgu-lib';
-import { combineLatest } from 'rxjs';
+
 import { EmployeeHistoryDatasourceService } from './employee-history.datasource.service';
-import * as moment_ from 'moment';
 import { EmployeeHostoryErrors } from '../employee-hostory.enums';
+import { defaultScreensAmount } from '../../repeatable-fields/repeatable-fields.constant';
 
 const moment = moment_;
 
@@ -41,6 +44,10 @@ export class EmployeeHistoryFormService {
   }
 
   newGeneration(generationData?: EmployeeHistoryModel): void {
+    if (!this.isScreensAvailable()) {
+      return;
+    }
+
     const form: FormGroup = this.fb.group({
       type: [null, Validators.required],
       from: [null, Validators.required],
@@ -72,6 +79,10 @@ export class EmployeeHistoryFormService {
 
   clearHistoryForm(): void {
     this.employeeHistoryForm = this.fb.array([]);
+  }
+
+  isScreensAvailable(): boolean {
+    return this.employeeHistoryForm.length < defaultScreensAmount;
   }
 
   private newGenerationWatch(form: FormGroup): void {
