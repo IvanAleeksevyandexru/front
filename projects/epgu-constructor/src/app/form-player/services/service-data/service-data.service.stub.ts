@@ -8,6 +8,7 @@ export class ServiceDataServiceStub implements Service {
   private _targetId: string;
   private _invited: boolean;
   private _canStartNew: boolean;
+  private _initState: string;
 
   get serviceId(): string {
     return this._serviceId;
@@ -29,6 +30,10 @@ export class ServiceDataServiceStub implements Service {
     return this._invited;
   }
 
+  get initState(): string {
+    return this._initState;
+  }
+
   set invited(invited: boolean) {
     this._invited = invited;
   }
@@ -41,5 +46,12 @@ export class ServiceDataServiceStub implements Service {
     this._canStartNew = canStartNew;
   }
 
-  init(): void {}
+  init(service: Service): void {
+    this._serviceId = service.serviceId;
+    this._targetId = service.targetId;
+    this._initState = service.initState;
+    this.orderId = service.orderId;
+    this.invited = service.invited;
+    this.canStartNew = service.canStartNew ?? true;
+  }
 }

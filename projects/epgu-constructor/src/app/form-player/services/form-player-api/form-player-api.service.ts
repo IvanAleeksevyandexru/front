@@ -7,7 +7,7 @@ import {
   ActionDTO,
   CheckOrderApiResponse,
   FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse,
+  FormPlayerApiSuccessResponse, QuizRequestDto,
 } from './form-player-api.types';
 import { FormPlayerNavigation, NavigationOptions } from '../../form-player.types';
 import { ConfigService } from '../../../core/config/config.service';
@@ -68,6 +68,16 @@ export class FormPlayerApiService {
 
     const body = {
       ...data,
+    };
+
+    return this.post<FormPlayerApiResponse>(path, body);
+  }
+
+  public quizToOrder(quiz: QuizRequestDto): Observable<FormPlayerApiResponse> {
+    let path = `${this.configService.apiUrl}/quiz/scenario/toOrder`;
+
+    const body = {
+      ...quiz,
     };
 
     return this.post<FormPlayerApiResponse>(path, body);

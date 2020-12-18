@@ -27,6 +27,8 @@ export abstract class FormPlayerBaseService {
 
   protected isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   protected playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
+  protected _isLoading$ = this.isLoadingSubject.asObservable();;
+  protected _playerLoaded$ = this.playerLoadedSubject.asObservable();
 
   constructor(
     public injector: Injector
@@ -37,11 +39,11 @@ export abstract class FormPlayerBaseService {
   }
 
   get isLoading$(): Observable<boolean>  {
-    return this.isLoadingSubject.asObservable();
+    return this._isLoading$;
   }
 
   get playerLoaded$(): Observable<boolean> {
-    return this.playerLoadedSubject.asObservable();
+    return this._playerLoaded$;
   }
 
   /**

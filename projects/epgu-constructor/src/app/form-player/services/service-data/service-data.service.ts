@@ -8,6 +8,7 @@ export class ServiceDataService implements Service {
   private _targetId: string;
   private _invited: boolean;
   private _canStartNew: boolean;
+  private _initState: string;
 
   get serviceId(): string {
     return this._serviceId;
@@ -29,6 +30,10 @@ export class ServiceDataService implements Service {
     return this._invited;
   }
 
+  get initState(): string {
+    return this._initState;
+  }
+
   set invited(invited: boolean) {
     this._invited = invited;
   }
@@ -45,6 +50,7 @@ export class ServiceDataService implements Service {
     this.checkProps(service);
     this._serviceId = service.serviceId;
     this._targetId = service.targetId;
+    this._initState = service.initState;
     this.orderId = service.orderId;
     this.invited = service.invited;
     this.canStartNew = service.canStartNew ?? true;
