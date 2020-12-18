@@ -1,17 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-
-import { ScreenModalService } from './screen-modal.service';
-import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
-import { ScreenService } from '../../screen/screen.service';
-import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';
-import { FormPlayerServiceStub } from '../../form-player/services/form-player/form-player.service.stub';
-import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
-import { ScreenServiceStub } from '../../screen/screen.service.stub';
+import { of, throwError } from 'rxjs';
 import { LoggerService } from '../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
-import { of, throwError } from 'rxjs';
 import { FormPlayerNavigation, Navigation } from '../../form-player/form-player.types';
+import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';
 import { FormPlayerApiErrorStatuses } from '../../form-player/services/form-player-api/form-player-api.types';
+import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
+import { FormPlayerServiceStub } from '../../form-player/services/form-player/form-player.service.stub';
+import { ScreenService } from '../../screen/screen.service';
+import { ScreenServiceStub } from '../../screen/screen.service.stub';
+import { HtmlRemoverService } from '../../shared/services/html-remover/html-remover.service';
+import { ScreenModalService } from './screen-modal.service';
+
 
 const response = new FormPlayerServiceStub()._store;
 
@@ -29,6 +30,7 @@ describe('ScreenModalService', () => {
       providers: [
         ScreenModalService,
         ScreenService,
+        HtmlRemoverService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
