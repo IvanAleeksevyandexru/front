@@ -127,6 +127,8 @@ export interface ComponentAttrsDto {
   sendEmailLabel?: string;
   redirectLabel?: string;
   repeatableComponents?: Array<Array<ComponentDto>>;
+  minDateRef?: string;
+  maxDateRef?: string;
 }
 
 export interface ComponentUploadedFileDto {
