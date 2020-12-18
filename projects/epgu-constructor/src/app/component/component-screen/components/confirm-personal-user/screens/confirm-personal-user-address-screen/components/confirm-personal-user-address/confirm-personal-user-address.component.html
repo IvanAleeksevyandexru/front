@@ -32,8 +32,8 @@
         class="item--date"
         [name]="field.fieldName"
         align="left"
-        [minDate]="field.minDate ? field.minDate : '-50y'"
-        [maxDate]="field.maxDate ? field.maxDate : 'today'"
+        [minDate]="(data$ | async)?.attrs?.minDate || '-50y'"
+        [maxDate]="(data$ | async)?.attrs?.maxDate || 'today'"
         [(ngModel)]="valueParsed[field.fieldName]"
         [clearable]="true"
       >
@@ -57,7 +57,7 @@
       </lib-plain-input>
     </epgu-constructor-address-item>
   </ng-container>
-  <div class="error" *ngIf="(screenService.componentError$ | async) && !isFormValid()">
+  <div class="error" *ngIf="screenService.componentError$ | async">
     <small>{{ screenService.componentError$ | async }}</small>
   </div>
 </form>

@@ -24,7 +24,7 @@ import {
   getDiscountPrice,
   getDocInfo,
 } from './components/payment/payment.component.functions';
-import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
+import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
 
@@ -121,7 +121,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   redirectToPayWindow(): void {
     this.inLoading = true;
     const data = { scenarioDto: this.screenService.getStore() };
-    this.localStorageService.set(COMPONENT_DATA_KEY, data);
+    this.localStorageService.set(LAST_SCENARIO_KEY, data);
     clearInterval(this.payStatusInterval);
     this.locationService.href(this.paymentService.getPaymentLink(this.billId));
   }

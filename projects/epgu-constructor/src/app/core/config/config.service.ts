@@ -5,11 +5,8 @@ import { Config, MockApi, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigService implements Config {
-  public get isLoaded$(): Observable<boolean> {
-    return this.isLoadedSubject.asObservable();
-  }
-
   private isLoadedSubject = new BehaviorSubject(false);
+  private _isLoaded$ = this.isLoadedSubject.asObservable();
   private _isLoaded = false;
   private _billsApiUrl: string;
   private _apiUrl: string;
@@ -40,6 +37,10 @@ export class ConfigService implements Config {
     }
   }
 
+  get isLoaded$(): Observable<boolean> {
+    return this._isLoaded$;
+  }
+
   get isLoaded(): boolean {
     return this._isLoaded;
   }
@@ -53,7 +54,7 @@ export class ConfigService implements Config {
   }
 
   get configId(): string {
-    return this._configId;
+    return this._configId || 'default-config';
   }
 
   set configId(configId: string) {

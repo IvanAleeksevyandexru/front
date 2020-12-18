@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ServiceDataService } from '../service-data/service-data.service';
@@ -7,9 +7,9 @@ import {
   ActionDTO,
   CheckOrderApiResponse,
   FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse,
+  FormPlayerApiSuccessResponse, QuizRequestDto,
 } from './form-player-api.types';
-import { FormPlayerNavigation, NavigationOptions } from '../../form-player.types';
+import { FormPlayerNavigation, NavigationOptions, NavigationParams } from '../../form-player.types';
 import { ConfigService } from '../../../core/config/config.service';
 import { LocationService } from '../../../core/services/location/location.service';
 
@@ -57,7 +57,7 @@ export class FormPlayerApiService {
   public navigate(
     data: FormPlayerApiSuccessResponse,
     options: NavigationOptions = {},
-    formPlayerNavigation: FormPlayerNavigation,
+    formPlayerNavigation: FormPlayerNavigation
   ): Observable<FormPlayerApiResponse> {
     let path = this.getNavigatePath(data, options, formPlayerNavigation);
     data.scenarioDto.currentUrl = this.locationService.getHref();
@@ -70,7 +70,24 @@ export class FormPlayerApiService {
       ...data,
     };
 
+    const params = this.getNavigateParams(options.params);
+
+    return this.post<FormPlayerApiResponse>(path, body, params);
+  }
+
+  public quizToOrder(quiz: QuizRequestDto): Observable<FormPlayerApiResponse> {
+    let path = `${this.configService.apiUrl}/quiz/scenario/toOrder`;
+
+    const body = {
+      ...quiz,
+    };
+
     return this.post<FormPlayerApiResponse>(path, body);
+  }
+
+  private getNavigateParams(params: NavigationParams = {}): HttpParams {
+    return Object.keys(params)
+      .reduce<HttpParams>((p, k) => p.set(k, params[k]), new HttpParams());
   }
 
   private getNavigatePath(
@@ -89,9 +106,10 @@ export class FormPlayerApiService {
     return path;
   }
 
-  private post<T>(path: string, body: Object): Observable<T> {
+  private post<T>(path: string, body: Object, params?: HttpParams): Observable<T> {
     return this.http.post<T>(path, body, {
       withCredentials: false,
+      params,
     });
   }
 }

@@ -2,12 +2,12 @@ import { Inject, Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { ScreenService } from '../../../screen/screen.service';
-import { COMPONENT_DATA_KEY } from '../../../shared/constants/form-player';
+import { LAST_SCENARIO_KEY } from '../../../shared/constants/form-player';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse,
+  FormPlayerApiSuccessResponse, QuizRequestDto,
 } from '../form-player-api/form-player-api.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
@@ -48,12 +48,22 @@ export class FormPlayerService extends FormPlayerBaseService {
    */
   initData(orderId?: string, invited?: boolean): void {
     this.updateLoading(true);
+    this.getOrderData(orderId);
+  }
 
-    if (this.isNeedToShowLastScreen()) {
-      this.loadDataFromLocalStorage();
-    } else {
-      this.getOrderData(orderId);
-    }
+  initPlayerFromQuiz(quiz: QuizRequestDto): void {
+    this.updateLoading(true);
+    this.formPlayerApiService
+      .quizToOrder(quiz)
+      .subscribe(
+        (response) => {
+          this.processResponse(response);
+        },
+        (error) => {
+          this.sendDataError(error);
+        },
+        () => this.updateLoading(false),
+      );
   }
 
   /**
@@ -66,16 +76,6 @@ export class FormPlayerService extends FormPlayerBaseService {
       (error) => this.sendDataError(error),
       () => this.updateLoading(false),
     );
-  }
-
-  /**
-   * Достаёт данные из localStorage для текущего экрана
-   */
-  loadDataFromLocalStorage(): void {
-    const store = this.localStorageService.get<FormPlayerApiResponse>(COMPONENT_DATA_KEY);
-    this.processResponse(store);
-    this.updateLoading(false);
-    this.localStorageService.delete(COMPONENT_DATA_KEY);
   }
 
   navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation): void {
@@ -94,6 +94,7 @@ export class FormPlayerService extends FormPlayerBaseService {
       );
   }
 
+
   /**
    * Обработка ответа сервера
    * @param response - ответ сервера на запрос
@@ -105,25 +106,6 @@ export class FormPlayerService extends FormPlayerBaseService {
       this.sendDataSuccess(response as FormPlayerApiSuccessResponse);
       this.resetViewByChangeScreen();
     }
-  }
-
-  /**
-   * Проверяет нужно ли нам достать ранее сохранённые данные
-   * для подмены экрана на тот на котором остановились
-   * @private
-   */
-  isNeedToShowLastScreen(): boolean {
-    return (
-      this.location.path(true).includes('getLastScreen=') && this.isHaveOrderDataInLocalStorage()
-    );
-  }
-
-  /**
-   * Возвращает true, если в LocalStorage если данные для показа
-   * @private
-   */
-  private isHaveOrderDataInLocalStorage(): boolean {
-    return !!localStorage.getItem(COMPONENT_DATA_KEY);
   }
 
   /**

@@ -2,13 +2,25 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class LocalStorageServiceStub {
-  get(): void  {}
+  get<T>(key: string): T {
+    const rawItem = this.getRaw(key);
+    return JSON.parse(rawItem) as T;
+  }
 
-  getRaw(): void  {}
+  getRaw(key: string): string {
+    return localStorage.getItem(key);
+  }
 
-  set(){}
+  set<T>(key: string, data: T): void {
+    const rawItem = JSON.stringify(data);
+    this.setRaw(key, rawItem);
+  }
 
-  setRaw(): void {}
+  setRaw(key: string, data: string): void {
+    localStorage.setItem(key, data);
+  }
 
-  delete(): void {}
+  delete(key: string): void {
+    localStorage.removeItem(key);
+  }
 }

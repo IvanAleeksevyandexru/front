@@ -116,6 +116,27 @@ describe('FormPlayerApiService', () => {
     }));
   });
 
+  describe('quizToOrder()', () => {
+    it('should call http with post method', fakeAsync(() => {
+      const quiz = { ...mockData, serviceId: '', targetId: '', answerServicePrefix: '' };
+      service.quizToOrder(quiz).subscribe(response => expect(response).toBe(responseMock));
+      const req = http.expectOne(`${apiUrl}/quiz/scenario/toOrder`);
+      expect(req.request.method).toBe('POST');
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should call with body', fakeAsync(() => {
+      const quiz = { ...mockData, serviceId: '', targetId: '', answerServicePrefix: '' };
+      service.quizToOrder(quiz).subscribe(response => expect(response).toBe(responseMock));
+      const req = http.expectOne(`${apiUrl}/quiz/scenario/toOrder`);
+      const body = req.request.body;
+      expect(body).toEqual(quiz);
+      req.flush(responseMock);
+      tick();
+    }));
+  });
+
   describe('getServiceData()', () => {
     it('should call http with post method', fakeAsync(() => {
       service.getServiceData().subscribe(response => expect(response).toBe(responseMock));
@@ -190,6 +211,19 @@ describe('FormPlayerApiService', () => {
       const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.PREV}`;
       const req = http.expectOne(url);
       expect(req.request.body).toEqual(mockData);
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should call http with params', fakeAsync(() => {
+      let mockNavigationOptions = {
+        params: { stepsBack: 2 }
+      };
+      service.navigate(mockData, mockNavigationOptions, FormPlayerNavigation.PREV)
+        .subscribe(response => expect(response).toBe(responseMock));
+      const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.PREV}?stepsBack=2`;
+      const req = http.expectOne(url);
+      expect(req.request.params.has('stepsBack')).toBeTruthy();
       req.flush(responseMock);
       tick();
     }));

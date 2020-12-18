@@ -1,21 +1,21 @@
-import { TestBed } from '@angular/core/testing';
-import { FormPlayerService } from './form-player.service';
-import { ScreenService } from '../../../screen/screen.service';
-import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
-import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
-import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
-import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { ServiceDataService } from '../service-data/service-data.service';
 import { Location } from '@angular/common';
-import { COMPONENT_DATA_KEY } from '../../../shared/constants/form-player';
+import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
-import { FormPlayerServiceStub } from './form-player.service.stub';
-import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { WINDOW, WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
-import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
+import { HtmlRemoverService } from '../../../shared/services/html-remover/html-remover.service';
+import { FormPlayerNavigation, Navigation } from '../../form-player.types';
+import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
+import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
+import { ServiceDataService } from '../service-data/service-data.service';
+import { FormPlayerService } from './form-player.service';
+import { FormPlayerServiceStub } from './form-player.service.stub';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 
@@ -45,6 +45,7 @@ describe('FormPlayerService', () => {
         ServiceDataService,
         CachedAnswersService,
         CurrentAnswersService,
+        HtmlRemoverService,
         Location,
         WINDOW_PROVIDERS,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
@@ -82,45 +83,6 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('isNeedToShowLastScreen()',() => {
-    it('should return true', () => {
-      location.go('/some-page', 'getLastScreen=true');
-      localStorage.setItem(COMPONENT_DATA_KEY, '{}');
-      expect(service['isNeedToShowLastScreen']()).toBeTruthy();
-      localStorage.removeItem(COMPONENT_DATA_KEY);
-    });
-
-    it('should return false', () => {
-      expect(service['isNeedToShowLastScreen']()).toBeFalsy();
-    });
-
-    it('should call isHaveOrderDataInLocalStorage if location has getLastScreen param', () => {
-      spyOn<any>(service, 'isHaveOrderDataInLocalStorage').and.callThrough();
-      location.go('/some-page', 'getLastScreen=true');
-      service['isNeedToShowLastScreen']();
-      expect(service['isHaveOrderDataInLocalStorage']).toHaveBeenCalled();
-    });
-
-    it('shouldn\'t call isHaveOrderDataInLocalStorage if location hasn\'t getLastScreen param', () => {
-      spyOn<any>(service, 'isHaveOrderDataInLocalStorage').and.callThrough();
-      location.go('/some-page');
-      service['isNeedToShowLastScreen']();
-      expect(service['isHaveOrderDataInLocalStorage']).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('isHaveOrderDataInLocalStorage()',() => {
-    it('should return true', () => {
-      localStorage.setItem(COMPONENT_DATA_KEY, '{}');
-      expect(service['isHaveOrderDataInLocalStorage']()).toBeTruthy();
-      localStorage.removeItem(COMPONENT_DATA_KEY);
-    });
-
-    it('should return false', () => {
-      expect(service['isHaveOrderDataInLocalStorage']()).toBeFalsy();
-    });
-  });
-
   describe('initData()',() => {
     it('should call updateLoading with true param', () => {
       spyOn<any>(service, 'updateLoading').and.callThrough();
@@ -128,28 +90,7 @@ describe('FormPlayerService', () => {
       expect(service['updateLoading']).toHaveBeenCalled();
     });
 
-    it('should call isNeedToShowLastScreen', () => {
-      spyOn<any>(service, 'isNeedToShowLastScreen').and.callThrough();
-      service.initData();
-      expect(service['isNeedToShowLastScreen']).toHaveBeenCalled();
-    });
-
-    it('should call loadDataFromLocalStorage when isNeedToShowLastScreen return true', () => {
-      spyOn<any>(service, 'isNeedToShowLastScreen').and.returnValue(true);
-      spyOn<any>(service, 'loadDataFromLocalStorage').and.callThrough();
-      service.initData();
-      expect(service['loadDataFromLocalStorage']).toHaveBeenCalled();
-    });
-
-    it('should call loadDataFromLocalStorage when isNeedToShowLastScreen return true', () => {
-      spyOn<any>(service, 'isNeedToShowLastScreen').and.returnValue(true);
-      spyOn<any>(service, 'loadDataFromLocalStorage').and.callThrough();
-      service.initData();
-      expect(service['loadDataFromLocalStorage']).toHaveBeenCalled();
-    });
-
     it('should call getOrderData with orderId when isNeedToShowLastScreen return false and hasn\'t invited case', () => {
-      spyOn<any>(service, 'isNeedToShowLastScreen').and.returnValue(false);
       spyOn<any>(service, 'getOrderData').and.callThrough();
       service.initData(orderId);
       expect(service['getOrderData']).toHaveBeenCalledWith(orderId);
@@ -242,7 +183,42 @@ describe('FormPlayerService', () => {
     });
   });
 
+  describe('initPlayerFromQuiz()',() => {
+    it('should call updateLoading with false true', () => {
+      const quiz = { ...response, serviceId: '', targetId: '', answerServicePrefix: '' };
+      spyOn<any>(service, 'updateLoading').and.callThrough();
+      service.initPlayerFromQuiz(quiz);
+      expect(service['updateLoading']).toHaveBeenCalled();
+    });
 
+    it('should call navigate of formPlayerApiService with params when call navigate', () => {
+      const quiz = { ...response, serviceId: '', targetId: '', answerServicePrefix: '' };
+      spyOn(formPlayerApiService, 'quizToOrder').and.callThrough();
+      service.initPlayerFromQuiz(quiz);
+      expect(formPlayerApiService.quizToOrder).toHaveBeenCalled();
+    });
+
+    it('should call sendDataError with error response when call navigate with error response case', () => {
+      const quiz = { ...response, serviceId: '', targetId: '', answerServicePrefix: '' };
+      const errorResponse = {
+        message: 'oops... i did it again',
+        description: 'a-e-e-e-e-e...',
+        status: 500
+      };
+      spyOn(formPlayerApiService, 'quizToOrder').and.returnValue(throwError(errorResponse));
+      spyOn<any>(service, 'sendDataError').and.callThrough();
+      service.initPlayerFromQuiz(quiz);
+      expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
+    });
+
+    it('should call updateLoading with false param when call navigate', () => {
+      const quiz = { ...response, serviceId: '', targetId: '', answerServicePrefix: '' };
+      spyOn(formPlayerApiService, 'navigate').and.returnValue(of(response));
+      spyOn<any>(service, 'updateLoading').and.callThrough();
+      service.initPlayerFromQuiz(quiz);
+      expect(service['updateLoading']).toHaveBeenCalled();
+    });
+  });
 
   describe('processResponse()',() => {
     it('should call hasError with response param', () => {

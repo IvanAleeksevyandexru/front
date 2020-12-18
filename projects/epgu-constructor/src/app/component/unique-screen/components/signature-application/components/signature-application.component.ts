@@ -2,7 +2,7 @@ import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@a
 
 import { ConfigService } from '../../../../../core/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { COMPONENT_DATA_KEY } from '../../../../../shared/constants/form-player';
+import { LAST_SCENARIO_KEY } from '../../../../../shared/constants/form-player';
 import { SignatureApplicationData } from '../models/application.interface';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { LocalStorageService } from '../../../../../core/services/local-storage/local-storage.service';
@@ -42,7 +42,7 @@ export class SignatureApplicationComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isSigned()) {
-      this.localStorageService.delete(COMPONENT_DATA_KEY);
+      this.localStorageService.delete(LAST_SCENARIO_KEY);
       this.nextStep();
     } else if (!this.isMobile) {
       this.redirectToSignatureWindow();
@@ -73,6 +73,6 @@ export class SignatureApplicationComponent implements OnInit {
 
   private setDataToLocalStorage(): void {
     const data = { scenarioDto: this.screenService.getStore() };
-    this.localStorageService.set(COMPONENT_DATA_KEY, data);
+    this.localStorageService.set(LAST_SCENARIO_KEY, data);
   }
 }

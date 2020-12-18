@@ -21,6 +21,7 @@ import { TimeSlotsServiceInterface } from './time-slots.interface';
 import { SlotInterface, TimeSlot, TimeSlotsAnswerInterface } from './time-slots.types';
 
 const moment = moment_;
+moment.locale('ru');
 
 @Component({
   selector: 'epgu-constructor-time-slots',

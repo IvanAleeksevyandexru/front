@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Config, MockApi, TimeSlotsApi } from './config.types';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
@@ -23,6 +24,7 @@ export class ConfigServiceStub implements Config {
   _timeSlots = {};
   _disableUnderConstructionMode = false;
   _addToCalendarUrl = '';
+  _isLoaded$ = of(false);
 
   get apiUrl(): string {
     return this._apiUrl;
@@ -102,6 +104,10 @@ export class ConfigServiceStub implements Config {
 
   get disableUnderConstructionMode(): boolean {
     return this._disableUnderConstructionMode;
+  }
+
+  get isLoaded$(): Observable<boolean> {
+    return this._isLoaded$;
   }
 
   initCore(): void {}
