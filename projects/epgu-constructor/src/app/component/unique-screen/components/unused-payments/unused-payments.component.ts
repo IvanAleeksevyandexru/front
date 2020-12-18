@@ -21,20 +21,21 @@ export class UnusedPaymentsComponent implements OnInit {
   @Output() nextStepEvent = new EventEmitter<string>();
 
   data$: Observable<DisplayDto> = this.screenService.display$;
-
   orderId: string = this.screenService.getStore().orderId;
-  private paymentsList: BehaviorSubject<UnusedPaymentInterface[]> = new BehaviorSubject([]);
-  paymentsList$ = this.paymentsList.pipe(filter((v) => v.length > 0));
   paymentUIN: string;
-
   mockOrderId = '763444783';
-
   tax: UnusedPaymentInterface;
+
+  get paymentsList$(): Observable<UnusedPaymentInterface[]> {
+    return this.paymentsList.pipe(filter((v) => v.length > 0));
+  }
+
+  private paymentsList: BehaviorSubject<UnusedPaymentInterface[]> = new BehaviorSubject([]);
 
   constructor(
     private modalService: ModalService,
     private navigationService: NavigationService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
     private listPaymentsService: UnusedPaymentsService,
   ) {}
 
@@ -46,13 +47,6 @@ export class UnusedPaymentsComponent implements OnInit {
   public cancelUsePayment = (): void => {
     this.navigationService.prev();
   };
-
-  /**
-   * Переход к следующему экрану
-   */
-  private nextStep(data: string): void {
-    this.nextStepEvent.emit(data);
-  }
 
   next(): void {
     if (this.tax) {
@@ -115,5 +109,12 @@ export class UnusedPaymentsComponent implements OnInit {
         concatMap((data) => combineLatest([of(data), this.data$])),
       )
       .subscribe(this.getListPaymentsInfoSuccess);
+  }
+
+  /**
+   * Переход к следующему экрану
+   */
+  private nextStep(data: string): void {
+    this.nextStepEvent.emit(data);
   }
 }

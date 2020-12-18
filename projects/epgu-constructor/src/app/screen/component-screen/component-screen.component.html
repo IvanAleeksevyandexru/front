@@ -1,4 +1,7 @@
-<epgu-constructor-screen-container>
+<epgu-constructor-screen-container
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
   <div class="screen-body">
     <div *ngIf="screenService.header$ | async as header" class="head">
       <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
@@ -7,50 +10,55 @@
     <epgu-constructor-screen-pad class="body">
       <ng-container [ngSwitch]="screenService.componentType$ | async">
         <epgu-constructor-confirm-personal-user-address
-            *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
+          *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
         ></epgu-constructor-confirm-personal-user-address>
 
         <epgu-constructor-confirm-personal-user-data
-            *ngSwitchCase="isUserData()"
+          *ngSwitchCase="isUserData()"
         ></epgu-constructor-confirm-personal-user-data>
 
         <epgu-constructor-confirm-personal-user-phone-email
-            *ngSwitchCase="isUserContactData()"
+          *ngSwitchCase="isUserContactData()"
         ></epgu-constructor-confirm-personal-user-phone-email>
 
         <epgu-constructor-registration-addr
-            *ngSwitchCase="screenComponentName.registrationAddr"
+          *ngSwitchCase="screenComponentName.registrationAddr"
         ></epgu-constructor-registration-addr>
 
         <epgu-constructor-add-passport
-            *ngSwitchCase="screenComponentName.passportLookup"
+          *ngSwitchCase="screenComponentName.passportLookup"
         ></epgu-constructor-add-passport>
 
         <epgu-constructor-country-selection
-            *ngSwitchCase="screenComponentName.countryApostil"
-            (changeComponentSettings)="changeComponentSettings($event)"
-            (changeComponentData)="changedComponentData($event)"
+          *ngSwitchCase="screenComponentName.countryApostil"
+          (changeComponentSettings)="changeComponentSettings($event)"
+          (changeComponentData)="changedComponentData($event)"
         ></epgu-constructor-country-selection>
 
         <epgu-constructor-select-children-screen
-            *ngSwitchCase="screenComponentName.childrenListUnder14"
-            (nextStepEvent)="nextStep()"
+          *ngSwitchCase="screenComponentName.childrenList"
+          (nextStepEvent)="nextStep()"
         ></epgu-constructor-select-children-screen>
-
+        <!-- TODO: удалить потом как depricated -->
         <epgu-constructor-select-children-screen
-            *ngSwitchCase="screenComponentName.childrenListAbove14"
-            (nextStepEvent)="nextStep()"
+          *ngSwitchCase="screenComponentName.childrenListUnder14"
+          (nextStepEvent)="nextStep()"
+        ></epgu-constructor-select-children-screen>
+        <!-- TODO: удалить потом как depricated -->
+        <epgu-constructor-select-children-screen
+          *ngSwitchCase="screenComponentName.childrenListAbove14"
+          (nextStepEvent)="nextStep()"
         ></epgu-constructor-select-children-screen>
 
         <epgu-constructor-field-list
-            [data]="screenService.component"
-            *ngSwitchCase="screenComponentName.fieldList"
+          [data]="screenService.component"
+          *ngSwitchCase="screenComponentName.fieldList"
         >
         </epgu-constructor-field-list>
         <epgu-constructor-timer
-            *ngSwitchCase="screenComponentName.timer"
-            [data]="$any(screenService.component)"
-            (nextStepEvent)="nextStep($event)"
+          *ngSwitchCase="screenComponentName.timer"
+          [data]="$any(screenService.component)"
+          (nextStepEvent)="nextStep($event)"
         >
         </epgu-constructor-timer>
       </ng-container>
@@ -59,7 +67,11 @@
 
   <div class="screen-footer">
     <ng-container *ngIf="isShowActionBtn">
-      <ng-container *ngTemplateOutlet="actionBtns"></ng-container>
+      <ng-container *ngTemplateOutlet="componentActionBtns"></ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="screenActionButtons.length">
+      <ng-container *ngTemplateOutlet="screenActionBtns"></ng-container>
     </ng-container>
 
     <ng-container *ngIf="componentSetting.displayContinueBtn">
@@ -72,12 +84,23 @@
   </div>
 </epgu-constructor-screen-container>
 
-<ng-template #actionBtns>
+<ng-template #componentActionBtns>
   <lib-button
-      *ngFor="let action of screenService.actions$ | async"
-      epgu-constructor-action
-      [action]="action"
-      [color]="action.color"
+    *ngFor="let action of actionButtons"
+    epgu-constructor-action
+    [action]="action"
+    [color]="action.color"
+  >
+    <div>{{ action.label }}</div>
+  </lib-button>
+</ng-template>
+
+<ng-template #screenActionBtns>
+  <lib-button
+    *ngFor="let action of screenActionButtons"
+    epgu-constructor-action
+    [action]="action"
+    [color]="action.color"
   >
     <div>{{ action.label }}</div>
   </lib-button>
@@ -85,12 +108,12 @@
 
 <ng-template #displayContinueBtn>
   <lib-button
-      *ngIf="screenService.submitLabel$ | async"
-      [showLoader]="screenService.isLoading$ | async"
-      (click)="nextStep()"
-      data-testid="display-continue-btn"
-      class="btn__submit"
-      [disabled]="!currentAnswersService.isValid || (screenService.isLoading$ | async)"
+    *ngIf="screenService.submitLabel$ | async"
+    [showLoader]="screenService.isLoading$ | async"
+    (click)="nextStep()"
+    data-testid="display-continue-btn"
+    class="btn__submit"
+    [disabled]="!currentAnswersService.isValid || (screenService.isLoading$ | async)"
   >
     <div class="secondary-font">
       {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
@@ -102,9 +125,9 @@
   <epgu-constructor-answer-button (click)="nextStep()" [data]="{ label: 'Всё равно продолжить' }">
   </epgu-constructor-answer-button>
   <epgu-constructor-answer-button
-      class="footer__answer-btn"
-      (click)="goToHomePage()"
-      [data]="{ label: 'Вернуться в личный кабинет' }"
+    class="footer__answer-btn"
+    (click)="goToHomePage()"
+    [data]="{ label: 'Вернуться в личный кабинет' }"
   >
   </epgu-constructor-answer-button>
 </ng-template>

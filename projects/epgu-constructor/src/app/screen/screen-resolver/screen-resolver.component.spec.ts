@@ -7,6 +7,7 @@ import { ScreenTypes } from '../screen.types';
 import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { of } from 'rxjs';
 
 @Component({
   template: '<div>test</div>',
@@ -49,7 +50,7 @@ describe('ScreenResolverComponent', () => {
   });
 
   it('should render screenComponent', () => {
-    component.screenComponent = (TestComponent as unknown) as ScreenComponent;
+    component.screenComponent$ = of((TestComponent as unknown) as ScreenComponent);
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.directive(TestComponent))).toBeTruthy();

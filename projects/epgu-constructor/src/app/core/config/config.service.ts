@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { LoadService } from 'epgu-lib';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Config, MockApi, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigService implements Config {
+  public get isLoaded$(): Observable<boolean> {
+    return this.isLoadedSubject.asObservable();
+  }
+
   private isLoadedSubject = new BehaviorSubject(false);
   private _isLoaded = false;
   private _billsApiUrl: string;
+  private _apiUrl: string;
   private _dictionaryUrl: string;
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
@@ -23,15 +28,9 @@ export class ConfigService implements Config {
   private _timeSlots?: TimeSlotsApi;
   private _mockUrl: string;
   private _disableUnderConstructionMode: boolean;
+  private _addToCalendarUrl: string;
 
-  public isLoaded$ = this.isLoadedSubject.asObservable();
-
-  constructor(private loadService: LoadService) {
-    // TODO отписаться
-    this.loadService.loaded.subscribe(() => {
-      this.initCore();
-    });
-  }
+  constructor(private loadService: LoadService) {}
 
   checkConfig(config: Config): void {
     if (!config) {
@@ -41,6 +40,10 @@ export class ConfigService implements Config {
 
   get isLoaded(): boolean {
     return this._isLoaded;
+  }
+
+  get apiUrl(): string {
+    return this._apiUrl;
   }
 
   get billsApiUrl(): string {
@@ -107,28 +110,29 @@ export class ConfigService implements Config {
     return this._disableUnderConstructionMode;
   }
 
-  private getStaticDomainCfg(): string {
-    const domain = this.loadService.config.staticDomain;
-
-    if (!domain) {
-      return '';
-    }
-    return domain.lastIndexOf('/') === domain.length - 1 ? domain.substring(0, domain.length - 1) : domain;
+  get addToCalendarUrl(): string {
+    return this._addToCalendarUrl;
   }
 
   initCore(config: Config = {} as Config): void {
+    this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
-    this._fileUploadApiUrl = config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;
+    this._fileUploadApiUrl =
+      config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;
     this._lkUrl = config.lkUrl ?? `${this.loadService.config.lkUrl}`;
     this._paymentUrl = config.paymentUrl ?? `${this.loadService.config.paymentUrl}`;
     this._timeSlotApiUrl = config.timeSlotApiUrl ?? `${this.loadService.config.lkApiUrl}equeue/agg`;
-    this._listPaymentsApiUrl = config.listPaymentsApiUrl ?? `${this.loadService.config.lkApiUrl}orders/listpaymentsinfo`;
+    this._listPaymentsApiUrl =
+      config.listPaymentsApiUrl ?? `${this.loadService.config.lkApiUrl}orders/listpaymentsinfo`;
     this._uinApiUrl = config.uinApiUrl ?? `${this.loadService.config.lkApiUrl}paygate/uin`;
     this._invitationUrl = config.invitationUrl ?? `${this.loadService.config.lkApiUrl}`;
-    this._yandexMapsApiKey = config.yandexMapsApiKey ?? `${this.loadService.config.yandexMapsApiKey}`;
+    this._yandexMapsApiKey =
+      config.yandexMapsApiKey ?? `${this.loadService.config.yandexMapsApiKey}`;
     this._staticDomainAssetsPath = config.staticDomainAssetsPath ?? this.getStaticDomainCfg();
+    this._addToCalendarUrl =
+      config.addToCalendarUrl ?? `${this.loadService.config.addToCalendarUrl}`;
   }
 
   set config(config: Config) {
@@ -145,5 +149,16 @@ export class ConfigService implements Config {
     console.group('Config');
     console.log({ ...this });
     console.groupEnd();
+  }
+
+  private getStaticDomainCfg(): string {
+    const domain = this.loadService.config.staticDomain;
+
+    if (!domain) {
+      return '';
+    }
+    return domain.lastIndexOf('/') === domain.length - 1
+      ? domain.substring(0, domain.length - 1)
+      : domain;
   }
 }

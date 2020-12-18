@@ -11,6 +11,7 @@ import { CoreModule } from '../../../../core/core.module';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
+import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
 
 describe('TimerComponent', () => {
   let component: TimerComponent;
@@ -32,6 +33,7 @@ describe('TimerComponent', () => {
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         CachedAnswersService,
+        ValueLoaderService,
       ],
       imports: [MockModule(CoreModule)],
     }).compileComponents();

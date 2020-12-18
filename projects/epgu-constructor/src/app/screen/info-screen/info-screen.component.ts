@@ -2,8 +2,9 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import {
-  ComponentDto,
   ComponentActionDto,
+  ComponentDto,
+  ScreenActionDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenBase } from '../screenBase';
 
@@ -18,6 +19,7 @@ import { ScreenBase } from '../screenBase';
 })
 export class InfoScreenComponent extends ScreenBase implements OnInit {
   actionButtons: ComponentActionDto[] = [];
+  screenActionButtons: ScreenActionDto[] = [];
 
   constructor(public injector: Injector) {
     super(injector);
@@ -26,7 +28,14 @@ export class InfoScreenComponent extends ScreenBase implements OnInit {
   ngOnInit(): void {
     this.screenService.component$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((component) => this.setActionButtons(component));
+      .subscribe((component: ComponentDto): void => {
+        this.setActionButtons(component);
+      });
+    this.screenService.buttons$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((buttons: Array<ScreenActionDto>) => {
+        this.screenActionButtons = buttons || [];
+      });
   }
 
   setActionButtons(component: ComponentDto): void {

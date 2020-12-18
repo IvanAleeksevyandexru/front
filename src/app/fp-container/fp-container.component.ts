@@ -17,12 +17,17 @@ export class FpContainerComponent {
         targetId: config.targetId,
         orderId: config.orderId,
         invited: config.invited,
+        apiUrl: config.apiUrl,
         canStartNew: config.canStartNew,
         initState: config.initState,
       };
 
       if (typeof config.invited === 'string' && config.invited === '') {
         delete service.invited;
+      }
+
+      if (!config.apiUrl) {
+        delete service.apiUrl;
       }
 
       if (typeof config.canStartNew === 'string' && config.canStartNew === '') {

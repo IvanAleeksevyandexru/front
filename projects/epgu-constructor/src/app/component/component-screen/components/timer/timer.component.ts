@@ -17,15 +17,13 @@ import {
   styleUrls: ['./timer.component.scss'],
 })
 export class TimerComponent {
-  @Output() nextStepEvent = new EventEmitter<string>();
-
-  public componentBase: TimerComponentBase;
   @Input() set data(componentBase: TimerComponentBase) {
     this.componentBase = componentBase;
     this.hasLabels = this.data.attrs?.timerRules?.labels?.length > 0;
     this.hasButtons = this.data.attrs?.timerRules?.actions?.length > 0;
 
     this.timer = createTimer(
+      this.getCurrentTime(),
       this.getStartDate(),
       this.getFinishDate(),
       this.componentBase.attrs?.timerRules?.warningColorFromTime,
@@ -38,6 +36,9 @@ export class TimerComponent {
     }
     this.startTimer();
   }
+  @Output() nextStepEvent = new EventEmitter<string>();
+
+  public componentBase: TimerComponentBase;
   get data(): TimerComponentBase {
     return this.componentBase;
   }
@@ -56,7 +57,7 @@ export class TimerComponent {
    * Стартует работу таймера
    */
   startTimer(): void {
-    timer(this.timer.start - Date.now(), this.oneSecond)
+    timer(this.timer.start - this.getCurrentTime(), this.oneSecond)
       .pipe(
         takeWhile(() => this.timer.time - this.oneSecond >= -this.oneSecond),
         takeUntil(this.ngUnsubscribe$),
@@ -89,6 +90,10 @@ export class TimerComponent {
     if (this.data?.attrs?.timerRules?.hideTimerFrom !== undefined) {
       this.checkHideTimer();
     }
+  }
+
+  nextStep(): void {
+    this.nextStepEvent.emit(JSON.stringify({ isExpired: this.timer.time === 0 }));
   }
 
   /**
@@ -166,6 +171,16 @@ export class TimerComponent {
   }
 
   /**
+   * Возвращает текущее время в милисекундах
+   * @private
+   */
+  private getCurrentTime(): number {
+    return this.data.attrs?.currentTime
+      ? new Date(this.data.attrs.currentTime).getTime()
+      : Date.now();
+  }
+
+  /**
    * Возвращает дату старта таймера в милисекундах
    * @private
    */
@@ -179,9 +194,5 @@ export class TimerComponent {
    */
   private getFinishDate(): number {
     return new Date(this.data.attrs.expirationTime).getTime();
-  }
-
-  nextStep(): void {
-    this.nextStepEvent.emit(JSON.stringify({ isExpired: this.timer.time === 0 }));
   }
 }

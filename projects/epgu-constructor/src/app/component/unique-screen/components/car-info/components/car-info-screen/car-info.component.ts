@@ -1,5 +1,4 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { CarInfoValues } from '../../models/car-info.interface';
@@ -13,6 +12,8 @@ import { ScreenService } from '../../../../../../screen/screen.service';
   styleUrls: ['./car-info.component.scss'],
 })
 export class CarInfoComponent {
+  @Output() nextStepEvent = new EventEmitter<string>();
+
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
 
   display$: Observable<DisplayDto> = this.screenService.display$;
@@ -22,9 +23,7 @@ export class CarInfoComponent {
     map((display: DisplayDto) => JSON.parse(display.components[0].value)),
   );
 
-  @Output() nextStepEvent = new EventEmitter<string>();
-
-  constructor(private screenService: ScreenService) {}
+  constructor(public screenService: ScreenService) {}
 
   nextStep(carInfo: CarInfoValues): void {
     this.nextStepEvent.emit(JSON.stringify(carInfo));
