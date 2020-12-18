@@ -8,13 +8,14 @@ import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
   BookTimeSlotReq,
+  CancelSlotResponseInterface,
   SlotInterface,
   SmevBookResponseInterface,
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface
+  ZagsDepartmentInterface,
 } from './time-slots.types';
 
 const moment = moment_;
@@ -32,6 +33,8 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
   private errorMessage;
+
+  private isDepartmentChanged = false; // Флаг показывающий что департамент поменялся с одного(непустого) на другой
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -102,6 +105,11 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     if (this.changed(data) || this.errorMessage) {
       this.slotsMap = {};
       this.errorMessage = undefined;
+
+      if (this.bookedSlot && this.isDepartmentChanged) {
+        this.cancelSlot().subscribe();
+      }
+
       return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
         map((response) => {
           if (response.error.errorDetail.errorCode === 0) {
@@ -135,6 +143,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     let department = JSON.parse(data.department);
     if (!this.department || this.department.value !== department.value) {
       changed = true;
+      this.isDepartmentChanged = !!this.department;
       this.department = department;
     }
 
@@ -162,12 +171,35 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     return changed;
   }
 
+  private cancelSlot(): Observable<CancelSlotResponseInterface> {
+    const { eserviceId } = this.config.timeSlots.brak;
+
+    return this.smev3TimeSlotsRestService
+      .cancelSlot({
+        eserviceId,
+        bookId: this.bookId,
+      })
+      .pipe(
+        tap((response) => {
+          if (response.error) {
+            this.errorMessage = response.error.errorDetail
+              ? response.error.errorDetail.errorMessage
+              : 'check log';
+            console.log(response.error);
+          } else {
+            this.bookedSlot = null;
+            this.bookId = null;
+          }
+        }),
+        catchError((error) => {
+          this.errorMessage = error.message;
+          return throwError(error);
+        }),
+      );
+  }
+
   private getSlotsRequest(): TimeSlotReq {
-    const {
-      serviceId,
-      eserviceId,
-      routeNumber,
-    } = this.config.timeSlots.brak;
+    const { serviceId, eserviceId, routeNumber } = this.config.timeSlots.brak;
 
     return {
       organizationId: [this.department.attributeValues.CODE],
