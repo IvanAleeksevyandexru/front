@@ -56,12 +56,28 @@ export class ConfirmPhoneComponent implements OnInit {
     return Boolean(this.screenService.componentError && codeValue);
   }
 
-  focusIndex(nextIndex: number): void {
-    if (!this.codeFormArray.value[nextIndex]?.codeValue) {
-      const input: HTMLElement = this.getInput(
-        this.codeGroupElement.nativeElement.children[nextIndex],
-      );
-      this.focusToElement(input);
+  sendCodeAgain(): void {
+    const url = this.screenService.component.attrs.resendCodeUrl;
+    const options: NavigationOptions = { url };
+    this.navModalService.next({ options });
+    this.isTimerShow = true;
+  }
+
+  enterCode(code: string): void {
+    if (String(code).length === this.codeLength && this.lastCode !== code) {
+      this.navModalService.next({ payload: this.getComponentState(code) });
+    }
+  }
+
+  editNumber(): void {
+    this.navModalService.prev({});
+  }
+
+  timerChange(num: number): void {
+    if (num) {
+      this.timer = num;
+    } else {
+      this.isTimerShow = false;
     }
   }
 
@@ -69,28 +85,12 @@ export class ConfirmPhoneComponent implements OnInit {
     setTimeout(() => element.focus(), 0);
   }
 
-  public sendCodeAgain(): void {
-    const url = this.screenService.component.attrs.resendCodeUrl;
-    const options: NavigationOptions = { url };
-    this.navModalService.next({ options });
-    this.isTimerShow = true;
-  }
-
-  public enterCode(code: string): void {
-    if (String(code).length === this.codeLength && this.lastCode !== code) {
-      this.navModalService.next({ payload: this.getComponentState(code) });
-    }
-  }
-
-  public editNumber(): void {
-    this.navModalService.prev({});
-  }
-
-  public timerChange(num: number): void {
-    if (num) {
-      this.timer = num;
-    } else {
-      this.isTimerShow = false;
+  focusIndex(nextIndex: number): void {
+    if (!this.codeFormArray.value[nextIndex]?.codeValue) {
+      const input: HTMLElement = this.getInput(
+        this.codeGroupElement.nativeElement.children[nextIndex],
+      );
+      this.focusToElement(input);
     }
   }
 

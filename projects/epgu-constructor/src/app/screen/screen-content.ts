@@ -1,12 +1,14 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
   ApplicantAnswersDto,
+  CachedAnswersDto,
   ComponentActionDto,
   ComponentAnswerDto,
   ComponentDto,
   DisplayDto,
   DisplaySubjHead,
-  ScenarioErrorsDto
+  ScenarioErrorsDto,
+  ScreenActionDto
 } from '../form-player/services/form-player-api/form-player-api.types';
 import { Gender } from '../shared/types/gender';
 import { ScreenStore, ScreenTypes } from './screen.types';
@@ -73,6 +75,16 @@ export class ScreenContent {
   }
   public get terminal$(): Observable<boolean> {
     return this._terminal.asObservable();
+  }
+
+  public get showNav(): boolean {
+    return this._showNav.getValue();
+  }
+  public set showNav(val: boolean) {
+    this._showNav.next(val);
+  }
+  public get showNav$(): Observable<boolean> {
+    return this._showNav.asObservable();
   }
 
   public get displayCssClass(): string {
@@ -165,6 +177,16 @@ export class ScreenContent {
     return this._componentLabel.asObservable();
   }
 
+  public get buttons(): Array<ScreenActionDto> {
+    return this._buttons.getValue();
+  }
+  public set buttons(val: Array<ScreenActionDto>) {
+    this._buttons.next(val);
+  }
+  public get buttons$(): Observable<ScreenActionDto[]> {
+    return this._buttons.asObservable();
+  }
+
   public get actions(): Array<ComponentActionDto> {
     return this._actions.getValue();
   }
@@ -205,12 +227,24 @@ export class ScreenContent {
     return this._applicantAnswers.asObservable();
   }
 
+  public get cachedAnswers(): CachedAnswersDto {
+    return this._cachedAnswers.getValue();
+  }
+  public set cachedAnswers(val: CachedAnswersDto) {
+    this._cachedAnswers.next(val);
+  }
+
+  public get cachedAnswers$(): Observable<CachedAnswersDto> {
+    return this._cachedAnswers.asObservable();
+  }
+
   private _display = new BehaviorSubject<DisplayDto>(null);
   private _header = new BehaviorSubject<string>(null);
   private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
   private _submitLabel = new BehaviorSubject<string>(null);
   private _gender = new BehaviorSubject<Gender>(null);
   private _terminal = new BehaviorSubject<boolean>(null);
+  private _showNav = new BehaviorSubject<boolean>(null);
   private _displayCssClass = new BehaviorSubject<string>(null);
   private _screenType = new BehaviorSubject<ScreenTypes>(null);
   private _orderId = new BehaviorSubject<string>(null);
@@ -220,10 +254,12 @@ export class ScreenContent {
   private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
   private _componentError = new BehaviorSubject<string>(null);
   private _componentLabel = new BehaviorSubject<string>(null);
+  private _buttons = new BehaviorSubject<Array<ScreenActionDto>>(null);
   private _actions = new BehaviorSubject<Array<ComponentActionDto>>(null);
   private _action = new BehaviorSubject<ComponentActionDto>(null);
   private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
+  private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
 
   updateScreenContent(screenStore: ScreenStore): void {
     const {
@@ -231,9 +267,10 @@ export class ScreenContent {
       display = {} as DisplayDto,
       orderId,
       gender,
-      applicantAnswers
+      applicantAnswers,
+      cachedAnswers
     } = screenStore;
-    const { header, subHeader, submitLabel, type, components = [], terminal, cssClass } = display;
+    const { header, subHeader, submitLabel, type, components = [], terminal, cssClass, buttons } = display;
     const firstComponent = components[0];
     this.display = display;
     this.header = header;
@@ -242,6 +279,7 @@ export class ScreenContent {
     this.screenType = type;
     this.gender = gender;
     this.terminal = terminal;
+    this.showNav = !terminal;
     this.displayCssClass = cssClass;
     this.orderId = orderId;
     this.componentErrors = errors;
@@ -251,9 +289,11 @@ export class ScreenContent {
     this.componentLabel = firstComponent?.label;
     this.componentValue = this.getComponentData(firstComponent?.value);
     this.actions = firstComponent?.attrs?.actions || [];
+    this.buttons = buttons || [];
     this.action = this.actions[0];
     this.answers = firstComponent?.attrs?.answers || [];
     this.applicantAnswers = applicantAnswers;
+    this.cachedAnswers = cachedAnswers;
   }
 
   getComponentData(str: string): ComponentValue {

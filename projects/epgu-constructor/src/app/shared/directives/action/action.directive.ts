@@ -15,6 +15,7 @@ import {
 import { ScreenService } from '../../../screen/screen.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { ComponentStateForNavigate } from './action.interface';
+import { ConfigService } from '../../../core/config/config.service';
 
 @Directive({
   selector: '[epgu-constructor-action]',
@@ -29,6 +30,7 @@ export class ActionDirective {
     private navService: NavigationService,
     private navModalService: NavigationModalService,
     private utilsService: UtilsService,
+    private configService: ConfigService,
   ) {}
 
   @HostListener('click') onClick(): void {
@@ -43,12 +45,12 @@ export class ActionDirective {
   navigateModal(stepType: string): void {
     const navigation = this.prepareNavigationData();
     switch (stepType) {
-    case 'prevStep':
-      this.navModalService.prev(navigation);
-      break;
-    case 'nextStep':
-      this.navModalService.next(navigation);
-      break;
+      case 'prevStep':
+        this.navModalService.prev(navigation);
+        break;
+      case 'nextStep':
+        this.navModalService.next(navigation);
+        break;
     }
   }
 
@@ -135,9 +137,16 @@ export class ActionDirective {
   }
 
   private getActionDTO(): ActionDTO {
-    return {
+    let bodyResult: ActionDTO = {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},
     };
+    if (this.action?.action.indexOf('addToCalendar') !== -1) {
+      bodyResult.scenarioDto = {
+        ...bodyResult.scenarioDto,
+        currentUrl: this.configService.addToCalendarUrl,
+      };
+    }
+    return bodyResult;
   }
 }

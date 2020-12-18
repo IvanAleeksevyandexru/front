@@ -37,6 +37,7 @@ export interface TimerComponentDtoAction extends ComponentActionDto {
 export interface TimerComponentBase extends ComponentBase {
   attrs: {
     startTime: string,
+    currentTime?: string,
     expirationTime: string,
     timerRules: TimerRulesDto,
     refs: {

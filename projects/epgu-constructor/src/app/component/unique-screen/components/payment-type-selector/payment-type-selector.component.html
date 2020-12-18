@@ -3,7 +3,10 @@
              let-isErrorTemplate="isErrorTemplate"
              let-paymentTypeSelector="paymentTypeSelector"
              let-applicantType="applicantType">
-  <epgu-constructor-screen-container class="payment-type-selector">
+  <epgu-constructor-screen-container class="payment-type-selector"
+                                     [show-nav]="screenService.showNav$ | async"
+                                     [class.screen-container-mt]="!(screenService.showNav$ | async)"
+  >
     <epgu-constructor-screen-pad *ngIf="isErrorTemplate; else templateRef" class="screen-body">
       <ng-container *ngTemplateOutlet="templateRef"></ng-container>
     </epgu-constructor-screen-pad>

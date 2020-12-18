@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { CustomScreenComponentTypes } from '../component/components-list/components-list.types';
 import { ComponentDto } from '../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
 import { UtilsService } from '../core/services/utils/utils.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
+import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -23,6 +22,7 @@ export class ScreenService extends ScreenContent {
     private currentAnswersService: CurrentAnswersService,
     private cachedAnswersService: CachedAnswersService,
     private utils: UtilsService,
+    private valueLoaderService: ValueLoaderService,
   ) {
     super();
   }
@@ -86,55 +86,13 @@ export class ScreenService extends ScreenContent {
   }
 
   private loadValueFromCachedAnswer(): void {
-    const components: Array<ComponentDto> = [];
+    const components = this.screenStore.display.components;
+    const cashedAnswers = this.screenStore.cachedAnswers;
+    const screenStoreComponent = this.valueLoaderService.loadValueFromCachedAnswer(components, cashedAnswers);
 
-    this.screenStore.display.components.forEach((item) => {
-      const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(item); // TODO костыль от backend(-a);
-      const hasPresetTypeRef = item.attrs?.preset?.type === 'REF';
-      const cachedValue =
-        shouldBeTakenFromTheCache &&
-        this.cachedAnswersService.getCachedValueById(this.screenStore.cachedAnswers, item.id);
-
-      if (hasPresetTypeRef && shouldBeTakenFromTheCache && !cachedValue) {
-        const component = this.getPresetValue(item);
-        components.push(component);
-        return;
-      }
-      item.presetValue = item.value;
-      const component = cachedValue
-        ? { ...item, value: this.mergePresetCacheValue(cachedValue, item.value, item.type) }
-        : item;
-      components.push(component);
-    });
-
-    if (components.length) {
-      this.screenStore.display = { ...this.screenStore.display, components };
+    if (screenStoreComponent.length) {
+      this.screenStore.display = { ...this.screenStore.display, components: screenStoreComponent };
     }
-  }
-
-  /**
-   * Метод объединяет preset значение и ответ из кэша
-   * @param cachedValue - кэш ответов из cachedAnswersService
-   * @param preset - preset значения из display.components[].value
-   * @param componentType
-   */
-  private mergePresetCacheValue(
-    cachedValue: string,
-    preset: string,
-    componentType: string,
-  ): string {
-    if (componentType === CustomScreenComponentTypes.SnilsInput) {
-      return JSON.parse(cachedValue).snils;
-    }
-    const isPresetParseable = this.utils.hasJsonStructure(preset);
-    const isCachedValueParseable = this.utils.hasJsonStructure(cachedValue);
-    if (isPresetParseable && isCachedValueParseable) {
-      return JSON.stringify({
-        ...JSON.parse(preset),
-        ...JSON.parse(cachedValue),
-      });
-    }
-    return cachedValue || preset;
   }
 
   /**

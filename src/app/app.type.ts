@@ -7,4 +7,5 @@ export interface AppConfig {
   invited?: boolean;
   canStartNew?: boolean;
   initState?: string;
+  apiUrl?: string;
 }

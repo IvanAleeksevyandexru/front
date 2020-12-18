@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AppService } from '../app.service';
@@ -8,7 +8,6 @@ import { Service } from '../../../projects/epgu-constructor/src/app/form-player/
   selector: 'fp-container',
   templateUrl: './fp-container.component.html',
   styleUrls: ['./fp-container.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FpContainerComponent {
   service$: Observable<Service> = this.appService.config$.pipe(
@@ -18,15 +17,17 @@ export class FpContainerComponent {
         targetId: config.targetId,
         orderId: config.orderId,
         invited: config.invited,
+        apiUrl: config.apiUrl,
         canStartNew: config.canStartNew,
         initState: config.initState,
       };
 
-      console.log('initConfig');
-      console.log(service);
-
       if (typeof config.invited === 'string' && config.invited === '') {
         delete service.invited;
+      }
+
+      if (!config.apiUrl) {
+        delete service.apiUrl;
       }
 
       if (typeof config.canStartNew === 'string' && config.canStartNew === '') {

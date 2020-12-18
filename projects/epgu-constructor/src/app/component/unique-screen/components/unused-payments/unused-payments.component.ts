@@ -35,7 +35,7 @@ export class UnusedPaymentsComponent implements OnInit {
   constructor(
     private modalService: ModalService,
     private navigationService: NavigationService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
     private listPaymentsService: UnusedPaymentsService,
   ) {}
 
