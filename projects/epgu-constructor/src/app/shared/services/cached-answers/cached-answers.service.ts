@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CachedAnswers } from '../../../screen/screen.types';
-import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { ComponentScreenComponentTypes } from '../../../component/component-screen/component-screen-components.types';
 
@@ -10,6 +9,7 @@ export const componentsNoCache: Array<string> = [
   ComponentScreenComponentTypes.confirmPersonalUserPhone,
   ComponentScreenComponentTypes.confirmPersonalUserEmail,
   UniqueScreenComponentTypes.paymentScr,
+  ComponentScreenComponentTypes.timeSlot,
 ];
 
 @Injectable()

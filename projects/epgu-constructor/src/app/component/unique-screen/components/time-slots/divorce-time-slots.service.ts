@@ -22,12 +22,13 @@ const moment = moment_;
 
 @Injectable()
 export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
+
+  public department: ZagsDepartmentInterface;
   public activeMonthNumber: number;
   public activeYearNumber: number;
   public bookId;
   public availableMonths: string[];
 
-  private department: ZagsDepartmentInterface;
   private orderId;
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
