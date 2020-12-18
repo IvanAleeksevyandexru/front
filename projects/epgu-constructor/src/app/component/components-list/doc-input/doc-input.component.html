@@ -1,9 +1,9 @@
 <section class="doc-input">
   <div
-    *ngIf="this.data.value.label && isValidationShown(seriesNumDateGroup)"
+    *ngIf="data.value.label && isValidationShown(seriesNumDateGroup)"
     class="doc-input__title"
   >
-    <span>{{ this.data.value.label }}</span>
+    <span>{{ data.value.label }}</span>
   </div>
   <div class="form__error">
     <epgu-constructor-input-error *ngFor="let fieldName of fieldsNames | slice: 0:-1">
@@ -11,14 +11,14 @@
         {{ fields[fieldName]?.label }}: {{ form.get([seriesNumDateGroup, fieldName]).errors.msg }}
       </span>
     </epgu-constructor-input-error>
-    <epgu-constructor-input-error *ngIf="hasExpirationDate()" >
-      <span *ngIf="isValidationShown(this.expirationDateName)">
-        {{ fields[this.expirationDateName]?.label }}: {{ form.get(this.expirationDateName).errors.msg }}
+    <epgu-constructor-input-error *ngIf="hasExpirationDate" >
+      <span *ngIf="isValidationShown(expirationDateName)">
+        {{ fields[expirationDateName]?.label }}: {{ form.get(expirationDateName).errors.msg }}
       </span>
     </epgu-constructor-input-error>
   </div>
 
-  <div *ngIf="!hasExpirationDate(); else expirDate" class="doc-input__group">
+  <div *ngIf="!hasExpirationDate; else expireDate" class="doc-input__group">
     <div class="doc-input__group-item doc-input__series">
       <epgu-constructor-label
         [tips]="fields['series']?.attrs?.labelHint"
@@ -105,7 +105,7 @@
       </epgu-constructor-helper-text>
     </div>
   </div>
-  <ng-template  #expirDate>
+  <ng-template  #expireDate>
     <div class="doc-input__group">
       <div class="doc-input__group-item doc-input__series">
         <epgu-constructor-label
@@ -173,7 +173,7 @@
       </div>
     </div>
     <div class="doc-input__group">
-      <div class="doc-input__group-item doc-input__date expirDate">
+      <div class="doc-input__group-item doc-input__date expireDate">
         <epgu-constructor-label
           [tips]="fields['date']?.attrs?.labelHint"
           [label]="fields['date']?.label"
@@ -194,7 +194,7 @@
           {{ hint }}
         </epgu-constructor-helper-text>
       </div>
-      <div class="doc-input__group-item doc-input__date expirDate">
+      <div class="doc-input__group-item doc-input__date expireDate">
         <epgu-constructor-label
           [tips]="fields[expirationDateName]?.attrs?.labelHint"
           [label]="fields[expirationDateName]?.label"
