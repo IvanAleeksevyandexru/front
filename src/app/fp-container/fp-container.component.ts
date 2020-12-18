@@ -17,7 +17,7 @@ export class FpContainerComponent {
         targetId: config.targetId,
         orderId: config.orderId,
         invited: config.invited,
-        apiUrl: config.apiUrl,
+        configId: config.configId,
         canStartNew: config.canStartNew,
         initState: config.initState,
       };
@@ -26,8 +26,8 @@ export class FpContainerComponent {
         delete service.invited;
       }
 
-      if (!config.apiUrl) {
-        delete service.apiUrl;
+      if (!config.configId) {
+        delete service.configId;
       }
 
       if (typeof config.canStartNew === 'string' && config.canStartNew === '') {

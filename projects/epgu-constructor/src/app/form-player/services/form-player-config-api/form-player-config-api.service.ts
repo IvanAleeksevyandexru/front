@@ -12,7 +12,7 @@ export class FormPlayerConfigApiService {
   ) {}
 
   public getFormPlayerConfig(): Observable<Config> {
-    const path = `${this.configService.apiUrl}/pgu-service-config/config/default-config`;
+    const path = `${this.configService.configApiUrl}/pgu-service-config/config/${this.configService.configId}`;
     return this.http.get<Config>(path);
   }
 }

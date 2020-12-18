@@ -13,6 +13,8 @@ export class ConfigService implements Config {
   private _isLoaded = false;
   private _billsApiUrl: string;
   private _apiUrl: string;
+  private _configApiUrl: string;
+  private _configId: string;
   private _dictionaryUrl: string;
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
@@ -44,6 +46,18 @@ export class ConfigService implements Config {
 
   get apiUrl(): string {
     return this._apiUrl;
+  }
+
+  get configApiUrl(): string {
+    return this._configApiUrl;
+  }
+
+  get configId(): string {
+    return this._configId;
+  }
+
+  set configId(configId: string) {
+    this._configId = configId;
   }
 
   get billsApiUrl(): string {
@@ -115,6 +129,8 @@ export class ConfigService implements Config {
   }
 
   initCore(config: Config = {} as Config): void {
+    this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
+    this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
