@@ -16,7 +16,7 @@ import {
   TimeSlot,
   TimeSlotReq,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface,
+  ZagsDepartmentInterface
 } from './time-slots.types';
 
 const moment = moment_;
@@ -30,6 +30,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   public availableMonths: string[];
 
   private orderId;
+  private serviceId: string;
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
   private errorMessage;
@@ -158,6 +159,12 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       this.orderId = orderId;
     }
 
+    let serviceId = data.serviceId;
+    if (!this.serviceId || this.serviceId !== serviceId) {
+      changed = true;
+      this.serviceId = serviceId;
+    }
+
     return changed;
   }
 
@@ -194,7 +201,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     return {
       organizationId: [this.department.attributeValues.CODE],
       caseNumber: this.orderId,
-      serviceId: [serviceId],
+      serviceId: [this.serviceId || serviceId],
       eserviceId,
       routeNumber,
       attributes: [],
@@ -240,11 +247,11 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       attributes: [
         {
           name: 'serviceId',
-          value: serviceId,
+          value: this.serviceId || serviceId,
         },
       ],
       slotId: [selectedSlot.slotId],
-      serviceId: [serviceId],
+      serviceId: [this.serviceId || serviceId],
     };
   }
 

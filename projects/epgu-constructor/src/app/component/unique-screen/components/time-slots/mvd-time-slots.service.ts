@@ -26,6 +26,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
   public availableMonths: string[];
 
   private orderId;
+  private serviceId: string;
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
   private errorMessage;
@@ -140,6 +141,12 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
       this.orderId = orderId;
     }
 
+    let serviceId = data.serviceId;
+    if (!this.serviceId || this.serviceId !== serviceId) {
+      changed = true;
+      this.serviceId = serviceId;
+    }
+
     return changed;
   }
 
@@ -199,7 +206,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
         selectedSlot.slotId
       ],
       serviceId: [
-        serviceId
+        this.serviceId || serviceId
       ]
     };
   }
