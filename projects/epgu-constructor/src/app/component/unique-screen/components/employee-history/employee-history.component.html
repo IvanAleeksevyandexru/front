@@ -1,13 +1,17 @@
-<epgu-constructor-screen-container class="employee-history" *ngIf="(init$ | async) as data"
-                                   [show-nav]="screenService.showNav$ | async"
-                                   [class.screen-container-mt]="!(screenService.showNav$ | async)"
+<epgu-constructor-screen-container
+  class="employee-history"
+  *ngIf="init$ | async as data"
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
-
   <div class="screen-body">
-    <epgu-constructor-page-name *ngIf="(header$ | async) as header">{{ header }}</epgu-constructor-page-name>
+    <epgu-constructor-page-name *ngIf="header$ | async as header">{{
+      header
+    }}</epgu-constructor-page-name>
     <section
       class="employee-history__generation"
-      *ngFor="let generation of employeeFormService.employeeHistoryForm.controls; let i = index">
+      *ngFor="let generation of employeeFormService.employeeHistoryForm.controls; let i = index"
+    >
       <div
         class="icon-close"
         *ngIf="employeeFormService.employeeHistoryForm.controls.length !== 1"
@@ -15,11 +19,12 @@
       ></div>
       <div class="employee-history__type">
         <div>
-          <lib-radio *ngFor="let role of ds"
-                     [name]="i + '_generationType'"
-                     [formControl]="$any(generation.get('type'))"
-                     [labelText]="role.label"
-                     [value]="role.type"
+          <lib-radio
+            *ngFor="let role of ds"
+            [name]="i + '_generationType'"
+            [formControl]="$any(generation.get('type'))"
+            [labelText]="role.label"
+            [value]="role.type"
           ></lib-radio>
         </div>
       </div>
@@ -32,10 +37,7 @@
       </div>
       <div class="employee-history__date">
         <div>
-          <epgu-constructor-label
-            label="Начало (месяц, год)"
-            for="from"
-          ></epgu-constructor-label>
+          <epgu-constructor-label label="Начало (месяц, год)" for="from"></epgu-constructor-label>
           <epgu-constructor-constructor-month-picker
             [id]="i + '_minDate'"
             [control]="generation.get('from')"
@@ -74,15 +76,12 @@
           labelText="По настоящее время"
         ></epgu-constructor-constructor-checkbox>
       </div>
-      <div class="employee-history__input"
-           *ngIf="availableControlsOfType(generation.get('type').value)?.position as position">
-        <epgu-constructor-label
-          [label]="position"
-          for="position"
-        ></epgu-constructor-label>
+      <div
+        class="employee-history__input"
+        *ngIf="availableControlsOfType(generation.get('type').value)?.position as position"
+      >
+        <epgu-constructor-label [label]="position" for="position"></epgu-constructor-label>
         <epgu-constructor-constructor-plain-input
-          epgu-constructor-trim
-          epgu-constructor-text-transform
           [textTransformType]="textTransformType(data[0])"
           [name]="i + '_position'"
           [control]="$any(generation.get('position'))"
@@ -90,20 +89,19 @@
           [validationShowOn]="validationShowOn"
         ></epgu-constructor-constructor-plain-input>
         <epgu-constructor-helper-text
-          *ngIf="availableControlsOfType(generation.get('type').value)?.positionHint as positionHint"
+          *ngIf="
+            availableControlsOfType(generation.get('type').value)?.positionHint as positionHint
+          "
         >
           {{ positionHint }}
         </epgu-constructor-helper-text>
       </div>
-      <div class="employee-history__input"
-           *ngIf="availableControlsOfType(generation.get('type').value)?.place as place">
-        <epgu-constructor-label
-          [label]="place"
-          for="place"
-        ></epgu-constructor-label>
+      <div
+        class="employee-history__input"
+        *ngIf="availableControlsOfType(generation.get('type').value)?.place as place"
+      >
+        <epgu-constructor-label [label]="place" for="place"></epgu-constructor-label>
         <epgu-constructor-constructor-plain-input
-          epgu-constructor-trim
-          epgu-constructor-text-transform
           [textTransformType]="textTransformType(data[0])"
           [name]="i + '_place'"
           [control]="$any(generation.get('place'))"
@@ -116,15 +114,12 @@
           {{ placeHint }}
         </epgu-constructor-helper-text>
       </div>
-      <div class="employee-history__input"
-           *ngIf="availableControlsOfType(generation.get('type').value)?.address as address">
-        <epgu-constructor-label
-          [label]="address"
-          [for]="'address'"
-        ></epgu-constructor-label>
+      <div
+        class="employee-history__input"
+        *ngIf="availableControlsOfType(generation.get('type').value)?.address as address"
+      >
+        <epgu-constructor-label [label]="address" [for]="'address'"></epgu-constructor-label>
         <epgu-constructor-constructor-plain-input
-          epgu-constructor-trim
-          epgu-constructor-text-transform
           [textTransformType]="textTransformType(data[0])"
           [name]="i + '_address'"
           [control]="$any(generation.get('address'))"
@@ -134,13 +129,13 @@
       </div>
     </section>
     <section class="employee-history__newGeneration">
-      <epgu-constructor-clone-button (click)="employeeFormService.newGeneration()"
+      <epgu-constructor-clone-button
+        [disabled]="!employeeFormService.isScreensAvailable()"
+        (click)="employeeFormService.newGeneration()"
         >Добавить данные</epgu-constructor-clone-button
       >
     </section>
-    <section
-      *ngIf="monthsService.getUncheckedPeriods().length"
-      class="employee-history__progress">
+    <section *ngIf="monthsService.getUncheckedPeriods().length" class="employee-history__progress">
       <div class="employee-history__progress__notification">
         <div class="employee-history__progress__icon"></div>
         <div class="employee-history__progress__msg">Не заполнены периоды</div>
@@ -152,22 +147,26 @@
       </div>
     </section>
     <section
-      *ngIf="(monthsService.isMonthComplete$ | async) && employeeFormService.employeeHistoryForm.valid"
-      class="employee-history__completed">
+      *ngIf="
+        (monthsService.isMonthComplete$ | async) && employeeFormService.employeeHistoryForm.valid
+      "
+      class="employee-history__completed"
+    >
       <div class="employee-history__completed__icon"></div>
       <div class="employee-history__completed__msg">Вы заполнили {{ monthsService.years }} лет</div>
     </section>
   </div>
 
-
-
   <div class="screen-footer">
     <lib-button
       (click)="getNextScreen()"
-      [disabled]="(monthsService.isMonthComplete$ | async) === false || employeeFormService.employeeHistoryForm.invalid"
+      [disabled]="
+        (monthsService.isMonthComplete$ | async) === false ||
+        employeeFormService.employeeHistoryForm.invalid
+      "
       class="btn__submit"
     >
-        {{ data[0]?.submitLabel || 'Продолжить' }}
+      {{ data[0]?.submitLabel || 'Продолжить' }}
     </lib-button>
   </div>
 </epgu-constructor-screen-container>
