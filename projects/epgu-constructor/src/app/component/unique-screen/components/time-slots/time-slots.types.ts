@@ -19,16 +19,20 @@ export interface TimeSlotValueInterface {
   orderId?: string;
 }
 
-export interface MvdDepartmentInterface {
+export interface DepartmentInterface {
   value: string;
   title: string;
+  attributeValues: { [key: string]: string };
+}
+export interface MvdDepartmentInterface extends DepartmentInterface {
+
   attributeValues: {
     ADDRESS_OUT: string;
     phone: string;
   };
 }
 
-export interface ZagsDepartmentInterface {
+export interface ZagsDepartmentInterface extends DepartmentInterface {
   value: string;
   title: string;
   attributeValues: {
@@ -39,7 +43,7 @@ export interface ZagsDepartmentInterface {
   };
 }
 
-export interface GibddDepartmentInterface {
+export interface GibddDepartmentInterface extends DepartmentInterface {
   value: string;
   title: string;
   attributeValues: {
@@ -74,6 +78,10 @@ export interface SmevBookResponseInterface {
   error: ErrorInterface;
   timeStart: Date;
   timeFinish: Date;
+}
+
+export interface TimeSlotsAnswerInterface extends SmevBookResponseInterface {
+  department: DepartmentInterface;
 }
 
 export interface CancelSlotResponseInterface {
@@ -114,7 +122,6 @@ export interface TimeSlotReq {
   attributes?: { name: string; value: string; }[];
   routeNumber?: string;
   serviceCode?: string;
-
 }
 
 // TODO разнести на brak/mvd etc

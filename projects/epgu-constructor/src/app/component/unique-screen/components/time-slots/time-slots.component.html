@@ -31,7 +31,6 @@
                     <div *ngFor="let day of week" class="calendar-day" (click)="selectDate(day.date)" [ngClass]="{
                     'today': isToday(day.date),
                     'locked': isDateLocked(day.date),
-                    'holiday': isHoliday(day.date),
                     'selected': isSelected(day.date),
                     'outer': isDateOutOfMonth(day.date)
                   }">
@@ -61,15 +60,22 @@
       </div>
     </epgu-constructor-screen-pad>
   </div>
-
   <div class="screen-footer">
-    <lib-button
-      [showLoader]="(isLoading$ | async) || inProgress"
-      (click)="clickSubmit()"
-      class="btn__submit"
-      [disabled]="buttonDisabled()"
-    >
-      <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
-    </lib-button>
+    <div class="screen-footer--time-slots">
+      <span *ngIf="chosenTimeStr" class="time">
+        Вы выбрали: 
+        <span class="time--bold">
+          {{chosenTimeStr}}
+        </span>
+      </span>
+      <lib-button
+        [showLoader]="(isLoading$ | async) || inProgress"
+        (click)="clickSubmit()"
+        class="btn__submit"
+        [disabled]="buttonDisabled()"
+      >
+        <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
+      </lib-button>
+    </div>
   </div>
 </epgu-constructor-screen-container>
