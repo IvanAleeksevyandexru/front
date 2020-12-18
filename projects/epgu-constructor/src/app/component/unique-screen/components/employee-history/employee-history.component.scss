@@ -36,8 +36,9 @@
     &__periods {
       margin-top: 12px;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
       @include typ-plain-text();
 
       & > div {

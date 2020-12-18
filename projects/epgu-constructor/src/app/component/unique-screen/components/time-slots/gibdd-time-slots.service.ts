@@ -8,6 +8,7 @@ import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
   BookTimeSlotReq,
+  CancelSlotResponseInterface,
   GibddDepartmentInterface,
   SlotInterface,
   SmevBookResponseInterface,
@@ -21,16 +22,18 @@ const moment = moment_;
 
 @Injectable()
 export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
+
+  public department: GibddDepartmentInterface;
   public activeMonthNumber: number;
   public activeYearNumber: number;
   public availableMonths: string[];
   public bookId;
 
-  private department: GibddDepartmentInterface;
   private orderId;
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
   private errorMessage;
+  private isDepartmentChanged = false; // Флаг показывающий что департамент поменялся с одного(непустого) на другой
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -39,8 +42,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     if (this.bookedSlot) {
-      return this.smev3TimeSlotsRestService.cancelSlot(
-        { eserviceId: '10000070732', bookId: this.bookId })
+      return this.cancelSlot(this.bookId)
       .pipe(
         switchMap((response) => {
           if (!response.error) {
@@ -119,6 +121,9 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
       this.slotsMap = {};
       this.availableMonths = [];
       this.errorMessage = undefined;
+      if (this.bookedSlot && this.isDepartmentChanged) {
+        this.cancelSlot(this.bookId).subscribe();
+      }
       return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
         map(response => {
             if (response.error.errorDetail.errorCode === 0) {
@@ -154,6 +159,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     let department = JSON.parse(data.department);
     if (!this.department || this.department.value !== department.value) {
       changed = true;
+      this.isDepartmentChanged = !!this.department;
       this.department = department;
     }
 
@@ -273,5 +279,11 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
         timezone: slot.visitTimeISO.substr(-6),
       });
     });
+  }
+
+  private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
+    this.bookedSlot = null;
+    return this.smev3TimeSlotsRestService.cancelSlot(
+      { eserviceId: this.config.timeSlots.gibdd.eserviceId, bookId });
   }
 }

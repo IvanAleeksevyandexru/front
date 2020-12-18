@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
 import {
+  DepartmentInterface,
   SlotInterface,
   SmevBookResponseInterface,
   TimeSlotValueInterface
@@ -7,6 +8,7 @@ import {
 
 export interface TimeSlotsServiceInterface {
   bookId: string;
+  department: DepartmentInterface;
   init(data: TimeSlotValueInterface): Observable<void>;
   getCurrentYear(): number;
   getCurrentMonth(): number;

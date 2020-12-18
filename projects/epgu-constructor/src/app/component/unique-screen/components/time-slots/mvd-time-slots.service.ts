@@ -18,12 +18,13 @@ import {
 
 @Injectable()
 export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
+
+  public department: MvdDepartmentInterface;
   public activeMonthNumber: number;
   public activeYearNumber: number;
   public bookId;
   public availableMonths: string[];
 
-  private department: MvdDepartmentInterface;
   private orderId;
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
