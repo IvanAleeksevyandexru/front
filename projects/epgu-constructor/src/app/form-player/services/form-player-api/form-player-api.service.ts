@@ -75,11 +75,6 @@ export class FormPlayerApiService {
     return this.post<FormPlayerApiResponse>(path, body, params);
   }
 
-  private getNavigateParams(params: NavigationParams = {}): HttpParams {
-    return Object.keys(params)
-      .reduce<HttpParams>((p, k) => p.set(k, params[k]), new HttpParams());
-  }
-
   public quizToOrder(quiz: QuizRequestDto): Observable<FormPlayerApiResponse> {
     let path = `${this.configService.apiUrl}/quiz/scenario/toOrder`;
 
@@ -88,6 +83,11 @@ export class FormPlayerApiService {
     };
 
     return this.post<FormPlayerApiResponse>(path, body);
+  }
+
+  private getNavigateParams(params: NavigationParams = {}): HttpParams {
+    return Object.keys(params)
+      .reduce<HttpParams>((p, k) => p.set(k, params[k]), new HttpParams());
   }
 
   private getNavigatePath(
