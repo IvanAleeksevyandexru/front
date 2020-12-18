@@ -10,6 +10,7 @@ import { MonthYear } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 
 const moment = moment_;
+moment.locale('ru');
 
 @Injectable()
 export class EmployeeHistoryMonthsService {
