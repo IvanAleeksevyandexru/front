@@ -57,7 +57,7 @@
       </lib-plain-input>
     </epgu-constructor-address-item>
   </ng-container>
-  <div class="error" *ngIf="(screenService.componentError$ | async) && !isFormValid()">
+  <div class="error" *ngIf="screenService.componentError$ | async">
     <small>{{ screenService.componentError$ | async }}</small>
   </div>
 </form>
