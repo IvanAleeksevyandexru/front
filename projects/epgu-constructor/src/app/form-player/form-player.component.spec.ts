@@ -76,7 +76,7 @@ describe('FormPlayerComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ContinueOrderModalService, useClass: ContinueOrderModalServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub }
       ]
     }).compileComponents();
 

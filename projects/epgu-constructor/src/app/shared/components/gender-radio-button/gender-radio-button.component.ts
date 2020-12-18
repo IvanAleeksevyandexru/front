@@ -1,5 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 enum GenderOrder {
   male = 0,
@@ -30,6 +31,8 @@ export class GenderRadioButtonComponent implements ControlValueAccessor {
 
   innerValue: string | number | boolean;
 
+  constructor(private loggerService: LoggerService) {}
+
   writeValue(value: string | number | boolean): void {
     this.innerValue = value || GenderOrder.male;
   }
@@ -48,7 +51,7 @@ export class GenderRadioButtonComponent implements ControlValueAccessor {
       this.onChange(gender.value);
       this.onTouched(gender.value);
     } else {
-      console.error('You should apply data binding');
+      this.loggerService.error(['You should apply data binding']);
     }
   }
 }

@@ -12,6 +12,7 @@ import {
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CustomComponent } from '../../../components-list/components-list.types';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
 
 @Component({
   selector: 'epgu-constructor-invitation-error',
@@ -39,6 +40,7 @@ export class InvitationErrorComponent implements OnInit {
     private http: HttpClient,
     private validationService: ValidationService,
     private ngUnsubscribe$: UnsubscribeService,
+    private loggerService: LoggerService,
   ) {}
 
   ngOnInit(): void {
@@ -79,7 +81,7 @@ export class InvitationErrorComponent implements OnInit {
           this.success = true;
         },
         (error) => {
-          console.error(error);
+          this.loggerService.error(error);
         },
       );
   }

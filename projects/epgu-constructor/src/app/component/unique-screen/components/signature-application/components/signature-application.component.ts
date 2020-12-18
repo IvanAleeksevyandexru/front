@@ -2,10 +2,10 @@ import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@a
 
 import { ConfigService } from '../../../../../core/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { COMPONENT_DATA_KEY } from '../../../../../shared/constants/form-player';
 import { SignatureApplicationData } from '../models/application.interface';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
+import { LocalStorageService } from '../../../../../core/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
@@ -26,6 +26,7 @@ export class SignatureApplicationComponent implements OnInit {
     public config: ConfigService,
     public screenService: ScreenService,
     private deviceDetector: DeviceDetectorService,
+    private localStorageService: LocalStorageService,
   ) {}
 
   @HostListener('click', ['$event'])
@@ -39,7 +40,7 @@ export class SignatureApplicationComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isSigned()) {
-      UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
+      this.localStorageService.delete(COMPONENT_DATA_KEY);
       this.nextStep();
     } else if (!this.isMobile) {
       this.redirectToSignatureWindow();
@@ -70,6 +71,6 @@ export class SignatureApplicationComponent implements OnInit {
 
   private setDataToLocalStorage(): void {
     const data = { scenarioDto: this.screenService.getStore() };
-    UtilsService.setLocalStorageJSON(COMPONENT_DATA_KEY, data);
+    this.localStorageService.set(COMPONENT_DATA_KEY, data);
   }
 }

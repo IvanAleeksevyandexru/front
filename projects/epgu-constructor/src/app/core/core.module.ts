@@ -19,6 +19,7 @@ import { GlobalErrorHandler } from './services/global-error/global-error.service
 import { WINDOW_PROVIDERS } from './providers/window.provider';
 import { LoggerService } from './services/logger/logger.service';
 import { UtilsService } from './services/utils/utils.service';
+import { LocalStorageService } from './services/local-storage/local-storage.service';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
@@ -54,6 +55,7 @@ const PIPES = [ImgPrefixerPipe, SafePipe];
     NavigationModalService,
     SmuEventsService,
     LoggerService,
+    LocalStorageService,
     UtilsService,
     {
       provide: ErrorHandler,
