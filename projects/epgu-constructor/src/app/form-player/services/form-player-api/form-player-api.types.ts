@@ -128,6 +128,8 @@ export interface ComponentAttrsDto {
   redirectLabel?: string;
   repeatableComponents?: Array<Array<ComponentDto>>;
   singleChild?: boolean;
+  minDateRef?: string;
+  maxDateRef?: string;
 }
 
 export interface ComponentUploadedFileDto {
