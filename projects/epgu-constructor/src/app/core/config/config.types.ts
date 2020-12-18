@@ -4,18 +4,19 @@
 export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
 export type TimeSlotsApi = {
   [key: string]: {
-    subject?: string,
-    calendarName?: string,
-    preliminaryReservation: 'true' | 'false',
-    serviceId: string,
-    serviceCode?: string,
-    eserviceId: string,
-    preliminaryReservationPeriod?: string,
-    routeNumber: string,
-  }
+    subject?: string;
+    calendarName?: string;
+    preliminaryReservation: 'true' | 'false';
+    serviceId: string;
+    serviceCode?: string;
+    eserviceId: string;
+    preliminaryReservationPeriod?: string;
+    routeNumber: string;
+  };
 };
 
 /**
+ * @property {string}apiUrl - url до форм плеер апи
  * @property {string}dictionaryUrl - url до сервиса словарей, как правило apiHostName/api/nsi/v1/dictionary
  * @property {string}externalApiUrl - url до сервиса dadata, как правило apiHostName/api/nsi/v1
  * @property {string}timeSlotApiUrl - url до сервиса тайм слотов, как правило apiHostName/api/lk/v1/equeue/agg
@@ -33,6 +34,7 @@ export type TimeSlotsApi = {
  * @property {boolean}disableUnderConstructionMode - отключить underConstruction режим, для отладки прохода сценариев
  */
 export interface Config {
+  apiUrl: string;
   dictionaryUrl: string;
   externalApiUrl: string;
   timeSlotApiUrl: string;
@@ -49,6 +51,7 @@ export interface Config {
   mockUrl?: string;
   timeSlots?: TimeSlotsApi;
   disableUnderConstructionMode?: boolean;
+  addToCalendarUrl?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';

@@ -1,6 +1,6 @@
 <epgu-constructor-screen-container
-  [show-nav]="(screenService.terminal$ | async) === false"
-  [class.screen-container-mt]="screenService.terminal$ | async"
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
   <epgu-constructor-screen-pad
     class="screen-body"
@@ -17,17 +17,13 @@
     <epgu-constructor-info-screen-body [data]="screenService.component">
     </epgu-constructor-info-screen-body>
 
-    <div class="info__actions" *ngIf="this.actionButtons.length">
-      <lib-button
-        *ngFor="let action of this.actionButtons"
-        class="info__action btn__submit"
-        epgu-constructor-action
-        [action]="action"
-        [color]="action.color"
-      >
-        {{ action.label }}
-      </lib-button>
-    </div>
+    <ng-container *ngIf="actionButtons.length">
+      <ng-container *ngTemplateOutlet="actionsBtns"></ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="screenActionButtons.length">
+      <ng-container *ngTemplateOutlet="screenActionBtns"></ng-container>
+    </ng-container>
 
     <div class="info__submit" *ngIf="screenService.submitLabel$ | async">
       <lib-button
@@ -50,3 +46,32 @@
     ></lib-social-share>
   </div>
 </epgu-constructor-screen-container>
+
+<ng-template #screenActionBtns>
+  <div class="info__actions">
+    <lib-button
+      *ngFor="let action of screenActionButtons"
+      class="info__action btn__submit"
+      epgu-constructor-action
+      [action]="action"
+      [color]="action.color"
+    >
+      <div>{{ action.label }}</div>
+    </lib-button>
+  </div>
+</ng-template>
+
+<!-- TODO: убрать после переезда на механизм screenActionsBtns -->
+<ng-template #actionsBtns>
+  <div class="info__actions">
+    <lib-button
+      *ngFor="let action of actionButtons"
+      class="info__action btn__submit"
+      epgu-constructor-action
+      [action]="action"
+      [color]="action.color"
+    >
+      {{ action.label }}
+    </lib-button>
+  </div>
+</ng-template>

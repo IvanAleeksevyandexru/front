@@ -1,27 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LoadService } from 'epgu-lib';
-import { apiUrlDefault } from '../form-player-api/form-player-api.service';
 import { Config } from '../../../core/config/config.types';
+import { ConfigService } from '../../../core/config/config.service';
 
 @Injectable()
 export class FormPlayerConfigApiService {
-  private apiUrl = apiUrlDefault;
-
   constructor(
     private http: HttpClient,
-    private loadService: LoadService
-  ) {
-    this.loadService.loaded.subscribe(() => {
-      const coreApiUrl = this.loadService.config.newSfApiUrl;
-      this.apiUrl = coreApiUrl ?? apiUrlDefault;
-    });
-  }
+    private configService: ConfigService
+  ) {}
 
   public getFormPlayerConfig(): Observable<Config> {
-    const path = `${this.apiUrl}/pgu-service-config/config/default-config`;
+    const path = `${this.configService.apiUrl}/pgu-service-config/config/default-config`;
     return this.http.get<Config>(path);
   }
-
 }

@@ -2,14 +2,14 @@ import { TimerInterface } from './timer.interface';
 
 /**
  * Создаёт данные для таймера
+ * @param current - текущее время
  * @param start - время начала
  * @param finish - время окончания
  * @param warningTime - промежуток времени когда в секундах для подсветки красным
  */
-export function createTimer(start: number, finish: number, warningTime: number | undefined): TimerInterface {
-  const now = Date.now();
-  const isCorrectTime = (finish - now) > 0;
-  const time = isCorrectTime ? finish - now : 0;
+export function createTimer(current: number, start: number, finish: number, warningTime: number | undefined): TimerInterface {
+  const isCorrectTime = (finish - current) > 0;
+  const time = isCorrectTime ? finish - current : 0;
 
   return {
     isWarning: isWarning(time, finish, warningTime),

@@ -11,6 +11,7 @@ const initValues: AppConfig = {
   serviceId: environment.serviceId,
   targetId: environment.targetId,
   orderId: environment.orderId,
+  apiUrl: null,
   invited: null,
   canStartNew: null,
   initState: null,

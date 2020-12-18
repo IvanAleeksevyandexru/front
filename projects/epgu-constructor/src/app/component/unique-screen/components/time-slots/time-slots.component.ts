@@ -18,7 +18,7 @@ import { GibddTimeSlotsService } from './gibdd-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
-import { SlotInterface, SmevBookResponseInterface } from './time-slots.types';
+import { SlotInterface, TimeSlot, TimeSlotsAnswerInterface } from './time-slots.types';
 
 const moment = moment_;
 
@@ -37,6 +37,7 @@ export class TimeSlotsComponent implements OnInit {
   public label: string;
   public activeMonthNumber: number;
   public activeYearNumber: number;
+  public chosenTimeStr: string;
 
   confirmModalParameters: ConfirmationModal = {
     text: 'Вы уверены, что хотите поменять забронированное время?',
@@ -75,7 +76,7 @@ export class TimeSlotsComponent implements OnInit {
   private timeSlotServices: { [key: string]: TimeSlotsServiceInterface } = {};
   private currentService: TimeSlotsServiceInterface;
   private errorModalResultSub = new Subscription();
-  private cachedAnswer: SmevBookResponseInterface;
+  private cachedAnswer: TimeSlotsAnswerInterface;
 
   constructor(
     private brakTimeSlotsService: BrakTimeSlotsService,
@@ -86,7 +87,7 @@ export class TimeSlotsComponent implements OnInit {
     private currentAnswersService: CurrentAnswersService,
     public constants: TimeSlotsConstants,
     private ngUnsubscribe$: UnsubscribeService,
-    private screenService: ScreenService,
+    public screenService: ScreenService,
   ) {
     this.timeSlotServices.BRAK = this.brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = this.divorceTimeSlotsService;
@@ -95,13 +96,13 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.screenService.component) {
-      this.loadTimeSlots();
-    }
-
     const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
     if (cachedAnswer) {
       this.cachedAnswer = JSON.parse(cachedAnswer);
+    }
+
+    if (this.screenService.component) {
+      this.loadTimeSlots();
     }
   }
 
@@ -124,10 +125,6 @@ export class TimeSlotsComponent implements OnInit {
 
   public isToday(date: Date): boolean {
     return date && moment().isSame(moment(date), 'day');
-  }
-
-  public isHoliday(date: Date): boolean {
-    return date && [6, 7].includes(moment(date).isoWeekday());
   }
 
   public isSelected(date: Date): boolean {
@@ -157,6 +154,9 @@ export class TimeSlotsComponent implements OnInit {
   public chooseTimeSlot(slot: SlotInterface): void {
     this.currentSlot = slot;
     this.currentAnswersService.state = slot;
+    const time = moment(slot.slotTime).utcOffset(slot.timezone);
+    const formatTemplate = 'D MMMM YYYY года в HH:mm, dddd';
+    this.chosenTimeStr = time.format(formatTemplate);
   }
 
   public isSlotSelected({ slotId }: SlotInterface): boolean {
@@ -223,7 +223,11 @@ export class TimeSlotsComponent implements OnInit {
           );
           return;
         }
-        this.nextStepEvent.emit(JSON.stringify(response));
+        const answer = {
+          ...response,
+          department: this.currentService.department,
+        };
+        this.nextStepEvent.emit(JSON.stringify(answer));
       },
       () => {
         this.inProgress = false;
@@ -277,9 +281,11 @@ export class TimeSlotsComponent implements OnInit {
     this.label = this.screenService.component?.label;
     const value = JSON.parse(this.screenService.component?.value);
     // waitingTimeExpired - Флаг просрочки бронирования
-    const { timeSlot, waitingTimeExpired } = value;
+    const { waitingTimeExpired } = value;
+    const timeSlotFromCache = this.cachedAnswer?.timeSlot;
 
     this.currentService = this.timeSlotServices[value.timeSlotType];
+    this.setBookedSlot(timeSlotFromCache, waitingTimeExpired);
     this.currentService.init(value).subscribe(
       () => {
         if (this.currentService.hasError()) {
@@ -299,24 +305,7 @@ export class TimeSlotsComponent implements OnInit {
           this.fixedMonth = this.monthsYears.length < 2;
           this.monthChanged(this.currentMonth);
 
-          if (waitingTimeExpired) {
-            this.bookedSlot = null;
-            this.currentService.setBookedSlot(null);
-            this.currentService.bookId = null;
-          } else {
-            this.bookedSlot = this.currentService.getBookedSlot();
-            if (!this.bookedSlot && timeSlot) {
-              this.bookedSlot = {
-                slotId: timeSlot.slotId,
-                slotTime: new Date(timeSlot.visitTimeISO),
-                timezone: timeSlot.visitTimeISO.substr(-6),
-                areaId: timeSlot.areaId,
-              };
-              this.currentService.setBookedSlot(this.bookedSlot);
-              this.currentService.bookId = this.cachedAnswer.bookId;
-            }
-          }
-
+          this.bookedSlot = this.currentService.getBookedSlot();
           if (this.bookedSlot) {
             this.selectDate(this.bookedSlot.slotTime);
             this.chooseTimeSlot(this.bookedSlot);
@@ -440,14 +429,50 @@ export class TimeSlotsComponent implements OnInit {
     return slotIdFromAnswer !== this.currentSlot.slotId;
   }
 
+  /**
+   * Создается и заполняет массив для выпадающего списка месяцев
+   * Месяцы создаются от минимального до максимального из эндпоинта самих слотов
+   */
   private fillMonthsYears(): void {
     this.monthsYears = [];
     const availableMonths = this.currentService.getAvailableMonths();
-    availableMonths.sort((date1: string, date2: string): number => {
-      return new Date(date1) > new Date(date2) ? 1 : -1;
-    });
-    for (let i = 0; i < availableMonths.length; i += 1) {
-      this.monthsYears.push(this.getMonthsListItem(availableMonths[i]));
+    if (availableMonths.length) {
+      availableMonths.sort((date1: string, date2: string): number => {
+        return new Date(date1) > new Date(date2) ? 1 : -1;
+      });
+      const firstMonthStr = availableMonths[0];
+      const lastMonthStr = availableMonths[availableMonths.length - 1];
+      for (let month = moment(firstMonthStr); !month.isAfter(lastMonthStr); month.add(1, 'M')) {
+        const monthForDropdown = this.getMonthsListItem(month.format('YYYY-M'));
+        if (!availableMonths.includes(month.format('YYYY-M'))) {
+          monthForDropdown.unselectable = true;
+        }
+        this.monthsYears.push(monthForDropdown);
+      }
+    }
+  }
+
+  /**
+   * Устанавливает забуканный слот при его наличие, иначе пытается его проставить из кэша ответов
+   * @param timeSlot таймслот из кэша
+   */
+  private setBookedSlot(timeSlot: TimeSlot, waitingTimeExpired: boolean): void {
+    if (waitingTimeExpired) {
+      this.bookedSlot = null;
+      this.currentService.setBookedSlot(null);
+      this.currentService.bookId = null;
+    } else {
+      this.bookedSlot = this.currentService.getBookedSlot();
+      if (!this.bookedSlot && timeSlot) {
+        this.bookedSlot = {
+          slotId: timeSlot.slotId,
+          slotTime: new Date(timeSlot.visitTimeISO),
+          timezone: timeSlot.visitTimeISO.substr(-6),
+          areaId: timeSlot.areaId,
+        };
+        this.currentService.setBookedSlot(this.bookedSlot);
+        this.currentService.bookId = this.cachedAnswer.bookId;
+      }
     }
   }
 }

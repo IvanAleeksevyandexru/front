@@ -3,6 +3,7 @@ import { Config, MockApi, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
+  _apiUrl = '/api';
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
   _timeSlotApiUrl = '';
@@ -19,6 +20,11 @@ export class ConfigServiceStub implements Config {
   _mockUrl = '';
   _timeSlots = {};
   _disableUnderConstructionMode = false;
+  _addToCalendarUrl = '';
+
+  get apiUrl(): string {
+    return this._apiUrl;
+  }
 
   get billsApiUrl(): string {
     return this._billsApiUrl;
@@ -84,7 +90,14 @@ export class ConfigServiceStub implements Config {
     return this._disableUnderConstructionMode;
   }
 
+  initCore(): void {}
+
+  get addToCalendarUrl(): string {
+    return this._addToCalendarUrl;
+  }
+
   set config(config: Config) {
+    this._apiUrl = config.apiUrl;
     this._billsApiUrl = config.billsApiUrl;
     this._dictionaryUrl = config.dictionaryUrl;
     this._externalApiUrl = config.externalApiUrl;
@@ -101,5 +114,6 @@ export class ConfigServiceStub implements Config {
     this._mockUrl = config.mockUrl;
     this._timeSlots = config.timeSlots;
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
+    this._addToCalendarUrl = config.addToCalendarUrl;
   }
 }

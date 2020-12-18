@@ -7,7 +7,9 @@ exports[`CustomScreenComponent check snapshot 1`] = `
   ngUnsubscribe$={[Function UnsubscribeService]}
   screenService={[Function ScreenServiceStub]}
 >
-  <epgu-constructor-screen-container>
+  <epgu-constructor-screen-container
+    class="screen-container-mt"
+  >
     <div
       class="screen-body"
     >

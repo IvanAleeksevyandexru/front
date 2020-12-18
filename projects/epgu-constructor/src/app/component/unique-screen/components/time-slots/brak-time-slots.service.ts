@@ -25,7 +25,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   public activeYearNumber: number;
   public bookId;
 
-  private department: ZagsDepartmentInterface;
+  public department: ZagsDepartmentInterface;
   private solemn: boolean;
   private slotsPeriod;
   private orderId;
