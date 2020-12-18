@@ -65,10 +65,6 @@
   background-color: transparent;
   box-shadow: none;
 
-  .divider {
-    display: none;
-  }
-
   &::ng-deep ul {
     background-color: $color-white;
     border-radius: 8px;

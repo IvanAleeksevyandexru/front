@@ -214,6 +214,19 @@ describe('FormPlayerApiService', () => {
       req.flush(responseMock);
       tick();
     }));
+
+    it('should call http with params', fakeAsync(() => {
+      let mockNavigationOptions = {
+        params: { stepsBack: 2 }
+      };
+      service.navigate(mockData, mockNavigationOptions, FormPlayerNavigation.PREV)
+        .subscribe(response => expect(response).toBe(responseMock));
+      const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.PREV}?stepsBack=2`;
+      const req = http.expectOne(url);
+      expect(req.request.params.has('stepsBack')).toBeTruthy();
+      req.flush(responseMock);
+      tick();
+    }));
   });
 
   describe('navigate()', () => {

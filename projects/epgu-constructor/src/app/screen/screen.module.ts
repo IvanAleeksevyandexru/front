@@ -1,25 +1,26 @@
 import { NgModule } from '@angular/core';
-import { InvitationErrorScreenModule } from './invitation-error-screen/invitation-error-screen.module';
-import { UniqueScreenModule } from './unique-screen/unique-screen.module';
-import { QuestionsScreenModule } from './questions-screen/questions-screen.module';
-import { EmptyScreenModule } from './empty-screen/empty-screen.module';
-import { CustomScreenModule } from './custom-screen/custom-screen.module';
-import { ComponentScreenModule } from './component-screen/component-screen.module';
-import { InfoScreenModule } from './info-screen/info-screen.module';
-import { InfoScreenComponent } from './info-screen/info-screen.component';
-import { QuestionsScreenComponent } from './questions-screen/questions-screen.component';
-import { ComponentScreenComponent } from './component-screen/component-screen.component';
-import { EmptyScreenComponent } from './empty-screen/empty-screen.component';
-import { UniqueScreenComponent } from './unique-screen/unique-screen.component';
-import { CustomScreenComponent } from './custom-screen/custom-screen.component';
-import { InvitationErrorScreenComponent } from './invitation-error-screen/invitation-error-screen.component';
-import { ScreenResolverComponent } from './screen-resolver/screen-resolver.component';
-import { CurrentAnswersService } from './current-answers.service';
-import { ScreenService } from './screen.service';
 import { CoreModule } from '../core/core.module';
 import { ModalModule } from '../modal/modal.module';
 import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
+import { HtmlRemoverService } from '../shared/services/html-remover/html-remover.service';
 import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
+import { ComponentScreenComponent } from './component-screen/component-screen.component';
+import { ComponentScreenModule } from './component-screen/component-screen.module';
+import { CurrentAnswersService } from './current-answers.service';
+import { CustomScreenComponent } from './custom-screen/custom-screen.component';
+import { CustomScreenModule } from './custom-screen/custom-screen.module';
+import { EmptyScreenComponent } from './empty-screen/empty-screen.component';
+import { EmptyScreenModule } from './empty-screen/empty-screen.module';
+import { InfoScreenComponent } from './info-screen/info-screen.component';
+import { InfoScreenModule } from './info-screen/info-screen.module';
+import { InvitationErrorScreenComponent } from './invitation-error-screen/invitation-error-screen.component';
+import { InvitationErrorScreenModule } from './invitation-error-screen/invitation-error-screen.module';
+import { QuestionsScreenComponent } from './questions-screen/questions-screen.component';
+import { QuestionsScreenModule } from './questions-screen/questions-screen.module';
+import { ScreenResolverComponent } from './screen-resolver/screen-resolver.component';
+import { ScreenService } from './screen.service';
+import { UniqueScreenComponent } from './unique-screen/unique-screen.component';
+import { UniqueScreenModule } from './unique-screen/unique-screen.module';
 
 /**
  * Домен скринов. Здесь храниться всё что связанно со скринами и их обязками.
@@ -37,7 +38,13 @@ import { ValueLoaderService } from '../shared/services/value-loader/value-loader
     InfoScreenModule,
     ModalModule,
   ],
-  providers: [ScreenService, CachedAnswersService, CurrentAnswersService, ValueLoaderService],
+  providers: [
+    ScreenService,
+    CachedAnswersService,
+    CurrentAnswersService,
+    ValueLoaderService,
+    HtmlRemoverService,
+  ],
   exports: [ScreenResolverComponent],
   entryComponents: [
     InfoScreenComponent,

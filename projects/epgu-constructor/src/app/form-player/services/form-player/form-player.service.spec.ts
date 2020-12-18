@@ -1,21 +1,21 @@
-import { TestBed } from '@angular/core/testing';
-import { FormPlayerService } from './form-player.service';
-import { ScreenService } from '../../../screen/screen.service';
-import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
-import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
-import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
-import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { ServiceDataService } from '../service-data/service-data.service';
 import { Location } from '@angular/common';
-import { LAST_SCENARIO_KEY } from '../../../shared/constants/form-player';
+import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
-import { FormPlayerServiceStub } from './form-player.service.stub';
-import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { WINDOW, WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
-import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
+import { HtmlRemoverService } from '../../../shared/services/html-remover/html-remover.service';
+import { FormPlayerNavigation, Navigation } from '../../form-player.types';
+import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
+import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
+import { ServiceDataService } from '../service-data/service-data.service';
+import { FormPlayerService } from './form-player.service';
+import { FormPlayerServiceStub } from './form-player.service.stub';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 
@@ -45,6 +45,7 @@ describe('FormPlayerService', () => {
         ServiceDataService,
         CachedAnswersService,
         CurrentAnswersService,
+        HtmlRemoverService,
         Location,
         WINDOW_PROVIDERS,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },

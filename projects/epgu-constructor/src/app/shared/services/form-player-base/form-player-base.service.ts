@@ -8,6 +8,7 @@ import {
   FormPlayerApiSuccessResponse, ScenarioDto
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
+import { HtmlRemoverService } from '../html-remover/html-remover.service';
 
 
 /**
@@ -20,6 +21,7 @@ export abstract class FormPlayerBaseService {
   protected formPlayerApiService: FormPlayerApiService;
   protected screenServiceBase: ScreenService;
   protected loggerBase: LoggerService;
+  protected htmlRemover: HtmlRemoverService;
   protected _store: FormPlayerApiSuccessResponse;
   protected playerLoaded = false;
   protected isLoading = false;
@@ -31,11 +33,12 @@ export abstract class FormPlayerBaseService {
   protected _playerLoaded$ = this.playerLoadedSubject.asObservable();
 
   constructor(
-    public injector: Injector
+    public injector: Injector,
   ) {
     this.formPlayerApiService = this.injector.get(FormPlayerApiService);
     this.screenServiceBase = this.injector.get(ScreenService);
     this.loggerBase = this.injector.get(LoggerService);
+    this.htmlRemover = this.injector.get(HtmlRemoverService);
   }
 
   get isLoading$(): Observable<boolean>  {
@@ -86,6 +89,8 @@ export abstract class FormPlayerBaseService {
     } else {
       this._store.scenarioDto.currentValue = navigationPayload;
     }
+
+    this._store.scenarioDto.display = this.htmlRemover.delete(this._store.scenarioDto.display);
   }
 
   protected sendDataSuccess(response: FormPlayerApiSuccessResponse): void {

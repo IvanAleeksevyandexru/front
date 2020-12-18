@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import * as moment_ from 'moment';
-import { takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
@@ -89,8 +89,9 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   }
 
   public isFormValid(): boolean {
-    const hasValue = (): boolean => Object.values(this.dataForm.form.value).every((value) => value);
-    const isValid = (): boolean => (this.isRequired ? hasValue() : true);
+    const hasValueAndFormValid = (): boolean =>
+      Object.values(this.dataForm.form.value).every((value) => value) && this.dataForm.form.valid;
+    const isValid = (): boolean => (this.isRequired ? hasValueAndFormValid() : true);
     const isFormInited = (): { [key: string]: string | Date } => this.dataForm?.form?.value;
 
     return isFormInited() && isValid();

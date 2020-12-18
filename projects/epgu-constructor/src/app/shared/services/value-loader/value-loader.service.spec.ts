@@ -136,6 +136,55 @@ describe('ValueLoaderService', () => {
     });
   });
 
+  describe('loadValueFromCachedAnswer() for refDate', () => {
+    it('should be return minDate, maxDate if has minRefDate, maxDateRef', () => {
+      const cachedAnswers: CachedAnswers = {
+        pd1: {
+          visited: true,
+          disabled: false,
+          value: '12.12.2020',
+        },
+        pd2: {
+          visited: true,
+          disabled: false,
+          value: '{date: 15.12.2020}',
+        },
+      };
+
+      const componentMock: ComponentDto = {
+        id: 'ai4',
+        type: '',
+        label: '',
+        attrs: {
+          components: [
+            {
+              id: 'rf1',
+              type: 'DateInput',
+              label: 'Прежняя фамилия',
+              attrs: {
+                minDate: '-30y',
+                maxDate: 'today',
+                minDateRef: 'pd1.value',
+                maxDateRef: 'pd2.value.date',
+              },
+              value: '',
+              required: true,
+            },
+          ],
+        },
+        value: '',
+        required: true,
+      };
+
+      const component = { ...componentMock, presetValue: '' };
+      component.attrs.maxDate = '15.12.2020';
+      component.attrs.minDate = '12.12.2020';
+
+      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);
+      expect(componentDtoIS).toEqual([component]);
+    });
+  });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });

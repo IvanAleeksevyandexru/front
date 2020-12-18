@@ -24,6 +24,8 @@ interface ConfirmAddressInterfaceAttr {
   fields: Array<ConfirmAddressFieldsInterface>;
   fstuc?: TextTransform;
   hideLevels?: Array<string>;
+  minDate?: Date | RelativeDate | string;
+  maxDate?: Date | RelativeDate | string;
 }
 
 /**
@@ -46,8 +48,6 @@ export type ConfirmAddressFieldName = 'regAddr' | 'regFrom' | 'regTo' | 'regDate
 export interface ConfirmAddressFieldsInterface {
   fieldName: ConfirmAddressFieldName;
   label: 'адрес';
-  minDate?: Date | RelativeDate | string;
-  maxDate?: Date | RelativeDate | string;
   attrs?: { labelHint?: string };
   hint?: string;
   nonPresetable?: boolean;
