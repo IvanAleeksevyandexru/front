@@ -17,13 +17,6 @@ import { ScreenService } from '../../../screen/screen.service';
  */
 @Injectable()
 export abstract class FormPlayerBaseService {
-  public get isLoading$(): Observable<boolean>  {
-    return this.isLoadingSubject.asObservable();
-  }
-  public get playerLoaded$(): Observable<boolean> {
-    return this.playerLoadedSubject.asObservable();
-  }
-
   protected formPlayerApiService: FormPlayerApiService;
   protected screenServiceBase: ScreenService;
   protected loggerBase: LoggerService;
@@ -41,6 +34,14 @@ export abstract class FormPlayerBaseService {
     this.formPlayerApiService = this.injector.get(FormPlayerApiService);
     this.screenServiceBase = this.injector.get(ScreenService);
     this.loggerBase = this.injector.get(LoggerService);
+  }
+
+  get isLoading$(): Observable<boolean>  {
+    return this.isLoadingSubject.asObservable();
+  }
+
+  get playerLoaded$(): Observable<boolean> {
+    return this.playerLoadedSubject.asObservable();
   }
 
   /**
