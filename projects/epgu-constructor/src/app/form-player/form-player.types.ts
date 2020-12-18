@@ -38,11 +38,13 @@ export interface NavigationPayload {
 /**
  * @property {FormPlayerNavigation}direction - направление движения навигации
  * @property {string}url - адресс на который нужно стучатся (иногда в actions приходит url)
+ * @property {NavigationParams}params - query params для navigate методов
  */
 export interface NavigationOptions {
   isInternalScenarioFinish?: boolean;
   url?: string;
   store?: FormPlayerApiSuccessResponse;
+  params?: NavigationParams;
 }
 
 export type NavigationParams = Pick<ComponentActionDto['attrs'], 'stepsBack'>;
@@ -50,5 +52,4 @@ export type NavigationParams = Pick<ComponentActionDto['attrs'], 'stepsBack'>;
 export interface Navigation {
   payload?: NavigationPayload;
   options?: NavigationOptions;
-  params?: NavigationParams;
 }

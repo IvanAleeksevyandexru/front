@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { Navigation, NavigationOptions } from '../../../form-player/form-player.types';
+import { Navigation, NavigationOptions, NavigationParams } from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import {
   ActionApiResponse,
@@ -41,16 +41,6 @@ export class ActionDirective {
     this.navService[stepType].next(navigation);
   }
 
-  navigatePrevStep(stepType: string): void {
-    const attrs = this.action?.attrs;
-    const stepsBack = attrs?.stepsBack;
-    const navigation = {
-      ...this.prepareNavigationData(),
-      params: stepsBack ? { stepsBack } : {}
-    };
-    this.navService[stepType].next(navigation);
-  }
-
   navigateModal(stepType: string): void {
     const navigation = this.prepareNavigationData();
     switch (stepType) {
@@ -78,7 +68,7 @@ export class ActionDirective {
         this.navigate('skipStep');
         break;
       case ActionType.prevStep:
-        this.navigatePrevStep('prevStep');
+        this.navigate('prevStep');
         break;
       case ActionType.nextStep:
         this.navigate('nextStep');
@@ -103,7 +93,8 @@ export class ActionDirective {
 
   private prepareNavigationData(): Navigation {
     const payload = this.getComponentStateForNavigate();
-    const options = this.getOptions();
+    const params = this.getParams();
+    const options = { ...this.getOptions(), params };
     return { payload, options };
   }
 
@@ -119,6 +110,12 @@ export class ActionDirective {
     } else {
       return {};
     }
+  }
+
+  private getParams(): NavigationParams {
+    const attrs: NavigationParams = this.action?.attrs;
+    const stepsBack = attrs?.stepsBack;
+    return stepsBack ? { stepsBack } : {};
   }
 
   private getComponentStateForNavigate(): ComponentStateForNavigate {

@@ -55,8 +55,7 @@ export class FormPlayerApiService {
   public navigate(
     data: FormPlayerApiSuccessResponse,
     options: NavigationOptions = {},
-    formPlayerNavigation: FormPlayerNavigation,
-    navigationParams?: NavigationParams,
+    formPlayerNavigation: FormPlayerNavigation
   ): Observable<FormPlayerApiResponse> {
     let path = this.getNavigatePath(data, options, formPlayerNavigation);
     data.scenarioDto.currentUrl = location.href;
@@ -69,7 +68,7 @@ export class FormPlayerApiService {
       ...data,
     };
 
-    const params = this.getNavigateParams(navigationParams);
+    const params = this.getNavigateParams(options.params);
 
     return this.post<FormPlayerApiResponse>(path, body, params);
   }
