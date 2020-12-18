@@ -9,6 +9,8 @@ import { ScreenContainerComponent } from '../screen-container/screen-container.c
 import { NavigationComponent } from './navigation.component';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
+import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
+import { LocationService } from '../../../core/services/location/location.service';
 
 
 describe('NavigationComponent', () => {
@@ -22,6 +24,8 @@ describe('NavigationComponent', () => {
       declarations: [ NavigationComponent, ScreenContainerComponentMock ],
       providers: [
         NavigationService,
+        LocationService,
+        WINDOW_PROVIDERS,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },

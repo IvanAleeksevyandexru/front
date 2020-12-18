@@ -25,6 +25,7 @@ import {
   getDocInfo,
 } from './components/payment/payment.component.functions';
 import { COMPONENT_DATA_KEY } from '../../../../shared/constants/form-player';
+import { LocationService } from '../../../../core/services/location/location.service';
 import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
 
 const ALREADY_PAY_ERROR = 23;
@@ -69,13 +70,14 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   public currentAnswersService: CurrentAnswersService;
   public ngUnsubscribe$: UnsubscribeService;
   public config: ConfigService;
-  public localStorageService: LocalStorageService;
 
   data: ComponentBase;
   header$: Observable<string>;
   init$: Observable<ComponentBase>;
   submitLabel$: Observable<string>;
 
+  private localStorageService: LocalStorageService;
+  private locationService: LocationService;
   private payCode = 1; // Код типа плательщика
   private payStatusIntervalLink = null;
   private payStatusInterval = 30;
@@ -88,6 +90,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     this.currentAnswersService = this.injector.get(CurrentAnswersService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.config = this.injector.get(ConfigService);
+    this.locationService = this.injector.get(LocationService);
     this.localStorageService = this.injector.get(LocalStorageService);
     this.header$ = this.screenService.header$.pipe(map((header) => header ?? 'Оплата госпошлины'));
     this.init$ = this.screenService.component$.pipe(
@@ -120,7 +123,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     const data = { scenarioDto: this.screenService.getStore() };
     this.localStorageService.set(COMPONENT_DATA_KEY, data);
     clearInterval(this.payStatusInterval);
-    window.location.href = this.paymentService.getPaymentLink(this.billId);
+    this.locationService.href(this.paymentService.getPaymentLink(this.billId));
   }
 
   ngOnDestroy(): void {

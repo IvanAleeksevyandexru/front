@@ -6,6 +6,7 @@ import { COMPONENT_DATA_KEY } from '../../../../../shared/constants/form-player'
 import { SignatureApplicationData } from '../models/application.interface';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { LocalStorageService } from '../../../../../core/services/local-storage/local-storage.service';
+import { LocationService } from '../../../../../core/services/location/location.service';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
@@ -27,6 +28,7 @@ export class SignatureApplicationComponent implements OnInit {
     public screenService: ScreenService,
     private deviceDetector: DeviceDetectorService,
     private localStorageService: LocalStorageService,
+    private locationService: LocationService,
   ) {}
 
   @HostListener('click', ['$event'])
@@ -48,7 +50,7 @@ export class SignatureApplicationComponent implements OnInit {
   }
 
   public redirectToLK(): void {
-    window.location.href = this.config.lkUrl;
+    this.locationService.href(this.config.lkUrl);
   }
 
   private nextStep(): void {
@@ -58,7 +60,7 @@ export class SignatureApplicationComponent implements OnInit {
   private isSigned(): boolean {
     return (
       !!this.screenService.applicantAnswers[this.screenService.component.id]?.value ||
-      window.location.href.includes('signatureSuccess')
+      this.locationService.getHref().includes('signatureSuccess')
     );
   }
 
@@ -66,7 +68,7 @@ export class SignatureApplicationComponent implements OnInit {
     this.setDataToLocalStorage();
 
     const { url } = this.data;
-    window.location.href = `${url}?getLastScreen=signatureSuccess`;
+    this.locationService.href(`${url}?getLastScreen=signatureSuccess`);
   }
 
   private setDataToLocalStorage(): void {
