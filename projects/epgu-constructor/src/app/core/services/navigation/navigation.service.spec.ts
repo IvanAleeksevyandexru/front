@@ -8,17 +8,22 @@ import { DeviceDetectorServiceStub } from '../device-detector/device-detector.se
 import { SmuEventsService } from 'epgu-lib';
 import { SmuEventsServiceStub } from '../device-detector/smu-events.service.stub';
 import { MobilViewEvents } from '../../../shared/constants/redirect-event';
+import { LocationService } from '../location/location.service';
+import { WINDOW_PROVIDERS } from '../../providers/window.provider';
 
 describe('NavigationService', () => {
   let navigationService: NavigationService;
   let deviceDetectorService: DeviceDetectorService;
   let configService: ConfigService;
   let smuEventsService: SmuEventsService;
+  let locationService: LocationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         NavigationService,
+        LocationService,
+        WINDOW_PROVIDERS,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: SmuEventsService, useClass: SmuEventsServiceStub },
@@ -30,6 +35,7 @@ describe('NavigationService', () => {
     configService = TestBed.inject(ConfigService);
     smuEventsService = TestBed.inject(SmuEventsService);
     navigationService = TestBed.inject(NavigationService);
+    locationService = TestBed.inject(LocationService);
   });
 
   it('test skip', (done) => {
@@ -58,15 +64,15 @@ describe('NavigationService', () => {
   it('test redirectToProfileEdit', () => {
     navigationService.isWebView = true;
     navigationService.redirectToProfileEdit();
-    expect(window.location.href).toBe('/profile/user');
+    expect(locationService.getHref()).toBe('/profile/user');
     navigationService.isWebView = false;
     navigationService.redirectToProfileEdit();
-    expect(window.location.href).toBe(`${configService.lkUrl}/profile/personal`);
+    expect(locationService.getHref()).toBe(`${configService.lkUrl}/profile/personal`);
   });
   it('test redirectToLK', () => {
     navigationService.isWebView = false;
     navigationService.redirectToLK();
-    expect(window.location.href).toBe(`${configService.lkUrl}/orders/all`);
+    expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all`);
     navigationService.isWebView = true;
     spyOn(smuEventsService, 'notify').and.callThrough();
     navigationService.redirectToLK();
@@ -75,7 +81,7 @@ describe('NavigationService', () => {
   it('test redirectToHome', () => {
     navigationService.isWebView = false;
     navigationService.redirectToHome();
-    expect(window.location.href).toBe('/');
+    expect(locationService.getHref()).toBe('/');
     navigationService.isWebView = true;
     spyOn(smuEventsService, 'notify').and.callThrough();
     navigationService.redirectToHome();

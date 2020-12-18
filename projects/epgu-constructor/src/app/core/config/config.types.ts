@@ -17,6 +17,8 @@ export type TimeSlotsApi = {
 
 /**
  * @property {string}apiUrl - url до форм плеер апи
+ * @property {string}configApiUrl - url до форм плеер конфиг сервиса апи
+ * @property {string}configId - id
  * @property {string}dictionaryUrl - url до сервиса словарей, как правило apiHostName/api/nsi/v1/dictionary
  * @property {string}externalApiUrl - url до сервиса dadata, как правило apiHostName/api/nsi/v1
  * @property {string}timeSlotApiUrl - url до сервиса тайм слотов, как правило apiHostName/api/lk/v1/equeue/agg
@@ -35,6 +37,8 @@ export type TimeSlotsApi = {
  */
 export interface Config {
   apiUrl: string;
+  configApiUrl: string;
+  configId: string;
   dictionaryUrl: string;
   externalApiUrl: string;
   timeSlotApiUrl: string;

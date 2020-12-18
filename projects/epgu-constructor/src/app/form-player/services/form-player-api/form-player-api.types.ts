@@ -352,6 +352,12 @@ export interface FormPlayerApiSuccessResponse {
   isInternalScenario?: boolean;
 }
 
+export interface QuizRequestDto extends FormPlayerApiSuccessResponse {
+  serviceId: string;
+  targetId: string;
+  answerServicePrefix: string;
+}
+
 export enum FormPlayerApiErrorStatuses {
   badRequest = 'BAD_REQUEST',
 }

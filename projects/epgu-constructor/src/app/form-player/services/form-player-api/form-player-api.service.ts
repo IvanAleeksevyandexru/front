@@ -7,10 +7,11 @@ import {
   ActionDTO,
   CheckOrderApiResponse,
   FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse,
+  FormPlayerApiSuccessResponse, QuizRequestDto,
 } from './form-player-api.types';
 import { FormPlayerNavigation, NavigationOptions, NavigationParams } from '../../form-player.types';
 import { ConfigService } from '../../../core/config/config.service';
+import { LocationService } from '../../../core/services/location/location.service';
 
 @Injectable()
 export class FormPlayerApiService {
@@ -18,6 +19,7 @@ export class FormPlayerApiService {
     private http: HttpClient,
     private serviceDataService: ServiceDataService,
     private configService: ConfigService,
+    private locationService: LocationService,
   ) {}
 
   public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
@@ -58,7 +60,7 @@ export class FormPlayerApiService {
     formPlayerNavigation: FormPlayerNavigation
   ): Observable<FormPlayerApiResponse> {
     let path = this.getNavigatePath(data, options, formPlayerNavigation);
-    data.scenarioDto.currentUrl = location.href;
+    data.scenarioDto.currentUrl = this.locationService.getHref();
 
     if (options.isInternalScenarioFinish) {
       data.isInternalScenario = false;
@@ -71,6 +73,16 @@ export class FormPlayerApiService {
     const params = this.getNavigateParams(options.params);
 
     return this.post<FormPlayerApiResponse>(path, body, params);
+  }
+
+  public quizToOrder(quiz: QuizRequestDto): Observable<FormPlayerApiResponse> {
+    let path = `${this.configService.apiUrl}/quiz/scenario/toOrder`;
+
+    const body = {
+      ...quiz,
+    };
+
+    return this.post<FormPlayerApiResponse>(path, body);
   }
 
   private getNavigateParams(params: NavigationParams = {}): HttpParams {

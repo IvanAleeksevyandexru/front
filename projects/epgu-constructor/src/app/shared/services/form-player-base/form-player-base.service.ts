@@ -18,13 +18,6 @@ import { HtmlRemoverService } from '../html-remover/html-remover.service';
  */
 @Injectable()
 export abstract class FormPlayerBaseService {
-  public get isLoading$(): Observable<boolean>  {
-    return this.isLoadingSubject.asObservable();
-  }
-  public get playerLoaded$(): Observable<boolean> {
-    return this.playerLoadedSubject.asObservable();
-  }
-
   protected formPlayerApiService: FormPlayerApiService;
   protected screenServiceBase: ScreenService;
   protected loggerBase: LoggerService;
@@ -36,6 +29,8 @@ export abstract class FormPlayerBaseService {
 
   protected isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   protected playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
+  protected _isLoading$ = this.isLoadingSubject.asObservable();;
+  protected _playerLoaded$ = this.playerLoadedSubject.asObservable();
 
   constructor(
     public injector: Injector,
@@ -44,6 +39,14 @@ export abstract class FormPlayerBaseService {
     this.screenServiceBase = this.injector.get(ScreenService);
     this.loggerBase = this.injector.get(LoggerService);
     this.htmlRemover = this.injector.get(HtmlRemoverService);
+  }
+
+  get isLoading$(): Observable<boolean>  {
+    return this._isLoading$;
+  }
+
+  get playerLoaded$(): Observable<boolean> {
+    return this._playerLoaded$;
   }
 
   /**

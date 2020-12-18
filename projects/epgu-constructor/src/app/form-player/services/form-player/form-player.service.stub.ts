@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ComponentActionDto, DisplayDto, FormPlayerApiSuccessResponse } from '../form-player-api/form-player-api.types';
+import { FormPlayerApiSuccessResponse } from '../form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { Gender } from '../../../shared/types/gender';
 import { Observable, of } from 'rxjs';
@@ -40,6 +40,17 @@ export class FormPlayerServiceStub {
   componentType: string;
   isLoading = false;
 
+  _isLoading$ = of(false);
+  _playerLoaded$ = of(false);
+
+  get isLoading$(): Observable<boolean>  {
+    return this._isLoading$;
+  }
+
+  get playerLoaded$(): Observable<boolean> {
+    return this._playerLoaded$;
+  }
+
   get store(): FormPlayerApiSuccessResponse {
     return this._store;
   }
@@ -59,6 +70,10 @@ export class FormPlayerServiceStub {
   initData(): void {}
 
   navigate(): void {}
+
+  processResponse(): void {}
+
+  initPlayerFromQuiz(): void {}
 
   checkIfOrderExist(): Observable<{}> {
     return of({});

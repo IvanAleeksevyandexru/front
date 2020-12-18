@@ -8,6 +8,8 @@ import { ScreenTypes } from '../../../screen/screen.types';
 import { ServiceDataServiceStub } from '../service-data/service-data.service.stub';
 import { ConfigService } from '../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../core/config/config.service.stub';
+import { LocationService } from '../../../core/services/location/location.service';
+import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 
 
 describe('FormPlayerApiService', () => {
@@ -60,6 +62,8 @@ describe('FormPlayerApiService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
+        LocationService,
+        WINDOW_PROVIDERS,
         { provide: ServiceDataService, useClass: ServiceDataServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ]
@@ -107,6 +111,27 @@ describe('FormPlayerApiService', () => {
       const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getOrderStatus`);
       const body = req.request.body;
       expect(body).toEqual({ targetId, orderId });
+      req.flush(responseMock);
+      tick();
+    }));
+  });
+
+  describe('quizToOrder()', () => {
+    it('should call http with post method', fakeAsync(() => {
+      const quiz = { ...mockData, serviceId: '', targetId: '', answerServicePrefix: '' };
+      service.quizToOrder(quiz).subscribe(response => expect(response).toBe(responseMock));
+      const req = http.expectOne(`${apiUrl}/quiz/scenario/toOrder`);
+      expect(req.request.method).toBe('POST');
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should call with body', fakeAsync(() => {
+      const quiz = { ...mockData, serviceId: '', targetId: '', answerServicePrefix: '' };
+      service.quizToOrder(quiz).subscribe(response => expect(response).toBe(responseMock));
+      const req = http.expectOne(`${apiUrl}/quiz/scenario/toOrder`);
+      const body = req.request.body;
+      expect(body).toEqual(quiz);
       req.flush(responseMock);
       tick();
     }));

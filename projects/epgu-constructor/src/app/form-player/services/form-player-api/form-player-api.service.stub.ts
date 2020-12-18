@@ -20,6 +20,10 @@ export class FormPlayerApiServiceStub {
     return of({});
   }
 
+  public quizToOrder(): Observable<{}> {
+    return of({});
+  }
+
   public navigate(): Observable<{}> {
     return of({});
   }

@@ -49,33 +49,6 @@ export class UtilsService {
   // TODO: add shared utils
 
   /**
-   * Получает данные JSON из LocalStorage по ключу
-   * @param key - ключ хранилища
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static getLocalStorageJSON(key: string): any | null {
-    return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
-  }
-
-  /**
-   * Устанавливае данные JSON в LocalStorage по ключу
-   * @param key - ключ хранилища
-   * @param data - данные для сохранения
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static setLocalStorageJSON(key: string, data: any): void {
-    localStorage.setItem(key, JSON.stringify(data));
-  }
-
-  /**
-   * Удаляет из хранилища Local Storage по ключу
-   * @param key
-   */
-  static deleteFromLocalStorage(key: string): void {
-    localStorage.removeItem(key);
-  }
-
-  /**
    * Устанавливает куку
    * @param name - имя куки
    * @param value - значение куки
