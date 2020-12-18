@@ -60,7 +60,7 @@ export class DictionaryApiService {
       filter: options.filter,
       treeFiltering: options.treeFiltering || 'ONELEVEL',
       pageNum: options.pageNum || 1,
-      pageSize: options.pageSize || '1000',
+      pageSize: options.pageSize || '10000',
       parentRefItemValue: options.parentRefItemValue || '',
       selectAttributes: options.selectAttributes || ['*'],
       tx: options.tx || '',
