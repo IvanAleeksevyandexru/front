@@ -76,7 +76,7 @@ describe('FormPlayerComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ContinueOrderModalService, useClass: ContinueOrderModalServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub }
       ]
     }).compileComponents();
 
@@ -205,15 +205,15 @@ describe('FormPlayerComponent', () => {
       expect(formPlayerConfigApiService.getFormPlayerConfig).toBeCalled();
     });
 
-    it('should call getResultConfig method twice when loadService has loaded', () => {
+    it('should call getConfigId method twice when loadService has loaded', () => {
       const fixture = TestBed.createComponent(FormPlayerComponent);
       const component = fixture.componentInstance;
       component.service = serviceDataMock;
       fixture.detectChanges();
       loadService.loaded.next(true);
-      spyOn<any>(component, 'getResultConfig').and.callThrough();
+      spyOn<any>(component, 'getConfigId').and.callThrough();
       component['initFormPlayerConfig']();
-      expect(component['getResultConfig']).toBeCalledTimes(2);
+      expect(component['getConfigId']).toBeCalled();
     });
 
     it('should set form player config', () => {
@@ -230,25 +230,26 @@ describe('FormPlayerComponent', () => {
     });
   });
 
-  describe('getResultConfig()', () => {
-    it('should return passed config when apiUrl service property is empty', () => {
+  describe('getConfigId()', () => {
+    it('should return default configId', () => {
       const fixture = TestBed.createComponent(FormPlayerComponent);
       const component = fixture.componentInstance;
       component.service = serviceDataMock;
       fixture.detectChanges();
       spyOn<any>(component, 'nextStep').and.callThrough();
-      const config = component['getResultConfig']();
-      expect(config).toEqual({});
+      const resultConfigId = component['getConfigId']();
+      expect(resultConfigId).toEqual('default-config');
     });
 
-    it('should return config with apiUrl when apiUrl service property has value', () => {
+    it('should return passed configId', () => {
       const fixture = TestBed.createComponent(FormPlayerComponent);
       const component = fixture.componentInstance;
-      component.service = { ...serviceDataMock, apiUrl: '/someApiUrl' };
+      const configId = 'quiz-config';
+      component.service = { ...serviceDataMock, configId };
       fixture.detectChanges();
       spyOn<any>(component, 'nextStep').and.callThrough();
-      const config = component['getResultConfig']();
-      expect(config).toEqual({ apiUrl: '/someApiUrl' });
+      const resultConfigId = component['getConfigId']();
+      expect(resultConfigId).toEqual(configId);
     });
   });
 

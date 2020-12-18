@@ -13,6 +13,7 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
 import { Location } from '@angular/common';
 import { WINDOW } from '../../../core/providers/window.provider';
+import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -26,6 +27,7 @@ export class FormPlayerService extends FormPlayerBaseService {
     public formPlayerApiService: FormPlayerApiService,
     private screenService: ScreenService,
     private location: Location,
+    private localStorageService: LocalStorageService,
     @Inject(WINDOW) private window: Window,
   ) {
     super(injector);
@@ -70,10 +72,10 @@ export class FormPlayerService extends FormPlayerBaseService {
    * Достаёт данные из localStorage для текущего экрана
    */
   loadDataFromLocalStorage(): void {
-    const store = UtilsService.getLocalStorageJSON(COMPONENT_DATA_KEY);
+    const store = this.localStorageService.get<FormPlayerApiResponse>(COMPONENT_DATA_KEY);
     this.processResponse(store);
     this.updateLoading(false);
-    UtilsService.deleteFromLocalStorage(COMPONENT_DATA_KEY);
+    this.localStorageService.delete(COMPONENT_DATA_KEY);
   }
 
   navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation): void {

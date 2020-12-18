@@ -25,7 +25,6 @@ import { FormPlayerConfigApiService } from './services/form-player-config-api/fo
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
 import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
-import { Config } from '../core/config/config.types';
 
 @Component({
   selector: 'epgu-constructor-form-player',
@@ -75,23 +74,20 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   private initFormPlayerConfig(): void {
     this.isCoreConfigLoaded$
       .pipe(
-        tap(() => this.configService.initCore(this.getResultConfig())),
+        tap(() => {
+          this.configService.configId = this.getConfigId();
+          this.configService.initCore();
+        }),
         mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()),
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe((config) => {
-        this.configService.config = this.getResultConfig(config);
+        this.configService.config = config;
       });
   }
 
-  private getResultConfig(config?: Config): Config {
-    const resultConfig: Config = { ...config };
-
-    if (this.service.apiUrl) {
-      resultConfig.apiUrl = this.service.apiUrl;
-    }
-
-    return resultConfig;
+  private getConfigId(): string {
+    return this.service.configId ?? 'default-config';
   }
 
   private initNavigation(): void {

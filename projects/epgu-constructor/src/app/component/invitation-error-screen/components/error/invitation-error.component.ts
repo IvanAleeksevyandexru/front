@@ -13,6 +13,7 @@ import {
 import { CustomComponent } from '../../../components-list/components-list.types';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
 
 @Component({
   selector: 'epgu-constructor-invitation-error',
@@ -41,6 +42,7 @@ export class InvitationErrorComponent implements OnInit {
     private validationService: ValidationService,
     private locationService: LocationService,
     private ngUnsubscribe$: UnsubscribeService,
+    private loggerService: LoggerService,
   ) {}
 
   ngOnInit(): void {
@@ -81,7 +83,7 @@ export class InvitationErrorComponent implements OnInit {
           this.success = true;
         },
         (error) => {
-          console.error(error);
+          this.loggerService.error(error);
         },
       );
   }

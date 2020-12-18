@@ -4,6 +4,8 @@ import { Config, MockApi, TimeSlotsApi } from './config.types';
 @Injectable()
 export class ConfigServiceStub implements Config {
   _apiUrl = '/api';
+  _configApiUrl = '/api';
+  _configId = 'default-config';
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
   _timeSlotApiUrl = '';
@@ -24,6 +26,18 @@ export class ConfigServiceStub implements Config {
 
   get apiUrl(): string {
     return this._apiUrl;
+  }
+
+  get configApiUrl(): string {
+    return this._configApiUrl;
+  }
+
+  get configId(): string {
+    return this._configId;
+  }
+
+  set configId(configId: string) {
+    this._configId = configId;
   }
 
   get billsApiUrl(): string {

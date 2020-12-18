@@ -16,6 +16,8 @@ import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.t
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 
 declare global {
   namespace NodeJS {
@@ -25,8 +27,8 @@ declare global {
   }
 }
 
-
 const response = new FormPlayerServiceStub()._store;
+
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
   let screenService: ScreenService;
@@ -48,6 +50,7 @@ describe('FormPlayerService', () => {
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ]
     });
     service = TestBed.inject(FormPlayerService);
