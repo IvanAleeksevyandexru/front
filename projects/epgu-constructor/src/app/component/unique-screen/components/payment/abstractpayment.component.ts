@@ -38,7 +38,7 @@ const moment = moment_;
   template: '',
 })
 export class AbstractPaymentComponent implements OnDestroy, OnInit {
-  @Output() nextStepEvent = new EventEmitter<PaymentInfoEventValue>();
+  @Output() nextStepEvent = new EventEmitter<string>();
 
   public paymentStatus = PaymentStatus;
   public paymentPurpose = '';
@@ -107,7 +107,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       paymentPurpose: this.paymentPurpose ? this.paymentPurpose : null,
       receiver: this.docInfo ? this.docInfo : null,
     } as PaymentInfoEventValue;
-    this.nextStepEvent.emit(exportValue);
+    this.nextStepEvent.emit(JSON.stringify(exportValue));
   }
 
   /**

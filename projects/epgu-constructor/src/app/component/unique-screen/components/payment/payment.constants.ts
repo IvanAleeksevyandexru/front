@@ -1,5 +1,9 @@
-import { IFilterRegItems, PaymentDictionaryOptionsInterface, SubPaymentDictionaryOptionInterface } from './payment.types';
-import { PaymentsAttrs } from './abstractpayment.component';
+import {
+  IFilterRegItems,
+  PaymentDictionaryOptionsInterface,
+  PaymentsAttrs,
+  SubPaymentDictionaryOptionInterface
+} from './payment.types';
 
 /**
  * Интерфейс для части опции запроса на создание оплаты
