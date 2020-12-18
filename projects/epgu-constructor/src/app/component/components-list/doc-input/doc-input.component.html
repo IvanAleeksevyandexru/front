@@ -11,9 +11,14 @@
         {{ fields[fieldName]?.label }}: {{ form.get([seriesNumDateGroup, fieldName]).errors.msg }}
       </span>
     </epgu-constructor-input-error>
+    <epgu-constructor-input-error *ngIf="hasExpirationDate()" >
+      <span *ngIf="isValidationShown(this.expirationDateName)">
+        {{ fields[this.expirationDateName]?.label }}: {{ form.get(this.expirationDateName).errors.msg }}
+      </span>
+    </epgu-constructor-input-error>
   </div>
 
-  <div class="doc-input__group">
+  <div *ngIf="!hasExpirationDate(); else expirDate" class="doc-input__group">
     <div class="doc-input__group-item doc-input__series">
       <epgu-constructor-label
         [tips]="fields['series']?.attrs?.labelHint"
@@ -100,6 +105,120 @@
       </epgu-constructor-helper-text>
     </div>
   </div>
+  <ng-template  #expirDate>
+    <div class="doc-input__group">
+      <div class="doc-input__group-item doc-input__series">
+        <epgu-constructor-label
+          [tips]="fields['series']?.attrs?.labelHint"
+          [label]="fields['series']?.label"
+          for="series"
+        ></epgu-constructor-label>
+        <epgu-constructor-masked-input
+          *ngIf="fields['series']?.attrs.mask; else plainInputSeries"
+          [textTransformType]="fields['series']?.attrs?.fstuc"
+          id="series"
+          [control]="$any(form.get([seriesNumDateGroup, 'series']))"
+          [mask]="fields['series']?.attrs?.mask | maskHandle"
+          [showMaskAsPlaceholder]="!fields['series']?.placeholder"
+          [placeholder]="fields['series']?.placeholder"
+          [showConstantMaskSymbols]="true"
+          [invalid]="isValidationShown([seriesNumDateGroup, 'series'])"
+          [validationShowOn]="validationShowOn"
+        ></epgu-constructor-masked-input>
+        <ng-template #plainInputSeries>
+          <epgu-constructor-constructor-plain-input
+            [textTransformType]="fields['series']?.attrs?.fstuc"
+            id="series"
+            [control]="$any(form.get([seriesNumDateGroup, 'series']))"
+            [placeholder]="fields['series']?.placeholder"
+            [invalid]="isValidationShown([seriesNumDateGroup, 'series'])"
+            [validationShowOn]="validationShowOn"
+          ></epgu-constructor-constructor-plain-input>
+        </ng-template>
+        <epgu-constructor-helper-text *ngIf="fields['series']?.hint as hint" class="doc-input__hint">
+          {{ hint }}
+        </epgu-constructor-helper-text>
+      </div>
+      <div class="doc-input__group-item doc-input__number">
+        <epgu-constructor-label
+          [tips]="fields['number']?.attrs?.labelHint"
+          [label]="fields['number']?.label"
+          for="number"
+        ></epgu-constructor-label>
+        <epgu-constructor-masked-input
+          *ngIf="fields['number']?.attrs.mask; else plainInputNumber"
+          [textTransformType]="fields['number']?.attrs?.fstuc"
+          id="number"
+          [control]="$any(form.get([seriesNumDateGroup, 'number']))"
+          [mask]="fields['number']?.attrs?.mask | maskHandle"
+          [showMaskAsPlaceholder]="!fields['number']?.placeholder"
+          [placeholder]="fields['number']?.placeholder"
+          [showConstantMaskSymbols]="true"
+          [invalid]="isValidationShown([seriesNumDateGroup, 'number'])"
+          [validationShowOn]="validationShowOn"
+        ></epgu-constructor-masked-input>
+        <ng-template #plainInputNumber>
+          <epgu-constructor-constructor-plain-input
+            [textTransformType]="fields['number']?.attrs?.fstuc"
+            id="number"
+            [control]="$any(form.get([seriesNumDateGroup, 'number']))"
+            [placeholder]="fields['number']?.placeholder"
+            [invalid]="isValidationShown([seriesNumDateGroup, 'number'])"
+            [validationShowOn]="validationShowOn"
+          ></epgu-constructor-constructor-plain-input>
+        </ng-template>
+        <epgu-constructor-helper-text *ngIf="fields['number']?.hint as hint" class="doc-input__hint">
+          {{ hint }}
+        </epgu-constructor-helper-text>
+      </div>
+    </div>
+    <div class="doc-input__group">
+      <div class="doc-input__group-item doc-input__date expirDate">
+        <epgu-constructor-label
+          [tips]="fields['date']?.attrs?.labelHint"
+          [label]="fields['date']?.label"
+          for="date"
+        ></epgu-constructor-label>
+        <lib-date-picker
+          id="date"
+          align="left"
+          [formControl]="$any(form.get([seriesNumDateGroup, 'date']))"
+          [minDate]="fields['date']?.attrs?.minDate || '-120y'"
+          [maxDate]="fields['date']?.attrs?.maxDate || 'today'"
+          (blur)="markControlAsDirty([seriesNumDateGroup, 'date'])"
+          [invalid]="isValidationShown([seriesNumDateGroup, 'date'])"
+          [validationShowOn]="validationShowOn"
+          [clearable]="true"
+        ></lib-date-picker>
+        <epgu-constructor-helper-text *ngIf="fields['date']?.hint as hint" class="doc-input__hint">
+          {{ hint }}
+        </epgu-constructor-helper-text>
+      </div>
+      <div class="doc-input__group-item doc-input__date expirDate">
+        <epgu-constructor-label
+          [tips]="fields[expirationDateName]?.attrs?.labelHint"
+          [label]="fields[expirationDateName]?.label"
+          for="date"
+        ></epgu-constructor-label>
+        <lib-date-picker
+          id="expirationDate"
+          align="left"
+          [formControl]="$any(form.get(expirationDateName))"
+          [minDate]="fields[expirationDateName]?.attrs?.minDate || '-120y'"
+          [maxDate]="fields[expirationDateName]?.attrs?.maxDate || 'today'"
+          (blur)="markControlAsDirty(expirationDateName)"
+          [invalid]="isValidationShown(expirationDateName)"
+          [validationShowOn]="validationShowOn"
+          [clearable]="true"
+        ></lib-date-picker>
+        <epgu-constructor-helper-text *ngIf="fields[expirationDateName]?.hint as hint" class="doc-input__hint">
+          {{ hint }}
+        </epgu-constructor-helper-text>
+      </div>
+    </div>
+  </ng-template>
+
+
   <epgu-constructor-helper-text *ngIf="fields['hint']?.label as label" class="doc-input__hint">
     {{ label }}
   </epgu-constructor-helper-text>

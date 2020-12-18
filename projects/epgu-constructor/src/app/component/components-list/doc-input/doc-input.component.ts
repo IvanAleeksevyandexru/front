@@ -31,6 +31,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
 
   fields: { [fieldName: string]: DocInputField };
   fieldsNames = ['series', 'number', 'date', 'emitter'];
+  expirationDateName = 'expirationDate';
   seriesNumDateGroup = 'seriesNumDate'; // name of nested form group
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
@@ -45,8 +46,13 @@ export class DocInputComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.fields = this.data.value.attrs.fields;
+
     this.addFormGroupControls();
     this.subscribeOnFormChange();
+  }
+
+  hasExpirationDate(): boolean {
+    return !!this.fields.expirationDate;
   }
 
   ngAfterViewInit(): void {
@@ -62,7 +68,13 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     if (serverErrorJson) {
       const serverError = JSON.parse(serverErrorJson);
 
-      this.fieldsNames.forEach((fieldName: string) => {
+      const fields = [...this.fieldsNames];
+
+      if (this.hasExpirationDate()) {
+        fields.push(this.expirationDateName);
+      }
+
+      fields.forEach((fieldName: string) => {
         const fieldControl = this.form.get(fieldName);
         if (serverError[fieldName] && fieldControl) {
           fieldControl.setErrors({ msg: serverError[fieldName] });
@@ -82,9 +94,17 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   }
 
   formatFormFields(formFields: DocInputFormFields): DocInputFields {
+    const expirationDate = this.hasExpirationDate()
+      ? {
+          expirationDate: formFields[this.expirationDateName]
+            ? moment(formFields[this.expirationDateName]).toISOString(true)
+            : null,
+        }
+      : {};
     const { seriesNumDate } = formFields;
     return {
       ...seriesNumDate,
+      ...expirationDate,
       date: seriesNumDate.date ? moment(seriesNumDate.date).toISOString(true) : null,
       emitter: formFields.emitter,
     };
@@ -125,6 +145,15 @@ export class DocInputComponent implements OnInit, AfterViewInit {
       [this.seriesNumDateGroup]: this.fb.group(seriesNumDate),
       ...emitter,
     });
+
+    if (this.hasExpirationDate()) {
+      this.form.setControl(
+        this.expirationDateName,
+        new FormControl(componentValues[this.expirationDateName], [
+          ...this.getFormFieldValidators(this.expirationDateName),
+        ]),
+      );
+    }
   }
 
   markControlAsDirty(control: string | string[]): void {
