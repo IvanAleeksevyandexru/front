@@ -10,7 +10,7 @@ export class LocationService extends Location {
     super(platformStrategy, platformLocation);
   }
 
-  href(url: string, isInner?: boolean): void {
+  href(url: string, isInner: boolean = false): void {
     isInner ? this.go(url) : this.window.location.href = url;
   }
 

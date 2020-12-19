@@ -385,6 +385,7 @@ export enum ActionType {
   nextStep = 'nextStep',
   skipStep = 'skipStep',
   redirectToLK = 'redirectToLK',
+  quizToOrder = 'quizToOrder',
   profileEdit = 'profileEdit',
   home = 'home',
 }
@@ -393,6 +394,7 @@ export enum DTOActionAction {
   getNextStep = 'getNextScreen',
   getPrevStep = 'getPrevScreen',
   skipStep = 'skipStep',
+  quizToOrder = 'quizToOrder',
   reject = 'reject',
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editEmail = 'service/actions/editUserEmail',
