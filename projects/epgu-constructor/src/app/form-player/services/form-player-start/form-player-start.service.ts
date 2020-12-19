@@ -40,8 +40,8 @@ export class FormPlayerStartService {
       this.startLoadNextScreenCase();
     } else if (this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY)) {
       this.startLoadFromQuizCase();
-    } else if (this.hasOrderStatus(orderId, invited, canStartNew)) {
-      this.handleOrder(orderId, invited, canStartNew);
+    // } else if (this.hasOrderStatus(orderId, invited, canStartNew)) {
+    //   this.handleOrder(orderId, invited, canStartNew);
     } else if (orderId) {
       this.getOrderStatus();
     } else {
