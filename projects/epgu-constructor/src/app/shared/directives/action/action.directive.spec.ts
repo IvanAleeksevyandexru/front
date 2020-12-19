@@ -102,9 +102,8 @@ export class ActionTestComponent {
   quizToOrder: ComponentActionDto = {
     label: '',
     value: '',
-    action: DTOActionAction.quizToOrder,
+    action: '/to-some-order' as DTOActionAction,
     type: ActionType.quizToOrder,
-    link: '/to-some-order',
   };
 }
 

@@ -394,7 +394,6 @@ export enum DTOActionAction {
   getNextStep = 'getNextScreen',
   getPrevStep = 'getPrevScreen',
   skipStep = 'skipStep',
-  quizToOrder = 'quizToOrder',
   reject = 'reject',
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editEmail = 'service/actions/editUserEmail',

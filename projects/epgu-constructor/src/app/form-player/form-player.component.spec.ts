@@ -33,6 +33,8 @@ import { FormPlayerStartService } from './services/form-player-start/form-player
 import { FormPlayerStartServiceStub } from './services/form-player-start/form-player-start.service.stub';
 import { LocalStorageServiceStub } from '../core/services/local-storage/local-storage.service.stub';
 import { LocalStorageService } from '../core/services/local-storage/local-storage.service';
+import { LocationService } from '../core/services/location/location.service';
+import { WINDOW_PROVIDERS } from '../core/providers/window.provider';
 
 
 describe('FormPlayerComponent', () => {
@@ -67,6 +69,8 @@ describe('FormPlayerComponent', () => {
       ],
       providers: [
         UnsubscribeService,
+        LocationService,
+        WINDOW_PROVIDERS,
         { provide: ServiceDataService, useClass: ServiceDataServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: LoadService, useClass: LoadServiceStub },
