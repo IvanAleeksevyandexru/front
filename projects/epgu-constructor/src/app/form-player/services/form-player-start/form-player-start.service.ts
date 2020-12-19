@@ -15,13 +15,14 @@ import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { LocationService } from '../../../core/services/location/location.service';
 
 @Injectable()
 export class FormPlayerStartService {
   constructor (
     private serviceDataService: ServiceDataService,
     private loggerService: LoggerService,
-    private location: Location,
+    private locationService: LocationService,
     private localStorageService: LocalStorageService,
     private formPlayerService: FormPlayerService,
     public continueOrderModalService: ContinueOrderModalService,
@@ -62,7 +63,7 @@ export class FormPlayerStartService {
 
   private hasLoadFromStorageCase(queryParamName: string, key: string): boolean {
     return (
-      this.location.path(true).includes(`${queryParamName}=`) &&
+      this.locationService.path(true).includes(`${queryParamName}=`) &&
       !!this.localStorageService.getRaw(key)
     );
   }
@@ -72,12 +73,14 @@ export class FormPlayerStartService {
     this.formPlayerService.store = store;
     this.formPlayerService.processResponse(store);
     this.localStorageService.delete(LAST_SCENARIO_KEY);
+    this.locationService.deleteParam('getLastScreen');
   }
 
   private startLoadNextScreenCase(): void {
     const store = this.localStorageService.get<FormPlayerApiSuccessResponse>(NEXT_SCENARIO_KEY);
     this.loadStoreAndNavigate(store);
     this.localStorageService.delete(NEXT_SCENARIO_KEY);
+    this.locationService.deleteParam('getNextScreen');
   }
 
   private startLoadFromQuizCase(): void {
@@ -86,6 +89,7 @@ export class FormPlayerStartService {
     quiz.targetId = this.serviceDataService.targetId;
     this.formPlayerService.initPlayerFromQuiz(quiz);
     this.localStorageService.delete(QUIZ_SCENARIO_KEY);
+    this.locationService.deleteParam('fromQuiz');
   }
 
   private hasOrderStatus(orderId?: string, invited?: boolean, canStartNew?: boolean): boolean {

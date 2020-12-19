@@ -385,6 +385,7 @@ export enum ActionType {
   nextStep = 'nextStep',
   skipStep = 'skipStep',
   redirectToLK = 'redirectToLK',
+  quizToOrder = 'quizToOrder',
   profileEdit = 'profileEdit',
   home = 'home',
 }

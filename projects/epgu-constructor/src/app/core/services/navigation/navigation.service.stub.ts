@@ -28,4 +28,6 @@ export class NavigationServiceStub {
   redirectToProfileEdit(): void {}
 
   redirectToHome(): void {}
+
+  redirectTo(): void {}
 }
