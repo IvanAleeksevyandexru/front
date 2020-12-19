@@ -23,6 +23,8 @@ import { LocalStorageService } from '../../../core/services/local-storage/local-
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { Location } from '@angular/common';
+import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
+import { LocationService } from '../../../core/services/location/location.service';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -47,7 +49,8 @@ describe('FormServiceStartService', () => {
       providers: [
         FormPlayerStartService,
         UnsubscribeService,
-        Location,
+        WINDOW_PROVIDERS,
+        LocationService,
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ContinueOrderModalService, useClass: ContinueOrderModalServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },

@@ -77,7 +77,7 @@ export class NavigationService {
   }
 
   redirectTo(url: string): void {
-    window.location.href = url;
+    this.locationService.href(url);
   }
 
   private navigateInsideWebView(options: typeof OPTIONS_FEED_MV | typeof OPTIONS_FEED_EXIT): void {
