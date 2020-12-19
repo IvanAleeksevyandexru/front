@@ -161,7 +161,7 @@ export class ActionDirective {
   private quizToOrder(): void {
     const store = this.screenService.getStore();
     this.localStorageService.set(QUIZ_SCENARIO_KEY, store);
-    const href = this.action.link;
+    const href = this.action.action;
     this.navService.redirectTo(href);
   }
 }
