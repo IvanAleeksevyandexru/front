@@ -15,7 +15,7 @@
     flex: 1 1 100%;
     margin-left: $screen-pad-small-gap / 2;
     margin-right: $screen-pad-small-gap / 2;
-    max-width: 100%;
+    max-width: calc(100% - #{$screen-pad-small-gap});
     & > * {
       margin-bottom: $screen-pad-p;
     }

@@ -15,7 +15,7 @@ import {
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
-  TimeSlotValueInterface,
+  TimeSlotValueInterface
 } from './time-slots.types';
 
 const moment = moment_;
@@ -29,6 +29,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   public bookId;
 
   private orderId;
+  private serviceId: string;
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
   private errorMessage;
@@ -173,6 +174,12 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
       this.orderId = orderId;
     }
 
+    let serviceId = data.serviceId;
+    if (!this.serviceId || this.serviceId !== serviceId) {
+      changed = true;
+      this.serviceId = serviceId;
+    }
+
     return changed;
   }
 
@@ -194,7 +201,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     return {
       organizationId: [this.department.attributeValues.code],
       caseNumber: this.orderId,
-      serviceId: [serviceId],
+      serviceId: [this.serviceId || serviceId],
       eserviceId,
       routeNumber,
       attributes: [
@@ -204,7 +211,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
         },
         {
           name: 'serviceId',
-          value: serviceId,
+          value: this.serviceId || serviceId,
         },
       ],
     };
@@ -242,11 +249,11 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
       attributes: [
         {
           name: 'serviceId',
-          value: serviceId,
+          value: this.serviceId || serviceId,
         },
       ],
       slotId: [selectedSlot.slotId],
-      serviceId: [serviceId],
+      serviceId: [this.serviceId || serviceId],
     };
   }
 
