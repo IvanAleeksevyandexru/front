@@ -15,7 +15,7 @@ import {
   TimeSlot,
   TimeSlotReq,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface,
+  ZagsDepartmentInterface
 } from './time-slots.types';
 
 const moment = moment_;
@@ -27,6 +27,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   public bookId;
 
   public department: ZagsDepartmentInterface;
+  private serviceId: string;
   private solemn: boolean;
   private slotsPeriod;
   private orderId;
@@ -168,6 +169,12 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       this.orderId = orderId;
     }
 
+    let serviceId = data.serviceId;
+    if (!this.serviceId || this.serviceId !== serviceId) {
+      changed = true;
+      this.serviceId = serviceId;
+    }
+
     return changed;
   }
 
@@ -204,7 +211,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     return {
       organizationId: [this.department.attributeValues.CODE],
       caseNumber: this.orderId,
-      serviceId: [serviceId],
+      serviceId: [this.serviceId || serviceId],
       eserviceId,
       routeNumber,
       attributes: [
@@ -259,7 +266,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       preliminaryReservationPeriod,
       attributes: [],
       slotId: [selectedSlot.slotId],
-      serviceId: [serviceId],
+      serviceId: [this.serviceId || serviceId],
     };
   }
 

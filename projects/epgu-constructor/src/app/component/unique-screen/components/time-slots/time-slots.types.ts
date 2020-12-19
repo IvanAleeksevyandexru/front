@@ -17,6 +17,7 @@ export interface TimeSlotValueInterface {
   solemn?: string;
   slotsPeriod?: string;
   orderId?: string;
+  serviceId?: string;
 }
 
 export interface DepartmentInterface {
