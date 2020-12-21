@@ -35,7 +35,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   seriesNumDateGroup = 'seriesNumDate'; // name of nested form group
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-
+  hasExpirationDate = false;
   form: FormGroup;
 
   constructor(
@@ -46,13 +46,9 @@ export class DocInputComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.fields = this.data.value.attrs.fields;
-
+    this.hasExpirationDate = !!this.fields?.expirationDate;
     this.addFormGroupControls();
     this.subscribeOnFormChange();
-  }
-
-  hasExpirationDate(): boolean {
-    return !!this.fields.expirationDate;
   }
 
   ngAfterViewInit(): void {
@@ -70,7 +66,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
 
       const fields = [...this.fieldsNames];
 
-      if (this.hasExpirationDate()) {
+      if (this.hasExpirationDate) {
         fields.push(this.expirationDateName);
       }
 
@@ -94,7 +90,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   }
 
   formatFormFields(formFields: DocInputFormFields): DocInputFields {
-    const expirationDate = this.hasExpirationDate()
+    const expirationDate = this.hasExpirationDate
       ? {
           expirationDate: formFields[this.expirationDateName]
             ? moment(formFields[this.expirationDateName]).toISOString(true)
@@ -146,7 +142,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
       ...emitter,
     });
 
-    if (this.hasExpirationDate()) {
+    if (this.hasExpirationDate) {
       this.form.setControl(
         this.expirationDateName,
         new FormControl(componentValues[this.expirationDateName], [
