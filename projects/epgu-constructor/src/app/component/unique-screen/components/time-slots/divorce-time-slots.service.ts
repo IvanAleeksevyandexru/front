@@ -16,7 +16,7 @@ import {
   TimeSlot,
   TimeSlotReq,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface
+  ZagsDepartmentInterface,
 } from './time-slots.types';
 
 const moment = moment_;
@@ -147,9 +147,9 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     let changed = false;
 
     let department = JSON.parse(data.department);
-    if (!this.department || this.department.value !== department.value) {
+    this.isDepartmentChanged = this.department?.value !== department.value;
+    if (this.isDepartmentChanged) {
       changed = true;
-      this.isDepartmentChanged = !!this.department;
       this.department = department;
     }
 
