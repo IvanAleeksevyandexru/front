@@ -120,13 +120,6 @@ describe('FormServiceStartService', () => {
       localStorage.removeItem(QUIZ_SCENARIO_KEY);
     });
 
-    // it('should call hasOrderStatus case', () => {
-    //   serviceDataService.init({ ...serviceDataMock, orderId: '2145', canStartNew: true, invited: false });
-    //   spyOn<any>(service, 'hasOrderStatus').and.callThrough();
-    //   service.startPlayer();
-    //   expect(service['hasOrderStatus']).toBeCalled();
-    // });
-
     it('should call handleOrder case', () => {
       serviceDataService.init({ ...serviceDataMock, orderId: '2145', canStartNew: true, invited: false });
       spyOn<any>(service, 'handleOrder').and.callThrough();

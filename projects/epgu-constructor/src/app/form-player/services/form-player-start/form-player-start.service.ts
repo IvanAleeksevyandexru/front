@@ -40,8 +40,6 @@ export class FormPlayerStartService {
       this.startLoadNextScreenCase();
     } else if (this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY)) {
       this.startLoadFromQuizCase();
-    // } else if (this.hasOrderStatus(orderId, invited, canStartNew)) {
-    //   this.handleOrder(orderId, invited, canStartNew);
     } else if (orderId) {
       this.getOrderStatus();
     } else {
@@ -90,10 +88,6 @@ export class FormPlayerStartService {
     this.formPlayerService.initPlayerFromQuiz(quiz);
     this.localStorageService.delete(QUIZ_SCENARIO_KEY);
     this.locationService.deleteParam('fromQuiz');
-  }
-
-  private hasOrderStatus(orderId?: string, invited?: boolean, canStartNew?: boolean): boolean {
-    return orderId && (typeof invited === 'boolean' || typeof canStartNew === 'boolean');
   }
 
   private handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean): void {
