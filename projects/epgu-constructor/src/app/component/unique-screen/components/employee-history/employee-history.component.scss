@@ -17,7 +17,8 @@
     }
   }
 
-  &__progress, &__completed {
+  &__progress,
+  &__completed {
     display: flex;
     margin-top: 40px;
 
@@ -105,12 +106,15 @@
     display: flex;
 
     & > div:not(.employee-history__removeGeneration) {
-      flex: 1;
+      flex: 0 1 auto;
     }
 
     lib-radio {
       display: block;
       margin-bottom: 16px;
+      &::ng-deep > .radio {
+        cursor: pointer;
+      }
     }
   }
 
