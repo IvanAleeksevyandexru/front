@@ -3,6 +3,7 @@ import { CachedAnswers, ScreenStore } from '../../../../screen/screen.types';
 import {
   DictionaryFilters,
   DictionaryItem,
+  DictionaryUnionKind,
   DictionaryValue
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
@@ -36,7 +37,7 @@ export class DictionaryUtilities {
     return {
       filter: {
         union: {
-          unionKind: 'AND',
+          unionKind: DictionaryUnionKind.AND,
           subs: filters,
         },
       },

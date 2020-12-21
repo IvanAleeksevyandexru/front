@@ -5,6 +5,7 @@ import { UniqueScreenComponentTypes } from '../../unique-screen-components.types
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
+  FileResponseToBackendUploadsItem,
   FileUploadEmitValue,
   FileUploadEmitValueForComponent,
   FileUploadItem,
@@ -76,13 +77,12 @@ export class FileUploadScreenComponent {
    * Принимает новое значение от компонентов и провеяет доступность кнопки далее
    * @param $eventData - данные из компонента
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleNewValueSet($eventData: any): void {
+  handleNewValueSet($eventData: FileResponseToBackendUploadsItem): void {
     if ($eventData.relatedUploads && this.value?.uploads) {
       this.value.uploads = this.value.uploads.map((value: FileUploadEmitValue) => {
         if ($eventData.uploadId === value.uploadId) {
           // eslint-disable-next-line no-param-reassign
-          value = { ...value, relatedUploads: $eventData.relatedUploads };
+          value = { ...value, relatedUploads: $eventData.relatedUploads } as FileUploadEmitValue;
         }
         return value;
       });

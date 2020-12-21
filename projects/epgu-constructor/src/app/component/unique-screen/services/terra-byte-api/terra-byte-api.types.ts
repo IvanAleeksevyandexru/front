@@ -23,18 +23,19 @@ export interface TerraUploadFileOptions extends TerraFileOptions {
  */
 export interface FileResponseToBackendUploadsItem {
   uploadId?: string;
-  value?: UploadedFile[]
+  value?: UploadedFile[];
   relatedUploads?: {
-    uploads: FileResponseToBackendUploadsItem[]
+    uploads: FileResponseToBackendUploadsItem[];
   }
-  errors?: string[]
+  errors?: string[];
+  files?: FileResponseToBackendUploadsItem[];
 }
 /**
  * Интерфейс для экспорта одного значения для компонента загрузки для связанных компонентов
  */
 export interface FileResponseToBackendWithRelatedUploads {
   uploadId: string;
-  uploads?: FileResponseToBackendUploadsItem[]
+  uploads?: FileResponseToBackendUploadsItem[];
 }
 
 /**
@@ -141,10 +142,10 @@ export interface TerabyteListItem {
  * Интерфейс для события значений файлов
  */
 export interface FileUploadEmitValue{
-  uploadId: string
-  value: TerraUploadedFile[],
+  uploadId: string;
+  value: TerraUploadedFile[];
   relatedUploads?: {
-    uploads: FileUploadEmitValue[]
+    uploads: FileUploadEmitValue[];
   }
 }
 

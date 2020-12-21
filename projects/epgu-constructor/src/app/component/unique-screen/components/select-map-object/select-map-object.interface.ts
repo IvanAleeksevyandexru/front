@@ -1,5 +1,4 @@
-import { ComponentDictionaryFilterCondition } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { DictionaryYMapItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { DictionaryConditions, DictionaryYMapItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 export interface IGeoCoords {
   address: string;
@@ -31,7 +30,7 @@ export interface IFeatureCollection {
 
 export interface IdictionaryFilter {
   attributeName: string;
-  condition: ComponentDictionaryFilterCondition;
+  condition: DictionaryConditions;
   value: string;
   valueType: string;
 }

@@ -37,6 +37,9 @@ export enum CustomScreenComponentTypes {
   Timer = 'Timer',
 }
 
+export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;
+// type CustomScreenComponentValue = {[key in CustomScreenComponentTypes]: CustomScreenComponentValueTypes };
+
 export type CustomListDropDowns = Array<{ [key: string]: Partial<ListItem>[] }>;
 export type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;
 export type CustomListReferenceData = CustomListGenericData< Partial<ListItem>[] | DictionaryResponse >;
@@ -166,8 +169,7 @@ export interface CustomListFormGroup {
   label: string;
   required: boolean;
   type: CustomScreenComponentTypes;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  value: any; // TODO придумать что делать с интерфейсами для формгрупп
+  value: CustomScreenComponentValueTypes;
 }
 
 export interface CustomDisplay extends DisplayDto {

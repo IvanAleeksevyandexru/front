@@ -1,12 +1,9 @@
 import { IFilterRegItems, PaymentDictionaryOptionsInterface, SubPaymentDictionaryOptionInterface } from './payment.types';
 import { PaymentsAttrs } from './abstractpayment.component';
-
-/**
- * Интерфейс для части опции запроса на создание оплаты
- */
-export enum SubPaymentDictionaryOptionType {
-  EQUALS = 'EQUALS'
-}
+import {
+  DictionaryConditions,
+  DictionaryUnionKind
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 /**
  * Тип справочников для услуг
@@ -31,13 +28,13 @@ const requestPageSize = 258; //Сколько сведений на одной �
  */
 const getPaymentRequestOptionsFilter = (
   subs: SubPaymentDictionaryOptionInterface[],
-  unionKind: string = 'AND'
+  unionKind = DictionaryUnionKind.AND
 ): PaymentDictionaryOptionsInterface => {
   return {
     pageSize: requestPageSize,
     filter: {
       union: {
-        unionKind: unionKind,
+        unionKind,
         subs: subs
       }
     }
@@ -72,12 +69,12 @@ export const getPaymentRequestOptions = (filterReg: IFilterRegItems, attrs: Paym
 export const getPaymentSimpleRequestOption = (
   attributeName: string,
   value: string,
-  condition: string = SubPaymentDictionaryOptionType.EQUALS
+  condition = DictionaryConditions.EQUALS
 ): SubPaymentDictionaryOptionInterface => {
   return {
     simple: {
-      attributeName: attributeName,
-      condition: condition,
+      attributeName,
+      condition,
       value: {
         asString: value
       }

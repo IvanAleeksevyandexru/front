@@ -215,7 +215,8 @@ export class SelectMapObjectService implements OnDestroy {
     dictionary.items.forEach((item: DictionaryYMapItem) => {
       const hashKey = `${item.center[0]}$${item.center[1]}`;
       // agreement - чекбокс согласия с условиями услуг для загсов
-      item.agreement = item.attributeValues.GET_CONSENT !== 'true';
+      const attrValues = item.attributeValues as { GET_CONSENT: string };
+      item.agreement = attrValues.GET_CONSENT !== 'true';
       if (hashMap[hashKey]) {
         hashMap[hashKey].children.push(item);
       } else {

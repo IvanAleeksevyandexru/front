@@ -13,6 +13,7 @@ import {
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface
 } from './payment.types';
+import { DictionaryItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 /**
  * Сервис для оплаты услуг пользователем

@@ -26,7 +26,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
   ) { }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<void | never>> {
     return next.handle(req).pipe(
       catchError(err => this.handleResponseError(err)),
     );
@@ -40,7 +40,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private handleResponseError(error: any): Observable<HttpEvent<any>> {
+  private handleResponseError(error: any): Observable<HttpEvent<void | never>> {
     if (error.status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).subscribe((result) => {
         result === 'login' ? window.location.reload() : window.location.href = '/';
