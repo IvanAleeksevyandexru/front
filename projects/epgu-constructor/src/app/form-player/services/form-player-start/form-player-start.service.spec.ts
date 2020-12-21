@@ -120,13 +120,6 @@ describe('FormServiceStartService', () => {
       localStorage.removeItem(QUIZ_SCENARIO_KEY);
     });
 
-    it('should call hasOrderStatus case', () => {
-      serviceDataService.init({ ...serviceDataMock, orderId: '2145', canStartNew: true, invited: false });
-      spyOn<any>(service, 'hasOrderStatus').and.callThrough();
-      service.startPlayer();
-      expect(service['hasOrderStatus']).toBeCalled();
-    });
-
     it('should call handleOrder case', () => {
       serviceDataService.init({ ...serviceDataMock, orderId: '2145', canStartNew: true, invited: false });
       spyOn<any>(service, 'handleOrder').and.callThrough();
@@ -148,31 +141,7 @@ describe('FormServiceStartService', () => {
       expect(service['getOrderIdFromApi']).toBeCalled();
     });
   });
-
-  describe('hasOrderStatus()', () => {
-    it('should return true if has orderId and some of invited or canStartNew', () => {
-      const orderId = '2145';
-      const canStartNew = true;
-      const invited = false;
-      const hasOrderStatus = service['hasOrderStatus'](orderId, invited, canStartNew);
-      expect(hasOrderStatus).toBe(true);
-    });
-
-    it('should return true if has orderId and some of invited or canStartNew', () => {
-      const orderId = '2145';
-      const hasOrderStatus = service['hasOrderStatus'](orderId);
-      expect(hasOrderStatus).toBe(false);
-    });
-
-    it('should return true if has orderId and some of invited or canStartNew with false state', () => {
-      const orderId = '2145';
-      const canStartNew = false;
-      const invited = false;
-      const hasOrderStatus = service['hasOrderStatus'](orderId, invited, canStartNew);
-      expect(hasOrderStatus).toBe(true);
-    });
-  });
-
+  
   describe('startScenarioFromProps()', () => {
     const rawSate = JSON.stringify(responseDto);
 

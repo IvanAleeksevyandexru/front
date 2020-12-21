@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { LoadService } from 'epgu-lib';
 import { filter, mergeMap, takeUntil, tap, take } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 import { ConfigService } from '../core/config/config.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
@@ -31,8 +32,9 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('attr.test-screen-id') screenId: string;
   @Input() service: Service;
 
-  isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
-  isFirstLoading$ = this.screenService.isLoading$.pipe(take(3));
+  public isFirstLoading$ = this.screenService.isLoading$.pipe(take(3));
+  private isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
+  private isConfigReady$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private serviceDataService: ServiceDataService,
@@ -73,6 +75,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       )
       .subscribe((config) => {
         this.configService.config = config;
+        this.isConfigReady$.next(true);
       });
   }
 
@@ -97,9 +100,14 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private startPlayer(): void {
-    this.isCoreConfigLoaded$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.formPlayerStartService.startPlayer();
-    });
+    this.isConfigReady$
+      .pipe(
+        filter((loaded: boolean) => loaded),
+        takeUntil(this.ngUnsubscribe$),
+      )
+      .subscribe(() => {
+        this.formPlayerStartService.startPlayer();
+      });
   }
 
   private nextStep(navigation?: Navigation): void {
