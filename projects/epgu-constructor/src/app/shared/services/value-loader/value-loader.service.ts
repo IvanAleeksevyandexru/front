@@ -43,7 +43,7 @@ export class ValueLoaderService {
       }
 
       if (hasPresetTypeRef && !cachedValue) {
-        return this.getPresetValue(item, cachedAnswers);
+        return this.getPresetValue(item, cachedValue);
       }
 
       return this.getComponentWithCaches(item, cachedValue);
@@ -55,35 +55,36 @@ export class ValueLoaderService {
     cachedAnswers: CachedAnswers,
     parentComponent: ComponentDto,
   ): Array<Array<ComponentDto>> {
-    const cachedValue = this.getCache(parentComponent.type, parentComponent.id, cachedAnswers);
+    const cachedValue =
+      this.getCache(parentComponent.type, parentComponent.id, cachedAnswers) ||
+      parentComponent.value ||
+      null;
     const cachedValueArray: Array<{ [key: string]: string }> = JSON.parse(cachedValue) || [];
 
     if (cachedValueArray.length) {
       let repeatableFieldComponents: Array<Array<ComponentDto>> = [];
       cachedValueArray.forEach((component, index) => {
         repeatableFieldComponents.push(
-          this.getCacheRepeatableField(components, cachedAnswers, parentComponent, index),
+          this.getCacheRepeatableField(components, cachedValue, index),
         );
       });
 
       return repeatableFieldComponents;
     } else {
-      return [this.getCacheRepeatableField(components, cachedAnswers, parentComponent, 0)];
+      return [this.getCacheRepeatableField(components, cachedValue, 0)];
     }
   }
 
   private getCacheRepeatableField(
     components: Array<ComponentDto>,
-    cachedAnswers: CachedAnswers,
-    parentComponent: ComponentDto,
+    cachedValue: string,
     index: number,
   ): Array<ComponentDto> {
     return components.map((item) => {
       const hasPresetTypeRef = item.attrs?.preset?.type === 'REF';
-      const cachedValue = this.getCache(item.type, parentComponent.id, cachedAnswers);
 
       if (hasPresetTypeRef && !cachedValue) {
-        return this.getPresetValue(item, cachedAnswers);
+        return this.getPresetValue(item, cachedValue);
       }
 
       return this.getComponentWithCaches(item, cachedValue, item.id, index);
@@ -132,12 +133,9 @@ export class ValueLoaderService {
    * Возвращает данные из cachedAnswers, если в JSON есть preset.type = REF
    * TODO нужно утащить на backend (HARDCODE from backend)
    */
-  private getPresetValue(item: ComponentDto, cachedAnswers: CachedAnswers): ComponentDto {
-    const { id, path } = this.getPathFromPreset(item.attrs.preset.value);
-    const cachedValue = JSON.parse(
-      this.cachedAnswersService.getCachedValueById(cachedAnswers, id) || '{}',
-    );
-    const value = UtilsService.getObjectProperty(cachedValue, path, item.value);
+  private getPresetValue(item: ComponentDto, cachedValue: string): ComponentDto {
+    const { path } = this.getPathFromPreset(item.attrs.preset.value);
+    const value = UtilsService.getObjectProperty(JSON.parse(cachedValue || '{}'), path, item.value);
 
     return typeof value === 'object'
       ? { ...item, value: JSON.stringify(value) }
