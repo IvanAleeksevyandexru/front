@@ -34,7 +34,7 @@ export class EmployeeHistoryDatasourceService {
         address: 'Юридический адрес полностью, включая регион и город',
       },
       {
-        label: `Я не работал${gender === Gender.male ? '' : 'а'}`,
+        label: `Я не работал${gender === Gender.male ? '' : 'а'} и не учил${gender === Gender.male ? 'ся' : 'ась'}`,
         type: 'unemployed',
         position: '',
         place: '',
