@@ -41,9 +41,8 @@ export class ValueLoaderService {
       if (item.attrs.maxDateRef) {
         item.attrs.maxDate = this.getLimitDate(cachedAnswers, item.attrs.minDateRef);
       }
-
       if (hasPresetTypeRef && !cachedValue) {
-        return this.getPresetValue(item, cachedValue);
+        return this.getPresetValue(item, cachedAnswers);
       }
 
       return this.getComponentWithCaches(item, cachedValue);
@@ -81,12 +80,6 @@ export class ValueLoaderService {
     index: number,
   ): Array<ComponentDto> {
     return components.map((item) => {
-      const hasPresetTypeRef = item.attrs?.preset?.type === 'REF';
-
-      if (hasPresetTypeRef && !cachedValue) {
-        return this.getPresetValue(item, cachedValue);
-      }
-
       return this.getComponentWithCaches(item, cachedValue, item.id, index);
     });
   }
@@ -133,9 +126,12 @@ export class ValueLoaderService {
    * Возвращает данные из cachedAnswers, если в JSON есть preset.type = REF
    * TODO нужно утащить на backend (HARDCODE from backend)
    */
-  private getPresetValue(item: ComponentDto, cachedValue: string): ComponentDto {
-    const { path } = this.getPathFromPreset(item.attrs.preset.value);
-    const value = UtilsService.getObjectProperty(JSON.parse(cachedValue || '{}'), path, item.value);
+  private getPresetValue(item: ComponentDto, cachedAnswers: CachedAnswers): ComponentDto {
+    const { id, path } = this.getPathFromPreset(item.attrs.preset.value);
+    const cachedValue = JSON.parse(
+      this.cachedAnswersService.getCachedValueById(cachedAnswers, id) || '{}',
+    );
+    const value = UtilsService.getObjectProperty(cachedValue, path, item.value);
 
     return typeof value === 'object'
       ? { ...item, value: JSON.stringify(value) }
