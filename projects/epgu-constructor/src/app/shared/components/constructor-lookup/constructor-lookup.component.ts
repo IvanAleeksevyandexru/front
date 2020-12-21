@@ -15,6 +15,7 @@ export class ConstructorLookupComponent {
   @ViewChild('lookupComponent', { static: false })
   lookupComponent: LookupComponent;
 
+  @Input() showNotFound = false;
   @Input() id: string | number;
   @Input() control: AbstractControl = new FormControl();
   @Input() invalid: boolean;
