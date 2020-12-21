@@ -141,31 +141,7 @@ describe('FormServiceStartService', () => {
       expect(service['getOrderIdFromApi']).toBeCalled();
     });
   });
-
-  describe('hasOrderStatus()', () => {
-    it('should return true if has orderId and some of invited or canStartNew', () => {
-      const orderId = '2145';
-      const canStartNew = true;
-      const invited = false;
-      const hasOrderStatus = service['hasOrderStatus'](orderId, invited, canStartNew);
-      expect(hasOrderStatus).toBe(true);
-    });
-
-    it('should return true if has orderId and some of invited or canStartNew', () => {
-      const orderId = '2145';
-      const hasOrderStatus = service['hasOrderStatus'](orderId);
-      expect(hasOrderStatus).toBe(false);
-    });
-
-    it('should return true if has orderId and some of invited or canStartNew with false state', () => {
-      const orderId = '2145';
-      const canStartNew = false;
-      const invited = false;
-      const hasOrderStatus = service['hasOrderStatus'](orderId, invited, canStartNew);
-      expect(hasOrderStatus).toBe(true);
-    });
-  });
-
+  
   describe('startScenarioFromProps()', () => {
     const rawSate = JSON.stringify(responseDto);
 
