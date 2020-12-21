@@ -223,6 +223,19 @@ describe('FormPlayerComponent', () => {
       component['initFormPlayerConfig']();
       expect(setterSpy).toBeCalled();
     });
+
+    it('should call next of isConfigReady$', () => {
+      const config = {};
+      const fixture = TestBed.createComponent(FormPlayerComponent);
+      const component = fixture.componentInstance;
+      component.service = serviceDataMock;
+      fixture.detectChanges();
+      loadService.loaded.next(true);
+      spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.returnValue(of(config));
+      spyOn<any>(component['isConfigReady$'], 'next').and.callThrough();
+      component['initFormPlayerConfig']();
+      expect(component['isConfigReady$'].next).toBeCalledWith(true);
+    });
   });
 
   describe('initNavigation()', () => {

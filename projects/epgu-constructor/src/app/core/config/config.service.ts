@@ -132,7 +132,6 @@ export class ConfigService implements Config {
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
-    this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
