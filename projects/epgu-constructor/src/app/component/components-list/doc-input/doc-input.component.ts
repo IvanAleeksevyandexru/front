@@ -147,11 +147,12 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     });
 
     if (this.hasExpirationDate()) {
+      const expirationDate = componentValues[this.expirationDateName]
+        ? new Date(componentValues[this.expirationDateName])
+        : null;
       this.form.setControl(
         this.expirationDateName,
-        new FormControl(componentValues[this.expirationDateName], [
-          ...this.getFormFieldValidators(this.expirationDateName),
-        ]),
+        new FormControl(expirationDate, [...this.getFormFieldValidators(this.expirationDateName)]),
       );
     }
   }
