@@ -1,6 +1,6 @@
 import { AbstractControl } from '@angular/forms';
-import { CustomComponentAttrValidation } from '../components-list.types';
 import { TextTransform } from '../../../shared/types/textTransform';
+import { CustomComponent, CustomComponentAttrValidation } from '../components-list.types';
 
 interface DocInputControl extends Partial<AbstractControl> {
   value: DocInputComponentData;
@@ -17,9 +17,8 @@ interface DocInputComponentData {
   };
 }
 
-interface DocInputField {
+interface DocInputField extends CustomComponent {
   label?: string;
-  type?: string;
   placeholder?: string;
   required?: boolean;
   hint?: string;
@@ -58,3 +57,4 @@ export {
   DocInputFormFields,
   DocInputFields,
 };
+
