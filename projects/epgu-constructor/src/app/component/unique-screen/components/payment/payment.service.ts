@@ -5,13 +5,12 @@ import { map } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import { PaymentsAttrs } from './abstractpayment.component';
 import { getPaymentRequestOptions } from './payment.constants';
 import {
   BillsInfoResponse,
   PaymentDictionaryOptionsInterface,
   PaymentInfoForPaidStatusData,
-  PaymentInfoInterface
+  PaymentInfoInterface, PaymentsAttrs
 } from './payment.types';
 import { LocationService } from '../../../../core/services/location/location.service';
 

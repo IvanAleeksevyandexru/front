@@ -16,8 +16,11 @@ import {
   BillInfoResponse,
   BillsInfoResponse,
   HttpPaymentError,
+  PaymentInfoEventValue,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
+  PaymentInfoValue,
+  PaymentsAttrs,
 } from './payment.types';
 import {
   getDiscountDate,
@@ -30,21 +33,6 @@ import { LocalStorageService } from '../../../../core/services/local-storage/loc
 
 const ALREADY_PAY_ERROR = 23;
 const moment = moment_;
-
-export interface PaymentsAttrs {
-  nsi: string;
-  dictItemCode: string;
-  ref: { fiasCode: string };
-}
-
-export interface PaymentInfoValue {
-  billNumber: string;
-  billId: number;
-  amount: string;
-  billName: string;
-  billDate: string;
-  payCode: number;
-}
 
 @Component({
   template: '',
@@ -112,7 +100,14 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Переход к следующему экрану
    */
   nextStep(): void {
-    this.nextStepEvent.emit(this.uin);
+    const exportValue = {
+      uin: this.uin,
+      amount: this.sum,
+      amountWithoutDiscount: this.sumWithoutDiscount ? this.sumWithoutDiscount : null,
+      paymentPurpose: this.paymentPurpose ? this.paymentPurpose : null,
+      receiver: this.docInfo ? this.docInfo : null,
+    } as PaymentInfoEventValue;
+    this.nextStepEvent.emit(JSON.stringify(exportValue));
   }
 
   /**
@@ -231,12 +226,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       uin = `PRIOR${uin}`;
     }
     this.uin = uin;
-    // Если нужно перескочить оплату для случая просто необходимости создания УИН (брак/разбрак)
-    if (this.data.attrs?.goNextAfterUIN) {
-      this.isShown = false;
-      this.nextStep();
-      return;
-    }
+
     this.paymentService
       .getBillsInfoByUIN(this.uin, this.orderId)
       .pipe(
@@ -309,10 +299,6 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     const bill: BillInfoResponse = info.response.bills[this.billPosition];
 
     this.isPaid = bill.isPaid;
-    if (this.isPaid) {
-      this.isShown = false;
-      this.nextStep();
-    }
 
     // Ищем сведения по скидке, цене и начислению
     this.validDiscountDate = getDiscountDate(bill);
@@ -326,6 +312,12 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     this.sum = String(bill.amount);
     this.billId = bill.billId;
     this.inLoading = false;
+
+    // Если нужно перескочить оплату для случая просто необходимости создания УИН (брак/разбрак)
+    if (this.data.attrs?.goNextAfterUIN || this.isPaid) {
+      this.isShown = false;
+      this.nextStep();
+    }
   }
 
   /**
