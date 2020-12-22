@@ -1,17 +1,26 @@
-import { Component, EventEmitter, Injector, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import * as moment_ from 'moment';
-import { catchError, switchMap, takeUntil, map, tap } from 'rxjs/operators';
+import { EventBusService } from 'projects/epgu-constructor/src/app/form-player/services/event-bus/event-bus.service';
 import { Observable, throwError } from 'rxjs';
-import { ScreenService } from '../../../../screen/screen.service';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/services/config/config.service';
+import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
+import { LocationService } from '../../../../core/services/location/location.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ComponentBase } from '../../../../screen/screen.types';
+import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
+import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
+import {
+  getDiscountDate,
+  getDiscountPrice,
+  getDocInfo,
+} from './components/payment/payment.component.functions';
 // eslint-disable-next-line import/no-cycle
 import { PaymentStatus } from './payment.constants';
 // eslint-disable-next-line import/no-cycle
 import { PaymentService } from './payment.service';
-import { ComponentBase } from '../../../../screen/screen.types';
-import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import {
   BillInfoResponse,
   BillsInfoResponse,
@@ -22,14 +31,6 @@ import {
   PaymentInfoValue,
   PaymentsAttrs,
 } from './payment.types';
-import {
-  getDiscountDate,
-  getDiscountPrice,
-  getDocInfo,
-} from './components/payment/payment.component.functions';
-import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
-import { LocationService } from '../../../../core/services/location/location.service';
-import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
 
 const ALREADY_PAY_ERROR = 23;
 const moment = moment_;
@@ -38,8 +39,6 @@ const moment = moment_;
   template: '',
 })
 export class AbstractPaymentComponent implements OnDestroy, OnInit {
-  @Output() nextStepEvent = new EventEmitter<string>();
-
   public paymentStatus = PaymentStatus;
   public paymentPurpose = '';
   public uin = ''; // Уникальный идентификатор платежа
@@ -58,6 +57,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   public currentAnswersService: CurrentAnswersService;
   public ngUnsubscribe$: UnsubscribeService;
   public config: ConfigService;
+  public eventBusService: EventBusService;
 
   data: ComponentBase;
   header$: Observable<string>;
@@ -75,6 +75,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   constructor(public injector: Injector) {
     this.paymentService = this.injector.get(PaymentService);
     this.screenService = this.injector.get(ScreenService);
+    this.eventBusService = this.injector.get(EventBusService);
     this.currentAnswersService = this.injector.get(CurrentAnswersService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.config = this.injector.get(ConfigService);
@@ -108,7 +109,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       receiver: this.docInfo ? this.docInfo : null,
       billId: this.billId ? this.billId : null,
     } as PaymentInfoEventValue;
-    this.nextStepEvent.emit(JSON.stringify(exportValue));
+    this.eventBusService.emit('nextStepEvent', JSON.stringify(exportValue));
   }
 
   /**

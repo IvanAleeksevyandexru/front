@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-import { TextTransform } from '../../types/textTransform';
 import { CustomComponent } from '../../../component/components-list/components-list.types';
+import { TextTransform } from '../../types/textTransform';
 
 @Component({
   selector: 'epgu-constructor-constructor-plain-input',
@@ -23,14 +23,4 @@ export class ConstructorPlainInputComponent {
   @Input() type?: string;
   @Input() pattern?: string;
   @Input() component?: CustomComponent;
-  @Output() public blurEvent = new EventEmitter();
-  @Output() public emmitChangesEvent = new EventEmitter<void>();
-
-  onBlur(): void {
-    this.blurEvent.emit();
-  }
-
-  onEmmitChanges(): void {
-    this.emmitChangesEvent.emit();
-  }
 }

@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { PhotoRequirementsModalComponent } from './photo-requirements-modal.component';
 import { ConfigService } from '../../../../../core/services/config/config.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
+import { PhotoRequirementsModalComponent } from './photo-requirements-modal.component';
+
+
 
 xdescribe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;
@@ -10,7 +13,7 @@ xdescribe('PhotoRequirementsModalComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PhotoRequirementsModalComponent ],
-      providers: [ ConfigService ],
+      providers: [ ConfigService, UnsubscribeService, EventBusService ],
     })
     .compileComponents();
   }));

@@ -1,19 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { NavigationPayload } from '../../../../form-player/form-player.types';
 import { ConfigService } from '../../../../core/services/config/config.service';
+import { LocationService } from '../../../../core/services/location/location.service';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   ApplicantAnswersDto,
   ComponentDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { CustomComponent } from '../../../components-list/components-list.types';
-import { LocationService } from '../../../../core/services/location/location.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { CustomComponent } from '../../../components-list/components-list.types';
 
 @Component({
   selector: 'epgu-constructor-invitation-error',
@@ -26,7 +25,6 @@ export class InvitationErrorComponent implements OnInit {
   @Input() applicantAnswers: ApplicantAnswersDto;
   @Input() orderId: string;
   @Input() header: string;
-  @Output() nextStepEvent = new EventEmitter<NavigationPayload>();
   public email: FormControl = new FormControl('', {
     validators: Validators.required,
   });

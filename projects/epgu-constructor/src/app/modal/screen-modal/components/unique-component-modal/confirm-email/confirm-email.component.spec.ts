@@ -1,19 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { ConfirmEmailComponent } from './confirm-email.component';
-import { ScreenService } from '../../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
-import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
+import { CoreModule } from '../../../../../core/core.module';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
-import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
-import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
-import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { LocationService } from '../../../../../core/services/location/location.service';
+import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
+import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
+import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../../shared/base.module';
-import { CoreModule } from '../../../../../core/core.module';
+import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
+import { ConfirmEmailComponent } from './confirm-email.component';
+
+
 
 describe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;
@@ -41,6 +43,7 @@ describe('ConfirmEmailComponent', () => {
         UnsubscribeService,
         NavigationService,
         LocationService,
+        EventBusService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],

@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FileUploadScreenComponent } from './file-upload-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentBase } from '../../../../screen/screen.types';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentBase } from '../../../../screen/screen.types';
+import { FileUploadScreenComponent } from './file-upload-screen.component';
 
 // TODO: Need to refactoring component
 xdescribe('FileUploadScreenComponent', () => {
@@ -34,7 +34,10 @@ xdescribe('FileUploadScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [FileUploadScreenComponent],
-      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        EventBusService,
+      ],
     }).compileComponents();
     screenService = TestBed.inject(ScreenService);
   }));

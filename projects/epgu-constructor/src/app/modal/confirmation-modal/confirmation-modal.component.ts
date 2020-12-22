@@ -1,13 +1,17 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
+import { ModalService } from '../modal.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { ConfirmationModal } from './confirmation-modal.interface';
-import { ModalService } from '../modal.service';
 
 @Component({
   selector: 'epgu-constructor-confirmation-modal',
   templateUrl: './confirmation-modal.component.html',
   styleUrls: ['./confirmation-modal.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class ConfirmationModalComponent extends ModalBaseComponent
   implements OnInit, AfterViewInit {
@@ -29,7 +33,12 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   showCrossButton: boolean;
   isShortModal?: ConfirmationModal['isShortModal'];
 
-  constructor(private modalService: ModalService, private elemRef: ElementRef) {
+  constructor(
+    private modalService: ModalService,
+    private elemRef: ElementRef,
+    private ngUnsubscribe$: UnsubscribeService,
+    private eventBusService: EventBusService,
+  ) {
     super();
   }
 
@@ -38,6 +47,11 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     if (this.showCrossButton === undefined) {
       this.showCrossButton = Boolean(this.title);
     }
+
+    this.eventBusService
+      .on('closeModalEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.closeModal());
   }
 
   ngAfterViewInit(): void {

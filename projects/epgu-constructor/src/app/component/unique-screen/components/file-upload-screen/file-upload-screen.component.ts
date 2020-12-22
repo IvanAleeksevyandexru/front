@@ -1,26 +1,27 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import { ComponentBase } from '../../../../screen/screen.types';
+import { Component, OnInit } from '@angular/core';
+import { combineLatest, Observable } from 'rxjs';
+import { map, takeUntil, tap } from 'rxjs/operators';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../screen/screen.service';
+import { ComponentBase } from '../../../../screen/screen.types';
 import {
   FileResponseToBackendUploadsItem,
   FileUploadEmitValue,
   FileUploadEmitValueForComponent,
   FileUploadItem,
 } from '../../services/terra-byte-api/terra-byte-api.types';
+import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { TerraUploadedFile } from './sub-components/file-upload-item/data';
-import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',
   templateUrl: './file-upload-screen.component.html',
   styleUrls: ['./file-upload-screen.component.scss'],
+  providers: [UnsubscribeService],
 })
-export class FileUploadScreenComponent {
-  @Output() nextStepEvent = new EventEmitter();
-
+export class FileUploadScreenComponent implements OnInit {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
 
   data$: Observable<ComponentBase> = this.screenService.component$.pipe(
@@ -49,7 +50,18 @@ export class FileUploadScreenComponent {
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
   private value: FileUploadEmitValueForComponent; // Здесь будет храниться значение на передачу
 
-  constructor(public screenService: ScreenService) {}
+  constructor(
+    public screenService: ScreenService,
+    private eventBusService: EventBusService,
+    private ngUnsubscribe$: UnsubscribeService,
+  ) {}
+
+  ngOnInit(): void {
+    this.eventBusService
+      .on('fileUploadValueChangedEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: FileResponseToBackendUploadsItem) => this.handleNewValueSet(payload));
+  }
 
   /**
    * Возвращает префикс для формирования мнемоники
@@ -115,7 +127,7 @@ export class FileUploadScreenComponent {
    * Переход на следующий экран с отправкой данных
    */
   nextScreen(): void {
-    this.nextStepEvent.emit(JSON.stringify(this.value));
+    this.eventBusService.emit('nextStepEvent', JSON.stringify(this.value));
   }
 
   /**

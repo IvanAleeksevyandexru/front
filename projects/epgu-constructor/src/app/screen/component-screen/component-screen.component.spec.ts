@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { CurrentAnswersService } from '../current-answers.service';
-import { ComponentScreenComponent } from './component-screen.component';
-import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ScreenService } from '../screen.service';
+import { By } from '@angular/platform-browser';
+import { EpguLibModule } from 'epgu-lib';
 import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
-import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
+import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
+import { AddPassportComponent } from '../../component/component-screen/components/add-passport/add-passport.component';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressComponent } from '../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-address-screen/components/confirm-personal-user-address/confirm-personal-user-address.component';
 // eslint-disable-next-line max-len
@@ -15,26 +13,27 @@ import { ConfirmPersonalUserDataComponent } from '../../component/component-scre
 import { ConfirmPersonalUserPhoneEmailComponent } from '../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-phone-email/confirm-personal-user-phone-email.component';
 // eslint-disable-next-line max-len
 import { RegistrationAddrComponent } from '../../component/component-screen/components/confirm-personal-user/screens/registration-addr/components/registration-addr/registration-addr.component';
-import { AddPassportComponent } from '../../component/component-screen/components/add-passport/add-passport.component';
-import { CountrySelectionComponent } from '../../component/component-screen/components/country-selection/country-selection.component';
 // eslint-disable-next-line max-len
 import { SelectChildrenScreenComponent } from '../../component/component-screen/components/select-children/select-children-screen.component';
-import { FieldListComponent } from '../../shared/components/field-list/field-list.component';
 import { TimerComponent } from '../../component/component-screen/components/timer/timer.component';
-import { ButtonComponent, EpguLibModule } from 'epgu-lib';
-import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
-import { ActionDirective } from '../../shared/directives/action/action.directive';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { ScreenServiceStub } from '../screen.service.stub';
-import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
+import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
   ComponentActionDto,
   ComponentDto,
   DTOActionAction,
-  ScenarioErrorsDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { By } from '@angular/platform-browser';
+import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
+import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
+import { FieldListComponent } from '../../shared/components/field-list/field-list.component';
+import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
+import { ActionDirective } from '../../shared/directives/action/action.directive';
+import { CurrentAnswersService } from '../current-answers.service';
+import { ScreenService } from '../screen.service';
+import { ScreenServiceStub } from '../screen.service.stub';
+import { ComponentScreenComponent } from './component-screen.component';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -72,12 +71,12 @@ describe('ComponentScreenComponent', () => {
         MockComponents(
           ScreenContainerComponent,
           PageNameComponent,
+          ScreenPadComponent,
           ConfirmPersonalUserAddressComponent,
           ConfirmPersonalUserDataComponent,
           ConfirmPersonalUserPhoneEmailComponent,
           RegistrationAddrComponent,
           AddPassportComponent,
-          CountrySelectionComponent,
           SelectChildrenScreenComponent,
           FieldListComponent,
           TimerComponent,
@@ -90,6 +89,7 @@ describe('ComponentScreenComponent', () => {
         CurrentAnswersService,
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        EventBusService,
       ],
     }).compileComponents();
   });
@@ -107,21 +107,6 @@ describe('ComponentScreenComponent', () => {
   describe('isShowActionBtn property', () => {
     it('should be FALSE by default', () => {
       expect(component.isShowActionBtn).toBeFalsy();
-    });
-  });
-
-  describe('componentData property', () => {
-    it('should be NULL by default', () => {
-      expect(component.componentData).toBeNull();
-    });
-  });
-
-  describe('componentSetting property', () => {
-    it('default value', () => {
-      expect(component.componentSetting).toEqual({
-        displayContinueBtn: true,
-        displayWarningAnswers: false,
-      });
     });
   });
 
@@ -268,53 +253,6 @@ describe('ComponentScreenComponent', () => {
     });
   });
 
-  describe('changedComponentData() method', () => {
-    it('should set componentData property', () => {
-      component.changedComponentData('foo');
-      expect(component.componentData).toBe('foo');
-
-      component.changedComponentData('bar');
-      expect(component.componentData).toBe('bar');
-    });
-  });
-
-  describe('changeComponentSettings() method', () => {
-    it('should set componentSetting property', () => {
-      expect(component.componentSetting).toEqual({
-        displayContinueBtn: true,
-        displayWarningAnswers: false,
-      });
-
-      component.changeComponentSettings({
-        displayContinueBtn: false,
-      });
-      expect(component.componentSetting).toEqual({
-        displayContinueBtn: false,
-        displayWarningAnswers: false,
-      });
-    });
-  });
-
-  describe('isUserData() method', () => {
-    it('should return screen content type or FALSE', () => {
-      screenService.componentType = ComponentScreenComponentTypes.countryApostil;
-      expect(component.isUserData()).toBeFalsy();
-
-      screenService.componentType = ComponentScreenComponentTypes.confirmPersonalUserData;
-      expect(component.isUserData()).toBe(ComponentScreenComponentTypes.confirmPersonalUserData);
-    });
-  });
-
-  describe('isUserContactData() method', () => {
-    it('should return screen content type or FALSE', () => {
-      screenService.componentType = ComponentScreenComponentTypes.countryApostil;
-      expect(component.isUserData()).toBeFalsy();
-
-      screenService.componentType = ComponentScreenComponentTypes.confirmAnotherUserData;
-      expect(component.isUserData()).toBe(ComponentScreenComponentTypes.confirmAnotherUserData);
-    });
-  });
-
   describe('calcIsShowActionBtn() method', () => {
     it('should set isShowActionBtn property', () => {
       component.calcIsShowActionBtn(ComponentScreenComponentTypes.childrenListAbove14);
@@ -370,6 +308,14 @@ describe('ComponentScreenComponent', () => {
     expect(debugEl.nativeElement.textContent.trim()).toBe('foo');
   });
 
+  it('should render epgu-constructor-screen-pad', () => {
+    const selector = 'epgu-constructor-screen-container';
+
+    const debugEl = fixture.debugElement.query(By.css(selector));
+
+    expect(debugEl).toBeTruthy();
+  });
+
   it('should render epgu-constructor-confirm-personal-user-address if componentType is confirmPersonalUserRegAddr', () => {
     const selector =
       'epgu-constructor-screen-container epgu-constructor-confirm-personal-user-address';
@@ -416,7 +362,8 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should render epgu-constructor-registration-addr', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-registration-addr';
+    const selector =
+      'epgu-constructor-screen-container epgu-constructor-registration-addr';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -430,7 +377,8 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should render epgu-constructor-add-passport', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-add-passport';
+    const selector =
+      'epgu-constructor-screen-container epgu-constructor-add-passport';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -443,58 +391,9 @@ describe('ComponentScreenComponent', () => {
     expect(debugEl).toBeTruthy();
   });
 
-  it('should render epgu-constructor-country-selection', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-country-selection';
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeNull();
-
-    screenService.componentType = ComponentScreenComponentTypes.countryApostil;
-    fixture.detectChanges();
-
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
-  });
-
-  it('should call changeComponentSettings() on epgu-constructor-country-selection changeComponentSettings() event', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-country-selection';
-
-    screenService.componentType = ComponentScreenComponentTypes.countryApostil;
-    fixture.detectChanges();
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    const changeComponentSettingsSpy = spyOn(component, 'changeComponentSettings');
-
-    debugEl.triggerEventHandler('changeComponentSettings', {
-      displayContinueBtn: true,
-    });
-
-    expect(changeComponentSettingsSpy).toBeCalledTimes(1);
-    expect(changeComponentSettingsSpy).toBeCalledWith({
-      displayContinueBtn: true,
-    });
-  });
-
-  it('should call changedComponentData() on epgu-constructor-country-selection changeComponentData() event', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-country-selection';
-
-    screenService.componentType = ComponentScreenComponentTypes.countryApostil;
-    fixture.detectChanges();
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    const changedComponentDataSpy = spyOn(component, 'changedComponentData');
-
-    debugEl.triggerEventHandler('changeComponentData', 'foo');
-
-    expect(changedComponentDataSpy).toBeCalledTimes(1);
-    expect(changedComponentDataSpy).toBeCalledWith('foo');
-  });
-
   it('should render epgu-constructor-select-children-screen (childrenListUnder14)', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-select-children-screen';
+    const selector =
+      'epgu-constructor-screen-container epgu-constructor-select-children-screen';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -505,26 +404,11 @@ describe('ComponentScreenComponent', () => {
 
     debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
-  });
-
-  it('should call nextStep() on epgu-constructor-select-children-screen (childrenListUnder14) nextStepEvent() event', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-select-children-screen';
-
-    screenService.componentType = ComponentScreenComponentTypes.childrenListUnder14;
-    fixture.detectChanges();
-
-    const debugEl = fixture.debugElement.query(By.css(selector));
-
-    const nextStepSpy = spyOn(component, 'nextStep');
-
-    debugEl.triggerEventHandler('nextStepEvent', 'foo');
-
-    expect(nextStepSpy).toBeCalledTimes(1);
-    expect(nextStepSpy).toBeCalledWith(); // ignore arguments from nextStepEvent()
   });
 
   it('should render epgu-constructor-select-children-screen (childrenListAbove14)', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-select-children-screen';
+    const selector =
+      'epgu-constructor-screen-container epgu-constructor-select-children-screen';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -537,24 +421,9 @@ describe('ComponentScreenComponent', () => {
     expect(debugEl).toBeTruthy();
   });
 
-  it('should call nextStep() on epgu-constructor-select-children-screen (childrenListAbove14) nextStepEvent() event', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-select-children-screen';
-
-    screenService.componentType = ComponentScreenComponentTypes.childrenListAbove14;
-    fixture.detectChanges();
-
-    const debugEl = fixture.debugElement.query(By.css(selector));
-
-    const nextStepSpy = spyOn(component, 'nextStep');
-
-    debugEl.triggerEventHandler('nextStepEvent', 'foo');
-
-    expect(nextStepSpy).toBeCalledTimes(1);
-    expect(nextStepSpy).toBeCalledWith(); // ignore arguments from nextStepEvent()
-  });
-
   it('should render epgu-constructor-field-list', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-field-list';
+    const selector =
+      'epgu-constructor-screen-container epgu-constructor-field-list';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -575,7 +444,8 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should render epgu-constructor-timer', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-timer';
+    const selector =
+      'epgu-constructor-screen-container epgu-constructor-timer';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -593,22 +463,6 @@ describe('ComponentScreenComponent', () => {
     fixture.detectChanges();
 
     expect(debugEl.componentInstance.data).toBe(componentDtoSample);
-  });
-
-  it('should call nextStep() on epgu-constructor-timer nextStepEvent() event', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-timer';
-
-    screenService.componentType = ComponentScreenComponentTypes.timer;
-    fixture.detectChanges();
-
-    const debugEl = fixture.debugElement.query(By.css(selector));
-
-    const nextStepSpy = spyOn(component, 'nextStep');
-
-    debugEl.triggerEventHandler('nextStepEvent', 'foo');
-
-    expect(nextStepSpy).toBeCalledTimes(1);
-    expect(nextStepSpy).toBeCalledWith('foo');
   });
 
   it('should render action buttons if isShowActionBtn is TRUE', () => {
@@ -638,124 +492,5 @@ describe('ComponentScreenComponent', () => {
     expect(debugElements[1].injector.get(ActionDirective).action).toBe(componentActionDtoSample2);
     expect(debugElements[1].componentInstance.color).toBe(componentActionDtoSample2.color);
     expect(debugElements[1].nativeElement.textContent.trim()).toBe(componentActionDtoSample2.label);
-  });
-
-  it('should render display continue button if componentSetting.displayContinueBtn is TRUE and screenService.submitLabel is TRUE', () => {
-    const selector =
-      'epgu-constructor-screen-container lib-button[data-testid="display-continue-btn"]';
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeNull();
-
-    screenService.submitLabel = 'foo';
-    component.componentSetting.displayContinueBtn = false;
-    fixture.detectChanges();
-
-    expect(debugEl).toBeNull();
-
-    component.componentSetting.displayContinueBtn = true;
-    fixture.detectChanges();
-
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.showLoader).toBeFalsy();
-
-    screenService.isLoadingSubject$.next(true);
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.showLoader).toBeTruthy();
-
-    currentAnswersService.isValid = false;
-    screenService.isLoadingSubject$.next(true);
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.disabled).toBeTruthy();
-
-    currentAnswersService.isValid = false;
-    screenService.isLoadingSubject$.next(false);
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.disabled).toBeTruthy();
-
-    currentAnswersService.isValid = true;
-    screenService.isLoadingSubject$.next(false);
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.disabled).toBeFalsy();
-
-    expect(debugEl.nativeElement.textContent.trim()).toBe('foo');
-  });
-
-  it('should call nextStep() on display continue button click() event', () => {
-    const selector =
-      'epgu-constructor-screen-container lib-button[data-testid="display-continue-btn"]';
-
-    screenService.submitLabel = 'foo';
-    component.componentSetting.displayContinueBtn = true;
-    fixture.detectChanges();
-
-    const debugEl = fixture.debugElement.query(By.css(selector));
-
-    const nextStepSpy = spyOn(component, 'nextStep');
-
-    debugEl.triggerEventHandler('click', 'foo');
-
-    expect(nextStepSpy).toBeCalledTimes(1);
-    expect(nextStepSpy).toBeCalledWith(); // ignore arguments from click
-  });
-
-  it('should render displayWarningAnswersBtn if componentSetting.displayWarningAnswers is TRUE', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-answer-button';
-
-    let debugElements = fixture.debugElement.queryAll(By.css(selector));
-
-    expect(debugElements.length).toBe(0);
-
-    component.componentSetting.displayWarningAnswers = true;
-    fixture.detectChanges();
-
-    debugElements = fixture.debugElement.queryAll(By.css(selector));
-    expect(debugElements.length).toBe(2);
-
-    expect(debugElements[0].componentInstance.data).toEqual({
-      label: 'Всё равно продолжить',
-    });
-    expect(debugElements[1].componentInstance.data).toEqual({
-      label: 'Вернуться в личный кабинет',
-    });
-  });
-
-  it('should call nextStep() on first displayWarningAnswers button click', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-answer-button';
-
-    component.componentSetting.displayWarningAnswers = true;
-    fixture.detectChanges();
-
-    const debugElements = fixture.debugElement.queryAll(By.css(selector));
-
-    const nextStepSpy = spyOn(component, 'nextStep');
-
-    debugElements[0].triggerEventHandler('click', 'foo');
-
-    expect(nextStepSpy).toBeCalledTimes(1);
-    expect(nextStepSpy).toBeCalledWith(); // ignore arguments from click
-  });
-
-  it('should call goToHomePage() on second displayWarningAnswers button click', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-answer-button';
-
-    component.componentSetting.displayWarningAnswers = true;
-    fixture.detectChanges();
-
-    const debugElements = fixture.debugElement.queryAll(By.css(selector));
-
-    const goToHomePageSpy = spyOn(component, 'goToHomePage');
-
-    debugElements[1].triggerEventHandler('click', 'foo');
-
-    expect(goToHomePageSpy).toBeCalledTimes(1);
-    expect(goToHomePageSpy).toBeCalledWith(); // ignore arguments from click
   });
 });

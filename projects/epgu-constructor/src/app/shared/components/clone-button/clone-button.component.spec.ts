@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
 import { CloneButtonComponent } from './clone-button.component';
+
 
 describe('CloneButtonComponent', () => {
   let component: CloneButtonComponent;
@@ -8,7 +9,8 @@ describe('CloneButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CloneButtonComponent ]
+      declarations: [CloneButtonComponent],
+      providers: [EventBusService]
     })
     .compileComponents();
   });

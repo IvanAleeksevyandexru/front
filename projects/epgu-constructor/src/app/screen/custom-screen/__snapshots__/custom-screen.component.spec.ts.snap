@@ -2,6 +2,7 @@
 
 exports[`CustomScreenComponent check snapshot 1`] = `
 <epgu-constructor-custom-screen
+  eventBusService={[Function EventBusService]}
   injector={[Function Injector_]}
   navigationService={[Function NavigationServiceStub]}
   ngUnsubscribe$={[Function UnsubscribeService]}

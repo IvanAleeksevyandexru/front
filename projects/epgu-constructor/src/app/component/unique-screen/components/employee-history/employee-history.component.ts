@@ -1,11 +1,15 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
 import { combineLatest, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { Gender } from '../../../../shared/types/gender';
-import { ComponentBase } from '../../../../screen/screen.types';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ComponentBase } from '../../../../screen/screen.types';
+import { months } from '../../../../shared/constants/dates';
+import { Gender } from '../../../../shared/types/gender';
+import { TextTransform } from '../../../../shared/types/textTransform';
 import {
   EmployeeHistoryDataSource,
   EmployeeHistoryModel,
@@ -15,9 +19,6 @@ import {
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
-import { TextTransform } from '../../../../shared/types/textTransform';
-import { ScreenService } from '../../../../screen/screen.service';
-import { months } from '../../../../shared/constants/dates';
 
 export interface EmployeeHistoryComponentInterface extends ComponentBase {
   attrs: {
@@ -31,8 +32,7 @@ export interface EmployeeHistoryComponentInterface extends ComponentBase {
   styleUrls: ['./employee-history.component.scss'],
   providers: [UnsubscribeService],
 })
-export class EmployeeHistoryComponent {
-  @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
+export class EmployeeHistoryComponent implements OnInit {
   display$: Observable<DisplayDto> = this.screenService.display$;
   header$: Observable<string> = this.screenService.header$;
   gender$: Observable<Gender> = this.screenService.gender$;
@@ -53,11 +53,19 @@ export class EmployeeHistoryComponent {
 
   constructor(
     public employeeFormService: EmployeeHistoryFormService,
-    private unsubscribeService: UnsubscribeService,
+    private ngUnsubscribe$: UnsubscribeService,
     private datasourceService: EmployeeHistoryDatasourceService,
     public monthsService: EmployeeHistoryMonthsService,
     public screenService: ScreenService,
+    private eventBusService: EventBusService,
   ) {}
+
+  ngOnInit(): void {
+    this.eventBusService
+      .on('cloneButtonClickEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.employeeFormService.newGeneration());
+  }
 
   textTransformType(display: DisplayDto): TextTransform {
     const component = display?.components[0] as EmployeeHistoryComponentInterface;
@@ -68,7 +76,7 @@ export class EmployeeHistoryComponent {
     const employeeHistoryBeforeSend: Array<EmployeeHistoryServerModel> = this.employeeFormService.employeeHistoryForm
       .getRawValue()
       .map((employee: EmployeeHistoryModel) => this.formatToServerModel(employee));
-    this.nextStepEvent.emit(JSON.stringify(employeeHistoryBeforeSend));
+    this.eventBusService.emit('nextStepEvent', JSON.stringify(employeeHistoryBeforeSend));
   }
 
   formatToServerModel(employee: EmployeeHistoryModel): EmployeeHistoryServerModel {

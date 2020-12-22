@@ -6,7 +6,8 @@
 .form {
   &__hint {
     @include first-letter-uppercase();
-    margin: 4px 4px 0 0;
+    display: block;
+    margin-top: 4px;
     color: $color-text-helper;
     @include typ-plain-small();
   }

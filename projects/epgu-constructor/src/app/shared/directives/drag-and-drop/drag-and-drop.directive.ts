@@ -1,10 +1,9 @@
 import {
   Directive,
-  Output,
-  EventEmitter,
   HostBinding,
   HostListener
 } from '@angular/core';
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
@@ -12,7 +11,8 @@ import {
 })
 export class DragAndDropDirective {
   @HostBinding('class.file-over') fileOver: boolean;
-  @Output() fileDropped = new EventEmitter<FileList>();
+
+  constructor(private eventBusService: EventBusService) { }
 
   // Dragover listener
   @HostListener('dragover', ['$event']) onDragOver(evt: DragEvent): void {
@@ -35,7 +35,7 @@ export class DragAndDropDirective {
     this.fileOver = false;
     let files = evt.dataTransfer.files;
     if (files.length > 0) {
-      this.fileDropped.emit(files);
+      this.eventBusService.emit('fileDropped', files as FileList);
     }
   }
 }

@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-
+import { Component, Input, OnInit } from '@angular/core';
 import { UnusedPaymentInterface } from '../../../component/unique-screen/components/unused-payments/unused-payment.interface';
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
 
 @Component({
   selector: 'epgu-constructor-radio-tax',
@@ -9,20 +9,19 @@ import { UnusedPaymentInterface } from '../../../component/unique-screen/compone
 })
 export class RadioTaxComponent implements OnInit {
   @Input() data: UnusedPaymentInterface[] = [];
-  @Output() selected = new EventEmitter<UnusedPaymentInterface>();
-
   selectedItem: UnusedPaymentInterface;
+  constructor(private eventBusService: EventBusService) {}
 
   select(index: number): void {
     this.selectedItem = this.data[index];
-    this.selected.emit(this.selectedItem);
+    this.eventBusService.emit('radioTaxSelectedEvent', this.selectedItem);
   }
 
   ngOnInit(): void {
     if (this.data.length > 0) {
       const [item] = this.data;
       this.selectedItem = item;
-      this.selected.emit(this.selectedItem);
+      this.eventBusService.emit('radioTaxSelectedEvent', this.selectedItem);
     }
   }
 }

@@ -1,12 +1,12 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
-
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { ConfigService } from '../../../../../core/services/config/config.service';
-import { ScreenService } from '../../../../../screen/screen.service';
-import { LAST_SCENARIO_KEY } from '../../../../../shared/constants/form-player';
-import { SignatureApplicationData } from '../models/application.interface';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { LocalStorageService } from '../../../../../core/services/local-storage/local-storage.service';
 import { LocationService } from '../../../../../core/services/location/location.service';
+import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { LAST_SCENARIO_KEY } from '../../../../../shared/constants/form-player';
+import { SignatureApplicationData } from '../models/application.interface';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
@@ -15,7 +15,6 @@ import { LocationService } from '../../../../../core/services/location/location.
 })
 export class SignatureApplicationComponent implements OnInit {
   @Input() isLoading: boolean;
-  @Output() nextStepEvent = new EventEmitter<string>();
 
   isMobile = this.deviceDetector.isMobile;
 
@@ -29,6 +28,7 @@ export class SignatureApplicationComponent implements OnInit {
     private deviceDetector: DeviceDetectorService,
     private localStorageService: LocalStorageService,
     private locationService: LocationService,
+    private eventBusService: EventBusService,
   ) {}
 
   @HostListener('click', ['$event'])
@@ -54,7 +54,7 @@ export class SignatureApplicationComponent implements OnInit {
   }
 
   private nextStep(): void {
-    this.nextStepEvent.emit(JSON.stringify({ ...this.data, success: true }));
+    this.eventBusService.emit('nextStepEvent', JSON.stringify({ ...this.data, success: true }));
   }
 
   private isSigned(): boolean {
