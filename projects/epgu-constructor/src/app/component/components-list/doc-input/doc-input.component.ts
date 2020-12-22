@@ -109,7 +109,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     } else {
       this.data.get('value').setErrors({ invalidForm: true });
     }
-    this.formService.emmitChanges();
+    this.formService.emitChanges();
   }
 
   addFormGroupControls(): void {
