@@ -45,6 +45,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
     },
     type: '',
     value: '{}',
+    presetValue: '{}',
     label: '',
     id: '',
   };

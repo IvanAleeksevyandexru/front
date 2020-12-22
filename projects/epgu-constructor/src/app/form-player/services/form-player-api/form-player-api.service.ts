@@ -7,7 +7,8 @@ import {
   ActionDTO,
   CheckOrderApiResponse,
   FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse, QuizRequestDto,
+  FormPlayerApiSuccessResponse,
+  QuizRequestDto,
 } from './form-player-api.types';
 import { FormPlayerNavigation, NavigationOptions, NavigationParams } from '../../form-player.types';
 import { ConfigService } from '../../../core/config/config.service';
@@ -57,7 +58,7 @@ export class FormPlayerApiService {
   public navigate(
     data: FormPlayerApiSuccessResponse,
     options: NavigationOptions = {},
-    formPlayerNavigation: FormPlayerNavigation
+    formPlayerNavigation: FormPlayerNavigation,
   ): Observable<FormPlayerApiResponse> {
     let path = this.getNavigatePath(data, options, formPlayerNavigation);
     data.scenarioDto.currentUrl = this.locationService.getHref();
@@ -86,8 +87,7 @@ export class FormPlayerApiService {
   }
 
   private getNavigateParams(params: NavigationParams = {}): HttpParams {
-    return Object.keys(params)
-      .reduce<HttpParams>((p, k) => p.set(k, params[k]), new HttpParams());
+    return Object.keys(params).reduce<HttpParams>((p, k) => p.set(k, params[k]), new HttpParams());
   }
 
   private getNavigatePath(
