@@ -210,16 +210,14 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param index индекс массива детей
    */
   handleSelect(event: ChildI | null, index?: number, id?: string): void {
-    console.log(id);
-    const clearEvent = {
-      isClear: event === null,
-      id,
-    };
-
     Object.assign(this.items[index], event);
     if (event && event[this.idRef] === this.NEW_ID) {
       this.addNewChild(index);
     } else {
+      const clearEvent = {
+        isClear: event === null,
+        id,
+      };
       this.passDataToSend(this.items, clearEvent);
     }
   }
@@ -247,11 +245,7 @@ export class SelectChildrenScreenComponent implements OnInit {
         const isNeedToHidden =
           isSelectChild && clearEvent?.isClear && selectedChild.controlId === clearEvent?.id;
 
-        if (isNeedToHidden) {
-          return false;
-        }
-
-        return isSelectChild;
+        return isNeedToHidden ? false : isSelectChild;
       });
 
       return child;
