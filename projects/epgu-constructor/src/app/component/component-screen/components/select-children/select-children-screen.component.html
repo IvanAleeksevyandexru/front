@@ -3,7 +3,7 @@
     <div class="select-children-screen__card" *ngFor="let item of items; let idx = index">
       <div class="card">
         <div class="card__wrapper">
-          <div class="card__header">
+          <div *ngIf="!isSingleChild" class="card__header">
             <div class="card__title">Ребенок {{ idx + 1 }}</div>
             <div class="card__close" *ngIf="isMoreThanOneChild()">
               <button (click)="removeChild(idx)" class="button-close">
