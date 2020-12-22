@@ -7,6 +7,7 @@ import {
   ScreenActionDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenBase } from '../screenBase';
+import { LocationService } from '../../core/services/location/location.service';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.
@@ -21,7 +22,7 @@ export class InfoScreenComponent extends ScreenBase implements OnInit {
   actionButtons: ComponentActionDto[] = [];
   screenActionButtons: ScreenActionDto[] = [];
 
-  constructor(public injector: Injector) {
+  constructor(public injector: Injector, public locationService: LocationService) {
     super(injector);
   }
 

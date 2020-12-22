@@ -1,16 +1,20 @@
 <epgu-constructor-screen-container
-  [show-nav]="screenService.showNav$ | async"
-  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+  *ngIf="{
+   showNav: screenService.showNav$ | async,
+   displayCssClass: screenService.displayCssClass$ | async,
+   header: screenService.header$ | async,
+   submitLabel: screenService.submitLabel$ | async,
+   isLoading: screenService.isLoading$ | async
+  } as async"
+  [show-nav]="async.showNav"
+  [class.screen-container-mt]="!async.showNav"
 >
   <epgu-constructor-screen-pad
     class="screen-body"
-    [ngClass]="screenService.displayCssClass$ | async"
+    [ngClass]="async.displayCssClass"
   >
-    <div *ngIf="screenService.header$ | async">
-      <epgu-constructor-page-name class="info__head">{{
-        screenService.header$ | async
-      }}</epgu-constructor-page-name>
-
+    <div *ngIf="async.header">
+      <epgu-constructor-page-name class="info__head">{{ async.header }}</epgu-constructor-page-name>
       <div class="divider"></div>
     </div>
 
@@ -25,15 +29,15 @@
       <ng-container *ngTemplateOutlet="screenActionBtns"></ng-container>
     </ng-container>
 
-    <div class="info__submit" *ngIf="screenService.submitLabel$ | async">
+    <div class="info__submit" *ngIf="async.submitLabel">
       <lib-button
         class="btn__submit"
         data-testid="submit-btn"
-        [showLoader]="screenService.isLoading$ | async"
+        [showLoader]="async.isLoading"
         (click)="nextStep()"
-        [disabled]="screenService.isLoading$ | async"
+        [disabled]="async.isLoading"
       >
-        {{ screenService.submitLabel$ | async }}
+        {{ async.submitLabel }}
       </lib-button>
     </div>
   </epgu-constructor-screen-pad>
@@ -42,7 +46,8 @@
     <lib-social-share
       class="social-share"
       [isNewDesign]="true"
-      [isNewDesignDisabled]="true"
+      [isNewDesignDisabled]="false"
+      [url]="locationService.getHref()"
     ></lib-social-share>
   </div>
 </epgu-constructor-screen-container>

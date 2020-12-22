@@ -18,6 +18,8 @@ import {
   DTOActionAction,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { By } from '@angular/platform-browser';
+import { LocationService } from '../../core/services/location/location.service';
+import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -60,6 +62,8 @@ describe('InfoScreenComponent', () => {
         MockDirective(ActionDirective),
       ],
       providers: [
+        LocationService,
+        WINDOW_PROVIDERS,
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
@@ -282,6 +286,6 @@ describe('InfoScreenComponent', () => {
     expect(debugEl).toBeTruthy();
 
     expect(debugEl.componentInstance.isNewDesign).toBeTruthy();
-    expect(debugEl.componentInstance.isNewDesignDisabled).toBeTruthy();
+    expect(debugEl.componentInstance.isNewDesignDisabled).toBeFalsy();
   });
 });
