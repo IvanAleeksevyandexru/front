@@ -108,7 +108,7 @@ export class FormPlayerApiService {
 
   private post<T>(path: string, body: Object, params?: HttpParams): Observable<T> {
     return this.http.post<T>(path, body, {
-      withCredentials: false,
+      withCredentials: true,
       params,
     });
   }
