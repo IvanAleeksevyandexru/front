@@ -3,19 +3,14 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class CurrentAnswersService {
 
-  // <-- component
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _state: any;
+  private _state: string | object;
   private _isValid: boolean;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get state (): any {
+  get state (): string | object {
     return this._state;
   }
 
-  // TODO привести все к json строке
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  set state (val: any) {
+  set state (val: string | object) {
     this._state = val;
   }
 

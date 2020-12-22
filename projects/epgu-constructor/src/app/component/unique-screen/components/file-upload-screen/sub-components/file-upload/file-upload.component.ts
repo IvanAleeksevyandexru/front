@@ -20,8 +20,7 @@ export class FileUploadComponent implements OnInit {
   @Input() prefixForMnemonic: string;
   @Input() uploadId: string = null;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Output() newValueSet = new EventEmitter<any>();
+  @Output() newValueSet = new EventEmitter<FileResponseToBackendUploadsItem>();
   @Output() newRelatedValueSet = new EventEmitter<FileResponseToBackendWithRelatedUploads>();
 
   @Input()
@@ -40,10 +39,7 @@ export class FileUploadComponent implements OnInit {
   fileUploadItemTypes = FileUploadItemTypes;
   refData: string = null;
   private attrs: FileUploadAttributes;
-  private value: {
-    files: FileResponseToBackendUploadsItem[]; // Здесь будет храниться значение на передачу
-    errors: string[];
-  } = { files: [], errors: [] };
+  private value: FileResponseToBackendUploadsItem = { files: [], errors: [] };
 
   constructor(private fileUploadService: FileUploadService) {}
 
@@ -96,7 +92,7 @@ export class FileUploadComponent implements OnInit {
       this.newRelatedValueSet.emit({
         uploadId: this.uploadId,
         uploads: this.value.files,
-      } as FileResponseToBackendWithRelatedUploads);
+      });
     }
   }
 
@@ -110,7 +106,7 @@ export class FileUploadComponent implements OnInit {
       relatedUploads: {
         uploads: $eventData.uploads,
       },
-    } as FileResponseToBackendUploadsItem);
+    });
   }
 
   /**
@@ -119,8 +115,10 @@ export class FileUploadComponent implements OnInit {
    * @param refBlock - блок ответов связанного компонента
    * @private
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private getRefSubLabels(attrs: FileUploadAttributes, refBlock: any): string {
+  private getRefSubLabels(
+    attrs: FileUploadAttributes,
+    refBlock: Array<{ [key: string]: string }>,
+  ): string {
     const subLabel = [];
     const isArrData = Array.isArray(refBlock);
 

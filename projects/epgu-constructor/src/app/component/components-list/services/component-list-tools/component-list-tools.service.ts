@@ -9,7 +9,8 @@ import {
   CustomComponentRefRelation,
   CustomListFormGroup,
   CustomListStatusElements,
-  CustomScreenComponentTypes
+  CustomScreenComponentTypes,
+  CustomScreenComponentValueTypes
 } from '../../components-list.types';
 import { ListItem } from 'epgu-lib';
 
@@ -136,7 +137,7 @@ export class ComponentListToolsService {
         shownElements = this.updateStatusElements(
           dependentComponent,
           reference,
-          component.value,
+          component.value as { [key: string]: string },
           components,
           form,
           shownElements
@@ -164,12 +165,9 @@ export class ComponentListToolsService {
     return shownElements;
   }
 
-  // TODO по возможности придумать как избавиться тут от any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  convertedValue(component: CustomComponent): any {
+  convertedValue(component: CustomComponent): CustomScreenComponentValueTypes {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const parseValue = (value): any => {
+    const parseValue = (value): CustomScreenComponentValueTypes => {
       if (isDateAndValue) {
         return new Date(value);
       } else if (this.isAddress(component.type)) {

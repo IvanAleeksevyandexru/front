@@ -29,6 +29,7 @@ import { ComponentListToolsService } from '../component-list-tools/component-lis
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { DictionaryConditions } from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 const moment = moment_;
 
@@ -88,7 +89,7 @@ export class ComponentListFormService {
         {
           ...component,
           value: this.toolsService.convertedValue(component),
-        },
+        } as CustomComponent,
         this.shownElements,
         this.form,
       );
@@ -309,7 +310,7 @@ export class ComponentListFormService {
             filter: {
               simple: {
                 attributeName: 'Id_Mark',
-                condition: 'EQUALS',
+                condition: DictionaryConditions.EQUALS,
                 value: {
                   asString: `${this.form.get(String(indexVehicle)).value?.value?.id}`,
                 },

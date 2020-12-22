@@ -108,7 +108,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   }
 
   getState(): Array<{ [key: string]: { value: string } }> {
-    return JSON.parse(this.currentAnswersService.state);
+    return JSON.parse(this.currentAnswersService.state as string);
   }
 
   saveState(state: Array<{ [key: string]: { value: string } }>): void {

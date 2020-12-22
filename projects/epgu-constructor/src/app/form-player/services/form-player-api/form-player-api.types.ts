@@ -4,7 +4,10 @@ import {
   TimerComponentDtoAction,
   TimerLabelSection
 } from '../../../component/component-screen/components/timer/timer.interface';
-import { DictionaryOptions } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
+import {
+  DictionaryConditions,
+  DictionaryOptions
+} from '../../../component/shared/services/dictionary-api/dictionary-api.types';
 import { Clarifications } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { Answer } from '../../../shared/types/answer';
@@ -180,12 +183,10 @@ export interface ComponentBaloonContentDto {
 
 export interface ComponentDictionaryFilterDto {
   attributeName: string;
-  condition: ComponentDictionaryFilterCondition;
+  condition: DictionaryConditions;
   value: string;
   valueType: string;
 }
-
-export type ComponentDictionaryFilterCondition = 'EQUALS' |'CONTAINS';
 
 export interface ComponentGIBDDpaymentErrorDto {
   text: string;

@@ -1,4 +1,5 @@
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+import { PaymentInfoInterface } from '../../../unique-screen/components/payment/payment.types';
 
 /**
  * @property {string}[treeFiltering='ONELEVEL'] -
@@ -9,8 +10,7 @@ import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
  * @property {string}tx -
  */
 export interface DictionaryOptions {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  filter?: any; // TODO
+  filter?: DictionaryFilters['filter'] | DictionarySubFilter;
   treeFiltering?: string;
   pageNum?: number;
   pageSize?: string | number;
@@ -45,11 +45,9 @@ export interface DictionaryResponseError {
  * @property {string}value - example: RUS
  */
 export interface DictionaryItem extends ListElement {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  attributeValues: {[key: string]: any}; // TODO
+  attributeValues: unknown | {[key: string]: string };
   attributes: Array<string | boolean>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  children: Array<any>; // TODO
+  children: Array<unknown>;
   isLeaf: boolean;
   parentValue: null;
   title: string;
@@ -70,9 +68,19 @@ export interface  DictionaryValue {
   asString: string;
 }
 
+export enum DictionaryConditions {
+  EQUALS = 'EQUALS',
+  CONTAINS = 'CONTAINS'
+}
+
+export enum DictionaryUnionKind {
+  AND = 'AND',
+  OR = 'OR'
+}
+
 export interface DictionarySimpleFilter {
   attributeName: string;
-  condition: 'EQUALS' | 'CONTAINS';
+  condition: DictionaryConditions;
   value: DictionaryValue;
 }
 export interface DictionarySubFilter {
@@ -83,7 +91,7 @@ export interface DictionaryFilters {
   filter: {
     union?:
     {
-      unionKind: 'AND' | 'OR';
+      unionKind: DictionaryUnionKind;
       subs: Array<DictionarySubFilter>;
     }
     pageNum?: number;
