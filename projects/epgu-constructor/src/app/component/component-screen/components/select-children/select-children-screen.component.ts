@@ -229,10 +229,6 @@ export class SelectChildrenScreenComponent implements OnInit {
     return screensAmount >= repeatAmount;
   }
 
-  isNewId(itemId: string = 'false'): boolean {
-    return JSON.parse(itemId);
-  }
-
   isMoreThanOneChild(): boolean {
     return this.items.length > 1;
   }
