@@ -355,7 +355,6 @@ export interface FormPlayerApiSuccessResponse {
 export interface QuizRequestDto extends FormPlayerApiSuccessResponse {
   serviceId: string;
   targetId: string;
-  answerServicePrefix: string;
 }
 
 export enum FormPlayerApiErrorStatuses {
