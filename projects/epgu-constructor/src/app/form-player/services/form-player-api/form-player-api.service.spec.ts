@@ -164,11 +164,11 @@ describe('FormPlayerApiService', () => {
       tick();
     }));
 
-    it('should call http post with withCredentials equal false', fakeAsync(() => {
+    it('should call http post with withCredentials equal true', fakeAsync(() => {
       service.getServiceData().subscribe(response => expect(response).toBe(responseMock));
       const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getService`);
       const withCredentials = req.request.withCredentials;
-      expect(withCredentials).toBe(false);
+      expect(withCredentials).toBe(true);
       req.flush(responseMock);
       tick();
     }));
