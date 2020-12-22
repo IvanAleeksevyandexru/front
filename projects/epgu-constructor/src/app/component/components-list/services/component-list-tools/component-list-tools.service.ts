@@ -23,6 +23,7 @@ export class ComponentListToolsService {
     CustomScreenComponentTypes.AddressInput,
     CustomScreenComponentTypes.CityInput,
     CustomScreenComponentTypes.PassportLookup,
+    CustomScreenComponentTypes.DocInput,
   ];
 
   private readonly availableComponentTypesToAddressParse = [

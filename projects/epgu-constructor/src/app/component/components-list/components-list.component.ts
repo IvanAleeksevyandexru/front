@@ -79,8 +79,8 @@ export class ComponentsListComponent implements OnChanges {
     return halfWidthItemTypes.includes(componentData.value?.type);
   }
 
-  public emmitChanges(): void {
-    this.formService.emmitChanges();
+  public emitChanges(): void {
+    this.formService.emitChanges();
   }
 
   private loadRepository(components: Array<CustomComponent>): void {
@@ -89,7 +89,7 @@ export class ComponentsListComponent implements OnChanges {
       .subscribe((references: Array<CustomListReferenceData>) => {
         references.forEach((reference: CustomListReferenceData) => {
           setTimeout(() => this.formService.patch(reference.component), 0);
-          this.formService.emmitChanges();
+          this.formService.emitChanges();
         });
       });
   }

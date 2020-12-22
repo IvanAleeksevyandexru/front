@@ -23,7 +23,10 @@ import {
   UpdateOn,
 } from '../../components-list.types';
 import { isDropDown } from '../../tools/custom-screen-tools';
-import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper/address-helper.service';
+import {
+  AddressHelperService,
+  DadataSuggestionsAddressForLookup,
+} from '../address-helper/address-helper.service';
 import { ComponentListRepositoryService } from '../component-list-repository/component-list-repository.service';
 import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
@@ -97,8 +100,8 @@ export class ComponentListFormService {
 
     this.watchFormArray$()
       .pipe(tap(() => this.relationMapChanges(this.lastChangedComponent[1])))
-      .subscribe(() => this.emmitChanges());
-    this.emmitChanges();
+      .subscribe(() => this.emitChanges());
+    this.emitChanges();
   }
 
   patch(component: CustomComponent): void {
@@ -131,7 +134,7 @@ export class ComponentListFormService {
     );
   }
 
-  async emmitChanges(): Promise<void> {
+  async emitChanges(): Promise<void> {
     const components = this.form.getRawValue();
     for (const component of components) {
       if (component?.type === CustomScreenComponentTypes.CityInput && component?.value) {

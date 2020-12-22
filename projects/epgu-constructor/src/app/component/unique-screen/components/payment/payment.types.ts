@@ -173,3 +173,36 @@ export interface HttpPaymentError{
   message: string;
   status: number;
 }
+
+/**
+ * Аттрибуты получения сведений для оплаты брака и разбрака
+ */
+export interface PaymentsAttrs {
+  nsi: string;
+  dictItemCode: string;
+  ref: { fiasCode: string };
+}
+
+/**
+ * Объект значений со сведений об оплате от бэка
+ */
+export interface PaymentInfoValue {
+  billNumber: string;
+  billId: number;
+  amount: string;
+  billName: string;
+  billDate: string;
+  payCode: number;
+}
+
+/**
+ * Объект для экпорта в бэк
+ */
+export interface PaymentInfoEventValue{
+  uin: string;
+  amount: string;
+  amountWithoutDiscount: string;
+  paymentPurpose: string;
+  receiver: string;
+}
+
