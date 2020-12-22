@@ -20,7 +20,7 @@
               <epgu-constructor-constructor-dropdown
                 [id]="idx"
                 [control]="selectChildrenForm.get(item.controlId)"
-                (changed)="handleSelect($event, idx)"
+                (changed)="handleSelect($event, idx, item.controlId)"
                 [items]="$any(itemsToSelect)"
               ></epgu-constructor-constructor-dropdown>
             </div>
@@ -29,7 +29,7 @@
                 (changes)="updateChild($event, item, idx)"
                 (emitFormStatus)="updateItemValidationStatus($event, item?.controlId)"
                 [components]="itemsComponents[idx]"
-                [errors]="screenService.getStore().errors"
+                [errors]="screenService.componentErrors$ | async"
               >
               </epgu-constructor-components-list>
             </section>
