@@ -168,7 +168,7 @@
       >
         <lib-date-picker
           (dateSelected)="
-            dateRangeService.changeDate($event, componentData.value?.attrs, componentData.value?.id)
+            dateRangeService.changeDate($event, componentData.value?.attrs, componentData.value?.id, formService.form)
           "
           (cleared)="
             dateRangeService.clearDate(componentData.value?.id, componentData.value?.attrs)
@@ -179,12 +179,12 @@
           [formControl]="$any(componentData.get('value'))"
           [readOnly]="componentData.value?.attrs?.readonly"
           [minDate]="
-            dateRangeService.getMinDate(componentData.value) ||
+            dateRangeService.getMinDate(componentData.value, formService.form) ||
             componentData.value?.attrs?.minDate ||
             '-120y'
           "
           [maxDate]="
-            dateRangeService.getMaxDate(componentData.value) ||
+            dateRangeService.getMaxDate(componentData.value, formService.form) ||
             componentData.value?.attrs?.maxDate ||
             '+50y'
           "

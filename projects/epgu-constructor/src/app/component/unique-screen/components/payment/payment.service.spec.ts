@@ -11,6 +11,8 @@ import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { PaymentService } from './payment.service';
 import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
+import { LocationService } from '../../../../core/services/location/location.service';
+import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -28,6 +30,8 @@ describe('PaymentService', () => {
         DictionaryApiService,
         ScreenService,
         UtilsService,
+        LocationService,
+        WINDOW_PROVIDERS,
         { provide: ConfigService, useClass: ConfigServiceStub },
         ValueLoaderService,
       ],

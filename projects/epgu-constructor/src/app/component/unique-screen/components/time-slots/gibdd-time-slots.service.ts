@@ -15,14 +15,13 @@ import {
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
-  TimeSlotValueInterface
+  TimeSlotValueInterface,
 } from './time-slots.types';
 
 const moment = moment_;
 
 @Injectable()
 export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
-
   public department: GibddDepartmentInterface;
   public activeMonthNumber: number;
   public activeYearNumber: number;
@@ -30,6 +29,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   public bookId;
 
   private orderId;
+  private serviceId: string;
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
   private errorMessage;
@@ -42,22 +42,22 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     if (this.bookedSlot) {
-      return this.cancelSlot(this.bookId)
-      .pipe(
+      return this.cancelSlot(this.bookId).pipe(
         switchMap((response) => {
-          if (!response.error) {
-            this.bookId = null;
-            return this.book(selectedSlot);
-          } else {
-            this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
+          if (response.error) {
+            this.errorMessage = response.error.errorDetail
+              ? response.error.errorDetail.errorMessage
+              : 'check log';
             console.log(response.error);
             return of(null);
           }
+
+          return this.book(selectedSlot);
         }),
-        catchError(error => {
+        catchError((error) => {
           this.errorMessage = error.message;
           return throwError(error);
-        })
+        }),
       );
     }
     return this.book(selectedSlot);
@@ -66,30 +66,34 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     this.errorMessage = undefined;
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
-      tap(response => {
-        if (!response.error) {
+      tap((response) => {
+        if (response.error) {
+          this.errorMessage = response.error.errorDetail
+            ? response.error.errorDetail.errorMessage
+            : 'check log';
+          console.log(response.error);
+        } else {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;
           this.activeMonthNumber = selectedSlot.slotTime.getMonth();
           this.activeYearNumber = selectedSlot.slotTime.getFullYear();
           response.timeStart = new Date();
           response.timeFinish = moment(response.timeStart).add(240, 'm').toDate();
-        } else {
-          this.errorMessage = response.error.errorDetail ? response.error.errorDetail.errorMessage : 'check log';
-          console.log(response.error);
         }
       }),
-      catchError( error => {
+      catchError((error) => {
         this.errorMessage = error.message;
         return throwError(error);
-      })
+      }),
     );
   }
 
   isDateLocked(date: Date): boolean {
-    return !this.slotsMap[date.getFullYear()]
-      || !this.slotsMap[date.getFullYear()][date.getMonth()]
-      || !this.slotsMap[date.getFullYear()][date.getMonth()][date.getDate()];
+    return (
+      !this.slotsMap[date.getFullYear()] ||
+      !this.slotsMap[date.getFullYear()][date.getMonth()] ||
+      !this.slotsMap[date.getFullYear()][date.getMonth()][date.getDate()]
+    );
   }
 
   getAvailableMonths(): string[] {
@@ -97,7 +101,9 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   getAvailableSlots(selectedDay: Date): Observable<SlotInterface[]> {
-    return of(this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()]);
+    return of(
+      this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()],
+    );
   }
 
   getBookedSlot(): SlotInterface {
@@ -125,20 +131,19 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
         this.cancelSlot(this.bookId).subscribe();
       }
       return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
-        map(response => {
-            if (response.error.errorDetail.errorCode === 0) {
-              this.initSlotsMap(response.slots);
-            } else {
-              const { errorMessage, errorCode } = response.error.errorDetail;
-              this.errorMessage = errorMessage || errorCode;
-            }
-            this.initActiveMonth();
+        map((response) => {
+          if (response.error.errorDetail.errorCode === 0) {
+            this.initSlotsMap(response.slots);
+          } else {
+            const { errorMessage, errorCode } = response.error.errorDetail;
+            this.errorMessage = errorMessage || errorCode;
           }
-        ),
-        catchError( error => {
+          this.initActiveMonth();
+        }),
+        catchError((error) => {
           this.errorMessage = error.message;
           return throwError(error);
-        })
+        }),
       );
     }
 
@@ -157,9 +162,9 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     let changed = false;
 
     let department = JSON.parse(data.department);
-    if (!this.department || this.department.value !== department.value) {
+    this.isDepartmentChanged = this.department?.value !== department.value;
+    if (this.isDepartmentChanged) {
       changed = true;
-      this.isDepartmentChanged = !!this.department;
       this.department = department;
     }
 
@@ -167,6 +172,12 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     if (!this.orderId || this.orderId !== orderId) {
       changed = true;
       this.orderId = orderId;
+    }
+
+    let serviceId = data.serviceId;
+    if (!this.serviceId || this.serviceId !== serviceId) {
+      changed = true;
+      this.serviceId = serviceId;
     }
 
     return changed;
@@ -185,28 +196,24 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getSlotsRequest(): TimeSlotReq {
-    const {
-      serviceId,
-      eserviceId,
-      routeNumber,
-    } = this.config.timeSlots.gibdd;
+    const { serviceId, eserviceId, routeNumber } = this.config.timeSlots.gibdd;
 
     return {
       organizationId: [this.department.attributeValues.code],
       caseNumber: this.orderId,
-      serviceId: [serviceId],
+      serviceId: [this.serviceId || serviceId],
       eserviceId,
       routeNumber,
       attributes: [
         {
           name: 'organizationId',
-          value: this.department.attributeValues.code
+          value: this.department.attributeValues.code,
         },
         {
           name: 'serviceId',
-          value: serviceId
-        }
-      ]
+          value: this.serviceId || serviceId,
+        },
+      ],
     };
   }
 
@@ -242,15 +249,11 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
       attributes: [
         {
           name: 'serviceId',
-          value: serviceId
-        }
+          value: this.serviceId || serviceId,
+        },
       ],
-      slotId: [
-        selectedSlot.slotId
-      ],
-      serviceId: [
-        serviceId
-      ]
+      slotId: [selectedSlot.slotId],
+      serviceId: [this.serviceId || serviceId],
     };
   }
 
@@ -264,7 +267,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
       let monthSlots = this.slotsMap[slotDate.getFullYear()];
       if (!monthSlots[slotDate.getMonth()]) {
         monthSlots[slotDate.getMonth()] = {};
-        this.availableMonths.push(`${slotDate.getFullYear()}-${slotDate.getMonth()+1}`);
+        this.availableMonths.push(`${slotDate.getFullYear()}-${slotDate.getMonth() + 1}`);
       }
 
       let daySlots = monthSlots[slotDate.getMonth()];
@@ -282,8 +285,18 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
-    this.bookedSlot = null;
-    return this.smev3TimeSlotsRestService.cancelSlot(
-      { eserviceId: this.config.timeSlots.gibdd.eserviceId, bookId });
+    return this.smev3TimeSlotsRestService
+      .cancelSlot({
+        eserviceId: this.config.timeSlots.gibdd.eserviceId,
+        bookId,
+      })
+      .pipe(
+        tap((response) => {
+          if (!response.error) {
+            this.bookedSlot = null;
+            this.bookId = null;
+          }
+        }),
+      );
   }
 }

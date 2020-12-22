@@ -25,6 +25,8 @@ import { ActionDirective } from '../../shared/directives/action/action.directive
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { QuestionsScreenComponent } from './questions-screen.component';
+import { LocationService } from '../../core/services/location/location.service';
+import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -88,6 +90,8 @@ describe('QuestionsScreenComponent', () => {
         MockPipe(ImgPrefixerPipe, (value) => `ImgPrefixerFakePipe:${value}`),
       ],
       providers: [
+        LocationService,
+        WINDOW_PROVIDERS,
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },

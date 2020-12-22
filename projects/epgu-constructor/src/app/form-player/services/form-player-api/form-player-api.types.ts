@@ -131,6 +131,8 @@ export interface ComponentAttrsDto {
   redirectLabel?: string;
   repeatableComponents?: Array<Array<ComponentDto>>;
   singleChild?: boolean;
+  minDateRef?: string;
+  maxDateRef?: string;
 }
 
 export interface ComponentUploadedFileDto {
@@ -265,6 +267,9 @@ export interface ComponentActionDto {
   link?: string;
   underConstruction?: boolean;
   hint?: string;
+  attrs?: {
+    stepsBack?: number;
+  }
 }
 
 export interface ScreenActionDto extends ComponentActionDto {}
@@ -348,6 +353,12 @@ export interface FormPlayerApiSuccessResponse {
   isInternalScenario?: boolean;
 }
 
+export interface QuizRequestDto extends FormPlayerApiSuccessResponse {
+  serviceId: string;
+  targetId: string;
+  answerServicePrefix: string;
+}
+
 export enum FormPlayerApiErrorStatuses {
   badRequest = 'BAD_REQUEST',
 }
@@ -375,6 +386,7 @@ export enum ActionType {
   nextStep = 'nextStep',
   skipStep = 'skipStep',
   redirectToLK = 'redirectToLK',
+  quizToOrder = 'quizToOrder',
   profileEdit = 'profileEdit',
   home = 'home',
 }

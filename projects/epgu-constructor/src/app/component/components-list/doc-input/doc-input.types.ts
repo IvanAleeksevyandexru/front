@@ -26,7 +26,7 @@ interface DocInputField {
   attrs: {
     labelHint?: string;
     mask?: Array<string>;
-    validation?: CustomComponentAttrValidation[],
+    validation?: CustomComponentAttrValidation[];
     maxDate?: string;
     minDate?: string;
     accuracy?: string;
@@ -40,6 +40,7 @@ interface DocInputFormFields {
     number: number;
     date: string | Date;
   };
+  expirationDate?: string | Date;
   emitter: string;
 }
 
@@ -50,4 +51,10 @@ interface DocInputFields {
   emitter: string;
 }
 
-export { DocInputControl, DocInputComponentData, DocInputField, DocInputFormFields, DocInputFields };
+export {
+  DocInputControl,
+  DocInputComponentData,
+  DocInputField,
+  DocInputFormFields,
+  DocInputFields,
+};

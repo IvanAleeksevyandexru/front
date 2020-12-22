@@ -17,7 +17,7 @@ import {
   ActionApiResponse,
   ActionType,
   ComponentDto,
-  ComponentDtoAction,
+  ComponentActionDto,
   DTOActionAction,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { Observable, of } from 'rxjs';
@@ -25,6 +25,9 @@ import { FormPlayerApiServiceStub } from '../../../form-player/services/form-pla
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConfigService } from '../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../core/config/config.service.stub';
+import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
+import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 
 @Component({
   selector: 'epgu-constructor-action-test',
@@ -38,62 +41,69 @@ import { ConfigServiceStub } from '../../../core/config/config.service.stub';
     <button class="redirectToLK" epgu-constructor-action [action]="redirectToLKAction"></button>
     <button class="profileEdit" epgu-constructor-action [action]="profileEditAction"></button>
     <button class="home" epgu-constructor-action [action]="homeAction"></button>
+    <button class="quizToOrder" epgu-constructor-action [action]="quizToOrder"></button>
   `,
 })
 export class ActionTestComponent {
-  downloadAction: ComponentDtoAction = {
+  downloadAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.download,
   };
-  prevStepModalAction: ComponentDtoAction = {
+  prevStepModalAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.prevStepModal,
   };
-  nextStepModalAction: ComponentDtoAction = {
+  nextStepModalAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.nextStepModal,
   };
-  skipStepAction: ComponentDtoAction = {
+  skipStepAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.skipStep,
   };
-  prevStepAction: ComponentDtoAction = {
+  prevStepAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.prevStep,
   };
-  nextStepAction: ComponentDtoAction = {
+  nextStepAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.nextStep,
   };
-  redirectToLKAction: ComponentDtoAction = {
+  redirectToLKAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.redirectToLK,
   };
-  profileEditAction: ComponentDtoAction = {
+  profileEditAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.profileEdit,
   };
-  homeAction: ComponentDtoAction = {
+  homeAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.home,
+  };
+  quizToOrder: ComponentActionDto = {
+    label: '',
+    value: '',
+    action: '/to-some-order' as DTOActionAction,
+    type: ActionType.quizToOrder,
   };
 }
 
@@ -118,6 +128,7 @@ describe('ActionDirective', () => {
   let navigationService: NavigationService;
   let navigationModalService: NavigationModalService;
   let utilsService: UtilsService;
+  let localStorageService: LocalStorageService;
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ActionDirective, ActionTestComponent],
@@ -128,6 +139,7 @@ describe('ActionDirective', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
@@ -140,6 +152,7 @@ describe('ActionDirective', () => {
         navigationService = TestBed.inject(NavigationService);
         navigationModalService = TestBed.inject(NavigationModalService);
         utilsService = TestBed.inject(UtilsService);
+        localStorageService = TestBed.inject(LocalStorageService);
         jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
         jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
       });
@@ -175,28 +188,28 @@ describe('ActionDirective', () => {
   it('test directive - skipStep Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.skipStep')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationService.skipStep, 'next').and.callThrough();
+    spyOn(navigationService, 'skip').and.callThrough();
     button.click();
 
-    expect(navigationService.skipStep.next).toHaveBeenCalled();
+    expect(navigationService.skip).toHaveBeenCalled();
   });
 
   it('test directive - nextStep Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.nextStep')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationService.nextStep, 'next').and.callThrough();
+    spyOn(navigationService, 'next').and.callThrough();
     button.click();
 
-    expect(navigationService.nextStep.next).toHaveBeenCalled();
+    expect(navigationService.next).toHaveBeenCalled();
   });
 
   it('test directive - prevStep Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.prevStep')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationService.prevStep, 'next').and.callThrough();
+    spyOn(navigationService, 'prev').and.callThrough();
     button.click();
 
-    expect(navigationService.prevStep.next).toHaveBeenCalled();
+    expect(navigationService.prev).toHaveBeenCalled();
   });
 
   it('test directive - redirectToLK Action', () => {
@@ -224,5 +237,17 @@ describe('ActionDirective', () => {
     button.click();
 
     expect(navigationService.redirectToHome).toHaveBeenCalled();
+  });
+
+  it('test directive - quizToOrder Action', () => {
+    const button: HTMLElement = fixture.debugElement.query(By.css('.quizToOrder')).nativeElement;
+    fixture.detectChanges();
+    spyOn(navigationService, 'redirectTo').and.callThrough();
+    spyOn(screenService, 'getStore').and.returnValue({});
+    spyOn(localStorageService, 'set').and.callThrough();
+    button.click();
+
+    expect(localStorageService.set).toHaveBeenCalledWith(QUIZ_SCENARIO_KEY, {});
+    expect(navigationService.redirectTo).toHaveBeenCalledWith('/to-some-order');
   });
 });

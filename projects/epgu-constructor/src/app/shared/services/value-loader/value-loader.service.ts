@@ -34,6 +34,13 @@ export class ValueLoaderService {
       const hasPresetTypeRef = item.attrs?.preset?.type === 'REF';
       const cachedValue = this.getCache(item.type, item.id, cachedAnswers);
 
+      if (item.attrs.minDateRef) {
+        item.attrs.minDate = this.getLimitDate(cachedAnswers, item.attrs.minDateRef);
+      }
+
+      if (item.attrs.maxDateRef) {
+        item.attrs.maxDate = this.getLimitDate(cachedAnswers, item.attrs.minDateRef);
+      }
       if (hasPresetTypeRef && !cachedValue) {
         return this.getPresetValue(item, cachedAnswers);
       }
@@ -47,37 +54,32 @@ export class ValueLoaderService {
     cachedAnswers: CachedAnswers,
     parentComponent: ComponentDto,
   ): Array<Array<ComponentDto>> {
-    const cachedValue = this.getCache(parentComponent.type, parentComponent.id, cachedAnswers);
+    const cachedValue =
+      this.getCache(parentComponent.type, parentComponent.id, cachedAnswers) ||
+      parentComponent.value ||
+      null;
     const cachedValueArray: Array<{ [key: string]: string }> = JSON.parse(cachedValue) || [];
 
     if (cachedValueArray.length) {
       let repeatableFieldComponents: Array<Array<ComponentDto>> = [];
       cachedValueArray.forEach((component, index) => {
         repeatableFieldComponents.push(
-          this.getCacheRepeatableField(components, cachedAnswers, parentComponent, index),
+          this.getCacheRepeatableField(components, cachedValue, index),
         );
       });
 
       return repeatableFieldComponents;
     } else {
-      return [this.getCacheRepeatableField(components, cachedAnswers, parentComponent, 0)];
+      return [this.getCacheRepeatableField(components, cachedValue, 0)];
     }
   }
 
   private getCacheRepeatableField(
     components: Array<ComponentDto>,
-    cachedAnswers: CachedAnswers,
-    parentComponent: ComponentDto,
+    cachedValue: string,
     index: number,
   ): Array<ComponentDto> {
     return components.map((item) => {
-      const hasPresetTypeRef = item.attrs?.preset?.type === 'REF';
-      const cachedValue = this.getCache(item.type, parentComponent.id, cachedAnswers);
-
-      if (hasPresetTypeRef && !cachedValue) {
-        return this.getPresetValue(item, cachedAnswers);
-      }
-
       return this.getComponentWithCaches(item, cachedValue, item.id, index);
     });
   }
@@ -125,7 +127,7 @@ export class ValueLoaderService {
    * TODO нужно утащить на backend (HARDCODE from backend)
    */
   private getPresetValue(item: ComponentDto, cachedAnswers: CachedAnswers): ComponentDto {
-    const [id, path] = item.attrs.preset.value.split(/\.(.+)/);
+    const { id, path } = this.getPathFromPreset(item.attrs.preset.value);
     const cachedValue = JSON.parse(
       this.cachedAnswersService.getCachedValueById(cachedAnswers, id) || '{}',
     );
@@ -169,5 +171,21 @@ export class ValueLoaderService {
     }
 
     return component;
+  }
+
+  private getLimitDate(cachedAnswers: CachedAnswers, preset: string): string {
+    const { path, id } = this.getPathFromPreset(preset);
+    const cache = cachedAnswers[id].value;
+
+    if (this.utils.hasJsonStructure(cache)) {
+      return UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
+    } else {
+      return cache;
+    }
+  }
+
+  private getPathFromPreset(value: string): { id: string; path: string } {
+    const [id, path] = value.split(/\.(.+)/);
+    return { id, path };
   }
 }

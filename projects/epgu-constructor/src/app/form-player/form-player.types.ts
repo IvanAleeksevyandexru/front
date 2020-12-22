@@ -1,5 +1,5 @@
 import { Answer } from '../shared/types/answer';
-import { FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
+import { ComponentActionDto, FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
 
 /**
  * @property serviceId - идентификатор услуги в formPlayerApi
@@ -15,7 +15,7 @@ export interface Service {
   orderId?: string;
   invited?: boolean;
   canStartNew?: boolean;
-  apiUrl?: string;
+  configId?: string;
   initState?: string;
 }
 
@@ -38,12 +38,16 @@ export interface NavigationPayload {
 /**
  * @property {FormPlayerNavigation}direction - направление движения навигации
  * @property {string}url - адресс на который нужно стучатся (иногда в actions приходит url)
+ * @property {NavigationParams}params - query params для navigate методов
  */
 export interface NavigationOptions {
   isInternalScenarioFinish?: boolean;
   url?: string;
   store?: FormPlayerApiSuccessResponse;
+  params?: NavigationParams;
 }
+
+export type NavigationParams = Pick<ComponentActionDto['attrs'], 'stepsBack'>;
 
 export interface Navigation {
   payload?: NavigationPayload;

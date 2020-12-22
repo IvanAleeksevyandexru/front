@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Config, MockApi, TimeSlotsApi } from './config.types';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
   _apiUrl = '/api';
+  _configApiUrl = '/api';
+  _configId = 'default-config';
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
   _timeSlotApiUrl = '';
@@ -21,9 +24,22 @@ export class ConfigServiceStub implements Config {
   _timeSlots = {};
   _disableUnderConstructionMode = false;
   _addToCalendarUrl = '';
+  _isLoaded$ = of(false);
 
   get apiUrl(): string {
     return this._apiUrl;
+  }
+
+  get configApiUrl(): string {
+    return this._configApiUrl;
+  }
+
+  get configId(): string {
+    return this._configId;
+  }
+
+  set configId(configId: string) {
+    this._configId = configId;
   }
 
   get billsApiUrl(): string {
@@ -88,6 +104,10 @@ export class ConfigServiceStub implements Config {
 
   get disableUnderConstructionMode(): boolean {
     return this._disableUnderConstructionMode;
+  }
+
+  get isLoaded$(): Observable<boolean> {
+    return this._isLoaded$;
   }
 
   initCore(): void {}

@@ -13,7 +13,7 @@ import {
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface
 } from './payment.types';
-import { DictionaryItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { LocationService } from '../../../../core/services/location/location.service';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -26,7 +26,8 @@ export class PaymentService {
     public http: HttpClient,
     public config: ConfigService,
     public dictionaryApiService: DictionaryApiService,
-    public screenService: ScreenService
+    public screenService: ScreenService,
+    private locationService: LocationService
   ) {}
 
   /**
@@ -113,7 +114,7 @@ export class PaymentService {
    */
   getReturnUrl(): string {
     const slashInEndRex = /\/$/;
-    const href = location.href.replace(slashInEndRex,'');
+    const href = this.locationService.getHref().replace(slashInEndRex,'');
     const haveQuestion = href.includes('?');
     const glueParam = haveQuestion ? '&' : '?';
     const historyParam = 'getLastScreen=1';

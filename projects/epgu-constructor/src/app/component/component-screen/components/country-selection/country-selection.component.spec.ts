@@ -36,7 +36,6 @@ xdescribe('CountrySelectionComponent', () => {
   beforeEach(async(() => {
     fixture = TestBed.createComponent(CountrySelectionComponent);
     component = fixture.componentInstance;
-    component.data = mockData;
     component.form = new FormGroup({});
     fixture.detectChanges();
   }));

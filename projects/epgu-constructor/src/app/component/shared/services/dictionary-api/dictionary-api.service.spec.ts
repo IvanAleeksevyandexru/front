@@ -68,7 +68,7 @@ describe('DictionaryApiService', () => {
         filter: undefined,
         treeFiltering: 'ONELEVEL',
         pageNum: 1,
-        pageSize: '1000',
+        pageSize: '10000',
         parentRefItemValue: '',
         selectAttributes: ['*'],
         tx: '',

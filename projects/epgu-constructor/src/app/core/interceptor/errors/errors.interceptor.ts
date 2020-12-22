@@ -17,12 +17,14 @@ import { AUTH_ERROR_MODAL_PARAMS, COMMON_ERROR_MODAL_PARAMS } from './errors.int
 import { ModalService } from '../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
+import { LocationService } from '../../services/location/location.service';
 
 @Injectable()
 export class ErrorsInterceptorService implements HttpInterceptor {
 
   constructor(
     private modalService: ModalService,
+    private locationService: LocationService,
   ) { }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,7 +45,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
   private handleResponseError(error: any): Observable<HttpEvent<void | never>> {
     if (error.status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).subscribe((result) => {
-        result === 'login' ? window.location.reload() : window.location.href = '/';
+        result === 'login' ? this.locationService.reload() : this.locationService.href('/');
       });
     } else if (error.status !== 404) {
       this.showModal(COMMON_ERROR_MODAL_PARAMS);

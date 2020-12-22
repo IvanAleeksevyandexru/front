@@ -3,35 +3,28 @@ import {
   Component,
   HostBinding,
   Input,
-  NgZone,
   OnChanges,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
 import { LoadService } from 'epgu-lib';
 import { filter, mergeMap, takeUntil, tap, take } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 import { ConfigService } from '../core/config/config.service';
-import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
-import { LoggerService } from '../core/services/logger/logger.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../screen/screen.service';
 import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
-import {
-  CheckOrderApiResponse,
-  FormPlayerApiSuccessResponse,
-} from './services/form-player-api/form-player-api.types';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { ServiceDataService } from './services/service-data/service-data.service';
-import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
-import { Config } from '../core/config/config.types';
+import { FormPlayerStartService } from './services/form-player-start/form-player-start.service';
 
 @Component({
   selector: 'epgu-constructor-form-player',
   templateUrl: './form-player.component.html',
   styleUrls: ['../../styles/index.scss'],
-  providers: [UnsubscribeService],
+  providers: [UnsubscribeService, FormPlayerStartService],
   encapsulation: ViewEncapsulation.None,
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
@@ -39,11 +32,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('attr.test-screen-id') screenId: string;
   @Input() service: Service;
 
-  isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
-  isFirstLoading$ = this.screenService.isLoading$.pipe(take(3));
+  public isFirstLoading$ = this.screenService.isLoading$.pipe(take(3));
+  private isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
+  private isConfigReady$ = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private deviceDetector: DeviceDetectorService,
     private serviceDataService: ServiceDataService,
     public formPlayerConfigApiService: FormPlayerConfigApiService,
     public formPlayerService: FormPlayerService,
@@ -51,10 +44,8 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     private ngUnsubscribe$: UnsubscribeService,
     public configService: ConfigService,
     public loadService: LoadService,
-    public continueOrderModalService: ContinueOrderModalService,
-    private zone: NgZone,
     public screenService: ScreenService,
-    private loggerService: LoggerService,
+    public formPlayerStartService: FormPlayerStartService,
   ) {}
 
   ngOnInit(): void {
@@ -75,23 +66,17 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   private initFormPlayerConfig(): void {
     this.isCoreConfigLoaded$
       .pipe(
-        tap(() => this.configService.initCore(this.getResultConfig())),
+        tap(() => {
+          this.configService.configId = this.service.configId;
+          this.configService.initCore();
+        }),
         mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()),
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe((config) => {
-        this.configService.config = this.getResultConfig(config);
+        this.configService.config = config;
+        this.isConfigReady$.next(true);
       });
-  }
-
-  private getResultConfig(config?: Config): Config {
-    const resultConfig: Config = { ...config };
-
-    if (this.service.apiUrl) {
-      resultConfig.apiUrl = this.service.apiUrl;
-    }
-
-    return resultConfig;
   }
 
   private initNavigation(): void {
@@ -115,77 +100,13 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private startPlayer(): void {
-    this.isCoreConfigLoaded$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      const { orderId, invited, canStartNew, initState } = this.service;
-      if (initState) {
-        this.startScenarioFromProps();
-      } else if (this.hasOrderStatus(orderId, invited, canStartNew)) {
-        this.handleOrder(orderId, invited, canStartNew);
-      } else if (orderId) {
-        this.getOrderStatus();
-      } else {
-        this.getOrderIdFromApi();
-      }
-    });
-  }
-
-  private hasOrderStatus(orderId?: string, invited?: boolean, canStartNew?: boolean): boolean {
-    return orderId && (typeof invited === 'boolean' || typeof canStartNew === 'boolean');
-  }
-
-  private startScenarioFromProps(): void {
-    const store = JSON.parse(this.service.initState) as FormPlayerApiSuccessResponse;
-    this.loggerService.log(['initState', store], 'Запуск плеера из предустановленого состояния');
-    this.formPlayerService.store = store;
-    const payload = store.scenarioDto.currentValue;
-    this.formPlayerService.navigate({ payload }, FormPlayerNavigation.NEXT);
-  }
-
-  private getOrderStatus(): void {
-    this.formPlayerService
-      .getOrderStatus(this.service.orderId)
-      .subscribe((checkOrderApiResponse) => {
-        this.handleOrderDataResponse(checkOrderApiResponse);
-      });
-  }
-
-  private getOrderIdFromApi(): void {
-    this.formPlayerService.checkIfOrderExist().subscribe((checkOrderApiResponse) => {
-      this.handleOrderDataResponse(checkOrderApiResponse);
-    });
-  }
-
-  private handleOrderDataResponse(checkOrderApiResponse: CheckOrderApiResponse): void {
-    const { isInviteScenario: invited, canStartNew, orderId } = checkOrderApiResponse;
-    this.serviceDataService.invited = invited;
-    this.serviceDataService.orderId = orderId;
-    this.serviceDataService.canStartNew = canStartNew;
-    this.handleOrder(orderId, invited, canStartNew);
-  }
-
-  private handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean): void {
-    if (this.shouldShowContinueOrderModal(orderId, invited, canStartNew)) {
-      this.showContinueOrderModal();
-    } else {
-      this.formPlayerService.initData(orderId, invited);
-    }
-  }
-
-  private shouldShowContinueOrderModal(
-    orderId?: string,
-    invited?: boolean,
-    canStartNew?: boolean,
-  ): boolean {
-    return !invited && canStartNew && !!orderId && !this.formPlayerService.isNeedToShowLastScreen();
-  }
-
-  private showContinueOrderModal(): void {
-    this.continueOrderModalService
-      .openModal()
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((result) => {
-        const orderId = result ? this.serviceDataService.orderId : null;
-        this.formPlayerService.initData(orderId, false);
+    this.isConfigReady$
+      .pipe(
+        filter((loaded: boolean) => loaded),
+        takeUntil(this.ngUnsubscribe$),
+      )
+      .subscribe(() => {
+        this.formPlayerStartService.startPlayer();
       });
   }
 

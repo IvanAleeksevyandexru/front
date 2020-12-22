@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { LocationService } from '../../../core/services/location/location.service';
 
 /**
  * Модуль для редиректа на нужный адрес
@@ -8,7 +9,9 @@ import { Component, Input } from '@angular/core';
   template: '',
 })
 export class RedirectComponent {
+  constructor(private locationService: LocationService) {}
+
   @Input() set link(link: string) {
-    window.location.href = link;
+    this.locationService.href(link);
   }
 }

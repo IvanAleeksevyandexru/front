@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, startWith, take, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as uuid from 'uuid';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -57,16 +57,18 @@ export class SelectChildrenScreenComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$), take(1)).subscribe((data) => {
       this.initVariables(data.id);
       this.initStartValues(data.id);
     });
 
-    this.selectChildrenForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() =>
-      setTimeout(() => {
-        this.updateCurrentAnswerServiceValidation();
-      }),
-    );
+    this.selectChildrenForm.valueChanges
+      .pipe(startWith(this.selectChildrenForm.value as object), takeUntil(this.ngUnsubscribe$))
+      .subscribe(() =>
+        setTimeout(() => {
+          this.updateCurrentAnswerServiceValidation();
+        }),
+      );
   }
 
   initVariables(id: string): void {
