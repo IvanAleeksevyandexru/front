@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { ValidationService } from '../../../shared/services/validation/validation.service';
 import { ComponentListFormService } from '../services/component-list-form/component-list-form.service';
 import {
   DocInputControl,
@@ -14,11 +15,6 @@ import {
 } from './doc-input.types';
 
 const moment = moment_;
-
-enum ValidatorTypes {
-  RegExp = 'RegExp',
-  Required = 'required',
-}
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -41,6 +37,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
     private formService: ComponentListFormService,
+    private validationService: ValidationService,
     private fb: FormBuilder,
   ) {}
 
@@ -128,7 +125,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     };
 
     this.fieldsNames.forEach((fieldName: string) => {
-      const validators = this.getFormFieldValidators(fieldName);
+      const validators = [this.validationService.customValidator(this.fields[fieldName])];
 
       if (Object.prototype.hasOwnProperty.call(seriesNumDate, fieldName)) {
         seriesNumDate[fieldName] = new FormControl(componentValues[fieldName], [...validators]);
@@ -148,7 +145,9 @@ export class DocInputComponent implements OnInit, AfterViewInit {
         : null;
       this.form.setControl(
         this.expirationDateName,
-        new FormControl(expirationDate, [...this.getFormFieldValidators(this.expirationDateName)]),
+        new FormControl(expirationDate, [
+          ...[this.validationService.customValidator(this.fields[this.expirationDateName])],
+        ]),
       );
     }
   }
@@ -159,62 +158,6 @@ export class DocInputComponent implements OnInit, AfterViewInit {
 
   isValidationShown(control: string | string[]): boolean {
     return this.form.get(control).invalid && this.form.get(control).dirty;
-  }
-
-  getFormFieldValidators(fieldName: string): ValidatorFn[] {
-    const validators: ValidatorFn[] = [];
-
-    if (this.fields[fieldName]?.attrs?.validation) {
-      this.fields[fieldName]?.attrs?.validation.forEach((validationItem) => {
-        validators.push(
-          this.getCustomValidator({
-            validationType: validationItem.type,
-            msg: validationItem.errorMsg,
-            pattern: validationItem.value,
-          }),
-        );
-      });
-    }
-
-    if (this.fields[fieldName]?.required) {
-      validators.push(
-        this.getCustomValidator({
-          validationType: ValidatorTypes.Required,
-          msg: 'Поле обязательно для заполнения',
-        }),
-      );
-    }
-
-    return validators;
-  }
-
-  getCustomValidator(config: {
-    validationType: string;
-    pattern?: string;
-    msg: string;
-  }): ValidatorFn {
-    return (control: FormControl): Function => {
-      const validationHandler = this.getValidationHandler()[config.validationType];
-      return validationHandler(control, config);
-    };
-  }
-
-  getValidationHandler(): { [key: string]: Function } {
-    const regExp = (control, config): { msg: string } => {
-      if (control.value && !control.value.match(config.pattern)) {
-        return { msg: config.msg };
-      }
-      return null;
-    };
-
-    const required = (control, config): { msg: string } => {
-      if (!control.value) {
-        return { msg: config.msg };
-      }
-      return null;
-    };
-
-    return { [ValidatorTypes.RegExp]: regExp, [ValidatorTypes.Required]: required };
   }
 
   private getParsedComponentValues(): DocInputFields {
