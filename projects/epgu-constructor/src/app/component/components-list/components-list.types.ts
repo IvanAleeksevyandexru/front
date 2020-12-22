@@ -145,6 +145,7 @@ export enum CustomComponentRefRelation {
   displayOff = 'displayOff',
   disabled = 'disabled',
   calc = 'calc',
+  autofillFromDictionary = 'autofillFromDictionary',
 }
 
 export enum CustomComponentValidationConditions {
