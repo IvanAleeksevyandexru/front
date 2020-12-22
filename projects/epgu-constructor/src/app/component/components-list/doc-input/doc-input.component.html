@@ -1,8 +1,5 @@
 <section class="doc-input">
-  <div
-    *ngIf="data.value.label && isValidationShown(seriesNumDateGroup)"
-    class="doc-input__title"
-  >
+  <div *ngIf="data.value.label && isValidationShown(seriesNumDateGroup)" class="doc-input__title">
     <span>{{ data.value.label }}</span>
   </div>
   <div class="form__error">
@@ -11,7 +8,7 @@
         {{ fields[fieldName]?.label }}: {{ form.get([seriesNumDateGroup, fieldName]).errors.msg }}
       </span>
     </epgu-constructor-input-error>
-    <epgu-constructor-input-error *ngIf="hasExpirationDate" >
+    <epgu-constructor-input-error *ngIf="hasExpirationDate">
       <span *ngIf="isValidationShown(expirationDateName)">
         {{ fields[expirationDateName]?.label }}: {{ form.get(expirationDateName).errors.msg }}
       </span>
@@ -36,6 +33,7 @@
         [showConstantMaskSymbols]="true"
         [invalid]="isValidationShown([seriesNumDateGroup, 'series'])"
         [validationShowOn]="validationShowOn"
+        [component]="fields['series']"
       ></epgu-constructor-masked-input>
       <ng-template #plainInputSeries>
         <epgu-constructor-constructor-plain-input
@@ -45,6 +43,7 @@
           [placeholder]="fields['series']?.placeholder"
           [invalid]="isValidationShown([seriesNumDateGroup, 'series'])"
           [validationShowOn]="validationShowOn"
+          [component]="fields['series']"
         ></epgu-constructor-constructor-plain-input>
       </ng-template>
       <epgu-constructor-helper-text *ngIf="fields['series']?.hint as hint" class="doc-input__hint">
@@ -68,6 +67,7 @@
         [showConstantMaskSymbols]="true"
         [invalid]="isValidationShown([seriesNumDateGroup, 'number'])"
         [validationShowOn]="validationShowOn"
+        [component]="fields['number']"
       ></epgu-constructor-masked-input>
       <ng-template #plainInputNumber>
         <epgu-constructor-constructor-plain-input
@@ -77,6 +77,7 @@
           [placeholder]="fields['number']?.placeholder"
           [invalid]="isValidationShown([seriesNumDateGroup, 'number'])"
           [validationShowOn]="validationShowOn"
+          [component]="fields['number']"
         ></epgu-constructor-constructor-plain-input>
       </ng-template>
       <epgu-constructor-helper-text *ngIf="fields['number']?.hint as hint" class="doc-input__hint">
@@ -105,7 +106,7 @@
       </epgu-constructor-helper-text>
     </div>
   </div>
-  <ng-template  #expireDate>
+  <ng-template #expireDate>
     <div class="doc-input__group">
       <div class="doc-input__group-item doc-input__series">
         <epgu-constructor-label
@@ -124,6 +125,7 @@
           [showConstantMaskSymbols]="true"
           [invalid]="isValidationShown([seriesNumDateGroup, 'series'])"
           [validationShowOn]="validationShowOn"
+          [component]="fields['series']"
         ></epgu-constructor-masked-input>
         <ng-template #plainInputSeries>
           <epgu-constructor-constructor-plain-input
@@ -133,9 +135,13 @@
             [placeholder]="fields['series']?.placeholder"
             [invalid]="isValidationShown([seriesNumDateGroup, 'series'])"
             [validationShowOn]="validationShowOn"
+            [component]="fields['series']"
           ></epgu-constructor-constructor-plain-input>
         </ng-template>
-        <epgu-constructor-helper-text *ngIf="fields['series']?.hint as hint" class="doc-input__hint">
+        <epgu-constructor-helper-text
+          *ngIf="fields['series']?.hint as hint"
+          class="doc-input__hint"
+        >
           {{ hint }}
         </epgu-constructor-helper-text>
       </div>
@@ -156,6 +162,7 @@
           [showConstantMaskSymbols]="true"
           [invalid]="isValidationShown([seriesNumDateGroup, 'number'])"
           [validationShowOn]="validationShowOn"
+          [component]="fields['number']"
         ></epgu-constructor-masked-input>
         <ng-template #plainInputNumber>
           <epgu-constructor-constructor-plain-input
@@ -165,9 +172,13 @@
             [placeholder]="fields['number']?.placeholder"
             [invalid]="isValidationShown([seriesNumDateGroup, 'number'])"
             [validationShowOn]="validationShowOn"
+            [component]="fields['number']"
           ></epgu-constructor-constructor-plain-input>
         </ng-template>
-        <epgu-constructor-helper-text *ngIf="fields['number']?.hint as hint" class="doc-input__hint">
+        <epgu-constructor-helper-text
+          *ngIf="fields['number']?.hint as hint"
+          class="doc-input__hint"
+        >
           {{ hint }}
         </epgu-constructor-helper-text>
       </div>
@@ -211,13 +222,15 @@
           [validationShowOn]="validationShowOn"
           [clearable]="true"
         ></lib-date-picker>
-        <epgu-constructor-helper-text *ngIf="fields[expirationDateName]?.hint as hint" class="doc-input__hint">
+        <epgu-constructor-helper-text
+          *ngIf="fields[expirationDateName]?.hint as hint"
+          class="doc-input__hint"
+        >
           {{ hint }}
         </epgu-constructor-helper-text>
       </div>
     </div>
   </ng-template>
-
 
   <epgu-constructor-helper-text *ngIf="fields['hint']?.label as label" class="doc-input__hint">
     {{ label }}
@@ -240,6 +253,7 @@
       [control]="$any(form.get('emitter'))"
       [invalid]="isValidationShown('emitter')"
       [validationShowOn]="validationShowOn"
+      [component]="fields['emitter']"
     ></epgu-constructor-constructor-plain-input>
   </div>
   <epgu-constructor-helper-text *ngIf="fields['emitter']?.hint as hint" class="doc-input__hint">
