@@ -152,7 +152,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.items.splice(index, 1);
     this.itemsComponents.splice(index, 1);
     this.selectChildrenForm.removeControl(controlId);
-    if (formStatus === 'INVALID') {
+    if (formStatus === ItemStatus.invalid) {
       this.selectChildrenForm.setErrors({ invalidForm: true });
     }
     this.passDataToSend(this.items);
