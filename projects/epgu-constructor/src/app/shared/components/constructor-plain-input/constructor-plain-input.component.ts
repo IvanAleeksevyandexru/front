@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { TextTransform } from '../../types/textTransform';
@@ -7,6 +7,7 @@ import { CustomComponent } from '../../../component/components-list/components-l
 @Component({
   selector: 'epgu-constructor-constructor-plain-input',
   templateUrl: './constructor-plain-input.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConstructorPlainInputComponent {
   @Input() control: FormControl;

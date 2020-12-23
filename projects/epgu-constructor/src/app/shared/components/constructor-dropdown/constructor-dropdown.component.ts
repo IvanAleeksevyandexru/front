@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
@@ -6,6 +13,7 @@ import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 @Component({
   selector: 'epgu-constructor-constructor-dropdown',
   templateUrl: './constructor-dropdown.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConstructorDropdownComponent implements OnInit {
   @Input() id: string | number;
