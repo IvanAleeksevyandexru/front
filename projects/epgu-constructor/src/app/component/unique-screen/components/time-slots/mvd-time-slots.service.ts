@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
+import { SessionService } from '../../../../core/services/session/session.service';
 import { ConfigService } from '../../../../core/config/config.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
@@ -24,6 +25,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
   public activeYearNumber: number;
   public bookId;
   public availableMonths: string[];
+  public BOOKING_NAMESPACE = '28dffe80-c8f3-4fa0-ae6a-989ed4497e8c'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга мвд
 
   private orderId;
   private serviceId: string;
@@ -34,6 +36,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
+    private sessionService: SessionService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -179,9 +182,8 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    if (!this.bookId) {
-      this.bookId = uuid.v4();
-    }
+    const name = `${this.sessionService.userId}#${this.department.value}`;
+    this.bookId = uuid.v5(name, this.BOOKING_NAMESPACE);
 
     const {
       serviceId,
