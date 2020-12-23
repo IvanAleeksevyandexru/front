@@ -7,12 +7,14 @@ import {
   CustomComponentDropDownItemList,
   CustomComponentRef,
   CustomComponentRefRelation,
+  CustomListDictionaries,
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes,
-  CustomScreenComponentValueTypes
+  CustomScreenComponentValueTypes,
 } from '../../components-list.types';
 import { ListItem } from 'epgu-lib';
+import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
 
 @Injectable()
 export class ComponentListToolsService {
@@ -36,15 +38,19 @@ export class ComponentListToolsService {
   updateStatusElements(
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
-    componentVal: { [key: string]: string },
+    componentVal: { [key: string]: string }, // @todo. иногда здесь пустая строка вместо объекта
     components: Array<CustomComponent>,
     form: FormArray,
     shownElements: CustomListStatusElements,
+    dictionaries: CustomListDictionaries
   ): CustomListStatusElements {
     const dependentControl: AbstractControl = form.controls.find(
-      (control: AbstractControl) => control.value.id === dependentComponent.id
+      (control: AbstractControl) => control.value.id === dependentComponent.id,
     );
-    const patchValueAndDisable = (control: AbstractControl, defaultValue?: string | boolean): void => {
+    const patchValueAndDisable = (
+      control: AbstractControl,
+      defaultValue?: string | boolean,
+    ): void => {
       const valueControl: AbstractControl = control.get('value');
       this.prevValues[dependentComponent.id] = valueControl.value;
       valueControl.patchValue(defaultValue || '');
@@ -53,7 +59,8 @@ export class ComponentListToolsService {
     };
     const patchToPrevValueAndEnable = (control: AbstractControl): void => {
       const isFindAndValue: boolean =
-        !isUndefined(this.prevValues[dependentComponent.id]) && !!String(this.prevValues[dependentComponent.id]);
+        !isUndefined(this.prevValues[dependentComponent.id]) &&
+        !!String(this.prevValues[dependentComponent.id]);
       if (isFindAndValue) {
         control.get('value').patchValue(this.prevValues[dependentComponent.id]);
       }
@@ -67,13 +74,12 @@ export class ComponentListToolsService {
       const isDisplayOff = element.relation === CustomComponentRefRelation.displayOff;
 
       if ((isDisplayOff && element.isShown === true) || !isDisplayOff) {
-        shownElements[dependentComponent.id]= {
+        shownElements[dependentComponent.id] = {
           relation: CustomComponentRefRelation.displayOn,
           isShown: this.isValueEquals(reference.val, componentVal),
         };
         dependentControl.markAsUntouched();
       }
-
     }
 
     if (reference.relation === CustomComponentRefRelation.disabled) {
@@ -86,24 +92,46 @@ export class ComponentListToolsService {
 
     if (reference.relation === CustomComponentRefRelation.calc) {
       const calcRelation: CustomComponentRef = dependentComponent.attrs?.ref?.find(
-        item => item.relation === reference.relation
+        (item) => item.relation === reference.relation,
       );
 
-      dependentControl.get('value').patchValue(
-        this.calculateValueFromRelation(calcRelation, components, form)
-      );
+      dependentControl
+        .get('value')
+        .patchValue(this.calculateValueFromRelation(calcRelation, components, form));
     }
 
     if (reference.relation === CustomComponentRefRelation.displayOff) {
       const isDisplayOn = element.relation === CustomComponentRefRelation.displayOn;
 
       if ((isDisplayOn && element.isShown === true) || !isDisplayOn) {
-        shownElements[dependentComponent.id]= {
+        shownElements[dependentComponent.id] = {
           relation: CustomComponentRefRelation.displayOff,
           isShown: !this.isValueEquals(reference.val, componentVal),
         };
         dependentControl.markAsUntouched();
       }
+    }
+
+    if (reference.relation === CustomComponentRefRelation.autofillFromDictionary) {
+      const attributeName = reference.val as string;
+      const componentId = reference.relatedRel;
+
+      const dictionaryAttributeValue = this.getDictionaryAttributeValue(
+        attributeName,
+        componentId,
+        components,
+        componentVal,
+        dictionaries
+      );
+
+      if (dictionaryAttributeValue === undefined) {
+        dependentControl.get('value').patchValue('');
+        dependentControl.get('value').enable();
+      } else {
+        dependentControl.get('value').patchValue(dictionaryAttributeValue);
+        dependentControl.get('value').disable();
+      }
+      dependentControl.markAsUntouched();
     }
 
     if (isDependentDisabled) {
@@ -113,7 +141,7 @@ export class ComponentListToolsService {
     return shownElements;
   }
 
-  hasRelation(component: CustomComponent,relation: CustomComponentRefRelation): boolean {
+  hasRelation(component: CustomComponent, relation: CustomComponentRefRelation): boolean {
     return component.attrs?.ref?.some((o) => o.relation === relation);
   }
 
@@ -122,6 +150,7 @@ export class ComponentListToolsService {
     component: CustomListFormGroup | CustomComponent,
     shownElements: CustomListStatusElements,
     form: FormArray,
+    dictionaries: CustomListDictionaries
   ): CustomListStatusElements {
     const isComponentDependent = (arr = []): boolean =>
       arr?.some((el) => el.relatedRel === component.id);
@@ -130,9 +159,7 @@ export class ComponentListToolsService {
       components.filter((c: CustomComponent) => isComponentDependent(c.attrs?.ref));
 
     getDependentComponents(components).forEach((dependentComponent: CustomComponent) => {
-      const reference = dependentComponent.attrs?.ref?.find(
-        (el) => el.relatedRel === component.id
-      );
+      const reference = dependentComponent.attrs?.ref?.find((el) => el.relatedRel === component.id);
 
       if (reference) {
         shownElements = this.updateStatusElements(
@@ -141,7 +168,8 @@ export class ComponentListToolsService {
           component.value as { [key: string]: string },
           components,
           form,
-          shownElements
+          shownElements,
+          dictionaries
         );
       }
     });
@@ -151,15 +179,12 @@ export class ComponentListToolsService {
 
   createStatusElements(
     components: Array<CustomComponent>,
-    shownElements: CustomListStatusElements
+    shownElements: CustomListStatusElements,
   ): CustomListStatusElements {
     components.forEach((component: CustomComponent) => {
       shownElements[component.id] = {
         relation: CustomComponentRefRelation.displayOn,
-        isShown: !this.hasRelation(
-          component,
-          CustomComponentRefRelation.displayOn,
-        )
+        isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
       };
     });
 
@@ -230,12 +255,53 @@ export class ComponentListToolsService {
   }
 
   /**
+   * Возвращает значение атрибута attributeName из словаря компонента componentId.
+   * Если атрибут не найден, то возвращается undefined.
+   *
+   * @param dictionaryAttributeName - название атрибута из словаря
+   * @param componentId - ID компонента
+   * @param components - компоненты с информацией
+   */
+  private getDictionaryAttributeValue(
+    dictionaryAttributeName: string,
+    componentId: string,
+    components: CustomComponent[],
+    componentVal: { [key: string]: string } | '', // @todo. проверить, правильно ли указан тип
+    dictionaries: CustomListDictionaries,
+  ): unknown {
+    const relatedComponent = components.find((item) => item.id === componentId);
+
+    if (relatedComponent) {
+      const dictKey = utils.getDictKeyByComp(relatedComponent);
+
+      const dictionary = dictionaries[dictKey];
+
+      if (dictionary) {
+        if (componentVal) {
+          const dictionaryItem = dictionary.list.find((item) => item.id === componentVal.id);
+
+          const dictionaryAttributeValue =
+            dictionaryItem.originalItem.attributeValues[dictionaryAttributeName];
+
+          return dictionaryAttributeValue;
+        }
+      }
+    }
+
+    return undefined;
+  }
+
+  /**
    * Подсчитывает автовычисляемое значение из формулы, которую передали
    * @param itemRef - объект с информацией о связи
    * @param components - компоненты с информацией
    * @example {val: '{add16} + {add17} / 100'} => 50 + 150 / 100
    */
-  private calculateValueFromRelation(itemRef: CustomComponentRef, components: CustomComponent[], form: FormArray): Function | string {
+  private calculateValueFromRelation(
+    itemRef: CustomComponentRef,
+    components: CustomComponent[],
+    form: FormArray,
+  ): number | string {
     let str = itemRef.val as string;
     const lettersAnNumberItemRegExp = /\{\w+\}/gm;
     const matches = str.match(lettersAnNumberItemRegExp);
@@ -260,10 +326,10 @@ export class ComponentListToolsService {
   }
 
   /**
-   * Возвращает откалькулируемую функцию по формуле
+   * Возвращает вычисленное значение по формуле по формуле
    * @param formula - формула для расчета
    */
-  private getCalcFieldValue(formula: string): Function {
+  private getCalcFieldValue(formula: string): number {
     // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
     return Function(`'use strict'; return (Math.round(${formula}))`)();
   }
@@ -273,7 +339,10 @@ export class ComponentListToolsService {
    * @param value - value из зависимого компонета
    * @param componentVal - value из компонета
    */
-  private isValueEquals (value: string | Array<string> | boolean, componentVal: { id?: string }): boolean {
+  private isValueEquals(
+    value: string | Array<string> | boolean,
+    componentVal: { id?: string },
+  ): boolean {
     if (['string', 'boolean'].includes(typeof componentVal)) {
       return value === componentVal;
     }
@@ -283,6 +352,5 @@ export class ComponentListToolsService {
     }
 
     return value === componentVal?.id;
-  };
-
+  }
 }

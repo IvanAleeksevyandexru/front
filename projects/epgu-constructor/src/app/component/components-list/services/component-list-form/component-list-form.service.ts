@@ -95,6 +95,7 @@ export class ComponentListFormService {
         } as CustomComponent,
         this.shownElements,
         this.form,
+        this.repository.dictionaries
       );
     });
 
@@ -299,6 +300,7 @@ export class ComponentListFormService {
           next,
           this.shownElements,
           this.form,
+          this.repository.dictionaries
         );
         ////////HARDCODE!!!
         if (
