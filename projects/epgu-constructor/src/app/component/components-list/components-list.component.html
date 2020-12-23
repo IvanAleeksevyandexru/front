@@ -217,7 +217,7 @@
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [control]="$any(componentData.get('value'))"
-          [itemsProvider]="formService.addressHelperServiceProvider()"
+          [itemsProvider]="componentData | memo:formService.addressHelperServiceProvider:formService"
           [clearable]="true"
         >
         </epgu-constructor-constructor-lookup>

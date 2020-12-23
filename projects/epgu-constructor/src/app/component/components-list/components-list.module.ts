@@ -20,8 +20,9 @@ import { InputErrorModule } from '../../shared/components/input-error/input-erro
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
 import { MaskHandleModule } from '../../shared/pipes/mask-handle/mask-handle.module';
 import { CurrencyModule } from '../../shared/directives/currency/currency.module';
+import { MemoPipe } from '../../core/pipes/memo/memo.pipe';
 
-const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent];
+const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent, MemoPipe];
 
 @NgModule({
   declarations: [...COMPONENTS],

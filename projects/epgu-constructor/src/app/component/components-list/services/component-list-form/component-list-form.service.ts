@@ -95,7 +95,7 @@ export class ComponentListFormService {
         } as CustomComponent,
         this.shownElements,
         this.form,
-        this.repository.dictionaries
+        this.repository.dictionaries,
       );
     });
 
@@ -150,8 +150,8 @@ export class ComponentListFormService {
     this._changes.emit(prepareStateForSending);
   }
 
-  addressHelperServiceProvider(): LookupProvider | LookupPartialProvider {
-    return this.addressHelperService.provider;
+  addressHelperServiceProvider(control: AbstractControl): LookupProvider | LookupPartialProvider {
+    return this.addressHelperService.getProvider(control.value?.attrs?.cityFilter);
   }
 
   private getPreparedStateForSending(): CustomComponentOutputData {
@@ -300,7 +300,7 @@ export class ComponentListFormService {
           next,
           this.shownElements,
           this.form,
-          this.repository.dictionaries
+          this.repository.dictionaries,
         );
         ////////HARDCODE!!!
         if (
