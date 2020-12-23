@@ -103,9 +103,10 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     const exportValue = {
       uin: this.uin,
       amount: this.sum,
-      amountWithoutDiscount: this.sumWithoutDiscount ? this.sumWithoutDiscount : null,
-      paymentPurpose: this.paymentPurpose ? this.paymentPurpose : null,
-      receiver: this.docInfo ? this.docInfo : null,
+      amountWithoutDiscount: this.sumWithoutDiscount ?? null,
+      paymentPurpose: this.paymentPurpose ?? null,
+      receiver: this.docInfo ?? null,
+      billId: this.billId ?? null,
     } as PaymentInfoEventValue;
     this.nextStepEvent.emit(JSON.stringify(exportValue));
   }
