@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
+import { SessionService } from '../../../../core/services/session/session.service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
@@ -28,6 +29,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   public activeYearNumber: number;
   public bookId;
   public availableMonths: string[];
+  public BOOKING_NAMESPACE = 'c4d4da75-53dc-47bc-a255-720750dfdb76'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга разводов
 
   private orderId;
   private serviceId: string;
@@ -41,6 +43,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     private http: HttpClient,
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
+    private sessionService: SessionService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -152,6 +155,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       changed = true;
       this.department = department;
     }
+    this.isDepartmentChanged = !!this.department && (this.department.value !== department.value);
 
     let orderId = data.orderId;
     if (!this.orderId || this.orderId !== orderId) {
@@ -209,9 +213,8 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    if (!this.bookId) {
-      this.bookId = uuid.v4();
-    }
+    const name = `${this.sessionService.userId}#${this.department.value}`;
+    this.bookId = uuid.v5(name, this.BOOKING_NAMESPACE);
 
     const {
       preliminaryReservation,

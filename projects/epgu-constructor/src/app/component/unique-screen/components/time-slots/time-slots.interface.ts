@@ -7,6 +7,7 @@ import {
 } from './time-slots.types';
 
 export interface TimeSlotsServiceInterface {
+  BOOKING_NAMESPACE: string;
   bookId: string;
   department: DepartmentInterface;
   init(data: TimeSlotValueInterface): Observable<void>;
