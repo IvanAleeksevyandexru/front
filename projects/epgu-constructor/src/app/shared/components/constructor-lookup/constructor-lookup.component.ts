@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import {
   ListElement,
@@ -10,6 +17,7 @@ import { LookupComponent, ValidationShowOn } from 'epgu-lib';
 @Component({
   selector: 'epgu-constructor-constructor-lookup',
   templateUrl: './constructor-lookup.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConstructorLookupComponent {
   @ViewChild('lookupComponent', { static: false })

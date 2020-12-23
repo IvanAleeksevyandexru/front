@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 
@@ -8,6 +8,7 @@ import { CustomComponent } from '../../../../component/components-list/component
 @Component({
   selector: 'epgu-constructor-masked-input',
   templateUrl: './constructor-masked-input.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConstructorMaskedInputComponent {
   @Input() control: FormControl;
