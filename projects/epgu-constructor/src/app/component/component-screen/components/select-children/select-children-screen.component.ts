@@ -22,6 +22,11 @@ interface ChildI extends Partial<ListElement> {
   isNewRef?: string;
 }
 
+interface ClearEvent {
+  isClear: boolean;
+  id?: string;
+}
+
 @Component({
   selector: 'epgu-constructor-select-children-screen',
   templateUrl: './select-children-screen.component.html',
@@ -145,7 +150,7 @@ export class SelectChildrenScreenComponent implements OnInit {
   /**
    * Сохраняем данные для отправки, удаляя лишние поля
    */
-  passDataToSend(items: ChildI[]): void {
+  passDataToSend(items: ChildI[], clearEvent?: ClearEvent): void {
     const itemsToSend = items.map((child) => {
       const childToSend = { ...child };
       delete childToSend.controlId;
@@ -158,7 +163,7 @@ export class SelectChildrenScreenComponent implements OnInit {
       return childToSend;
     });
     this.currentAnswersService.state = itemsToSend;
-    this.setHideStateToSelectedItems();
+    this.setHideStateToSelectedItems(clearEvent);
   }
 
   /**
@@ -204,12 +209,16 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param event объект-ребенок
    * @param index индекс массива детей
    */
-  handleSelect(event: ChildI, index?: number): void {
+  handleSelect(event: ChildI | null, index?: number, id?: string): void {
     Object.assign(this.items[index], event);
-    if (event[this.idRef] === this.NEW_ID) {
+    if (event && event[this.idRef] === this.NEW_ID) {
       this.addNewChild(index);
     } else {
-      this.passDataToSend(this.items);
+      const clearEvent = {
+        isClear: event === null,
+        id,
+      };
+      this.passDataToSend(this.items, clearEvent);
     }
   }
 
@@ -220,20 +229,21 @@ export class SelectChildrenScreenComponent implements OnInit {
     return screensAmount >= repeatAmount;
   }
 
-  isNewId(itemId: string = 'false'): boolean {
-    return JSON.parse(itemId);
-  }
-
   isMoreThanOneChild(): boolean {
     return this.items.length > 1;
   }
 
-  private setHideStateToSelectedItems(): void {
+  private setHideStateToSelectedItems(clearEvent?: ClearEvent): void {
     this.itemsToSelect = this.itemsToSelect.map((child) => {
       // eslint-disable-next-line no-param-reassign
       child.hidden = this.items.some((selectedChild) => {
-        return selectedChild[this.idRef] === child[this.idRef];
+        const isSelectChild = selectedChild[this.idRef] === child[this.idRef];
+        const isNeedToHidden =
+          isSelectChild && clearEvent?.isClear && selectedChild.controlId === clearEvent?.id;
+
+        return isNeedToHidden ? false : isSelectChild;
       });
+
       return child;
     });
   }

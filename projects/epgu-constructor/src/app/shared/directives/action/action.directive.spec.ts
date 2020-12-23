@@ -243,11 +243,18 @@ describe('ActionDirective', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.quizToOrder')).nativeElement;
     fixture.detectChanges();
     spyOn(navigationService, 'redirectTo').and.callThrough();
-    spyOn(screenService, 'getStore').and.returnValue({});
+    spyOn(screenService, 'getStore').and.returnValue({ applicantAnswers: {}});
     spyOn(localStorageService, 'set').and.callThrough();
     button.click();
 
-    expect(localStorageService.set).toHaveBeenCalledWith(QUIZ_SCENARIO_KEY, {});
+    const applicantAnswers = {
+      12: {
+        visited: true,
+        value: ''
+      }
+    };
+
+    expect(localStorageService.set).toHaveBeenCalledWith(QUIZ_SCENARIO_KEY, { applicantAnswers });
     expect(navigationService.redirectTo).toHaveBeenCalledWith('/to-some-order');
   });
 });

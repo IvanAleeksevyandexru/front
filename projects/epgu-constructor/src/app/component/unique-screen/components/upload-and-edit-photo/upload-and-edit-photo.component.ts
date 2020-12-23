@@ -33,6 +33,7 @@ import {
   uploadPhotoElemId,
 } from './upload-and-edit-photo.constant';
 import { ImgSubject } from './upload-and-edit-photo.model';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',
@@ -79,6 +80,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
     private compressionService: CompressionService,
+    private utils: UtilsService,
     public screenService: ScreenService,
     public config: ConfigService,
   ) {
@@ -274,7 +276,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
 
   setFile(file: File, isPhoto: boolean): void {
     if (isPhoto) {
-      this.fileName = `Фото_${uuidv4()}.jpg`;
+      this.fileName = this.utils.cyrillicToLatin(`Фото_${uuidv4()}.jpg`);
     } else {
       this.fileName = this.fixFileName(file);
     }
@@ -341,7 +343,8 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     const uploadFile = (file: Blob | File): Observable<void> => {
       const fileName = this.fileName.split('.');
       fileName[fileName.length - 1] = 'jpg';
-      requestData = { ...requestData, name: fileName.join('.') };
+      const name = this.utils.cyrillicToLatin(fileName.join('.'));
+      requestData = { ...requestData, name };
       return this.terabyteService.uploadFile(requestData, file);
     };
 

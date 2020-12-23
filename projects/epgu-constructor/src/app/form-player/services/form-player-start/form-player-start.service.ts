@@ -6,7 +6,7 @@ import { ServiceDataService } from '../service-data/service-data.service';
 import {
   CheckOrderApiResponse,
   FormPlayerApiSuccessResponse,
-  QuizRequestDto
+  QuizRequestDto, ScenarioDto
 } from '../form-player-api/form-player-api.types';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { Location } from '@angular/common';
@@ -82,9 +82,11 @@ export class FormPlayerStartService {
   }
 
   private startLoadFromQuizCase(): void {
-    const quiz = this.localStorageService.get<QuizRequestDto>(QUIZ_SCENARIO_KEY);
-    quiz.serviceId = this.serviceDataService.serviceId;
-    quiz.targetId = this.serviceDataService.targetId;
+    const quiz: QuizRequestDto = {
+      scenarioDto: this.localStorageService.get<ScenarioDto>(QUIZ_SCENARIO_KEY),
+      serviceId: this.serviceDataService.serviceId,
+      targetId: this.serviceDataService.targetId
+    };
     this.formPlayerService.initPlayerFromQuiz(quiz);
     this.localStorageService.delete(QUIZ_SCENARIO_KEY);
     this.locationService.deleteParam('fromQuiz');

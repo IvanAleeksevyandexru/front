@@ -2,7 +2,7 @@
 import { ConfirmUserDataStyle } from '../../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import {
   TimerComponentDtoAction,
-  TimerLabelSection
+  TimerLabelSection,
 } from '../../../component/component-screen/components/timer/timer.interface';
 import {
   DictionaryConditions,
@@ -47,6 +47,7 @@ export interface ComponentDto {
   value?: string;
   required?: boolean;
   visited?: boolean;
+  presetValue?: string;
 }
 
 export interface ComponentAnswerDto {
@@ -63,7 +64,7 @@ export interface ComponentAnswerDto {
 
 export interface ComponentAttrsDto {
   actions?: Array<ComponentActionDto>;
-  answers?: Array<ComponentAnswerDto>
+  answers?: Array<ComponentAnswerDto>;
   clarifications?: ClarificationsDto;
   fields?: Array<ComponentFieldDto>;
   dictionaryType?: Array<string> | string; //TODO: прояснить почему либо массив объектов либо строка
@@ -119,7 +120,7 @@ export interface ComponentAttrsDto {
   nsi?: string;
   dictItemCode?: string;
   uploadedFile?: ComponentUploadedFileDto;
-  validateMessage?: string;  //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
+  validateMessage?: string; //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
   dictionaryOptions?: DictionaryOptions;
   style?: ConfirmUserDataStyle;
   imgSrc?: string;
@@ -133,6 +134,7 @@ export interface ComponentAttrsDto {
   singleChild?: boolean;
   minDateRef?: string;
   maxDateRef?: string;
+  hideSocialShare?: boolean;
 }
 
 export interface ComponentUploadedFileDto {
@@ -150,10 +152,10 @@ export interface RefsTimeDto {
 }
 
 export interface TimerRulesDto {
-  hideTimerFrom?: number,
-  warningColorFromTime?: number,
-  labels?: TimerLabelSection[],
-  actions?: TimerComponentDtoAction[],
+  hideTimerFrom?: number;
+  warningColorFromTime?: number;
+  labels?: TimerLabelSection[];
+  actions?: TimerComponentDtoAction[];
 }
 
 export interface ComponentFilterDto {
@@ -200,14 +202,14 @@ export interface ComponentGIBDDpaymentErrorDto {
 }
 
 export interface ComponentStatesDto {
- [key: string]: {
-   actions: Array<ComponentActionDto>;
-   body: string;
-   header: string;
-   subHeader: string;
-   clarifications: ClarificationsDto;
-   srcImg?: string;
- }
+  [key: string]: {
+    actions: Array<ComponentActionDto>;
+    body: string;
+    header: string;
+    subHeader: string;
+    clarifications: ClarificationsDto;
+    srcImg?: string;
+  };
 }
 
 export interface ComponentPresetDto {
@@ -222,7 +224,7 @@ export interface ComponentRelationFieldDto {
     value: string;
     result: {
       attrs: ComponentAttrsDto;
-    }
+    };
   }>;
 }
 
@@ -251,8 +253,8 @@ export interface ClarificationsDto {
   [key: string]: {
     title: string;
     text: string;
-    setting?: {}
-  }
+    setting?: {};
+  };
 }
 
 export interface ComponentActionDto {
@@ -269,7 +271,7 @@ export interface ComponentActionDto {
   hint?: string;
   attrs?: {
     stepsBack?: number;
-  }
+  };
 }
 
 export interface ScreenActionDto extends ComponentActionDto {}
@@ -356,7 +358,6 @@ export interface FormPlayerApiSuccessResponse {
 export interface QuizRequestDto extends FormPlayerApiSuccessResponse {
   serviceId: string;
   targetId: string;
-  answerServicePrefix: string;
 }
 
 export enum FormPlayerApiErrorStatuses {
@@ -374,7 +375,7 @@ export type FormPlayerApiResponse = FormPlayerApiSuccessResponse | FormPlayerApi
 export enum ButtonType {
   anchor = 'anchor',
   search = 'search',
-  button = 'button'
+  button = 'button',
 }
 
 export enum ActionType {

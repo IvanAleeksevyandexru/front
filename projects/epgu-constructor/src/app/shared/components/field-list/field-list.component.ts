@@ -33,7 +33,7 @@ export class FieldListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
-      const { states } = JSON.parse(this.data.value) as ConfirmUserDataState;
+      const { states } = JSON.parse(this.data.presetValue) as ConfirmUserDataState;
       this.preparedData = states;
     }
   }

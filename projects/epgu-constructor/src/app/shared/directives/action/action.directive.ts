@@ -17,6 +17,7 @@ import { ComponentStateForNavigate } from './action.interface';
 import { ConfigService } from '../../../core/config/config.service';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
+import { ScreenStore } from '../../../screen/screen.types';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -159,9 +160,18 @@ export class ActionDirective {
   }
 
   private quizToOrder(): void {
-    const store = this.screenService.getStore();
+    const store = this.getStoreForQuiz();
     this.localStorageService.set(QUIZ_SCENARIO_KEY, store);
     const href = this.action.action;
     this.navService.redirectTo(href);
   }
+
+  private getStoreForQuiz(): ScreenStore {
+    const store = this.screenService.getStore();
+    store.applicantAnswers[this.screenService.component.id] = {
+      visited: true,
+      value: ''
+    };
+    return store;
+  };
 }
