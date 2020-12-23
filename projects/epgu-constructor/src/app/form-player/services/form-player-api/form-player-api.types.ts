@@ -131,6 +131,7 @@ export interface ComponentAttrsDto {
   singleChild?: boolean;
   minDateRef?: string;
   maxDateRef?: string;
+  hideSocialShare?: boolean;
 }
 
 export interface ComponentUploadedFileDto {

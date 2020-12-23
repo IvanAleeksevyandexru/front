@@ -1,10 +1,11 @@
 <epgu-constructor-screen-container
   *ngIf="{
-   showNav: screenService.showNav$ | async,
-   displayCssClass: screenService.displayCssClass$ | async,
-   header: screenService.header$ | async,
-   submitLabel: screenService.submitLabel$ | async,
-   isLoading: screenService.isLoading$ | async
+    showNav: screenService.showNav$ | async,
+    hideSocialShare: (screenService.component$ | async)?.attrs?.hideSocialShare,
+    displayCssClass: screenService.displayCssClass$ | async,
+    header: screenService.header$ | async,
+    submitLabel: screenService.submitLabel$ | async,
+    isLoading: screenService.isLoading$ | async
   } as async"
   [show-nav]="async.showNav"
   [class.screen-container-mt]="!async.showNav"
@@ -44,6 +45,7 @@
 
   <div class="screen-footer">
     <lib-social-share
+      *ngIf="!async.hideSocialShare"
       class="social-share"
       [isNewDesign]="true"
       [isNewDesignDisabled]="false"
