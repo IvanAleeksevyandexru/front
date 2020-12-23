@@ -337,8 +337,6 @@ export interface ScenarioDto {
   finishedAndCurrentScreens: string[];
   orderId: string;
   callBackOrderId?: string;
-  token: string;
-  userId: string;
   isInternalScenario?: boolean;
   serviceId?: string;
   currentUrl?: string;

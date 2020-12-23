@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
+import { SessionService } from '../../../../core/services/session/session.service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
@@ -25,6 +26,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   public activeMonthNumber: number;
   public activeYearNumber: number;
   public bookId;
+  public BOOKING_NAMESPACE = '1252d729-fb01-4768-935d-8ddb95e14b7d'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга браков
 
   public department: ZagsDepartmentInterface;
   private serviceId: string;
@@ -40,6 +42,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
+    private sessionService: SessionService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -147,6 +150,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       changed = true;
       this.department = department;
     }
+    this.isDepartmentChanged = !!this.department && (this.department.value !== department.value);
 
     let solemn = data.solemn == 'Да';
     if (this.solemn !== solemn) {
@@ -228,9 +232,8 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    if (!this.bookId) {
-      this.bookId = uuid.v4();
-    }
+    const name = `${this.sessionService.userId}#${this.department.value}`;
+    this.bookId = uuid.v5(name, this.BOOKING_NAMESPACE);
 
     const {
       preliminaryReservation,

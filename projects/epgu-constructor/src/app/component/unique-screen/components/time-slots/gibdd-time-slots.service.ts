@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
+import { SessionService } from '../../../../core/services/session/session.service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import * as uuid from 'uuid';
@@ -27,6 +28,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   public activeYearNumber: number;
   public availableMonths: string[];
   public bookId;
+  public BOOKING_NAMESPACE = 'f3ed0310-84ca-496c-a0e8-b06e35897b5e'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга гибдд
 
   private orderId;
   private serviceId: string;
@@ -38,6 +40,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
+    private sessionService: SessionService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -218,9 +221,8 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    if (!this.bookId) {
-      this.bookId = uuid.v4();
-    }
+    const name = `${this.sessionService.userId}#${this.department.value}`;
+    this.bookId = uuid.v5(name, this.BOOKING_NAMESPACE);
 
     const {
       preliminaryReservation,

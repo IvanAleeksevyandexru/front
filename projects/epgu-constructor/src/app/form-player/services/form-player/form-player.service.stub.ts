@@ -33,8 +33,6 @@ export class FormPlayerServiceStub {
       errors: {},
       gender: Gender.male,
       orderId: '1',
-      token: 'someSecret',
-      userId: '12552'
     }};
   componentId: string;
   componentType: string;
