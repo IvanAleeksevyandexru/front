@@ -71,6 +71,13 @@ export class SelectChildrenScreenComponent implements OnInit {
       .pipe(startWith(this.selectChildrenForm.value as object), takeUntil(this.ngUnsubscribe$))
       .subscribe(() =>
         setTimeout(() => {
+          if (
+            Object.keys(this.selectChildrenForm.controls).every((control) => {
+              return this.selectChildrenForm.controls[control].valid;
+            })
+          ) {
+            this.selectChildrenForm.setErrors(null);
+          }
           this.updateCurrentAnswerServiceValidation();
         }),
       );
@@ -141,9 +148,13 @@ export class SelectChildrenScreenComponent implements OnInit {
 
   removeChild(index: number): void {
     const { controlId } = this.items[index];
+    const formStatus = this.selectChildrenForm.status;
     this.items.splice(index, 1);
     this.itemsComponents.splice(index, 1);
     this.selectChildrenForm.removeControl(controlId);
+    if (formStatus === 'INVALID') {
+      this.selectChildrenForm.setErrors({ invalidForm: true });
+    }
     this.passDataToSend(this.items);
   }
 
