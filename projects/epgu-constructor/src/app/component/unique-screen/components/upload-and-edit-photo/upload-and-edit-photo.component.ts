@@ -276,7 +276,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
 
   setFile(file: File, isPhoto: boolean): void {
     if (isPhoto) {
-      this.fileName = `Фото_${uuidv4()}.jpg`;
+      this.fileName = this.utils.cyrillicToLatin(`Фото_${uuidv4()}.jpg`);
     } else {
       this.fileName = this.fixFileName(file);
     }
