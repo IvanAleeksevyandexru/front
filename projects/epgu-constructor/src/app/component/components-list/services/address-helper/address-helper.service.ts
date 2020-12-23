@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
-import { filter, pluck, concatMap, reduce } from 'rxjs/operators';
+import { pluck, concatMap, reduce } from 'rxjs/operators';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import {
   DadataSuggestions,
@@ -38,10 +38,11 @@ export class AddressHelperService {
         return from(addresses);
       }),
       //TODO: Временное ограничение для EPGUCORE-43916
-      filter(({ address }: DadataSuggestionsAddress) => {
-        const test: string = address.toLowerCase();
-        return test.indexOf('москва') !== -1 || test.indexOf('московская обл') !== -1;
-      }),
+      //TODO: EPGUCORE-44752 отключено
+      // filter(({ address }: DadataSuggestionsAddress) => {
+      //   const test: string = address.toLowerCase();
+      //   return test.indexOf('москва') !== -1 || test.indexOf('московская обл') !== -1;
+      // }),
       reduce<DadataSuggestionsAddress, DadataSuggestionsAddressForLookup[]>((acc, value) => {
         acc.push({
           ...value,
