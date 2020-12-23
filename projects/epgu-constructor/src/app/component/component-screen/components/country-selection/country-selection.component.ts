@@ -91,10 +91,10 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
   }
 
   mapToListItemModel(dictionary: DictionaryItem[]): void {
-    this.listItemDictionary = dictionary.map((item) => ({
-      id: item.value,
-      text: item.title,
-      countryType: item.attributeValues.CHECK_APOSTIL,
+    this.listItemDictionary = dictionary.map(({ value: id, title: text, attributeValues }) => ({
+      id,
+      text,
+      countryType: (attributeValues as { CHECK_APOSTIL: string }).CHECK_APOSTIL,
     }));
   }
 

@@ -2,19 +2,23 @@
  * Возвращает опции атрибута запроса доступности оплаты в ГИБДД
  * @param id - объект фильтра для оплаты
  */
-import { DictionaryOptions } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import {
+  DictionaryConditions,
+  DictionaryOptions,
+  DictionaryUnionKind
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 export const getPaymentRequestOptionGIBDD = (id: number): DictionaryOptions => {
   return {
     treeFiltering: 'ONELEVEL',
     filter: {
       union: {
-        unionKind: 'AND',
+        unionKind: DictionaryUnionKind.AND,
         subs: [
           {
             simple: {
               attributeName: 'OFFICE_FRGU',
-              condition: 'CONTAINS',
+              condition: DictionaryConditions.CONTAINS,
               value: {
                 asString: `${id}`,
               },

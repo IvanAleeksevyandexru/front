@@ -1,4 +1,9 @@
-import { DictionaryOptions } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import {
+  DictionaryOptions,
+  DictionarySimpleFilter,
+  DictionarySubFilter,
+  DictionaryUnionKind
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 /**
  * Информация о нужном платеже
@@ -28,21 +33,21 @@ export interface PaymentInfoInterface {
  * Интерфейс для статуса опчеченого или нет счета
  */
 export interface PaymentInfoForPaidStatus{
-  date: string,
-  eventWhen: string,
-  number: number,
-  paid: boolean,
-  source: string,
-  status: string,
-  uin: string
+  date: string;
+  eventWhen: string;
+  number: number;
+  paid: boolean;
+  source: string;
+  status: string;
+  uin: string;
 }
 
 /**
  * Интерфейс для данные ответа по ответу на проверку статуса счета
  */
 export interface PaymentInfoForPaidStatusData {
-  data: PaymentInfoForPaidStatus[],
-  total: number
+  data: PaymentInfoForPaidStatus[];
+  total: number;
 }
 
 /**
@@ -51,92 +56,85 @@ export interface PaymentInfoForPaidStatusData {
 export interface PaymentDictionaryOptionsInterface extends DictionaryOptions {
   filter: {
     union: {
-      unionKind: string;
+      unionKind: DictionaryUnionKind;
       subs: SubPaymentDictionaryOptionInterface[];
     };
   };
 }
 
 
-
 /**
  * Интерфейс для части опции запроса на создание оплаты
  */
-export interface SubPaymentDictionaryOptionInterface {
-  simple: {
-    attributeName: string;
-    condition: string;
-    value: {
-      asString: string;
-    };
-  };
+export interface SubPaymentDictionaryOptionInterface extends DictionarySubFilter{
+  simple: DictionarySimpleFilter;
 }
 
 /**
  * Интерфейс массива информации о суб статусе в одном счете на оплату
  */
 export interface BillInfoSubStatusResponse{
-  code: string,
-  name: string
+  code: string;
+  name: string;
 }
 
 export interface BillInfoBillSumResponse{
-  summId: number,
-  summ: number
+  summId: number;
+  summ: number;
 }
 
 export interface BillInfoAddAttrsResponse{
-  value: string,
-  name: string,
-  title: string
+  value: string;
+  name: string;
+  title: string;
 }
 
 export interface BillInfoPayRequSitesResponse{
-  account: string,
-  bankName: string,
-  bic: string,
-  kbk: string,
-  oktmo: string,
-  payPurpose: string,
-  receiverInn: string,
-  receiverKpp: string,
-  receiverName: string
+  account: string;
+  bankName: string;
+  bic: string;
+  kbk: string;
+  oktmo: string;
+  payPurpose: string;
+  receiverInn: string;
+  receiverKpp: string;
+  receiverName: string;
 }
 
 export interface BillInfoPaidIdResponse{
-  id: number,
-  amount: number,
-  fee: number,
-  date: string,
-  userId: number
+  id: number;
+  amount: number;
+  fee: number;
+  date: string;
+  userId: number;
 }
 
 /**
  * Интерфейс массива информации в одном счете на оплату
  */
 export interface BillInfoResponse{
-  billId: number,
-  billNumber: string,
-  billName: string,
-  signature: string,
-  billDate: string,
-  createDate: string,
-  billStatus: BillInfoSubStatusResponse,
-  isPaid: boolean,
-  amount: number,
-  currencyCode: string,
-  comment: string,
-  service: BillInfoSubStatusResponse,
-  billSource: BillInfoSubStatusResponse,
-  serviceType: BillInfoSubStatusResponse,
-  billSumm: BillInfoBillSumResponse[],
-  payRequsites: BillInfoPayRequSitesResponse,
-  paidIds: BillInfoPaidIdResponse[],
-  addAttrs: BillInfoAddAttrsResponse[],
-  selectedByWhiteList: boolean,
-  serviceCategory: BillInfoSubStatusResponse,
-  isMessage: boolean,
-  actualBeforeDate: string
+  billId: number;
+  billNumber: string;
+  billName: string;
+  signature: string;
+  billDate: string;
+  createDate: string;
+  billStatus: BillInfoSubStatusResponse;
+  isPaid: boolean;
+  amount: number;
+  currencyCode: string;
+  comment: string;
+  service: BillInfoSubStatusResponse;
+  billSource: BillInfoSubStatusResponse;
+  serviceType: BillInfoSubStatusResponse;
+  billSumm: BillInfoBillSumResponse[];
+  payRequsites: BillInfoPayRequSitesResponse;
+  paidIds: BillInfoPaidIdResponse[];
+  addAttrs: BillInfoAddAttrsResponse[];
+  selectedByWhiteList: boolean;
+  serviceCategory: BillInfoSubStatusResponse;
+  isMessage: boolean;
+  actualBeforeDate: string;
 }
 
 /**
@@ -144,19 +142,19 @@ export interface BillInfoResponse{
  */
 export interface BillsInfoResponse{
   error?: {
-    code: number,
-    message: string
+    code: number;
+    message: string;
   },
   response: {
-    bills: BillInfoResponse[],
-    hasEditableSumm: boolean,
-    userHasAddress: boolean,
-    addressValid: boolean,
-    paiedBillIds: number[],
-    warning: boolean,
-    unidentifiedBillIds: number[],
-    fkSmevVersion: number,
-    hasUnidentifiedBills: boolean
+    bills: BillInfoResponse[];
+    hasEditableSumm: boolean;
+    userHasAddress: boolean;
+    addressValid: boolean;
+    paiedBillIds: number[];
+    warning: boolean;
+    unidentifiedBillIds: number[];
+    fkSmevVersion: number;
+    hasUnidentifiedBills: boolean;
   }
 }
 
@@ -164,7 +162,7 @@ export interface BillsInfoResponse{
  * Интерфейс филтра опции оплаты
  */
 export interface IFilterRegItems{
-  value: string
+  value: string;
 }
 
 /**
