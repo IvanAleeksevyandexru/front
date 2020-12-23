@@ -13,6 +13,7 @@ import {
   ConfirmAddressFieldsInterface,
   ConfirmAddressInterface,
 } from '../../interface/confirm-address.interface';
+import { CachedAnswersService } from '../../../../../../../../shared/services/cached-answers/cached-answers.service';
 
 const moment = moment_;
 
@@ -28,6 +29,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     ConfirmAddressInterface
   >;
   valueParsed: { [key: string]: string | Date } = {};
+  cachedAnswer: { [key: string]: string | Date } = {};
   textTransformType: TextTransform;
   isRequired: boolean;
 
@@ -37,10 +39,12 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     public screenService: ScreenService,
     private changeDetection: ChangeDetectorRef,
     private currentAnswersService: CurrentAnswersService,
+    private cachedAnswersService: CachedAnswersService,
   ) {}
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$), take(1)).subscribe((data) => {
+      this.prepareCachedAnswers(data);
       this.textTransformType = data?.attrs?.fstuc;
       this.isRequired = data.required;
       this.updateValue(data);
@@ -66,7 +70,8 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       const isPresetable = this.isPresetable(
         data?.attrs?.fields?.find((field) => field.fieldName === 'regDate'),
       );
-      if (isPresetable) {
+      const isExistCachedValue = this.isExistCachedValue('regDate');
+      if (isPresetable || isExistCachedValue) {
         this.valueParsed.regDate = this.getDate(localValueParsed.regDate);
       }
     }
@@ -75,7 +80,8 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       const isPresetable = this.isPresetable(
         data?.attrs?.fields?.find((field) => field.fieldName === 'regAddr'),
       );
-      if (isPresetable) {
+      const isExistCachedValue = this.isExistCachedValue('regAddr');
+      if (isPresetable || isExistCachedValue) {
         this.valueParsed.regAddr = this.getAddress(localValueParsed.regAddr);
       }
     }
@@ -130,5 +136,15 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
 
   private getAddress(regAddr: string | { fullAddress: string }): string {
     return typeof regAddr === 'string' ? regAddr : regAddr.fullAddress;
+  }
+
+  private prepareCachedAnswers(data: ConfirmAddressInterface): void {
+    const { cachedAnswers } = this.screenService.getStore();
+    const cachedValue = this.cachedAnswersService.getCachedValueById(cachedAnswers, data.id);
+    this.cachedAnswer = JSON.parse(cachedValue);
+  }
+
+  private isExistCachedValue(field: string): boolean {
+    return this.cachedAnswer && field in this.cachedAnswer && !!this.cachedAnswer[field];
   }
 }
