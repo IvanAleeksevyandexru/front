@@ -5,9 +5,14 @@ import { Observable, of } from 'rxjs';
 import {
   CustomComponent,
   CustomComponentAttrValidation,
-  CustomScreenComponentTypes
+  CustomScreenComponentTypes,
 } from '../../../component/components-list/components-list.types';
 import { InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
+
+enum ValidationType {
+  regExp = 'RegExp',
+  regExpException = 'RegExpException',
+}
 
 @Injectable()
 export class ValidationService {
@@ -120,8 +125,8 @@ export class ValidationService {
 
   private getError(validations: Array<CustomComponentAttrValidation>, control: AbstractControl): CustomComponentAttrValidation {
     return validations.find(({ value, type }) =>
-      type === 'RegExp' && control.value && !new RegExp(value).test(control.value) ||
-      type === 'RegExpException' && control.value && new RegExp(value).test(control.value)
+      type === ValidationType.regExp && control.value && !new RegExp(value).test(control.value) ||
+      type === ValidationType.regExpException && control.value && new RegExp(value).test(control.value)
     );
   }
 }
