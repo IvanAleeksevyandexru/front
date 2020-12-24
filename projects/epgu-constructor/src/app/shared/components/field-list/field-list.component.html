@@ -1,34 +1,32 @@
-<epgu-constructor-screen-pad class="screen-pad-body">
-  <div class="data" [ngClass]="style.list">
-    <ng-container *ngFor="let groupItem of preparedData">
-      <div class="data__group data-group" [ngClass]="[style.group]">
-        <div class="flex-row">
+<div class="data" [ngClass]="style.list">
+  <ng-container *ngFor="let groupItem of preparedData">
+    <div class="data__group data-group" [ngClass]="[style.group]">
+      <div class="flex-row">
+        <div
+          [innerHTML]="groupItem?.groupName | safe: 'html'"
+          [ngClass]="style.groupTitle"
+          class="data-group__title"
+        ></div>
+      </div>
+      <div class="data-group__items">
+        <div
+          class="data__item data-item"
+          [ngClass]="style.field"
+          *ngFor="let field of groupItem.fields"
+        >
           <div
-            [innerHTML]="groupItem?.groupName | safe: 'html'"
-            [ngClass]="style.groupTitle"
-            class="data-group__title"
+            [innerHTML]="field?.label | safe: 'html'"
+            class="data-item__label"
+            [ngClass]="style.label"
+          ></div>
+          <div
+            [innerHTML]="field?.value | safe: 'html'"
+            class="data-item__value"
+            [ngClass]="style.value"
           ></div>
         </div>
-        <div class="data-group__items">
-          <div
-            class="data__item data-item"
-            [ngClass]="style.field"
-            *ngFor="let field of groupItem.fields"
-          >
-            <div
-              [innerHTML]="field?.label | safe: 'html'"
-              class="data-item__label"
-              [ngClass]="style.label"
-            ></div>
-            <div
-              [innerHTML]="field?.value | safe: 'html'"
-              class="data-item__value"
-              [ngClass]="style.value"
-            ></div>
-          </div>
-        </div>
       </div>
-      <div *ngIf="groupItem.needDivider" [ngClass]="['group-divider', style.divider]"></div>
-    </ng-container>
-  </div>
-</epgu-constructor-screen-pad>
+    </div>
+    <div *ngIf="groupItem.needDivider" [ngClass]="['group-divider', style.divider]"></div>
+  </ng-container>
+</div>

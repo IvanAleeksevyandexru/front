@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SafePipe } from '../../../core/pipes/safe/safe.pipe';
 
 import { FieldListComponent } from './field-list.component';
-import { ScreenPadComponent } from '../screen-pad/screen-pad.component';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
@@ -20,7 +19,7 @@ describe('FieldListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FieldListComponent, SafePipe, ScreenPadComponent],
+      declarations: [FieldListComponent, SafePipe],
     }).compileComponents();
   });
 

@@ -12,7 +12,6 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
-import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
 
 describe('TimerComponent', () => {
   let component: TimerComponent;
@@ -27,7 +26,7 @@ describe('TimerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TimerComponent, TimerPipe, ActionDirective, ScreenPadComponent],
+      declarations: [TimerComponent, TimerPipe, ActionDirective],
       providers: [
         UnsubscribeService,
         ScreenService,

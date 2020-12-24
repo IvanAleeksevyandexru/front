@@ -9,6 +9,7 @@ import { ScreenContainerModule } from '../../shared/components/screen-container/
 import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
 import { ActionModule } from '../../shared/directives/action/action.module';
+import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 
 @NgModule({
   declarations: [ComponentScreenComponent],
@@ -23,6 +24,7 @@ import { ActionModule } from '../../shared/directives/action/action.module';
     AnswerButtonModule,
     FieldListModule,
     ActionModule,
+    ScreenPadModule,
   ],
   providers: [],
 })

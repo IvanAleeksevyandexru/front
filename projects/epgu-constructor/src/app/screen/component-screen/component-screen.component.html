@@ -49,17 +49,20 @@
         (nextStepEvent)="nextStep()"
       ></epgu-constructor-select-children-screen>
 
-      <epgu-constructor-field-list
-        [data]="screenService.component"
-        *ngSwitchCase="screenComponentName.fieldList"
-      >
-      </epgu-constructor-field-list>
-      <epgu-constructor-timer
-        *ngSwitchCase="screenComponentName.timer"
-        [data]="$any(screenService.component)"
-        (nextStepEvent)="nextStep($event)"
-      >
-      </epgu-constructor-timer>
+      <epgu-constructor-screen-pad class="screen-pad-body" *ngSwitchCase="screenComponentName.fieldList">
+        <epgu-constructor-field-list
+          [data]="screenService.component"
+        >
+        </epgu-constructor-field-list>
+      </epgu-constructor-screen-pad>
+
+      <epgu-constructor-screen-pad class="screen-pad-body" *ngSwitchCase="screenComponentName.timer">
+        <epgu-constructor-timer
+          [data]="$any(screenService.component)"
+          (nextStepEvent)="nextStep($event)"
+        >
+        </epgu-constructor-timer>
+      </epgu-constructor-screen-pad>
     </ng-container>
   </div>
 
