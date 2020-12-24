@@ -286,6 +286,6 @@ describe('InfoScreenComponent', () => {
     expect(debugEl).toBeTruthy();
 
     expect(debugEl.componentInstance.isNewDesign).toBeTruthy();
-    expect(debugEl.componentInstance.isNewDesignDisabled).toBeFalsy();
+    expect(debugEl.componentInstance.isNewDesignDisabled).toBeTruthy();
   });
 });

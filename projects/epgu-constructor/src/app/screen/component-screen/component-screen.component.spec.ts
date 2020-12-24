@@ -7,7 +7,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ScreenService } from '../screen.service';
 import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
 import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
-import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressComponent } from '../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-address-screen/components/confirm-personal-user-address/confirm-personal-user-address.component';
 // eslint-disable-next-line max-len
@@ -72,7 +71,6 @@ describe('ComponentScreenComponent', () => {
         MockComponents(
           ScreenContainerComponent,
           PageNameComponent,
-          ScreenPadComponent,
           ConfirmPersonalUserAddressComponent,
           ConfirmPersonalUserDataComponent,
           ConfirmPersonalUserPhoneEmailComponent,
@@ -370,17 +368,9 @@ describe('ComponentScreenComponent', () => {
     expect(debugEl.nativeElement.textContent.trim()).toBe('foo');
   });
 
-  it('should render epgu-constructor-screen-pad', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-screen-pad';
-
-    const debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeTruthy();
-  });
-
   it('should render epgu-constructor-confirm-personal-user-address if componentType is confirmPersonalUserRegAddr', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-confirm-personal-user-address';
+      'epgu-constructor-screen-container epgu-constructor-confirm-personal-user-address';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -395,7 +385,7 @@ describe('ComponentScreenComponent', () => {
 
   it('should render epgu-constructor-confirm-personal-user-data', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-confirm-personal-user-data';
+      'epgu-constructor-screen-container epgu-constructor-confirm-personal-user-data';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -410,7 +400,7 @@ describe('ComponentScreenComponent', () => {
 
   it('should render epgu-constructor-confirm-personal-user-phone-email', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-confirm-personal-user-phone-email';
+      'epgu-constructor-screen-container epgu-constructor-confirm-personal-user-phone-email';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -424,8 +414,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should render epgu-constructor-registration-addr', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-registration-addr';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-registration-addr';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -439,8 +428,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should render epgu-constructor-add-passport', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-add-passport';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-add-passport';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -454,8 +442,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should render epgu-constructor-country-selection', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-country-selection';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-country-selection';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -469,8 +456,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should call changeComponentSettings() on epgu-constructor-country-selection changeComponentSettings() event', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-country-selection';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-country-selection';
 
     screenService.componentType = ComponentScreenComponentTypes.countryApostil;
     fixture.detectChanges();
@@ -490,8 +476,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should call changedComponentData() on epgu-constructor-country-selection changeComponentData() event', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-country-selection';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-country-selection';
 
     screenService.componentType = ComponentScreenComponentTypes.countryApostil;
     fixture.detectChanges();
@@ -507,8 +492,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should render epgu-constructor-select-children-screen (childrenListUnder14)', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-select-children-screen';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-select-children-screen';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -522,8 +506,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should call nextStep() on epgu-constructor-select-children-screen (childrenListUnder14) nextStepEvent() event', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-select-children-screen';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-select-children-screen';
 
     screenService.componentType = ComponentScreenComponentTypes.childrenListUnder14;
     fixture.detectChanges();
@@ -539,8 +522,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should render epgu-constructor-select-children-screen (childrenListAbove14)', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-select-children-screen';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-select-children-screen';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -554,8 +536,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should call nextStep() on epgu-constructor-select-children-screen (childrenListAbove14) nextStepEvent() event', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-select-children-screen';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-select-children-screen';
 
     screenService.componentType = ComponentScreenComponentTypes.childrenListAbove14;
     fixture.detectChanges();
@@ -571,8 +552,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should render epgu-constructor-field-list', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-field-list';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-field-list';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -593,8 +573,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should render epgu-constructor-timer', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-timer';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-timer';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -615,8 +594,7 @@ describe('ComponentScreenComponent', () => {
   });
 
   it('should call nextStep() on epgu-constructor-timer nextStepEvent() event', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-timer';
+    const selector = 'epgu-constructor-screen-container epgu-constructor-timer';
 
     screenService.componentType = ComponentScreenComponentTypes.timer;
     fixture.detectChanges();

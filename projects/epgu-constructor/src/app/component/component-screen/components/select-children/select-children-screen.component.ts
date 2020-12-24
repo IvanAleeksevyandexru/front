@@ -54,6 +54,7 @@ export class SelectChildrenScreenComponent implements OnInit {
   passportRef: string;
   defaultAvailable = 20;
   isSingleChild: boolean;
+  hint: string | undefined;
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -73,6 +74,13 @@ export class SelectChildrenScreenComponent implements OnInit {
       .pipe(startWith(this.selectChildrenForm.value as object), takeUntil(this.ngUnsubscribe$))
       .subscribe(() =>
         setTimeout(() => {
+          if (
+            Object.keys(this.selectChildrenForm.controls).every((control) => {
+              return this.selectChildrenForm.controls[control].valid;
+            })
+          ) {
+            this.selectChildrenForm.setErrors(null);
+          }
           this.updateCurrentAnswerServiceValidation();
         }),
       );
@@ -87,6 +95,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.passportRef = this.getRefFromComponent('rfPasportSeries');
     this.itemsToSelect = this.getItemsToSelect(itemsList);
     this.isSingleChild = component?.attrs?.singleChild;
+    this.hint = component?.attrs?.hint;
   }
 
   initStartValues(id: string): void {
@@ -143,9 +152,13 @@ export class SelectChildrenScreenComponent implements OnInit {
 
   removeChild(index: number): void {
     const { controlId } = this.items[index];
+    const formStatus = this.selectChildrenForm.status;
     this.items.splice(index, 1);
     this.itemsComponents.splice(index, 1);
     this.selectChildrenForm.removeControl(controlId);
+    if (formStatus === ItemStatus.invalid) {
+      this.selectChildrenForm.setErrors({ invalidForm: true });
+    }
     this.passDataToSend(this.items);
   }
 

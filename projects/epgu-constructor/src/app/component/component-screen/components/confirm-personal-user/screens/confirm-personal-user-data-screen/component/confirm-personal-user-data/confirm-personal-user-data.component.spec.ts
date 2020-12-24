@@ -13,6 +13,7 @@ import { SafePipe } from 'projects/epgu-constructor/src/app/core/pipes/safe/safe
 import { FieldListComponent } from 'projects/epgu-constructor/src/app/shared/components/field-list/field-list.component';
 import { of } from 'rxjs';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { ScreenPadComponent } from '../../../../../../../../shared/components/screen-pad/screen-pad.component';
 
 describe('ConfirmPersonalUserDataComponent', () => {
   let component: ConfirmPersonalUserDataComponent;
@@ -61,6 +62,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
       TestBed.configureTestingModule({
         declarations: [
           ConfirmPersonalUserDataComponent,
+          ScreenPadComponent,
           ToJsonPipe,
           ActionDirective,
           FieldListComponent,

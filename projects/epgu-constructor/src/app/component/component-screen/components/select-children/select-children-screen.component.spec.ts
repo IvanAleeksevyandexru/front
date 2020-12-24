@@ -17,6 +17,7 @@ import { CachedAnswersService } from '../../../../shared/services/cached-answers
 import { of } from 'rxjs';
 import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
 import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
+import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
 
 describe('SelectChildrenScreenComponent', () => {
   let component: SelectChildrenScreenComponent;
@@ -33,7 +34,11 @@ describe('SelectChildrenScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SelectChildrenScreenComponent, NavigationComponentMock],
+      declarations: [
+        SelectChildrenScreenComponent,
+        NavigationComponentMock,
+        MockComponent(ScreenPadComponent),
+      ],
       imports: [
         CoreModule,
         BaseModule,
