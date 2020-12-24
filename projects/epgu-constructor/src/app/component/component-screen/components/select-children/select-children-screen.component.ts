@@ -4,7 +4,7 @@ import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
 import { map, startWith, take, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import * as uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -131,7 +131,7 @@ export class SelectChildrenScreenComponent implements OnInit {
    * Создание кастомного ребенка
    */
   addNewChild(index: number): void {
-    const id = uuid.v4();
+    const id = uuidv4();
     const newChild = {
       ...this.screenService.component?.attrs?.components?.reduce(
         (accum, value) => ({
@@ -209,7 +209,7 @@ export class SelectChildrenScreenComponent implements OnInit {
    */
   addMoreChild(initValue?: ChildI, childFromCache: ChildI = {}): void {
     const index = this.items.length;
-    const controlId = `child_${uuid.v4()}`;
+    const controlId = `child_${uuidv4()}`;
     this.addFormControl(controlId, initValue);
     this.items.push({ controlId });
     this.itemsComponents[index] = this.prepareItemComponents(childFromCache);
