@@ -12,7 +12,7 @@ import {
 import { YaMapService } from 'epgu-lib';
 import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { combineLatest, merge, Observable, of } from 'rxjs';
-import { filter, map, reduce, switchMap, takeUntil, take } from 'rxjs/operators';
+import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -84,7 +84,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnInit(): void {
     this.initData$
-      .pipe(take(1))
+      .pipe(takeUntil(this.screenService.isNextScreen$))
       .subscribe(([data, applicantAnswers]: [ComponentBase, ApplicantAnswersDto]) => {
         this.data = data;
         this.applicantAnswers = applicantAnswers;
