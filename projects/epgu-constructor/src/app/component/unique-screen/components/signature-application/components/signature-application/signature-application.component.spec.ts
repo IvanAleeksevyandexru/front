@@ -22,7 +22,7 @@ import {
   DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
-import { SignatureApplicationContainerComponent } from './container.component';
+import { SignatureApplicationContainerComponent } from '../container/signature-application-container.component';
 import { of } from 'rxjs';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ImgPrefixerPipe } from '../../../../../../core/pipes/img-prefixer/img-prefixer.pipe';
@@ -104,18 +104,14 @@ describe('SignatureApplicationComponent', () => {
     screenService = TestBed.inject(ScreenService);
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
 
-    jest.spyOn(screenService, 'isLoading$', 'get').mockReturnValue(of(false));
     jest.spyOn(screenService, 'actions$', 'get').mockReturnValue(of(mockActions));
-    jest.spyOn(screenService, 'header$', 'get').mockReturnValue(of(mockHeader));
     jest.spyOn(screenService, 'showNav$', 'get').mockReturnValue(of(true));
-    jest.spyOn(screenService, 'componentValue', 'get').mockReturnValue(mockComponentValue);
     jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockComponent));
+    jest.spyOn(screenService, 'componentValue', 'get').mockReturnValue(mockComponentValue);
     jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
-
-    fixture.detectChanges();
   });
 
-  it('check image src', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 });
