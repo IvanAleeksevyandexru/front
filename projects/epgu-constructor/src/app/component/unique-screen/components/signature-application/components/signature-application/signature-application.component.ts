@@ -1,27 +1,42 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  HostListener,
+  OnInit,
+  Output,
+} from '@angular/core';
 
-import { ConfigService } from '../../../../../core/config/config.service';
-import { ScreenService } from '../../../../../screen/screen.service';
-import { LAST_SCENARIO_KEY } from '../../../../../shared/constants/form-player';
-import { SignatureApplicationData } from '../models/application.interface';
-import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
-import { LocalStorageService } from '../../../../../core/services/local-storage/local-storage.service';
-import { LocationService } from '../../../../../core/services/location/location.service';
+import { Observable } from 'rxjs';
+import { ConfigService } from '../../../../../../core/config/config.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { LAST_SCENARIO_KEY } from '../../../../../../shared/constants/form-player';
+import { SignatureApplicationData } from '../../models/application.interface';
+import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
+import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
+import { LocationService } from '../../../../../../core/services/location/location.service';
+import {
+  ComponentActionDto,
+  ComponentDto,
+} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
   templateUrl: './signature-application.component.html',
   styleUrls: ['./signature-application.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignatureApplicationComponent implements OnInit {
-  @Input() isLoading: boolean;
   @Output() nextStepEvent = new EventEmitter<string>();
 
-  isMobile = this.deviceDetector.isMobile;
+  data: SignatureApplicationData = this.screenService.componentValue as SignatureApplicationData;
 
-  get data(): SignatureApplicationData {
-    return this.screenService.componentValue as SignatureApplicationData;
-  }
+  isMobile = this.deviceDetector.isMobile;
+  showNav$: Observable<boolean> = this.screenService.showNav$;
+  header$: Observable<string> = this.screenService.header$;
+  component$: Observable<ComponentDto> = this.screenService.component$;
+  isLoading$: Observable<boolean> = this.screenService.isLoading$;
+  actions$: Observable<ComponentActionDto[]> = this.screenService.actions$;
 
   constructor(
     public config: ConfigService,

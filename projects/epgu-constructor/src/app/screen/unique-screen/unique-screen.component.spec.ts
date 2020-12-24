@@ -13,7 +13,7 @@ import { RepeatableFieldsComponent } from '../../component/unique-screen/compone
 import { TimeSlotsComponent } from '../../component/unique-screen/components/time-slots/time-slots.component';
 import { CarInfoComponent } from '../../component/unique-screen/components/car-info/components/car-info-screen/car-info.component';
 // eslint-disable-next-line max-len
-import { SignatureApplicationComponent } from '../../component/unique-screen/components/signature-application/components/signature-application.component';
+import { SignatureApplicationComponent } from '../../component/unique-screen/components/signature-application/components/signature-application/signature-application.component';
 import { PaymentComponent } from '../../component/unique-screen/components/payment/components/payment/payment.component';
 import { BillInfoComponent } from '../../component/unique-screen/components/payment/components/billinfo/billinfo.component';
 // eslint-disable-next-line max-len
