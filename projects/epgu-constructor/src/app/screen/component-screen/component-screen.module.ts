@@ -6,7 +6,6 @@ import { ComponentsListModule } from '../../component/components-list/components
 import { TimerModule } from '../../component/component-screen/components/timer/timer.module';
 import { BaseModule } from '../../shared/components/base/base.module';
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
-import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
 import { ActionModule } from '../../shared/directives/action/action.module';
@@ -21,7 +20,6 @@ import { ActionModule } from '../../shared/directives/action/action.module';
     TimerModule,
     BaseModule,
     ScreenContainerModule,
-    ScreenPadModule,
     AnswerButtonModule,
     FieldListModule,
     ActionModule,

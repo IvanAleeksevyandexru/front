@@ -5,10 +5,17 @@ import { RegistrationAddrComponent } from './components/registration-addr/regist
 // eslint-disable-next-line max-len
 import { ConstructorDadataWidgetModule } from '../../../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 import { BaseModule } from '../../../../../../shared/components/base/base.module';
+import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 
 @NgModule({
   declarations: [RegistrationAddrComponent],
   exports: [RegistrationAddrComponent],
-  imports: [CoreModule, ConstructorPlainInputModule, ConstructorDadataWidgetModule, BaseModule],
+  imports: [
+    CoreModule,
+    ConstructorPlainInputModule,
+    ConstructorDadataWidgetModule,
+    BaseModule,
+    ScreenPadModule,
+  ],
 })
 export class RegistrationAddrScreenModule {}

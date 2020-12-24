@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
-import { pluck, concatMap, reduce } from 'rxjs/operators';
+import { filter, pluck, concatMap, reduce, tap } from 'rxjs/operators';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import {
   DadataSuggestions,
@@ -15,34 +15,48 @@ export interface DadataSuggestionsAddressForLookup extends DadataSuggestionsAddr
 interface objectWithSuggestions {
   suggestions: DadataSuggestions;
 }
+interface addressHelperProvider {
+  search: (searchString: string) => Observable<DadataSuggestionsAddressForLookup[]>;
+}
 
 @Injectable()
 export class AddressHelperService {
   // Провайдер поиска для передачи в lib-lookup
   // с функцией поиска для lib-lookup. Сам поиск осуществляется за счет suggestions дадаты
-  public provider = {
-    search: (searchString): Observable<DadataSuggestionsAddressForLookup[]> =>
-      searchString ? this.getCitySuggestions(searchString) : of([]),
-  };
 
   constructor(private dictionaryApiService: DictionaryApiService) {}
+
+  public getProvider(filter?: string[]): addressHelperProvider {
+    return {
+      search: (searchString: string): Observable<DadataSuggestionsAddressForLookup[]> =>
+        searchString ? this.getCitySuggestions(searchString, filter) : of([]),
+    };
+  }
 
   /**
    * Получение городов из suggestions дадаты для lib-lookup. Добавляет к suggestions атрибуты id и text
    * @param qString - строка для поиска
+   * @param cityFilter - ограничение результатов поиска
    */
-  public getCitySuggestions(qString: string): Observable<Array<DadataSuggestionsAddressForLookup>> {
+  public getCitySuggestions(
+    qString: string,
+    cityFilter?: string[],
+  ): Observable<Array<DadataSuggestionsAddressForLookup>> {
     return this.dictionaryApiService.getDadataSuggestions(qString, { isCity: 'true' }).pipe(
       pluck('suggestions', 'addresses'),
       concatMap((addresses: Array<DadataSuggestionsAddress>) => {
-        return from(addresses);
+        return cityFilter
+          ? from(addresses).pipe(
+              filter(({ address }: DadataSuggestionsAddress) => {
+                const test: string = address.toLowerCase();
+                const result = cityFilter.some(
+                  (filter: string) => test.indexOf(filter.toLowerCase()) !== -1,
+                );
+                return result;
+              }),
+            )
+          : from(addresses);
       }),
-      //TODO: Временное ограничение для EPGUCORE-43916
-      //TODO: EPGUCORE-44752 отключено
-      // filter(({ address }: DadataSuggestionsAddress) => {
-      //   const test: string = address.toLowerCase();
-      //   return test.indexOf('москва') !== -1 || test.indexOf('московская обл') !== -1;
-      // }),
       reduce<DadataSuggestionsAddress, DadataSuggestionsAddressForLookup[]>((acc, value) => {
         acc.push({
           ...value,

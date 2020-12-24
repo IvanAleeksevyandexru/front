@@ -3,6 +3,7 @@ import { TimerComponent } from './timer.component';
 import { TimerPipe } from './pipes/timer.pipe';
 import { CoreModule } from '../../../../core/core.module';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
+import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 
 const COMPONENTS = [TimerComponent, TimerPipe];
 
@@ -10,6 +11,6 @@ const COMPONENTS = [TimerComponent, TimerPipe];
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   providers: [],
-  imports: [CoreModule, ActionModule],
+  imports: [CoreModule, ActionModule, ScreenPadModule],
 })
 export class TimerModule {}

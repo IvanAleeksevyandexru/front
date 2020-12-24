@@ -1,19 +1,21 @@
-<form [formGroup]="form">
-  <epgu-constructor-label [tips]="(data$ | async)?.attrs?.labelHint" [label]="(data$ | async).label"></epgu-constructor-label>
-  <epgu-constructor-constructor-dropdown
-    [control]="form.get('countryDropdown')"
-    [placeholder]="placeholder"
-    [items]="listItemDictionary"
-    (changed)="selectCountry($event)"
-    [localSearch]="true">
-  </epgu-constructor-constructor-dropdown>
-  <epgu-constructor-helper-text *ngIf="helperText">{{ helperText }}</epgu-constructor-helper-text>
-  <div *ngIf="selectedCountry && selectedCountry.countryType !== '1'"
-       class="country-apostil__warning">
-    <lib-disclaimer-elk
-      (click)="clickToInnerHTML($event)"
-      color="#FFD54C"
-      title="Предупреждение"
-      [text]="warningMessages[selectedCountry.countryType]"></lib-disclaimer-elk>
-  </div>
-</form>
+<epgu-constructor-screen-pad class="screen-pad-body">
+  <form [formGroup]="form">
+    <epgu-constructor-label [tips]="(data$ | async)?.attrs?.labelHint" [label]="(data$ | async).label"></epgu-constructor-label>
+    <epgu-constructor-constructor-dropdown
+      [control]="form.get('countryDropdown')"
+      [placeholder]="placeholder"
+      [items]="listItemDictionary"
+      (changed)="selectCountry($event)"
+      [localSearch]="true">
+    </epgu-constructor-constructor-dropdown>
+    <epgu-constructor-helper-text *ngIf="helperText">{{ helperText }}</epgu-constructor-helper-text>
+    <div *ngIf="selectedCountry && selectedCountry.countryType !== '1'"
+         class="country-apostil__warning">
+      <lib-disclaimer-elk
+        (click)="clickToInnerHTML($event)"
+        color="#FFD54C"
+        title="Предупреждение"
+        [text]="warningMessages[selectedCountry.countryType]"></lib-disclaimer-elk>
+    </div>
+  </form>
+</epgu-constructor-screen-pad>

@@ -1,9 +1,11 @@
-<section class="add-passport-screen">
-  <div class="add-passport-screen__body">
-    <epgu-constructor-passport
-      (valueChangedEvent)="onPassportDataChange($event)"
-      [attrs]="$any((data$ | async).attrs)"
-    >
-    </epgu-constructor-passport>
-  </div>
-</section>
+<epgu-constructor-screen-pad class="screen-pad-body">
+  <section class="add-passport-screen">
+    <div class="add-passport-screen__body">
+      <epgu-constructor-passport
+        (valueChangedEvent)="onPassportDataChange($event)"
+        [attrs]="$any((data$ | async).attrs)"
+      >
+      </epgu-constructor-passport>
+    </div>
+  </section>
+</epgu-constructor-screen-pad>
