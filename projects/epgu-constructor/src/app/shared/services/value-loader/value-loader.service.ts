@@ -16,6 +16,7 @@ export class ValueLoaderService {
     cachedAnswers: CachedAnswers,
   ): Array<ScreenStoreComponentDtoI> {
     return components.map((item) => {
+      item.valueFromCache = false;
       if (item.type === this.repeatableFields) {
         const repeatableFieldsComponents = this.setRepeatableFields(
           item.attrs.components,
@@ -167,6 +168,7 @@ export class ValueLoaderService {
           parentId,
           parentIndex,
         ),
+        valueFromCache: true
       };
     }
 
