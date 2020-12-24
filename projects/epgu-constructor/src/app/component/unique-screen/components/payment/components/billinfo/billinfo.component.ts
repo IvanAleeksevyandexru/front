@@ -17,7 +17,7 @@ export class BillInfoComponent extends AbstractPaymentComponent {
    * Возвращает ссылку на скачивание квитанции
    */
   get getBillLink(): string {
-    const urlPrefix = this.config.mocks.includes('payment')
+    const urlPrefix = this.config.mocks?.includes('payment')
       ? `${this.config.mockUrl}/pay/v1/bill/get/pdf`
       : `${this.config.billsApiUrl}bill/get/pdf`;
 
