@@ -1,6 +1,6 @@
-<section class="select-children-screen">
+<div class="cmp-group">
   <form [formGroup]="selectChildrenForm">
-    <div class="select-children-screen__card" *ngFor="let item of items; let idx = index">
+    <epgu-constructor-screen-pad class="cmp-group__layer" *ngFor="let item of items; let idx = index">
       <div class="card">
         <div class="card__wrapper">
           <div *ngIf="!isSingleChild" class="card__header">
@@ -33,15 +33,20 @@
               >
               </epgu-constructor-components-list>
             </section>
+
+            <epgu-constructor-helper-text *ngIf="hint">
+              {{ hint }}
+            </epgu-constructor-helper-text>
           </div>
         </div>
       </div>
-    </div>
-    <epgu-constructor-clone-button
-      *ngIf="!isSingleChild"
-      [disabled]="isScreensAvailable()"
-      (click)="addMoreChild()"
-      >{{ addSectionLabel$ | async }}</epgu-constructor-clone-button
-    >
+    </epgu-constructor-screen-pad>
   </form>
-</section>
+</div>
+
+<epgu-constructor-clone-button
+  *ngIf="!isSingleChild"
+  [disabled]="isScreensAvailable()"
+  (click)="addMoreChild()"
+>{{ addSectionLabel$ | async }}</epgu-constructor-clone-button>
+
