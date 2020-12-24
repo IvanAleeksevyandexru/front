@@ -9,6 +9,7 @@ import { PassportModule } from '../../../../shared/components/add-passport/passp
 import { ComponentListToolsService } from '../../../components-list/services/component-list-tools/component-list-tools.service';
 import { AddPassportComponent } from './add-passport.component';
 import { of } from 'rxjs';
+import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -24,7 +25,7 @@ describe('AddPassportComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AddPassportComponent],
+      declarations: [AddPassportComponent, ScreenPadComponent],
       imports: [RouterTestingModule, PassportModule],
       providers: [
         CurrentAnswersService,

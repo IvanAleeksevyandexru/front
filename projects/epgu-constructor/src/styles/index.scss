@@ -258,4 +258,16 @@
   .screen-container-mt {
     margin-top: $navigation-mb;
   }
+
+  .screen-pad-body {
+    display: flex;
+    @include tablets-down {
+      flex-grow: 1;
+    }
+    & > * {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+    }
+  }
 }

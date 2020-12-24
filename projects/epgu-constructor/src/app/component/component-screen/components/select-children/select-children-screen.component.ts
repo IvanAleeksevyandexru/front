@@ -54,6 +54,7 @@ export class SelectChildrenScreenComponent implements OnInit {
   passportRef: string;
   defaultAvailable = 20;
   isSingleChild: boolean;
+  hint: string | undefined;
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
@@ -92,6 +93,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     this.passportRef = this.getRefFromComponent('rfPasportSeries');
     this.itemsToSelect = this.getItemsToSelect(itemsList);
     this.isSingleChild = component?.attrs?.singleChild;
+    this.hint = component?.attrs?.hint;
   }
 
   initStartValues(id: string): void {
