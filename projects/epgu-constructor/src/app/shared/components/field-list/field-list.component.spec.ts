@@ -2,29 +2,26 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SafePipe } from '../../../core/pipes/safe/safe.pipe';
 
 import { FieldListComponent } from './field-list.component';
+import { ScreenPadComponent } from '../screen-pad/screen-pad.component';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
   let fixture: ComponentFixture<FieldListComponent>;
   const dataMock = {
     attrs: {
-      style: {}
+      style: {},
     },
     visited: true,
     label: '',
     type: '',
     value: '',
-    id: ''
+    id: '',
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        FieldListComponent,
-        SafePipe,
-      ]
-    })
-      .compileComponents();
+      declarations: [FieldListComponent, SafePipe, ScreenPadComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

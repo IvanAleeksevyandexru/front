@@ -7,62 +7,60 @@
       <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
     </div>
 
-    <epgu-constructor-screen-pad class="body">
-      <ng-container [ngSwitch]="screenService.componentType$ | async">
-        <epgu-constructor-confirm-personal-user-address
-          *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
-        ></epgu-constructor-confirm-personal-user-address>
+    <ng-container [ngSwitch]="screenService.componentType$ | async">
+      <epgu-constructor-confirm-personal-user-address
+        *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
+      ></epgu-constructor-confirm-personal-user-address>
 
-        <epgu-constructor-confirm-personal-user-data
-          *ngSwitchCase="isUserData()"
-        ></epgu-constructor-confirm-personal-user-data>
+      <epgu-constructor-confirm-personal-user-data
+        *ngSwitchCase="isUserData()"
+      ></epgu-constructor-confirm-personal-user-data>
 
-        <epgu-constructor-confirm-personal-user-phone-email
-          *ngSwitchCase="isUserContactData()"
-        ></epgu-constructor-confirm-personal-user-phone-email>
+      <epgu-constructor-confirm-personal-user-phone-email
+        *ngSwitchCase="isUserContactData()"
+      ></epgu-constructor-confirm-personal-user-phone-email>
 
-        <epgu-constructor-registration-addr
-          *ngSwitchCase="screenComponentName.registrationAddr"
-        ></epgu-constructor-registration-addr>
+      <epgu-constructor-registration-addr
+        *ngSwitchCase="screenComponentName.registrationAddr"
+      ></epgu-constructor-registration-addr>
 
-        <epgu-constructor-add-passport
-          *ngSwitchCase="screenComponentName.passportLookup"
-        ></epgu-constructor-add-passport>
+      <epgu-constructor-add-passport
+        *ngSwitchCase="screenComponentName.passportLookup"
+      ></epgu-constructor-add-passport>
 
-        <epgu-constructor-country-selection
-          *ngSwitchCase="screenComponentName.countryApostil"
-          (changeComponentSettings)="changeComponentSettings($event)"
-          (changeComponentData)="changedComponentData($event)"
-        ></epgu-constructor-country-selection>
+      <epgu-constructor-country-selection
+        *ngSwitchCase="screenComponentName.countryApostil"
+        (changeComponentSettings)="changeComponentSettings($event)"
+        (changeComponentData)="changedComponentData($event)"
+      ></epgu-constructor-country-selection>
 
-        <epgu-constructor-select-children-screen
-          *ngSwitchCase="screenComponentName.childrenList"
-          (nextStepEvent)="nextStep()"
-        ></epgu-constructor-select-children-screen>
-        <!-- TODO: удалить потом как depricated -->
-        <epgu-constructor-select-children-screen
-          *ngSwitchCase="screenComponentName.childrenListUnder14"
-          (nextStepEvent)="nextStep()"
-        ></epgu-constructor-select-children-screen>
-        <!-- TODO: удалить потом как depricated -->
-        <epgu-constructor-select-children-screen
-          *ngSwitchCase="screenComponentName.childrenListAbove14"
-          (nextStepEvent)="nextStep()"
-        ></epgu-constructor-select-children-screen>
+      <epgu-constructor-select-children-screen
+        *ngSwitchCase="screenComponentName.childrenList"
+        (nextStepEvent)="nextStep()"
+      ></epgu-constructor-select-children-screen>
+      <!-- TODO: удалить потом как depricated -->
+      <epgu-constructor-select-children-screen
+        *ngSwitchCase="screenComponentName.childrenListUnder14"
+        (nextStepEvent)="nextStep()"
+      ></epgu-constructor-select-children-screen>
+      <!-- TODO: удалить потом как depricated -->
+      <epgu-constructor-select-children-screen
+        *ngSwitchCase="screenComponentName.childrenListAbove14"
+        (nextStepEvent)="nextStep()"
+      ></epgu-constructor-select-children-screen>
 
-        <epgu-constructor-field-list
-          [data]="screenService.component"
-          *ngSwitchCase="screenComponentName.fieldList"
-        >
-        </epgu-constructor-field-list>
-        <epgu-constructor-timer
-          *ngSwitchCase="screenComponentName.timer"
-          [data]="$any(screenService.component)"
-          (nextStepEvent)="nextStep($event)"
-        >
-        </epgu-constructor-timer>
-      </ng-container>
-    </epgu-constructor-screen-pad>
+      <epgu-constructor-field-list
+        [data]="screenService.component"
+        *ngSwitchCase="screenComponentName.fieldList"
+      >
+      </epgu-constructor-field-list>
+      <epgu-constructor-timer
+        *ngSwitchCase="screenComponentName.timer"
+        [data]="$any(screenService.component)"
+        (nextStepEvent)="nextStep($event)"
+      >
+      </epgu-constructor-timer>
+    </ng-container>
   </div>
 
   <div class="screen-footer">

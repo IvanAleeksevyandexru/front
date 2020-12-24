@@ -14,6 +14,7 @@ import { CountrySelectionComponent } from './components/country-selection/countr
 import { SelectChildrenScreenModule } from './components/select-children/select-children-screen.module';
 import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { BaseModule } from '../../shared/components/base/base.module';
+import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 
 const COMPONENTS = [CountrySelectionComponent];
 
@@ -29,6 +30,7 @@ const COMPONENTS = [CountrySelectionComponent];
     AddPassportModule,
     ConstructorDropdownModule,
     BaseModule,
+    ScreenPadModule,
   ],
   exports: [
     ...COMPONENTS,
