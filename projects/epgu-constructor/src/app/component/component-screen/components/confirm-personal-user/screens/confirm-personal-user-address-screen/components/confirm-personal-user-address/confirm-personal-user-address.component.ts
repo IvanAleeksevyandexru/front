@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import * as moment_ from 'moment';
 import { Observable } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
@@ -40,11 +40,13 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   ) {}
 
   ngOnInit(): void {
-    this.data$.pipe(takeUntil(this.ngUnsubscribe$), take(1)).subscribe((data) => {
-      this.textTransformType = data?.attrs?.fstuc;
-      this.isRequired = data.required;
-      this.updateValue(data);
-    });
+    this.data$
+      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
+      .subscribe((data) => {
+        this.textTransformType = data?.attrs?.fstuc;
+        this.isRequired = data.required;
+        this.updateValue(data);
+      });
   }
 
   updateValue(data: ConfirmAddressInterface): void {
