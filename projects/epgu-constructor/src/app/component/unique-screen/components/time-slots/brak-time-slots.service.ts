@@ -3,7 +3,7 @@ import * as moment_ from 'moment';
 import { SessionService } from '../../../../core/services/session/session.service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import * as uuid from 'uuid';
+import { v5 as uuidv5 } from 'uuid';
 import { ConfigService } from '../../../../core/config/config.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
@@ -233,7 +233,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
     const name = `${this.sessionService.userId}#${this.department.value}`;
-    this.bookId = uuid.v5(name, this.BOOKING_NAMESPACE);
+    this.bookId = uuidv5(name, this.BOOKING_NAMESPACE);
 
     const {
       preliminaryReservation,
