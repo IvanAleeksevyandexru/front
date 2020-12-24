@@ -11,7 +11,6 @@ import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-add
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
 import { of } from 'rxjs';
-import { CachedAnswersService } from '../../../../../../../../shared/services/cached-answers/cached-answers.service';
 
 
 
@@ -38,7 +37,6 @@ describe('ConfirmPersonalUserAddressComponent', () => {
       providers: [
         UnsubscribeService,
         CurrentAnswersService,
-        CachedAnswersService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
