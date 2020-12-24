@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import * as moment_ from 'moment';
 
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import { CustomScreenComponentTypes } from '../../../component/components-list/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
+
+const moment = moment_;
 
 @Injectable()
 export class ValueLoaderService {
@@ -178,14 +181,19 @@ export class ValueLoaderService {
     const cache = cachedAnswers[id].value;
 
     if (this.utils.hasJsonStructure(cache)) {
-      return UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
+      const date =  UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
+      return this.isShortTimeFormat(date) ? date : moment(date).format('DD.MM.YYYY');
     } else {
-      return cache;
+      return this.isShortTimeFormat(cache) ? cache : moment(cache).format('DD.MM.YYYY');
     }
   }
 
   private getPathFromPreset(value: string): { id: string; path: string } {
     const [id, path] = value.split(/\.(.+)/);
     return { id, path };
+  }
+
+  private isShortTimeFormat(date: string): boolean {
+    return /^\d{1,2}.\d{1,2}.\d{1,4}$/.test(date);
   }
 }
