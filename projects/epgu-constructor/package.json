@@ -14,14 +14,14 @@
     "moment": "2.24.0",
     "ngx-perfect-scrollbar": "8.0.0",
     "text-mask-core": "5.1.2",
-    "epgu-lib": "0.0.778"
+    "epgu-lib": "0.0.778",
+    "uuid": "8.3.0"
   },
   "dependencies": {
     "@tanker/file-ponyfill": "^2.6.3",
     "tslib": "2.0.0",
     "ics": "^2.24.0",
     "@alyle/ui": "^10.2.1",
-    "angular-resize-event": "^2.0.0",
-    "uuid": "8.3.0"
+    "angular-resize-event": "^2.0.0"
   }
 }
