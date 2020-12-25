@@ -34,6 +34,7 @@ export type TimeSlotsApi = {
  * @property {string}mockUrl - url до mockApi
  * @property {TimeSlotsApi}timeSlots - настройки для time-slot в разных услугах
  * @property {boolean}disableUnderConstructionMode - отключить underConstruction режим, для отладки прохода сценариев
+ * @property {boolean}isSocialShareDisabled - задизейблить соц.кнопки на всех экранах
  */
 export interface Config {
   apiUrl: string;
@@ -55,6 +56,7 @@ export interface Config {
   mockUrl?: string;
   timeSlots?: TimeSlotsApi;
   disableUnderConstructionMode?: boolean;
+  isSocialShareDisabled?: boolean;
   addToCalendarUrl?: string;
 }
 
