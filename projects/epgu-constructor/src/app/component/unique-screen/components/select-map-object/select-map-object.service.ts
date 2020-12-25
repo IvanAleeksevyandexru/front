@@ -172,7 +172,7 @@ export class SelectMapObjectService implements OnDestroy {
    */
   public searchMapObject(searchString: string): void {
     const searchStringLower = searchString.toLowerCase();
-    this.filteredDictionaryItems = this.dictionary?.items.filter((item) => {
+    this.filteredDictionaryItems = this.dictionary.items.filter((item) => {
       const address = (item.attributeValues[this.componentAttrs.attributeNameWithAddress])?.toLowerCase();
       return item.title?.toLowerCase().includes(searchStringLower)
         || address?.includes(searchStringLower);
