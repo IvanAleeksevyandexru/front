@@ -35,6 +35,7 @@ import { LocalStorageServiceStub } from '../core/services/local-storage/local-st
 import { LocalStorageService } from '../core/services/local-storage/local-storage.service';
 import { LocationService } from '../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../core/providers/window.provider';
+import { SimpleChange } from '@angular/core';
 
 
 describe('FormPlayerComponent', () => {
@@ -161,7 +162,7 @@ describe('FormPlayerComponent', () => {
       component.service = serviceDataMock;
       fixture.detectChanges();
       spyOn(serviceDataService, 'init').and.callThrough();
-      component.ngOnChanges();
+      component.ngOnChanges({ service: new SimpleChange(null, serviceDataMock, true) });
       expect(serviceDataService.init).toBeCalledWith(serviceDataMock);
     });
   });
