@@ -10,6 +10,8 @@ import { MockProvider } from 'ng-mocks';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { LocationService } from '../../../../../../core/services/location/location.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
+import { ConfigServiceStub } from '../../../../../../core/config/config.service.stub';
 
 let mockData: ComponentDto;
 
@@ -28,9 +30,9 @@ const testFnc = () => {
       providers: [
         MockProvider(PaymentService),
         MockProvider(CurrentAnswersService),
-        MockProvider(ConfigService),
         MockProvider(LocationService),
-        MockProvider(LocalStorageService),
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub }
       ],
     }).compileComponents();
@@ -43,7 +45,6 @@ const testFnc = () => {
     screenService.submitLabel = '';
     fixture = TestBed.createComponent(PaymentComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create payment brak/razbrack', () => {
