@@ -5,6 +5,7 @@ import {
   Input,
   OnChanges,
   OnInit,
+  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { LoadService } from 'epgu-lib';
@@ -59,8 +60,15 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.startPlayer();
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.serviceDataService.init(this.service);
+
+    if (
+      changes.service.previousValue &&
+      changes.service.previousValue.serviceId !== changes.service.currentValue.serviceId
+    ) {
+      this.restartPlayer();
+    }
   }
 
   private initFormPlayerConfig(): void {
@@ -108,6 +116,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       .subscribe(() => {
         this.formPlayerStartService.startPlayer();
       });
+  }
+
+  private restartPlayer(): void {
+    this.formPlayerStartService.restartPlayer();
+    this.isFirstLoading$ = this.screenService.isLoading$.pipe(take(3));
   }
 
   private nextStep(navigation?: Navigation): void {
