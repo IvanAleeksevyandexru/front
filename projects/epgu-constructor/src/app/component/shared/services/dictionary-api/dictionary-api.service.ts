@@ -8,7 +8,7 @@ import {
 } from './dictionary-api.types';
 import { ConfigService } from '../../../../core/config/config.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { concatMap, delayWhen, filter, tap } from 'rxjs/operators';
+import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
 
 @Injectable()
 export class DictionaryApiService {
@@ -41,11 +41,13 @@ export class DictionaryApiService {
 
           return this.post(path, options).pipe(
             tap((response) => {
+              this.dictionaryCache[id] = response;
+            }),
+            finalize(() => {
               const status = this.processStatus.getValue();
               delete status[id];
               this.processStatus.next(status);
-              this.dictionaryCache[id] = response;
-            }),
+            })
           );
         }
       }),
