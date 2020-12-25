@@ -1,33 +1,34 @@
-import { inject, TestBed, ComponentFixture } from '@angular/core/testing';
-
-import { ActionDirective } from './action.directive';
-
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
-
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
-import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
-import { NavigationModalServiceStub } from '../../../core/services/navigation-modal/navigation-modal.service.stub';
-import { UtilsService } from '../../../core/services/utils/utils.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import {
-  ActionApiResponse,
-  ActionType,
-  ComponentDto,
-  ComponentActionDto,
-  DTOActionAction,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { Observable, of } from 'rxjs';
-import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConfigService } from '../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../core/config/config.service.stub';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
+import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
+import { NavigationModalServiceStub } from '../../../core/services/navigation-modal/navigation-modal.service.stub';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
+import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
+import {
+  ActionApiResponse,
+  ActionType,
+  ComponentActionDto,
+  ComponentDto,
+  DTOActionAction,
+} from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
+import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
+import { ActionDirective } from './action.directive';
+
+
+
 
 @Component({
   selector: 'epgu-constructor-action-test',
@@ -140,6 +141,7 @@ describe('ActionDirective', () => {
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        HtmlRemoverService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })

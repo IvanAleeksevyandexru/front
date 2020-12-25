@@ -1,23 +1,24 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { ConfigService } from '../../../core/config/config.service';
+import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
+import { UtilsService } from '../../../core/services/utils/utils.service';
 import { Navigation, NavigationOptions, NavigationParams } from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import {
   ActionApiResponse,
   ActionDTO,
   ActionType,
-  ComponentActionDto,
+  ComponentActionDto
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
-import { UtilsService } from '../../../core/services/utils/utils.service';
-import { ComponentStateForNavigate } from './action.interface';
-import { ConfigService } from '../../../core/config/config.service';
-import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
-import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { ScreenStore } from '../../../screen/screen.types';
+import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
+import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
+import { ComponentStateForNavigate } from './action.interface';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -40,6 +41,7 @@ export class ActionDirective {
     private utilsService: UtilsService,
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
+    private htmlRemover: HtmlRemoverService,
   ) {}
 
   @HostListener('click') onClick(): void {
@@ -96,6 +98,7 @@ export class ActionDirective {
   private sendAction<T>(): Observable<ActionApiResponse<T>> {
     const data = this.getActionDTO();
 
+    data.scenarioDto.display = this.htmlRemover.delete(data.scenarioDto.display);
     return this.actionApiService.sendAction<T>(this.action.action, data);
   }
 
