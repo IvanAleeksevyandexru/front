@@ -27,6 +27,7 @@ export class ConfigService implements Config {
   private _timeSlots?: TimeSlotsApi;
   private _mockUrl: string;
   private _disableUnderConstructionMode: boolean;
+  private _isSocialShareDisabled: boolean;
   private _addToCalendarUrl: string;
 
   constructor(private loadService: LoadService) {}
@@ -125,6 +126,10 @@ export class ConfigService implements Config {
     return this._disableUnderConstructionMode;
   }
 
+  get isSocialShareDisabled(): boolean {
+    return this._isSocialShareDisabled;
+  }
+
   get addToCalendarUrl(): string {
     return this._addToCalendarUrl;
   }
@@ -159,6 +164,7 @@ export class ConfigService implements Config {
     this._mockUrl = config.mockUrl || '';
     this._timeSlots = config.timeSlots || {};
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
+    this._isSocialShareDisabled = config.isSocialShareDisabled || false;
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 
