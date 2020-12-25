@@ -29,6 +29,7 @@ export class DictionaryApiService {
     const path = `${this.config.dictionaryUrl}/${dictionaryName}`;
     const cacheId = dictionaryName + JSON.stringify(options);
 
+    // TODO: Вынести кеш логику в кеш сервис
     return of(cacheId).pipe(
       delayWhen(() => this.processStatus.pipe(filter((v) => !v[cacheId]))),
       concatMap((id) => {
