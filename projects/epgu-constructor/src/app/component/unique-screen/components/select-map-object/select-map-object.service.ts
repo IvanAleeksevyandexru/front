@@ -213,6 +213,10 @@ export class SelectMapObjectService implements OnDestroy {
     const newItems = [];
     const hashMap = {};
     dictionary.items.forEach((item: DictionaryYMapItem) => {
+      if (!item.center) {
+        return;
+      }
+
       const hashKey = `${item.center[0]}$${item.center[1]}`;
       // agreement - чекбокс согласия с условиями услуг для загсов
       const attrValues = item.attributeValues as { GET_CONSENT: string };
