@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
@@ -35,6 +43,7 @@ const halfWidthItemTypes = [
     UnsubscribeService,
     DateRangeService,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComponentsListComponent implements OnChanges {
   @Input() components: CustomComponent;

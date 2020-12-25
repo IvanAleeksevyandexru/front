@@ -1,5 +1,6 @@
 import {
   AfterViewChecked,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -25,6 +26,7 @@ import { ScreenTypes } from '../../../../screen/screen.types';
   selector: 'epgu-constructor-repeatable-fields',
   templateUrl: './repeatable-fields.component.html',
   styleUrls: ['./repeatable-fields.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RepeatableFieldsComponent implements AfterViewChecked {
   @Output() nextStepEvent = new EventEmitter();

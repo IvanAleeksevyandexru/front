@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { debounceTime, delay, takeUntil } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
@@ -20,6 +26,7 @@ import { NavigationService } from '../../core/services/navigation/navigation.ser
   templateUrl: './screen-modal.component.html',
   styleUrls: ['./screen-modal.component.scss'],
   providers: [ScreenService, ScreenModalService], // Нужен отдельный инстанс для ScreenService
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   @ViewChild('headerBlock', { static: false }) headerBlock;
@@ -37,6 +44,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
     private navService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private deviceDetector: DeviceDetectorService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     super();
   }
@@ -49,12 +57,14 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
       .pipe(debounceTime(50))
       .subscribe(() => {
         this.updateHeaderHeight();
+        this.changeDetectionRef.markForCheck();
       });
 
     this.screenModalService.playerLoaded$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((showModal) => {
         this.showModal = showModal;
+        this.changeDetectionRef.markForCheck();
       });
 
     this.screenService.header$
@@ -62,6 +72,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
       .pipe(delay(100))
       .subscribe(() => {
         this.updateHeaderHeight();
+        this.changeDetectionRef.markForCheck();
       });
 
     this.screenModalService.isInternalScenarioFinish$
@@ -71,15 +82,22 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
         if (isInternalScenarioFinish) {
           this.nextStep({ options: { isInternalScenarioFinish } });
         }
+        this.changeDetectionRef.markForCheck();
       });
 
     this.navModalService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NavigationPayload) => this.nextStep(data));
+      .subscribe((data: NavigationPayload) => {
+        this.nextStep(data);
+        this.changeDetectionRef.markForCheck();
+      });
 
     this.navModalService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NavigationPayload) => this.prevStep(data));
+      .subscribe((data: NavigationPayload) => {
+        this.prevStep(data);
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   updateHeaderHeight(): void {

@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
@@ -21,6 +28,7 @@ const moment = moment_;
   templateUrl: './doc-input.component.html',
   styleUrls: ['./doc-input.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocInputComponent implements OnInit, AfterViewInit {
   @Input() data: AbstractControl | DocInputControl;
@@ -39,6 +47,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     private formService: ComponentListFormService,
     private validationService: ValidationService,
     private fb: FormBuilder,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +58,10 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.handleServerErrors()); // https://stackoverflow.com/questions/54611631/expressionchangedafterithasbeencheckederror-on-angular-6-while-using-mat-tab
+    setTimeout(() => {
+      this.handleServerErrors();
+      this.changeDetectionRef.markForCheck();
+    }); // https://stackoverflow.com/questions/54611631/expressionchangedafterithasbeencheckederror-on-angular-6-while-using-mat-tab
   }
 
   /**
@@ -83,7 +95,10 @@ export class DocInputComponent implements OnInit, AfterViewInit {
         takeUntil(this.ngUnsubscribe$),
         map((formFields: DocInputFormFields) => this.formatFormFields(formFields)),
       )
-      .subscribe((formFields) => this.emitToParentForm(formFields));
+      .subscribe((formFields) => {
+        this.emitToParentForm(formFields);
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   formatFormFields(formFields: DocInputFormFields): DocInputFields {

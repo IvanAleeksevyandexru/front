@@ -22,6 +22,7 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { InfoScreenBodyComponent } from './info-screen-body/info-screen-body.component';
 import { InfoScreenComponent } from './info-screen.component';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -70,6 +71,8 @@ describe('InfoScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
+    }).overrideComponent(InfoScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     }).compileComponents();
   });
 

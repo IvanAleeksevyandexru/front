@@ -1,9 +1,10 @@
-import { Component, HostListener } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HelperService } from 'epgu-lib';
 
 @Component({
   template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalBaseComponent {
   detachView: Function;

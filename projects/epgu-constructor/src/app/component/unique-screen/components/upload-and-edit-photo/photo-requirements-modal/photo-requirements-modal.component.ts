@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
 import { ConfirmationModalBaseButton } from '../../../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.interface';
 import { uploadPhotoElemId } from '../upload-and-edit-photo.constant';
@@ -9,6 +9,7 @@ import { ConfigService } from '../../../../../core/services/config/config.servic
   selector: 'epgu-constructor-photo-requirements-modal',
   templateUrl: './photo-requirements-modal.component.html',
   styleUrls: ['./photo-requirements-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoRequirementsModalComponent extends ModalBaseComponent implements OnInit {
   setting: PhotoRequirementsModalSetting;

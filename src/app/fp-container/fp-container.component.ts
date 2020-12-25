@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AppService } from '../app.service';
@@ -9,6 +9,7 @@ import { FormPlayerContext } from '../../../dist/epgu-constructor/app/form-playe
   selector: 'fp-container',
   templateUrl: './fp-container.component.html',
   styleUrls: ['./fp-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FpContainerComponent {
   service$: Observable<ServiceEntity> = this.appService.config$.pipe(

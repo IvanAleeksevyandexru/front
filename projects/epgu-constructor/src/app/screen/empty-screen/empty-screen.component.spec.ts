@@ -6,6 +6,7 @@ import { ScreenServiceStub } from '../screen.service.stub';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 import { RedirectComponent } from '../../component/empty-screen/components/redirect.component';
 import { By } from '@angular/platform-browser';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../core/services/init-data/init-data.service.stub';
 
@@ -22,6 +23,8 @@ describe('EmptyScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
       ],
+    }).overrideComponent(EmptyScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     });
   });
 

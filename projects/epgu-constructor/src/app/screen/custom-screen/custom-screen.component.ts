@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import * as moment_ from 'moment';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
@@ -15,6 +15,7 @@ const moment = moment_;
   templateUrl: './custom-screen.component.html',
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomScreenComponent extends ScreenBase {
   dataToSend: NavigationPayload;

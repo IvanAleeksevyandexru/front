@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import { UnsubscribeService } from '../../../../../../../../core/services/unsubs
   selector: 'epgu-constructor-confirm-personal-user-data',
   templateUrl: './confirm-personal-user-data.component.html',
   styleUrls: ['./confirm-personal-user-data.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmPersonalUserDataComponent implements OnInit {
   // <-- variable
@@ -24,11 +25,14 @@ export class ConfirmPersonalUserDataComponent implements OnInit {
     public screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.updateValue(data.value);
+
+      this.changeDetectionRef.markForCheck();
     });
   }
 
