@@ -17,6 +17,7 @@ export interface ConfirmAddressInterface {
   type: ComponentScreenComponentTypes;
   value: string;
   required: boolean;
+  valueFromCache: boolean;
 }
 
 interface ConfirmAddressInterfaceAttr {

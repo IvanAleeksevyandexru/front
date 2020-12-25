@@ -68,7 +68,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       const isPresetable = this.isPresetable(
         data?.attrs?.fields?.find((field) => field.fieldName === 'regDate'),
       );
-      if (isPresetable) {
+      if (isPresetable || data.valueFromCache) {
         this.valueParsed.regDate = this.getDate(localValueParsed.regDate);
       }
     }
@@ -77,7 +77,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       const isPresetable = this.isPresetable(
         data?.attrs?.fields?.find((field) => field.fieldName === 'regAddr'),
       );
-      if (isPresetable) {
+      if (isPresetable || data.valueFromCache) {
         this.valueParsed.regAddr = this.getAddress(localValueParsed.regAddr);
       }
     }
