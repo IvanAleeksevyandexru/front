@@ -27,10 +27,10 @@
     *ngSwitchCase="uniqueComponentName.carInfo"
     (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-car-info>
-  <epgu-constructor-signature-application
+  <epgu-constructor-signature-application-container
     *ngSwitchCase="uniqueComponentName.signatureApplication"
     (nextStepEvent)="nextDataForStep($event)">
-  </epgu-constructor-signature-application>
+  </epgu-constructor-signature-application-container>
   <epgu-constructor-payment
     *ngSwitchCase="uniqueComponentName.paymentScr"
     (nextStepEvent)="nextDataForStep($event)"

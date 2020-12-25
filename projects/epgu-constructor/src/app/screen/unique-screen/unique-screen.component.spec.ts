@@ -13,7 +13,6 @@ import { RepeatableFieldsComponent } from '../../component/unique-screen/compone
 import { TimeSlotsComponent } from '../../component/unique-screen/components/time-slots/time-slots.component';
 import { CarInfoComponent } from '../../component/unique-screen/components/car-info/components/car-info-screen/car-info.component';
 // eslint-disable-next-line max-len
-import { SignatureApplicationComponent } from '../../component/unique-screen/components/signature-application/components/signature-application/signature-application.component';
 import { PaymentComponent } from '../../component/unique-screen/components/payment/components/payment/payment.component';
 import { BillInfoComponent } from '../../component/unique-screen/components/payment/components/billinfo/billinfo.component';
 // eslint-disable-next-line max-len
@@ -28,7 +27,8 @@ import {
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { By } from '@angular/platform-browser';
 import { ScreenTypes } from '../screen.types';
-import { of } from 'rxjs';
+// eslint-disable-next-line max-len
+import { SignatureApplicationContainerComponent } from '../../component/unique-screen/components/signature-application/components/container/signature-application-container.component';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -70,7 +70,7 @@ describe('UniqueScreenComponent', () => {
           RepeatableFieldsComponent,
           TimeSlotsComponent,
           CarInfoComponent,
-          SignatureApplicationComponent,
+          SignatureApplicationContainerComponent,
           PaymentComponent,
           BillInfoComponent,
           UploadAndEditPhotoComponent,
@@ -373,9 +373,9 @@ describe('UniqueScreenComponent', () => {
   });
 
   describe('epgu-constructor-signature-application', () => {
-    const selector = 'epgu-constructor-signature-application';
+    const selector = 'epgu-constructor-signature-application-container';
 
-    it('should be rendered if componentType is signatureApplication', () => {
+    it('should be rendered if componentType is signatureApplicationContainer', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeNull();

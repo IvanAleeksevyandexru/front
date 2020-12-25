@@ -1,9 +1,49 @@
-<epgu-constructor-signature-application-container
-  [isMobile]="isMobile"
-  [showNav$]="showNav$"
-  [header$]="header$"
-  [isLoading$]="isLoading$"
-  [component$]="component$"
-  [actions$]="actions$"
-  (next)="redirectToLK()">
-</epgu-constructor-signature-application-container>
+<ng-container *ngTemplateOutlet="templateContent; context: {showNav: showNav$ | async,
+                                                            header: header$ | async,
+                                                            component: component$ | async,
+                                                            isLoading: isLoading$ | async,
+                                                            actions: actions$ | async}">
+</ng-container>
+<ng-template #templateContent let-showNav="showNav"
+                              let-header="header"
+                              let-actionLabel="actions[0].label"
+                              let-componentLabel="component.label"
+                              let-imageSrc="component.attrs.image.src"
+                              let-isLoading="isLoading">
+  <epgu-constructor-screen-container
+    [show-nav]="!isMobile && showNav"
+    [class.screen-container-mt]="!(!isMobile && showNav)"
+  >
+    <div class="screen-body">
+      <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
+      <div class="application" *ngIf="isMobile; else desktopTemplate">
+        <div class="application__center">
+          <img [src]="imageSrc"/>
+        </div>
+
+        <epgu-constructor-output-html
+          [html]="componentLabel"
+        ></epgu-constructor-output-html>
+      </div>
+    </div>
+
+    <div class="screen-footer">
+      <div class="footer">
+        <lib-button
+          [showLoader]="isLoading"
+          (click)="nextAction()"
+          class="btn__submit"
+        >
+          {{ actionLabel || 'Продолжить' }}
+        </lib-button>
+      </div>
+    </div>
+  </epgu-constructor-screen-container>
+
+  <ng-template #desktopTemplate>
+    <div class="application__center">
+      <lib-loader></lib-loader>
+    </div>
+  </ng-template>
+</ng-template>
+

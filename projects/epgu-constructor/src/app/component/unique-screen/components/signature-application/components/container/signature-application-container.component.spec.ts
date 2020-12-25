@@ -1,22 +1,28 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ButtonComponent, LoaderComponent } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
+
 import { ScreenContainerComponent } from '../../../../../../shared/components/screen-container/screen-container.component';
 import { PageNameComponent } from '../../../../../../shared/components/base/page-name/page-name.component';
 import { NavigationComponent } from '../../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { OutputHtmlComponent } from '../../../../../../core/components/output-html/output-html.component';
+
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
+
 import { SafePipe } from '../../../../../../core/pipes/safe/safe.pipe';
+import { SignatureApplicationData } from '../../models/application.interface';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import {
+  ApplicantAnswersDto,
   ComponentActionDto,
   ComponentAttrsDto,
   ComponentDto,
   DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { SignatureApplicationContainerComponent } from './signature-application-container.component';
+
+import { SignatureApplicationComponent } from '../signature-application/signature-application.component';
 import { of } from 'rxjs';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ImgPrefixerPipe } from '../../../../../../core/pipes/img-prefixer/img-prefixer.pipe';
@@ -25,13 +31,24 @@ import { DeviceDetectorService } from '../../../../../../core/services/device-de
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ConfigService } from '../../../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/config/config.service.stub';
-import { By } from '@angular/platform-browser';
 import { LocationService } from '../../../../../../core/services/location/location.service';
+import { SignatureApplicationContainerComponent } from './signature-application-container.component';
+import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
 import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;
   let fixture: ComponentFixture<SignatureApplicationContainerComponent>;
+  let screenService: ScreenService;
+  let deviceDetectorService: DeviceDetectorService;
+  let locationService: LocationService;
+  const mockComponentValue: SignatureApplicationData = {
+    fileAccessCodes: [],
+    operationID: '',
+    url: '',
+    userId: 0,
+  };
 
   const mockComponent: ComponentDto = {
     attrs: {
@@ -43,6 +60,9 @@ describe('SignatureApplicationContainerComponent', () => {
     value: '',
   };
 
+  const applicantAnswersDto: ApplicantAnswersDto = {
+    id: { value: '', visited: false },
+  };
   const mockHeader = 'header';
 
   const mockActions: ComponentActionDto[] = [
@@ -54,6 +74,7 @@ describe('SignatureApplicationContainerComponent', () => {
       TestBed.configureTestingModule({
         imports: [RouterTestingModule],
         declarations: [
+          SignatureApplicationComponent,
           SignatureApplicationContainerComponent,
           ScreenContainerComponent,
           PageNameComponent,
@@ -72,56 +93,32 @@ describe('SignatureApplicationContainerComponent', () => {
           { provide: ModalService, useClass: ModalServiceStub },
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: LocationService, useClass: LocationServiceStub },
+          { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         ],
       }).compileComponents();
     }),
   );
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
+    deviceDetectorService = TestBed.inject(DeviceDetectorService);
+    locationService = TestBed.inject(LocationService);
+
+    jest.spyOn(screenService, 'actions$', 'get').mockReturnValue(of(mockActions));
+    jest.spyOn(screenService, 'header$', 'get').mockReturnValue(of(mockHeader));
+    jest.spyOn(screenService, 'showNav$', 'get').mockReturnValue(of(true));
+    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockComponent));
+    jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
+    jest.spyOn(screenService, 'componentValue', 'get').mockReturnValue(mockComponentValue);
+    jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
+    jest.spyOn(locationService, 'getHref').mockReturnValue('');
+
     fixture = TestBed.createComponent(SignatureApplicationContainerComponent);
     component = fixture.componentInstance;
-    component.isLoading$ = of(false);
-    component.actions$ = of(mockActions);
-    component.component$ = of(mockComponent);
-    component.header$ = of(mockHeader);
-    component.showNav$ = of(true);
-    component.isMobile = true;
-
-    fixture.debugElement.injector.get(ScreenService);
-
     fixture.detectChanges();
   });
 
-  it('check mobile', () => {
-    expect(fixture.debugElement.query(By.css('.screen-container-mt'))).not.toBeNull();
-  });
-
-  it('check header', () => {
-    const h1: HTMLHeadingElement = fixture.debugElement.query(
-      By.css('epgu-constructor-page-name h1'),
-    )?.nativeElement;
-
-    expect(h1.innerHTML).toBe(mockHeader);
-  });
-
-  it('check label button', () => {
-    const divButton: HTMLButtonElement = fixture.debugElement.query(By.css('.btn__submit button'))
-      ?.nativeElement;
-    expect(divButton.innerHTML.indexOf(mockActions[0].label)).not.toBe(-1);
-  });
-
-  it('check image src', () => {
-    const imageElement: HTMLImageElement = fixture.debugElement.query(
-      By.css('.application__center img'),
-    )?.nativeElement;
-    expect(imageElement.src).toBe(mockComponent.attrs.image.src);
-  });
-
-  it('check output next', (done) => {
-    component.next.subscribe((v) => {
-      expect(v).toBeUndefined();
-      done();
-    });
-    fixture.debugElement.query(By.css('.btn__submit'))?.nativeElement?.click();
+  it('should be created', () => {
+    expect(component).toBeTruthy();
   });
 });
