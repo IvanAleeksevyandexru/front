@@ -9,7 +9,6 @@ import {
   QuizRequestDto, ScenarioDto
 } from '../form-player-api/form-player-api.types';
 import { LoggerService } from '../../../core/services/logger/logger.service';
-import { Location } from '@angular/common';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
@@ -30,7 +29,7 @@ export class FormPlayerStartService {
     ) {}
 
   public startPlayer(): void {
-    const { orderId, invited, canStartNew, initState } = this.serviceDataService;
+    const { orderId, initState } = this.serviceDataService;
 
     if (initState) {
       this.startScenarioFromProps(initState);
@@ -45,6 +44,11 @@ export class FormPlayerStartService {
     } else {
       this.getOrderIdFromApi();
     }
+  }
+
+  public restartPlayer(): void {
+    this.formPlayerService.reloadState();
+    this.startPlayer();
   }
 
   private startScenarioFromProps(initState: string): void {
