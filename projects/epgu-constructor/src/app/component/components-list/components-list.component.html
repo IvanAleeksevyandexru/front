@@ -61,6 +61,7 @@
           [validationShowOn]="validationShowOn"
           [formControl]="$any(componentData.get('value'))"
           [clearable]="true"
+          [localSearch]="componentData.get('attrs').value.localSearch"
           class="cs__select cs-select"
         >
         </lib-dropdown>
