@@ -48,7 +48,7 @@ export class ValidationService {
         );
       }
 
-      if (!control.value || validations.length === 0) {
+      if (!control.value || validations?.length === 0) {
         return null;
       }
 
