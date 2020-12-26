@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { InitData } from '../../../form-player/form-player.types';
+import { FormPlayerContext, InitData } from '../../../form-player/form-player.types';
 
 @Injectable()
 export class InitDataServiceStub implements InitData {
@@ -9,6 +9,7 @@ export class InitDataServiceStub implements InitData {
   private _invited: boolean;
   private _canStartNew: boolean;
   private _initState: string;
+  private _context: FormPlayerContext;
 
   get serviceId(): string {
     return this._serviceId;
@@ -46,12 +47,21 @@ export class InitDataServiceStub implements InitData {
     this._canStartNew = canStartNew;
   }
 
-  init(service: InitData): void {
-    this._serviceId = service.serviceId;
-    this._targetId = service.targetId;
-    this._initState = service.initState;
-    this.orderId = service.orderId;
-    this.invited = service.invited;
-    this.canStartNew = service.canStartNew ?? true;
+  get context(): FormPlayerContext {
+    return this._context;
+  }
+
+  set context(context: FormPlayerContext) {
+    this._context = context;
+  }
+
+  init(data: InitData): void {
+    this._serviceId = data.serviceId;
+    this._targetId = data.targetId;
+    this._initState = data.initState;
+    this.orderId = data.orderId;
+    this.invited = data.invited;
+    this.canStartNew = data.canStartNew;
+    this.context = data.context;
   }
 }

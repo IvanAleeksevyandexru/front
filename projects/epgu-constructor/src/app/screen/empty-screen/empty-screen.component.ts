@@ -32,7 +32,12 @@ export class EmptyScreenComponent {
           .map(([key, value]) => `${key}=${value}`)
           .join('&')
       : '';
-    const queryParams = addContextQueryParams ? contextQueryParams : '';
-    return `${ref ? linkFromRef() : linkFromComponent()}?${queryParams}`;
+    const queryParams = addContextQueryParams ? `?${contextQueryParams}` : '';
+    let link = ref ? linkFromRef() : linkFromComponent();
+    if (link) {
+      link = `${link}${queryParams}`;
+    }
+
+    return link;
   }
 }

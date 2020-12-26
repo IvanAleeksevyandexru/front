@@ -31,7 +31,7 @@ import { FormPlayerStartService } from './services/form-player-start/form-player
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-form-player') class = true;
   @HostBinding('attr.test-screen-id') screenId: string;
-  @Input() service: InitData;
+  @Input() initData: InitData;
 
   public isFirstLoading$ = this.screenService.isLoading$.pipe(take(3));
   private isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
@@ -50,7 +50,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.initDataService.init(this.service);
+    this.initDataService.init(this.initData);
     this.initFormPlayerConfig();
     this.initNavigation();
     this.initSettingOfScreenIdToAttr();
@@ -61,11 +61,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.initDataService.init(this.service);
+    this.initDataService.init(this.initData);
 
     if (
-      changes.service.previousValue &&
-      changes.service.previousValue.serviceId !== changes.service.currentValue.serviceId
+      changes.initData.previousValue &&
+      changes.initData.previousValue.serviceId !== changes.initData.currentValue.serviceId
     ) {
       this.restartPlayer();
     }
@@ -75,7 +75,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.isCoreConfigLoaded$
       .pipe(
         tap(() => {
-          this.configService.configId = this.service.configId;
+          this.configService.configId = this.initData.configId;
           this.configService.initCore();
         }),
         mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()),
