@@ -20,6 +20,7 @@ import { InputErrorModule } from '../../shared/components/input-error/input-erro
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
 import { MaskHandleModule } from '../../shared/pipes/mask-handle/mask-handle.module';
 import { CurrencyModule } from '../../shared/directives/currency/currency.module';
+import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
 
 const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent];
 
@@ -41,6 +42,7 @@ const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputCom
     FieldListModule,
     MaskHandleModule,
     CurrencyModule,
+    ConstructorDatePickerModule,
   ],
   providers: [
     ValidationService,

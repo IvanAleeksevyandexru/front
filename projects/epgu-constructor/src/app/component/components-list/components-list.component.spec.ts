@@ -14,6 +14,7 @@ import { ConstructorDadataWidgetModule } from '../../shared/components/construct
 import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { ConstructorLookupModule } from '../../shared/components/constructor-lookup/constructor-lookup.module';
 import { ConstructorCheckboxModule } from '../../shared/components/constructor-checkbox/constructor-checkbox.module';
+import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
 
 
 xdescribe('ComponentsListComponent', () => {
@@ -37,7 +38,8 @@ xdescribe('ComponentsListComponent', () => {
         ConstructorDadataWidgetModule,
         ConstructorDropdownModule,
         ConstructorLookupModule,
-        ConstructorCheckboxModule
+        ConstructorCheckboxModule,
+        ConstructorDatePickerModule,
       ]
     });
 

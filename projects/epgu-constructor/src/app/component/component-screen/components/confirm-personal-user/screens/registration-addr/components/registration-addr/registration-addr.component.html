@@ -21,7 +21,7 @@
           [clearable]="true">
         </epgu-constructor-constructor-dadata-widget>
 
-        <lib-date-picker
+        <epgu-constructor-constructor-date-picker
           *ngSwitchCase="
             ['regFrom', 'regTo', 'regDate'].includes(field?.fieldName)
               ? field?.fieldName
@@ -34,10 +34,10 @@
           [validationShowOn]="validationShowOn"
           [id]="field.fieldName"
           [invalid]="redAddrForm.controls[field.fieldName].invalid"
-          [formControlName]="field.fieldName"
+          [control]="redAddrForm.get(field.fieldName)"
           [disabled]="field.disabled"
           [clearable]="true">
-        </lib-date-picker>
+        </epgu-constructor-constructor-date-picker>
 
         <epgu-constructor-constructor-plain-input
           [textTransformType]="(data$ | async)?.attrs?.fstuc"

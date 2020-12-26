@@ -1,6 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { of } from 'rxjs';
+
 import { RouterTestingModule } from '@angular/router/testing';
 import { ConfigService } from '../../../../../../../../core/config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../core/config/config.service.stub';
@@ -14,7 +16,8 @@ import { IRegistrationAddrComponent } from '../../registration-addr-screen.types
 import { RegistrationAddrComponent } from './registration-addr.component';
 // eslint-disable-next-line max-len
 import { ConstructorDadataWidgetModule } from '../../../../../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
-import { of } from 'rxjs';
+// eslint-disable-next-line max-len
+import { ConstructorDatePickerModule } from '../../../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 
 
 
@@ -37,7 +40,8 @@ describe('RegistrationAddrComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      imports: [FormsModule, ReactiveFormsModule, ConstructorPlainInputModule, RouterTestingModule, ConstructorDadataWidgetModule],
+      // eslint-disable-next-line max-len
+      imports: [FormsModule, ReactiveFormsModule, ConstructorPlainInputModule, RouterTestingModule, ConstructorDadataWidgetModule, ConstructorDatePickerModule],
       declarations: [ RegistrationAddrComponent ],
       providers: [
         UnsubscribeService,
