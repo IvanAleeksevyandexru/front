@@ -1,0 +1,23 @@
+@startuml
+
+package "Form Player" {
+  [FormPlayerModule] <-- [FormPlayerComponent]
+  [FormPlayerComponent] <-- [ServiceDataService]
+  [ServiceDataService] --> [FormPlayerStartService]
+  [ServiceDataService] --> [FormPlayerApiService]
+  [FormPlayerComponent] <-- [FormPlayerConfigApiService]
+  [FormPlayerComponent] --> [FormPlayerStartService]
+  [FormPlayerStartService] --> [FormPlayerService]
+  [FormPlayerService] <-- [FormPlayerApiService]
+}
+
+package "Core" {
+  [CoreModule] -> [FormPlayerModule]
+  [CoreModule] <-- [CoreComponents...]
+  [CoreModule] <-- [CoreServices...]
+}
+
+
+
+
+@enduml

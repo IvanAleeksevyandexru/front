@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Service } from '../../form-player.types';
 
+/**
+ * Сервис необходим для хранения входных параметров с которыми стартует приложение
+ */
 @Injectable()
 export class ServiceDataService implements Service {
   private _serviceId: string;
