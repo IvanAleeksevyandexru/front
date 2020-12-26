@@ -21,6 +21,7 @@ import { AnswerButtonModule } from '../../../../shared/components/answer-button/
 import { ActionModule } from '../../../../shared/directives/action/action.module';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
+import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -74,6 +75,7 @@ describe('PaymentTypeSelectorComponent', () => {
         DatePipe,
         LocationService,
         WINDOW_PROVIDERS,
+        HtmlRemoverService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
