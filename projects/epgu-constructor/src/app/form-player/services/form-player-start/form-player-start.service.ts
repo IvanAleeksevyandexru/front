@@ -19,7 +19,7 @@ import { LocationService } from '../../../core/services/location/location.servic
 @Injectable()
 export class FormPlayerStartService {
   constructor (
-    private serviceDataService: InitDataService,
+    private initDataService: InitDataService,
     private loggerService: LoggerService,
     private locationService: LocationService,
     private localStorageService: LocalStorageService,
@@ -29,7 +29,7 @@ export class FormPlayerStartService {
     ) {}
 
   public startPlayer(): void {
-    const { orderId, initState } = this.serviceDataService;
+    const { orderId, initState } = this.initDataService;
 
     if (initState) {
       this.startScenarioFromProps(initState);
@@ -88,8 +88,8 @@ export class FormPlayerStartService {
   private startLoadFromQuizCase(): void {
     const quiz: QuizRequestDto = {
       scenarioDto: this.localStorageService.get<ScenarioDto>(QUIZ_SCENARIO_KEY),
-      serviceId: this.serviceDataService.serviceId,
-      targetId: this.serviceDataService.targetId
+      serviceId: this.initDataService.serviceId,
+      targetId: this.initDataService.targetId
     };
     this.formPlayerService.initPlayerFromQuiz(quiz);
     this.localStorageService.delete(QUIZ_SCENARIO_KEY);
@@ -124,14 +124,14 @@ export class FormPlayerStartService {
       .openModal()
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((result) => {
-        const orderId = result ? this.serviceDataService.orderId : null;
+        const orderId = result ? this.initDataService.orderId : null;
         this.formPlayerService.initData(orderId, false);
       });
   }
 
   private getOrderStatus(): void {
     this.formPlayerService
-      .getOrderStatus(this.serviceDataService.orderId)
+      .getOrderStatus(this.initDataService.orderId)
       .subscribe((checkOrderApiResponse) => {
         this.handleOrderDataResponse(checkOrderApiResponse);
       });
@@ -145,9 +145,9 @@ export class FormPlayerStartService {
 
   private handleOrderDataResponse(checkOrderApiResponse: CheckOrderApiResponse): void {
     const { isInviteScenario: invited, canStartNew, orderId } = checkOrderApiResponse;
-    this.serviceDataService.invited = invited;
-    this.serviceDataService.orderId = orderId;
-    this.serviceDataService.canStartNew = canStartNew;
+    this.initDataService.invited = invited;
+    this.initDataService.orderId = orderId;
+    this.initDataService.canStartNew = canStartNew;
     this.handleOrder(orderId, invited, canStartNew);
   }
 }

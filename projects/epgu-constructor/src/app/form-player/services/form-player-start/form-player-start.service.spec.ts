@@ -36,7 +36,7 @@ describe('FormServiceStartService', () => {
   let loadService: LoadService;
   let loggerService: LoggerService;
   let continueOrderModalService: ContinueOrderModalService;
-  let serviceDataService: InitDataService;
+  let initDataService: InitDataService;
   let location: Location;
 
   let serviceDataMock: InitData = {
@@ -69,7 +69,7 @@ describe('FormServiceStartService', () => {
     localStorageService = TestBed.inject(LocalStorageService);
     loadService = TestBed.inject(LoadService);
     loggerService = TestBed.inject(LoggerService);
-    serviceDataService = TestBed.inject(InitDataService);
+    initDataService = TestBed.inject(InitDataService);
     location = TestBed.inject(Location);
   });
 
@@ -77,14 +77,14 @@ describe('FormServiceStartService', () => {
     const rawSate = JSON.stringify(responseDto);
 
     it('should call startScenarioFromProps case', () => {
-      serviceDataService.init({ ...serviceDataMock, initState: rawSate });
+      initDataService.init({ ...serviceDataMock, initState: rawSate });
       spyOn<any>(service, 'startScenarioFromProps').and.callThrough();
       service.startPlayer();
       expect(service['startScenarioFromProps']).toBeCalled();
     });
 
     it('should call hasLoadFromStorageCase case', () => {
-      serviceDataService.init({ ...serviceDataMock });
+      initDataService.init({ ...serviceDataMock });
       spyOn<any>(service, 'hasLoadFromStorageCase').and.callThrough();
       service.startPlayer();
       expect(service['hasLoadFromStorageCase']).toBeCalled();
@@ -93,7 +93,7 @@ describe('FormServiceStartService', () => {
     it('should call hasLoadFromStorageCase case', () => {
       location.go('/some-page', 'getLastScreen=true');
       localStorage.setItem(LAST_SCENARIO_KEY, rawSate);
-      serviceDataService.init({ ...serviceDataMock });
+      initDataService.init({ ...serviceDataMock });
       spyOn<any>(service, 'startLoadLastScreenCase').and.callThrough();
       service.startPlayer();
       expect(service['startLoadLastScreenCase']).toBeCalled();
@@ -103,7 +103,7 @@ describe('FormServiceStartService', () => {
     it('should call startLoadNextScreenCase case', () => {
       location.go('/some-page', 'getNextScreen=true');
       localStorage.setItem(NEXT_SCENARIO_KEY, rawSate);
-      serviceDataService.init({ ...serviceDataMock });
+      initDataService.init({ ...serviceDataMock });
       spyOn<any>(service, 'startLoadNextScreenCase').and.callThrough();
       service.startPlayer();
       expect(service['startLoadNextScreenCase']).toBeCalled();
@@ -113,7 +113,7 @@ describe('FormServiceStartService', () => {
     it('should call startLoadFromQuizCase case', () => {
       location.go('/some-page', 'fromQuiz=true');
       localStorage.setItem(QUIZ_SCENARIO_KEY, rawSate);
-      serviceDataService.init({ ...serviceDataMock });
+      initDataService.init({ ...serviceDataMock });
       spyOn<any>(service, 'startLoadFromQuizCase').and.callThrough();
       service.startPlayer();
       expect(service['startLoadFromQuizCase']).toBeCalled();
@@ -121,21 +121,21 @@ describe('FormServiceStartService', () => {
     });
 
     it('should call handleOrder case', () => {
-      serviceDataService.init({ ...serviceDataMock, orderId: '2145', canStartNew: true, invited: false });
+      initDataService.init({ ...serviceDataMock, orderId: '2145', canStartNew: true, invited: false });
       spyOn<any>(service, 'handleOrder').and.callThrough();
       service.startPlayer();
       expect(service['handleOrder']).toBeCalled();
     });
 
     it('should call getOrderStatus case', () => {
-      serviceDataService.init({ ...serviceDataMock, orderId: '2145' });
+      initDataService.init({ ...serviceDataMock, orderId: '2145' });
       spyOn<any>(service, 'handleOrder').and.callThrough();
       service.startPlayer();
       expect(service['handleOrder']).toBeCalled();
     });
 
     it('should call getOrderIdFromApi case', () => {
-      serviceDataService.init({ ...serviceDataMock });
+      initDataService.init({ ...serviceDataMock });
       spyOn<any>(service, 'getOrderIdFromApi').and.callThrough();
       service.startPlayer();
       expect(service['getOrderIdFromApi']).toBeCalled();
@@ -182,9 +182,9 @@ describe('FormServiceStartService', () => {
       canStartNew: true
     };
 
-    it('should call invited of serviceDataService', () => {
+    it('should call invited of initDataService', () => {
       spyOn(formPlayerService, 'getOrderStatus').and.returnValue(of(checkIfOrderExistResult));
-      serviceDataService.init({ ...serviceDataMock, orderId: '123456' });
+      initDataService.init({ ...serviceDataMock, orderId: '123456' });
       spyOn<any>(service, 'handleOrderDataResponse');
       service['getOrderStatus']();
       expect(service['handleOrderDataResponse']).toBeCalledWith(checkIfOrderExistResult);
@@ -198,7 +198,7 @@ describe('FormServiceStartService', () => {
       canStartNew: true
     };
 
-    it('should call invited of serviceDataService', () => {
+    it('should call invited of initDataService', () => {
       spyOn(formPlayerService, 'checkIfOrderExist').and.returnValue(of(checkIfOrderExistResult));
       spyOn<any>(service, 'handleOrderDataResponse');
       service['getOrderIdFromApi']();
@@ -213,20 +213,20 @@ describe('FormServiceStartService', () => {
       canStartNew: true
     };
 
-    it('should call invited of serviceDataService', () => {
-      const spySetter = jest.spyOn(serviceDataService, 'invited', 'set');
+    it('should call invited of initDataService', () => {
+      const spySetter = jest.spyOn(initDataService, 'invited', 'set');
       service['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(spySetter).toBeCalledWith(checkIfOrderExistResult.isInviteScenario);
     });
 
-    it('should call orderId of serviceDataService', () => {
-      const spySetter = jest.spyOn(serviceDataService, 'orderId', 'set');
+    it('should call orderId of initDataService', () => {
+      const spySetter = jest.spyOn(initDataService, 'orderId', 'set');
       service['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(spySetter).toBeCalledWith(checkIfOrderExistResult.orderId);
     });
 
-    it('should call canStartNew of serviceDataService', () => {
-      const spySetter = jest.spyOn(serviceDataService, 'canStartNew', 'set');
+    it('should call canStartNew of initDataService', () => {
+      const spySetter = jest.spyOn(initDataService, 'canStartNew', 'set');
       service['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(spySetter).toBeCalledWith(checkIfOrderExistResult.canStartNew);
     });
@@ -325,7 +325,7 @@ describe('FormServiceStartService', () => {
     it('should call initData of formPlayerService with orderId', () => {
       const orderId = '1234';
       spyOn(continueOrderModalService, 'openModal').and.returnValue(of(true));
-      serviceDataService.orderId = orderId;
+      initDataService.orderId = orderId;
       spyOn(formPlayerService, 'initData').and.callThrough();
       service['showContinueOrderModal']();
       expect(formPlayerService.initData).toBeCalledWith(orderId, false);

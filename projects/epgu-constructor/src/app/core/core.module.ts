@@ -22,6 +22,7 @@ import { UtilsService } from './services/utils/utils.service';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
 import { LocationService } from './services/location/location.service';
 import { SessionService } from './services/session/session.service';
+import { InitDataService } from './services/init-data/init-data.service';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
@@ -60,6 +61,7 @@ const PIPES = [ImgPrefixerPipe, SafePipe];
     LocalStorageService,
     UtilsService,
     SessionService,
+    InitDataService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,

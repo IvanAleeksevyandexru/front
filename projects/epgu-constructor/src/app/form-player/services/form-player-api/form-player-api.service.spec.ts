@@ -14,7 +14,7 @@ import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 
 describe('FormPlayerApiService', () => {
   let service: FormPlayerApiService;
-  let serviceDataService: InitDataService;
+  let initDataService: InitDataService;
   let http: HttpTestingController;
   let apiUrl = '/api';
   let serviceId = 'local';
@@ -69,10 +69,10 @@ describe('FormPlayerApiService', () => {
       ]
     });
     service = TestBed.inject(FormPlayerApiService);
-    serviceDataService = TestBed.inject(InitDataService);
-    serviceDataService['_targetId'] = targetId;
-    serviceDataService['_orderId'] = orderId;
-    serviceDataService['_serviceId'] = serviceId;
+    initDataService = TestBed.inject(InitDataService);
+    initDataService['_targetId'] = targetId;
+    initDataService['_orderId'] = orderId;
+    initDataService['_serviceId'] = serviceId;
     http = TestBed.inject(HttpTestingController);
   }));
 

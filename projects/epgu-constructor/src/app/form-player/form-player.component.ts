@@ -38,7 +38,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   private isConfigReady$ = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private serviceDataService: InitDataService,
+    private initDataService: InitDataService,
     public formPlayerConfigApiService: FormPlayerConfigApiService,
     public formPlayerService: FormPlayerService,
     private navService: NavigationService,
@@ -50,7 +50,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.serviceDataService.init(this.service);
+    this.initDataService.init(this.service);
     this.initFormPlayerConfig();
     this.initNavigation();
     this.initSettingOfScreenIdToAttr();
@@ -61,7 +61,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.serviceDataService.init(this.service);
+    this.initDataService.init(this.service);
 
     if (
       changes.service.previousValue &&

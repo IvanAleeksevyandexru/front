@@ -5,7 +5,9 @@ import { ComponentActionDto, FormPlayerApiSuccessResponse } from './services/for
  * @property queryParams - квери параметры которые необходимо пробросить в форм плеер
  */
 export interface FormPlayerContext {
-  queryParams: string;
+  queryParams: {
+    [key: string]: string;
+  };
 }
 
 /**

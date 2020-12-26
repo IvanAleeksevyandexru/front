@@ -47,7 +47,7 @@ describe('FormPlayerComponent', () => {
   let screenService: ScreenService;
   let loggerService: LoggerService;
   let continueOrderModalService: ContinueOrderModalService;
-  let serviceDataService: InitDataService;
+  let initDataService: InitDataService;
   let formPlayerStartService: FormPlayerStartService;
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
@@ -90,7 +90,7 @@ describe('FormPlayerComponent', () => {
 
   beforeEach(() => {
     formPlayerService = TestBed.inject(FormPlayerService);
-    serviceDataService = TestBed.inject(InitDataService);
+    initDataService = TestBed.inject(InitDataService);
     formPlayerConfigApiService = TestBed.inject(FormPlayerConfigApiService);
     loadService = TestBed.inject(LoadService);
     configService = TestBed.inject(ConfigService);
@@ -102,14 +102,14 @@ describe('FormPlayerComponent', () => {
   });
 
   describe('ngOnInit()', () => {
-    it('should call init method of serviceDataService with service param', () => {
+    it('should call init method of initDataService with service param', () => {
       const fixture = TestBed.createComponent(FormPlayerComponent);
       const component = fixture.componentInstance;
       component.service = serviceDataMock;
       fixture.detectChanges();
-      spyOn(serviceDataService, 'init').and.callThrough();
+      spyOn(initDataService, 'init').and.callThrough();
       component.ngOnInit();
-      expect(serviceDataService.init).toBeCalledWith(serviceDataMock);
+      expect(initDataService.init).toBeCalledWith(serviceDataMock);
     });
 
     it('should call initFormPlayerConfig', () => {
@@ -156,14 +156,14 @@ describe('FormPlayerComponent', () => {
   });
 
   describe('ngOnChanges()', () => {
-    it('should call init method of serviceDataService with service param', () => {
+    it('should call init method of initDataService with service param', () => {
       const fixture = TestBed.createComponent(FormPlayerComponent);
       const component = fixture.componentInstance;
       component.service = serviceDataMock;
       fixture.detectChanges();
-      spyOn(serviceDataService, 'init').and.callThrough();
+      spyOn(initDataService, 'init').and.callThrough();
       component.ngOnChanges({ service: new SimpleChange(null, serviceDataMock, true) });
-      expect(serviceDataService.init).toBeCalledWith(serviceDataMock);
+      expect(initDataService.init).toBeCalledWith(serviceDataMock);
     });
   });
 

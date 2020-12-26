@@ -12,7 +12,7 @@ import { InitData } from '../../../projects/epgu-constructor/src/app/form-player
 export class FpContainerComponent {
   service$: Observable<InitData> = this.appService.config$.pipe(
     map((config) => {
-      const service: InitData = {
+      const initData: InitData = {
         serviceId: config.serviceId,
         targetId: config.targetId,
         orderId: config.orderId,
@@ -20,21 +20,32 @@ export class FpContainerComponent {
         configId: config.configId,
         canStartNew: config.canStartNew,
         initState: config.initState,
+        context: {
+          queryParams: config.queryParams ? JSON.parse(config.queryParams) : [],
+        },
       };
 
       if (typeof config.invited === 'string' && config.invited === '') {
-        delete service.invited;
+        delete initData.invited;
       }
 
       if (!config.configId) {
-        delete service.configId;
+        delete initData.configId;
       }
 
       if (typeof config.canStartNew === 'string' && config.canStartNew === '') {
-        delete service.canStartNew;
+        delete initData.canStartNew;
       }
 
-      return service;
+      if (typeof config.queryParams === 'string' && config.queryParams === '') {
+        delete initData.context.queryParams;
+      }
+
+      if (Object.entries(initData.context).length === 0) {
+        delete initData.context;
+      }
+
+      return initData;
     }),
   );
 

@@ -27,7 +27,12 @@ export class EmptyScreenComponent {
     const addContextQueryParams = this.screenService.component?.attrs?.addContextQueryParams;
     const linkFromRef = (): string => applicantAnswers[ref]?.value;
     const linkFromComponent = (): string => this.screenService.component?.attrs?.link;
-    const queryParams = addContextQueryParams ? this.initDataService.context?.queryParams : '';
-    return `${ref ? linkFromRef() : linkFromComponent()}${queryParams}`;
+    const contextQueryParams = this.initDataService.context?.queryParams
+      ? Object.entries(this.initDataService.context?.queryParams)
+          .map(([key, value]) => `${key}=${value}`)
+          .join('&')
+      : '';
+    const queryParams = addContextQueryParams ? contextQueryParams : '';
+    return `${ref ? linkFromRef() : linkFromComponent()}?${queryParams}`;
   }
 }

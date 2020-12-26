@@ -15,6 +15,7 @@ const initValues: AppConfig = {
   invited: null,
   canStartNew: null,
   initState: null,
+  queryParams: '',
 }
 
 @Injectable()

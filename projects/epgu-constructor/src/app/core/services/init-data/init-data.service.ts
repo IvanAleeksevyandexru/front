@@ -47,7 +47,7 @@ export class InitDataService implements InitData {
   }
 
   set canStartNew(canStartNew: boolean) {
-    this._canStartNew = canStartNew;
+    this._canStartNew = canStartNew  ?? true;
   }
 
   get context(): FormPlayerContext {
@@ -65,7 +65,8 @@ export class InitDataService implements InitData {
     this._initState = data.initState;
     this.orderId = data.orderId;
     this.invited = data.invited;
-    this.canStartNew = data.canStartNew ?? true;
+    this.canStartNew = data.canStartNew;
+    this.context = data.context;
   }
 
   private checkProps(service: InitData): void {

@@ -18,13 +18,13 @@ import { LocationService } from '../../../core/services/location/location.servic
 export class FormPlayerApiService {
   constructor(
     private http: HttpClient,
-    private serviceDataService: InitDataService,
+    private initDataService: InitDataService,
     private configService: ConfigService,
     private locationService: LocationService,
   ) {}
 
   public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
-    const { serviceId, targetId } = this.serviceDataService;
+    const { serviceId, targetId } = this.initDataService;
     const body = { targetId };
     const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/checkIfOrderIdExists`;
 
@@ -32,7 +32,7 @@ export class FormPlayerApiService {
   }
 
   public getOrderStatus(orderId: string): Observable<CheckOrderApiResponse> {
-    const { serviceId, targetId } = this.serviceDataService;
+    const { serviceId, targetId } = this.initDataService;
     const body = { targetId, orderId };
     const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/getOrderStatus`;
 
@@ -40,7 +40,7 @@ export class FormPlayerApiService {
   }
 
   public getServiceData(orderId?: string): Observable<FormPlayerApiResponse> {
-    const { serviceId, targetId } = this.serviceDataService;
+    const { serviceId, targetId } = this.initDataService;
     const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/getService`;
     const body = { targetId };
 
@@ -95,7 +95,7 @@ export class FormPlayerApiService {
     options: NavigationOptions,
     formPlayerNavigation: FormPlayerNavigation,
   ): string {
-    const { serviceId } = this.serviceDataService;
+    const { serviceId } = this.initDataService;
     let path = this.configService.apiUrl;
     if (options.url) {
       path += `/${options.url}`;
