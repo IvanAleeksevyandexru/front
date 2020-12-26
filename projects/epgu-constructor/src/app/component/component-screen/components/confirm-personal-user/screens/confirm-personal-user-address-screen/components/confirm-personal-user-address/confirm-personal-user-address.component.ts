@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '
 import * as moment_ from 'moment';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../../../../core/services/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';

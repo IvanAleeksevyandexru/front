@@ -11,7 +11,7 @@ import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { catchError, switchMap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';

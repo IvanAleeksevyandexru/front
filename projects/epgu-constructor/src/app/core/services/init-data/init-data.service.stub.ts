@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Service } from '../../form-player.types';
+import { InitData } from '../../../form-player/form-player.types';
 
 @Injectable()
-export class ServiceDataServiceStub implements Service {
+export class InitDataServiceStub implements InitData {
   private _serviceId: string;
   private _orderId: string;
   private _targetId: string;
@@ -46,7 +46,7 @@ export class ServiceDataServiceStub implements Service {
     this._canStartNew = canStartNew;
   }
 
-  init(service: Service): void {
+  init(service: InitData): void {
     this._serviceId = service.serviceId;
     this._targetId = service.targetId;
     this._initState = service.initState;

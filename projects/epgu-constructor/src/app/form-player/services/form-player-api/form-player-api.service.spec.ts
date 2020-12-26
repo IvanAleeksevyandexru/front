@@ -2,19 +2,19 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
-import { ServiceDataService } from '../service-data/service-data.service';
+import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { Gender } from '../../../shared/types/gender';
 import { ScreenTypes } from '../../../screen/screen.types';
-import { ServiceDataServiceStub } from '../service-data/service-data.service.stub';
-import { ConfigService } from '../../../core/config/config.service';
-import { ConfigServiceStub } from '../../../core/config/config.service.stub';
+import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
+import { ConfigService } from '../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { LocationService } from '../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 
 
 describe('FormPlayerApiService', () => {
   let service: FormPlayerApiService;
-  let serviceDataService: ServiceDataService;
+  let serviceDataService: InitDataService;
   let http: HttpTestingController;
   let apiUrl = '/api';
   let serviceId = 'local';
@@ -64,12 +64,12 @@ describe('FormPlayerApiService', () => {
         FormPlayerApiService,
         LocationService,
         WINDOW_PROVIDERS,
-        { provide: ServiceDataService, useClass: ServiceDataServiceStub },
+        { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ]
     });
     service = TestBed.inject(FormPlayerApiService);
-    serviceDataService = TestBed.inject(ServiceDataService);
+    serviceDataService = TestBed.inject(InitDataService);
     serviceDataService['_targetId'] = targetId;
     serviceDataService['_orderId'] = orderId;
     serviceDataService['_serviceId'] = serviceId;

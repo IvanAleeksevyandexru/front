@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AppService } from '../app.service';
-import { Service } from '../../../projects/epgu-constructor/src/app/form-player/form-player.types';
+import { InitData } from '../../../projects/epgu-constructor/src/app/form-player/form-player.types';
 
 @Component({
   selector: 'fp-container',
@@ -10,9 +10,9 @@ import { Service } from '../../../projects/epgu-constructor/src/app/form-player/
   styleUrls: ['./fp-container.component.scss'],
 })
 export class FpContainerComponent {
-  service$: Observable<Service> = this.appService.config$.pipe(
+  service$: Observable<InitData> = this.appService.config$.pipe(
     map((config) => {
-      const service: Service = {
+      const service: InitData = {
         serviceId: config.serviceId,
         targetId: config.targetId,
         orderId: config.orderId,

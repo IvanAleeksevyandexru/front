@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Service } from '../../form-player.types';
+import { FormPlayerContext, InitData } from '../../../form-player/form-player.types';
 
 /**
  * Сервис необходим для хранения входных параметров с которыми стартует приложение
  */
 @Injectable()
-export class ServiceDataService implements Service {
+export class InitDataService implements InitData {
   private _serviceId: string;
   private _orderId: string;
   private _targetId: string;
   private _invited: boolean;
   private _canStartNew: boolean;
   private _initState: string;
+  private _context: FormPlayerContext;
 
   get serviceId(): string {
     return this._serviceId;
@@ -49,17 +50,25 @@ export class ServiceDataService implements Service {
     this._canStartNew = canStartNew;
   }
 
-  init(service: Service): void {
-    this.checkProps(service);
-    this._serviceId = service.serviceId;
-    this._targetId = service.targetId;
-    this._initState = service.initState;
-    this.orderId = service.orderId;
-    this.invited = service.invited;
-    this.canStartNew = service.canStartNew ?? true;
+  get context(): FormPlayerContext {
+    return this._context;
   }
 
-  private checkProps(service: Service): void {
+  set context(context: FormPlayerContext) {
+    this._context = context;
+  }
+
+  init(data: InitData): void {
+    this.checkProps(data);
+    this._serviceId = data.serviceId;
+    this._targetId = data.targetId;
+    this._initState = data.initState;
+    this.orderId = data.orderId;
+    this.invited = data.invited;
+    this.canStartNew = data.canStartNew ?? true;
+  }
+
+  private checkProps(service: InitData): void {
     console.group('----- Init props ---------');
     console.log('service', service);
     console.groupEnd();

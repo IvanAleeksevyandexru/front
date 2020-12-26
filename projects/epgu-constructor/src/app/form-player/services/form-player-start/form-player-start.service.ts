@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { LAST_SCENARIO_KEY, NEXT_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../../shared/constants/form-player';
-import { ServiceDataService } from '../service-data/service-data.service';
+import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import {
   CheckOrderApiResponse,
   FormPlayerApiSuccessResponse,
@@ -19,7 +19,7 @@ import { LocationService } from '../../../core/services/location/location.servic
 @Injectable()
 export class FormPlayerStartService {
   constructor (
-    private serviceDataService: ServiceDataService,
+    private serviceDataService: InitDataService,
     private loggerService: LoggerService,
     private locationService: LocationService,
     private localStorageService: LocalStorageService,

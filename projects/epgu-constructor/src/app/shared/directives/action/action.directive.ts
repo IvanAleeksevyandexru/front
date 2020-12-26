@@ -1,7 +1,7 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ConfigService } from '../../../core/config/config.service';
+import { ConfigService } from '../../../core/services/config/config.service';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';

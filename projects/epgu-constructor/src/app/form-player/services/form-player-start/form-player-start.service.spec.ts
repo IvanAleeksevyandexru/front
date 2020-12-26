@@ -2,22 +2,22 @@ import { TestBed } from '@angular/core/testing';
 
 import { FormPlayerStartService } from './form-player-start.service';
 import { FormPlayerComponent } from '../../form-player.component';
-import { FormPlayerNavigation, Service } from '../../form-player.types';
+import { FormPlayerNavigation, InitData } from '../../form-player.types';
 import { of } from 'rxjs';
 import { LAST_SCENARIO_KEY, NEXT_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../../shared/constants/form-player';
 import { FormPlayerServiceStub } from '../form-player/form-player.service.stub';
 import { LoadService } from 'epgu-lib';
-import { LoadServiceStub } from '../../../core/config/load-service-stub';
+import { LoadServiceStub } from '../../../core/services/config/load-service-stub';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
 import { FormPlayerService } from '../form-player/form-player.service';
-import { ServiceDataService } from '../service-data/service-data.service';
+import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { FormPlayerConfigApiService } from '../form-player-config-api/form-player-config-api.service';
-import { ConfigService } from '../../../core/config/config.service';
+import { ConfigService } from '../../../core/services/config/config.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
-import { ServiceDataServiceStub } from '../service-data/service-data.service.stub';
+import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
 import { ContinueOrderModalServiceStub } from '../../../modal/continue-order-modal/continue-order-modal.service.stub';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
@@ -36,10 +36,10 @@ describe('FormServiceStartService', () => {
   let loadService: LoadService;
   let loggerService: LoggerService;
   let continueOrderModalService: ContinueOrderModalService;
-  let serviceDataService: ServiceDataService;
+  let serviceDataService: InitDataService;
   let location: Location;
 
-  let serviceDataMock: Service = {
+  let serviceDataMock: InitData = {
     serviceId: '10000100',
     targetId: '-10000100'
   };
@@ -56,7 +56,7 @@ describe('FormServiceStartService', () => {
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
-        { provide: ServiceDataService, useClass: ServiceDataServiceStub },
+        { provide: InitDataService, useClass: InitDataServiceStub },
       ]
     });
     service = TestBed.inject(FormPlayerStartService);
@@ -69,7 +69,7 @@ describe('FormServiceStartService', () => {
     localStorageService = TestBed.inject(LocalStorageService);
     loadService = TestBed.inject(LoadService);
     loggerService = TestBed.inject(LoggerService);
-    serviceDataService = TestBed.inject(ServiceDataService);
+    serviceDataService = TestBed.inject(InitDataService);
     location = TestBed.inject(Location);
   });
 
@@ -141,7 +141,7 @@ describe('FormServiceStartService', () => {
       expect(service['getOrderIdFromApi']).toBeCalled();
     });
   });
-  
+
   describe('startScenarioFromProps()', () => {
     const rawSate = JSON.stringify(responseDto);
 

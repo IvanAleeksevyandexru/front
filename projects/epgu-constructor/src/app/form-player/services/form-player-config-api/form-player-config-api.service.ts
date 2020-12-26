@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Config } from '../../../core/config/config.types';
-import { ConfigService } from '../../../core/config/config.service';
+import { Config } from '../../../core/services/config/config.types';
+import { ConfigService } from '../../../core/services/config/config.service';
 
 @Injectable()
 export class FormPlayerConfigApiService {

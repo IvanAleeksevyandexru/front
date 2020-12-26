@@ -13,7 +13,7 @@ import { YaMapService } from 'epgu-lib';
 import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { combineLatest, merge, Observable, of } from 'rxjs';
 import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';

@@ -8,10 +8,10 @@ import { PageNameComponent } from '../../../../../shared/components/base/page-na
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { OutputHtmlComponent } from '../../../../../core/components/output-html/output-html.component';
-import { ConfigService } from '../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { ConfigServiceStub } from '../../../../../core/config/config.service.stub';
+import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
 import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/core/pipes/img-prefixer/img-prefixer.pipe';
 import { SafePipe } from '../../../../../core/pipes/safe/safe.pipe';
 import { SignatureApplicationData } from '../models/application.interface';

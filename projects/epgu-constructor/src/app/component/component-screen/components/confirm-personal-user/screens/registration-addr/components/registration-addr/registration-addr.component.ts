@@ -4,7 +4,7 @@ import { DadataResult, ValidationShowOn } from 'epgu-lib';
 import { skip, startWith, takeUntil } from 'rxjs/operators';
 import * as moment_ from 'moment';
 import { combineLatest, Observable } from 'rxjs';
-import { ConfigService } from '../../../../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../../../../core/services/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';

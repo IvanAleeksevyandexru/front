@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 
 @Injectable()
 export class Icons {

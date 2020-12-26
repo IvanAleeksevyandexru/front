@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { LoadService } from 'epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { LoadServiceStub } from '../core/config/load-service-stub';
+import { LoadServiceStub } from '../core/services/config/load-service-stub';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
@@ -13,17 +13,17 @@ import { LoggerService } from '../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../core/services/logger/logger.service.stub';
 import { ScreenResolverComponent } from '../screen/screen-resolver/screen-resolver.component';
 import { ScreenModalComponent } from '../modal/screen-modal/screen-modal.component';
-import { ServiceDataService } from './services/service-data/service-data.service';
+import { InitDataService } from '../core/services/init-data/init-data.service';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerConfigApiServiceStub } from './services/form-player-config-api/form-player-config-api.service.stub';
 import { NavigationServiceStub } from '../core/services/navigation/navigation.service.stub';
-import { ConfigService } from '../core/config/config.service';
-import { ConfigServiceStub } from '../core/config/config.service.stub';
+import { ConfigService } from '../core/services/config/config.service';
+import { ConfigServiceStub } from '../core/services/config/config.service.stub';
 import { ScreenService } from '../screen/screen.service';
 import { ScreenServiceStub } from '../screen/screen.service.stub';
 import { EpguLibModuleInited } from '../core/core.module';
-import { ServiceDataServiceStub } from './services/service-data/service-data.service.stub';
-import { FormPlayerNavigation, Service } from './form-player.types';
+import { InitDataServiceStub } from '../core/services/init-data/init-data.service.stub';
+import { FormPlayerNavigation, InitData } from './form-player.types';
 import { of } from 'rxjs';
 import { ScreenTypes } from '../screen/screen.types';
 import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
@@ -47,12 +47,12 @@ describe('FormPlayerComponent', () => {
   let screenService: ScreenService;
   let loggerService: LoggerService;
   let continueOrderModalService: ContinueOrderModalService;
-  let serviceDataService: ServiceDataService;
+  let serviceDataService: InitDataService;
   let formPlayerStartService: FormPlayerStartService;
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
   let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
-  let serviceDataMock: Service = {
+  let serviceDataMock: InitData = {
     serviceId: '10000100',
     targetId: '-10000100'
   };
@@ -72,7 +72,7 @@ describe('FormPlayerComponent', () => {
         UnsubscribeService,
         LocationService,
         WINDOW_PROVIDERS,
-        { provide: ServiceDataService, useClass: ServiceDataServiceStub },
+        { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
@@ -90,7 +90,7 @@ describe('FormPlayerComponent', () => {
 
   beforeEach(() => {
     formPlayerService = TestBed.inject(FormPlayerService);
-    serviceDataService = TestBed.inject(ServiceDataService);
+    serviceDataService = TestBed.inject(InitDataService);
     formPlayerConfigApiService = TestBed.inject(FormPlayerConfigApiService);
     loadService = TestBed.inject(LoadService);
     configService = TestBed.inject(ConfigService);

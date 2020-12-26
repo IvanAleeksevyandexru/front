@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ComponentBase } from '../../../../../../screen/screen.types';

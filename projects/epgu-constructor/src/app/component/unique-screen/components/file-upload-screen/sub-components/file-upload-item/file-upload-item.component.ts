@@ -10,7 +10,7 @@ import {
 import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';

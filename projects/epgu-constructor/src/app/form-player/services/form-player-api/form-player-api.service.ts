@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ServiceDataService } from '../service-data/service-data.service';
+import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import {
   ActionApiResponse,
   ActionDTO,
@@ -11,14 +11,14 @@ import {
   QuizRequestDto,
 } from './form-player-api.types';
 import { FormPlayerNavigation, NavigationOptions, NavigationParams } from '../../form-player.types';
-import { ConfigService } from '../../../core/config/config.service';
+import { ConfigService } from '../../../core/services/config/config.service';
 import { LocationService } from '../../../core/services/location/location.service';
 
 @Injectable()
 export class FormPlayerApiService {
   constructor(
     private http: HttpClient,
-    private serviceDataService: ServiceDataService,
+    private serviceDataService: InitDataService,
     private configService: ConfigService,
     private locationService: LocationService,
   ) {}
