@@ -1,6 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 
-import { ConfigService } from '../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { LAST_SCENARIO_KEY } from '../../../../../shared/constants/form-player';
 import { SignatureApplicationData } from '../models/application.interface';

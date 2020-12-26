@@ -10,8 +10,8 @@ import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalModule } from '../../../../modal/modal.module';
 import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
-import { ConfigService } from '../../../../core/config/config.service';
-import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../shared/components/base/base.module';
@@ -21,6 +21,7 @@ import { AnswerButtonModule } from '../../../../shared/components/answer-button/
 import { ActionModule } from '../../../../shared/directives/action/action.module';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
+import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -74,6 +75,7 @@ describe('PaymentTypeSelectorComponent', () => {
         DatePipe,
         LocationService,
         WINDOW_PROVIDERS,
+        HtmlRemoverService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },

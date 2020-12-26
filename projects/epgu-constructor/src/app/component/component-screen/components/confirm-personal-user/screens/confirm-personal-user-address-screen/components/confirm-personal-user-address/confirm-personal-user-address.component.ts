@@ -1,8 +1,8 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import * as moment_ from 'moment';
 import { Observable } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../../../core/config/config.service';
+import { takeUntil } from 'rxjs/operators';
+import { ConfigService } from '../../../../../../../../core/services/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
@@ -40,11 +40,13 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   ) {}
 
   ngOnInit(): void {
-    this.data$.pipe(takeUntil(this.ngUnsubscribe$), take(1)).subscribe((data) => {
-      this.textTransformType = data?.attrs?.fstuc;
-      this.isRequired = data.required;
-      this.updateValue(data);
-    });
+    this.data$
+      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
+      .subscribe((data) => {
+        this.textTransformType = data?.attrs?.fstuc;
+        this.isRequired = data.required;
+        this.updateValue(data);
+      });
   }
 
   updateValue(data: ConfirmAddressInterface): void {
@@ -66,7 +68,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       const isPresetable = this.isPresetable(
         data?.attrs?.fields?.find((field) => field.fieldName === 'regDate'),
       );
-      if (isPresetable) {
+      if (isPresetable || data.valueFromCache) {
         this.valueParsed.regDate = this.getDate(localValueParsed.regDate);
       }
     }
@@ -75,7 +77,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       const isPresetable = this.isPresetable(
         data?.attrs?.fields?.find((field) => field.fieldName === 'regAddr'),
       );
-      if (isPresetable) {
+      if (isPresetable || data.valueFromCache) {
         this.valueParsed.regAddr = this.getAddress(localValueParsed.regAddr);
       }
     }

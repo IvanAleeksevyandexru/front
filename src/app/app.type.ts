@@ -8,4 +8,5 @@ export interface AppConfig {
   canStartNew?: boolean;
   initState?: string;
   configId?: string;
+  queryParams?: string;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Config, MockApi, TimeSlotsApi } from './config.types';
 import { Observable, of } from 'rxjs';
+import { Config, MockApi, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
@@ -23,6 +23,7 @@ export class ConfigServiceStub implements Config {
   _mockUrl = '';
   _timeSlots = {};
   _disableUnderConstructionMode = false;
+  _isSocialShareDisabled = false;
   _addToCalendarUrl = '';
   _isLoaded$ = of(false);
 
@@ -106,6 +107,10 @@ export class ConfigServiceStub implements Config {
     return this._disableUnderConstructionMode;
   }
 
+  get isSocialShareDisabled(): boolean {
+    return this._isSocialShareDisabled;
+  }
+
   get isLoaded$(): Observable<boolean> {
     return this._isLoaded$;
   }
@@ -134,6 +139,7 @@ export class ConfigServiceStub implements Config {
     this._mockUrl = config.mockUrl;
     this._timeSlots = config.timeSlots;
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
+    this._isSocialShareDisabled = config.isSocialShareDisabled || false;
     this._addToCalendarUrl = config.addToCalendarUrl;
   }
 }

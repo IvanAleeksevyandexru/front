@@ -6,7 +6,7 @@ import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal
 import { ImageErrorText, NewSizeEvent } from '../upload-and-edit-photo.model';
 import { imageErrorText, minCropSize } from '../upload-and-edit-photo.constant';
 import { hintSetting, photoMaskSrc, showErrorTime } from './photo-editor-modal.constant';
-import { ConfigService } from '../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../core/services/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-photo-editor-modal',

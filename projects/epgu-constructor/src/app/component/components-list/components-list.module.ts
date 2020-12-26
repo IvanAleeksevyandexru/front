@@ -21,6 +21,7 @@ import { FieldListModule } from '../../shared/components/field-list/field-list.m
 import { MaskHandleModule } from '../../shared/pipes/mask-handle/mask-handle.module';
 import { CurrencyModule } from '../../shared/directives/currency/currency.module';
 import { MemoPipe } from '../../core/pipes/memo/memo.pipe';
+import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
 
 const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent, MemoPipe];
 
@@ -42,6 +43,7 @@ const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputCom
     FieldListModule,
     MaskHandleModule,
     CurrencyModule,
+    ConstructorDatePickerModule,
   ],
   providers: [
     ValidationService,

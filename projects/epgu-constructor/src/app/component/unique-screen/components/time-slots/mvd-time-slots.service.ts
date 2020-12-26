@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import * as uuid from 'uuid';
+import { v5 as uuidv5 } from 'uuid';
 import { SessionService } from '../../../../core/services/session/session.service';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
@@ -14,6 +14,7 @@ import {
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
+  TimeSlotsAnswerInterface,
   TimeSlotValueInterface
 } from './time-slots.types';
 
@@ -26,6 +27,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
   public bookId;
   public availableMonths: string[];
   public BOOKING_NAMESPACE = '28dffe80-c8f3-4fa0-ae6a-989ed4497e8c'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга мвд
+  public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
 
   private orderId;
   private serviceId: string;
@@ -94,9 +96,8 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     return this.activeYearNumber;
   }
 
-  init(data: TimeSlotValueInterface): Observable<void> {
-
-    if (this.changed(data) || this.errorMessage) {
+  init(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): Observable<boolean> {
+    if (this.changed(data, cachedAnswer) || this.errorMessage) {
       this.slotsMap = {};
       this.availableMonths = [];
       this.errorMessage = undefined;
@@ -109,6 +110,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
               this.errorMessage = errorMessage || errorCode;
             }
             this.initActiveMonth();
+            return this.isBookedDepartment;
           }
         ),
         catchError( error => {
@@ -118,7 +120,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
       );
     }
 
-    return of(undefined);
+    return of(this.isBookedDepartment);
   }
 
   hasError(): boolean {
@@ -129,10 +131,11 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
     return this.errorMessage;
   }
 
-  changed(data: TimeSlotValueInterface): boolean {
+  changed(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): boolean {
     let changed = false;
 
     let department = JSON.parse(data.department);
+    this.isBookedDepartment = cachedAnswer?.department.value === department.value;
     if (!this.department || this.department.value !== department.value) {
       changed = true;
       this.department = department;
@@ -183,7 +186,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
     const name = `${this.sessionService.userId}#${this.department.value}`;
-    this.bookId = uuid.v5(name, this.BOOKING_NAMESPACE);
+    this.bookId = uuidv5(name, this.BOOKING_NAMESPACE);
 
     const {
       serviceId,

@@ -34,6 +34,7 @@ import {
   ScenarioErrorsDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { By } from '@angular/platform-browser';
+import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -81,6 +82,7 @@ describe('ComponentScreenComponent', () => {
           FieldListComponent,
           TimerComponent,
           AnswerButtonComponent,
+          ScreenPadComponent,
         ),
         MockDirective(ActionDirective),
       ],

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmUserData } from '../../confirm-personal-user-data-screen.types';
-import { ConfigService } from '../../../../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ActionType } from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';

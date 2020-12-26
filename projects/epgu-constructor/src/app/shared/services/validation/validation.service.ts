@@ -2,12 +2,17 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
-import { InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
 import {
   CustomComponent,
   CustomComponentAttrValidation,
   CustomScreenComponentTypes,
 } from '../../../component/components-list/components-list.types';
+import { InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
+
+enum ValidationType {
+  regExp = 'RegExp',
+  regExpException = 'RegExpException',
+}
 
 @Injectable()
 export class ValidationService {
@@ -43,7 +48,7 @@ export class ValidationService {
         );
       }
 
-      if (!control.value) {
+      if (!control.value || validations?.length === 0) {
         return null;
       }
 
@@ -120,7 +125,8 @@ export class ValidationService {
 
   private getError(validations: Array<CustomComponentAttrValidation>, control: AbstractControl): CustomComponentAttrValidation {
     return validations.find(({ value, type }) =>
-      type === 'RegExp' && control.value && !new RegExp(value).test(control.value)
+      type === ValidationType.regExp && control.value && !new RegExp(value).test(control.value) ||
+      type === ValidationType.regExpException && control.value && new RegExp(value).test(control.value)
     );
   }
 }

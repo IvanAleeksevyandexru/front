@@ -5,7 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { ScreenService } from '../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 // eslint-disable-next-line import/no-cycle
 import { PaymentStatus } from './payment.constants';
 // eslint-disable-next-line import/no-cycle
@@ -106,6 +106,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       amountWithoutDiscount: this.sumWithoutDiscount ? this.sumWithoutDiscount : null,
       paymentPurpose: this.paymentPurpose ? this.paymentPurpose : null,
       receiver: this.docInfo ? this.docInfo : null,
+      billId: this.billId ? this.billId : null,
     } as PaymentInfoEventValue;
     this.nextStepEvent.emit(JSON.stringify(exportValue));
   }

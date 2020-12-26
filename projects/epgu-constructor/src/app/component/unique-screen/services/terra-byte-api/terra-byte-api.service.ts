@@ -8,7 +8,7 @@ import {
 } from './terra-byte-api.types';
 import { Observable } from 'rxjs';
 import { TerraUploadedFile } from '../../components/file-upload-screen/sub-components/file-upload-item/data';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import * as FileSaver from 'file-saver';
 
 /**

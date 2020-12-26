@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AppService } from '../app.service';
-import { Service } from '../../../projects/epgu-constructor/src/app/form-player/form-player.types';
+import { ServiceEntity } from '../../../projects/epgu-constructor/src/app/form-player/form-player.types';
+import { FormPlayerContext } from '../../../dist/epgu-constructor/app/form-player/form-player.types';
 
 @Component({
   selector: 'fp-container',
@@ -10,24 +11,18 @@ import { Service } from '../../../projects/epgu-constructor/src/app/form-player/
   styleUrls: ['./fp-container.component.scss'],
 })
 export class FpContainerComponent {
-  service$: Observable<Service> = this.appService.config$.pipe(
+  service$: Observable<ServiceEntity> = this.appService.config$.pipe(
     map((config) => {
-      const service: Service = {
+      const service: ServiceEntity = {
         serviceId: config.serviceId,
         targetId: config.targetId,
         orderId: config.orderId,
         invited: config.invited,
-        configId: config.configId,
         canStartNew: config.canStartNew,
-        initState: config.initState,
       };
 
       if (typeof config.invited === 'string' && config.invited === '') {
         delete service.invited;
-      }
-
-      if (!config.configId) {
-        delete service.configId;
       }
 
       if (typeof config.canStartNew === 'string' && config.canStartNew === '') {
@@ -35,6 +30,26 @@ export class FpContainerComponent {
       }
 
       return service;
+    }),
+  );
+
+  context$: Observable<FormPlayerContext> = this.appService.config$.pipe(
+    map((config) => {
+      const context: FormPlayerContext = {
+        configId: config.configId,
+        initState: config.initState,
+        queryParams: config.queryParams ? JSON.parse(config.queryParams) : [],
+      };
+
+      if (!config.configId) {
+        delete context.configId;
+      }
+
+      if (typeof config.queryParams === 'string' && config.queryParams === '') {
+        delete context.queryParams;
+      }
+
+      return context;
     }),
   );
 

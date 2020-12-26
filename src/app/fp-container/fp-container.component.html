@@ -1,7 +1,8 @@
 <div class="portal-new-sf-player">
   <epgu-constructor-form-player
     class="form-player"
-    *ngIf="service$ | async as service"
-    [service]="service"
+    *ngIf="(service$ | async) && (context$ | async)"
+    [service]="service$ | async"
+    [context]="context$ | async"
   ></epgu-constructor-form-player>
 </div>

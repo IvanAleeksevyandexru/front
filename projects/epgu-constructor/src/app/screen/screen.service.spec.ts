@@ -58,6 +58,7 @@ const makeScreenStoreSample = (): ScreenStore => ({
         },
         value: 'component w1 value',
         required: true,
+        valueFromCache: true,
       },
     ],
     terminal: false,
@@ -128,6 +129,7 @@ describe('ScreenService', () => {
                       value: 'p1.a.b.c',
                     },
                   },
+                  valueFromCache: false,
                 },
               ],
             },
@@ -158,6 +160,7 @@ describe('ScreenService', () => {
               components: [
                 {
                   presetValue: 'component w1 value',
+                  valueFromCache: false,
                 },
               ],
             },

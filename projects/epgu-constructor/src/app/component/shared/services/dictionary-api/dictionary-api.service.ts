@@ -6,11 +6,17 @@ import {
   DictionaryOptions,
   DictionaryResponse
 } from './dictionary-api.types';
-import { ConfigService } from '../../../../core/config/config.service';
-import { Observable } from 'rxjs';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
 
 @Injectable()
 export class DictionaryApiService {
+
+  private dictionaryCache: Record<string, DictionaryResponse> = {};
+  private processStatus: BehaviorSubject<Record<string, true>> = new BehaviorSubject<
+    Record<string, true>
+    >({});
 
   constructor(private http: HttpClient, private config: ConfigService) {}
 
@@ -21,7 +27,32 @@ export class DictionaryApiService {
    */
   getDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
     const path = `${this.config.dictionaryUrl}/${dictionaryName}`;
-    return this.post(path, options);
+    const cacheId = dictionaryName + JSON.stringify(options);
+
+    // TODO: Вынести кеш логику в кеш сервис
+    return of(cacheId).pipe(
+      delayWhen(() => this.processStatus.pipe(filter((v) => !v[cacheId]))),
+      concatMap((id) => {
+        if (this.dictionaryCache[id]) {
+          return of(this.dictionaryCache[id]);
+        } else {
+          const status = this.processStatus.getValue();
+          status[id] = true;
+          this.processStatus.next(status);
+
+          return this.post(path, options).pipe(
+            tap((response) => {
+              this.dictionaryCache[id] = response;
+            }),
+            finalize(() => {
+              const status = this.processStatus.getValue();
+              delete status[id];
+              this.processStatus.next(status);
+            })
+          );
+        }
+      }),
+    );
   }
 
   getMvdDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {

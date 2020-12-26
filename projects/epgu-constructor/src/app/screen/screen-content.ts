@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import {
   ApplicantAnswersDto,
   CachedAnswersDto,
@@ -238,6 +238,16 @@ export class ScreenContent {
     return this._cachedAnswers.asObservable();
   }
 
+  public set isNextScreen(val: boolean) {
+    if (val) {
+      this._isNextScreen.next(val);
+    }
+  }
+
+  public get isNextScreen$(): Observable<boolean> {
+    return this._isNextScreen;
+  }
+
   private _display = new BehaviorSubject<DisplayDto>(null);
   private _header = new BehaviorSubject<string>(null);
   private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
@@ -260,6 +270,7 @@ export class ScreenContent {
   private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
+  private _isNextScreen = new Subject<boolean>();
 
   updateScreenContent(screenStore: ScreenStore): void {
     const {
@@ -272,6 +283,7 @@ export class ScreenContent {
     } = screenStore;
     const { header, subHeader, submitLabel, type, components = [], terminal, cssClass, buttons } = display;
     const firstComponent = components[0];
+    this.isNextScreen = this.display?.id !== display.id;
     this.display = display;
     this.header = header;
     this.subHeader = subHeader;
