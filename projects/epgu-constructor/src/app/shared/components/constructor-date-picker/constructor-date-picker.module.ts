@@ -7,5 +7,6 @@ import { CoreModule } from '../../../core/core.module';
 @NgModule({
   declarations: [ConstructorDatePickerComponent],
   imports: [CommonModule, CoreModule],
+  exports: [ConstructorDatePickerComponent],
 })
 export class ConstructorDatePickerModule {}

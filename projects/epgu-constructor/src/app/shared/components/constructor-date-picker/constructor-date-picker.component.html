@@ -1,6 +1,4 @@
 <lib-date-picker
-  (dateSelected)="dateSelected($event)"
-  (cleared)="cleared()"
   [invalid]="invalid"
   [validationShowOn]="validationShowOn"
   [name]="name"
@@ -10,4 +8,9 @@
   [maxDate]="maxDate"
   [clearable]="clearable"
   [align]="align"
+  [disabled]="disabled"
+  (change)="onChange($event)"
+  (dateSelected)="onDateSelected($event)"
+  (cleared)="onCleared()"
+  (blur)="onBlur()"
 ></lib-date-picker>
