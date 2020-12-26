@@ -455,7 +455,10 @@ export class TimeSlotsComponent implements OnInit {
         ) {
           monthForDropdown.unselectable = true;
         }
-        this.monthsYears.push(monthForDropdown);
+        // Чтобы в начале списка не было "серых" месяцев
+        if (!monthForDropdown.unselectable || this.monthsYears.length) {
+          this.monthsYears.push(monthForDropdown);
+        }
       }
       if (this.currentMonth) {
         this.currentMonth = this.monthsYears.find(({ id }) => id === this.currentMonth.id);
