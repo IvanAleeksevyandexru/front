@@ -16,6 +16,7 @@ import {
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
+  TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
 } from './time-slots.types';
 
@@ -29,13 +30,13 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   public availableMonths: string[];
   public bookId;
   public BOOKING_NAMESPACE = 'f3ed0310-84ca-496c-a0e8-b06e35897b5e'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга гибдд
+  public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
 
   private orderId;
   private serviceId: string;
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
   private errorMessage;
-  private isDepartmentChanged = false; // Флаг показывающий что департамент поменялся с одного(непустого) на другой
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -125,14 +126,11 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     return this.activeYearNumber;
   }
 
-  init(data: TimeSlotValueInterface): Observable<void> {
-    if (this.changed(data) || this.errorMessage) {
+  init(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): Observable<boolean> {
+    if (this.changed(data, cachedAnswer) || this.errorMessage) {
       this.slotsMap = {};
       this.availableMonths = [];
       this.errorMessage = undefined;
-      if (this.bookedSlot && this.isDepartmentChanged) {
-        this.cancelSlot(this.bookId).subscribe();
-      }
       return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
         map((response) => {
           if (response.error.errorDetail.errorCode === 0) {
@@ -142,6 +140,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
             this.errorMessage = errorMessage || errorCode;
           }
           this.initActiveMonth();
+          return this.isBookedDepartment;
         }),
         catchError((error) => {
           this.errorMessage = error.message;
@@ -150,7 +149,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
       );
     }
 
-    return of(undefined);
+    return of(this.isBookedDepartment);
   }
 
   hasError(): boolean {
@@ -161,12 +160,12 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
     return this.errorMessage;
   }
 
-  changed(data: TimeSlotValueInterface): boolean {
+  changed(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): boolean {
     let changed = false;
 
     let department = JSON.parse(data.department);
-    this.isDepartmentChanged = this.department?.value !== department.value;
-    if (this.isDepartmentChanged) {
+    this.isBookedDepartment = cachedAnswer?.department.value === department.value;
+    if (this.department?.value !== department.value) {
       changed = true;
       this.department = department;
     }
@@ -177,11 +176,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
       this.orderId = orderId;
     }
 
-    let serviceId = data.serviceId;
-    if (!this.serviceId || this.serviceId !== serviceId) {
-      changed = true;
-      this.serviceId = serviceId;
-    }
+    this.serviceId = data.serviceId;
 
     return changed;
   }

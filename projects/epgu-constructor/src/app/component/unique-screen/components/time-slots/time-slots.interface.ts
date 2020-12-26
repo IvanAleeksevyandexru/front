@@ -3,6 +3,7 @@ import {
   DepartmentInterface,
   SlotInterface,
   SmevBookResponseInterface,
+  TimeSlotsAnswerInterface,
   TimeSlotValueInterface
 } from './time-slots.types';
 
@@ -10,7 +11,9 @@ export interface TimeSlotsServiceInterface {
   BOOKING_NAMESPACE: string;
   bookId: string;
   department: DepartmentInterface;
-  init(data: TimeSlotValueInterface): Observable<void>;
+  isBookedDepartment: boolean
+
+  init(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): Observable<boolean>;
   getCurrentYear(): number;
   getCurrentMonth(): number;
   getAvailableMonths(): string[];
