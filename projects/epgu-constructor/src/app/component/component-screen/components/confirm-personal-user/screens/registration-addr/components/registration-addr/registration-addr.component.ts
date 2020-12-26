@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DadataResult, ValidationShowOn } from 'epgu-lib';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { skip, startWith, takeUntil } from 'rxjs/operators';
 import * as moment_ from 'moment';
 import { combineLatest, Observable } from 'rxjs';
 import { ConfigService } from '../../../../../../../../core/config/config.service';
@@ -48,7 +48,8 @@ export class RegistrationAddrComponent implements OnInit {
       .subscribe(([data]) => {
         this.required = data.required;
         this.initFormGroup(data);
-        this.subscribeToFormChanges(data);
+        this.subscribeToFormChanges();
+        this.subscribeToCmpErrors(data);
       });
   }
 
@@ -91,16 +92,26 @@ export class RegistrationAddrComponent implements OnInit {
     return validators;
   }
 
-  private subscribeToFormChanges(data: IRegistrationAddrComponent): void {
+  private subscribeToFormChanges(): void {
     this.redAddrForm.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$), startWith(this.redAddrForm.value))
+      .pipe(startWith(this.redAddrForm.value), takeUntil(this.ngUnsubscribe$))
       .subscribe((changes) => {
-        delete this.screenService.componentErrors[data.id];
         if (this.redAddrForm.invalid) {
           this.currentAnswersService.isValid = false;
         } else {
           this.currentAnswersService.isValid = true;
           this.currentAnswersService.state = changes;
+        }
+      });
+  }
+
+  private subscribeToCmpErrors({ id }: IRegistrationAddrComponent): void {
+    combineLatest([this.screenService.componentErrors$, this.redAddrForm.valueChanges])
+      .pipe(skip(1), takeUntil(this.ngUnsubscribe$))
+      .subscribe(([errors]) => {
+        const hasCmpError = Object.keys(errors).find((er) => er === id);
+        if (hasCmpError) {
+          this.screenService.componentError = null;
         }
       });
   }
