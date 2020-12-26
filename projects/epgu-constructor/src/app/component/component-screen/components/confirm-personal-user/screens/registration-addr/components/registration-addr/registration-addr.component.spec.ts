@@ -4,8 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 
 import { RouterTestingModule } from '@angular/router/testing';
-import { ConfigService } from '../../../../../../../../core/config/config.service';
-import { ConfigServiceStub } from '../../../../../../../../core/config/config.service.stub';
+import { ConfigService } from '../../../../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../../../../core/services/config/config.service.stub';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';

@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { ConfigService } from '../../config/config.service';
+import { ConfigService } from '../../services/config/config.service';
 import { ImgPrefixerPipe } from './img-prefixer.pipe';
 import { LoadService } from 'epgu-lib';
-import { LoadServiceStub } from '../../config/load-service-stub';
+import { LoadServiceStub } from '../../services/config/load-service-stub';
 
 describe('ImgPrefixerPipe', () => {
   let pipe: ImgPrefixerPipe;

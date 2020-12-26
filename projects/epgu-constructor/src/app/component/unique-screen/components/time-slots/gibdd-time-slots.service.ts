@@ -4,7 +4,7 @@ import { SessionService } from '../../../../core/services/session/session.servic
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v5 as uuidv5 } from 'uuid';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {

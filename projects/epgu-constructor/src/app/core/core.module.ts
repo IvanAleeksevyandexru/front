@@ -6,7 +6,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { OutputHtmlComponent } from './components/output-html/output-html.component';
 import { ImgPrefixerPipe } from './pipes/img-prefixer/img-prefixer.pipe';
 import { SafePipe } from './pipes/safe/safe.pipe';
-import { ConfigService } from './config/config.service';
+import { ConfigService } from './services/config/config.service';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 import { NavigationService } from './services/navigation/navigation.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -22,6 +22,7 @@ import { UtilsService } from './services/utils/utils.service';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
 import { LocationService } from './services/location/location.service';
 import { SessionService } from './services/session/session.service';
+import { InitDataService } from './services/init-data/init-data.service';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
@@ -60,6 +61,7 @@ const PIPES = [ImgPrefixerPipe, SafePipe];
     LocalStorageService,
     UtilsService,
     SessionService,
+    InitDataService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,

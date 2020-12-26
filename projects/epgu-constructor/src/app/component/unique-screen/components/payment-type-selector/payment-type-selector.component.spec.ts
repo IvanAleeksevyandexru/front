@@ -10,8 +10,8 @@ import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalModule } from '../../../../modal/modal.module';
 import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
-import { ConfigService } from '../../../../core/config/config.service';
-import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../shared/components/base/base.module';

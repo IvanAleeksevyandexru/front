@@ -11,14 +11,20 @@ import {
 import { LoadService } from 'epgu-lib';
 import { filter, mergeMap, takeUntil, tap, take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { ConfigService } from '../core/config/config.service';
+import { ConfigService } from '../core/services/config/config.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../screen/screen.service';
-import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
+import {
+  FormPlayerContext,
+  FormPlayerNavigation,
+  Navigation,
+  NavigationPayload,
+  ServiceEntity,
+} from './form-player.types';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
-import { ServiceDataService } from './services/service-data/service-data.service';
+import { InitDataService } from '../core/services/init-data/init-data.service';
 import { FormPlayerStartService } from './services/form-player-start/form-player-start.service';
 
 @Component({
@@ -31,14 +37,15 @@ import { FormPlayerStartService } from './services/form-player-start/form-player
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-form-player') class = true;
   @HostBinding('attr.test-screen-id') screenId: string;
-  @Input() service: Service;
+  @Input() service: ServiceEntity;
+  @Input() context: FormPlayerContext;
 
   public isFirstLoading$ = this.screenService.isLoading$.pipe(take(3));
   private isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
   private isConfigReady$ = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private serviceDataService: ServiceDataService,
+    private initDataService: InitDataService,
     public formPlayerConfigApiService: FormPlayerConfigApiService,
     public formPlayerService: FormPlayerService,
     private navService: NavigationService,
@@ -50,7 +57,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.serviceDataService.init(this.service);
+    this.initDataService.init(this.service, this.context);
     this.initFormPlayerConfig();
     this.initNavigation();
     this.initSettingOfScreenIdToAttr();
@@ -61,7 +68,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.serviceDataService.init(this.service);
+    this.initDataService.init(this.service, this.context);
 
     if (
       changes.service.previousValue &&
@@ -75,7 +82,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.isCoreConfigLoaded$
       .pipe(
         tap(() => {
-          this.configService.configId = this.service.configId;
+          this.configService.configId = this.context.configId;
           this.configService.initCore();
         }),
         mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()),

@@ -13,7 +13,7 @@ import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
 import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
-import { ServiceDataService } from '../service-data/service-data.service';
+import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { FormPlayerService } from './form-player.service';
 import { FormPlayerServiceStub } from './form-player.service.stub';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
@@ -42,7 +42,7 @@ describe('FormPlayerService', () => {
     TestBed.configureTestingModule({
       providers: [
         FormPlayerService,
-        ServiceDataService,
+        InitDataService,
         CachedAnswersService,
         CurrentAnswersService,
         HtmlRemoverService,

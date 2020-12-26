@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ConfigService } from '../../../core/config/config.service';
+import { ConfigService } from '../../../core/services/config/config.service';
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({

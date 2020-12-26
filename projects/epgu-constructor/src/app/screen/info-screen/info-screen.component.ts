@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../core/config/config.service';
+import { ConfigService } from '../../core/services/config/config.service';
 import { LocationService } from '../../core/services/location/location.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import {
