@@ -450,7 +450,10 @@ export class TimeSlotsComponent implements OnInit {
       for (let month = moment(firstMonthStr); !month.isAfter(lastMonthStr); month.add(1, 'M')) {
         const monthForDropdown = this.getMonthsListItem(month.format('YYYY-M'));
         if (
-          !availableMonths.includes(month.format('YYYY-M')) ||
+          !(
+            availableMonths.includes(month.format('YYYY-M')) ||
+            availableMonths.includes(month.format('YYYY-MM'))
+          ) ||
           this.checkDateRestrictions(month.toDate(), 'month')
         ) {
           monthForDropdown.unselectable = true;
