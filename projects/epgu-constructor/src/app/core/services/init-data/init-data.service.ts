@@ -1,25 +1,34 @@
 import { Injectable } from '@angular/core';
-import { FormPlayerContext, InitData } from '../../../form-player/form-player.types';
+import { FormPlayerContext, QueryParams, ServiceEntity } from '../../../form-player/form-player.types';
 
 /**
  * Сервис необходим для хранения входных параметров с которыми стартует приложение
  */
 @Injectable()
-export class InitDataService implements InitData {
+export class InitDataService implements ServiceEntity, FormPlayerContext {
   private _serviceId: string;
   private _orderId: string;
   private _targetId: string;
   private _invited: boolean;
   private _canStartNew: boolean;
   private _initState: string;
-  private _context: FormPlayerContext;
+  private _configId: string;
+  private _queryParams: QueryParams;
 
   get serviceId(): string {
     return this._serviceId;
   }
 
+  set serviceId(serviceId: string) {
+    this._serviceId = serviceId;
+  }
+
   get targetId(): string {
     return this._targetId;
+  }
+
+  set targetId(targetId: string) {
+    this._targetId = targetId;
   }
 
   get orderId(): string {
@@ -34,12 +43,16 @@ export class InitDataService implements InitData {
     return this._invited;
   }
 
+  set invited(invited: boolean) {
+    this._invited = invited;
+  }
+
   get initState(): string {
     return this._initState;
   }
 
-  set invited(invited: boolean) {
-    this._invited = invited;
+  set initState(initState: string) {
+    this._initState = initState;
   }
 
   get canStartNew(): boolean {
@@ -50,26 +63,35 @@ export class InitDataService implements InitData {
     this._canStartNew = canStartNew  ?? true;
   }
 
-  get context(): FormPlayerContext {
-    return this._context;
+  get configId(): string {
+    return this._configId;
   }
 
-  set context(context: FormPlayerContext) {
-    this._context = context;
+  set configId(configId: string) {
+    this._configId = configId;
   }
 
-  init(data: InitData): void {
-    this.checkProps(data);
-    this._serviceId = data.serviceId;
-    this._targetId = data.targetId;
-    this._initState = data.initState;
-    this.orderId = data.orderId;
-    this.invited = data.invited;
-    this.canStartNew = data.canStartNew;
-    this.context = data.context;
+  get queryParams(): QueryParams {
+    return this._queryParams;
   }
 
-  private checkProps(service: InitData): void {
+  set queryParams(queryParams: QueryParams) {
+    this._queryParams = queryParams;
+  }
+
+  init(service: ServiceEntity, context?: FormPlayerContext): void {
+    this.checkProps(service);
+    this.serviceId = service.serviceId;
+    this.targetId = service.targetId;
+    this.orderId = service.orderId;
+    this.invited = service.invited;
+    this.canStartNew = service.canStartNew;
+    this.initState = context?.initState;
+    this.configId = context?.configId;
+    this.queryParams = context?.queryParams;
+  }
+
+  private checkProps(service: ServiceEntity): void {
     console.group('----- Init props ---------');
     console.log('service', service);
     console.groupEnd();

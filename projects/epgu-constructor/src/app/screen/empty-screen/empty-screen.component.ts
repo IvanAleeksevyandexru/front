@@ -27,8 +27,8 @@ export class EmptyScreenComponent {
     const addContextQueryParams = this.screenService.component?.attrs?.addContextQueryParams;
     const linkFromRef = (): string => applicantAnswers[ref]?.value;
     const linkFromComponent = (): string => this.screenService.component?.attrs?.link;
-    const contextQueryParams = this.initDataService.context?.queryParams
-      ? Object.entries(this.initDataService.context?.queryParams)
+    const contextQueryParams = this.initDataService.queryParams
+      ? Object.entries(this.initDataService.queryParams)
           .map(([key, value]) => `${key}=${value}`)
           .join('&')
       : '';

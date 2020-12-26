@@ -15,7 +15,13 @@ import { ConfigService } from '../core/services/config/config.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../screen/screen.service';
-import { FormPlayerNavigation, Navigation, NavigationPayload, InitData } from './form-player.types';
+import {
+  FormPlayerContext,
+  FormPlayerNavigation,
+  Navigation,
+  NavigationPayload,
+  ServiceEntity,
+} from './form-player.types';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { InitDataService } from '../core/services/init-data/init-data.service';
@@ -31,7 +37,8 @@ import { FormPlayerStartService } from './services/form-player-start/form-player
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-form-player') class = true;
   @HostBinding('attr.test-screen-id') screenId: string;
-  @Input() initData: InitData;
+  @Input() service: ServiceEntity;
+  @Input() context: FormPlayerContext;
 
   public isFirstLoading$ = this.screenService.isLoading$.pipe(take(3));
   private isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
@@ -50,7 +57,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.initDataService.init(this.initData);
+    this.initDataService.init(this.service, this.context);
     this.initFormPlayerConfig();
     this.initNavigation();
     this.initSettingOfScreenIdToAttr();
@@ -61,11 +68,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.initDataService.init(this.initData);
+    this.initDataService.init(this.service, this.context);
 
     if (
-      changes.initData.previousValue &&
-      changes.initData.previousValue.serviceId !== changes.initData.currentValue.serviceId
+      changes.service.previousValue &&
+      changes.service.previousValue.serviceId !== changes.service.currentValue.serviceId
     ) {
       this.restartPlayer();
     }
@@ -75,7 +82,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.isCoreConfigLoaded$
       .pipe(
         tap(() => {
-          this.configService.configId = this.initData.configId;
+          this.configService.configId = this.context.configId;
           this.configService.initCore();
         }),
         mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()),

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { FormPlayerStartService } from './form-player-start.service';
 import { FormPlayerComponent } from '../../form-player.component';
-import { FormPlayerNavigation, InitData } from '../../form-player.types';
+import { FormPlayerNavigation, ServiceEntity } from '../../form-player.types';
 import { of } from 'rxjs';
 import { LAST_SCENARIO_KEY, NEXT_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../../shared/constants/form-player';
 import { FormPlayerServiceStub } from '../form-player/form-player.service.stub';
@@ -39,7 +39,7 @@ describe('FormServiceStartService', () => {
   let initDataService: InitDataService;
   let location: Location;
 
-  let serviceDataMock: InitData = {
+  let serviceDataMock: ServiceEntity = {
     serviceId: '10000100',
     targetId: '-10000100'
   };
@@ -77,7 +77,7 @@ describe('FormServiceStartService', () => {
     const rawSate = JSON.stringify(responseDto);
 
     it('should call startScenarioFromProps case', () => {
-      initDataService.init({ ...serviceDataMock, initState: rawSate });
+      initDataService.init({ ...serviceDataMock }, { initState: rawSate });
       spyOn<any>(service, 'startScenarioFromProps').and.callThrough();
       service.startPlayer();
       expect(service['startScenarioFromProps']).toBeCalled();

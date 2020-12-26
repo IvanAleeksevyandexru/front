@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { LoadService } from 'epgu-lib';
 import { MockComponent } from 'ng-mocks';
@@ -23,7 +23,7 @@ import { ScreenService } from '../screen/screen.service';
 import { ScreenServiceStub } from '../screen/screen.service.stub';
 import { EpguLibModuleInited } from '../core/core.module';
 import { InitDataServiceStub } from '../core/services/init-data/init-data.service.stub';
-import { FormPlayerNavigation, InitData } from './form-player.types';
+import { FormPlayerNavigation, ServiceEntity } from './form-player.types';
 import { of } from 'rxjs';
 import { ScreenTypes } from '../screen/screen.types';
 import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
@@ -39,6 +39,8 @@ import { SimpleChange } from '@angular/core';
 
 
 describe('FormPlayerComponent', () => {
+  let fixture: ComponentFixture<FormPlayerComponent>;
+  let component: FormPlayerComponent;
   let formPlayerService: FormPlayerService;
   let formPlayerConfigApiService: FormPlayerConfigApiService;
   let loadService: LoadService;
@@ -52,10 +54,11 @@ describe('FormPlayerComponent', () => {
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
   let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
-  let serviceDataMock: InitData = {
+  let serviceDataMock: ServiceEntity = {
     serviceId: '10000100',
     targetId: '-10000100'
   };
+  let contextMock = {};
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -99,44 +102,34 @@ describe('FormPlayerComponent', () => {
     loggerService = TestBed.inject(LoggerService);
     continueOrderModalService = TestBed.inject(ContinueOrderModalService);
     formPlayerStartService = TestBed.inject(FormPlayerStartService);
+
+    fixture = TestBed.createComponent(FormPlayerComponent);
+    component = fixture.componentInstance;
+    component.service = serviceDataMock;
+    component.context = contextMock;
+    fixture.detectChanges();
   });
 
   describe('ngOnInit()', () => {
     it('should call init method of initDataService with service param', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn(initDataService, 'init').and.callThrough();
       component.ngOnInit();
-      expect(initDataService.init).toBeCalledWith(serviceDataMock);
+      expect(initDataService.init).toBeCalledWith(serviceDataMock, contextMock);
     });
 
     it('should call initFormPlayerConfig', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn<any>(component, 'initFormPlayerConfig').and.callThrough();
       component.ngOnInit();
       expect(component['initFormPlayerConfig']).toBeCalled();
     });
 
     it('should call initNavigation', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn<any>(component, 'initNavigation').and.callThrough();
       component.ngOnInit();
       expect(component['initNavigation']).toBeCalled();
     });
 
     it('should call initSettingOfScreenIdToAttr', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn<any>(component, 'initSettingOfScreenIdToAttr').and.callThrough();
       component.ngOnInit();
       expect(component['initSettingOfScreenIdToAttr']).toBeCalled();
@@ -145,10 +138,6 @@ describe('FormPlayerComponent', () => {
 
   describe('ngAfterViewInit()', () => {
     it('should call startPlayer', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn<any>(component, 'startPlayer').and.callThrough();
       component.ngAfterViewInit();
       expect(component['startPlayer']).toBeCalled();
@@ -157,22 +146,14 @@ describe('FormPlayerComponent', () => {
 
   describe('ngOnChanges()', () => {
     it('should call init method of initDataService with service param', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn(initDataService, 'init').and.callThrough();
-      component.ngOnChanges({ initData: new SimpleChange(null, serviceDataMock, true) });
-      expect(initDataService.init).toBeCalledWith(serviceDataMock);
+      component.ngOnChanges({ service: new SimpleChange(null, serviceDataMock, true) });
+      expect(initDataService.init).toBeCalledWith(serviceDataMock, contextMock);
     });
   });
 
   describe('initFormPlayerConfig()', () => {
     it('shouldn\'t call getFormPlayerConfig method of formPlayerConfigApiService when loadService not loaded', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       loadService.loaded.next(false);
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
       component['initFormPlayerConfig']();
@@ -180,10 +161,6 @@ describe('FormPlayerComponent', () => {
     });
 
     it('shouldn\'t call initCore method of configService when loadService not loaded', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       loadService.loaded.next(false);
       spyOn(configService, 'initCore').and.callThrough();
       component['initFormPlayerConfig']();
@@ -191,10 +168,6 @@ describe('FormPlayerComponent', () => {
     });
 
     it('should call initCore method of configService when loadService has loaded', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       loadService.loaded.next(true);
       spyOn(configService, 'initCore').and.callThrough();
       component['initFormPlayerConfig']();
@@ -202,10 +175,6 @@ describe('FormPlayerComponent', () => {
     });
 
     it('should call getFormPlayerConfig method of formPlayerConfigApiService when loadService has loaded', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       loadService.loaded.next(true);
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
       component['initFormPlayerConfig']();
@@ -214,10 +183,6 @@ describe('FormPlayerComponent', () => {
 
     it('should set form player config', () => {
       const config = {};
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       loadService.loaded.next(true);
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.returnValue(of(config));
       const setterSpy = jest.spyOn(configService, 'config', 'set');
@@ -227,10 +192,6 @@ describe('FormPlayerComponent', () => {
 
     it('should call next of isConfigReady$', () => {
       const config = {};
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       loadService.loaded.next(true);
       spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.returnValue(of(config));
       spyOn<any>(component['isConfigReady$'], 'next').and.callThrough();
@@ -242,10 +203,6 @@ describe('FormPlayerComponent', () => {
   describe('initNavigation()', () => {
     it('should call nextStep with param when push nextStep navigation', () => {
       const navigationParam = {};
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn<any>(component, 'nextStep').and.callThrough();
       navService.next(navigationParam);
       component['initNavigation']();
@@ -254,10 +211,6 @@ describe('FormPlayerComponent', () => {
 
     it('should call prevStep with param when push prevStep navigation', () => {
       const navigationParam = {};
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn<any>(component, 'prevStep').and.callThrough();
       navService.prev(navigationParam);
       component['initNavigation']();
@@ -266,10 +219,6 @@ describe('FormPlayerComponent', () => {
 
     it('should call skipStep with param when push skipStep navigation', () => {
       const navigationParam = {};
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn<any>(component, 'skipStep').and.callThrough();
       navService.skip(navigationParam);
       component['initNavigation']();
@@ -289,20 +238,12 @@ describe('FormPlayerComponent', () => {
     };
 
     it('should set screenId to component param', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       screenService.display = display;
       component['initSettingOfScreenIdToAttr']();
       expect(component.screenId).toBe(display.id);
     });
 
     it('should attr.test-screen-id be screenId', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       screenService.display = display;
       component['initSettingOfScreenIdToAttr']();
       fixture.detectChanges();
@@ -313,10 +254,6 @@ describe('FormPlayerComponent', () => {
   describe('nextStep()', () => {
     it('should call navigate of formPlayerService with next param', () => {
       const navigation = {};
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn(formPlayerService, 'navigate').and.callThrough();
       component['nextStep'](navigation);
       expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.NEXT);
@@ -326,10 +263,6 @@ describe('FormPlayerComponent', () => {
   describe('prevStep()', () => {
     it('should call navigate of formPlayerService with prev param', () => {
       const navigation = {};
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn(formPlayerService, 'navigate').and.callThrough();
       component['prevStep'](navigation);
       expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.PREV);
@@ -339,10 +272,6 @@ describe('FormPlayerComponent', () => {
   describe('skipStep()', () => {
     it('should call navigate of formPlayerService with skip param', () => {
       const navigation = {};
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       spyOn(formPlayerService, 'navigate').and.callThrough();
       component['skipStep'](navigation);
       expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.SKIP);
@@ -351,9 +280,6 @@ describe('FormPlayerComponent', () => {
 
   describe('render throbber', () => {
     it('should render throbber', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
       component.isFirstLoading$ = of(true);
       fixture.detectChanges();
       const throbber = fixture.debugElement.query(By.css('lib-throbber-hexagon'));
@@ -361,9 +287,6 @@ describe('FormPlayerComponent', () => {
     });
 
     it('should not render throbber', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
       component.isFirstLoading$ = of(false);
       fixture.detectChanges();
       const throbber = fixture.debugElement.query(By.css('lib-throbber-hexagon'));
@@ -371,9 +294,6 @@ describe('FormPlayerComponent', () => {
     });
 
     it('throbber should has big size', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
       component.isFirstLoading$ = of(true);
       fixture.detectChanges();
       const throbber = fixture.debugElement.query(By.css('lib-throbber-hexagon'));
@@ -383,33 +303,24 @@ describe('FormPlayerComponent', () => {
 
   describe('render screen resolver', () => {
     it('should not render screen resolver when player not loaded', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
       formPlayerService['_playerLoaded$'] = of(false);
       configService['_isLoaded$'] = of(true);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
       fixture.detectChanges();
       const screenResolver = fixture.debugElement.query(By.css('epgu-constructor-screen-resolver'));
       expect(screenResolver).toBeFalsy();
     });
 
     it('should not render screen resolver when config not loaded', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
       formPlayerService['_playerLoaded$'] = of(true);
       configService['_isLoaded$'] = of(false);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
       fixture.detectChanges();
       const screenResolver = fixture.debugElement.query(By.css('epgu-constructor-screen-resolver'));
       expect(screenResolver).toBeFalsy();
     });
 
     it('should render screen resolver when config loaded and player loaded', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
       formPlayerService['_playerLoaded$'] = of(true);
       configService['_isLoaded$'] = of(true);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
       fixture.detectChanges();
       const screenResolver = fixture.debugElement.query(By.css('epgu-constructor-screen-resolver'));
       expect(screenResolver).toBeTruthy();
@@ -418,19 +329,11 @@ describe('FormPlayerComponent', () => {
 
   describe('render modal', () => {
     it('should render screen modal', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       const screenModal = fixture.debugElement.query(By.css('epgu-constructor-screen-modal'));
       expect(screenModal).toBeTruthy();
     });
 
     it('should render modal container', () => {
-      const fixture = TestBed.createComponent(FormPlayerComponent);
-      const component = fixture.componentInstance;
-      component.initData = serviceDataMock;
-      fixture.detectChanges();
       const modalContainer = fixture.debugElement.query(By.css('epgu-constructor-modal-container'));
       expect(modalContainer).toBeTruthy();
     });
