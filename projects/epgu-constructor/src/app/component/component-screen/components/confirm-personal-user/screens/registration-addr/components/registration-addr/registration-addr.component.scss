@@ -39,6 +39,7 @@ $item-hint-mx: 13px;
   margin-top: -$item-hint-mx;
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .content {
