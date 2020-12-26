@@ -137,6 +137,7 @@ export interface ComponentAttrsDto {
   minDateRef?: string;
   maxDateRef?: string;
   hideSocialShare?: boolean;
+  addContextQueryParams?: boolean;
 }
 
 export interface ComponentUploadedFileDto {
