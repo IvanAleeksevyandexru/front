@@ -2,19 +2,22 @@
 
 package "Form Player" {
   [FormPlayerModule] <-- [FormPlayerComponent]
-  [FormPlayerComponent] <-- [ServiceDataService]
-  [ServiceDataService] --> [FormPlayerStartService]
-  [ServiceDataService] --> [FormPlayerApiService]
   [FormPlayerComponent] <-- [FormPlayerConfigApiService]
-  [FormPlayerComponent] --> [FormPlayerStartService]
-  [FormPlayerStartService] --> [FormPlayerService]
+  [FormPlayerComponent] <-- [FormPlayerStartService]
+  [FormPlayerStartService] <-- [FormPlayerService]
   [FormPlayerService] <-- [FormPlayerApiService]
 }
+
+[FormPlayerApiService] <..> FormPlayerApi
 
 package "Core" {
   [CoreModule] -> [FormPlayerModule]
   [CoreModule] <-- [CoreComponents...]
   [CoreModule] <-- [CoreServices...]
+  [CoreServices...] .. [InitDataService]
+  [InitDataService] --> [FormPlayerComponent]
+  [InitDataService] --> [FormPlayerStartService]
+  [InitDataService] --> [FormPlayerApiService]
 }
 
 
