@@ -8,7 +8,6 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { SelectChildrenScreenComponent } from './select-children-screen.component';
 import { ComponentsListModule } from '../../../components-list/components-list.module';
-import { CoreModule } from '../../../../core/core.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
@@ -18,6 +17,8 @@ import { of } from 'rxjs';
 import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
 import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
 import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
+import { BaseModule } from '../../../../shared/base.module';
+import { CoreModule } from '../../../../core/core.module';
 
 describe('SelectChildrenScreenComponent', () => {
   let component: SelectChildrenScreenComponent;
@@ -41,6 +42,7 @@ describe('SelectChildrenScreenComponent', () => {
       ],
       imports: [
         CoreModule,
+        BaseModule,
         BaseComponentsModule,
         CloneButtonModule,
         ReactiveFormsModule,

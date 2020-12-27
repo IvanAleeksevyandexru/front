@@ -8,11 +8,12 @@ import { NavigationService } from '../../../../../core/services/navigation/navig
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
-import { CoreModule } from '../../../../../core/core.module';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { LocationService } from '../../../../../core/services/location/location.service';
+import { BaseModule } from '../../../../../shared/base.module';
+import { CoreModule } from '../../../../../core/core.module';
 
 describe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;
@@ -35,7 +36,7 @@ describe('ConfirmEmailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConfirmEmailComponent, CounterDirective],
-      imports: [CoreModule, RouterTestingModule],
+      imports: [BaseModule, CoreModule, RouterTestingModule],
       providers: [
         UnsubscribeService,
         NavigationService,

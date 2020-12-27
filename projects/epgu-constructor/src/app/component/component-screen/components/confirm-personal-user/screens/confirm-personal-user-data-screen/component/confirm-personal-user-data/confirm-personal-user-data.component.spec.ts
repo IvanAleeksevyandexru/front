@@ -2,7 +2,6 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfigService } from '../../../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../core/services/config/config.service.stub';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
-import { ToJsonPipe } from '../../../../../../../../shared/pipes/to-json/to-json.pipe';
 import { ConfirmUserData } from '../../confirm-personal-user-data-screen.types';
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
@@ -63,7 +62,6 @@ describe('ConfirmPersonalUserDataComponent', () => {
         declarations: [
           ConfirmPersonalUserDataComponent,
           ScreenPadComponent,
-          ToJsonPipe,
           ActionDirective,
           FieldListComponent,
           SafePipe,

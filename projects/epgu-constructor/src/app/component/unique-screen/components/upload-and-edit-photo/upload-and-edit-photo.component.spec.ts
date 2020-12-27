@@ -12,6 +12,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
+import { CoreModule } from '../../../../core/core.module';
 
 class MockScreenService {
   header = '';
@@ -51,7 +52,7 @@ describe('UploadAndEditPhotoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ UploadAndEditPhotoModule, RouterTestingModule ],
+      imports: [ UploadAndEditPhotoModule, RouterTestingModule, CoreModule ],
       providers: [
         TerraByteApiService,
         HealthService,

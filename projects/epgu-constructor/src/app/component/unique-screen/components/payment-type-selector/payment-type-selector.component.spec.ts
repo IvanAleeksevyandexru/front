@@ -22,6 +22,7 @@ import { ActionModule } from '../../../../shared/directives/action/action.module
 import { LocationService } from '../../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
+import { BaseModule } from '../../../../shared/base.module';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -62,6 +63,7 @@ describe('PaymentTypeSelectorComponent', () => {
       declarations: [PaymentTypeSelectorComponent],
       imports: [
         ModalModule,
+        BaseModule,
         CoreModule,
         RouterTestingModule,
         BaseComponentsModule,
