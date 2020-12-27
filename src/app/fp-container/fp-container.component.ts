@@ -9,7 +9,7 @@ import { FormPlayerContext } from '../../../dist/epgu-constructor/app/form-playe
   selector: 'fp-container',
   templateUrl: './fp-container.component.html',
   styleUrls: ['./fp-container.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class FpContainerComponent {
   service$: Observable<ServiceEntity> = this.appService.config$.pipe(

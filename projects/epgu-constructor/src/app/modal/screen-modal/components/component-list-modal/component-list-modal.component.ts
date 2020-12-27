@@ -14,7 +14,7 @@ const moment = moment_;
   templateUrl: './component-list-modal.component.html',
   styleUrls: ['./component-list-modal.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentListModalComponent {
   dataToSend: NavigationPayload;

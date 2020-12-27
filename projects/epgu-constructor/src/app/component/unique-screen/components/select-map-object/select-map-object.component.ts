@@ -41,7 +41,7 @@ import { ConstructorLookupComponent } from '../../../../shared/components/constr
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
   providers: [UnsubscribeService, SelectMapObjectService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() nextStepEvent = new EventEmitter<string>();

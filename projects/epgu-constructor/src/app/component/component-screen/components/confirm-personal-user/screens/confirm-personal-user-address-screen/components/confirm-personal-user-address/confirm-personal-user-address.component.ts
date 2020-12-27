@@ -28,7 +28,7 @@ const moment = moment_;
   templateUrl: './confirm-personal-user-address.component.html',
   styleUrls: ['./confirm-personal-user-address.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnInit {
   @ViewChild('dataForm', { static: false }) dataForm;

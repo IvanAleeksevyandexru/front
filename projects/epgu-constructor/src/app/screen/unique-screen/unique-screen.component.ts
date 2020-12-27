@@ -9,7 +9,7 @@ import { ScreenBase } from '../screenBase';
   templateUrl: './unique-screen.component.html',
   styleUrls: ['./unique-screen.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class UniqueScreenComponent extends ScreenBase implements OnInit {
   // <-- constant

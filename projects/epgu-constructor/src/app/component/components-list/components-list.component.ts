@@ -43,7 +43,7 @@ const halfWidthItemTypes = [
     UnsubscribeService,
     DateRangeService,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentsListComponent implements OnChanges {
   @Input() components: CustomComponent;

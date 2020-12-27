@@ -25,7 +25,7 @@ export interface ComponentSetting {
   templateUrl: './component-screen.component.html',
   styleUrls: ['./component-screen.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentScreenComponent extends ScreenBase implements OnInit {
   // <-- constant

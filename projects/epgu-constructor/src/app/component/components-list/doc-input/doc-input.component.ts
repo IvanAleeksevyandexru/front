@@ -28,7 +28,7 @@ const moment = moment_;
   templateUrl: './doc-input.component.html',
   styleUrls: ['./doc-input.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class DocInputComponent implements OnInit, AfterViewInit {
   @Input() data: AbstractControl | DocInputControl;

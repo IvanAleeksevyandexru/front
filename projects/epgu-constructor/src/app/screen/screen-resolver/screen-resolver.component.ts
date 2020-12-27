@@ -9,7 +9,7 @@ import { ScreenService } from '../screen.service';
   selector: 'epgu-constructor-screen-resolver',
   templateUrl: './screen-resolver.component.html',
   styleUrls: ['./screen-resolver.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ScreenResolverComponent {
   screenComponent$: Observable<ScreenComponent> = this.screenService.screenType$.pipe(

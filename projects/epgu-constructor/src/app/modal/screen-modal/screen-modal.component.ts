@@ -26,7 +26,7 @@ import { NavigationService } from '../../core/services/navigation/navigation.ser
   templateUrl: './screen-modal.component.html',
   styleUrls: ['./screen-modal.component.scss'],
   providers: [ScreenService, ScreenModalService], // Нужен отдельный инстанс для ScreenService
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   @ViewChild('headerBlock', { static: false }) headerBlock;

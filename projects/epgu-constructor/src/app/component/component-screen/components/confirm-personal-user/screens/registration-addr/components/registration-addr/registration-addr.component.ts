@@ -23,7 +23,7 @@ const moment = moment_;
   templateUrl: './registration-addr.component.html',
   styleUrls: ['./registration-addr.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class RegistrationAddrComponent implements OnInit {
   data$: Observable<IRegistrationAddrComponent> = this.screenService.component$ as Observable<

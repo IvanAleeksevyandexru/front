@@ -15,7 +15,7 @@ const moment = moment_;
   templateUrl: './custom-screen.component.html',
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class CustomScreenComponent extends ScreenBase {
   dataToSend: NavigationPayload;
