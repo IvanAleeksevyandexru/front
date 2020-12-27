@@ -48,7 +48,7 @@ export interface ComponentDto {
   required?: boolean;
   visited?: boolean;
   presetValue?: string;
-  valueFromCache: boolean;
+  valueFromCache?: boolean;
 }
 
 export interface ComponentAnswerDto {

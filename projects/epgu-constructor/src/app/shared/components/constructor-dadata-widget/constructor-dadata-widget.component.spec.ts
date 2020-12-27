@@ -8,6 +8,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConstructorDadataWidgetComponent } from './constructor-dadata-widget.component';
+import { BaseModule } from '../../base.module';
 
 describe('ConstructorDadataWidgetComponent', () => {
   let component: ConstructorDadataWidgetComponent;
@@ -16,7 +17,7 @@ describe('ConstructorDadataWidgetComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorDadataWidgetComponent],
-      imports: [CoreModule, RouterTestingModule],
+      imports: [CoreModule, BaseModule, RouterTestingModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },

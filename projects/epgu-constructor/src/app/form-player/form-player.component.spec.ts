@@ -21,7 +21,6 @@ import { ConfigService } from '../core/services/config/config.service';
 import { ConfigServiceStub } from '../core/services/config/config.service.stub';
 import { ScreenService } from '../screen/screen.service';
 import { ScreenServiceStub } from '../screen/screen.service.stub';
-import { EpguLibModuleInited } from '../core/core.module';
 import { InitDataServiceStub } from '../core/services/init-data/init-data.service.stub';
 import { FormPlayerNavigation, ServiceEntity } from './form-player.types';
 import { of } from 'rxjs';
@@ -36,6 +35,7 @@ import { LocalStorageService } from '../core/services/local-storage/local-storag
 import { LocationService } from '../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../core/providers/window.provider';
 import { SimpleChange } from '@angular/core';
+import { EpguLibModuleInited } from '../shared/base.module';
 
 
 describe('FormPlayerComponent', () => {

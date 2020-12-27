@@ -3,22 +3,22 @@ import { EmployeeHistoryComponent } from './employee-history.component';
 import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
-import { CoreModule } from '../../../../core/core.module';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ConstructorMonthPickerModule } from '../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
 import { ConstructorCheckboxModule } from '../../../../shared/components/constructor-checkbox/constructor-checkbox.module';
-import { BaseModule } from '../../../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
+import { BaseModule } from '../../../../shared/base.module';
 
 @NgModule({
   declarations: [EmployeeHistoryComponent],
   imports: [
-    CoreModule,
+    BaseModule,
     ConstructorPlainInputModule,
     ConstructorMonthPickerModule,
     ConstructorCheckboxModule,
-    BaseModule,
+    BaseComponentsModule,
     ScreenContainerModule,
     CloneButtonModule,
   ],

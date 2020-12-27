@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { EmptyScreenComponent } from './empty-screen.component';
 import { EmptyScreenComponentsModule } from '../../component/empty-screen/empty-screen-components.module';
-import { CoreModule } from '../../core/core.module';
+import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
 	declarations: [
@@ -11,8 +11,8 @@ import { CoreModule } from '../../core/core.module';
 	  EmptyScreenComponent
   ],
 	imports: [
-		CoreModule,
+    BaseModule,
     EmptyScreenComponentsModule
 	],
 })
-export class EmptyScreenModule { }
+export class EmptyScreenModule {}

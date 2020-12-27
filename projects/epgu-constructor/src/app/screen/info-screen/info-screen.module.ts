@@ -1,24 +1,20 @@
 import { NgModule } from '@angular/core';
 import { InfoScreenBodyModule } from './info-screen-body/info-screen-body.module';
 import { InfoScreenComponent } from './info-screen.component';
-import { CoreModule } from '../../core/core.module';
-import { BaseModule } from '../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
-import { ActionModule } from '../../shared/directives/action/action.module';
-
-const COMPONENT = [InfoScreenComponent];
+import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
-  declarations: [...COMPONENT],
-  exports: [...COMPONENT],
+  declarations: [InfoScreenComponent],
+  exports: [InfoScreenComponent],
   imports: [
-    CoreModule,
-    InfoScreenBodyModule,
     BaseModule,
+    InfoScreenBodyModule,
+    BaseComponentsModule,
     ScreenContainerModule,
     ScreenPadModule,
-    ActionModule,
   ],
   providers: [],
 })

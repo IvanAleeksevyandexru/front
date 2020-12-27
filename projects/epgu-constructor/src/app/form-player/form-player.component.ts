@@ -38,7 +38,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-form-player') class = true;
   @HostBinding('attr.test-screen-id') screenId: string;
   @Input() service: ServiceEntity;
-  @Input() context: FormPlayerContext;
+  @Input() context: FormPlayerContext = {};
 
   public isFirstLoading$ = this.screenService.isLoading$.pipe(take(3));
   private isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
@@ -82,7 +82,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.isCoreConfigLoaded$
       .pipe(
         tap(() => {
-          this.configService.configId = this.context.configId;
+          this.configService.configId = this.context?.configId;
           this.configService.initCore();
         }),
         mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()),

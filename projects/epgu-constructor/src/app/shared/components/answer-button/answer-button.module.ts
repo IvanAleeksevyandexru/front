@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { AnswerButtonComponent } from './answer-button.component';
 import { LongButtonModule } from '../long-button/long-button.module';
-import { CoreModule } from '../../../core/core.module';
+import { BaseModule } from '../../base.module';
 
 @NgModule({
   declarations: [AnswerButtonComponent],
-  imports: [CommonModule, LongButtonModule, CoreModule],
+  imports: [BaseModule, LongButtonModule],
   exports: [AnswerButtonComponent],
 })
 export class AnswerButtonModule {}

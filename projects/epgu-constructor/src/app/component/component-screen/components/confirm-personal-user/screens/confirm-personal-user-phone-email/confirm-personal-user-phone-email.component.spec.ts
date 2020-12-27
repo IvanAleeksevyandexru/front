@@ -7,7 +7,6 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ComponentBase } from '../../../../../../screen/screen.types';
-// eslint-disable-next-line max-len
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
 import { ActionType } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { of } from 'rxjs';
@@ -28,7 +27,7 @@ xdescribe('ConfirmPersonalUserPhoneEmailComponent', () => {
     label: '',
     value: '',
     action: '',
-    type: ActionType.editPhoneNumber,
+    type: ActionType.nextStepModal,
   };
 
 

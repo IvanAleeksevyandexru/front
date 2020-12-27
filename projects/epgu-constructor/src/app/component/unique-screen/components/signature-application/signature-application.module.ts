@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { SignatureApplicationComponent } from './components/signature-application.component';
-import { CoreModule } from '../../../../core/core.module';
-import { BaseModule } from '../../../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
-
-const COMPONENTS = [SignatureApplicationComponent];
+import { BaseModule } from '../../../../shared/base.module';
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
-  providers: [],
-  imports: [CoreModule, BaseModule, ScreenContainerModule],
+  declarations: [SignatureApplicationComponent],
+  exports: [SignatureApplicationComponent],
+  imports: [BaseModule, BaseComponentsModule, ScreenContainerModule],
 })
 export class SignatureApplicationModule {}

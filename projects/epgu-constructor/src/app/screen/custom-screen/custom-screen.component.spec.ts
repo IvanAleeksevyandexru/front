@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponent, MockModule } from 'ng-mocks';
 import * as moment_ from 'moment';
-import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
+import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 import { NavigationService } from '../../core/services/navigation/navigation.service';

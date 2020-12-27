@@ -7,6 +7,7 @@ import { ConstructorDatePickerComponent } from './constructor-date-picker.compon
 import { CoreModule } from '../../../core/core.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { BaseModule } from '../../base.module';
 
 xdescribe('ConstructorDatePickerComponent', () => {
   let component: ConstructorDatePickerComponent;
@@ -15,7 +16,7 @@ xdescribe('ConstructorDatePickerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorDatePickerComponent],
-      imports: [CoreModule, RouterTestingModule, NoopAnimationsModule],
+      imports: [CoreModule, BaseModule, RouterTestingModule, NoopAnimationsModule],
       providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
     }).compileComponents();
   });

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ConfigService } from '../../services/config/config.service';
+import { ConfigService } from '../../../core/services/config/config.service';
 
 @Pipe({
   name: 'imgPrefixer',
