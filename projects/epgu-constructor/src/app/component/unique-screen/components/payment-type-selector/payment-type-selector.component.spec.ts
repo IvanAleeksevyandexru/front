@@ -14,7 +14,7 @@ import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { BaseModule } from '../../../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { AnswerButtonModule } from '../../../../shared/components/answer-button/answer-button.module';
@@ -64,7 +64,7 @@ describe('PaymentTypeSelectorComponent', () => {
         ModalModule,
         CoreModule,
         RouterTestingModule,
-        BaseModule,
+        BaseComponentsModule,
         ScreenContainerModule,
         ScreenPadModule,
         AnswerButtonModule,

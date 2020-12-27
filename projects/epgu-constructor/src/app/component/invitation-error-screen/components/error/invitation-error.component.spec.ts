@@ -5,7 +5,7 @@ import { ValidationService } from 'epgu-lib';
 import { UnsubscribeService } from 'projects/epgu-constructor/src/app/core/services/unsubscribe/unsubscribe.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
-import { ImgPrefixerPipe } from '../../../../core/pipes/img-prefixer/img-prefixer.pipe';
+import { ImgPrefixerPipe } from '../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 import { InvitationErrorComponent } from './invitation-error.component';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ComponentAttrsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';

@@ -14,7 +14,7 @@ import {
   ComponentDto,
   DTOActionAction,
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
+import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 import { ActionDirective } from '../../shared/directives/action/action.directive';

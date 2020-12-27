@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToJsonPipe } from './to-json.pipe';
+import { SafePipe } from './safe.pipe';
 
 @NgModule({
-  declarations: [ToJsonPipe],
+  declarations: [SafePipe],
   imports: [CommonModule],
-  exports: [ToJsonPipe],
+  exports: [SafePipe],
 })
-export class ToJsonModule {}
+export class SafeModule {}

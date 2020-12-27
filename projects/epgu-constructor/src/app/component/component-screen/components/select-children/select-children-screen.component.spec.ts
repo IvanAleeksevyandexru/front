@@ -12,7 +12,7 @@ import { CoreModule } from '../../../../core/core.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { BaseModule } from '../../../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { of } from 'rxjs';
 import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
@@ -41,7 +41,7 @@ describe('SelectChildrenScreenComponent', () => {
       ],
       imports: [
         CoreModule,
-        BaseModule,
+        BaseComponentsModule,
         CloneButtonModule,
         ReactiveFormsModule,
         ComponentsListModule,

@@ -6,7 +6,7 @@ import { ScreenContainerComponent } from '../../shared/components/screen-contain
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScreenService } from '../screen.service';
 import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
-import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
+import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressComponent } from '../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-address-screen/components/confirm-personal-user-address/confirm-personal-user-address.component';
 // eslint-disable-next-line max-len

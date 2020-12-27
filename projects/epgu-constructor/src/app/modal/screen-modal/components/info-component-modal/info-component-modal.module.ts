@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CoreModule } from '../../../../core/core.module';
 import { InfoScreenBodyModule } from '../../../../screen/info-screen/info-screen-body/info-screen-body.module';
 import { InfoComponentModalComponent } from './info-component-modal.component';
-import { ActionModule } from '../../../../shared/directives/action/action.module';
+import { BaseModule } from '../../../../shared/base.module';
 
 @NgModule({
   declarations: [InfoComponentModalComponent],
   exports: [InfoComponentModalComponent],
-  imports: [CoreModule, InfoScreenBodyModule, ActionModule],
+  imports: [BaseModule, InfoScreenBodyModule],
 })
 export class InfoComponentModalModule {}

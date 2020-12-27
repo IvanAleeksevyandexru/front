@@ -6,7 +6,7 @@ import { EpguLibModule, HealthService } from 'epgu-lib';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { PassportComponent } from './passport.component';
 import { ConstructorMaskedInputModule } from '../epgu-lib/constructor-masked-input/constructor-masked-input.module';
-import { BaseModule } from '../base/base.module';
+import { BaseComponentsModule } from '../base-components/base-components.module';
 import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
 
 import { ScreenService } from '../../../screen/screen.service';
@@ -24,7 +24,7 @@ describe('PassportComponent', () => {
           FormsModule,
           RouterTestingModule,
           ConstructorMaskedInputModule,
-          BaseModule,
+          BaseComponentsModule,
           MaskHandleModule,
         ],
         declarations: [PassportComponent],

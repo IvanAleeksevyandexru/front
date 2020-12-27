@@ -9,7 +9,7 @@ import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ActionType } from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ActionDirective } from '../../../../../../../../shared/directives/action/action.directive';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
-import { SafePipe } from 'projects/epgu-constructor/src/app/core/pipes/safe/safe.pipe';
+import { SafePipe } from 'projects/epgu-constructor/src/app/shared/pipes/safe/safe.pipe';
 import { FieldListComponent } from 'projects/epgu-constructor/src/app/shared/components/field-list/field-list.component';
 import { of } from 'rxjs';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';

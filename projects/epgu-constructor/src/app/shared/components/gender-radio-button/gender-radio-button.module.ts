@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { GenderRadioButtonComponent } from './gender-radio-button.component';
-import { CoreModule } from '../../../core/core.module';
+import { BaseModule } from '../../base.module';
 
 @NgModule({
   declarations: [GenderRadioButtonComponent],
-  imports: [CommonModule, CoreModule],
+  imports: [BaseModule],
   exports: [GenderRadioButtonComponent],
 })
 export class GenderRadioButtonModule {}
