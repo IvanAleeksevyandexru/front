@@ -5,14 +5,15 @@ import {
   EventEmitter,
   Output,
 } from '@angular/core';
-import { filter, map, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { filter, map, pairwise, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
   defaultScreensAmount,
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
+  StateStatus,
 } from './repeatable-fields.constant';
 import {
   CustomComponent,
@@ -20,6 +21,7 @@ import {
 } from '../../../components-list/components-list.types';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../../screen/screen.types';
+import { isEqualObj } from '../../../../shared/constants/uttils';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
@@ -48,9 +50,20 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     tap((data: DisplayDto) => {
       this.initVariable();
       this.propData = data;
-
       this.duplicateScreen();
     }),
+  );
+  state$ = new BehaviorSubject<Array<{ [key: string]: { value: string } }>>([]);
+
+  commonError$ = combineLatest([
+    this.screenService.componentErrors$,
+    this.screenService.component$,
+    this.getStateStatus$(),
+  ]).pipe(
+    filter(([error, component]) => !!error[component.id]),
+    map(([error, component, isChangeState]) =>
+      isChangeState === 'change' ? '' : error[component.id],
+    ),
   );
 
   constructor(
@@ -112,7 +125,24 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   }
 
   saveState(state: Array<{ [key: string]: { value: string } }>): void {
+    this.state$.next(state);
     this.currentAnswersService.state = JSON.stringify(state);
+  }
+
+  getStateStatus$(): Observable<StateStatus> {
+    // TODO: refactor когда бэк сделает вывод ошибки для конкректной формы
+    return this.state$.pipe(
+      pairwise(),
+      map(([prev, curr]) => {
+        const prevLength = prev.length;
+        const currLength = curr.length;
+        if (prevLength === 0 || currLength === 0 || prevLength < currLength) {
+          return 'init';
+        }
+
+        return isEqualObj(prev, curr) ? 'noChange' : 'change';
+      }),
+    );
   }
 
   private setNewScreen(components: CustomComponent[]): void {
