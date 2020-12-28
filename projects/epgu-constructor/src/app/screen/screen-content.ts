@@ -238,26 +238,6 @@ export class ScreenContent {
     return this._cachedAnswers.asObservable();
   }
 
-  public set isNextScreen(val: boolean) {
-    if (val) {
-      this._isNextScreen.next(val);
-    }
-  }
-
-  public get isNextScreen$(): Observable<boolean> {
-    return this._isNextScreen;
-  }
-
-  public set isNextScreenByType(val: boolean) {
-    if (val) {
-      this._isNextScreenByType.next(val);
-    }
-  }
-
-  public get isNextScreenByType$(): Observable<boolean> {
-    return this._isNextScreenByType;
-  }
-
   private _display = new BehaviorSubject<DisplayDto>(null);
   private _header = new BehaviorSubject<string>(null);
   private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
@@ -280,8 +260,6 @@ export class ScreenContent {
   private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
-  private _isNextScreen = new Subject<boolean>();
-  private _isNextScreenByType = new Subject<boolean>();
 
   updateScreenContent(screenStore: ScreenStore): void {
     const {
@@ -294,13 +272,11 @@ export class ScreenContent {
     } = screenStore;
     const { header, subHeader, submitLabel, type, components = [], terminal, cssClass, buttons } = display;
     const firstComponent = components[0];
-    this.isNextScreen = this.calcIsNextScreen(display, this.display);
-    this.isNextScreenByType = this.calcIsNextScreen(display, this.display, true);
+    this.screenType = type;
     this.display = display;
     this.header = header;
     this.subHeader = subHeader;
     this.submitLabel = submitLabel;
-    this.screenType = type;
     this.gender = gender;
     this.terminal = terminal;
     this.showNav = !terminal;
@@ -326,13 +302,5 @@ export class ScreenContent {
     } catch (e) {
       return str;
     }
-  }
-
-  private calcIsNextScreen(nextDisplay: DisplayDto, prevDisplay: DisplayDto, useScreenType: boolean = false): boolean {
-    const nextDisplayByCmpId = nextDisplay?.id !== prevDisplay?.id;
-    if(useScreenType) {
-      return nextDisplay?.type !== prevDisplay?.type && nextDisplayByCmpId;
-    }
-    return nextDisplayByCmpId;
   }
 }

@@ -40,13 +40,11 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   ) {}
 
   ngOnInit(): void {
-    this.data$
-      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
-      .subscribe((data) => {
-        this.textTransformType = data?.attrs?.fstuc;
-        this.isRequired = data.required;
-        this.updateValue(data);
-      });
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+      this.textTransformType = data?.attrs?.fstuc;
+      this.isRequired = data.required;
+      this.updateValue(data);
+    });
   }
 
   updateValue(data: ConfirmAddressInterface): void {

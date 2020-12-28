@@ -90,16 +90,14 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   private subscribeToComponent(): void {
     /* TODO: после переезда на механизм отдельных answers
     избавиться от хардкода action-кнопок в шаблоне и передавать массив action-кнопок как есть */
-    this.screenService.component$
-      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreenByType$))
-      .subscribe((component) => {
-        const componentAttrs = component?.attrs;
-        this.componentAnswers = componentAttrs?.answers || [];
-        this.componentActions = componentAttrs?.actions || [];
-        this.rejectAction = this.getRejectAction(componentAttrs?.actions);
-        this.isActionsAsLongBtsShown = Boolean(!this.rejectAction && this.componentActions?.length);
-        this.isAnswersAsLongBtsShown = Boolean(!this.rejectAction && this.componentAnswers?.length);
-      });
+    this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
+      const componentAttrs = component?.attrs;
+      this.componentAnswers = componentAttrs?.answers || [];
+      this.componentActions = componentAttrs?.actions || [];
+      this.rejectAction = this.getRejectAction(componentAttrs?.actions);
+      this.isActionsAsLongBtsShown = Boolean(!this.rejectAction && this.componentActions?.length);
+      this.isAnswersAsLongBtsShown = Boolean(!this.rejectAction && this.componentAnswers?.length);
+    });
     this.screenService.isLoading$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((isLoading: boolean) => {

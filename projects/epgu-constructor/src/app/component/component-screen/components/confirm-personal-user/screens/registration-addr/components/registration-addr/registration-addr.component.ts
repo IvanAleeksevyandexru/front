@@ -44,7 +44,7 @@ export class RegistrationAddrComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([this.data$, this.screenService.display$])
-      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([data]) => {
         this.required = data.required;
         this.initFormGroup(data);
