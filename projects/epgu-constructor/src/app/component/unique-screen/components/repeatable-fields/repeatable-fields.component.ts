@@ -61,9 +61,18 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     this.getStateStatus$(),
   ]).pipe(
     filter(([error, component]) => !!error[component.id]),
-    map(([error, component, isChangeState]) =>
-      isChangeState === 'change' ? '' : error[component.id],
-    ),
+    map(([error, component, isChangeState]) => {
+      const message = error[component.id];
+      return isChangeState === 'change'
+        ? {
+            hasError: false,
+            message,
+          }
+        : {
+            hasError: true,
+            message,
+          };
+    }),
   );
 
   constructor(
