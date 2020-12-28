@@ -327,7 +327,6 @@ export class TimeSlotsComponent implements OnInit {
             this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
           }
           this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
-          this.changeDetectionRef.markForCheck();
         } else {
           this.serviceInitHandle(!!isBookedDepartment);
         }
@@ -335,6 +334,8 @@ export class TimeSlotsComponent implements OnInit {
         this.inProgress = false;
 
         this.checkExistenceSlots();
+
+        this.changeDetectionRef.markForCheck();
       },
       () => {
         this.errorMessage = this.currentService.getErrorMessage();
