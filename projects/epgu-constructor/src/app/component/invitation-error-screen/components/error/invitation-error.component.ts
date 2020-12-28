@@ -27,6 +27,9 @@ export class InvitationErrorComponent implements OnInit {
   @Input() orderId: string;
   @Input() header: string;
   @Output() nextStepEvent = new EventEmitter<NavigationPayload>();
+
+  public defaultImgSrc = `${this.config.staticDomainAssetsPath}/assets/icons/svg/warn.svg`;
+
   public email: FormControl = new FormControl('', {
     validators: Validators.required,
   });
