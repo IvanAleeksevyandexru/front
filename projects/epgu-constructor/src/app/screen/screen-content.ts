@@ -248,6 +248,16 @@ export class ScreenContent {
     return this._isNextScreen;
   }
 
+  public set isNextScreenByType(val: boolean) {
+    if (val) {
+      this._isNextScreenByType.next(val);
+    }
+  }
+
+  public get isNextScreenByType$(): Observable<boolean> {
+    return this._isNextScreenByType;
+  }
+
   private _display = new BehaviorSubject<DisplayDto>(null);
   private _header = new BehaviorSubject<string>(null);
   private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
@@ -271,6 +281,7 @@ export class ScreenContent {
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
   private _isNextScreen = new Subject<boolean>();
+  private _isNextScreenByType = new Subject<boolean>();
 
   updateScreenContent(screenStore: ScreenStore): void {
     const {
@@ -283,7 +294,8 @@ export class ScreenContent {
     } = screenStore;
     const { header, subHeader, submitLabel, type, components = [], terminal, cssClass, buttons } = display;
     const firstComponent = components[0];
-    this.isNextScreen = this.display?.id !== display.id;
+    this.isNextScreen = this.calcIsNextScreen(display, this.display);
+    this.isNextScreenByType = this.calcIsNextScreen(display, this.display, true);
     this.display = display;
     this.header = header;
     this.subHeader = subHeader;
@@ -314,5 +326,13 @@ export class ScreenContent {
     } catch (e) {
       return str;
     }
+  }
+
+  private calcIsNextScreen(nextDisplay: DisplayDto, prevDisplay: DisplayDto, useScreenType: boolean = false): boolean {
+    const nextDisplayByCmpId = nextDisplay?.id !== prevDisplay?.id;
+    if(useScreenType) {
+      return nextDisplay?.type !== prevDisplay?.type && nextDisplayByCmpId;
+    }
+    return nextDisplayByCmpId;
   }
 }

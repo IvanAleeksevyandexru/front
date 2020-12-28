@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, takeUntil, tap } from 'rxjs/operators';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -34,6 +34,7 @@ export class FileUploadScreenComponent {
         type: UniqueScreenComponentTypes.fileUploadComponent,
       };
     }),
+    takeUntil(this.screenService.isNextScreen$),
   );
 
   applicantAnswers$: Observable<ApplicantAnswersDto> = this.screenService.applicantAnswers$;
