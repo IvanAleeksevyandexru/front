@@ -169,7 +169,7 @@ export class PaymentService {
   // TODO
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getValueFromObjectAsArray(obj_or_result: any, path: string[]): string | null {
-    if (path.length){
+    if (path?.length){
       const key = path.shift();
       if (obj_or_result.hasOwnProperty(key)){
         return this.getValueFromObjectAsArray(obj_or_result[key], path);
