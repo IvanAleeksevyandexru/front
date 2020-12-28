@@ -28,8 +28,8 @@ import { ScreenTypes } from '../screen/screen.types';
 import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
 import { ContinueOrderModalServiceStub } from '../modal/continue-order-modal/continue-order-modal.service.stub';
 import { By } from '@angular/platform-browser';
-import { FormPlayerStartService } from './services/form-player-start/form-player-start.service';
-import { FormPlayerStartServiceStub } from './services/form-player-start/form-player-start.service.stub';
+import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
+import { FormPlayerStartManagerStub } from './services/form-player-start/form-player-start.manager.stub';
 import { LocalStorageServiceStub } from '../core/services/local-storage/local-storage.service.stub';
 import { LocalStorageService } from '../core/services/local-storage/local-storage.service';
 import { LocationService } from '../core/services/location/location.service';
@@ -50,7 +50,7 @@ describe('FormPlayerComponent', () => {
   let loggerService: LoggerService;
   let continueOrderModalService: ContinueOrderModalService;
   let initDataService: InitDataService;
-  let formPlayerStartService: FormPlayerStartService;
+  let formPlayerStartService: FormPlayerStartManager;
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
   let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
@@ -84,7 +84,7 @@ describe('FormPlayerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ContinueOrderModalService, useClass: ContinueOrderModalServiceStub },
-        { provide: FormPlayerStartService, useClass: FormPlayerStartServiceStub },
+        { provide: FormPlayerStartManager, useClass: FormPlayerStartManagerStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub }
       ]
     }).compileComponents();
@@ -101,7 +101,7 @@ describe('FormPlayerComponent', () => {
     screenService = TestBed.inject(ScreenService);
     loggerService = TestBed.inject(LoggerService);
     continueOrderModalService = TestBed.inject(ContinueOrderModalService);
-    formPlayerStartService = TestBed.inject(FormPlayerStartService);
+    formPlayerStartService = TestBed.inject(FormPlayerStartManager);
 
     fixture = TestBed.createComponent(FormPlayerComponent);
     component = fixture.componentInstance;

@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FormPlayerStartService } from './form-player-start.service';
-import { FormPlayerComponent } from '../../form-player.component';
+import { FormPlayerStartManager } from './form-player-start.manager';
 import { FormPlayerNavigation, ServiceEntity } from '../../form-player.types';
 import { of } from 'rxjs';
 import { LAST_SCENARIO_KEY, NEXT_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../../shared/constants/form-player';
@@ -12,10 +11,6 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
 import { FormPlayerService } from '../form-player/form-player.service';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { FormPlayerConfigApiService } from '../form-player-config-api/form-player-config-api.service';
-import { ConfigService } from '../../../core/services/config/config.service';
-import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { ScreenService } from '../../../screen/screen.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
 import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
 import { ContinueOrderModalServiceStub } from '../../../modal/continue-order-modal/continue-order-modal.service.stub';
@@ -29,8 +24,8 @@ import { LocationService } from '../../../core/services/location/location.servic
 const responseDto = new FormPlayerServiceStub()._store;
 
 
-describe('FormServiceStartService', () => {
-  let service: FormPlayerStartService;
+describe('FormPlayerStartManager', () => {
+  let service: FormPlayerStartManager;
   let formPlayerService: FormPlayerService;
   let localStorageService: LocalStorageService;
   let loadService: LoadService;
@@ -47,7 +42,7 @@ describe('FormServiceStartService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        FormPlayerStartService,
+        FormPlayerStartManager,
         UnsubscribeService,
         WINDOW_PROVIDERS,
         LocationService,
@@ -59,11 +54,11 @@ describe('FormServiceStartService', () => {
         { provide: InitDataService, useClass: InitDataServiceStub },
       ]
     });
-    service = TestBed.inject(FormPlayerStartService);
+    service = TestBed.inject(FormPlayerStartManager);
   });
 
   beforeEach(() => {
-    service = TestBed.inject(FormPlayerStartService);
+    service = TestBed.inject(FormPlayerStartManager);
     formPlayerService = TestBed.inject(FormPlayerService);
     continueOrderModalService = TestBed.inject(ContinueOrderModalService);
     localStorageService = TestBed.inject(LocalStorageService);
