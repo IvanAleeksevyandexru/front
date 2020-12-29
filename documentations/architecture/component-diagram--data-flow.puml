@@ -6,13 +6,19 @@ skinparam component {
 }
 
 package "Component" {
+  component [ComponentModules...]
   component [Components...]
+  component [ComponentDomainServices...]
+  [ComponentModules...] <-- [Components...]
+  [Components...] <-- [ComponentDomainServices...]
 }
 
 package "Screen" {
   component [ScreenResolverComponent] <<main>>
   component [ScreenService] <<store>>
   component [Screens...]
+  [ScreenModule] <---- [ComponentModules...]
+  [Screens...] <---- [Components...]
   [ScreenModule] <-- [ScreenService]
   [ScreenModule] <-- [ScreenResolverComponent]
   [ScreenResolverComponent] <-- [Screens...]
@@ -31,6 +37,24 @@ package "Form Player" {
   [FormPlayerComponent] <-- [FormPlayerStartManager]
   [FormPlayerStartManager] <-- [FormPlayerService]
   [FormPlayerService] <-- [FormPlayerApiService]
+}
+
+package "Modal" {
+  component [ModalModule]
+  component [ScreenModalComponent] <<main>>
+  component [ScreenModalService] <<store>>
+  note left of [ContinueOrderModalService] : Провайдит вызов \n показа \n ContinueOrderModal
+  note left of [ModalService] : Общий сервис для \n вызова отображения \n различных модальных окон
+  note left of [ScreenModalComponent] : Компанента для вызова плеера \n в режиме модалног окна \n управляеться через \n NavigationModalService
+  note left of [ScreenModalService] : Схожий сервис с \n  FormPlayerService, \n отдельный контур для \n ScreenModalComponent
+  [FormPlayerModule] <.. [ModalModule]
+  [ModalModule] <-- [ModalService]
+  [ModalModule] <-- [ScreenModalComponent]
+  [ScreenModalComponent] <-- [ScreenModalService]
+  [ModalModule] <--- [ConfirmationModalComponent]
+  [ModalModule] <--- [UsePaymentsModalComponent]
+  [ModalModule] <--- [ContinueOrderModalService]
+  [FormPlayerStartManager] <--- [ContinueOrderModalService]
 }
 
 package "Core" {
@@ -54,9 +78,7 @@ package "Core" {
 [FormPlayerModule] .up..> EPGU : Встраивает \n formPlayer \n передаёт пропсы
 [FormPlayerApiService] ... FormPlayerApi : HTTP
 [FormPlayerConfigApiService] ... FormPlayerConfigApi : HTTP
-
-
-
+[ComponentDomainServices...] ... DifferentDataProviders : HTTP
 
 
 package "Shared" {
