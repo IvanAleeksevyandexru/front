@@ -5,6 +5,7 @@ import { ComponentsListModule } from '../../component/components-list/components
 import { CoreModule } from '../../core/core.module';
 import { UniqueComponentModalModule } from '../../modal/screen-modal/components/unique-component-modal/unique-component-modal.module';
 import { AbstractPaymentComponent } from '../../component/unique-screen/components/payment/abstractpayment.component';
+import { InformationCenterMvdModule } from '../../component/unique-screen/components/information-center-mvd/information-center-mvd.module';
 
 // NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
 const COMPONENTS = [UniqueScreenComponent];
@@ -17,6 +18,7 @@ const COMPONENTS = [UniqueScreenComponent];
     UniqueScreenComponentsModule,
     ComponentsListModule,
     UniqueComponentModalModule,
+    InformationCenterMvdModule,
   ],
 })
 export class UniqueScreenModule {}
