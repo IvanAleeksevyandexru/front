@@ -72,7 +72,10 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.eventBusService.on('validateOnBlur').subscribe(() => this.formService.emitChanges());
+    this.eventBusService
+      .on('validateOnBlur')
+      .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
+      .subscribe(() => this.formService.emitChanges());
   }
 
   ngOnChanges(changes: SimpleChanges): void {

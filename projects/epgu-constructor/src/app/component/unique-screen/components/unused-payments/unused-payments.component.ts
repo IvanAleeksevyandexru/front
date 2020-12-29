@@ -22,7 +22,6 @@ export class UnusedPaymentsComponent implements OnInit {
   data$: Observable<DisplayDto> = this.screenService.display$;
   orderId: string = this.screenService.getStore().orderId;
   paymentUIN: string;
-  mockOrderId = '763444783';
   tax: UnusedPaymentInterface;
 
   get paymentsList$(): Observable<UnusedPaymentInterface[]> {
@@ -51,6 +50,7 @@ export class UnusedPaymentsComponent implements OnInit {
           );
         }),
         concatMap((data) => combineLatest([of(data), this.data$])),
+        takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(this.getListPaymentsInfoSuccess);
 

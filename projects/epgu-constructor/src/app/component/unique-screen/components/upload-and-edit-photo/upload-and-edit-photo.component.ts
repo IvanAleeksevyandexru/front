@@ -1,11 +1,12 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
@@ -32,6 +33,7 @@ import { ImgSubject } from './upload-and-edit-photo.model';
   selector: 'epgu-constructor-upload-and-edit-photo',
   templateUrl: './upload-and-edit-photo.component.html',
   styleUrls: ['./upload-and-edit-photo.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   @ViewChild('hiddenFileInput') fileInput: ElementRef;
@@ -75,6 +77,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     public screenService: ScreenService,
     public config: ConfigService,
     private eventBusService: EventBusService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.header = screenService.header;
     this.data = { ...screenService.component };
@@ -88,6 +91,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
 
     this.eventBusService
       .on('fileDropped')
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileList) => this.onFileSelected(payload));
 
     this.isDesktop = this.deviceDetector.isDesktop;
