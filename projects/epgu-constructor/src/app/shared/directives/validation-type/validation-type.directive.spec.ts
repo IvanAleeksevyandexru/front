@@ -14,6 +14,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CoreModule } from '../../../core/core.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { BaseModule } from '../../base.module';
 
 const componentMockData: CustomComponent = {
   attrs: {
@@ -63,7 +64,7 @@ describe('ValidationTypeDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
-      imports: [ValidationTypeModule, RouterTestingModule, CoreModule],
+      imports: [CoreModule, ValidationTypeModule, RouterTestingModule, BaseModule],
       providers: [
         ValidationService,
         NgControl,

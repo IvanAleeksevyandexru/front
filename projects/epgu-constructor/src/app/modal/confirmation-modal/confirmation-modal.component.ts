@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnInit,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { ConfirmationModal } from './confirmation-modal.interface';
@@ -8,6 +14,7 @@ import { ModalService } from '../modal.service';
   selector: 'epgu-constructor-confirmation-modal',
   templateUrl: './confirmation-modal.component.html',
   styleUrls: ['./confirmation-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmationModalComponent extends ModalBaseComponent
   implements OnInit, AfterViewInit {

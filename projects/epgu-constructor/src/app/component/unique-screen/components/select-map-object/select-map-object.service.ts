@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { IGeoCoordsResponse, IFeatureCollection } from './select-map-object.interface';
 import {
   DictionaryItem,

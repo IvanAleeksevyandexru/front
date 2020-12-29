@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CoreModule } from '../core/core.module';
 import { ModalModule } from '../modal/modal.module';
 import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
 import { HtmlRemoverService } from '../shared/services/html-remover/html-remover.service';
@@ -21,6 +20,7 @@ import { ScreenResolverComponent } from './screen-resolver/screen-resolver.compo
 import { ScreenService } from './screen.service';
 import { UniqueScreenComponent } from './unique-screen/unique-screen.component';
 import { UniqueScreenModule } from './unique-screen/unique-screen.module';
+import { BaseModule } from '../shared/base.module';
 
 /**
  * Домен скринов. Здесь храниться всё что связанно со скринами и их обязками.
@@ -28,7 +28,7 @@ import { UniqueScreenModule } from './unique-screen/unique-screen.module';
 @NgModule({
   declarations: [ScreenResolverComponent],
   imports: [
-    CoreModule,
+    BaseModule,
     ComponentScreenModule,
     CustomScreenModule,
     EmptyScreenModule,

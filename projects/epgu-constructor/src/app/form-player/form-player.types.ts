@@ -1,6 +1,23 @@
 import { Answer } from '../shared/types/answer';
 import { ComponentActionDto, FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
 
+export interface QueryParams {
+  [key: string]: string;
+}
+
+/**
+ * @property configId - id конфига по которому будет искаться настройки в конфиг апи сервисе.
+ * @property initState - если передать сюда строкой FormPlayerApiResponse,
+ *   то можно смоделировать переход на нужный экран, использовать только в целях разработки,
+ *   более подробно о запусках плеера смотри в FormPlayerStartService.
+ * @property queryParams - квери параметры которые необходимо пробросить в форм плеер
+ */
+export interface FormPlayerContext {
+  configId?: string;
+  initState?: string;
+  queryParams?: QueryParams;
+}
+
 /**
  * @property serviceId - идентификатор услуги в formPlayerApi
  * @property targetId - идентификатор услуги в ФРГУ
@@ -9,14 +26,12 @@ import { ComponentActionDto, FormPlayerApiSuccessResponse } from './services/for
  * @property canStartNew - флаг для возможности отображения модального окна "продолжить черновик",
  *   по дефолту значение true. Если поставить false, то модального окна не будет.
  */
-export interface Service {
+export interface ServiceEntity {
   serviceId: string;
   targetId: string;
   orderId?: string;
   invited?: boolean;
   canStartNew?: boolean;
-  configId?: string;
-  initState?: string;
 }
 
 /**

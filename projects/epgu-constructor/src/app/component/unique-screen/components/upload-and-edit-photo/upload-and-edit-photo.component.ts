@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -11,7 +13,7 @@ import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { catchError, switchMap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
@@ -39,6 +41,7 @@ import { UtilsService } from '../../../../core/services/utils/utils.service';
   selector: 'epgu-constructor-upload-and-edit-photo',
   templateUrl: './upload-and-edit-photo.component.html',
   styleUrls: ['./upload-and-edit-photo.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   @ViewChild('hiddenFileInput') fileInput: ElementRef;
@@ -83,6 +86,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     private utils: UtilsService,
     public screenService: ScreenService,
     public config: ConfigService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     this.header = screenService.header;
     this.data = { ...screenService.component };
@@ -101,6 +105,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     if (!this.isDesktop) {
       this.webcamService.isWebcamAllowed().subscribe((isAvailable) => {
         this.isWebcamAvailable = isAvailable;
+        this.changeDetectionRef.markForCheck();
       });
     }
   }
@@ -145,6 +150,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
             this.croppedImageUrl = data.imageObjectUrl;
           }
           this.isModalOpened = false;
+          this.changeDetectionRef.markForCheck();
         });
     });
   }
@@ -153,9 +159,12 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     return this.imgAttachErrorSubject.subscribe((imageErrors) =>
       this.modalService
         .openModal(PhotoErrorModalComponent, { imageErrors })
-        .subscribe((data: { changeImage?: boolean }) =>
-          data?.changeImage ? this.fileInput.nativeElement.click() : null,
-        ),
+        .subscribe((data: { changeImage?: boolean }) => {
+          if (data?.changeImage) {
+            this.fileInput.nativeElement.click();
+          }
+          this.changeDetectionRef.markForCheck();
+        }),
     );
   }
 
@@ -163,8 +172,18 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.subs
       .add(this.imgSub())
       .add(this.imgAttachErrorSub())
-      .add(fromEvent(this.imageValidator, 'load').subscribe(() => this.validateImage()))
-      .add(fromEvent(this.imageValidator, 'error').subscribe(() => this.validateImage()));
+      .add(
+        fromEvent(this.imageValidator, 'load').subscribe(() => {
+          this.validateImage();
+          this.changeDetectionRef.markForCheck();
+        }),
+      )
+      .add(
+        fromEvent(this.imageValidator, 'error').subscribe(() => {
+          this.validateImage();
+          this.changeDetectionRef.markForCheck();
+        }),
+      );
   }
 
   getRequestData(): {
@@ -316,6 +335,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       if (value === uploadPhotoElemId.howToTakePhoto) {
         this.openHowPhotoModal();
       }
+      this.changeDetectionRef.markForCheck();
     });
   }
 
@@ -326,6 +346,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         if (value === uploadPhotoElemId.requirements) {
           this.openRequirementsModal();
         }
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -354,6 +375,9 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         switchMap(() => compressFile()),
         switchMap((compressedFile) => uploadFile(compressedFile)),
       )
-      .subscribe(() => this.nextStepEvent.emit(JSON.stringify(requestData)));
+      .subscribe(() => {
+        this.nextStepEvent.emit(JSON.stringify(requestData));
+        this.changeDetectionRef.markForCheck();
+      });
   }
 }

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { Observable, Subscription } from 'rxjs';
@@ -33,6 +40,7 @@ moment.locale('ru');
   templateUrl: './time-slots.component.html',
   styleUrls: ['./time-slots.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeSlotsComponent implements OnInit {
   @Output() nextStepEvent = new EventEmitter();
@@ -95,6 +103,7 @@ export class TimeSlotsComponent implements OnInit {
     public constants: TimeSlotsConstants,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     this.timeSlotServices.BRAK = this.brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = this.divorceTimeSlotsService;
@@ -193,11 +202,13 @@ export class TimeSlotsComponent implements OnInit {
             `${this.constants.errorLoadingTimeSlots} (${this.currentService.getErrorMessage()})`,
           );
         }
+        this.changeDetectionRef.markForCheck();
       },
       () => {
         this.showError(
           `${this.constants.errorLoadingTimeSlots}  (${this.currentService.getErrorMessage()})`,
         );
+        this.changeDetectionRef.markForCheck();
       },
     );
   }
@@ -249,10 +260,12 @@ export class TimeSlotsComponent implements OnInit {
         };
         this.setBookedTimeStr(this.currentSlot);
         this.nextStepEvent.emit(JSON.stringify(answer));
+        this.changeDetectionRef.markForCheck();
       },
       () => {
         this.inProgress = false;
         this.showModal(COMMON_ERROR_MODAL_PARAMS);
+        this.changeDetectionRef.markForCheck();
       },
     );
   }
@@ -276,6 +289,7 @@ export class TimeSlotsComponent implements OnInit {
         if (result) {
           this.loadTimeSlots();
         }
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -320,11 +334,15 @@ export class TimeSlotsComponent implements OnInit {
         this.inProgress = false;
 
         this.checkExistenceSlots();
+
+        this.changeDetectionRef.markForCheck();
       },
       () => {
         this.errorMessage = this.currentService.getErrorMessage();
         this.inProgress = false;
         this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+
+        this.changeDetectionRef.markForCheck();
       },
     );
   }
@@ -450,12 +468,18 @@ export class TimeSlotsComponent implements OnInit {
       for (let month = moment(firstMonthStr); !month.isAfter(lastMonthStr); month.add(1, 'M')) {
         const monthForDropdown = this.getMonthsListItem(month.format('YYYY-M'));
         if (
-          !availableMonths.includes(month.format('YYYY-M')) ||
+          !(
+            availableMonths.includes(month.format('YYYY-M')) ||
+            availableMonths.includes(month.format('YYYY-MM'))
+          ) ||
           this.checkDateRestrictions(month.toDate(), 'month')
         ) {
           monthForDropdown.unselectable = true;
         }
-        this.monthsYears.push(monthForDropdown);
+        // Чтобы в начале списка не было "серых" месяцев
+        if (!monthForDropdown.unselectable || this.monthsYears.length) {
+          this.monthsYears.push(monthForDropdown);
+        }
       }
       if (this.currentMonth) {
         this.currentMonth = this.monthsYears.find(({ id }) => id === this.currentMonth.id);

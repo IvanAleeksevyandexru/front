@@ -1,5 +1,7 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   HostBinding,
   Input,
@@ -11,34 +13,46 @@ import {
 import { LoadService } from 'epgu-lib';
 import { filter, mergeMap, takeUntil, tap, take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { ConfigService } from '../core/config/config.service';
+import { ConfigService } from '../core/services/config/config.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../screen/screen.service';
-import { FormPlayerNavigation, Navigation, NavigationPayload, Service } from './form-player.types';
+import {
+  FormPlayerContext,
+  FormPlayerNavigation,
+  Navigation,
+  NavigationPayload,
+  ServiceEntity,
+} from './form-player.types';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
-import { ServiceDataService } from './services/service-data/service-data.service';
-import { FormPlayerStartService } from './services/form-player-start/form-player-start.service';
+import { InitDataService } from '../core/services/init-data/init-data.service';
+import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
 
+/**
+ * Точка входа для приложения, эквивалент AppComponent.
+ *   При запуске подтягивает данные из конфигов, и тригерит старт приложения.
+ */
 @Component({
   selector: 'epgu-constructor-form-player',
   templateUrl: './form-player.component.html',
   styleUrls: ['../../styles/index.scss'],
-  providers: [UnsubscribeService, FormPlayerStartService],
+  providers: [UnsubscribeService, FormPlayerStartManager],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-form-player') class = true;
   @HostBinding('attr.test-screen-id') screenId: string;
-  @Input() service: Service;
+  @Input() service: ServiceEntity;
+  @Input() context: FormPlayerContext = {};
 
   public isFirstLoading$ = this.screenService.isLoading$.pipe(take(3));
   private isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
   private isConfigReady$ = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private serviceDataService: ServiceDataService,
+    private initDataService: InitDataService,
     public formPlayerConfigApiService: FormPlayerConfigApiService,
     public formPlayerService: FormPlayerService,
     private navService: NavigationService,
@@ -46,11 +60,12 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     public configService: ConfigService,
     public loadService: LoadService,
     public screenService: ScreenService,
-    public formPlayerStartService: FormPlayerStartService,
+    public formPlayerStartService: FormPlayerStartManager,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.serviceDataService.init(this.service);
+    this.initDataService.init(this.service, this.context);
     this.initFormPlayerConfig();
     this.initNavigation();
     this.initSettingOfScreenIdToAttr();
@@ -61,7 +76,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.serviceDataService.init(this.service);
+    this.initDataService.init(this.service, this.context);
 
     if (
       changes.service.previousValue &&
@@ -75,7 +90,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.isCoreConfigLoaded$
       .pipe(
         tap(() => {
-          this.configService.configId = this.service.configId;
+          this.configService.configId = this.context?.configId;
           this.configService.initCore();
         }),
         mergeMap(() => this.formPlayerConfigApiService.getFormPlayerConfig()),
@@ -84,26 +99,38 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       .subscribe((config) => {
         this.configService.config = config;
         this.isConfigReady$.next(true);
+
+        this.changeDetectionRef.markForCheck();
       });
   }
 
   private initNavigation(): void {
     this.navService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NavigationPayload) => this.nextStep(data));
+      .subscribe((data: NavigationPayload) => {
+        this.nextStep(data);
+        this.changeDetectionRef.markForCheck();
+      });
 
     this.navService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NavigationPayload) => this.prevStep(data));
+      .subscribe((data: NavigationPayload) => {
+        this.prevStep(data);
+        this.changeDetectionRef.markForCheck();
+      });
 
     this.navService.skipStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NavigationPayload) => this.skipStep(data));
+      .subscribe((data: NavigationPayload) => {
+        this.skipStep(data);
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   private initSettingOfScreenIdToAttr(): void {
     this.screenService.display$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((display) => {
       this.screenId = display?.id;
+      this.changeDetectionRef.markForCheck();
     });
   }
 
@@ -115,6 +142,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       )
       .subscribe(() => {
         this.formPlayerStartService.startPlayer();
+        this.changeDetectionRef.markForCheck();
       });
   }
 

@@ -1,20 +1,15 @@
 import { NgModule } from '@angular/core';
 import { ModalService } from '../modal.service';
-import { CoreModule } from '../../core/core.module';
 import { UsePaymentsModalComponent } from './use-payments-modal.component';
-
-
-const COMPONENTS = [
-  UsePaymentsModalComponent
-];
+import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [UsePaymentsModalComponent],
   providers: [
     ModalService,
   ],
-  exports: [...COMPONENTS],
-  imports: [CoreModule],
+  exports: [UsePaymentsModalComponent],
+  imports: [BaseModule],
   entryComponents: [
     UsePaymentsModalComponent
   ],

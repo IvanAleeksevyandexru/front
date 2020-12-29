@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponent, MockModule } from 'ng-mocks';
 import * as moment_ from 'moment';
-import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
+import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
@@ -19,6 +19,7 @@ import { ScreenServiceStub } from '../screen.service.stub';
 import { By } from '@angular/platform-browser';
 import { ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 const moment = moment_;
 
@@ -43,6 +44,8 @@ describe('CustomScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
       ],
+    }).overrideComponent(CustomScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     });
   });
 

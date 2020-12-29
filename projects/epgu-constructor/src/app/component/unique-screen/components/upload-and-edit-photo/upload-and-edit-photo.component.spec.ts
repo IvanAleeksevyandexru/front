@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UploadAndEditPhotoComponent } from './upload-and-edit-photo.component';
 import { UploadAndEditPhotoModule } from './upload-and-edit-photo.module';
 import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { Subject } from 'rxjs';
@@ -12,6 +12,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
+import { CoreModule } from '../../../../core/core.module';
 
 class MockScreenService {
   header = '';
@@ -51,7 +52,7 @@ describe('UploadAndEditPhotoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ UploadAndEditPhotoModule, RouterTestingModule ],
+      imports: [ UploadAndEditPhotoModule, RouterTestingModule, CoreModule ],
       providers: [
         TerraByteApiService,
         HealthService,

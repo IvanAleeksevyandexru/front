@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
@@ -32,6 +39,7 @@ interface ClearEvent {
   templateUrl: './select-children-screen.component.html',
   styleUrls: ['./select-children-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class SelectChildrenScreenComponent implements OnInit {
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
@@ -60,12 +68,14 @@ export class SelectChildrenScreenComponent implements OnInit {
     private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.initVariables(data.id);
       this.initStartValues(data.id);
+      this.changeDetectionRef.markForCheck();
     });
 
     this.selectChildrenForm.valueChanges
@@ -80,6 +90,8 @@ export class SelectChildrenScreenComponent implements OnInit {
             this.selectChildrenForm.setErrors(null);
           }
           this.updateCurrentAnswerServiceValidation();
+
+          this.changeDetectionRef.markForCheck();
         }),
       );
   }

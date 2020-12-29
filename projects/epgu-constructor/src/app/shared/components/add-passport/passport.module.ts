@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
-import { CoreModule } from '../../../core/core.module';
 import { PassportComponent } from './passport.component';
 import { ConstructorMaskedInputModule } from '../epgu-lib/constructor-masked-input/constructor-masked-input.module';
-import { BaseModule } from '../base/base.module';
-import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
+import { BaseComponentsModule } from '../base-components/base-components.module';
+import { BaseModule } from '../../base.module';
 
 @NgModule({
   declarations: [PassportComponent],
-  imports: [CommonModule, CoreModule, ConstructorMaskedInputModule, BaseModule, MaskHandleModule],
+  imports: [BaseModule, ConstructorMaskedInputModule, BaseComponentsModule],
   exports: [PassportComponent],
 })
 export class PassportModule {}

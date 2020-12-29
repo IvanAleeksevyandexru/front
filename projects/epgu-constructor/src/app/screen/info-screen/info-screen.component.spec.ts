@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
-import { ConfigService } from '../../core/config/config.service';
-import { ConfigServiceStub } from '../../core/config/config.service.stub';
+import { ConfigService } from '../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
 import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 import { LocationService } from '../../core/services/location/location.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
@@ -14,7 +14,7 @@ import {
   ComponentDto,
   DTOActionAction,
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
+import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 import { ActionDirective } from '../../shared/directives/action/action.directive';
@@ -22,6 +22,7 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { InfoScreenBodyComponent } from './info-screen-body/info-screen-body.component';
 import { InfoScreenComponent } from './info-screen.component';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -70,6 +71,8 @@ describe('InfoScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
+    }).overrideComponent(InfoScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     }).compileComponents();
   });
 

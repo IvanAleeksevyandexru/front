@@ -1,6 +1,12 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../core/config/config.service';
+import { ConfigService } from '../../core/services/config/config.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import {
@@ -22,6 +28,7 @@ import { LocationService } from '../../core/services/location/location.service';
   templateUrl: './questions-screen.component.html',
   styleUrls: ['./questions-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   rejectAction: ComponentActionDto;
@@ -39,6 +46,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     private modalService: ModalService,
     private config: ConfigService,
     private locationService: LocationService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     super(injector);
   }
@@ -50,6 +58,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((label: string) => {
         this.submitLabel = label;
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -97,11 +106,13 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       this.rejectAction = this.getRejectAction(componentAttrs?.actions);
       this.isActionsAsLongBtsShown = Boolean(!this.rejectAction && this.componentActions?.length);
       this.isAnswersAsLongBtsShown = Boolean(!this.rejectAction && this.componentAnswers?.length);
+      this.changeDetectionRef.markForCheck();
     });
     this.screenService.isLoading$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((isLoading: boolean) => {
         this.isLoading = isLoading;
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -110,6 +121,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((buttons: Array<ScreenActionDto>) => {
         this.screenActionButtons = buttons || [];
+        this.changeDetectionRef.markForCheck();
       });
   }
 

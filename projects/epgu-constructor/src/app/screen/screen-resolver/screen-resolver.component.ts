@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ComponentFactory,
   ComponentFactoryResolver,
@@ -18,6 +19,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
   selector: 'epgu-constructor-screen-resolver',
   templateUrl: './screen-resolver.component.html',
   styleUrls: ['./screen-resolver.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ScreenResolverComponent implements AfterViewInit {
   @ViewChild('screenContainer', { read: ViewContainerRef }) screenContainer: ViewContainerRef;
@@ -27,6 +29,7 @@ export class ScreenResolverComponent implements AfterViewInit {
     private screenService: ScreenService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private ngUnsubscribe$: UnsubscribeService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {

@@ -1,14 +1,11 @@
 import { NgModule } from '@angular/core';
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
 import { InvitationErrorScreenComponentsModule } from '../../component/invitation-error-screen/invitation-error-screen-components.module';
-import { CoreModule } from '../../core/core.module';
-
-const COMPONENTS = [InvitationErrorScreenComponent];
+import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
-  imports: [CoreModule, InvitationErrorScreenComponentsModule],
-  providers: [],
+  declarations: [InvitationErrorScreenComponent],
+  exports: [InvitationErrorScreenComponent],
+  imports: [BaseModule, InvitationErrorScreenComponentsModule],
 })
 export class InvitationErrorScreenModule {}

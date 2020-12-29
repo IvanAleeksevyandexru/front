@@ -1,9 +1,17 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../core/config/config.service';
+import { ConfigService } from '../../core/services/config/config.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScenarioErrorsDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
@@ -35,6 +43,7 @@ const halfWidthItemTypes = [
     UnsubscribeService,
     DateRangeService,
   ],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentsListComponent implements OnChanges {
   @Input() components: CustomComponent;

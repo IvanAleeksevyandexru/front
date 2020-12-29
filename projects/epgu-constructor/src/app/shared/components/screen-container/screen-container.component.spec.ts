@@ -9,6 +9,7 @@ import { NavigationModule } from '../navigation/navigation.module';
 import { CoreModule } from '../../../core/core.module';
 import { LocationService } from '../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
+import { BaseModule } from '../../base.module';
 
 describe('ScreenContainerComponent', () => {
   let component: ScreenContainerComponent;
@@ -17,7 +18,7 @@ describe('ScreenContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CoreModule, RouterTestingModule, NavigationModule],
+        imports: [CoreModule, BaseModule, RouterTestingModule, NavigationModule],
         declarations: [ScreenContainerComponent],
         providers: [
           LocationService,

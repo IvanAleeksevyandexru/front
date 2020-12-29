@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
@@ -17,6 +17,7 @@ import { ApplicantAnswersDto } from '../../../../form-player/services/form-playe
   selector: 'epgu-constructor-file-upload-screen',
   templateUrl: './file-upload-screen.component.html',
   styleUrls: ['./file-upload-screen.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadScreenComponent {
   @Output() nextStepEvent = new EventEmitter();

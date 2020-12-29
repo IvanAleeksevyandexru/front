@@ -1,0 +1,73 @@
+@startuml
+
+skinparam component {
+    backgroundColor<<main>> DarkKhaki
+    backgroundColor<<store>> LightBlue
+}
+
+package "Component" {
+  component [Components...]
+}
+
+package "Screen" {
+  component [ScreenResolverComponent] <<main>>
+  component [ScreenService] <<store>>
+  component [Screens...]
+  [ScreenModule] <-- [ScreenService]
+  [ScreenModule] <-- [ScreenResolverComponent]
+  [ScreenResolverComponent] <-- [Screens...]
+  [ScreenModule] <-- [Screens...]
+}
+
+package "Form Player" {
+  component [FormPlayerComponent] <<main>>
+  component [FormPlayerService] <<store>>
+  note left of [FormPlayerComponent] : Точка входа для приложения, \n эквивалент AppComponent
+  note left of [FormPlayerStartManager] : Менеджер для обработки \n различных кейсов \n запуска плеера
+  note left of [FormPlayerService] : Сервис для обработки \n и хранения ответа \n от FormPlayerApi \n реализует логику \n навигации по скринам
+  [FormPlayerModule] <.right.. [ScreenModule]
+  [FormPlayerModule] <-- [FormPlayerComponent]
+  [FormPlayerComponent] <---- [FormPlayerConfigApiService]: FormPlayerComponent \n загружает конфиг \nиз Config API
+  [FormPlayerComponent] <-- [FormPlayerStartManager]
+  [FormPlayerStartManager] <-- [FormPlayerService]
+  [FormPlayerService] <-- [FormPlayerApiService]
+}
+
+package "Core" {
+  note left of [ConfigService] : Хранит \n настройки \n приложения
+  note left of [InitDataService] : Хранит \n переданные \n пропсы \n FormPlayer
+  note left of [NavigationService] : Сервис для передачи \n события связанных \n с навигацией FromPlayer
+  note left of [NavigationModalService] : Сервис для передачи \n события связанных \n с навигацией ModalScreen
+  [FormPlayerModule] <. [CoreModule]
+  [CoreModule] <-- [InitDataService]
+  [CoreModule] <-- [ConfigService]
+  [CoreModule] <-- [NavigationModalService]
+  [CoreModule] <-- [NavigationService]
+  [ConfigService] --> [FormPlayerApiService]
+  [ConfigService] --> [FormPlayerComponent]
+  [NavigationService] --> [FormPlayerComponent]
+  [InitDataService] --> [FormPlayerComponent]
+  [InitDataService] --> [FormPlayerStartManager]
+  [InitDataService] --> [FormPlayerApiService]
+}
+
+[FormPlayerModule] .up..> EPGU : Встраивает \n formPlayer \n передаёт пропсы
+[FormPlayerApiService] ... FormPlayerApi : HTTP
+[FormPlayerConfigApiService] ... FormPlayerConfigApi : HTTP
+
+
+
+
+
+package "Shared" {
+  note right of [BaseModule] : Модуль с общими \n directives сущностями \n хранит общие зависимости
+  [BaseModule]
+  [Components...]
+  [Pipes...]
+  [Directives...]
+}
+
+
+
+
+@enduml

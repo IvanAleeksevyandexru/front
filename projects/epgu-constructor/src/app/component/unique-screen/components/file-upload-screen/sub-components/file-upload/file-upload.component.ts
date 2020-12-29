@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   FileResponseToBackendUploadsItem,
   FileResponseToBackendWithRelatedUploads,
@@ -12,6 +19,7 @@ import { FileUploadService, Uploaders } from '../file-upload.service';
   selector: 'epgu-constructor-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadComponent implements OnInit {
   @Input() objectId: string;

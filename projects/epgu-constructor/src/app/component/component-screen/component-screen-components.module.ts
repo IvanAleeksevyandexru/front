@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CoreModule } from '../../core/core.module';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 import { AddPassportModule } from './components/add-passport/add-passport.module';
 // eslint-disable-next-line max-len
@@ -13,15 +12,16 @@ import { RegistrationAddrScreenModule } from './components/confirm-personal-user
 import { CountrySelectionComponent } from './components/country-selection/country-selection.component';
 import { SelectChildrenScreenModule } from './components/select-children/select-children-screen.module';
 import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { BaseModule } from '../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
+import { BaseModule } from '../../shared/base.module';
 
 const COMPONENTS = [CountrySelectionComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
   imports: [
-    CoreModule,
+    BaseModule,
     ConfirmPersonalUserPhoneEmailModule,
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserDataScreenModule,
@@ -29,7 +29,7 @@ const COMPONENTS = [CountrySelectionComponent];
     RegistrationAddrScreenModule,
     AddPassportModule,
     ConstructorDropdownModule,
-    BaseModule,
+    BaseComponentsModule,
     ScreenPadModule,
   ],
   exports: [

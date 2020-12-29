@@ -2,19 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModalComponent } from './common-modal/common-modal.component';
 import { ModalContainerComponent } from './modal-container/modal-container.component';
 import { ModalBaseComponent } from './modal-base/modal-base.component';
-import { CoreModule } from '../../core/core.module';
-
-
-const COMPONENTS = [
-  CommonModalComponent,
-  ModalContainerComponent,
-  ModalBaseComponent,
-];
+import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
-  imports: [CoreModule],
+  declarations: [
+    CommonModalComponent,
+    ModalContainerComponent,
+    ModalBaseComponent,
+  ],
+  exports: [
+    CommonModalComponent,
+    ModalContainerComponent,
+    ModalBaseComponent,
+  ],
+  imports: [BaseModule],
   entryComponents: [
     ModalBaseComponent,
     ModalContainerComponent,

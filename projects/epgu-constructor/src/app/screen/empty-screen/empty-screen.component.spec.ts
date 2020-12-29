@@ -6,8 +6,10 @@ import { ScreenServiceStub } from '../screen.service.stub';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 import { RedirectComponent } from '../../component/empty-screen/components/redirect.component';
 import { By } from '@angular/platform-browser';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { InitDataService } from '../../core/services/init-data/init-data.service';
+import { InitDataServiceStub } from '../../core/services/init-data/init-data.service.stub';
 
-// TODO: Need to refactoring component
 describe('EmptyScreenComponent', () => {
   let component: EmptyScreenComponent;
   let fixture: ComponentFixture<EmptyScreenComponent>;
@@ -17,7 +19,12 @@ describe('EmptyScreenComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [EmptyScreenComponent, MockComponent(RedirectComponent)],
-      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: InitDataService, useClass: InitDataServiceStub },
+      ],
+    }).overrideComponent(EmptyScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     });
   });
 

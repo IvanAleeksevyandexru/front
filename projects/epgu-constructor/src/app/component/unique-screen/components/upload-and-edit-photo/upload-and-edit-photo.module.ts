@@ -9,13 +9,13 @@ import { PhotoEditorModalComponent } from './photo-editor-modal/photo-editor-mod
 import { PhotoErrorModalComponent } from './photo-error-modal/photo-error-modal.component';
 import { CompressionService } from './compression/compression.service';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal/photo-requirements-modal.component';
-import { CoreModule } from '../../../../core/core.module';
 import { ModalModule } from '../../../../modal/modal.module';
-import { BaseModule } from '../../../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { DragAndDropModule } from '../../../../shared/directives/drag-and-drop/drag-and-drop.module';
 import { WebcamShootModule } from '../../../../shared/components/webcam-shoot/webcam-shoot.module';
 import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
+import { BaseModule } from '../../../../shared/base.module';
 
 @NgModule({
   entryComponents: [
@@ -31,12 +31,12 @@ import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-ap
     PhotoRequirementsModalComponent,
   ],
   imports: [
-    CoreModule,
+    BaseModule,
     ModalModule,
     WebcamShootModule,
     LyImageCropperModule,
     AngularResizedEventModule,
-    BaseModule,
+    BaseComponentsModule,
     ScreenContainerModule,
     DragAndDropModule,
   ],

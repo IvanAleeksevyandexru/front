@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ComponentBase } from '../../../../screen/screen.types';
@@ -8,6 +8,7 @@ import { ScreenService } from '../../../../screen/screen.service';
   selector: 'epgu-constructor-add-passport',
   templateUrl: './add-passport.component.html',
   styleUrls: ['./add-passport.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddPassportComponent {
   data$: Observable<ComponentBase> = this.screenService.component$;

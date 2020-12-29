@@ -10,11 +10,11 @@ import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalModule } from '../../../../modal/modal.module';
 import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
-import { ConfigService } from '../../../../core/config/config.service';
-import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { BaseModule } from '../../../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { AnswerButtonModule } from '../../../../shared/components/answer-button/answer-button.module';
@@ -22,6 +22,7 @@ import { ActionModule } from '../../../../shared/directives/action/action.module
 import { LocationService } from '../../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
+import { BaseModule } from '../../../../shared/base.module';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -62,9 +63,10 @@ describe('PaymentTypeSelectorComponent', () => {
       declarations: [PaymentTypeSelectorComponent],
       imports: [
         ModalModule,
+        BaseModule,
         CoreModule,
         RouterTestingModule,
-        BaseModule,
+        BaseComponentsModule,
         ScreenContainerModule,
         ScreenPadModule,
         AnswerButtonModule,

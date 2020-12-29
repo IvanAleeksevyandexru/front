@@ -1,23 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FormPlayerStartService } from './form-player-start.service';
-import { FormPlayerComponent } from '../../form-player.component';
-import { FormPlayerNavigation, Service } from '../../form-player.types';
+import { FormPlayerStartManager } from './form-player-start.manager';
+import { FormPlayerNavigation, ServiceEntity } from '../../form-player.types';
 import { of } from 'rxjs';
 import { LAST_SCENARIO_KEY, NEXT_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../../shared/constants/form-player';
 import { FormPlayerServiceStub } from '../form-player/form-player.service.stub';
 import { LoadService } from 'epgu-lib';
-import { LoadServiceStub } from '../../../core/config/load-service-stub';
+import { LoadServiceStub } from '../../../core/services/config/load-service-stub';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
 import { FormPlayerService } from '../form-player/form-player.service';
-import { ServiceDataService } from '../service-data/service-data.service';
-import { FormPlayerConfigApiService } from '../form-player-config-api/form-player-config-api.service';
-import { ConfigService } from '../../../core/config/config.service';
-import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { ScreenService } from '../../../screen/screen.service';
+import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
-import { ServiceDataServiceStub } from '../service-data/service-data.service.stub';
+import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
 import { ContinueOrderModalServiceStub } from '../../../modal/continue-order-modal/continue-order-modal.service.stub';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
@@ -29,17 +24,17 @@ import { LocationService } from '../../../core/services/location/location.servic
 const responseDto = new FormPlayerServiceStub()._store;
 
 
-describe('FormServiceStartService', () => {
-  let service: FormPlayerStartService;
+describe('FormPlayerStartManager', () => {
+  let service: FormPlayerStartManager;
   let formPlayerService: FormPlayerService;
   let localStorageService: LocalStorageService;
   let loadService: LoadService;
   let loggerService: LoggerService;
   let continueOrderModalService: ContinueOrderModalService;
-  let serviceDataService: ServiceDataService;
+  let initDataService: InitDataService;
   let location: Location;
 
-  let serviceDataMock: Service = {
+  let serviceDataMock: ServiceEntity = {
     serviceId: '10000100',
     targetId: '-10000100'
   };
@@ -47,7 +42,7 @@ describe('FormServiceStartService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        FormPlayerStartService,
+        FormPlayerStartManager,
         UnsubscribeService,
         WINDOW_PROVIDERS,
         LocationService,
@@ -56,20 +51,20 @@ describe('FormServiceStartService', () => {
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
-        { provide: ServiceDataService, useClass: ServiceDataServiceStub },
+        { provide: InitDataService, useClass: InitDataServiceStub },
       ]
     });
-    service = TestBed.inject(FormPlayerStartService);
+    service = TestBed.inject(FormPlayerStartManager);
   });
 
   beforeEach(() => {
-    service = TestBed.inject(FormPlayerStartService);
+    service = TestBed.inject(FormPlayerStartManager);
     formPlayerService = TestBed.inject(FormPlayerService);
     continueOrderModalService = TestBed.inject(ContinueOrderModalService);
     localStorageService = TestBed.inject(LocalStorageService);
     loadService = TestBed.inject(LoadService);
     loggerService = TestBed.inject(LoggerService);
-    serviceDataService = TestBed.inject(ServiceDataService);
+    initDataService = TestBed.inject(InitDataService);
     location = TestBed.inject(Location);
   });
 
@@ -77,14 +72,14 @@ describe('FormServiceStartService', () => {
     const rawSate = JSON.stringify(responseDto);
 
     it('should call startScenarioFromProps case', () => {
-      serviceDataService.init({ ...serviceDataMock, initState: rawSate });
+      initDataService.init({ ...serviceDataMock }, { initState: rawSate });
       spyOn<any>(service, 'startScenarioFromProps').and.callThrough();
       service.startPlayer();
       expect(service['startScenarioFromProps']).toBeCalled();
     });
 
     it('should call hasLoadFromStorageCase case', () => {
-      serviceDataService.init({ ...serviceDataMock });
+      initDataService.init({ ...serviceDataMock });
       spyOn<any>(service, 'hasLoadFromStorageCase').and.callThrough();
       service.startPlayer();
       expect(service['hasLoadFromStorageCase']).toBeCalled();
@@ -93,7 +88,7 @@ describe('FormServiceStartService', () => {
     it('should call hasLoadFromStorageCase case', () => {
       location.go('/some-page', 'getLastScreen=true');
       localStorage.setItem(LAST_SCENARIO_KEY, rawSate);
-      serviceDataService.init({ ...serviceDataMock });
+      initDataService.init({ ...serviceDataMock });
       spyOn<any>(service, 'startLoadLastScreenCase').and.callThrough();
       service.startPlayer();
       expect(service['startLoadLastScreenCase']).toBeCalled();
@@ -103,7 +98,7 @@ describe('FormServiceStartService', () => {
     it('should call startLoadNextScreenCase case', () => {
       location.go('/some-page', 'getNextScreen=true');
       localStorage.setItem(NEXT_SCENARIO_KEY, rawSate);
-      serviceDataService.init({ ...serviceDataMock });
+      initDataService.init({ ...serviceDataMock });
       spyOn<any>(service, 'startLoadNextScreenCase').and.callThrough();
       service.startPlayer();
       expect(service['startLoadNextScreenCase']).toBeCalled();
@@ -113,7 +108,7 @@ describe('FormServiceStartService', () => {
     it('should call startLoadFromQuizCase case', () => {
       location.go('/some-page', 'fromQuiz=true');
       localStorage.setItem(QUIZ_SCENARIO_KEY, rawSate);
-      serviceDataService.init({ ...serviceDataMock });
+      initDataService.init({ ...serviceDataMock });
       spyOn<any>(service, 'startLoadFromQuizCase').and.callThrough();
       service.startPlayer();
       expect(service['startLoadFromQuizCase']).toBeCalled();
@@ -121,27 +116,27 @@ describe('FormServiceStartService', () => {
     });
 
     it('should call handleOrder case', () => {
-      serviceDataService.init({ ...serviceDataMock, orderId: '2145', canStartNew: true, invited: false });
+      initDataService.init({ ...serviceDataMock, orderId: '2145', canStartNew: true, invited: false });
       spyOn<any>(service, 'handleOrder').and.callThrough();
       service.startPlayer();
       expect(service['handleOrder']).toBeCalled();
     });
 
     it('should call getOrderStatus case', () => {
-      serviceDataService.init({ ...serviceDataMock, orderId: '2145' });
+      initDataService.init({ ...serviceDataMock, orderId: '2145' });
       spyOn<any>(service, 'handleOrder').and.callThrough();
       service.startPlayer();
       expect(service['handleOrder']).toBeCalled();
     });
 
     it('should call getOrderIdFromApi case', () => {
-      serviceDataService.init({ ...serviceDataMock });
+      initDataService.init({ ...serviceDataMock });
       spyOn<any>(service, 'getOrderIdFromApi').and.callThrough();
       service.startPlayer();
       expect(service['getOrderIdFromApi']).toBeCalled();
     });
   });
-  
+
   describe('startScenarioFromProps()', () => {
     const rawSate = JSON.stringify(responseDto);
 
@@ -182,9 +177,9 @@ describe('FormServiceStartService', () => {
       canStartNew: true
     };
 
-    it('should call invited of serviceDataService', () => {
+    it('should call invited of initDataService', () => {
       spyOn(formPlayerService, 'getOrderStatus').and.returnValue(of(checkIfOrderExistResult));
-      serviceDataService.init({ ...serviceDataMock, orderId: '123456' });
+      initDataService.init({ ...serviceDataMock, orderId: '123456' });
       spyOn<any>(service, 'handleOrderDataResponse');
       service['getOrderStatus']();
       expect(service['handleOrderDataResponse']).toBeCalledWith(checkIfOrderExistResult);
@@ -198,7 +193,7 @@ describe('FormServiceStartService', () => {
       canStartNew: true
     };
 
-    it('should call invited of serviceDataService', () => {
+    it('should call invited of initDataService', () => {
       spyOn(formPlayerService, 'checkIfOrderExist').and.returnValue(of(checkIfOrderExistResult));
       spyOn<any>(service, 'handleOrderDataResponse');
       service['getOrderIdFromApi']();
@@ -213,20 +208,20 @@ describe('FormServiceStartService', () => {
       canStartNew: true
     };
 
-    it('should call invited of serviceDataService', () => {
-      const spySetter = jest.spyOn(serviceDataService, 'invited', 'set');
+    it('should call invited of initDataService', () => {
+      const spySetter = jest.spyOn(initDataService, 'invited', 'set');
       service['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(spySetter).toBeCalledWith(checkIfOrderExistResult.isInviteScenario);
     });
 
-    it('should call orderId of serviceDataService', () => {
-      const spySetter = jest.spyOn(serviceDataService, 'orderId', 'set');
+    it('should call orderId of initDataService', () => {
+      const spySetter = jest.spyOn(initDataService, 'orderId', 'set');
       service['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(spySetter).toBeCalledWith(checkIfOrderExistResult.orderId);
     });
 
-    it('should call canStartNew of serviceDataService', () => {
-      const spySetter = jest.spyOn(serviceDataService, 'canStartNew', 'set');
+    it('should call canStartNew of initDataService', () => {
+      const spySetter = jest.spyOn(initDataService, 'canStartNew', 'set');
       service['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(spySetter).toBeCalledWith(checkIfOrderExistResult.canStartNew);
     });
@@ -325,7 +320,7 @@ describe('FormServiceStartService', () => {
     it('should call initData of formPlayerService with orderId', () => {
       const orderId = '1234';
       spyOn(continueOrderModalService, 'openModal').and.returnValue(of(true));
-      serviceDataService.orderId = orderId;
+      initDataService.orderId = orderId;
       spyOn(formPlayerService, 'initData').and.callThrough();
       service['showContinueOrderModal']();
       expect(formPlayerService.initData).toBeCalledWith(orderId, false);
