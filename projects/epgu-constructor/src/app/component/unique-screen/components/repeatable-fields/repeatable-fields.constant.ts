@@ -11,3 +11,5 @@ export function prepareDataToSendForRepeatableFieldsComponent(
 }
 
 export const defaultScreensAmount = 20;
+
+export type StateStatus = 'init' | 'change' | 'noChange';

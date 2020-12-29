@@ -25,13 +25,17 @@ import {
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { InitDataService } from '../core/services/init-data/init-data.service';
-import { FormPlayerStartService } from './services/form-player-start/form-player-start.service';
+import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
 
+/**
+ * Точка входа для приложения, эквивалент AppComponent.
+ *   При запуске подтягивает данные из конфигов, и тригерит старт приложения.
+ */
 @Component({
   selector: 'epgu-constructor-form-player',
   templateUrl: './form-player.component.html',
   styleUrls: ['../../styles/index.scss'],
-  providers: [UnsubscribeService, FormPlayerStartService],
+  providers: [UnsubscribeService, FormPlayerStartManager],
   encapsulation: ViewEncapsulation.None,
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
@@ -53,7 +57,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     public configService: ConfigService,
     public loadService: LoadService,
     public screenService: ScreenService,
-    public formPlayerStartService: FormPlayerStartService,
+    public formPlayerStartService: FormPlayerStartManager,
   ) {}
 
   ngOnInit(): void {
