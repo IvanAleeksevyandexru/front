@@ -6,6 +6,7 @@ import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import { CustomScreenComponentTypes } from '../../../component/components-list/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
+import { ComponentScreenComponentTypes } from '../../../component/component-screen/component-screen-components.types';
 
 const moment = moment_;
 
@@ -91,19 +92,19 @@ export class ValueLoaderService {
   /**
    * Метод объединяет preset значение и ответ из кэша
    * @param cachedValue - кэш ответов из cachedAnswersService
-   * @param preset - preset значения из display.components[].value
-   * @param componentType
-   * @param componentId - id от родительского компонента для RepeatableField
+   * @param component - компонент из display.components
+   * @param parentId - id от родительского компонента для RepeatableField
    * @param parentIndex - индекс для взятие из кэша для RepeatableField
    */
   private mergePresetCacheValue(
     cachedValue: string,
-    preset: string,
-    componentType: string,
-    componentId?: string,
+    component: ScreenStoreComponentDtoI,
+    parentId?: string,
     parentIndex?: number,
   ): string {
-    if (componentType === CustomScreenComponentTypes.SnilsInput) {
+    const preset = component.value;
+
+    if (component.type === CustomScreenComponentTypes.SnilsInput) {
       return JSON.parse(cachedValue).snils;
     }
 
@@ -113,14 +114,14 @@ export class ValueLoaderService {
     if (isPresetParsable && isCachedValueParsable) {
       return JSON.stringify({
         ...JSON.parse(preset),
-        ...JSON.parse(cachedValue),
+        ...this.cachedAnswersService.parseCachedValue(cachedValue, component),
       });
     }
 
-    if (componentId && isCachedValueParsable) {
-      const value = JSON.parse(cachedValue);
+    if (parentId && isCachedValueParsable) {
+      const value = this.cachedAnswersService.parseCachedValue(cachedValue, component);
 
-      return value[parentIndex][componentId];
+      return value[parentIndex][parentId];
     }
 
     return cachedValue || preset;
@@ -156,7 +157,7 @@ export class ValueLoaderService {
     parentId?: string,
     parentIndex?: number,
   ): ComponentDto {
-    const component = {
+    const component: ScreenStoreComponentDtoI = {
       ...item,
       presetValue: item.value,
     };
@@ -166,8 +167,7 @@ export class ValueLoaderService {
         ...component,
         value: this.mergePresetCacheValue(
           cachedValue,
-          component.value,
-          component.type,
+          component,
           parentId,
           parentIndex,
         ),
