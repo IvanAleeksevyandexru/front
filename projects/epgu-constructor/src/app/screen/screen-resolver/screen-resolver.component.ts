@@ -29,7 +29,6 @@ export class ScreenResolverComponent implements AfterViewInit {
     private screenService: ScreenService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private ngUnsubscribe$: UnsubscribeService,
-    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
