@@ -93,7 +93,9 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.init$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+    this.init$
+      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
+      .subscribe();
   }
 
   /**
