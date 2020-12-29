@@ -247,7 +247,12 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param index индекс массива детей
    */
   handleSelect(event: ChildI | null, index?: number, id?: string): void {
-    Object.assign(this.items[index], event);
+    this.items[index] = {
+      controlId: this.items[index].controlId,
+      isNewRef: this.items[index].isNewRef,
+      ...event,
+    };
+
     if (event && event[this.idRef] === this.NEW_ID) {
       this.addNewChild(index);
     } else {
