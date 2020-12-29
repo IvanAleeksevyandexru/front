@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
-import { SessionService } from '../../../../core/services/session/session.service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v5 as uuidv5 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
+import { SessionService } from '../../../../core/services/session/session.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
@@ -18,7 +18,7 @@ import {
   TimeSlotReq,
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface,
+  ZagsDepartmentInterface
 } from './time-slots.types';
 
 const moment = moment_;
@@ -254,7 +254,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       bookId: this.bookId,
       organizationId: this.department.attributeValues.CODE,
       calendarName,
-      areaId: [selectedSlot.slotId],
+      areaId: [selectedSlot.areaId || this.department.attributeValues.AREA_NAME],
       parentOrderId: this.orderId,
       preliminaryReservationPeriod,
       attributes: [
@@ -269,7 +269,10 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private initSlotsMap(slots: TimeSlot[]): void {
-    slots.forEach((slot) => {
+    const filteredSlots = slots.filter(slot => slot.areaId === this.department.attributeValues.AREA_NAME);
+    const initSlots = filteredSlots.length ? filteredSlots : slots;
+
+    initSlots.forEach((slot) => {
       const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};

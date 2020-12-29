@@ -10,7 +10,8 @@ import { EventBusService } from '../../../../form-player/services/event-bus/even
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentBase } from '../../../../screen/screen.types';
+import { ComponentBase, ScreenStoreComponentDtoI } from '../../../../screen/screen.types';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { CustomComponentOutputData } from '../../../components-list/components-list.types';
 
 enum ItemStatus {
@@ -55,11 +56,14 @@ export class SelectChildrenScreenComponent implements OnInit {
   isSingleChild: boolean;
   hint: string | undefined;
 
+  private component: ScreenStoreComponentDtoI;
+
   constructor(
-    private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
+    private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
+    private cachedAnswersService: CachedAnswersService,
   ) {}
 
   ngOnInit(): void {
@@ -93,6 +97,8 @@ export class SelectChildrenScreenComponent implements OnInit {
 
   initVariables(id: string): void {
     const component = this.screenService.getCompFromDisplay(id);
+    this.component = component;
+
     const itemsList = component ? JSON.parse(component.presetValue) : [];
     this.firstNameRef = this.getRefFromComponent('firstName');
     this.isNewRef = this.getRefFromComponent('isNew');
@@ -106,7 +112,10 @@ export class SelectChildrenScreenComponent implements OnInit {
   initStartValues(id: string): void {
     const cachedValue = this.screenService.getCompValueFromCachedAnswers(id);
     if (cachedValue) {
-      const children = JSON.parse(cachedValue);
+      const children = this.cachedAnswersService.parseCachedValue<unknown[]>(
+        cachedValue,
+        this.component,
+      );
       children.forEach((child, index) => {
         const isNew = JSON.parse(child[this.isNewRef]);
         const childId = isNew ? this.NEW_ID : child[this.idRef];
