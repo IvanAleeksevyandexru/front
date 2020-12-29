@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
-import { SessionService } from '../../../../core/services/session/session.service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v5 as uuidv5 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
+import { SessionService } from '../../../../core/services/session/session.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
@@ -246,7 +246,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    const name = `${this.sessionService.userId}#${this.department.value}`;
+    const name = `${this.sessionService.userId}#${this.department.value}#${selectedSlot.slotId}`;
     this.bookId = uuidv5(name, this.BOOKING_NAMESPACE);
 
     const {
@@ -277,7 +277,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       bookId: this.bookId,
       organizationId: this.department.attributeValues.CODE,
       calendarName,
-      areaId: [selectedSlot.slotId],
+      areaId: [selectedSlot.areaId || this.department.attributeValues.AREA_NAME],
       selectedHallTitle: selectedSlot.slotId,
       parentOrderId: this.orderId,
       preliminaryReservationPeriod,
@@ -288,7 +288,10 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private initSlotsMap(slots: TimeSlot[]): void {
-    slots.forEach((slot) => {
+    const filteredSlots = slots.filter(slot => slot.areaId === this.department.attributeValues.AREA_NAME);
+    const initSlots = filteredSlots.length ? filteredSlots : slots;
+
+    initSlots.forEach((slot) => {
       const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
