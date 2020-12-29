@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
@@ -9,6 +9,7 @@ import { ScreenService } from '../screen.service';
   selector: 'epgu-constructor-screen-resolver',
   templateUrl: './screen-resolver.component.html',
   styleUrls: ['./screen-resolver.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ScreenResolverComponent {
   screenComponent$: Observable<ScreenComponent> = this.screenService.screenType$.pipe(
@@ -17,7 +18,10 @@ export class ScreenResolverComponent {
     }),
   );
 
-  constructor(private screenService: ScreenService) {}
+  constructor(
+    private screenService: ScreenService,
+    private changeDetectionRef: ChangeDetectorRef,
+  ) {}
 
   setScreenComponent(screenType: ScreenTypes): ScreenComponent {
     const screenComponent = this.getScreenComponentByType(screenType);

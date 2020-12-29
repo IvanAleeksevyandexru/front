@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../screen.service';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
@@ -12,6 +12,7 @@ import { InitDataService } from '../../core/services/init-data/init-data.service
   selector: 'epgu-constructor-empty-screen',
   templateUrl: './empty-screen.component.html',
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmptyScreenComponent {
   emptyComponentName = EmptyScreenComponentTypes;

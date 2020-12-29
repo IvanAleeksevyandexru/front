@@ -1,4 +1,12 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -12,6 +20,7 @@ import { LocationService } from '../../../../../core/services/location/location.
   selector: 'epgu-constructor-signature-application',
   templateUrl: './signature-application.component.html',
   styleUrls: ['./signature-application.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignatureApplicationComponent implements OnInit {
   @Input() isLoading: boolean;

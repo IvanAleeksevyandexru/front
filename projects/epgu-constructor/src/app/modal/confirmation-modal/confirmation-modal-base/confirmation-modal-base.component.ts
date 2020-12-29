@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { ConfirmationModal } from '../confirmation-modal.interface';
 import { ConfirmationModalBaseButton } from './confirmation-modal-base.interface';
@@ -7,6 +7,7 @@ import { ConfirmationModalBaseButton } from './confirmation-modal-base.interface
   selector: 'epgu-constructor-confirmation-modal-base',
   templateUrl: './confirmation-modal-base.component.html',
   styleUrls: ['./confirmation-modal-base.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmationModalBaseComponent {
   @Input() title?: ConfirmationModal['title'];

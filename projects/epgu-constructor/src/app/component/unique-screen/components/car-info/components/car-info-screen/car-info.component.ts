@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { CarInfoValues } from '../../models/car-info.interface';
@@ -10,6 +10,7 @@ import { ScreenService } from '../../../../../../screen/screen.service';
   selector: 'epgu-constructor-car-info',
   templateUrl: './car-info.component.html',
   styleUrls: ['./car-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarInfoComponent {
   @Output() nextStepEvent = new EventEmitter<string>();

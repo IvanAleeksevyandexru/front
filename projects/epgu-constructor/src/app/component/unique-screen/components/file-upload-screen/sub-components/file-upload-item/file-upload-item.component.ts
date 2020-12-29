@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -52,6 +54,7 @@ const maxImgSizeInBytes = 525288;
   templateUrl: './file-upload-item.component.html',
   styleUrls: ['./file-upload-item.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadItemComponent implements OnDestroy {
   @Input() objectId: string;
@@ -84,6 +87,8 @@ export class FileUploadItemComponent implements OnDestroy {
           this.files$$.next([...list]);
           this.maxFileNumber = this.getMaxFileNumberFromList(list);
         }
+
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -139,6 +144,7 @@ export class FileUploadItemComponent implements OnDestroy {
     private fileUploadService: FileUploadService,
     public config: ConfigService,
     public modal: ModalService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     this.isMobile = deviceDetectorService.isMobile;
   }
@@ -314,6 +320,8 @@ export class FileUploadItemComponent implements OnDestroy {
           this.updateUploadedCameraPhotosInfo(false, deletedFileInfo.fileName);
           this.updateUploadingInfo(deletedFileInfo, true);
           this.removeFileFromStore(file);
+
+          this.changeDetectionRef.markForCheck();
         });
     } else {
       let files = this.files$$.value;
