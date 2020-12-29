@@ -9,11 +9,6 @@ import {
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenBase } from '../screenBase';
 
-export interface ComponentSetting {
-  displayContinueBtn: boolean;
-  displayWarningAnswers: boolean;
-}
-
 @Component({
   selector: 'epgu-constructor-component-screen',
   templateUrl: './component-screen.component.html',
@@ -21,18 +16,10 @@ export interface ComponentSetting {
   providers: [UnsubscribeService],
 })
 export class ComponentScreenComponent extends ScreenBase implements OnInit {
-  // <-- constant
   screenComponentName = ComponentScreenComponentTypes;
   isShowActionBtn = false;
   actionButtons: ComponentActionDto[] = [];
   screenActionButtons: ScreenActionDto[] = [];
-
-  // <-- variables
-  componentSetting: ComponentSetting = {
-    displayContinueBtn: true,
-    displayWarningAnswers: false,
-  };
-  componentData = null;
 
   constructor(public currentAnswersService: CurrentAnswersService, public injector: Injector) {
     super(injector);
@@ -51,6 +38,12 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((buttons: Array<ScreenActionDto>) => {
         this.screenActionButtons = buttons || [];
+      });
+    this.eventBusService
+      .on('nextStepEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: string) => {
+        this.nextStep(payload);
       });
   }
 
@@ -76,26 +69,10 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
   }
 
   /**
-   * Смена данных компонента
-   * @param value - значение на установку
+   * Возвращение в личный кабинет
    */
-  changedComponentData(value: string): void {
-    this.componentData = value;
-  }
-
-  /**
-   * Смена настроек компонента
-   * @param settings - настройки компонента
-   */
-  changeComponentSettings(settings: Partial<ComponentSetting>): void {
-    this.componentSetting = { ...this.componentSetting, ...settings };
-  }
-
-  /**
-   * Возвращение на главную
-   */
-  goToHomePage(): void {
-    // TODO: navigate to Home Page
+  goToLK(): void {
+    this.navigationService.redirectToLK();
   }
 
   isUserData(): boolean | ComponentScreenComponentTypes {

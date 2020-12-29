@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
@@ -6,12 +6,13 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStoreComponentDtoI } from '../../../../screen/screen.types';
-import { CustomComponentOutputData } from '../../../components-list/components-list.types';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
+import { CustomComponentOutputData } from '../../../components-list/components-list.types';
 
 enum ItemStatus {
   invalid = 'INVALID',
@@ -35,8 +36,6 @@ interface ClearEvent {
   providers: [UnsubscribeService],
 })
 export class SelectChildrenScreenComponent implements OnInit {
-  @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
-
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     map((label) => {
       return label || 'Добавить ребенка';
@@ -63,6 +62,7 @@ export class SelectChildrenScreenComponent implements OnInit {
     public screenService: ScreenService,
     private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
+    private eventBusService: EventBusService,
     private cachedAnswersService: CachedAnswersService,
   ) {}
 
@@ -88,6 +88,11 @@ export class SelectChildrenScreenComponent implements OnInit {
           this.updateCurrentAnswerServiceValidation();
         }),
       );
+
+    this.eventBusService
+      .on('cloneButtonClickEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.addMoreChild());
   }
 
   initVariables(id: string): void {

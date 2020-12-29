@@ -1,22 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ScreenTypes } from '../../../../screen/screen.types';
-import { EmployeeHistoryComponent } from './employee-history.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
+import { EpguLibModule } from 'epgu-lib';
+import { of } from 'rxjs';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenTypes } from '../../../../screen/screen.types';
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
+import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
+import { ConstructorCheckboxModule } from '../../../../shared/components/constructor-checkbox/constructor-checkbox.module';
+import { ConstructorMonthPickerModule } from '../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
+import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { NavigationComponent } from '../../../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
-import { EmployeeHistoryFormService } from './services/employee-history.form.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
-import { EpguLibModule } from 'epgu-lib';
 import { Gender } from '../../../../shared/types/gender';
+import { EmployeeHistoryComponent } from './employee-history.component';
+import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
+import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
-import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
-import { of } from 'rxjs';
-import { ConstructorMonthPickerModule } from '../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
-import { ConstructorCheckboxModule } from '../../../../shared/components/constructor-checkbox/constructor-checkbox.module';
 
 xdescribe('EmployeeHistoryComponent', () => {
   let component: EmployeeHistoryComponent;
@@ -55,6 +56,7 @@ xdescribe('EmployeeHistoryComponent', () => {
         UnsubscribeService,
         EmployeeHistoryDatasourceService,
         EmployeeHistoryMonthsService,
+        EventBusService,
       ],
     }).compileComponents();
   });

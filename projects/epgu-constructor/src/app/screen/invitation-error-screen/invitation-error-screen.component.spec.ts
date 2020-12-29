@@ -6,6 +6,7 @@ import { InvitationErrorScreenComponentTypes } from '../../component/invitation-
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { NavigationPayload } from '../../form-player/form-player.types';
+import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import { ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
@@ -50,6 +51,7 @@ describe('InvitationErrorScreenComponent', () => {
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        EventBusService,
       ],
     }).compileComponents();
   });
@@ -74,19 +76,6 @@ describe('InvitationErrorScreenComponent', () => {
       initComponent();
 
       expect(component.scenarioDto).toBe(scenarioDtoSample);
-    });
-  });
-
-  describe('nextStep() method', () => {
-    it('should call navigationService.next()', () => {
-      const nextStepSpy = spyOn(navigationService, 'next');
-
-      component.nextStep(navigationPayloadSample);
-
-      expect(nextStepSpy).toBeCalledTimes(1);
-      expect(nextStepSpy).toBeCalledWith({
-        payload: navigationPayloadSample,
-      });
     });
   });
 
@@ -129,20 +118,5 @@ describe('InvitationErrorScreenComponent', () => {
 
       expect(debugEl.componentInstance.scenarioDto).toBe(scenarioDtoSample);
     });
-  });
-
-  it('should call nextStep() on epgu-constructor-invitation-error nextStepEvent() event', () => {
-    const selector = 'epgu-constructor-invitation-error';
-
-    screenService.componentType = InvitationErrorScreenComponentTypes.invitationError;
-    fixture.detectChanges();
-
-    const nextStepSpy = spyOn(component, 'nextStep');
-
-    const debugEl = fixture.debugElement.query(By.css(selector));
-    debugEl.triggerEventHandler('nextStepEvent', navigationPayloadSample);
-
-    expect(nextStepSpy).toBeCalledTimes(1);
-    expect(nextStepSpy).toBeCalledWith(navigationPayloadSample);
   });
 });

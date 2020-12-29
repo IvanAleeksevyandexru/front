@@ -5,10 +5,11 @@ import { ValidationService } from 'epgu-lib';
 import { UnsubscribeService } from 'projects/epgu-constructor/src/app/core/services/unsubscribe/unsubscribe.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { ComponentAttrsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ImgPrefixerPipe } from '../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 import { InvitationErrorComponent } from './invitation-error.component';
-import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
-import { ComponentAttrsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 
 xdescribe('InvitationErrorComponent', () => {
@@ -28,6 +29,7 @@ xdescribe('InvitationErrorComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         ValidationService,
         UnsubscribeService,
+        EventBusService,
       ]
     })
     .compileComponents();

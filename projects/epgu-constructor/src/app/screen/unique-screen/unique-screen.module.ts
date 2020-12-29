@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
-import { UniqueScreenComponent } from './unique-screen.component';
-import { UniqueScreenComponentsModule } from '../../component/unique-screen/unique-screen-components.module';
 import { ComponentsListModule } from '../../component/components-list/components-list.module';
-import { UniqueComponentModalModule } from '../../modal/screen-modal/components/unique-component-modal/unique-component-modal.module';
 import { AbstractPaymentComponent } from '../../component/unique-screen/components/payment/abstractpayment.component';
+import { UniqueScreenComponentsModule } from '../../component/unique-screen/unique-screen-components.module';
+import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
+import { UniqueComponentModalModule } from '../../modal/screen-modal/components/unique-component-modal/unique-component-modal.module';
 import { BaseModule } from '../../shared/base.module';
+import { UniqueScreenComponent } from './unique-screen.component';
+
+// NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
+const COMPONENTS = [UniqueScreenComponent];
 
 @NgModule({
   declarations: [UniqueScreenComponent, AbstractPaymentComponent],
@@ -14,6 +18,7 @@ import { BaseModule } from '../../shared/base.module';
     UniqueScreenComponentsModule,
     ComponentsListModule,
     UniqueComponentModalModule,
-  ]
+  ],
+  providers: [EventBusService]
 })
 export class UniqueScreenModule {}

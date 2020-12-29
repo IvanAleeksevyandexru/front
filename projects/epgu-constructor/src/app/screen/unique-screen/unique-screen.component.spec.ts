@@ -1,34 +1,34 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { ScreenService } from '../screen.service';
-import { UniqueScreenComponent } from './unique-screen.component';
-import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { ScreenServiceStub } from '../screen.service.stub';
+import { By } from '@angular/platform-browser';
 import { MockComponents } from 'ng-mocks';
-import { UnusedPaymentsComponent } from '../../component/unique-screen/components/unused-payments/unused-payments.component';
-import { SelectMapObjectComponent } from '../../component/unique-screen/components/select-map-object/select-map-object.component';
-import { FileUploadScreenComponent } from '../../component/unique-screen/components/file-upload-screen/file-upload-screen.component';
-import { EmployeeHistoryComponent } from '../../component/unique-screen/components/employee-history/employee-history.component';
-import { RepeatableFieldsComponent } from '../../component/unique-screen/components/repeatable-fields/repeatable-fields.component';
-import { TimeSlotsComponent } from '../../component/unique-screen/components/time-slots/time-slots.component';
 import { CarInfoComponent } from '../../component/unique-screen/components/car-info/components/car-info-screen/car-info.component';
-// eslint-disable-next-line max-len
-import { SignatureApplicationComponent } from '../../component/unique-screen/components/signature-application/components/signature-application.component';
-import { PaymentComponent } from '../../component/unique-screen/components/payment/components/payment/payment.component';
-import { BillInfoComponent } from '../../component/unique-screen/components/payment/components/billinfo/billinfo.component';
-// eslint-disable-next-line max-len
-import { UploadAndEditPhotoComponent } from '../../component/unique-screen/components/upload-and-edit-photo/upload-and-edit-photo.component';
+import { EmployeeHistoryComponent } from '../../component/unique-screen/components/employee-history/employee-history.component';
+import { FileUploadScreenComponent } from '../../component/unique-screen/components/file-upload-screen/file-upload-screen.component';
 // eslint-disable-next-line max-len
 import { PaymentTypeSelectorComponent } from '../../component/unique-screen/components/payment-type-selector/payment-type-selector.component';
+import { BillInfoComponent } from '../../component/unique-screen/components/payment/components/billinfo/billinfo.component';
+import { PaymentComponent } from '../../component/unique-screen/components/payment/components/payment/payment.component';
+import { RepeatableFieldsComponent } from '../../component/unique-screen/components/repeatable-fields/repeatable-fields.component';
+import { SelectMapObjectComponent } from '../../component/unique-screen/components/select-map-object/select-map-object.component';
+// eslint-disable-next-line max-len
+import { SignatureApplicationComponent } from '../../component/unique-screen/components/signature-application/components/signature-application.component';
+import { TimeSlotsComponent } from '../../component/unique-screen/components/time-slots/time-slots.component';
+import { UnusedPaymentsComponent } from '../../component/unique-screen/components/unused-payments/unused-payments.component';
+// eslint-disable-next-line max-len
+import { UploadAndEditPhotoComponent } from '../../component/unique-screen/components/upload-and-edit-photo/upload-and-edit-photo.component';
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
+import { NavigationPayload } from '../../form-player/form-player.types';
+import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
   ComponentDto,
-  DisplayDto,
+  DisplayDto
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { NavigationPayload } from '../../form-player/form-player.types';
-import { By } from '@angular/platform-browser';
+import { ScreenService } from '../screen.service';
+import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
-import { of } from 'rxjs';
+import { UniqueScreenComponent } from './unique-screen.component';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -52,6 +52,7 @@ describe('UniqueScreenComponent', () => {
 
   let navigationService: NavigationService;
   let screenService: ScreenService;
+  let eventBusService: EventBusService;
 
   const initComponent = () => {
     fixture = TestBed.createComponent(UniqueScreenComponent);
@@ -80,6 +81,8 @@ describe('UniqueScreenComponent', () => {
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        // { provide: EventBusService, useClass: EventBusServiceStub },
+        EventBusService,
       ],
     }).compileComponents();
   });
@@ -87,6 +90,7 @@ describe('UniqueScreenComponent', () => {
   beforeEach(() => {
     navigationService = TestBed.inject(NavigationService);
     screenService = TestBed.inject(ScreenService);
+    eventBusService = TestBed.inject(EventBusService);
     screenService.display = displayDtoSample;
     screenService.component = componentDtoSample;
     initComponent();
@@ -125,6 +129,18 @@ describe('UniqueScreenComponent', () => {
         },
       });
       nextStepSpy.calls.reset();
+    });
+
+
+    it('should call nextDataForStep() on eventBusService nextStepEvent', () => {
+      screenService.component = componentDtoSample;
+      fixture.detectChanges();
+      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
+
+      eventBusService.emit('nextStepEvent', 'any');
+
+      expect(nextDataForStepSpy).toBeCalledTimes(1);
+      expect(nextDataForStepSpy).toBeCalledWith('any');
     });
   });
 
@@ -170,20 +186,6 @@ describe('UniqueScreenComponent', () => {
 
       expect(debugEl).toBeTruthy();
     });
-
-    it('should call nextDataForStep() on epgu-constructor-unused-payments nextStepEvent() event', () => {
-      screenService.componentType = UniqueScreenComponentTypes.unusedPayments;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      debugEl.triggerEventHandler('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith('any');
-    });
   });
 
   describe('epgu-constructor-select-map-object', () => {
@@ -200,20 +202,6 @@ describe('UniqueScreenComponent', () => {
       debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeTruthy();
-    });
-
-    it('should call nextDataForStep() on epgu-constructor-select-map-object nextStepEvent() event', () => {
-      screenService.componentType = UniqueScreenComponentTypes.mapService;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      debugEl.triggerEventHandler('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith('any');
     });
   });
 
@@ -232,20 +220,6 @@ describe('UniqueScreenComponent', () => {
 
       expect(debugEl).toBeTruthy();
     });
-
-    it('should call nextDataForStep() on epgu-constructor-file-upload-screen nextStepEvent() event', () => {
-      screenService.componentType = UniqueScreenComponentTypes.fileUploadComponent;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      debugEl.triggerEventHandler('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith('any');
-    });
   });
 
   describe('epgu-constructor-employee-history', () => {
@@ -262,20 +236,6 @@ describe('UniqueScreenComponent', () => {
       debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeTruthy();
-    });
-
-    it('should call nextDataForStep() on epgu-constructor-employee-history nextStepEvent() event', () => {
-      screenService.componentType = UniqueScreenComponentTypes.employeeHistory;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      debugEl.triggerEventHandler('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith('any');
     });
   });
 
@@ -294,20 +254,6 @@ describe('UniqueScreenComponent', () => {
 
       expect(debugEl).toBeTruthy();
     });
-
-    it('should call nextDataForStep() on epgu-constructor-repeatable-fields nextStepEvent() event', () => {
-      screenService.componentType = UniqueScreenComponentTypes.repeatableFields;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      debugEl.triggerEventHandler('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith('any');
-    });
   });
 
   describe('epgu-constructor-time-slots', () => {
@@ -324,20 +270,6 @@ describe('UniqueScreenComponent', () => {
       debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeTruthy();
-    });
-
-    it('should call nextDataForStep() on epgu-constructor-time-slots nextStepEvent() event', () => {
-      screenService.componentType = UniqueScreenComponentTypes.timeSlot;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      debugEl.triggerEventHandler('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith('any');
     });
   });
 
@@ -356,20 +288,6 @@ describe('UniqueScreenComponent', () => {
 
       expect(debugEl).toBeTruthy();
     });
-
-    it('should call nextDataForStep() on epgu-constructor-car-info nextStepEvent() event', () => {
-      screenService.componentType = UniqueScreenComponentTypes.carInfo;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      debugEl.triggerEventHandler('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith('any');
-    });
   });
 
   describe('epgu-constructor-signature-application', () => {
@@ -386,20 +304,6 @@ describe('UniqueScreenComponent', () => {
       debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeTruthy();
-    });
-
-    it('should call nextDataForStep() on epgu-constructor-signature-application nextStepEvent() event', () => {
-      screenService.componentType = UniqueScreenComponentTypes.signatureApplication;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      debugEl.triggerEventHandler('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith('any');
     });
   });
 
@@ -418,20 +322,6 @@ describe('UniqueScreenComponent', () => {
 
       expect(debugEl).toBeTruthy();
     });
-
-    it('should call nextDataForStep() on epgu-constructor-payment nextStepEvent() event', () => {
-      screenService.componentType = UniqueScreenComponentTypes.paymentScr;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      debugEl.triggerEventHandler('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith('any'); // ignore argument from nextStepEvent()
-    });
   });
 
   describe('epgu-constructor-bill-info', () => {
@@ -449,20 +339,6 @@ describe('UniqueScreenComponent', () => {
 
       expect(debugEl).toBeTruthy();
     });
-
-    it('should call nextDataForStep() on epgu-constructor-bill-info nextStepEvent() event', () => {
-      screenService.componentType = UniqueScreenComponentTypes.billInfo;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      debugEl.triggerEventHandler('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith(); // ignore argument from nextStepEvent()
-    });
   });
 
   describe('epgu-constructor-upload-and-edit-photo', () => {
@@ -479,20 +355,6 @@ describe('UniqueScreenComponent', () => {
       debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeTruthy();
-    });
-
-    it('should call nextDataForStep() on epgu-constructor-upload-and-edit-photo nextStepEvent() event', () => {
-      screenService.componentType = UniqueScreenComponentTypes.photoUploadComponent;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      debugEl.triggerEventHandler('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith('any');
     });
   });
 

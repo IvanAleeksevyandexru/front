@@ -1,7 +1,8 @@
-import { Directive, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { Directive, Input, OnChanges } from '@angular/core';
 import { Subject, timer } from 'rxjs';
 import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
 
 @Directive({
   selector: '[epgu-constructor-counter]',
@@ -10,20 +11,19 @@ import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
 export class CounterDirective implements OnChanges {
   @Input('epgu-constructor-counter') counter: number;
   @Input() interval: number;
-  @Output() value = new EventEmitter<number>();
 
   private counter$ = new Subject<{ count: number; interval: number }>();
 
-  constructor(private ngUnsubscribe$: UnsubscribeService) {
+  constructor(private ngUnsubscribe$: UnsubscribeService, private eventBusService: EventBusService) {
     this.counter$
       .pipe(
         switchMap((options) => {
           return timer(0, options.interval).pipe(
             take(options.count),
-            tap(() => this.value.emit(--options.count)),
+            tap(() => this.eventBusService.emit('counterValueChanged', --options.count)),
           );
         }),
-        takeUntil(ngUnsubscribe$),
+        takeUntil(this.ngUnsubscribe$),
       )
       .subscribe();
   }

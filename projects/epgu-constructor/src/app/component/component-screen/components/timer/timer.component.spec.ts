@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { TimerComponent } from './timer.component';
-import { TimerPipe } from './pipes/timer.pipe';
 import { MockModule } from 'ng-mocks';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { ScreenService } from '../../../../screen/screen.service';
+import { CoreModule } from '../../../../core/core.module';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { BaseModule } from '../../../../shared/base.module';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
-import { BaseModule } from '../../../../shared/base.module';
-import { CoreModule } from '../../../../core/core.module';
+import { TimerPipe } from './pipes/timer.pipe';
+import { TimerComponent } from './timer.component';
+
 
 describe('TimerComponent', () => {
   let component: TimerComponent;
@@ -34,6 +35,7 @@ describe('TimerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         CachedAnswersService,
         ValueLoaderService,
+        EventBusService,
       ],
       imports: [MockModule(BaseModule), MockModule(CoreModule)],
     }).compileComponents();

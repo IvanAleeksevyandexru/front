@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
 import { ConfirmationModal } from '../confirmation-modal.interface';
 import { ConfirmationModalBaseButton } from './confirmation-modal-base.interface';
 
@@ -16,16 +17,17 @@ export class ConfirmationModalBaseComponent {
   @Input() preview?: boolean;
   @Input() isShortModal?: boolean;
 
-  @Output() closeModalChange = new EventEmitter();
-
   public isMobile: boolean;
   public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
 
-  constructor(private deviceDetector: DeviceDetectorService) {
+  constructor(
+    private deviceDetector: DeviceDetectorService,
+    private eventBusService: EventBusService,
+  ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
 
   closeModal(): void {
-    this.closeModalChange.emit();
+    this.eventBusService.emit('closeModalEvent');
   }
 }

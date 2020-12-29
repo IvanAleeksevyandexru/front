@@ -1,36 +1,31 @@
-import {
-  AfterViewChecked,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Output,
-} from '@angular/core';
-import { filter, map, pairwise, tap } from 'rxjs/operators';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenTypes } from '../../../../screen/screen.types';
+import { isEqualObj } from '../../../../shared/constants/uttils';
+import {
+  CustomComponent,
+  CustomComponentOutputData,
+} from '../../../components-list/components-list.types';
 import {
   defaultScreensAmount,
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
   StateStatus,
 } from './repeatable-fields.constant';
-import {
-  CustomComponent,
-  CustomComponentOutputData,
-} from '../../../components-list/components-list.types';
-import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { ScreenTypes } from '../../../../screen/screen.types';
-import { isEqualObj } from '../../../../shared/constants/uttils';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
   templateUrl: './repeatable-fields.component.html',
   styleUrls: ['./repeatable-fields.component.scss'],
+  providers: [UnsubscribeService],
 })
-export class RepeatableFieldsComponent implements AfterViewChecked {
-  @Output() nextStepEvent = new EventEmitter();
-
+export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
   objectKeys = Object.keys;
   componentId: number;
   isValid: boolean;
@@ -73,7 +68,16 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
     private cdr: ChangeDetectorRef,
+    private eventBusService: EventBusService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {}
+
+  ngOnInit(): void {
+    this.eventBusService
+      .on('cloneButtonClickEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.duplicateScreen(true));
+  }
 
   trackByFunction = (index, item): string => item;
 
@@ -111,7 +115,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   }
 
   nextScreen(): void {
-    this.nextStepEvent.emit(this.currentAnswersService.state);
+    this.eventBusService.emit('nextStepEvent', this.currentAnswersService.state);
   }
 
   removeItem(key: string, index: number): void {

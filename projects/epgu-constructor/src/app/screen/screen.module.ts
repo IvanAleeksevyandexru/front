@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
+import { EventBusService } from '../form-player/services/event-bus/event-bus.service';
 import { ModalModule } from '../modal/modal.module';
+import { BaseModule } from '../shared/base.module';
 import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
 import { HtmlRemoverService } from '../shared/services/html-remover/html-remover.service';
 import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
@@ -20,7 +22,6 @@ import { ScreenResolverComponent } from './screen-resolver/screen-resolver.compo
 import { ScreenService } from './screen.service';
 import { UniqueScreenComponent } from './unique-screen/unique-screen.component';
 import { UniqueScreenModule } from './unique-screen/unique-screen.module';
-import { BaseModule } from '../shared/base.module';
 
 /**
  * Домен скринов. Здесь храниться всё что связанно со скринами и их обязками.
@@ -44,6 +45,7 @@ import { BaseModule } from '../shared/base.module';
     CurrentAnswersService,
     ValueLoaderService,
     HtmlRemoverService,
+    EventBusService,
   ],
   exports: [ScreenResolverComponent],
   entryComponents: [

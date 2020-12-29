@@ -1,7 +1,7 @@
-import { Directive, HostListener, Input, Output, EventEmitter } from '@angular/core';
+import { Directive, HostListener, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
-
 import { CustomComponent } from '../../../component/components-list/components-list.types';
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
 import { ValidationService } from '../../services/validation/validation.service';
 
 @Directive({
@@ -9,9 +9,8 @@ import { ValidationService } from '../../services/validation/validation.service'
 })
 export class ValidationTypeDirective {
   @Input() component?: CustomComponent;
-  @Output() emmitChangesEvent = new EventEmitter<void>();
 
-  constructor(private validationService: ValidationService, private control: NgControl) {}
+  constructor(private validationService: ValidationService, private control: NgControl, private eventBusService: EventBusService) {}
 
   @HostListener('blur')
   blur(): void {
@@ -25,6 +24,6 @@ export class ValidationTypeDirective {
     this.control.control.setAsyncValidators(onBlurValidatorFns);
     this.control.control.updateValueAndValidity();
     this.control.control.clearAsyncValidators();
-    this.emmitChangesEvent.emit();
+    this.eventBusService.emit('validateOnBlur');
   }
 }

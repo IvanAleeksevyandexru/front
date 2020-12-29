@@ -2,13 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponents, MockDirective, MockModule, MockPipe } from 'ng-mocks';
-import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
+import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 import { ConfigService } from '../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
-import { ImgPrefixerPipe } from '../../shared/pipes/img-prefixer/img-prefixer.pipe';
+import { LocationService } from '../../core/services/location/location.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { NavigationPayload } from '../../form-player/form-player.types';
+import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
   ActionType,
   ClarificationsDto,
@@ -20,13 +21,13 @@ import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
+import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ActionDirective } from '../../shared/directives/action/action.directive';
+import { ImgPrefixerPipe } from '../../shared/pipes/img-prefixer/img-prefixer.pipe';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { QuestionsScreenComponent } from './questions-screen.component';
-import { LocationService } from '../../core/services/location/location.service';
-import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -96,6 +97,7 @@ describe('QuestionsScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        EventBusService,
       ],
     }).compileComponents();
   });

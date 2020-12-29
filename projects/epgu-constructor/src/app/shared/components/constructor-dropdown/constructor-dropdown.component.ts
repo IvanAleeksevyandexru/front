@@ -1,10 +1,10 @@
 import {
+  ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   OnInit,
   Output,
-  EventEmitter,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
@@ -26,7 +26,7 @@ export class ConstructorDropdownComponent implements OnInit {
   @Input() placeholder?: string = '&mdash;';
   @Input() items: Array<ListElement>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Output() changed = new EventEmitter<ListElement | any>();
+  @Output() changed = new EventEmitter<ListElement | any>(); // TODO: подумать над рефактором подписочной модели
 
   public onChanged(item: ListElement): void {
     this.changed.emit(item);

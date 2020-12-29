@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
+import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 
 @Component({
@@ -13,7 +14,7 @@ import { ScreenService } from '../../../../../screen/screen.service';
   styleUrls: ['./confirm-email.component.scss'],
   providers: [UnsubscribeService],
 })
-export class ConfirmEmailComponent {
+export class ConfirmEmailComponent implements OnInit {
   timer: number;
   isTimerShow = true;
 
@@ -25,12 +26,20 @@ export class ConfirmEmailComponent {
     private ngUnsubscribe$: UnsubscribeService,
     private navModalService: NavigationModalService,
     public config: ConfigService,
+    private eventBusService: EventBusService,
   ) {
     interval(5000)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
         this.navModalService.next({ payload: this.getComponentState() });
       });
+  }
+
+  ngOnInit(): void {
+    this.eventBusService
+      .on('counterValueChanged')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: number) => this.timerChange(payload));
   }
 
   public resendEmailConfirmation(): void {

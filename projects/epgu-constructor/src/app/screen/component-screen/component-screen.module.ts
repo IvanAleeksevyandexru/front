@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
-import { ComponentScreenComponent } from './component-screen.component';
 import { ComponentScreenComponentsModule } from '../../component/component-screen/component-screen-components.module';
-import { ComponentsListModule } from '../../component/components-list/components-list.module';
 import { TimerModule } from '../../component/component-screen/components/timer/timer.module';
-import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
-import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
-import { FieldListModule } from '../../shared/components/field-list/field-list.module';
-import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
+import { ComponentsListModule } from '../../component/components-list/components-list.module';
+import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import { BaseModule } from '../../shared/base.module';
+import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
+import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
+import { FieldListModule } from '../../shared/components/field-list/field-list.module';
+import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
+import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
+import { ActionModule } from '../../shared/directives/action/action.module';
+import { ComponentScreenComponent } from './component-screen.component';
 
 @NgModule({
   declarations: [ComponentScreenComponent],
@@ -23,6 +25,8 @@ import { BaseModule } from '../../shared/base.module';
     AnswerButtonModule,
     FieldListModule,
     ScreenPadModule,
-  ]
+    ActionModule,
+  ],
+  providers: [EventBusService],
 })
 export class ComponentScreenModule {}

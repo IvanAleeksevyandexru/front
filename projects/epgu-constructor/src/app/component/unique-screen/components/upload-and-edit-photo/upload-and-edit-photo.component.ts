@@ -1,19 +1,14 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
@@ -33,12 +28,12 @@ import {
   uploadPhotoElemId,
 } from './upload-and-edit-photo.constant';
 import { ImgSubject } from './upload-and-edit-photo.model';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',
   templateUrl: './upload-and-edit-photo.component.html',
   styleUrls: ['./upload-and-edit-photo.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   @ViewChild('hiddenFileInput') fileInput: ElementRef;
@@ -46,8 +41,6 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     static: true,
   })
   cameraInput: ElementRef;
-
-  @Output() nextStepEvent = new EventEmitter();
 
   data: ComponentDto;
   header: string;
@@ -83,6 +76,8 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     private utils: UtilsService,
     public screenService: ScreenService,
     public config: ConfigService,
+    private eventBusService: EventBusService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.header = screenService.header;
     this.data = { ...screenService.component };
@@ -93,6 +88,11 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.addImgSubscriptions();
     this.checkImagePresence();
     this.setHowPhotoModalParams();
+
+    this.eventBusService
+      .on('fileDropped')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: FileList) => this.onFileSelected(payload));
 
     this.isDesktop = this.deviceDetector.isDesktop;
     this.allowedImgTypes = this.data?.attrs?.uploadedFile?.fileType || [];
@@ -354,6 +354,6 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         switchMap(() => compressFile()),
         switchMap((compressedFile) => uploadFile(compressedFile)),
       )
-      .subscribe(() => this.nextStepEvent.emit(JSON.stringify(requestData)));
+      .subscribe(() => this.eventBusService.emit('nextStepEvent', JSON.stringify(requestData)));
   }
 }

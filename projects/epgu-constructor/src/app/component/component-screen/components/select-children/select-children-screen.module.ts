@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
-import { SelectChildrenScreenComponent } from './select-children-screen.component';
-import { ComponentsListModule } from '../../../components-list/components-list.module';
-import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
+import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
-import { BaseModule } from '../../../../shared/base.module';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
+import { ComponentsListModule } from '../../../components-list/components-list.module';
+import { SelectChildrenScreenComponent } from './select-children-screen.component';
 
 const COMPONENTS = [SelectChildrenScreenComponent];
 
@@ -22,6 +23,6 @@ const COMPONENTS = [SelectChildrenScreenComponent];
     ScreenPadModule,
   ],
   exports: [...COMPONENTS],
-  providers: [ScreenService, CachedAnswersService],
+  providers: [ScreenService, CachedAnswersService, EventBusService],
 })
 export class SelectChildrenScreenModule {}

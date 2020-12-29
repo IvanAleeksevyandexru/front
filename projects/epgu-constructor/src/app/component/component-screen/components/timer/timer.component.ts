@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { timer } from 'rxjs';
 import { takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -15,6 +15,7 @@ import {
   selector: 'epgu-constructor-timer',
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.scss'],
+  providers: [UnsubscribeService],
 })
 export class TimerComponent {
   @Input() set data(componentBase: TimerComponentBase) {
@@ -36,7 +37,6 @@ export class TimerComponent {
     }
     this.startTimer();
   }
-  @Output() nextStepEvent = new EventEmitter<string>();
 
   public componentBase: TimerComponentBase;
   get data(): TimerComponentBase {
@@ -90,10 +90,6 @@ export class TimerComponent {
     if (this.data?.attrs?.timerRules?.hideTimerFrom !== undefined) {
       this.checkHideTimer();
     }
-  }
-
-  nextStep(): void {
-    this.nextStepEvent.emit(JSON.stringify({ isExpired: this.timer.time === 0 }));
   }
 
   /**

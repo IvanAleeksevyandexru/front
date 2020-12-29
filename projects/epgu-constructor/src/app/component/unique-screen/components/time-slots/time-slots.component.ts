@@ -1,10 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { Observable, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
@@ -35,7 +36,6 @@ moment.locale('ru');
   providers: [UnsubscribeService],
 })
 export class TimeSlotsComponent implements OnInit {
-  @Output() nextStepEvent = new EventEmitter();
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<DisplayDto> = this.screenService.display$;
 
@@ -95,6 +95,7 @@ export class TimeSlotsComponent implements OnInit {
     public constants: TimeSlotsConstants,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
+    private eventBusService: EventBusService,
   ) {
     this.timeSlotServices.BRAK = this.brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = this.divorceTimeSlotsService;
@@ -225,7 +226,7 @@ export class TimeSlotsComponent implements OnInit {
       if (this.isCachedValueChanged()) {
         this.showModal(this.confirmModalParameters);
       } else {
-        this.nextStepEvent.emit(JSON.stringify(this.cachedAnswer));
+        this.eventBusService.emit('nextStepEvent', JSON.stringify(this.cachedAnswer));
       }
     } else {
       this.bookTimeSlot();
@@ -248,7 +249,7 @@ export class TimeSlotsComponent implements OnInit {
           department: this.currentService.department,
         };
         this.setBookedTimeStr(this.currentSlot);
-        this.nextStepEvent.emit(JSON.stringify(answer));
+        this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
       },
       () => {
         this.inProgress = false;

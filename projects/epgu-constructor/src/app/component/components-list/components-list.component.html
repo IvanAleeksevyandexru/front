@@ -336,7 +336,6 @@
     [readOnly]="data.value?.attrs?.readonly"
     [placeholder]="data.value?.attrs?.placeholder"
     [component]="data.value"
-    (emmitChangesEvent)="emitChanges()"
   ></epgu-constructor-constructor-plain-input>
 </ng-template>
 
@@ -356,7 +355,6 @@
     [invalid]="data.get('value').invalid && data.get('value').touched"
     [isTrim]="false"
     [component]="data.value"
-    (emmitChangesEvent)="emitChanges()"
   ></epgu-constructor-masked-input>
 </ng-template>
 

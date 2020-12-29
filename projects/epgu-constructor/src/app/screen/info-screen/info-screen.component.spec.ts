@@ -3,12 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
+import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 import { ConfigService } from '../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
-import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 import { LocationService } from '../../core/services/location/location.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
+import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
   ComponentActionDto,
   ComponentDto,
@@ -69,6 +70,7 @@ describe('InfoScreenComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        EventBusService,
       ],
     }).compileComponents();
   });

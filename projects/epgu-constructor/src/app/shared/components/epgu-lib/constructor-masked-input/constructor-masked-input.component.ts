@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-
-import { TextTransform } from '../../../types/textTransform';
 import { CustomComponent } from '../../../../component/components-list/components-list.types';
+import { TextTransform } from '../../../types/textTransform';
 
 @Component({
   selector: 'epgu-constructor-masked-input',
@@ -25,7 +24,6 @@ export class ConstructorMaskedInputComponent {
   @Input() placeholder: string;
   @Input() isTrim?: boolean;
   @Input() component?: CustomComponent;
-  @Output() public emmitChangesEvent = new EventEmitter<void>();
 
   public onChange($event: Event): void {
     if (this.control.updateOn === 'blur') {
@@ -33,9 +31,5 @@ export class ConstructorMaskedInputComponent {
       this.control.setValue(input.value);
       this.control.updateValueAndValidity();
     }
-  }
-
-  public onEmmitChanges(): void {
-    this.emmitChangesEvent.emit();
   }
 }

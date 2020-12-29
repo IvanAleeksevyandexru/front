@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
+import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 
 interface CodeFormGroup {
@@ -42,6 +43,7 @@ export class ConfirmPhoneComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private navModalService: NavigationModalService,
     private fb: FormBuilder,
+    private eventBusService: EventBusService,
   ) {
     this.characterMask = this.screenService.component.attrs.characterMask;
     this.codeLength = this.screenService.component.attrs.codeLength;
@@ -50,6 +52,10 @@ export class ConfirmPhoneComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCodeFormArray();
+    this.eventBusService
+      .on('counterValueChanged')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: number) => this.timerChange(payload));
   }
 
   isItemHasError(codeValue: string): Boolean {

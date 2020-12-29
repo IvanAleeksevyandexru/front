@@ -1,27 +1,29 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ButtonComponent, LoaderComponent } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { SignatureApplicationComponent } from './signature-application.component';
-import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
-import { PageNameComponent } from '../../../../../shared/components/base-components/page-name/page-name.component';
-import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
-import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
-import { OutputHtmlComponent } from '../../../../../shared/components/output-html/output-html.component';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { ScreenService } from '../../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { ButtonComponent, LoaderComponent } from 'epgu-lib';
 import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/shared/pipes/img-prefixer/img-prefixer.pipe';
-import { SafePipe } from '../../../../../shared/pipes/safe/safe.pipe';
-import { SignatureApplicationData } from '../models/application.interface';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../../core/services/device-detector/device-detector.service.stub';
+import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
+import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
 import {
   ApplicantAnswersDto,
   ComponentDto,
 } from '../../../../../form-player/services/form-player-api/form-player-api.types';
-import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../../../core/services/device-detector/device-detector.service.stub';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
+import { PageNameComponent } from '../../../../../shared/components/base-components/page-name/page-name.component';
+import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
+import { OutputHtmlComponent } from '../../../../../shared/components/output-html/output-html.component';
+import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
+import { SafePipe } from '../../../../../shared/pipes/safe/safe.pipe';
+import { SignatureApplicationData } from '../models/application.interface';
+import { SignatureApplicationComponent } from './signature-application.component';
+
+
 
 xdescribe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -72,6 +74,7 @@ xdescribe('SignatureApplicationComponent', () => {
           { provide: ScreenService, useClass: ScreenServiceStub },
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+          EventBusService,
         ],
       }).compileComponents();
 
