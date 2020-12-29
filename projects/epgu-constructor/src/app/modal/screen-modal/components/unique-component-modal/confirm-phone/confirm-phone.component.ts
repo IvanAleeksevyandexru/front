@@ -1,4 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
@@ -17,6 +24,7 @@ interface CodeFormGroup {
   templateUrl: './confirm-phone.component.html',
   styleUrls: ['./confirm-phone.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmPhoneComponent implements OnInit {
   @ViewChild('codeGroup') codeGroupElement: ElementRef;
@@ -42,6 +50,7 @@ export class ConfirmPhoneComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private navModalService: NavigationModalService,
     private fb: FormBuilder,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     this.characterMask = this.screenService.component.attrs.characterMask;
     this.codeLength = this.screenService.component.attrs.codeLength;
@@ -126,6 +135,8 @@ export class ConfirmPhoneComponent implements OnInit {
 
           this.enterCode(code);
           this.lastCode = code;
+
+          this.changeDetectionRef.markForCheck();
         });
     }
   }

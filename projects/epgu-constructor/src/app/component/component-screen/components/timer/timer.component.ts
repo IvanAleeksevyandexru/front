@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { timer } from 'rxjs';
 import { takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -15,6 +22,7 @@ import {
   selector: 'epgu-constructor-timer',
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimerComponent {
   @Input() set data(componentBase: TimerComponentBase) {
@@ -51,7 +59,11 @@ export class TimerComponent {
   private hasButtons = false;
   private oneSecond = 1000;
 
-  constructor(private ngUnsubscribe$: UnsubscribeService, public screenService: ScreenService) {}
+  constructor(
+    private ngUnsubscribe$: UnsubscribeService,
+    public screenService: ScreenService,
+    private changeDetectionRef: ChangeDetectorRef,
+  ) {}
 
   /**
    * Стартует работу таймера
@@ -63,7 +75,9 @@ export class TimerComponent {
         takeUntil(this.ngUnsubscribe$),
         tap(() => this.startTimerHandler()),
       )
-      .subscribe();
+      .subscribe(() => {
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   /**

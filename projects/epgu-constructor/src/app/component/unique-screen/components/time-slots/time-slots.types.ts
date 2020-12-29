@@ -39,6 +39,7 @@ export interface ZagsDepartmentInterface extends DepartmentInterface {
     ADDRESS: string;
     FULLNAME: string;
     PHONE: string;
+    AREA_NAME?: string;
   };
 }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { UnusedPaymentInterface } from '../../component/unique-screen/components/unused-payments/unused-payment.interface';
 
@@ -6,6 +6,7 @@ import { UnusedPaymentInterface } from '../../component/unique-screen/components
   selector: 'epgu-constructor-use-payments-modal',
   templateUrl: './use-payments-modal.component.html',
   styleUrls: ['./use-payments-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsePaymentsModalComponent extends ModalBaseComponent {
   paymentsList?: UnusedPaymentInterface[];

@@ -27,6 +27,7 @@ import { ScreenServiceStub } from '../screen.service.stub';
 import { QuestionsScreenComponent } from './questions-screen.component';
 import { LocationService } from '../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -97,6 +98,8 @@ describe('QuestionsScreenComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
+    }).overrideComponent(QuestionsScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     }).compileComponents();
   });
 

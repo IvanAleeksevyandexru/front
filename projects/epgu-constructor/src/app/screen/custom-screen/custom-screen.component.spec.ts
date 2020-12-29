@@ -19,6 +19,7 @@ import { ScreenServiceStub } from '../screen.service.stub';
 import { By } from '@angular/platform-browser';
 import { ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 const moment = moment_;
 
@@ -43,6 +44,8 @@ describe('CustomScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
       ],
+    }).overrideComponent(CustomScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     });
   });
 

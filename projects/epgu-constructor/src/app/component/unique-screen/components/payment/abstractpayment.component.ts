@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Injector, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Injector,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import * as moment_ from 'moment';
 import { catchError, switchMap, takeUntil, map, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
@@ -36,6 +45,7 @@ const moment = moment_;
 
 @Component({
   template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AbstractPaymentComponent implements OnDestroy, OnInit {
   @Output() nextStepEvent = new EventEmitter<string>();
@@ -66,6 +76,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
 
   private localStorageService: LocalStorageService;
   private locationService: LocationService;
+  private changeDetectionRef: ChangeDetectorRef;
   private payCode = 1; // Код типа плательщика
   private payStatusIntervalLink = null;
   private payStatusInterval = 30;
@@ -80,6 +91,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     this.config = this.injector.get(ConfigService);
     this.locationService = this.injector.get(LocationService);
     this.localStorageService = this.injector.get(LocalStorageService);
+    this.changeDetectionRef = this.injector.get(ChangeDetectorRef);
     this.header$ = this.screenService.header$.pipe(map((header) => header ?? 'Оплата госпошлины'));
     this.init$ = this.screenService.component$.pipe(
       tap((data: ComponentBase) => {
@@ -93,7 +105,9 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.init$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+    this.init$
+      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
+      .subscribe();
   }
 
   /**
@@ -151,8 +165,14 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
         .getBillsInfoByBillId(this.billId, this.orderId)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
-          (info: BillsInfoResponse) => this.getBillsInfoByBillIdSuccess(info),
-          (error) => this.setPaymentStatusFromErrorRequest(error),
+          (info: BillsInfoResponse) => {
+            this.getBillsInfoByBillIdSuccess(info);
+            this.changeDetectionRef.markForCheck();
+          },
+          (error) => {
+            this.setPaymentStatusFromErrorRequest(error);
+            this.changeDetectionRef.markForCheck();
+          },
         );
     } else {
       this.loadPaymentInfoOldType();
@@ -183,8 +203,14 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(
-        (res) => this.setPaymentStatusFromSuccessRequest(res),
-        (error) => this.setPaymentStatusFromErrorRequest(error),
+        (res) => {
+          this.setPaymentStatusFromSuccessRequest(res);
+          this.changeDetectionRef.markForCheck();
+        },
+        (error) => {
+          this.setPaymentStatusFromErrorRequest(error);
+          this.changeDetectionRef.markForCheck();
+        },
       );
   }
 
@@ -234,14 +260,22 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
         takeUntil(this.ngUnsubscribe$),
         catchError((err) => this.setPaymentStatusFromErrorRequest(err)),
       )
-      .subscribe((info: BillsInfoResponse) => this.getBillsInfoByUINSuccess(info));
+      .subscribe(
+        (info: BillsInfoResponse) => {
+          this.getBillsInfoByUINSuccess(info);
+          this.changeDetectionRef.markForCheck();
+        },
+        () => {
+          this.changeDetectionRef.markForCheck();
+        },
+      );
 
     // Если не оплачено, то периодически проверяем оплачено или нет
     if (!this.isPaid) {
-      this.payStatusIntervalLink = setInterval(
-        () => this.getPaymentStatusByUIN(),
-        this.payStatusInterval * 1000,
-      );
+      this.payStatusIntervalLink = setInterval(() => {
+        this.getPaymentStatusByUIN();
+        this.changeDetectionRef.markForCheck();
+      }, this.payStatusInterval * 1000);
     }
   }
 
@@ -333,9 +367,10 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
           return throwError(err);
         }),
       )
-      .subscribe((response: PaymentInfoForPaidStatusData) =>
-        this.getPaymentStatusByUINSuccess(response),
-      );
+      .subscribe((response: PaymentInfoForPaidStatusData) => {
+        this.getPaymentStatusByUINSuccess(response);
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   /**

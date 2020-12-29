@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import {
   ConfirmUserDataFieldsState,
   ConfirmUserDataState,
@@ -20,6 +27,7 @@ const defaultStyle: ConfirmUserDataStyle = {
   selector: 'epgu-constructor-field-list',
   templateUrl: './field-list.component.html',
   styleUrls: ['./field-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FieldListComponent implements OnInit, OnChanges {
   @Input() data: ComponentDto;
