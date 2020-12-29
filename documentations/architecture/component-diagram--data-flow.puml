@@ -20,6 +20,9 @@ package "Screen" {
   [ScreenModule] <---- [ComponentModules...]
   [Screens...] <---- [Components...]
   [ScreenModule] <-- [ScreenService]
+  [ScreenResolverComponent] <-- [ScreenService]
+  [Screens...] <-- [ScreenService]
+  [Components...] <-- [ScreenService]
   [ScreenModule] <-- [ScreenResolverComponent]
   [ScreenResolverComponent] <-- [Screens...]
   [ScreenModule] <-- [Screens...]
@@ -37,6 +40,7 @@ package "Form Player" {
   [FormPlayerComponent] <-- [FormPlayerStartManager]
   [FormPlayerStartManager] <-- [FormPlayerService]
   [FormPlayerService] <-- [FormPlayerApiService]
+  [FormPlayerService] ..> [ScreenService]
 }
 
 package "Modal" {
@@ -46,7 +50,7 @@ package "Modal" {
   note left of [ContinueOrderModalService] : Провайдит вызов \n показа \n ContinueOrderModal
   note left of [ModalService] : Общий сервис для \n вызова отображения \n различных модальных окон
   note left of [ScreenModalComponent] : Компанента для вызова плеера \n в режиме модалног окна \n управляеться через \n NavigationModalService
-  note left of [ScreenModalService] : Схожий сервис с \n  FormPlayerService, \n отдельный контур для \n ScreenModalComponent
+  note top of [ScreenModalService] : Схожий сервис с \n  FormPlayerService, \n отдельный контур для \n ScreenModalComponent
   [FormPlayerModule] <.. [ModalModule]
   [ModalModule] <-- [ModalService]
   [ModalModule] <-- [ScreenModalComponent]
@@ -95,6 +99,8 @@ package "Shared" {
   [Directives...]
   [ActionDirective] <-- [NavigationService]
   [ActionDirective] <-- [NavigationModalService]
+  [ActionDirective] --> [Screens...]
+  [ActionDirective] --> [Components...]
 }
 
 
