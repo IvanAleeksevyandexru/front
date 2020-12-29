@@ -15,7 +15,7 @@ import {
   TimeSlot,
   TimeSlotReq,
   TimeSlotsAnswerInterface,
-  TimeSlotValueInterface,
+  TimeSlotValueInterface
 } from './time-slots.types';
 
 @Injectable()
@@ -185,7 +185,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    const name = `${this.sessionService.userId}#${this.department.value}#${selectedSlot.slotId}`;
+    const name = `${this.sessionService.userId}#${this.department.value}`;
     this.bookId = uuidv5(name, this.BOOKING_NAMESPACE);
 
     const {

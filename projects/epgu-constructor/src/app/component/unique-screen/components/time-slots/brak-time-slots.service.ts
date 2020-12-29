@@ -17,7 +17,7 @@ import {
   TimeSlotReq,
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface,
+  ZagsDepartmentInterface
 } from './time-slots.types';
 
 const moment = moment_;
@@ -246,7 +246,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    const name = `${this.sessionService.userId}#${this.department.value}#${selectedSlot.slotId}`;
+    const name = `${this.sessionService.userId}#${this.department.value}`;
     this.bookId = uuidv5(name, this.BOOKING_NAMESPACE);
 
     const {
