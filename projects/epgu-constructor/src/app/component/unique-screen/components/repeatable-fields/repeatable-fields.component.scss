@@ -1,4 +1,5 @@
 @import 'src/styles/core/variables';
+@import 'src/styles/core/palettes';
 
 .cmp-group {
   &__layer {
@@ -18,4 +19,9 @@
     width: 100%;
     text-align: center;
   }
+}
+
+.common-error {
+  margin-bottom: 4px;
+  color: $color-gosred;
 }

@@ -57,10 +57,4 @@ import { InitDataService } from './services/init-data/init-data.service';
     LocationService,
   ],
 })
-export class CoreModule {
-  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
-    if (parentModule) {
-      throw new Error('CoreModule is already loaded. Import it in the FormPlayerModule only');
-    }
-  }
-}
+export class CoreModule {}

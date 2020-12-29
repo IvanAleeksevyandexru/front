@@ -16,8 +16,11 @@ import { ContinueOrderModalService } from '../../../modal/continue-order-modal/c
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { LocationService } from '../../../core/services/location/location.service';
 
+/**
+ * Менеджер для обработки различных кейсов запуска плеера.
+ */
 @Injectable()
-export class FormPlayerStartService {
+export class FormPlayerStartManager {
   constructor (
     private initDataService: InitDataService,
     private loggerService: LoggerService,

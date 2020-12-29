@@ -14,7 +14,7 @@
         <lib-dadata-widget
           [simpleMode]="true"
           [hideLevels]="(data$ | async)?.attrs?.hideLevels || []"
-          [hideHouseCheckbox]="true"
+          [hideHouseCheckbox]="false"
           [name]="field.fieldName"
           [externalApiUrl]="config.externalApiUrl + '/'"
           [initValue]="$any(valueParsed[field.fieldName])"

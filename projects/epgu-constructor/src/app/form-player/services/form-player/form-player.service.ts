@@ -2,14 +2,12 @@ import { Inject, Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { ScreenService } from '../../../screen/screen.service';
-import { LAST_SCENARIO_KEY } from '../../../shared/constants/form-player';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse, QuizRequestDto,
 } from '../form-player-api/form-player-api.types';
-import { UtilsService } from '../../../core/services/utils/utils.service';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
 import { Location } from '@angular/common';
 import { WINDOW } from '../../../core/providers/window.provider';
