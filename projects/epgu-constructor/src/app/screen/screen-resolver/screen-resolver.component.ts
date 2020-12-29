@@ -20,6 +20,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
   templateUrl: './screen-resolver.component.html',
   styleUrls: ['./screen-resolver.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  providers: [UnsubscribeService],
 })
 export class ScreenResolverComponent implements AfterViewInit {
   @ViewChild('screenContainer', { read: ViewContainerRef }) screenContainer: ViewContainerRef;
@@ -50,7 +51,15 @@ export class ScreenResolverComponent implements AfterViewInit {
     }
   }
 
-  createComponent(screenType: ScreenTypes): void {
+  getScreenComponentByType(screenType: ScreenTypes): Type<ScreenComponent> {
+    return SCREEN_COMPONENTS[screenType];
+  }
+
+  private handleScreenComponentError(screenType: ScreenTypes): never {
+    throw new Error(`We cant find screen component for this screen type: ${screenType}`);
+  }
+
+  private createComponent(screenType: ScreenTypes): void {
     const screenComponent = this.getScreenComponentByType(screenType);
 
     if (!screenComponent) {
@@ -62,13 +71,5 @@ export class ScreenResolverComponent implements AfterViewInit {
     );
 
     this.componentRef = this.screenContainer.createComponent(componentFactory);
-  }
-
-  getScreenComponentByType(screenType: ScreenTypes): Type<ScreenComponent> {
-    return SCREEN_COMPONENTS[screenType];
-  }
-
-  private handleScreenComponentError(screenType: ScreenTypes): never {
-    throw new Error(`We cant find screen component for this screen type: ${screenType}`);
   }
 }
