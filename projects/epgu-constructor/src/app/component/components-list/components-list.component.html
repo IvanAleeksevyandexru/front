@@ -264,6 +264,7 @@
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.SnilsInput"
         [data]="componentData"
+        [hidden]="componentData.value?.attrs?.hidden"
       >
         <ng-container
           *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
