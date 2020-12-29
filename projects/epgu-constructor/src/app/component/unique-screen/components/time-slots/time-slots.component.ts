@@ -341,6 +341,8 @@ export class TimeSlotsComponent implements OnInit {
         this.errorMessage = this.currentService.getErrorMessage();
         this.inProgress = false;
         this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+
+        this.changeDetectionRef.markForCheck();
       },
     );
   }
