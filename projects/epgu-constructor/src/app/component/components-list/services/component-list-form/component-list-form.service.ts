@@ -11,6 +11,7 @@ import { isEqualObj } from '../../../../shared/constants/uttils';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
 import {
   CustomComponent,
+  CustomComponentAttr,
   CustomComponentAttrValidation,
   CustomComponentOutputData,
   CustomComponentValidationConditions,
@@ -19,14 +20,10 @@ import {
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes,
-  CustomComponentAttr,
   UpdateOn,
 } from '../../components-list.types';
 import { isDropDown } from '../../tools/custom-screen-tools';
-import {
-  AddressHelperService,
-  DadataSuggestionsAddressForLookup,
-} from '../address-helper/address-helper.service';
+import { AddressHelperService, DadataSuggestionsAddressForLookup, } from '../address-helper/address-helper.service';
 import { ComponentListRepositoryService } from '../component-list-repository/component-list-repository.service';
 import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
@@ -271,6 +268,15 @@ export class ComponentListFormService {
     components: Array<CustomComponent>,
     errorMsg: string,
   ): FormGroup {
+    const validators = [
+      this.validationService.customValidator(component),
+      this.validationService.validationBackendError(errorMsg, component),
+    ];
+
+    if (component.type === CustomScreenComponentTypes.DateInput) {
+      validators.push(this.validationService.dateValidator(component));
+    }
+
     const form: FormGroup = this.fb.group(
       {
         ...component,
@@ -279,10 +285,7 @@ export class ComponentListFormService {
             value: this.toolsService.convertedValue(component),
             disabled: component.attrs.disabled,
           },
-          [
-            this.validationService.customValidator(component),
-            this.validationService.validationBackendError(errorMsg, component),
-          ],
+          validators,
         ],
       },
       { updateOn: this.updateOnValidation(component) },

@@ -112,10 +112,17 @@ export class ValueLoaderService {
     const isCachedValueParsable = this.utils.hasJsonStructure(cachedValue);
 
     if (isPresetParsable && isCachedValueParsable) {
-      return JSON.stringify({
-        ...JSON.parse(preset),
-        ...this.cachedAnswersService.parseCachedValue(cachedValue, component),
-      });
+      const parsedPreset = JSON.parse(preset);
+      const parsedCachedValue = this.cachedAnswersService.parseCachedValue(cachedValue, component);
+
+      if (Array.isArray(parsedCachedValue)) {
+        return JSON.stringify(parsedCachedValue);
+      } else {
+        return JSON.stringify({
+          ...parsedPreset,
+          ...parsedCachedValue as object,
+        });
+      }
     }
 
     if (parentId && isCachedValueParsable) {

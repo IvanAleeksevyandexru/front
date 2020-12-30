@@ -11,8 +11,8 @@ import { ComponentDto } from '../../../../form-player/services/form-player-api/f
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStoreComponentDtoI } from '../../../../screen/screen.types';
-import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { CustomComponentOutputData } from '../../../components-list/components-list.types';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 
 enum ItemStatus {
   invalid = 'INVALID',
@@ -245,7 +245,12 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param index индекс массива детей
    */
   handleSelect(event: ChildI | null, index?: number, id?: string): void {
-    Object.assign(this.items[index], event);
+    this.items[index] = {
+      controlId: this.items[index].controlId,
+      isNewRef: this.items[index].isNewRef,
+      ...event,
+    };
+
     if (event && event[this.idRef] === this.NEW_ID) {
       this.addNewChild(index);
     } else {

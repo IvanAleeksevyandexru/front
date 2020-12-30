@@ -9,7 +9,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { ValidationShowOn } from 'epgu-lib';
+import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../core/services/config/config.service';
@@ -39,12 +39,7 @@ const halfWidthItemTypes = [
   selector: 'epgu-constructor-components-list',
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
-  providers: [
-    ComponentListFormService,
-    ComponentListRepositoryService,
-    UnsubscribeService,
-    DateRangeService,
-  ],
+  providers: [ComponentListFormService, ComponentListRepositoryService, UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentsListComponent implements OnInit, OnChanges {
@@ -55,7 +50,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
 
   shownElements: { [key: string]: boolean } = {};
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-
+  brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
   dropDowns$: BehaviorSubject<CustomListDropDowns> = this.repository.dropDowns$;
   dictionaries$: BehaviorSubject<CustomListDictionaries> = this.repository.dictionaries$;
 

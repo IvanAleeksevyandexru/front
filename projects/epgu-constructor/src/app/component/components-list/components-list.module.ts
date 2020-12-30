@@ -21,6 +21,7 @@ import { CurrencyModule } from '../../shared/directives/currency/currency.module
 import { MemoPipe } from '../../core/pipes/memo/memo.pipe';
 import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../shared/base.module';
+import { DateRangeService } from './services/date-range/date-range.service';
 
 const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent, MemoPipe];
 
@@ -48,6 +49,7 @@ const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputCom
     AddressHelperService,
     ComponentListToolsService,
     DictionaryApiService,
+    DateRangeService,
   ],
 })
 export class ComponentsListModule {}
