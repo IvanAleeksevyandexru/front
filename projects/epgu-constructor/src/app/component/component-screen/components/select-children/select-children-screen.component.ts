@@ -72,14 +72,11 @@ export class SelectChildrenScreenComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.data$
-      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
-      .subscribe((data) => {
-        this.initVariables(data.id);
-        this.initStartValues(data.id);
-
-        this.changeDetectionRef.markForCheck();
-      });
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+      this.initVariables(data.id);
+      this.initStartValues(data.id);
+      this.changeDetectionRef.markForCheck();
+    });
 
     this.selectChildrenForm.valueChanges
       .pipe(startWith(this.selectChildrenForm.value as object), takeUntil(this.ngUnsubscribe$))
