@@ -11,7 +11,7 @@ import {
   Observable,
   throwError,
 } from 'rxjs';
-import { catchError, filter } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   COMMON_ERROR_MODAL_PARAMS,
@@ -38,23 +38,24 @@ export class ErrorsInterceptorService implements HttpInterceptor {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private showModal(params: ConfirmationModal): Observable<any> {
-    return this.modalService.openModal(ConfirmationModalComponent,
-      params,
-    );
+  private showModal(params: ConfirmationModal): Promise<any> {
+    return this.modalService.openModal(ConfirmationModalComponent, params).toPromise();
   }
 
   private handleResponseError(error: HttpErrorResponse): Observable<HttpEvent<void | never>> {
     const { status, url } = error;
     if (status === 401) {
-      this.showModal(AUTH_ERROR_MODAL_PARAMS).subscribe((result) => {
+      this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
         result === 'login' ? this.locationService.reload() : this.locationService.href('/');
       });
     } else if (status !== 404) {
-      this.showModal(COMMON_ERROR_MODAL_PARAMS);
+      this.showModal(COMMON_ERROR_MODAL_PARAMS).then();
     } else if (status === 404 && url.includes('scenario/getOrderStatus')) {
-      const needReload = this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS).pipe(filter((reload) => reload));
-      needReload.subscribe(() => this.locationService.reload());
+      this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS).then((reload) => {
+        if (reload) {
+          this.locationService.reload();
+        }
+      });
     }
     return throwError(error);
   }
