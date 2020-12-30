@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { DadataResult, ValidationShowOn } from 'epgu-lib';
+import { BrokenDateFixStrategy, DadataResult, ValidationShowOn } from 'epgu-lib';
 import { skip, startWith, takeUntil } from 'rxjs/operators';
 import * as moment_ from 'moment';
 import { combineLatest, Observable } from 'rxjs';
@@ -32,6 +32,7 @@ export class RegistrationAddrComponent implements OnInit {
 
   error$: Observable<string> = this.screenService.componentError$;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  brokenDateFixStrategy = BrokenDateFixStrategy.RESTORE;
   redAddrForm: FormGroup;
 
   constructor(

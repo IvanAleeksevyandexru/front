@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ValidationShowOn } from 'epgu-lib';
+import { ValidationShowOn, BrokenDateFixStrategy } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
@@ -31,6 +31,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   seriesNumDateGroup = 'seriesNumDate'; // name of nested form group
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  brokenDateFixStrategy = BrokenDateFixStrategy.RESTORE;
   hasExpirationDate = false;
   form: FormGroup;
 

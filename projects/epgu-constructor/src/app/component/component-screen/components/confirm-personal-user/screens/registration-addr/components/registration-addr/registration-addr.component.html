@@ -36,7 +36,9 @@
           [invalid]="redAddrForm.controls[field.fieldName].invalid"
           [control]="redAddrForm.get(field.fieldName)"
           [disabled]="field.disabled"
-          [clearable]="true">
+          [clearable]="true"
+          [brokenDateFixStrategy]="brokenDateFixStrategy"
+        >
         </epgu-constructor-constructor-date-picker>
 
         <epgu-constructor-constructor-plain-input
