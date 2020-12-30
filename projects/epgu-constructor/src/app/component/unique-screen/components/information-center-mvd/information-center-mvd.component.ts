@@ -20,7 +20,9 @@ import { DictionaryItem } from '../../../shared/services/dictionary-api/dictiona
   styleUrls: ['./information-center-mvd.component.scss'],
 })
 export class InformationCenterMvdComponent implements OnInit {
-  data$: Observable<InformationCenterMvdI> = this.screenService.component$ as Observable<InformationCenterMvdI>;
+  data$: Observable<InformationCenterMvdI> = this.screenService.component$ as Observable<
+    InformationCenterMvdI
+  >;
   display$: Observable<DisplayDto> = this.screenService.display$;
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   submitLabel$: Observable<string> = this.screenService.submitLabel$;
@@ -48,6 +50,7 @@ export class InformationCenterMvdComponent implements OnInit {
     this.loadInfoCenterDictionary(this.dictionaryToRequest.type, event.id);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private loadInfoCenterDictionary(dictionaryName: string, id: number | string): void {
     this.dictionaryApiService
       .getMvdDictionary(dictionaryName)
