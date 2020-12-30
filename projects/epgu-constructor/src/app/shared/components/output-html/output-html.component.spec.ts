@@ -8,6 +8,12 @@ import { ImgPrefixerPipe } from '../../pipes/img-prefixer/img-prefixer.pipe';
 import { SafePipe } from '../../pipes/safe/safe.pipe';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
+import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
 describe('OutputHtmlComponent', () => {
   let fixture: ComponentFixture<OutputHtmlComponent>;
@@ -20,6 +26,9 @@ describe('OutputHtmlComponent', () => {
         imports: [],
         declarations: [ImgPrefixerPipe, SafePipe, OutputHtmlComponent],
         providers: [
+          { provide: ScreenService, useClass: ScreenServiceStub },
+          { provide: NavigationService, useClass: NavigationServiceStub },
+          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: ModalService, useClass: ModalServiceStub },
         ],
