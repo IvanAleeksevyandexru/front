@@ -4,16 +4,19 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
+  HttpErrorResponse,
 } from '@angular/common/http';
 
 import {
   Observable,
   throwError,
 } from 'rxjs';
+import { catchError, filter } from 'rxjs/operators';
 import {
-  catchError,
-} from 'rxjs/operators';
-import { AUTH_ERROR_MODAL_PARAMS, COMMON_ERROR_MODAL_PARAMS } from './errors.interceptor.constants';
+  AUTH_ERROR_MODAL_PARAMS,
+  COMMON_ERROR_MODAL_PARAMS,
+  ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
+} from './errors.interceptor.constants';
 import { ModalService } from '../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
@@ -41,14 +44,17 @@ export class ErrorsInterceptorService implements HttpInterceptor {
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private handleResponseError(error: any): Observable<HttpEvent<void | never>> {
-    if (error.status === 401) {
+  private handleResponseError(error: HttpErrorResponse): Observable<HttpEvent<void | never>> {
+    const { status, url } = error;
+    if (status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).subscribe((result) => {
         result === 'login' ? this.locationService.reload() : this.locationService.href('/');
       });
-    } else if (error.status !== 404) {
+    } else if (status !== 404) {
       this.showModal(COMMON_ERROR_MODAL_PARAMS);
+    } else if (status === 404 && url.includes('scenario/getOrderStatus')) {
+      const needReload = this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS).pipe(filter((reload) => reload));
+      needReload.subscribe(() => this.locationService.reload());
     }
     return throwError(error);
   }
