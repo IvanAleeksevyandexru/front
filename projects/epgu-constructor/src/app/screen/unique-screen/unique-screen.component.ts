@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { ScreenBase } from '../screenBase';

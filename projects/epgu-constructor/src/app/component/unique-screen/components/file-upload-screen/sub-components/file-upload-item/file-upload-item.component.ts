@@ -3,10 +3,8 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnDestroy,
-  Output,
   ViewChild,
 } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';

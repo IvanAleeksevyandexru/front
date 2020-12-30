@@ -2,11 +2,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Injector,
   OnDestroy,
   OnInit,
-  Output,
 } from '@angular/core';
 import * as moment_ from 'moment';
 import { EventBusService } from 'projects/epgu-constructor/src/app/form-player/services/event-bus/event-bus.service';
