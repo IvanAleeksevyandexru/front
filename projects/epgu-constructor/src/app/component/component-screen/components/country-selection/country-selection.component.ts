@@ -1,4 +1,12 @@
-import { Component, EventEmitter, OnInit, Output, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
@@ -26,6 +34,7 @@ interface Country extends ListElement {
   selector: 'epgu-constructor-country-selection',
   templateUrl: './country-selection.component.html',
   styleUrls: ['./country-selection.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CountrySelectionComponent implements OnInit, AfterViewInit {
   @Output() changeComponentSettings = new EventEmitter();
@@ -68,6 +77,7 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
     private modalService: ModalService,
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -77,7 +87,11 @@ export class CountrySelectionComponent implements OnInit, AfterViewInit {
         .getDictionary(data.attrs.dictionaryType as string) // TODO: прояснить почему либо массив объектов либо строка
         .subscribe((dictionary) => {
           this.mapToListItemModel(dictionary.items);
+
+          this.changeDetectionRef.markForCheck();
         });
+
+      this.changeDetectionRef.markForCheck();
     });
 
     this.form.addControl('countryDropdown', new FormControl('', [Validators.required]));

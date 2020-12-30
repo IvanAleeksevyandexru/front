@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -40,6 +41,7 @@ import { ConstructorLookupComponent } from '../../../../shared/components/constr
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
   providers: [UnsubscribeService, SelectMapObjectService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() nextStepEvent = new EventEmitter<string>();
@@ -84,7 +86,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnInit(): void {
     this.initData$
-      .pipe(takeUntil(this.screenService.isNextScreen$))
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([data, applicantAnswers]: [ComponentBase, ApplicantAnswersDto]) => {
         this.data = data;
         this.applicantAnswers = applicantAnswers;

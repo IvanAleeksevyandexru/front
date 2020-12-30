@@ -1,4 +1,13 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import {
   ControlValueAccessor,
@@ -38,6 +47,7 @@ type PassportFormFields = { rfPasportNumber: string; rfPasportSeries: string };
       multi: true,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PassportComponent implements OnInit, ControlValueAccessor, Validator {
   @Input() attrs: PassportAttr;
@@ -48,7 +58,11 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
 
   touchedUnfocused = ValidationShowOn.TOUCHED_UNFOCUSED;
 
-  constructor(private fb: FormBuilder, private ngUnsubscribe$: UnsubscribeService) {}
+  constructor(
+    private fb: FormBuilder,
+    private ngUnsubscribe$: UnsubscribeService,
+    private changeDetectionRef: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.initFormGroup();
@@ -89,6 +103,7 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
       )
       .subscribe((value) => {
         this.valueChangedEvent.emit(value);
+        this.changeDetectionRef.markForCheck();
       });
   }
 

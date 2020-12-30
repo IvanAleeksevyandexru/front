@@ -12,7 +12,7 @@
           *ngSwitchCase="'regAddr'"
           [simpleMode]="true"
           [hideLevels]="(data$ | async)?.attrs?.hideLevels || []"
-          [hideHouseCheckbox]="true"
+          [hideHouseCheckbox]="false"
           [externalApiUrl]="config.externalApiUrl + '/'"
           [id]="field.fieldName"
           [validationShowOn]="field.validationShowOn || validationShowOn"

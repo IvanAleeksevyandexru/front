@@ -203,7 +203,7 @@
           [simpleMode]="true"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
-          [hideHouseCheckbox]="true"
+          [hideHouseCheckbox]="false"
           [externalApiUrl]="configService.externalApiUrl + '/'"
           [control]="componentData.get('value')"
           [hideLevels]="componentData.value?.attrs?.hideLevels"
@@ -265,6 +265,7 @@
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.SnilsInput"
         [data]="componentData"
+        [hidden]="componentData.value?.attrs?.hidden"
       >
         <ng-container
           *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"

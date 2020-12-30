@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ScreenService } from '../../../screen/screen.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 
@@ -6,6 +6,7 @@ import { NavigationService } from '../../../core/services/navigation/navigation.
   selector: 'epgu-constructor-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent implements OnInit {
   constructor(private navService: NavigationService, private screenService: ScreenService) {}

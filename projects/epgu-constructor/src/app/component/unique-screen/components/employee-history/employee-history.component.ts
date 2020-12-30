@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -30,6 +30,7 @@ export interface EmployeeHistoryComponentInterface extends ComponentBase {
   templateUrl: './employee-history.component.html',
   styleUrls: ['./employee-history.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeeHistoryComponent {
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
