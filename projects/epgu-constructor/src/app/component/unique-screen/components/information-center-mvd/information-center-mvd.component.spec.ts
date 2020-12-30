@@ -7,8 +7,6 @@ import { DictionaryApiService } from '../../../shared/services/dictionary-api/di
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
-import { ConfigService } from '../../../../core/config/config.service';
-import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DictionaryApiServiceStub } from '../../../shared/services/dictionary-api/dictionary-api.service.stub';
 import { DisplayDto, DTOActionAction } from '../../../../form-player/services/form-player-api/form-player-api.types';
@@ -17,6 +15,8 @@ import { of } from 'rxjs';
 import { InformationCenterMvdI } from './interface/information-center-mvd.interface';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { ScreenTypes } from '../../../../screen/screen.types';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 
 describe('InformationCenterMvdComponent', () => {
   let component: InformationCenterMvdComponent;
