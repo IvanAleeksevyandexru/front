@@ -15,6 +15,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
 import { BaseModule } from '../../base.module';
+import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 
 describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;
@@ -32,7 +33,11 @@ describe('ConstructorPlainInputComponent', () => {
         CurrencyModule,
         ValidationTypeModule,
       ],
-      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }, ValidationService],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        ValidationService,
+        DateRangeService,
+      ],
     }).compileComponents();
   });
 
