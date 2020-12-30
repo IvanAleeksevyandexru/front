@@ -3,9 +3,9 @@ import { ModalService } from '../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { getHiddenBlock } from '../../constants/uttils';
 import { Clarifications } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
-import { NavigationService } from '../../services/navigation/navigation.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { NavigationPayload } from '../../../form-player/form-player.types';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
 
 @Component({
   selector: 'epgu-constructor-output-html',
