@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable } from 'rxjs';
 import {
   ComponentActionDto,
   ComponentDto,
@@ -13,11 +12,11 @@ import {
 })
 export class SignatureApplicationComponent {
   @Input() isMobile: boolean;
-  @Input() showNav$: Observable<boolean>;
-  @Input() header$: Observable<string>;
-  @Input() component$: Observable<ComponentDto>;
-  @Input() isLoading$: Observable<boolean>;
-  @Input() actions$: Observable<ComponentActionDto[]>;
+  @Input() showNav: boolean;
+  @Input() header: string;
+  @Input() component: ComponentDto;
+  @Input() isLoading: boolean;
+  @Input() actions: ComponentActionDto[];
 
   @Output() next = new EventEmitter<null>();
 

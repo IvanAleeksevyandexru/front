@@ -80,11 +80,11 @@ describe('SignatureApplicationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SignatureApplicationComponent);
     component = fixture.componentInstance;
-    component.isLoading$ = of(false);
-    component.actions$ = of(mockActions);
-    component.component$ = of(mockComponent);
-    component.header$ = of(mockHeader);
-    component.showNav$ = of(true);
+    component.isLoading = false;
+    component.actions = mockActions;
+    component.component = mockComponent;
+    component.header = mockHeader;
+    component.showNav = true;
     component.isMobile = true;
 
     fixture.detectChanges();

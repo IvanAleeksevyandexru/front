@@ -11,7 +11,6 @@ import { PaymentComponent } from '../../component/unique-screen/components/payme
 import { RepeatableFieldsComponent } from '../../component/unique-screen/components/repeatable-fields/repeatable-fields.component';
 import { SelectMapObjectComponent } from '../../component/unique-screen/components/select-map-object/select-map-object.component';
 // eslint-disable-next-line max-len
-import { SignatureApplicationComponent } from '../../component/unique-screen/components/signature-application/components/signature-application.component';
 import { TimeSlotsComponent } from '../../component/unique-screen/components/time-slots/time-slots.component';
 import { UnusedPaymentsComponent } from '../../component/unique-screen/components/unused-payments/unused-payments.component';
 // eslint-disable-next-line max-len

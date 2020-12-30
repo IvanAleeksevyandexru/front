@@ -1,16 +1,5 @@
-<ng-container *ngTemplateOutlet="templateContent; context: {showNav: showNav$ | async,
-                                                            header: header$ | async,
-                                                            component: component$ | async,
-                                                            isLoading: isLoading$ | async,
-                                                            actions: actions$ | async}">
-</ng-container>
-<ng-template #templateContent let-showNav="showNav"
-                              let-header="header"
-                              let-actionLabel="actions[0].label"
-                              let-componentLabel="component.label"
-                              let-imageSrc="component.attrs.image.src"
-                              let-isLoading="isLoading">
-  <epgu-constructor-screen-container
+
+<epgu-constructor-screen-container
     [show-nav]="!isMobile && showNav"
     [class.screen-container-mt]="!(!isMobile && showNav)"
   >
@@ -18,11 +7,11 @@
       <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
       <div class="application" *ngIf="isMobile; else desktopTemplate">
         <div class="application__center">
-          <img [src]="imageSrc"/>
+          <img [src]="component.attrs.image.src"/>
         </div>
 
         <epgu-constructor-output-html
-          [html]="componentLabel"
+          [html]="component.label"
         ></epgu-constructor-output-html>
       </div>
     </div>
@@ -34,7 +23,7 @@
           (click)="nextAction()"
           class="btn__submit"
         >
-          {{ actionLabel || 'Продолжить' }}
+          {{ actions[0]?.label || 'Продолжить' }}
         </lib-button>
       </div>
     </div>
@@ -45,5 +34,4 @@
       <lib-loader></lib-loader>
     </div>
   </ng-template>
-</ng-template>
 

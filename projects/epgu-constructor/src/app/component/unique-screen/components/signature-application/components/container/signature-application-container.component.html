@@ -1,9 +1,9 @@
 <epgu-constructor-signature-application
   [isMobile]="isMobile"
-  [showNav$]="showNav$"
-  [header$]="header$"
-  [isLoading$]="isLoading$"
-  [component$]="component$"
-  [actions$]="actions$"
+  [showNav]="showNav$ | async"
+  [header]="header$ | async"
+  [isLoading]="isLoading$ | async"
+  [component]="component$ | async"
+  [actions]="actions$ | async"
   (next)="redirectToLK()">
 </epgu-constructor-signature-application>
