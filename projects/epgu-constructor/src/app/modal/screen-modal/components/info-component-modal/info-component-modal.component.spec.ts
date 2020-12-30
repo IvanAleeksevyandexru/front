@@ -16,6 +16,7 @@ import {
   ComponentDto,
   DTOActionAction,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -38,6 +39,8 @@ describe('InfoComponentModalComponent', () => {
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
+    }).overrideComponent(InfoComponentModalComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     }).compileComponents();
   });
 

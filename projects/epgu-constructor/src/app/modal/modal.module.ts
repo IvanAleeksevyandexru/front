@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CoreModule } from '../core/core.module';
 import { ModalService } from './modal.service';
 import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal.module';
 import { UsePaymentsModalModule } from './use-payment-modal/use-payments-modal.module';
 import { SharedModalModule } from './shared/shared-modal.module';
 import { ScreenModalModule } from './screen-modal/screen-modal.module';
 import { ContinueOrderModalService } from './continue-order-modal/continue-order-modal.service';
+import { BaseModule } from '../shared/base.module';
 
 
 /**
@@ -17,7 +17,7 @@ import { ContinueOrderModalService } from './continue-order-modal/continue-order
     ContinueOrderModalService,
   ],
   imports: [
-    CoreModule,
+    BaseModule,
     SharedModalModule,
     ConfirmationModalModule,
     UsePaymentsModalModule,

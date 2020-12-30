@@ -12,6 +12,7 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConstructorLookupComponent } from './constructor-lookup.component';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
+import { BaseModule } from '../../base.module';
 
 describe('ConstructorLookupComponent', () => {
   let component: ConstructorLookupComponent;
@@ -20,7 +21,7 @@ describe('ConstructorLookupComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorLookupComponent],
-      imports: [CoreModule, RouterTestingModule, ValidationTypeModule],
+      imports: [CoreModule, BaseModule, RouterTestingModule, ValidationTypeModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },

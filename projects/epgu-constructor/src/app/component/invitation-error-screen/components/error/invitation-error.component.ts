@@ -1,10 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { NavigationPayload } from '../../../../form-player/form-player.types';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   ApplicantAnswersDto,
@@ -20,6 +27,7 @@ import { LoggerService } from '../../../../core/services/logger/logger.service';
   templateUrl: './invitation-error.component.html',
   styleUrls: ['./invitation-error.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvitationErrorComponent implements OnInit {
   @Input() data: ComponentDto;

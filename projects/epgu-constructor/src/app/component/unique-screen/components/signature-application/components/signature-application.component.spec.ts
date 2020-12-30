@@ -4,16 +4,16 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { SignatureApplicationComponent } from './signature-application.component';
 import { ScreenContainerComponent } from '../../../../../shared/components/screen-container/screen-container.component';
-import { PageNameComponent } from '../../../../../shared/components/base/page-name/page-name.component';
+import { PageNameComponent } from '../../../../../shared/components/base-components/page-name/page-name.component';
 import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
-import { OutputHtmlComponent } from '../../../../../core/components/output-html/output-html.component';
-import { ConfigService } from '../../../../../core/config/config.service';
+import { OutputHtmlComponent } from '../../../../../shared/components/output-html/output-html.component';
+import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { ConfigServiceStub } from '../../../../../core/config/config.service.stub';
-import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/core/pipes/img-prefixer/img-prefixer.pipe';
-import { SafePipe } from '../../../../../core/pipes/safe/safe.pipe';
+import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { ImgPrefixerPipe } from 'projects/epgu-constructor/src/app/shared/pipes/img-prefixer/img-prefixer.pipe';
+import { SafePipe } from '../../../../../shared/pipes/safe/safe.pipe';
 import { SignatureApplicationData } from '../models/application.interface';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import {

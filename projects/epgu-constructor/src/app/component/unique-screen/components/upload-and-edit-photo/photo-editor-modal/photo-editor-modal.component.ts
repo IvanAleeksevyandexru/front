@@ -1,4 +1,10 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ImgCropperConfig, ImgCropperEvent, LyImageCropper } from '@alyle/ui/image-cropper';
 import { Subject } from 'rxjs';
@@ -6,12 +12,13 @@ import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal
 import { ImageErrorText, NewSizeEvent } from '../upload-and-edit-photo.model';
 import { imageErrorText, minCropSize } from '../upload-and-edit-photo.constant';
 import { hintSetting, photoMaskSrc, showErrorTime } from './photo-editor-modal.constant';
-import { ConfigService } from '../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../core/services/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-photo-editor-modal',
   templateUrl: './photo-editor-modal.component.html',
   styleUrls: ['./photo-editor-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoEditorModalComponent extends ModalBaseComponent implements AfterViewInit {
   @ViewChild('cropper') cropper: LyImageCropper;
@@ -33,7 +40,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
   isPhoneSize: boolean;
 
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-  constructor(public config: ConfigService) {
+  constructor(public config: ConfigService, private changeDetectionRef: ChangeDetectorRef) {
     super();
   }
 
@@ -51,6 +58,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
     this.errorTextIsShown = true;
     setTimeout(() => {
       this.errorTextIsShown = false;
+      this.changeDetectionRef.markForCheck();
     }, showErrorTime);
   }
 

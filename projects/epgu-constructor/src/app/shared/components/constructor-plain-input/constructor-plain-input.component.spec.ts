@@ -14,6 +14,7 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
+import { BaseModule } from '../../base.module';
 
 describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;
@@ -24,6 +25,7 @@ describe('ConstructorPlainInputComponent', () => {
       declarations: [ConstructorPlainInputComponent],
       imports: [
         CoreModule,
+        BaseModule,
         RouterTestingModule,
         TrimModule,
         TextTransformModule,

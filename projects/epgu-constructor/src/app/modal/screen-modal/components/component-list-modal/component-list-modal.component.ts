@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import * as moment_ from 'moment';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { Navigation, NavigationPayload } from '../../../../form-player/form-player.types';
@@ -14,6 +14,7 @@ const moment = moment_;
   templateUrl: './component-list-modal.component.html',
   styleUrls: ['./component-list-modal.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentListModalComponent {
   dataToSend: NavigationPayload;

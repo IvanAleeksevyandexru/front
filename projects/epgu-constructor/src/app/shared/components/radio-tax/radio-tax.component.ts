@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 
 import { UnusedPaymentInterface } from '../../../component/unique-screen/components/unused-payments/unused-payment.interface';
 
@@ -6,6 +13,7 @@ import { UnusedPaymentInterface } from '../../../component/unique-screen/compone
   selector: 'epgu-constructor-radio-tax',
   templateUrl: './radio-tax.component.html',
   styleUrls: ['./radio-tax.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RadioTaxComponent implements OnInit {
   @Input() data: UnusedPaymentInterface[] = [];

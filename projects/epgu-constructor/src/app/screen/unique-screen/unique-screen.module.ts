@@ -2,23 +2,18 @@ import { NgModule } from '@angular/core';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { UniqueScreenComponentsModule } from '../../component/unique-screen/unique-screen-components.module';
 import { ComponentsListModule } from '../../component/components-list/components-list.module';
-import { CoreModule } from '../../core/core.module';
 import { UniqueComponentModalModule } from '../../modal/screen-modal/components/unique-component-modal/unique-component-modal.module';
 import { AbstractPaymentComponent } from '../../component/unique-screen/components/payment/abstractpayment.component';
-import { InformationCenterMvdModule } from '../../component/unique-screen/components/information-center-mvd/information-center-mvd.module';
-
-// NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
-const COMPONENTS = [UniqueScreenComponent];
+import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
-  declarations: [...COMPONENTS, AbstractPaymentComponent],
-  exports: [...COMPONENTS],
+  declarations: [UniqueScreenComponent, AbstractPaymentComponent],
+  exports: [UniqueScreenComponent],
   imports: [
-    CoreModule,
+    BaseModule,
     UniqueScreenComponentsModule,
     ComponentsListModule,
     UniqueComponentModalModule,
-    InformationCenterMvdModule,
-  ],
+  ]
 })
 export class UniqueScreenModule {}

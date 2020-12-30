@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, filter, tap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -14,6 +21,7 @@ import { ScreenService } from '../../../../screen/screen.service';
   selector: 'epgu-constructor-unused-payments',
   templateUrl: './unused-payments.component.html',
   styleUrls: ['./unused-payments.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnusedPaymentsComponent implements OnInit {
   // @Input() orderId: string;
@@ -37,6 +45,7 @@ export class UnusedPaymentsComponent implements OnInit {
     private navigationService: NavigationService,
     public screenService: ScreenService,
     private listPaymentsService: UnusedPaymentsService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   public usePayment = (uin: string): void => {
@@ -80,12 +89,14 @@ export class UnusedPaymentsComponent implements OnInit {
     } else {
       this.usePaymentsListData(serviceData);
     }
+    this.changeDetectionRef.markForCheck();
   };
 
   getListPaymentsInfoError = ([error, data]: [HttpErrorResponse, DisplayDto]): void => {
     // eslint-disable-next-line no-console
     console.log('Error', error);
     this.usePaymentsListData(data);
+    this.changeDetectionRef.markForCheck();
   };
 
   /**

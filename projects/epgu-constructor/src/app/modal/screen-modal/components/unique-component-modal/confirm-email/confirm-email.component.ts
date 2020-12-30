@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../core/services/config/config.service';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
@@ -12,6 +12,7 @@ import { ScreenService } from '../../../../../screen/screen.service';
   templateUrl: './confirm-email.component.html',
   styleUrls: ['./confirm-email.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmEmailComponent {
   timer: number;

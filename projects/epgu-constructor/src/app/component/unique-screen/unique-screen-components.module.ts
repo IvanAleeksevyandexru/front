@@ -14,22 +14,19 @@ import { WebcamService } from './services/webcam/webcam.service';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 import { ComponentsListModule } from '../components-list/components-list.module';
 import { ModalModule } from '../../modal/modal.module';
-import { CoreModule } from '../../core/core.module';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { PaymentTypeSelectorModule } from './components/payment-type-selector/payment-type-selector.module';
-import { BaseModule } from '../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { CloneButtonModule } from '../../shared/components/clone-button/clone-button.module';
 import { WebcamShootModule } from '../../shared/components/webcam-shoot/webcam-shoot.module';
-
-// NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
-const COMPONENTS = [RepeatableFieldsComponent];
+import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [RepeatableFieldsComponent],
   imports: [
-    CoreModule,
+    BaseModule,
     WebcamShootModule,
     ModalModule,
     FileUploadModule,
@@ -44,13 +41,13 @@ const COMPONENTS = [RepeatableFieldsComponent];
     UploadAndEditPhotoModule,
     ComponentsListModule,
     PaymentTypeSelectorModule,
-    BaseModule,
+    BaseComponentsModule,
     ScreenContainerModule,
     ScreenPadModule,
     CloneButtonModule,
   ],
   exports: [
-    ...COMPONENTS,
+    RepeatableFieldsComponent,
     UploadAndEditPhotoModule,
     FileUploadModule,
     SelectMapObjectModule,

@@ -1,8 +1,8 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormPlayerConfigApiService } from './form-player-config-api.service';
-import { ConfigService } from '../../../core/config/config.service';
-import { ConfigServiceStub } from '../../../core/config/config.service.stub';
+import { ConfigService } from '../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 
 
 describe('FormPlayerConfigApiService', () => {

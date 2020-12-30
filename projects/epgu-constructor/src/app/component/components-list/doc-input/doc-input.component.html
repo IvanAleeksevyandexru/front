@@ -90,17 +90,17 @@
         [label]="fields['date']?.label"
         for="date"
       ></epgu-constructor-label>
-      <lib-date-picker
+      <epgu-constructor-constructor-date-picker
         id="date"
         align="left"
-        [formControl]="$any(form.get([seriesNumDateGroup, 'date']))"
+        [control]="form.get([seriesNumDateGroup, 'date'])"
         [minDate]="fields['date']?.attrs?.minDate || '-120y'"
         [maxDate]="fields['date']?.attrs?.maxDate || 'today'"
-        (blur)="markControlAsDirty([seriesNumDateGroup, 'date'])"
+        (blurEvent)="markControlAsDirty([seriesNumDateGroup, 'date'])"
         [invalid]="isValidationShown([seriesNumDateGroup, 'date'])"
         [validationShowOn]="validationShowOn"
         [clearable]="true"
-      ></lib-date-picker>
+      ></epgu-constructor-constructor-date-picker>
       <epgu-constructor-helper-text *ngIf="fields['date']?.hint as hint" class="doc-input__hint">
         {{ hint }}
       </epgu-constructor-helper-text>
@@ -190,17 +190,17 @@
           [label]="fields['date']?.label"
           for="date"
         ></epgu-constructor-label>
-        <lib-date-picker
+        <epgu-constructor-constructor-date-picker
           id="date"
           align="left"
-          [formControl]="$any(form.get([seriesNumDateGroup, 'date']))"
+          [control]="form.get([seriesNumDateGroup, 'date'])"
           [minDate]="fields['date']?.attrs?.minDate || '-120y'"
           [maxDate]="fields['date']?.attrs?.maxDate || 'today'"
-          (blur)="markControlAsDirty([seriesNumDateGroup, 'date'])"
+          (blurEvent)="markControlAsDirty([seriesNumDateGroup, 'date'])"
           [invalid]="isValidationShown([seriesNumDateGroup, 'date'])"
           [validationShowOn]="validationShowOn"
           [clearable]="true"
-        ></lib-date-picker>
+        ></epgu-constructor-constructor-date-picker>
         <epgu-constructor-helper-text *ngIf="fields['date']?.hint as hint" class="doc-input__hint">
           {{ hint }}
         </epgu-constructor-helper-text>
@@ -211,17 +211,17 @@
           [label]="fields[expirationDateName]?.label"
           for="date"
         ></epgu-constructor-label>
-        <lib-date-picker
+        <epgu-constructor-constructor-date-picker
           id="expirationDate"
           align="left"
-          [formControl]="$any(form.get(expirationDateName))"
+          [control]="form.get(expirationDateName)"
           [minDate]="fields[expirationDateName]?.attrs?.minDate || '-120y'"
           [maxDate]="fields[expirationDateName]?.attrs?.maxDate || 'today'"
-          (blur)="markControlAsDirty(expirationDateName)"
+          (blurEvent)="markControlAsDirty(expirationDateName)"
           [invalid]="isValidationShown(expirationDateName)"
           [validationShowOn]="validationShowOn"
           [clearable]="true"
-        ></lib-date-picker>
+        ></epgu-constructor-constructor-date-picker>
         <epgu-constructor-helper-text
           *ngIf="fields[expirationDateName]?.hint as hint"
           class="doc-input__hint"
