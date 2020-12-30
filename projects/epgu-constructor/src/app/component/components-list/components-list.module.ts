@@ -20,6 +20,7 @@ import { FieldListModule } from '../../shared/components/field-list/field-list.m
 import { CurrencyModule } from '../../shared/directives/currency/currency.module';
 import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../shared/base.module';
+import { DateRangeService } from './services/date-range/date-range.service';
 
 const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent];
 
@@ -47,6 +48,7 @@ const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputCom
     AddressHelperService,
     ComponentListToolsService,
     DictionaryApiService,
+    DateRangeService,
   ],
 })
 export class ComponentsListModule {}

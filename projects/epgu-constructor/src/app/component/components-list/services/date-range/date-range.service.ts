@@ -80,7 +80,12 @@ export class DateRangeService {
     }
 
     const refParams = ref.find((item) => item.relatedDate);
-    const formControl = form.controls.find(
+
+    if (!refParams) {
+      return range;
+    }
+
+    const formControl = form?.controls?.find(
       (control) => control.value.id === refParams.relatedDate,
     );
 

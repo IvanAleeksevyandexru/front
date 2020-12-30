@@ -100,6 +100,7 @@
         [invalid]="isValidationShown([seriesNumDateGroup, 'date'])"
         [validationShowOn]="validationShowOn"
         [clearable]="true"
+        [brokenDateFixStrategy]="brokenDateFixStrategy"
       ></epgu-constructor-constructor-date-picker>
       <epgu-constructor-helper-text *ngIf="fields['date']?.hint as hint" class="doc-input__hint">
         {{ hint }}
@@ -199,6 +200,7 @@
           (blurEvent)="markControlAsDirty([seriesNumDateGroup, 'date'])"
           [invalid]="isValidationShown([seriesNumDateGroup, 'date'])"
           [validationShowOn]="validationShowOn"
+          [brokenDateFixStrategy]="brokenDateFixStrategy"
           [clearable]="true"
         ></epgu-constructor-constructor-date-picker>
         <epgu-constructor-helper-text *ngIf="fields['date']?.hint as hint" class="doc-input__hint">
@@ -221,6 +223,7 @@
           [invalid]="isValidationShown(expirationDateName)"
           [validationShowOn]="validationShowOn"
           [clearable]="true"
+          [brokenDateFixStrategy]="brokenDateFixStrategy"
         ></epgu-constructor-constructor-date-picker>
         <epgu-constructor-helper-text
           *ngIf="fields[expirationDateName]?.hint as hint"
