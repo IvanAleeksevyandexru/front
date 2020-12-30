@@ -6,16 +6,14 @@ import { GibddTimeSlotsService } from './gibdd-time-slots.service';
 import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { CoreModule } from '../../../../core/core.module';
-import { BaseModule } from '../../../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
-
-const COMPONENTS = [TimeSlotsComponent];
+import { BaseModule } from '../../../../shared/base.module';
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
+  declarations: [TimeSlotsComponent],
+  exports: [TimeSlotsComponent],
   providers: [
     TimeSlotsConstants,
     BrakTimeSlotsService,
@@ -24,6 +22,6 @@ const COMPONENTS = [TimeSlotsComponent];
     MvdTimeSlotsService,
     Smev3TimeSlotsRestService,
   ],
-  imports: [CoreModule, BaseModule, ScreenContainerModule, ScreenPadModule],
+  imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule],
 })
 export class TimeSlotsModule {}

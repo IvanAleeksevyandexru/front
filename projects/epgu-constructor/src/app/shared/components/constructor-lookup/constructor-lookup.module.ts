@@ -1,14 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { ConstructorLookupComponent } from './constructor-lookup.component';
-import { CoreModule } from '../../../core/core.module';
+import { BaseModule } from '../../base.module';
 
 @NgModule({
   declarations: [ConstructorLookupComponent],
-  imports: [CommonModule, CoreModule],
-  exports: [
-    ConstructorLookupComponent
-  ]
+  imports: [BaseModule],
+  exports: [ConstructorLookupComponent]
 })
 export class ConstructorLookupModule {}

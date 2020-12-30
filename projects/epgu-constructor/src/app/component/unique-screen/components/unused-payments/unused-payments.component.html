@@ -1,26 +1,21 @@
-<!--<div>-->
-<!--  <h3 *ngIf="paymentUIN">Использована оплата по УИН {{paymentUIN}}</h3>-->
-<!--</div>-->
-<epgu-constructor-screen-container *ngIf="(data$ | async) as data"
-                                   [show-nav]="screenService.showNav$ | async"
-                                   [class.screen-container-mt]="!(screenService.showNav$ | async)"
+<epgu-constructor-screen-container
+  *ngIf="data$ | async as data"
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
   <div class="inner">
     <div *ngIf="data?.name" class="head">
       <epgu-constructor-page-name>{{ data.name }}</epgu-constructor-page-name>
     </div>
-    <div class="unused-payments__description">Выберите пошлину, которую вы оплатили, но еще не использовали</div>
+    <div class="unused-payments__description">
+      Выберите пошлину, которую вы оплатили, но еще не использовали
+    </div>
   </div>
-  <div class="radio-list" *ngIf="(paymentsList$ | async) as paymentsData; else emptyList">
-    <epgu-constructor-radio-tax
-      (selected)="radioSelect($event)"
-      [data]="paymentsData"></epgu-constructor-radio-tax>
-      <lib-button
-        class="btn__submit"
-        (click)="next()"
-      >
-        <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
-      </lib-button>
+  <div class="radio-list" *ngIf="paymentsList$ | async as paymentsData; else emptyList">
+    <epgu-constructor-radio-tax [data]="paymentsData"></epgu-constructor-radio-tax>
+    <lib-button class="btn__submit" (click)="next()">
+      <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
+    </lib-button>
   </div>
   <ng-template #emptyList>
     <div class="text--center">
@@ -28,5 +23,3 @@
     </div>
   </ng-template>
 </epgu-constructor-screen-container>
-
-

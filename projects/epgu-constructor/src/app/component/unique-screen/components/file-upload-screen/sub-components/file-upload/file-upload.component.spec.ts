@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { FileUploadComponent } from './file-upload.component';
-import { FileUploadAttributes } from '../../../../services/terra-byte-api/terra-byte-api.types';
 import { MockComponent } from 'ng-mocks';
+import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
+import { FileUploadAttributes } from '../../../../services/terra-byte-api/terra-byte-api.types';
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
 import { FileUploadService } from '../file-upload.service';
+import { FileUploadComponent } from './file-upload.component';
+
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -26,7 +27,7 @@ describe('FileUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FileUploadComponent, FileUploadItemComponentMock ],
-      providers: [FileUploadService],
+      providers: [FileUploadService, EventBusService],
     })
     .compileComponents();
   }));

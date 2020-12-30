@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { TimerComponent } from './timer.component';
-import { TimerPipe } from './pipes/timer.pipe';
 import { MockModule } from 'ng-mocks';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ConfigService } from '../../../../core/config/config.service';
-import { ConfigServiceStub } from '../../../../core/config/config.service.stub';
 import { CoreModule } from '../../../../core/core.module';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ActionDirective } from '../../../../shared/directives/action/action.directive';
+import { ScreenService } from '../../../../screen/screen.service';
+import { BaseModule } from '../../../../shared/base.module';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
-import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
+import { TimerPipe } from './pipes/timer.pipe';
+import { TimerComponent } from './timer.component';
+
 
 describe('TimerComponent', () => {
   let component: TimerComponent;
@@ -27,7 +27,7 @@ describe('TimerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TimerComponent, TimerPipe, ActionDirective, ScreenPadComponent],
+      declarations: [TimerComponent, TimerPipe],
       providers: [
         UnsubscribeService,
         ScreenService,
@@ -35,8 +35,9 @@ describe('TimerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         CachedAnswersService,
         ValueLoaderService,
+        EventBusService,
       ],
-      imports: [MockModule(CoreModule)],
+      imports: [MockModule(BaseModule), MockModule(CoreModule)],
     }).compileComponents();
   });
 

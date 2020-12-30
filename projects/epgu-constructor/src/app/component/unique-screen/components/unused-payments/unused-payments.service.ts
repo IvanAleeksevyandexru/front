@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { Observable } from 'rxjs';
 import { UnusedPaymentInterface } from './unused-payment.interface';
 import { Injectable } from '@angular/core';

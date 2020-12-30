@@ -1,4 +1,5 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
 import { NavigationPayload } from '../../form-player/form-player.types';
@@ -9,16 +10,21 @@ import { ScreenBase } from '../screenBase';
   templateUrl: './unique-screen.component.html',
   styleUrls: ['./unique-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class UniqueScreenComponent extends ScreenBase implements OnInit {
-  // <-- constant
   uniqueComponentName = UniqueScreenComponentTypes;
 
   constructor(public injector: Injector) {
     super(injector);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.eventBusService
+      .on('nextStepEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: string) => this.nextDataForStep(payload));
+  }
 
   /**
    * Переход на следущий экран с передачей данных

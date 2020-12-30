@@ -1,24 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
-import { MockComponent, MockModule } from 'ng-mocks';
 import * as moment_ from 'moment';
-import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
-import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
-import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { ScreenService } from '../screen.service';
-import { ScreenTypes } from '../screen.types';
+import { MockComponent, MockModule } from 'ng-mocks';
 import { ComponentsListComponent } from '../../component/components-list/components-list.component';
-import { CustomScreenComponent } from './custom-screen.component';
-import { NavigationPayload } from '../../form-player/form-player.types';
 import {
   CustomComponentOutputData,
   CustomComponentValidationConditions,
 } from '../../component/components-list/components-list.types';
-import { ScreenServiceStub } from '../screen.service.stub';
-import { By } from '@angular/platform-browser';
-import { ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
+import { NavigationPayload } from '../../form-player/form-player.types';
+import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
+import { ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
+import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
+import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
+import { ScreenService } from '../screen.service';
+import { ScreenServiceStub } from '../screen.service.stub';
+import { ScreenTypes } from '../screen.types';
+import { CustomScreenComponent } from './custom-screen.component';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 const moment = moment_;
 
@@ -42,7 +44,10 @@ describe('CustomScreenComponent', () => {
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
+        EventBusService,
       ],
+    }).overrideComponent(CustomScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     });
   });
 

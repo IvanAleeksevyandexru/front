@@ -7,7 +7,7 @@ import {
   OPTIONS_FEED_EXIT,
   OPTIONS_FEED_MV
 } from '../../../shared/constants/redirect-event';
-import { ConfigService } from '../../config/config.service';
+import { ConfigService } from '../config/config.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { LocationService } from '../location/location.service';
 

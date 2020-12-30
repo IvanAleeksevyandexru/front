@@ -1,25 +1,29 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { InfoScreenComponent } from './info-screen.component';
-import { ScreenService } from '../screen.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
-import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
-import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
-import { PageNameComponent } from '../../shared/components/base/page-name/page-name.component';
-import { InfoScreenBodyComponent } from './info-screen-body/info-screen-body.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
-import { ActionDirective } from '../../shared/directives/action/action.directive';
+import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
+import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
+import { ConfigService } from '../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
+import { LocationService } from '../../core/services/location/location.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { ScreenServiceStub } from '../screen.service.stub';
+import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
   ComponentActionDto,
   ComponentDto,
   DTOActionAction,
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { By } from '@angular/platform-browser';
-import { LocationService } from '../../core/services/location/location.service';
-import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
+import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
+import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
+import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
+import { ActionDirective } from '../../shared/directives/action/action.directive';
+import { ScreenService } from '../screen.service';
+import { ScreenServiceStub } from '../screen.service.stub';
+import { InfoScreenBodyComponent } from './info-screen-body/info-screen-body.component';
+import { InfoScreenComponent } from './info-screen.component';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -66,7 +70,11 @@ describe('InfoScreenComponent', () => {
         WINDOW_PROVIDERS,
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        EventBusService,
       ],
+    }).overrideComponent(InfoScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     }).compileComponents();
   });
 
@@ -286,6 +294,6 @@ describe('InfoScreenComponent', () => {
     expect(debugEl).toBeTruthy();
 
     expect(debugEl.componentInstance.isNewDesign).toBeTruthy();
-    expect(debugEl.componentInstance.isNewDesignDisabled).toBeTruthy();
+    expect(debugEl.componentInstance.isNewDesignDisabled).toBeFalsy();
   });
 });

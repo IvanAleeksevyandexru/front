@@ -38,11 +38,13 @@ describe('ValueLoaderService', () => {
               attrs: {},
               value: '',
               required: true,
+              valueFromCache: true,
             },
           ],
         },
         value: '',
         required: true,
+        valueFromCache: true,
       };
 
       const components = { ...componentMock, value: 'Ываыавыва', presetValue: '' };
@@ -72,11 +74,13 @@ describe('ValueLoaderService', () => {
               attrs: {},
               value: '',
               required: true,
+              valueFromCache: false,
             },
           ],
         },
         value: '',
         required: true,
+        valueFromCache: false,
       };
       const repeatableComponents = { ...componentMock };
       repeatableComponents.attrs.repeatableComponents = [
@@ -88,6 +92,7 @@ describe('ValueLoaderService', () => {
             attrs: {},
             value: 'Ываыавыва',
             required: true,
+            valueFromCache: false,
           },
         ],
       ];
@@ -111,11 +116,13 @@ describe('ValueLoaderService', () => {
               attrs: {},
               value: '',
               required: true,
+              valueFromCache: false,
             },
           ],
         },
         value: '',
         required: true,
+        valueFromCache: false,
       };
       const repeatableComponents = { ...componentMock };
       repeatableComponents.attrs.repeatableComponents = [
@@ -127,6 +134,7 @@ describe('ValueLoaderService', () => {
             attrs: {},
             value: '',
             required: true,
+            valueFromCache: false,
           },
         ],
       ];
@@ -169,11 +177,13 @@ describe('ValueLoaderService', () => {
               },
               value: '',
               required: true,
+              valueFromCache: false,
             },
           ],
         },
         value: '',
         required: true,
+        valueFromCache: false,
       };
 
       const component = { ...componentMock, presetValue: '' };

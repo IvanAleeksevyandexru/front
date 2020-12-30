@@ -1,19 +1,21 @@
-import { ComponentsListComponent } from './components-list.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
-import { ConfigService } from '../../core/config/config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MaskHandlePipe } from '../../shared/pipes/mask-handle/mask-handle.pipe';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DictionaryApiServiceStub } from '../shared/services/dictionary-api/dictionary-api.service.stub';
-import { ConfigServiceStub } from '../../core/config/config.service.stub';
-import { ComponentListFormService } from './services/component-list-form/component-list-form.service';
-import { ConstructorPlainInputModule } from '../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { ConfigService } from '../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
+import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
+import { ConstructorCheckboxModule } from '../../shared/components/constructor-checkbox/constructor-checkbox.module';
 import { ConstructorDadataWidgetModule } from '../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
+import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { ConstructorLookupModule } from '../../shared/components/constructor-lookup/constructor-lookup.module';
-import { ConstructorCheckboxModule } from '../../shared/components/constructor-checkbox/constructor-checkbox.module';
+import { ConstructorPlainInputModule } from '../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { MaskHandlePipe } from '../../shared/pipes/mask-handle/mask-handle.pipe';
+import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../shared/services/dictionary-api/dictionary-api.service.stub';
+import { ComponentsListComponent } from './components-list.component';
+import { ComponentListFormService } from './services/component-list-form/component-list-form.service';
 
 
 xdescribe('ComponentsListComponent', () => {
@@ -28,6 +30,7 @@ xdescribe('ComponentsListComponent', () => {
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide:  ConfigService, useClass: ConfigServiceStub },
         ComponentListFormService,
+        EventBusService,
       ],
       imports: [
         HttpClientTestingModule,
@@ -37,7 +40,8 @@ xdescribe('ComponentsListComponent', () => {
         ConstructorDadataWidgetModule,
         ConstructorDropdownModule,
         ConstructorLookupModule,
-        ConstructorCheckboxModule
+        ConstructorCheckboxModule,
+        ConstructorDatePickerModule,
       ]
     });
 

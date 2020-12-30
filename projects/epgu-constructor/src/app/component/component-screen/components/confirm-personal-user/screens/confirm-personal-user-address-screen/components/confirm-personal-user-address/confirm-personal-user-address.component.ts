@@ -1,8 +1,15 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import * as moment_ from 'moment';
 import { Observable } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../../../core/config/config.service';
+import { takeUntil } from 'rxjs/operators';
+import { ConfigService } from '../../../../../../../../core/services/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
@@ -21,6 +28,7 @@ const moment = moment_;
   templateUrl: './confirm-personal-user-address.component.html',
   styleUrls: ['./confirm-personal-user-address.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnInit {
   @ViewChild('dataForm', { static: false }) dataForm;
@@ -37,13 +45,16 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     public screenService: ScreenService,
     private changeDetection: ChangeDetectorRef,
     private currentAnswersService: CurrentAnswersService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.data$.pipe(takeUntil(this.ngUnsubscribe$), take(1)).subscribe((data) => {
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.textTransformType = data?.attrs?.fstuc;
       this.isRequired = data.required;
       this.updateValue(data);
+
+      this.changeDetectionRef.markForCheck();
     });
   }
 
@@ -66,7 +77,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       const isPresetable = this.isPresetable(
         data?.attrs?.fields?.find((field) => field.fieldName === 'regDate'),
       );
-      if (isPresetable) {
+      if (isPresetable || data.valueFromCache) {
         this.valueParsed.regDate = this.getDate(localValueParsed.regDate);
       }
     }
@@ -75,7 +86,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       const isPresetable = this.isPresetable(
         data?.attrs?.fields?.find((field) => field.fieldName === 'regAddr'),
       );
-      if (isPresetable) {
+      if (isPresetable || data.valueFromCache) {
         this.valueParsed.regAddr = this.getAddress(localValueParsed.regAddr);
       }
     }

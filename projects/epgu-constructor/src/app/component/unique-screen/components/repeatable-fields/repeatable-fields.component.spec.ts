@@ -1,15 +1,16 @@
-import { RepeatableFieldsComponent } from './repeatable-fields.component';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { MockComponent } from 'ng-mocks';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ScreenTypes } from '../../../../screen/screen.types';
-import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { By } from '@angular/platform-browser';
-import { MockComponent } from 'ng-mocks';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
+import { RepeatableFieldsComponent } from './repeatable-fields.component';
+
 
 describe('RepeatableFieldsComponent', () => {
   let component: RepeatableFieldsComponent;
@@ -126,6 +127,7 @@ describe('RepeatableFieldsComponent', () => {
           CurrentAnswersService,
           ChangeDetectorRef,
           { provide: ScreenService, useClass: ScreenServiceStub },
+          EventBusService,
         ],
       }).compileComponents();
       screenService = TestBed.inject(ScreenService);

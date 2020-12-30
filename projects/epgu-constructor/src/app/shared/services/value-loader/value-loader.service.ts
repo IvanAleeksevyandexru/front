@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
+import * as moment_ from 'moment';
 
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import { CustomScreenComponentTypes } from '../../../component/components-list/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
+import { ComponentScreenComponentTypes } from '../../../component/component-screen/component-screen-components.types';
+
+const moment = moment_;
 
 @Injectable()
 export class ValueLoaderService {
@@ -16,6 +20,7 @@ export class ValueLoaderService {
     cachedAnswers: CachedAnswers,
   ): Array<ScreenStoreComponentDtoI> {
     return components.map((item) => {
+      item.valueFromCache = false;
       if (item.type === this.repeatableFields) {
         const repeatableFieldsComponents = this.setRepeatableFields(
           item.attrs.components,
@@ -87,19 +92,19 @@ export class ValueLoaderService {
   /**
    * Метод объединяет preset значение и ответ из кэша
    * @param cachedValue - кэш ответов из cachedAnswersService
-   * @param preset - preset значения из display.components[].value
-   * @param componentType
-   * @param componentId - id от родительского компонента для RepeatableField
+   * @param component - компонент из display.components
+   * @param parentId - id от родительского компонента для RepeatableField
    * @param parentIndex - индекс для взятие из кэша для RepeatableField
    */
   private mergePresetCacheValue(
     cachedValue: string,
-    preset: string,
-    componentType: string,
-    componentId?: string,
+    component: ScreenStoreComponentDtoI,
+    parentId?: string,
     parentIndex?: number,
   ): string {
-    if (componentType === CustomScreenComponentTypes.SnilsInput) {
+    const preset = component.value;
+
+    if (component.type === CustomScreenComponentTypes.SnilsInput) {
       return JSON.parse(cachedValue).snils;
     }
 
@@ -107,16 +112,23 @@ export class ValueLoaderService {
     const isCachedValueParsable = this.utils.hasJsonStructure(cachedValue);
 
     if (isPresetParsable && isCachedValueParsable) {
-      return JSON.stringify({
-        ...JSON.parse(preset),
-        ...JSON.parse(cachedValue),
-      });
+      const parsedPreset = JSON.parse(preset);
+      const parsedCachedValue = this.cachedAnswersService.parseCachedValue(cachedValue, component);
+
+      if (Array.isArray(parsedCachedValue)) {
+        return JSON.stringify(parsedCachedValue);
+      } else {
+        return JSON.stringify({
+          ...parsedPreset,
+          ...parsedCachedValue as object,
+        });
+      }
     }
 
-    if (componentId && isCachedValueParsable) {
-      const value = JSON.parse(cachedValue);
+    if (parentId && isCachedValueParsable) {
+      const value = this.cachedAnswersService.parseCachedValue(cachedValue, component);
 
-      return value[parentIndex][componentId];
+      return value[parentIndex][parentId];
     }
 
     return cachedValue || preset;
@@ -152,7 +164,7 @@ export class ValueLoaderService {
     parentId?: string,
     parentIndex?: number,
   ): ComponentDto {
-    const component = {
+    const component: ScreenStoreComponentDtoI = {
       ...item,
       presetValue: item.value,
     };
@@ -162,11 +174,11 @@ export class ValueLoaderService {
         ...component,
         value: this.mergePresetCacheValue(
           cachedValue,
-          component.value,
-          component.type,
+          component,
           parentId,
           parentIndex,
         ),
+        valueFromCache: true
       };
     }
 
@@ -178,14 +190,19 @@ export class ValueLoaderService {
     const cache = cachedAnswers[id].value;
 
     if (this.utils.hasJsonStructure(cache)) {
-      return UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
+      const date =  UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
+      return this.isShortTimeFormat(date) ? date : moment(date).format('DD.MM.YYYY');
     } else {
-      return cache;
+      return this.isShortTimeFormat(cache) ? cache : moment(cache).format('DD.MM.YYYY');
     }
   }
 
   private getPathFromPreset(value: string): { id: string; path: string } {
     const [id, path] = value.split(/\.(.+)/);
     return { id, path };
+  }
+
+  private isShortTimeFormat(date: string): boolean {
+    return /^\d{1,2}.\d{1,2}.\d{1,4}$/.test(date);
   }
 }

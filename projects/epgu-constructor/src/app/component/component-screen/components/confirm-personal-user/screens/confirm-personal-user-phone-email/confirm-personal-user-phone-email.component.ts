@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ComponentBase } from '../../../../../../screen/screen.types';
@@ -13,6 +13,7 @@ import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/
   selector: 'epgu-constructor-confirm-personal-user-phone-email',
   templateUrl: './confirm-personal-user-phone-email.component.html',
   styleUrls: ['./confirm-personal-user-phone-email.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
   data$: Observable<ComponentBase> = this.screenService.component$;
@@ -24,12 +25,15 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     public config: ConfigService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.isEditContactAction = this.getIsEditContactAction();
       this.updateValue(data?.value);
+
+      this.changeDetectionRef.markForCheck();
     });
   }
 

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { Clarifications } from '../../services/terra-byte-api/terra-byte-api.types';
@@ -26,6 +26,7 @@ interface PaymentTypeSelectorContext {
   selector: 'epgu-constructor-payment-type-selector',
   templateUrl: './payment-type-selector.component.html',
   styleUrls: ['./payment-type-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentTypeSelectorComponent {
   data$ = this.screenService.component$;

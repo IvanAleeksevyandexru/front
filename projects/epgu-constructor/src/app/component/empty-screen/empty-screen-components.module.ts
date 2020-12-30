@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RedirectComponent } from './components/redirect.component';
 import { ModalModule } from '../../modal/modal.module';
-import { CoreModule } from '../../core/core.module';
+import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
 	declarations: [
@@ -11,7 +11,7 @@ import { CoreModule } from '../../core/core.module';
     RedirectComponent
   ],
 	imports: [
-		CoreModule,
+    BaseModule,
     ModalModule
 	],
 })

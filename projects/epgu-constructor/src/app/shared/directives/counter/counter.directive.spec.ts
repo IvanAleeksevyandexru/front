@@ -1,7 +1,8 @@
-import { CounterDirective } from './counter.directive';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
+import { CounterDirective } from './counter.directive';
 
 @Component({
   selector: 'epgu-constructor-test-counter',
@@ -10,7 +11,6 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
       class="timer"
       [epgu-constructor-counter]="count"
       [interval]="countInterval"
-      (value)="change($event)"
     ></b>
   `,
 })
@@ -18,6 +18,9 @@ class TestCounterComponent {
   count = 0;
   countInterval = 1;
   timer: number;
+  constructor(private eventBusService: EventBusService) {
+    this.eventBusService.on('counterValueChanged').subscribe((payload: number) => this.change(payload));
+  }
   change(event: number) {
     this.timer = event;
   }
@@ -31,7 +34,7 @@ describe('CounterDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [CounterDirective, TestCounterComponent],
-      providers: [UnsubscribeService],
+      providers: [UnsubscribeService, EventBusService],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()

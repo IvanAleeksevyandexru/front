@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CoreModule } from '../core/core.module';
+import { EventBusService } from '../form-player/services/event-bus/event-bus.service';
 import { ModalModule } from '../modal/modal.module';
+import { BaseModule } from '../shared/base.module';
 import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
 import { HtmlRemoverService } from '../shared/services/html-remover/html-remover.service';
 import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
@@ -28,7 +29,7 @@ import { UniqueScreenModule } from './unique-screen/unique-screen.module';
 @NgModule({
   declarations: [ScreenResolverComponent],
   imports: [
-    CoreModule,
+    BaseModule,
     ComponentScreenModule,
     CustomScreenModule,
     EmptyScreenModule,
@@ -44,6 +45,7 @@ import { UniqueScreenModule } from './unique-screen/unique-screen.module';
     CurrentAnswersService,
     ValueLoaderService,
     HtmlRemoverService,
+    EventBusService,
   ],
   exports: [ScreenResolverComponent],
   entryComponents: [

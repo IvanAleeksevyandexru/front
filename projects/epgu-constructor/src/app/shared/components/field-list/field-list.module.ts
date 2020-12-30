@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FieldListComponent } from './field-list.component';
-import { CoreModule } from '../../../core/core.module';
-import { ScreenPadModule } from '../screen-pad/screen-pad.module';
+import { BaseModule } from '../../base.module';
 
 @NgModule({
   declarations: [FieldListComponent],
-  imports: [CommonModule, CoreModule, ScreenPadModule],
+  imports: [BaseModule],
   exports: [FieldListComponent],
 })
 export class FieldListModule {}

@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { InfoScreenBodyComponent } from './info-screen-body.component';
-import { CoreModule } from '../../../core/core.module';
-
-const COMPONENTS = [InfoScreenBodyComponent];
+import { BaseModule } from '../../../shared/base.module';
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
-  imports: [CoreModule],
+  declarations: [InfoScreenBodyComponent],
+  exports: [InfoScreenBodyComponent],
+  imports: [BaseModule],
 })
 export class InfoScreenBodyModule {}

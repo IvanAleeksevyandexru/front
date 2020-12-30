@@ -2,12 +2,23 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
-import { InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
+import * as moment_ from 'moment';
+import { DatesHelperService } from 'epgu-lib';
+
 import {
   CustomComponent,
   CustomComponentAttrValidation,
   CustomScreenComponentTypes,
 } from '../../../component/components-list/components-list.types';
+import { DATE_FIELD, InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
+import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
+
+const moment = moment_;
+
+enum ValidationType {
+  regExp = 'RegExp',
+  regExpException = 'RegExpException',
+}
 
 @Injectable()
 export class ValidationService {
@@ -15,12 +26,17 @@ export class ValidationService {
     CustomScreenComponentTypes.LabelSection,
     CustomScreenComponentTypes.HtmlString,
   ];
+
+  constructor(private dateRangeService: DateRangeService) {}
+
   customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
-    const validations = componentValidations && componentValidations.filter(validationRule =>
-      validationRule.updateOn === 'change' ||
-      typeof validationRule.updateOn === 'undefined'
-    );
+    const validations =
+      componentValidations &&
+      componentValidations.filter(
+        (validationRule) =>
+          validationRule.updateOn === 'change' || typeof validationRule.updateOn === 'undefined',
+      );
 
     return (control: AbstractControl): ValidationErrors => {
       if (this.typesWithoutValidation.includes(component.type)) {
@@ -43,7 +59,7 @@ export class ValidationService {
         );
       }
 
-      if (!control.value) {
+      if (!control.value || validations?.length === 0) {
         return null;
       }
 
@@ -98,6 +114,25 @@ export class ValidationService {
     };
   }
 
+  public dateValidator(component: CustomComponent): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors => {
+      if (!this.dateRangeService.rangeMap.has(component.id)) return;
+
+      const hasMinError = moment(control.value).isBefore(
+        this.dateRangeService.rangeMap.get(component.id).min ||
+          DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate),
+      );
+      const hasMaxError = moment(control.value).isAfter(
+        this.dateRangeService.rangeMap.get(component.id).max ||
+          DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate),
+      );
+
+      if (hasMinError || hasMaxError) {
+        return this.validationErrorMsg(DATE_FIELD);
+      }
+    };
+  }
+
   private isValid(component: CustomComponent, value: string): boolean {
     switch (component.type) {
       case CustomScreenComponentTypes.OgrnInput:
@@ -118,9 +153,18 @@ export class ValidationService {
     return { msg: error };
   }
 
-  private getError(validations: Array<CustomComponentAttrValidation>, control: AbstractControl): CustomComponentAttrValidation {
-    return validations.find(({ value, type }) =>
-      type === 'RegExp' && control.value && !new RegExp(value).test(control.value)
+  private getError(
+    validations: Array<CustomComponentAttrValidation>,
+    control: AbstractControl,
+  ): CustomComponentAttrValidation {
+    return validations.find(
+      ({ value, type }) =>
+        (type === ValidationType.regExp &&
+          control.value &&
+          !new RegExp(value).test(control.value)) ||
+        (type === ValidationType.regExpException &&
+          control.value &&
+          new RegExp(value).test(control.value)),
     );
   }
 }

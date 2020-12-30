@@ -1,48 +1,38 @@
 <ng-container [ngSwitch]="screenService.componentType$ | async">
   <epgu-constructor-unused-payments
     *ngSwitchCase="uniqueComponentName.unusedPayments"
-    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-unused-payments>
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
-    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-select-map-object>
   <epgu-constructor-file-upload-screen
     *ngSwitchCase="uniqueComponentName.fileUploadComponent"
-    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-file-upload-screen>
+  <epgu-constructor-upload-and-edit-photo
+    *ngSwitchCase="uniqueComponentName.photoUploadComponent"
+  ></epgu-constructor-upload-and-edit-photo>
   <epgu-constructor-employee-history
     *ngSwitchCase="uniqueComponentName.employeeHistory"
-    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-employee-history>
   <epgu-constructor-repeatable-fields
     *ngSwitchCase="uniqueComponentName.repeatableFields"
-    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-repeatable-fields>
   <epgu-constructor-time-slots
     *ngSwitchCase="uniqueComponentName.timeSlot"
-    (nextStepEvent)="nextDataForStep($event)">
-  </epgu-constructor-time-slots>
+  ></epgu-constructor-time-slots>
   <epgu-constructor-car-info
     *ngSwitchCase="uniqueComponentName.carInfo"
-    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-car-info>
   <epgu-constructor-signature-application-container
     *ngSwitchCase="uniqueComponentName.signatureApplication"
-    (nextStepEvent)="nextDataForStep($event)">
-  </epgu-constructor-signature-application-container>
+  ></epgu-constructor-signature-application-container>
   <epgu-constructor-payment
     *ngSwitchCase="uniqueComponentName.paymentScr"
-    (nextStepEvent)="nextDataForStep($event)"
   ></epgu-constructor-payment>
   <epgu-constructor-bill-info
     *ngSwitchCase="uniqueComponentName.billInfo"
     (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-bill-info>
-  <epgu-constructor-upload-and-edit-photo
-    *ngSwitchCase="uniqueComponentName.photoUploadComponent"
-    (nextStepEvent)="nextDataForStep($event)">
-  </epgu-constructor-upload-and-edit-photo>
   <epgu-constructor-payment-type-selector
     *ngSwitchCase="uniqueComponentName.paymentTypeSelector">
   </epgu-constructor-payment-type-selector>

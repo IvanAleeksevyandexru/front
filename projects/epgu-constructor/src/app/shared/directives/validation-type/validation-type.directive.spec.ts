@@ -1,19 +1,20 @@
-import { ValidationTypeDirective } from './validation-type.directive';
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { FormBuilder, FormControl, FormGroup, NgControl } from '@angular/forms';
-
+import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import {
   CustomComponent,
-  CustomScreenComponentTypes,
+  CustomScreenComponentTypes
 } from '../../../component/components-list/components-list.types';
-import { ValidationService } from '../../services/validation/validation.service';
-import { ValidationTypeModule } from './validation-type.module';
-import { RouterTestingModule } from '@angular/router/testing';
 import { CoreModule } from '../../../core/core.module';
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { BaseModule } from '../../base.module';
+import { ValidationService } from '../../services/validation/validation.service';
+import { ValidationTypeModule } from './validation-type.module';
+import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 
 const componentMockData: CustomComponent = {
   attrs: {
@@ -63,11 +64,13 @@ describe('ValidationTypeDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
-      imports: [ValidationTypeModule, RouterTestingModule, CoreModule],
+      imports: [CoreModule, ValidationTypeModule, RouterTestingModule, BaseModule],
       providers: [
         ValidationService,
         NgControl,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        EventBusService,
+        DateRangeService,
       ],
     });
     service = TestBed.inject(ValidationService);

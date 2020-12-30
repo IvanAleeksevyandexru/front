@@ -1,17 +1,33 @@
-import { Component, EventEmitter, Injector, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import * as moment_ from 'moment';
-import { catchError, switchMap, takeUntil, map, tap } from 'rxjs/operators';
+import { EventBusService } from 'projects/epgu-constructor/src/app/form-player/services/event-bus/event-bus.service';
 import { Observable, throwError } from 'rxjs';
-import { ScreenService } from '../../../../screen/screen.service';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
+import { LocationService } from '../../../../core/services/location/location.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { ConfigService } from '../../../../core/config/config.service';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ComponentBase } from '../../../../screen/screen.types';
+import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
+import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
+import {
+  getDiscountDate,
+  getDiscountPrice,
+  getDocInfo,
+} from './components/payment/payment.component.functions';
 // eslint-disable-next-line import/no-cycle
 import { PaymentStatus } from './payment.constants';
 // eslint-disable-next-line import/no-cycle
 import { PaymentService } from './payment.service';
-import { ComponentBase } from '../../../../screen/screen.types';
-import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import {
   BillInfoResponse,
   BillsInfoResponse,
@@ -22,24 +38,15 @@ import {
   PaymentInfoValue,
   PaymentsAttrs,
 } from './payment.types';
-import {
-  getDiscountDate,
-  getDiscountPrice,
-  getDocInfo,
-} from './components/payment/payment.component.functions';
-import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
-import { LocationService } from '../../../../core/services/location/location.service';
-import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
 
 const ALREADY_PAY_ERROR = 23;
 const moment = moment_;
 
 @Component({
   template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AbstractPaymentComponent implements OnDestroy, OnInit {
-  @Output() nextStepEvent = new EventEmitter<string>();
-
   public paymentStatus = PaymentStatus;
   public paymentPurpose = '';
   public uin = ''; // Уникальный идентификатор платежа
@@ -58,6 +65,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   public currentAnswersService: CurrentAnswersService;
   public ngUnsubscribe$: UnsubscribeService;
   public config: ConfigService;
+  public eventBusService: EventBusService;
 
   data: ComponentBase;
   header$: Observable<string>;
@@ -66,6 +74,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
 
   private localStorageService: LocalStorageService;
   private locationService: LocationService;
+  private changeDetectionRef: ChangeDetectorRef;
   private payCode = 1; // Код типа плательщика
   private payStatusIntervalLink = null;
   private payStatusInterval = 30;
@@ -75,11 +84,13 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   constructor(public injector: Injector) {
     this.paymentService = this.injector.get(PaymentService);
     this.screenService = this.injector.get(ScreenService);
+    this.eventBusService = this.injector.get(EventBusService);
     this.currentAnswersService = this.injector.get(CurrentAnswersService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.config = this.injector.get(ConfigService);
     this.locationService = this.injector.get(LocationService);
     this.localStorageService = this.injector.get(LocalStorageService);
+    this.changeDetectionRef = this.injector.get(ChangeDetectorRef);
     this.header$ = this.screenService.header$.pipe(map((header) => header ?? 'Оплата госпошлины'));
     this.init$ = this.screenService.component$.pipe(
       tap((data: ComponentBase) => {
@@ -106,8 +117,9 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       amountWithoutDiscount: this.sumWithoutDiscount ? this.sumWithoutDiscount : null,
       paymentPurpose: this.paymentPurpose ? this.paymentPurpose : null,
       receiver: this.docInfo ? this.docInfo : null,
+      billId: this.billId ? this.billId : null,
     } as PaymentInfoEventValue;
-    this.nextStepEvent.emit(JSON.stringify(exportValue));
+    this.eventBusService.emit('nextStepEvent', JSON.stringify(exportValue));
   }
 
   /**
@@ -150,8 +162,14 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
         .getBillsInfoByBillId(this.billId, this.orderId)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
-          (info: BillsInfoResponse) => this.getBillsInfoByBillIdSuccess(info),
-          (error) => this.setPaymentStatusFromErrorRequest(error),
+          (info: BillsInfoResponse) => {
+            this.getBillsInfoByBillIdSuccess(info);
+            this.changeDetectionRef.markForCheck();
+          },
+          (error) => {
+            this.setPaymentStatusFromErrorRequest(error);
+            this.changeDetectionRef.markForCheck();
+          },
         );
     } else {
       this.loadPaymentInfoOldType();
@@ -182,8 +200,14 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(
-        (res) => this.setPaymentStatusFromSuccessRequest(res),
-        (error) => this.setPaymentStatusFromErrorRequest(error),
+        (res) => {
+          this.setPaymentStatusFromSuccessRequest(res);
+          this.changeDetectionRef.markForCheck();
+        },
+        (error) => {
+          this.setPaymentStatusFromErrorRequest(error);
+          this.changeDetectionRef.markForCheck();
+        },
       );
   }
 
@@ -233,14 +257,22 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
         takeUntil(this.ngUnsubscribe$),
         catchError((err) => this.setPaymentStatusFromErrorRequest(err)),
       )
-      .subscribe((info: BillsInfoResponse) => this.getBillsInfoByUINSuccess(info));
+      .subscribe(
+        (info: BillsInfoResponse) => {
+          this.getBillsInfoByUINSuccess(info);
+          this.changeDetectionRef.markForCheck();
+        },
+        () => {
+          this.changeDetectionRef.markForCheck();
+        },
+      );
 
     // Если не оплачено, то периодически проверяем оплачено или нет
     if (!this.isPaid) {
-      this.payStatusIntervalLink = setInterval(
-        () => this.getPaymentStatusByUIN(),
-        this.payStatusInterval * 1000,
-      );
+      this.payStatusIntervalLink = setInterval(() => {
+        this.getPaymentStatusByUIN();
+        this.changeDetectionRef.markForCheck();
+      }, this.payStatusInterval * 1000);
     }
   }
 
@@ -332,9 +364,10 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
           return throwError(err);
         }),
       )
-      .subscribe((response: PaymentInfoForPaidStatusData) =>
-        this.getPaymentStatusByUINSuccess(response),
-      );
+      .subscribe((response: PaymentInfoForPaidStatusData) => {
+        this.getPaymentStatusByUINSuccess(response);
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   /**

@@ -1,20 +1,14 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  HostListener,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { ConfigService } from '../../../../../../core/config/config.service';
-import { ScreenService } from '../../../../../../screen/screen.service';
-import { LAST_SCENARIO_KEY } from '../../../../../../shared/constants/form-player';
-import { SignatureApplicationData } from '../../models/application.interface';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
 import { LocationService } from '../../../../../../core/services/location/location.service';
+import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { LAST_SCENARIO_KEY } from '../../../../../../shared/constants/form-player';
+import { SignatureApplicationData } from '../../models/application.interface';
 import {
   ComponentActionDto,
   ComponentDto,
@@ -27,8 +21,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignatureApplicationContainerComponent implements OnInit {
-  @Output() nextStepEvent = new EventEmitter<string>();
-
   data: SignatureApplicationData = this.screenService.componentValue as SignatureApplicationData;
 
   isMobile = this.deviceDetector.isMobile;
@@ -44,6 +36,7 @@ export class SignatureApplicationContainerComponent implements OnInit {
     private deviceDetector: DeviceDetectorService,
     private localStorageService: LocalStorageService,
     private locationService: LocationService,
+    private eventBusService: EventBusService,
   ) {}
 
   @HostListener('click', ['$event'])
@@ -69,7 +62,7 @@ export class SignatureApplicationContainerComponent implements OnInit {
   }
 
   private nextStep(): void {
-    this.nextStepEvent.emit(JSON.stringify({ ...this.data, success: true }));
+    this.eventBusService.emit('nextStepEvent', JSON.stringify({ ...this.data, success: true }));
   }
 
   private isSigned(): boolean {

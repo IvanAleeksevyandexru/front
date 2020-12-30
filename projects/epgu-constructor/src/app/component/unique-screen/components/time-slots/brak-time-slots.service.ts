@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
-import { SessionService } from '../../../../core/services/session/session.service';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v5 as uuidv5 } from 'uuid';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { SessionService } from '../../../../core/services/session/session.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
@@ -15,8 +15,9 @@ import {
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
+  TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface,
+  ZagsDepartmentInterface
 } from './time-slots.types';
 
 const moment = moment_;
@@ -27,6 +28,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   public activeYearNumber: number;
   public bookId;
   public BOOKING_NAMESPACE = '1252d729-fb01-4768-935d-8ddb95e14b7d'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга браков
+  public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
 
   public department: ZagsDepartmentInterface;
   private serviceId: string;
@@ -37,8 +39,6 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   private bookedSlot: SlotInterface;
   private errorMessage;
 
-  private isDepartmentChanged = false; // Флаг показывающий что департамент поменялся с одного(непустого) на другой
-
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
@@ -46,6 +46,24 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
+    if (this.bookedSlot && !this.isBookedDepartment) {
+      return this.cancelSlot(this.bookId).pipe(
+        switchMap((response) => {
+          if (response.error) {
+            this.errorMessage = response.error.errorDetail
+              ? response.error.errorDetail.errorMessage
+              : 'check log';
+            console.log(response.error);
+            return of(null);
+          }
+          return this.book(selectedSlot);
+        }),
+        catchError((error) => {
+          this.errorMessage = error.message;
+          return throwError(error);
+        }),
+      );
+    }
     return this.book(selectedSlot);
   }
 
@@ -105,14 +123,10 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     return this.activeYearNumber;
   }
 
-  init(data: TimeSlotValueInterface): Observable<void> {
-    if (this.changed(data) || this.errorMessage) {
+  init(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): Observable<boolean> {
+    if (this.changed(data, cachedAnswer) || this.errorMessage) {
       this.slotsMap = {};
       this.errorMessage = undefined;
-
-      if (this.bookedSlot && this.isDepartmentChanged) {
-        this.cancelSlot().subscribe();
-      }
 
       return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
         map((response) => {
@@ -122,6 +136,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
             const { errorMessage, errorCode } = response.error.errorDetail;
             this.errorMessage = errorMessage || errorCode;
           }
+          return this.isBookedDepartment;
         }),
         catchError((error) => {
           this.errorMessage = error.message;
@@ -130,7 +145,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       );
     }
 
-    return of(undefined);
+    return of(this.isBookedDepartment);
   }
 
   hasError(): boolean {
@@ -141,16 +156,15 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     return this.errorMessage;
   }
 
-  changed(data: TimeSlotValueInterface): boolean {
+  changed(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): boolean {
     let changed = false;
 
     let department = JSON.parse(data.department);
-    this.isDepartmentChanged = this.department?.value !== department.value;
-    if (this.isDepartmentChanged) {
+    this.isBookedDepartment = cachedAnswer?.department.value === department.value;
+    if (this.department?.value !== department.value) {
       changed = true;
       this.department = department;
     }
-    this.isDepartmentChanged = !!this.department && (this.department.value !== department.value);
 
     let solemn = data.solemn == 'Да';
     if (this.solemn !== solemn) {
@@ -182,13 +196,13 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     return changed;
   }
 
-  private cancelSlot(): Observable<CancelSlotResponseInterface> {
+  private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
     const { eserviceId } = this.config.timeSlots.brak;
 
     return this.smev3TimeSlotsRestService
       .cancelSlot({
         eserviceId,
-        bookId: this.bookId,
+        bookId: bookId,
       })
       .pipe(
         tap((response) => {
@@ -263,7 +277,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       bookId: this.bookId,
       organizationId: this.department.attributeValues.CODE,
       calendarName,
-      areaId: [selectedSlot.slotId],
+      areaId: [selectedSlot.areaId || this.department.attributeValues.AREA_NAME],
       selectedHallTitle: selectedSlot.slotId,
       parentOrderId: this.orderId,
       preliminaryReservationPeriod,
@@ -274,7 +288,10 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private initSlotsMap(slots: TimeSlot[]): void {
-    slots.forEach((slot) => {
+    const filteredSlots = slots.filter(slot => slot.areaId === this.department.attributeValues.AREA_NAME);
+    const initSlots = filteredSlots.length ? filteredSlots : slots;
+
+    initSlots.forEach((slot) => {
       const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};

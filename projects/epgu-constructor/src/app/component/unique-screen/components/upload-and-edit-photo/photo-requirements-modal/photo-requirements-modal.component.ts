@@ -1,20 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
 import { ConfirmationModalBaseButton } from '../../../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.interface';
 import { uploadPhotoElemId } from '../upload-and-edit-photo.constant';
 import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
-import { ConfigService } from '../../../../../core/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-photo-requirements-modal',
   templateUrl: './photo-requirements-modal.component.html',
   styleUrls: ['./photo-requirements-modal.component.scss'],
+  providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoRequirementsModalComponent extends ModalBaseComponent implements OnInit {
   setting: PhotoRequirementsModalSetting;
   buttons: ConfirmationModalBaseButton[] = [];
 
-  constructor(public config: ConfigService) {
+  constructor(
+    public config: ConfigService,
+    private ngUnsubscribe$: UnsubscribeService,
+    private eventBusService: EventBusService,
+    private cdr: ChangeDetectorRef,
+  ) {
     super();
   }
 
@@ -25,6 +35,14 @@ export class PhotoRequirementsModalComponent extends ModalBaseComponent implemen
         handler: (): void => this.closeModal(),
       },
     ];
+
+    this.eventBusService
+      .on('closeModalEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
+        this.closeModal();
+        this.cdr.markForCheck();
+      });
   }
 
   handleClickOnElemById($event: Event): void {

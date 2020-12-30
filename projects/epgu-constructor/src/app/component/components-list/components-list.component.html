@@ -61,6 +61,7 @@
           [validationShowOn]="validationShowOn"
           [formControl]="$any(componentData.get('value'))"
           [clearable]="true"
+          [localSearch]="componentData.get('attrs').value.localSearch"
           class="cs__select cs-select"
         >
         </lib-dropdown>
@@ -166,17 +167,17 @@
         *ngSwitchCase="componentType.DateInput"
         [data]="componentData"
       >
-        <lib-date-picker
-          (dateSelected)="
+        <epgu-constructor-constructor-date-picker
+          (dateSelectedEvent)="
             dateRangeService.changeDate($event, componentData.value?.attrs, componentData.value?.id, formService.form)
           "
-          (cleared)="
+          (clearedEvent)="
             dateRangeService.clearDate(componentData.value?.id, componentData.value?.attrs)
           "
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [name]="componentData.value?.id"
-          [formControl]="$any(componentData.get('value'))"
+          [control]="$any(componentData.get('value'))"
           [readOnly]="componentData.value?.attrs?.readonly"
           [minDate]="
             dateRangeService.getMinDate(componentData.value, formService.form) ||
@@ -190,7 +191,8 @@
           "
           [clearable]="true"
           [align]="'left'"
-        ></lib-date-picker>
+          [brokenDateFixStrategy]="componentData.value?.attrs?.brokenDateFixStrategy || brokenDateFixStrategy"
+        ></epgu-constructor-constructor-date-picker>
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item
@@ -201,7 +203,7 @@
           [simpleMode]="true"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
-          [hideHouseCheckbox]="true"
+          [hideHouseCheckbox]="false"
           [externalApiUrl]="configService.externalApiUrl + '/'"
           [control]="componentData.get('value')"
           [hideLevels]="componentData.value?.attrs?.hideLevels"
@@ -217,7 +219,7 @@
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [control]="$any(componentData.get('value'))"
-          [itemsProvider]="formService.addressHelperServiceProvider()"
+          [itemsProvider]="componentData | memo:formService.addressHelperServiceProvider:formService"
           [clearable]="true"
         >
         </epgu-constructor-constructor-lookup>
@@ -263,6 +265,7 @@
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.SnilsInput"
         [data]="componentData"
+        [hidden]="componentData.value?.attrs?.hidden"
       >
         <ng-container
           *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
@@ -334,7 +337,6 @@
     [readOnly]="data.value?.attrs?.readonly"
     [placeholder]="data.value?.attrs?.placeholder"
     [component]="data.value"
-    (emmitChangesEvent)="emitChanges()"
   ></epgu-constructor-constructor-plain-input>
 </ng-template>
 
@@ -354,7 +356,6 @@
     [invalid]="data.get('value').invalid && data.get('value').touched"
     [isTrim]="false"
     [component]="data.value"
-    (emmitChangesEvent)="emitChanges()"
   ></epgu-constructor-masked-input>
 </ng-template>
 

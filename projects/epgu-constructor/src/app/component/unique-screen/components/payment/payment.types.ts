@@ -204,5 +204,6 @@ export interface PaymentInfoEventValue{
   amountWithoutDiscount: string;
   paymentPurpose: string;
   receiver: string;
+  billId: number;
 }
 

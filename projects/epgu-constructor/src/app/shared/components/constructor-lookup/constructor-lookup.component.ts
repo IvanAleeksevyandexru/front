@@ -7,17 +7,17 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
+import { LookupComponent, ValidationShowOn } from 'epgu-lib';
 import {
   ListElement,
   LookupPartialProvider,
   LookupProvider,
 } from 'epgu-lib/lib/models/dropdown.model';
-import { LookupComponent, ValidationShowOn } from 'epgu-lib';
 
 @Component({
   selector: 'epgu-constructor-constructor-lookup',
   templateUrl: './constructor-lookup.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ConstructorLookupComponent {
   @ViewChild('lookupComponent', { static: false })
@@ -39,7 +39,7 @@ export class ConstructorLookupComponent {
   @Input() showSuggestion: boolean;
   @Input() showExpandCollapse: boolean;
   @Input() disabled: boolean;
-  @Output() changed = new EventEmitter<ListElement>();
+  @Output() changed = new EventEmitter<ListElement>(); // TODO: подумать над рефактором подписочной модели
 
   public onChanged(item: ListElement): void {
     this.changed.emit(item);

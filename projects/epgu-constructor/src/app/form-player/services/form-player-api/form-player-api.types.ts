@@ -48,6 +48,7 @@ export interface ComponentDto {
   required?: boolean;
   visited?: boolean;
   presetValue?: string;
+  valueFromCache?: boolean;
 }
 
 export interface ComponentAnswerDto {
@@ -136,6 +137,7 @@ export interface ComponentAttrsDto {
   minDateRef?: string;
   maxDateRef?: string;
   hideSocialShare?: boolean;
+  addContextQueryParams?: boolean;
 }
 
 export interface ComponentUploadedFileDto {

@@ -1,19 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { ValidationShowOn } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
+import { ValidationShowOn } from 'epgu-lib';
 import { CoreModule } from '../../../core/core.module';
-import { TextTransform } from '../../types/textTransform';
-import { TrimModule } from '../../directives/trim/trim.module';
-import { TextTransformModule } from '../../directives/text-transform/text-transform.module';
-import { CurrencyModule } from '../../directives/currency/currency.module';
-
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { CurrencyModule } from '../../directives/currency/currency.module';
+import { TextTransformModule } from '../../directives/text-transform/text-transform.module';
+import { TrimModule } from '../../directives/trim/trim.module';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
+import { BaseModule } from '../../base.module';
+import { TextTransform } from '../../types/textTransform';
+import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
+import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 
 describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;
@@ -24,13 +25,19 @@ describe('ConstructorPlainInputComponent', () => {
       declarations: [ConstructorPlainInputComponent],
       imports: [
         CoreModule,
+        BaseModule,
         RouterTestingModule,
         TrimModule,
         TextTransformModule,
         CurrencyModule,
         ValidationTypeModule,
       ],
-      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }, ValidationService],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        EventBusService,
+        ValidationService,
+        DateRangeService,
+      ],
     }).compileComponents();
   });
 

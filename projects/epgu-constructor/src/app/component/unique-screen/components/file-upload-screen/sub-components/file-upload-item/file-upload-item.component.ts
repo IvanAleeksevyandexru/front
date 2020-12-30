@@ -1,18 +1,19 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnDestroy,
-  Output,
   ViewChild,
 } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
-import { ConfigService } from '../../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../../../../../modal/modal.service';
@@ -52,6 +53,7 @@ const maxImgSizeInBytes = 525288;
   templateUrl: './file-upload-item.component.html',
   styleUrls: ['./file-upload-item.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadItemComponent implements OnDestroy {
   @Input() objectId: string;
@@ -84,10 +86,10 @@ export class FileUploadItemComponent implements OnDestroy {
           this.files$$.next([...list]);
           this.maxFileNumber = this.getMaxFileNumberFromList(list);
         }
+
+        this.changeDetectionRef.markForCheck();
       });
   }
-
-  @Output() newValueSet = new EventEmitter<FileResponseToBackendUploadsItem>();
 
   @ViewChild('fileUploadInput', { static: true })
   uploadInput: ElementRef;
@@ -108,7 +110,7 @@ export class FileUploadItemComponent implements OnDestroy {
       takeUntil(this.ngUnsubscribe$),
       tap((files) => {
         if (this.loadData) {
-          this.newValueSet.emit({
+          this.eventBusService.emit('fileUploadItemValueChangedEvent', {
             uploadId: this.loadData.uploadId,
             value: files,
             errors: this.errors,
@@ -139,8 +141,10 @@ export class FileUploadItemComponent implements OnDestroy {
     private fileUploadService: FileUploadService,
     public config: ConfigService,
     public modal: ModalService,
+    private eventBusService: EventBusService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
-    this.isMobile = deviceDetectorService.isMobile;
+    this.isMobile = this.deviceDetectorService.isMobile;
   }
   updateUploadedCameraPhotosInfo(addPhoto: boolean, fileName: string): void {
     if (!fileName?.includes(photoBaseName)) {
@@ -263,7 +267,9 @@ export class FileUploadItemComponent implements OnDestroy {
       this.errors = [];
     } else {
       this.errors.push(errorHandler[action]);
-      this.newValueSet.emit({ errors: this.errors });
+      this.eventBusService.emit('fileUploadItemValueChangedEvent', {
+        errors: this.errors,
+      } as FileResponseToBackendUploadsItem);
     }
   }
 
@@ -314,6 +320,8 @@ export class FileUploadItemComponent implements OnDestroy {
           this.updateUploadedCameraPhotosInfo(false, deletedFileInfo.fileName);
           this.updateUploadingInfo(deletedFileInfo, true);
           this.removeFileFromStore(file);
+
+          this.changeDetectionRef.markForCheck();
         });
     } else {
       let files = this.files$$.value;

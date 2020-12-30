@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
   ComponentActionDto,
   ComponentAnswerDto,
@@ -10,6 +10,7 @@ import {
     <ng-content></ng-content>
   </button>`,
   styleUrls: ['./long-button.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LongButtonComponent {
   @Input() data: Partial<ComponentActionDto | ComponentAnswerDto>;

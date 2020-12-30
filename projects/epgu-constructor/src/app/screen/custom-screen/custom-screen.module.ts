@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CustomScreenComponent } from './custom-screen.component';
 import { ComponentsListModule } from '../../component/components-list/components-list.module';
-import { CoreModule } from '../../core/core.module';
-import { BaseModule } from '../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
-
-const COMPONENTS = [CustomScreenComponent];
+import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
-  imports: [CoreModule, ComponentsListModule, BaseModule, ScreenContainerModule, ScreenPadModule],
+  declarations: [CustomScreenComponent],
+  exports: [CustomScreenComponent],
+  imports: [
+    BaseModule,
+    ComponentsListModule,
+    BaseComponentsModule,
+    ScreenContainerModule,
+    ScreenPadModule
+  ],
 })
 export class CustomScreenModule {}

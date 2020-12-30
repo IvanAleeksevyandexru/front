@@ -1,8 +1,11 @@
-import { DragAndDropDirective } from './drag-and-drop.directive';
+import { CurrencyPipe } from '@angular/common';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CurrencyPipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
+import { takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
+import { DragAndDropDirective } from './drag-and-drop.directive';
 
 class FileListMock {
   readonly length: number = 1;
@@ -26,10 +29,20 @@ const createDragEventMock = (fileList: FileList) => {
 
 @Component({
   selector: 'epgu-constructor-drag-and-drop-test-component',
-  template: '<div dragAndDrop (fileDropped)="onFileSelected($event)"></div>',
+  template: '<div dragAndDrop></div>',
+  providers: [UnsubscribeService],
 })
 class DragAndDropTestComponent {
   e: FileList;
+  constructor(
+    private eventBusService: EventBusService,
+    private ngUnsubscribe$: UnsubscribeService,
+  ) {
+    this.eventBusService
+      .on('fileDropped')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: FileList) => this.onFileSelected(payload));
+  }
   onFileSelected(e: FileList) {
     this.e = e;
   }
@@ -41,7 +54,7 @@ describe('DragAndDropDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [DragAndDropDirective, DragAndDropTestComponent],
-      providers: [CurrencyPipe],
+      providers: [CurrencyPipe, EventBusService, UnsubscribeService],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()

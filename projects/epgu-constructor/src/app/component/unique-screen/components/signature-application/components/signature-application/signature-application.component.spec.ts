@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ButtonComponent, LoaderComponent } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ScreenContainerComponent } from '../../../../../../shared/components/screen-container/screen-container.component';
-import { PageNameComponent } from '../../../../../../shared/components/base/page-name/page-name.component';
+import { PageNameComponent } from '../../../../../../shared/components/base-components/page-name/page-name.component';
 import { NavigationComponent } from '../../../../../../shared/components/navigation/navigation.component';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { OutputHtmlComponent } from '../../../../../../core/components/output-html/output-html.component';
+import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { SafePipe } from '../../../../../../core/pipes/safe/safe.pipe';
+import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import {
   ComponentActionDto,
@@ -19,12 +19,12 @@ import {
 import { SignatureApplicationComponent } from './signature-application.component';
 import { of } from 'rxjs';
 import { ModalService } from '../../../../../../modal/modal.service';
-import { ImgPrefixerPipe } from '../../../../../../core/pipes/img-prefixer/img-prefixer.pipe';
+import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
-import { ConfigService } from '../../../../../../core/config/config.service';
-import { ConfigServiceStub } from '../../../../../../core/config/config.service.stub';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { By } from '@angular/platform-browser';
 import { LocationService } from '../../../../../../core/services/location/location.service';
 import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';

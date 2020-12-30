@@ -1,32 +1,40 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { NavigationPayload } from '../../../../form-player/form-player.types';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { LocationService } from '../../../../core/services/location/location.service';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   ApplicantAnswersDto,
   ComponentDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { CustomComponent } from '../../../components-list/components-list.types';
-import { LocationService } from '../../../../core/services/location/location.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { CustomComponent } from '../../../components-list/components-list.types';
 
 @Component({
   selector: 'epgu-constructor-invitation-error',
   templateUrl: './invitation-error.component.html',
   styleUrls: ['./invitation-error.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvitationErrorComponent implements OnInit {
   @Input() data: ComponentDto;
   @Input() applicantAnswers: ApplicantAnswersDto;
   @Input() orderId: string;
   @Input() header: string;
-  @Output() nextStepEvent = new EventEmitter<NavigationPayload>();
+
+  public defaultImgSrc = `${this.config.staticDomainAssetsPath}/assets/icons/svg/warn.svg`;
+
   public email: FormControl = new FormControl('', {
     validators: Validators.required,
   });
@@ -43,6 +51,7 @@ export class InvitationErrorComponent implements OnInit {
     private locationService: LocationService,
     private ngUnsubscribe$: UnsubscribeService,
     private loggerService: LoggerService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -84,6 +93,9 @@ export class InvitationErrorComponent implements OnInit {
         },
         (error) => {
           this.loggerService.error(error);
+        },
+        () => {
+          this.cdr.markForCheck();
         },
       );
   }
