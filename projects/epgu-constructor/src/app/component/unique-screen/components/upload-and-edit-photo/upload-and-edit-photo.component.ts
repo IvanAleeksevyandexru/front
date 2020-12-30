@@ -1,4 +1,14 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
@@ -34,6 +44,7 @@ import { ImgSubject } from './upload-and-edit-photo.model';
   templateUrl: './upload-and-edit-photo.component.html',
   styleUrls: ['./upload-and-edit-photo.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   @ViewChild('hiddenFileInput') fileInput: ElementRef;
@@ -78,6 +89,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     public config: ConfigService,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     this.header = screenService.header;
     this.data = { ...screenService.component };
@@ -92,7 +104,10 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.eventBusService
       .on('fileDropped')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: FileList) => this.onFileSelected(payload));
+      .subscribe((payload: FileList) => {
+        this.onFileSelected(payload);
+        this.changeDetectionRef.markForCheck();
+      });
 
     this.isDesktop = this.deviceDetector.isDesktop;
     this.allowedImgTypes = this.data?.attrs?.uploadedFile?.fileType || [];
@@ -101,6 +116,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     if (!this.isDesktop) {
       this.webcamService.isWebcamAllowed().subscribe((isAvailable) => {
         this.isWebcamAvailable = isAvailable;
+        this.changeDetectionRef.markForCheck();
       });
     }
   }
@@ -145,6 +161,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
             this.croppedImageUrl = data.imageObjectUrl;
           }
           this.isModalOpened = false;
+          this.changeDetectionRef.markForCheck();
         });
     });
   }
@@ -153,9 +170,12 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     return this.imgAttachErrorSubject.subscribe((imageErrors) =>
       this.modalService
         .openModal(PhotoErrorModalComponent, { imageErrors })
-        .subscribe((data: { changeImage?: boolean }) =>
-          data?.changeImage ? this.fileInput.nativeElement.click() : null,
-        ),
+        .subscribe((data: { changeImage?: boolean }) => {
+          if (data?.changeImage) {
+            this.fileInput.nativeElement.click();
+          }
+          this.changeDetectionRef.markForCheck();
+        }),
     );
   }
 
@@ -163,8 +183,18 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.subs
       .add(this.imgSub())
       .add(this.imgAttachErrorSub())
-      .add(fromEvent(this.imageValidator, 'load').subscribe(() => this.validateImage()))
-      .add(fromEvent(this.imageValidator, 'error').subscribe(() => this.validateImage()));
+      .add(
+        fromEvent(this.imageValidator, 'load').subscribe(() => {
+          this.validateImage();
+          this.changeDetectionRef.markForCheck();
+        }),
+      )
+      .add(
+        fromEvent(this.imageValidator, 'error').subscribe(() => {
+          this.validateImage();
+          this.changeDetectionRef.markForCheck();
+        }),
+      );
   }
 
   getRequestData(): {
@@ -316,6 +346,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       if (value === uploadPhotoElemId.howToTakePhoto) {
         this.openHowPhotoModal();
       }
+      this.changeDetectionRef.markForCheck();
     });
   }
 
@@ -326,6 +357,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         if (value === uploadPhotoElemId.requirements) {
           this.openRequirementsModal();
         }
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -354,6 +386,9 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         switchMap(() => compressFile()),
         switchMap((compressedFile) => uploadFile(compressedFile)),
       )
-      .subscribe(() => this.eventBusService.emit('nextStepEvent', JSON.stringify(requestData)));
+      .subscribe(() => {
+        this.eventBusService.emit('nextStepEvent', JSON.stringify(requestData));
+        this.changeDetectionRef.markForCheck();
+      });
   }
 }

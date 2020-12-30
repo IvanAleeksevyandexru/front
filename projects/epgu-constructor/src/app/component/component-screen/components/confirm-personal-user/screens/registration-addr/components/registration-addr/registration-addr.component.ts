@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DadataResult, ValidationShowOn } from 'epgu-lib';
 import { skip, startWith, takeUntil } from 'rxjs/operators';
@@ -23,6 +23,7 @@ const moment = moment_;
   templateUrl: './registration-addr.component.html',
   styleUrls: ['./registration-addr.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class RegistrationAddrComponent implements OnInit {
   data$: Observable<IRegistrationAddrComponent> = this.screenService.component$ as Observable<
@@ -40,16 +41,19 @@ export class RegistrationAddrComponent implements OnInit {
     private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     private fb: FormBuilder,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     combineLatest([this.data$, this.screenService.display$])
-      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([data]) => {
         this.required = data.required;
         this.initFormGroup(data);
         this.subscribeToFormChanges();
         this.subscribeToCmpErrors(data);
+
+        this.changeDetectionRef.markForCheck();
       });
   }
 

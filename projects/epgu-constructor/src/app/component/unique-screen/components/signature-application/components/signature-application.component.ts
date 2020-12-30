@@ -1,4 +1,5 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
+
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { LocalStorageService } from '../../../../../core/services/local-storage/local-storage.service';
@@ -12,6 +13,7 @@ import { SignatureApplicationData } from '../models/application.interface';
   selector: 'epgu-constructor-signature-application',
   templateUrl: './signature-application.component.html',
   styleUrls: ['./signature-application.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignatureApplicationComponent implements OnInit {
   @Input() isLoading: boolean;

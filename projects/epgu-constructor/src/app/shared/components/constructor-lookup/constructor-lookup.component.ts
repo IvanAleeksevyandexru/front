@@ -17,7 +17,7 @@ import {
 @Component({
   selector: 'epgu-constructor-constructor-lookup',
   templateUrl: './constructor-lookup.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ConstructorLookupComponent {
   @ViewChild('lookupComponent', { static: false })

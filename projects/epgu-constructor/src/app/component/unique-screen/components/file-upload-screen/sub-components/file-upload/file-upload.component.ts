@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
@@ -16,6 +22,7 @@ import { FileUploadService, Uploaders } from '../file-upload.service';
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadComponent implements OnInit {
   @Input() objectId: string;
@@ -45,6 +52,7 @@ export class FileUploadComponent implements OnInit {
     private fileUploadService: FileUploadService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -53,16 +61,18 @@ export class FileUploadComponent implements OnInit {
     this.eventBusService
       .on('fileUploadItemValueChangedEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: FileResponseToBackendUploadsItem) =>
-        this.handleNewValueForItem(payload),
-      );
+      .subscribe((payload: FileResponseToBackendUploadsItem) => {
+        this.handleNewValueForItem(payload);
+        this.cdr.markForCheck();
+      });
 
     this.eventBusService
       .on('fileUploadRelatedValueChangedEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: FileResponseToBackendWithRelatedUploads) =>
-        this.handleNewRelatedValueForItem(payload),
-      );
+      .subscribe((payload: FileResponseToBackendWithRelatedUploads) => {
+        this.handleNewRelatedValueForItem(payload);
+        this.cdr.markForCheck();
+      });
   }
 
   setUploadersRestrictions(): void {

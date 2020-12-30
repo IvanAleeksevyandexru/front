@@ -1,7 +1,7 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { ScreenBase } from '../screenBase';
 
@@ -10,6 +10,7 @@ import { ScreenBase } from '../screenBase';
   templateUrl: './unique-screen.component.html',
   styleUrls: ['./unique-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class UniqueScreenComponent extends ScreenBase implements OnInit {
   uniqueComponentName = UniqueScreenComponentTypes;

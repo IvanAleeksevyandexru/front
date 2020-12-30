@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { LocationService } from '../../../core/services/location/location.service';
 
 /**
@@ -7,6 +7,7 @@ import { LocationService } from '../../../core/services/location/location.servic
 @Component({
   selector: 'epgu-constructor-redirect',
   template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RedirectComponent {
   constructor(private locationService: LocationService) {}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
@@ -11,6 +11,7 @@ import { CarInfoValues } from '../../models/car-info.interface';
   selector: 'epgu-constructor-car-info',
   templateUrl: './car-info.component.html',
   styleUrls: ['./car-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarInfoComponent {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;

@@ -1,4 +1,10 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
@@ -14,36 +20,44 @@ import { ScreenBase } from '../screenBase';
   templateUrl: './component-screen.component.html',
   styleUrls: ['./component-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentScreenComponent extends ScreenBase implements OnInit {
   screenComponentName = ComponentScreenComponentTypes;
   isShowActionBtn = false;
   actionButtons: ComponentActionDto[] = [];
   screenActionButtons: ScreenActionDto[] = [];
-
-  constructor(public currentAnswersService: CurrentAnswersService, public injector: Injector) {
+  constructor(
+    public currentAnswersService: CurrentAnswersService,
+    public injector: Injector,
+    private changeDetectionRef: ChangeDetectorRef,
+  ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this.screenService.componentType$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((type) => this.calcIsShowActionBtn(type as ComponentScreenComponentTypes));
+    this.screenService.componentType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((type) => {
+      this.calcIsShowActionBtn(type as ComponentScreenComponentTypes);
+      this.changeDetectionRef.markForCheck();
+    });
     this.screenService.actions$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((actions: Array<ComponentActionDto>): void => {
         this.actionButtons = actions || [];
+        this.changeDetectionRef.markForCheck();
       });
     this.screenService.buttons$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((buttons: Array<ScreenActionDto>) => {
         this.screenActionButtons = buttons || [];
+        this.changeDetectionRef.markForCheck();
       });
     this.eventBusService
       .on('nextStepEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: string) => {
         this.nextStep(payload);
+        this.changeDetectionRef.markForCheck();
       });
   }
 

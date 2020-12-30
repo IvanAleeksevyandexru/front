@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
@@ -12,6 +19,7 @@ import { ConfirmationModal } from './confirmation-modal.interface';
   templateUrl: './confirmation-modal.component.html',
   styleUrls: ['./confirmation-modal.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmationModalComponent extends ModalBaseComponent
   implements OnInit, AfterViewInit {
@@ -38,6 +46,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     private elemRef: ElementRef,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
+    private cdr: ChangeDetectorRef,
   ) {
     super();
   }
@@ -51,7 +60,10 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     this.eventBusService
       .on('closeModalEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.closeModal());
+      .subscribe(() => {
+        this.closeModal();
+        this.cdr.markForCheck();
+      });
   }
 
   ngAfterViewInit(): void {

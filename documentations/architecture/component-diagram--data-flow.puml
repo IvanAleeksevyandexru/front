@@ -6,14 +6,23 @@ skinparam component {
 }
 
 package "Component" {
+  component [ComponentModules...]
   component [Components...]
+  component [ComponentDomainServices...]
+  [ComponentModules...] <-- [Components...]
+  [Components...] <-- [ComponentDomainServices...]
 }
 
 package "Screen" {
   component [ScreenResolverComponent] <<main>>
   component [ScreenService] <<store>>
   component [Screens...]
+  [ScreenModule] <---- [ComponentModules...]
+  [Screens...] <---- [Components...]
   [ScreenModule] <-- [ScreenService]
+  [ScreenResolverComponent] <-- [ScreenService]
+  [Screens...] <-- [ScreenService]
+  [Components...] <-- [ScreenService]
   [ScreenModule] <-- [ScreenResolverComponent]
   [ScreenResolverComponent] <-- [Screens...]
   [ScreenModule] <-- [Screens...]
@@ -31,6 +40,25 @@ package "Form Player" {
   [FormPlayerComponent] <-- [FormPlayerStartManager]
   [FormPlayerStartManager] <-- [FormPlayerService]
   [FormPlayerService] <-- [FormPlayerApiService]
+  [FormPlayerService] ..> [ScreenService]
+}
+
+package "Modal" {
+  component [ModalModule]
+  component [ScreenModalComponent] <<main>>
+  component [ScreenModalService] <<store>>
+  note left of [ContinueOrderModalService] : Провайдит вызов \n показа \n ContinueOrderModal
+  note left of [ModalService] : Общий сервис для \n вызова отображения \n различных модальных окон
+  note left of [ScreenModalComponent] : Компанента для вызова плеера \n в режиме модалног окна \n управляеться через \n NavigationModalService
+  note top of [ScreenModalService] : Схожий сервис с \n  FormPlayerService, \n отдельный контур для \n ScreenModalComponent
+  [FormPlayerModule] <.. [ModalModule]
+  [ModalModule] <-- [ModalService]
+  [ModalModule] <-- [ScreenModalComponent]
+  [ScreenModalComponent] <-- [ScreenModalService]
+  [ModalModule] <--- [ConfirmationModalComponent]
+  [ModalModule] <--- [UsePaymentsModalComponent]
+  [ModalModule] <--- [ContinueOrderModalService]
+  [FormPlayerStartManager] <--- [ContinueOrderModalService]
 }
 
 package "Core" {
@@ -45,26 +73,34 @@ package "Core" {
   [CoreModule] <-- [NavigationService]
   [ConfigService] --> [FormPlayerApiService]
   [ConfigService] --> [FormPlayerComponent]
+  [ConfigService] --> [ComponentDomainServices...]
   [NavigationService] --> [FormPlayerComponent]
+  [NavigationService] --> [Screens...]
+  [NavigationService] --> [Components...]
+  [NavigationModalService] --> [ScreenModalComponent]
   [InitDataService] --> [FormPlayerComponent]
   [InitDataService] --> [FormPlayerStartManager]
   [InitDataService] --> [FormPlayerApiService]
+  [InitDataService] --> [Components...]
 }
 
 [FormPlayerModule] .up..> EPGU : Встраивает \n formPlayer \n передаёт пропсы
-[FormPlayerApiService] ... FormPlayerApi : HTTP
-[FormPlayerConfigApiService] ... FormPlayerConfigApi : HTTP
-
-
-
+[FormPlayerApiService] .. FormPlayerApi : HTTP
+[FormPlayerConfigApiService] .. FormPlayerConfigApi : HTTP
+[ComponentDomainServices...] ... DifferentDataProviders : HTTP
 
 
 package "Shared" {
   note right of [BaseModule] : Модуль с общими \n directives сущностями \n хранит общие зависимости
-  [BaseModule]
+  note right of [ActionDirective] : Необходима для \n обработки экшенов
+  [BaseModule] <-- [ActionDirective]
   [Components...]
   [Pipes...]
   [Directives...]
+  [ActionDirective] <-- [NavigationService]
+  [ActionDirective] <-- [NavigationModalService]
+  [ActionDirective] --> [Screens...]
+  [ActionDirective] --> [Components...]
 }
 
 

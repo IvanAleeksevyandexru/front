@@ -1,11 +1,12 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
+  OnInit,
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
@@ -44,6 +45,7 @@ const halfWidthItemTypes = [
     UnsubscribeService,
     DateRangeService,
   ],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentsListComponent implements OnInit, OnChanges {
   @Input() components: CustomComponent;

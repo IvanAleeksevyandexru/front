@@ -1,4 +1,14 @@
-import { Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
@@ -45,6 +55,7 @@ const maxImgSizeInBytes = 525288;
   templateUrl: './file-upload-item.component.html',
   styleUrls: ['./file-upload-item.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadItemComponent implements OnDestroy {
   @Input() objectId: string;
@@ -77,6 +88,8 @@ export class FileUploadItemComponent implements OnDestroy {
           this.files$$.next([...list]);
           this.maxFileNumber = this.getMaxFileNumberFromList(list);
         }
+
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -131,6 +144,7 @@ export class FileUploadItemComponent implements OnDestroy {
     public config: ConfigService,
     public modal: ModalService,
     private eventBusService: EventBusService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     this.isMobile = this.deviceDetectorService.isMobile;
   }
@@ -308,6 +322,8 @@ export class FileUploadItemComponent implements OnDestroy {
           this.updateUploadedCameraPhotosInfo(false, deletedFileInfo.fileName);
           this.updateUploadingInfo(deletedFileInfo, true);
           this.removeFileFromStore(file);
+
+          this.changeDetectionRef.markForCheck();
         });
     } else {
       let files = this.files$$.value;

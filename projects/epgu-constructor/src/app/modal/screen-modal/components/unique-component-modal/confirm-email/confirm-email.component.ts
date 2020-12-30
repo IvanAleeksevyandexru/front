@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core'
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../core/services/config/config.service';
@@ -13,6 +13,7 @@ import { ScreenService } from '../../../../../screen/screen.service';
   templateUrl: './confirm-email.component.html',
   styleUrls: ['./confirm-email.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmEmailComponent implements OnInit {
   timer: number;
@@ -27,6 +28,7 @@ export class ConfirmEmailComponent implements OnInit {
     private navModalService: NavigationModalService,
     public config: ConfigService,
     private eventBusService: EventBusService,
+    private cdr: ChangeDetectorRef,
   ) {
     interval(5000)
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -39,7 +41,10 @@ export class ConfirmEmailComponent implements OnInit {
     this.eventBusService
       .on('counterValueChanged')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: number) => this.timerChange(payload));
+      .subscribe((payload: number) => {
+        this.timerChange(payload);
+        this.cdr.markForCheck();
+      });
   }
 
   public resendEmailConfirmation(): void {

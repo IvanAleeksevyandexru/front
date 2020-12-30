@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UnsubscribeService } from '../../../projects/epgu-constructor/src/app/core/services/unsubscribe/unsubscribe.service';
@@ -10,17 +10,24 @@ import { AppConfig } from '../app.type';
   templateUrl: './config.component.html',
   styleUrls: ['./config.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfigComponent implements OnInit {
   configForm: FormGroup;
   fieldsName = [];
 
-  constructor(private appService: AppService, private ngUnsubscribe$: UnsubscribeService) {}
+  constructor(
+    private appService: AppService,
+    private ngUnsubscribe$: UnsubscribeService,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.appService.config$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((config) => {
       this.fieldsName = Object.keys(config);
       this.configForm = this.getConfigForm(config);
+
+      this.changeDetectorRef.markForCheck();
     });
   }
 

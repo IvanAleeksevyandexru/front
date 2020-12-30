@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core'
+import { Observable, combineLatest } from 'rxjs';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import {
@@ -12,7 +13,6 @@ import {
   FileUploadEmitValueForComponent,
   FileUploadItem,
 } from '../../services/terra-byte-api/terra-byte-api.types';
-import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { TerraUploadedFile } from './sub-components/file-upload-item/data';
 
 @Component({
@@ -20,6 +20,7 @@ import { TerraUploadedFile } from './sub-components/file-upload-item/data';
   templateUrl: './file-upload-screen.component.html',
   styleUrls: ['./file-upload-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadScreenComponent implements OnInit {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
@@ -54,13 +55,17 @@ export class FileUploadScreenComponent implements OnInit {
     public screenService: ScreenService,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.eventBusService
       .on('fileUploadValueChangedEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: FileResponseToBackendUploadsItem) => this.handleNewValueSet(payload));
+      .subscribe((payload: FileResponseToBackendUploadsItem) => {
+        this.handleNewValueSet(payload);
+        this.cdr.markForCheck();
+      });
   }
 
   /**

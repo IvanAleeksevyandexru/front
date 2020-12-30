@@ -17,6 +17,8 @@ import { RegistrationAddrComponent } from '../../component/component-screen/comp
 import { SelectChildrenScreenComponent } from '../../component/component-screen/components/select-children/select-children-screen.component';
 import { TimerComponent } from '../../component/component-screen/components/timer/timer.component';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
+import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
@@ -24,16 +26,15 @@ import {
   ComponentDto,
   DTOActionAction,
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { FieldListComponent } from '../../shared/components/field-list/field-list.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
-import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ComponentScreenComponent } from './component-screen.component';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -91,6 +92,8 @@ describe('ComponentScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         EventBusService,
       ],
+    }).overrideComponent(ComponentScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     }).compileComponents();
   });
 

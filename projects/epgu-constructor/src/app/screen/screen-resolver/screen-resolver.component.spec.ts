@@ -4,19 +4,30 @@ import { ScreenResolverComponent } from './screen-resolver.component';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
-import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
+import { SCREEN_COMPONENTS } from '../screen.const';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { of } from 'rxjs';
 
 @Component({
   template: '<div>test</div>',
 })
 class TestComponent {}
 
-Object.defineProperty(SCREEN_COMPONENTS, 'TEST', {
-  value: TestComponent,
+@Component({
+  template: '<div>test</div>',
+})
+class Test2Component {}
+
+Object.defineProperties(SCREEN_COMPONENTS, {
+  TEST: {
+    value: TestComponent,
+  },
+  TEST2: {
+    value: Test2Component,
+  }
 });
+
+jest.useFakeTimers();
 
 describe('ScreenResolverComponent', () => {
   let component: ScreenResolverComponent;
@@ -25,12 +36,12 @@ describe('ScreenResolverComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ScreenResolverComponent, TestComponent],
+      declarations: [ScreenResolverComponent, TestComponent, Test2Component],
       providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [TestComponent],
+          entryComponents: [TestComponent, Test2Component],
         },
       })
       .compileComponents();
@@ -50,45 +61,20 @@ describe('ScreenResolverComponent', () => {
   });
 
   it('should render screenComponent', () => {
-    component.screenComponent$ = of((TestComponent as unknown) as ScreenComponent);
-    fixture.detectChanges();
-
+    jest.runAllTimers();
     expect(fixture.debugElement.query(By.directive(TestComponent))).toBeTruthy();
   });
 
   it('should set screen component on screen type change', () => {
-    const setScreenComponentSpy = spyOn(component, 'setScreenComponent');
+    jest.runAllTimers();
+    expect(component.componentRef.instance).toBeInstanceOf(TestComponent);
 
-    screenService.screenType = ScreenTypes.COMPONENT;
-    expect(setScreenComponentSpy).toBeCalledTimes(1);
-    expect(setScreenComponentSpy).toBeCalledWith(ScreenTypes.COMPONENT);
-    setScreenComponentSpy.calls.reset();
+    // @ts-ignore
+    screenService.screenType = 'TEST2';
+    fixture.detectChanges();
+    jest.runAllTimers();
 
-    screenService.screenType = ScreenTypes.CUSTOM;
-    expect(setScreenComponentSpy).toBeCalledTimes(1);
-    expect(setScreenComponentSpy).toBeCalledWith(ScreenTypes.CUSTOM);
-  });
-
-  describe('setScreenComponent() method', () => {
-    it('should return EmptyScreenComponent', () => {
-      const screenComponent = component.setScreenComponent(ScreenTypes.EMPTY);
-      expect(screenComponent).toBe(SCREEN_COMPONENTS[ScreenTypes.EMPTY]);
-    });
-
-    it('should return InfoScreenComponent', () => {
-      const screenComponent = component.setScreenComponent(ScreenTypes.INFO);
-      expect(screenComponent).toBe(SCREEN_COMPONENTS[ScreenTypes.INFO]);
-    });
-
-    it('should throw ScreenComponentError if is called with unrecognized screen type', () => {
-      expect(() => {
-        component.setScreenComponent(ScreenTypes.INVITATION_ERROR);
-      }).not.toThrow();
-
-      expect(() => {
-        component.setScreenComponent('unrecognized screen type' as ScreenTypes);
-      }).toThrow();
-    });
+    expect(component.componentRef.instance).toBeInstanceOf(Test2Component);
   });
 
   describe('getScreenComponentByType() method', () => {
@@ -103,5 +89,5 @@ describe('ScreenResolverComponent', () => {
         SCREEN_COMPONENTS[ScreenTypes.UNIQUE],
       );
     });
-  });
+   });
 });

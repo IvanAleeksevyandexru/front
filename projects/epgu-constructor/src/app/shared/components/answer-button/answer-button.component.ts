@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import {
@@ -12,6 +18,7 @@ import { ScreenService } from '../../../screen/screen.service';
   templateUrl: './answer-button.component.html',
   styleUrls: ['./answer-button.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnswerButtonComponent implements OnInit {
   @Input() data: Partial<ComponentActionDto | ComponentAnswerDto>;
@@ -19,11 +26,16 @@ export class AnswerButtonComponent implements OnInit {
 
   isLoading: boolean;
 
-  constructor(public screenService: ScreenService, private ngUnsubscribe$: UnsubscribeService) {}
+  constructor(
+    public screenService: ScreenService,
+    private ngUnsubscribe$: UnsubscribeService,
+    private changeDetectionRef: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.screenService.isLoading$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((isLoading) => {
       this.isLoading = isLoading;
+      this.changeDetectionRef.markForCheck();
     });
   }
 

@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
@@ -34,6 +39,7 @@ interface ClearEvent {
   templateUrl: './select-children-screen.component.html',
   styleUrls: ['./select-children-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class SelectChildrenScreenComponent implements OnInit {
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
@@ -64,15 +70,15 @@ export class SelectChildrenScreenComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
     private cachedAnswersService: CachedAnswersService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.data$
-      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
-      .subscribe((data) => {
-        this.initVariables(data.id);
-        this.initStartValues(data.id);
-      });
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+      this.initVariables(data.id);
+      this.initStartValues(data.id);
+      this.changeDetectionRef.markForCheck();
+    });
 
     this.selectChildrenForm.valueChanges
       .pipe(startWith(this.selectChildrenForm.value as object), takeUntil(this.ngUnsubscribe$))
@@ -86,13 +92,18 @@ export class SelectChildrenScreenComponent implements OnInit {
             this.selectChildrenForm.setErrors(null);
           }
           this.updateCurrentAnswerServiceValidation();
+
+          this.changeDetectionRef.markForCheck();
         }),
       );
 
     this.eventBusService
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.addMoreChild());
+      .subscribe(() => {
+        this.addMoreChild();
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   initVariables(id: string): void {

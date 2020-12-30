@@ -1,5 +1,5 @@
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, filter, takeUntil, tap } from 'rxjs/operators';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
@@ -17,6 +17,7 @@ import { UnusedPaymentsService } from './unused-payments.service';
   templateUrl: './unused-payments.component.html',
   styleUrls: ['./unused-payments.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnusedPaymentsComponent implements OnInit {
   data$: Observable<DisplayDto> = this.screenService.display$;
@@ -37,6 +38,7 @@ export class UnusedPaymentsComponent implements OnInit {
     private listPaymentsService: UnusedPaymentsService,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -101,12 +103,14 @@ export class UnusedPaymentsComponent implements OnInit {
     } else {
       this.usePaymentsListData(serviceData);
     }
+    this.changeDetectionRef.markForCheck();
   };
 
   getListPaymentsInfoError = ([error, data]: [HttpErrorResponse, DisplayDto]): void => {
     // eslint-disable-next-line no-console
     console.log('Error', error);
     this.usePaymentsListData(data);
+    this.changeDetectionRef.markForCheck();
   };
 
   /**

@@ -1,4 +1,10 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit
+} from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -24,6 +30,7 @@ import {
   templateUrl: './repeatable-fields.component.html',
   styleUrls: ['./repeatable-fields.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
   objectKeys = Object.keys;
