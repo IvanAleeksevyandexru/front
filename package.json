@@ -27,6 +27,13 @@
     "e2e": "ng e2e"
   },
   "private": true,
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged --relative",
+      "pre-push": "yarn ci"
+    }
+  },
   "jest-junit": {
     "suiteName": "epgu-form-frontend",
     "outputDirectory": "./coverage/junit",
