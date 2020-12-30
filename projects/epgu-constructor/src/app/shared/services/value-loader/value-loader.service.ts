@@ -116,7 +116,6 @@ export class ValueLoaderService {
       const parsedCachedValue = this.cachedAnswersService.parseCachedValue(cachedValue, component);
 
       if (Array.isArray(parsedCachedValue)) {
-        // @todo. Правильно ли так делать?
         return JSON.stringify(parsedCachedValue);
       } else {
         return JSON.stringify({
