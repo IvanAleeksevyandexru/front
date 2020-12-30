@@ -1,5 +1,4 @@
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
-import { PaymentInfoInterface } from '../../../unique-screen/components/payment/payment.types';
 
 /**
  * @property {string}[treeFiltering='ONELEVEL'] -

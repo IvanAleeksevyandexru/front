@@ -26,7 +26,6 @@ export class EmployeeHistoryFormService {
   generateForm: FormGroup;
 
   private readonly defaultType: EmployeeType;
-  private readonly unrequiredCheckedKeys: string[];
 
   constructor(
     private fb: FormBuilder,
@@ -35,7 +34,6 @@ export class EmployeeHistoryFormService {
     private ds: EmployeeHistoryDatasourceService,
   ) {
     this.defaultType = 'student';
-    this.unrequiredCheckedKeys = ['position', 'place'];
   }
 
   removeGeneration(index: number): void {
@@ -116,10 +114,10 @@ export class EmployeeHistoryFormService {
     combineLatest(form.get('from').valueChanges, form.get('to').valueChanges)
       .pipe(
         tap(([fromDateValue, toDateValue]) => this.checkDates(form, fromDateValue, toDateValue)),
-        filter(([fromDate, toDate]) => toDate),
+        filter(([, toDate]) => toDate),
         takeUntil(this.unsubscribeService),
       )
-      .subscribe(([fromDateValue, toDateValue]) => {
+      .subscribe(() => {
         this.monthsService.updateAvailableMonths(this.employeeHistoryForm.getRawValue());
       });
   }

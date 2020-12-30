@@ -2,11 +2,8 @@ import { Injectable, ErrorHandler } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ScreenService } from '../../../screen/screen.service';
 import { UtilsService } from '../utils/utils.service';
-
 import { HealthService } from 'epgu-lib';
-
 import { ScreenStore } from '../../../screen/screen.types';
-import { isDefined } from '@angular/compiler/src/util';
 
 interface Error {
   message: string;

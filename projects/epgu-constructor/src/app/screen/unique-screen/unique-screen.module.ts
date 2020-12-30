@@ -7,9 +7,6 @@ import { UniqueComponentModalModule } from '../../modal/screen-modal/components/
 import { BaseModule } from '../../shared/base.module';
 import { UniqueScreenComponent } from './unique-screen.component';
 
-// NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
-const COMPONENTS = [UniqueScreenComponent];
-
 @NgModule({
   declarations: [UniqueScreenComponent, AbstractPaymentComponent],
   exports: [UniqueScreenComponent],

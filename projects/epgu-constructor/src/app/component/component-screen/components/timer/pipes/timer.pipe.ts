@@ -10,7 +10,7 @@ const moment = moment_;
   name: 'timer',
 })
 export class TimerPipe implements PipeTransform {
-  transform(value: number, ...args: unknown[]): string {
+  transform(value: number): string {
     const duration = moment.duration(value);
     const seconds = duration.seconds();
     const minutes = duration.minutes();

@@ -159,7 +159,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
 
       // Проверим оплачено ли ранее
       this.paymentService
-        .getBillsInfoByBillId(this.billId, this.orderId)
+        .getBillsInfoByBillId(this.billId)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
           (info: BillsInfoResponse) => {

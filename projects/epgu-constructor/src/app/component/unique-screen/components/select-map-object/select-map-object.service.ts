@@ -37,7 +37,6 @@ export class SelectMapObjectService implements OnDestroy {
   private objectManager;
   private activePlacemarkId;
   private __mapStateCenter: Array<number>;
-  private preventBoundsChangeBalloon = false;
 
   constructor(
     private http: HttpClient,
@@ -45,7 +44,7 @@ export class SelectMapObjectService implements OnDestroy {
     private yaMapService: YaMapService,
     private icons: Icons,
   ) {
-    this.selectedValue.pipe(filter((value) => !value)).subscribe((value) => {
+    this.selectedValue.pipe(filter((value) => !value)).subscribe(() => {
       this.mapOpenedBalloonId = null;
     });
   }
@@ -158,7 +157,6 @@ export class SelectMapObjectService implements OnDestroy {
             serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset]);
             serviceContext.__mapStateCenter = serviceContext.yaMapService.map.getCenter();
             serviceContext.mapOpenedBalloonId = objectId;
-            serviceContext.preventBoundsChangeBalloon = false;
             serviceContext.selectedValue.next(serviceContext.objectManager.objects.getById(objectId).properties.res);
           }, 200);
         });

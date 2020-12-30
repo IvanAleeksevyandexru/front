@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ComponentDto } from '../form-player/services/form-player-api/form-player-api.types';
-import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
-import { UtilsService } from '../core/services/utils/utils.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
@@ -20,8 +17,6 @@ export class ScreenService extends ScreenContent {
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
-    private cachedAnswersService: CachedAnswersService,
-    private utils: UtilsService,
     private valueLoaderService: ValueLoaderService,
   ) {
     super();
@@ -92,23 +87,6 @@ export class ScreenService extends ScreenContent {
 
     if (screenStoreComponent.length) {
       this.screenStore.display = { ...this.screenStore.display, components: screenStoreComponent };
-    }
-  }
-
-  /**
-   * Возвращает данные из cachedAnswers, если в JSON есть preset.type = REF
-   * TODO нужно утащить на backend (HARDCODE from backend)
-   */
-  private getPresetValue(item: ComponentDto): ComponentDto {
-    const [id, path] = item.attrs.preset.value.split(/\.(.+)/);
-    const cachedValue = JSON.parse(
-      this.cachedAnswersService.getCachedValueById(this.screenStore.cachedAnswers, id) || '{}',
-    );
-    const value = UtilsService.getObjectProperty(cachedValue, path, item.value);
-    if (typeof value === 'object') {
-      return { ...item, value: JSON.stringify(value) };
-    } else {
-      return { ...item, value };
     }
   }
 }

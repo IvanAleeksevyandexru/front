@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule, ErrorHandler, Optional, SkipSelf } from '@angular/core';
+import { APP_INITIALIZER, NgModule, ErrorHandler } from '@angular/core';
 import { SmuEventsService } from 'epgu-lib';
 import { ConfigService } from './services/config/config.service';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';

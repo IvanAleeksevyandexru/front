@@ -4,7 +4,6 @@ import {
   TerabyteListItem,
   TerraFileOptions,
   TerraUploadFileOptions,
-  UploadedFile,
 } from './terra-byte-api.types';
 import { Observable } from 'rxjs';
 import { TerraUploadedFile } from '../../components/file-upload-screen/sub-components/file-upload-item/data';
