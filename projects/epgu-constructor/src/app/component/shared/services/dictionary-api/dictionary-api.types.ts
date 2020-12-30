@@ -1,5 +1,4 @@
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
-import { PaymentInfoInterface } from '../../../unique-screen/components/payment/payment.types';
 
 /**
  * @property {string}[treeFiltering='ONELEVEL'] -
@@ -90,10 +89,16 @@ export interface DictionarySubFilter {
 export interface DictionaryFilters {
   filter: {
     union?:
-    {
-      unionKind: DictionaryUnionKind;
-      subs: Array<DictionarySubFilter>;
-    }
+      {
+        unionKind: DictionaryUnionKind;
+        subs: Array<DictionarySubFilter>;
+      },
+    simple?:
+      {
+        attributeName: string;
+        condition: string;
+        value: { [key: string]: string };
+      }
     pageNum?: number;
     pageSize?: string;
     parentRefItemValue?: string;

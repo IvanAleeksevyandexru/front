@@ -12,7 +12,10 @@ import {
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { DictionaryUtilities } from '../select-map-object/dictionary-utilities';
-import { DictionaryItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import {
+  DictionaryFilters,
+  DictionaryItem,
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 @Component({
   selector: 'epgu-constructor-information-center-mvd',
@@ -50,10 +53,9 @@ export class InformationCenterMvdComponent implements OnInit {
     this.loadInfoCenterDictionary(this.dictionaryToRequest.type, event.id);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private loadInfoCenterDictionary(dictionaryName: string, id: number | string): void {
     this.dictionaryApiService
-      .getMvdDictionary(dictionaryName)
+      .getMvdDictionary(dictionaryName, this.getInfoCenterOptionsRequest(id.toString()))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((response) => {
         this.infoCenterList = response.items;
@@ -68,5 +70,18 @@ export class InformationCenterMvdComponent implements OnInit {
         // @todo вынести DictionaryUtilities из select-map-object на более глобальный уровень
         this.sourceList = DictionaryUtilities.adaptDictionaryToListItem(data.items);
       });
+  }
+
+  private getInfoCenterOptionsRequest(id: string): DictionaryFilters {
+    return {
+      filter: {
+        simple: {
+          attributeName: 'REGION_CODE',
+          condition: 'CONTAINS',
+          value: { asString: id },
+        },
+        tx: 'e838ab71-49dd-11eb-9135-fa163e1007b9',
+      },
+    };
   }
 }

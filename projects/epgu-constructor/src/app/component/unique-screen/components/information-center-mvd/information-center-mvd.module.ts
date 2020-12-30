@@ -7,6 +7,7 @@ import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen
 import { ActionModule } from '../../../../shared/directives/action/action.module';
 import { InformationCenterCardComponent } from './components/information-center-card/information-center-card.component';
 import { BaseModule } from '../../../../shared/base.module';
+import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 
 const COMPONENTS = [
   InformationCenterMvdComponent,
@@ -14,7 +15,15 @@ const COMPONENTS = [
 
 @NgModule({
   declarations: [...COMPONENTS, InformationCenterCardComponent],
-  imports: [CoreModule, ConstructorDropdownModule, ScreenContainerModule, ScreenPadModule, BaseModule, ActionModule],
+  imports: [
+    CoreModule,
+    ConstructorDropdownModule,
+    ScreenContainerModule,
+    ScreenPadModule,
+    BaseModule,
+    ActionModule,
+    BaseComponentsModule
+  ],
   exports: [...COMPONENTS],
 })
 export class InformationCenterMvdModule {
