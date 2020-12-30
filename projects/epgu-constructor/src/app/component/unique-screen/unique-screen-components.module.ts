@@ -22,6 +22,7 @@ import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.m
 import { CloneButtonModule } from '../../shared/components/clone-button/clone-button.module';
 import { WebcamShootModule } from '../../shared/components/webcam-shoot/webcam-shoot.module';
 import { BaseModule } from '../../shared/base.module';
+import { InformationCenterMvdModule } from './components/information-center-mvd/information-center-mvd.module';
 
 @NgModule({
   declarations: [RepeatableFieldsComponent],
@@ -45,6 +46,7 @@ import { BaseModule } from '../../shared/base.module';
     ScreenContainerModule,
     ScreenPadModule,
     CloneButtonModule,
+    InformationCenterMvdModule
   ],
   exports: [
     RepeatableFieldsComponent,
@@ -59,6 +61,7 @@ import { BaseModule } from '../../shared/base.module';
     UnusedPaymentsModule,
     SignatureApplicationModule,
     PaymentTypeSelectorModule,
+    InformationCenterMvdModule
   ],
   providers: [WebcamService, DictionaryApiService, UnsubscribeService],
 })
