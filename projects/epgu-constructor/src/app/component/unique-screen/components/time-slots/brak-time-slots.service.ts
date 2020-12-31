@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { v5 as uuidv5 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { SessionService } from '../../../../core/services/session/session.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
@@ -160,7 +160,10 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     let changed = false;
 
     let department = JSON.parse(data.department);
-    this.isBookedDepartment = cachedAnswer?.department.value === department.value;
+    this.isBookedDepartment =
+      (cachedAnswer?.department.value === department.value) &&
+      (cachedAnswer?.department.attributeValues?.AREA_NAME === department.attributeValues?.AREA_NAME)
+      ;
     if (this.department?.value !== department.value) {
       changed = true;
       this.department = department;
@@ -246,8 +249,9 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    const name = `${this.sessionService.userId}#${this.department.value}`;
-    this.bookId = uuidv5(name, this.BOOKING_NAMESPACE);
+    if (!this.bookId || !this.isBookedDepartment) {
+      this.bookId = uuidv4();
+    }
 
     const {
       preliminaryReservation,
