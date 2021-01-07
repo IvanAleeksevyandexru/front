@@ -548,7 +548,7 @@ export class TimeSlotsComponent implements OnInit {
    * @param isBookedDepartment Флаг показывающий что выбран департамент, на который уже есть бронь
    */
   private serviceInitHandle(isBookedDepartment: boolean): void {
-    this.isChosenTimeStrVisible = isBookedDepartment;
+    this.isChosenTimeStrVisible = isBookedDepartment && !!this.bookedSlot;
     this.errorMessage = undefined;
     this.activeMonthNumber = this.currentService.getCurrentMonth();
     this.activeYearNumber = this.currentService.getCurrentYear();
