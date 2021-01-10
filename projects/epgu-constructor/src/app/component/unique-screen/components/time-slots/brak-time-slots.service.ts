@@ -175,7 +175,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     this.isBookedDepartment =
       (cachedAnswer?.department.value === department.value) &&
       (cachedAnswer?.department.attributeValues?.AREA_NAME === department.attributeValues?.AREA_NAME);
-    if (!this.isBookedDepartment) {
+    if (!this.isBookedDepartment || !this.department) {
       changed = true;
       this.department = department;
     }
