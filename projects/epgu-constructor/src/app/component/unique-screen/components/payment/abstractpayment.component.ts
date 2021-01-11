@@ -349,7 +349,6 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     // Если нужно перескочить оплату для случая просто необходимости создания УИН (брак/разбрак)
     if (this.data.attrs?.goNextAfterUIN || this.isPaid) {
       this.isShown = false;
-      clearInterval(this.payStatusIntervalLink);
       this.nextStep();
     }
   }
