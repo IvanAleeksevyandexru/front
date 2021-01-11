@@ -7,6 +7,7 @@ import { ComponentBase } from '../../../../../screen/screen.types';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { PassportModule } from '../../../../../shared/components/add-passport/passport.module';
 import { ComponentListToolsService } from '../../../../components-list/services/component-list-tools/component-list-tools.service';
+import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -24,7 +25,7 @@ describe('AddPassportComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AddPassportComponent, ScreenPadComponent],
       imports: [RouterTestingModule, PassportModule],
-      providers: [ComponentListToolsService, HealthService],
+      providers: [ComponentListToolsService, HealthService, EventBusService],
     }).compileComponents();
   }));
 

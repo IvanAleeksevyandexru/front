@@ -7,6 +7,7 @@ import { EventBusService } from '../../../../../form-player/services/event-bus/e
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ComponentBase } from '../../../../../screen/screen.types';
+import { PassportFormFields } from '../../../../../shared/components/add-passport/passport.interface';
 
 @Component({
   selector: 'epgu-constructor-add-passport-container',
@@ -29,13 +30,13 @@ export class AddPassportContainerComponent implements OnInit {
     this.eventBusService
       .on('passportValueChangedEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: ComponentBase) => {
+      .subscribe((payload: PassportFormFields) => {
         this.onPassportDataChange(payload);
         this.cdr.markForCheck();
       });
   }
 
-  onPassportDataChange(data: ComponentBase): void {
+  onPassportDataChange(data: PassportFormFields): void {
     this.currentAnswersService.state = data;
   }
 }

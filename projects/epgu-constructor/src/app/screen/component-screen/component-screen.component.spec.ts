@@ -382,7 +382,7 @@ describe('ComponentScreenComponent', () => {
 
   it('should render epgu-constructor-add-passport', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-constructor-add-passport';
+      'epgu-constructor-screen-container epgu-constructor-add-passport-container';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
