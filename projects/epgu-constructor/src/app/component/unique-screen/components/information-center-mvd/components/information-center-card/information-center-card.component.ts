@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
-import { MvdInfoCanterInterface } from '../../interface/information-center-mvd.interface';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { MvdInfoCanterI } from '../../interface/information-center-mvd.interface';
 
 @Component({
   selector: 'epgu-constructor-information-center-card',
   templateUrl: './information-center-card.component.html',
   styleUrls: ['./information-center-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InformationCenterCardComponent {
-  @Input() item: MvdInfoCanterInterface;
+  @Input() item: MvdInfoCanterI;
 }

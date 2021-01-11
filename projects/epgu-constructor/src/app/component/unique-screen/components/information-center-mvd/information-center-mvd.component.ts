@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { takeUntil } from 'rxjs/operators';
@@ -21,6 +21,7 @@ import {
   selector: 'epgu-constructor-information-center-mvd',
   templateUrl: './information-center-mvd.component.html',
   styleUrls: ['./information-center-mvd.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InformationCenterMvdComponent implements OnInit {
   data$: Observable<InformationCenterMvdI> = this.screenService.component$ as Observable<
@@ -41,16 +42,22 @@ export class InformationCenterMvdComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.data$
-      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
-      .subscribe((data) => {
-        this.dictionaryToRequest = data.attrs.dictionaryToRequest;
-        this.loadSourceDictionary(data.attrs.sourceDictionary.type);
-      });
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+      this.dictionaryToRequest = data.attrs.dictionaryToRequest;
+      this.loadSourceDictionary(data.attrs.sourceDictionary.type);
+    });
   }
 
   handleSelect(event: ListElement): void {
-    this.loadInfoCenterDictionary(this.dictionaryToRequest.type, event.id);
+    if (event && event.id) {
+      this.loadInfoCenterDictionary(this.dictionaryToRequest.type, event.id);
+    } else {
+      this.clearInfoCenterList();
+    }
+  }
+
+  private clearInfoCenterList(): void {
+    this.infoCenterList = [];
   }
 
   private loadInfoCenterDictionary(dictionaryName: string, id: number | string): void {

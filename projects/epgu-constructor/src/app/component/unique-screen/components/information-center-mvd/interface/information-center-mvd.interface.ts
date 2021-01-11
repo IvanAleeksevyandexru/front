@@ -1,7 +1,5 @@
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { ComponentActionDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
-import { DepartmentInterface } from '../../time-slots/time-slots.types';
-import { DictionaryItem } from '../../../../shared/services/dictionary-api/dictionary-api.types';
 
 export interface InformationCenterMvdI {
   id: string;
@@ -19,7 +17,7 @@ interface InformationCenterMvdAttrI {
   actions: ComponentActionDto[];
 }
 
-interface SourceDictionaryI{
+interface SourceDictionaryI {
   type: string;
   label: string;
   text: string;
@@ -33,7 +31,8 @@ export interface DictionaryToRequestI{
   hint: string;
 }
 
-export interface MvdInfoCanterInterface extends DictionaryItem{
+export interface MvdInfoCanterI {
+  title: string;
   attributeValues: {
     CODE: string;
     ADDRESS: string;
