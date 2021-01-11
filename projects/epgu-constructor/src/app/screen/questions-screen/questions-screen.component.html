@@ -37,13 +37,15 @@
 <!-- TODO: удалить после переезда на механизм явных answers -->
 <ng-template #actionAsLongBtn>
   <div class="quiz__answers">
-    <ng-container *ngFor="let action of componentActions">
+    <ng-container *ngFor="let action of componentActions; let idx = index">
       <epgu-constructor-answer-button
+        [tabindex]="idx + 1"
         [data]="action"
         class="quiz__answer"
         [selectedValue]="selectedAnswer"
         *ngIf="showAnswerAsLongBtn(action)"
         (click)="answerChoose(action)"
+        (keydown)="handleKeyEvent($event, action)"
       >
       </epgu-constructor-answer-button>
     </ng-container>
@@ -52,13 +54,15 @@
 
 <ng-template #answerAsLongBtn>
   <div class="quiz__answers">
-    <ng-container *ngFor="let answer of componentAnswers">
+    <ng-container *ngFor="let answer of componentAnswers; let idx = index">
       <epgu-constructor-answer-button
+        [tabindex]="idx + 1"
         [data]="answer"
         class="quiz__answer"
         [selectedValue]="selectedAnswer"
         *ngIf="showAnswerAsLongBtn(answer)"
         (click)="answerChoose(answer)"
+        (keydown)="handleKeyEvent($event, answer)"
       >
       </epgu-constructor-answer-button>
     </ng-container>
@@ -67,14 +71,18 @@
 
 <!-- TODO: переделать на прямой проброс всех actions после переезда на механизм явных answers -->
 <ng-template #footerActionAndSubmit>
-  <lib-button color="white" [action]="rejectAction" epgu-constructor-action>
+  <lib-button color="white"
+    epgu-constructor-action
+    [action]="rejectAction"
+  >
     {{ rejectAction.label }}
   </lib-button>
   <lib-button
     *ngIf="submitLabel"
     [showLoader]="screenService.isLoading$ | async"
-    (click)="onSubmitClick({ value: submitLabel })"
-    class="btn__submit"
+    epgu-constructor-action
+    [action]="nextStepAction"
+    class="submit-button"
     data-testid="submit-btn"
   >
     {{ submitLabel }}

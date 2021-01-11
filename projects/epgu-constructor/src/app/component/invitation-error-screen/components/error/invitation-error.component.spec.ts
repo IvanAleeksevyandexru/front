@@ -7,6 +7,7 @@ import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { ComponentAttrsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ImgPrefixerPipe } from '../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 import { InvitationErrorComponent } from './invitation-error.component';
@@ -30,6 +31,7 @@ xdescribe('InvitationErrorComponent', () => {
         ValidationService,
         UnsubscribeService,
         EventBusService,
+        CurrentAnswersService,
       ]
     })
     .compileComponents();

@@ -13,7 +13,7 @@
   <div class="info__actions" *ngIf="this.actionButtons.length">
     <lib-button
       *ngFor="let action of this.actionButtons"
-      class="info__action btn__submit"
+      class="info__action submit-button"
       epgu-constructor-action
       [color]="action.color ? action.color : ''"
       [action]="action"

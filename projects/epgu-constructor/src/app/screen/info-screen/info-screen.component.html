@@ -32,10 +32,11 @@
 
     <div class="info__submit" *ngIf="async.submitLabel">
       <lib-button
-        class="btn__submit"
+        class="submit-button"
         data-testid="submit-btn"
+        epgu-constructor-action
+        [action]="nextStepAction"
         [showLoader]="async.isLoading"
-        (click)="nextStep()"
         [disabled]="async.isLoading"
       >
         {{ async.submitLabel }}
@@ -58,7 +59,7 @@
   <div class="info__actions">
     <lib-button
       *ngFor="let action of screenActionButtons"
-      class="info__action btn__submit"
+      class="info__action submit-button"
       epgu-constructor-action
       [action]="action"
       [color]="action.color"
@@ -73,7 +74,7 @@
   <div class="info__actions">
     <lib-button
       *ngFor="let action of actionButtons"
-      class="info__action btn__submit"
+      class="info__action submit-button"
       epgu-constructor-action
       [action]="action"
       [color]="action.color"

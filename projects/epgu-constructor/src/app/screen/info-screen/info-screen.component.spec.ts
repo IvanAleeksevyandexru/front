@@ -1,4 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
@@ -13,17 +14,17 @@ import { EventBusService } from '../../form-player/services/event-bus/event-bus.
 import {
   ComponentActionDto,
   ComponentDto,
-  DTOActionAction,
+  DTOActionAction
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 import { ActionDirective } from '../../shared/directives/action/action.directive';
+import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { InfoScreenBodyComponent } from './info-screen-body/info-screen-body.component';
 import { InfoScreenComponent } from './info-screen.component';
-import { ChangeDetectionStrategy } from '@angular/core';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -72,6 +73,7 @@ describe('InfoScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         EventBusService,
+        CurrentAnswersService,
       ],
     }).overrideComponent(InfoScreenComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default }
@@ -122,17 +124,6 @@ describe('InfoScreenComponent', () => {
       });
 
       expect(component.actionButtons).toEqual(actions);
-    });
-  });
-
-  describe('nextStep() method', () => {
-    it('should call navigationService.next()', () => {
-      const nextStepSpy = spyOn(navigationService, 'next');
-
-      component.nextStep();
-
-      expect(nextStepSpy).toBeCalledTimes(1);
-      expect(nextStepSpy).toBeCalledWith({});
     });
   });
 
@@ -268,22 +259,6 @@ describe('InfoScreenComponent', () => {
       expect(debugEl.componentInstance.showLoader).toBeTruthy();
       expect(debugEl.componentInstance.disabled).toBeTruthy();
     });
-  });
-
-  it('should call nextStep() on Submit button click() event', () => {
-    const selector = 'epgu-constructor-screen-container lib-button[data-testid="submit-btn"]';
-
-    screenService.submitLabel = 'any';
-    fixture.detectChanges();
-
-    const debugEl = fixture.debugElement.query(By.css(selector));
-
-    const nextStepSpy = spyOn(component, 'nextStep');
-
-    debugEl.triggerEventHandler('click', 'any');
-
-    expect(nextStepSpy).toBeCalledTimes(1);
-    expect(nextStepSpy).toBeCalledWith(); // ignore arguments from click event
   });
 
   it('should render lib-social-share', () => {

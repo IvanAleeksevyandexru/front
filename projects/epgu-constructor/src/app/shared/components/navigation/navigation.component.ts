@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ScreenService } from '../../../screen/screen.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
+import { ScreenService } from '../../../screen/screen.service';
 
 @Component({
   selector: 'epgu-constructor-navigation',
@@ -19,10 +19,13 @@ export class NavigationComponent implements OnInit {
       this.navService.redirectToHome();
     } else {
       this.navService.prev();
-      // Если нужно будет передавать данные, то лучше
-      // складировать состояние в какое-то харнилище, а при навигации
-      // отправлять их или найди коммит который создал этот комменатрий
-      // this.navService.clickToBack.next();
+    }
+  }
+
+  handleKeyEvent(event: KeyboardEvent): void {
+    if (event.code === 'Space') {
+      event.preventDefault();
+      this.clickGoBack();
     }
   }
 }

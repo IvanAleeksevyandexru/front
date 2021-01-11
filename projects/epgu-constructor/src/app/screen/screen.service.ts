@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
-import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
 
 @Injectable()
 export class ScreenService extends ScreenContent {

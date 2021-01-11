@@ -1,7 +1,12 @@
 <div class="head">
 
   <div class="head__inner container">
-    <div class="head__left" (click)="clickGoBack()">
+    <div
+      tabindex="1"
+      class="head__left"
+      (click)="clickGoBack()"
+      (keydown)="handleKeyEvent($event)"
+    >
       <div class="icon-arrow"></div>
       <span>Назад</span>
     </div>
