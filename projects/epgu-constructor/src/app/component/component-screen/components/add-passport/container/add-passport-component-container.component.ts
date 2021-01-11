@@ -1,19 +1,20 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentBase } from '../../../../screen/screen.types';
+
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
+import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { ComponentBase } from '../../../../../screen/screen.types';
 
 @Component({
-  selector: 'epgu-constructor-add-passport',
-  templateUrl: './add-passport.component.html',
-  styleUrls: ['./add-passport.component.scss'],
+  selector: 'epgu-constructor-add-passport-container',
+  templateUrl: './add-passport-component-container.component.html',
+  styleUrls: ['./add-passport-component-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddPassportComponent implements OnInit {
+export class AddPassportContainerComponent implements OnInit {
   data$: Observable<ComponentBase> = this.screenService.component$;
 
   constructor(
