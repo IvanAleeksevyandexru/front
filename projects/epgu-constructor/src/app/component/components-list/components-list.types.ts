@@ -113,6 +113,8 @@ export interface CustomComponentAttr {
   attrs?: CustomComponentAttr; // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
   dictionaryOptions?: DictionaryOptions;
   grid?: string;
+  minDate?: string;
+  maxDate?: string;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';

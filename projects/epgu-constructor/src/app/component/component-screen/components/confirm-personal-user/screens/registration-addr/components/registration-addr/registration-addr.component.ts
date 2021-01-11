@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { DadataResult, ValidationShowOn } from 'epgu-lib';
+import { BrokenDateFixStrategy, DadataResult, ValidationShowOn } from 'epgu-lib';
 import { skip, startWith, takeUntil } from 'rxjs/operators';
 import * as moment_ from 'moment';
 import { combineLatest, Observable } from 'rxjs';
@@ -33,6 +33,7 @@ export class RegistrationAddrComponent implements OnInit {
 
   error$: Observable<string> = this.screenService.componentError$;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  brokenDateFixStrategy = BrokenDateFixStrategy.RESTORE;
   redAddrForm: FormGroup;
 
   constructor(
@@ -46,7 +47,7 @@ export class RegistrationAddrComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([this.data$, this.screenService.display$])
-      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([data]) => {
         this.required = data.required;
         this.initFormGroup(data);

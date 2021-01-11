@@ -11,6 +11,9 @@ import { DictionaryApiService } from '../../../shared/services/dictionary-api/di
 import { DictionaryApiServiceStub } from 'projects/epgu-constructor/src/app/component/shared/services/dictionary-api/dictionary-api.service.stub';
 import { ComponentListRepositoryService } from '../component-list-repository/component-list-repository.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { DateRangeService } from '../date-range/date-range.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 
 describe('ComponentListFormService', () => {
   let service: ComponentListFormService;
@@ -27,6 +30,8 @@ describe('ComponentListFormService', () => {
         ComponentListRepositoryService,
         LoggerService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        DateRangeService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
       ],
     });
     service = TestBed.inject(ComponentListFormService);

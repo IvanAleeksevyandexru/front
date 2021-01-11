@@ -16,8 +16,9 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentBase } from '../../../../screen/screen.types';
+import { ComponentBase, ScreenStoreComponentDtoI } from '../../../../screen/screen.types';
 import { CustomComponentOutputData } from '../../../components-list/components-list.types';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 
 enum ItemStatus {
   invalid = 'INVALID',
@@ -64,22 +65,22 @@ export class SelectChildrenScreenComponent implements OnInit {
   isSingleChild: boolean;
   hint: string | undefined;
 
+  private component: ScreenStoreComponentDtoI;
+
   constructor(
-    private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
+    private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
+    private cachedAnswersService: CachedAnswersService,
     private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.data$
-      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
-      .subscribe((data) => {
-        this.initVariables(data.id);
-        this.initStartValues(data.id);
-
-        this.changeDetectionRef.markForCheck();
-      });
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+      this.initVariables(data.id);
+      this.initStartValues(data.id);
+      this.changeDetectionRef.markForCheck();
+    });
 
     this.selectChildrenForm.valueChanges
       .pipe(startWith(this.selectChildrenForm.value as object), takeUntil(this.ngUnsubscribe$))
@@ -101,6 +102,8 @@ export class SelectChildrenScreenComponent implements OnInit {
 
   initVariables(id: string): void {
     const component = this.screenService.getCompFromDisplay(id);
+    this.component = component;
+
     const itemsList = component ? JSON.parse(component.presetValue) : [];
     this.firstNameRef = this.getRefFromComponent('firstName');
     this.isNewRef = this.getRefFromComponent('isNew');
@@ -114,7 +117,10 @@ export class SelectChildrenScreenComponent implements OnInit {
   initStartValues(id: string): void {
     const cachedValue = this.screenService.getCompValueFromCachedAnswers(id);
     if (cachedValue) {
-      const children = JSON.parse(cachedValue);
+      const children = this.cachedAnswersService.parseCachedValue<unknown[]>(
+        cachedValue,
+        this.component,
+      );
       children.forEach((child, index) => {
         const isNew = JSON.parse(child[this.isNewRef]);
         const childId = isNew ? this.NEW_ID : child[this.idRef];
@@ -238,7 +244,12 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param index индекс массива детей
    */
   handleSelect(event: ChildI | null, index?: number, id?: string): void {
-    Object.assign(this.items[index], event);
+    this.items[index] = {
+      controlId: this.items[index].controlId,
+      isNewRef: this.items[index].isNewRef,
+      ...event,
+    };
+
     if (event && event[this.idRef] === this.NEW_ID) {
       this.addNewChild(index);
     } else {

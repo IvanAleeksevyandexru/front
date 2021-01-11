@@ -16,6 +16,7 @@ import {
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { BaseModule } from '../../../../../shared/base.module';
+import { DateRangeService } from '../../../../../component/components-list/services/date-range/date-range.service';
 
 describe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
@@ -50,6 +51,7 @@ describe('ConfirmPhoneComponent', () => {
         NavigationModalService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         ValidationService,
+        DateRangeService,
       ],
     }).compileComponents();
 

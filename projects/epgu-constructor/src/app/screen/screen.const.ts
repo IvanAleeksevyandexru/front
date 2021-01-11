@@ -6,16 +6,17 @@ import { UniqueScreenComponent } from './unique-screen/unique-screen.component';
 import { InvitationErrorScreenComponent } from './invitation-error-screen/invitation-error-screen.component';
 import { EmptyScreenComponent } from './empty-screen/empty-screen.component';
 import { ScreenTypes } from './screen.types';
+import { Type } from '@angular/core';
 
-export type ScreenComponent = typeof InfoScreenComponent
-  | typeof QuestionsScreenComponent
-  | typeof ComponentScreenComponent
-  | typeof CustomScreenComponent
-  | typeof UniqueScreenComponent
-  | typeof InvitationErrorScreenComponent
-  | typeof EmptyScreenComponent;
+export type ScreenComponent = InfoScreenComponent
+  | QuestionsScreenComponent
+  | ComponentScreenComponent
+  | CustomScreenComponent
+  | UniqueScreenComponent
+  | InvitationErrorScreenComponent
+  | EmptyScreenComponent;
 
-export const SCREEN_COMPONENTS: Readonly<{ [key in ScreenTypes]: ScreenComponent }> = {
+export const SCREEN_COMPONENTS: Readonly<{ [key in ScreenTypes]: Type<ScreenComponent> }> = {
   INFO: InfoScreenComponent,
   QUESTION: QuestionsScreenComponent,
   COMPONENT: ComponentScreenComponent,

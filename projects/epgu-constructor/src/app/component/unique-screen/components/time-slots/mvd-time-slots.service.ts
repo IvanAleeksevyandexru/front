@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { v5 as uuidv5 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { SessionService } from '../../../../core/services/session/session.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
@@ -185,8 +185,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    const name = `${this.sessionService.userId}#${this.department.value}`;
-    this.bookId = uuidv5(name, this.BOOKING_NAMESPACE);
+    this.bookId = uuidv4();
 
     const {
       serviceId,

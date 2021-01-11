@@ -44,7 +44,7 @@ export interface DictionaryResponseError {
  * @property {string}value - example: RUS
  */
 export interface DictionaryItem extends ListElement {
-  attributeValues: unknown | {[key: string]: string };
+  attributeValues: PaymentInfoInterface & {[key: string]: string };
   attributes: Array<string | boolean>;
   children: Array<unknown>;
   isLeaf: boolean;

@@ -191,6 +191,7 @@
           "
           [clearable]="true"
           [align]="'left'"
+          [brokenDateFixStrategy]="componentData.value?.attrs?.brokenDateFixStrategy || brokenDateFixStrategy"
         ></epgu-constructor-constructor-date-picker>
       </epgu-constructor-component-item>
 
@@ -264,6 +265,7 @@
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.SnilsInput"
         [data]="componentData"
+        [hidden]="componentData.value?.attrs?.hidden"
       >
         <ng-container
           *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
