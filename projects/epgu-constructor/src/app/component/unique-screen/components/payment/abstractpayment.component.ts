@@ -100,6 +100,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Переход к следующему экрану
    */
   nextStep(): void {
+    clearInterval(this.payStatusIntervalLink);
     const exportValue = {
       uin: this.uin,
       amount: this.sum,
