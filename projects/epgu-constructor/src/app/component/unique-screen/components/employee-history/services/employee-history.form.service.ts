@@ -172,6 +172,7 @@ export class EmployeeHistoryFormService {
   }
 
   private inputValidators(): ValidatorFn {
+    //TODO: сделать валидацию через json
     const errorMsg = 'Для ввода доступны только русские и латинские буквы, цифры, а также символы ()? /.",#№:;-+\'*<>&';
 
     return (control: AbstractControl): ValidationErrors => {
