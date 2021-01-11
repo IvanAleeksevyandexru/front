@@ -219,7 +219,7 @@ export class SelectMapObjectService implements OnDestroy {
 
       const hashKey = `${item.center[0]}$${item.center[1]}`;
       // agreement - чекбокс согласия с условиями услуг для загсов
-      const attrValues = item.attributeValues as { GET_CONSENT: string };
+      const attrValues = item.attributeValues;
       item.agreement = attrValues.GET_CONSENT !== 'true';
       if (hashMap[hashKey]) {
         hashMap[hashKey].children.push(item);

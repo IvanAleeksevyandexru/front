@@ -5,6 +5,13 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { SessionService } from '../../../../core/services/session/session.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import {
+  DictionaryConditions,
+  DictionaryOptions,
+  DictionaryResponse,
+  DictionaryUnionKind,
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
@@ -17,7 +24,7 @@ import {
   TimeSlotReq,
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface
+  ZagsDepartmentInterface,
 } from './time-slots.types';
 
 const moment = moment_;
@@ -43,6 +50,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
     private sessionService: SessionService,
+    private dictionaryApiService: DictionaryApiService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -128,19 +136,23 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       this.slotsMap = {};
       this.errorMessage = undefined;
 
-      return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
-        map((response) => {
-          if (response.error.errorDetail.errorCode === 0) {
-            this.initSlotsMap(response.slots);
-          } else {
-            const { errorMessage, errorCode } = response.error.errorDetail;
-            this.errorMessage = errorMessage || errorCode;
-          }
-          return this.isBookedDepartment;
-        }),
-        catchError((error) => {
-          this.errorMessage = error.message;
-          return throwError(error);
+      return this.getAvailableAreaNames(this.department.attributeValues.AREA_NAME).pipe(
+        switchMap((areaNames) => {
+          return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
+            map((response) => {
+              if (response.error.errorDetail.errorCode === 0) {
+                this.initSlotsMap(response.slots, areaNames);
+              } else {
+                const { errorMessage, errorCode } = response.error.errorDetail;
+                this.errorMessage = errorMessage || errorCode;
+              }
+              return this.isBookedDepartment;
+            }),
+            catchError((error) => {
+              this.errorMessage = error.message;
+              return throwError(error);
+            }),
+          );
         }),
       );
     }
@@ -162,9 +174,8 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     let department = JSON.parse(data.department);
     this.isBookedDepartment =
       (cachedAnswer?.department.value === department.value) &&
-      (cachedAnswer?.department.attributeValues?.AREA_NAME === department.attributeValues?.AREA_NAME)
-      ;
-    if (this.department?.value !== department.value) {
+      (cachedAnswer?.department.attributeValues?.AREA_NAME === department.attributeValues?.AREA_NAME);
+    if (!this.isBookedDepartment || !this.department) {
       changed = true;
       this.department = department;
     }
@@ -282,7 +293,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
       organizationId: this.department.attributeValues.CODE,
       calendarName,
       areaId: [selectedSlot.areaId || this.department.attributeValues.AREA_NAME],
-      selectedHallTitle: selectedSlot.slotId,
+      selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
       parentOrderId: this.orderId,
       preliminaryReservationPeriod,
       attributes: [],
@@ -291,9 +302,8 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     };
   }
 
-  private initSlotsMap(slots: TimeSlot[]): void {
-    const filteredSlots = slots.filter(slot => slot.areaId === this.department.attributeValues.AREA_NAME);
-    const initSlots = filteredSlots.length ? filteredSlots : slots;
+  private initSlotsMap(slots: TimeSlot[], areaNames: Array<string>): void {
+    const initSlots = slots.filter((slot) => areaNames.includes(slot.areaId));
 
     initSlots.forEach((slot) => {
       const slotDate = new Date(slot.visitTimeISO);
@@ -318,5 +328,62 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
         timezone: slot.visitTimeISO.substring(slot.visitTimeISO.length - 6),
       });
     });
+  }
+
+  /**
+   * Метод возвращает массив с AREA_NAME для слотов загса. Если был выбран загс с AREA_NAME = null
+   * то нужно из справочника запросить список кабинетов
+   * @param areaName AREA_NAME загса
+   */
+  private getAvailableAreaNames(areaName: string): Observable<Array<string>> {
+    if (areaName) {
+      return of([areaName]);
+    } else {
+      return this.dictionaryApiService
+        .getSelectMapDictionary('FNS_ZAGS_ORGANIZATION_AREA', this.getOptionsMapDictionary())
+        .pipe(
+          map((response: DictionaryResponse) => {
+            return response.items.map((zags) => zags.attributeValues.AREA_NAME);
+          }),
+        );
+    }
+  }
+
+  /**
+   * Подготовка тела POST запроса dictionary
+   */
+  private getOptionsMapDictionary(): DictionaryOptions {
+    return {
+      filter: {
+        union: {
+          unionKind: DictionaryUnionKind.AND,
+          subs: [
+            {
+              simple: {
+                attributeName: 'SHOW_ON_MAP',
+                condition: DictionaryConditions.EQUALS,
+                value: { asString: 'false' },
+              },
+            },
+            {
+              simple: {
+                attributeName: 'SOLEMN',
+                condition: DictionaryConditions.EQUALS,
+                value: { asString: this.solemn.toString() },
+              },
+            },
+            {
+              simple: {
+                attributeName: 'CODE',
+                condition: DictionaryConditions.CONTAINS,
+                value: { asString: this.department.value },
+              },
+            },
+          ],
+        },
+      },
+      selectAttributes: ['*'],
+      pageSize: '10000',
+    };
   }
 }

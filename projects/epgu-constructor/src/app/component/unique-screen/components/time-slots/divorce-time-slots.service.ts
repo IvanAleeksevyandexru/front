@@ -270,10 +270,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private initSlotsMap(slots: TimeSlot[]): void {
-    const filteredSlots = slots.filter(slot => slot.areaId === this.department.attributeValues.AREA_NAME);
-    const initSlots = filteredSlots.length ? filteredSlots : slots;
-
-    initSlots.forEach((slot) => {
+    slots.forEach((slot) => {
       const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
