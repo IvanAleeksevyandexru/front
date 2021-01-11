@@ -1,11 +1,10 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { FileUploadScreenComponent } from './file-upload-screen.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { ComponentBase } from '../../../../screen/screen.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { ComponentBase } from '../../../../screen/screen.types';
-import { FileUploadScreenComponent } from './file-upload-screen.component';
 
 // TODO: Need to refactoring component
 xdescribe('FileUploadScreenComponent', () => {
@@ -43,12 +42,11 @@ xdescribe('FileUploadScreenComponent', () => {
   }));
 
   beforeEach(() => {
-    screenService.component$ = of(mockData);
-    screenService.header$ = of('');
-    screenService.submitLabel$ = of('');
+    screenService.component = mockData;
+    screenService.header = '';
+    screenService.submitLabel = '';
     fixture = TestBed.createComponent(FileUploadScreenComponent);
     component = fixture.componentInstance;
-    Z;
     fixture.detectChanges();
   });
 
