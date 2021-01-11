@@ -111,6 +111,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Переход к следующему экрану
    */
   nextStep(): void {
+    clearInterval(this.payStatusIntervalLink);
     const exportValue = {
       uin: this.uin,
       amount: this.sum,
@@ -129,12 +130,12 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     this.inLoading = true;
     const data = { scenarioDto: this.screenService.getStore() };
     this.localStorageService.set(LAST_SCENARIO_KEY, data);
-    clearInterval(this.payStatusInterval);
+    clearInterval(this.payStatusIntervalLink);
     this.locationService.href(this.paymentService.getPaymentLink(this.billId));
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.payStatusInterval);
+    clearInterval(this.payStatusIntervalLink);
   }
 
   /**

@@ -1,13 +1,18 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "types": [],
     "paths": {
-      "@ifc/plugin": ["node_modules/epgu-lib/assets/vendor/ifcplugin-lib.js"],
-      "@ifc/common": ["node_modules/epgu-lib/assets/vendor/ifccommon-lib.js"],
-      "epgu-constructor": ["dist/epgu-constructor"]
+      "@ifc/plugin": [
+        "node_modules/epgu-lib/assets/vendor/ifcplugin-lib.js"
+      ],
+      "@ifc/common": [
+        "node_modules/epgu-lib/assets/vendor/ifccommon-lib.js"
+      ],
+      "epgu-constructor": [
+        "dist/epgu-constructor"
+      ]
     }
   },
   "files": [
@@ -16,5 +21,8 @@
   ],
   "include": [
     "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "**/*.stories.*"
   ]
 }
