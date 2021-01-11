@@ -12,6 +12,7 @@ import { LocalStorageService } from '../../../../../../core/services/local-stora
 import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
+import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
 
 let mockData: ComponentDto;
 
@@ -33,7 +34,8 @@ const testFnc = () => {
         MockProvider(LocationService),
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub }
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        EventBusService
       ],
     }).compileComponents();
     screenService = TestBed.inject(ScreenService);

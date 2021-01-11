@@ -12,6 +12,7 @@ import { LocationService } from '../../../../../../core/services/location/locati
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { BillInfoComponent } from './billinfo.component';
+import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
 
 const mockData: ComponentDto = {
   attrs: {},
@@ -38,7 +39,8 @@ describe('BillInfoComponent', () => {
         MockProvider(ConfigService),
         MockProvider(LocationService),
         MockProvider(LocalStorageService),
-        { provide: ScreenService, useClass: ScreenServiceStub }
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        EventBusService
       ],
     }).compileComponents();
     screenService = TestBed.inject(ScreenService);
