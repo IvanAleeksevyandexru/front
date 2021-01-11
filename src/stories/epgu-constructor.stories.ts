@@ -13,6 +13,18 @@ import {CurrentAnswersService} from "../../projects/epgu-constructor/src/app/scr
 import {CachedAnswersService} from "../../projects/epgu-constructor/src/app/shared/services/cached-answers/cached-answers.service";
 import {UtilsService} from "../../projects/epgu-constructor/src/app/core/services/utils/utils.service";
 import {ValueLoaderService} from "../../projects/epgu-constructor/src/app/shared/services/value-loader/value-loader.service";
+import {SignatureApplicationComponent} from "../../projects/epgu-constructor/src/app/component/unique-screen/components/signature-application/components/signature-application/signature-application.component";
+import {SignatureApplicationModule} from "../../projects/epgu-constructor/src/app/component/unique-screen/components/signature-application/signature-application.module";
+import {
+  ComponentDto,
+  DTOActionAction
+} from "../../projects/epgu-constructor/src/app/form-player/services/form-player-api/form-player-api.types";
+import {NavigationService} from "../../projects/epgu-constructor/src/app/core/services/navigation/navigation.service";
+import {DeviceDetectorService} from "../../projects/epgu-constructor/src/app/core/services/device-detector/device-detector.service";
+import {ConfigService} from "../../projects/epgu-constructor/src/app/core/services/config/config.service";
+import {LocationService} from "../../projects/epgu-constructor/src/app/core/services/location/location.service";
+import {WINDOW_PROVIDERS} from "../../projects/epgu-constructor/src/app/core/providers/window.provider";
+import {ModalService} from "../../projects/epgu-constructor/src/app/modal/modal.service";
 
 export default {
   title: 'Example/EPGU Constructor',
@@ -22,6 +34,7 @@ export default {
         ActionButtonModule,
         PassportModule,
         AnswerButtonModule,
+        SignatureApplicationModule
       ],
       schemas: [],
       declarations: [],
@@ -31,7 +44,13 @@ export default {
         CachedAnswersService,
         CurrentAnswersService,
         UtilsService,
-        ValueLoaderService
+        ValueLoaderService,
+        NavigationService,
+        DeviceDetectorService,
+        ConfigService,
+        LocationService,
+        WINDOW_PROVIDERS,
+        ModalService
       ],
     })
   ],
@@ -68,9 +87,38 @@ export const AnswerButton = (args: AnswerButtonComponent) => ({
   props: args,
 });
 AnswerButton.args = {
+  data: {},
+  selectedValue: ''
+};
+
+const componentDtoSample: ComponentDto = {
   attrs: {
-    data: {},
-    selectedValue: ''
-  }
+    image: {
+      src: 'https://gu-st.ru/content/catalog/new/divorce_3_e-signature.svg',
+      alt: ''
+    }
+  },
+  id: 'id1',
+  type: 'type1',
+};
+
+export const SignatureApplication = (args: SignatureApplicationComponent) => ({
+  component: SignatureApplicationComponent,
+  props: args
+});
+SignatureApplication.args = {
+  isMobile: false,
+  showNav: true,
+  header: 'Some header',
+  component: componentDtoSample,
+  isLoading: false,
+  actions: [
+    {
+      label: 'label1',
+      value: 'value1',
+      color: 'white',
+      action: DTOActionAction.editEmail,
+    }
+  ]
 };
 
