@@ -93,7 +93,6 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    clearInterval(this.payStatusInterval);
     this.init$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
   }
 
@@ -101,7 +100,6 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * Переход к следующему экрану
    */
   nextStep(): void {
-    clearInterval(this.payStatusIntervalLink);
     const exportValue = {
       uin: this.uin,
       amount: this.sum,
@@ -119,12 +117,12 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     this.inLoading = true;
     const data = { scenarioDto: this.screenService.getStore() };
     this.localStorageService.set(LAST_SCENARIO_KEY, data);
-    clearInterval(this.payStatusInterval);
+    clearInterval(this.payStatusIntervalLink);
     this.locationService.href(this.paymentService.getPaymentLink(this.billId));
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.payStatusInterval);
+    clearInterval(this.payStatusIntervalLink);
   }
 
   /**
@@ -318,6 +316,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     // Если нужно перескочить оплату для случая просто необходимости создания УИН (брак/разбрак)
     if (this.data.attrs?.goNextAfterUIN || this.isPaid) {
       this.isShown = false;
+      clearInterval(this.payStatusIntervalLink);
       this.nextStep();
     }
   }
