@@ -7,7 +7,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MockProvider } from 'ng-mocks';
 import { PaymentService } from '../../payment.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { ConfigService } from '../../../../../../core/config/config.service';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { LocationService } from '../../../../../../core/services/location/location.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';

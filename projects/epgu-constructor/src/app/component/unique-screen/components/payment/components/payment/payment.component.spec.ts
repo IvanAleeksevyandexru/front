@@ -5,13 +5,13 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { PaymentService } from '../../payment.service';
-import { ConfigService } from '../../../../../../core/config/config.service';
 import { MockProvider } from 'ng-mocks';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { LocationService } from '../../../../../../core/services/location/location.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
-import { ConfigServiceStub } from '../../../../../../core/config/config.service.stub';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 
 let mockData: ComponentDto;
 
