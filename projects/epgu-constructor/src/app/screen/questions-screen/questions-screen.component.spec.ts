@@ -28,6 +28,7 @@ import { ImgPrefixerPipe } from '../../shared/pipes/img-prefixer/img-prefixer.pi
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { QuestionsScreenComponent } from './questions-screen.component';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -99,6 +100,8 @@ describe('QuestionsScreenComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         EventBusService,
       ],
+    }).overrideComponent(QuestionsScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     }).compileComponents();
   });
 

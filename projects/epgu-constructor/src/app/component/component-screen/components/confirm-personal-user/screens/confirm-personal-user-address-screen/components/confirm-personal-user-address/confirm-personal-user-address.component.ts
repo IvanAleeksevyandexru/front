@@ -1,4 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import * as moment_ from 'moment';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -21,6 +28,7 @@ const moment = moment_;
   templateUrl: './confirm-personal-user-address.component.html',
   styleUrls: ['./confirm-personal-user-address.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnInit {
   @ViewChild('dataForm', { static: false }) dataForm;
@@ -37,16 +45,17 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     public screenService: ScreenService,
     private changeDetection: ChangeDetectorRef,
     private currentAnswersService: CurrentAnswersService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.data$
-      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
-      .subscribe((data) => {
-        this.textTransformType = data?.attrs?.fstuc;
-        this.isRequired = data.required;
-        this.updateValue(data);
-      });
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+      this.textTransformType = data?.attrs?.fstuc;
+      this.isRequired = data.required;
+      this.updateValue(data);
+
+      this.changeDetectionRef.markForCheck();
+    });
   }
 
   updateValue(data: ConfirmAddressInterface): void {

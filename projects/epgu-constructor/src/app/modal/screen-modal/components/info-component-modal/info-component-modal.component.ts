@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -14,6 +14,7 @@ import { ScreenModalService } from '../../screen-modal.service';
   templateUrl: './info-component-modal.component.html',
   styleUrls: ['./info-component-modal.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoComponentModalComponent implements OnInit {
   actionButtons: ComponentActionDto[] = [];
@@ -23,12 +24,14 @@ export class InfoComponentModalComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     public screenModalService: ScreenModalService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.screenService.component$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((component) => this.setActionButtons(component));
+    this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
+      this.setActionButtons(component);
+      this.changeDetectionRef.markForCheck();
+    });
   }
 
   setActionButtons(component: ComponentDto): void {

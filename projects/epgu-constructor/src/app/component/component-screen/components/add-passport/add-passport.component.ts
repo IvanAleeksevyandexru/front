@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -11,6 +11,7 @@ import { ComponentBase } from '../../../../screen/screen.types';
   selector: 'epgu-constructor-add-passport',
   templateUrl: './add-passport.component.html',
   styleUrls: ['./add-passport.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddPassportComponent implements OnInit {
   data$: Observable<ComponentBase> = this.screenService.component$;
@@ -20,13 +21,17 @@ export class AddPassportComponent implements OnInit {
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.eventBusService
       .on('passportValueChangedEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: ComponentBase) => this.onPassportDataChange(payload));
+      .subscribe((payload: ComponentBase) => {
+        this.onPassportDataChange(payload);
+        this.cdr.markForCheck();
+      });
   }
 
   onPassportDataChange(data: ComponentBase): void {

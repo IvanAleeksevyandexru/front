@@ -14,7 +14,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
 import { ValidationService } from '../../services/validation/validation.service';
 import { ValidationTypeModule } from './validation-type.module';
-
+import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 
 const componentMockData: CustomComponent = {
   attrs: {
@@ -70,6 +70,7 @@ describe('ValidationTypeDirective', () => {
         NgControl,
         { provide: ScreenService, useClass: ScreenServiceStub },
         EventBusService,
+        DateRangeService,
       ],
     });
     service = TestBed.inject(ValidationService);

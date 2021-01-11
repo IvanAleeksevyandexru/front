@@ -1,4 +1,11 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  forwardRef,
+  Input,
+  OnInit,
+} from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import {
   ControlValueAccessor,
@@ -40,6 +47,7 @@ type PassportFormFields = { rfPasportNumber: string; rfPasportSeries: string };
       multi: true,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PassportComponent implements OnInit, ControlValueAccessor, Validator {
   @Input() attrs: PassportAttr;
@@ -53,6 +61,7 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
     private fb: FormBuilder,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -94,6 +103,7 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
       )
       .subscribe((value: ComponentBase) => {
         this.eventBusService.emit('passportValueChangedEvent', value);
+        this.changeDetectionRef.markForCheck();
       });
   }
 

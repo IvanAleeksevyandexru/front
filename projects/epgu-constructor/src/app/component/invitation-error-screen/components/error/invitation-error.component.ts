@@ -1,5 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { finalize, takeUntil } from 'rxjs/operators';
@@ -19,6 +25,7 @@ import { CustomComponent } from '../../../components-list/components-list.types'
   templateUrl: './invitation-error.component.html',
   styleUrls: ['./invitation-error.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvitationErrorComponent implements OnInit {
   @Input() data: ComponentDto;
@@ -44,6 +51,7 @@ export class InvitationErrorComponent implements OnInit {
     private locationService: LocationService,
     private ngUnsubscribe$: UnsubscribeService,
     private loggerService: LoggerService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -85,6 +93,9 @@ export class InvitationErrorComponent implements OnInit {
         },
         (error) => {
           this.loggerService.error(error);
+        },
+        () => {
+          this.cdr.markForCheck();
         },
       );
   }

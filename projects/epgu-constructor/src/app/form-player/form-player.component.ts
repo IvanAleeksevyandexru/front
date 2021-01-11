@@ -1,5 +1,7 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   HostBinding,
   Input,
@@ -37,6 +39,7 @@ import { FormPlayerStartManager } from './services/form-player-start/form-player
   styleUrls: ['../../styles/index.scss'],
   providers: [UnsubscribeService, FormPlayerStartManager],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-form-player') class = true;
@@ -58,6 +61,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     public loadService: LoadService,
     public screenService: ScreenService,
     public formPlayerStartService: FormPlayerStartManager,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -95,26 +99,38 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       .subscribe((config) => {
         this.configService.config = config;
         this.isConfigReady$.next(true);
+
+        this.changeDetectionRef.markForCheck();
       });
   }
 
   private initNavigation(): void {
     this.navService.nextStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NavigationPayload) => this.nextStep(data));
+      .subscribe((data: NavigationPayload) => {
+        this.nextStep(data);
+        this.changeDetectionRef.markForCheck();
+      });
 
     this.navService.prevStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NavigationPayload) => this.prevStep(data));
+      .subscribe((data: NavigationPayload) => {
+        this.prevStep(data);
+        this.changeDetectionRef.markForCheck();
+      });
 
     this.navService.skipStep$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: NavigationPayload) => this.skipStep(data));
+      .subscribe((data: NavigationPayload) => {
+        this.skipStep(data);
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   private initSettingOfScreenIdToAttr(): void {
     this.screenService.display$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((display) => {
       this.screenId = display?.id;
+      this.changeDetectionRef.markForCheck();
     });
   }
 
@@ -126,6 +142,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
       )
       .subscribe(() => {
         this.formPlayerStartService.startPlayer();
+        this.changeDetectionRef.markForCheck();
       });
   }
 

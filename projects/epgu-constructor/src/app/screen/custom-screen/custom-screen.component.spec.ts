@@ -20,6 +20,7 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
 import { CustomScreenComponent } from './custom-screen.component';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 const moment = moment_;
 
@@ -45,6 +46,8 @@ describe('CustomScreenComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         EventBusService,
       ],
+    }).overrideComponent(CustomScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     });
   });
 

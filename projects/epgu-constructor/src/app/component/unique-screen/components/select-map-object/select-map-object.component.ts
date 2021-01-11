@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   NgZone,
@@ -39,6 +40,7 @@ import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-ob
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
   providers: [UnsubscribeService, SelectMapObjectService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
@@ -83,7 +85,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnInit(): void {
     this.initData$
-      .pipe(takeUntil(this.screenService.isNextScreen$))
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([data, applicantAnswers]: [ComponentBase, ApplicantAnswersDto]) => {
         this.data = data;
         this.applicantAnswers = applicantAnswers;

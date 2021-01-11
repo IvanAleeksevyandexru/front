@@ -16,7 +16,7 @@ import { ConstructorPlainInputModule } from '../../../../../shared/components/co
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ConfirmPhoneComponent } from './confirm-phone.component';
-
+import { DateRangeService } from '../../../../../component/components-list/services/date-range/date-range.service';
 
 describe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
@@ -52,6 +52,7 @@ describe('ConfirmPhoneComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         ValidationService,
         EventBusService,
+        DateRangeService,
       ],
     }).compileComponents();
 

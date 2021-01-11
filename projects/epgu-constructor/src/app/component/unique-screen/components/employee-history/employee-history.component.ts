@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
 import { combineLatest, Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -31,6 +31,7 @@ export interface EmployeeHistoryComponentInterface extends ComponentBase {
   templateUrl: './employee-history.component.html',
   styleUrls: ['./employee-history.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeeHistoryComponent implements OnInit {
   display$: Observable<DisplayDto> = this.screenService.display$;
@@ -58,13 +59,17 @@ export class EmployeeHistoryComponent implements OnInit {
     public monthsService: EmployeeHistoryMonthsService,
     public screenService: ScreenService,
     private eventBusService: EventBusService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.eventBusService
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.employeeFormService.newGeneration());
+      .subscribe(() => {
+        this.employeeFormService.newGeneration();
+        this.cdr.markForCheck();
+      });
   }
 
   textTransformType(display: DisplayDto): TextTransform {

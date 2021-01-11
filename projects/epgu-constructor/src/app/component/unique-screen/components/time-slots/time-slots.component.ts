@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { Observable, Subscription } from 'rxjs';
@@ -34,6 +34,7 @@ moment.locale('ru');
   templateUrl: './time-slots.component.html',
   styleUrls: ['./time-slots.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeSlotsComponent implements OnInit {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
@@ -96,6 +97,7 @@ export class TimeSlotsComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     private eventBusService: EventBusService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     this.timeSlotServices.BRAK = this.brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = this.divorceTimeSlotsService;
@@ -194,11 +196,13 @@ export class TimeSlotsComponent implements OnInit {
             `${this.constants.errorLoadingTimeSlots} (${this.currentService.getErrorMessage()})`,
           );
         }
+        this.changeDetectionRef.markForCheck();
       },
       () => {
         this.showError(
           `${this.constants.errorLoadingTimeSlots}  (${this.currentService.getErrorMessage()})`,
         );
+        this.changeDetectionRef.markForCheck();
       },
     );
   }
@@ -250,10 +254,12 @@ export class TimeSlotsComponent implements OnInit {
         };
         this.setBookedTimeStr(this.currentSlot);
         this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
+        this.changeDetectionRef.markForCheck();
       },
       () => {
         this.inProgress = false;
         this.showModal(COMMON_ERROR_MODAL_PARAMS);
+        this.changeDetectionRef.markForCheck();
       },
     );
   }
@@ -277,6 +283,7 @@ export class TimeSlotsComponent implements OnInit {
         if (result) {
           this.loadTimeSlots();
         }
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -321,11 +328,15 @@ export class TimeSlotsComponent implements OnInit {
         this.inProgress = false;
 
         this.checkExistenceSlots();
+
+        this.changeDetectionRef.markForCheck();
       },
       () => {
         this.errorMessage = this.currentService.getErrorMessage();
         this.inProgress = false;
         this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+
+        this.changeDetectionRef.markForCheck();
       },
     );
   }
@@ -537,7 +548,7 @@ export class TimeSlotsComponent implements OnInit {
    * @param isBookedDepartment Флаг показывающий что выбран департамент, на который уже есть бронь
    */
   private serviceInitHandle(isBookedDepartment: boolean): void {
-    this.isChosenTimeStrVisible = isBookedDepartment;
+    this.isChosenTimeStrVisible = isBookedDepartment && !!this.bookedSlot;
     this.errorMessage = undefined;
     this.activeMonthNumber = this.currentService.getCurrentMonth();
     this.activeYearNumber = this.currentService.getCurrentYear();

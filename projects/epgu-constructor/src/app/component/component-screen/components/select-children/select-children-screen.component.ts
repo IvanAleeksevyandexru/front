@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
@@ -11,8 +11,8 @@ import { ComponentDto } from '../../../../form-player/services/form-player-api/f
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStoreComponentDtoI } from '../../../../screen/screen.types';
-import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { CustomComponentOutputData } from '../../../components-list/components-list.types';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 
 enum ItemStatus {
   invalid = 'INVALID',
@@ -34,6 +34,7 @@ interface ClearEvent {
   templateUrl: './select-children-screen.component.html',
   styleUrls: ['./select-children-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class SelectChildrenScreenComponent implements OnInit {
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
@@ -64,15 +65,15 @@ export class SelectChildrenScreenComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
     private cachedAnswersService: CachedAnswersService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.data$
-      .pipe(takeUntil(this.ngUnsubscribe$), takeUntil(this.screenService.isNextScreen$))
-      .subscribe((data) => {
-        this.initVariables(data.id);
-        this.initStartValues(data.id);
-      });
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+      this.initVariables(data.id);
+      this.initStartValues(data.id);
+      this.changeDetectionRef.markForCheck();
+    });
 
     this.selectChildrenForm.valueChanges
       .pipe(startWith(this.selectChildrenForm.value as object), takeUntil(this.ngUnsubscribe$))
@@ -86,13 +87,18 @@ export class SelectChildrenScreenComponent implements OnInit {
             this.selectChildrenForm.setErrors(null);
           }
           this.updateCurrentAnswerServiceValidation();
+
+          this.changeDetectionRef.markForCheck();
         }),
       );
 
     this.eventBusService
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.addMoreChild());
+      .subscribe(() => {
+        this.addMoreChild();
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   initVariables(id: string): void {
@@ -239,7 +245,12 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param index индекс массива детей
    */
   handleSelect(event: ChildI | null, index?: number, id?: string): void {
-    Object.assign(this.items[index], event);
+    this.items[index] = {
+      controlId: this.items[index].controlId,
+      isNewRef: this.items[index].isNewRef,
+      ...event,
+    };
+
     if (event && event[this.idRef] === this.NEW_ID) {
       this.addNewChild(index);
     } else {

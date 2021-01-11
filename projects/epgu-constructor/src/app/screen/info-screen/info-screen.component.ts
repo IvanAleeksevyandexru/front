@@ -1,4 +1,10 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../core/services/config/config.service';
 import { LocationService } from '../../core/services/location/location.service';
@@ -18,6 +24,7 @@ import { ScreenBase } from '../screenBase';
   templateUrl: './info-screen.component.html',
   styleUrls: ['./info-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoScreenComponent extends ScreenBase implements OnInit {
   actionButtons: ComponentActionDto[] = [];
@@ -28,6 +35,7 @@ export class InfoScreenComponent extends ScreenBase implements OnInit {
     public injector: Injector,
     public locationService: LocationService,
     private configService: ConfigService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     super(injector);
   }
@@ -38,11 +46,13 @@ export class InfoScreenComponent extends ScreenBase implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((component: ComponentDto): void => {
         this.setActionButtons(component);
+        this.changeDetectionRef.markForCheck();
       });
     this.screenService.buttons$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((buttons: Array<ScreenActionDto>) => {
         this.screenActionButtons = buttons || [];
+        this.changeDetectionRef.markForCheck();
       });
   }
 

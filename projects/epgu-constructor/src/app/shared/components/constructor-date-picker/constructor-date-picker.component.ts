@@ -1,20 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { Align, RelativeDate } from 'epgu-lib';
+import { Align, BrokenDateFixStrategy, RelativeDate } from 'epgu-lib';
 import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
 
 @Component({
   selector: 'epgu-constructor-constructor-date-picker',
   templateUrl: './constructor-date-picker.component.html',
   styleUrls: ['./constructor-date-picker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConstructorDatePickerComponent implements OnInit {
   @Input() invalid: boolean;
@@ -27,6 +19,7 @@ export class ConstructorDatePickerComponent implements OnInit {
   @Input() clearable: boolean;
   @Input() align: Align | string;
   @Input() disabled: boolean;
+  @Input() brokenDateFixStrategy?: BrokenDateFixStrategy;
 
   @Output() dateSelectedEvent = new EventEmitter<Date>();
   @Output() clearedEvent = new EventEmitter<void>();

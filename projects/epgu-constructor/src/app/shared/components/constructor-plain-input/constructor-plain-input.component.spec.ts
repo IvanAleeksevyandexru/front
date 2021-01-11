@@ -14,7 +14,7 @@ import { ValidationService } from '../../services/validation/validation.service'
 import { BaseModule } from '../../base.module';
 import { TextTransform } from '../../types/textTransform';
 import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
-
+import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 
 describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;
@@ -32,7 +32,12 @@ describe('ConstructorPlainInputComponent', () => {
         CurrencyModule,
         ValidationTypeModule,
       ],
-      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }, ValidationService, EventBusService],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        EventBusService,
+        ValidationService,
+        DateRangeService,
+      ],
     }).compileComponents();
   });
 

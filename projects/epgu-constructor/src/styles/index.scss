@@ -243,10 +243,6 @@
     margin-left: auto;
     padding-left: 16px;
     padding-right: 16px;
-
-    @include tablets-up {
-      box-sizing: content-box;
-    }
   }
 
   .title {
