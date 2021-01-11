@@ -1,9 +1,17 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
+import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 
 interface CodeFormGroup {
@@ -17,6 +25,7 @@ interface CodeFormGroup {
   templateUrl: './confirm-phone.component.html',
   styleUrls: ['./confirm-phone.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmPhoneComponent implements OnInit {
   @ViewChild('codeGroup') codeGroupElement: ElementRef;
@@ -42,6 +51,8 @@ export class ConfirmPhoneComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private navModalService: NavigationModalService,
     private fb: FormBuilder,
+    private eventBusService: EventBusService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     this.characterMask = this.screenService.component.attrs.characterMask;
     this.codeLength = this.screenService.component.attrs.codeLength;
@@ -50,6 +61,13 @@ export class ConfirmPhoneComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCodeFormArray();
+    this.eventBusService
+      .on('counterValueChanged')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: number) => {
+        this.timerChange(payload);
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   isItemHasError(codeValue: string): Boolean {
@@ -126,6 +144,8 @@ export class ConfirmPhoneComponent implements OnInit {
 
           this.enterCode(code);
           this.lastCode = code;
+
+          this.changeDetectionRef.markForCheck();
         });
     }
   }

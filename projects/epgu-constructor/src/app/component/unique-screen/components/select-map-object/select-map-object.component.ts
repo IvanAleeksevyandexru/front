@@ -1,48 +1,48 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   NgZone,
   OnDestroy,
   OnInit,
-  Output,
   ViewChild,
 } from '@angular/core';
 import { YaMapService } from 'epgu-lib';
 import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { combineLatest, merge, Observable, of } from 'rxjs';
-import { filter, map, reduce, switchMap, takeUntil, take } from 'rxjs/operators';
-import { ConfigService } from '../../../../core/config/config.service';
+import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../modal/modal.service';
 import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { ConstructorLookupComponent } from '../../../../shared/components/constructor-lookup/constructor-lookup.component';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import { ComponentValue, DictionaryUtilities } from './dictionary-utilities';
 import {
   DictionaryOptions,
   DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { ComponentValue, DictionaryUtilities } from './dictionary-utilities';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
-import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { ConstructorLookupComponent } from '../../../../shared/components/constructor-lookup/constructor-lookup.component';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
   providers: [UnsubscribeService, SelectMapObjectService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Output() nextStepEvent = new EventEmitter<string>();
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
   @ViewChild('informationTemplate', { static: false }) informationTemplate;
   data: ComponentBase;
@@ -78,13 +78,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private modalService: ModalService,
     private zone: NgZone,
     private deviceDetector: DeviceDetectorService,
+    private eventBusService: EventBusService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
 
   ngOnInit(): void {
     this.initData$
-      .pipe(take(1))
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([data, applicantAnswers]: [ComponentBase, ApplicantAnswersDto]) => {
         this.data = data;
         this.applicantAnswers = applicantAnswers;
@@ -341,7 +342,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         regOkato: this.componentValue?.regOkato,
         okato: this.componentValue?.okato,
       };
-      this.nextStepEvent.emit(JSON.stringify(answer));
+      this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
     });
   }
 

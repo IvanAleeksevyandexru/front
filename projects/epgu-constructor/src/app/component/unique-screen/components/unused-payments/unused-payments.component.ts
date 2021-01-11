@@ -1,29 +1,28 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, filter, tap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, combineLatest, Observable, of, throwError } from 'rxjs';
+import { catchError, concatMap, filter, takeUntil, tap } from 'rxjs/operators';
+import { NavigationService } from '../../../../core/services/navigation/navigation.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../modal/modal.service';
 import { UsePaymentsModalComponent } from '../../../../modal/use-payment-modal/use-payments-modal.component';
-import { UnusedPaymentsService } from './unused-payments.service';
-import { UnusedPaymentInterface } from './unused-payment.interface';
-import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { UnusedPaymentInterface } from './unused-payment.interface';
+import { UnusedPaymentsService } from './unused-payments.service';
 
 @Component({
   selector: 'epgu-constructor-unused-payments',
   templateUrl: './unused-payments.component.html',
   styleUrls: ['./unused-payments.component.scss'],
+  providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnusedPaymentsComponent implements OnInit {
-  // @Input() orderId: string;
-  // @Input() data: DisplayDto;
-  @Output() nextStepEvent = new EventEmitter<string>();
-
   data$: Observable<DisplayDto> = this.screenService.display$;
   orderId: string = this.screenService.getStore().orderId;
   paymentUIN: string;
-  mockOrderId = '763444783';
   tax: UnusedPaymentInterface;
 
   get paymentsList$(): Observable<UnusedPaymentInterface[]> {
@@ -37,7 +36,31 @@ export class UnusedPaymentsComponent implements OnInit {
     private navigationService: NavigationService,
     public screenService: ScreenService,
     private listPaymentsService: UnusedPaymentsService,
+    private eventBusService: EventBusService,
+    private ngUnsubscribe$: UnsubscribeService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
+
+  ngOnInit(): void {
+    this.listPaymentsService
+      .getListPaymentsInfo({ orderId: this.orderId })
+      .pipe(
+        catchError((err) => {
+          return combineLatest([of(err), this.data$]).pipe(
+            tap(this.getListPaymentsInfoError),
+            concatMap(() => throwError(err)),
+          );
+        }),
+        concatMap((data) => combineLatest([of(data), this.data$])),
+        takeUntil(this.ngUnsubscribe$),
+      )
+      .subscribe(this.getListPaymentsInfoSuccess);
+
+    this.eventBusService
+      .on('radioTaxSelectedEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: UnusedPaymentInterface) => this.radioSelect(payload));
+  }
 
   public usePayment = (uin: string): void => {
     this.paymentUIN = uin;
@@ -80,12 +103,14 @@ export class UnusedPaymentsComponent implements OnInit {
     } else {
       this.usePaymentsListData(serviceData);
     }
+    this.changeDetectionRef.markForCheck();
   };
 
   getListPaymentsInfoError = ([error, data]: [HttpErrorResponse, DisplayDto]): void => {
     // eslint-disable-next-line no-console
     console.log('Error', error);
     this.usePaymentsListData(data);
+    this.changeDetectionRef.markForCheck();
   };
 
   /**
@@ -96,25 +121,10 @@ export class UnusedPaymentsComponent implements OnInit {
     this.tax = $event;
   }
 
-  ngOnInit(): void {
-    this.listPaymentsService
-      .getListPaymentsInfo({ orderId: this.orderId })
-      .pipe(
-        catchError((err) => {
-          return combineLatest([of(err), this.data$]).pipe(
-            tap(this.getListPaymentsInfoError),
-            concatMap(() => throwError(err)),
-          );
-        }),
-        concatMap((data) => combineLatest([of(data), this.data$])),
-      )
-      .subscribe(this.getListPaymentsInfoSuccess);
-  }
-
   /**
    * Переход к следующему экрану
    */
   private nextStep(data: string): void {
-    this.nextStepEvent.emit(data);
+    this.eventBusService.emit('nextStepEvent', data);
   }
 }

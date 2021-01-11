@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms';
 import { Align, ValidationShowOn } from 'epgu-lib';
 
 import { ConstructorMonthPickerComponent } from './constructor-month-picker.component';
+import { BaseModule } from '../../base.module';
 import { CoreModule } from '../../../core/core.module';
 
 xdescribe('ConstructorMonthPickerComponent', () => {
@@ -14,7 +15,7 @@ xdescribe('ConstructorMonthPickerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorMonthPickerComponent],
-      imports: [CoreModule, RouterTestingModule, BrowserAnimationsModule],
+      imports: [CoreModule, BaseModule, RouterTestingModule, BrowserAnimationsModule],
     }).compileComponents();
   });
 

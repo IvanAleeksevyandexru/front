@@ -4,7 +4,6 @@ import { AddressHelperService } from './services/address-helper/address-helper.s
 import { ComponentListToolsService } from './services/component-list-tools/component-list-tools.service';
 import { ComponentsListComponent } from './components-list.component';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
-import { CoreModule } from '../../core/core.module';
 import { ComponentItemComponent } from './component-item/component-item.component';
 import { DocInputComponent } from './doc-input/doc-input.component';
 import { TimerModule } from '../component-screen/components/timer/timer.module';
@@ -15,12 +14,14 @@ import { ConstructorDadataWidgetModule } from '../../shared/components/construct
 import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { ConstructorLookupModule } from '../../shared/components/constructor-lookup/constructor-lookup.module';
 import { ConstructorCheckboxModule } from '../../shared/components/constructor-checkbox/constructor-checkbox.module';
-import { BaseModule } from '../../shared/components/base/base.module';
+import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { InputErrorModule } from '../../shared/components/input-error/input-error.module';
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
-import { MaskHandleModule } from '../../shared/pipes/mask-handle/mask-handle.module';
 import { CurrencyModule } from '../../shared/directives/currency/currency.module';
 import { MemoPipe } from '../../core/pipes/memo/memo.pipe';
+import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
+import { BaseModule } from '../../shared/base.module';
+import { DateRangeService } from './services/date-range/date-range.service';
 
 const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent, MemoPipe];
 
@@ -28,7 +29,7 @@ const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputCom
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   imports: [
-    CoreModule,
+    BaseModule,
     TimerModule,
     ConstructorPlainInputModule,
     ConstructorMaskedInputModule,
@@ -37,17 +38,18 @@ const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputCom
     ConstructorDropdownModule,
     ConstructorLookupModule,
     ConstructorCheckboxModule,
-    BaseModule,
+    BaseComponentsModule,
     InputErrorModule,
     FieldListModule,
-    MaskHandleModule,
     CurrencyModule,
+    ConstructorDatePickerModule,
   ],
   providers: [
     ValidationService,
     AddressHelperService,
     ComponentListToolsService,
     DictionaryApiService,
+    DateRangeService,
   ],
 })
 export class ComponentsListModule {}

@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -32,7 +33,10 @@ xdescribe('FileUploadScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [FileUploadScreenComponent],
-      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        EventBusService,
+      ],
     }).compileComponents();
     screenService = TestBed.inject(ScreenService);
   }));

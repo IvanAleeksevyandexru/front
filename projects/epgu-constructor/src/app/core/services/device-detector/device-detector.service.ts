@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LoadService, SmuEventsService } from 'epgu-lib';
-import { LOCAL_STORAGE_PLATFORM_TYPE } from '../../config/config.types';
+import { LOCAL_STORAGE_PLATFORM_TYPE } from '../config/config.types';
 
 export enum LoadServiceDeviceType {
   'desk' = 'desk',

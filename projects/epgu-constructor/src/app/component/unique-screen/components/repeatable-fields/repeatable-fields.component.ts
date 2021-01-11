@@ -1,34 +1,38 @@
 import {
   AfterViewChecked,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
-  Output,
+  OnInit,
 } from '@angular/core';
-import { filter, map, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import {
-  defaultScreensAmount,
-  prepareDataToSendForRepeatableFieldsComponent,
-  removeItemFromArrByIndex,
-} from './repeatable-fields.constant';
+import { ScreenTypes } from '../../../../screen/screen.types';
+import { isEqualObj } from '../../../../shared/constants/uttils';
 import {
   CustomComponent,
   CustomComponentOutputData,
 } from '../../../components-list/components-list.types';
-import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { ScreenTypes } from '../../../../screen/screen.types';
+import {
+  defaultScreensAmount,
+  prepareDataToSendForRepeatableFieldsComponent,
+  removeItemFromArrByIndex,
+  StateStatus,
+} from './repeatable-fields.constant';
 
 @Component({
   selector: 'epgu-constructor-repeatable-fields',
   templateUrl: './repeatable-fields.component.html',
   styleUrls: ['./repeatable-fields.component.scss'],
+  providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class RepeatableFieldsComponent implements AfterViewChecked {
-  @Output() nextStepEvent = new EventEmitter();
-
+export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
   objectKeys = Object.keys;
   componentId: number;
   isValid: boolean;
@@ -48,8 +52,22 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     tap((data: DisplayDto) => {
       this.initVariable();
       this.propData = data;
-
       this.duplicateScreen();
+    }),
+  );
+  state$ = new BehaviorSubject<Array<{ [key: string]: { value: string } }>>([]);
+
+  commonError$ = combineLatest([
+    this.screenService.componentErrors$,
+    this.screenService.component$,
+    this.getStateStatus$(),
+  ]).pipe(
+    filter(([error, component]) => !!error[component.id]),
+    map(([error, component, isChangeState]) => {
+      return {
+        hasError: isChangeState !== 'change',
+        message: error[component.id],
+      };
     }),
   );
 
@@ -57,7 +75,16 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
     private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
     private cdr: ChangeDetectorRef,
+    private eventBusService: EventBusService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {}
+
+  ngOnInit(): void {
+    this.eventBusService
+      .on('cloneButtonClickEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.duplicateScreen(true));
+  }
 
   trackByFunction = (index, item): string => item;
 
@@ -95,7 +122,7 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   }
 
   nextScreen(): void {
-    this.nextStepEvent.emit(this.currentAnswersService.state);
+    this.eventBusService.emit('nextStepEvent', this.currentAnswersService.state);
   }
 
   removeItem(key: string, index: number): void {
@@ -112,7 +139,24 @@ export class RepeatableFieldsComponent implements AfterViewChecked {
   }
 
   saveState(state: Array<{ [key: string]: { value: string } }>): void {
+    this.state$.next(state);
     this.currentAnswersService.state = JSON.stringify(state);
+  }
+
+  getStateStatus$(): Observable<StateStatus> {
+    // TODO: refactor когда бэк сделает вывод ошибки для конкректной формы
+    return this.state$.pipe(
+      pairwise(),
+      map(([prev, curr]) => {
+        const prevLength = prev.length;
+        const currLength = curr.length;
+        if (prevLength === 0 || currLength === 0 || prevLength < currLength) {
+          return 'init';
+        }
+
+        return isEqualObj(prev, curr) ? 'noChange' : 'change';
+      }),
+    );
   }
 
   private setNewScreen(components: CustomComponent[]): void {

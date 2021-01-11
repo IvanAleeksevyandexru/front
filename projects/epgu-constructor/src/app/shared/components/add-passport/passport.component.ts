@@ -1,4 +1,11 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  forwardRef,
+  Input,
+  OnInit,
+} from '@angular/core';
 /* eslint-disable import/no-extraneous-dependencies */
 import {
   ControlValueAccessor,
@@ -14,6 +21,8 @@ import {
 import { ValidationShowOn } from 'epgu-lib';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
+import { ComponentBase } from '../../../screen/screen.types';
 // eslint-disable-next-line import/named
 import { PassportAttr, PassportFields } from './passport.interface';
 
@@ -38,17 +47,22 @@ type PassportFormFields = { rfPasportNumber: string; rfPasportSeries: string };
       multi: true,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PassportComponent implements OnInit, ControlValueAccessor, Validator {
   @Input() attrs: PassportAttr;
-  @Output() valueChangedEvent = new EventEmitter();
 
   public passportForm: FormGroup;
   public fieldsNames: Array<string> = [];
 
   touchedUnfocused = ValidationShowOn.TOUCHED_UNFOCUSED;
 
-  constructor(private fb: FormBuilder, private ngUnsubscribe$: UnsubscribeService) {}
+  constructor(
+    private fb: FormBuilder,
+    private ngUnsubscribe$: UnsubscribeService,
+    private eventBusService: EventBusService,
+    private changeDetectionRef: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.initFormGroup();
@@ -87,8 +101,9 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
         debounceTime(300),
         filter(() => this.passportForm.valid),
       )
-      .subscribe((value) => {
-        this.valueChangedEvent.emit(value);
+      .subscribe((value: ComponentBase) => {
+        this.eventBusService.emit('passportValueChangedEvent', value);
+        this.changeDetectionRef.markForCheck();
       });
   }
 

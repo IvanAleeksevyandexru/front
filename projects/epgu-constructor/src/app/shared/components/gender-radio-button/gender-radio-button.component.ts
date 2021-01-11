@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 
@@ -19,6 +19,7 @@ enum GenderOrder {
       multi: true,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GenderRadioButtonComponent implements ControlValueAccessor {
   genders = [

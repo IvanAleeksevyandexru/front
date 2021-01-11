@@ -29,7 +29,7 @@ export abstract class FormPlayerBaseService {
 
   protected isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
   protected playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
-  protected _isLoading$ = this.isLoadingSubject.asObservable();;
+  protected _isLoading$ = this.isLoadingSubject.asObservable();
   protected _playerLoaded$ = this.playerLoadedSubject.asObservable();
 
   constructor(
@@ -39,6 +39,11 @@ export abstract class FormPlayerBaseService {
     this.screenServiceBase = this.injector.get(ScreenService);
     this.loggerBase = this.injector.get(LoggerService);
     this.htmlRemover = this.injector.get(HtmlRemoverService);
+  }
+
+  public reloadState(): void {
+    this.playerLoadedSubject.next(false);
+    this.store = null;
   }
 
   get isLoading$(): Observable<boolean>  {

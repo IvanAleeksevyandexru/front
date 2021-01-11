@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { AbstractPaymentComponent } from '../../abstractpayment.component';
 
@@ -7,6 +7,7 @@ import { AbstractPaymentComponent } from '../../abstractpayment.component';
   templateUrl: './billinfo.component.html',
   styleUrls: ['../payment/payment.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BillInfoComponent extends AbstractPaymentComponent {
   constructor(public injector: Injector) {

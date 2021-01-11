@@ -2,15 +2,16 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EpguLibModule, HealthService } from 'epgu-lib';
-
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { PassportComponent } from './passport.component';
-import { ConstructorMaskedInputModule } from '../epgu-lib/constructor-masked-input/constructor-masked-input.module';
-import { BaseModule } from '../base/base.module';
-import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
-
+import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
+import { BaseComponentsModule } from '../base-components/base-components.module';
+import { ConstructorMaskedInputModule } from '../epgu-lib/constructor-masked-input/constructor-masked-input.module';
+import { PassportComponent } from './passport.component';
+
+
 
 describe('PassportComponent', () => {
   let component: PassportComponent;
@@ -24,7 +25,7 @@ describe('PassportComponent', () => {
           FormsModule,
           RouterTestingModule,
           ConstructorMaskedInputModule,
-          BaseModule,
+          BaseComponentsModule,
           MaskHandleModule,
         ],
         declarations: [PassportComponent],
@@ -32,6 +33,7 @@ describe('PassportComponent', () => {
           UnsubscribeService,
           HealthService,
           { provide: ScreenService, useClass: ScreenServiceStub },
+          EventBusService,
         ],
       }).compileComponents();
     }),

@@ -1,0 +1,13 @@
+@import '../../../../../../../styles/core';
+
+.application {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

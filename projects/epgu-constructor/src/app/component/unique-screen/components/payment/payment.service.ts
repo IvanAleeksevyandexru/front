@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { getPaymentRequestOptions } from './payment.constants';
@@ -169,7 +169,7 @@ export class PaymentService {
   // TODO
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getValueFromObjectAsArray(obj_or_result: any, path: string[]): string | null {
-    if (path.length){
+    if (path?.length){
       const key = path.shift();
       if (obj_or_result.hasOwnProperty(key)){
         return this.getValueFromObjectAsArray(obj_or_result[key], path);

@@ -1,19 +1,22 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   OnDestroy,
   OnInit,
-  Output,
   ViewChild,
 } from '@angular/core';
 import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
@@ -33,12 +36,13 @@ import {
   uploadPhotoElemId,
 } from './upload-and-edit-photo.constant';
 import { ImgSubject } from './upload-and-edit-photo.model';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo',
   templateUrl: './upload-and-edit-photo.component.html',
   styleUrls: ['./upload-and-edit-photo.component.scss'],
+  providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   @ViewChild('hiddenFileInput') fileInput: ElementRef;
@@ -46,8 +50,6 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     static: true,
   })
   cameraInput: ElementRef;
-
-  @Output() nextStepEvent = new EventEmitter();
 
   data: ComponentDto;
   header: string;
@@ -83,6 +85,9 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     private utils: UtilsService,
     public screenService: ScreenService,
     public config: ConfigService,
+    private eventBusService: EventBusService,
+    private ngUnsubscribe$: UnsubscribeService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     this.header = screenService.header;
     this.data = { ...screenService.component };
@@ -94,6 +99,14 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.checkImagePresence();
     this.setHowPhotoModalParams();
 
+    this.eventBusService
+      .on('fileDropped')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: FileList) => {
+        this.onFileSelected(payload);
+        this.changeDetectionRef.markForCheck();
+      });
+
     this.isDesktop = this.deviceDetector.isDesktop;
     this.allowedImgTypes = this.data?.attrs?.uploadedFile?.fileType || [];
     this.fileName = this.data?.attrs?.uploadedFile?.name || '';
@@ -101,6 +114,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     if (!this.isDesktop) {
       this.webcamService.isWebcamAllowed().subscribe((isAvailable) => {
         this.isWebcamAvailable = isAvailable;
+        this.changeDetectionRef.markForCheck();
       });
     }
   }
@@ -145,6 +159,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
             this.croppedImageUrl = data.imageObjectUrl;
           }
           this.isModalOpened = false;
+          this.changeDetectionRef.markForCheck();
         });
     });
   }
@@ -153,9 +168,12 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     return this.imgAttachErrorSubject.subscribe((imageErrors) =>
       this.modalService
         .openModal(PhotoErrorModalComponent, { imageErrors })
-        .subscribe((data: { changeImage?: boolean }) =>
-          data?.changeImage ? this.fileInput.nativeElement.click() : null,
-        ),
+        .subscribe((data: { changeImage?: boolean }) => {
+          if (data?.changeImage) {
+            this.fileInput.nativeElement.click();
+          }
+          this.changeDetectionRef.markForCheck();
+        }),
     );
   }
 
@@ -163,8 +181,18 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     this.subs
       .add(this.imgSub())
       .add(this.imgAttachErrorSub())
-      .add(fromEvent(this.imageValidator, 'load').subscribe(() => this.validateImage()))
-      .add(fromEvent(this.imageValidator, 'error').subscribe(() => this.validateImage()));
+      .add(
+        fromEvent(this.imageValidator, 'load').subscribe(() => {
+          this.validateImage();
+          this.changeDetectionRef.markForCheck();
+        }),
+      )
+      .add(
+        fromEvent(this.imageValidator, 'error').subscribe(() => {
+          this.validateImage();
+          this.changeDetectionRef.markForCheck();
+        }),
+      );
   }
 
   getRequestData(): {
@@ -316,6 +344,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       if (value === uploadPhotoElemId.howToTakePhoto) {
         this.openHowPhotoModal();
       }
+      this.changeDetectionRef.markForCheck();
     });
   }
 
@@ -326,6 +355,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         if (value === uploadPhotoElemId.requirements) {
           this.openRequirementsModal();
         }
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -354,6 +384,9 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         switchMap(() => compressFile()),
         switchMap((compressedFile) => uploadFile(compressedFile)),
       )
-      .subscribe(() => this.nextStepEvent.emit(JSON.stringify(requestData)));
+      .subscribe(() => {
+        this.eventBusService.emit('nextStepEvent', JSON.stringify(requestData));
+        this.changeDetectionRef.markForCheck();
+      });
   }
 }

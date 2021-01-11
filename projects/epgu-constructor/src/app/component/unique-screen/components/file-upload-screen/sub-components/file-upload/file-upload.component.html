@@ -6,7 +6,6 @@
     [data]="upload"
     [clarification]="attributes?.clarifications"
     [prefixForMnemonic]="prefixForMnemonic"
-    (newValueSet)="handleNewValueForItem($event)"
   ></epgu-constructor-file-upload-item>
   <epgu-constructor-file-upload
     *ngIf="upload.type == fileUploadItemTypes.cycle"
@@ -16,6 +15,5 @@
     [uploadId]="upload.uploadId"
     [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(upload.relatedUploads?.ref)"
     [attributes]="upload.relatedUploads"
-    (newRelatedValueSet)="handleNewRelatedValueForItem($event)"
   ></epgu-constructor-file-upload>
 </ng-template>

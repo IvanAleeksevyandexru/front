@@ -1,16 +1,18 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
-import { map, startWith, take, takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import * as uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentBase } from '../../../../screen/screen.types';
+import { ComponentBase, ScreenStoreComponentDtoI } from '../../../../screen/screen.types';
 import { CustomComponentOutputData } from '../../../components-list/components-list.types';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 
 enum ItemStatus {
   invalid = 'INVALID',
@@ -32,10 +34,9 @@ interface ClearEvent {
   templateUrl: './select-children-screen.component.html',
   styleUrls: ['./select-children-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class SelectChildrenScreenComponent implements OnInit {
-  @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
-
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     map((label) => {
       return label || 'Добавить ребенка';
@@ -56,16 +57,22 @@ export class SelectChildrenScreenComponent implements OnInit {
   isSingleChild: boolean;
   hint: string | undefined;
 
+  private component: ScreenStoreComponentDtoI;
+
   constructor(
-    private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
+    private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
+    private eventBusService: EventBusService,
+    private cachedAnswersService: CachedAnswersService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.data$.pipe(takeUntil(this.ngUnsubscribe$), take(1)).subscribe((data) => {
+    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.initVariables(data.id);
       this.initStartValues(data.id);
+      this.changeDetectionRef.markForCheck();
     });
 
     this.selectChildrenForm.valueChanges
@@ -80,12 +87,24 @@ export class SelectChildrenScreenComponent implements OnInit {
             this.selectChildrenForm.setErrors(null);
           }
           this.updateCurrentAnswerServiceValidation();
+
+          this.changeDetectionRef.markForCheck();
         }),
       );
+
+    this.eventBusService
+      .on('cloneButtonClickEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
+        this.addMoreChild();
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   initVariables(id: string): void {
     const component = this.screenService.getCompFromDisplay(id);
+    this.component = component;
+
     const itemsList = component ? JSON.parse(component.presetValue) : [];
     this.firstNameRef = this.getRefFromComponent('firstName');
     this.isNewRef = this.getRefFromComponent('isNew');
@@ -99,7 +118,10 @@ export class SelectChildrenScreenComponent implements OnInit {
   initStartValues(id: string): void {
     const cachedValue = this.screenService.getCompValueFromCachedAnswers(id);
     if (cachedValue) {
-      const children = JSON.parse(cachedValue);
+      const children = this.cachedAnswersService.parseCachedValue<unknown[]>(
+        cachedValue,
+        this.component,
+      );
       children.forEach((child, index) => {
         const isNew = JSON.parse(child[this.isNewRef]);
         const childId = isNew ? this.NEW_ID : child[this.idRef];
@@ -133,7 +155,7 @@ export class SelectChildrenScreenComponent implements OnInit {
    * Создание кастомного ребенка
    */
   addNewChild(index: number): void {
-    const id = uuid.v4();
+    const id = uuidv4();
     const newChild = {
       ...this.screenService.component?.attrs?.components?.reduce(
         (accum, value) => ({
@@ -211,7 +233,7 @@ export class SelectChildrenScreenComponent implements OnInit {
    */
   addMoreChild(initValue?: ChildI, childFromCache: ChildI = {}): void {
     const index = this.items.length;
-    const controlId = `child_${uuid.v4()}`;
+    const controlId = `child_${uuidv4()}`;
     this.addFormControl(controlId, initValue);
     this.items.push({ controlId });
     this.itemsComponents[index] = this.prepareItemComponents(childFromCache);
@@ -223,7 +245,12 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param index индекс массива детей
    */
   handleSelect(event: ChildI | null, index?: number, id?: string): void {
-    Object.assign(this.items[index], event);
+    this.items[index] = {
+      controlId: this.items[index].controlId,
+      isNewRef: this.items[index].isNewRef,
+      ...event,
+    };
+
     if (event && event[this.idRef] === this.NEW_ID) {
       this.addNewChild(index);
     } else {

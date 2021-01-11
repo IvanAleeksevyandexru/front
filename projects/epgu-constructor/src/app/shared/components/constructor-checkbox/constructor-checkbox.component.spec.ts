@@ -8,6 +8,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConstructorCheckboxComponent } from './constructor-checkbox.component';
+import { BaseModule } from '../../base.module';
 
 describe('ConstructorCheckboxComponent', () => {
   let component: ConstructorCheckboxComponent;
@@ -16,7 +17,7 @@ describe('ConstructorCheckboxComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorCheckboxComponent],
-      imports: [CoreModule, RouterTestingModule],
+      imports: [CoreModule, BaseModule, RouterTestingModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },

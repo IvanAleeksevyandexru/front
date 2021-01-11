@@ -18,6 +18,7 @@ export interface TimeSlotValueInterface {
   slotsPeriod?: string;
   orderId?: string;
   serviceId?: string;
+  waitingTimeExpired: boolean;
 }
 
 export interface DepartmentInterface {
@@ -26,7 +27,6 @@ export interface DepartmentInterface {
   attributeValues: { [key: string]: string };
 }
 export interface MvdDepartmentInterface extends DepartmentInterface {
-
   attributeValues: {
     ADDRESS_OUT: string;
     phone: string;
@@ -34,19 +34,16 @@ export interface MvdDepartmentInterface extends DepartmentInterface {
 }
 
 export interface ZagsDepartmentInterface extends DepartmentInterface {
-  value: string;
-  title: string;
   attributeValues: {
     CODE: string;
     ADDRESS: string;
     FULLNAME: string;
     PHONE: string;
+    AREA_NAME?: string;
   };
 }
 
 export interface GibddDepartmentInterface extends DepartmentInterface {
-  value: string;
-  title: string;
   attributeValues: {
     code: string;
     address: string;

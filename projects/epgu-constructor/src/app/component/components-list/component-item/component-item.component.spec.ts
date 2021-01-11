@@ -5,11 +5,12 @@ import { AbstractControl, FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { WebcamShootModule } from '../../../shared/components/webcam-shoot/webcam-shoot.module';
-import { HelperTextComponent } from '../../../shared/components/base/helper-text/helper-text.component';
-import { LabelComponent } from '../../../shared/components/base/label/label.component';
+import { HelperTextComponent } from '../../../shared/components/base-components/helper-text/helper-text.component';
+import { LabelComponent } from '../../../shared/components/base-components/label/label.component';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { BaseModule } from '../../../shared/base.module';
 import { CoreModule } from '../../../core/core.module';
 
 describe('ComponentItemComponent', () => {
@@ -33,7 +34,7 @@ describe('ComponentItemComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ComponentItemComponent, LabelComponent, HelperTextComponent],
-      imports: [CoreModule, RouterTestingModule, WebcamShootModule],
+      imports: [CoreModule, BaseModule, RouterTestingModule, WebcamShootModule],
       providers: [HealthService, { provide: ScreenService, useClass: ScreenServiceStub }],
     }).compileComponents();
     fb = TestBed.inject(FormBuilder);

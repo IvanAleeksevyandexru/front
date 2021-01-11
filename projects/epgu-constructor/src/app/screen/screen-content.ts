@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import {
   ApplicantAnswersDto,
   CachedAnswersDto,
@@ -272,11 +272,11 @@ export class ScreenContent {
     } = screenStore;
     const { header, subHeader, submitLabel, type, components = [], terminal, cssClass, buttons } = display;
     const firstComponent = components[0];
+    this.screenType = type;
     this.display = display;
     this.header = header;
     this.subHeader = subHeader;
     this.submitLabel = submitLabel;
-    this.screenType = type;
     this.gender = gender;
     this.terminal = terminal;
     this.showNav = !terminal;

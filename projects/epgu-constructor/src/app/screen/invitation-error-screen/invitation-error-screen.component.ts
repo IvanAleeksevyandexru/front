@@ -1,7 +1,6 @@
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { InvitationErrorScreenComponentTypes } from '../../component/invitation-error-screen/invitation-error-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { NavigationPayload } from '../../form-player/form-player.types';
 import { ScreenBase } from '../screenBase';
 
 @Component({
@@ -9,6 +8,7 @@ import { ScreenBase } from '../screenBase';
   templateUrl: './invitation-error-screen.component.html',
   styleUrls: ['./invitation-error-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvitationErrorScreenComponent extends ScreenBase {
   typeComponent = InvitationErrorScreenComponentTypes;
@@ -17,7 +17,7 @@ export class InvitationErrorScreenComponent extends ScreenBase {
     super(injector);
   }
 
-  nextStep(payload?: NavigationPayload): void {
-    this.navigationService.next({ payload });
+  nextStep(): void {
+    // NOTICE: у скрина InvitationErrorScreenComponent не может быть следующего экрана по бизнес-логике.
   }
 }

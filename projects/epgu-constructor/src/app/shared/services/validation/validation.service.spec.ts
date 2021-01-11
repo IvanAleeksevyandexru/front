@@ -3,6 +3,9 @@ import { FormControl } from '@angular/forms';
 import { CustomComponent, CustomScreenComponentTypes } from '../../../component/components-list/components-list.types';
 import { ComponentListToolsService } from '../../../component/components-list/services/component-list-tools/component-list-tools.service';
 import { ValidationService } from './validation.service';
+import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
 describe('ValidationService', () => {
   let service: ValidationService;
@@ -61,7 +64,12 @@ describe('ValidationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ValidationService, ComponentListToolsService],
+      providers: [
+        ValidationService,
+        ComponentListToolsService,
+        DateRangeService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+      ],
     });
     service = TestBed.inject(ValidationService);
   });

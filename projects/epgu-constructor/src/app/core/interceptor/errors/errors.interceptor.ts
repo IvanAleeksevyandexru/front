@@ -4,16 +4,19 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
+  HttpErrorResponse,
 } from '@angular/common/http';
 
 import {
   Observable,
   throwError,
 } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import {
-  catchError,
-} from 'rxjs/operators';
-import { AUTH_ERROR_MODAL_PARAMS, COMMON_ERROR_MODAL_PARAMS } from './errors.interceptor.constants';
+  AUTH_ERROR_MODAL_PARAMS,
+  COMMON_ERROR_MODAL_PARAMS,
+  ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
+} from './errors.interceptor.constants';
 import { ModalService } from '../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
@@ -35,20 +38,24 @@ export class ErrorsInterceptorService implements HttpInterceptor {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private showModal(params: ConfirmationModal): Observable<any> {
-    return this.modalService.openModal(ConfirmationModalComponent,
-      params,
-    );
+  private showModal(params: ConfirmationModal): Promise<any> {
+    return this.modalService.openModal(ConfirmationModalComponent, params).toPromise();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private handleResponseError(error: any): Observable<HttpEvent<void | never>> {
-    if (error.status === 401) {
-      this.showModal(AUTH_ERROR_MODAL_PARAMS).subscribe((result) => {
+  private handleResponseError(error: HttpErrorResponse): Observable<HttpEvent<void | never>> {
+    const { status, url } = error;
+    if (status === 401) {
+      this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
         result === 'login' ? this.locationService.reload() : this.locationService.href('/');
       });
-    } else if (error.status !== 404) {
-      this.showModal(COMMON_ERROR_MODAL_PARAMS);
+    } else if (status !== 404) {
+      this.showModal(COMMON_ERROR_MODAL_PARAMS).then();
+    } else if (status === 404 && url.includes('scenario/getOrderStatus')) {
+      this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS).then((reload) => {
+        if (reload) {
+          this.locationService.reload();
+        }
+      });
     }
     return throwError(error);
   }

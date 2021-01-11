@@ -1,17 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { UploadAndEditPhotoComponent } from './upload-and-edit-photo.component';
-import { UploadAndEditPhotoModule } from './upload-and-edit-photo.module';
-import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
-import { ConfigService } from '../../../../core/config/config.service';
-import { ComponentBase } from '../../../../screen/screen.types';
-import { ScreenService } from '../../../../screen/screen.service';
-import { Subject } from 'rxjs';
-import { WebcamService } from '../../services/webcam/webcam.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
-import { LocationService } from '../../../../core/services/location/location.service';
+import { Subject } from 'rxjs';
+import { CoreModule } from '../../../../core/core.module';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { LocationService } from '../../../../core/services/location/location.service';
+import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ComponentBase } from '../../../../screen/screen.types';
+import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
+import { WebcamService } from '../../services/webcam/webcam.service';
+import { UploadAndEditPhotoComponent } from './upload-and-edit-photo.component';
+import { UploadAndEditPhotoModule } from './upload-and-edit-photo.module';
+
+
 
 class MockScreenService {
   header = '';
@@ -51,7 +54,7 @@ describe('UploadAndEditPhotoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ UploadAndEditPhotoModule, RouterTestingModule ],
+      imports: [ UploadAndEditPhotoModule, RouterTestingModule, CoreModule ],
       providers: [
         TerraByteApiService,
         HealthService,
@@ -60,6 +63,7 @@ describe('UploadAndEditPhotoComponent', () => {
         LocationService,
         WINDOW_PROVIDERS,
         { provide: ScreenService, useClass: MockScreenService },
+        EventBusService,
       ],
     })
     .compileComponents();

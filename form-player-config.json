@@ -54,6 +54,7 @@
       }
     },
     "disableUnderConstructionMode": false,
+    "isSocialShareDisabled": true,
     "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/"
   },
   "core": {

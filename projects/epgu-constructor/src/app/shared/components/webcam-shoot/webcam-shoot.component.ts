@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { WebcamImage } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 import { WebcamEvents } from './webcamevents';
@@ -8,6 +8,7 @@ import { IMAGE_CAMERA_QUALITY } from './webcam-shoot.const';
   selector: 'epgu-constructor-webcam-shoot',
   templateUrl: './webcam-shoot.component.html',
   styleUrls: ['./webcam-shoot.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WebcamShootComponent {
   imageCameraQuality = IMAGE_CAMERA_QUALITY;

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
-import { ConfigService } from '../../../../core/config/config.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { IGeoCoordsResponse, IFeatureCollection } from './select-map-object.interface';
 import {
   DictionaryItem,
@@ -172,7 +172,7 @@ export class SelectMapObjectService implements OnDestroy {
    */
   public searchMapObject(searchString: string): void {
     const searchStringLower = searchString.toLowerCase();
-    this.filteredDictionaryItems = this.dictionary?.items.filter((item) => {
+    this.filteredDictionaryItems = this.dictionary.items.filter((item) => {
       const address = (item.attributeValues[this.componentAttrs.attributeNameWithAddress])?.toLowerCase();
       return item.title?.toLowerCase().includes(searchStringLower)
         || address?.includes(searchStringLower);
@@ -213,6 +213,10 @@ export class SelectMapObjectService implements OnDestroy {
     const newItems = [];
     const hashMap = {};
     dictionary.items.forEach((item: DictionaryYMapItem) => {
+      if (!item.center) {
+        return;
+      }
+
       const hashKey = `${item.center[0]}$${item.center[1]}`;
       // agreement - чекбокс согласия с условиями услуг для загсов
       const attrValues = item.attributeValues as { GET_CONSENT: string };

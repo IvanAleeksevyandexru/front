@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
 import {
   FileResponseToBackendUploadsItem,
   FileResponseToBackendWithRelatedUploads,
@@ -12,6 +21,8 @@ import { FileUploadService, Uploaders } from '../file-upload.service';
   selector: 'epgu-constructor-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
+  providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadComponent implements OnInit {
   @Input() objectId: string;
@@ -19,10 +30,6 @@ export class FileUploadComponent implements OnInit {
   @Input() applicantAnswers: object;
   @Input() prefixForMnemonic: string;
   @Input() uploadId: string = null;
-
-  @Output() newValueSet = new EventEmitter<FileResponseToBackendUploadsItem>();
-  @Output() newRelatedValueSet = new EventEmitter<FileResponseToBackendWithRelatedUploads>();
-
   @Input()
   set attributes(attrs: FileUploadAttributes) {
     this.attrs = attrs;
@@ -30,7 +37,7 @@ export class FileUploadComponent implements OnInit {
       this.refData = this.getRefValuesForApplicantAnswers(attrs);
     }
     this.value.files = this.fillUploadsDefaultValue();
-    this.newValueSet.emit(this.value);
+    this.eventBusService.emit('fileUploadValueChangedEvent', this.value);
   }
   get attributes(): FileUploadAttributes {
     return this.attrs;
@@ -41,10 +48,31 @@ export class FileUploadComponent implements OnInit {
   private attrs: FileUploadAttributes;
   private value: FileResponseToBackendUploadsItem = { files: [], errors: [] };
 
-  constructor(private fileUploadService: FileUploadService) {}
+  constructor(
+    private fileUploadService: FileUploadService,
+    private ngUnsubscribe$: UnsubscribeService,
+    private eventBusService: EventBusService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.setUploadersRestrictions();
+
+    this.eventBusService
+      .on('fileUploadItemValueChangedEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: FileResponseToBackendUploadsItem) => {
+        this.handleNewValueForItem(payload);
+        this.cdr.markForCheck();
+      });
+
+    this.eventBusService
+      .on('fileUploadRelatedValueChangedEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: FileResponseToBackendWithRelatedUploads) => {
+        this.handleNewRelatedValueForItem(payload);
+        this.cdr.markForCheck();
+      });
   }
 
   setUploadersRestrictions(): void {
@@ -87,12 +115,12 @@ export class FileUploadComponent implements OnInit {
     this.value.errors = $eventData.errors;
 
     if (!this.isRelatedUploads) {
-      this.newValueSet.emit(this.value);
+      this.eventBusService.emit('fileUploadValueChangedEvent', this.value);
     } else {
-      this.newRelatedValueSet.emit({
+      this.eventBusService.emit('fileUploadRelatedValueChangedEvent', {
         uploadId: this.uploadId,
         uploads: this.value.files,
-      });
+      } as FileResponseToBackendWithRelatedUploads);
     }
   }
 
@@ -101,12 +129,12 @@ export class FileUploadComponent implements OnInit {
    * @param $eventData - новые значения от формы
    */
   handleNewRelatedValueForItem($eventData: FileResponseToBackendWithRelatedUploads): void {
-    this.newValueSet.emit({
+    this.eventBusService.emit('fileUploadValueChangedEvent', {
       uploadId: $eventData.uploadId,
       relatedUploads: {
         uploads: $eventData.uploads,
       },
-    });
+    } as FileResponseToBackendUploadsItem);
   }
 
   /**

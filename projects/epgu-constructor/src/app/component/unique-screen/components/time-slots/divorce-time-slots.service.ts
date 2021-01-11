@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
-import { SessionService } from '../../../../core/services/session/session.service';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import * as uuid from 'uuid';
-import { ConfigService } from '../../../../core/config/config.service';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { v4 as uuidv4 } from 'uuid';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { SessionService } from '../../../../core/services/session/session.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
@@ -16,8 +16,9 @@ import {
   SmevSlotsMapInterface,
   TimeSlot,
   TimeSlotReq,
+  TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface,
+  ZagsDepartmentInterface
 } from './time-slots.types';
 
 const moment = moment_;
@@ -30,14 +31,13 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   public bookId;
   public availableMonths: string[];
   public BOOKING_NAMESPACE = 'c4d4da75-53dc-47bc-a255-720750dfdb76'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга разводов
+  public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
 
   private orderId;
   private serviceId: string;
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
   private errorMessage;
-
-  private isDepartmentChanged = false; // Флаг показывающий что департамент поменялся с одного(непустого) на другой
 
   constructor(
     private http: HttpClient,
@@ -47,6 +47,24 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
+    if (this.bookedSlot && !this.isBookedDepartment) {
+      return this.cancelSlot(this.bookId).pipe(
+        switchMap((response) => {
+          if (response.error) {
+            this.errorMessage = response.error.errorDetail
+              ? response.error.errorDetail.errorMessage
+              : 'check log';
+            console.log(response.error);
+            return of(null);
+          }
+          return this.book(selectedSlot);
+        }),
+        catchError((error) => {
+          this.errorMessage = error.message;
+          return throwError(error);
+        }),
+      );
+    }
     return this.book(selectedSlot);
   }
 
@@ -109,15 +127,11 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     return this.activeYearNumber;
   }
 
-  init(data: TimeSlotValueInterface): Observable<void> {
-    if (this.changed(data) || this.errorMessage) {
+  init(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): Observable<boolean> {
+    if (this.changed(data, cachedAnswer) || this.errorMessage) {
       this.slotsMap = {};
       this.availableMonths = [];
       this.errorMessage = undefined;
-
-      if (this.bookedSlot && this.isDepartmentChanged) {
-        this.cancelSlot().subscribe();
-      }
 
       return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
         map((response) => {
@@ -127,6 +141,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
             const { errorMessage, errorCode } = response.error.errorDetail;
             this.errorMessage = errorMessage || errorCode;
           }
+          return this.isBookedDepartment;
         }),
         catchError((error) => {
           this.errorMessage = error.message;
@@ -135,7 +150,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       );
     }
 
-    return of(undefined);
+    return of(this.isBookedDepartment);
   }
 
   hasError(): boolean {
@@ -146,16 +161,15 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     return this.errorMessage;
   }
 
-  changed(data: TimeSlotValueInterface): boolean {
+  changed(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): boolean {
     let changed = false;
 
     let department = JSON.parse(data.department);
-    this.isDepartmentChanged = this.department?.value !== department.value;
-    if (this.isDepartmentChanged) {
+    this.isBookedDepartment = cachedAnswer?.department.value === department.value;
+    if (this.department?.value !== department.value) {
       changed = true;
       this.department = department;
     }
-    this.isDepartmentChanged = !!this.department && (this.department.value !== department.value);
 
     let orderId = data.orderId;
     if (!this.orderId || this.orderId !== orderId) {
@@ -163,22 +177,18 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       this.orderId = orderId;
     }
 
-    let serviceId = data.serviceId;
-    if (!this.serviceId || this.serviceId !== serviceId) {
-      changed = true;
-      this.serviceId = serviceId;
-    }
+    this.serviceId = data.serviceId;
 
     return changed;
   }
 
-  private cancelSlot(): Observable<CancelSlotResponseInterface> {
+  private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
     const { eserviceId } = this.config.timeSlots.brak;
 
     return this.smev3TimeSlotsRestService
       .cancelSlot({
         eserviceId,
-        bookId: this.bookId,
+        bookId: bookId,
       })
       .pipe(
         tap((response) => {
@@ -213,8 +223,9 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    const name = `${this.sessionService.userId}#${this.department.value}`;
-    this.bookId = uuid.v5(name, this.BOOKING_NAMESPACE);
+    if (!this.bookId || !this.isBookedDepartment) {
+      this.bookId = uuidv4();
+    }
 
     const {
       preliminaryReservation,
@@ -244,7 +255,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       bookId: this.bookId,
       organizationId: this.department.attributeValues.CODE,
       calendarName,
-      areaId: [selectedSlot.slotId],
+      areaId: [selectedSlot.areaId || this.department.attributeValues.AREA_NAME],
       parentOrderId: this.orderId,
       preliminaryReservationPeriod,
       attributes: [
@@ -259,7 +270,10 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private initSlotsMap(slots: TimeSlot[]): void {
-    slots.forEach((slot) => {
+    const filteredSlots = slots.filter(slot => slot.areaId === this.department.attributeValues.AREA_NAME);
+    const initSlots = filteredSlots.length ? filteredSlots : slots;
+
+    initSlots.forEach((slot) => {
       const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};

@@ -1,4 +1,10 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
@@ -9,48 +15,49 @@ import {
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenBase } from '../screenBase';
 
-export interface ComponentSetting {
-  displayContinueBtn: boolean;
-  displayWarningAnswers: boolean;
-}
-
 @Component({
   selector: 'epgu-constructor-component-screen',
   templateUrl: './component-screen.component.html',
   styleUrls: ['./component-screen.component.scss'],
   providers: [UnsubscribeService],
+  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentScreenComponent extends ScreenBase implements OnInit {
-  // <-- constant
   screenComponentName = ComponentScreenComponentTypes;
   isShowActionBtn = false;
   actionButtons: ComponentActionDto[] = [];
   screenActionButtons: ScreenActionDto[] = [];
-
-  // <-- variables
-  componentSetting: ComponentSetting = {
-    displayContinueBtn: true,
-    displayWarningAnswers: false,
-  };
-  componentData = null;
-
-  constructor(public currentAnswersService: CurrentAnswersService, public injector: Injector) {
+  constructor(
+    public currentAnswersService: CurrentAnswersService,
+    public injector: Injector,
+    private changeDetectionRef: ChangeDetectorRef,
+  ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this.screenService.componentType$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((type) => this.calcIsShowActionBtn(type as ComponentScreenComponentTypes));
+    this.screenService.componentType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((type) => {
+      this.calcIsShowActionBtn(type as ComponentScreenComponentTypes);
+      this.changeDetectionRef.markForCheck();
+    });
     this.screenService.actions$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((actions: Array<ComponentActionDto>): void => {
         this.actionButtons = actions || [];
+        this.changeDetectionRef.markForCheck();
       });
     this.screenService.buttons$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((buttons: Array<ScreenActionDto>) => {
         this.screenActionButtons = buttons || [];
+        this.changeDetectionRef.markForCheck();
+      });
+    this.eventBusService
+      .on('nextStepEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: string) => {
+        this.nextStep(payload);
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -76,26 +83,10 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
   }
 
   /**
-   * Смена данных компонента
-   * @param value - значение на установку
+   * Возвращение в личный кабинет
    */
-  changedComponentData(value: string): void {
-    this.componentData = value;
-  }
-
-  /**
-   * Смена настроек компонента
-   * @param settings - настройки компонента
-   */
-  changeComponentSettings(settings: Partial<ComponentSetting>): void {
-    this.componentSetting = { ...this.componentSetting, ...settings };
-  }
-
-  /**
-   * Возвращение на главную
-   */
-  goToHomePage(): void {
-    // TODO: navigate to Home Page
+  goToLK(): void {
+    this.navigationService.redirectToLK();
   }
 
   isUserData(): boolean | ComponentScreenComponentTypes {
