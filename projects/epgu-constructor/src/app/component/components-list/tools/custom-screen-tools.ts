@@ -95,12 +95,10 @@ export const isHaveNeededValue = (
 /**
  * Адаптирует массив в вид необходимый для компонентов из библлиотеки и если нужно то удаляет РОССИЮ из списка
  * @param {Array<DictionaryItem>}items
- * @param {string}dictionaryName
  * @param {CustomComponent}component - тут хранится флаг, для удаление россии из словаря.
  */
 export function getNormalizeDataCustomScreenDictionary(
   items: Array<DictionaryItem>,
-  dictionaryName: string,
   component: CustomComponent,
 ): Array<ListItem> {
   const isRemoveRussiaFromList = component?.attrs.russia === false;

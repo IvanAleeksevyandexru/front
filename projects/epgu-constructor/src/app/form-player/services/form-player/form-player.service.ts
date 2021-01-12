@@ -1,17 +1,15 @@
 import { Inject, Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
-import { ScreenService } from '../../../screen/screen.service';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse, QuizRequestDto,
+  FormPlayerApiSuccessResponse,
+  QuizRequestDto,
 } from '../form-player-api/form-player-api.types';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
-import { Location } from '@angular/common';
 import { WINDOW } from '../../../core/providers/window.provider';
-import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -23,9 +21,6 @@ export class FormPlayerService extends FormPlayerBaseService {
   constructor(
     public injector: Injector,
     public formPlayerApiService: FormPlayerApiService,
-    private screenService: ScreenService,
-    private location: Location,
-    private localStorageService: LocalStorageService,
     @Inject(WINDOW) private window: Window,
   ) {
     super(injector);
@@ -42,9 +37,8 @@ export class FormPlayerService extends FormPlayerBaseService {
   /**
    * Инициализирует данные для показа, смотрим откуда брать данные
    * @param orderId - id заявления
-   * @param invited - являеться ли сценарий приглашённым
    */
-  initData(orderId?: string, invited?: boolean): void {
+  initData(orderId?: string): void {
     this.updateLoading(true);
     this.getOrderData(orderId);
   }

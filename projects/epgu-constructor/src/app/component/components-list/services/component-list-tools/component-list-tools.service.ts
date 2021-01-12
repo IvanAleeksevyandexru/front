@@ -28,11 +28,6 @@ export class ComponentListToolsService {
     CustomScreenComponentTypes.DocInput,
   ];
 
-  private readonly availableComponentTypesToAddressParse = [
-    CustomScreenComponentTypes.AddressInput,
-    CustomScreenComponentTypes.CityInput,
-  ];
-
   private prevValues: { [key: string]: string | number } = {};
 
   updateStatusElements(

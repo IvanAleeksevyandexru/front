@@ -1,3 +1,4 @@
+import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -18,24 +19,23 @@ import { RegistrationAddrComponent } from '../../component/component-screen/comp
 import { SelectChildrenScreenComponent } from '../../component/component-screen/components/select-children/select-children-screen.component';
 import { TimerComponent } from '../../component/component-screen/components/timer/timer.component';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
-import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
   ComponentActionDto,
   ComponentDto,
-  DTOActionAction,
+  DTOActionAction
 } from '../../form-player/services/form-player-api/form-player-api.types';
+import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { FieldListComponent } from '../../shared/components/field-list/field-list.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
+import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ComponentScreenComponent } from './component-screen.component';
-import { ChangeDetectionStrategy } from '@angular/core';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -60,9 +60,6 @@ const componentDtoSample: ComponentDto = {
 describe('ComponentScreenComponent', () => {
   let component: ComponentScreenComponent;
   let fixture: ComponentFixture<ComponentScreenComponent>;
-
-  let currentAnswersService: CurrentAnswersService;
-  let navigationService: NavigationServiceStub;
   let screenService: ScreenServiceStub;
 
   beforeEach(() => {
@@ -103,8 +100,6 @@ describe('ComponentScreenComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    currentAnswersService = TestBed.inject(CurrentAnswersService);
-    navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
   });
 
@@ -129,132 +124,6 @@ describe('ComponentScreenComponent', () => {
     expect(setScreenComponentSpy).toBeCalledWith(
       ComponentScreenComponentTypes.confirmPersonalUserPhone,
     );
-  });
-
-  describe('nextStep() method', () => {
-    let skipStepSpy: jasmine.Spy;
-    let nextStepSpy: jasmine.Spy;
-
-    const stateObj: any = {
-      foo: 'bar',
-    };
-    const stateJson = JSON.stringify(stateObj);
-
-    beforeEach(() => {
-      skipStepSpy = spyOn(navigationService, 'skip');
-      nextStepSpy = spyOn(navigationService, 'next');
-
-      screenService.component = {
-        attrs: {},
-        id: 'id1',
-        type: 'type1',
-      };
-      currentAnswersService.state = stateObj;
-    });
-
-    it('should call navigationService.skip() if action === "skipStep"', () => {
-      component.nextStep('skipStep');
-
-      expect(skipStepSpy).toBeCalledTimes(1);
-      expect(nextStepSpy).not.toBeCalled();
-    });
-
-    it('should call navigationService.next() if action !== "skipStep"', () => {
-      component.nextStep();
-
-      expect(skipStepSpy).not.toBeCalled();
-      expect(nextStepSpy).toBeCalledTimes(1);
-      nextStepSpy.calls.reset();
-
-      component.nextStep('not skipStep');
-
-      expect(skipStepSpy).not.toBeCalled();
-      expect(nextStepSpy).toBeCalledTimes(1);
-    });
-
-    it('should call navigationService.next with payload object', () => {
-      screenService.component = {
-        attrs: {},
-        id: 'id1',
-        type: 'type1',
-      };
-      currentAnswersService.state = stateObj;
-
-      component.nextStep('nextStep');
-
-      // component.id === 'id1', state is object
-      expect(nextStepSpy).toBeCalledWith({
-        payload: {
-          id1: {
-            visited: true,
-            value: stateJson, // value is always JSON
-          },
-        },
-      });
-      nextStepSpy.calls.reset();
-
-      screenService.component = {
-        attrs: {},
-        id: 'id2',
-        type: 'type1',
-      };
-      currentAnswersService.state = stateJson;
-
-      component.nextStep('nextStep');
-
-      // component.id === 'id2', state is JSON
-      expect(nextStepSpy).toBeCalledWith({
-        payload: {
-          id2: {
-            // id from screenService.component.id
-            visited: true,
-            value: stateJson, // value is always JSON
-          },
-        },
-      });
-    });
-
-    it('should call navigationService.skipStep.next with payload object', () => {
-      screenService.component = {
-        attrs: {},
-        id: 'id1',
-        type: 'type1',
-      };
-      currentAnswersService.state = stateObj;
-
-      component.nextStep('skipStep');
-
-      // component.id === 'id1', state is object
-      expect(skipStepSpy).toBeCalledWith({
-        payload: {
-          id1: {
-            visited: true,
-            value: stateJson, // value is always JSON
-          },
-        },
-      });
-      skipStepSpy.calls.reset();
-
-      screenService.component = {
-        attrs: {},
-        id: 'id2',
-        type: 'type1',
-      };
-      currentAnswersService.state = stateJson;
-
-      component.nextStep('skipStep');
-
-      // component.id === 'id2', state is JSON
-      expect(skipStepSpy).toBeCalledWith({
-        payload: {
-          id2: {
-            // id from screenService.component.id
-            visited: true,
-            value: stateJson, // value is always JSON
-          },
-        },
-      });
-    });
   });
 
   describe('calcIsShowActionBtn() method', () => {

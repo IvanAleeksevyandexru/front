@@ -31,7 +31,6 @@
   ></epgu-constructor-payment>
   <epgu-constructor-bill-info
     *ngSwitchCase="uniqueComponentName.billInfo"
-    (nextStepEvent)="nextDataForStep()"
   ></epgu-constructor-bill-info>
   <epgu-constructor-payment-type-selector
     *ngSwitchCase="uniqueComponentName.paymentTypeSelector">

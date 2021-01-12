@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../core/services/config/config.service';
+import { LocationService } from '../../core/services/location/location.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import {
@@ -21,7 +22,6 @@ import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-m
 import { ModalService } from '../../modal/modal.service';
 import { Answer } from '../../shared/types/answer';
 import { ScreenBase } from '../screenBase';
-import { LocationService } from '../../core/services/location/location.service';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -33,6 +33,12 @@ import { LocationService } from '../../core/services/location/location.service';
 export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   rejectAction: ComponentActionDto;
   submitLabel: string;
+  nextStepAction: ComponentActionDto = {
+    label: 'Далее',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
   isLoading: boolean;
   selectedAnswer: string;
   isActionsAsLongBtsShown: boolean;
@@ -58,6 +64,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((label: string) => {
         this.submitLabel = label;
+        this.nextStepAction.label = label || 'Далее';
         this.changeDetectionRef.markForCheck();
       });
   }
@@ -89,11 +96,11 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     return !(answer.hidden || this.isRejectAction(answer.action));
   }
 
-  onSubmitClick(submitPayload: { value: string }): void {
-    const componentId = this.screenService.component.id;
-    const payload = {};
-    payload[componentId] = { ...submitPayload, visited: true };
-    this.nextStep(payload);
+  handleKeyEvent(event: KeyboardEvent, answer: ComponentActionDto | ComponentAnswerDto): void {
+    if (event.code === 'Space') {
+      event.preventDefault();
+      this.answerChoose(answer);
+    }
   }
 
   private subscribeToComponent(): void {

@@ -12,7 +12,7 @@ export function createTimer(current: number, start: number, finish: number, warn
   const time = isCorrectTime ? finish - current : 0;
 
   return {
-    isWarning: isWarning(time, finish, warningTime),
+    isWarning: isWarning(time, warningTime),
     isFinish: isFinish(time),
     time,
     start,
@@ -31,10 +31,9 @@ export function isFinish(time: number):boolean {
 /**
  * Возвращает true, если нужно подсветить таймер красным
  * @param time - время для сравнения
- * @param finish - время окончания
  * @param warningTime - промежуток времени когда в секундах для подсветки красным
  */
-export function isWarning(time: number, finish: number, warningTime: number | undefined):boolean {
+export function isWarning(time: number, warningTime: number | undefined):boolean {
   if (!warningTime) {
     return false;
   }

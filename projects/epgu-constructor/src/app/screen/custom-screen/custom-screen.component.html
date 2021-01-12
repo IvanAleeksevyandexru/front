@@ -20,8 +20,9 @@
     <lib-button
       *ngIf="screenService.submitLabel$ | async"
       [showLoader]="screenService.isLoading$ | async"
-      (click)="nextStep()"
-      class="btn__submit"
+      epgu-constructor-action
+      [action]="nextStepAction"
+      class="submit-button"
       [disabled]="(screenService.isLoading$ | async) || !isValid"
     >
       {{ screenService.submitLabel$ | async }}

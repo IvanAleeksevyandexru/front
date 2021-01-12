@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, filter, takeUntil, tap } from 'rxjs/operators';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
@@ -81,8 +81,6 @@ export class UnusedPaymentsComponent implements OnInit {
     const value = JSON.parse(data.components[0].value);
     if (value.length) {
       this.paymentsList.next(value);
-      // this.paymentsList = value;
-      // this.showModal();
     }
   }
 

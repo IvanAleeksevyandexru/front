@@ -3,26 +3,27 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { CoreModule } from '../../../../core/core.module';
+import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
+import { LocationService } from '../../../../core/services/location/location.service';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalModule } from '../../../../modal/modal.module';
-import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { BaseModule } from '../../../../shared/base.module';
+import { AnswerButtonModule } from '../../../../shared/components/answer-button/answer-button.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
-import { AnswerButtonModule } from '../../../../shared/components/answer-button/answer-button.module';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
-import { LocationService } from '../../../../core/services/location/location.service';
-import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
-import { BaseModule } from '../../../../shared/base.module';
+import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -82,6 +83,7 @@ describe('PaymentTypeSelectorComponent', () => {
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        CurrentAnswersService,
       ],
     }).compileComponents();
   });
