@@ -1,8 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, throwError } from 'rxjs';
 import { catchError, concatMap, filter, tap, map, startWith } from 'rxjs/operators';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -14,7 +13,6 @@ import { LoggerService } from '../../../../core/services/logger/logger.service';
   selector: 'epgu-constructor-unused-payments-container',
   templateUrl: './unused-payments-container.component.html',
   styleUrls: ['./unused-payments-container.component.scss'],
-  providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnusedPaymentsContainerComponent {
@@ -58,8 +56,6 @@ export class UnusedPaymentsContainerComponent {
     public screenService: ScreenService,
     private listPaymentsService: UnusedPaymentsService,
     private eventBusService: EventBusService,
-    private ngUnsubscribe$: UnsubscribeService,
-    private changeDetectionRef: ChangeDetectorRef,
     private logger: LoggerService,
   ) {}
 
