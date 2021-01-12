@@ -28,8 +28,8 @@ const navActionToNavMethodMap = {
 
 @Injectable()
 export class ActionService {
-  action: ComponentActionDto;
-  componentId: string;
+  private action: ComponentActionDto;
+  private componentId: string;
 
   constructor(
     private actionApiService: FormPlayerApiService,
@@ -43,19 +43,9 @@ export class ActionService {
   ) {
   }
 
-  navigate(stepType: string): void {
-    const navigation = this.prepareNavigationData();
-    const navMethod = navActionToNavMethodMap[stepType];
-    this.navService[navMethod](navigation);
-  }
-
-  navigateModal(stepType: string): void {
-    const navigation = this.prepareNavigationData();
-    const navMethod = navActionToNavMethodMap[stepType];
-    this.navModalService[navMethod](navigation);
-  }
-
-  switchAction(): void {
+  switchAction(action: ComponentActionDto, componentId: string): void {
+    this.action = action;
+    this.componentId = componentId;
     switch (this.action.type) {
       case ActionType.download:
         this.downloadAction();
@@ -88,6 +78,18 @@ export class ActionService {
         this.navService.redirectToHome();
         break;
     }
+  }
+
+  private navigate(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    const navMethod = navActionToNavMethodMap[stepType];
+    this.navService[navMethod](navigation);
+  }
+
+  private navigateModal(stepType: string): void {
+    const navigation = this.prepareNavigationData();
+    const navMethod = navActionToNavMethodMap[stepType];
+    this.navModalService[navMethod](navigation);
   }
 
   private sendAction<T>(): Observable<ActionApiResponse<T>> {

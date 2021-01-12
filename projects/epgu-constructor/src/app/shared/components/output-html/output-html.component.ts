@@ -53,9 +53,10 @@ export class OutputHtmlComponent {
   private handleAction(type: ActionType, value?: string): void {
     const action: DTOActionAction =
       type === ActionType.nextStep ? DTOActionAction.getNextStep : DTOActionAction.getPrevStep;
-    this.actionService.action = { label: '', type, action, value };
-    this.actionService.componentId = this.screenService.component.id;
-    this.actionService.switchAction();
+    this.actionService.switchAction(
+      { label: '', type, action, value },
+      this.screenService.component.id,
+    );
   }
 
   private toggleHiddenBlockOrShowModal(el: HTMLElement, targetElementId: string): void {

@@ -14,8 +14,6 @@ export class ActionDirective {
   ) {}
 
   @HostListener('click') onClick(): void {
-    this.actionService.action = this.action;
-    this.actionService.componentId = this.componentId;
-    this.actionService.switchAction();
+    this.actionService.switchAction(this.action, this.componentId);
   }
 }
