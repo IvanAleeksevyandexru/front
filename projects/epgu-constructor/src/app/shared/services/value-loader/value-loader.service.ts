@@ -65,7 +65,7 @@ export class ValueLoaderService {
 
     if (cachedValueArray.length) {
       let repeatableFieldComponents: Array<Array<ComponentDto>> = [];
-      cachedValueArray.forEach(({}, index) => {
+      cachedValueArray.forEach((_component, index) => {
         repeatableFieldComponents.push(
           this.getCacheRepeatableField(components, cachedValue, index),
         );
