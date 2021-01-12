@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { ComponentBase } from '../../../../../screen/screen.types';
+import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-add-passport',
@@ -9,5 +9,5 @@ import { ComponentBase } from '../../../../../screen/screen.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddPassportComponent {
-  @Input() data: ComponentBase;
+  @Input() data: ComponentAttrsDto;
 }

@@ -7,13 +7,13 @@ import {
   PaymentInfoInterface,
   PaymentsAttrs
 } from './payment.types';
-import { ConfigService } from '../../../../core/config/config.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryConditions,
   DictionaryUnionKind
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { ConfigService } from '../../../../core/services/config/config.service';
 
 const billsInfo = {
   error: {
