@@ -15,7 +15,7 @@
   <div class="screen-footer">
     <div class="radio-list" *ngIf="paymentsData?.length > 0; else emptyList">
       <epgu-constructor-radio-tax [data]="paymentsData"></epgu-constructor-radio-tax>
-      <lib-button class="btn__submit" (click)="nextAction()">
+      <lib-button class="submit-button" (click)="nextAction()">
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
       </lib-button>
     </div>

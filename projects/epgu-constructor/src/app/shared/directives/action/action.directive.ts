@@ -14,8 +14,9 @@ import {
   ActionType,
   ComponentActionDto
 } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { ScreenStore } from '../../../screen/screen.types';
+import { ScreenStore, ScreenTypes } from '../../../screen/screen.types';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ComponentStateForNavigate } from './action.interface';
@@ -36,6 +37,7 @@ export class ActionDirective {
   constructor(
     private actionApiService: FormPlayerApiService,
     private screenService: ScreenService,
+    private currentAnswersService: CurrentAnswersService,
     private navService: NavigationService,
     private navModalService: NavigationModalService,
     private utilsService: UtilsService,
@@ -43,6 +45,13 @@ export class ActionDirective {
     private localStorageService: LocalStorageService,
     private htmlRemover: HtmlRemoverService,
   ) {}
+
+  @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && this.action.type === ActionType.nextStep) {
+      event.preventDefault();
+      this.currentAnswersService.isValid && this.navigate('nextStep');
+    }
+  }
 
   @HostListener('click') onClick(): void {
     this.switchAction();
@@ -92,6 +101,9 @@ export class ActionDirective {
       case ActionType.home:
         this.navService.redirectToHome();
         break;
+      default:
+        this.navigate('nextStep');
+        break;
     }
   }
 
@@ -131,10 +143,22 @@ export class ActionDirective {
 
   private getComponentStateForNavigate(): ComponentStateForNavigate {
     const componentId = this.componentId || this.screenService.component.id;
+
+    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов
+    if (this.screenService.display?.type === ScreenTypes.CUSTOM) {
+      return {
+        ...this.currentAnswersService.state as object
+      };
+    }
+
+    const value: string = typeof this.currentAnswersService.state === 'object'
+      ? JSON.stringify(this.currentAnswersService.state)
+      : this.currentAnswersService.state;
+
     return {
       [componentId]: {
         visited: true,
-        value: this.action.value,
+        value: value || this.action.value,
       },
     };
   }

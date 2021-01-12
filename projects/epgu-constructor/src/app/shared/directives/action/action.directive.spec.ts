@@ -19,8 +19,9 @@ import {
   ActionType,
   ComponentActionDto,
   ComponentDto,
-  DTOActionAction,
+  DTOActionAction
 } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
@@ -142,6 +143,7 @@ describe('ActionDirective', () => {
         { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         HtmlRemoverService,
+        CurrentAnswersService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })

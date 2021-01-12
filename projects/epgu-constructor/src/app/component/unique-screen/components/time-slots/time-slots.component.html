@@ -71,7 +71,7 @@
       <lib-button
         [showLoader]="(isLoading$ | async) || inProgress"
         (click)="clickSubmit()"
-        class="btn__submit"
+        class="submit-button"
         [disabled]="buttonDisabled()"
       >
         <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>

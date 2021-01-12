@@ -24,9 +24,6 @@ import { UnusedPaymentsModule } from './components/unused-payments/unused-paymen
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { WebcamService } from './services/webcam/webcam.service';
 
-// NOTICE: Avoid using this component, as it's temporary storage solution for to-be-decomposed components
-const COMPONENTS = [RepeatableFieldsComponent];
-
 @NgModule({
   declarations: [RepeatableFieldsComponent],
   imports: [

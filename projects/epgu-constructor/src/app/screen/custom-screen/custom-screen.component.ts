@@ -1,12 +1,17 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import * as moment_ from 'moment';
-import { NavigationPayload } from '../../form-player/form-player.types';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { ScreenBase } from '../screenBase';
 import {
   CustomComponentOutputData,
   CustomComponentValidationConditions,
 } from '../../component/components-list/components-list.types';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { NavigationPayload } from '../../form-player/form-player.types';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from '../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenBase } from '../screenBase';
 
 const moment = moment_;
 
@@ -20,17 +25,23 @@ const moment = moment_;
 export class CustomScreenComponent extends ScreenBase {
   dataToSend: NavigationPayload;
   isValid: boolean;
+  nextStepAction: ComponentActionDto = {
+    label: 'Продолжить',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
 
   constructor(public injector: Injector) {
     super(injector);
   }
 
   nextStep(): void {
-    this.navigationService.next({ payload: this.dataToSend });
+    // TODO: заглушка для абстрактного метода ScreenBase
   }
 
   /**
-   * Форматиркем данные перед отправкой
+   * Форматируем данные перед отправкой
    * @param changes - данные на отправку
    */
   getFormattedData(changes: CustomComponentOutputData): NavigationPayload {
@@ -54,8 +65,9 @@ export class CustomScreenComponent extends ScreenBase {
       : true;
 
     this.isValid = notAtLeastOneExpression && atLeastOneExpression;
-
     this.dataToSend = this.getFormattedData(changes);
+    this.currentAnswersService.isValid = this.isValid;
+    this.currentAnswersService.state = this.dataToSend;
   }
 
   /**

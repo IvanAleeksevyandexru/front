@@ -8,6 +8,7 @@ import { NavigationServiceStub } from '../../core/services/navigation/navigation
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import { ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenStore } from '../screen.types';
@@ -52,6 +53,7 @@ describe('InvitationErrorScreenComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         EventBusService,
+        CurrentAnswersService,
       ],
     }).compileComponents();
   });

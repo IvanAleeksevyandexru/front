@@ -103,12 +103,6 @@
 
   button {
     font-family: inherit;
-    /**
-     Предпочтительно не использовать это свойство, оно перезатирает стиль компонента кнопки epgu-lib,
-     из за чего уменьшается высота кнопки. Если необходимо добавить это свойство, то следует исключить
-     его применение как минимум к кнопкам epgu-lib
-     */
-    // border:none;
   }
 
   strike {
@@ -127,7 +121,7 @@
     border-top: 1px solid $color-divider;
   }
 
-  .btn__submit {
+  .submit-button {
     min-width: 100%;
     @include tablets-up {
       width: auto;

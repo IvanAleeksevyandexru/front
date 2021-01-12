@@ -14,13 +14,13 @@ import { HelperService } from 'epgu-lib';
 @Injectable()
 export class ModalService {
   private injector: Injector;
-  private renderer: Renderer2;
+  private renderer: Renderer2 = this.rendererFactory.createRenderer(null, null);
 
-  constructor(private cfr: ComponentFactoryResolver,
-              private rendererFactory: RendererFactory2,
-              private appRef: ApplicationRef) {
-    this.renderer = rendererFactory.createRenderer(null, null);
-  }
+  constructor(
+    private cfr: ComponentFactoryResolver,
+    private rendererFactory: RendererFactory2,
+    private appRef: ApplicationRef
+  ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public openModal<T, K = any>(modalComponent: Type<any>, modalParameters?: K): Observable<T> {

@@ -119,7 +119,6 @@ export class ComponentListRepositoryService {
 
   initDictionary(reference: CustomListGenericData<DictionaryResponse>): void {
     const dictionaries = this.dictionaries;
-    const { dictionaryType } = reference.component.attrs;
     const id = utils.getDictKeyByComp(reference.component);
 
     dictionaries[id] = getCustomScreenDictionaryFirstState();
@@ -129,7 +128,6 @@ export class ComponentListRepositoryService {
     dictionaries[id].origin = reference.component;
     dictionaries[id].list = getNormalizeDataCustomScreenDictionary(
       reference.data.items,
-      dictionaryType,
       reference.component,
     );
 

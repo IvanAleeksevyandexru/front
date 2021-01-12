@@ -14,8 +14,6 @@ import { ConfigService } from '../../../../../../core/services/config/config.ser
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
-import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { TerraByteApiService } from '../../../../services/terra-byte-api/terra-byte-api.service';
 import {
@@ -400,52 +398,6 @@ export class FileUploadItemComponent implements OnDestroy {
     this.subs.forEach((sub) => sub.unsubscribe());
   }
 
-  /**
-   * Converts the file to base64 format
-   * @param file
-   */
-  private fileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (): void => resolve(reader.result as string);
-      reader.onerror = (error): void => reject(error);
-    });
-  }
-
-  /**
-   * Opens a modal window with the specified parameters
-   * @param modalParams
-   */
-  private openModal(modalParams: ConfirmationModal): void {
-    this.modal.openModal(ConfirmationModalComponent, modalParams);
-  }
-
-  /**
-   * Opens a modal window of photo preview
-   * Do not use for the "Get a criminal record" service
-   * @param file
-   */
-  private async openPreviewModal(file: File): Promise<void> {
-    const src = await this.fileToBase64(file);
-
-    this.openModal({
-      text: `<div style="padding:0;">
-                <img src="${src}" alt="${file.name}" />
-              </div>`,
-      title: 'Просмотр фото',
-      showCloseButton: false,
-      showCrossButton: true,
-      preview: true,
-      buttons: [
-        {
-          label: 'Использовать',
-          closeModal: true,
-          handler: (): void => this.sendFile(file),
-        },
-      ],
-    });
-  }
   /**
    * Переводит список файлов с сервера в файлы для отображения
    * @param list - массив информациио файлах на сервере

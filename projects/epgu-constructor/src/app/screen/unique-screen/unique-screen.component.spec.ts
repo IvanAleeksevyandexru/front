@@ -11,6 +11,8 @@ import { PaymentComponent } from '../../component/unique-screen/components/payme
 import { RepeatableFieldsComponent } from '../../component/unique-screen/components/repeatable-fields/repeatable-fields.component';
 import { SelectMapObjectComponent } from '../../component/unique-screen/components/select-map-object/select-map-object.component';
 // eslint-disable-next-line max-len
+import { SignatureApplicationContainerComponent } from '../../component/unique-screen/components/signature-application/components/container/signature-application-container.component';
+// eslint-disable-next-line max-len
 import { TimeSlotsComponent } from '../../component/unique-screen/components/time-slots/time-slots.component';
 // eslint-disable-next-line max-len
 import { UnusedPaymentsContainerComponent } from '../../component/unique-screen/components/unused-payments/unused-payments-container.component';
@@ -23,14 +25,13 @@ import { NavigationPayload } from '../../form-player/form-player.types';
 import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
   ComponentDto,
-  DisplayDto,
+  DisplayDto
 } from '../../form-player/services/form-player-api/form-player-api.types';
+import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
 import { UniqueScreenComponent } from './unique-screen.component';
-// eslint-disable-next-line max-len
-import { SignatureApplicationContainerComponent } from '../../component/unique-screen/components/signature-application/components/container/signature-application-container.component';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -83,8 +84,8 @@ describe('UniqueScreenComponent', () => {
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        // { provide: EventBusService, useClass: EventBusServiceStub },
         EventBusService,
+        CurrentAnswersService,
       ],
     }).compileComponents();
   });

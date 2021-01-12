@@ -32,7 +32,7 @@ export abstract class FormPlayerBaseService {
   protected _isLoading$ = this.isLoadingSubject.asObservable();
   protected _playerLoaded$ = this.playerLoadedSubject.asObservable();
 
-  constructor(
+  protected constructor(
     public injector: Injector,
   ) {
     this.formPlayerApiService = this.injector.get(FormPlayerApiService);
