@@ -13,23 +13,24 @@ import { UnusedPaymentInterface } from './unused-payment.interface';
 import { UnusedPaymentsService } from './unused-payments.service';
 
 @Component({
-  selector: 'epgu-constructor-unused-payments',
-  templateUrl: './unused-payments.component.html',
-  styleUrls: ['./unused-payments.component.scss'],
+  selector: 'epgu-constructor-unused-payments-container',
+  templateUrl: './unused-payments-container.component.html',
+  styleUrls: ['./unused-payments-container.component.scss'],
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UnusedPaymentsComponent implements OnInit {
+export class UnusedPaymentsContainerComponent implements OnInit {
   data$: Observable<DisplayDto> = this.screenService.display$;
   orderId: string = this.screenService.getStore().orderId;
   paymentUIN: string;
   tax: UnusedPaymentInterface;
+  showNav$: Observable<boolean> = this.screenService.showNav$;
 
-  get paymentsList$(): Observable<UnusedPaymentInterface[]> {
-    return this.paymentsList.pipe(filter((v) => v.length > 0));
-  }
+  readonly paymentsList: BehaviorSubject<UnusedPaymentInterface[]> = new BehaviorSubject([]);
 
-  private paymentsList: BehaviorSubject<UnusedPaymentInterface[]> = new BehaviorSubject([]);
+  paymentsList$: Observable<UnusedPaymentInterface[]> = this.paymentsList.pipe(
+    filter((v) => v.length > 0),
+  );
 
   constructor(
     private modalService: ModalService,

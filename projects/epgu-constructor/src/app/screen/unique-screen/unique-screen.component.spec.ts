@@ -12,7 +12,8 @@ import { RepeatableFieldsComponent } from '../../component/unique-screen/compone
 import { SelectMapObjectComponent } from '../../component/unique-screen/components/select-map-object/select-map-object.component';
 // eslint-disable-next-line max-len
 import { TimeSlotsComponent } from '../../component/unique-screen/components/time-slots/time-slots.component';
-import { UnusedPaymentsComponent } from '../../component/unique-screen/components/unused-payments/unused-payments.component';
+// eslint-disable-next-line max-len
+import { UnusedPaymentsContainerComponent } from '../../component/unique-screen/components/unused-payments/unused-payments-container.component';
 // eslint-disable-next-line max-len
 import { UploadAndEditPhotoComponent } from '../../component/unique-screen/components/upload-and-edit-photo/upload-and-edit-photo.component';
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
@@ -65,7 +66,7 @@ describe('UniqueScreenComponent', () => {
       declarations: [
         UniqueScreenComponent,
         MockComponents(
-          UnusedPaymentsComponent,
+          UnusedPaymentsContainerComponent,
           SelectMapObjectComponent,
           FileUploadScreenComponent,
           EmployeeHistoryComponent,
@@ -171,8 +172,8 @@ describe('UniqueScreenComponent', () => {
     });
   });
 
-  describe('epgu-constructor-unused-payments', () => {
-    const selector = 'epgu-constructor-unused-payments';
+  describe('epgu-constructor-unused-payments-container', () => {
+    const selector = 'epgu-constructor-unused-payments-container';
 
     it('should be rendered if componentType is unusedPayments', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
