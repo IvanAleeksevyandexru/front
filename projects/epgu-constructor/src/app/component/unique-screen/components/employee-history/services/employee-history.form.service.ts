@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import { filter, takeUntil, tap } from 'rxjs/operators';
 import { MonthYear } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
@@ -154,12 +162,24 @@ export class EmployeeHistoryFormService {
     for (const [key, value] of Object.entries(ds)) {
       if (!missedControls.includes(key)) {
         if (value) {
-          form.get(String(key)).setValidators(Validators.required);
+          form.get(String(key)).setValidators([Validators.required, this.inputValidators()]);
         } else {
-          form.get(String(key)).setValidators(Validators.nullValidator);
+          form.get(String(key)).setValidators([Validators.nullValidator]);
         }
         form.get(String(key)).updateValueAndValidity();
       }
     }
+  }
+
+  private inputValidators(): ValidatorFn {
+    //TODO: сделать валидацию через json
+    const errorMsg = 'Для ввода доступны только русские и латинские буквы, цифры, а также символы ()? /.",#№:;-+\'*<>&';
+
+    return (control: AbstractControl): ValidationErrors => {
+      const pattern = new RegExp(/^[a-zA-Zа-яА-ЯёЁ\d\s\(\)\?\.",#№:;\-\+\/'*<>&]{1,5530}$/,'gm');
+      const hasError = !pattern.test(control.value);
+
+      return hasError ? { errorMsg } : null;
+    };
   }
 }

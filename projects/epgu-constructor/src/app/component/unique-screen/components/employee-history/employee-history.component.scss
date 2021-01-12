@@ -102,6 +102,11 @@
     }
   }
 
+  &__error {
+    margin-bottom: 4px;
+    color: $color-gosred;
+  }
+
   &__type {
     display: flex;
 
