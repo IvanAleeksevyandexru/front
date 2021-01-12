@@ -1,1 +1,5 @@
-<epgu-constructor-add-passport [data]="(this.data$ | async).attrs"> </epgu-constructor-add-passport>
+<epgu-constructor-add-passport
+  [attrs]="(this.data$ | async).attrs"
+  (changeFormEvent)="onPassportDataChange($event)"
+>
+</epgu-constructor-add-passport>

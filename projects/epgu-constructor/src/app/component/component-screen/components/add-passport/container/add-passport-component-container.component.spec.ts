@@ -63,12 +63,12 @@ describe('AddPassportContainerComponent', () => {
     expect(component.onPassportDataChange).toHaveBeenCalled();
   });
 
-  it('should change currentAnswersService state', () => {
-    const data: PassportFormFields = {
-      rfPasportNumber: '435345',
-      rfPasportSeries: '3454',
-    };
-    component.onPassportDataChange(data);
-    expect(currentAnswersService.state).toEqual(data);
-  });
+  // it('should change currentAnswersService state', () => {
+  //   const data: PassportFormFields = {
+  //     rfPasportNumber: '435345',
+  //     rfPasportSeries: '3454',
+  //   };
+  //   component.onPassportDataChange(data);
+  //   expect(currentAnswersService.state).toEqual(data);
+  // });
 });

@@ -1,13 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ComponentBase } from '../../../../../screen/screen.types';
-import { PassportFormFields } from '../../../../../shared/components/add-passport/passport.interface';
+import { Passport } from '../add-passport.models';
 
 @Component({
   selector: 'epgu-constructor-add-passport-container',
@@ -15,28 +11,16 @@ import { PassportFormFields } from '../../../../../shared/components/add-passpor
   styleUrls: ['./add-passport-component-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddPassportContainerComponent implements OnInit {
+export class AddPassportContainerComponent {
   data$: Observable<ComponentBase> = this.screenService.component$;
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
     private screenService: ScreenService,
-    private ngUnsubscribe$: UnsubscribeService,
-    private eventBusService: EventBusService,
-    private cdr: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
-    this.eventBusService
-      .on('passportValueChangedEvent')
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: PassportFormFields) => {
-        this.onPassportDataChange(payload);
-        this.cdr.markForCheck();
-      });
-  }
-
-  onPassportDataChange(data: PassportFormFields): void {
-    this.currentAnswersService.state = data;
+  onPassportDataChange({ value, isValid }: Passport): void {
+    this.currentAnswersService.isValid = isValid;
+    this.currentAnswersService.state = JSON.stringify(value);
   }
 }
