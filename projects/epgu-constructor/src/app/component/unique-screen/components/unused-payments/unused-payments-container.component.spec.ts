@@ -44,6 +44,9 @@ import { ScreenTypes } from '../../../../screen/screen.types';
 import { UnusedPaymentsService } from './unused-payments.service';
 import { UnusedPaymentsServiceStub } from './unused-payments.service.stub';
 import { RadioTaxComponent } from '../../../../shared/components/radio-tax/radio-tax.component';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
+import { By } from '@angular/platform-browser';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;
@@ -52,6 +55,7 @@ describe('UnusedPaymentsContainerComponent', () => {
   let deviceDetectorService: DeviceDetectorService;
   let locationService: LocationService;
   let unusedPaymentsService: UnusedPaymentsService;
+  let eventBusService: EventBusService;
 
   const mockComponent: ComponentDto = {
     attrs: {
@@ -107,6 +111,7 @@ describe('UnusedPaymentsContainerComponent', () => {
           { provide: LocationService, useClass: LocationServiceStub },
           { provide: LocalStorageService, useClass: LocalStorageServiceStub },
           { provide: UnusedPaymentsService, useClass: UnusedPaymentsServiceStub },
+          { provide: LoggerService, useClass: LoggerServiceStub },
           EventBusService,
         ],
       }).compileComponents();
@@ -118,6 +123,7 @@ describe('UnusedPaymentsContainerComponent', () => {
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     locationService = TestBed.inject(LocationService);
     unusedPaymentsService = TestBed.inject(UnusedPaymentsService);
+    eventBusService = TestBed.inject(EventBusService);
 
     jest.spyOn(screenService, 'showNav$', 'get').mockReturnValue(of(true));
     jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockComponent));
@@ -131,7 +137,21 @@ describe('UnusedPaymentsContainerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
+  it('check radioSelect', () => {
+    spyOn(component, 'radioSelect').and.callThrough();
+    fixture.debugElement.query(By.css('.radio-tax__container')).nativeElement.click();
+    fixture.detectChanges();
+    expect(component.radioSelect).toHaveBeenCalled();
+  });
+
+  it('check next', (done) => {
+    component.tax = paymentsDataMock[0];
+    eventBusService.on('nextStepEvent').subscribe((value: string) => {
+      expect(JSON.parse(value).reusePaymentUin).toEqual(paymentsDataMock[0].uin);
+      done();
+    });
+    fixture.debugElement.query(By.css('.submit-button')).nativeElement.click();
+    fixture.detectChanges();
+    component.next();
   });
 });
