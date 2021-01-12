@@ -1,19 +1,18 @@
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { of } from 'rxjs';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { ComponentBase } from '../../../../../screen/screen.types';
 import { PassportModule } from '../../../../../shared/components/add-passport/passport.module';
-import { AddPassportContainerComponent } from './add-passport-component-container.component';
-import { AddPassportComponent } from '../component/add-passport.component';
-import { Passport } from '../add-passport.models';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
-import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
+import { Passport } from '../add-passport.models';
+import { AddPassportComponent } from '../component/add-passport.component';
+import { AddPassportContainerComponent } from './add-passport-component-container.component';
 
 describe('AddPassportContainerComponent', () => {
   let component: AddPassportContainerComponent;

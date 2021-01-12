@@ -22,8 +22,11 @@
       "epgu-lib": "epgu-lib",
       "ics": "ics",
       "@alyle/ui": "@alyle/ui",
+      "@alyle/ui/image-cropper": "i4$1",
+      "@alyle/ui/themes/minima": "minima",
       "angular-resize-event": "angular-resize-event",
-      "@tanker/file-ponyfill": "@tanker/file-ponyfill"
+      "@tanker/file-ponyfill": "@tanker/file-ponyfill",
+      "file-saver": "FileSaver"
     },
     "styleIncludePaths": ["."]
   }

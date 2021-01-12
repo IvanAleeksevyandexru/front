@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../core/services/config/config.service';
+import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
-import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 
 @Component({

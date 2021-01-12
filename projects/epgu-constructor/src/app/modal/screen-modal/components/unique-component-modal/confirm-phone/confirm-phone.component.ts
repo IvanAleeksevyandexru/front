@@ -8,10 +8,10 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
+import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
-import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 
 interface CodeFormGroup {

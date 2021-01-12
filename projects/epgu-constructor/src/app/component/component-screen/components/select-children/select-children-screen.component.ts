@@ -5,14 +5,14 @@ import { Observable } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
+import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStoreComponentDtoI } from '../../../../screen/screen.types';
-import { CustomComponentOutputData } from '../../../components-list/components-list.types';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
+import { CustomComponentOutputData } from '../../../components-list/components-list.types';
 
 enum ItemStatus {
   invalid = 'INVALID',

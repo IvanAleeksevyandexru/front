@@ -1,7 +1,6 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { UnusedPaymentInterface } from '../../../component/unique-screen/components/unused-payments/unused-payment.interface';
-import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 
 @Component({
   selector: 'epgu-constructor-radio-tax',

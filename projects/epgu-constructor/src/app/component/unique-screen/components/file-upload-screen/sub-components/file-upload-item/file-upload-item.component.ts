@@ -12,8 +12,8 @@ import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError 
 import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
+import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { TerraByteApiService } from '../../../../services/terra-byte-api/terra-byte-api.service';
 import {

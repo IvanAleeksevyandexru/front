@@ -1,9 +1,10 @@
-import { Injectable, ErrorHandler } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ScreenService } from '../../../screen/screen.service';
-import { UtilsService } from '../utils/utils.service';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { HealthService } from 'epgu-lib';
+import { ScreenService } from '../../../screen/screen.service';
 import { ScreenStore } from '../../../screen/screen.types';
+import { LoggerService } from '../logger/logger.service';
+import { UtilsService } from '../utils/utils.service';
 
 interface Error {
   message: string;
@@ -24,6 +25,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     private health: HealthService,
     public screenService: ScreenService,
     private utils: UtilsService,
+    private loggerService: LoggerService,
   ) {}
 
   handleError(error: Error): void {
@@ -46,7 +48,7 @@ export class GlobalErrorHandler implements ErrorHandler {
       this.health.measureStart('clientError');
       this.health.measureEnd('clientError', 1, errorParams);
 
-      console.error(error);
+      this.loggerService.error([error]);
     }
   }
 
