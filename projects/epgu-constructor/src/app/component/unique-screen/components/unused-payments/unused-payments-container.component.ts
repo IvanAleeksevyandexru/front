@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, throwError } from 'rxjs';
-import { catchError, concatMap, filter, takeUntil, tap, map } from 'rxjs/operators';
+import { catchError, concatMap, filter, tap, map, startWith } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
@@ -17,10 +17,14 @@ import { LoggerService } from '../../../../core/services/logger/logger.service';
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UnusedPaymentsContainerComponent implements OnInit {
+export class UnusedPaymentsContainerComponent {
   data$: Observable<DisplayDto> = this.screenService.display$;
-  orderId: string = this.screenService.getStore().orderId;
-  tax: UnusedPaymentInterface;
+
+  orderId: BehaviorSubject<string> = new BehaviorSubject<string>(
+    this.screenService.getStore().orderId,
+  );
+
+  tax: BehaviorSubject<UnusedPaymentInterface> = new BehaviorSubject<UnusedPaymentInterface>(null);
   showNav$: Observable<boolean> = this.screenService.showNav$;
 
   readonly paymentsList: BehaviorSubject<UnusedPaymentInterface[]> = new BehaviorSubject([]);
@@ -33,6 +37,23 @@ export class UnusedPaymentsContainerComponent implements OnInit {
     map(this.getCachedData.bind(this)),
   );
 
+  getListPaymentsInfo$: Observable<
+    [UnusedPaymentInterface[], UnusedPaymentInterface[]]
+  > = this.orderId.pipe(concatMap(this.getListPaymentsInfoByOrderId.bind(this)));
+
+  radioTaxSelectedEvent$: Observable<UnusedPaymentInterface> = this.eventBusService
+    .on('radioTaxSelectedEvent')
+    .pipe(
+      startWith(null),
+      tap((payload: UnusedPaymentInterface) => {
+        if (payload) {
+          this.radioSelect(payload);
+        }
+      }),
+    );
+
+  init$ = combineLatest([this.getListPaymentsInfo$, this.radioTaxSelectedEvent$]);
+
   constructor(
     public screenService: ScreenService,
     private listPaymentsService: UnusedPaymentsService,
@@ -42,19 +63,15 @@ export class UnusedPaymentsContainerComponent implements OnInit {
     private logger: LoggerService,
   ) {}
 
-  ngOnInit(): void {
-    this.getListPaymentsInfo().subscribe();
-    this.radioTaxSelectedEvent().subscribe();
-  }
-
-  getListPaymentsInfo(): Observable<[UnusedPaymentInterface[], UnusedPaymentInterface[]]> {
+  getListPaymentsInfoByOrderId(
+    orderId: string,
+  ): Observable<[UnusedPaymentInterface[], UnusedPaymentInterface[]]> {
     return combineLatest([
-      this.listPaymentsService.getListPaymentsInfo({ orderId: this.orderId }),
+      this.listPaymentsService.getListPaymentsInfo({ orderId }),
       this.cachedPaymentsList$,
     ]).pipe(
       catchError(this.errorResponseHandler.bind(this)),
-      takeUntil(this.ngUnsubscribe$),
-      tap(this.getListPaymentsInfoSuccess.bind(this)),
+      tap(([data, cache]) => this.paymentsList.next(data.length ? data : cache)),
     );
   }
 
@@ -64,40 +81,19 @@ export class UnusedPaymentsContainerComponent implements OnInit {
       : []) as UnusedPaymentInterface[];
   }
 
-  errorResponseHandler(err: HttpErrorResponse): Observable<never> {
-    this.error(err);
+  errorResponseHandler(error: HttpErrorResponse): Observable<never> {
+    this.logger.error([error], 'UnusedPaymentsContainerComponent');
     return this.cachedPaymentsList$.pipe(
       tap((cache) => this.paymentsList.next(cache)),
-      concatMap(() => throwError(err)),
-    );
-  }
-
-  radioTaxSelectedEvent(): Observable<UnusedPaymentInterface> {
-    return this.eventBusService.on('radioTaxSelectedEvent').pipe(
-      tap((payload: UnusedPaymentInterface) => this.radioSelect(payload)),
-      takeUntil(this.ngUnsubscribe$),
+      concatMap(() => throwError(error)),
     );
   }
 
   next(): void {
-    if (this.tax) {
-      this.nextStep(JSON.stringify({ reusePaymentUin: this.tax.uin }));
+    const tax = this.tax.getValue();
+    if (tax) {
+      this.eventBusService.emit('nextStepEvent', JSON.stringify({ reusePaymentUin: tax.uin }));
     }
-  }
-
-  getListPaymentsInfoSuccess([data, cache]: [
-    UnusedPaymentInterface[],
-    UnusedPaymentInterface[],
-  ]): void {
-    this.paymentsList.next(data.length ? data : cache);
-  }
-
-  error(error: HttpErrorResponse): void {
-    this.logger.error([error], 'UnusedPaymentsContainerComponent');
-  }
-
-  nextStep(data: string): void {
-    this.eventBusService.emit('nextStepEvent', data);
   }
 
   /**
@@ -105,6 +101,6 @@ export class UnusedPaymentsContainerComponent implements OnInit {
    * @param $event - событие выбора
    */
   radioSelect($event: UnusedPaymentInterface): void {
-    this.tax = $event;
+    this.tax.next($event);
   }
 }

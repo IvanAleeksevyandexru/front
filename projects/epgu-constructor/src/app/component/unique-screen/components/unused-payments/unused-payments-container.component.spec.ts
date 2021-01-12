@@ -16,11 +16,9 @@ import { SafePipe } from '../../../../shared/pipes/safe/safe.pipe';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import {
   ApplicantAnswersDto,
-  ComponentActionDto,
   ComponentAttrsDto,
   ComponentDto,
   DisplayDto,
-  DTOActionAction,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 import { of } from 'rxjs';
@@ -145,7 +143,6 @@ describe('UnusedPaymentsContainerComponent', () => {
   });
 
   it('check next', (done) => {
-    component.tax = paymentsDataMock[0];
     eventBusService.on('nextStepEvent').subscribe((value: string) => {
       expect(JSON.parse(value).reusePaymentUin).toEqual(paymentsDataMock[0].uin);
       done();
