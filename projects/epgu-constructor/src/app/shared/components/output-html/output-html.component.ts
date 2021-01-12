@@ -4,8 +4,12 @@ import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/co
 import { getHiddenBlock } from '../../constants/uttils';
 import { Clarifications } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
 import { ScreenService } from '../../../screen/screen.service';
-import { NavigationPayload } from '../../../form-player/form-player.types';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
+import {
+  ActionType,
+  DTOActionAction,
+} from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ActionService } from '../../directives/action/action.service';
 
 @Component({
   selector: 'epgu-constructor-output-html',
@@ -21,6 +25,7 @@ export class OutputHtmlComponent {
     private modalService: ModalService,
     private navigationService: NavigationService,
     private screenService: ScreenService,
+    private actionService: ActionService,
   ) {}
 
   showModal(targetClarification: { text?: string }, targetElementId: string): void {
@@ -35,7 +40,7 @@ export class OutputHtmlComponent {
 
   clickToInnerHTML($event: MouseEvent, el: HTMLElement): void {
     const targetElement = $event.target as HTMLElement;
-    const targetElementActionType = targetElement.getAttribute('data-action-type');
+    const targetElementActionType = targetElement.getAttribute('data-action-type') as ActionType;
     const targetElementActionValue = targetElement.getAttribute('data-action-value');
 
     if (targetElementActionType) {
@@ -45,22 +50,12 @@ export class OutputHtmlComponent {
     }
   }
 
-  private handleAction(action: string, value?: string): void {
-    switch (action) {
-      case 'nextStep':
-        this.navigationService.next({ payload: this.getComponentState(value) });
-        break;
-      default:
-    }
-  }
-
-  private getComponentState(value?: string): NavigationPayload {
-    return {
-      [this.screenService.component.id]: {
-        visited: true,
-        value,
-      },
-    };
+  private handleAction(type: ActionType, value?: string): void {
+    const action: DTOActionAction =
+      type === ActionType.nextStep ? DTOActionAction.getNextStep : DTOActionAction.getPrevStep;
+    this.actionService.action = { label: '', type, action, value };
+    this.actionService.componentId = this.screenService.component.id;
+    this.actionService.switchAction();
   }
 
   private toggleHiddenBlockOrShowModal(el: HTMLElement, targetElementId: string): void {

@@ -18,7 +18,11 @@
           [items]="$any(sourceList)"
       ></epgu-constructor-constructor-dropdown>
 
-      <div class="list" *ngIf="infoCenterList.length">
+      <div class="loader" *ngIf="isLoadingInfoCenter">
+        <lib-throbber-hexagon size="medium"></lib-throbber-hexagon>
+      </div>
+
+      <div class="list" *ngIf="infoCenterList.length && !isLoadingInfoCenter">
         <epgu-constructor-label
             class="list-label"
             [tips]="(data$ | async).attrs.dictionaryToRequest.label"

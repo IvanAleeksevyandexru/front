@@ -30,7 +30,7 @@ export class InformationCenterMvdComponent implements OnInit {
   display$: Observable<DisplayDto> = this.screenService.display$;
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   submitLabel$: Observable<string> = this.screenService.submitLabel$;
-
+  isLoadingInfoCenter = false;
   select = new FormControl();
   sourceList: Array<ListElement> = [];
   infoCenterList: Array<DictionaryItem> = [];
@@ -61,10 +61,13 @@ export class InformationCenterMvdComponent implements OnInit {
   }
 
   private loadInfoCenterDictionary(dictionaryName: string, id: number | string): void {
+    this.clearInfoCenterList();
+    this.isLoadingInfoCenter = true;
     this.dictionaryApiService
       .getMvdDictionary(dictionaryName, this.getInfoCenterOptionsRequest(id.toString()))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((response) => {
+        this.isLoadingInfoCenter = false;
         this.infoCenterList = response.items;
       });
   }
