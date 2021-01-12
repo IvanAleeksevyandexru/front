@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, throwError } from 'rxjs';
-import { catchError, concatMap, filter, tap, map, startWith } from 'rxjs/operators';
+import { catchError, concatMap, filter, tap, map } from 'rxjs/operators';
 import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -41,16 +41,7 @@ export class UnusedPaymentsContainerComponent {
 
   radioTaxSelectedEvent$: Observable<UnusedPaymentInterface> = this.eventBusService
     .on('radioTaxSelectedEvent')
-    .pipe(
-      startWith(null),
-      tap((payload: UnusedPaymentInterface) => {
-        if (payload) {
-          this.radioSelect(payload);
-        }
-      }),
-    );
-
-  init$ = combineLatest([this.getListPaymentsInfo$, this.radioTaxSelectedEvent$]);
+    .pipe(tap((payload: UnusedPaymentInterface) => this.radioSelect(payload)));
 
   constructor(
     public screenService: ScreenService,
