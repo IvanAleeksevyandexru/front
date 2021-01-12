@@ -28,8 +28,6 @@ const navActionToNavMethodMap = {
 
 @Injectable()
 export class ActionService {
-  private action: ComponentActionDto;
-  private componentId: string;
 
   constructor(
     private actionApiService: FormPlayerApiService,
@@ -44,29 +42,27 @@ export class ActionService {
   }
 
   switchAction(action: ComponentActionDto, componentId: string): void {
-    this.action = action;
-    this.componentId = componentId;
-    switch (this.action.type) {
+    switch (action.type) {
       case ActionType.download:
-        this.downloadAction();
+        this.downloadAction(action);
         break;
       case ActionType.prevStepModal:
-        this.navigateModal('prevStep');
+        this.navigateModal(action, componentId, 'prevStep');
         break;
       case ActionType.nextStepModal:
-        this.navigateModal('nextStep');
+        this.navigateModal(action, componentId, 'nextStep');
         break;
       case ActionType.skipStep:
-        this.navigate('skipStep');
+        this.navigate(action, componentId,'skipStep');
         break;
       case ActionType.prevStep:
-        this.navigate('prevStep');
+        this.navigate(action, componentId,'prevStep');
         break;
       case ActionType.nextStep:
-        this.navigate('nextStep');
+        this.navigate(action, componentId,'nextStep');
         break;
       case ActionType.quizToOrder:
-        this.quizToOrder();
+        this.quizToOrder(action);
         break;
       case ActionType.redirectToLK:
         this.navService.redirectToLK();
@@ -80,39 +76,39 @@ export class ActionService {
     }
   }
 
-  private navigate(stepType: string): void {
-    const navigation = this.prepareNavigationData();
+  private navigate(action: ComponentActionDto, componentId: string, stepType: string): void {
+    const navigation = this.prepareNavigationData(action, componentId);
     const navMethod = navActionToNavMethodMap[stepType];
     this.navService[navMethod](navigation);
   }
 
-  private navigateModal(stepType: string): void {
-    const navigation = this.prepareNavigationData();
+  private navigateModal(action: ComponentActionDto, componentId: string, stepType: string): void {
+    const navigation = this.prepareNavigationData(action, componentId);
     const navMethod = navActionToNavMethodMap[stepType];
     this.navModalService[navMethod](navigation);
   }
 
-  private sendAction<T>(): Observable<ActionApiResponse<T>> {
-    const data = this.getActionDTO();
+  private sendAction<T>(action: ComponentActionDto): Observable<ActionApiResponse<T>> {
+    const data = this.getActionDTO(action);
 
     data.scenarioDto.display = this.htmlRemover.delete(data.scenarioDto.display);
-    return this.actionApiService.sendAction<T>(this.action.action, data);
+    return this.actionApiService.sendAction<T>(action.action, data);
   }
 
-  private prepareNavigationData(): Navigation {
-    const payload = this.getComponentStateForNavigate();
-    const params = this.getParams();
-    const options = { ...this.getOptions(), params };
+  private prepareNavigationData(action: ComponentActionDto, componentId: string): Navigation {
+    const payload = this.getComponentStateForNavigate(action, componentId);
+    const params = this.getParams(action);
+    const options = { ...this.getOptions(action), params };
     return { payload, options };
   }
 
-  private getOptions(): NavigationOptions {
-    const { action } = this.action;
-    const isService = action.includes('service');
-    const isLastPageInInternalScenario = action.includes('goBackToMainScenario');
+  private getOptions(action: ComponentActionDto): NavigationOptions {
+    const dtoAction = action.action;
+    const isService = dtoAction.includes('service');
+    const isLastPageInInternalScenario = dtoAction.includes('goBackToMainScenario');
 
     if (isService) {
-      return { url: action };
+      return { url: dtoAction };
     } else if (isLastPageInInternalScenario) {
       return { isInternalScenarioFinish: true };
     } else {
@@ -120,24 +116,24 @@ export class ActionService {
     }
   }
 
-  private getParams(): NavigationParams {
-    const attrs: NavigationParams = this.action?.attrs;
+  private getParams(action: ComponentActionDto): NavigationParams {
+    const attrs: NavigationParams = action?.attrs;
     const stepsBack = attrs?.stepsBack;
     return stepsBack ? { stepsBack } : {};
   }
 
-  private getComponentStateForNavigate(): ComponentStateForNavigate {
-    const componentId = this.componentId || this.screenService.component.id;
+  private getComponentStateForNavigate(action: ComponentActionDto, componentId: string): ComponentStateForNavigate {
+    componentId = componentId || this.screenService.component.id;
     return {
       [componentId]: {
         visited: true,
-        value: this.action.value,
+        value: action.value,
       },
     };
   }
 
-  private downloadAction(): void {
-    this.sendAction<string>()
+  private downloadAction(action: ComponentActionDto): void {
+    this.sendAction<string>(action)
       .pipe(filter((response) => !response.errorList.length))
       .subscribe(
         ({ responseData }) => this.utilsService.downloadFile(responseData),
@@ -145,12 +141,12 @@ export class ActionService {
       );
   }
 
-  private getActionDTO(): ActionDTO {
+  private getActionDTO(action: ComponentActionDto): ActionDTO {
     let bodyResult: ActionDTO = {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},
     };
-    if (this.action?.action.indexOf('addToCalendar') !== -1) {
+    if (action?.action.indexOf('addToCalendar') !== -1) {
       bodyResult.scenarioDto = {
         ...bodyResult.scenarioDto,
         currentUrl: this.configService.addToCalendarUrl,
@@ -159,10 +155,10 @@ export class ActionService {
     return bodyResult;
   }
 
-  private quizToOrder(): void {
+  private quizToOrder(action: ComponentActionDto): void {
     const store = this.getStoreForQuiz();
     this.localStorageService.set(QUIZ_SCENARIO_KEY, store);
-    const href = this.action.action;
+    const href = action.action;
     this.navService.redirectTo(href);
   }
 
