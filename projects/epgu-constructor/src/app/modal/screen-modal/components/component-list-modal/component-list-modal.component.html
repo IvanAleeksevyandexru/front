@@ -11,7 +11,7 @@
     <lib-button
       [showLoader]="screenService.isLoading$ | async"
       (click)="nextScreen()"
-      class="btn__submit"
+      class="submit-button"
       [disabled]="(screenService.isLoading$ | async) || !isValid"
     >
       {{ screenService.submitLabel$ | async }}

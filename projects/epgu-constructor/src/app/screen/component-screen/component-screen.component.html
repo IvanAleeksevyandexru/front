@@ -97,9 +97,10 @@
   <lib-button
     *ngIf="screenService.submitLabel$ | async"
     [showLoader]="screenService.isLoading$ | async"
-    (click)="nextStep()"
+    epgu-constructor-action
+    [action]="nextStepAction"
     data-testid="display-continue-btn"
-    class="btn__submit"
+    class="submit-button"
     [disabled]="!currentAnswersService.isValid || (screenService.isLoading$ | async)"
   >
     <div class="secondary-font">

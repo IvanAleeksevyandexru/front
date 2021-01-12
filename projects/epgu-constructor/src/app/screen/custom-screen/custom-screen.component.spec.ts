@@ -1,3 +1,4 @@
+import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
@@ -6,21 +7,20 @@ import { MockComponent, MockModule } from 'ng-mocks';
 import { ComponentsListComponent } from '../../component/components-list/components-list.component';
 import {
   CustomComponentOutputData,
-  CustomComponentValidationConditions,
+  CustomComponentValidationConditions
 } from '../../component/components-list/components-list.types';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { NavigationPayload } from '../../form-player/form-player.types';
 import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import { ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
+import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
 import { CustomScreenComponent } from './custom-screen.component';
-import { ChangeDetectionStrategy } from '@angular/core';
 
 const moment = moment_;
 
@@ -45,7 +45,9 @@ describe('CustomScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         EventBusService,
+        CurrentAnswersService,
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(CustomScreenComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default }
     });
@@ -73,35 +75,6 @@ describe('CustomScreenComponent', () => {
   describe('isValid property', () => {
     it('should be undefined by default', () => {
       expect(component.isValid).toBeUndefined();
-    });
-  });
-
-  describe('nextStep() method', () => {
-    it('should call navigationService.next()', () => {
-      const nextStepSpy = spyOn(navigationService, 'next');
-
-      component.nextStep();
-
-      expect(nextStepSpy).toBeCalledTimes(1);
-      expect(nextStepSpy).toBeCalledWith({
-        payload: undefined,
-      });
-      nextStepSpy.calls.reset();
-
-      const dataToSend: NavigationPayload = {
-        foo: {
-          visited: true,
-          value: 'bar',
-        },
-      };
-
-      component.dataToSend = dataToSend;
-
-      component.nextStep();
-      expect(nextStepSpy).toBeCalledTimes(1);
-      expect(nextStepSpy).toBeCalledWith({
-        payload: dataToSend,
-      });
     });
   });
 
@@ -174,24 +147,6 @@ describe('CustomScreenComponent', () => {
       const result = component.getPrepareResponseData();
       //@ts-ignore
       expect(result).toEqual({});
-    });
-  });
-
-  describe('navigation cases', () => {
-    it('onClick lib button should call nextScreen()', () => {
-      spyOn(component, 'nextStep').and.callThrough();
-      screenService.submitLabel = 'next';
-      fixture.detectChanges();
-      const libButton = fixture.debugElement.nativeElement.querySelector('.btn__submit');
-      libButton.click();
-      expect(component.nextStep).toHaveBeenCalled();
-    });
-
-    it('nextScreen() should call next of navigationService', () => {
-      component.dataToSend = { any: { visited: true, value: '' }};
-      spyOn(navigationService, 'next').and.callThrough();
-      component.nextStep();
-      expect(navigationService.next).toHaveBeenCalled();
     });
   });
 
@@ -349,21 +304,5 @@ describe('CustomScreenComponent', () => {
 
       expect(debugEl.componentInstance.disabled).toBeFalsy();
     });
-  });
-
-  it('should call nextStep() on Submit button click() event', () => {
-    const selector = 'epgu-constructor-screen-container lib-button';
-
-    screenService.submitLabel = 'any';
-    fixture.detectChanges();
-
-    const debugEl = fixture.debugElement.query(By.css(selector));
-
-    const nextStepSpy = spyOn(component, 'nextStep');
-
-    debugEl.triggerEventHandler('click', 'any');
-
-    expect(nextStepSpy).toBeCalledTimes(1);
-    expect(nextStepSpy).toBeCalledWith(); // ignore arguments from click event
   });
 });

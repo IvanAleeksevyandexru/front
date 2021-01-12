@@ -26,6 +26,9 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    &:focus {
+      outline: 1px dashed $color-divider;
+    }
   }
 }
 

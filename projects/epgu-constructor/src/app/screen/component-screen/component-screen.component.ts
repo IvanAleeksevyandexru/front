@@ -9,7 +9,9 @@ import { takeUntil } from 'rxjs/operators';
 import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import {
+  ActionType,
   ComponentActionDto,
+  DTOActionAction,
   ScreenActionDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -27,6 +29,12 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
   isShowActionBtn = false;
   actionButtons: ComponentActionDto[] = [];
   screenActionButtons: ScreenActionDto[] = [];
+  nextStepAction: ComponentActionDto = {
+    label: 'Продолжить',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
   constructor(
     public currentAnswersService: CurrentAnswersService,
     public injector: Injector,
@@ -52,41 +60,6 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
         this.screenActionButtons = buttons || [];
         this.changeDetectionRef.markForCheck();
       });
-    this.eventBusService
-      .on('nextStepEvent')
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: string) => {
-        this.nextStep(payload);
-        this.changeDetectionRef.markForCheck();
-      });
-  }
-
-  /**
-   * Переход на следующую страницу и передача данных
-   */
-  nextStep(action?: string): void {
-    let value: string;
-    if (typeof this.currentAnswersService.state === 'object') {
-      value = JSON.stringify(this.currentAnswersService.state);
-    } else {
-      value = this.currentAnswersService.state;
-    }
-
-    const payload = {};
-    payload[this.screenService.component.id] = { visited: true, value };
-
-    if (action === 'skipStep') {
-      this.navigationService.skip({ payload });
-    } else {
-      this.navigationService.next({ payload });
-    }
-  }
-
-  /**
-   * Возвращение в личный кабинет
-   */
-  goToLK(): void {
-    this.navigationService.redirectToLK();
   }
 
   isUserData(): boolean | ComponentScreenComponentTypes {
@@ -118,5 +91,9 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
       ComponentScreenComponentTypes.divorceConsent,
       ComponentScreenComponentTypes.fieldList,
     ].includes(type);
+  }
+
+  nextStep(): void {
+    // TODO: заглушка абстрактного метода ScreenBase
   }
 }

@@ -1,3 +1,4 @@
+import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
@@ -15,7 +16,7 @@ import {
   ClarificationsDto,
   ComponentActionDto,
   ComponentDto,
-  DTOActionAction,
+  DTOActionAction
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
@@ -25,10 +26,10 @@ import { OutputHtmlComponent } from '../../shared/components/output-html/output-
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { ImgPrefixerPipe } from '../../shared/pipes/img-prefixer/img-prefixer.pipe';
+import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { QuestionsScreenComponent } from './questions-screen.component';
-import { ChangeDetectionStrategy } from '@angular/core';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -99,6 +100,7 @@ describe('QuestionsScreenComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         EventBusService,
+        CurrentAnswersService,
       ],
     }).overrideComponent(QuestionsScreenComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default }
@@ -531,23 +533,6 @@ describe('QuestionsScreenComponent', () => {
       fixture.detectChanges();
 
       expect(debugEl.nativeElement.textContent.trim()).toBe('submit label #2');
-    });
-
-    it('should call onSubmitClick() on lib-button[data-testid="submit-btn"] click() event', () => {
-      component.rejectAction = componentActionDtoSample1;
-      component.submitLabel = 'submit label';
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      const onSubmitClickSpy = spyOn(component, 'onSubmitClick');
-
-      debugEl.triggerEventHandler('click', 'any');
-
-      expect(onSubmitClickSpy).toBeCalledTimes(1);
-      expect(onSubmitClickSpy).toBeCalledWith({
-        value: 'submit label',
-      });
     });
   });
 });

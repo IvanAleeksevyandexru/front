@@ -9,7 +9,12 @@ import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
-import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ActionType,
+  ComponentActionDto,
+  DisplayDto,
+  DTOActionAction,
+} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenTypes } from '../../../../screen/screen.types';
@@ -37,6 +42,12 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
   componentId: number;
   isValid: boolean;
   componentValidation: Array<boolean> = [];
+  nextStepAction: ComponentActionDto = {
+    label: 'Далее',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
 
   /**
    * Словарь для хранения массива компонентов
@@ -118,10 +129,6 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
     this.isValid = this.componentValidation.every((valid: boolean) => valid);
     state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
     this.saveState(state);
-  }
-
-  nextScreen(): void {
-    this.eventBusService.emit('nextStepEvent', this.currentAnswersService.state);
   }
 
   removeItem(key: string, index: number): void {

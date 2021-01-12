@@ -13,7 +13,10 @@
   </div>
   <div class="radio-list" *ngIf="paymentsList$ | async as paymentsData; else emptyList">
     <epgu-constructor-radio-tax [data]="paymentsData"></epgu-constructor-radio-tax>
-    <lib-button class="btn__submit" (click)="next()">
+    <lib-button
+      class="submit-button"
+      (click)="next()"
+    >
       <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
     </lib-button>
   </div>
