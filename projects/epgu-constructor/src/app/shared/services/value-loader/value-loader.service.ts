@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
-
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import { CustomScreenComponentTypes } from '../../../component/components-list/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
-import { ComponentScreenComponentTypes } from '../../../component/component-screen/component-screen-components.types';
 
 const moment = moment_;
 
@@ -67,7 +65,7 @@ export class ValueLoaderService {
 
     if (cachedValueArray.length) {
       let repeatableFieldComponents: Array<Array<ComponentDto>> = [];
-      cachedValueArray.forEach((component, index) => {
+      cachedValueArray.forEach((_component, index) => {
         repeatableFieldComponents.push(
           this.getCacheRepeatableField(components, cachedValue, index),
         );

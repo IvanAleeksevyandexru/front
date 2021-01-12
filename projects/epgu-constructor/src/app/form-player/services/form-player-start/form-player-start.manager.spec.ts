@@ -242,7 +242,7 @@ describe('FormPlayerStartManager', () => {
     const invited = false;
     const canStartNew = true;
 
-    it('should call shouldShowContinueOrderModal', () => {;
+    it('should call shouldShowContinueOrderModal', () => {
       spyOn<any>(service, 'shouldShowContinueOrderModal').and.callThrough();
       service['handleOrder'](orderId, invited, canStartNew);
       expect(service['shouldShowContinueOrderModal']).toBeCalledWith(orderId, invited, canStartNew);
@@ -259,7 +259,7 @@ describe('FormPlayerStartManager', () => {
       spyOn<any>(service, 'shouldShowContinueOrderModal').and.returnValue(false);
       spyOn(formPlayerService, 'initData').and.callThrough();
       service['handleOrder'](orderId, invited, canStartNew);
-      expect(formPlayerService.initData).toBeCalledWith(orderId, invited);
+      expect(formPlayerService.initData).toBeCalledWith(orderId);
     });
   });
 
@@ -323,14 +323,14 @@ describe('FormPlayerStartManager', () => {
       initDataService.orderId = orderId;
       spyOn(formPlayerService, 'initData').and.callThrough();
       service['showContinueOrderModal']();
-      expect(formPlayerService.initData).toBeCalledWith(orderId, false);
+      expect(formPlayerService.initData).toBeCalledWith(orderId);
     });
 
     it('should call initData of formPlayerService without orderId', () => {
       spyOn(continueOrderModalService, 'openModal').and.returnValue(of(false));
       spyOn(formPlayerService, 'initData').and.callThrough();
       service['showContinueOrderModal']();
-      expect(formPlayerService.initData).toBeCalledWith(null, false);
+      expect(formPlayerService.initData).toBeCalledWith(null);
     });
   });
 });

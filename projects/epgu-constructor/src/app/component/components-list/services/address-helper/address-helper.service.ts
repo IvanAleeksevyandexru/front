@@ -1,20 +1,14 @@
 import { Injectable } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
-import { filter, pluck, concatMap, reduce, tap } from 'rxjs/operators';
+import { filter, pluck, concatMap, reduce } from 'rxjs/operators';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import {
-  DadataSuggestions,
-  DadataSuggestionsAddress,
-} from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { DadataSuggestionsAddress } from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 export interface DadataSuggestionsAddressForLookup extends DadataSuggestionsAddress {
   id: string;
   text: string;
 }
 
-interface objectWithSuggestions {
-  suggestions: DadataSuggestions;
-}
 interface addressHelperProvider {
   search: (searchString: string) => Observable<DadataSuggestionsAddressForLookup[]>;
 }

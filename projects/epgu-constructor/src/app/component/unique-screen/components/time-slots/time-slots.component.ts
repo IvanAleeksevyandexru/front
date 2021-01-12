@@ -376,33 +376,6 @@ export class TimeSlotsComponent implements OnInit {
     }
   }
 
-  /**
-   * Генерирует ID совместимый с ID ListItem
-   * @example
-   * this.generateMonthListId(2020, 0) // 2020-01
-   * this.generateMonthListId(2020, 1) // 2020-02
-   * this.generateMonthListId(2020, 11) // 2020-12
-   * @param year
-   * @param month
-   * @private
-   */
-  private generateMonthListId(year: number, month: number): string {
-    const monthWithZero = this.getMonthWithZero(month);
-    return `${year}-${monthWithZero}`;
-  }
-
-  /**
-   * Преобразует номер месяца в формат с ведущим нулем
-   * @example
-   * this.getMonthWithZero(0) // "01"
-   * this.getMonthWithZero(1) // "02"
-   * this.getMonthWithZero(10) // "11"
-   * @param month от 0 до 11
-   */
-  private getMonthWithZero(month: number): string {
-    return String(`00${month + 1}`).slice(-2);
-  }
-
   private getMonthsListItem(monthYear: string): ListItem {
     const [activeYear, activeMonth] = monthYear.split('-');
     const monthNumber = parseInt(activeMonth, 10) - 1;

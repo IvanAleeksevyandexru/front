@@ -86,7 +86,7 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
       .subscribe(() => this.duplicateScreen(true));
   }
 
-  trackByFunction = (index, item): string => item;
+  trackByFunction = (_index: number, item: string): string => item;
 
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();
@@ -112,7 +112,6 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  // TODO
   changeComponentList(changes: CustomComponentOutputData, index: number): void {
     const state = this.getState();
     this.componentValidation[index] = Object.values(changes).every((item) => item.isValid);

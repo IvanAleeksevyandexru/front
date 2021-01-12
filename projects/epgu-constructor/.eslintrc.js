@@ -22,6 +22,8 @@ module.exports = {
       }
     ],
     "@typescript-eslint/explicit-function-return-type": ["error"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/member-ordering": ["error", {
       "default": [
         "signature",
@@ -116,7 +118,8 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/typedef': 'off',
         "@typescript-eslint/explicit-function-return-type": 'off',
-        "@typescript-eslint/member-ordering": 'off'
+        "@typescript-eslint/no-unused-vars": 'off',
+        "@typescript-eslint/member-ordering": 'off',
       }
     }
   ],

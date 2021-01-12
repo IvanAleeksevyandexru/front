@@ -80,9 +80,8 @@ export class PaymentService {
   /**
    * Получение данных (предначисления) по номеру счета, полная информация
    * @param billId - номер патежа
-   * @param orderId - идентификатор заявления
    */
-  getBillsInfoByBillId(billId: number, orderId: string): Observable<BillsInfoResponse> {
+  getBillsInfoByBillId(billId: number): Observable<BillsInfoResponse> {
     // На случай если сервис лежит, только для теста
     // const billMockUp = new BehaviorSubject(mockUpBillsInfo);
     // return billMockUp.asObservable();

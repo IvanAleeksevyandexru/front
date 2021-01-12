@@ -147,7 +147,7 @@ export class CompressionService {
   }
 
   private async createImageBitmap(data: Blob | ImageData): Promise<void | HTMLImageElement> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       let dataURL;
       if (data instanceof Blob) {
         dataURL = URL.createObjectURL(data);
@@ -380,7 +380,7 @@ export class CompressionService {
         URL.revokeObjectURL(objUrl);
         return resolve(true);
       };
-      img.onerror = (e): void => {
+      img.onerror = (): void => {
         URL.revokeObjectURL(objUrl);
         return reject(false);
       };
@@ -403,7 +403,7 @@ export class CompressionService {
     let remainingTrials = options['maxIteration'] || 10;
     const maxSizeByte = options['maxSizeMB'] * 1024 * 1024;
 
-    let [img, origCanvas] = await this.drawFileInCanvas(file);
+    let [,origCanvas] = await this.drawFileInCanvas(file);
 
     const maxWidthOrHeightFixedCanvas = this.handleMaxWidthOrHeight(origCanvas, options);
 

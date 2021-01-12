@@ -103,7 +103,7 @@ export class FormPlayerStartManager {
     if (this.shouldShowContinueOrderModal(orderId, invited, canStartNew)) {
       this.showContinueOrderModal();
     } else {
-      this.formPlayerService.initData(orderId, invited);
+      this.formPlayerService.initData(orderId);
     }
   }
 
@@ -128,7 +128,7 @@ export class FormPlayerStartManager {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((result) => {
         const orderId = result ? this.initDataService.orderId : null;
-        this.formPlayerService.initData(orderId, false);
+        this.formPlayerService.initData(orderId);
       });
   }
 
