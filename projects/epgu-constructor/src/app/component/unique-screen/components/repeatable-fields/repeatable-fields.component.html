@@ -41,7 +41,8 @@
   <div class="screen-footer">
     <lib-button
       [showLoader]="screenService.isLoading$ | async"
-      (click)="nextScreen()"
+      epgu-constructor-action
+      [action]="nextStepAction"
       class="submit-button"
       [disabled]="(screenService.isLoading$ | async) || !isValid || (commonError$ | async)?.hasError"
     >

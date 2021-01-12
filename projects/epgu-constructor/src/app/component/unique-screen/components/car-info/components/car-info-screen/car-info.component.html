@@ -1,23 +1,28 @@
-<ng-container *ngTemplateOutlet="templateContent; context: {carInfo: carInfo$ | async,
-                                                            display: display$ | async,
-                                                            isLoading: isLoading$ | async}">
+<ng-container
+  *ngTemplateOutlet="
+    templateContent;
+    context: { carInfo: carInfo$ | async, display: display$ | async, isLoading: isLoading$ | async }
+  "
+>
 </ng-container>
-<ng-template #templateContent
-             let-carInfo="carInfo"
-             let-display="display"
-             let-isLoading="isLoading">
+<ng-template #templateContent let-carInfo="carInfo" let-display="display" let-isLoading="isLoading">
   <epgu-constructor-screen-container
     [show-nav]="screenService.showNav$ | async"
     [class.screen-container-mt]="!(screenService.showNav$ | async)"
   >
-
     <div class="screen-body">
       <div *ngIf="display?.header" class="head">
         <epgu-constructor-page-name>{{ display?.header }}</epgu-constructor-page-name>
       </div>
 
       <epgu-constructor-screen-pad
-        *ngIf="!carInfo.brandModel && !carInfo.status && !carInfo.owners && !carInfo.legals && !carInfo.accidenceCount"
+        *ngIf="
+          !carInfo.brandModel &&
+          !carInfo.status &&
+          !carInfo.owners &&
+          !carInfo.legals &&
+          !carInfo.accidenceCount
+        "
         class="car__info--block"
       >
         <h5 class="car__info--title">Данные не получены</h5>
@@ -37,8 +42,9 @@
       <epgu-constructor-screen-pad *ngIf="carInfo.owners" class="car__info--block">
         <h5 class="car__info--title">Владельцы по ПТС</h5>
         <div class="car__info--item" *ngFor="let owner of carInfo.owners">
-          <div class="car__info--owner">{{ owner.ownerType | carInfoOwner }}
-            <span class="bold">{{ owner.tenure | carInfoDate:'DIFF' }}</span>
+          <div class="car__info--owner">
+            {{ owner.ownerType | carInfoOwner }}
+            <span class="bold">{{ owner.tenure | carInfoDate: 'DIFF' }}</span>
           </div>
           <div class="car__info--dates">{{ owner.tenure | carInfoDate }}</div>
         </div>
@@ -48,7 +54,7 @@
       <epgu-constructor-screen-pad *ngIf="carInfo.legals" class="car__info--block">
         <h5 class="car__info--title">Юридическая чистота</h5>
         <div class="car__info--item" *ngFor="let legal of carInfo.legals">
-          {{legal.name | carInfoLegal}}: <span class="bold">{{ legal ? 'Да' : 'Нет' }}</span>
+          {{ legal.name | carInfoLegal }}: <span class="bold">{{ legal ? 'Да' : 'Нет' }}</span>
         </div>
         <div class="car__info--item" *ngIf="carInfo.legals?.length === 0">Нет данных</div>
       </epgu-constructor-screen-pad>
@@ -61,13 +67,12 @@
     <div class="screen-footer">
       <lib-button
         [showLoader]="isLoading"
-        (click)="nextStep(carInfo)"
+        epgu-constructor-action
+        [action]="nextStepAction"
         class="submit-button"
       >
         {{ display?.submitLabel || 'Продолжить' }}
-      </lib-button
-      >
+      </lib-button>
     </div>
   </epgu-constructor-screen-container>
 </ng-template>
-

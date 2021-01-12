@@ -39,7 +39,8 @@
       <lib-button
         [showLoader]="isLoading"
         [disabled]="disabled"
-        (click)="nextScreen()"
+        epgu-constructor-action
+        [action]="nextStepAction"
         class="submit-button"
       >
         {{ submitLabel || 'Продолжить' }}

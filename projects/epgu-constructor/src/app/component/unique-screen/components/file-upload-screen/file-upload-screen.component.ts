@@ -1,10 +1,15 @@
-import { map, takeUntil, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
+import { map, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
-import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
+import {
+  ActionType,
+  ApplicantAnswersDto,
+  ComponentActionDto,
+  DTOActionAction,
+} from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import {
@@ -13,6 +18,7 @@ import {
   FileUploadEmitValueForComponent,
   FileUploadItem,
 } from '../../services/terra-byte-api/terra-byte-api.types';
+import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { TerraUploadedFile } from './sub-components/file-upload-item/data';
 
 @Component({
@@ -24,7 +30,6 @@ import { TerraUploadedFile } from './sub-components/file-upload-item/data';
 })
 export class FileUploadScreenComponent implements OnInit {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
-
   data$: Observable<ComponentBase> = this.screenService.component$.pipe(
     tap((data: ComponentBase) => {
       this.allMaxFiles = 0;
@@ -37,11 +42,8 @@ export class FileUploadScreenComponent implements OnInit {
       };
     }),
   );
-
   applicantAnswers$: Observable<ApplicantAnswersDto> = this.screenService.applicantAnswers$;
-
   submitLabel$: Observable<string> = this.screenService.submitLabel$;
-
   header$: Observable<string> = combineLatest([
     this.screenService.component$,
     this.screenService.header$,
@@ -49,12 +51,19 @@ export class FileUploadScreenComponent implements OnInit {
 
   disabled = true;
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
+  nextStepAction: ComponentActionDto = {
+    label: 'Далее',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
   private value: FileUploadEmitValueForComponent; // Здесь будет храниться значение на передачу
 
   constructor(
     public screenService: ScreenService,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
+    private currentAnswersService: CurrentAnswersService,
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -64,6 +73,7 @@ export class FileUploadScreenComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileResponseToBackendUploadsItem) => {
         this.handleNewValueSet(payload);
+        this.currentAnswersService.state = this.value;
         this.cdr.markForCheck();
       });
   }
@@ -126,13 +136,6 @@ export class FileUploadScreenComponent implements OnInit {
     this.disabled = !(
       this.isEveryUploaderHasFile(this.value.uploads) && this.isAllFilesUploaded(this.value.uploads)
     );
-  }
-
-  /**
-   * Переход на следующий экран с отправкой данных
-   */
-  nextScreen(): void {
-    this.eventBusService.emit('nextStepEvent', JSON.stringify(this.value));
   }
 
   /**

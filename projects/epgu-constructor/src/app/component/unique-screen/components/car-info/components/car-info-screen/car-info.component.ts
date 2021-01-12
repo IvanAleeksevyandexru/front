@@ -1,8 +1,13 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
-import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ActionType,
+  ComponentActionDto,
+  DisplayDto,
+  DTOActionAction,
+} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CarInfoValues } from '../../models/car-info.interface';
 
@@ -18,12 +23,21 @@ export class CarInfoComponent {
   display$: Observable<DisplayDto> = this.screenService.display$;
   carInfo$: Observable<CarInfoValues> = this.display$.pipe(
     filter((display: DisplayDto) => !!display?.components[0].value),
-    map((display: DisplayDto) => JSON.parse(display.components[0].value)),
+    map((display: DisplayDto) => {
+      const carInfo = display.components[0].value;
+      this.currentAnswersService.state = carInfo;
+      return JSON.parse(carInfo);
+    }),
   );
+  nextStepAction: ComponentActionDto = {
+    label: 'Далее',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
 
-  constructor(public screenService: ScreenService, private eventBusService: EventBusService) {}
-
-  nextStep(carInfo: CarInfoValues): void {
-    this.eventBusService.emit('nextStepEvent', JSON.stringify(carInfo));
-  }
+  constructor(
+    public screenService: ScreenService,
+    private currentAnswersService: CurrentAnswersService,
+  ) {}
 }
