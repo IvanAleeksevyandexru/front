@@ -14,6 +14,8 @@ import { DeviceDetectorServiceStub } from '../../../core/services/device-detecto
 import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { ActionService } from '../../directives/action/action.service';
+import { ActionServiceStub } from '../../directives/action/action.service.stub';
 
 describe('OutputHtmlComponent', () => {
   let fixture: ComponentFixture<OutputHtmlComponent>;
@@ -31,6 +33,7 @@ describe('OutputHtmlComponent', () => {
           { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: ModalService, useClass: ModalServiceStub },
+          { provide: ActionService, useClass: ActionServiceStub },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       })
