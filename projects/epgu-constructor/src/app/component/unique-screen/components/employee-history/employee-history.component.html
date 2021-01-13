@@ -81,6 +81,11 @@
         *ngIf="availableControlsOfType(generation.get('type').value)?.position as position"
       >
         <epgu-constructor-label [label]="position" for="position"></epgu-constructor-label>
+        <div class="employee-history__error" *ngIf="generation.get('position').hasError('errorMsg')">
+          <small>
+            {{ generation.get('position')?.getError('errorMsg') }}
+          </small>
+        </div>
         <epgu-constructor-constructor-plain-input
           [textTransformType]="textTransformType(data[0])"
           [name]="i + '_position'"
@@ -101,6 +106,11 @@
         *ngIf="availableControlsOfType(generation.get('type').value)?.place as place"
       >
         <epgu-constructor-label [label]="place" for="place"></epgu-constructor-label>
+        <div class="employee-history__error" *ngIf="generation.get('place').hasError('errorMsg')">
+          <small>
+            {{ generation.get('place')?.getError('errorMsg') }}
+          </small>
+        </div>
         <epgu-constructor-constructor-plain-input
           [textTransformType]="textTransformType(data[0])"
           [name]="i + '_place'"
@@ -119,6 +129,11 @@
         *ngIf="availableControlsOfType(generation.get('type').value)?.address as address"
       >
         <epgu-constructor-label [label]="address" [for]="'address'"></epgu-constructor-label>
+        <div class="employee-history__error" *ngIf="generation.get('address').hasError('errorMsg')">
+          <small>
+            {{ generation.get('address')?.getError('errorMsg') }}
+          </small>
+        </div>
         <epgu-constructor-constructor-plain-input
           [textTransformType]="textTransformType(data[0])"
           [name]="i + '_address'"
