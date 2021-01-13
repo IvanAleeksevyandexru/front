@@ -5,6 +5,8 @@ import { CarInfoComponent } from '../../component/unique-screen/components/car-i
 import { EmployeeHistoryComponent } from '../../component/unique-screen/components/employee-history/employee-history.component';
 import { FileUploadScreenComponent } from '../../component/unique-screen/components/file-upload-screen/file-upload-screen.component';
 // eslint-disable-next-line max-len
+import { InformationCenterMvdComponent } from '../../component/unique-screen/components/information-center-mvd/information-center-mvd.component';
+// eslint-disable-next-line max-len
 import { PaymentTypeSelectorComponent } from '../../component/unique-screen/components/payment-type-selector/payment-type-selector.component';
 import { BillInfoComponent } from '../../component/unique-screen/components/payment/components/billinfo/billinfo.component';
 import { PaymentComponent } from '../../component/unique-screen/components/payment/components/payment/payment.component';
@@ -25,7 +27,7 @@ import { NavigationPayload } from '../../form-player/form-player.types';
 import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
   ComponentDto,
-  DisplayDto
+  DisplayDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
@@ -37,6 +39,7 @@ const componentDtoSample: ComponentDto = {
   attrs: {},
   id: 'id1',
   type: 'type1',
+  valueFromCache: false
 };
 
 const displayDtoSample: DisplayDto = {
@@ -79,6 +82,7 @@ describe('UniqueScreenComponent', () => {
           BillInfoComponent,
           UploadAndEditPhotoComponent,
           PaymentTypeSelectorComponent,
+          InformationCenterMvdComponent
         ),
       ],
       providers: [

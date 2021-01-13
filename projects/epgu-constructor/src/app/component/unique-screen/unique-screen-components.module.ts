@@ -13,6 +13,7 @@ import { DictionaryApiService } from '../shared/services/dictionary-api/dictiona
 import { CarInfoModule } from './components/car-info/car-info.module';
 import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
 import { FileUploadModule } from './components/file-upload-screen/file-upload.module';
+import { InformationCenterMvdModule } from './components/information-center-mvd/information-center-mvd.module';
 import { PaymentTypeSelectorModule } from './components/payment-type-selector/payment-type-selector.module';
 import { BillinfoModule } from './components/payment/components/billinfo/billinfo.module';
 import { PaymentModule } from './components/payment/components/payment/payment.module';
@@ -46,6 +47,7 @@ import { WebcamService } from './services/webcam/webcam.service';
     ScreenContainerModule,
     ScreenPadModule,
     CloneButtonModule,
+    InformationCenterMvdModule,
   ],
   exports: [
     RepeatableFieldsComponent,
@@ -60,6 +62,7 @@ import { WebcamService } from './services/webcam/webcam.service';
     UnusedPaymentsModule,
     SignatureApplicationModule,
     PaymentTypeSelectorModule,
+    InformationCenterMvdModule,
   ],
   providers: [WebcamService, DictionaryApiService, UnsubscribeService, EventBusService],
 })
