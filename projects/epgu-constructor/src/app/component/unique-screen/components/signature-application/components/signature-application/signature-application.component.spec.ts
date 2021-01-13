@@ -11,10 +11,10 @@ import { LocationServiceStub } from '../../../../../../core/services/location/lo
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import {
-    ComponentActionDto,
-    ComponentAttrsDto,
-    ComponentDto,
-    DTOActionAction
+  ComponentActionDto,
+  ComponentAttrsDto,
+  ComponentDto,
+  DTOActionAction
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
@@ -24,6 +24,8 @@ import { PageNameComponent } from '../../../../../../shared/components/base-comp
 import { NavigationComponent } from '../../../../../../shared/components/navigation/navigation.component';
 import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
 import { ScreenContainerComponent } from '../../../../../../shared/components/screen-container/screen-container.component';
+import { ActionService } from '../../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
 import { SignatureApplicationComponent } from './signature-application.component';
@@ -71,6 +73,7 @@ describe('SignatureApplicationComponent', () => {
           { provide: ModalService, useClass: ModalServiceStub },
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: LocationService, useClass: LocationServiceStub },
+          { provide: ActionService, useClass: ActionServiceStub },
         ],
       }).compileComponents();
     }),
