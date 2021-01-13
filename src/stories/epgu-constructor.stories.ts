@@ -31,6 +31,10 @@ import { UnusedPaymentsComponent } from '../../projects/epgu-constructor/src/app
 import { ScreenTypes } from '../../projects/epgu-constructor/src/app/screen/screen.types';
 
 import { UnusedPaymentInterface } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/unused-payment.interface';
+import { AddPassportModule } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/add-passport.module';
+import { AddPassportComponent } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/component/add-passport.component';
+import { ValidationService } from '../../projects/epgu-constructor/src/app/shared/services/validation/validation.service';
+import { DateRangeService } from '../../projects/epgu-constructor/src/app/component/components-list/services/date-range/date-range.service';
 
 export default {
   title: 'Example/EPGU Constructor',
@@ -42,6 +46,7 @@ export default {
         AnswerButtonModule,
         SignatureApplicationModule,
         UnusedPaymentsModule,
+        AddPassportModule,
       ],
       schemas: [],
       declarations: [],
@@ -58,6 +63,8 @@ export default {
         LocationService,
         WINDOW_PROVIDERS,
         ModalService,
+        ValidationService,
+        DateRangeService,
       ],
     }),
   ],
@@ -152,4 +159,33 @@ UnusedPayments.args = {
   showNav: true,
   data: DisplayDtoSample,
   paymentsData: paymentsDataSample,
+};
+
+export const AddPassport = (args: AddPassportComponent) => ({
+  component: AddPassportComponent,
+  props: args,
+});
+AddPassport.args = {
+  data: {
+    participant: { role: 'Approval', mode: 'MentionedApplicant' },
+    fstuc: TextTransform.ALL,
+    fields: [
+      {
+        mask: ['/[0-9]/', '/[0-9]/', '/[0-9]/', '/[0-9]/'],
+        fieldName: 'rfPasportSeries',
+        label: 'Серия',
+        type: 'input',
+        regexp: '^[0-9]{4}$',
+        errorMsg: 'Поле должно содержать 4 цифры',
+      },
+      {
+        mask: ['/[0-9]/', '/[0-9]/', '/[0-9]/', '/[0-9]/', '/[0-9]/', '/[0-9]/'],
+        fieldName: 'rfPasportNumber',
+        label: 'Номер',
+        type: 'input',
+        regexp: '^[0-9]{6}$',
+        errorMsg: 'Поле должно содержать 6 цифр',
+      },
+    ],
+  },
 };
