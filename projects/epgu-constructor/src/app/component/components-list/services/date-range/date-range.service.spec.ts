@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import * as moment_ from 'moment';
-import { FormArray, FormControl } from '@angular/forms';
 
 import { DateRangeService } from './date-range.service';
 import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
@@ -35,7 +34,6 @@ describe('DateRangeService', () => {
   const applicantAnswersDto: ApplicantAnswersDto = {
     pd15: { value: '2020-10-28T00:00:00.000+03:00', visited: false },
   };
-  const mockForm: FormArray = new FormArray([new FormControl({})]);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -52,7 +50,7 @@ describe('DateRangeService', () => {
   it('should be return min date', () => {
     const expectedResult = moment('2020-10-27T21:00:00.000Z').toDate();
     jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
-    const minDate = service.getMinDate(componentMock, mockForm);
+    const minDate = service.getMinDate(componentMock.attrs.ref, componentMock.id, new Date());
 
     expect(minDate).toEqual(expectedResult);
   });
@@ -60,7 +58,7 @@ describe('DateRangeService', () => {
   it('should be return max date', () => {
     const expectedResult = moment('2022-10-27T21:00:00.000Z').toDate();
     jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
-    const maxDate = service.getMaxDate(componentMock, mockForm);
+    const maxDate = service.getMaxDate(componentMock.attrs.ref, componentMock.id, new Date());
 
     expect(maxDate).toEqual(expectedResult);
   });
@@ -88,9 +86,8 @@ describe('DateRangeService', () => {
 
   describe('changeDate()', () => {
     it('should be void if has not control and attrs', () => {
-      const mockForm: FormArray = new FormArray([new FormControl({})]);
       const date = moment().toDate();
-      expect(service.changeDate(date, {} as any, '', mockForm)).toBe(undefined);
+      expect(service.changeDate({} as any, '',date)).toBe(undefined);
     });
 
     it('should be set date to if has attrs.to', () => {
@@ -100,7 +97,7 @@ describe('DateRangeService', () => {
       } as any;
       const mockId = '5';
       const date = moment('2020-11-27T09:55:55.588Z').toDate();
-      service.changeDate(date, mockAttrs, mockId, mockForm);
+      service.changeDate(mockAttrs, mockId, date);
       const range = service.rangeMap.get(mockAttrs.to);
 
       expect(range).toEqual({ min: date, max: moment('2024-11-27T09:55:55.588Z').toDate() });
@@ -113,7 +110,7 @@ describe('DateRangeService', () => {
       } as any;
       const mockId = '5';
       const date = moment('2020-11-27T09:55:55.588Z').toDate();
-      service.changeDate(date, mockAttrs, mockId, mockForm);
+      service.changeDate(mockAttrs, mockId, date);
       const range = service.rangeMap.get(mockAttrs.from);
 
       expect(range).toEqual({ min: moment('2016-11-27T09:55:55.588Z').toDate(), max: date });
