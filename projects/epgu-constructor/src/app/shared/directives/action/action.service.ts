@@ -90,9 +90,9 @@ export class ActionService {
 
   private sendAction<T>(action: ComponentActionDto): Observable<ActionApiResponse<T>> {
     const data = this.getActionDTO(action);
-
-    data.scenarioDto.display = this.htmlRemover.delete(data.scenarioDto.display);
-    return this.actionApiService.sendAction<T>(action.action, data);
+    const preparedData = JSON.parse(JSON.stringify(data));
+    preparedData.scenarioDto.display = this.htmlRemover.delete(preparedData.scenarioDto.display);
+    return this.actionApiService.sendAction<T>(action.action, preparedData);
   }
 
   private prepareNavigationData(action: ComponentActionDto, componentId: string): Navigation {
