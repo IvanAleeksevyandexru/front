@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormArray } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import { isUndefined, toBoolean } from '../../../../shared/constants/uttils';
 import {
   CustomComponent,
@@ -15,6 +15,7 @@ import {
 } from '../../components-list.types';
 import { ListItem } from 'epgu-lib';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
+import { DateRangeService } from '../date-range/date-range.service';
 
 @Injectable()
 export class ComponentListToolsService {
@@ -35,6 +36,8 @@ export class ComponentListToolsService {
 
   private prevValues: { [key: string]: string | number } = {};
 
+  constructor(private dateRangeService: DateRangeService) {}
+
   updateStatusElements(
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
@@ -42,7 +45,7 @@ export class ComponentListToolsService {
     components: Array<CustomComponent>,
     form: FormArray,
     shownElements: CustomListStatusElements,
-    dictionaries: CustomListDictionaries
+    dictionaries: CustomListDictionaries,
   ): CustomListStatusElements {
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id,
@@ -121,7 +124,7 @@ export class ComponentListToolsService {
         componentId,
         components,
         componentVal,
-        dictionaries
+        dictionaries,
       );
 
       if (dictionaryAttributeValue === undefined) {
@@ -150,16 +153,19 @@ export class ComponentListToolsService {
     component: CustomListFormGroup | CustomComponent,
     shownElements: CustomListStatusElements,
     form: FormArray,
-    dictionaries: CustomListDictionaries
+    dictionaries: CustomListDictionaries,
   ): CustomListStatusElements {
     const isComponentDependent = (arr = []): boolean =>
-      arr?.some((el) => el.relatedRel === component.id);
+      arr?.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
 
     const getDependentComponents = (components): Array<CustomComponent> =>
       components.filter((c: CustomComponent) => isComponentDependent(c.attrs?.ref));
 
     getDependentComponents(components).forEach((dependentComponent: CustomComponent) => {
       const reference = dependentComponent.attrs?.ref?.find((el) => el.relatedRel === component.id);
+      const referenceDate = dependentComponent.attrs?.ref?.find(
+        (el) => el.relatedDate === component.id,
+      );
 
       if (reference) {
         shownElements = this.updateStatusElements(
@@ -169,12 +175,52 @@ export class ComponentListToolsService {
           components,
           form,
           shownElements,
-          dictionaries
+          dictionaries,
+        );
+      }
+
+      if (referenceDate) {
+        this.updateLimitDate(referenceDate,
+          form,
+          component as CustomComponent,
+          dependentComponent
         );
       }
     });
 
     return shownElements;
+  }
+
+  updateLimitDate(
+    referenceDate: CustomComponentRef,
+    form: FormArray,
+    component: CustomComponent,
+    dependentComponent: CustomComponent,
+  ): void {
+    const dependentControl = form.controls.find(
+      (control) => control.value.id === dependentComponent.id,
+    );
+
+    if (dependentControl) {
+      const relatedDate = new Date(component.value);
+      const { attrs, id } = dependentControl.value;
+      const minDate = this.dateRangeService.getMinDate(attrs.ref, id, relatedDate);
+      const maxDate = this.dateRangeService.getMaxDate(attrs.ref, id, relatedDate);
+      this.dateRangeService.changeDate(relatedDate, attrs.ref, id);
+      // const attrsValue = dependentControl.get('attrs').value;
+      dependentControl.get('attrs').patchValue({
+        ...attrs,
+        minDate,
+        maxDate,
+      });
+
+      const isDateInRange =
+        dependentControl.value.value >= minDate?.getTime() &&
+        dependentControl.value.value <= maxDate?.getTime();
+      if (!isDateInRange) {
+        dependentControl.get('value').patchValue('');
+      }
+    }
   }
 
   createStatusElements(
