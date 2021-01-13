@@ -180,47 +180,11 @@ export class ComponentListToolsService {
       }
 
       if (referenceDate) {
-        this.updateLimitDate(referenceDate,
-          form,
-          component as CustomComponent,
-          dependentComponent
-        );
+        this.updateLimitDate(form, component as CustomComponent, dependentComponent);
       }
     });
 
     return shownElements;
-  }
-
-  updateLimitDate(
-    referenceDate: CustomComponentRef,
-    form: FormArray,
-    component: CustomComponent,
-    dependentComponent: CustomComponent,
-  ): void {
-    const dependentControl = form.controls.find(
-      (control) => control.value.id === dependentComponent.id,
-    );
-
-    if (dependentControl) {
-      const relatedDate = new Date(component.value);
-      const { attrs, id } = dependentControl.value;
-      const minDate = this.dateRangeService.getMinDate(attrs.ref, id, relatedDate);
-      const maxDate = this.dateRangeService.getMaxDate(attrs.ref, id, relatedDate);
-      this.dateRangeService.changeDate(relatedDate, attrs.ref, id);
-      // const attrsValue = dependentControl.get('attrs').value;
-      dependentControl.get('attrs').patchValue({
-        ...attrs,
-        minDate,
-        maxDate,
-      });
-
-      const isDateInRange =
-        dependentControl.value.value >= minDate?.getTime() &&
-        dependentControl.value.value <= maxDate?.getTime();
-      if (!isDateInRange) {
-        dependentControl.get('value').patchValue('');
-      }
-    }
   }
 
   createStatusElements(
@@ -398,5 +362,34 @@ export class ComponentListToolsService {
     }
 
     return value === componentVal?.id;
+  }
+
+  private updateLimitDate(
+    form: FormArray,
+    component: CustomComponent,
+    dependentComponent: CustomComponent,
+  ): void {
+    const dependentControl = form.controls.find(
+      (control) => control.value.id === dependentComponent.id,
+    );
+
+    if (dependentControl) {
+      const relatedDate = component.value !== '' ? new Date(component.value) : null;
+      const { attrs, id, value } = dependentControl.value;
+      const minDate = this.dateRangeService.getMinDate(attrs.ref, id, relatedDate);
+      const maxDate = this.dateRangeService.getMaxDate(attrs.ref, id, relatedDate);
+      this.dateRangeService.changeDate(attrs.ref, id, relatedDate);
+
+      dependentControl.get('attrs').patchValue({
+        ...attrs,
+        minDate: minDate || attrs.minDate,
+        maxDate: maxDate || attrs.maxDate,
+      });
+
+      const isDateInRange = value >= minDate?.getTime() && value <= maxDate?.getTime();
+      if (!isDateInRange) {
+        dependentControl.get('value').patchValue('');
+      }
+    }
   }
 }

@@ -10,7 +10,7 @@ import {
   CustomComponentAttrValidation,
   CustomScreenComponentTypes,
 } from '../../../component/components-list/components-list.types';
-import { DATE_FIELD, InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
+import { InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
 import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 
 const moment = moment_;
@@ -18,7 +18,9 @@ const moment = moment_;
 enum ValidationType {
   regExp = 'RegExp',
   regExpException = 'RegExpException',
+  date = 'Date',
 }
+type DateValidationCondition = '<' | '<=' | '>' | '>=';
 
 @Injectable()
 export class ValidationService {
@@ -115,20 +117,37 @@ export class ValidationService {
   }
 
   public dateValidator(component: CustomComponent): ValidatorFn {
+    const validations =
+      component.attrs.validation?.filter((validation) => validation.type === ValidationType.date) ||
+      [];
+
     return (control: AbstractControl): ValidationErrors => {
-      if (!this.dateRangeService.rangeMap.has(component.id)) return;
+      if (validations.length === 0) return;
 
-      const hasMinError = moment(control.value).isBefore(
-        this.dateRangeService.rangeMap.get(component.id).min ||
-          DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate),
-      );
-      const hasMaxError = moment(control.value).isAfter(
-        this.dateRangeService.rangeMap.get(component.id).max ||
-          DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate),
-      );
+      const minDate =
+        this.dateRangeService.rangeMap.get(component.id)?.min ||
+        DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
+      const maxDate =
+        this.dateRangeService.rangeMap.get(component.id)?.max ||
+        DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
 
-      if (hasMinError || hasMaxError) {
-        return this.validationErrorMsg(DATE_FIELD);
+      const error = validations.find((validation) => {
+        switch ((validation.condition as unknown) as DateValidationCondition) {
+          case '<':
+            return moment(control.value).isBefore(minDate);
+          case '<=':
+            return moment(control.value).isSameOrBefore(minDate);
+          case '>':
+            return moment(control.value).isAfter(maxDate);
+          case '>=':
+            return moment(control.value).isSameOrAfter(maxDate);
+          default:
+            return null;
+        }
+      });
+
+      if (error) {
+        return this.validationErrorMsg(error.errorMsg);
       }
     };
   }

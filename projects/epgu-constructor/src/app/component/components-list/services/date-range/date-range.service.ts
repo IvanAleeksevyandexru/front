@@ -19,7 +19,7 @@ export class DateRangeService {
    * @param attrs аттрибуты компонента календаря
    * @param id id компонента
    */
-  changeDate(date: DateRange, attrs: Attrs, id: string): void {
+  changeDate(attrs: Attrs, id: string, date: DateRange): void {
      if (!attrs?.limit) return;
 
     if (attrs?.to) {
