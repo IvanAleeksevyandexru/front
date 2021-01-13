@@ -5,7 +5,8 @@ import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
 import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
-import { AddPassportComponent } from '../../component/component-screen/components/add-passport/add-passport.component';
+// eslint-disable-next-line max-len
+import { AddPassportContainerComponent } from '../../component/component-screen/components/add-passport/container/add-passport-component-container.component';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressComponent } from '../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-address-screen/components/confirm-personal-user-address/confirm-personal-user-address.component';
 // eslint-disable-next-line max-len
@@ -74,7 +75,7 @@ describe('ComponentScreenComponent', () => {
           ConfirmPersonalUserDataComponent,
           ConfirmPersonalUserPhoneEmailComponent,
           RegistrationAddrComponent,
-          AddPassportComponent,
+          AddPassportContainerComponent,
           SelectChildrenScreenComponent,
           FieldListComponent,
           TimerComponent,
@@ -250,7 +251,7 @@ describe('ComponentScreenComponent', () => {
 
   it('should render epgu-constructor-add-passport', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-constructor-add-passport';
+      'epgu-constructor-screen-container epgu-constructor-add-passport-container';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 

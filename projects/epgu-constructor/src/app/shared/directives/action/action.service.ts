@@ -15,10 +15,11 @@ import {
   ComponentActionDto
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
-import { ScreenStore } from '../../../screen/screen.types';
+import { ScreenStore, ScreenTypes } from '../../../screen/screen.types';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ComponentStateForNavigate } from './action.interface';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -38,6 +39,7 @@ export class ActionService {
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
     private htmlRemover: HtmlRemoverService,
+    private currentAnswersService: CurrentAnswersService,
   ) {
   }
 
@@ -96,7 +98,7 @@ export class ActionService {
   }
 
   private prepareNavigationData(action: ComponentActionDto, componentId: string): Navigation {
-    const payload = this.getComponentStateForNavigate(action, componentId);
+    const payload = this.getComponentStateForNavigate(action, componentId || this.screenService.component.id);
     const params = this.getParams(action);
     const options = { ...this.getOptions(action), params };
     return { payload, options };
@@ -123,11 +125,19 @@ export class ActionService {
   }
 
   private getComponentStateForNavigate(action: ComponentActionDto, componentId: string): ComponentStateForNavigate {
-    componentId = componentId || this.screenService.component.id;
+    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов
+    if (this.screenService.display?.type === ScreenTypes.CUSTOM) {
+      return {
+        ...this.currentAnswersService.state as object
+      };
+    }
+    const value: string = typeof this.currentAnswersService.state === 'object'
+      ? JSON.stringify(this.currentAnswersService.state)
+      : this.currentAnswersService.state;
     return {
       [componentId]: {
         visited: true,
-        value: action.value,
+        value: value || action.value,
       },
     };
   }
