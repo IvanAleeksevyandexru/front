@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ModalService } from '../../../modal/modal.service';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
-import { getHiddenBlock } from '../../constants/uttils';
 import { Clarifications } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
-import { ScreenService } from '../../../screen/screen.service';
-import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import {
   ActionType,
   DTOActionAction,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { ModalService } from '../../../modal/modal.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { getHiddenBlock } from '../../constants/uttils';
 import { ActionService } from '../../directives/action/action.service';
 
 @Component({
@@ -23,7 +22,6 @@ export class OutputHtmlComponent {
 
   constructor(
     private modalService: ModalService,
-    private navigationService: NavigationService,
     private screenService: ScreenService,
     private actionService: ActionService,
   ) {}
