@@ -28,6 +28,7 @@ export class MvdTimeSlotsService implements TimeSlotsServiceInterface {
   public availableMonths: string[];
   public BOOKING_NAMESPACE = '28dffe80-c8f3-4fa0-ae6a-989ed4497e8c'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга мвд
   public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
+  public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
 
   private orderId;
   private serviceId: string;
