@@ -11,7 +11,8 @@ export interface TimeSlotsServiceInterface {
   BOOKING_NAMESPACE: string;
   bookId: string;
   department: DepartmentInterface;
-  isBookedDepartment: boolean
+  isBookedDepartment: boolean;
+  waitingTimeExpired: boolean;
 
   init(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): Observable<boolean>;
   getCurrentYear(): number;

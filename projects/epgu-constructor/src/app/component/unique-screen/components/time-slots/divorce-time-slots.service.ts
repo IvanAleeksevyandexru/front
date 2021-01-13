@@ -32,6 +32,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   public availableMonths: string[];
   public BOOKING_NAMESPACE = 'c4d4da75-53dc-47bc-a255-720750dfdb76'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга разводов
   public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
+  public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
 
   private orderId;
   private serviceId: string;
@@ -47,7 +48,8 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
-    if (this.bookedSlot && !this.isBookedDepartment) {
+    // Если есть забуканный слот и (сменился загс или слот просрочен)
+    if (this.bookedSlot && (!this.isBookedDepartment || this.waitingTimeExpired)) {
       return this.cancelSlot(this.bookId).pipe(
         switchMap((response) => {
           if (response.error) {
@@ -223,7 +225,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    if (!this.bookId || !this.isBookedDepartment) {
+    if (!this.bookId || !this.isBookedDepartment || this.waitingTimeExpired) {
       this.bookId = uuidv4();
     }
 
