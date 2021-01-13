@@ -31,6 +31,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   public bookId;
   public BOOKING_NAMESPACE = 'f3ed0310-84ca-496c-a0e8-b06e35897b5e'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга гибдд
   public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
+  public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
 
   private orderId;
   private serviceId: string;

@@ -20,9 +20,15 @@ interface objectWithSuggestions {
 export class AddressHelperService {
   // Провайдер поиска для передачи в lib-lookup
   // с функцией поиска для lib-lookup. Сам поиск осуществляется за счет suggestions дадаты
-  public provider = {
-    search: (searchString): Observable<DadataSuggestionsAddressForLookup[]> =>
-      searchString ? this.getCitySuggestions(searchString) : of([]),
+  public providers = {
+    city: {
+      search: (searchString): Observable<DadataSuggestionsAddressForLookup[]> =>
+        searchString ? this.getSuggestions(searchString) : of([]),
+    },
+    region: {
+      search: (searchString): Observable<DadataSuggestionsAddressForLookup[]> =>
+        searchString ? this.getSuggestions(searchString, { isRegion: 'true' }) : of([]),
+    },
   };
 
   constructor(private dictionaryApiService: DictionaryApiService) {}
@@ -30,9 +36,13 @@ export class AddressHelperService {
   /**
    * Получение городов из suggestions дадаты для lib-lookup. Добавляет к suggestions атрибуты id и text
    * @param qString - строка для поиска
+   * @param {{ [key: string]: string }} [params={ isCity: 'true' }] - параметры запроса.
    */
-  public getCitySuggestions(qString: string): Observable<Array<DadataSuggestionsAddressForLookup>> {
-    return this.dictionaryApiService.getDadataSuggestions(qString, { isCity: 'true' }).pipe(
+  public getSuggestions(
+    qString: string,
+    params: { [key: string]: string } = { isCity: 'true' },
+  ): Observable<Array<DadataSuggestionsAddressForLookup>> {
+    return this.dictionaryApiService.getDadataSuggestions(qString, params).pipe(
       pluck('suggestions', 'addresses'),
       concatMap((addresses: Array<DadataSuggestionsAddress>) => {
         return from(addresses);

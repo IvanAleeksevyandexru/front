@@ -2,7 +2,7 @@ import {
   DictionaryOptions,
   DictionarySimpleFilter,
   DictionarySubFilter,
-  DictionaryUnionKind
+  DictionaryUnionKind,
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 /**
@@ -27,12 +27,14 @@ export interface PaymentInfoInterface {
   recipientTaxAuthorityName: string;
   recipientTitle: string;
   sum: string;
+  DATAN?: string;
+  DATAK?: string;
 }
 
 /**
  * Интерфейс для статуса опчеченого или нет счета
  */
-export interface PaymentInfoForPaidStatus{
+export interface PaymentInfoForPaidStatus {
   date: string;
   eventWhen: string;
   number: number;
@@ -62,34 +64,33 @@ export interface PaymentDictionaryOptionsInterface extends DictionaryOptions {
   };
 }
 
-
 /**
  * Интерфейс для части опции запроса на создание оплаты
  */
-export interface SubPaymentDictionaryOptionInterface extends DictionarySubFilter{
+export interface SubPaymentDictionaryOptionInterface extends DictionarySubFilter {
   simple: DictionarySimpleFilter;
 }
 
 /**
  * Интерфейс массива информации о суб статусе в одном счете на оплату
  */
-export interface BillInfoSubStatusResponse{
+export interface BillInfoSubStatusResponse {
   code: string;
   name: string;
 }
 
-export interface BillInfoBillSumResponse{
+export interface BillInfoBillSumResponse {
   summId: number;
   summ: number;
 }
 
-export interface BillInfoAddAttrsResponse{
+export interface BillInfoAddAttrsResponse {
   value: string;
   name: string;
   title: string;
 }
 
-export interface BillInfoPayRequSitesResponse{
+export interface BillInfoPayRequSitesResponse {
   account: string;
   bankName: string;
   bic: string;
@@ -101,7 +102,7 @@ export interface BillInfoPayRequSitesResponse{
   receiverName: string;
 }
 
-export interface BillInfoPaidIdResponse{
+export interface BillInfoPaidIdResponse {
   id: number;
   amount: number;
   fee: number;
@@ -112,7 +113,7 @@ export interface BillInfoPaidIdResponse{
 /**
  * Интерфейс массива информации в одном счете на оплату
  */
-export interface BillInfoResponse{
+export interface BillInfoResponse {
   billId: number;
   billNumber: string;
   billName: string;
@@ -140,11 +141,11 @@ export interface BillInfoResponse{
 /**
  * Интерфейс массива информации о счетах на оплату
  */
-export interface BillsInfoResponse{
+export interface BillsInfoResponse {
   error?: {
     code: number;
     message: string;
-  },
+  };
   response: {
     bills: BillInfoResponse[];
     hasEditableSumm: boolean;
@@ -155,20 +156,20 @@ export interface BillsInfoResponse{
     unidentifiedBillIds: number[];
     fkSmevVersion: number;
     hasUnidentifiedBills: boolean;
-  }
+  };
 }
 
 /**
  * Интерфейс филтра опции оплаты
  */
-export interface IFilterRegItems{
+export interface IFilterRegItems {
   value: string;
 }
 
 /**
  * Интерфейс ошибки оплаты
  */
-export interface HttpPaymentError{
+export interface HttpPaymentError {
   code: number;
   message: string;
   status: number;
@@ -198,7 +199,7 @@ export interface PaymentInfoValue {
 /**
  * Объект для экпорта в бэк
  */
-export interface PaymentInfoEventValue{
+export interface PaymentInfoEventValue {
   uin: string;
   amount: string;
   amountWithoutDiscount: string;
@@ -206,4 +207,3 @@ export interface PaymentInfoEventValue{
   receiver: string;
   billId: number;
 }
-

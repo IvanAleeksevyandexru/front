@@ -26,6 +26,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ActionDirective } from './action.directive';
+import { ActionService } from './action.service';
 
 
 
@@ -142,6 +143,7 @@ describe('ActionDirective', () => {
         { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         HtmlRemoverService,
+        ActionService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })

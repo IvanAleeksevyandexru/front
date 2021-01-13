@@ -10,6 +10,7 @@ import { isDefined } from '@angular/compiler/src/util';
 
 interface Error {
   message: string;
+  stack: string;
 }
 
 interface ErrorParams {
@@ -17,6 +18,7 @@ interface ErrorParams {
   id: string;
   name: string;
   orderId: string;
+  stack: string;
 }
 
 @Injectable({
@@ -42,6 +44,7 @@ export class GlobalErrorHandler implements ErrorHandler {
           : this.utils.isValidOrderId(store.orderId)
             ? store.orderId
             : store.callBackOrderId,
+        stack: error.message ? error.stack : null,
       };
 
       errorParams = this.utils.filterIncorrectObjectFields(errorParams) as ErrorParams;

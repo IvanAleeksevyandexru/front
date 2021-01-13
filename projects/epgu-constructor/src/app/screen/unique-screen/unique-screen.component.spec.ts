@@ -28,12 +28,14 @@ import {
 import { NavigationPayload } from '../../form-player/form-player.types';
 import { By } from '@angular/platform-browser';
 import { ScreenTypes } from '../screen.types';
-import { of } from 'rxjs';
+// eslint-disable-next-line max-len
+import { InformationCenterMvdComponent } from '../../component/unique-screen/components/information-center-mvd/information-center-mvd.component';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
   id: 'id1',
   type: 'type1',
+  valueFromCache: false
 };
 
 const displayDtoSample: DisplayDto = {
@@ -75,6 +77,7 @@ describe('UniqueScreenComponent', () => {
           BillInfoComponent,
           UploadAndEditPhotoComponent,
           PaymentTypeSelectorComponent,
+          InformationCenterMvdComponent
         ),
       ],
       providers: [
