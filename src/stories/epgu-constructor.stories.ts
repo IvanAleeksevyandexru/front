@@ -17,6 +17,7 @@ import { SignatureApplicationComponent } from '../../projects/epgu-constructor/s
 import { SignatureApplicationModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/signature-application/signature-application.module';
 import {
   ComponentDto,
+  DisplayDto,
   DTOActionAction,
 } from '../../projects/epgu-constructor/src/app/form-player/services/form-player-api/form-player-api.types';
 import { NavigationService } from '../../projects/epgu-constructor/src/app/core/services/navigation/navigation.service';
@@ -25,6 +26,11 @@ import { ConfigService } from '../../projects/epgu-constructor/src/app/core/serv
 import { LocationService } from '../../projects/epgu-constructor/src/app/core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../projects/epgu-constructor/src/app/core/providers/window.provider';
 import { ModalService } from '../../projects/epgu-constructor/src/app/modal/modal.service';
+import { UnusedPaymentsModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/unused-payments.module';
+import { UnusedPaymentsComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/component/unused-payments.component';
+import { ScreenTypes } from '../../projects/epgu-constructor/src/app/screen/screen.types';
+
+import { UnusedPaymentInterface } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/unused-payment.interface';
 import { AddPassportModule } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/add-passport.module';
 import { AddPassportComponent } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/component/add-passport.component';
 import { ValidationService } from '../../projects/epgu-constructor/src/app/shared/services/validation/validation.service';
@@ -39,6 +45,7 @@ export default {
         PassportModule,
         AnswerButtonModule,
         SignatureApplicationModule,
+        UnusedPaymentsModule,
         AddPassportModule,
       ],
       schemas: [],
@@ -128,6 +135,30 @@ SignatureApplication.args = {
       action: DTOActionAction.editEmail,
     },
   ],
+};
+
+const DisplayDtoSample: DisplayDto = {
+  components: [],
+  header: '',
+  id: '',
+  terminal: false,
+  type: ScreenTypes.COMPONENT,
+  name: 'name',
+  submitLabel: 'submitLabel',
+};
+const paymentsDataSample: UnusedPaymentInterface[] = [
+  { uin: '123', payDate: 123123123, amount: 123, link: 'http://link' },
+];
+
+export const UnusedPayments = (args: UnusedPaymentsComponent) => ({
+  component: UnusedPaymentsComponent,
+  props: args,
+});
+
+UnusedPayments.args = {
+  showNav: true,
+  data: DisplayDtoSample,
+  paymentsData: paymentsDataSample,
 };
 
 export const AddPassport = (args: AddPassportComponent) => ({

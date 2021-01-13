@@ -1,8 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { ModalService } from '../../../modal/modal.service';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
-import { getHiddenBlock } from '../../constants/uttils';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Clarifications } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
+import {
+  ActionType,
+  DTOActionAction,
+} from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { ModalService } from '../../../modal/modal.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { getHiddenBlock } from '../../constants/uttils';
+import { ActionService } from '../../directives/action/action.service';
 
 @Component({
   selector: 'epgu-constructor-output-html',
@@ -10,12 +16,15 @@ import { Clarifications } from '../../../component/unique-screen/services/terra-
   styleUrls: ['./output-html.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OutputHtmlComponent implements OnInit {
+export class OutputHtmlComponent {
   @Input() html: string;
   @Input() clarifications: Clarifications;
-  constructor(private modalService: ModalService) {}
 
-  ngOnInit(): void {}
+  constructor(
+    private modalService: ModalService,
+    private screenService: ScreenService,
+    private actionService: ActionService,
+  ) {}
 
   showModal(targetClarification: { text?: string }, targetElementId: string): void {
     const clarifications = { ...this.clarifications };
@@ -28,10 +37,24 @@ export class OutputHtmlComponent implements OnInit {
   }
 
   clickToInnerHTML($event: MouseEvent, el: HTMLElement): void {
-    const targetElementId = ($event.target as HTMLElement).id;
-    if (targetElementId) {
-      this.toggleHiddenBlockOrShowModal(el, targetElementId);
+    const targetElement = $event.target as HTMLElement;
+    const targetElementActionType = targetElement.getAttribute('data-action-type') as ActionType;
+    const targetElementActionValue = targetElement.getAttribute('data-action-value');
+
+    if (targetElementActionType) {
+      this.handleAction(targetElementActionType, targetElementActionValue);
+    } else if (targetElement.id) {
+      this.toggleHiddenBlockOrShowModal(el, targetElement.id);
     }
+  }
+
+  private handleAction(type: ActionType, value?: string): void {
+    const action: DTOActionAction =
+      type === ActionType.nextStep ? DTOActionAction.getNextStep : DTOActionAction.getPrevStep;
+    this.actionService.switchAction(
+      { label: '', type, action, value },
+      this.screenService.component.id,
+    );
   }
 
   private toggleHiddenBlockOrShowModal(el: HTMLElement, targetElementId: string): void {

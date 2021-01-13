@@ -5,71 +5,73 @@ import {
   PaymentDictionaryOptionsInterface,
   PaymentInfoForPaidStatusData,
   PaymentInfoInterface,
-  PaymentsAttrs
+  PaymentsAttrs,
 } from './payment.types';
+import { ConfigService } from '../../../../core/services/config/config.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryConditions,
-  DictionaryUnionKind
+  DictionaryUnionKind,
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
-import { ConfigService } from '../../../../core/services/config/config.service';
 
 const billsInfo = {
   error: {
     code: 0,
-    message: ''
+    message: '',
   },
   response: {
-    bills: [{
-      billId: 0,
-      billNumber: '',
-      billName: '',
-      signature: '',
-      billDate: '',
-      createDate: '',
-      billStatus: {
-        code: '',
-        name: ''
+    bills: [
+      {
+        billId: 0,
+        billNumber: '',
+        billName: '',
+        signature: '',
+        billDate: '',
+        createDate: '',
+        billStatus: {
+          code: '',
+          name: '',
+        },
+        isPaid: false,
+        amount: 3244,
+        currencyCode: '',
+        comment: '',
+        service: {
+          code: '',
+          name: '',
+        },
+        billSource: {
+          code: '',
+          name: '',
+        },
+        serviceType: {
+          code: '',
+          name: '',
+        },
+        billSumm: [],
+        payRequsites: {
+          account: '',
+          bankName: '',
+          bic: '',
+          kbk: '',
+          oktmo: '',
+          payPurpose: '',
+          receiverInn: '',
+          receiverKpp: '',
+          receiverName: '',
+        },
+        paidIds: [],
+        addAttrs: [],
+        selectedByWhiteList: false,
+        serviceCategory: {
+          code: '',
+          name: '',
+        },
+        isMessage: false,
+        actualBeforeDate: '',
       },
-      isPaid: false,
-      amount: 3244,
-      currencyCode: '',
-      comment: '',
-      service: {
-        code: '',
-        name: ''
-      },
-      billSource: {
-        code: '',
-        name: ''
-      },
-      serviceType: {
-        code: '',
-        name: ''
-      },
-      billSumm: [],
-      payRequsites: {
-        account: '',
-        bankName: '',
-        bic: '',
-        kbk: '',
-        oktmo: '',
-        payPurpose: '',
-        receiverInn: '',
-        receiverKpp: '',
-        receiverName: ''
-      },
-      paidIds: [],
-      addAttrs: [],
-      selectedByWhiteList: false,
-      serviceCategory: {
-        code: '',
-        name: ''
-      },
-      isMessage: false,
-      actualBeforeDate: '',
-    }],
+    ],
     hasEditableSumm: false,
     userHasAddress: true,
     addressValid: true,
@@ -77,8 +79,8 @@ const billsInfo = {
     warning: false,
     unidentifiedBillIds: [],
     fkSmevVersion: 0,
-    hasUnidentifiedBills: false
-  }
+    hasUnidentifiedBills: false,
+  },
 };
 
 /**
@@ -91,7 +93,7 @@ export class PaymentServiceStub {
   constructor(
     public config: ConfigService,
     public dictionaryApiService: DictionaryApiService,
-    public screenService: ScreenService
+    public screenService: ScreenService,
   ) {}
 
   /**
@@ -120,7 +122,11 @@ export class PaymentServiceStub {
    * @param code - идентификатор заявителя
    * @param attributeValues - дополнительные параметры
    */
-  getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<{ value: string }> {
+  getUinByOrderId(
+    orderId: string,
+    code: number = 1,
+    attributeValues: PaymentInfoInterface,
+  ): Observable<{ value: string }> {
     return of({ value: 'PRIOR234324234234234' });
   }
 
@@ -130,7 +136,7 @@ export class PaymentServiceStub {
    * @param orderId - идентификатор заявления
    */
   getBillsInfoByUIN(uin: string | number, orderId: string): Observable<BillsInfoResponse> {
-   return of(billsInfo);
+    return of(billsInfo);
   }
 
   /**
@@ -147,18 +153,23 @@ export class PaymentServiceStub {
    * @param orderId - идентификатор заявления
    * @param code - идентификатор заявителя
    */
-  getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<PaymentInfoForPaidStatusData> {
+  getPaymentStatusByUIN(
+    orderId: string,
+    code: number = 1,
+  ): Observable<PaymentInfoForPaidStatusData> {
     return of({
-      data: [{
-        date: '',
-        eventWhen: '',
-        number: 0,
-        paid: false,
-        source: '',
-        status: '',
-        uin: '',
-      }],
-      total: 1000
+      data: [
+        {
+          date: '',
+          eventWhen: '',
+          number: 0,
+          paid: false,
+          source: '',
+          status: '',
+          uin: '',
+        },
+      ],
+      total: 1000,
     });
   }
 
@@ -201,7 +212,7 @@ export class PaymentServiceStub {
       recipientTOFK: '',
       recipientTaxAuthorityName: '',
       recipientTitle: '',
-      sum: '4564'
+      sum: '4564',
     });
   }
 
@@ -215,17 +226,19 @@ export class PaymentServiceStub {
       filter: {
         union: {
           unionKind: DictionaryUnionKind.AND,
-          subs: [{
-            simple: {
-              attributeName: '',
-              condition: DictionaryConditions.EQUALS,
-              value: {
-                asString: ''
-              }
-            }
-          }]
-        }
-      }
+          subs: [
+            {
+              simple: {
+                attributeName: '',
+                condition: DictionaryConditions.EQUALS,
+                value: {
+                  asString: '',
+                },
+              },
+            },
+          ],
+        },
+      },
     };
   }
 

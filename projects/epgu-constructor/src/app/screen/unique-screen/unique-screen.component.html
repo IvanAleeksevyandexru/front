@@ -1,7 +1,10 @@
 <ng-container [ngSwitch]="screenService.componentType$ | async">
-  <epgu-constructor-unused-payments
+  <epgu-constructor-information-center-mvd
+    *ngSwitchCase="uniqueComponentName.cityDepartment"
+  ></epgu-constructor-information-center-mvd>
+  <epgu-constructor-unused-payments-container
     *ngSwitchCase="uniqueComponentName.unusedPayments"
-  ></epgu-constructor-unused-payments>
+  ></epgu-constructor-unused-payments-container>
   <epgu-constructor-select-map-object
     *ngSwitchCase="uniqueComponentName.mapService"
   ></epgu-constructor-select-map-object>
