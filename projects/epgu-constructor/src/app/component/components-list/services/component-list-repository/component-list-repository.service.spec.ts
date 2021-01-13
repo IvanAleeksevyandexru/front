@@ -4,6 +4,9 @@ import { ComponentListRepositoryService } from './component-list-repository.serv
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../shared/services/dictionary-api/dictionary-api.service.stub';
 import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
+import { DateRangeService } from '../date-range/date-range.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 
 describe('ComponentListRepositoryService', () => {
   let service: ComponentListRepositoryService;
@@ -14,6 +17,8 @@ describe('ComponentListRepositoryService', () => {
         ComponentListRepositoryService,
         ComponentListToolsService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        DateRangeService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
       ],
     });
     service = TestBed.inject(ComponentListRepositoryService);

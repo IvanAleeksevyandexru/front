@@ -168,9 +168,6 @@
         [data]="componentData"
       >
         <epgu-constructor-constructor-date-picker
-          (dateSelectedEvent)="
-            dateRangeService.changeDate($event, componentData.value?.attrs, componentData.value?.id, formService.form)
-          "
           (clearedEvent)="
             dateRangeService.clearDate(componentData.value?.id, componentData.value?.attrs)
           "
@@ -179,16 +176,8 @@
           [name]="componentData.value?.id"
           [control]="$any(componentData.get('value'))"
           [readOnly]="componentData.value?.attrs?.readonly"
-          [minDate]="
-            dateRangeService.getMinDate(componentData.value, formService.form) ||
-            componentData.value?.attrs?.minDate ||
-            '-120y'
-          "
-          [maxDate]="
-            dateRangeService.getMaxDate(componentData.value, formService.form) ||
-            componentData.value?.attrs?.maxDate ||
-            '+50y'
-          "
+          [minDate]="componentData.value?.attrs?.minDate || '-120y'"
+          [maxDate]="componentData.value?.attrs?.maxDate || '+50y'"
           [clearable]="true"
           [align]="'left'"
           [brokenDateFixStrategy]="componentData.value?.attrs?.brokenDateFixStrategy || brokenDateFixStrategy"
