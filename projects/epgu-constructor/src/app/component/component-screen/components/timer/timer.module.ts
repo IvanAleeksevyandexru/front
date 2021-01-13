@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CoreModule } from '../../../../core/core.module';
-import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { TimerPipe } from './pipes/timer.pipe';

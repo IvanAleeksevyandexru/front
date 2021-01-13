@@ -1,18 +1,17 @@
 import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
-
 import { Observable } from 'rxjs';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
+import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
 import { LocationService } from '../../../../../../core/services/location/location.service';
-import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
-import { ScreenService } from '../../../../../../screen/screen.service';
-import { LAST_SCENARIO_KEY } from '../../../../../../shared/constants/form-player';
-import { SignatureApplicationData } from '../../models/application.interface';
 import {
   ComponentActionDto,
   ComponentDto,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { LAST_SCENARIO_KEY } from '../../../../../../shared/constants/form-player';
+import { SignatureApplicationData } from '../../models/application.interface';
 
 @Component({
   selector: 'epgu-constructor-signature-application-container',

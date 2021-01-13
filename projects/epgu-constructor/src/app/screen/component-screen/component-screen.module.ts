@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ComponentScreenComponentsModule } from '../../component/component-screen/component-screen-components.module';
 import { TimerModule } from '../../component/component-screen/components/timer/timer.module';
 import { ComponentsListModule } from '../../component/components-list/components-list.module';
-import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { BaseModule } from '../../shared/base.module';
 import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';

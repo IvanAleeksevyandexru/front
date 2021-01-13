@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { LoadService } from 'epgu-lib';
+import { LoggerService } from '../logger/logger.service';
+import { LoggerServiceStub } from '../logger/logger.service.stub';
 import { ConfigService } from './config.service';
 import { Config } from './config.types';
 import { LoadServiceStub } from './load-service-stub';
@@ -64,7 +66,11 @@ describe('ConfigService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ConfigService, { provide: LoadService, useClass: LoadServiceStub }],
+      providers: [
+        ConfigService,
+        { provide: LoadService, useClass: LoadServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+      ],
     });
     service = TestBed.inject(ConfigService);
   });

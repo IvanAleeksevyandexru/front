@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { EventBusService } from '../form-player/services/event-bus/event-bus.service';
+import { EventBusService } from '../core/services/event-bus/event-bus.service';
 import { ModalModule } from '../modal/modal.module';
 import { BaseModule } from '../shared/base.module';
 import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';

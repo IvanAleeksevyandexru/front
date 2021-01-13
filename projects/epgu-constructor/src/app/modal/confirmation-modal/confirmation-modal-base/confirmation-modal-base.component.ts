@@ -1,6 +1,6 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
-import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ConfirmationModal } from '../confirmation-modal.interface';
 import { ConfirmationModalBaseButton } from './confirmation-modal-base.interface';
 

@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
 import { ConfigService } from '../../../../../core/services/config/config.service';
+import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
 import { ConfirmationModalBaseButton } from '../../../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.interface';
+import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
 import { uploadPhotoElemId } from '../upload-and-edit-photo.constant';
 import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
 

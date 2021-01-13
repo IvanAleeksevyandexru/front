@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { startWith, takeUntil } from 'rxjs/operators';
-
 import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { Passport } from '../add-passport.models';

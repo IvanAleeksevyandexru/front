@@ -1,18 +1,18 @@
-import { PaymentComponent } from './payment.component';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ScreenService } from '../../../../../../screen/screen.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { PaymentService } from '../../payment.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
-import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { LocationService } from '../../../../../../core/services/location/location.service';
-import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
-import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
+import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
+import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
+import { LocationService } from '../../../../../../core/services/location/location.service';
+import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
+import { PaymentService } from '../../payment.service';
+import { PaymentComponent } from './payment.component';
 
 let mockData: ComponentDto;
 

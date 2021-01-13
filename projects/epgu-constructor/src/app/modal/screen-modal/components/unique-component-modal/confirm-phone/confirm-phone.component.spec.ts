@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DateRangeService } from '../../../../../component/components-list/services/date-range/date-range.service';
 import { CoreModule } from '../../../../../core/core.module';
+import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../../../../form-player/services/event-bus/event-bus.service';
 import {
   ApplicantAnswersDto,
-  ComponentDto,
+  ComponentDto
 } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -16,7 +17,6 @@ import { ConstructorPlainInputModule } from '../../../../../shared/components/co
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ConfirmPhoneComponent } from './confirm-phone.component';
-import { DateRangeService } from '../../../../../component/components-list/services/date-range/date-range.service';
 
 describe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;

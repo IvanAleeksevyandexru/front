@@ -1,8 +1,8 @@
 import { Directive, Input, OnChanges } from '@angular/core';
 import { Subject, timer } from 'rxjs';
 import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
 
 @Directive({
   selector: '[epgu-constructor-counter]',

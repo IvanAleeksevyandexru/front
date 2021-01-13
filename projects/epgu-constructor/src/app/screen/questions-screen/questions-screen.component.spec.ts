@@ -6,11 +6,11 @@ import { MockComponents, MockDirective, MockModule, MockPipe } from 'ng-mocks';
 import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 import { ConfigService } from '../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { LocationService } from '../../core/services/location/location.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
   ActionType,
   ClarificationsDto,

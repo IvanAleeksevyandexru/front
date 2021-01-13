@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import { ModalModule } from '../../modal/modal.module';
 import { BaseModule } from '../../shared/base.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';

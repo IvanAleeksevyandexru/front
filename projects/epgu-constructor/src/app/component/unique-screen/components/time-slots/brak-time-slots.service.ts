@@ -4,12 +4,13 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import {
   DictionaryConditions,
   DictionaryOptions,
   DictionaryResponse,
-  DictionaryUnionKind,
+  DictionaryUnionKind
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
@@ -23,7 +24,7 @@ import {
   TimeSlotReq,
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface,
+  ZagsDepartmentInterface
 } from './time-slots.types';
 
 const moment = moment_;
@@ -49,6 +50,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
     private dictionaryApiService: DictionaryApiService,
+    private loggerService: LoggerService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -59,7 +61,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
             this.errorMessage = response.error.errorDetail
               ? response.error.errorDetail.errorMessage
               : 'check log';
-            console.log(response.error);
+            this.loggerService.log([response.error]);
             return of(null);
           }
           return this.book(selectedSlot);
@@ -80,7 +82,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
           this.errorMessage = response.error.errorDetail
             ? response.error.errorDetail.errorMessage
             : 'check log';
-          console.log(response.error);
+          this.loggerService.log([response.error]);
         } else {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;
@@ -222,7 +224,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
             this.errorMessage = response.error.errorDetail
               ? response.error.errorDetail.errorMessage
               : 'check log';
-            console.log(response.error);
+            this.loggerService.log([response.error]);
           } else {
             this.bookedSlot = null;
             this.bookId = null;

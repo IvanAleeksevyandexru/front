@@ -1,13 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, throwError } from 'rxjs';
-import { catchError, concatMap, filter, tap, map } from 'rxjs/operators';
-import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { catchError, concatMap, filter, map, tap } from 'rxjs/operators';
+import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { UnusedPaymentInterface } from './unused-payment.interface';
 import { UnusedPaymentsService } from './unused-payments.service';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
 
 @Component({
   selector: 'epgu-constructor-unused-payments-container',

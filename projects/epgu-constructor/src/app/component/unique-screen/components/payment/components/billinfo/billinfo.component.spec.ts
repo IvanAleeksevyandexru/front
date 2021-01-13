@@ -1,18 +1,18 @@
 
 // Новый способ оплаты
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ScreenService } from '../../../../../../screen/screen.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
-import { PaymentService } from '../../payment.service';
-import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { LocationService } from '../../../../../../core/services/location/location.service';
+import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
+import { LocationService } from '../../../../../../core/services/location/location.service';
+import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
+import { PaymentService } from '../../payment.service';
 import { BillInfoComponent } from './billinfo.component';
-import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
 
 const mockData: ComponentDto = {
   attrs: {},

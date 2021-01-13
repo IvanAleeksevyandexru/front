@@ -7,10 +7,10 @@ import {
   OnInit,
 } from '@angular/core';
 import * as moment_ from 'moment';
-import { EventBusService } from 'projects/epgu-constructor/src/app/form-player/services/event-bus/event-bus.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/services/config/config.service';
+import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';

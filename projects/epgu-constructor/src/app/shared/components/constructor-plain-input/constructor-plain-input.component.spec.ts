@@ -2,19 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ValidationShowOn } from 'epgu-lib';
+import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
-import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { BaseModule } from '../../base.module';
 import { CurrencyModule } from '../../directives/currency/currency.module';
 import { TextTransformModule } from '../../directives/text-transform/text-transform.module';
 import { TrimModule } from '../../directives/trim/trim.module';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
-import { BaseModule } from '../../base.module';
 import { TextTransform } from '../../types/textTransform';
 import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
-import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 
 describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;

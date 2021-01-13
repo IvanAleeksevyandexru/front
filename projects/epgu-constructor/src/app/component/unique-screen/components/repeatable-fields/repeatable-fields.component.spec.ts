@@ -2,7 +2,7 @@ import { ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
-import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
+import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';

@@ -18,9 +18,9 @@ import { RegistrationAddrComponent } from '../../component/component-screen/comp
 // eslint-disable-next-line max-len
 import { SelectChildrenScreenComponent } from '../../component/component-screen/components/select-children/select-children-screen.component';
 import { TimerComponent } from '../../component/component-screen/components/timer/timer.component';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
   ComponentActionDto,
   ComponentDto,
