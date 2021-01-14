@@ -1,0 +1,12 @@
+@import '../../../../../../../styles/core/index';
+
+.card {
+  &__content {
+    margin-top: 24px;
+  }
+  &__select {
+    & select {
+      width: 100%;
+    }
+  }
+}

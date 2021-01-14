@@ -7,7 +7,7 @@ import { CustomScreenComponentTypes } from '../components-list.types';
   selector: 'epgu-constructor-component-item',
   templateUrl: './component-item.component.html',
   styleUrls: ['./component-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ComponentItemComponent implements OnInit {
   @Input() data: AbstractControl;

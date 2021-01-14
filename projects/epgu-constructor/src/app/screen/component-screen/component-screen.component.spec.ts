@@ -16,7 +16,7 @@ import { ConfirmPersonalUserPhoneEmailComponent } from '../../component/componen
 // eslint-disable-next-line max-len
 import { RegistrationAddrComponent } from '../../component/component-screen/components/confirm-personal-user/screens/registration-addr/components/registration-addr/registration-addr.component';
 // eslint-disable-next-line max-len
-import { SelectChildrenScreenComponent } from '../../component/component-screen/components/select-children/select-children-screen.component';
+import { SelectChildrenScreenContainerComponent } from '../../component/component-screen/components/select-children/container/select-children-screen-container.component';
 import { TimerComponent } from '../../component/component-screen/components/timer/timer.component';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
@@ -76,7 +76,7 @@ describe('ComponentScreenComponent', () => {
           ConfirmPersonalUserPhoneEmailComponent,
           RegistrationAddrComponent,
           AddPassportContainerComponent,
-          SelectChildrenScreenComponent,
+          SelectChildrenScreenContainerComponent,
           FieldListComponent,
           TimerComponent,
           AnswerButtonComponent,

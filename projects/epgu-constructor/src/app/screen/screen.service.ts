@@ -30,8 +30,7 @@ export class ScreenService extends ScreenContent {
   }
 
   public getCompFromDisplay(componentId: string): ScreenStoreComponentDtoI {
-    const component = this.display?.components.find((comp) => comp.id === componentId);
-    return component;
+    return this.display?.components.find((comp) => comp.id === componentId);
   }
 
   public getCompValueFromCachedAnswers(componentId?: string): string {
