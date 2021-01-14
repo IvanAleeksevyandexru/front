@@ -157,7 +157,7 @@ export class PaymentService {
         const { items } = response;
         return items.some((item: DictionaryItem) => {
           const info = item.attributeValues as PaymentInfoInterface;
-          return !info.DATAK;
+          return !info.DATAK || info.DATAK === '';
         })
           ? of(response)
           : throwError(null);
