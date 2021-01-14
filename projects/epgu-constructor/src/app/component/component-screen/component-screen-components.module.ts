@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { BaseModule } from '../../shared/base.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';

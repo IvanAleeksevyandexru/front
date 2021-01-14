@@ -1,18 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ButtonComponent, LoaderComponent } from 'epgu-lib';
+import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
-
-import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { NavigationComponent } from '../../../../shared/components/navigation/navigation.component';
+import { ButtonComponent, LoaderComponent } from 'epgu-lib';
+import { of } from 'rxjs';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
+import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
+import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../../core/services/local-storage/local-storage.service.stub';
+import { LocationService } from '../../../../core/services/location/location.service';
+import { LocationServiceStub } from '../../../../core/services/location/location.service.stub';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
-import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
-
-import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-
-import { SafePipe } from '../../../../shared/pipes/safe/safe.pipe';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import {
   ApplicantAnswersDto,
@@ -20,31 +22,23 @@ import {
   ComponentDto,
   DisplayDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
-
-import { of } from 'rxjs';
 import { ModalService } from '../../../../modal/modal.service';
-import { ImgPrefixerPipe } from '../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
-import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
-import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
-import { LocationService } from '../../../../core/services/location/location.service';
-
-import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../../../core/services/local-storage/local-storage.service.stub';
-import { LocationServiceStub } from '../../../../core/services/location/location.service.stub';
-import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
-import { UnusedPaymentsContainerComponent } from './unused-payments-container.component';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { ScreenTypes } from '../../../../screen/screen.types';
+import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
+import { NavigationComponent } from '../../../../shared/components/navigation/navigation.component';
+import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
+import { RadioTaxComponent } from '../../../../shared/components/radio-tax/radio-tax.component';
+import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
+import { ImgPrefixerPipe } from '../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
+import { SafePipe } from '../../../../shared/pipes/safe/safe.pipe';
 import { UnusedPaymentsComponent } from './component/unused-payments.component';
 import { UnusedPaymentInterface } from './unused-payment.interface';
-import { ScreenTypes } from '../../../../screen/screen.types';
+import { UnusedPaymentsContainerComponent } from './unused-payments-container.component';
 import { UnusedPaymentsService } from './unused-payments.service';
 import { UnusedPaymentsServiceStub } from './unused-payments.service.stub';
-import { RadioTaxComponent } from '../../../../shared/components/radio-tax/radio-tax.component';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
-import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
-import { By } from '@angular/platform-browser';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;

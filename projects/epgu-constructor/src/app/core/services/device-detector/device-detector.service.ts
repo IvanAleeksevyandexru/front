@@ -18,7 +18,10 @@ export class DeviceDetectorService {
   isDesktop: boolean;
   isWebView: boolean;
 
-  constructor(private loadService: LoadService, private smuEventsService: SmuEventsService) {
+  constructor(
+    private loadService: LoadService,
+    private smuEventsService: SmuEventsService,
+  ) {
     this.initState();
   }
 
@@ -33,7 +36,6 @@ export class DeviceDetectorService {
     this.isTablet = deviceType === LoadServiceDeviceType.tab;
     this.isDesktop = deviceType === LoadServiceDeviceType.desk;
     this.isWebView = this.smuEventsService.smuInit;
-    console.log('deviceType:', deviceType);
   }
 
   /**

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import { ConfirmationModalComponent } from './confirmation-modal.component';
 
 

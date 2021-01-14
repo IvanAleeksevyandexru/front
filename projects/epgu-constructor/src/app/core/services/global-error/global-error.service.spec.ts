@@ -5,6 +5,8 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
+import { LoggerService } from '../logger/logger.service';
+import { LoggerServiceStub } from '../logger/logger.service.stub';
 import { UtilsService } from '../utils/utils.service';
 import { GlobalErrorHandler } from './global-error.service';
 import { HealthServiceStub } from './health.service.stub';
@@ -22,6 +24,7 @@ describe('GlobalErrorHandler', () => {
         CachedAnswersService,
         UtilsService,
         { provide: HealthService, useClass: HealthServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
       ],
     });
     healthService = TestBed.inject(HealthService);

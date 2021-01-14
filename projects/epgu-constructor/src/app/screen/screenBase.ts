@@ -1,8 +1,8 @@
 import { Injector } from '@angular/core';
+import { EventBusService } from '../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../form-player/form-player.types';
-import { EventBusService } from '../form-player/services/event-bus/event-bus.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenService } from './screen.service';
 

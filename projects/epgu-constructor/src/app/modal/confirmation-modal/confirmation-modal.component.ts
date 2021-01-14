@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import { ModalService } from '../modal.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { ConfirmationModal } from './confirmation-modal.interface';

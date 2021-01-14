@@ -1,10 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FileUploadScreenComponent } from './file-upload-screen.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { EventBusService } from '../../../../form-player/services/event-bus/event-bus.service';
-import { ComponentBase } from '../../../../screen/screen.types';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { ComponentBase } from '../../../../screen/screen.types';
+import { FileUploadScreenComponent } from './file-upload-screen.component';
 
 // TODO: Need to refactoring component
 xdescribe('FileUploadScreenComponent', () => {

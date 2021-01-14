@@ -1,37 +1,39 @@
-import { Meta } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
-import { ActionButtonComponent } from '../../projects/epgu-constructor/src/app/shared/components/action-button/action-button.component';
-import { ActionButtonModule } from '../../projects/epgu-constructor/src/app/shared/components/action-button/action-button.module';
-import { PassportModule } from '../../projects/epgu-constructor/src/app/shared/components/add-passport/passport.module';
-import { PassportComponent } from '../../projects/epgu-constructor/src/app/shared/components/add-passport/passport.component';
-import { TextTransform } from '../../projects/epgu-constructor/src/app/shared/types/textTransform';
-import { AnswerButtonComponent } from '../../projects/epgu-constructor/src/app/shared/components/answer-button/answer-button.component';
-import { AnswerButtonModule } from '../../projects/epgu-constructor/src/app/shared/components/answer-button/answer-button.module';
-import { EventBusService } from '../../projects/epgu-constructor/src/app/form-player/services/event-bus/event-bus.service';
-import { ScreenService } from '../../projects/epgu-constructor/src/app/screen/screen.service';
-import { CurrentAnswersService } from '../../projects/epgu-constructor/src/app/screen/current-answers.service';
-import { CachedAnswersService } from '../../projects/epgu-constructor/src/app/shared/services/cached-answers/cached-answers.service';
-import { UtilsService } from '../../projects/epgu-constructor/src/app/core/services/utils/utils.service';
-import { ValueLoaderService } from '../../projects/epgu-constructor/src/app/shared/services/value-loader/value-loader.service';
+import { Meta } from '@storybook/angular/types-6-0';
+import { AddPassportModule } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/add-passport.module';
+import { AddPassportComponent } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/component/add-passport.component';
+import { DateRangeService } from '../../projects/epgu-constructor/src/app/component/components-list/services/date-range/date-range.service';
 import { SignatureApplicationComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/signature-application/components/signature-application/signature-application.component';
 import { SignatureApplicationModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/signature-application/signature-application.module';
+import { UnusedPaymentsComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/component/unused-payments.component';
+import { UnusedPaymentInterface } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/unused-payment.interface';
+import { UnusedPaymentsModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/unused-payments.module';
+import { WINDOW_PROVIDERS } from '../../projects/epgu-constructor/src/app/core/providers/window.provider';
+import { ConfigService } from '../../projects/epgu-constructor/src/app/core/services/config/config.service';
+import { DeviceDetectorService } from '../../projects/epgu-constructor/src/app/core/services/device-detector/device-detector.service';
+import { EventBusService } from '../../projects/epgu-constructor/src/app/core/services/event-bus/event-bus.service';
+import { LocationService } from '../../projects/epgu-constructor/src/app/core/services/location/location.service';
+import { NavigationService } from '../../projects/epgu-constructor/src/app/core/services/navigation/navigation.service';
+import { UtilsService } from '../../projects/epgu-constructor/src/app/core/services/utils/utils.service';
 import {
   ComponentDto,
   DisplayDto,
-  DTOActionAction,
+  DTOActionAction
 } from '../../projects/epgu-constructor/src/app/form-player/services/form-player-api/form-player-api.types';
-import { NavigationService } from '../../projects/epgu-constructor/src/app/core/services/navigation/navigation.service';
-import { DeviceDetectorService } from '../../projects/epgu-constructor/src/app/core/services/device-detector/device-detector.service';
-import { ConfigService } from '../../projects/epgu-constructor/src/app/core/services/config/config.service';
-import { LocationService } from '../../projects/epgu-constructor/src/app/core/services/location/location.service';
-import { WINDOW_PROVIDERS } from '../../projects/epgu-constructor/src/app/core/providers/window.provider';
 import { ModalService } from '../../projects/epgu-constructor/src/app/modal/modal.service';
-import { UnusedPaymentsModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/unused-payments.module';
-import { UnusedPaymentsComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/component/unused-payments.component';
+import { CurrentAnswersService } from '../../projects/epgu-constructor/src/app/screen/current-answers.service';
+import { ScreenService } from '../../projects/epgu-constructor/src/app/screen/screen.service';
 import { ScreenTypes } from '../../projects/epgu-constructor/src/app/screen/screen.types';
-
-import { UnusedPaymentInterface } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/unused-payment.interface';
-
+import { ActionButtonComponent } from '../../projects/epgu-constructor/src/app/shared/components/action-button/action-button.component';
+import { ActionButtonModule } from '../../projects/epgu-constructor/src/app/shared/components/action-button/action-button.module';
+import { PassportComponent } from '../../projects/epgu-constructor/src/app/shared/components/add-passport/passport.component';
+import { PassportModule } from '../../projects/epgu-constructor/src/app/shared/components/add-passport/passport.module';
+import { AnswerButtonComponent } from '../../projects/epgu-constructor/src/app/shared/components/answer-button/answer-button.component';
+import { AnswerButtonModule } from '../../projects/epgu-constructor/src/app/shared/components/answer-button/answer-button.module';
+import { CachedAnswersService } from '../../projects/epgu-constructor/src/app/shared/services/cached-answers/cached-answers.service';
+import { ValidationService } from '../../projects/epgu-constructor/src/app/shared/services/validation/validation.service';
+import { ValueLoaderService } from '../../projects/epgu-constructor/src/app/shared/services/value-loader/value-loader.service';
+import { TextTransform } from '../../projects/epgu-constructor/src/app/shared/types/textTransform';
 export default {
   title: 'Example/EPGU Constructor',
   decorators: [
@@ -42,6 +44,7 @@ export default {
         AnswerButtonModule,
         SignatureApplicationModule,
         UnusedPaymentsModule,
+        AddPassportModule,
       ],
       schemas: [],
       declarations: [],
@@ -58,6 +61,8 @@ export default {
         LocationService,
         WINDOW_PROVIDERS,
         ModalService,
+        ValidationService,
+        DateRangeService,
       ],
     }),
   ],
@@ -152,4 +157,33 @@ UnusedPayments.args = {
   showNav: true,
   data: DisplayDtoSample,
   paymentsData: paymentsDataSample,
+};
+
+export const AddPassport = (args: AddPassportComponent) => ({
+  component: AddPassportComponent,
+  props: args,
+});
+AddPassport.args = {
+  data: {
+    participant: { role: 'Approval', mode: 'MentionedApplicant' },
+    fstuc: TextTransform.ALL,
+    fields: [
+      {
+        mask: ['/[0-9]/', '/[0-9]/', '/[0-9]/', '/[0-9]/'],
+        fieldName: 'rfPasportSeries',
+        label: 'Серия',
+        type: 'input',
+        regexp: '^[0-9]{4}$',
+        errorMsg: 'Поле должно содержать 4 цифры',
+      },
+      {
+        mask: ['/[0-9]/', '/[0-9]/', '/[0-9]/', '/[0-9]/', '/[0-9]/', '/[0-9]/'],
+        fieldName: 'rfPasportNumber',
+        label: 'Номер',
+        type: 'input',
+        regexp: '^[0-9]{6}$',
+        errorMsg: 'Поле должно содержать 6 цифр',
+      },
+    ],
+  },
 };

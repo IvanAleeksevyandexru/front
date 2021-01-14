@@ -9,9 +9,9 @@ import {
   CustomComponentOutputData,
   CustomComponentValidationConditions
 } from '../../component/components-list/components-list.types';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import { ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';

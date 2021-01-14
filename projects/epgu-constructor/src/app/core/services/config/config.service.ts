@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LoadService } from 'epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { LoggerService } from '../logger/logger.service';
 import { Config, MockApi, TimeSlotsApi } from './config.types';
 
 @Injectable()
@@ -30,7 +31,10 @@ export class ConfigService implements Config {
   private _isSocialShareDisabled: boolean;
   private _addToCalendarUrl: string;
 
-  constructor(private loadService: LoadService) {}
+  constructor(
+    private loadService: LoadService,
+    private loggerService: LoggerService,
+  ) { }
 
   checkConfig(config: Config): void {
     if (!config) {
@@ -168,9 +172,7 @@ export class ConfigService implements Config {
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 
-    console.group('Config');
-    console.log({ ...this });
-    console.groupEnd();
+    this.loggerService.log([{ ...this }], 'Config');
   }
 
   private getStaticDomainCfg(): string {

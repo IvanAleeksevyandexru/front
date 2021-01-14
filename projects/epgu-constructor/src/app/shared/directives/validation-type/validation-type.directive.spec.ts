@@ -7,14 +7,14 @@ import {
   CustomComponent,
   CustomScreenComponentTypes
 } from '../../../component/components-list/components-list.types';
+import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
-import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
 import { ValidationService } from '../../services/validation/validation.service';
 import { ValidationTypeModule } from './validation-type.module';
-import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 
 const componentMockData: CustomComponent = {
   attrs: {

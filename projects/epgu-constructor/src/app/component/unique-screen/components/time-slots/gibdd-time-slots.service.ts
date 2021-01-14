@@ -4,6 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsServiceInterface } from './time-slots.interface';
 import {
@@ -40,6 +41,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
+    private loggerService: LoggerService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -50,7 +52,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
             this.errorMessage = response.error.errorDetail
               ? response.error.errorDetail.errorMessage
               : 'check log';
-            console.log(response.error);
+            this.loggerService.error([response.error]);
             return of(null);
           }
 
@@ -73,7 +75,7 @@ export class GibddTimeSlotsService implements TimeSlotsServiceInterface {
           this.errorMessage = response.error.errorDetail
             ? response.error.errorDetail.errorMessage
             : 'check log';
-          console.log(response.error);
+          this.loggerService.error([response.error]);
         } else {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;

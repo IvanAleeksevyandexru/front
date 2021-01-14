@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-
-import { DeviceDetectorService } from './device-detector.service';
 import { LoadService, SmuEventsService } from 'epgu-lib';
 import { LoadServiceStub } from '../config/load-service-stub';
+import { DeviceDetectorService } from './device-detector.service';
 import { SmuEventsServiceStub } from './smu-events.service.stub';
+
 
 describe('DeviceDetectorService', () => {
   let deviceDetectorService: DeviceDetectorService;

@@ -20,13 +20,11 @@ import {
 } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
 import { ComponentBase } from '../../../screen/screen.types';
 // eslint-disable-next-line import/named
-import { PassportAttr, PassportFields } from './passport.interface';
-
-type PassportFormFields = { rfPasportNumber: string; rfPasportSeries: string };
+import { PassportAttr, PassportFields, PassportFormFields } from './passport.interface';
 
 @Component({
   selector: 'epgu-constructor-passport',

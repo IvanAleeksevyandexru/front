@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { EventBusService } from '../../../form-player/services/event-bus/event-bus.service';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 
 @Component({
   selector: 'epgu-constructor-clone-button',

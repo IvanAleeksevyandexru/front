@@ -1,43 +1,43 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ButtonComponent, LoaderComponent } from 'epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { ScreenContainerComponent } from '../../../../../../shared/components/screen-container/screen-container.component';
-
-import { PageNameComponent } from '../../../../../../shared/components/base-components/page-name/page-name.component';
-import { NavigationComponent } from '../../../../../../shared/components/navigation/navigation.component';
+import { ButtonComponent, LoaderComponent } from 'epgu-lib';
+import { of } from 'rxjs';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
+import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
+import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
+import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
+import { LocationService } from '../../../../../../core/services/location/location.service';
+import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
-
-import { ScreenService } from '../../../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-
-import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
-import { SignatureApplicationData } from '../../models/application.interface';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import {
   ApplicantAnswersDto,
   ComponentActionDto,
   ComponentAttrsDto,
   ComponentDto,
-  DTOActionAction,
+  DTOActionAction
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-
-import { SignatureApplicationComponent } from '../signature-application/signature-application.component';
-import { of } from 'rxjs';
 import { ModalService } from '../../../../../../modal/modal.service';
-import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
-import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
-import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
-import { LocationService } from '../../../../../../core/services/location/location.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
+import { PageNameComponent } from '../../../../../../shared/components/base-components/page-name/page-name.component';
+import { NavigationComponent } from '../../../../../../shared/components/navigation/navigation.component';
+import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
+import { ScreenContainerComponent } from '../../../../../../shared/components/screen-container/screen-container.component';
+import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
+import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
+import { SignatureApplicationData } from '../../models/application.interface';
+import { SignatureApplicationComponent } from '../signature-application/signature-application.component';
 import { SignatureApplicationContainerComponent } from './signature-application-container.component';
-import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
-import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
-import { EventBusService } from '../../../../../../form-player/services/event-bus/event-bus.service';
+
+
+
+
+
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;

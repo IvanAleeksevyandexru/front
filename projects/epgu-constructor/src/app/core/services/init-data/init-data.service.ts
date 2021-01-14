@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormPlayerContext, QueryParams, ServiceEntity } from '../../../form-player/form-player.types';
+import { LoggerService } from '../logger/logger.service';
 
 /**
  * Сервис необходим для хранения входных параметров с которыми стартует приложение
@@ -79,6 +80,8 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
     this._queryParams = queryParams;
   }
 
+  constructor(private loggerService: LoggerService) { }
+
   init(service: ServiceEntity, context?: FormPlayerContext): void {
     this.checkProps(service);
     this.serviceId = service.serviceId;
@@ -92,9 +95,7 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
   }
 
   private checkProps(service: ServiceEntity): void {
-    console.group('----- Init props ---------');
-    console.log('service', service);
-    console.groupEnd();
+    this.loggerService.log([service], '----- Init props ---------');
 
     if (!service) {
       throw Error('Need to set Service for epgu form player');

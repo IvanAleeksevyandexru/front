@@ -21,13 +21,13 @@ import { UnusedPaymentsContainerComponent } from '../../component/unique-screen/
 // eslint-disable-next-line max-len
 import { UploadAndEditPhotoComponent } from '../../component/unique-screen/components/upload-and-edit-photo/upload-and-edit-photo.component';
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import { EventBusService } from '../../form-player/services/event-bus/event-bus.service';
 import {
   ComponentDto,
-  DisplayDto,
+  DisplayDto
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
