@@ -146,8 +146,8 @@ export class ComponentListFormService {
     this._changes.emit(prepareStateForSending);
   }
 
-  addressHelperServiceProvider(control: AbstractControl): LookupProvider | LookupPartialProvider {
-    return this.addressHelperService.getProvider(control.value?.attrs?.cityFilter);
+  addressHelperServiceProvider(searchType: string = 'city'): LookupProvider | LookupPartialProvider {
+    return this.addressHelperService.providers[searchType];
   }
 
   private getPreparedStateForSending(): CustomComponentOutputData {

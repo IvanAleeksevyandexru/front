@@ -8,6 +8,10 @@ export class HtmlRemoverService {
   constructor() {}
 
   public delete(display: DisplayDto): DisplayDto {
+    if (!display) {
+      return;
+    }
+    const clearedDisplay = JSON.parse(JSON.stringify(display));
     const recursiveDeleteNodesWithHtml = (obj: DisplayDto): DisplayDto => {
       for (const property in obj) {
         if (obj.hasOwnProperty(property)) {
@@ -25,6 +29,6 @@ export class HtmlRemoverService {
       return obj;
     };
 
-    return recursiveDeleteNodesWithHtml(display);
+    return recursiveDeleteNodesWithHtml(clearedDisplay);
   }
 }

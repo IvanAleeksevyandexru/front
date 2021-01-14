@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
 import { Moment } from 'moment';
 
-import { CustomComponent } from '../../components-list.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { Attrs, DateRange, Range, Ref } from './date-range.models';
-import { FormArray } from '@angular/forms';
 
 const moment = moment_;
 
@@ -20,14 +18,9 @@ export class DateRangeService {
    * @param date объект DateRange, выбранная дата в календаре
    * @param attrs аттрибуты компонента календаря
    * @param id id компонента
-   * @param form
    */
-  changeDate(date: DateRange, attrs: Attrs, id: string, form: FormArray): void {
-    const control = form?.controls?.find((contr) =>
-      contr.value?.attrs?.ref?.find((item) => item.relatedDate === id),
-    );
-
-    if (!attrs?.limit && !control) return;
+  changeDate(attrs: Attrs, date: DateRange): void {
+     if (!attrs?.limit) return;
 
     if (attrs?.to) {
       const maxDate = moment(date).add(attrs.limit, 'years').toDate();
@@ -37,11 +30,6 @@ export class DateRangeService {
     if (attrs?.from) {
       const minDate = moment(date).subtract(attrs.limit, 'years').toDate();
       this.rangeMap.set(attrs.from, { max: date, min: minDate });
-    }
-
-    if (control) {
-      control.get('value').patchValue('');
-      this.rangeMap.delete(control?.value.id);
     }
   }
 
@@ -57,22 +45,16 @@ export class DateRangeService {
     this.rangeMap.set(id, { max: null, min: null });
   }
 
-  getMinDate(componentData: CustomComponent, form: FormArray): Date {
-    return this.calcDateRange(componentData.attrs.ref, componentData.id, form).min;
+  getMinDate(ref: Array<Ref>, id: string, relatedDate: Date): Date {
+    return this.calcDateRange(ref, id, relatedDate).min;
   }
 
-  getMaxDate(componentData: CustomComponent, form: FormArray): Date {
-    return this.calcDateRange(componentData.attrs.ref, componentData.id, form).max;
+  getMaxDate(ref: Array<Ref>, id: string, relatedDate: Date): Date {
+    return this.calcDateRange(ref, id, relatedDate).max;
   }
 
-  private calcDateRange(ref: Array<Ref>, id: string, form: FormArray): Range {
-    let range = this.rangeMap.get(id);
-
-    if (range) {
-      return range;
-    }
-
-    range = { max: null, min: null };
+  private calcDateRange(ref: Array<Ref>, id: string, relatedDate: Date): Range {
+    let range = { max: null, min: null };
     this.rangeMap.set(id, range);
 
     if (!ref) {
@@ -85,12 +67,8 @@ export class DateRangeService {
       return range;
     }
 
-    const formControl = form?.controls?.find(
-      (control) => control.value.id === refParams.relatedDate,
-    );
-
     const refDate =
-      this.screenService.applicantAnswers[refParams.relatedDate]?.value || formControl.value.value;
+      this.screenService.applicantAnswers[refParams.relatedDate]?.value || relatedDate;
 
     if (!refDate) {
       return range;

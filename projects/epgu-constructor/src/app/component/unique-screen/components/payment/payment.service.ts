@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { concatMap, map } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
@@ -10,9 +10,14 @@ import {
   BillsInfoResponse,
   PaymentDictionaryOptionsInterface,
   PaymentInfoForPaidStatusData,
-  PaymentInfoInterface, PaymentsAttrs
+  PaymentInfoInterface,
+  PaymentsAttrs,
 } from './payment.types';
 import { LocationService } from '../../../../core/services/location/location.service';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -26,7 +31,7 @@ export class PaymentService {
     public config: ConfigService,
     public dictionaryApiService: DictionaryApiService,
     public screenService: ScreenService,
-    private locationService: LocationService
+    private locationService: LocationService,
   ) {}
 
   /**
@@ -55,7 +60,11 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    * @param attributeValues - дополнительные параметры
    */
-  getUinByOrderId(orderId: string, code: number = 1, attributeValues: PaymentInfoInterface): Observable<{ value: string }> {
+  getUinByOrderId(
+    orderId: string,
+    code: number = 1,
+    attributeValues: PaymentInfoInterface,
+  ): Observable<{ value: string }> {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/lk/v1/paygate/uin`
       : this.config.uinApiUrl;
@@ -99,7 +108,10 @@ export class PaymentService {
    * @param orderId - идентификатор заявления
    * @param code - идентификатор заявителя
    */
-  getPaymentStatusByUIN(orderId: string, code: number = 1): Observable<PaymentInfoForPaidStatusData> {
+  getPaymentStatusByUIN(
+    orderId: string,
+    code: number = 1,
+  ): Observable<PaymentInfoForPaidStatusData> {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/lk/v1/paygate/uin`
       : this.config.uinApiUrl;
@@ -112,11 +124,13 @@ export class PaymentService {
    */
   getReturnUrl(): string {
     const slashInEndRex = /\/$/;
-    const href = this.locationService.getHref().replace(slashInEndRex,'');
+    const href = this.locationService.getHref().replace(slashInEndRex, '');
     const haveQuestion = href.includes('?');
     const glueParam = haveQuestion ? '&' : '?';
     const historyParam = 'getLastScreen=1';
-    return href.includes(historyParam) ? href : encodeURIComponent(`${href}${glueParam}getLastScreen=1`);
+    return href.includes(historyParam)
+      ? href
+      : encodeURIComponent(`${href}${glueParam}getLastScreen=1`);
   }
 
   /**
@@ -138,6 +152,15 @@ export class PaymentService {
     const dictionaryOptions = this.createPaymentRequestOptions(attrs);
 
     return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
+      concatMap((response: DictionaryResponse) => {
+        const { items } = response;
+        return items.some((item: DictionaryItem) => {
+          const info = item.attributeValues as PaymentInfoInterface;
+          return !info.DATAK || info.DATAK === '';
+        })
+          ? of(response)
+          : throwError(null);
+      }),
       map(({ error: { code }, items }) => {
         if (code === 0) {
           return items[0].attributeValues as PaymentInfoInterface;
@@ -154,7 +177,9 @@ export class PaymentService {
    */
   createPaymentRequestOptions(attrs: PaymentsAttrs): PaymentDictionaryOptionsInterface {
     const { applicantAnswers } = this.screenService;
-    const filterReg = JSON.parse(this.getValueFromObjectAsArray(applicantAnswers, attrs?.ref?.fiasCode?.split('.')));
+    const filterReg = JSON.parse(
+      this.getValueFromObjectAsArray(applicantAnswers, attrs?.ref?.fiasCode?.split('.')),
+    );
 
     return getPaymentRequestOptions(filterReg, attrs);
   }
@@ -168,9 +193,9 @@ export class PaymentService {
   // TODO
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getValueFromObjectAsArray(obj_or_result: any, path: string[]): string | null {
-    if (path?.length){
+    if (path?.length) {
       const key = path.shift();
-      if (obj_or_result.hasOwnProperty(key)){
+      if (obj_or_result.hasOwnProperty(key)) {
         return this.getValueFromObjectAsArray(obj_or_result[key], path);
       }
       return null;

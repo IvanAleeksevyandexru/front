@@ -36,6 +36,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   public bookId;
   public BOOKING_NAMESPACE = '1252d729-fb01-4768-935d-8ddb95e14b7d'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга браков
   public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
+  public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
 
   public department: ZagsDepartmentInterface;
   private serviceId: string;
@@ -54,7 +55,8 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
-    if (this.bookedSlot && !this.isBookedDepartment) {
+    // Если есть забуканный слот и (сменился загс или слот просрочен)
+    if (this.bookedSlot && (!this.isBookedDepartment || this.waitingTimeExpired)) {
       return this.cancelSlot(this.bookId).pipe(
         switchMap((response) => {
           if (response.error) {
@@ -260,7 +262,7 @@ export class BrakTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
-    if (!this.bookId || !this.isBookedDepartment) {
+    if (!this.bookId || !this.isBookedDepartment || this.waitingTimeExpired) {
       this.bookId = uuidv4();
     }
 

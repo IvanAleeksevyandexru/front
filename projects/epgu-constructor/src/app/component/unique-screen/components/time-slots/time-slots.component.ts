@@ -461,23 +461,20 @@ export class TimeSlotsComponent implements OnInit {
    * @param timeSlot таймслот из кэша
    */
   private setBookedSlot(timeSlot: TimeSlot, waitingTimeExpired: boolean): void {
-    if (waitingTimeExpired) {
-      this.bookedSlot = null;
-      this.currentService.setBookedSlot(null);
-      this.currentService.bookId = null;
-    } else {
-      this.bookedSlot = this.currentService.getBookedSlot();
-      if (!this.bookedSlot && timeSlot) {
-        this.bookedSlot = {
-          slotId: timeSlot.slotId,
-          slotTime: new Date(timeSlot.visitTimeISO),
-          timezone: timeSlot.visitTimeISO.substr(-6),
-          areaId: timeSlot.areaId,
-        };
-        this.currentService.setBookedSlot(this.bookedSlot);
-        this.currentService.bookId = this.cachedAnswer.bookId;
-      }
+    this.currentService.waitingTimeExpired = waitingTimeExpired;
+    let bookedSlot = this.currentService.getBookedSlot();
+    if (!bookedSlot && timeSlot) {
+      bookedSlot = {
+        slotId: timeSlot.slotId,
+        slotTime: new Date(timeSlot.visitTimeISO),
+        timezone: timeSlot.visitTimeISO.substr(-6),
+        areaId: timeSlot.areaId,
+      };
+      this.currentService.setBookedSlot(bookedSlot);
+      this.currentService.bookId = this.cachedAnswer.bookId;
     }
+
+    this.bookedSlot = waitingTimeExpired ? null : bookedSlot;
   }
 
   /**
