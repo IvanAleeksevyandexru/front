@@ -44,7 +44,7 @@ Lint:
     - master
     - stage
 
-Codecov:
+Code-coverage:
   stage: code-quality
   except:
     variables:
@@ -71,6 +71,22 @@ Code-quality:
     policy: pull
   script:
     - yarn test:coverage
+  only:
+    - merge_requests
+    - master
+    - stage
+
+Code-dry:
+  stage: code-quality
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  cache:
+    <<: *global_cache
+    policy: pull
+  allow_failure: true
+  script:
+    - yarn test:dry
   only:
     - merge_requests
     - master

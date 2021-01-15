@@ -8,37 +8,6 @@
   padding: 32px;
   border-radius: 12px;
 
-  &__close {
-    float: right;
-    width: 16px;
-    height: 16px;
-
-    &:before,
-    &:after {
-      content: '';
-      position: absolute;
-      width: 2px;
-      height: 20px;
-      background: $color-button-hit;
-      transform: rotate(45deg);
-    }
-
-    &:before {
-      transform: rotate(45deg);
-    }
-
-    &:after {
-      transform: rotate(-45deg);
-    }
-  }
-
-  &__title {
-    padding-right: 50px;
-    font-size: 24px;
-    line-height: 32px;
-    color: $color-summer-night;
-  }
-
   &__header {
     border-bottom: 1px solid $color-divider;
     padding-bottom: 24px;

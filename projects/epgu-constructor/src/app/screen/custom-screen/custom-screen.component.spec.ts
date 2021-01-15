@@ -21,6 +21,7 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
 import { CustomScreenComponent } from './custom-screen.component';
+import { CustomScreenService } from './custom-screen.service';
 
 const moment = moment_;
 
@@ -30,6 +31,7 @@ describe('CustomScreenComponent', () => {
 
   let screenService: ScreenServiceStub;
   let navigationService: NavigationServiceStub;
+  let customScreenService: CustomScreenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -46,6 +48,7 @@ describe('CustomScreenComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         EventBusService,
         CurrentAnswersService,
+        CustomScreenService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(CustomScreenComponent, {
@@ -60,6 +63,7 @@ describe('CustomScreenComponent', () => {
 
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
+    customScreenService = TestBed.inject(CustomScreenService);
   });
 
   it('check snapshot', () => {
@@ -91,7 +95,7 @@ describe('CustomScreenComponent', () => {
         any: { visited: true, disabled: undefined, value: moment(date).toISOString() },
       };
 
-      const result = component.getFormattedData(changes);
+      const result = customScreenService.getFormattedData(changes);
 
       expect(result).toEqual(expectedResult);
     });
@@ -137,16 +141,6 @@ describe('CustomScreenComponent', () => {
 
       expect(component.isValid).toBeFalsy();
       expect(component.dataToSend).toEqual(expectedDataSend);
-    });
-  });
-
-  // @todo. Do we need to test private method?
-  describe('getPrepareResponseData method', () => {
-    it('without data', () => {
-      //@ts-ignore
-      const result = component.getPrepareResponseData();
-      //@ts-ignore
-      expect(result).toEqual({});
     });
   });
 

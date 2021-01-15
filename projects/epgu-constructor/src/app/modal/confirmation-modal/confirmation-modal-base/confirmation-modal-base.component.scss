@@ -27,40 +27,6 @@ $minModalHeight: 293px;
       border-radius: 12px;
     }
 
-    &__cross-button {
-      position: absolute;
-      right: 32px;
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-      z-index: 2;
-
-      &:before,
-      &:after {
-        content: '';
-        position: absolute;
-        left: 10px;
-        width: 2px;
-        height: 20px;
-        background: $color-gosblue;
-        transform: rotate(45deg);
-      }
-
-      &:before {
-        transform: rotate(45deg);
-      }
-
-      &:after {
-        transform: rotate(-45deg);
-      }
-    }
-
-    &__title {
-      @include typ-h3;
-      padding-right: 50px;
-      color: $color-summer-night;
-    }
-
     &__header {
       border-bottom: 1px solid $color-divider;
       padding-bottom: 24px;

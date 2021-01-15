@@ -29,39 +29,6 @@ $controlHeight: 55px;
       padding: 24px;
     }
 
-    &__cross-button {
-      position: absolute;
-      right: 26px;
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-      z-index: 2;
-
-      &:before,
-      &:after {
-        content: '';
-        position: absolute;
-        width: 2px;
-        height: 20px;
-        background: $color-button-hit;
-        transform: rotate(45deg);
-      }
-
-      &:before {
-        transform: rotate(45deg);
-      }
-
-      &:after {
-        transform: rotate(-45deg);
-      }
-    }
-
-    &__title {
-      @include typ-h3;
-      padding-right: 50px;
-      color: $color-summer-night;
-    }
-
     &__header {
       border-bottom: 1px solid $color-divider;
       padding-bottom: 24px;

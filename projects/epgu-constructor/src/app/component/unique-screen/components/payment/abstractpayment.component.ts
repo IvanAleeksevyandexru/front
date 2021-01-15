@@ -307,11 +307,8 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
    * @param info - информация о выставленном счете
    */
   private getBillsInfoByBillIdSuccess(info: BillsInfoResponse): void {
-    if (info.error?.code) {
-      this.getBillsInfoByUINErrorsFromSuccess(info);
-    }
-
-    const bill: BillInfoResponse = info.response.bills[this.billPosition];
+    this.checkBillHasErrors(info);
+    const bill: BillInfoResponse = this.getBill(info);
 
     this.isPaid = bill.isPaid;
     if (this.isPaid) {
@@ -321,14 +318,16 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     this.inLoading = false;
   }
 
+  private getBill(info: BillsInfoResponse): BillInfoResponse {
+    return info.response.bills[this.billPosition];
+  }
+
   /**
    * Обрабатываем информацию от сервера по счетам, которые мы пытались оплатить
    * @param info - информация о выставленном счете
    */
   private getBillsInfoByUINSuccess(info: BillsInfoResponse): void {
-    if (info.error?.code) {
-      this.getBillsInfoByUINErrorsFromSuccess(info);
-    }
+    this.checkBillHasErrors(info);
     const bill: BillInfoResponse = info.response.bills[this.billPosition];
 
     this.isPaid = bill.isPaid;
@@ -350,6 +349,12 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     if (this.data.attrs?.goNextAfterUIN || this.isPaid) {
       this.isShown = false;
       this.nextStep();
+    }
+  }
+
+  private checkBillHasErrors(info: BillsInfoResponse): void {
+    if (info.error?.code) {
+      this.getBillsInfoByUINErrorsFromSuccess(info);
     }
   }
 

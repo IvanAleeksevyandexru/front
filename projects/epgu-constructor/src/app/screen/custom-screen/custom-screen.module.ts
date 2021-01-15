@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CustomScreenComponent } from './custom-screen.component';
 import { ComponentsListModule } from '../../component/components-list/components-list.module';
+import { BaseModule } from '../../shared/base.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
-import { BaseModule } from '../../shared/base.module';
+import { CustomScreenComponent } from './custom-screen.component';
+import { CustomScreenService } from './custom-screen.service';
 
 @NgModule({
   declarations: [CustomScreenComponent],
@@ -14,7 +15,10 @@ import { BaseModule } from '../../shared/base.module';
     ComponentsListModule,
     BaseComponentsModule,
     ScreenContainerModule,
-    ScreenPadModule
+    ScreenPadModule,
   ],
+  providers: [
+    CustomScreenService,
+  ]
 })
 export class CustomScreenModule {}
