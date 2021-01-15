@@ -1,23 +1,24 @@
-import { APP_INITIALIZER, NgModule, ErrorHandler } from '@angular/core';
-import { SmuEventsService } from 'epgu-lib';
-import { ConfigService } from './services/config/config.service';
-import { DeviceDetectorService } from './services/device-detector/device-detector.service';
-import { NavigationService } from './services/navigation/navigation.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
-import { ErrorsInterceptorService } from './interceptor/errors/errors.interceptor';
-import { initApp } from './initializers/app.initializer';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
+import { SmuEventsService } from 'epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
+import { initApp } from './initializers/app.initializer';
+import { ErrorsInterceptorService } from './interceptor/errors/errors.interceptor';
 import { HealthInterceptor } from './interceptor/health/health.interceptor';
 import { HttpCancelInterceptor } from './interceptor/http-cancel/http-cancel.interceptor';
 import { GlobalErrorHandler } from './services/global-error/global-error.service';
 import { WINDOW_PROVIDERS } from './providers/window.provider';
-import { LoggerService } from './services/logger/logger.service';
-import { UtilsService } from './services/utils/utils.service';
+import { AutocompleteService } from './services/autocomplete/autocomplete.service';
+import { ConfigService } from './services/config/config.service';
+import { DeviceDetectorService } from './services/device-detector/device-detector.service';
+import { InitDataService } from './services/init-data/init-data.service';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
 import { LocationService } from './services/location/location.service';
+import { LoggerService } from './services/logger/logger.service';
+import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
+import { NavigationService } from './services/navigation/navigation.service';
 import { SessionService } from './services/session/session.service';
-import { InitDataService } from './services/init-data/init-data.service';
+import { UtilsService } from './services/utils/utils.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -34,6 +35,7 @@ import { InitDataService } from './services/init-data/init-data.service';
     UtilsService,
     SessionService,
     InitDataService,
+    AutocompleteService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,

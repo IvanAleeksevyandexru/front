@@ -5,13 +5,13 @@ import {
   DisplayDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../screen/screen.types';
-import { Ref } from './services/date-range/date-range.models';
 import { TextTransform } from '../../../../shared/types/textTransform';
 import {
   DictionaryItem,
   DictionaryOptions,
   DictionaryResponse,
 } from '../../services/dictionary-api/dictionary-api.types';
+import { Ref } from './services/date-range/date-range.models';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -120,6 +120,7 @@ export interface CustomComponentAttr {
   maxDate?: string;
   onlyFirstScreen?: boolean;
   add?: { component: string; caption: string[] };
+  suggestionId?: string;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
