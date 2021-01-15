@@ -34,6 +34,8 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
 import { UniqueScreenComponent } from './unique-screen.component';
+// eslint-disable-next-line max-len
+import { CarInfoContainerComponent } from '../../component/unique-screen/components/car-info/containers/car-info-screen/car-info-container.component';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -76,6 +78,7 @@ describe('UniqueScreenComponent', () => {
           EmployeeHistoryComponent,
           RepeatableFieldsComponent,
           TimeSlotsComponent,
+          CarInfoContainerComponent,
           CarInfoComponent,
           SignatureApplicationContainerComponent,
           PaymentComponent,
@@ -279,10 +282,10 @@ describe('UniqueScreenComponent', () => {
     });
   });
 
-  describe('epgu-constructor-car-info', () => {
-    const selector = 'epgu-constructor-car-info';
+  describe('epgu-constructor-car-info-container', () => {
+    const selector = 'epgu-constructor-car-info-container';
 
-    it('should be rendered if componentType is carInfo', () => {
+    it('should be rendered if componentType is carInfoContainer', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeNull();
