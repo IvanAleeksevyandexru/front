@@ -6,10 +6,10 @@ import {
   ComponentActionDto,
   DisplayDto,
   DTOActionAction,
-} from '../../../../../form-player/services/form-player-api/form-player-api.types';
-import { CarInfoValues } from '../models/car-info.interface';
-import { ScreenService } from '../../../../../screen/screen.service';
-import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { CarInfoValues } from '../../models/car-info.interface';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
 @Component({
   selector: 'epgu-constructor-car-info-container',

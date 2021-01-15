@@ -34,6 +34,16 @@ import { CachedAnswersService } from '../../projects/epgu-constructor/src/app/sh
 import { ValidationService } from '../../projects/epgu-constructor/src/app/shared/services/validation/validation.service';
 import { ValueLoaderService } from '../../projects/epgu-constructor/src/app/shared/services/value-loader/value-loader.service';
 import { TextTransform } from '../../projects/epgu-constructor/src/app/shared/types/textTransform';
+import { CarInfoModule } from "../../projects/epgu-constructor/src/app/component/unique-screen/components/car-info/car-info.module";
+import { CarInfoComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/car-info/components/car-info-screen/car-info.component';
+import { FormPlayerApiService } from "../../projects/epgu-constructor/src/app/form-player/services/form-player-api/form-player-api.service";
+import { InitDataService } from "../../projects/epgu-constructor/src/app/core/services/init-data/init-data.service";
+import { LoggerService } from "../../projects/epgu-constructor/src/app/core/services/logger/logger.service";
+import { NavigationModalService } from "../../projects/epgu-constructor/src/app/core/services/navigation-modal/navigation-modal.service";
+import { LocalStorageService } from '../../projects/epgu-constructor/src/app/core/services/local-storage/local-storage.service';
+import { HtmlRemoverService } from "../../projects/epgu-constructor/src/app/shared/services/html-remover/html-remover.service";
+
+
 export default {
   title: 'Example/EPGU Constructor',
   decorators: [
@@ -45,6 +55,7 @@ export default {
         SignatureApplicationModule,
         UnusedPaymentsModule,
         AddPassportModule,
+        CarInfoModule
       ],
       schemas: [],
       declarations: [],
@@ -63,6 +74,12 @@ export default {
         ModalService,
         ValidationService,
         DateRangeService,
+        FormPlayerApiService,
+        InitDataService,
+        LoggerService,
+        NavigationModalService,
+        LocalStorageService,
+        HtmlRemoverService
       ],
     }),
   ],
@@ -186,4 +203,22 @@ AddPassport.args = {
       },
     ],
   },
+};
+
+export const CarInfo = (args: CarInfoComponent) => ({
+  component: CarInfoComponent,
+  props: args,
+});
+CarInfo.args = {
+  showNav: true,
+  display: DisplayDtoSample,
+  carInfo: {
+    brandModel: 'test',
+    status: 'REGISTERED',
+    owners: [],
+    legals: [],
+    accidenceCount: 3,
+  },
+  isLoading: false,
+  nextStepAction: {},
 };

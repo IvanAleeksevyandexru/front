@@ -17,7 +17,6 @@ export class CarInfoComponent implements OnInit {
   @Input() display: DisplayDto;
   @Input() carInfo: CarInfoValues;
   @Input() showNav: boolean;
-
   @Input() nextStepAction: ComponentActionDto;
 
   ngOnInit(): void {}
