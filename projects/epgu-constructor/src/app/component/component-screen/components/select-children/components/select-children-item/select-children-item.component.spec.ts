@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
+import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemComponent } from './select-children-item.component';
 import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { ComponentsListModule } from '../../../../../components-list/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { By } from '@angular/platform-browser';
 import { ItemStatus } from '../../select-children.models';
 
 describe('SelectChildrenItemComponent', () => {
@@ -81,6 +81,7 @@ describe('SelectChildrenItemComponent', () => {
   it('should call selectChildrenEvent', () => {
     jest.spyOn(component.selectChildrenEvent, 'emit');
     component.selectChildren({});
+
     expect(component.selectChildrenEvent.emit).toHaveBeenCalled();
   });
 
@@ -96,6 +97,7 @@ describe('SelectChildrenItemComponent', () => {
   it('should call updateChildEvent', () => {
     jest.spyOn(component.updateChildEvent, 'emit');
     component.updateChild({});
+
     expect(component.updateChildEvent.emit).toHaveBeenCalled();
   });
 
@@ -111,6 +113,7 @@ describe('SelectChildrenItemComponent', () => {
   it('should call updateItemValidationStatusEvent', () => {
     jest.spyOn(component.updateItemValidationStatusEvent, 'emit');
     component.updateItemValidationStatus(ItemStatus.valid);
+
     expect(component.updateItemValidationStatusEvent.emit).toHaveBeenCalled();
   });
 

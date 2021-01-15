@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
-import { MockComponent } from 'ng-mocks';
+import { By } from '@angular/platform-browser';
 
 import { CoreModule } from '../../../../../core/core.module';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
@@ -13,53 +13,112 @@ import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
 import { CloneButtonModule } from '../../../../../shared/components/clone-button/clone-button.module';
 import { ConstructorDropdownModule } from '../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { NavigationComponent } from '../../../../../shared/components/navigation/navigation.component';
-import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
-import { ValueLoaderService } from '../../../../../shared/services/value-loader/value-loader.service';
 import { ComponentsListModule } from '../../../../components-list/components-list.module';
 import { SelectChildrenScreenContainerComponent } from './select-children-screen-container.component';
+import { SelectChildrenItemWrapperComponent } from '../components/select-children-item-wrapper/select-children-item-wrapper.component';
+import { SelectChildrenItemComponent } from '../components/select-children-item/select-children-item.component';
+import { SelectChildrenComponent } from '../components/select-children/select-children.component';
+import { ScreenPadModule } from '../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 
 describe('SelectChildrenScreenContainerComponent', () => {
   let component: SelectChildrenScreenContainerComponent;
   let fixture: ComponentFixture<SelectChildrenScreenContainerComponent>;
-  let NavigationComponentMock = MockComponent(NavigationComponent);
-
+  let screenService: ScreenService;
+  const selector = 'epgu-constructor-select-children';
+  let componentMock = {
+    id: 'scrchld16',
+    name: 'Подтверждение ПД ребенка',
+    type: 'COMPONENT',
+    header: 'Проверьте корректность данных ребенка',
+    submitLabel: 'Верно',
+    components: [
+      {
+        id: 'pd21',
+        type: 'ConfirmChildData',
+        label: '',
+        attrs: {
+          actions: [
+            { label: 'Редактировать', value: '', type: 'profileEdit', action: 'editPassportData' },
+          ],
+          fields: [
+            { fieldName: 'firstName', label: '' },
+            { fieldName: 'lastName', label: '' },
+            { fieldName: 'middleName', label: '' },
+            { fieldName: 'birthDate', label: 'Дата рождения' },
+            { fieldName: 'rfBirthCertificateSeries', label: 'Серия' },
+            { fieldName: 'rfBirthCertificateNumber', label: 'Номер' },
+            { fieldName: 'rfBirthCertificateActNumber', label: 'Актовый номер' },
+            { fieldName: 'rfBirthCertificateIssueDate', label: 'Дата выдачи' },
+            { fieldName: 'rfBirthCertificateIssuedBy', label: 'Кем выдан' },
+          ],
+          refs: {},
+        },
+        linkedValues: [],
+        arguments: {},
+        value:
+          // eslint-disable-next-line max-len
+          '{"states":[{"groupName":"аааа бббб вввв","fields":[{"label":"Дата рождения","value":"12.09.2020"}]},{"groupName":"Свидетельство о рождении","fields":[{"label":"Серия и Номер","value":"11111 1111"},{"label":"Дата выдачи","value":"01.10.2020"},{"label":"Кем выдан","value":"111111"},{"label":"Актовый номер","value":"-"}]}],"storedValues":{"firstName":"бббб","lastName":"аааа","rfBirthCertificateIssuedBy":"111111","rfBirthCertificateIssueDate":"01.10.2020","rfBirthCertificateSeries":"11111","middleName":"вввв","rfBirthCertificateNumber":"1111","birthDate":"12.09.2020","rfBirthCertificateActNumber":"-"}}',
+        required: true,
+      },
+    ],
+    terminal: false,
+    accepted: true,
+    firstScreen: false,
+    impasse: false,
+  };
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         SelectChildrenScreenContainerComponent,
-        NavigationComponentMock,
-        MockComponent(ScreenPadComponent),
+        SelectChildrenItemWrapperComponent,
+        SelectChildrenItemComponent,
+        SelectChildrenComponent,
       ],
       imports: [
         CoreModule,
+        RouterTestingModule,
+        ReactiveFormsModule,
         BaseModule,
         BaseComponentsModule,
+        ScreenPadModule,
         CloneButtonModule,
-        ReactiveFormsModule,
-        ComponentsListModule,
-        RouterTestingModule,
         ConstructorDropdownModule,
+        ComponentsListModule,
       ],
       providers: [
+        UnsubscribeService,
+        HealthService,
+        EventBusService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
         CachedAnswersService,
-        UnsubscribeService,
-        ScreenService,
-        HealthService,
-        ValueLoaderService,
-        EventBusService,
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectChildrenScreenContainerComponent);
+    screenService = TestBed.inject(ScreenService);
+    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(componentMock as any);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should be updateCurrentAnswersState()', () => {
+    jest.spyOn(component, 'updateCurrentAnswersState');
+    const debugEl = fixture.debugElement.query(By.css(selector));
+    debugEl.triggerEventHandler('updateCurrentAnswerServiceStateEvent', []);
+
+    expect(component.updateCurrentAnswersState).toHaveBeenCalled();
+  });
+
+  it('should be updateCurrentAnswersValid()', () => {
+    jest.spyOn(component, 'updateCurrentAnswersValid');
+    const debugEl = fixture.debugElement.query(By.css(selector));
+    debugEl.triggerEventHandler('updateCurrentAnswerServiceValidationEvent', true);
+
+    expect(component.updateCurrentAnswersValid).toHaveBeenCalled();
   });
 });

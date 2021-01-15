@@ -78,7 +78,7 @@ export class SelectChildrenComponent implements OnInit {
   }
 
   initVariables(): void {
-    const itemsList = this.component ? JSON.parse(this.component.presetValue) : [];
+    const itemsList = this.component ? JSON.parse(this.component.presetValue || '[]') : [];
     this.firstNameRef = this.getRefFromComponent('firstName');
     this.isNewRef = this.getRefFromComponent('isNew');
     this.idRef = this.getRefFromComponent('id');

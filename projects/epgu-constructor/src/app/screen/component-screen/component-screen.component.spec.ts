@@ -264,9 +264,9 @@ describe('ComponentScreenComponent', () => {
     expect(debugEl).toBeTruthy();
   });
 
-  it('should render epgu-constructor-select-children-screen (childrenListUnder14)', () => {
+  it('should render epgu-constructor-select-children-screen-container (childrenListUnder14)', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-constructor-select-children-screen';
+      'epgu-constructor-screen-container epgu-constructor-select-children-screen-container';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -279,9 +279,9 @@ describe('ComponentScreenComponent', () => {
     expect(debugEl).toBeTruthy();
   });
 
-  it('should render epgu-constructor-select-children-screen (childrenListAbove14)', () => {
+  it('should render epgu-constructor-select-children-screen-container (childrenListAbove14)', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-constructor-select-children-screen';
+      'epgu-constructor-screen-container epgu-constructor-select-children-screen-container';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 

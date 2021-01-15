@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ import { CachedValue } from '../select-children.models';
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectChildrenScreenContainerComponent implements OnInit {
+export class SelectChildrenScreenContainerComponent {
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     map((label) => label || 'Добавить ребенка'),
   );
@@ -39,8 +39,6 @@ export class SelectChildrenScreenContainerComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private cachedAnswersService: CachedAnswersService,
   ) {}
-
-  ngOnInit(): void {}
 
   public updateCurrentAnswersState(state: { [key: string]: string | number | boolean }[]): void {
     this.currentAnswersService.state = state;
