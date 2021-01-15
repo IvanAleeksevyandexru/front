@@ -1,5 +1,5 @@
 <div class="conf-modal">
-  <div (click)="closeModal()" class="cross-btn"></div>
+  <div (click)="closeModal()" class="modal__close"></div>
   <ng-content></ng-content>
   <ng-container *ngTemplateOutlet="modalTemplateRef; context: this"></ng-container>
   <div

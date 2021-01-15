@@ -1,5 +1,7 @@
 import { Inject, Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
+import { WINDOW } from '../../../core/providers/window.provider';
+import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import {
@@ -8,8 +10,6 @@ import {
   FormPlayerApiSuccessResponse,
   QuizRequestDto,
 } from '../form-player-api/form-player-api.types';
-import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
-import { WINDOW } from '../../../core/providers/window.provider';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -70,11 +70,11 @@ export class FormPlayerService extends FormPlayerBaseService {
     );
   }
 
-  navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation): void {
+  navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation, store?: FormPlayerApiSuccessResponse): void {
     this.updateLoading(true);
     this.updateRequest(navigation);
     this.formPlayerApiService
-      .navigate(this._store, navigation.options, formPlayerNavigation)
+      .navigate(store || this._store, navigation.options, formPlayerNavigation)
       .subscribe(
         (response) => {
           this.processResponse(response);
