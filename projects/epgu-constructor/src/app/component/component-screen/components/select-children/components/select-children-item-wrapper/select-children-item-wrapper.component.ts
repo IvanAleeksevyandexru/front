@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from 
 @Component({
   selector: 'epgu-constructor-select-children-item-wrapper',
   templateUrl: './select-children-item-wrapper.component.html',
-
+  styleUrls: ['./select-children-item-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectChildrenItemWrapperComponent {
