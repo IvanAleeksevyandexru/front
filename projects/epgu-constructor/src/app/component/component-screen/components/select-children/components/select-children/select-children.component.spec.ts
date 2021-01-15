@@ -30,7 +30,6 @@ describe('SelectChildrenComponent', () => {
     type: 'ChildrenListAbove14',
     label: '',
     attrs: {
-      // singleChild: true,
       components: [
         {
           id: 'ai19_0',
@@ -49,6 +48,17 @@ describe('SelectChildrenComponent', () => {
                 errorMsg: 'Поле не может быть пустым',
               },
             ],
+          },
+          value: '',
+          required: true,
+        },
+        {
+          id: 'ai19_6',
+          type: 'RadioInput',
+          label: 'Ребенок новый?',
+          attrs: {
+            hidden: true,
+            fields: [{ fieldName: 'isNew' }],
           },
           value: '',
           required: true,
@@ -100,6 +110,24 @@ describe('SelectChildrenComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('removeChild()', () => {
+    it('should be remove child', () => {
+      component.items = [{}];
+      fixture.detectChanges();
+      component.removeChild(0);
+
+      expect(component.items.length).toBe(0);
+    });
+  });
+
+  describe('createNewChild()', () => {
+    it('should be return new child', () => {
+      const newChild = component.createNewChild();
+
+      expect(newChild['ai19_6']).toBeTruthy();
+    });
   });
 
   describe('getRefFromComponent()', () => {

@@ -26,6 +26,7 @@ describe('SelectChildrenScreenContainerComponent', () => {
   let component: SelectChildrenScreenContainerComponent;
   let fixture: ComponentFixture<SelectChildrenScreenContainerComponent>;
   let screenService: ScreenService;
+  let currentAnswersService: CurrentAnswersService;
   const selector = 'epgu-constructor-select-children';
   let componentMock = {
     id: 'scrchld16',
@@ -100,6 +101,7 @@ describe('SelectChildrenScreenContainerComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectChildrenScreenContainerComponent);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
     screenService = TestBed.inject(ScreenService);
     jest.spyOn(screenService, 'component$', 'get').mockReturnValue(componentMock as any);
     component = fixture.componentInstance;
@@ -107,11 +109,13 @@ describe('SelectChildrenScreenContainerComponent', () => {
   });
 
   it('should be updateCurrentAnswersState()', () => {
+    const data = [];
     jest.spyOn(component, 'updateCurrentAnswersState');
     const debugEl = fixture.debugElement.query(By.css(selector));
-    debugEl.triggerEventHandler('updateCurrentAnswerServiceStateEvent', []);
+    debugEl.triggerEventHandler('updateCurrentAnswerServiceStateEvent', data);
 
     expect(component.updateCurrentAnswersState).toHaveBeenCalled();
+    expect(currentAnswersService.state).toBe(data);
   });
 
   it('should be updateCurrentAnswersValid()', () => {
@@ -120,5 +124,6 @@ describe('SelectChildrenScreenContainerComponent', () => {
     debugEl.triggerEventHandler('updateCurrentAnswerServiceValidationEvent', true);
 
     expect(component.updateCurrentAnswersValid).toHaveBeenCalled();
+    expect(currentAnswersService.isValid).toBeTruthy();
   });
 });

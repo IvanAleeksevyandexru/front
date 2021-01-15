@@ -124,9 +124,10 @@ export class SelectChildrenComponent implements OnInit {
   /**
    * Создание кастомного ребенка
    */
-  addNewChild(index: number): void {
+  createNewChild(): ChildI {
     const id = uuidv4();
-    const newChild = {
+
+    return {
       ...this.component?.attrs?.components?.reduce(
         (accum, value) => ({
           ...accum,
@@ -137,7 +138,6 @@ export class SelectChildrenComponent implements OnInit {
       [this.isNewRef]: 'true',
       [this.idRef]: id,
     };
-    this.handleSelect(newChild, index);
   }
 
   removeChild(index: number): void {
@@ -223,7 +223,8 @@ export class SelectChildrenComponent implements OnInit {
     };
 
     if (event && event[this.idRef] === this.NEW_ID) {
-      this.addNewChild(index);
+      const newChild = this.createNewChild();
+      this.handleSelect(newChild, index);
     } else {
       const clearEvent = {
         isClear: event === null,
@@ -231,13 +232,6 @@ export class SelectChildrenComponent implements OnInit {
       };
       this.passDataToSend(this.items, clearEvent);
     }
-  }
-
-  isScreensAvailable(): boolean {
-    const screensAmount = this.items.length;
-    const repeatAmount = this.component?.attrs?.repeatAmount || this.DEFAULT_AVAILABLE;
-
-    return screensAmount >= repeatAmount;
   }
 
   private setHideStateToSelectedItems(clearEvent?: ClearEvent): void {
