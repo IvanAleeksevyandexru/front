@@ -6,6 +6,7 @@ import { EventBusService } from '../../core/services/event-bus/event-bus.service
 import { UniqueComponentModalModule } from '../../modal/screen-modal/components/unique-component-modal/unique-component-modal.module';
 import { BaseModule } from '../../shared/base.module';
 import { UniqueScreenComponent } from './unique-screen.component';
+import { ComponentResolverModule } from '../../component/component-resolver/component-resolver.module';
 
 @NgModule({
   declarations: [UniqueScreenComponent, AbstractPaymentComponent],
@@ -15,6 +16,7 @@ import { UniqueScreenComponent } from './unique-screen.component';
     UniqueScreenComponentsModule,
     ComponentsListModule,
     UniqueComponentModalModule,
+    ComponentResolverModule
   ],
   providers: [EventBusService]
 })
