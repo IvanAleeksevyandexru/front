@@ -1,7 +1,34 @@
-<epgu-constructor-car-info
-  [isLoading]="isLoading$ | async"
-  [display]="display$ | async"
-  [carInfo]="carInfo$ | async"
-  [showNav]="showNav$ | async"
-  [nextStepAction]="nextStepAction"
-></epgu-constructor-car-info>
+<ng-container
+  *ngTemplateOutlet="
+    templateContent;
+    context: { carInfo: (carInfo$ | async), display: (display$ | async), isLoading: (isLoading$ | async), showNav: (showNav$ | async)  }
+  "
+>
+</ng-container>
+<ng-template #templateContent let-carInfo="carInfo" let-display="display" let-isLoading="isLoading"
+             let-showNav="showNav">
+  <epgu-constructor-screen-container
+    [show-nav]="showNav"
+    [class.screen-container-mt]="!showNav"
+  >
+    <div class="screen-body">
+      <div *ngIf="display?.header" class="head">
+        <epgu-constructor-page-name>{{ display?.header }}</epgu-constructor-page-name>
+      </div>
+
+      <epgu-constructor-car-info
+        [carInfo]="carInfo"
+      ></epgu-constructor-car-info>
+    </div>
+    <div class="screen-footer">
+      <lib-button
+        [showLoader]="isLoading"
+        epgu-constructor-action
+        [action]="nextStepAction"
+        class="submit-button"
+      >
+        {{ display?.submitLabel || 'Продолжить' }}
+      </lib-button>
+    </div>
+  </epgu-constructor-screen-container>
+</ng-template>
