@@ -441,3 +441,8 @@ export interface ActionApiResponse<T> {
   errorList: { [key: string]: string }[];
   responseData: { value: T; type: string };
 }
+
+export interface SuggestionsApiResponse {
+  suggestionId: string;
+  values: string[];
+}
