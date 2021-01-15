@@ -1,14 +1,14 @@
 <ng-container
   *ngTemplateOutlet="
     templateContent;
-    context: { carInfo: carInfo$ | async, display: display$ | async, isLoading: isLoading$ | async }
+    context: { carInfo: carInfo, display: display, isLoading: isLoading  }
   "
 >
 </ng-container>
 <ng-template #templateContent let-carInfo="carInfo" let-display="display" let-isLoading="isLoading">
   <epgu-constructor-screen-container
-    [show-nav]="screenService.showNav$ | async"
-    [class.screen-container-mt]="!(screenService.showNav$ | async)"
+    [show-nav]="showNav"
+    [class.screen-container-mt]="!showNav"
   >
     <div class="screen-body">
       <div *ngIf="display?.header" class="head">

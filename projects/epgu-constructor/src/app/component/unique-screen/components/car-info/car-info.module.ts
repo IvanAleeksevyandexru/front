@@ -11,6 +11,7 @@ import { CarInfoDatePipe } from './pipes/car-date-format.pipe';
 import { CarInfoLegalPipe } from './pipes/car-info.pipe';
 import { CarInfoOwnerPipe } from './pipes/car-owner-type.pipe';
 import { CarInfoStatusPipe } from './pipes/car-status.pipe';
+import { CarInfoContainerComponent } from './containers/car-info-screen/car-info-container.component';
 
 const COMPONENTS = [
   CarInfoComponent,
@@ -19,6 +20,7 @@ const COMPONENTS = [
   CarInfoDatePipe,
   CarInfoOwnerPipe,
   CarInfoAccidentsPipe,
+  CarInfoContainerComponent
 ];
 
 @NgModule({
