@@ -148,7 +148,6 @@ export class ComponentListFormService {
   }
 
   addressHelperServiceProvider(searchType: string = 'city'): LookupProvider | LookupPartialProvider {
-    console.log('searchType', searchType);
     return this.addressHelperService.providers[searchType];
   }
 
