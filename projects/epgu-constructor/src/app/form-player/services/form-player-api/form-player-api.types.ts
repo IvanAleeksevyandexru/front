@@ -1,9 +1,6 @@
 // eslint-disable-next-line max-len
 import { ConfirmUserDataStyle } from '../../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
-import {
-  TimerComponentDtoAction,
-  TimerLabelSection,
-} from '../../../component/custom-screen/timer/timer.interface';
+import { TimerComponentDtoAction, TimerLabelSection } from '../../../component/custom-screen/timer/timer.interface';
 import {
   DictionaryConditions,
   DictionaryOptions,
@@ -420,4 +417,9 @@ export interface ActionDTO<T = {}> {
 export interface ActionApiResponse<T> {
   errorList: { [key: string]: string }[];
   responseData: { value: T; type: string };
+}
+
+export interface SuggestionsApiResponse {
+  suggestionId: string;
+  values: string[];
 }
