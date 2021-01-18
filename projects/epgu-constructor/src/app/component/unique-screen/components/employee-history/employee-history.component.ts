@@ -30,7 +30,8 @@ export interface EmployeeHistoryComponentInterface extends ComponentBase {
   templateUrl: './employee-history.component.html',
   styleUrls: ['./employee-history.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // TODO: month picker открывается на 50 год из-за OnPush
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class EmployeeHistoryComponent {
   @Output() nextStepEvent: EventEmitter<string> = new EventEmitter<string>();
