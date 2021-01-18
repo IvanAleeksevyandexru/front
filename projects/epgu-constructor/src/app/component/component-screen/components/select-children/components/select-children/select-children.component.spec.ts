@@ -125,12 +125,12 @@ describe('SelectChildrenComponent', () => {
       expect(component.handleSelect).toBeCalledTimes(2);
     });
 
-    // it('should be call passDataToSend()', () => {
-    //   jest.spyOn(component, 'passDataToSend');
-    //   component.handleSelect({}, 0);
-    //
-    //   expect(component.passDataToSend).toHaveBeenCalled();
-    // });
+    it('should be call passDataToSend()', () => {
+      jest.spyOn(component, 'passDataToSend');
+      component.handleSelect({}, 0);
+
+      expect(component.passDataToSend).toHaveBeenCalled();
+    });
   });
 
   describe('removeChild()', () => {
