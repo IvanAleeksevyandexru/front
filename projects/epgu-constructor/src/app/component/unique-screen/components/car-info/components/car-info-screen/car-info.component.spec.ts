@@ -65,8 +65,6 @@ describe('CarInfoComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CarInfoComponent);
     component = fixture.componentInstance;
-    component.showNav = true;
-    component.isLoading = true;
     component.carInfo = mockData;
     fixture.detectChanges();
   });

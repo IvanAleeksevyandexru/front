@@ -210,15 +210,11 @@ export const CarInfo = (args: CarInfoComponent) => ({
   props: args,
 });
 CarInfo.args = {
-  showNav: true,
-  display: DisplayDtoSample,
   carInfo: {
     brandModel: 'test',
     status: 'REGISTERED',
     owners: [],
     legals: [],
     accidenceCount: 3,
-  },
-  isLoading: false,
-  nextStepAction: {},
+  }
 };
