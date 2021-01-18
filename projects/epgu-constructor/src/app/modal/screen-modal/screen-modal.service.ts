@@ -1,12 +1,12 @@
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { FormPlayerNavigation, Navigation } from '../../form-player/form-player.types';
+import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import {
   DTOActionAction,
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
-import { FormPlayerNavigation, Navigation } from '../../form-player/form-player.types';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerBaseService } from '../../shared/services/form-player-base/form-player-base.service';
 
@@ -52,18 +52,7 @@ export class ScreenModalService extends FormPlayerBaseService {
       this._store = JSON.parse(JSON.stringify(this.formPlayerService.store));
     }
 
-    this.updateLoading(true);
-    this.updateRequest(navigation);
-
-    this.formPlayerApiService.navigate(this._store, navigation.options, formPlayerNavigation).subscribe(
-      (response) => {
-        this.processResponse(response);
-      },
-      (error) => {
-        this.sendDataError(error);
-      },
-      () => this.updateLoading(false)
-    );
+    this.formPlayerService.navigate(navigation, formPlayerNavigation, this._store);
   }
 
   processResponse(response: FormPlayerApiResponse): void {

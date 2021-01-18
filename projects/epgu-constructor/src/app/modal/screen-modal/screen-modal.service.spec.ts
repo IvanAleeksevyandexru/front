@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
 import { LoggerService } from '../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
-import { FormPlayerNavigation, Navigation } from '../../form-player/form-player.types';
+import { Navigation } from '../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';
 import { FormPlayerApiErrorStatuses } from '../../form-player/services/form-player-api/form-player-api.types';
@@ -73,57 +72,6 @@ describe('ScreenModalService', () => {
     it('should return initStore', () => {
       const initStore = service.initStore;
       expect(initStore).toBe(service['_initStore']);
-    });
-  });
-
-  describe('navigate()',() => {
-    it('should call updateLoading with false true', () => {
-      spyOn<any>(service, 'updateLoading').and.callThrough();
-      service.navigate({}, FormPlayerNavigation.NEXT);
-      expect(service['updateLoading']).toHaveBeenCalled();
-    });
-
-    it('should call updateRequest with navigation param', () => {
-      const navigation = {};
-      spyOn<any>(service, 'updateRequest').and.callThrough();
-      service.navigate(navigation, FormPlayerNavigation.NEXT);
-      expect(service['updateRequest']).toHaveBeenCalledWith(navigation);
-    });
-
-    it('should call navigate of formPlayerApiService with params when call navigate', () => {
-      const navigation = {};
-      spyOn(formPlayerApiService, 'navigate').and.callThrough();
-      service.navigate(navigation, FormPlayerNavigation.NEXT);
-      expect(formPlayerApiService.navigate).toHaveBeenCalled();
-    });
-
-    it('should call processResponse with response when call navigate with success response case', () => {
-      const navigation = {};
-      spyOn(formPlayerApiService, 'navigate').and.returnValue(of(response));
-      spyOn<any>(service, 'processResponse').and.callThrough();
-      service.navigate(navigation, FormPlayerNavigation.NEXT);
-      expect(service.processResponse).toHaveBeenCalledWith(response);
-    });
-
-    it('should call sendDataError with error response when call navigate with error response case', () => {
-      const navigation = {};
-      const errorResponse = {
-        message: 'oops... i did it again',
-        description: 'a-e-e-e-e-e...',
-        status: 500
-      };
-      spyOn(formPlayerApiService, 'navigate').and.returnValue(throwError(errorResponse));
-      spyOn<any>(service, 'sendDataError').and.callThrough();
-      service.navigate(navigation, FormPlayerNavigation.NEXT);
-      expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
-    });
-
-    it('should call updateLoading with false param when call navigate', () => {
-      const navigation = {};
-      spyOn(formPlayerApiService, 'navigate').and.returnValue(of(response));
-      spyOn<any>(service, 'updateLoading').and.callThrough();
-      service.navigate(navigation, FormPlayerNavigation.NEXT);
-      expect(service['updateLoading']).toHaveBeenCalled();
     });
   });
 

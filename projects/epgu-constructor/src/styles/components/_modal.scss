@@ -3,9 +3,12 @@
 
 .modal {
   &__close {
-    float: right;
-    width: 16px;
-    height: 16px;
+    position: absolute;
+    right: 32px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 2;
 
     &:before,
     &:after {
@@ -13,6 +16,7 @@
       position: absolute;
       width: 2px;
       height: 20px;
+      left: 9px;
       background: $color-button-hit;
       transform: rotate(45deg);
     }
@@ -29,7 +33,6 @@
   &__title {
     padding-right: 50px;
     color: $color-summer-night;
-
     @include typ-h3;
   }
 }
