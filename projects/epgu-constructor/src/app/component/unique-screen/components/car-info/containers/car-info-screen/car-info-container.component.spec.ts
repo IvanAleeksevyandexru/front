@@ -27,6 +27,7 @@ import { DeviceDetectorService } from '../../../../../../core/services/device-de
 import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
+import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 
 
 describe('CarInfoContainerComponent', () => {
@@ -70,6 +71,7 @@ describe('CarInfoContainerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         CurrentAnswersService, UtilsService, NavigationService,
+        DatesToolsService,
       ],
       imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule],
     })

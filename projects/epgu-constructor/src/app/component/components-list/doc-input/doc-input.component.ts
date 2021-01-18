@@ -9,8 +9,8 @@ import {
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from 'epgu-lib';
-import * as moment_ from 'moment';
 import { map, takeUntil } from 'rxjs/operators';
+import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ValidationService } from '../../../shared/services/validation/validation.service';
 import { ComponentListFormService } from '../services/component-list-form/component-list-form.service';
@@ -20,8 +20,6 @@ import {
   DocInputFields,
   DocInputFormFields,
 } from './doc-input.types';
-
-const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -49,6 +47,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     private validationService: ValidationService,
     private fb: FormBuilder,
     private changeDetectionRef: ChangeDetectorRef,
+    private datesToolsService: DatesToolsService,
   ) {}
 
   ngOnInit(): void {
@@ -106,15 +105,16 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     const expirationDate = this.hasExpirationDate
       ? {
           expirationDate: formFields[this.expirationDateName]
-            ? moment(formFields[this.expirationDateName]).toISOString(true)
+            ? this.datesToolsService.format(formFields[this.expirationDateName])
             : null,
         }
       : {};
     const { seriesNumDate } = formFields;
+
     return {
       ...seriesNumDate,
       ...expirationDate,
-      date: seriesNumDate.date ? moment(seriesNumDate.date).toISOString(true) : null,
+      date: seriesNumDate.date ? this.datesToolsService.format(seriesNumDate.date) : null,
       emitter: formFields.emitter,
     };
   }

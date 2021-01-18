@@ -1,7 +1,7 @@
 import { RelativeDate } from 'epgu-lib';
-import { DurationInputArg2 } from 'moment';
 import { ComponentActionDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../../../screen/screen.types';
+import { DurationTimeTypes } from '../../../../../../shared/constants/dates';
 import { TextTransform } from '../../../../../../shared/types/textTransform';
 
 export interface IRegistrationAddrComponent extends ComponentBase {
@@ -20,12 +20,12 @@ export interface RegistrationAddrComponentAttrs {
 /**
  * @property {string}label - some title
  * @property {number}amount - число которое прибавляется к текущей дате
- * @property {DurationInputArg2}unit - тип времени день, год и т.д
+ * @property {DurationTimeTypes}unit - тип времени день, год и т.д
  */
 export interface RegistrationAddrHints {
   label: string;
   amount: number;
-  unit: DurationInputArg2;
+  unit: DurationTimeTypes;
 }
 
 /**

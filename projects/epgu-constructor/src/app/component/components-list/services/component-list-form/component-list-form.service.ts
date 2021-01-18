@@ -2,9 +2,9 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ListItem } from 'epgu-lib';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
-import * as moment_ from 'moment';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
@@ -30,8 +30,6 @@ import { isDropDown } from '../../tools/custom-screen-tools';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper/address-helper.service';
 import { ComponentListRepositoryService } from '../component-list-repository/component-list-repository.service';
 import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
-
-const moment = moment_;
 
 @Injectable()
 export class ComponentListFormService {
@@ -66,6 +64,7 @@ export class ComponentListFormService {
     private addressHelperService: AddressHelperService,
     private repository: ComponentListRepositoryService,
     private logger: LoggerService,
+    private datesHelperService: DatesToolsService,
   ) {}
 
   create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
@@ -166,8 +165,8 @@ export class ComponentListFormService {
       const isValid = disabled || valid;
 
       if (this.shownElements[val.id].isShown) {
-        if (type === CustomScreenComponentTypes.DateInput) {
-          value = moment(value).toISOString(true); // NOTICE: обработка даты и "правильное" приведение к ISO-строке
+        if (type === CustomScreenComponentTypes.DateInput && value) {
+          value = this.datesHelperService.format(value);
         }
         acc[val.id] = { value, isValid, disabled, condition };
       }
@@ -179,11 +178,19 @@ export class ComponentListFormService {
   private relationRegExp(value: string, params: RegExp): Array<string> {
     return String(value).match(params);
   }
-  private relationMinDate(value: string, params: string): boolean {
-    return moment(value).isSameOrAfter(moment(params, DATE_STRING_DOT_FORMAT));
+  private relationMinDate(value: string | Date, params: string): boolean {
+    const dateLeft = typeof value === 'string'
+      ? this.datesHelperService.parseISO(value)
+      : this.datesHelperService.toDate(value);
+    const dateRight = this.datesHelperService.parse(params, DATE_STRING_DOT_FORMAT);
+    return this.datesHelperService.isSameOrAfter(dateLeft, dateRight);
   }
-  private relationMaxDate(value: string, params: string): boolean {
-    return moment(value).isSameOrBefore(moment(params, DATE_STRING_DOT_FORMAT));
+  private relationMaxDate(value: string | Date, params: string): boolean {
+    const dateLeft = typeof value === 'string'
+      ? this.datesHelperService.parseISO(value)
+      : this.datesHelperService.toDate(value);
+    const dateRight = this.datesHelperService.parse(params, DATE_STRING_DOT_FORMAT);
+    return this.datesHelperService.isSameOrBefore(dateLeft, dateRight);
   }
 
   private changeValidators(component: CustomComponent, control: AbstractControl): void {
@@ -305,6 +312,7 @@ export class ComponentListFormService {
           this.repository.dictionaries,
         );
         ////////HARDCODE!!!
+        // TODO: избавиться от хардкода
         if (
           next.attrs.dictionaryType === 'MARKI_TS' &&
           !isEqualObj<CustomListFormGroup>(prev, next)

@@ -4,6 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
 import { LocationService } from '../../../../../../core/services/location/location.service';
@@ -40,7 +41,8 @@ describe('BillInfoComponent', () => {
         MockProvider(LocationService),
         MockProvider(LocalStorageService),
         { provide: ScreenService, useClass: ScreenServiceStub },
-        EventBusService
+        EventBusService,
+        DatesToolsService,
       ],
     }).compileComponents();
     screenService = TestBed.inject(ScreenService);

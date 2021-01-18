@@ -7,6 +7,7 @@ import { ComponentListToolsService } from '../component-list-tools/component-lis
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 describe('ComponentListRepositoryService', () => {
   let service: ComponentListRepositoryService;
@@ -18,6 +19,7 @@ describe('ComponentListRepositoryService', () => {
         ComponentListToolsService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         DateRangeService,
+        DatesToolsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
     });

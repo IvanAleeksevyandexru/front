@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import * as moment_ from 'moment';
 import { CustomComponentOutputData } from '../../component/components-list/components-list.types';
+import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
-
-const moment = moment_;
 
 @Injectable()
 export class CustomScreenService {
 
-  constructor() { }
+  constructor(private datesToolsService: DatesToolsService) { }
 
   /**
    * Форматируем данные перед отправкой
@@ -16,15 +14,6 @@ export class CustomScreenService {
    */
   getFormattedData(changes: CustomComponentOutputData): NavigationPayload {
     return this.getPrepareResponseData(changes);
-  }
-
-  /**
-   * Возвращает true, если дата валидна
-   * @param date - дата для проверки
-   * @private
-   */
-  private isValidDate(date: string): boolean {
-    return new Date(date).toString() !== 'Invalid Date';
   }
 
   /**
@@ -38,8 +27,8 @@ export class CustomScreenService {
       const dataValue = data[key].value;
 
       if (typeof dataValue === 'object') {
-        if (this.isValidDate(dataValue)) {
-          value = moment(dataValue).toISOString();
+        if (this.datesToolsService.isValid(dataValue)) {
+          value = this.datesToolsService.format(dataValue);
         } else {
           value = JSON.stringify(dataValue || {});
         }

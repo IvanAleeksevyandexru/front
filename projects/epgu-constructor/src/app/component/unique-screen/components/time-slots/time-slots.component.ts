@@ -4,6 +4,7 @@ import * as moment_ from 'moment';
 import { Observable, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
@@ -98,6 +99,7 @@ export class TimeSlotsComponent implements OnInit {
     public screenService: ScreenService,
     private eventBusService: EventBusService,
     private changeDetectionRef: ChangeDetectorRef,
+    private datesHelperService: DatesToolsService,
   ) {
     this.timeSlotServices.BRAK = this.brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = this.divorceTimeSlotsService;
@@ -134,11 +136,11 @@ export class TimeSlotsComponent implements OnInit {
   }
 
   public isToday(date: Date): boolean {
-    return date && moment().isSame(moment(date), 'day');
+    return this.datesHelperService.isToday(date);
   }
 
   public isSelected(date: Date): boolean {
-    return date && moment(date).isSame(this.date, 'day');
+    return this.datesHelperService.isSameDate(date, this.date);
   }
 
   public isDateOutOfMonth(date: Date): boolean {
