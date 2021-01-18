@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryDatasourceService } from './employee-history.datasource.service';
+import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 
 describe('EmployeeHistoryFormService', () => {
   let service: EmployeeHistoryFormService;
@@ -12,7 +13,13 @@ describe('EmployeeHistoryFormService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      providers: [UnsubscribeService, EmployeeHistoryMonthsService, EmployeeHistoryFormService, EmployeeHistoryDatasourceService],
+      providers: [
+        UnsubscribeService,
+        EmployeeHistoryMonthsService,
+        EmployeeHistoryFormService,
+        EmployeeHistoryDatasourceService,
+        DatesToolsService,
+      ],
     });
     service = TestBed.inject(EmployeeHistoryFormService);
   });

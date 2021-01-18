@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { BrokenDateFixStrategy, DadataResult, ValidationShowOn } from 'epgu-lib';
 import { skip, startWith, takeUntil } from 'rxjs/operators';
-import * as moment_ from 'moment';
 import { combineLatest, Observable } from 'rxjs';
 import { ConfigService } from '../../../../../../../../core/services/config/config.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -15,8 +14,7 @@ import {
   RegistrationAddrFields,
   RegistrationAddrHints,
 } from '../../registration-addr-screen.types';
-
-const moment = moment_;
+import { DatesToolsService } from '../../../../../../../../core/services/dates-tools/dates-tools.service';
 
 @Component({
   selector: 'epgu-constructor-registration-addr',
@@ -43,6 +41,8 @@ export class RegistrationAddrComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private fb: FormBuilder,
     private changeDetectionRef: ChangeDetectorRef,
+    private dateValidator: DateValidator,
+    private datesToolsService: DatesToolsService,
   ) {}
 
   ngOnInit(): void {
@@ -73,7 +73,7 @@ export class RegistrationAddrComponent implements OnInit {
   }
 
   hintClick({ amount, unit }: RegistrationAddrHints): void {
-    const regDate = moment().add(amount, unit).toDate();
+    const regDate = this.datesToolsService.add(new Date(), amount, unit);
     this.redAddrForm.patchValue({ regDate });
   }
 
@@ -87,7 +87,7 @@ export class RegistrationAddrComponent implements OnInit {
     }
 
     if (isDateType) {
-      validators.push(DateValidator.date);
+      validators.push(this.dateValidator.date);
     }
 
     if (isRequired) {

@@ -9,6 +9,7 @@ import {
 } from '../../../component/components-list/components-list.types';
 import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
+import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -71,6 +72,7 @@ describe('ValidationTypeDirective', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         EventBusService,
         DateRangeService,
+        DatesToolsService,
       ],
     });
     service = TestBed.inject(ValidationService);

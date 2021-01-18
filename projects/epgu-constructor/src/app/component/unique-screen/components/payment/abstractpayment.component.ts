@@ -6,10 +6,10 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import * as moment_ from 'moment';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/services/config/config.service';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
 import { LocationService } from '../../../../core/services/location/location.service';
@@ -40,7 +40,6 @@ import {
 } from './payment.types';
 
 const ALREADY_PAY_ERROR = 23;
-const moment = moment_;
 
 @Component({
   template: '',
@@ -72,6 +71,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   init$: Observable<ComponentBase>;
   submitLabel$: Observable<string>;
 
+  private datesToolsService: DatesToolsService;
   private localStorageService: LocalStorageService;
   private locationService: LocationService;
   private changeDetectionRef: ChangeDetectorRef;
@@ -101,6 +101,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       }),
     );
     this.submitLabel$ = this.screenService.submitLabel$;
+    this.datesToolsService = this.injector.get(DatesToolsService);
   }
 
   ngOnInit(): void {
@@ -152,7 +153,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       this.sum = amount;
       this.paymentPurpose = billName;
       this.billId = billId;
-      this.billDate = moment(billDate).format(DATE_STRING_DOT_FORMAT);
+      this.billDate = this.datesToolsService.format(billDate, DATE_STRING_DOT_FORMAT);
       this.payCode = payCode;
       this.inLoading = true;
       this.isShown = true;
