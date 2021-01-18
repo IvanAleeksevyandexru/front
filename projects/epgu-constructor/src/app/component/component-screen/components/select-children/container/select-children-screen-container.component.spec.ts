@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
 import { CoreModule } from '../../../../../core/core.module';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
@@ -21,6 +22,7 @@ import { SelectChildrenItemComponent } from '../components/select-children-item/
 import { SelectChildrenComponent } from '../components/select-children/select-children.component';
 import { ScreenPadModule } from '../../../../../shared/components/screen-pad/screen-pad.module';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
+import { CachedAnswersDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 
 describe('SelectChildrenScreenContainerComponent', () => {
   let component: SelectChildrenScreenContainerComponent;
@@ -103,7 +105,7 @@ describe('SelectChildrenScreenContainerComponent', () => {
     fixture = TestBed.createComponent(SelectChildrenScreenContainerComponent);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     screenService = TestBed.inject(ScreenService);
-    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(componentMock as any);
+    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(componentMock) as any);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -125,5 +127,37 @@ describe('SelectChildrenScreenContainerComponent', () => {
 
     expect(component.updateCurrentAnswersValid).toHaveBeenCalled();
     expect(currentAnswersService.isValid).toBeTruthy();
+  });
+
+  describe('cachedValue$', () => {
+    it('should be return null', () => {
+      component.cachedValue$.subscribe((value) => {
+        expect(value).toBeNull();
+      });
+    });
+
+    it('should be return cachedValue', () => {
+      const value = JSON.stringify([
+        {
+          ai18_4: 'Александр',
+          ai18_6: 'false',
+          ai18_0: '7588684',
+          ai18_1: '2021-01-16T00:00:00Z',
+          ai18_2: 'M',
+          ai18_3: 'Кенов',
+        },
+      ]);
+      const cachedAnswersMock: CachedAnswersDto = {
+        ai18: {
+          value,
+          visited: true,
+        },
+      };
+      jest.spyOn(screenService, 'cachedAnswers', 'get').mockReturnValue(cachedAnswersMock);
+      jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(componentMock) as any);
+      component.cachedValue$.subscribe((value) => {
+        expect(value).toBeNull();
+      });
+    });
   });
 });
