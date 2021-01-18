@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileUploadItemComponent } from './file-upload-item.component';
-
+import { UserInfoLoaderModule } from '../../../../../../shared/components/user-info-loader/user-info-loader.module';
 
 // TODO: Need to refactoring component
 xdescribe('FileUploadItemComponent', () => {
@@ -10,9 +10,9 @@ xdescribe('FileUploadItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FileUploadItemComponent ]
-    })
-    .compileComponents();
+      declarations: [FileUploadItemComponent],
+      imports: [UserInfoLoaderModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

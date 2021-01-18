@@ -5,6 +5,7 @@
   <div class="screen-body quiz__content">
     <epgu-constructor-page-name class="quiz__head">
       {{ screenService.header$ | async }}
+      <epgu-constructor-user-info-loader></epgu-constructor-user-info-loader>
     </epgu-constructor-page-name>
     <epgu-constructor-output-html
       class="quiz__text"

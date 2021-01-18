@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
 
 // TODO: Need to refactoring component
 xdescribe('FileUploadScreenComponent', () => {
@@ -34,6 +35,7 @@ xdescribe('FileUploadScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [FileUploadScreenComponent],
+      imports: [UserInfoLoaderModule],
       providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
     }).compileComponents();
     screenService = TestBed.inject(ScreenService);

@@ -6,13 +6,20 @@ import { BaseComponentsModule } from '../../../../shared/components/base-compone
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
 import { BaseModule } from '../../../../shared/base.module';
+import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
 
 const COMPONENTS = [FileUploadScreenComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
-  imports: [BaseModule, SubComponentsModule, BaseComponentsModule, ScreenContainerModule],
-  providers: [TerraByteApiService]
+  imports: [
+    BaseModule,
+    SubComponentsModule,
+    BaseComponentsModule,
+    ScreenContainerModule,
+    UserInfoLoaderModule,
+  ],
+  providers: [TerraByteApiService],
 })
 export class FileUploadModule {}
