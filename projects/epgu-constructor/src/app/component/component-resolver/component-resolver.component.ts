@@ -62,7 +62,7 @@ export class ComponentResolverComponent implements AfterViewInit {
     const component = this.getComponentByType(cmpType, screenType);
 
     if (!component) {
-      this.handleComponentError(cmpType);
+      this.handleComponentError(cmpType, screenType);
     }
 
     const componentFactory: ComponentFactory<ScreenComponentTypes> = this.componentFactoryResolver.resolveComponentFactory(
@@ -82,7 +82,9 @@ export class ComponentResolverComponent implements AfterViewInit {
     }
   }
 
-  private handleComponentError(cmpType: ComponentTypes): never {
-    throw new Error(`We cant find component for this component type: ${cmpType}`);
+  private handleComponentError(cmpType: ComponentTypes, screenType: ScreenTypes): never {
+    throw new Error(
+      `We cant find component for this component type: ${cmpType} for screen type: ${screenType}`,
+    );
   }
 }
