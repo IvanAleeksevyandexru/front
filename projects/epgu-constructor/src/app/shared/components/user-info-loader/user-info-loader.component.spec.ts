@@ -5,6 +5,7 @@ import { ConfigServiceStub } from '../../../core/services/config/config.service.
 import { UserInfoLoaderComponent } from './user-info-loader.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { UserInfoComponent } from '../user-info/user-info.component';
 
 describe('UserInfoLoaderComponent', () => {
   let component: UserInfoLoaderComponent;
@@ -13,7 +14,7 @@ describe('UserInfoLoaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UserInfoLoaderComponent],
+      declarations: [UserInfoLoaderComponent, UserInfoComponent],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
