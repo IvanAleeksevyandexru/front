@@ -12,7 +12,7 @@ export const componentsNoCache: Array<string> = [
   ComponentScreenComponentTypes.confirmPersonalUserPhone,
   ComponentScreenComponentTypes.confirmPersonalUserEmail,
   UniqueScreenComponentTypes.paymentScr,
-  ComponentScreenComponentTypes.timeSlot,
+  UniqueScreenComponentTypes.timeSlot,
 ];
 
 @Injectable()

@@ -7,39 +7,10 @@
       <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
     </div>
 
+    <epgu-constructor-component-resolver></epgu-constructor-component-resolver>
+
+    <!--TODO придумать что делать с component-list-->
     <ng-container [ngSwitch]="screenService.componentType$ | async">
-      <epgu-constructor-confirm-personal-user-address
-        *ngSwitchCase="screenComponentName.confirmPersonalUserRegAddr"
-      ></epgu-constructor-confirm-personal-user-address>
-
-      <epgu-constructor-confirm-personal-user-data
-        *ngSwitchCase="isUserData()"
-      ></epgu-constructor-confirm-personal-user-data>
-
-      <epgu-constructor-confirm-personal-user-phone-email
-        *ngSwitchCase="isUserContactData()"
-      ></epgu-constructor-confirm-personal-user-phone-email>
-
-      <epgu-constructor-registration-addr
-        *ngSwitchCase="screenComponentName.registrationAddr"
-      ></epgu-constructor-registration-addr>
-
-      <epgu-constructor-add-passport-container
-        *ngSwitchCase="screenComponentName.passportLookup"
-      ></epgu-constructor-add-passport-container>
-
-      <epgu-constructor-select-children-screen
-        *ngSwitchCase="screenComponentName.childrenList"
-      ></epgu-constructor-select-children-screen>
-      <!-- TODO: удалить потом как depricated -->
-      <epgu-constructor-select-children-screen
-        *ngSwitchCase="screenComponentName.childrenListUnder14"
-      ></epgu-constructor-select-children-screen>
-      <!-- TODO: удалить потом как depricated -->
-      <epgu-constructor-select-children-screen
-        *ngSwitchCase="screenComponentName.childrenListAbove14"
-      ></epgu-constructor-select-children-screen>
-
       <epgu-constructor-screen-pad class="screen-pad-body" *ngSwitchCase="screenComponentName.fieldList">
         <epgu-constructor-field-list
           [data]="screenService.component"
