@@ -4,11 +4,12 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { ComponentResolverComponent } from './component-resolver.component';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
 import { ScreenService } from '../../screen/screen.service';
-import { COMPONENT_SCREEN_COMPONENTS } from './component-resolver.const';
+import { COMPONENT_SCREEN_COMPONENTS, UNIQUE_SCREEN_COMPONENTS } from './component-resolver.const';
 import { ComponentScreenComponentTypes } from '../component-screen/component-screen-components.types';
 import { UniqueScreenComponentTypes } from '../unique-screen/unique-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { By } from '@angular/platform-browser';
+import { ScreenTypes } from '../../screen/screen.types';
 
 @Component({ template: '<div>test</div>' })
 class TestComponent {}
@@ -53,7 +54,7 @@ describe('ComponentResolverComponent', () => {
     component = fixture.componentInstance;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     // @ts-ignore
-    screenService.display = { components: [{ type: 'TEST' }] };
+    screenService.display = { components: [{ type: 'TEST' }], type: ScreenTypes.COMPONENT };
     fixture.detectChanges();
   });
 
@@ -67,7 +68,7 @@ describe('ComponentResolverComponent', () => {
     jest.runAllTimers();
     expect(component.componentRef.instance).toBeInstanceOf(TestComponent);
     // @ts-ignore
-    screenService.display = { components: [{ type: 'TEST2' }] };
+    screenService.display = { components: [{ type: 'TEST2' }], type: ScreenTypes.COMPONENT };
     fixture.detectChanges();
     jest.runAllTimers();
 
@@ -76,12 +77,12 @@ describe('ComponentResolverComponent', () => {
   });
 
 
-  it('should return screens from SCREEN_COMPONENTS', () => {
-    expect(component.getComponentByType(ComponentScreenComponentTypes.childrenList)).toBe(
+  it('should return screens from SCREEN_COMPONENTS or UNIQUE_SCREEN_COMPONENTS', () => {
+    expect(component.getComponentByType(ComponentScreenComponentTypes.childrenList, ScreenTypes.COMPONENT)).toBe(
       COMPONENT_SCREEN_COMPONENTS[ComponentScreenComponentTypes.childrenList],
     );
-    expect(component.getComponentByType(UniqueScreenComponentTypes.billInfo)).toBe(
-      COMPONENT_SCREEN_COMPONENTS[UniqueScreenComponentTypes.billInfo],
+    expect(component.getComponentByType(UniqueScreenComponentTypes.billInfo, ScreenTypes.UNIQUE)).toBe(
+      UNIQUE_SCREEN_COMPONENTS[UniqueScreenComponentTypes.billInfo],
     );
   });
 
@@ -90,11 +91,11 @@ describe('ComponentResolverComponent', () => {
     const unrecognizedType = 'unrecognized type' as any;
 
     expect(() => {
-      component.createComponent('TEST' as any);
+      component.createComponent('TEST' as any, ScreenTypes.COMPONENT);
     }).not.toThrow();
 
     expect(() => {
-      component.createComponent(unrecognizedType);
+      component.createComponent(unrecognizedType, null);
     }).toThrow();
   });
 });

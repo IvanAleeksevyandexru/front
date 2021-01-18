@@ -5,6 +5,7 @@ import {
   ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
+  Input,
   Type,
   ViewChild,
   ViewContainerRef,
@@ -14,9 +15,11 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ScreenService } from '../../screen/screen.service';
 import {
   COMPONENT_SCREEN_COMPONENTS,
-  ComponentScreenComponent,
+  ScreenComponentTypes,
   ComponentTypes,
+  UNIQUE_SCREEN_COMPONENTS,
 } from './component-resolver.const';
+import { ScreenTypes } from '../../screen/screen.types';
 
 @Component({
   selector: 'epgu-constructor-component-resolver',
@@ -26,7 +29,8 @@ import {
 })
 export class ComponentResolverComponent implements AfterViewInit {
   @ViewChild('componentContainer', { read: ViewContainerRef }) componentContainer: ViewContainerRef;
-  componentRef: ComponentRef<ComponentScreenComponent>;
+  @Input() componentIndex = 0;
+  componentRef: ComponentRef<ScreenComponentTypes>;
 
   constructor(
     private screenService: ScreenService,
@@ -41,8 +45,9 @@ export class ComponentResolverComponent implements AfterViewInit {
         delay(0),
         takeUntil(this.ngUnsubscribe$),
       )
-      .subscribe(({ components }) => {
-        components.forEach((cmp) => this.createComponent(cmp.type as ComponentTypes));
+      .subscribe(({ components, type: screenType }) => {
+        const cmpType = components[this.componentIndex].type as ComponentTypes;
+        this.createComponent(cmpType, screenType);
       });
   }
 
@@ -53,21 +58,28 @@ export class ComponentResolverComponent implements AfterViewInit {
     }
   }
 
-  createComponent(cmpType: ComponentTypes): void {
-    const component = this.getComponentByType(cmpType);
+  createComponent(cmpType: ComponentTypes, screenType: ScreenTypes): void {
+    const component = this.getComponentByType(cmpType, screenType);
 
     if (!component) {
       this.handleComponentError(cmpType);
     }
 
-    const componentFactory: ComponentFactory<ComponentScreenComponent> = this.componentFactoryResolver.resolveComponentFactory(
+    const componentFactory: ComponentFactory<ScreenComponentTypes> = this.componentFactoryResolver.resolveComponentFactory(
       component,
     );
     this.componentRef = this.componentContainer.createComponent(componentFactory);
   }
 
-  getComponentByType(cmpType: ComponentTypes): Type<ComponentScreenComponent> {
-    return COMPONENT_SCREEN_COMPONENTS[cmpType];
+  getComponentByType(cmpType: ComponentTypes, screenType: ScreenTypes): Type<ScreenComponentTypes> {
+    switch (screenType) {
+      case ScreenTypes.COMPONENT:
+        return COMPONENT_SCREEN_COMPONENTS[cmpType];
+      case ScreenTypes.UNIQUE:
+        return UNIQUE_SCREEN_COMPONENTS[cmpType];
+      default:
+        return null;
+    }
   }
 
   private handleComponentError(cmpType: ComponentTypes): never {

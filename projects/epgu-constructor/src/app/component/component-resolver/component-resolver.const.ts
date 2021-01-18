@@ -33,14 +33,14 @@ import { CarInfoContainerComponent } from '../unique-screen/components/car-info/
 
 export type ComponentTypes = ComponentScreenComponentTypes | UniqueScreenComponentTypes;
 
-export type ComponentScreenComponent = ConfirmPersonalUserAddressComponent
+type ComponentScreenComponent = ConfirmPersonalUserAddressComponent
   | ConfirmPersonalUserDataComponent
   | ConfirmPersonalUserPhoneEmailComponent
   | RegistrationAddrComponent
   | AddPassportContainerComponent
-  | SelectChildrenScreenComponent
+  | SelectChildrenScreenComponent;
 
-  | InformationCenterMvdComponent
+type UniqueScreenComponent = InformationCenterMvdComponent
   | UnusedPaymentsContainerComponent
   | SelectMapObjectComponent
   | FileUploadScreenComponent
@@ -52,8 +52,9 @@ export type ComponentScreenComponent = ConfirmPersonalUserAddressComponent
   | SignatureApplicationContainerComponent
   | PaymentComponent
   | BillInfoComponent
-  | PaymentTypeSelectorComponent
-  ;
+  | PaymentTypeSelectorComponent;
+
+export type ScreenComponentTypes = ComponentScreenComponent | UniqueScreenComponent;
 
 export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<ComponentTypes, Type<ComponentScreenComponent>>> = {
   ConfirmPersonalUserRegAddr: ConfirmPersonalUserAddressComponent,
@@ -67,7 +68,9 @@ export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<ComponentTypes, Type<Co
   ChildrenList: SelectChildrenScreenComponent,
   ChildrenListUnder14: SelectChildrenScreenComponent, // TODO: удалить потом как depricated
   ChildrenListAbove14: SelectChildrenScreenComponent, //TODO: удалить потом как depricated
+};
 
+export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes, Type<UniqueScreenComponent>>> = {
   CityDepartment: InformationCenterMvdComponent,
   UnusedPayments: UnusedPaymentsContainerComponent,
   MapService: SelectMapObjectComponent,
@@ -82,6 +85,3 @@ export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<ComponentTypes, Type<Co
   BillInfo: BillInfoComponent,
   PaymentTypeSelector: PaymentTypeSelectorComponent,
 };
-
-
-
