@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { By } from '@angular/platform-browser';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 import { SelectChildrenComponent } from './select-children.component';
 import { CoreModule } from '../../../../../../core/core.module';
@@ -93,7 +94,11 @@ describe('SelectChildrenComponent', () => {
         EventBusService,
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(SelectChildrenComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -112,9 +117,25 @@ describe('SelectChildrenComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('handleSelect()', () => {
+    it('should be call handleSelect()', () => {
+      jest.spyOn(component, 'handleSelect');
+      component.handleSelect({ ai19_0: 'new' }, 0);
+
+      expect(component.handleSelect).toBeCalledTimes(2);
+    });
+
+    // it('should be call passDataToSend()', () => {
+    //   jest.spyOn(component, 'passDataToSend');
+    //   component.handleSelect({}, 0);
+    //
+    //   expect(component.passDataToSend).toHaveBeenCalled();
+    // });
+  });
+
   describe('removeChild()', () => {
     it('should be remove child', () => {
-      component.items = [{}];
+      component.items = [{ controlId: 'child1' }];
       fixture.detectChanges();
       component.removeChild(0);
 
@@ -162,15 +183,13 @@ describe('SelectChildrenComponent', () => {
       expect(debugEl).toBeTruthy();
     });
 
-    // it('should be not show clone button', () => {
-    //   component.isSingleChild = true;
-    //
-    //   // fixture.detectChanges();
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //   console.log(!component.isSingleChild);
-    //
-    //   expect(debugEl).toBeNull();
-    // });
+    it('should be not show clone button', () => {
+      component.isSingleChild = true;
+      fixture.detectChanges();
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl).toBeNull();
+    });
 
     it('should be not disabled clone button', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
@@ -178,14 +197,13 @@ describe('SelectChildrenComponent', () => {
       expect(debugEl.componentInstance.disabled).toBe(false);
     });
 
-    // it('should be disabled clone button', () => {
-    //   component.repeatAmount = 0;
-    //   component.items = [{}];
-    //   fixture.detectChanges();
-    //   const debugEl = fixture.debugElement.query(By.css(selector));
-    //
-    //   expect(debugEl.componentInstance.disabled).toBe(true);
-    // });
+    it('should be disabled clone button', () => {
+      component.repeatAmount = -1;
+      fixture.detectChanges();
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl.componentInstance.disabled).toBe(true);
+    });
   });
 
   describe('updateCurrentAnswerService', () => {

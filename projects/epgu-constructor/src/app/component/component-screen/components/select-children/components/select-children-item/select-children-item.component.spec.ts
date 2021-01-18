@@ -78,51 +78,36 @@ describe('SelectChildrenItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call selectChildrenEvent', () => {
-    jest.spyOn(component.selectChildrenEvent, 'emit');
-    component.selectChildren({});
-
-    expect(component.selectChildrenEvent.emit).toHaveBeenCalled();
-  });
-
   it('should call selectChildren()', () => {
     jest.spyOn(component, 'selectChildren');
+    jest.spyOn(component.selectChildrenEvent, 'emit');
     const debugEl = fixture.debugElement.query(By.css('epgu-constructor-constructor-dropdown'));
     debugEl.triggerEventHandler('changed', {});
     fixture.detectChanges();
 
     expect(component.selectChildren).toHaveBeenCalled();
-  });
-
-  it('should call updateChildEvent', () => {
-    jest.spyOn(component.updateChildEvent, 'emit');
-    component.updateChild({});
-
-    expect(component.updateChildEvent.emit).toHaveBeenCalled();
+    expect(component.selectChildrenEvent.emit).toHaveBeenCalled();
   });
 
   it('should call updateChild()', () => {
     jest.spyOn(component, 'updateChild');
+    jest.spyOn(component.updateChildEvent, 'emit');
     const debugEl = fixture.debugElement.query(By.css('epgu-constructor-components-list'));
     debugEl.triggerEventHandler('changes', {});
     fixture.detectChanges();
 
     expect(component.updateChild).toHaveBeenCalled();
-  });
-
-  it('should call updateItemValidationStatusEvent', () => {
-    jest.spyOn(component.updateItemValidationStatusEvent, 'emit');
-    component.updateItemValidationStatus(ItemStatus.valid);
-
-    expect(component.updateItemValidationStatusEvent.emit).toHaveBeenCalled();
+    expect(component.updateChildEvent.emit).toHaveBeenCalled();
   });
 
   it('should call updateItemValidationStatus()', () => {
     jest.spyOn(component, 'updateItemValidationStatus');
+    jest.spyOn(component.updateItemValidationStatusEvent, 'emit');
     const debugEl = fixture.debugElement.query(By.css('epgu-constructor-components-list'));
     debugEl.triggerEventHandler('emitFormStatus', {});
     fixture.detectChanges();
 
     expect(component.updateItemValidationStatus).toHaveBeenCalled();
+    expect(component.updateItemValidationStatusEvent.emit).toHaveBeenCalled();
   });
 });
