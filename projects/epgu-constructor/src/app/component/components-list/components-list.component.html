@@ -347,18 +347,3 @@
     [component]="data.value"
   ></epgu-constructor-masked-input>
 </ng-template>
-
-<ng-template #dropDowns let-data>
-  <div *ngIf="dropDowns$ | async as dropDowns">
-    <epgu-constructor-constructor-dropdown
-      [invalid]="data.get('value').invalid && data.get('value').touched"
-      [items]="$any(dropDowns[data?.value?.id])"
-      [disabled]="$any(dropDowns[data.value?.id])?.length === 1"
-      [validationShowOn]="validationShowOn"
-      [control]="data.get('value')"
-      [clearable]="true"
-      class="cs__select cs-select"
-    >
-    </epgu-constructor-constructor-dropdown>
-  </div>
-</ng-template>

@@ -62,28 +62,6 @@ export class ComponentScreenComponent extends ScreenBase implements OnInit {
       });
   }
 
-  isUserData(): boolean | ComponentScreenComponentTypes {
-    const type = this.screenService.componentType as ComponentScreenComponentTypes;
-    const hasType = [
-      ComponentScreenComponentTypes.divorceConsent,
-      ComponentScreenComponentTypes.confirmPersonalUserData,
-      ComponentScreenComponentTypes.confirmAnotherUserData,
-      ComponentScreenComponentTypes.confirmChildData,
-    ].includes(type);
-
-    return hasType ? type : false;
-  }
-
-  isUserContactData(): boolean | ComponentScreenComponentTypes {
-    const type = this.screenService.componentType as ComponentScreenComponentTypes;
-    const hasType = [
-      ComponentScreenComponentTypes.confirmPersonalUserPhone,
-      ComponentScreenComponentTypes.confirmPersonalUserEmail,
-    ].includes(type);
-
-    return hasType ? type : false;
-  }
-
   calcIsShowActionBtn(type: ComponentScreenComponentTypes): void {
     this.isShowActionBtn = [
       ComponentScreenComponentTypes.registrationAddr,

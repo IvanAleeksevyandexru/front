@@ -1,26 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { MockComponents } from 'ng-mocks';
-import { CarInfoComponent } from '../../component/unique-screen/components/car-info/components/car-info-screen/car-info.component';
-import { EmployeeHistoryComponent } from '../../component/unique-screen/components/employee-history/employee-history.component';
-import { FileUploadScreenComponent } from '../../component/unique-screen/components/file-upload-screen/file-upload-screen.component';
-// eslint-disable-next-line max-len
-import { InformationCenterMvdComponent } from '../../component/unique-screen/components/information-center-mvd/information-center-mvd.component';
-// eslint-disable-next-line max-len
-import { PaymentTypeSelectorComponent } from '../../component/unique-screen/components/payment-type-selector/payment-type-selector.component';
-import { BillInfoComponent } from '../../component/unique-screen/components/payment/components/billinfo/billinfo.component';
-import { PaymentComponent } from '../../component/unique-screen/components/payment/components/payment/payment.component';
-import { RepeatableFieldsComponent } from '../../component/unique-screen/components/repeatable-fields/repeatable-fields.component';
-import { SelectMapObjectComponent } from '../../component/unique-screen/components/select-map-object/select-map-object.component';
-// eslint-disable-next-line max-len
-import { SignatureApplicationContainerComponent } from '../../component/unique-screen/components/signature-application/components/container/signature-application-container.component';
-// eslint-disable-next-line max-len
-import { TimeSlotsComponent } from '../../component/unique-screen/components/time-slots/time-slots.component';
-// eslint-disable-next-line max-len
-import { UnusedPaymentsContainerComponent } from '../../component/unique-screen/components/unused-payments/unused-payments-container.component';
-// eslint-disable-next-line max-len
-import { UploadAndEditPhotoComponent } from '../../component/unique-screen/components/upload-and-edit-photo/upload-and-edit-photo.component';
-import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
@@ -34,8 +12,7 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
 import { UniqueScreenComponent } from './unique-screen.component';
-// eslint-disable-next-line max-len
-import { CarInfoContainerComponent } from '../../component/unique-screen/components/car-info/containers/car-info-screen/car-info-container.component';
+import { ComponentResolverComponent } from '../../component/component-resolver/component-resolver.component';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -71,22 +48,7 @@ describe('UniqueScreenComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         UniqueScreenComponent,
-        MockComponents(
-          UnusedPaymentsContainerComponent,
-          SelectMapObjectComponent,
-          FileUploadScreenComponent,
-          EmployeeHistoryComponent,
-          RepeatableFieldsComponent,
-          TimeSlotsComponent,
-          CarInfoContainerComponent,
-          CarInfoComponent,
-          SignatureApplicationContainerComponent,
-          PaymentComponent,
-          BillInfoComponent,
-          UploadAndEditPhotoComponent,
-          PaymentTypeSelectorComponent,
-          InformationCenterMvdComponent
-        ),
+        ComponentResolverComponent,
       ],
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
@@ -104,12 +66,6 @@ describe('UniqueScreenComponent', () => {
     screenService.display = displayDtoSample;
     screenService.component = componentDtoSample;
     initComponent();
-  });
-
-  describe('uniqueComponentName property', () => {
-    it('should be UniqueScreenComponentTypes', () => {
-      expect(component.uniqueComponentName).toBe(UniqueScreenComponentTypes);
-    });
   });
 
   describe('nextDataForStep() method', () => {
@@ -177,210 +133,6 @@ describe('UniqueScreenComponent', () => {
       expect(nextStepSpy).toBeCalledWith({
         payload: navigationPayload,
       });
-    });
-  });
-
-  describe('epgu-constructor-unused-payments-container', () => {
-    const selector = 'epgu-constructor-unused-payments-container';
-
-    it('should be rendered if componentType is unusedPayments', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.unusedPayments;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-  });
-
-  describe('epgu-constructor-select-map-object', () => {
-    const selector = 'epgu-constructor-select-map-object';
-
-    it('should be rendered if componentType is mapService', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.mapService;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-  });
-
-  describe('epgu-constructor-file-upload-screen', () => {
-    const selector = 'epgu-constructor-file-upload-screen';
-
-    it('should be rendered if componentType is mapService', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.fileUploadComponent;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-  });
-
-  describe('epgu-constructor-employee-history', () => {
-    const selector = 'epgu-constructor-employee-history';
-
-    it('should be rendered if componentType is employeeHistory', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.employeeHistory;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-  });
-
-  describe('epgu-constructor-repeatable-fields', () => {
-    const selector = 'epgu-constructor-repeatable-fields';
-
-    it('should be rendered if componentType is repeatableFields', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.repeatableFields;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-  });
-
-  describe('epgu-constructor-time-slots', () => {
-    const selector = 'epgu-constructor-time-slots';
-
-    it('should be rendered if componentType is timeSlot', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.timeSlot;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-  });
-
-  describe('epgu-constructor-car-info-container', () => {
-    const selector = 'epgu-constructor-car-info-container';
-
-    it('should be rendered if componentType is carInfoContainer', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.carInfo;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-  });
-
-  describe('epgu-constructor-signature-application', () => {
-    const selector = 'epgu-constructor-signature-application-container';
-
-    it('should be rendered if componentType is signatureApplicationContainer', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.signatureApplication;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-  });
-
-  describe('epgu-constructor-payment', () => {
-    const selector = 'epgu-constructor-payment';
-
-    it('should be rendered if componentType is paymentScr', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.paymentScr;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-  });
-
-  describe('epgu-constructor-bill-info', () => {
-    const selector = 'epgu-constructor-bill-info';
-
-    it('should be rendered if componentType is billInfo', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.billInfo;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-  });
-
-  describe('epgu-constructor-upload-and-edit-photo', () => {
-    const selector = 'epgu-constructor-upload-and-edit-photo';
-
-    it('should be rendered if componentType is photoUploadComponent', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.photoUploadComponent;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-  });
-
-  describe('epgu-constructor-payment-type-selector', () => {
-    const selector = 'epgu-constructor-payment-type-selector';
-
-    it('should be rendered if componentType is paymentTypeSelector', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = UniqueScreenComponentTypes.paymentTypeSelector;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
     });
   });
 });
