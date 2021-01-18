@@ -11,6 +11,7 @@ import { ScreenContainerModule } from '../../shared/components/screen-container/
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { ActionModule } from '../../shared/directives/action/action.module';
 import { ComponentScreenComponent } from './component-screen.component';
+import { ComponentResolverModule } from '../../component/component-resolver/component-resolver.module';
 
 @NgModule({
   declarations: [ComponentScreenComponent],
@@ -26,6 +27,7 @@ import { ComponentScreenComponent } from './component-screen.component';
     FieldListModule,
     ScreenPadModule,
     ActionModule,
+    ComponentResolverModule
   ],
   providers: [EventBusService],
 })

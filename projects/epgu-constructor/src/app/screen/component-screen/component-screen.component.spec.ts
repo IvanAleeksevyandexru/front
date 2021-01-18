@@ -36,6 +36,7 @@ import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ComponentScreenComponent } from './component-screen.component';
+import { ComponentResolverComponent } from '../../component/component-resolver/component-resolver.component';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -71,16 +72,10 @@ describe('ComponentScreenComponent', () => {
           ScreenContainerComponent,
           PageNameComponent,
           ScreenPadComponent,
-          ConfirmPersonalUserAddressComponent,
-          ConfirmPersonalUserDataComponent,
-          ConfirmPersonalUserPhoneEmailComponent,
-          RegistrationAddrComponent,
-          AddPassportContainerComponent,
-          SelectChildrenScreenContainerComponent,
           FieldListComponent,
           TimerComponent,
           AnswerButtonComponent,
-          ScreenPadComponent,
+          ComponentResolverComponent,
         ),
         MockDirective(ActionDirective),
       ],
@@ -187,155 +182,6 @@ describe('ComponentScreenComponent', () => {
     const debugEl = fixture.debugElement.query(By.css(selector));
 
     expect(debugEl).toBeTruthy();
-  });
-
-  it('should render epgu-constructor-confirm-personal-user-address if componentType is confirmPersonalUserRegAddr', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-confirm-personal-user-address';
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeNull();
-
-    screenService.componentType = ComponentScreenComponentTypes.confirmPersonalUserRegAddr;
-    fixture.detectChanges();
-
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
-  });
-
-  it('should render epgu-constructor-confirm-personal-user-data', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-confirm-personal-user-data';
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeNull();
-
-    screenService.componentType = ComponentScreenComponentTypes.confirmPersonalUserData; // isUserData() returned value
-    fixture.detectChanges();
-
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
-  });
-
-  it('should render epgu-constructor-confirm-personal-user-phone-email', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-confirm-personal-user-phone-email';
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeNull();
-
-    screenService.componentType = ComponentScreenComponentTypes.confirmPersonalUserPhone; // isUserContactData() returned value
-    fixture.detectChanges();
-
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
-  });
-
-  it('should render epgu-constructor-registration-addr', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-registration-addr';
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeNull();
-
-    screenService.componentType = ComponentScreenComponentTypes.registrationAddr;
-    fixture.detectChanges();
-
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
-  });
-
-  it('should render epgu-constructor-add-passport', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-add-passport-container';
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeNull();
-
-    screenService.componentType = ComponentScreenComponentTypes.passportLookup;
-    fixture.detectChanges();
-
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
-  });
-
-  it('should render epgu-constructor-select-children-screen-container (childrenListUnder14)', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-select-children-screen-container';
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeNull();
-
-    screenService.componentType = ComponentScreenComponentTypes.childrenListUnder14;
-    fixture.detectChanges();
-
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
-  });
-
-  it('should render epgu-constructor-select-children-screen-container (childrenListAbove14)', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-select-children-screen-container';
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeNull();
-
-    screenService.componentType = ComponentScreenComponentTypes.childrenListAbove14;
-    fixture.detectChanges();
-
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
-  });
-
-  it('should render epgu-constructor-field-list', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-field-list';
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeNull();
-
-    screenService.componentType = ComponentScreenComponentTypes.fieldList;
-    fixture.detectChanges();
-
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.data).toBeNull();
-
-    screenService.component = componentDtoSample;
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.data).toBe(componentDtoSample);
-  });
-
-  it('should render epgu-constructor-timer', () => {
-    const selector =
-      'epgu-constructor-screen-container epgu-constructor-timer';
-
-    let debugEl = fixture.debugElement.query(By.css(selector));
-
-    expect(debugEl).toBeNull();
-
-    screenService.componentType = ComponentScreenComponentTypes.timer;
-    fixture.detectChanges();
-
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.data).toBeNull();
-
-    screenService.component = componentDtoSample;
-    fixture.detectChanges();
-
-    expect(debugEl.componentInstance.data).toBe(componentDtoSample);
   });
 
   it('should render action buttons if isShowActionBtn is TRUE', () => {
