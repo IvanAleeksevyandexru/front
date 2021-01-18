@@ -1,5 +1,9 @@
 import { moduleMetadata } from '@storybook/angular';
 import { Meta } from '@storybook/angular/types-6-0';
+import { AnimationBuilder } from '@angular/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { AddPassportModule } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/add-passport.module';
 import { AddPassportComponent } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/component/add-passport.component';
 import { DateRangeService } from '../../projects/epgu-constructor/src/app/component/components-list/services/date-range/date-range.service';
@@ -42,8 +46,8 @@ import { LoggerService } from '../../projects/epgu-constructor/src/app/core/serv
 import { NavigationModalService } from '../../projects/epgu-constructor/src/app/core/services/navigation-modal/navigation-modal.service';
 import { LocalStorageService } from '../../projects/epgu-constructor/src/app/core/services/local-storage/local-storage.service';
 import { HtmlRemoverService } from '../../projects/epgu-constructor/src/app/shared/services/html-remover/html-remover.service';
+import { SelectChildrenScreenModule } from '../../projects/epgu-constructor/src/app/component/component-screen/components/select-children/select-children-screen.module';
 import { SelectChildrenComponent } from '../../projects/epgu-constructor/src/app/component/component-screen/components/select-children/components/select-children/select-children.component';
-import { SelectChildrenScreenModule } from '../../dist/epgu-constructor/app/component/component-screen/components/select-children/select-children-screen.module';
 
 export default {
   title: 'Example/EPGU Constructor',
@@ -58,6 +62,8 @@ export default {
         AddPassportModule,
         CarInfoModule,
         SelectChildrenScreenModule,
+        RouterTestingModule,
+        BrowserAnimationsModule,
       ],
       schemas: [],
       declarations: [],
@@ -82,6 +88,7 @@ export default {
         NavigationModalService,
         LocalStorageService,
         HtmlRemoverService,
+        AnimationBuilder,
       ],
     }),
   ],
@@ -230,200 +237,186 @@ SelectChildren.args = {
   cachedValue: null,
   errors: {},
   component: {
-    id: 's39',
-    name: 'Какому ребенку до 14 нужен загранпаспорт',
-    type: 'COMPONENT',
-    header: 'Укажите детей до 14 лет, кому требуется оформить загранпаспорт',
-    submitLabel: 'Продолжить',
-    components: [
-      {
-        id: 'ai18',
-        type: 'ChildrenListUnder14',
-        label: '',
-        attrs: {
-          imaginaryOidBase: 10,
-          isCycled: true,
-          components: [
-            {
-              id: 'ai18_0',
-              type: 'StringInput',
-              label: 'Идентификатор',
-              attrs: {
-                hidden: true,
-                fields: [{ fieldName: 'id' }],
-                validation: [
-                  {
-                    type: 'RegExp',
-                    value: '.+',
-                    ref: '',
-                    dataType: '',
-                    condition: '',
-                    errorMsg: 'Поле не может быть пустым',
-                  },
-                ],
-                hint:
-                  'Дату регистрации можно найти на штампе о регистрации на стр. 5-12 паспорта РФ',
+    id: 'ai18',
+    type: 'ChildrenListUnder14',
+    label: '',
+    attrs: {
+      imaginaryOidBase: 10,
+      isCycled: true,
+      components: [
+        {
+          id: 'ai18_0',
+          type: 'StringInput',
+          label: 'Идентификатор',
+          attrs: {
+            hidden: true,
+            fields: [{ fieldName: 'id' }],
+            validation: [
+              {
+                type: 'RegExp',
+                value: '.+',
+                ref: '',
+                dataType: '',
+                condition: '',
+                errorMsg: 'Поле не может быть пустым',
               },
-              value: '',
-              required: true,
-            },
-            {
-              id: 'ai18_00',
-              type: 'LabelSection',
-              label: "<p class='text-color--text-helper'>Укажите детей до 14 лет</p>",
-              attrs: {},
-              value: '',
-              required: true,
-            },
-            {
-              id: 'ai18_1',
-              type: 'DateInput',
-              label: 'Дата рождения',
-              attrs: {
-                grid: 'grid-col-6 grid-col-12-sm',
-                fields: [{ fieldName: 'birthDate' }],
-                accuracy: 'day',
-                minDate: '-14y',
-                maxDate: 'today',
-                validation: [
-                  {
-                    type: 'RegExp',
-                    value: '.*',
-                    ref: '',
-                    condition: '',
-                    errorMsg: 'Поле должно быть заполено',
-                  },
-                ],
-              },
-              value: '',
-              required: true,
-            },
-            {
-              id: 'ai18_2',
-              type: 'RadioInput',
-              label: 'Пол',
-              attrs: {
-                fields: [{ fieldName: 'gender' }],
-                supportedValues: [
-                  { label: 'Мальчик', value: 'M', isDefault: true },
-                  { label: 'Девочка', value: 'F' },
-                ],
-                isHorizontal: true,
-                required: true,
-              },
-              value: '',
-              required: true,
-            },
-            {
-              id: 'ai18_3',
-              type: 'StringInput',
-              label: 'Фамилия',
-              attrs: {
-                fstuc: 'first',
-                fields: [{ fieldName: 'lastName' }],
-                validation: [
-                  {
-                    type: 'RegExp',
-                    value: '.+',
-                    ref: '',
-                    dataType: '',
-                    condition: '',
-                    errorMsg: 'Поле не может быть пустым',
-                  },
-                  {
-                    type: 'RegExp',
-                    value: '^.{0,30}$',
-                    ref: '',
-                    dataType: '',
-                    condition: '',
-                    errorMsg: 'Поле может содержать не более 30 символов',
-                  },
-                ],
-              },
-              value: '',
-              required: true,
-            },
-            {
-              id: 'ai18_4',
-              type: 'StringInput',
-              label: 'Имя',
-              attrs: {
-                fstuc: 'first',
-                fields: [{ fieldName: 'firstName' }],
-                validation: [
-                  {
-                    type: 'RegExp',
-                    value: '.+',
-                    ref: '',
-                    dataType: '',
-                    condition: '',
-                    errorMsg: 'Поле не может быть пустым',
-                  },
-                  {
-                    type: 'RegExp',
-                    value: '^.{0,30}$',
-                    ref: '',
-                    dataType: '',
-                    condition: '',
-                    errorMsg: 'Поле может содержать не более 30 символов',
-                  },
-                ],
-              },
-              value: '',
-              required: true,
-            },
-            {
-              id: 'ai18_5',
-              type: 'StringInput',
-              label: 'Отчество',
-              attrs: {
-                fstuc: 'first',
-                fields: [{ fieldName: 'middleName' }],
-                validation: [
-                  {
-                    type: 'RegExp',
-                    value: '^.{0,30}$',
-                    ref: '',
-                    dataType: '',
-                    condition: '',
-                    errorMsg: 'Поле может содержать не более 30 символов',
-                  },
-                ],
-                customUnrecLabel: 'При наличии',
-              },
-              value: '',
-              required: false,
-            },
-            {
-              id: 'ai18_6',
-              type: 'RadioInput',
-              label: 'Ребенок новый?',
-              attrs: {
-                hidden: true,
-                fields: [{ fieldName: 'isNew' }],
-                supportedValues: [
-                  { label: 'Да', value: true },
-                  { label: 'Нет', value: false, isDefault: false },
-                ],
-                isHorizontal: true,
-              },
-              value: '',
-              required: true,
-            },
-          ],
-          refs: {},
-          maxAge: 13,
+            ],
+            hint: 'Дату регистрации можно найти на штампе о регистрации на стр. 5-12 паспорта РФ',
+          },
+          value: '',
+          required: true,
         },
-        linkedValues: [],
-        arguments: {},
-        value:
-          '[{"ai18_4":"Dsssss","ai18_6":false,"ai18_0":"7588631","ai18_1":"2020-01-14T00:00:00Z","ai18_2":"F","ai18_3":"Впрол"},{"ai18_4":"Попавук","ai18_6":false,"ai18_0":"7588557","ai18_1":"2020-01-12T00:00:00Z","ai18_2":"F","ai18_3":"Лолд"},{"ai18_4":"Александр","ai18_6":false,"ai18_0":"7588684","ai18_1":"2021-01-16T00:00:00Z","ai18_2":"M","ai18_3":"Кенов"},{"ai18_4":"МПКТ","ai18_5":"сергеевич","ai18_6":false,"ai18_0":"7579800","ai18_1":"2020-12-31T00:00:00Z","ai18_2":"M","ai18_3":"свидетельство"},{"ai18_4":"Иван","ai18_6":false,"ai18_0":"7588685","ai18_1":"2021-01-16T00:00:00Z","ai18_2":"M","ai18_3":"Тигуран"},{"ai18_4":"бббб","ai18_5":"вввв","ai18_6":false,"ai18_0":"7588320","ai18_1":"2020-09-12T00:00:00Z","ai18_2":"F","ai18_3":"аааа"},{"ai18_4":"Орун","ai18_5":"Федорович","ai18_6":false,"ai18_0":"7588328","ai18_1":"2020-10-28T00:00:00Z","ai18_2":"F","ai18_3":"Громкий"}]',
-        required: true,
-      },
-    ],
-    terminal: false,
-    impasse: false,
-    accepted: true,
-    firstScreen: false,
+        {
+          id: 'ai18_00',
+          type: 'LabelSection',
+          label: "<p class='text-color--text-helper'>Укажите детей до 14 лет</p>",
+          attrs: {},
+          value: '',
+          required: true,
+        },
+        {
+          id: 'ai18_1',
+          type: 'DateInput',
+          label: 'Дата рождения',
+          attrs: {
+            grid: 'grid-col-6 grid-col-12-sm',
+            fields: [{ fieldName: 'birthDate' }],
+            accuracy: 'day',
+            minDate: '-14y',
+            maxDate: 'today',
+            validation: [
+              {
+                type: 'RegExp',
+                value: '.*',
+                ref: '',
+                condition: '',
+                errorMsg: 'Поле должно быть заполено',
+              },
+            ],
+          },
+          value: '',
+          required: true,
+        },
+        {
+          id: 'ai18_2',
+          type: 'RadioInput',
+          label: 'Пол',
+          attrs: {
+            fields: [{ fieldName: 'gender' }],
+            supportedValues: [
+              { label: 'Мальчик', value: 'M', isDefault: true },
+              { label: 'Девочка', value: 'F' },
+            ],
+            isHorizontal: true,
+            required: true,
+          },
+          value: '',
+          required: true,
+        },
+        {
+          id: 'ai18_3',
+          type: 'StringInput',
+          label: 'Фамилия',
+          attrs: {
+            fstuc: 'first',
+            fields: [{ fieldName: 'lastName' }],
+            validation: [
+              {
+                type: 'RegExp',
+                value: '.+',
+                ref: '',
+                dataType: '',
+                condition: '',
+                errorMsg: 'Поле не может быть пустым',
+              },
+              {
+                type: 'RegExp',
+                value: '^.{0,30}$',
+                ref: '',
+                dataType: '',
+                condition: '',
+                errorMsg: 'Поле может содержать не более 30 символов',
+              },
+            ],
+          },
+          value: '',
+          required: true,
+        },
+        {
+          id: 'ai18_4',
+          type: 'StringInput',
+          label: 'Имя',
+          attrs: {
+            fstuc: 'first',
+            fields: [{ fieldName: 'firstName' }],
+            validation: [
+              {
+                type: 'RegExp',
+                value: '.+',
+                ref: '',
+                dataType: '',
+                condition: '',
+                errorMsg: 'Поле не может быть пустым',
+              },
+              {
+                type: 'RegExp',
+                value: '^.{0,30}$',
+                ref: '',
+                dataType: '',
+                condition: '',
+                errorMsg: 'Поле может содержать не более 30 символов',
+              },
+            ],
+          },
+          value: '',
+          required: true,
+        },
+        {
+          id: 'ai18_5',
+          type: 'StringInput',
+          label: 'Отчество',
+          attrs: {
+            fstuc: 'first',
+            fields: [{ fieldName: 'middleName' }],
+            validation: [
+              {
+                type: 'RegExp',
+                value: '^.{0,30}$',
+                ref: '',
+                dataType: '',
+                condition: '',
+                errorMsg: 'Поле может содержать не более 30 символов',
+              },
+            ],
+            customUnrecLabel: 'При наличии',
+          },
+          value: '',
+          required: false,
+        },
+        {
+          id: 'ai18_6',
+          type: 'RadioInput',
+          label: 'Ребенок новый?',
+          attrs: {
+            hidden: true,
+            fields: [{ fieldName: 'isNew' }],
+            supportedValues: [
+              { label: 'Да', value: true },
+              { label: 'Нет', value: false, isDefault: false },
+            ],
+            isHorizontal: true,
+          },
+          value: '',
+          required: true,
+        },
+      ],
+      refs: {},
+      maxAge: 13,
+    },
+    linkedValues: [],
+    arguments: {},
+    value:
+      '[{"ai18_4":"Dsssss","ai18_6":false,"ai18_0":"7588631","ai18_1":"2020-01-14T00:00:00Z","ai18_2":"F","ai18_3":"Впрол"}]',
+    required: true,
   },
 };
