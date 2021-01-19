@@ -5,6 +5,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
+import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
 
 // TODO: Need to refactoring component
 xdescribe('FileUploadScreenComponent', () => {
@@ -33,6 +34,7 @@ xdescribe('FileUploadScreenComponent', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [FileUploadScreenComponent],
+      imports: [UserInfoLoaderModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         EventBusService,

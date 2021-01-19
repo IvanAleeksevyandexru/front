@@ -12,11 +12,13 @@ import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.m
 import { ActionModule } from '../../shared/directives/action/action.module';
 import { ComponentScreenComponent } from './component-screen.component';
 import { ComponentResolverModule } from '../../component/component-resolver/component-resolver.module';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 @NgModule({
   declarations: [ComponentScreenComponent],
   exports: [ComponentScreenComponent],
   imports: [
+    UserInfoLoaderModule,
     BaseModule,
     ComponentScreenComponentsModule,
     ComponentsListModule,
