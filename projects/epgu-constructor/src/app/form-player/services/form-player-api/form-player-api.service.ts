@@ -12,7 +12,6 @@ import {
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   QuizRequestDto,
-  SuggestionsApiResponse
 } from './form-player-api.types';
 
 @Injectable()
@@ -87,13 +86,6 @@ export class FormPlayerApiService {
     return this.post<FormPlayerApiResponse>(path, body);
   }
 
-  public getSuggestions(fields: Array<string>): Observable<Array<SuggestionsApiResponse>> {
-    // const { serviceId } = this.initDataService;
-    const searchQuery = fields.map(field => 'suggestionId=' + field).join('&');
-    const path = `/fields?${searchQuery}`;
-    return this.get(path);
-  }
-
   private getNavigateParams(params: NavigationParams = {}): HttpParams {
     return Object.keys(params).reduce<HttpParams>((p, k) => p.set(k, params[k]), new HttpParams());
   }
@@ -116,13 +108,6 @@ export class FormPlayerApiService {
 
   private post<T>(path: string, body: Object, params?: HttpParams): Observable<T> {
     return this.http.post<T>(path, body, {
-      withCredentials: true,
-      params,
-    });
-  }
-
-  private get<T>(path: string, params?: HttpParams): Observable<T> {
-    return this.http.get<T>(path, {
       withCredentials: true,
       params,
     });
