@@ -9,11 +9,13 @@ import { AnswerButtonModule } from '../../shared/components/answer-button/answer
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { BaseModule } from '../../shared/base.module';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 @NgModule({
   declarations: [ComponentScreenComponent],
   exports: [ComponentScreenComponent],
   imports: [
+    UserInfoLoaderModule,
     BaseModule,
     ComponentScreenComponentsModule,
     ComponentsListModule,
@@ -23,6 +25,6 @@ import { BaseModule } from '../../shared/base.module';
     AnswerButtonModule,
     FieldListModule,
     ScreenPadModule,
-  ]
+  ],
 })
 export class ComponentScreenModule {}

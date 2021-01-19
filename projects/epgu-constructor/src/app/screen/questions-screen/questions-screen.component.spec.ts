@@ -28,6 +28,7 @@ import { QuestionsScreenComponent } from './questions-screen.component';
 import { LocationService } from '../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -78,7 +79,7 @@ describe('QuestionsScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MockModule(EpguLibModule)],
+      imports: [MockModule(EpguLibModule), MockModule(UserInfoLoaderModule)],
       declarations: [
         QuestionsScreenComponent,
         MockComponents(
@@ -98,9 +99,11 @@ describe('QuestionsScreenComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
-    }).overrideComponent(QuestionsScreenComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(QuestionsScreenComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

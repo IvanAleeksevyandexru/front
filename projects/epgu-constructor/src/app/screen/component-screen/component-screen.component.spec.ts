@@ -35,6 +35,7 @@ import {
 import { By } from '@angular/platform-browser';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -66,7 +67,7 @@ describe('ComponentScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MockModule(EpguLibModule)],
+      imports: [ReactiveFormsModule, MockModule(EpguLibModule), MockModule(UserInfoLoaderModule)],
       declarations: [
         ComponentScreenComponent,
         MockComponents(
@@ -91,9 +92,11 @@ describe('ComponentScreenComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
-    }).overrideComponent(ComponentScreenComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(ComponentScreenComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
