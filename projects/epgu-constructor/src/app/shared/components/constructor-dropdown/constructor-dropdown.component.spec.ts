@@ -9,6 +9,7 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConstructorDropdownComponent } from './constructor-dropdown.component';
 import { BaseModule } from '../../base.module';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 
 describe('ConstructorDropdownComponent', () => {
   let component: ConstructorDropdownComponent;
@@ -21,6 +22,7 @@ describe('ConstructorDropdownComponent', () => {
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
+        UnsubscribeService,
       ],
     }).compileComponents();
   });

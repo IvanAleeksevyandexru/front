@@ -9,7 +9,7 @@ import { ConstructorDropdownModule } from '../../../../../../shared/components/c
 import { ComponentsListModule } from '../../../../../shared/components/components-list/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { ItemStatus } from '../../select-children.models';
+import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 
 describe('SelectChildrenItemComponent', () => {
@@ -63,6 +63,7 @@ describe('SelectChildrenItemComponent', () => {
         HealthService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
+        UnsubscribeService,
       ],
     }).compileComponents();
   });

@@ -9,6 +9,7 @@ import { ConfigServiceStub } from '../../../../core/services/config/config.servi
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
 import { LocationService } from '../../../../core/services/location/location.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
@@ -84,6 +85,7 @@ describe('PaymentTypeSelectorComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
+        UnsubscribeService,
       ],
     }).compileComponents();
   });

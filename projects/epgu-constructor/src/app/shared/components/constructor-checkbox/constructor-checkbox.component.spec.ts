@@ -9,6 +9,7 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConstructorCheckboxComponent } from './constructor-checkbox.component';
 import { BaseModule } from '../../base.module';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 
 describe('ConstructorCheckboxComponent', () => {
   let component: ConstructorCheckboxComponent;
@@ -22,6 +23,7 @@ describe('ConstructorCheckboxComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
         CurrentAnswersService,
+        UnsubscribeService,
       ],
     }).compileComponents();
   });

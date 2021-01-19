@@ -10,6 +10,7 @@ import { CoreModule } from '../../../core/core.module';
 import { LocationService } from '../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 import { BaseModule } from '../../base.module';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 
 describe('ScreenContainerComponent', () => {
   let component: ScreenContainerComponent;
@@ -24,7 +25,8 @@ describe('ScreenContainerComponent', () => {
           LocationService,
           WINDOW_PROVIDERS,
           HealthService,
-          { provide: ScreenService, useClass: ScreenServiceStub }
+          { provide: ScreenService, useClass: ScreenServiceStub },
+          UnsubscribeService,
         ],
       }).compileComponents();
     }),

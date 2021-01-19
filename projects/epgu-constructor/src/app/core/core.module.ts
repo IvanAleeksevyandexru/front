@@ -58,7 +58,7 @@ import { UtilsService } from './services/utils/utils.service';
     {
       provide: APP_INITIALIZER,
       useFactory: initApp,
-      deps: [SmuEventsService, CookieService],
+      deps: [SmuEventsService, CookieService, AutocompleteService],
       multi: true,
     },
     WINDOW_PROVIDERS,

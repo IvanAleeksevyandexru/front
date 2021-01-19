@@ -7,6 +7,7 @@ import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { LocationService } from '../../../../core/services/location/location.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
@@ -64,6 +65,7 @@ describe('UploadAndEditPhotoComponent', () => {
         WINDOW_PROVIDERS,
         { provide: ScreenService, useClass: MockScreenService },
         EventBusService,
+        UnsubscribeService,
       ],
     })
     .compileComponents();

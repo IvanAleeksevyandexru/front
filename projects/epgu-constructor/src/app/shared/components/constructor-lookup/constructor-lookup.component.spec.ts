@@ -13,6 +13,7 @@ import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stu
 import { ConstructorLookupComponent } from './constructor-lookup.component';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { BaseModule } from '../../base.module';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 
 describe('ConstructorLookupComponent', () => {
   let component: ConstructorLookupComponent;
@@ -27,6 +28,7 @@ describe('ConstructorLookupComponent', () => {
         { provide: UtilsService, useClass: UtilsServiceStub },
         CurrentAnswersService,
         CachedAnswersService,
+        UnsubscribeService,
       ],
     }).compileComponents();
   });
