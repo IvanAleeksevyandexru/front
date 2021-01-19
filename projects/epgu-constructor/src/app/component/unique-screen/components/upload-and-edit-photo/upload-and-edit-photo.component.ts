@@ -215,6 +215,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         const setImageUrl = (imageUrl: string): void => {
           this.croppedImageUrl = imageUrl;
           this.previousImageObjectUrl = imageUrl;
+          this.changeDetectionRef.markForCheck();
         };
         this.blobToDataURL(file, setImageUrl);
       });
