@@ -25,7 +25,7 @@ import { ScreenTypes } from '../../screen/screen.types';
 @Component({
   selector: 'epgu-constructor-component-resolver',
   templateUrl: './component-resolver.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
 export class ComponentResolverComponent implements AfterViewInit {
