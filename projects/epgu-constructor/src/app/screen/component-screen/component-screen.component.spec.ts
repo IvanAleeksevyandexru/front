@@ -3,7 +3,6 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { ReactiveFormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponents, MockModule } from 'ng-mocks';
-import { of } from 'rxjs';
 
 import { TimerComponent } from '../../component/component-screen/components/timer/timer.component';
 import { NavigationService } from '../../core/services/navigation/navigation.service';

@@ -23,8 +23,9 @@ import {
 import { ScreenTypes } from '../../screen/screen.types';
 
 @Component({
-  selector: 'epgu-constructor-component-resolver',
+  selector: 'epgu-constructor-component-resolver-2',
   templateUrl: './component-resolver.component.html',
+  styleUrls: ['./component-resolver.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
