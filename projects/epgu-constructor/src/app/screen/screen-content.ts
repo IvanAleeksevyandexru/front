@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
 import {
   ApplicantAnswersDto,
   CachedAnswersDto,
@@ -8,15 +8,63 @@ import {
   DisplayDto,
   DisplaySubjHead,
   ScenarioErrorsDto,
-  ScreenActionDto
+  ScreenActionDto,
 } from '../form-player/services/form-player-api/form-player-api.types';
 import { Gender } from '../shared/types/gender';
 import { ScreenStore, ScreenTypes } from './screen.types';
+import { concatMap, map } from 'rxjs/operators';
 
 type ComponentValueGeneric<T> = T;
-type ComponentValue = string | number | ComponentValueGeneric<unknown>;
+export type ComponentValue = string | number | ComponentValueGeneric<unknown>;
 
 export class ScreenContent {
+  public get displayInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
+    return this.display$.pipe(
+      concatMap(({ infoComponents, components }) =>
+        infoComponents
+          ? (of(infoComponents).pipe(
+              map(
+                (infoList) =>
+                  infoList
+                    .map((componentId) => {
+                      const findedComponent = components.find(
+                        (component) => component.id === componentId,
+                      );
+                      return findedComponent
+                        ? [findedComponent, this.getComponentData(findedComponent.value)]
+                        : null;
+                    })
+                    .filter((component) => !!component) as [ComponentDto, ComponentValue][],
+              ),
+            ) as Observable<[ComponentDto, ComponentValue][]>)
+          : of([] as [ComponentDto, ComponentValue][]),
+      ),
+    );
+  }
+  public get componentInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
+    return this.component$.pipe(
+      concatMap(({ attrs: { infoComponents }}) =>
+        infoComponents
+          ? (combineLatest([of(infoComponents), this.display$]).pipe(
+              map(
+                ([infoList, display]) =>
+                  infoList
+                    .map((componentId) => {
+                      const findedComponent = display.components.find(
+                        (component) => component.id === componentId,
+                      );
+                      return findedComponent
+                        ? [findedComponent, this.getComponentData(findedComponent.value)]
+                        : null;
+                    })
+                    .filter((component) => !!component) as [ComponentDto, ComponentValue][],
+              ),
+            ) as Observable<[ComponentDto, ComponentValue][]>)
+          : (of([]) as Observable<[ComponentDto, ComponentValue][]>),
+      ),
+    );
+  }
+
   public get display(): DisplayDto {
     return this._display.getValue();
   }
@@ -140,7 +188,7 @@ export class ScreenContent {
   public get componentValue(): ComponentValue {
     return this._componentValue.getValue();
   }
-  public set componentValue(val: ComponentValue ) {
+  public set componentValue(val: ComponentValue) {
     this._componentValue.next(val);
   }
   public get componentValue$(): Observable<ComponentValue> {
@@ -268,10 +316,19 @@ export class ScreenContent {
       orderId,
       gender,
       applicantAnswers,
-      cachedAnswers
+      cachedAnswers,
     } = screenStore;
-    const { header, subHeader, submitLabel, type, components = [], terminal, cssClass, buttons } = display;
-    const firstComponent = components[0];
+    const {
+      header,
+      subHeader,
+      submitLabel,
+      type,
+      components = [],
+      terminal,
+      cssClass,
+      buttons,
+    } = display;
+    const firstComponent = components.filter((component) => component?.attrs?.hidden !== true)[0];
     this.screenType = type;
     this.display = display;
     this.header = header;

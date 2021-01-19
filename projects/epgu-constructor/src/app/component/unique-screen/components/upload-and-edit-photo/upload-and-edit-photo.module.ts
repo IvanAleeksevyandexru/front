@@ -16,6 +16,7 @@ import { DragAndDropModule } from '../../../../shared/directives/drag-and-drop/d
 import { WebcamShootModule } from '../../../../shared/components/webcam-shoot/webcam-shoot.module';
 import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
 import { BaseModule } from '../../../../shared/base.module';
+import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
 
 @NgModule({
   entryComponents: [
@@ -39,6 +40,7 @@ import { BaseModule } from '../../../../shared/base.module';
     BaseComponentsModule,
     ScreenContainerModule,
     DragAndDropModule,
+    UserInfoLoaderModule,
   ],
   exports: [UploadAndEditPhotoComponent],
   providers: [

@@ -37,6 +37,7 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ComponentScreenComponent } from './component-screen.component';
 import { ComponentResolverComponent } from '../../component/component-resolver/component-resolver.component';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -65,7 +66,7 @@ describe('ComponentScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MockModule(EpguLibModule)],
+      imports: [ReactiveFormsModule, MockModule(EpguLibModule), MockModule(UserInfoLoaderModule)],
       declarations: [
         ComponentScreenComponent,
         MockComponents(
@@ -85,9 +86,11 @@ describe('ComponentScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         EventBusService,
       ],
-    }).overrideComponent(ComponentScreenComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(ComponentScreenComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
