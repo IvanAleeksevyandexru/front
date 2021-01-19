@@ -1,11 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnInit,
-} from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { map, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
 import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import {
@@ -14,7 +10,6 @@ import {
   DTOActionAction,
   ScreenActionDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenBase } from '../screenBase';
 
 @Component({
@@ -22,48 +17,35 @@ import { ScreenBase } from '../screenBase';
   templateUrl: './component-screen.component.html',
   styleUrls: ['./component-screen.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ComponentScreenComponent extends ScreenBase implements OnInit {
-  screenComponentName = ComponentScreenComponentTypes;
-  isShowActionBtn = false;
-  actionButtons: ComponentActionDto[] = [];
-  screenActionButtons: ScreenActionDto[] = [];
+export class ComponentScreenComponent extends ScreenBase {
+  isShowActionBtn$: Observable<boolean> = this.screenService.componentType$.pipe(
+    takeUntil(this.ngUnsubscribe$),
+    map((type) => this.calcIsShowActionBtn(type as ComponentScreenComponentTypes)),
+  );
+  actionButtons$: Observable<ComponentActionDto[]> = this.screenService.actions$.pipe(
+    takeUntil(this.ngUnsubscribe$),
+    map((actions: Array<ComponentActionDto>) => actions || []),
+  );
+  screenActionButtons$: Observable<ScreenActionDto[]> = this.screenService.buttons$.pipe(
+    takeUntil(this.ngUnsubscribe$),
+    map((buttons: Array<ScreenActionDto>) => buttons || []),
+  );
   nextStepAction: ComponentActionDto = {
     label: 'Продолжить',
     action: DTOActionAction.getNextStep,
     value: '',
     type: ActionType.nextStep,
   };
-  constructor(
-    public currentAnswersService: CurrentAnswersService,
-    public injector: Injector,
-    private changeDetectionRef: ChangeDetectorRef,
-  ) {
+  screenComponentName = ComponentScreenComponentTypes;
+
+  constructor(public injector: Injector) {
     super(injector);
   }
 
-  ngOnInit(): void {
-    this.screenService.componentType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((type) => {
-      this.calcIsShowActionBtn(type as ComponentScreenComponentTypes);
-      this.changeDetectionRef.markForCheck();
-    });
-    this.screenService.actions$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((actions: Array<ComponentActionDto>): void => {
-        this.actionButtons = actions || [];
-        this.changeDetectionRef.markForCheck();
-      });
-    this.screenService.buttons$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((buttons: Array<ScreenActionDto>) => {
-        this.screenActionButtons = buttons || [];
-        this.changeDetectionRef.markForCheck();
-      });
-  }
-
-  calcIsShowActionBtn(type: ComponentScreenComponentTypes): void {
-    this.isShowActionBtn = [
+  calcIsShowActionBtn(type: ComponentScreenComponentTypes): boolean {
+    return [
       ComponentScreenComponentTypes.registrationAddr,
       ComponentScreenComponentTypes.confirmPersonalUserRegAddr,
       ComponentScreenComponentTypes.divorceConsent,

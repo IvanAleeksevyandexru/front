@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ComponentFactory,
   ComponentFactoryResolver,
@@ -10,7 +11,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { delay, takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../screen/screen.service';
 import {
@@ -24,7 +25,7 @@ import { ScreenTypes } from '../../screen/screen.types';
 @Component({
   selector: 'epgu-constructor-component-resolver',
   templateUrl: './component-resolver.component.html',
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush, // @todo. заменить на OnPush
   providers: [UnsubscribeService],
 })
 export class ComponentResolverComponent implements AfterViewInit {
@@ -36,18 +37,19 @@ export class ComponentResolverComponent implements AfterViewInit {
     private screenService: ScreenService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private ngUnsubscribe$: UnsubscribeService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
     this.screenService.display$
       .pipe(
         tap(() => this.destroyComponent()),
-        delay(0),
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(({ components, type: screenType }) => {
         const cmpType = components[this.componentIndex].type as ComponentTypes;
         this.createComponent(cmpType, screenType);
+        this.cdr.detectChanges();
       });
   }
 

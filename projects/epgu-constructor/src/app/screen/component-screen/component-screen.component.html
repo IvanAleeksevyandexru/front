@@ -1,81 +1,27 @@
-<epgu-constructor-screen-container
-  [show-nav]="screenService.showNav$ | async"
-  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+<epgu-constructor-component-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenActionButtons]="screenActionButtons$ | async"
+  [actionButtons]="actionButtons$ | async"
+  [isShowActionBtn]="isShowActionBtn$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [submitLabel]="screenService.submitLabel$ | async"
+  [isValid]="currentAnswersService.isValid"
+  [nextStepAction]="nextStepAction"
 >
-  <div class="screen-body">
-    <div *ngIf="screenService.header$ | async as header" class="head">
-      <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
-    </div>
+  <epgu-constructor-component-resolver></epgu-constructor-component-resolver>
 
-    <epgu-constructor-component-resolver></epgu-constructor-component-resolver>
+  <!--TODO придумать что делать с component-list-->
+  <ng-container [ngSwitch]="screenService.componentType$ | async">
+    <epgu-constructor-screen-pad
+      class="screen-pad-body"
+      *ngSwitchCase="screenComponentName.fieldList"
+    >
+      <epgu-constructor-field-list [data]="screenService.component"> </epgu-constructor-field-list>
+    </epgu-constructor-screen-pad>
 
-    <!--TODO придумать что делать с component-list-->
-    <ng-container [ngSwitch]="screenService.componentType$ | async">
-      <epgu-constructor-screen-pad class="screen-pad-body" *ngSwitchCase="screenComponentName.fieldList">
-        <epgu-constructor-field-list
-          [data]="screenService.component"
-        >
-        </epgu-constructor-field-list>
-      </epgu-constructor-screen-pad>
-
-      <epgu-constructor-screen-pad class="screen-pad-body" *ngSwitchCase="screenComponentName.timer">
-        <epgu-constructor-timer
-          [data]="$any(screenService.component)"
-        >
-        </epgu-constructor-timer>
-      </epgu-constructor-screen-pad>
-    </ng-container>
-  </div>
-
-  <div class="screen-footer">
-    <ng-container *ngIf="isShowActionBtn">
-      <ng-container *ngTemplateOutlet="componentActionBtns"></ng-container>
-    </ng-container>
-
-    <ng-container *ngIf="screenActionButtons.length">
-      <ng-container *ngTemplateOutlet="screenActionBtns"></ng-container>
-    </ng-container>
-
-    <ng-container *ngIf="screenService.submitLabel$ | async">
-      <ng-container *ngTemplateOutlet="displayContinueBtn"></ng-container>
-    </ng-container>
-  </div>
-</epgu-constructor-screen-container>
-
-<ng-template #componentActionBtns>
-  <lib-button
-    *ngFor="let action of actionButtons"
-    epgu-constructor-action
-    [action]="action"
-    [color]="action.color"
-  >
-    <div>{{ action.label }}</div>
-  </lib-button>
-</ng-template>
-
-<ng-template #screenActionBtns>
-  <lib-button
-    *ngFor="let action of screenActionButtons"
-    epgu-constructor-action
-    [action]="action"
-    [color]="action.color"
-  >
-    <div>{{ action.label }}</div>
-  </lib-button>
-</ng-template>
-
-<ng-template #displayContinueBtn>
-  <lib-button
-    *ngIf="screenService.submitLabel$ | async"
-    [showLoader]="screenService.isLoading$ | async"
-    epgu-constructor-action
-    [action]="nextStepAction"
-    data-testid="display-continue-btn"
-    class="submit-button"
-    [disabled]="!currentAnswersService.isValid || (screenService.isLoading$ | async)"
-  >
-    <div class="secondary-font">
-      {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
-    </div>
-  </lib-button>
-</ng-template>
+    <epgu-constructor-screen-pad class="screen-pad-body" *ngSwitchCase="screenComponentName.timer">
+      <epgu-constructor-timer [data]="$any(screenService.component)"> </epgu-constructor-timer>
+    </epgu-constructor-screen-pad>
+  </ng-container>
+</epgu-constructor-component-wrapper>
