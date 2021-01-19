@@ -4,6 +4,7 @@ import { BaseComponentsModule } from '../../shared/components/base-components/ba
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
 import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
 import { BaseModule } from '../../shared/base.module';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 @NgModule({
   declarations: [QuestionsScreenComponent],
@@ -12,7 +13,8 @@ import { BaseModule } from '../../shared/base.module';
     BaseModule,
     BaseComponentsModule,
     ScreenContainerModule,
-    AnswerButtonModule
-  ]
+    AnswerButtonModule,
+    UserInfoLoaderModule,
+  ],
 })
 export class QuestionsScreenModule {}

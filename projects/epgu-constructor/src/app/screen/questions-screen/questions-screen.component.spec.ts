@@ -30,6 +30,7 @@ import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { QuestionsScreenComponent } from './questions-screen.component';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -80,7 +81,7 @@ describe('QuestionsScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MockModule(EpguLibModule)],
+      imports: [MockModule(EpguLibModule), MockModule(UserInfoLoaderModule)],
       declarations: [
         QuestionsScreenComponent,
         MockComponents(
@@ -102,9 +103,11 @@ describe('QuestionsScreenComponent', () => {
         EventBusService,
         CurrentAnswersService,
       ],
-    }).overrideComponent(QuestionsScreenComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(QuestionsScreenComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -6,7 +6,7 @@ import {
 } from '../../../component/component-screen/components/timer/timer.interface';
 import {
   DictionaryConditions,
-  DictionaryOptions
+  DictionaryOptions,
 } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
 import { Clarifications } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
@@ -138,6 +138,7 @@ export interface ComponentAttrsDto {
   maxDateRef?: string;
   hideSocialShare?: boolean;
   addContextQueryParams?: boolean;
+  infoComponents?: string[];
 }
 
 export interface ComponentUploadedFileDto {
@@ -309,6 +310,7 @@ export interface DisplayDto {
   isSocialButtonsHidden?: boolean;
   displayCssClass?: string;
   buttons?: Array<ScreenActionDto>;
+  infoComponents?: string[];
 }
 
 export interface ScenarioErrorsDto {
