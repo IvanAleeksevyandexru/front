@@ -20,6 +20,7 @@ import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ComponentStateForNavigate } from './action.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { CustomScreenComponentTypes } from '../../../component/components-list/components-list.types';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -125,8 +126,8 @@ export class ActionService {
   }
 
   private getComponentStateForNavigate(action: ComponentActionDto, componentId: string): ComponentStateForNavigate {
-    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов
-    if (this.screenService.display?.type === ScreenTypes.CUSTOM) {
+    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов (кроме таймера)
+    if (this.screenService.display?.type === ScreenTypes.CUSTOM && !this.isTimerComponent(componentId)) {
       return {
         ...this.currentAnswersService.state as object
       };
@@ -140,6 +141,11 @@ export class ActionService {
         value: value || action.value,
       },
     };
+  }
+
+  private isTimerComponent(componentId: string): boolean {
+    return this.screenService.display.components
+      .some(component => component.id === componentId && component.type === CustomScreenComponentTypes.Timer);
   }
 
   private downloadAction(action: ComponentActionDto): void {
