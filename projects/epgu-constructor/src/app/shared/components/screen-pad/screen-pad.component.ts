@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'epgu-constructor-screen-pad',
@@ -6,6 +6,4 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   styleUrls: ['./screen-pad.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScreenPadComponent implements OnInit {
-  ngOnInit(): void {}
-}
+export class ScreenPadComponent {}

@@ -1,10 +1,4 @@
-@import '../../../../../styles/core';
-
-.cmp-group {
-  &__layer {
-    margin-bottom: $screen-pad-p;
-  }
-}
+@import '../../../../../../../styles/core/index';
 
 .card {
   &__header {
