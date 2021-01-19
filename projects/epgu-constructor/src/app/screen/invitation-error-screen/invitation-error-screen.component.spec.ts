@@ -71,11 +71,13 @@ describe('InvitationErrorScreenComponent', () => {
     });
   });
 
-  xdescribe('scenarioDto property', () => {
+  describe('scenarioDto property', () => {
     it('should be equal to this.screenService.getStore()', () => {
-      spyOn(screenService, 'getStore').and.returnValue(scenarioDtoSample);
-
+      screenService.componentType = InvitationErrorScreenComponentTypes.invitationError;
       initComponent();
+
+      component.scenarioDto = scenarioDtoSample;
+      spyOn(screenService, 'getStore').and.returnValue(scenarioDtoSample);
 
       expect(component.scenarioDto).toBe(scenarioDtoSample);
     });
